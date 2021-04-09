@@ -3,12 +3,9 @@ import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
-import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PublicProfileService } from '../../core/services/public-profile.service';
-
 import { MapPublishedItemCardService } from '../../core/services/map-published-item-card/map-published-item-card.service';
-
 import { UserPublishedComponent } from './user-published.component';
 import { By } from '@angular/platform-browser';
 import { EmptyStateComponent } from '@public/shared/components/empty-state/empty-state.component';
@@ -17,9 +14,8 @@ import { ItemApiService } from '@public/core/services/api/item/item-api.service'
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { UuidService } from '@core/uuid/uuid.service';
-import { FavoritesApiService } from '@public/core/services/api/favorites/favorites-api.service';
 import { PublishedItemCardFavouriteCheckedModule } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.module';
-import { ItemFavoritesService } from '@public/core/services/item-favorites/item-favorites.service';
+import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
 
 describe('UserPublishedComponent', () => {
   let component: UserPublishedComponent;
@@ -29,19 +25,16 @@ describe('UserPublishedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, PublishedItemCardFavouriteCheckedModule],
+      imports: [HttpClientTestingModule, PublishedItemCardFavouriteCheckedModule, ItemFavoritesModule],
       declarations: [UserPublishedComponent, ItemCardListComponentStub, EmptyStateComponent],
       providers: [
         PublicProfileService,
         MapPublishedItemCardService,
         UuidService,
-        FavoritesApiService,
-        CheckSessionService,
         PublicUserApiService,
         DeviceDetectorService,
         ItemCardService,
         ItemApiService,
-        ItemFavoritesService,
         {
           provide: AccessTokenService,
           useValue: {

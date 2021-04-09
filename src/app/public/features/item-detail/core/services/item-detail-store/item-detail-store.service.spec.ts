@@ -1,13 +1,16 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { MOCK_ITEM_DETAIL_RESPONSE } from '@fixtures/item-detail-response.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
+import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
 import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { CookieService } from 'ngx-cookie';
 import { of, throwError } from 'rxjs';
 import { ItemDetailFlagsStoreService } from '../item-detail-flags-store/item-detail-flags-store.service';
 import { ItemDetailService } from '../item-detail/item-detail.service';
@@ -24,7 +27,7 @@ describe('ItemDetailStoreService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, ItemFavoritesModule],
       providers: [
         ItemDetailStoreService,
         PublicUserApiService,
@@ -52,6 +55,10 @@ describe('ItemDetailStoreService', () => {
           useValue: {
             navigate() {},
           },
+        },
+        {
+          provide: CookieService,
+          useValue: MockCookieService,
         },
       ],
     });

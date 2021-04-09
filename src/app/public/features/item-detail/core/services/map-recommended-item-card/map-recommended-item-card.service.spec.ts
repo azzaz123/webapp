@@ -3,9 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { UuidService } from '@core/uuid/uuid.service';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { MOCK_RECOMMENDED_ITEM_CARD, MOCK_RECOMMENDED_ITEM_CARD_WITHOUT_IMAGES } from '@fixtures/item-card.fixtures.spec';
-import { FavoritesApiService } from '@public/core/services/api/favorites/favorites-api.service';
-import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
-import { ItemFavoritesService } from '@public/core/services/item-favorites/item-favorites.service';
+import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
 import {
   RECOMMENDED_ITEM_MOCK,
   RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES,
@@ -19,12 +17,9 @@ describe('MapRecommendedItemCardService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, ItemFavoritesModule],
       providers: [
         MapRecommendedItemCardService,
-        ItemFavoritesService,
-        CheckSessionService,
-        FavoritesApiService,
         {
           provide: CookieService,
           useValue: MockCookieService,

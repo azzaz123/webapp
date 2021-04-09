@@ -67,12 +67,11 @@ import {
 } from '@fixtures/item-card.fixtures.spec';
 import { RecommenderItemCardFavouriteCheckedService } from '../core/services/recommender-item-card-favorite-checked/recommender-item-card-favorite-checked.service';
 import { MapRecommendedItemCardService } from '../core/services/map-recommended-item-card/map-recommended-item-card.service';
-import { ItemFavoritesService } from '@public/core/services/item-favorites/item-favorites.service';
-import { FavoritesApiService } from '@public/core/services/api/favorites/favorites-api.service';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { MapItemService } from '@public/core/services/map-item/map-item.service';
+import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -123,7 +122,7 @@ describe('ItemDetailComponent', () => {
         ItemTaxonomiesComponent,
         ItemFullScreenCarouselComponent,
       ],
-      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule, ItemDetailHeaderModule],
+      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule, ItemDetailHeaderModule, ItemFavoritesModule],
       providers: [
         CheckSessionService,
         ItemCardService,
@@ -133,8 +132,6 @@ describe('ItemDetailComponent', () => {
         Renderer2,
         RecommenderItemCardFavouriteCheckedService,
         MapRecommendedItemCardService,
-        ItemFavoritesService,
-        FavoritesApiService,
         ItemDetailService,
         PublicUserApiService,
         RecommenderApiService,

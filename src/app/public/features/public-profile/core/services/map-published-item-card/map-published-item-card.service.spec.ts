@@ -4,9 +4,7 @@ import { UuidService } from '@core/uuid/uuid.service';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { MOCK_PUBLISHED_ITEM_CARD, MOCK_PUBLISHED_ITEM_CARD_WITHOUT_IMAGES } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM_RESPONSE } from '@fixtures/item.fixtures.spec';
-import { FavoritesApiService } from '@public/core/services/api/favorites/favorites-api.service';
-import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
-import { ItemFavoritesService } from '@public/core/services/item-favorites/item-favorites.service';
+import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
 import { CookieService } from 'ngx-cookie';
 import { MapPublishedItemCardService } from './map-published-item-card.service';
 
@@ -16,13 +14,10 @@ describe('MapPublishedItemCardService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, ItemFavoritesModule],
       providers: [
         MapPublishedItemCardService,
         UuidService,
-        CheckSessionService,
-        FavoritesApiService,
-        ItemFavoritesService,
         {
           provide: CookieService,
           useValue: MockCookieService,
