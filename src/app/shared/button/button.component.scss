@@ -175,4 +175,13 @@ $vertical-padding: $spacing-ms;
     display: flex;
     justify-content: center;
   }
+
+  &.btn-modal-primary {
+    height: 40px;
+    padding: 0 $spacing-ml;
+    font-size: $font-size-s;
+    font-weight: bold;
+    width: 100%;
+    max-width: 371px;
+  }
 }

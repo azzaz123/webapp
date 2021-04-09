@@ -11,7 +11,6 @@ import {
 } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
-import { FeatureflagService } from '../user/featureflag.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
 import { CategoryService } from '../category/category.service';
@@ -44,7 +43,6 @@ export class SubscriptionsService {
 
   constructor(
     private userService: UserService,
-    private featureflagService: FeatureflagService,
     private http: HttpClient,
     private categoryService: CategoryService,
     private uuidService: UuidService,
@@ -317,5 +315,15 @@ export class SubscriptionsService {
     }
 
     return discountPercentatge;
+  }
+
+  public hasFreeTrialByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): boolean {
+    const selectedsubscription = subscriptions.find((subscription) => subscription.category_id === categoryId);
+
+    if (!selectedsubscription) {
+      return false;
+    }
+
+    return this.hasTrial(selectedsubscription) && !selectedsubscription.subscribed_from;
   }
 }
