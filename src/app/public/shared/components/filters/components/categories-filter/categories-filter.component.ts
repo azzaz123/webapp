@@ -5,6 +5,7 @@ import { FILTER_VARIANT } from '@public/shared/components/filters/components/abs
 import { GridSelectFormOption } from '@shared/form/components/grid-select/interfaces/grid-select-form-option.interface';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
+import { CATEGORY_OPTIONS } from '@public/shared/components/filters/components/categories-filter/data/category_options';
 
 @Component({
   selector: 'tsl-categories-filter',
@@ -18,7 +19,7 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   });
 
   public getGridOptions(): GridSelectFormOption[] {
-    return [];
+    return CATEGORY_OPTIONS;
   }
 
   public getSelectOptions(): SelectFormOption<string>[] {
