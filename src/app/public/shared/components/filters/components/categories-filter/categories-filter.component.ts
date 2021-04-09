@@ -25,6 +25,9 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
     select: new FormControl([]),
   });
 
+  public selectOptions = CategoriesFilterComponent.getSelectOptions();
+  public gridOptions = CategoriesFilterComponent.getGridOptions();
+
   @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
   @ViewChild(SelectFilterTemplateComponent) placeholderTemplate: SelectFilterTemplateComponent;
 
@@ -45,6 +48,17 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
     return this.labelSubject.asObservable();
   }
 
+  public static getGridOptions(): GridSelectFormOption[] {
+    return CATEGORY_OPTIONS;
+  }
+
+  public static getSelectOptions(): SelectFormOption<string>[] {
+    return CATEGORY_OPTIONS.map((option) => ({
+      ...option,
+      icon: option.icon.stroke,
+    }));
+  }
+
   public ngOnInit() {
     super.ngOnInit();
     this.updateSubjects();
@@ -55,14 +69,6 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
     this.subscriptions.unsubscribe();
   }
 
-  public getGridOptions(): GridSelectFormOption[] {
-    return CATEGORY_OPTIONS;
-  }
-
-  public getSelectOptions(): SelectFormOption<string>[] {
-    return [];
-  }
-
   public handleClear() {
     super.handleClear();
     this.cleanForm();
@@ -71,14 +77,19 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   private initializeForm(): void {
     this.subscriptions.add(
       this.formGroup.controls.select.valueChanges.subscribe((value) => {
-        if (this.isAllCategoriesSelected(value[0])) {
+        const formattedValue = this.getFormValue(value);
+        if (this.isAllCategoriesSelected(formattedValue)) {
           this.cleanForm();
         }
         this.handleValueChange();
-        this.updateSubjects(value[0]);
+        this.updateSubjects(formattedValue);
         this.closeTemplates();
       })
     );
+  }
+
+  private getFormValue(value: string | string[]): string {
+    return typeof value === 'string' ? value : value[0];
   }
 
   private handleValueChange(): void {
@@ -94,28 +105,28 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private isAllCategoriesSelected(value: string): boolean {
-    return value === null;
+    return value === '';
   }
 
   private cleanForm(): void {
     this.formGroup.controls.select.reset([]);
   }
 
-  private updateSubjects(value: string | null = null): void {
-    this.iconSubject.next(this.getCategoryIcon(value, typeof value !== 'string' ? 'standard' : 'stroke'));
+  private updateSubjects(value: string = ''): void {
+    this.iconSubject.next(this.getCategoryIcon(value, value === '' ? 'standard' : 'stroke'));
     this.placeholderIconSubject.next(this.getCategoryIcon(value, 'standard'));
     this.labelSubject.next(this.getCategoryLabel(value));
   }
 
-  private getCategoryIcon(value: string | null, iconType: keyof CategoriesFilterIcon): string {
+  private getCategoryIcon(value: string, iconType: keyof CategoriesFilterIcon): string {
     return this.getCategoryByValue(value).icon[iconType];
   }
 
-  private getCategoryLabel(value: string | null): string {
+  private getCategoryLabel(value: string): string {
     return this.getCategoryByValue(value).label;
   }
 
-  private getCategoryByValue(value: string | null): CategoriesFilterOption {
+  private getCategoryByValue(value: string): CategoriesFilterOption {
     return CATEGORY_OPTIONS.find((option) => option.value === value);
   }
 

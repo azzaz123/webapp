@@ -3,7 +3,7 @@ import { CategoriesFilterOption } from '@public/shared/components/filters/compon
 export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
   {
     label: $localize`:@@filtersCategoryAllCategories:All categories`,
-    value: null,
+    value: '',
     icon: {
       standard: '/assets/icons/filters/categories/all.svg',
       active: '/assets/icons/filters/categories/all_selected.svg',
