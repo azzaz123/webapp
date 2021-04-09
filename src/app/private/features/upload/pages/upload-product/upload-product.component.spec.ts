@@ -982,18 +982,40 @@ describe('UploadProductComponent', () => {
   });
 
   describe('getSizes', () => {
-    it('should get the sizes for the current object type and gender', () => {
-      component.uploadForm.get('extra_info').patchValue({
-        object_type: {
-          id: '365',
-        },
-        gender: 'male',
+    describe('and has object_type', () => {
+      it('should get the sizes for the current object type and gender', () => {
+        const objectTypeId = 365;
+        const gender = 'male';
+        component.uploadForm.get('extra_info').patchValue({
+          object_type: {
+            id: objectTypeId,
+          },
+          gender: gender,
+        });
+        spyOn(generalSuggestionsService, 'getSizes').and.callThrough();
+
+        component.getSizes();
+
+        expect(generalSuggestionsService.getSizes).toHaveBeenCalledWith(objectTypeId, gender);
       });
-      spyOn(generalSuggestionsService, 'getSizes').and.callThrough();
+    });
 
-      component.getSizes();
+    describe('and has object_type_2', () => {
+      it('should get the sizes for the current object type 2 and gender', () => {
+        const objectType2Id = 365;
+        const gender = 'female';
+        component.uploadForm.get('extra_info').patchValue({
+          object_type_2: {
+            id: objectType2Id,
+          },
+          gender: gender,
+        });
+        spyOn(generalSuggestionsService, 'getSizes').and.callThrough();
 
-      expect(generalSuggestionsService.getSizes).toHaveBeenCalledWith('365', 'male');
+        component.getSizes();
+
+        expect(generalSuggestionsService.getSizes).toHaveBeenCalledWith(objectType2Id, gender);
+      });
     });
   });
 
