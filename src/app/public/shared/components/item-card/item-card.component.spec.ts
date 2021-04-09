@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
-import { ITEM_BUMP_FLAGS, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
@@ -22,7 +22,11 @@ describe('ItemCardComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardComponent],
       imports: [CommonModule, FavouriteIconModule, CustomCurrencyModule, SvgIconModule, ImageFallbackModule, HttpClientTestingModule],
-    }).compileComponents();
+    })
+      .overrideComponent(ItemCardComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -30,8 +34,7 @@ describe('ItemCardComponent', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
-    component.item = MOCK_ITEM;
-    component.item.bumpFlags = ITEM_BUMP_FLAGS;
+    component.item = MOCK_ITEM_CARD;
     fixture.detectChanges();
   });
 

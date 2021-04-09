@@ -1,0 +1,41 @@
+<tsl-filter-template #filterTemplateComponent
+                     [isBubble]="isBubble()"
+                     [isDropdown]="isDropdown()"
+                     [isClearable]="true"
+                     [title]="config.title"
+                     [icon]="config.icon"
+                     [label]="label$ | async"
+                     [hasValue]="hasValue$() | async"
+                     (clear)="handleClear()"
+                     (openStateChange)="openStateChange.emit($event)">
+
+  <tsl-select-filter-template #selectFilterTemplateComponent
+                              [hasContentPlaceholder]="hasContentPlaceholder()"
+                              [placeholderLabel]="label$ | async"
+                              [contentTitle]="contentTitle"
+                              [isClearable]="hasValue$() | async"
+                              (clear)="handleClear()">
+
+    <div class="SuggesterFilter__search_box">
+      <input [placeholder]="config.suggesterPlaceholder" class="SuggesterFilter__search_box_input mx-3" type="text"
+             [(ngModel)]="searchQuery" (ngModelChange)="modelChanged()"/>
+      <tsl-svg-icon src="/assets/icons/glass_icon.svg" class="SuggesterFilter__glass"
+                    width="24" height="24">
+      </tsl-svg-icon>
+      <tsl-svg-icon *ngIf="searchQuery" src="/assets/icons/cross.svg" class="SuggesterFilter__clear p-2" width="10" height="10"
+                    (click)="clearSearch()">
+      </tsl-svg-icon>
+    </div>
+
+    <div [class.SuggesterFilter--bubble]="isBubble()">
+      <form [formGroup]="formGroup" class="SuggesterFilter__form">
+        <tsl-select-form
+          formControlName="select"
+          [options]="options">
+        </tsl-select-form>
+      </form>
+    </div>
+
+  </tsl-select-filter-template>
+
+</tsl-filter-template>
