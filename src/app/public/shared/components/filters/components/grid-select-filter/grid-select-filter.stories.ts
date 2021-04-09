@@ -23,10 +23,10 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/
         <div class="m-2" style="width: 100%">
           <tsl-grid-select-filter
             [variant]="${FILTER_VARIANT.BUBBLE}"
-            [value]="monoselectValue"
-            [config]="monoselectConfig"
-            (valueChange)="changeMonoselect($event)"
-            (clear)="changeMonoselect([])"
+            [value]="singleSelectValue"
+            [config]="singleSelectConfig"
+            (valueChange)="changeSingleSelect($event)"
+            (clear)="changeSingleSelect([])"
           >
           </tsl-grid-select-filter>
         </div>
@@ -46,10 +46,10 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/
       <div style="border: 1px dashed black; background-color: white; position: relative; min-height: 400px;" class="p-3">
         <tsl-grid-select-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
-          [value]="monoselectValue"
-          [config]="monoselectConfig"
-          (valueChange)="changeMonoselect($event)"
-          (clear)="changeMonoselect([])"
+          [value]="singleSelectValue"
+          [config]="singleSelectConfig"
+          (valueChange)="changeSingleSelect($event)"
+          (clear)="changeSingleSelect([])"
         >
         </tsl-grid-select-filter>
         <hr />
@@ -66,13 +66,13 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/
   `,
 })
 class FiltersComponent {
-  @Input() public monoselectValue: FilterParameter[];
+  @Input() public singleSelectValue: FilterParameter[];
   @Input() public multiselectValue: FilterParameter[];
-  @Input() public monoselectConfig: GridSelectFilterConfig;
+  @Input() public singleSelectConfig: GridSelectFilterConfig;
   @Input() public multiselectConfig: GridSelectFilterConfig;
 
-  public changeMonoselect(value: FilterParameter[]): void {
-    this.monoselectValue = value;
+  public changeSingleSelect(value: FilterParameter[]): void {
+    this.singleSelectValue = value;
   }
 
   public changeMultiselect(value: FilterParameter[]): void {
@@ -101,7 +101,7 @@ const Template: Story<FiltersComponent> = (args) => ({
   component: FiltersComponent,
 });
 
-const monoselectConfig: GridSelectFilterConfig = {
+const singleSelectConfig: GridSelectFilterConfig = {
   id: REAL_ESTATE_CONFIGURATION_ID.ROOMS,
   title: 'Big icons',
   icon: '/assets/icons/joke.svg',
@@ -131,14 +131,14 @@ const multiselectConfig: GridSelectFilterConfig = {
 
 export const Default = Template.bind({});
 Default.args = {
-  monoselectConfig: monoselectConfig,
+  singleSelectConfig: singleSelectConfig,
   multiselectConfig: multiselectConfig,
 };
 
 export const WithDefaultValues = Template.bind({});
 WithDefaultValues.args = {
-  monoselectConfig: monoselectConfig,
+  singleSelectConfig: singleSelectConfig,
   multiselectConfig: multiselectConfig,
-  monoselectValue: [{ key: 'big_icons', value: '3' }],
+  singleSelectValue: [{ key: 'big_icons', value: '3' }],
   multiselectValue: [{ key: 'multiselect', value: 'gasoil,gasoline' }],
 };
