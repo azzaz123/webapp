@@ -478,16 +478,6 @@ describe('UploadProductComponent', () => {
       it('should disable the gender field', () => {
         expect(component.uploadForm.get('extra_info').get('gender').disabled).toBe(true);
       });
-
-      describe('and object_type_2 is enabled', () => {
-        beforeEach(() => {
-          component.uploadForm.get('extra_info').get('object_type_2').enable();
-        });
-
-        it('should require the object_type_2 field', () => {
-          expect(component.uploadForm.get('extra_info').get('object_type_2').get('id').errors).toEqual({ required: true });
-        });
-      });
     });
     describe('if the selected category is fashion', () => {
       beforeEach(() => {
@@ -513,14 +503,16 @@ describe('UploadProductComponent', () => {
       });
       it('should enable the size field', () => {
         component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
           extra_info: {
             object_type: { id: 1 },
             gender: 'M',
           },
         });
-
+        component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
+        });
         fixture.detectChanges();
-
         expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(false);
       });
       it('should disable the size field', () => {
@@ -534,16 +526,6 @@ describe('UploadProductComponent', () => {
         });
         fixture.detectChanges();
         expect(component.uploadForm.get('extra_info').get('size').disabled).toBe(true);
-      });
-
-      describe('and object_type_2 is enabled', () => {
-        beforeEach(() => {
-          component.uploadForm.get('extra_info').get('object_type_2').enable();
-        });
-
-        it('should require the object_type_2 field', () => {
-          expect(component.uploadForm.get('extra_info').get('object_type_2').get('id').errors).toEqual({ required: true });
-        });
       });
     });
 
@@ -569,16 +551,6 @@ describe('UploadProductComponent', () => {
       });
       it('should disable the model field', () => {
         expect(component.uploadForm.get('extra_info').get('model').disabled).toBe(true);
-      });
-
-      describe('and object_type_2 is enabled', () => {
-        beforeEach(() => {
-          component.uploadForm.get('extra_info').get('object_type_2').enable();
-        });
-
-        it('should require the object_type_2 field', () => {
-          expect(component.uploadForm.get('extra_info').get('object_type_2').get('id').errors).toBeNull();
-        });
       });
     });
   });
@@ -704,16 +676,11 @@ describe('UploadProductComponent', () => {
         },
         extra_info: {
           object_type: { id: 1 },
+          object_type_2: { id: 2 },
         },
       });
       component.uploadForm.get('extra_info').get('object_type').enable();
       component.uploadForm.get('extra_info').get('object_type_2').enable();
-      component.uploadForm.patchValue({
-        extra_info: {
-          object_type_2: { id: 2 },
-        },
-      });
-
       const expected = {
         category_id: CATEGORY_IDS.SERVICES,
         currency_code: 'EUR',
@@ -995,50 +962,18 @@ describe('UploadProductComponent', () => {
   });
 
   describe('getSizes', () => {
-    describe('and has object_type', () => {
-      it('should get the sizes for the current object type and gender', () => {
-        const objectTypeId = 365;
-        const gender = 'male';
-        component.uploadForm.get('extra_info').patchValue({
-          object_type: {
-            id: objectTypeId,
-          },
-          gender: gender,
-        });
-        spyOn(generalSuggestionsService, 'getSizes').and.callThrough();
-
-        component.getSizes();
-
-        expect(generalSuggestionsService.getSizes).toHaveBeenCalledWith(objectTypeId, gender);
+    it('should get the sizes for the current object type and gender', () => {
+      component.uploadForm.get('extra_info').patchValue({
+        object_type: {
+          id: '365',
+        },
+        gender: 'male',
       });
-    });
+      spyOn(generalSuggestionsService, 'getSizes').and.callThrough();
 
-    describe('and has object_type_2', () => {
-      it('should get the sizes for the current object type 2 and gender', () => {
-        const objectType2Id = 365;
-        const gender = 'female';
-        component.uploadForm.get('extra_info').patchValue({
-          object_type_2: {
-            id: objectType2Id,
-          },
-          gender: gender,
-        });
-        spyOn(generalSuggestionsService, 'getSizes').and.callThrough();
+      component.getSizes();
 
-        component.getSizes();
-
-        expect(generalSuggestionsService.getSizes).toHaveBeenCalledWith(objectType2Id, gender);
-      });
-    });
-
-    describe('and has NOT gender', () => {
-      it('should NOT get the sizes', () => {
-        spyOn(generalSuggestionsService, 'getSizes').and.callThrough();
-
-        component.getSizes();
-
-        expect(generalSuggestionsService.getSizes).not.toHaveBeenCalled();
-      });
+      expect(generalSuggestionsService.getSizes).toHaveBeenCalledWith('365', 'male');
     });
   });
 
@@ -1350,6 +1285,7 @@ describe('UploadProductComponent', () => {
       const expected = {
         object_type: { id: null },
         brand: null,
+        size: { id: null },
         gender: null,
         condition: null,
       };
