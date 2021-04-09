@@ -823,13 +823,16 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we click one of the recommened item cards', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
     it('should send track click item card event', () => {
       const recommenedItemCard = fixture.debugElement.query(By.css(recommendedItemsTag));
       spyOn(userService, 'get').and.returnValue(of(MOCK_OTHER_USER));
       spyOn(itemDetailTrackEventsService, 'trackClickItemCardEvent');
 
       recommenedItemCard.triggerEventHandler('clickedItemAndIndexEvent', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
-      fixture.detectChanges();
 
       expect(itemDetailTrackEventsService.trackClickItemCardEvent).toHaveBeenCalled();
     });
