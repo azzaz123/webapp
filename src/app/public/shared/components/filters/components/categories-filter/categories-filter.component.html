@@ -2,14 +2,15 @@
                      [isDropdown]="isDropdown()"
                      [isClearable]="true"
                      [title]="config.title"
-                     [icon]="config.icon"
-                     [label]="getLabel()"
+                     [icon]="icon$ | async"
+                     [label]="label$ | async"
                      [hasValue]="hasValue$() | async"
                      (clear)="handleClear()"
                      (openStateChange)="openStateChange.emit($event)">
 
   <form [formGroup]="formGroup">
     <tsl-grid-select-form *ngIf="variant === VARIANT.BUBBLE"
+                          [isHoverMainColor]="true"
                           [isBig]="true"
                           [isMultiselect]="false"
                           [options]="getGridOptions()"
@@ -20,8 +21,8 @@
                                 [contentTitle]="config.title"
                                 [hasContentPlaceholder]="true"
                                 [isClearable]="false"
-                                [placeholderLabel]="getLabel()"
-                                [placeholderIcon]="getIcon()">
+                                [placeholderLabel]="label$ | async"
+                                [placeholderIcon]="placeholderIcon$ | async">
         <tsl-select-form
           formControlName="select"
           [options]="getSelectOptions()">
