@@ -155,7 +155,6 @@ describe('GooglePublisherTagService', () => {
         fn({ slot: { getAdUnitPath: () => MockAdSlots[0].name } });
       });
       let expectLoaded = false;
-
       service.setSlots(MockAdSlots);
 
       service.isAdSlotLoaded$(MockAdSlots[0]).subscribe((loaded: boolean) => {
@@ -167,7 +166,6 @@ describe('GooglePublisherTagService', () => {
 
     it('should get if ad slot is not loaded in a subscribe', () => {
       let expectLoaded = false;
-
       service.setSlots(MockAdSlots);
 
       service.isAdSlotLoaded$(MockAdSlots[0]).subscribe((loaded: boolean) => {
