@@ -4,6 +4,7 @@
                      [icon]="icon$ | async"
                      [label]="label$ | async"
                      [hasValue]="hasValue$() | async"
+                     [hasMaxHeight]="false"
                      (openStateChange)="openStateChange.emit($event)">
 
   <form [formGroup]="formGroup">
