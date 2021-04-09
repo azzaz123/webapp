@@ -10,4 +10,7 @@ export class GridSelectOptionComponent {
   @Input() label?: string;
   @Input() isActive?: boolean;
   @Input() isBig?: boolean;
+
+  public BIG_SIZE = 30;
+  public SMALL_SIZE = 20;
 }
