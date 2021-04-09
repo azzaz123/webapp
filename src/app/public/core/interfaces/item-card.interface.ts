@@ -13,3 +13,8 @@ export interface ItemCard {
   flags?: ItemFlags;
   bumpFlags?: ItemVisibilityFlags;
 }
+
+export interface ItemsCardsWithPagination {
+  nextPaginationItem: number;
+  items: ItemCard[];
+}

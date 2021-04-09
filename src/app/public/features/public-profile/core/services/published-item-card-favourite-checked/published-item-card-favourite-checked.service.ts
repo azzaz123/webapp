@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ItemCard, ItemsCardsWithPagination } from '@public/core/interfaces/item-card.interface';
+import { ItemsCardsWithPagination } from '@public/core/interfaces/item-card.interface';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { MapPublishedItemCardService } from '../map-published-item-card/map-published-item-card.service';
