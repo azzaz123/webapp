@@ -31,7 +31,7 @@ export const MOCK_CLICK_CHAT_BUTTON_EVENT: AnalyticsEvent<ClickChatButton> = {
     sellerUserId: MOCK_USER.id,
     screenId: SCREEN_IDS.ItemDetail,
     isPro: MOCK_USER.featured,
-    isBumped: !!MOCK_ITEM.bumpFlags,
+    isBumped: !!MOCK_ITEM.bumpFlags?.bumped,
   },
 };
 
@@ -70,7 +70,7 @@ export const MOCK_FAVORITE_ITEM_EVENT: AnalyticsEvent<FavoriteItem> = {
     salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
     isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
     title: MOCK_CAR_ITEM_DETAIL.item.title,
-    isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags,
+    isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags?.bumped,
   },
 };
 
@@ -84,7 +84,7 @@ export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
     salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
     isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
     title: MOCK_CAR_ITEM_DETAIL.item.title,
-    isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags,
+    isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags?.bumped,
   },
 };
 
