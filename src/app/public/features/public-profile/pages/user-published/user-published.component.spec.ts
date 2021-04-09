@@ -18,6 +18,8 @@ import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { UuidService } from '@core/uuid/uuid.service';
 import { FavoritesApiService } from '@public/core/services/api/favorites/favorites-api.service';
+import { PublishedItemCardFavouriteCheckedModule } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.module';
+import { ItemFavoritesService } from '@public/core/services/item-favorites/item-favorites.service';
 
 describe('UserPublishedComponent', () => {
   let component: UserPublishedComponent;
@@ -27,7 +29,7 @@ describe('UserPublishedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, PublishedItemCardFavouriteCheckedModule],
       declarations: [UserPublishedComponent, ItemCardListComponentStub, EmptyStateComponent],
       providers: [
         PublicProfileService,
@@ -39,6 +41,7 @@ describe('UserPublishedComponent', () => {
         DeviceDetectorService,
         ItemCardService,
         ItemApiService,
+        ItemFavoritesService,
         {
           provide: AccessTokenService,
           useValue: {

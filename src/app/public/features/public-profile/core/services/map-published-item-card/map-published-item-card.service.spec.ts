@@ -1,9 +1,13 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { UuidService } from '@core/uuid/uuid.service';
+import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { MOCK_PUBLISHED_ITEM_CARD, MOCK_PUBLISHED_ITEM_CARD_WITHOUT_IMAGES } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM_RESPONSE } from '@fixtures/item.fixtures.spec';
 import { FavoritesApiService } from '@public/core/services/api/favorites/favorites-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
+import { ItemFavoritesService } from '@public/core/services/item-favorites/item-favorites.service';
+import { CookieService } from 'ngx-cookie';
 import { MapPublishedItemCardService } from './map-published-item-card.service';
 
 describe('MapPublishedItemCardService', () => {
@@ -12,7 +16,18 @@ describe('MapPublishedItemCardService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MapPublishedItemCardService, UuidService, CheckSessionService, FavoritesApiService],
+      imports: [HttpClientTestingModule],
+      providers: [
+        MapPublishedItemCardService,
+        UuidService,
+        CheckSessionService,
+        FavoritesApiService,
+        ItemFavoritesService,
+        {
+          provide: CookieService,
+          useValue: MockCookieService,
+        },
+      ],
     });
     service = TestBed.inject(MapPublishedItemCardService);
     uuidService = TestBed.inject(UuidService);

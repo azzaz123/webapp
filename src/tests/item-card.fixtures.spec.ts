@@ -1,5 +1,6 @@
 import { Image } from '@core/user/user-response.interface';
-import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { ItemCard, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
+import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { ITEM_BUMP_FLAGS, ITEM_DATA, MOCK_ITEM_RESPONSE, ITEM_SALE_CONDITIONS } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';
@@ -85,4 +86,14 @@ export const MOCK_RECOMMENDED_ITEM_CARD_WITHOUT_IMAGES: ItemCard = {
   images: [],
   webSlug: RECOMMENDED_ITEM_MOCK.web_slug,
   currencyCode: RECOMMENDED_ITEM_MOCK.currency,
+};
+
+export const MOCK_ITEM_CARDS_WITH_RECOMMENDED_TYPE: ItemCardsWithRecommenedType = {
+  recommendedType: RECOMMENDER_TYPE.DEFAULT,
+  recommendedItems: [MOCK_ITEM_CARD, MOCK_ITEM_CARD],
+};
+
+export const MOCK_EMPTY_ITEM_CARDS_WITH_RECOMMENDED_TYPE: ItemCardsWithRecommenedType = {
+  recommendedType: RECOMMENDER_TYPE.DEFAULT,
+  recommendedItems: [],
 };
