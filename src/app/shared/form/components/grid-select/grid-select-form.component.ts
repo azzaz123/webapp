@@ -18,6 +18,8 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
 export class GridSelectFormComponent extends AbstractFormComponent<string[]> {
   @Input() options: GridSelectFormOption[];
   @Input() columns: number;
+  @Input() columnsMd?: number;
+  @Input() columnsSm?: number;
   @Input() isBig?: boolean;
   @Input() isMultiselect?: boolean;
   @Input() isHoverMainColor?: boolean;

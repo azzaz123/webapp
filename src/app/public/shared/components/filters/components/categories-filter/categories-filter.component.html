@@ -7,14 +7,16 @@
                      [hasMaxHeight]="false"
                      (openStateChange)="openStateChange.emit($event)">
 
-  <form [formGroup]="formGroup">
+  <form [formGroup]="formGroup" [class.CategoriesFilter__grid]="isBubble()">
     <tsl-grid-select-form *ngIf="variant === VARIANT.BUBBLE"
                           formControlName="select"
                           [isHoverMainColor]="true"
                           [isBig]="true"
                           [isMultiselect]="false"
                           [options]="this.config.options"
-                          [columns]="6">
+                          [columns]="6"
+                          [columnsMd]="4"
+                          [columnsSm]="3">
     </tsl-grid-select-form>
 
     <tsl-select-filter-template *ngIf="variant === VARIANT.CONTENT"
