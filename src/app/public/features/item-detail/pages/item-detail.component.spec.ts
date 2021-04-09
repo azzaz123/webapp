@@ -37,6 +37,7 @@ import { ItemCardService } from '@public/core/services/item-card/item-card.servi
 import {
   EMPTY_RECOMMENDED_ITEMS_MOCK,
   RECOMMENDED_ITEMS_MOCK,
+  RECOMMENDED_ITEM_IDS_MOCK,
 } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
@@ -65,6 +66,7 @@ import { MockItemdDetailTrackEventService } from '../core/services/item-detail-t
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
+import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -426,6 +428,23 @@ describe('ItemDetailComponent', () => {
         });
         it('should show the recommended items', () => {
           expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeTruthy();
+        });
+
+        it('should send track view item detail recommendation slider event', () => {
+          const recommendedItems = fixture.debugElement.query(By.css(recommendedItemsTag));
+          const recommendedIds = RECOMMENDED_ITEM_IDS_MOCK;
+          const engine = SEARCH_TECHNIQUE_ENGINE.MORE_LIKE_THIS_SOLR;
+          spyOn(itemDetailTrackEventsService, 'trackViewItemDetailRecommendationSliderEvent');
+
+          recommendedItems.triggerEventHandler('initRecommendedItemsSlider', { recommendedItemIds: recommendedIds, engine });
+          fixture.detectChanges();
+
+          expect(itemDetailTrackEventsService.trackViewItemDetailRecommendationSliderEvent).toHaveBeenCalledWith(
+            MOCK_ITEM_CAR,
+            MOCK_USER,
+            recommendedIds,
+            engine
+          );
         });
       });
 

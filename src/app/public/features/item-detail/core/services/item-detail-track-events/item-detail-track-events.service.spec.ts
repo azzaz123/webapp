@@ -26,6 +26,7 @@ import {
   MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER,
   MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT,
 } from './track-events.fixtures.spec';
+import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 
 describe('ItemDetailTrackEventsService', () => {
   let service: ItemDetailTrackEventsService;
@@ -186,11 +187,12 @@ describe('ItemDetailTrackEventsService', () => {
     const item = MOCK_ITEM;
     const user = MOCK_USER;
     const recommendedItemIds = RECOMMENDED_ITEM_IDS_MOCK;
+    const engine = SEARCH_TECHNIQUE_ENGINE.MORE_LIKE_THIS_SOLR;
     it('should send view item detail recommendation slider event', () => {
       spyOn(service, 'trackViewItemDetailRecommendationSliderEvent').and.callThrough();
       spyOn(analyticsService, 'trackPageView');
 
-      service.trackViewItemDetailRecommendationSliderEvent(item, user, recommendedItemIds);
+      service.trackViewItemDetailRecommendationSliderEvent(item, user, recommendedItemIds, engine);
 
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT);
     });
