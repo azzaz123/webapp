@@ -127,9 +127,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   private initializeItemRecommendations(itemId: string, categoryId: number): void {
-    // if (this.isItemRecommendations(categoryId)) {
-    this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
-    // }
+    if (this.isItemRecommendations(categoryId)) {
+      this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
+    }
   }
 
   private setAdSlot(item: Item): void {
