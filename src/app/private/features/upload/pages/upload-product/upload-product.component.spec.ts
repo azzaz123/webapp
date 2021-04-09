@@ -1017,6 +1017,16 @@ describe('UploadProductComponent', () => {
         expect(generalSuggestionsService.getSizes).toHaveBeenCalledWith(objectType2Id, gender);
       });
     });
+
+    describe('and has NOT gender', () => {
+      it('should NOT get the sizes', () => {
+        spyOn(generalSuggestionsService, 'getSizes').and.callThrough();
+
+        component.getSizes();
+
+        expect(generalSuggestionsService.getSizes).not.toHaveBeenCalled();
+      });
+    });
   });
 
   describe('onUploaded', () => {
