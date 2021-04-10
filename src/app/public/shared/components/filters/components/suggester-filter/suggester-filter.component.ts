@@ -41,7 +41,7 @@ export class SuggesterFilterComponent
 
   private subscriptions = new Subscription();
 
-  public constructor(private optionService: FilterOptionService) {
+  constructor(private optionService: FilterOptionService) {
     super();
   }
 

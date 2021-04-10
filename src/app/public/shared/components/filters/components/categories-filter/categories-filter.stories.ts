@@ -15,6 +15,7 @@ import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-s
 import { CategoriesFilterConfig } from './interfaces/categories-filter-config.interface';
 import { CATEGORY_OPTIONS } from './data/category_options';
 import { FormatSelectOptionsPipe } from '@public/shared/components/filters/components/categories-filter/pipes/format-select-options.pipe';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-filters',
@@ -66,7 +67,7 @@ export default {
         GridSelectFormModule,
         SelectFormModule,
       ],
-      declarations: [FiltersComponent, CategoriesFilterComponent, FormatSelectOptionsPipe],
+      declarations: [FiltersComponent, CategoriesFilterComponent, FormatSelectOptionsPipe, IsBubblePipe],
     }),
   ],
 } as Meta;

@@ -15,14 +15,15 @@ import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { SelectFilterParams } from '../select-filter/interfaces/select-filter-params.interface';
 import { AbstractSelectFilterConfig } from './interfaces/abstract-select-filter-config.interface';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'story-abstract-select-filter',
   template: `
     <tsl-filter-template
-      [isBubble]="isBubble()"
-      [isDropdown]="isDropdown()"
+      [isBubble]="variant | isBubble"
+      [isDropdown]="true"
       [isClearable]="true"
       [title]="config.title"
       [icon]="config.icon"
@@ -32,7 +33,7 @@ import { AbstractSelectFilterConfig } from './interfaces/abstract-select-filter-
       (openStateChange)="openStateChange.emit($event)"
     >
       <tsl-select-filter-template
-        [hasContentPlaceholder]="hasContentPlaceholder()"
+        [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
         [placeholderLabel]="drawerPlaceholder"
         [contentTitle]="contentTitle"
       >
@@ -51,7 +52,7 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [AbstractSelectFilterModule, AbstractFilterModule, SvgIconModule, HttpClientModule, CommonModule],
-      declarations: [StoryAbstractSelectFilterComponent, LoremIpsumComponent],
+      declarations: [StoryAbstractSelectFilterComponent, LoremIpsumComponent, IsBubblePipe],
       providers: [
         { provide: CookieService, useValue: MockCookieService },
         { provide: FilterOptionService, useValue: {} },

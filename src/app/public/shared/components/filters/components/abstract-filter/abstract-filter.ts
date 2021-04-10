@@ -47,30 +47,6 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
     this.hasValueSubject.next(this._hasValue());
   }
 
-  public isBubble(): boolean {
-    return this.variant === FILTER_VARIANT.BUBBLE;
-  }
-
-  public isDropdown(): boolean {
-    return true;
-  }
-
-  public hasApply(): boolean {
-    return this.config.actions?.apply;
-  }
-
-  public isClearable(): boolean {
-    return this.config.isClearable;
-  }
-
-  public getIcon(): string | undefined {
-    return this.config.icon;
-  }
-
-  public getTitle(): string {
-    return this.config.title;
-  }
-
   public getFilterCounter(): number | undefined {
     return this._value.length > 1 ? this._value.length : undefined;
   }

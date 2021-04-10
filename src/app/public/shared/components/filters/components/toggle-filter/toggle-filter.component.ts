@@ -3,6 +3,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { ToggleFilterConfig } from './interfaces/toggle-filter-config.interface';
 import { ToggleFilterParams } from './interfaces/toggle-filter-params.interface';
+import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 
 @Component({
   selector: 'tsl-toggle-filter',
@@ -41,7 +42,7 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
   }
 
   public handleClick(): void {
-    if (this.isBubble()) {
+    if (this.variant === FILTER_VARIANT.BUBBLE) {
       this.toggle = !this.toggle;
       this.handleChange();
     }
