@@ -72,7 +72,6 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
-    console.log(previousValue, currentValue);
     if (this.hasValueChanged(previousValue, currentValue)) {
       if (this._value.length > 0) {
         this.updateValueFromParent();

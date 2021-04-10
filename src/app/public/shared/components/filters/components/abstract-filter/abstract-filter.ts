@@ -30,7 +30,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
 
   public label: string;
-  protected _value: FilterParameter[];
+  protected _value: FilterParameter[] = [];
 
   protected hasValueSubject = new BehaviorSubject<boolean>(false);
 
@@ -48,7 +48,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   }
 
   public writeValue(value: FilterParameter[]): void {
-    this._value = value;
+    this._value = [...value];
     this.hasValueSubject.next(this._hasValue());
   }
 
@@ -56,7 +56,9 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
     return this._value.length > 1 ? this._value.length : undefined;
   }
 
-  public handleApply(): void {}
+  public handleApply(): void {
+    this.valueChange.emit(this._value);
+  }
 
   public handleClear(): void {
     this.clear.emit();
