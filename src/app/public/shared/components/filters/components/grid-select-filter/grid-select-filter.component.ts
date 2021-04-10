@@ -75,8 +75,19 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
   }
 
   public handleApply() {
-    super.handleApply();
-    this.handleValueChange(this.formGroup.controls.select.value);
+    const value = this.formGroup.controls.select.value;
+    if (value.length) {
+      this.handleValueChange(value);
+      super.handleApply();
+    } else {
+      this.handleClear();
+    }
+  }
+
+  public handleClear() {
+    super.handleClear();
+    this.updateForm();
+    this.initLabel();
   }
 
   public clearForm(): void {
@@ -95,7 +106,14 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
 
   private initForm(): void {
     if (this.variant === FILTER_VARIANT.CONTENT) {
-      const subscription = this.formGroup.controls.select.valueChanges.subscribe(this.handleValueChange.bind(this));
+      const subscription = this.formGroup.controls.select.valueChanges.subscribe((value) => {
+        if (value.length) {
+          this.handleValueChange(value);
+          this.valueChange.emit(this._value);
+        } else {
+          this.handleClear();
+        }
+      });
       this.subscriptions.add(subscription);
     }
   }
@@ -111,10 +129,10 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
   }
 
   private updateForm(): void {
-    this.formGroup.controls.select.setValue(this.deserializeValue(this.getValue('parameterKey')));
+    this.formGroup.controls.select.setValue(this.deserializeValue(this.getValue('parameterKey')), { emitEvent: false });
   }
 
   private deserializeValue(commaSeparatedValue: string): string[] {
-    return commaSeparatedValue.split(',');
+    return commaSeparatedValue?.split(',') || [];
   }
 }
