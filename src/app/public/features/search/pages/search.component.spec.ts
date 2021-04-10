@@ -15,10 +15,9 @@ import { of } from 'rxjs/internal/observable/of';
 import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrapper.module';
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
-import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
-import { AdShoppingPageOptionPublicSearchFactory, AD_SHOPPING_PUBLIC_SEARCH } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchStoreService } from '../core/services/search-store.service';
 import { SearchComponent } from './search.component';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -124,7 +123,7 @@ describe('SearchComponent', () => {
     });
     it('should update items', () => {
       const newItems = [MOCK_SEARCH_ITEM, MOCK_SEARCH_ITEM];
-      let nextItems: Item[] = [];
+      let nextItems: ItemCard[] = [];
       component.items$.subscribe((items) => (nextItems = items));
 
       searchStoreService.appendItems(newItems);
