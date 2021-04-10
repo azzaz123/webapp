@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { SliderFormModule } from '@shared/form/components/slider/slider-form.module';
@@ -30,8 +30,8 @@ import { RangeFilterComponent } from './range-filter.component';
   `,
 })
 class FiltersComponent {
-  public value: FilterParameter[];
-  public config: RangeFilterConfig;
+  @Input() public value: FilterParameter[];
+  @Input() public config: RangeFilterConfig;
 
   changeBubble(value: FilterParameter[]): void {
     this.value = value;
@@ -46,7 +46,7 @@ export default {
   title: 'Webapp/Public/Shared/Components/Filters/RangeFilter',
   decorators: [
     moduleMetadata({
-      declarations: [RangeFilterComponent],
+      declarations: [FiltersComponent, RangeFilterComponent],
       imports: [CommonModule, AbstractFilterModule, SliderFormModule, ReactiveFormsModule, HttpClientModule],
       providers: [{ provide: CookieService, useValue: MockCookieService }],
     }),

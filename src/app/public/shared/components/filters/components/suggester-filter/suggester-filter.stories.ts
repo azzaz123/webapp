@@ -1,6 +1,5 @@
 import { moduleMetadata } from '@storybook/angular';
-import { Meta } from '@storybook/angular/types-6-0';
-import { Story } from '@storybook/angular/ts3.4/dist/client';
+import { Meta, Story } from '@storybook/angular/types-6-0';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { Component, Input } from '@angular/core';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';

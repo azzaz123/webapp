@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { moduleMetadata } from '@storybook/angular';
 import { Meta, Story } from '@storybook/angular/types-6-0';
@@ -23,11 +23,11 @@ import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/comm
   `,
 })
 class FiltersComponent {
-  public variant: FILTER_VARIANT;
-  public config: [RangeFilterConfig, ToggleFilterConfig];
-  public values: FilterParameter[];
+  @Input() variant: FILTER_VARIANT;
+  @Input() config: [RangeFilterConfig, ToggleFilterConfig];
+  @Input() values: FilterParameter[];
 
-  public valueChange(): void {}
+  public valueChange(parameters: FilterParameter[]): void {}
 }
 
 export default {

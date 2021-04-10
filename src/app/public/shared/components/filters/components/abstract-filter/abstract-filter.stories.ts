@@ -102,11 +102,11 @@ const Template: Story<StoryAbstractFilterComponent> = (args) => ({
     variant: FILTER_VARIANT.BUBBLE,
     ...args,
     config: {
-      ...args.config,
       title: 'I am the title',
+      bubblePlaceholder: 'I am the bubble placeholder',
+      ...args.config,
     },
   },
-  component: StoryAbstractFilterComponent,
 });
 
 const VariantTemplate: Story<StoryAbstractFilterComponent> = (args) => ({
@@ -115,10 +115,10 @@ const VariantTemplate: Story<StoryAbstractFilterComponent> = (args) => ({
     ...args,
     config: {
       title: 'I am the title',
+      bubblePlaceholder: 'I am the bubble placeholder',
       ...args.config,
     },
   },
-  component: StoryAbstractFilterComponent,
   template: `
     <div>
       <h1>Bubble variant</h1>

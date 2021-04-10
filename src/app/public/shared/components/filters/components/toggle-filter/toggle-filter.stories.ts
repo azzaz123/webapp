@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
@@ -12,6 +12,8 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { ToggleFilterConfig } from './interfaces/toggle-filter-config.interface';
 import { ToggleFilterComponent } from './toggle-filter.component';
+
+// BEFOREMERGE: There's some problem with event handling here. When making the toggle off, the bubble keeps the has value style
 
 @Component({
   selector: 'tsl-filters',
@@ -29,8 +31,8 @@ import { ToggleFilterComponent } from './toggle-filter.component';
   `,
 })
 class FiltersComponent {
-  public value: FilterParameter[];
-  public config: ToggleFilterConfig;
+  @Input() public value: FilterParameter[];
+  @Input() public config: ToggleFilterConfig;
 
   changeBubble(value: FilterParameter[]): void {
     this.value = value;
