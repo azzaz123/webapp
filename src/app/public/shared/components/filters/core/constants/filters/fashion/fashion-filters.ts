@@ -8,6 +8,7 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     type: FILTER_TYPES.SELECT,
     title: $localize`:@@filterGenderTitle:Gender`,
     bubblePlaceholder: $localize`:@@filterGenderBubblePlaceholder:Gender`,
+    drawerPlaceholder: $localize`:@@filterGenderBubblePlaceholder:Select gender`,
     mapKey: {
       parameterKey: 'gender',
     },
