@@ -11,6 +11,5 @@ export interface Filter<T extends Record<keyof T, string>> {
 
   // Outputs
   valueChange: EventEmitter<FilterParameter[]>;
-  clear: EventEmitter<void>;
   openStateChange: EventEmitter<boolean>;
 }

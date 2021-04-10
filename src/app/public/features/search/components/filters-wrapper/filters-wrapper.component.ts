@@ -70,11 +70,6 @@ export class FiltersWrapperComponent {
     }
   }
 
-  public bubbleClear(valuesToRemove: FilterParameter[]): void {
-    this.filterParameterDraftService.removeParameters(valuesToRemove);
-    this.applyFilters();
-  }
-
   public drawerClear(valuesToRemove: FilterParameter[]): void {
     this.filterParameterDraftService.removeParameters(valuesToRemove);
   }

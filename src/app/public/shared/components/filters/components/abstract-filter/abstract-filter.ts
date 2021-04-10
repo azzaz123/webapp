@@ -24,7 +24,6 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   }
 
   @Output() valueChange = new EventEmitter<FilterParameter[]>();
-  @Output() clear = new EventEmitter<void>();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
 
   @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
@@ -61,7 +60,9 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   }
 
   public handleClear(): void {
-    this.clear.emit();
+    const keys = Object.keys(this.config.mapKey).map((key) => this.config.mapKey[key]);
+    this.valueChange.emit(keys.map((key) => ({ key, value: undefined })));
+    this.writeValue([]);
   }
 
   public handleOpenStateChange(isOpen: boolean): void {

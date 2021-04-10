@@ -7,7 +7,7 @@
                      [hasValue]="hasValue$() | async"
                      [hasApply]="true"
                      (apply)="handleApply()"
-                     (clear)="handleClear()"
+                     (clear)="clearForm()"
                      (openStateChange)="openStateChange.emit($event)">
   <form [formGroup]="formGroup">
     <tsl-grid-select-form formControlName="select"

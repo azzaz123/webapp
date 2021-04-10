@@ -38,6 +38,7 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
   public ngOnInit(): void {
     super.ngOnInit();
     this.initForm();
+    this.initLabel();
     this.optionService
       .getOptions(this.config.id)
       .pipe(take(1))
@@ -48,7 +49,6 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
           label: option.label,
         }));
       });
-    this.initLabel();
   }
 
   public ngAfterContentInit(): void {
@@ -68,7 +68,7 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
         this.updateForm();
         this.updateLabel();
       } else {
-        this.handleClear();
+        this.clearForm();
         this.initLabel();
       }
     }
@@ -79,25 +79,18 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
     this.handleValueChange(this.formGroup.controls.select.value);
   }
 
-  public writeValue(value: FilterParameter[]): void {
-    super.writeValue(value);
-    this.valueChange.emit(this.value);
-  }
-
-  public handleClear(): void {
+  public clearForm(): void {
     this.formGroup.controls.select.reset([]);
-    super.handleClear();
   }
 
   private handleValueChange(value: string[]): void {
-    if (!value || value.length === 0) {
+    if (value.length) {
+      this.writeValue([{ key: this.config.mapKey.parameterKey, value: value.join(',') }]);
+      this.updateLabel();
+    } else {
       this.writeValue([]);
       this.initLabel();
-    } else {
-      this.writeValue([{ key: this.config.mapKey.parameterKey, value: value.join(',') }]);
     }
-
-    this.updateLabel();
   }
 
   private initForm(): void {
@@ -108,7 +101,7 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
   }
 
   private initLabel(): void {
-    this.labelSubject.next(this.label);
+    this.labelSubject.next(this.config.bubblePlaceholder);
   }
 
   private updateLabel(): void {
