@@ -47,7 +47,7 @@ describe('GridSelectFilterComponent', () => {
     mapKey: {
       parameterKey: 'key',
     },
-    type: FILTER_TYPES.ICON,
+    type: FILTER_TYPES.GRID,
     isMultiselect: false,
     hasBigIcons: false,
   };

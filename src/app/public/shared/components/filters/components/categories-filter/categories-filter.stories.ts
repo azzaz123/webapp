@@ -80,7 +80,7 @@ const categoriesConfig: CategoriesFilterConfig = {
   id: COMMON_CONFIGURATION_ID.CATEGORIES,
   title: 'Category',
   icon: '/assets/icons/joke.svg',
-  bubblePlaceholder: 'Condition',
+  bubblePlaceholder: 'All categories',
   drawerPlaceholder: 'All categories',
   mapKey: {
     parameterKey: 'category_ids',

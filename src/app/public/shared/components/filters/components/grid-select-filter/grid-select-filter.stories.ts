@@ -109,7 +109,7 @@ const singleSelectConfig: GridSelectFilterConfig = {
   mapKey: {
     parameterKey: 'big_icons',
   },
-  type: FILTER_TYPES.ICON,
+  type: FILTER_TYPES.GRID,
   isMultiselect: false,
   hasBigIcons: true,
 };
@@ -123,7 +123,7 @@ const multiselectConfig: GridSelectFilterConfig = {
   mapKey: {
     parameterKey: 'multiselect',
   },
-  type: FILTER_TYPES.ICON,
+  type: FILTER_TYPES.GRID,
   isMultiselect: true,
   hasBigIcons: false,
 };

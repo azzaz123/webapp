@@ -14,16 +14,19 @@ type HardcodedOptions = {
 export const HARDCODED_OPTIONS: HardcodedOptions = {
   [COMMON_CONFIGURATION_ID.POSTED_AGO]: [
     {
-      value: '24h',
+      value: 'today',
       label: $localize`:@@FilterOptionPostedAgo_hours:Hours`,
+      icon: '/assets/icons/filters/options/24.svg',
     },
     {
-      value: '7d',
+      value: 'lastWeek',
       label: $localize`:@@FilterOptionPostedAgo_days:Days`,
+      icon: '/assets/icons/filters/options/7.svg',
     },
     {
-      value: '30d',
+      value: 'lastMonth',
       label: $localize`:@@FilterOptionPostedAgo_days:Days`,
+      icon: '/assets/icons/filters/options/30.svg',
     },
   ],
   [REAL_ESTATE_CONFIGURATION_ID.ROOMS]: [
