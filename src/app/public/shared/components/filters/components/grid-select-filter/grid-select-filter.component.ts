@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterContentInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { GridSelectFilterParams } from './interfaces/grid-select-filter-params.interface';
 import { GridSelectFilterConfig } from './interfaces/grid-select-filter-config.interface';
@@ -16,9 +16,7 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
   templateUrl: './grid-select-filter.component.html',
   styleUrls: ['./grid-select-filter.component.scss'],
 })
-export class GridSelectFilterComponent
-  extends AbstractFilter<GridSelectFilterParams>
-  implements OnInit, OnDestroy, OnChanges, AfterContentInit {
+export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterParams> implements OnInit, OnDestroy, AfterContentInit {
   @Input() config: GridSelectFilterConfig;
 
   public options: GridSelectFormOption[] = [];
@@ -64,8 +62,8 @@ export class GridSelectFilterComponent
     this.subscriptions.unsubscribe();
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value && !changes.value.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
+    if (this.hasValueChanged(previousValue, currentValue)) {
       if (this._value.length > 0) {
         this.updateForm();
         this.updateLabel();

@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractSelectFilter } from '../abstract-select-filter/abstract-select-filter';
 import { SuggesterFilterParams } from './interfaces/suggester-filter-params.interface';
 import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
@@ -21,9 +21,7 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
   styleUrls: ['./suggester-filter.component.scss'],
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SuggesterFilterComponent
-  extends AbstractSelectFilter<SuggesterFilterParams>
-  implements OnInit, OnDestroy, OnChanges, AfterContentInit {
+export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilterParams> implements OnInit, OnDestroy, AfterContentInit {
   @Input() config: SuggesterFilterConfig;
 
   @ViewChild('selectFilterTemplateComponent', { read: SelectFilterTemplateComponent })
@@ -65,8 +63,8 @@ export class SuggesterFilterComponent
     }
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value && !changes.value.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
+    if (this.hasValueChanged(previousValue, currentValue)) {
       if (this._value.length > 0) {
         this.updateValueFromParent();
       } else {

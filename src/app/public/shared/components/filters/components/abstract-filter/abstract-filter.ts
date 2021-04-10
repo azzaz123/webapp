@@ -11,10 +11,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export abstract class AbstractFilter<T extends Record<keyof T, string>> implements Filter<T>, OnInit {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Input() config: FilterConfig<T>;
+
   @Input()
   set value(value: FilterParameter[]) {
+    const previousValue = this._value;
     this.writeValue(value);
+    this.onValueChange(previousValue, value);
   }
+
   get value(): FilterParameter[] {
     return this._value;
   }
@@ -37,6 +41,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   protected _hasValue(): boolean {
     return this._value?.length > 0;
   }
+
   public ngOnInit(): void {
     this.label = this.config.bubblePlaceholder;
     this._value = this._value?.length ? this._value : this.config.defaultValue || [];
@@ -88,6 +93,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   public getValue(key: keyof T): string {
     return this._value?.find((parameter: FilterParameter) => parameter.key === this.config.mapKey[key])?.value;
   }
+
   public hasValueChanged(previous: FilterParameter[], current: FilterParameter[]): boolean {
     const keys = Object.keys(this.config.mapKey);
 
@@ -109,4 +115,6 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
 
     return false;
   }
+
+  public abstract onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void;
 }

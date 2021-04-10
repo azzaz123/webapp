@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { ToggleFilterConfig } from './interfaces/toggle-filter-config.interface';
@@ -10,7 +10,7 @@ import { ToggleFilterParams } from './interfaces/toggle-filter-params.interface'
   styleUrls: ['./toggle-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> implements OnInit, OnChanges {
+export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> implements OnInit {
   @Input() config: ToggleFilterConfig;
 
   public toggle: boolean;
@@ -20,8 +20,8 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
     this.toggle = this.getBooleanValue();
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.value?.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
+    if (this.hasValueChanged(previousValue, currentValue)) {
       if (this._value.length > 0) {
         this.toggle = this.getBooleanValue();
       } else {

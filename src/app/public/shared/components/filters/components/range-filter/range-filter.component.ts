@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
@@ -13,7 +13,7 @@ import { RangeFilterParams } from './interfaces/range-filter-params.interface';
   styleUrls: ['./range-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> implements OnInit, OnChanges {
+export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> implements OnInit {
   @Input() config: RangeFilterConfig;
   limitlessPlaceholder = $localize`:@@Limitless:No limit`;
   formGroup = new FormGroup({
@@ -32,8 +32,8 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
     this.bindFormValueChangesListeners();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.value?.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
+    if (this.hasValueChanged(previousValue, currentValue)) {
       if (this._value.length > 0) {
         this.updateForm();
         this.emitChange();
