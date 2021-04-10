@@ -18,6 +18,7 @@ import { AbstractSelectFilterModule } from '@public/shared/components/filters/co
 import { ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-filters',
@@ -105,7 +106,7 @@ export default {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [FiltersComponent, SuggesterFilterComponent],
+      declarations: [FiltersComponent, SuggesterFilterComponent, IsBubblePipe],
     }),
   ],
 } as Meta;

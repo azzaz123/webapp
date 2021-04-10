@@ -13,6 +13,7 @@ import { FilterOptionService } from '../../../../services/filter-option/filter-o
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 import { SelectFilterConfig } from '@public/shared/components/filters/components/select-filter/interfaces/select-filter-config.interface';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-filters',
@@ -91,7 +92,7 @@ export default {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [FiltersComponent, SelectFilterComponent, SelectFormComponent, SelectParentOptionComponent],
+      declarations: [FiltersComponent, SelectFilterComponent, SelectFormComponent, SelectParentOptionComponent, IsBubblePipe],
     }),
   ],
 } as Meta;
