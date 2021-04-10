@@ -983,4 +983,21 @@
   <translation id="NoPublishedItemsDescription">Al parecer, alguien usa todo lo que tiene. ¡Dale tiempo para subir algo a wallapop!</translation>
   <translation id="NoReviewsItemsTitle">Nadie ha opinado todavía</translation>
   <translation id="NoReviewsItemsDescription">Esta persona no ha recibido valoraciones. ¿Será la tuya la primera?</translation>
+  <translation id="filterPriceTitle">¿Cuánto quieres pagar?</translation>
+  <translation id="filterPriceBubblePlaceholder">Precio</translation>
+  <translation id="filterYearTitle">Fecha de matriculación</translation>
+  <translation id="filterYearBubblePlaceholder">Año</translation>
+  <translation id="filterMileageTitle">Kilometraje</translation>
+  <translation id="filterMileageBubblePlaceholder">Km</translation>
+  <translation id="filterProfessionalBubblePlaceholder">Sólo profesionales</translation>
+  <translation id="filterWarrantyTitle">Coches con garantía</translation>
+  <translation id="filterWarrantyBubblePlaceholder">Garantía</translation>
+  <translation id="filterNumOfSeatsTitle">Número de asientos</translation>
+  <translation id="filterNumOfSeatsBubblePlaceholder">Número de asientos</translation>
+  <translation id="filterNumOfDoorsTitle">Número de puertas</translation>
+  <translation id="filterNumOfDoorsBubblePlaceholder">Número de puertas</translation>
+  <translation id="filterHorsePowerTitle">Potencia</translation>
+  <translation id="filterHorsePowerBubblePlaceholder">Potencia</translation>
+ <translation id="filterSurfaceTitle">Superficie</translation>
+  <translation id="filterSurfaceBubblePlaceholder">Superficie</translation>
 </translationbundle>
