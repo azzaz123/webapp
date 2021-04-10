@@ -100,8 +100,13 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private handleValueChange(): void {
-    this.writeValue(this.getFilterParameterValue());
-    this.valueChange.emit(this._value);
+    const value = this.getFilterParameterValue();
+    if (value.length) {
+      this.writeValue(value);
+      this.valueChange.emit(this._value);
+    } else {
+      this.handleClear();
+    }
   }
 
   private getFilterParameterValue(): FilterParameter[] {
