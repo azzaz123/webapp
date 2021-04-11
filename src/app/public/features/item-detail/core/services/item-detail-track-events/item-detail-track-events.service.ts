@@ -47,6 +47,23 @@ export class ItemDetailTrackEventsService {
     this.analyticsService.trackEvent(event);
   }
 
+  public trackFavoriteOrUnfavoriteEventForRecommendedCard(item: ItemCard, isPro: boolean): void {
+    const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
+      name: item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+      attributes: {
+        itemId: item.id,
+        categoryId: item.categoryId,
+        screenId: SCREEN_IDS.ItemDetail,
+        salePrice: item.salePrice,
+        isPro: isPro,
+        title: item.title,
+        isBumped: !!item.bumpFlags?.bumped,
+      },
+    };
+    this.analyticsService.trackEvent(event);
+  }
+
   public trackClickChatButton(item: Item, user: User): void {
     const event: AnalyticsEvent<ClickChatButton> = {
       name: ANALYTICS_EVENT_NAMES.ClickChatButton,
