@@ -30,31 +30,20 @@ import { finalize, take } from 'rxjs/operators';
 export class ItemDetailTrackEventsService {
   constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
 
-  public trackFavoriteOrUnfavoriteEvent(itemDetail: ItemDetail): void {
+  public trackFavoriteOrUnfavoriteEvent(item: Item | ItemCard, isPro: boolean, isRecommenededCArd: boolean): void {
     const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
-      name: itemDetail.item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
-      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-      attributes: {
-        itemId: itemDetail.item.id,
-        categoryId: itemDetail.item.categoryId,
-        screenId: SCREEN_IDS.ItemDetail,
-        salePrice: itemDetail.item.salePrice,
-        isPro: itemDetail.user.featured,
-        title: itemDetail.item.title,
-        isBumped: !!itemDetail.item.bumpFlags?.bumped,
-      },
-    };
-    this.analyticsService.trackEvent(event);
-  }
-
-  public trackFavoriteOrUnfavoriteEventForRecommendedCard(item: ItemCard, isPro: boolean): void {
-    const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
-      name: item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+      name: isRecommenededCArd
+        ? !item.flags.favorite
+          ? ANALYTICS_EVENT_NAMES.FavoriteItem
+          : ANALYTICS_EVENT_NAMES.UnfavoriteItem
+        : item.flags.favorite
+        ? ANALYTICS_EVENT_NAMES.FavoriteItem
+        : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes: {
         itemId: item.id,
         categoryId: item.categoryId,
-        screenId: SCREEN_IDS.ItemDetail,
+        screenId: isRecommenededCArd ? SCREEN_IDS.ItemDetailRecommendationSlider : SCREEN_IDS.ItemDetail,
         salePrice: item.salePrice,
         isPro: isPro,
         title: item.title,
