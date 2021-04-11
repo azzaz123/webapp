@@ -1,8 +1,13 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { User } from '@core/user/user';
+import { UserResponse } from '@core/user/user-response.interface';
+import { UserService } from '@core/user/user.service';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RecommenderItem } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
+import { take } from 'rxjs/operators';
+import { ItemDetailTrackEventsService } from '../../core/services/item-detail-track-events/item-detail-track-events.service';
 import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 
 @Component({
@@ -23,7 +28,11 @@ export class RecommendedItemsComponent implements OnChanges {
     xs: 2,
   };
 
-  constructor(private mapRecommendedItemCardService: MapRecommendedItemCardService) {}
+  constructor(
+    private mapRecommendedItemCardService: MapRecommendedItemCardService,
+    private itemDetailTrackEventsService: ItemDetailTrackEventsService,
+    private userService: UserService
+  ) {}
 
   ngOnChanges() {
     if (this.recommendedItems) {
@@ -33,5 +42,14 @@ export class RecommendedItemsComponent implements OnChanges {
 
   public clickedItemAndIndex(event: ClickedItemCard): void {
     this.clickedItemAndIndexEvent.emit(event);
+  }
+
+  public trackFavoriteOrUnfavoriteEvent(item: ItemCard): void {
+    this.userService
+      .get(item.ownerId)
+      .pipe(take(1))
+      .subscribe((user: User) => {
+        this.itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEventForRecommendedCard(item, user && user.featured);
+      });
   }
 }
