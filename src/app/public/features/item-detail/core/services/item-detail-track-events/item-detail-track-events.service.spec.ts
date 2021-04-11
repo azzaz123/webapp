@@ -198,15 +198,16 @@ describe('ItemDetailTrackEventsService', () => {
   });
 
   describe('when user view item detail recommendation slider', () => {
-    const item = MOCK_ITEM;
-    const user = MOCK_USER;
-    const recommendedItemIds = RECOMMENDED_ITEM_IDS_MOCK;
-    const engine = SEARCH_TECHNIQUE_ENGINE.MORE_LIKE_THIS_SOLR;
     it('should send view item detail recommendation slider event', () => {
       spyOn(service, 'trackViewItemDetailRecommendationSliderEvent').and.callThrough();
       spyOn(analyticsService, 'trackPageView');
 
-      service.trackViewItemDetailRecommendationSliderEvent(item, user, recommendedItemIds, engine);
+      service.trackViewItemDetailRecommendationSliderEvent(
+        MOCK_ITEM,
+        MOCK_USER,
+        RECOMMENDED_ITEM_IDS_MOCK,
+        SEARCH_TECHNIQUE_ENGINE.MORE_LIKE_THIS_SOLR
+      );
 
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT);
     });
