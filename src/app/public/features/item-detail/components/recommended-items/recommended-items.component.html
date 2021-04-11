@@ -1,7 +1,8 @@
 <div class="RecommendedItems container py-4">
     <span i18n="@@recommendedItemsTitle" class="RecommendedItems__title">Other users have also seen</span>
     <div class="mt-1" *ngIf="items">
-        <tsl-public-item-card-list [items]="items" [showDescription]="showDescription" [columnsConfig]="columnsConfig" (clickedItemAndIndex)="clickedItemAndIndex($event)">
+        <tsl-public-item-card-list [items]="items" [showDescription]="showDescription" [columnsConfig]="columnsConfig" (clickedItemAndIndex)="clickedItemAndIndex($event)"
+        (toggleFavoriteEvent)="trackFavoriteOrUnfavoriteEvent($event)">
         </tsl-public-item-card-list>
     </div>
 </div>
