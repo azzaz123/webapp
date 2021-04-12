@@ -614,7 +614,11 @@ describe('ItemDetailComponent', () => {
 
         fixture.detectChanges();
         expect(itemDetailStoreService.toggleFavouriteItem).toHaveBeenCalled();
-        expect(itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent).toHaveBeenCalledWith(MOCK_CAR_ITEM_DETAIL);
+        expect(itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent).toHaveBeenCalledWith(
+          MOCK_CAR_ITEM_DETAIL.item,
+          MOCK_CAR_ITEM_DETAIL.user && MOCK_CAR_ITEM_DETAIL.user.featured,
+          false
+        );
       });
     });
 

@@ -75,6 +75,20 @@ export const MOCK_FAVORITE_ITEM_EVENT: AnalyticsEvent<FavoriteItem> = {
   },
 };
 
+export const MOCK_FAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER: AnalyticsEvent<FavoriteItem> = {
+  name: ANALYTICS_EVENT_NAMES.FavoriteItem,
+  eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+  attributes: {
+    itemId: MOCK_CAR_ITEM_DETAIL.item.id,
+    categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
+    screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
+    salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
+    isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
+    title: MOCK_CAR_ITEM_DETAIL.item.title,
+    isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags?.bumped,
+  },
+};
+
 export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
   name: ANALYTICS_EVENT_NAMES.UnfavoriteItem,
   eventType: ANALYTIC_EVENT_TYPES.UserPreference,
@@ -82,6 +96,20 @@ export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
     itemId: MOCK_CAR_ITEM_DETAIL.item.id,
     categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
     screenId: SCREEN_IDS.ItemDetail,
+    salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
+    isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
+    title: MOCK_CAR_ITEM_DETAIL.item.title,
+    isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags?.bumped,
+  },
+};
+
+export const MOCK_UNFAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER: AnalyticsEvent<FavoriteItem> = {
+  name: ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+  eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+  attributes: {
+    itemId: MOCK_CAR_ITEM_DETAIL.item.id,
+    categoryId: MOCK_CAR_ITEM_DETAIL.item.categoryId,
+    screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
     salePrice: MOCK_CAR_ITEM_DETAIL.item.salePrice,
     isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
     title: MOCK_CAR_ITEM_DETAIL.item.title,

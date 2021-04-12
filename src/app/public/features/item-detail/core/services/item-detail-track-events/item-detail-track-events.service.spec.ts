@@ -27,6 +27,8 @@ import {
   MOCK_TWITTER_SHARE_ITEM_EVENT,
   MOCK_EMAIL_SHARE_ITEM_EVENT,
   MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER,
+  MOCK_UNFAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER,
+  MOCK_FAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER,
 } from './track-events.fixtures.spec';
 
 describe('ItemDetailTrackEventsService', () => {
@@ -58,21 +60,42 @@ describe('ItemDetailTrackEventsService', () => {
       spyOn(analyticsService, 'trackEvent');
     });
     const itemDetail = MOCK_CAR_ITEM_DETAIL;
-    it('should send favorite item event if we favorite item', () => {
-      itemDetail.item.flags.favorite = true;
+    describe('of the item not from recommended slider', () => {
+      it('should send favorite item event if we favorite item', () => {
+        itemDetail.item.flags.favorite = true;
 
-      service.trackFavoriteOrUnfavoriteEvent(itemDetail);
+        service.trackFavoriteOrUnfavoriteEvent(itemDetail.item, itemDetail.user && itemDetail.user.featured, false);
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT);
-      expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT);
+      });
+      it('should send unfavorite item event if we unfavorite item', () => {
+        itemDetail.item.flags.favorite = false;
+
+        service.trackFavoriteOrUnfavoriteEvent(itemDetail.item, itemDetail.user && itemDetail.user.featured, false);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT);
+      });
     });
-    it('should send unfavorite item event if we unfavorite item', () => {
-      itemDetail.item.flags.favorite = false;
 
-      service.trackFavoriteOrUnfavoriteEvent(itemDetail);
+    describe('of the item from recommended slider', () => {
+      it('should send favorite item event if we favorite item', () => {
+        itemDetail.item.flags.favorite = false;
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT);
-      expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT);
+        service.trackFavoriteOrUnfavoriteEvent(itemDetail.item, itemDetail.user && itemDetail.user.featured, true);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+      });
+      it('should send unfavorite item event if we unfavorite item', () => {
+        itemDetail.item.flags.favorite = true;
+
+        service.trackFavoriteOrUnfavoriteEvent(itemDetail.item, itemDetail.user && itemDetail.user.featured, true);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+      });
     });
   });
 
