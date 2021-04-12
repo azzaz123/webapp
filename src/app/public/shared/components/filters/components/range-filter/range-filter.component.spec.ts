@@ -9,6 +9,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { RangeFilterComponent } from './range-filter.component';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 describe('RangeFilterComponent', () => {
   let component: RangeFilterComponent;
@@ -18,7 +19,7 @@ describe('RangeFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RangeFilterComponent],
+      declarations: [RangeFilterComponent, IsBubblePipe],
       imports: [CommonModule, SliderFormModule, ReactiveFormsModule, AbstractFilterModule, HttpClientTestingModule],
     }).compileComponents();
   });
@@ -194,20 +195,15 @@ describe('RangeFilterComponent', () => {
       expect(component.value).toEqual([]);
     });
 
-    it('should emit empty value changes', () => {
+    it('should emit value changes', () => {
       spyOn(component.valueChange, 'emit');
 
       component.handleClear();
 
-      expect(component.valueChange.emit).toHaveBeenCalledWith(component.value);
-    });
-
-    it('should emit clear event', () => {
-      spyOn(component.clear, 'emit');
-
-      component.handleClear();
-
-      expect(component.clear.emit).toHaveBeenCalled();
+      expect(component.valueChange.emit).toHaveBeenCalledWith([
+        { key: 'max', value: undefined },
+        { key: 'min', value: undefined },
+      ]);
     });
   });
 

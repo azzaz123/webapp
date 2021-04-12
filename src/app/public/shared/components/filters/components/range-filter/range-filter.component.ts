@@ -25,7 +25,7 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   public range: [number, number] = [0, 0];
   private readonly DEFAULT_DEBOUNCE_TIME = 200;
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.initRange();
     super.ngOnInit();
     this.updateForm();
