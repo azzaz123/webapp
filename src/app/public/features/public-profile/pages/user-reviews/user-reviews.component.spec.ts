@@ -1,8 +1,10 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 import { MOCK_FULL_USER_FEATURED } from '@fixtures/user.fixtures.spec';
+import { EmptyStateComponent } from '@public/shared/components/empty-state/empty-state.component';
 import { of } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 import { MapReviewService } from './services/map-review/map-review.service';
@@ -30,7 +32,8 @@ describe('UserReviewsComponent', () => {
         },
         MapReviewService,
       ],
-      declarations: [UserReviewsComponent],
+      declarations: [UserReviewsComponent, EmptyStateComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -54,6 +57,28 @@ describe('UserReviewsComponent', () => {
       const domReviewsLength = el.querySelectorAll(reviewSelector).length;
 
       expect(componentReviewsLength).toEqual(domReviewsLength);
+    });
+  });
+
+  describe(`when the user doesn't have reviews...`, () => {
+    it('should show the empty state', () => {
+      component.reviews = [];
+
+      fixture.detectChanges();
+
+      const emptyState = fixture.debugElement.query(By.directive(EmptyStateComponent));
+      expect(emptyState).toBeTruthy();
+    });
+  });
+
+  describe(`when the user have reviews...`, () => {
+    it('should not show the empty state', () => {
+      component.reviews = MOCK_REVIEWS;
+
+      fixture.detectChanges();
+
+      const emptyState = fixture.debugElement.query(By.directive(EmptyStateComponent));
+      expect(emptyState).toBeFalsy();
     });
   });
 });

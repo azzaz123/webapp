@@ -6,7 +6,7 @@ import { ITEM_COUNTERS_DATA, ITEM_BUMP_FLAGS } from '@fixtures/item.fixtures.spe
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
-import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { of } from 'rxjs';
 import { ItemDetailService } from './item-detail.service';
 import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';

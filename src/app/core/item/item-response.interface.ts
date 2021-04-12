@@ -50,15 +50,7 @@ export interface ItemContent {
   flags: ItemFlags;
   id: string;
   images?: Image[];
-  image?: {
-    original: string;
-    small: string;
-    large: string;
-    medium: string;
-    xlarge: string;
-    original_height: number;
-    original_width: number;
-  };
+  image?: ItemImagesURLs;
   modified_date: number;
   sale_conditions?: ItemSaleConditions;
   sale_price?: number;
@@ -71,9 +63,20 @@ export interface ItemContent {
   views?: number;
   delivery_info?: DeliveryInfo;
   extra_info?: ItemExtraInfo;
+  visibility_flags?: ItemVisibilityFlags;
   publish_date?: number;
   km?: number;
   user?: User;
+}
+
+export interface ItemImagesURLs {
+  original: string;
+  small: string;
+  large: string;
+  medium: string;
+  xlarge: string;
+  original_height: number;
+  original_width: number;
 }
 
 export interface ItemProResponse {

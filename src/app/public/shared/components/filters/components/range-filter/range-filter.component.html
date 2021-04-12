@@ -12,7 +12,7 @@
 (apply)="handleApply()"
 (clear)="handleClear()"
 (openStateChange)="openStateChange.emit($event)">
-    <form [formGroup]="formGroup">
+    <form class="RangeFilter__form" [formGroup]="formGroup">
         <tsl-slider-form
         formControlName="range"
         [stepsConfig]="config.stepsConfig"

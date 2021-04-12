@@ -725,8 +725,9 @@
   <msg id="ProfileInfoRatio"><source>src/app/public/features/public-profile/pages/user-info/user-info.component.html:46</source>Response rate</msg>
   <msg id="ProfileInfoSchedule"><source>src/app/public/features/public-profile/pages/user-info/user-info.component.html:51</source>Opening hours</msg>
   <msg id="ProfileInfoLocation"><source>src/app/public/features/public-profile/pages/user-info/user-info.component.html:57</source>Location</msg>
-  <msg id="UserPublishedNoResults"><source>src/app/public/features/public-profile/pages/user-published/user-published.component.html:2</source>User without products</msg>
-  <msg id="UserPublishedLoadMore"><source>src/app/public/features/public-profile/pages/user-published/user-published.component.html:4</source>Load more products</msg>
+  <msg id="UserPublishedLoadMore"><source>src/app/public/features/public-profile/pages/user-published/user-published.component.html:13</source>Load more products</msg>
+  <msg id="NoPublishedItemsTitle"><source>src/app/public/features/public-profile/pages/user-published/user-published.component.ts:16</source>Nothing for sale yet</msg>
+  <msg id="NoPublishedItemsDescription"><source>src/app/public/features/public-profile/pages/user-published/user-published.component.ts:17</source>Seems like someone’s using all they have. Give them time to upload something to wallapop!</msg>
   <msg id="UserReviewsNoResults"><source>src/app/public/features/public-profile/pages/user-reviews/user-reviews.component.html:2</source>User without reviews</msg>
   <msg id="UserReviewsLoadMore"><source>src/app/public/features/public-profile/pages/user-reviews/user-reviews.component.html:4</source>Load more reviews</msg>
   <msg id="FooterLinksWallapopTitle"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:5</source>wallapop</msg>
