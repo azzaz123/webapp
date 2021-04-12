@@ -186,3 +186,25 @@ export const MOCK_HERE_MAPS: any = {
   service: { Platform: (e) => e },
   ui: null,
 };
+
+/* export const MOCK_INTERSECTION_OBSERVER_ENTRY: IntersectionObserverEntry = {
+ 
+} */
+
+export class MOCK_INTERSECTION_OBSERVER {
+  /*   constructor(test) {
+    () => {
+      console.log('tttst constructor', test);
+    };
+  } */
+  observe() {
+    console.log('observeeee');
+    return {};
+  }
+  root: null;
+  rootMargin: null;
+  thresholds: null;
+  unobserve() {}
+  takeRecords() {}
+  disconnect() {}
+}
