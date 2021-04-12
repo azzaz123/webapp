@@ -1,5 +1,5 @@
 import { RECOMMENDER_TYPE, SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RecommenderItem } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
@@ -16,6 +16,7 @@ export class RecommendedItemsComponent implements OnChanges {
   @Input() recommendedItems: RecommenderItem[];
   @Output() initRecommendedItemsSlider: EventEmitter<RecommendedItemsInitEventEmitter> = new EventEmitter();
   @Output() clickedItemAndIndexEvent: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
+  @ViewChild('recommendedItemsSlider', { static: true }) recommendedItemsSlider: ElementRef;
 
   public items: ItemCard[];
   public showDescription = false;
@@ -25,12 +26,28 @@ export class RecommendedItemsComponent implements OnChanges {
     sm: 2,
     xs: 2,
   };
+  private;
 
   constructor(private mapRecommendedItemCardService: MapRecommendedItemCardService) {}
+  private alreadyRendered: boolean;
 
   ngOnChanges() {
     if (this.recommendedItems) {
       this.items = this.mapRecommendedItemCardService.mapRecommendedItems(this.recommendedItems).slice(0, 6);
+      console.log('iiii tt');
+      let observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+        console.log('en', entries);
+        this.emitInitRecommendedItemsSlider(entries[0].isIntersecting);
+        console.log('en', entries);
+      });
+      console.log(observer);
+      observer.observe(this.recommendedItemsSlider.nativeElement);
+    }
+  }
+
+  private emitInitRecommendedItemsSlider(isInView: boolean): void {
+    if (isInView && !this.alreadyRendered) {
+      this.alreadyRendered = true;
       this.initRecommendedItemsSlider.emit({
         recommendedItemIds: this.getRecommendedItemIds(this.items),
         engine: this.getRecommendedItemSearchEngine(),
