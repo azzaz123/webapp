@@ -47,7 +47,7 @@ describe('MapRecommendedItemCardService', () => {
 
   describe('when we map items and check the favorite...', () => {
     describe('and the item is NOT favorited...', () => {
-      it('should call the map recommended items with the favorited flag false', () => {
+      it('should call and return the map recommended items with the favorited flag false', () => {
         let cardsResponse: ItemCard[];
         spyOn(itemFavoritesService, 'getFavouritedItemIds').and.returnValue(of([]));
         spyOn(service, 'mapRecommendedItems').and.callThrough();
@@ -62,7 +62,7 @@ describe('MapRecommendedItemCardService', () => {
     });
 
     describe('and the item is favorited...', () => {
-      it('should call the map recommended items with the favorited flag true', () => {
+      it('should call and return the map recommended items with the favorited flag true', () => {
         let cardsResponse: ItemCard[];
         spyOn(itemFavoritesService, 'getFavouritedItemIds').and.returnValue(of([RECOMMENDED_ITEM_MOCK.id]));
         spyOn(service, 'mapRecommendedItems').and.callThrough();
