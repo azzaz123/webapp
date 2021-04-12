@@ -18,7 +18,7 @@
   || selectedStatus === 'featured'"
           [disabled]="!itemService.selectedItems.length" i18n="@@web_catalog_item_actions_624">Deactivate</button>
   <button class="btn-activate" (click)="activate()" *ngIf="selectedStatus === 'pending'"
-          [disabled]="!itemService.selectedItems.length" i18n>Activate</button>
+          [disabled]="!itemService.selectedItems.length" i18n="@@web_catalog_item_actions_684">Activate</button>
   <tsl-button [hidden]="selectedStatus !== 'active'" [disabled]="!itemService.selectedItems.length"
               className="btn-primary btn-big btn-feat" id="qa-catalog-feature-pro" (click)="feature()"
               i18n="@@web_catalog_item_actions_465"="Continue to cart|selected-items-button">Feature</tsl-button>
@@ -31,6 +31,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn" i18n (click)="d()">Cancel</button>
-    <button type="button" class="btn btn-warn" i18n (click)="c()">Delete</button>
+    <button type="button" class="btn btn-warn" i18n="@@web_catalog_item_actions_685" (click)="c()">Delete</button>
   </div>
 </ng-template>

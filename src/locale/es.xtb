@@ -1117,4 +1117,17 @@
 <translation id="web_sold_modal_671">¡Enhorabuena!</translation>
 <translation id="web_stripe_card_element_672">Guardar</translation>
 <translation id="web_all_button_process_673">Procesar todo</translation>
+<translation id="web_catalog_pages_checkout_674">Atrás</translation>
+<translation id="web_chat_modals_report_user_675">Reportar</translation>
+<translation id="web_dashboard_pages_676">Pendiente</translation>
+<translation id="web_profile_pages_pro_subscription_677">Suscríbete</translation>
+<translation id="web_profile_pages_subscription_678">Cancelar</translation>
+<translation id="web_components_sidebar_679">Mensajes</translation>
+<translation id="web_components_sidebar_680">Favoritos</translation>
+<translation id="web_cart_681">+ Añadir nueva tarjeta</translation>
+<translation id="web_cart_682">Utilizar una tarjeta guardada</translation>
+<translation id="web_cart_683">Comprar</translation>
+<translation id="web_catalog_item_actions_684">Activar</translation>
+<translation id="web_catalog_item_actions_685">Borrar</translation>
+<translation id="web_edit_password_modal_686">Actualizar</translation>
 </translationbundle>

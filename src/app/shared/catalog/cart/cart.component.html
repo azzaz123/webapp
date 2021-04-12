@@ -101,8 +101,8 @@
     <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
                               (hasCard)="hasCard($event)"
     ></tsl-stripe-card-selection>
-    <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
-    <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
+    <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n="@@web_cart_681">+ Add another credit card</div>
+    <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n="@@web_cart_682">Use saved card</div>
     <tsl-stripe-card-element *ngIf="showCard" [type]="'cart'" [cart]="cart" (stripeCardToken)="checkout($event)"
                             (stripeCard)="setCardInfo($event)" [loading]="loading"
     ></tsl-stripe-card-element>
@@ -115,7 +115,7 @@
               className="btn-primary btn-medium stripe"
   >
     <div class="secure-payment-button">
-      <span i18n>Continue to checkout</span>
+      <span i18n="@@web_cart_683">Continue to checkout</span>
     </div>
   </tsl-button>
 </div>
