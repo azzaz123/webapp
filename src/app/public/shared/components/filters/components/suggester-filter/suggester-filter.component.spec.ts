@@ -3,27 +3,28 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { SuggesterFilterComponent } from './suggester-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { AbstractFilterModule } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.module';
+import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
-import { AbstractSelectFilterModule } from '@public/shared/components/filters/components/abstract-select-filter/abstract-select-filter.module';
+import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-select-filter.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
 import { FASHION_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/fashion-configuration-ids.enum';
-import { SuggesterFilterConfig } from '@public/shared/components/filters/components/suggester-filter/interfaces/suggester-filter-config.interface';
+import { SuggesterFilterConfig } from './interfaces/suggester-filter-config.interface';
 import { Component, DebugElement, Input } from '@angular/core';
-import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
-import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
+import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { By } from '@angular/platform-browser';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
-import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
-import { SelectParentOptionComponent } from '@public/shared/components/filters/components/abstract-select-filter/select-parent-option/select-parent-option.component';
+import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
+import { SelectParentOptionComponent } from '../abstract-select-filter/select-parent-option/select-parent-option.component';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
-import { SelectFilterTemplateComponent } from '@public/shared/components/filters/components/abstract-select-filter/select-filter-template/select-filter-template.component';
-import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
-import spyOn = jest.spyOn;
+import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
+import { BubbleComponent } from '../../../bubble/bubble.component';
+import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
+import { of } from 'rxjs/internal/observable/of';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -32,7 +33,7 @@ import spyOn = jest.spyOn;
 class TestWrapperComponent {
   @Input() config: SuggesterFilterConfig;
   @Input() variant: FILTER_VARIANT;
-  @Input() value: FilterParameter[];
+  @Input() value: FilterParameter[] = [];
 }
 
 describe('SuggesterFilterComponent', () => {
@@ -75,7 +76,7 @@ describe('SuggesterFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestWrapperComponent, SuggesterFilterComponent],
+      declarations: [TestWrapperComponent, SuggesterFilterComponent, IsBubblePipe],
       imports: [
         HttpClientTestingModule,
         NgbDropdownModule,
@@ -155,6 +156,9 @@ describe('SuggesterFilterComponent', () => {
     const clearPredicate = By.css('.SuggesterFilter__clear');
     beforeEach(() => {
       testComponent.config = basicConfig;
+      testComponent.variant = FILTER_VARIANT.CONTENT;
+      fixture.detectChanges();
+      component.selectFilterTemplate.togglePlaceholderOpen();
       fixture.detectChanges();
     });
     describe('... has no value', () => {
@@ -197,7 +201,7 @@ describe('SuggesterFilterComponent', () => {
 
     describe('... changes', () => {
       it('should ask for new options', fakeAsync(() => {
-        spyOn(optionService, 'getOptions');
+        spyOn(optionService, 'getOptions').and.returnValue(of([]));
         const input: HTMLInputElement = debugElement.query(By.css('.SuggesterFilter__search_box_input')).nativeElement;
 
         input.value = 'my search';
@@ -405,7 +409,7 @@ describe('SuggesterFilterComponent', () => {
         testComponent.config = optionsOnInitConfig;
       });
       it('should call for options on init', () => {
-        spyOn(optionService, 'getOptions');
+        spyOn(optionService, 'getOptions').and.returnValue(of([]));
 
         fixture.detectChanges();
 
@@ -520,16 +524,7 @@ describe('SuggesterFilterComponent', () => {
           filterTemplate.clear.emit();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
-        });
-
-        it('should emit clear event', () => {
-          spyOn(component.clear, 'emit');
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-
-          filterTemplate.clear.emit();
-
-          expect(component.clear.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
         });
       });
     });
@@ -640,16 +635,7 @@ describe('SuggesterFilterComponent', () => {
           selectTemplate.clear.emit();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
-        });
-
-        it('should emit clear event', () => {
-          spyOn(component.clear, 'emit');
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
-
-          selectTemplate.clear.emit();
-
-          expect(component.clear.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
         });
       });
     });
