@@ -67,8 +67,8 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
   `,
 })
 class FiltersComponent {
-  public conditionValue: FilterParameter[];
-  public genderValue: FilterParameter[];
+  public conditionValue: FilterParameter[] = [];
+  public genderValue: FilterParameter[] = [];
   @Input() public conditionConfig: SelectFilterConfig;
   @Input() public genderConfig: SelectFilterConfig;
 

@@ -14,8 +14,6 @@ import { ToggleFilterConfig } from './interfaces/toggle-filter-config.interface'
 import { ToggleFilterComponent } from './toggle-filter.component';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
-// BEFOREMERGE: There's some problem with event handling here. When making the toggle off, the bubble keeps the has value style
-
 @Component({
   selector: 'tsl-filters',
   template: `
@@ -32,7 +30,7 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
   `,
 })
 class FiltersComponent {
-  @Input() public value: FilterParameter[];
+  @Input() public value: FilterParameter[] = [];
   @Input() public config: ToggleFilterConfig;
 
   changeBubble(value: FilterParameter[]): void {

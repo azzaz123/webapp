@@ -72,8 +72,8 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
   `,
 })
 class FiltersComponent {
-  @Input() public clothingTypeValue: FilterParameter[];
-  @Input() public brandValue: FilterParameter[];
+  @Input() public clothingTypeValue: FilterParameter[] = [];
+  @Input() public brandValue: FilterParameter[] = [];
   @Input() public clothingTypeConfig: SuggesterFilterConfig;
   @Input() public brandConfig: SuggesterFilterConfig;
 
