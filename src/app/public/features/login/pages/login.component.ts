@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccessTokenService } from '@core/http/access-token.service';
-import { LoginResponse } from '../core/login-response.interface';
+import { LoginResponse } from '../core/interfaces/login.response';
 import { LoginService } from '../core/services/login.service';
-
-const TEST_INSTALLATION_TYPE = 'WEB';
 
 @Component({
   selector: 'tsl-login',
@@ -19,7 +17,6 @@ export class LoginComponent implements OnInit {
   constructor(fb: FormBuilder, private accessTokenService: AccessTokenService, private loginService: LoginService, private router: Router) {
     this.loginForm = fb.group({
       emailAddress: ['', [Validators.required]],
-      installationType: [TEST_INSTALLATION_TYPE],
       password: ['', [Validators.required]],
     });
   }
