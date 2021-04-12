@@ -33,12 +33,10 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
-    if (this.hasValueChanged(previousValue, currentValue)) {
-      if (this._value.length > 0) {
-        this.updateForm();
-      } else {
-        this.cleanForm();
-      }
+    if (this._value.length > 0) {
+      this.updateForm();
+    } else {
+      this.cleanForm();
     }
   }
 
