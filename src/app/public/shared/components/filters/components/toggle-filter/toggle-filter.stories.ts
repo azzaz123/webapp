@@ -42,7 +42,7 @@ class FiltersComponent {
 }
 
 export default {
-  title: 'Webapp/Public/Shared/Components/Filters/ToggleFilterComponent',
+  title: 'Webapp/Public/Shared/Components/Filters/ToggleFilter',
   decorators: [
     moduleMetadata({
       declarations: [ToggleFilterComponent],

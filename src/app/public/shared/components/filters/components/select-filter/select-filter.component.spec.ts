@@ -25,7 +25,7 @@ import { SelectFormComponent } from '@shared/form/components/select/select-form.
 
 @Component({
   selector: 'tsl-test-wrapper',
-  template: ` <tsl-option-select-filter [config]="config" [variant]="variant" [value]="value"></tsl-option-select-filter> `,
+  template: ` <tsl-select-filter [config]="config" [variant]="variant" [value]="value"></tsl-select-filter> `,
 })
 class TestWrapperComponent {
   @Input() config: SelectFilterConfig;
