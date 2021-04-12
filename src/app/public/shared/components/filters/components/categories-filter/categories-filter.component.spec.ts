@@ -21,7 +21,7 @@ import { FilterTemplateComponent } from '@public/shared/components/filters/compo
 import { SelectFilterTemplateComponent } from '@public/shared/components/filters/components/abstract-select-filter/select-filter-template/select-filter-template.component';
 import { GridSelectFormComponent } from '@shared/form/components/grid-select/grid-select-form.component';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
-import spyOn = jest.spyOn;
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 @Component({
   selector: 'tsl-test-component',
@@ -104,7 +104,7 @@ describe('CategoriesFilterComponent', () => {
 
       describe('with parent value', () => {
         beforeEach(() => {
-          testComponent.value = [{ key: 'category_ids', value: '100' }];
+          testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.CAR.toString() }];
         });
 
         it('should not emit value change', () => {
@@ -118,27 +118,27 @@ describe('CategoriesFilterComponent', () => {
           fixture.detectChanges();
           const value = component.formGroup.controls.select.value;
 
-          expect(value).toEqual(['100']);
+          expect(value).toEqual([CATEGORY_IDS.CAR.toString()]);
         });
 
         it('should render cars label', () => {
           fixture.detectChanges();
           const label = debugElement.query(filterTemplatePredicate).componentInstance.label;
 
-          expect(label).toEqual(getOptionLabelByValue('100'));
+          expect(label).toEqual(getOptionLabelByValue(CATEGORY_IDS.CAR.toString()));
         });
       });
     });
 
     describe('on parent value change', () => {
       beforeEach(() => {
-        testComponent.value = [{ key: 'category_ids', value: '100' }];
+        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.CAR.toString() }];
         fixture.detectChanges();
       });
 
       it('should not emit value change', () => {
         spyOn(component.valueChange, 'emit');
-        testComponent.value = [{ key: 'category_ids', value: '200' }];
+        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
         fixture.detectChanges();
 
         expect(component.valueChange.emit).not.toHaveBeenCalled();
@@ -146,61 +146,61 @@ describe('CategoriesFilterComponent', () => {
 
       it('should change its value', () => {
         const previousValue = component.formGroup.controls.select.value;
-        expect(previousValue).toEqual(['100']);
+        expect(previousValue).toEqual([CATEGORY_IDS.CAR.toString()]);
 
-        testComponent.value = [{ key: 'category_ids', value: '200' }];
+        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
         fixture.detectChanges();
 
         const nextValue = component.formGroup.controls.select.value;
-        expect(nextValue).toEqual(['200']);
+        expect(nextValue).toEqual([CATEGORY_IDS.REAL_ESTATE.toString()]);
       });
 
       it('should change label', () => {
         const previousLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
-        expect(previousLabel).toEqual(getOptionLabelByValue('100'));
+        expect(previousLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.CAR.toString()));
 
-        testComponent.value = [{ key: 'category_ids', value: '200' }];
+        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
         fixture.detectChanges();
 
         const nextLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
-        expect(nextLabel).toEqual(getOptionLabelByValue('200'));
+        expect(nextLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.REAL_ESTATE.toString()));
       });
     });
 
     describe('on form value change', () => {
       beforeEach(() => {
-        testComponent.value = [{ key: 'category_ids', value: '100' }];
+        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.CAR.toString() }];
         fixture.detectChanges();
       });
       it('should emit value change', () => {
         spyOn(component.valueChange, 'emit');
         const gridForm: GridSelectFormComponent = debugElement.query(gridFormPredicate).componentInstance;
-        gridForm.handleOptionClick('200');
+        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
         fixture.detectChanges();
 
         expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-        expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'category_ids', value: '200' }]);
+        expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }]);
       });
 
       it('should change its value', () => {
         const gridForm: GridSelectFormComponent = debugElement.query(gridFormPredicate).componentInstance;
-        gridForm.handleOptionClick('200');
+        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
         fixture.detectChanges();
 
         const value = component.formGroup.controls.select.value;
 
-        expect(value).toEqual(['200']);
+        expect(value).toEqual([CATEGORY_IDS.REAL_ESTATE.toString()]);
       });
 
       it('should change its label', () => {
         const gridForm: GridSelectFormComponent = debugElement.query(gridFormPredicate).componentInstance;
-        gridForm.handleOptionClick('200');
+        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
         fixture.detectChanges();
 
         const label = debugElement.query(filterTemplatePredicate).componentInstance.label;
         fixture.detectChanges();
 
-        expect(label).toEqual(getOptionLabelByValue('200'));
+        expect(label).toEqual(getOptionLabelByValue(CATEGORY_IDS.REAL_ESTATE.toString()));
       });
     });
   });
@@ -229,7 +229,7 @@ describe('CategoriesFilterComponent', () => {
 
       describe('with parent value', () => {
         beforeEach(() => {
-          testComponent.value = [{ key: 'category_ids', value: '100' }];
+          testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.CAR.toString() }];
         });
         it('should not emit value change', () => {
           spyOn(component.valueChange, 'emit');
@@ -242,27 +242,27 @@ describe('CategoriesFilterComponent', () => {
           fixture.detectChanges();
           const value = component.formGroup.controls.select.value;
 
-          expect(value).toEqual('100');
+          expect(value).toEqual(CATEGORY_IDS.CAR.toString());
         });
 
         it('should change label', () => {
           fixture.detectChanges();
           const label = debugElement.query(placeholderTemplatePredicate).componentInstance.placeholderLabel;
 
-          expect(label).toEqual(getOptionLabelByValue('100'));
+          expect(label).toEqual(getOptionLabelByValue(CATEGORY_IDS.CAR.toString()));
         });
       });
     });
 
     describe('on parent value change', () => {
       beforeEach(() => {
-        testComponent.value = [{ key: 'category_ids', value: '100' }];
+        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.CAR.toString() }];
         fixture.detectChanges();
       });
 
       it('should not emit value change', () => {
         spyOn(component.valueChange, 'emit');
-        testComponent.value = [{ key: 'category_ids', value: '200' }];
+        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
         fixture.detectChanges();
 
         expect(component.valueChange.emit).not.toHaveBeenCalled();
@@ -270,24 +270,24 @@ describe('CategoriesFilterComponent', () => {
 
       it('should change its value', () => {
         const previousValue = component.formGroup.controls.select.value;
-        expect(previousValue).toEqual('100');
+        expect(previousValue).toEqual(CATEGORY_IDS.CAR.toString());
 
-        testComponent.value = [{ key: 'category_ids', value: '200' }];
+        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
         fixture.detectChanges();
 
         const nextValue = component.formGroup.controls.select.value;
-        expect(nextValue).toEqual('200');
+        expect(nextValue).toEqual(CATEGORY_IDS.REAL_ESTATE.toString());
       });
 
       it('should change label', () => {
         const previousLabel = debugElement.query(placeholderTemplatePredicate).componentInstance.placeholderLabel;
-        expect(previousLabel).toEqual(getOptionLabelByValue('100'));
+        expect(previousLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.CAR.toString()));
 
-        testComponent.value = [{ key: 'category_ids', value: '200' }];
+        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
         fixture.detectChanges();
 
         const nextLabel = debugElement.query(placeholderTemplatePredicate).componentInstance.placeholderLabel;
-        expect(nextLabel).toEqual(getOptionLabelByValue('200'));
+        expect(nextLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.REAL_ESTATE.toString()));
       });
     });
 
@@ -301,37 +301,37 @@ describe('CategoriesFilterComponent', () => {
       it('should emit value change', () => {
         spyOn(component.valueChange, 'emit');
         const gridForm: SelectFormComponent = debugElement.query(listFormPredicate).componentInstance;
-        gridForm.handleOptionClick('200');
+        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
         fixture.detectChanges();
 
         expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-        expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'category_ids', value: '200' }]);
+        expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }]);
       });
 
       it('should change its value', () => {
         const gridForm: SelectFormComponent = debugElement.query(listFormPredicate).componentInstance;
-        gridForm.handleOptionClick('200');
+        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
         fixture.detectChanges();
 
         const value = component.formGroup.controls.select.value;
 
-        expect(value).toEqual('200');
+        expect(value).toEqual(CATEGORY_IDS.REAL_ESTATE.toString());
       });
 
       it('should change label', () => {
         const gridForm: SelectFormComponent = debugElement.query(listFormPredicate).componentInstance;
-        gridForm.handleOptionClick('200');
+        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
         fixture.detectChanges();
 
         const label = debugElement.query(placeholderTemplatePredicate).componentInstance.placeholderLabel;
         fixture.detectChanges();
 
-        expect(label).toEqual(getOptionLabelByValue('200'));
+        expect(label).toEqual(getOptionLabelByValue(CATEGORY_IDS.REAL_ESTATE.toString()));
       });
 
       it('should close placeholder', () => {
         const gridForm: SelectFormComponent = debugElement.query(listFormPredicate).componentInstance;
-        gridForm.handleOptionClick('200');
+        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
         fixture.detectChanges();
 
         const placeholderTemplate: SelectFilterTemplateComponent = debugElement.query(placeholderTemplatePredicate).componentInstance;

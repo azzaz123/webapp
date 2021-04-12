@@ -6,8 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { take } from 'rxjs/operators';
 import { GridSelectFormOption } from '@shared/form/components/grid-select/interfaces/grid-select-form-option.interface';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
