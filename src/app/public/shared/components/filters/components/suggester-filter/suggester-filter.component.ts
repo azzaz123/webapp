@@ -75,30 +75,6 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     }
   }
 
-  // TODO: TechDebt(brand/model). This overwrite is needed to be able to handle the brand/model filter. In this filter, we are not
-  //       able to use the mapKey configuration because this comes from the backend dynamically, and the hasValueChanged
-  //       check depends on the mapKey configuration. There should be a new filter type for this case.
-
-  protected hasValueChanged(previousParameters: FilterParameter[], currentParameters: FilterParameter[]): boolean {
-    if (!previousParameters && !currentParameters) {
-      return false;
-    } else if (!previousParameters) {
-      return true;
-    } else if (previousParameters.length !== currentParameters.length) {
-      return true;
-    }
-
-    for (const currentParameter of currentParameters) {
-      const previousParameter = previousParameters.find((parameter) => parameter.key === currentParameter.key);
-
-      if (!previousParameter || previousParameter.value !== currentParameter.value) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   public handleClear(): void {
     super.handleClear();
     this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
@@ -174,13 +150,15 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
       return this.labelSubject.next(value);
     }
 
-    // TODO: TechDebt(brand/model) On the case of a complex value, when it enters through query, we don't have the options loaded
-    //       Complex values (brand/model filter) are always concatenated strings so we can just directly grab it from its values
-    return this.labelSubject.next(
-      Object.keys(value)
-        .map((key) => value[key])
-        .join(', ')
-    );
+    return this.labelSubject.next(this.calculateComplexLabel(value));
+  }
+
+  private calculateComplexLabel(value: Record<string, string>): string {
+    const mapKeys = Object.keys(this.config.mapKey);
+    return mapKeys
+      .map((key) => value[this.config.mapKey[key]])
+      .filter((str) => str)
+      .join(', ');
   }
 
   private closeContent(): void {
@@ -201,9 +179,11 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   }
 
   private getOptions(query?: string): void {
-    this.optionService
-      .getOptions(this.config.id, query ? { text: query } : undefined)
-      .pipe(take(1))
-      .subscribe((options) => this.optionsSubject.next(options));
+    if (this.config.hasOptionsOnInit || query) {
+      this.optionService
+        .getOptions(this.config.id, query ? { text: query } : undefined)
+        .pipe(take(1))
+        .subscribe((options) => this.optionsSubject.next(options));
+    }
   }
 }

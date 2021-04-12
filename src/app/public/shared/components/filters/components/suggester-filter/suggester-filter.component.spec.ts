@@ -71,7 +71,10 @@ describe('SuggesterFilterComponent', () => {
   const complexValueConfig: SuggesterFilterConfig = {
     ...basicConfig,
     id: CAR_CONFIGURATION_ID.BRAND_N_MODEL,
-    mapKey: {},
+    mapKey: {
+      brand: 'brand',
+      model: 'model',
+    },
   };
 
   beforeEach(async () => {
