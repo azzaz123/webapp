@@ -22,6 +22,7 @@ import { SelectFilterTemplateComponent } from '@public/shared/components/filters
 import { GridSelectFormComponent } from '@shared/form/components/grid-select/grid-select-form.component';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
 import { CATEGORY_IDS } from '@core/category/category-ids';
+import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-test-component',
@@ -30,7 +31,7 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 class TestComponent {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Input() config: CategoriesFilterConfig;
-  @Input() value: FilterParameter[];
+  @Input() value: FilterParameter[] = [];
 }
 
 describe('CategoriesFilterComponent', () => {
@@ -67,7 +68,7 @@ describe('CategoriesFilterComponent', () => {
         ReactiveFormsModule,
         SelectFormModule,
       ],
-      declarations: [TestComponent, CategoriesFilterComponent, FormatSelectOptionsPipe],
+      declarations: [TestComponent, CategoriesFilterComponent, FormatSelectOptionsPipe, IsBubblePipe],
     }).compileComponents();
   });
 
