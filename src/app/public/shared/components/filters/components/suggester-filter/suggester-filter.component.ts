@@ -33,7 +33,7 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     select: new FormControl(),
   });
   public searchQuery: string;
-  public options: FilterOption[] = [];
+  private optionsSubject = new BehaviorSubject<FilterOption[]>([]);
   private searchQuery$ = new Subject<string>();
   private labelSubject: BehaviorSubject<string> = new BehaviorSubject('');
 
@@ -41,6 +41,10 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
 
   constructor(private optionService: FilterOptionService) {
     super();
+  }
+
+  public get options$(): Observable<FilterOption[]> {
+    return this.optionsSubject.asObservable();
   }
 
   public get label$(): Observable<string> {
@@ -196,7 +200,7 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     return typeof value === 'string';
   }
 
-  public modelChanged() {
+  public onModelChanged() {
     this.searchQuery$.next(this.searchQuery);
   }
 
@@ -204,6 +208,6 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     this.optionService
       .getOptions(this.config.id, query ? { text: query } : undefined)
       .pipe(take(1))
-      .subscribe((options) => (this.options = options));
+      .subscribe((options) => this.optionsSubject.next(options));
   }
 }

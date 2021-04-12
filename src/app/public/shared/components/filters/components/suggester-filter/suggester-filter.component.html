@@ -18,7 +18,7 @@
 
     <div class="SuggesterFilter__search_box">
       <input [placeholder]="config.suggesterPlaceholder" class="SuggesterFilter__search_box_input mx-3" type="text"
-             [(ngModel)]="searchQuery" (ngModelChange)="modelChanged()"/>
+             [(ngModel)]="searchQuery" (ngModelChange)="onModelChanged()"/>
       <tsl-svg-icon src="/assets/icons/glass_icon.svg" class="SuggesterFilter__glass"
                     width="24" height="24">
       </tsl-svg-icon>
@@ -31,7 +31,7 @@
       <form [formGroup]="formGroup" class="SuggesterFilter__form">
         <tsl-select-form
           formControlName="select"
-          [options]="options">
+          [options]="options$ | async">
         </tsl-select-form>
       </form>
     </div>
