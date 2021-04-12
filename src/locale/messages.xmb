@@ -961,10 +961,11 @@
   <msg id="web_catalog_item_actions_465"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:23</source>Feature</msg>
   <msg id="web_catalog_item_actions_466"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:28</source>Delete items</msg>
   <msg id="web_catalog_item_actions_467"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:29</source>The selected items will be permanently deleted.</msg>
-  <msg id="2159130950882492111"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:32</source>Cancel</msg>
+  <msg id="web_catalog_item_actions_690"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:32</source>Cancel</msg>
   <msg id="web_catalog_item_actions_685"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:33</source>Delete</msg>
   <msg id="web_catalog_item_actions_deactivate_items_modal_468"><source>src/app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:1</source>Deactivate items</msg>
   <msg id="web_catalog_item_actions_deactivate_items_modal_469"><source>src/app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:2</source>The selected items will be set all pending.</msg>
+  <msg id="2159130950882492111"><source>src/app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:5</source>Cancel</msg>
   <msg id="web_catalog_item_actions_deactivate_items_modal_669"><source>src/app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:6</source>Deactivate</msg>
   <msg id="web_catalog_status_navbar_470"><source>src/app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.html:1,3</source>Active <ph name="START_TAG_SPAN_1"/>(<ph name="INTERPOLATION"/>/<ph name="START_TAG_SPAN"/><ph name="INTERPOLATION_1"/><ph name="CLOSE_TAG_SPAN"/>)<ph name="CLOSE_TAG_SPAN"/></msg>
   <msg id="web_catalog_status_navbar_471"><source>src/app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.html:3,5</source>Inactive <ph name="START_TAG_SPAN"/>(<ph name="INTERPOLATION"/>)<ph name="CLOSE_TAG_SPAN"/></msg>
