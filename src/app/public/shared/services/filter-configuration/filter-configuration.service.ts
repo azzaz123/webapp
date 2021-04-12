@@ -3,12 +3,12 @@ import { FILTER_CONFIGURATIONS } from '@public/shared/components/filters/core/co
 import { AvailableFilterConfig } from '@public/shared/components/filters/core/types/available-filter-config.type';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FilterConfigurations } from './interfaces/filter-configurations.interface';
-import { TEST_CONFIG } from '@public/shared/components/filters/core/constants/filter-configuration-by-category/test/remove-me';
+import { CAR_FILTER_CONFIGURATION } from '@public/shared/components/filters/core/constants/filter-configuration-by-category/car/car-filter-configuration';
 
 @Injectable()
 export class FilterConfigurationService {
   getConfiguration(parameters: FilterParameter[]): FilterConfigurations {
-    const configurationFilters = TEST_CONFIG;
+    const configurationFilters = CAR_FILTER_CONFIGURATION;
     const filters: FilterConfigurations = {
       bubble: [],
       drawer: [],
