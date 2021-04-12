@@ -165,7 +165,7 @@
     <div class="row" [ngbPopover]="coachmarkDescription" [autoClose]="false" popoverClass="ml-3">
       <div class="col-md-12">
         <div class="form-group last">
-          <label for="storytelling" i18n>Description</label>
+          <label for="storytelling" i18n="@@web_upload_pages_realestate_659">Description</label>
           <span class="chars-counter">{{ uploadForm.value?.storytelling?.length }}/650</span>
           <textarea i18n-placeholder="@@web_upload_pages_realestate_438" placeholder="Tell us more about your space" fz-elastic class="form-control"
             formControlName="storytelling" id="storytelling" maxlength="650"></textarea>
@@ -225,8 +225,8 @@
   <div class="row">
     <div class="col-12 col-md-5">
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
-        <span *ngIf="!item && !loading" i18n>Post Ad</span>
-        <span *ngIf="item && !loading" i18n>Update</span>
+        <span *ngIf="!item && !loading" i18n="@@web_upload_pages_realestate_660">Post Ad</span>
+        <span *ngIf="item && !loading" i18n="@@web_upload_pages_realestate_661">Update</span>
         <span *ngIf="loading && !pendingFiles" i18n="@@UploadProductSubmitLoading">Uploading... {{ uploadCompletedPercentage }}%</span>
         <span *ngIf="loading && pendingFiles" i18n="@@UploadImagesSubmitLoading">Uploading image... {{ pendingFiles.currentUploading}}/{{pendingFiles.totalFiles}}</span>
       </tsl-button>

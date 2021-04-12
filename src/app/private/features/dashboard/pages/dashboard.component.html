@@ -30,7 +30,7 @@
       <div class="scroll-panel" [hidden]="loading || (!hasConversations() && !hasCalls())">
         <div class="stats-sidebar-container" [hidden]="loading || !hasConversations()">
           <h3>
-            <span i18n>Messages</span>
+            <span i18n="@@web_dashboard_pages_651">Messages</span>
             <a [routerLink]="['/chat']" [hidden]="!messagesTotal"><span i18n="@@web_dashboard_pages_197">View all</span></a>
           </h3>
           <tsl-inbox-conversation *ngFor="let conversation of conversations | slice: 0: 5;"

@@ -57,7 +57,7 @@
             <div class="type" i18n="@@web_profile_pages_pro_subscription_309">Featured</div>
             <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
             <div class="discount" [hidden]="!bump.discount" i18n="@@web_profile_pages_pro_subscription_310">Save {{bump.discount}}%</div>
-            <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
+            <a href="mailto:{{email}}" class="btn btn-block" i18n="@@web_profile_pages_pro_subscription_654">Subscribe</a>
             <div class="expire"><span i18n="@@web_profile_pages_pro_subscription_582">Subscribed since</span><br />{{perks?.subscription.bump.createDate | date:'mediumDate'}}</div>
           </div>
         </div>
@@ -86,7 +86,7 @@
             <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
             <div class="discount" [hidden]="!bump.discount" i18n="@@web_profile_pages_pro_subscription_584">Save {{bump.discount}}%</div>
             <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
-            <div class="expire"><span i18n>Subscribed since</span><br />{{perks?.subscription.national.createDate | date:'mediumDate'}}</div>
+            <div class="expire"><span i18n="@@web_profile_pages_pro_subscription_655">Subscribed since</span><br />{{perks?.subscription.national.createDate | date:'mediumDate'}}</div>
           </div>
         </div>
       </div>

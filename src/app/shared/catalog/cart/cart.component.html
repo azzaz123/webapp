@@ -42,10 +42,10 @@
                       <ng-container *ngIf="!provincialBump" i18n="@@web_cart_454">Local</ng-container>
                       <ng-container *ngIf="provincialBump" i18n="@@web_cart_455">Provincial</ng-container>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'citybump'" i18n>City</ng-container>
-                    <ng-container *ngSwitchCase="'countrybump'" i18n>Country</ng-container>
+                    <ng-container *ngSwitchCase="'citybump'" i18n="@@web_cart_663">City</ng-container>
+                    <ng-container *ngSwitchCase="'countrybump'" i18n="@@web_cart_664">Country</ng-container>
                   </span>
-                  x {{cartItem.duration.duration / 24}}<span i18n>days</span>
+                  x {{cartItem.duration.duration / 24}}<span i18n="@@web_cart_665">days</span>
                 </div>
                 <div class="price">
                   {{cartItem.duration.market_code * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
@@ -68,7 +68,7 @@
   <div class="credit" [hidden]="!creditInfo?.credit && !usedCredits">
     <span class="label" [hidden]="!creditInfo?.credit">
       <span [hidden]="creditInfo?.currencyName !== 'wallacredits'">
-        {{creditInfo?.credit | customCurrency:creditInfo?.currencyName}} <span i18n>credit</span>
+        {{creditInfo?.credit | customCurrency:creditInfo?.currencyName}} <span i18n="@@web_cart_666">credit</span>
       </span>
       <span [hidden]="creditInfo?.currencyName === 'wallacredits'">
         <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="corporate"></tsl-wallacoin>

@@ -60,8 +60,8 @@
       <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
                                 (hasCard)="hasCard($event)"
       ></tsl-stripe-card-selection>
-      <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
-      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
+      <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n="@@web_catalog_modals_buy_product_modal_644">+ Add another credit card</div>
+      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n="@@web_catalog_modals_buy_product_modal_645">Use saved card</div>
       <tsl-stripe-card-element *ngIf="showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout($event)"
                               (stripeCard)="setCardInfo($event)" [loading]="loading"
       ></tsl-stripe-card-element>
@@ -73,7 +73,7 @@
                 [disabled]="!selectedCard && totalToPay > 0"
     >
       <div class="secure-payment-button">
-        <span i18n>Continue to checkout</span>
+        <span i18n="@@web_catalog_modals_buy_product_modal_646">Continue to checkout</span>
       </div>
     </tsl-button>
   </div>

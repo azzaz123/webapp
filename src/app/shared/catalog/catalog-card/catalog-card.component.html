@@ -23,7 +23,7 @@
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
     <div class="sold" *ngIf="item.sold">
-      <div i18n>Sold</div>
+      <div i18n="@@web_catalog_card_667">Sold</div>
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
     <div class="bumped" *ngIf="item.purchases && !item.flags.onhold && !item.flags.sold">
