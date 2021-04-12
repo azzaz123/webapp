@@ -5,7 +5,6 @@ import { AbstractFilter } from '../../abstract-filter/abstract-filter';
 export class FilterGroup {
   private _valueChange = new Subject<FilterParameter[]>();
   private _openStateChange = new Subject<boolean>();
-  private _clear = new Subject<FilterParameter[]>();
 
   constructor(private filters: AbstractFilter<unknown>[]) {
     this.bindChangesListener();
@@ -38,10 +37,6 @@ export class FilterGroup {
 
   public openStateChange(): Observable<boolean> {
     return this._openStateChange.asObservable();
-  }
-
-  public clear(): Observable<FilterParameter[]> {
-    return this._clear.asObservable();
   }
 
   private bindChangesListener(): void {
