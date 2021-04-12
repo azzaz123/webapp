@@ -14,6 +14,7 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { ToggleFilterComponent } from './toggle-filter.component';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
+import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 
 describe('ToggleFilterComponent', () => {
   let component: ToggleFilterComponent;
@@ -27,7 +28,7 @@ describe('ToggleFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ToggleFilterComponent],
+      declarations: [ToggleFilterComponent, IsBubblePipe],
       imports: [CommonModule, ToggleFormModule, FormsModule, AbstractFilterModule, HttpClientTestingModule],
       providers: [
         DeviceDetectorService,
