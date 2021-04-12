@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, SecurityContext, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, SecurityContext, SimpleChange, SimpleChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 import { SvgService } from '../svg.service';
@@ -27,7 +27,7 @@ export class SvgIconComponent implements OnInit, OnChanges {
 
   public ngOnChanges(changes: SimpleChanges) {
     const { src } = changes;
-    if (src && !src.firstChange && src.previousValue !== src.currentValue) {
+    if (this.hasIconSourceChanged(src)) {
       this.getIcon();
     }
   }
@@ -45,6 +45,10 @@ export class SvgIconComponent implements OnInit, OnChanges {
           this.handleCustomAttributes();
         });
     }
+  }
+
+  private hasIconSourceChanged(srcChange: SimpleChange): boolean {
+    return srcChange && !srcChange.firstChange && srcChange.previousValue !== srcChange.currentValue;
   }
 
   private handleGenericAttributes(): void {
