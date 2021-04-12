@@ -21,6 +21,7 @@ export class MapRecommendedItemCardService {
           }
           return item;
         });
+
         return this.mapRecommendedItems(itemsFavouriteChecked);
       })
     );
@@ -39,6 +40,14 @@ export class MapRecommendedItemCardService {
       images: recommendedItem.images?.map((image) => this.getImage(image)),
       webSlug: recommendedItem.web_slug,
       currencyCode: recommendedItem.currency,
+      flags: {
+        pending: false,
+        sold: false,
+        favorite: recommendedItem.favorited,
+        reserved: false,
+        banned: false,
+        expired: false,
+      },
     };
   }
 
