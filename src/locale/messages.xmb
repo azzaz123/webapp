@@ -1005,7 +1005,7 @@
   <msg id="web_modal_confirmation_489"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:23</source>The profile will be removed from favorites.</msg>
   <msg id="web_modal_confirmation_490"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:26</source>This profile is no longer featured</msg>
   <msg id="web_modal_confirmation_491"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:27</source>If you remove it you won&apos;t be able to save it again.</msg>
-  <msg id="2159130950882492111"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:31</source>Cancel</msg>
+  <msg id="web_modal_confirmation_692"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:31</source>Cancel</msg>
   <msg id="web_modal_confirmation_689"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:33</source>Delete</msg>
   <msg id="web_modal_confirmation_670"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:34</source>Reserve</msg>
   <msg id="web_modal_confirmation_492"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:35</source>Remove</msg>
@@ -1067,6 +1067,7 @@
   <msg id="Save"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:64</source>Save</msg>
   <msg id="web_all_button_process_629"><source>src/app/shared/process-all-button/process-all-button.component.html:6</source>Process all</msg>
   <msg id="web_all_button_process_516"><source>src/app/shared/process-all-button/process-all-button.component.html:7</source>This will process all the elements in this page.</msg>
+  <msg id="2159130950882492111"><source>src/app/shared/process-all-button/process-all-button.component.html:10</source>Cancel</msg>
   <msg id="web_all_button_process_673"><source>src/app/shared/process-all-button/process-all-button.component.html:11</source>Process all</msg>
   <msg id="web_pro_billing_delete_info_confirmation_modal_517"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:1</source>Are you sure you want to delete billing information?</msg>
   <msg id="web_pro_billing_delete_info_confirmation_modal_630"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source>Yes, I am sure</msg>
