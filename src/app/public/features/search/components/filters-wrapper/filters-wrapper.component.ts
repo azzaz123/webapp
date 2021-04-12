@@ -68,6 +68,9 @@ export class FiltersWrapperComponent {
     if (!isOpen) {
       this.filterValues = [...this.filterValues];
     }
+    if (this.drawerConfig.isOpen && isOpen) {
+      this.closeDrawer();
+    }
   }
 
   public drawerClear(valuesToRemove: FilterParameter[]): void {
