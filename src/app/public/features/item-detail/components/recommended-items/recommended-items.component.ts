@@ -23,8 +23,6 @@ export class RecommendedItemsComponent implements OnChanges {
     xs: 2,
   };
 
-  constructor() {}
-
   ngOnChanges() {
     if (this.recommendedItems) {
       this.items = this.recommendedItems.slice(0, 6);
