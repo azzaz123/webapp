@@ -4,7 +4,8 @@ import { MapRecommendedItemCardService } from '@public/features/item-detail/core
 import { forkJoin, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
-import { ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
+import { ItemCard, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
+import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 
 @Injectable()
 export class RecommenderItemCardFavouriteCheckedService {
@@ -17,7 +18,7 @@ export class RecommenderItemCardFavouriteCheckedService {
           of(response.recommended_type),
           this.mapRecommendedItemCardService.mapRecommendedItemsFavoriteCheck(response.recommended_items),
         ]).pipe(
-          map(([recommendedType, recommendedItems]) => {
+          map(([recommendedType, recommendedItems]: [RECOMMENDER_TYPE, ItemCard[]]) => {
             return {
               recommendedType,
               recommendedItems,
