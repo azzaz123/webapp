@@ -1,0 +1,40 @@
+@import '~style/common';
+
+$toolbar-height: 70px;
+
+.SelectFilterTemplate {
+  &__toolbar {
+    height: $toolbar-height;
+  }
+
+  &--open {
+    position: absolute;
+    background: $white;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  &__content--open {
+    max-height: calc(100% - #{$toolbar-height});
+    overflow-y: scroll;
+  }
+
+  &__title {
+    font-weight: bold;
+  }
+
+  &__back_icon {
+    cursor: pointer;
+    align-self: center;
+    position: absolute;
+    left: 0;
+  }
+
+  &--warning {
+    color: $brand-danger;
+  }
+}

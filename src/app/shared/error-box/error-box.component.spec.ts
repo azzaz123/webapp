@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MOCK_ERROR_BOX_EXIT_BUTTON, MOCK_ERROR_BOX_EXIT_LINK } from '@fixtures/error-box.fixtures.spec';
+import { ButtonModule } from '@shared/button/button.module';
 import { ErrorBoxComponent } from './error-box.component';
 
 describe('ErrorBoxComponent', () => {
@@ -8,7 +10,7 @@ describe('ErrorBoxComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [],
+        imports: [ButtonModule],
         declarations: [ErrorBoxComponent],
       }).compileComponents();
     })
@@ -17,7 +19,6 @@ describe('ErrorBoxComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ErrorBoxComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

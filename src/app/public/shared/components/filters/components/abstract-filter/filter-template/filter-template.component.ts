@@ -59,7 +59,7 @@ export class FilterTemplateComponent {
     this.clear.emit();
   }
 
-  private toggleDropdown(): void {
+  public toggleDropdown(): void {
     this.dropdown.toggle();
   }
 }

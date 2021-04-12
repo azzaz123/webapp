@@ -1,8 +1,8 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ItemResponse } from '@core/item/item-response.interface';
-import { Image, UserExtrainfo, UserResponse } from '@core/user/user-response.interface';
-import { UserStatsResponse } from '@core/user/user-stats.interface';
+import { ShippingCounterResponse, UserStatsResponse } from '@core/user/user-stats.interface';
+import { Image, UserExtrainfo, UserFavourited, UserResponse } from '@core/user/user-response.interface';
 import { environment } from '@environments/environment';
 import { ReviewResponse, ReviewsData } from '@private/features/reviews/core/review-response.interface';
 import { Observable } from 'rxjs';
@@ -11,8 +11,10 @@ import { PaginationService } from '../../pagination/pagination.service';
 import { MarkAsFavouriteBodyResponse } from './interfaces/public-user-response.interface';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
+export const DELIVERY_API_URL = (userId: string) => `api/v3/delivery/users/${userId}`;
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/cover-image`;
 export const STATS_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/stats`;
+export const SHIPPING_COUNTER_ENDPOINT = (userId: string) => `${DELIVERY_API_URL(userId)}/transaction/statistics`;
 export const REVIEWS_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/reviews`;
 export const PUBLISHED_ITEMS_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/items/published`;
 export const SOLDS_ITEMS_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/items/solds`;
@@ -32,8 +34,12 @@ export class PublicUserApiService {
     return this.http.get<UserStatsResponse>(`${environment.baseUrl}${STATS_ENDPOINT(userId)}`);
   }
 
-  public isFavourite(userId: string): Observable<boolean> {
-    return this.http.get<boolean>(`${environment.baseUrl}${IS_FAVOURITE_ENDPOINT(userId)}`);
+  public getShippingCounter(userId: string): Observable<ShippingCounterResponse> {
+    return this.http.get<ShippingCounterResponse>(`${environment.baseUrl}${SHIPPING_COUNTER_ENDPOINT(userId)}`);
+  }
+
+  public isFavourite(userId: string): Observable<UserFavourited> {
+    return this.http.get<UserFavourited>(`${environment.baseUrl}${IS_FAVOURITE_ENDPOINT(userId)}`);
   }
 
   public getReviews(userId: string, init: number = 0): Observable<PaginationResponse<ReviewResponse>> {

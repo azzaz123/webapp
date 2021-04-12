@@ -700,8 +700,8 @@
   <translation id="City">Ciudad</translation>
   <translation id="PostalCode">Código postal</translation>
   <translation id="Country">País</translation>
-  <translation id="CIFNumber">CIF</translation>
-  <translation id="NIFNumber">NIF</translation>
+  <translation id="CIFNumber">CIF de la empresa</translation>
+  <translation id="NIFNumber">NIF de la persona</translation>
   <translation id="Save">Guardar</translation>
   <translation id="5875130684997376720">Facturación</translation>
   <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
@@ -878,7 +878,6 @@
   <translation id="Unknown">Desconocido</translation>
   <translation id="UserReviewsNoResults">Usuario sin opiniones</translation>
   <translation id="UserReviewsLoadMore">Ver más opiniones</translation>
-  <translation id="UserPublishedNoResults">Usuario sin productos</translation>
   <translation id="UserPublishedLoadMore">Ver más productos</translation>
   <translation id="BumpSuggestionModalTitle">¡Genial! Tu producto ya está en Wallapop</translation>
   <translation id="BumpSuggestionModalSubtitle">¿Quieres venderlo cuanto antes?</translation>
@@ -988,6 +987,17 @@
   <translation id="filterNumOfDoorsBubblePlaceholder">Número de puertas</translation>
   <translation id="filterHorsePowerTitle">Potencia</translation>
   <translation id="filterHorsePowerBubblePlaceholder">Potencia</translation>
- <translation id="filterSurfaceTitle">Superficie</translation>
+  <translation id="filterSurfaceTitle">Superficie</translation>
   <translation id="filterSurfaceBubblePlaceholder">Superficie</translation>
+  <translation id="NotFoundTitle">Nada por aquí</translation>
+  <translation id="NotFoundMessage">Uish... Esta página no existe en Wallapop, lo que sí que existen son miles de oportunidades esperándote.</translation>
+  <translation id="NotFoundButtonText">Ver productos</translation>
+  <translation id="SuggestProModalDescriptionTrial">Prueba gratis Wallapop PRO y descubre todas sus ventajas.</translation>
+  <translation id="SuggestProModalDescriptionPlans">Elige un plan y aprovecha los beneficios de Wallapop PRO.</translation>
+  <translation id="SuggestProModalButtonCancel">Ahora no, gracias</translation>
+  <translation id="SuggestProModalTitle">Si fueses PRO tus productos nunca quedarían inactivos. ¿Lo sabías?</translation>
+  <translation id="NoPublishedItemsTitle">Nada en venta todavía</translation>
+  <translation id="NoPublishedItemsDescription">Al parecer, alguien usa todo lo que tiene. ¡Dale tiempo para subir algo a wallapop!</translation>
+  <translation id="NoReviewsItemsTitle">Nadie ha opinado todavía</translation>
+  <translation id="NoReviewsItemsDescription">Esta persona no ha recibido valoraciones. ¿Será la tuya la primera?</translation>
 </translationbundle>

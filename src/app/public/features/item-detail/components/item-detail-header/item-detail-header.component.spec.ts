@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ErrorsService } from '@core/errors/errors.service';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
-import { MOCK_ITEM, MOCK_ITEM_SOLD, PURCHASES } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM, MOCK_ITEM_FEATURED, MOCK_ITEM_SOLD, PURCHASES } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,31 +15,24 @@ import { PublicUserApiService } from '@public/core/services/api/public-user/publ
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
-import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { SoldModalComponent } from '@shared/modals/sold-modal/sold-modal.component';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
 import { ItemDetailService } from '../../core/services/item-detail/item-detail.service';
-import { MOCK_ITEM_7 } from '@public/shared/components/item-card/item-card.mock.stories';
-
 import { ItemDetailHeaderComponent } from './item-detail-header.component';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import {
-  AnalyticsEvent,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  ClickChatButton,
-  SCREEN_IDS,
-} from '@core/analytics/analytics-constants';
+import { ItemDetailTrackEventsService } from '../../core/services/item-detail-track-events/item-detail-track-events.service';
+import { MockItemdDetailTrackEventService } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
 
 describe('ItemDetailHeaderComponent', () => {
   let component: ItemDetailHeaderComponent;
   let fixture: ComponentFixture<ItemDetailHeaderComponent>;
   let checkSessionService: CheckSessionService;
   let itemDetailService: ItemDetailService;
-  let analyticsService: AnalyticsService;
+  let itemDetailTrackEventsService: ItemDetailTrackEventsService;
   let modalService: NgbModal;
 
   const trashButtonId = '#trashButton';
@@ -62,6 +55,10 @@ describe('ItemDetailHeaderComponent', () => {
         RecommenderApiService,
         MapItemService,
         ToastService,
+        {
+          provide: ItemDetailTrackEventsService,
+          useClass: MockItemdDetailTrackEventService,
+        },
         {
           provide: AnalyticsService,
           useClass: MockAnalyticsService,
@@ -129,7 +126,7 @@ describe('ItemDetailHeaderComponent', () => {
     component = fixture.componentInstance;
     itemDetailService = TestBed.inject(ItemDetailService);
     checkSessionService = TestBed.inject(CheckSessionService);
-    analyticsService = TestBed.inject(AnalyticsService);
+    itemDetailTrackEventsService = TestBed.inject(ItemDetailTrackEventsService);
     modalService = TestBed.inject(NgbModal);
     component.item = MOCK_ITEM;
     component.user = MOCK_USER;
@@ -147,7 +144,7 @@ describe('ItemDetailHeaderComponent', () => {
       it('should ask for the active purchases', () => {
         spyOn(itemDetailService, 'getItemActivePurchases').and.returnValue(of(PURCHASES));
         component.isOwner = true;
-        component.item = MOCK_ITEM_7;
+        component.item = MOCK_ITEM_FEATURED;
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -353,23 +350,13 @@ describe('ItemDetailHeaderComponent', () => {
   });
   describe('After we click the chatButton', () => {
     it('should send track click button event', () => {
-      spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickChatButton> = {
-        name: ANALYTICS_EVENT_NAMES.ClickChatButton,
-        eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: {
-          itemId: component.item.id,
-          sellerUserId: component.user.id,
-          screenId: SCREEN_IDS.ItemDetail,
-          isPro: component.user.featured,
-          isBumped: !!component.item.bumpFlags,
-        },
-      };
+      spyOn(itemDetailTrackEventsService, 'trackClickChatButton');
+
       const chatButton = fixture.debugElement.query(By.css(chatButtonId)).nativeElement;
 
       chatButton.click();
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      expect(itemDetailTrackEventsService.trackClickChatButton).toHaveBeenCalledWith(component.item, component.user);
     });
   });
 });

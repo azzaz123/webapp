@@ -102,6 +102,15 @@ describe('FilterTemplateComponent', () => {
         });
       });
 
+      describe('when asked to toggle dropdown', () => {
+        it('should toggle dropdown', () => {
+          spyOn(dropdown, 'toggle');
+          component.toggleDropdown();
+
+          expect(dropdown.toggle).toHaveBeenCalledTimes(1);
+        });
+      });
+
       describe('and dropdown is open', () => {
         beforeEach(async () => {
           dropdown.open();
@@ -110,13 +119,13 @@ describe('FilterTemplateComponent', () => {
         });
 
         it('should render developer warning content', () => {
-          expectRender(By.css('.FilterTemplate__dev_warn'), true);
+          expectRender(By.css('.FilterTemplate--warn'), true);
         });
 
         describe('on cancel click', () => {
           it('should close dropdown', () => {
             spyOn(dropdown, 'close');
-            debugElement.query(By.css('tsl-button .dark')).nativeElement.click();
+            debugElement.query(By.css('tsl-button .basic-dark')).nativeElement.click();
 
             expect(dropdown.close).toHaveBeenCalledTimes(1);
           });
@@ -213,7 +222,7 @@ describe('FilterTemplateComponent', () => {
     });
 
     it('should render developer warning content', () => {
-      expectRender(By.css('.FilterTemplate__dev_warn'), true);
+      expectRender(By.css('.FilterTemplate--warn'), true);
     });
   });
 

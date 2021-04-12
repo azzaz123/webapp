@@ -18,7 +18,7 @@ const routes: Route[] = [
         loadChildren: () => import('./features/register/register.module').then((m) => m.RegisterModule),
       },
       {
-        path: `${PUBLIC_PATHS.USER_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
+        path: `${PUBLIC_PATHS.USER_DETAIL}/:${PUBLIC_PATH_PARAMS.WEBSLUG}`,
         loadChildren: () => import('./features/public-profile/public-profile.module').then((m) => m.PublicProfileModule),
       },
       {
@@ -28,6 +28,10 @@ const routes: Route[] = [
       {
         path: `${PUBLIC_PATHS.ITEM_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
         loadChildren: () => import('./features/item-detail/item-detail.module').then((m) => m.ItemDetailModule),
+      },
+      {
+        path: PUBLIC_PATHS.NOT_FOUND,
+        loadChildren: () => import('./features/error/error.module').then((m) => m.ErrorModule),
       },
       {
         path: '**',

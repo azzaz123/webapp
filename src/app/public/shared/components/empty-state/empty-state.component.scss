@@ -1,0 +1,15 @@
+@import '~style/common';
+
+.EmptyState {
+  &__title,
+  &__description {
+    font-size: $font-size-m;
+  }
+
+  &__title {
+    font-weight: $font-weight-chunky;
+  }
+  &__description {
+    color: $blue-grey-2;
+  }
+}

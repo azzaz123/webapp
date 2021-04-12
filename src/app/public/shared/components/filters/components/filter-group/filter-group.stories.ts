@@ -14,6 +14,7 @@ import { ToggleFilterConfig } from '../toggle-filter/interfaces/toggle-filter-co
 import { FilterHostDirective } from './directives/filter-host.directive';
 import { FilterGroupComponent } from './filter-group.component';
 import { FilterFactoryService } from './services/filter-factory.service';
+import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
 
 @Component({
   selector: 'tsl-filters',
@@ -48,7 +49,7 @@ const Template: Story<FiltersComponent> = (args: FiltersComponent) => ({
 
 const CONFIG: [RangeFilterConfig, ToggleFilterConfig] = [
   {
-    id: 'storybook_price',
+    id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
     type: FILTER_TYPES.RANGE,
     mapKey: {
       maxKey: 'max',
@@ -61,7 +62,7 @@ const CONFIG: [RangeFilterConfig, ToggleFilterConfig] = [
     units: '€',
   },
   {
-    id: 'storybook_warranty',
+    id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
     type: FILTER_TYPES.TOGGLE,
     mapKey: {
       key: 'warranty',
