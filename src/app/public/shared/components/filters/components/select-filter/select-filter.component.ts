@@ -13,7 +13,7 @@ import { ComplexSelectValue } from '@shared/form/components/select/types/complex
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 
 @Component({
-  selector: 'tsl-option-select-filter',
+  selector: 'tsl-select-filter',
   templateUrl: './select-filter.component.html',
   styleUrls: ['./select-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

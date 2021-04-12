@@ -1,0 +1,38 @@
+@import '~style/common';
+
+$min-size: 96px;
+
+.GridSelectOption {
+  min-height: $min-size;
+  min-width: $min-size;
+  cursor: pointer;
+
+  &__label {
+    margin-top: 5px;
+    font-size: $font-size-s;
+
+    &--active {
+      color: $walla-main !important;
+    }
+  }
+
+  &__icon {
+    &--active {
+      ::ng-deep svg g g {
+        fill: $walla-main !important;
+      }
+    }
+  }
+
+  &:hover {
+    .GridSelectOption__label {
+      color: $blue-grey-4;
+    }
+
+    .GridSelectOption__icon {
+      ::ng-deep svg g g {
+        fill: $blue-grey-4;
+      }
+    }
+  }
+}
