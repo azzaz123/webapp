@@ -8,13 +8,19 @@ import { RECOMMENDED_ITEM_MOCK } from './constants/recommended-items.fixtures.sp
 import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 import { RecommendedItemsComponent } from './recommended-items.component';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
-
+import { MOCK_INTERSECTION_OBSERVER } from './../../../../../../configs/jest/global-mocks.fixtures.spec';
 describe('RecommendedItemsComponent', () => {
   const itemCardListTag = 'tsl-public-item-card-list';
   let component: RecommendedItemsComponent;
   let fixture: ComponentFixture<RecommendedItemsComponent>;
+  let windowMock;
 
   beforeEach(async () => {
+    windowMock = new MOCK_INTERSECTION_OBSERVER();
+    // window.IntersectionObserver = () => MOCK_INTERSECTION_OBSERVER;
+    /* windowMock = jest.fn();
+    windowMock.mockReturnValue(MOCK_INTERSECTION_OBSERVER);
+ */
     await TestBed.configureTestingModule({
       declarations: [RecommendedItemsComponent],
       providers: [MapRecommendedItemCardService],
@@ -55,6 +61,7 @@ describe('RecommendedItemsComponent', () => {
 
     it('should emit initRecommendedItemsSlider event', () => {
       spyOn(component.initRecommendedItemsSlider, 'emit');
+      //spyOn(windowMock, 'observe').and.returnValue({});
       component.ngOnChanges();
       const recommendedItemIds: string = component.items.map((item: ItemCard) => item.id).toString();
       fixture.detectChanges();
