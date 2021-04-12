@@ -16,8 +16,8 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   set value(value: FilterParameter[]) {
     const newValue = value.filter((param) => param.value);
     const previousValue = this._value;
-    this.writeValue(newValue);
     if (this.hasValueChanged(previousValue, newValue)) {
+      this.writeValue(newValue);
       this.onValueChange(previousValue, newValue);
     }
   }

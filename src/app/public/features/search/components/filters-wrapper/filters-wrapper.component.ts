@@ -46,8 +46,7 @@ export class FiltersWrapperComponent {
 
   public closeDrawer(): void {
     this.drawerConfig.isOpen = false;
-    this.filterValues = [...this.filterValues];
-    this.filterParameterDraftService.setParameters(this.filterValues);
+    this.filterParameterDraftService.setParameters([...this.filterValues]);
   }
   public applyDrawer(): void {
     this.applyFilters();
@@ -65,11 +64,8 @@ export class FiltersWrapperComponent {
 
   public bubbleOpenStateChange(isOpen: boolean): void {
     this.bubbleFilterOpenStateChange.emit(isOpen);
-    if (!isOpen) {
-      this.filterValues = [...this.filterValues];
-    }
     if (this.drawerConfig.isOpen && isOpen) {
-      this.closeDrawer();
+      this.drawerConfig.isOpen = false;
     }
   }
 
