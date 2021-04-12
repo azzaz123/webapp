@@ -1,13 +1,13 @@
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { filtersWall } from './search-api-url.factory';
+import { wallParameters } from './search-api-url.factory';
 import { ItemSearchResponse, SearchResponse } from '../search-response.interface';
 
 export function FilterParametersWallFactory(categoryId: string): FilterParameter[] {
-  return filtersWall.map((key: string) => ({ key, value: key === 'category_ids' ? categoryId : `${key}-value` }));
+  return wallParameters.map((key: string) => ({ key, value: key === 'category_ids' ? categoryId : `${key}-value` }));
 }
 
 export function FilterParametersSearchFactory(categoryId: string, search: string): FilterParameter[] {
-  return [...filtersWall, 'keywords'].map((key: string) => ({ key, value: key === 'category_ids' ? categoryId : `${key}-value` }));
+  return [...wallParameters, 'keywords'].map((key: string) => ({ key, value: key === 'category_ids' ? categoryId : `${key}-value` }));
 }
 
 export function ItemSearchResponseFactory(partial: Partial<ItemSearchResponse> = {}): ItemSearchResponse {
