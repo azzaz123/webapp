@@ -154,8 +154,9 @@ const getNewKeyName = node => {
         translationById.mainKey = newMainKey;
       }
 
-    } catch (e) {
+    } catch (error) {
       console.log('Problematic node found', node)
+      console.log(error)
     }
     return newMainKey;
   } else {
@@ -187,16 +188,40 @@ const setNewKeyNameInHTML = (node, newKeyName) => {
   fs.writeFileSync(filePath, formattedRawHTML);
 }
 
-const setNewKeyNameInCopies = keysToBeUpdated => {
-  translationsFilesLocations.forEach(fileLocation => {
-    let rawFile = fs.readFileSync(fileLocation, 'utf8');
+const setNewKeyNameInMainCopies = keysToBeUpdated => {
+  let rawFile = fs.readFileSync(mainCopiesFileLocation, 'utf8');
+
+  keysToBeUpdated.forEach(key => {
+    const regexpFindOldKey = new RegExp(`"${key.old}"`, 'g');
+    rawFile = rawFile.replace(regexpFindOldKey, `"${key.new}"`);
+  });
+
+  fs.writeFileSync(mainCopiesFileLocation, rawFile)
+}
+
+const setFinalKeysInOtherCopies = keysToBeUpdated => {
+  console.log('tobeuopdated', keysToBeUpdated)
+
+  const otherCopiesFiles = translationsFilesLocations.filter(file => file !== mainCopiesFileLocation);
+  otherCopiesFiles.forEach(file => {
+    let rawFile = fs.readFileSync(file, 'utf8');
+    const allLines = rawFile.split('\n');
 
     keysToBeUpdated.forEach(key => {
-      const regexpFindOldKey = new RegExp(`"${key.old}"`, 'g');
-      rawFile = rawFile.replace(regexpFindOldKey, `"${key.new}"`);
-    });
+      const isKeyNotInFile = !rawFile.includes(key.new); 
+      if (isKeyNotInFile) {
+        const translation = translations.find(t => t.numericKey && t.numericKey === key.old);
+        const cleanTranslation = translation.es
+        .replace(escapeGreaterThan, '>')
+        .replace(escapeLesserThan, '<')
 
-    fs.writeFileSync(fileLocation, rawFile)
+        allLines[allLines.length - 1] = `<translation id="${key.new}>${cleanTranslation}</translation>`;
+      } else {
+        rawFile = rawFile.replace(key.old, key.new)
+      }
+    })
+
+    fs.writeFileSync(`${file}-2.xtb`, allLines.join('\n'))
   });
 }
 
@@ -210,6 +235,7 @@ const commitTranslationsDiff = () => {
 }
 
 let recursiveIteration = 0;
+const keysToBeUpdated = [];
 const addMissingKeys = (needsAngularSync = true) => {
   if (needsAngularSync) {
     syncAngularMessages();
@@ -217,7 +243,6 @@ const addMissingKeys = (needsAngularSync = true) => {
 
   // Get XML nodes that are generated automatically and don't have manual key
   const nodeMessagesWithoutKeyname = getNodeMessages(true);
-  const keysToBeUpdated = [];
 
   nodeMessagesWithoutKeyname.forEach((node, i) => {
     // Get new key name
@@ -231,7 +256,8 @@ const addMissingKeys = (needsAngularSync = true) => {
   });
 
   // Replace old key for new one in copies
-  setNewKeyNameInCopies(keysToBeUpdated);
+  setNewKeyNameInMainCopies(keysToBeUpdated);
+  setFinalKeysInOtherCopies(keysToBeUpdated);
 
   commitTranslationsDiff();
 
@@ -289,7 +315,7 @@ const normalizeKeys = () => {
     }
   });
 
-  setNewKeyNameInCopies(keysToNormalize);
+  setNewKeyNameInMainCopies(keysToNormalize);
 }
 
 const main = () => {
