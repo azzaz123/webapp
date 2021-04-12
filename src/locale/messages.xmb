@@ -647,7 +647,7 @@
   <msg id="web_upload_modals_preview_modal_377"><source>src/app/private/features/upload/modals/preview-modal/preview-modal.component.html:59</source>Accept trades</msg>
   <msg id="web_upload_modals_remove_confirm_modal_378"><source>src/app/private/features/upload/modals/remove-confirm-modal/remove-confirm-modal.component.html:1</source>Delete photo</msg>
   <msg id="web_upload_modals_remove_confirm_modal_379"><source>src/app/private/features/upload/modals/remove-confirm-modal/remove-confirm-modal.component.html:2</source>The photo will be permanently deleted. Are you sure you want to proceed?</msg>
-  <msg id="2159130950882492111"><source>src/app/private/features/upload/modals/remove-confirm-modal/remove-confirm-modal.component.html:5</source>Cancel</msg>
+  <msg id="web_upload_modals_remove_confirm_modal_687"><source>src/app/private/features/upload/modals/remove-confirm-modal/remove-confirm-modal.component.html:5</source>Cancel</msg>
   <msg id="web_upload_modals_remove_confirm_modal_592"><source>src/app/private/features/upload/modals/remove-confirm-modal/remove-confirm-modal.component.html:6</source>Delete</msg>
   <msg id="web_upload_pages_car_380"><source>src/app/private/features/upload/pages/upload-car/upload-car.component.html:5</source>Basic Information</msg>
   <msg id="web_upload_pages_car_381"><source>src/app/private/features/upload/pages/upload-car/upload-car.component.html:11</source>Make</msg>
@@ -947,7 +947,7 @@
   <msg id="web_catalog_card_667"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:25</source>Sold</msg>
   <msg id="web_catalog_card_457"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:31,34</source> From <ph name="INTERPOLATION"/> to <ph name="INTERPOLATION_1"/> </msg>
   <msg id="web_catalog_card_458"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:42</source> Cancel</msg>
-  <msg id="4416413576346763682"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:74</source>Pending</msg>
+  <msg id="web_catalog_card_688"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:74</source>Pending</msg>
   <msg id="web_catalog_card_459"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:81</source>Cancel Autorenew</msg>
   <msg id="web_catalog_card_460"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:82</source>Do you really want to cancel the autorenew for this item?</msg>
   <msg id="web_catalog_card_461"><source>src/app/shared/catalog/catalog-card/catalog-card.component.html:85</source>No</msg>
@@ -961,6 +961,7 @@
   <msg id="web_catalog_item_actions_465"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:23</source>Feature</msg>
   <msg id="web_catalog_item_actions_466"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:28</source>Delete items</msg>
   <msg id="web_catalog_item_actions_467"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:29</source>The selected items will be permanently deleted.</msg>
+  <msg id="2159130950882492111"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:32</source>Cancel</msg>
   <msg id="web_catalog_item_actions_685"><source>src/app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:33</source>Delete</msg>
   <msg id="web_catalog_item_actions_deactivate_items_modal_468"><source>src/app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:1</source>Deactivate items</msg>
   <msg id="web_catalog_item_actions_deactivate_items_modal_469"><source>src/app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:2</source>The selected items will be set all pending.</msg>
@@ -1003,7 +1004,7 @@
   <msg id="web_modal_confirmation_489"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:23</source>The profile will be removed from favorites.</msg>
   <msg id="web_modal_confirmation_490"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:26</source>This profile is no longer featured</msg>
   <msg id="web_modal_confirmation_491"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:27</source>If you remove it you won&apos;t be able to save it again.</msg>
-  <msg id="7022070615528435141"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:33</source>Delete</msg>
+  <msg id="web_modal_confirmation_689"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:33</source>Delete</msg>
   <msg id="web_modal_confirmation_670"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:34</source>Reserve</msg>
   <msg id="web_modal_confirmation_492"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:35</source>Remove</msg>
   <msg id="web_modal_confirmation_493"><source>src/app/shared/confirmation-modal/confirmation-modal.component.html:36</source>Yes, I am sure</msg>
