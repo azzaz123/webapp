@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { PublicProfileService } from '../../core/services/public-profile.service';
 import { MapPublishedItemCardService } from '../../core/services/map-published-item-card/map-published-item-card.service';
 import { UserPublishedComponent } from './user-published.component';
 import { By } from '@angular/platform-browser';
@@ -12,29 +11,51 @@ import { EmptyStateComponent } from '@public/shared/components/empty-state/empty
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
-import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { MOCK_ITEM_CARD, MOCK_ITEM_CARDS_WITH_PAGINATION } from '@fixtures/item-card.fixtures.spec';
 import { UuidService } from '@core/uuid/uuid.service';
 import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
 import { PublishedItemCardFavouriteCheckedModule } from '../../core/services/published-item-card-favorite-checked/published-item-card-favorite-checked.module';
+import { PublishedItemCardFavoriteCheckedService } from '../../core/services/published-item-card-favorite-checked/published-item-card-favorite-checked.service';
+import { CookieService } from 'ngx-cookie';
+import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
+import { MockUserService } from '@fixtures/user.fixtures.spec';
+import { UserService } from '@core/user/user.service';
+import { of, throwError } from 'rxjs';
 
 describe('UserPublishedComponent', () => {
   let component: UserPublishedComponent;
   let de: DebugElement;
   let el: HTMLElement;
   let fixture: ComponentFixture<UserPublishedComponent>;
+  let publishedItemCardFavoriteCheckedService: PublishedItemCardFavoriteCheckedService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, PublishedItemCardFavouriteCheckedModule, ItemFavoritesModule],
       declarations: [UserPublishedComponent, ItemCardListComponentStub, EmptyStateComponent],
       providers: [
-        PublicProfileService,
         MapPublishedItemCardService,
         UuidService,
         PublicUserApiService,
         DeviceDetectorService,
         ItemCardService,
         ItemApiService,
+        {
+          provide: PublishedItemCardFavoriteCheckedService,
+          useValue: {
+            getItems() {
+              return of(MOCK_ITEM_CARDS_WITH_PAGINATION);
+            },
+          },
+        },
+        {
+          provide: CookieService,
+          useValue: MockCookieService,
+        },
+        {
+          provide: UserService,
+          useValue: MockUserService,
+        },
         {
           provide: AccessTokenService,
           useValue: {
@@ -49,6 +70,7 @@ describe('UserPublishedComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserPublishedComponent);
+    publishedItemCardFavoriteCheckedService = TestBed.inject(PublishedItemCardFavoriteCheckedService);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
@@ -60,13 +82,42 @@ describe('UserPublishedComponent', () => {
   });
 
   describe('when component inits', () => {
-    const itemCardSelector = 'tsl-public-item-card';
+    describe('and the petition succeed...', () => {
+      beforeEach(() => {
+        component.items = [];
+        spyOn(publishedItemCardFavoriteCheckedService, 'getItems').and.returnValue(of(MOCK_ITEM_CARDS_WITH_PAGINATION));
 
-    it('should print same amount of items received', () => {
-      const componentItemsLength = component.items.length;
-      const domItemsLength = el.querySelectorAll(itemCardSelector).length;
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
 
-      expect(componentItemsLength).toEqual(domItemsLength);
+      it('should ask for the items', () => {
+        expect(publishedItemCardFavoriteCheckedService.getItems).toHaveBeenCalledWith(component.nextPaginationItem);
+      });
+
+      it('should set same amount of items received', () => {
+        expect(component.items.length).toEqual(MOCK_ITEM_CARDS_WITH_PAGINATION.items.length);
+        expect(component.items).toStrictEqual(MOCK_ITEM_CARDS_WITH_PAGINATION.items);
+      });
+    });
+
+    describe('and the petition fails...', () => {
+      beforeEach(() => {
+        component.items = [];
+        spyOn(publishedItemCardFavoriteCheckedService, 'getItems').and.returnValue(throwError('network error'));
+
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should ask for the items', () => {
+        expect(publishedItemCardFavoriteCheckedService.getItems).toHaveBeenCalledWith(component.nextPaginationItem);
+      });
+
+      it('should set an empty array', () => {
+        expect(component.items.length).toEqual(0);
+        expect(component.items).toStrictEqual([]);
+      });
     });
   });
 
