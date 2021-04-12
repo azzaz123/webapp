@@ -37,7 +37,7 @@ $min-size: 96px;
       }
     }
 
-    .GridSelectOption__icon {
+    .GridSelectOption__icon-hover {
       ::ng-deep svg g g {
         fill: $blue-grey-4;
       }
