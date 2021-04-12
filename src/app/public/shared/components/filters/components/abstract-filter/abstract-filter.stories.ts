@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonModule } from '@shared/button/button.module';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 // TODO: Investigate how to implement filter template though a directive
 
@@ -69,6 +70,8 @@ class StoryAbstractFilterComponent extends AbstractFilter<{}> {
   public handleClick(): void {
     this.storyClick.emit();
   }
+
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {}
 }
 
 export default {

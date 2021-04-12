@@ -102,12 +102,10 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   }
 
   public handleClear(): void {
+    super.handleClear();
     this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
-    this.writeValue([]);
-    this.valueChange.emit([]);
     this.clearSearch();
     this.initLabel();
-    super.handleClear();
   }
 
   public clearSearch(): void {

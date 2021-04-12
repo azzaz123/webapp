@@ -30,7 +30,10 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     suggesterPlaceholder: $localize`:@@filterCarsBrandModelSuggesterPlaceholder:Looking for a certain brand?`,
     drawerPlaceholder: $localize`:@@filterCarsBrandModelDrawerPlaceholder:Select brand and model`,
     icon: '/assets/icons/filters/brand_model.svg',
-    mapKey: {},
+    mapKey: {
+      brand: 'brand',
+      model: 'model',
+    },
     hasContentPlaceholder: true,
     isClearable: true,
     hasOptionsOnInit: false,

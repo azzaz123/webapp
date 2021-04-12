@@ -16,6 +16,7 @@ import { FilterOptionService } from '@public/shared/services/filter-option/filte
 import { SelectFilterParams } from '../select-filter/interfaces/select-filter-params.interface';
 import { AbstractSelectFilterConfig } from './interfaces/abstract-select-filter-config.interface';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -45,7 +46,9 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
     </tsl-filter-template>
   `,
 })
-class StoryAbstractSelectFilterComponent extends AbstractSelectFilter<SelectFilterParams> {}
+class StoryAbstractSelectFilterComponent extends AbstractSelectFilter<SelectFilterParams> {
+  onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {}
+}
 
 export default {
   title: 'Webapp/Public/Shared/Components/Filters/AbstractSelectFilter',
