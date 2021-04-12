@@ -297,6 +297,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.getSecondObjectTypes(typeOfbOjectId);
 
           if (+this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
+            this.getUploadExtraInfoControl('size').disable();
             this.getSizes();
           }
         } else {
