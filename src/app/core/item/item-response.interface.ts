@@ -44,6 +44,7 @@ export interface RealEstateResponse extends BaseUpdateItemResponse {
 
 export interface ItemContent {
   category_id?: number;
+  conversations?: number;
   currency_code?: string;
   currency?: string;
   description: string;
@@ -364,7 +365,7 @@ export interface ItemSaleConditions {
 export interface ItemCounters {
   views: number;
   favorites: number;
-  conversations?: number;
+  conversations: number;
 }
 
 export interface ItemBulkResponse {
