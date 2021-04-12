@@ -35,7 +35,7 @@ describe('SearchApiService', () => {
 
         service.search(filters).subscribe();
 
-        const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse);
       });
@@ -50,7 +50,7 @@ describe('SearchApiService', () => {
           done();
         });
 
-        const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
           headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
@@ -67,7 +67,7 @@ describe('SearchApiService', () => {
           done();
         });
 
-        const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse);
       });
@@ -82,7 +82,7 @@ describe('SearchApiService', () => {
 
         service.search(filters).subscribe();
 
-        const request = httpController.expectOne(`/api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse);
       });
@@ -97,7 +97,7 @@ describe('SearchApiService', () => {
           done();
         });
 
-        const request = httpController.expectOne(`/api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
           headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
@@ -114,7 +114,7 @@ describe('SearchApiService', () => {
           done();
         });
 
-        const request = httpController.expectOne(`/api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse);
       });
@@ -129,7 +129,7 @@ describe('SearchApiService', () => {
 
         service.search(filters).subscribe();
 
-        const request = httpController.expectOne(`/api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse);
       });
@@ -144,7 +144,7 @@ describe('SearchApiService', () => {
           done();
         });
 
-        const request = httpController.expectOne(`/api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
           headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
@@ -161,7 +161,7 @@ describe('SearchApiService', () => {
           done();
         });
 
-        const request = httpController.expectOne(`/api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse);
       });
@@ -174,7 +174,7 @@ describe('SearchApiService', () => {
         const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
         service.search(filters).subscribe();
 
-        const request = httpController.expectOne(`/api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse);
       });
@@ -189,7 +189,7 @@ describe('SearchApiService', () => {
           done();
         });
 
-        const request = httpController.expectOne(`/api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
           headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
@@ -206,7 +206,7 @@ describe('SearchApiService', () => {
           done();
         });
 
-        const request = httpController.expectOne(`/api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+        const request = httpController.expectOne(`/api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse);
       });
@@ -226,7 +226,7 @@ describe('SearchApiService', () => {
       const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
       const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
       service.search(filters).subscribe();
-      const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+      const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
       request.flush(searchResponse, {
         headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
       });
@@ -247,7 +247,7 @@ describe('SearchApiService', () => {
 
       service.search(filters).subscribe()
 
-      const request1 = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+      const request1 = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
       expect(request1.request.method).toBe('GET');
       request1.flush(searchResponse, {
         headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
@@ -271,7 +271,7 @@ describe('SearchApiService', () => {
         done();
       })
 
-      const request1 = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value&language=language-value`);
+      const request1 = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
       expect(request1.request.method).toBe('GET');
       request1.flush(searchResponse, {
         headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
