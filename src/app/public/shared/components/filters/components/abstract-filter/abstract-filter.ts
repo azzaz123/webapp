@@ -14,9 +14,12 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
 
   @Input()
   set value(value: FilterParameter[]) {
+    const newValue = value.filter((param) => param.value);
     const previousValue = this._value;
-    this.writeValue(value);
-    this.onValueChange(previousValue, value);
+    this.writeValue(newValue);
+    if (this.hasValueChanged(previousValue, newValue)) {
+      this.onValueChange(previousValue, newValue);
+    }
   }
 
   get value(): FilterParameter[] {

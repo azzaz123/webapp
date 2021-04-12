@@ -2,9 +2,7 @@ import { AfterContentInit, Component, Input, OnDestroy, OnInit, ViewChild } from
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { CategoriesFilterParams } from './interfaces/categories-filter-params.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
-import { GridSelectFormOption } from '@shared/form/components/grid-select/interfaces/grid-select-form-option.interface';
 import { FormControl, FormGroup } from '@angular/forms';
-import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { CATEGORY_OPTIONS } from './data/category_options';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CategoriesFilterIcon } from './interfaces/categories-filter-icon.interface';
@@ -48,17 +46,6 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
     return this.labelSubject.asObservable();
   }
 
-  public static getGridOptions(): GridSelectFormOption[] {
-    return CATEGORY_OPTIONS;
-  }
-
-  public static getSelectOptions(): SelectFormOption<string>[] {
-    return CATEGORY_OPTIONS.map((option) => ({
-      ...option,
-      icon: option.icon.stroke,
-    }));
-  }
-
   public ngOnInit() {
     super.ngOnInit();
     this.updateSubjects();
@@ -72,12 +59,10 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
-    if (this.hasValueChanged(previousValue, currentValue)) {
-      if (this._value.length > 0) {
-        this.updateValueFromParent();
-      } else {
-        this.cleanForm();
-      }
+    if (this._value.length > 0) {
+      this.updateValueFromParent();
+    } else {
+      this.cleanForm();
     }
   }
 

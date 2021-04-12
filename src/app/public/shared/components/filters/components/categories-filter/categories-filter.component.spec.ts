@@ -48,7 +48,7 @@ describe('CategoriesFilterComponent', () => {
     id: COMMON_CONFIGURATION_ID.CATEGORIES,
     title: 'Category',
     icon: '/assets/icons/joke.svg',
-    bubblePlaceholder: 'Condition',
+    bubblePlaceholder: 'All categories',
     drawerPlaceholder: 'All categories',
     mapKey: {
       parameterKey: 'category_ids',
@@ -145,32 +145,60 @@ describe('CategoriesFilterComponent', () => {
         expect(component.valueChange.emit).not.toHaveBeenCalled();
       });
 
-      it('should change its value', () => {
-        const previousValue = component.formGroup.controls.select.value;
-        expect(previousValue).toEqual([CATEGORY_IDS.CAR.toString()]);
+      describe('when value has content', () => {
+        it('should change its value', () => {
+          const previousValue = component.formGroup.controls.select.value;
+          expect(previousValue).toEqual([CATEGORY_IDS.CAR.toString()]);
 
-        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
-        fixture.detectChanges();
+          testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+          fixture.detectChanges();
 
-        const nextValue = component.formGroup.controls.select.value;
-        expect(nextValue).toEqual([CATEGORY_IDS.REAL_ESTATE.toString()]);
+          const nextValue = component.formGroup.controls.select.value;
+          expect(nextValue).toEqual([CATEGORY_IDS.REAL_ESTATE.toString()]);
+        });
+
+        it('should change label', () => {
+          const previousLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
+          expect(previousLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.CAR.toString()));
+
+          testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+          fixture.detectChanges();
+
+          const nextLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
+          expect(nextLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.REAL_ESTATE.toString()));
+        });
       });
 
-      it('should change label', () => {
-        const previousLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
-        expect(previousLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.CAR.toString()));
+      describe('when value is empty', () => {
+        it('should change its value', () => {
+          const previousValue = component.formGroup.controls.select.value;
+          expect(previousValue).toEqual([CATEGORY_IDS.CAR.toString()]);
 
-        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
-        fixture.detectChanges();
+          testComponent.value = [];
+          fixture.detectChanges();
 
-        const nextLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
-        expect(nextLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.REAL_ESTATE.toString()));
+          const nextValue = component.formGroup.controls.select.value;
+          expect(nextValue).toEqual([]);
+        });
+
+        it('should change label', () => {
+          const previousLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
+          expect(previousLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.CAR.toString()));
+
+          testComponent.value = [];
+          fixture.detectChanges();
+
+          const nextLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
+          expect(nextLabel).toEqual(getOptionLabelByValue(''));
+        });
       });
     });
 
     describe('on form value change', () => {
       beforeEach(() => {
         testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.CAR.toString() }];
+        fixture.detectChanges();
+        component.filterTemplate.toggleDropdown();
         fixture.detectChanges();
       });
       it('should emit value change', () => {
@@ -202,6 +230,15 @@ describe('CategoriesFilterComponent', () => {
         fixture.detectChanges();
 
         expect(label).toEqual(getOptionLabelByValue(CATEGORY_IDS.REAL_ESTATE.toString()));
+      });
+
+      it('should close bubble', () => {
+        const gridForm: SelectFormComponent = debugElement.query(gridFormPredicate).componentInstance;
+        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
+        fixture.detectChanges();
+
+        const placeholderTemplate: FilterTemplateComponent = debugElement.query(filterTemplatePredicate).componentInstance;
+        expect(placeholderTemplate.isDropdownOpen).toBeFalsy();
       });
     });
   });
