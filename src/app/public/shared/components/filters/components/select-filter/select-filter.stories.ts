@@ -22,46 +22,46 @@ import { SelectFormComponent } from '@shared/form/components/select/select-form.
       <h1>Bubble variant</h1>
       <div style="display: flex;">
         <div class="m-2" style="width: 100%">
-          <tsl-option-select-filter
+          <tsl-select-filter
             [variant]="${FILTER_VARIANT.BUBBLE}"
             [value]="conditionValue"
             [config]="conditionConfig"
             (valueChange)="changeCondition($event)"
             (clear)="changeCondition([])"
           >
-          </tsl-option-select-filter>
+          </tsl-select-filter>
         </div>
         <div class="m-2" style="width: 100%">
-          <tsl-option-select-filter
+          <tsl-select-filter
             [variant]="${FILTER_VARIANT.BUBBLE}"
             [value]="genderValue"
             [config]="genderConfig"
             (valueChange)="changeGender($event)"
             (clear)="changeGender([])"
           >
-          </tsl-option-select-filter>
+          </tsl-select-filter>
         </div>
       </div>
 
       <h1>Content variant</h1>
       <div style="border: 1px dashed black; background-color: white; position: relative; min-height: 400px;" class="p-3">
-        <tsl-option-select-filter
+        <tsl-select-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="conditionValue"
           [config]="conditionConfig"
           (valueChange)="changeCondition($event)"
           (clear)="changeCondition([])"
         >
-        </tsl-option-select-filter>
+        </tsl-select-filter>
         <div style="height: 1px; width: 100%; background-color: #90A4AE;" class="my-3"></div>
-        <tsl-option-select-filter
+        <tsl-select-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="genderValue"
           [config]="genderConfig"
           (valueChange)="changeGender($event)"
           (clear)="changeGender([])"
         >
-        </tsl-option-select-filter>
+        </tsl-select-filter>
       </div>
     </div>
   `,
@@ -82,7 +82,7 @@ class FiltersComponent {
 }
 
 export default {
-  title: 'Webapp/Public/Shared/Components/Filters/SelectFilterComponent',
+  title: 'Webapp/Public/Shared/Components/Filters/SelectFilter',
   decorators: [
     moduleMetadata({
       imports: [HttpClientModule],
