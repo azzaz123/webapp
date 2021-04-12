@@ -222,11 +222,6 @@
   <msg id="6315786827665033981"><source>src/app/private/features/catalog/modals/buy-product-modal/buy-product-modal.component.html:54</source>Total to pay</msg>
   <msg id="3762527362373672599"><source>src/app/private/features/catalog/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:4</source>Congratulations!</msg>
   <msg id="7588966777090643410"><source>src/app/private/features/catalog/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:5</source>Your car is published for 60 days. You can find it in your catalog.</msg>
-  <msg id="349473182974314723"><source>src/app/private/features/catalog/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:11</source>Your item is now reactivated and in the first positions!</msg>
-  <msg id="1666676372989024280"><source>src/app/private/features/catalog/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:16</source>and you have <ph name="INTERPOLATION"/> wallacoins left</msg>
-  <msg id="3938280541945338173"><source>src/app/private/features/catalog/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:17</source>and you have <ph name="INTERPOLATION"/> credit</msg>
-  <msg id="5378722151309930038"><source>src/app/private/features/catalog/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:20</source>Buy more Wallacoins</msg>
-  <msg id="5880798667461104338"><source>src/app/private/features/catalog/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:21</source>Buy more credit</msg>
   <msg id="833919813165214228"><source>src/app/private/features/catalog/pages/checkout/checkout.component.html:13</source>Feature it locally</msg>
   <msg id="4721342773618175343"><source>src/app/private/features/catalog/pages/checkout/checkout.component.html:14</source>Feature it provincially</msg>
   <msg id="4828515169928166764"><source>src/app/private/features/catalog/pages/checkout/checkout.component.html:22</source>Feature it your city</msg>
@@ -237,6 +232,7 @@
   <msg id="ListComponentHeaderSubtitle"><source>src/app/private/features/catalog/pages/list/list.component.html:29,31</source> Here you can list items, manage the ones you already have and activate featured to sell them faster </msg>
   <msg id="442085080206895883"><source>src/app/private/features/catalog/pages/list/list.component.html:43</source>products</msg>
   <msg id="776785241867401546"><source>src/app/private/features/catalog/pages/list/list.component.html:44</source>product</msg>
+  <msg id="SuggestProModalTitle"><source>src/app/private/features/catalog/pages/list/list.component.ts:442</source>If you were PRO your items wouldn’t become inactive. Sounds good, right?</msg>
   <msg id="2874924373232293084"><source>src/app/private/features/chat/children/inbox/components/inbox-item-component/inbox-item-detail.component.html:18</source>Reserve</msg>
   <msg id="8016649850785953911"><source>src/app/private/features/chat/children/inbox/components/inbox-item-component/inbox-item-detail.component.html:19</source>Unreserve</msg>
   <msg id="7962273932004201523"><source>src/app/private/features/chat/children/inbox/components/inbox-item-component/inbox-item-detail.component.html:22,24</source>Sold </msg>
@@ -679,6 +675,9 @@
   <msg id="4588618843305891254"><source>src/app/private/layout/components/sidebar/components/sidebar.component.html:21</source>Catalog</msg>
   <msg id="9029286143304711365"><source>src/app/private/layout/components/sidebar/components/sidebar.component.html:43</source>Reviews</msg>
   <msg id="7911416166208830577"><source>src/app/private/layout/components/sidebar/components/sidebar.component.html:57</source>Help</msg>
+  <msg id="NotFoundTitle"><source>src/app/public/features/error/pages/error.component.ts:12</source>Whoops, the page you&apos;re looking for can&apos;t be found</msg>
+  <msg id="NotFoundMessage"><source>src/app/public/features/error/pages/error.component.ts:13</source>Our office unicorn might have impaled it. But, there&apos;s lots to be discovered in the land of Wallapop.</msg>
+  <msg id="NotFoundButtonText"><source>src/app/public/features/error/pages/error.component.ts:17</source>See listings</msg>
   <msg id="Feature"><source>src/app/public/features/item-detail/components/item-detail-header/item-detail-header.component.html:13</source>Feature</msg>
   <msg id="checkAsReservedItem"><source>src/app/public/features/item-detail/components/item-detail-header/item-detail-header.component.html:47,50</source><ph name="START_TAG_TSL_SVG_ICON"/><ph name="CLOSE_TAG_TSL_SVG_ICON"/> Mark as reserved </msg>
   <msg id="checkAsSoldItem"><source>src/app/public/features/item-detail/components/item-detail-header/item-detail-header.component.html:52,55</source><ph name="START_TAG_TSL_SVG_ICON"/><ph name="CLOSE_TAG_TSL_SVG_ICON"/> Mark as sold </msg>
@@ -776,9 +775,6 @@
   <msg id="Gasoline"><source>src/app/public/shared/components/counter-specification/constants/counter-car-constants.ts:78</source>Gasoline</msg>
   <msg id="Automatic"><source>src/app/public/shared/components/counter-specification/constants/counter-car-constants.ts:85</source>Automatic</msg>
   <msg id="Manual"><source>src/app/public/shared/components/counter-specification/constants/counter-car-constants.ts:92</source>Manual</msg>
-  <msg id="CarMint"><source>src/app/public/shared/components/counter-specification/constants/counter-car-constants.ts:106</source>Mint</msg>
-  <msg id="CarUsed"><source>src/app/public/shared/components/counter-specification/constants/counter-car-constants.ts:113</source>Used</msg>
-  <msg id="Crappy"><source>src/app/public/shared/components/counter-specification/constants/counter-car-constants.ts:120</source>Crappy</msg>
   <msg id="Bathroom"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:8</source>Bathroom</msg>
   <msg id="Bathrooms"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:9</source>Bathrooms</msg>
   <msg id="Room"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:15</source>Room</msg>
@@ -812,6 +808,10 @@
   <msg id="Expired"><source>src/app/public/shared/components/item-flag/item-flag-constants.ts:72</source>Expired</msg>
   <msg id="Inactive"><source>src/app/public/shared/components/item-flag/item-flag-constants.ts:79</source>Inactive</msg>
   <msg id="Featured"><source>src/app/public/shared/components/item-flag/item-flag-constants.ts:89</source>Featured</msg>
+  <msg id="FilterOptionPostedAgo_hours"><source>src/app/public/shared/services/filter-option/data/hardcoded-options.ts:17</source>Hours</msg>
+  <msg id="FilterOptionPostedAgo_days"><source>src/app/public/shared/services/filter-option/data/hardcoded-options.ts:21</source>Days</msg>
+  <msg id="FilterOptionGender_male"><source>src/app/public/shared/services/filter-option/data/hardcoded-options.ts:67</source>Male</msg>
+  <msg id="FilterOptionGender_female"><source>src/app/public/shared/services/filter-option/data/hardcoded-options.ts:71</source>Female</msg>
   <msg id="2595297634596426795"><source>src/app/shared/catalog/cart/cart.component.html:0</source>My features</msg>
   <msg id="6801638153695046345"><source>src/app/shared/catalog/cart/cart.component.html:19</source>Local bump</msg>
   <msg id="7379728362084736907"><source>src/app/shared/catalog/cart/cart.component.html:20</source>Provincial bump</msg>
@@ -841,6 +841,9 @@
   <msg id="4701510938988860546"><source>src/app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.html:8</source>Go back and cancel bumps</msg>
   <msg id="4807588143683316694"><source>src/app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.html:11</source>Items that are already planned can&apos;t be featured again.</msg>
   <msg id="445243100567221931"><source>src/app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.html:12</source>Ok, got it</msg>
+  <msg id="SuggestProModalButtonCancel"><source>src/app/shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component.html:15,17</source> Not now thanks </msg>
+  <msg id="SuggestProModalDescriptionTrial"><source>src/app/shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component.ts:20</source>Try Wallapop PRO for free and explore all their benefits.</msg>
+  <msg id="SuggestProModalDescriptionPlans"><source>src/app/shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component.ts:21</source>Choose a plan and take advantage of Wallapop PRO benefits.</msg>
   <msg id="TooManyItemsModalCardealerTitle"><source>src/app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:10</source><ph name="START_BOLD_TEXT"/>You are trying to activate more <ph name="INTERPOLATION"/> than what your plan supports<ph name="CLOSE_BOLD_TEXT"/></msg>
   <msg id="TooManyItemsModalTitle"><source>src/app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:13</source><ph name="START_BOLD_TEXT"/>You&apos;ve reached the listing limit<ph name="CLOSE_BOLD_TEXT"/></msg>
   <msg id="TooManyItemsModalCarDealerDesc"><source>src/app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:19</source>Please unselect some items or</msg>
@@ -932,17 +935,17 @@
   <msg id="CompanyName"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:65</source>Company Name</msg>
   <msg id="CompanyNameRequired"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:70,72</source> Company name is required. </msg>
   <msg id="CompanyNameMaxLength"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:73,75</source> Company name must be at most 32 characters long. </msg>
-  <msg id="Email"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:79</source>E-mail</msg>
-  <msg id="EmailRequired"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:84,86</source> E-mail is required. </msg>
-  <msg id="EmailFormat"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:87,89</source> E-mail must be valid. </msg>
-  <msg id="BillingAddress"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:93</source>Billing address</msg>
-  <msg id="City"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:99</source>City</msg>
-  <msg id="PostalCode"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:105</source>Postal code</msg>
-  <msg id="Country"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:111</source>Country</msg>
-  <msg id="CIFNumber"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:117</source>CIF Number</msg>
-  <msg id="NIFNumber"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:118</source>NIF Number</msg>
-  <msg id="CifRequired"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:123,125</source> CIF/NIF is required. </msg>
-  <msg id="CifFormat"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:126,128</source> CIF/NIF must be valid. </msg>
+  <msg id="CIFNumber"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:79</source>CIF of the company</msg>
+  <msg id="NIFNumber"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:80</source>NIF of the person</msg>
+  <msg id="CifRequired"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:85,87</source> CIF/NIF is required. </msg>
+  <msg id="CifFormat"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:88,90</source> CIF/NIF must be valid. </msg>
+  <msg id="Email"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:94</source>E-mail</msg>
+  <msg id="EmailRequired"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:99,101</source> E-mail is required. </msg>
+  <msg id="EmailFormat"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:102,104</source> E-mail must be valid. </msg>
+  <msg id="BillingAddress"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:108</source>Billing address</msg>
+  <msg id="City"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:114</source>City</msg>
+  <msg id="PostalCode"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:120</source>Postal code</msg>
+  <msg id="Country"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:126</source>Country</msg>
   <msg id="8493154674675875451"><source>src/app/shared/profile/cover-upload/cover-upload.component.html:2</source>Cover image</msg>
   <msg id="2099215062285114503"><source>src/app/shared/profile/cover-upload/cover-upload.component.html:19</source>Update picture</msg>
   <msg id="1897498190172236951"><source>src/app/shared/profile/cover-upload/cover-upload.component.html:20</source>Upload picture</msg>
