@@ -7,6 +7,7 @@ import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AccessMetadata } from '../interfaces/access-metadata';
+import { LoginRequest } from '../interfaces/login.request';
 import { LoginResponse } from '../interfaces/login.response';
 
 export const LOGIN_ENDPOINT = 'api/v3/users/access/login';
@@ -20,7 +21,7 @@ export class LoginService {
     private deviceService: DeviceService
   ) {}
 
-  public login(body: any): Observable<LoginResponse> {
+  public login(body: LoginRequest): Observable<LoginResponse> {
     body.metadata = this.getMetadata();
     return this.httpClient.post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body).pipe(tap((r) => this.storeData(r)));
   }
