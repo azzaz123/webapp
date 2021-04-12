@@ -49,11 +49,7 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
     if (this.hasValueChanged(previousValue, currentValue)) {
-      if (this._value.length > 0) {
-        this.updateValueFromParent();
-      } else {
-        this.handleClear();
-      }
+      this.updateValueFromParent();
     }
   }
 
@@ -69,8 +65,6 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
 
   public handleClear(): void {
     this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
-    this.writeValue([]);
-    this.valueChange.emit([]);
     super.handleClear();
   }
 
