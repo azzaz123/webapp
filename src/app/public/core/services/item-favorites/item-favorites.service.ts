@@ -8,7 +8,6 @@ export class ItemFavoritesService {
   constructor(private checkSessionService: CheckSessionService, private favoritesApiService: FavoritesApiService) {}
 
   public getFavouritedItemIds(itemsId: string[]): Observable<string[]> {
-    // TODO: check if not our own user		Date: 2021/04/08
     if (this.checkSessionService.hasSession()) {
       return this.favoritesApiService.getFavoriteItemsId(itemsId);
     }
