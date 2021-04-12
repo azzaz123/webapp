@@ -14,8 +14,8 @@ import { ItemApiService } from '@public/core/services/api/item/item-api.service'
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { UuidService } from '@core/uuid/uuid.service';
-import { PublishedItemCardFavouriteCheckedModule } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.module';
 import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
+import { PublishedItemCardFavouriteCheckedModule } from '../../core/services/published-item-card-favorite-checked/published-item-card-favorite-checked.module';
 
 describe('UserPublishedComponent', () => {
   let component: UserPublishedComponent;

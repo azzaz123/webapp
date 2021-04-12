@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ItemCard, ItemCardsWithPagination } from '@public/core/interfaces/item-card.interface';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 import { finalize, take } from 'rxjs/operators';
-import { PublishedItemCardFavouriteCheckedService } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.service';
+import { PublishedItemCardFavoriteCheckedService } from '../../core/services/published-item-card-favorite-checked/published-item-card-favorite-checked.service';
 
 @Component({
   selector: 'tsl-user-published',
@@ -19,7 +19,7 @@ export class UserPublishedComponent implements OnInit {
   public nextPaginationItem = 0;
   public loading = true;
 
-  constructor(private publishedItemCardFavouriteCheckedService: PublishedItemCardFavouriteCheckedService) {}
+  constructor(private publishedItemCardFavoriteCheckedService: PublishedItemCardFavoriteCheckedService) {}
 
   ngOnInit(): void {
     this.loadItems();
@@ -29,7 +29,7 @@ export class UserPublishedComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.publishedItemCardFavouriteCheckedService
+      this.publishedItemCardFavoriteCheckedService
         .getItems(this.nextPaginationItem)
         .pipe(
           finalize(() => (this.loading = false)),

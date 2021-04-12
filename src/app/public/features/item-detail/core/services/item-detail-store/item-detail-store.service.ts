@@ -38,7 +38,7 @@ export class ItemDetailStoreService {
 
   public initializeItemAndFlags(itemId: string): void {
     forkJoin([this.itemDetailService.getItemDetail(itemId), this.itemFavoritesService.getFavouritedItemIds([itemId])]).subscribe(
-      ([itemDetail, favorites]) => {
+      ([itemDetail, favorites]: [ItemDetail, string[]]) => {
         itemDetail.item.flags.favorite = !!favorites.length;
         this.itemDetail = this.mapItemDetailStoreService.mapItemDetailStore(itemDetail);
         this.itemDetailFlagsStoreService.updateStatusFlag(itemDetail.item.flags);
