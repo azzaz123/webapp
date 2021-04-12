@@ -30,7 +30,7 @@
           <tsl-dropdown *ngIf="!customMake" i18n-placeholder="@@web_upload_pages_car_386" placeholder="E.g. Ibiza" class="form-control" [isLoading]="isLoadingModels" (opened)="onIsModelsNeeded()"
             formControlName="model" id="model" [options]="models" [disableControl]="modelFieldDisabled">
           </tsl-dropdown>
-          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="E.g. Ibiza" class="form-control"
+          <input *ngIf="customMake" type="text" i18n-placeholder="@@web_upload_pages_car_593" placeholder="E.g. Ibiza" class="form-control"
             formControlName="model" id="model" [disableControl]="modelFieldDisabled" />
         </div>
       </div>
@@ -71,7 +71,7 @@
           <tsl-dropdown *ngIf="!customMake" i18n-placeholder="@@web_upload_pages_car_395" placeholder="Number plate" class="form-control"
             formControlName="year" id="year" [options]="years" [disableControl]="yearFieldDisabled" [isLoading]="isLoadingYears" (opened)="onIsYearsNeeded()">
           </tsl-dropdown>
-          <input *ngIf="customMake" type="number" i18n-placeholder placeholder="Number plate" class="form-control"
+          <input *ngIf="customMake" type="number" i18n-placeholder="@@web_upload_pages_car_594" placeholder="Number plate" class="form-control"
             formControlName="year" id="year" [disableControl]="yearFieldDisabled" min="1900" [max]="currentYear"/>
         </div>
       </div>
@@ -102,7 +102,7 @@
           </div>
           <tsl-dropdown *ngIf="!customMake && !customVersion" i18n-placeholder="@@web_upload_pages_car_403"            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
             for="version" [options]="versions" [disableControl]="versionFieldDisabled"></tsl-dropdown>
-          <input *ngIf="customMake || customVersion" type="text" i18n-placeholder            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
+          <input *ngIf="customMake || customVersion" type="text" i18n-placeholder="@@web_upload_pages_car_595"            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
             id="version" [disableControl]="versionFieldDisabled"/>
         </div>
       </div>
@@ -121,7 +121,7 @@
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="seats" i18n="@@web_upload_pages_car_407">Number of doors</label>
-          <input i18n-placeholder placeholder="Add a number" type="number" class="form-control"
+          <input i18n-placeholder="@@web_upload_pages_car_596" placeholder="Add a number" type="number" class="form-control"
             formControlName="num_doors" id="doors" min="0" max="99" />
         </div>
       </div>
@@ -169,28 +169,28 @@
                     <input ngbButton type="radio" name="engine" value="gasoline">
                     <tsl-svg-icon src="/assets/icons/gasoline.svg"></tsl-svg-icon>
                   </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Petrol</span>
+                  <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_597">Petrol</span>
                 </label>
                 <label ngbButtonLabel class="selector selector--cars">
                   <div class="selector-icon btn">
                     <input ngbButton type="radio" name="engine" value="gasoil">
                     <tsl-svg-icon src="/assets/icons/gasoil.svg"></tsl-svg-icon>
                   </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Diesel</span>
+                  <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_598">Diesel</span>
                 </label>
                 <label ngbButtonLabel class="selector selector--cars">
                   <div class="selector-icon btn">
                     <input ngbButton type="radio" name="engine" value="electric-hybrid">
                     <tsl-svg-icon src="/assets/icons/electric-hybrid.svg"></tsl-svg-icon>
                   </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Electric</span>
+                  <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_599">Electric</span>
                 </label>
                 <label ngbButtonLabel class="selector selector--cars">
                   <div class="selector-icon btn">
                     <input ngbButton type="radio" name="engine" value="others">
                     <tsl-svg-icon src="/assets/icons/others.svg"></tsl-svg-icon>
                   </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Other...</span>
+                  <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_600">Other...</span>
                 </label>
               </div>
             </div>
@@ -215,14 +215,14 @@
                     <input ngbButton type="radio" name="gearbox" value="manual">
                     <tsl-svg-icon src="/assets/icons/manual.svg"></tsl-svg-icon>
                   </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Manual</span>
+                  <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_601">Manual</span>
                 </label>
                 <label ngbButtonLabel class="selector selector--cars">
                   <div class="selector-icon btn">
                     <input ngbButton type="radio" name="gearbox" value="automatic">
                     <tsl-svg-icon src="/assets/icons/automatic.svg"></tsl-svg-icon>
                   </div>
-                  <span class="selector-text selector-text--uppercase" i18n>Automatic</span>
+                  <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_602">Automatic</span>
                 </label>
               </div>
             </div>
@@ -233,7 +233,7 @@
     <div class="row" [ngbPopover]="coachmarkDescription" [autoClose]="false" popoverClass="ml-3">
       <div class="col-12">
         <div class="form-group last">
-          <label for="tellUs" i18n>Description</label>
+          <label for="tellUs" i18n="@@web_upload_pages_car_603">Description</label>
           <span class="chars-counter">{{uploadForm.value?.storytelling?.length}}/650</span>
           <textarea i18n-placeholder="@@web_upload_pages_car_417" placeholder="Tell us more. Used or new? Yellow or red? Has it got any bumps?"
             fz-elastic class="form-control" formControlName="storytelling" id="tellUs" maxlength="650"></textarea>
@@ -262,8 +262,8 @@
   <div class="row">
     <div class="col-12 col-md-5">
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
-        <span *ngIf="!item && !loading" i18n>Post Ad</span>
-        <span *ngIf="item && !loading" i18n>Update</span>
+        <span *ngIf="!item && !loading" i18n="@@web_upload_pages_car_604">Post Ad</span>
+        <span *ngIf="item && !loading" i18n="@@web_upload_pages_car_605">Update</span>
         <span *ngIf="loading && !pendingFiles" i18n="@@UploadProductSubmitLoading">Uploading... {{ uploadCompletedPercentage }}%</span>
         <span *ngIf="loading && pendingFiles" i18n="@@UploadImagesSubmitLoading">Uploading image... {{ pendingFiles.currentUploading}}/{{pendingFiles.totalFiles}}</span>
       </tsl-button>

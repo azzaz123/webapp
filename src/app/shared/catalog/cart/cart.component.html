@@ -1,7 +1,7 @@
 <h1 i18n="@@web_cart_451">My features</h1>
 <div class="clean-cart" [hidden]="!cart?.total">
   <a (click)="clean()">
-    <span i18n>Delete list</span>
+    <span i18n="@@web_cart_615">Delete list</span>
   </a>
 </div>
 <div [class.with-credits]="creditInfo?.currencyName === 'wallacredits'">
@@ -20,8 +20,8 @@
                   <ng-container *ngIf="!provincialBump" i18n="@@web_cart_452">Local bump</ng-container>
                   <ng-container *ngIf="provincialBump" i18n="@@web_cart_453">Provincial bump</ng-container>
                 </ng-container>
-                <ng-container *ngSwitchCase="'citybump'" i18n>City bump</ng-container>
-                <ng-container *ngSwitchCase="'countrybump'" i18n>Country bump</ng-container>
+                <ng-container *ngSwitchCase="'citybump'" i18n="@@web_cart_616">City bump</ng-container>
+                <ng-container *ngSwitchCase="'countrybump'" i18n="@@web_cart_617">Country bump</ng-container>
               </span>
               <strong>x {{cart[type].cartItems.length}}</strong><br />
               <span class="price">
@@ -59,7 +59,7 @@
     </div>
   </div>
   <div class="walla-total" [hidden]="!creditInfo?.credit">
-    <span class="label" i18n>Total</span>
+    <span class="label" i18n="@@web_cart_618">Total</span>
     <span class="price">
       {{cart?.total * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
       <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="grey"></tsl-wallacoin>
@@ -72,7 +72,7 @@
       </span>
       <span [hidden]="creditInfo?.currencyName === 'wallacredits'">
         <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="corporate"></tsl-wallacoin>
-        <span i18n>spending</span>
+        <span i18n="@@web_cart_619">spending</span>
       </span>
     </span>
     <span class="price" [hidden]="!usedCredits">
@@ -83,7 +83,7 @@
   <div class="missing" [hidden]="creditInfo?.currencyName === 'wallacredits' || !creditInfo?.credit">
     <div class="label">
       <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="strike"></tsl-wallacoin>
-      <span i18n>missing</span>
+      <span i18n="@@web_cart_620">missing</span>
     </div>
     <div class="price">
       {{totalToPay * creditInfo?.factor | number}}
@@ -94,7 +94,7 @@
     <s>{{cart?.discountedTotal | customCurrency:creditInfo?.currencyName}}</s>
   </div>
   <div class="total">
-    <span class="label" i18n>Total to pay</span>
+    <span class="label" i18n="@@web_cart_621">Total to pay</span>
     <span class="price">{{totalToPay | customCurrency}}</span>
   </div>
   <div *ngIf="totalToPay > 0">

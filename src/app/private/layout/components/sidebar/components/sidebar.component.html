@@ -4,7 +4,7 @@
     <tsl-user-avatar class="topbar-avatar" [size]="50" [user]="user" [imageUrl]="user?.image?.urls_by_size.medium">
     </tsl-user-avatar>
   </div>
-  <h2 i18n>Profile</h2>
+  <h2 i18n="@@web_components_sidebar_611">Profile</h2>
 </a>
 
 <a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-dashboard" class="sidebar-section" [routerLink]="['/pro/dashboard']" routerLinkActive="active">
@@ -18,7 +18,7 @@
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_catalog.svg"></tsl-svg-icon>
   </div>
-  <h2 *ngxPermissionsExcept="['isProfessional']" i18n>Products</h2>
+  <h2 *ngxPermissionsExcept="['isProfessional']" i18n="@@web_components_sidebar_612">Products</h2>
   <h2 *ngxPermissionsOnly="['isProfessional']" i18n="@@web_components_sidebar_448">Catalog</h2>
 </a>
 
@@ -48,7 +48,7 @@
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_phones.svg" class="svg-icon-size"></tsl-svg-icon>
   </div>
-  <h2 i18n>Phones</h2>
+  <h2 i18n="@@web_components_sidebar_613">Phones</h2>
 </a>
 
 <a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-help" class="sidebar-section" [routerLink]="['/pro/help']" routerLinkActive="active">
@@ -62,5 +62,5 @@
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_dashboard.svg"></tsl-svg-icon>
   </div>
-  <h2 i18n>Stats</h2>
+  <h2 i18n="@@web_components_sidebar_614">Stats</h2>
 </a>

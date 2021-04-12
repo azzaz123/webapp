@@ -58,7 +58,7 @@
         </div>
         <div class="no-plan" [hidden]="true">
           <span i18n="@@web_catalog_pro_components_plan_data_61">You don't have a Country Plan</span>
-          <a href="#" i18n>Sign Up</a>
+          <a href="#" i18n="@@web_catalog_pro_components_plan_data_542">Sign Up</a>
         </div>
         <div class="border"></div>
         <div>
@@ -67,7 +67,7 @@
               {{perks?.subscription.national.quantity + perks?.extra.national.quantity}}</span>
             <span *ngIf="perks?.subscription.national.quantity + perks?.extra.national.quantity < 0">0</span>
           </span>
-          <span class="text grey" i18n>Available</span>
+          <span class="text grey" i18n="@@web_catalog_pro_components_plan_data_543">Available</span>
           <div class="extras">
             <span class="country" i18n="@@web_catalog_pro_components_plan_data_62">{{perks?.subscription.national.quantity}} plan</span>
             <span class="grey" i18n="@@web_catalog_pro_components_plan_data_63"> {{perks?.extra.national.quantity}} extra</span>
@@ -76,7 +76,7 @@
         <div class="border"></div>
         <div>
           <span class="number">{{status?.purchased?.countrybump || '0'}}</span>
-          <span class="text grey" i18n>In Use</span>
+          <span class="text grey" i18n="@@web_catalog_pro_components_plan_data_544">In Use</span>
           <div class="extras">
             <span class="grey" i18n="@@web_catalog_pro_components_plan_data_64">({{status?.autorenew_scheduled?.countrybump || '0'}} planned)</span>
           </div>

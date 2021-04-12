@@ -40,7 +40,7 @@
         <div class="stats-sidebar-container calls-container" [hidden]="loading || !hasCalls()">
           <h3>
             <span i18n="@@web_dashboard_pages_198">Phones</span>
-            <a [routerLink]="['/pro/calls']" [hidden]="!phonesTotal"><span i18n>View all</span></a>
+            <a [routerLink]="['/pro/calls']" [hidden]="!phonesTotal"><span i18n="@@web_dashboard_pages_575">View all</span></a>
           </h3>
           <tsl-call [call]="call" *ngFor="let call of calls" [routerLink]="['/pro/calls']" [queryParams]="{c: call.id}"
             [hidden]="!calls.length"></tsl-call>
@@ -51,7 +51,7 @@
       </div>
       <div [hidden]="loading || hasConversations() || hasCalls()" class="stats-sidebar-completed">
         <div>
-          <h2 i18n>Congratulations!</h2>
+          <h2 i18n="@@web_dashboard_pages_576">Congratulations!</h2>
           <p i18n="@@web_dashboard_pages_199">You have processed all the pending leads. Good job!</p>
         </div>
       </div>

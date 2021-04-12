@@ -2,7 +2,7 @@
   <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0"
      [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
     <ng-container [ngPlural]="itemService.selectedItems.length">
-      <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
+      <ng-template ngPluralCase="=1"><ng-container i18n="@@web_catalog_item_actions_623">1 item selected</ng-container></ng-template>
       <ng-template ngPluralCase="other"><ng-container i18n="@@web_catalog_item_actions_463">        {{itemService.selectedItems.length}} items selected</ng-container>
       </ng-template>
     </ng-container>
@@ -16,7 +16,7 @@
   </button>
   <button class="btn-delete dark" (click)="deactivate()" *ngIf="selectedStatus === 'active'
   || selectedStatus === 'featured'"
-          [disabled]="!itemService.selectedItems.length" i18n>Deactivate</button>
+          [disabled]="!itemService.selectedItems.length" i18n="@@web_catalog_item_actions_624">Deactivate</button>
   <button class="btn-activate" (click)="activate()" *ngIf="selectedStatus === 'pending'"
           [disabled]="!itemService.selectedItems.length" i18n>Activate</button>
   <tsl-button [hidden]="selectedStatus !== 'active'" [disabled]="!itemService.selectedItems.length"

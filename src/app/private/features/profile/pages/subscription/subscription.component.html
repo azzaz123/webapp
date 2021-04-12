@@ -24,11 +24,11 @@
         </div>
         <div *ngIf="subscription.subscribed_from" class="Subscriptions__category-info">
             <p i18n="@@web_profile_pages_subscription_325" *ngIf="subscription.selected_tier.limit">{{subscription.selected_tier.limit}} products</p>
-            <p i18n *ngIf="!subscription.selected_tier.limit">No limit</p>
+            <p i18n="@@web_profile_pages_subscription_586" *ngIf="!subscription.selected_tier.limit">No limit</p>
             <p class="Subscriptions__category-info--price" i18n="@@web_profile_pages_subscription_326">              {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
             </p>
             <p class="Subscriptions__category-info--edit" *ngIf="!subscription.subscribed_until">
-              <span *ngIf="showEdit(subscription)" i18n>Edit</span>
+              <span *ngIf="showEdit(subscription)" i18n="@@web_profile_pages_subscription_587">Edit</span>
               <span *ngIf="showCancel(subscription)" i18n>Cancel</span>
               <span *ngIf="showManageInApp(subscription)" i18n="@@web_profile_pages_subscription_327">Manage in app</span>
               <span *ngIf="showUnsubscribeFirst(subscription)" i18n="@@web_profile_pages_subscription_328">Unsubscribe first from app for your free month</span>

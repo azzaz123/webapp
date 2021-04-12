@@ -65,14 +65,14 @@
     <div class="row" [ngbPopover]="coachmarkPrice" [autoClose]="false" popoverClass="ml-3">
       <div class="col-6 col-md-3">
         <div class="form-group">
-          <label for="price" i18n>Price</label>
-          <input i18n-placeholder placeholder="With love..." type="number" class="form-control"
+          <label for="price" i18n="@@web_upload_pages_realestate_606">Price</label>
+          <input i18n-placeholder="@@web_upload_pages_realestate_607" placeholder="With love..." type="number" class="form-control"
             formControlName="sale_price" id="price" min="0" max="999999999" />
         </div>
       </div>
       <div class="col-6 col-md-2">
         <div class="form-group">
-          <label for="currency" i18n>Currency</label>
+          <label for="currency" i18n="@@web_upload_pages_realestate_608">Currency</label>
           <tsl-dropdown class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
             noFilter="10"></tsl-dropdown>
         </div>
@@ -150,9 +150,9 @@
     <div class="row" [ngbPopover]="coachmarkTitle" [autoClose]="false" popoverClass="ml-3">
       <div class="col-12">
         <div class="form-group">
-          <label for="title" i18n>Title</label>
+          <label for="title" i18n="@@web_upload_pages_realestate_609">Title</label>
           <span class="chars-counter">{{ uploadForm.value?.title?.length }}/50</span>
-          <input i18n-placeholder placeholder="In some words..." type="text" class="form-control"
+          <input i18n-placeholder="@@web_upload_pages_realestate_610" placeholder="In some words..." type="text" class="form-control"
             formControlName="title" id="title" maxlength="50" />
         </div>
       </div>

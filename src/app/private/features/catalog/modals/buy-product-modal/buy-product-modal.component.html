@@ -29,7 +29,7 @@
       <div class="credit" [hidden]="!creditInfo?.credit">
         <span class="label" [hidden]="!creditInfo?.credit">
           <span [hidden]="creditInfo?.currencyName !== 'wallacredits'">
-            {{creditInfo?.credit | customCurrency:creditInfo?.currencyName}} <span i18n>credit</span>
+            {{creditInfo?.credit | customCurrency:creditInfo?.currencyName}} <span i18n="@@web_catalog_modals_buy_product_modal_562">credit</span>
           </span>
           <span [hidden]="creditInfo?.currencyName === 'wallacredits'">
             <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="corporate"></tsl-wallacoin>

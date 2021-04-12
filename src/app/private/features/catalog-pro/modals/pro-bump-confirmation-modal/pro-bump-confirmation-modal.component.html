@@ -12,9 +12,9 @@
 </div>
 
 <div *ngIf="code === '201' && (extras === 'false' || extras === undefined)">
-  <h1 i18n>Congratulations</h1>
+  <h1 i18n="@@web_catalog_pro_modals_bump_confirmation_modal_548">Congratulations</h1>
   <p i18n="@@web_catalog_pro_modals_bump_confirmation_modal_69">You featured your products.</p>
-  <tsl-button (click)="activeModal.close()" i18n>Start selling</tsl-button>
+  <tsl-button (click)="activeModal.close()" i18n="@@web_catalog_pro_modals_bump_confirmation_modal_549">Start selling</tsl-button>
 </div>
 
 <div *ngIf="code === '202'">
@@ -26,7 +26,7 @@
 <div *ngIf="code === '203'">
   <h1 i18n="@@web_catalog_pro_modals_bump_confirmation_modal_73">Your product has been successfully bumped for the day.</h1>
   <p i18n="@@web_catalog_pro_modals_bump_confirmation_modal_74">We will run a daily check to make sure you have enough credits for your scheduled bumps.</p>
-  <tsl-button (click)="activeModal.close()" i18n>Buy Extras</tsl-button>
+  <tsl-button (click)="activeModal.close()" i18n="@@web_catalog_pro_modals_bump_confirmation_modal_550">Buy Extras</tsl-button>
 </div>
 
 <div *ngIf="code !== '200' && code !== '201' && code !== '202' && code !== '203'">

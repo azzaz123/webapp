@@ -40,7 +40,7 @@
 <div *ngIf="code !== '200'" class="error-content">
 
   <div *ngIf="code === '101'">
-    <h1 class="modal-title fail" i18n>Something happened...</h1>
+    <h1 class="modal-title fail" i18n="@@web_catalog_modals_bump_confirmation_modal_559">Something happened...</h1>
     <p class="modal-text" i18n="@@web_catalog_modals_bump_confirmation_modal_122">Your item(s) have not been featured because something went wrong with your credit card.<br />Please check and try again.</p>
     <tsl-button (click)="activeModal.close()" i18n="@@web_catalog_modals_bump_confirmation_modal_123">Let’s go</tsl-button>
   </div>
@@ -60,13 +60,13 @@
   <div *ngIf="code === '909'">
     <h1 class="modal-title fail" i18n="@@web_catalog_modals_bump_confirmation_modal_130">TPV... what?</h1>
     <p class="modal-text" i18n="@@web_catalog_modals_bump_confirmation_modal_131">There has been an unexpected error in the paying system. Why not trying again later?</p>
-    <tsl-button (click)="activeModal.close()" i18n>Ok</tsl-button>
+    <tsl-button (click)="activeModal.close()" i18n="@@web_catalog_modals_bump_confirmation_modal_560">Ok</tsl-button>
   </div>
 
   <div *ngIf="code === '-1'">
     <h1 class="modal-title fail" i18n="@@web_catalog_modals_bump_confirmation_modal_132">Oops!</h1>
     <p class="modal-text" i18n="@@web_catalog_modals_bump_confirmation_modal_133">We are trying to figure out what happened. Try again later.</p>
-    <tsl-button (click)="activeModal.close()" i18n>Fine!</tsl-button>
+    <tsl-button (click)="activeModal.close()" i18n="@@web_catalog_modals_bump_confirmation_modal_561">Fine!</tsl-button>
   </div>
 
 </div>

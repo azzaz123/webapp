@@ -24,7 +24,7 @@
             <tsl-svg-icon src="/assets/icons/plans/personal2.svg"></tsl-svg-icon>
             <div class="name" i18n="@@web_profile_pages_pro_subscription_304">Personal Plan</div>
             <div class="desc" i18n="@@web_profile_pages_pro_subscription_305">We can work out the best plan for you</div>
-            <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
+            <a href="mailto:{{email}}" class="btn btn-block" i18n="@@web_profile_pages_pro_subscription_581">Subscribe</a>
           </div>
         </div>
       </div>
@@ -58,7 +58,7 @@
             <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
             <div class="discount" [hidden]="!bump.discount" i18n="@@web_profile_pages_pro_subscription_310">Save {{bump.discount}}%</div>
             <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
-            <div class="expire"><span i18n>Subscribed since</span><br />{{perks?.subscription.bump.createDate | date:'mediumDate'}}</div>
+            <div class="expire"><span i18n="@@web_profile_pages_pro_subscription_582">Subscribed since</span><br />{{perks?.subscription.bump.createDate | date:'mediumDate'}}</div>
           </div>
         </div>
       </div>
@@ -82,9 +82,9 @@
               <div class="quantity">{{bump.quantity}}</div>
               <div class="quantity-time">x24h</div>
             </div>
-            <div class="type" i18n>Featured</div>
+            <div class="type" i18n="@@web_profile_pages_pro_subscription_583">Featured</div>
             <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
-            <div class="discount" [hidden]="!bump.discount" i18n>Save {{bump.discount}}%</div>
+            <div class="discount" [hidden]="!bump.discount" i18n="@@web_profile_pages_pro_subscription_584">Save {{bump.discount}}%</div>
             <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
             <div class="expire"><span i18n>Subscribed since</span><br />{{perks?.subscription.national.createDate | date:'mediumDate'}}</div>
           </div>
