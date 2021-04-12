@@ -48,9 +48,7 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
-    if (this.hasValueChanged(previousValue, currentValue)) {
-      this.updateValueFromParent();
-    }
+    this.updateValueFromParent();
   }
 
   public getLabel(): string {

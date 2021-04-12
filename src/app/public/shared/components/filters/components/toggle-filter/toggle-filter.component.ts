@@ -22,12 +22,10 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
-    if (this.hasValueChanged(previousValue, currentValue)) {
-      if (this._value.length > 0) {
-        this.toggle = this.getBooleanValue();
-      } else {
-        this.toggle = false;
-      }
+    if (this._value.length > 0) {
+      this.toggle = this.getBooleanValue();
+    } else {
+      this.toggle = false;
     }
   }
 

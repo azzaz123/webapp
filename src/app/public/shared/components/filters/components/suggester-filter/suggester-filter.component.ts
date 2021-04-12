@@ -68,12 +68,10 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
-    if (this.hasValueChanged(previousValue, currentValue)) {
-      if (this._value.length > 0) {
-        this.updateValueFromParent();
-      } else {
-        this.handleClear();
-      }
+    if (this._value.length > 0) {
+      this.updateValueFromParent();
+    } else {
+      this.handleClear();
     }
   }
 
@@ -81,7 +79,7 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   //       able to use the mapKey configuration because this comes from the backend dynamically, and the hasValueChanged
   //       check depends on the mapKey configuration. There should be a new filter type for this case.
 
-  public hasValueChanged(previousParameters: FilterParameter[], currentParameters: FilterParameter[]): boolean {
+  protected hasValueChanged(previousParameters: FilterParameter[], currentParameters: FilterParameter[]): boolean {
     if (!previousParameters && !currentParameters) {
       return false;
     } else if (!previousParameters) {
