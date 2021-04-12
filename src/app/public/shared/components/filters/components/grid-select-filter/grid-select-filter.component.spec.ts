@@ -18,6 +18,7 @@ import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filte
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { CAR_CONFIGURATION_ID } from '../../core/enums/configuration-ids/car-configuration-ids';
 import { GridSelectFormComponent } from '@shared/form/components/grid-select/grid-select-form.component';
+import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -26,7 +27,7 @@ import { GridSelectFormComponent } from '@shared/form/components/grid-select/gri
 class TestWrapperComponent {
   @Input() config: GridSelectFilterConfig;
   @Input() variant: FILTER_VARIANT;
-  @Input() value: FilterParameter[];
+  @Input() value: FilterParameter[] = [];
 }
 
 describe('GridSelectFilterComponent', () => {
@@ -64,7 +65,7 @@ describe('GridSelectFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestWrapperComponent, GridSelectFilterComponent],
+      declarations: [TestWrapperComponent, GridSelectFilterComponent, IsBubblePipe],
       providers: [
         {
           provide: FilterOptionService,
@@ -183,13 +184,12 @@ describe('GridSelectFilterComponent', () => {
           expect(component.formGroup.controls.select.value).toEqual([]);
         });
 
-        it('should emit value change', () => {
+        it('should not emit value change', () => {
           spyOn(component.valueChange, 'emit');
 
           fixture.detectChanges();
 
-          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
+          expect(component.valueChange.emit).not.toHaveBeenCalled();
         });
       });
 
@@ -209,13 +209,12 @@ describe('GridSelectFilterComponent', () => {
           expect(component.formGroup.controls.select.value).toEqual(['gasoil', 'gasoline']);
         });
 
-        it('should emit value change', () => {
+        it('should not emit value change', () => {
           spyOn(component.valueChange, 'emit');
 
           fixture.detectChanges();
 
-          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: 'gasoil,gasoline' }]);
+          expect(component.valueChange.emit).not.toHaveBeenCalled();
         });
       });
     });
@@ -255,6 +254,7 @@ describe('GridSelectFilterComponent', () => {
           component.handleApply();
           fixture.detectChanges();
 
+          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
           expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: 'gasoline' }]);
         });
       });
@@ -291,6 +291,7 @@ describe('GridSelectFilterComponent', () => {
           form.handleOptionClick('gasoline');
           fixture.detectChanges();
 
+          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
           expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: 'gasoline' }]);
         });
       });
