@@ -8,7 +8,7 @@ import { ItemApiService } from '@public/core/services/api/item/item-api.service'
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
-import { MapItemService } from '@public/features/public-profile/pages/user-published/services/map-item/map-item.service';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, mergeMap } from 'rxjs/operators';
 import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';

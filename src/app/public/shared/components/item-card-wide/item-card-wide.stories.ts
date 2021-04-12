@@ -3,7 +3,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { HammerModule } from '@angular/platform-browser';
 import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
-import { MOCK_CAR_EXTRA_INFO } from '@public/features/item-detail/core/services/map-extra-info/map-extra-info.fixtures.spec';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
@@ -14,14 +13,13 @@ import { SlidesCarouselModule } from '../carousel-slides/carousel-slides.module'
 import { ItemExtraInfoModule } from '../item-extra-info/item-extra-info.module';
 import { ItemCardWideComponent } from './item-card-wide.component';
 import {
-  MOCK_ITEM,
-  MOCK_CAR,
-  MOCK_ITEM_BUMPED,
-  MOCK_ITEM_COUNTRY_BUMPED,
-  MOCK_ITEM_FAVOURITE,
-  MOCK_ITEM_RESERVED,
-  MOCK_ITEM_SOLD,
-  MOCK_ITEM_WITHOUT_IMAGES,
+  MOCK_ITEM_CARD_WIDE_BUMPED,
+  MOCK_ITEM_CARD_WIDE,
+  MOCK_ITEM_CARD_WIDE_COUNTRY_BUMPED,
+  MOCK_ITEM_CARD_WIDE_FAVOURITE,
+  MOCK_ITEM_CARD_WIDE_SOLD,
+  MOCK_ITEM_CARD_WIDE_WITHOUT_IMAGES,
+  MOCK_ITEM_CARD_WIDE_RESERVED,
 } from './item-card-wide.mock.stories';
 
 export default {
@@ -54,151 +52,100 @@ const Template: Story<ItemCardWideComponent> = (args: ItemCardWideComponent) => 
 
 const MOCK_ITEM_EXTRA_INFO = ['Cámara De Fotos', '20 cm', 'Digital'];
 
-export const DefaultMD = Template.bind({});
-DefaultMD.args = {
-  item: MOCK_ITEM,
+export const Default = Template.bind({});
+Default.args = {
+  item: MOCK_ITEM_CARD_WIDE,
   itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
   showFavourite: true,
 };
 
-DefaultMD.parameters = {
+Default.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
   },
 };
 
-export const DefaultCarMD = Template.bind({});
-DefaultCarMD.args = {
-  item: MOCK_CAR,
-  itemExtraInfo: MOCK_CAR_EXTRA_INFO,
-  showFavourite: true,
-};
-
-DefaultCarMD.parameters = {
-  viewport: {
-    defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
-  },
-};
-
-export const DefaultXS = Template.bind({});
-DefaultXS.args = {
-  item: MOCK_ITEM,
-  itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
-  showFavourite: true,
-};
-
-DefaultXS.parameters = {
-  viewport: {
-    defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
-  },
-};
-
-export const DefaultMDWithoutFavourite = Template.bind({});
-DefaultMDWithoutFavourite.args = {
-  item: MOCK_ITEM,
+export const WithoutFavourite = Template.bind({});
+WithoutFavourite.args = {
+  item: MOCK_ITEM_CARD_WIDE,
   itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
   showFavourite: false,
 };
 
-DefaultMDWithoutFavourite.parameters = {
+WithoutFavourite.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
   },
 };
 
-export const DefaultXSWithoutFavourite = Template.bind({});
-DefaultXSWithoutFavourite.args = {
-  item: MOCK_ITEM,
-  itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
-  showFavourite: false,
-};
-
-DefaultXSWithoutFavourite.parameters = {
-  viewport: {
-    defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
-  },
-};
-
-export const ReservedMD = Template.bind({});
-ReservedMD.args = {
-  item: MOCK_ITEM_RESERVED,
+export const Reserved = Template.bind({});
+Reserved.args = {
+  item: MOCK_ITEM_CARD_WIDE_RESERVED,
   itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
   showFavourite: true,
 };
-ReservedMD.parameters = {
+Reserved.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
   },
 };
 
-export const SoldXS = Template.bind({});
-SoldXS.args = {
-  item: MOCK_ITEM_SOLD,
+export const Sold = Template.bind({});
+Sold.args = {
+  item: MOCK_ITEM_CARD_WIDE_SOLD,
   itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
   showFavourite: true,
 };
-SoldXS.parameters = {
-  viewport: {
-    defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
-  },
-};
-
-export const BumpedMD = Template.bind({});
-BumpedMD.args = {
-  item: MOCK_ITEM_BUMPED,
-  itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
-  showFavourite: true,
-};
-BumpedMD.parameters = {
+Sold.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
   },
 };
 
-export const CountryBumpedXS = Template.bind({});
-CountryBumpedXS.args = {
-  item: MOCK_ITEM_COUNTRY_BUMPED,
+export const Bumped = Template.bind({});
+Bumped.args = {
+  item: MOCK_ITEM_CARD_WIDE_BUMPED,
   itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
   showFavourite: true,
 };
-CountryBumpedXS.parameters = {
-  viewport: {
-    defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
-  },
-};
-
-export const FavouritedMD = Template.bind({});
-FavouritedMD.args = {
-  item: MOCK_ITEM_FAVOURITE,
-  itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
-  showFavourite: true,
-};
-FavouritedMD.parameters = {
+Bumped.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
   },
 };
 
-export const WithoutImagesMD = Template.bind({});
-WithoutImagesMD.args = {
-  item: MOCK_ITEM_WITHOUT_IMAGES,
+export const CountryBumped = Template.bind({});
+CountryBumped.args = {
+  item: MOCK_ITEM_CARD_WIDE_COUNTRY_BUMPED,
   itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
   showFavourite: true,
 };
-WithoutImagesMD.parameters = {
+CountryBumped.parameters = {
   viewport: {
     defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
   },
 };
 
-export const WithoutImagesXS = Template.bind({});
-WithoutImagesXS.args = {
-  item: MOCK_ITEM_WITHOUT_IMAGES,
+export const Favourited = Template.bind({});
+Favourited.args = {
+  item: MOCK_ITEM_CARD_WIDE_FAVOURITE,
   itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
   showFavourite: true,
 };
-WithoutImagesXS.parameters = {
+Favourited.parameters = {
   viewport: {
-    defaultViewport: CUSTOM_VIEWPORT_NAME.XS,
+    defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
+  },
+};
+
+export const WithoutImages = Template.bind({});
+WithoutImages.args = {
+  item: MOCK_ITEM_CARD_WIDE_WITHOUT_IMAGES,
+  itemExtraInfo: MOCK_ITEM_EXTRA_INFO,
+  showFavourite: true,
+};
+WithoutImages.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.MD,
   },
 };

@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { HammerModule } from '@angular/platform-browser';
 import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
-import { ITEM_BUMP_FLAGS, ITEM_FLAGS } from '@fixtures/item.fixtures.spec';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { SlidesCarouselModule } from '../carousel-slides/carousel-slides.module';
 import { ItemFlagModule } from '../item-flag/item-flag.module';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '../item-flag/item-flag-constants';
 
 export default {
   title: 'Webapp/Public/Shared/Components/ItemImagesCarousel',
@@ -33,7 +33,7 @@ const Template: Story<ItemImagesCarouselComponent> = (args: ItemImagesCarouselCo
     providers: [HAMMER_PROVIDER, DeviceDetectorService],
   },
   template:
-    '<tsl-item-images-carousel [isActive]="isActive" [images]="images" [itemFlags]="itemFlags" [itemVisibilityFlags]="itemVisibilityFlags"></tsl-item-images-carousel>',
+    '<tsl-item-images-carousel [isExpired]="isExpired" [images]="images" [statusFlag]="statusFlag" [bumpedFlag]="bumpedFlag"></tsl-item-images-carousel>',
 });
 
 const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://localhost:6006/images/item-pc.jpg'];
@@ -41,55 +41,49 @@ const imagesURL = ['http://localhost:6006/images/item-camera.jpg', 'http://local
 export const Bumped = Template.bind({});
 Bumped.args = {
   images: imagesURL,
-  isActive: true,
-  itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true },
+  isExpired: false,
+  bumpedFlag: BUMPED_ITEM_FLAG_TYPES.BUMPED,
 };
 
 export const CountryBumped = Template.bind({});
 CountryBumped.args = {
   images: imagesURL,
-  isActive: true,
-  itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true, country_bumped: true },
+  isExpired: false,
+  bumpedFlag: BUMPED_ITEM_FLAG_TYPES.COUNTRY_BUMP,
 };
 
 export const Sold = Template.bind({});
 Sold.args = {
   images: imagesURL,
-  isActive: true,
-  itemFlags: { ...ITEM_FLAGS, sold: true },
+  isExpired: false,
+  statusFlag: STATUS_ITEM_FLAG_TYPES.SOLD,
 };
 
 export const Reserved = Template.bind({});
 Reserved.args = {
   images: imagesURL,
-  isActive: true,
-  itemFlags: { ...ITEM_FLAGS, reserved: true },
+  isExpired: false,
+  statusFlag: STATUS_ITEM_FLAG_TYPES.RESERVED,
 };
 
 export const Expired = Template.bind({});
 Expired.args = {
   images: imagesURL,
-  isActive: true,
-  itemFlags: { ...ITEM_FLAGS, expired: true },
+  isExpired: true,
+  statusFlag: STATUS_ITEM_FLAG_TYPES.EXPIRED,
 };
 
 export const Inactive = Template.bind({});
 Inactive.args = {
   images: imagesURL,
-  isActive: true,
-  itemFlags: { ...ITEM_FLAGS, onhold: true },
+  isExpired: false,
+  statusFlag: STATUS_ITEM_FLAG_TYPES.INACTIVE,
 };
 
 export const TwoFlags = Template.bind({});
 TwoFlags.args = {
   images: imagesURL,
-  isActive: true,
-  itemFlags: { ...ITEM_FLAGS, reserved: true },
-  itemVisibilityFlags: { ...ITEM_BUMP_FLAGS, bumped: true },
-};
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-  images: imagesURL,
-  isActive: false,
+  isExpired: false,
+  statusFlag: STATUS_ITEM_FLAG_TYPES.RESERVED,
+  bumpedFlag: BUMPED_ITEM_FLAG_TYPES.BUMPED,
 };
