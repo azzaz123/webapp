@@ -408,6 +408,7 @@ export class ItemService {
               const item: Item = this.mapRecordData(i);
               item.views = i.content.views;
               item.favorites = i.content.favorites;
+              item.conversations = i.content.conversations;
               return item;
             });
           }
