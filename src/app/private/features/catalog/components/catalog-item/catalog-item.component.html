@@ -34,18 +34,18 @@
           </div>
 
           <div class="col d-none d-md-flex flex-column item-info clickable" [ngClass]="{'clickable--onHold': item.flags.onhold }" (click)="openItem()">
-            <div i18n>Published</div>
+            <div i18n="@@web_catalog_components_item_103">Published</div>
             <div class="subtitle"> {{ item.publishedDate | date: 'dd/MM/yyyy'}}</div>
           </div>
 
           <div class="col d-none d-xl-flex flex-column item-info clickable" (click)="openItem()">
             <ng-container *ngIf="!item.flags.onhold; else onHoldDate">
-              <div i18n>Modified</div>
+              <div i18n="@@web_catalog_components_item_104">Modified</div>
               <div class="subtitle"> {{ item.modifiedDate | date: 'dd/MM/yyyy'}}</div>
             </ng-container>
             <ng-template #onHoldDate>
               <div>
-                <span class="subtitle subtitle--onHold" i18n>                Inactive
+                <span class="subtitle subtitle--onHold" i18n="@@web_catalog_components_item_105">                Inactive
               </span>
             </div>
             </ng-template>
@@ -53,7 +53,7 @@
 
           <div class="col-1 d-none d-md-block item-info clickable" [ngClass]="{'clickable--onHold': item.flags.onhold }" *ngIf="showListingFee() || item.listingFeeExpiringDate"
             (click)="openItem()">
-            <div *ngIf="showListingFee()" i18n>Active</div>
+            <div *ngIf="showListingFee()" i18n="@@web_catalog_components_item_106">Active</div>
             <tsl-countdown *ngIf="item.listingFeeExpiringDate" class="subtitle"
               [ngClass]="{'few-days': listingFeeFewDays()}" [value]="item.listingFeeExpiringDate" format="listingFee">
             </tsl-countdown>
@@ -62,7 +62,7 @@
           <div class="col-3 ml-auto d-none d-md-flex align-items-center justify-content-center" *ngIf="item.flags.onhold">
           <div class="feature-action">
             <tsl-button className="btn-primary btn-activation" (click)="activateItem(item)" *ngIf="!selectMode">
-              <span i18n>Activate</span>
+              <span i18n="@@web_catalog_components_item_107">Activate</span>
             </tsl-button>
           </div>
         </div>
@@ -73,7 +73,7 @@
               <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate"
                 [hidden]="selectMode">
                 <tsl-svg-icon src="/assets/icons/feature.svg"></tsl-svg-icon>
-                <span i18n>Feature</span>
+                <span i18n="@@web_catalog_components_item_108">Feature</span>
               </tsl-button>
               <button class="btn-featured" *ngIf="item.bumpExpiringDate" [hidden]="selectMode">
                 <tsl-date-countdown [dateEndTimestamp]="item.bumpExpiringDate"></tsl-date-countdown>
@@ -102,7 +102,7 @@
           <div class="col ml-auto d-flex align-items-center justify-content-center" *ngIf="item.flags.expired">
             <button class="btn-reactivate" (click)="reactivate(item)" [hidden]="selectMode">
               <tsl-svg-icon src="/assets/icons/clock.svg"></tsl-svg-icon>
-              <span i18n>Reactivate</span>
+              <span i18n="@@web_catalog_components_item_109">Reactivate</span>
             </button>
           </div>
 

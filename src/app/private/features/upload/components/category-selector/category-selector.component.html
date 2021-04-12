@@ -1,12 +1,12 @@
 <div class="box" [ngbPopover]="coachmarkCategory" triggers="mouseenter:mouseleave" [autoClose]="false">
   <div class="row">
     <div class="col">
-      <h2 i18n>What will you list?</h2>
+      <h2 i18n="@@web_upload_components_category_selector_355">What will you list?</h2>
     </div>
   </div>
   <div class="row">
     <div class="col">
-      <p i18n>Set the product type</p>
+      <p i18n="@@web_upload_components_category_selector_356">Set the product type</p>
     </div>
   </div>
   <div class="row">
@@ -15,35 +15,35 @@
         <div class="square">
           <tsl-svg-icon src="/assets/icons/herocat-consumer-goods.svg"></tsl-svg-icon>
         </div>
-        <span i18n>Something I don't use anymore</span>
+        <span i18n="@@web_upload_components_category_selector_357">Something I don't use anymore</span>
       </a>
       <a class="type mb-3 mb-md-0" (click)="setCategory(100)" [ngClass]="{active: category === 100}">
         <div class="square">
           <tsl-svg-icon src="/assets/icons/herocat-cars.svg"></tsl-svg-icon>
         </div>
-        <span i18n>A car</span>
+        <span i18n="@@web_upload_components_category_selector_358">A car</span>
       </a>
       <a class="type" (click)="setCategory(13000)" [ngClass]="{active: category === 13000}">
         <div class="square">
           <tsl-svg-icon src="/assets/icons/herocat-real-estate.svg"></tsl-svg-icon>
         </div>
-        <span i18n>A property</span>
+        <span i18n="@@web_upload_components_category_selector_359">A property</span>
       </a>
       <a class="type" (click)="setCategory(13200)" [ngClass]="{active: category === 13200}">
         <div class="square">
           <tsl-svg-icon src="/assets/icons/herocat-services.svg"></tsl-svg-icon>
         </div>
-        <span i18n>My services</span>
+        <span i18n="@@web_upload_components_category_selector_360">My services</span>
       </a>
       <a class="type" (click)="setCategory(21000)" [ngClass]="{active: category === 21000}">
         <div class="square">
           <tsl-svg-icon src="/assets/icons/herocat-jobs.svg"></tsl-svg-icon>
         </div>
-        <span i18n>Job</span>
+        <span i18n="@@web_upload_components_category_selector_361">Job</span>
       </a>
     </div>
   </div>
   <ng-template #coachmarkCategory>
-    <div i18n>It's important you select the product type or service to be reached by the other users.</div>
+    <div i18n="@@web_upload_components_category_selector_362">It's important you select the product type or service to be reached by the other users.</div>
   </ng-template>
 </div>

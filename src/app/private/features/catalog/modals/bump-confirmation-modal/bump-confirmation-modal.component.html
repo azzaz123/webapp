@@ -12,25 +12,25 @@
 
     <div *ngIf="!creditUsed">
       <h1 class="modal-title" i18n>Congratulations</h1>
-      <p class="modal-text" i18n>Your item(s) have been featured and you can see them in the top position.</p>
+      <p class="modal-text" i18n="@@web_catalog_modals_bump_confirmation_modal_115">Your item(s) have been featured and you can see them in the top position.</p>
       <tsl-button className="btn btn-primary btn-block" (click)="activeModal.close()" i18n>Start selling</tsl-button>
     </div>
 
     <div *ngIf="creditUsed">
-      <h1 class="modal-title" i18n>Featured listings!</h1>
-      <p class="modal-text" i18n>All sorted, now your listings are more visibile to everyone. So let's get selling!</p>
+      <h1 class="modal-title" i18n="@@web_catalog_modals_bump_confirmation_modal_116">Featured listings!</h1>
+      <p class="modal-text" i18n="@@web_catalog_modals_bump_confirmation_modal_117">All sorted, now your listings are more visibile to everyone. So let's get selling!</p>
       <p *ngIf="creditUsed" class="modal-text credit-info">
       <b>
-        <span i18n>You have used</span>
+        <span i18n="@@web_catalog_modals_bump_confirmation_modal_118">You have used</span>
         <span *ngIf="withCoins"> {{spent | number}} wallacoins</span>
         <span *ngIf="!withCoins"> {{spent | customCurrency}}</span>
       </b><br />
       <b>
-        <span *ngIf="withCoins" i18n>You have {{creditInfo?.credit | number}} wallacoins left</span>
-        <span *ngIf="!withCoins" i18n>You have {{creditInfo?.credit | customCurrency}} credit</span>
+        <span *ngIf="withCoins" i18n="@@web_catalog_modals_bump_confirmation_modal_119">You have {{creditInfo?.credit | number}} wallacoins left</span>
+        <span *ngIf="!withCoins" i18n="@@web_catalog_modals_bump_confirmation_modal_120">You have {{creditInfo?.credit | customCurrency}} credit</span>
       </b>
       </p>
-      <a class="link" (click)="activeModal.close()" i18n>Go to my catalogue</a>
+      <a class="link" (click)="activeModal.close()" i18n="@@web_catalog_modals_bump_confirmation_modal_121">Go to my catalogue</a>
     </div>
 
   </div>
@@ -41,31 +41,31 @@
 
   <div *ngIf="code === '101'">
     <h1 class="modal-title fail" i18n>Something happened...</h1>
-    <p class="modal-text" i18n>Your item(s) have not been featured because something went wrong with your credit card.<br />Please check and try again.</p>
-    <tsl-button (click)="activeModal.close()" i18n>Let’s go</tsl-button>
+    <p class="modal-text" i18n="@@web_catalog_modals_bump_confirmation_modal_122">Your item(s) have not been featured because something went wrong with your credit card.<br />Please check and try again.</p>
+    <tsl-button (click)="activeModal.close()" i18n="@@web_catalog_modals_bump_confirmation_modal_123">Let’s go</tsl-button>
   </div>
 
   <div *ngIf="code === '102'">
-    <h1 class="modal-title fail" i18n>Hmmm…</h1>
-    <p class="modal-text" i18n>Your credit card seems suspicious. ¿Why not trying with another account?</p>
-    <tsl-button (click)="activeModal.close()" i18n>C'mon</tsl-button>
+    <h1 class="modal-title fail" i18n="@@web_catalog_modals_bump_confirmation_modal_124">Hmmm…</h1>
+    <p class="modal-text" i18n="@@web_catalog_modals_bump_confirmation_modal_125">Your credit card seems suspicious. ¿Why not trying with another account?</p>
+    <tsl-button (click)="activeModal.close()" i18n="@@web_catalog_modals_bump_confirmation_modal_126">C'mon</tsl-button>
   </div>
 
   <div *ngIf="code === '191'">
-    <h1 class="modal-title fail" i18n>There has been a mistake</h1>
-    <p class="modal-text" i18n>Your credit card has an invalid expiration date. Please check and try again.</p>
-    <tsl-button (click)="activeModal.close()" i18n>Ok</tsl-button>
+    <h1 class="modal-title fail" i18n="@@web_catalog_modals_bump_confirmation_modal_127">There has been a mistake</h1>
+    <p class="modal-text" i18n="@@web_catalog_modals_bump_confirmation_modal_128">Your credit card has an invalid expiration date. Please check and try again.</p>
+    <tsl-button (click)="activeModal.close()" i18n="@@web_catalog_modals_bump_confirmation_modal_129">Ok</tsl-button>
   </div>
 
   <div *ngIf="code === '909'">
-    <h1 class="modal-title fail" i18n>TPV... what?</h1>
-    <p class="modal-text" i18n>There has been an unexpected error in the paying system. Why not trying again later?</p>
+    <h1 class="modal-title fail" i18n="@@web_catalog_modals_bump_confirmation_modal_130">TPV... what?</h1>
+    <p class="modal-text" i18n="@@web_catalog_modals_bump_confirmation_modal_131">There has been an unexpected error in the paying system. Why not trying again later?</p>
     <tsl-button (click)="activeModal.close()" i18n>Ok</tsl-button>
   </div>
 
   <div *ngIf="code === '-1'">
-    <h1 class="modal-title fail" i18n>Oops!</h1>
-    <p class="modal-text" i18n>We are trying to figure out what happened. Try again later.</p>
+    <h1 class="modal-title fail" i18n="@@web_catalog_modals_bump_confirmation_modal_132">Oops!</h1>
+    <p class="modal-text" i18n="@@web_catalog_modals_bump_confirmation_modal_133">We are trying to figure out what happened. Try again later.</p>
     <tsl-button (click)="activeModal.close()" i18n>Fine!</tsl-button>
   </div>
 

@@ -11,7 +11,7 @@
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_dashboard.svg"></tsl-svg-icon>
   </div>
-  <h2 i18n>Dashboard</h2>
+  <h2 i18n="@@web_components_sidebar_447">Dashboard</h2>
 </a>
 
 <a class="sidebar-section" id="qa-sidebar-catalog" [routerLink]="['/catalog/list']" (click)="trackClickToCatalog()" [ngClass]="{active: isProducts}">
@@ -19,7 +19,7 @@
     <tsl-svg-icon src="/assets/icons/navigation_catalog.svg"></tsl-svg-icon>
   </div>
   <h2 *ngxPermissionsExcept="['isProfessional']" i18n>Products</h2>
-  <h2 *ngxPermissionsOnly="['isProfessional']" i18n>Catalog</h2>
+  <h2 *ngxPermissionsOnly="['isProfessional']" i18n="@@web_components_sidebar_448">Catalog</h2>
 </a>
 
 <a class="sidebar-section" id="qa-sidebar-messages" [routerLink]="['/chat']" routerLinkActive="active">
@@ -41,7 +41,7 @@
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_reviews.svg"></tsl-svg-icon>
   </div>
-  <h2 i18n>Reviews</h2>
+  <h2 i18n="@@web_components_sidebar_449">Reviews</h2>
 </a>
 
 <a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-phones" class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active">
@@ -55,7 +55,7 @@
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_help.svg"></tsl-svg-icon>
   </div>
-  <h2 i18n>Help</h2>
+  <h2 i18n="@@web_components_sidebar_450">Help</h2>
 </a>
 
 <a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-stats" class="sidebar-section" [routerLink]="['/stats']" routerLinkActive="active">

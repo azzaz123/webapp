@@ -18,28 +18,28 @@
           <hr />
         </div>
         <div [hidden]="subscription.subscribed_from" class="Subscriptions__category-info">
-            <p i18n *ngIf="subscription.current_limit">Limit without subscription: {{subscription.current_limit}}</p>
-            <p i18n *ngIf="!subscription.current_limit">No limit</p>
+            <p i18n="@@web_profile_pages_subscription_323" *ngIf="subscription.current_limit">Limit without subscription: {{subscription.current_limit}}</p>
+            <p i18n="@@web_profile_pages_subscription_324" *ngIf="!subscription.current_limit">No limit</p>
             <tsl-subscription-price-discount [subscription]="subscription"></tsl-subscription-price-discount>
         </div>
         <div *ngIf="subscription.subscribed_from" class="Subscriptions__category-info">
-            <p i18n *ngIf="subscription.selected_tier.limit">{{subscription.selected_tier.limit}} products</p>
+            <p i18n="@@web_profile_pages_subscription_325" *ngIf="subscription.selected_tier.limit">{{subscription.selected_tier.limit}} products</p>
             <p i18n *ngIf="!subscription.selected_tier.limit">No limit</p>
-            <p class="Subscriptions__category-info--price" i18n>              {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
+            <p class="Subscriptions__category-info--price" i18n="@@web_profile_pages_subscription_326">              {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
             </p>
             <p class="Subscriptions__category-info--edit" *ngIf="!subscription.subscribed_until">
               <span *ngIf="showEdit(subscription)" i18n>Edit</span>
               <span *ngIf="showCancel(subscription)" i18n>Cancel</span>
-              <span *ngIf="showManageInApp(subscription)" i18n>Manage in app</span>
-              <span *ngIf="showUnsubscribeFirst(subscription)" i18n>Unsubscribe first from app for your free month</span>
+              <span *ngIf="showManageInApp(subscription)" i18n="@@web_profile_pages_subscription_327">Manage in app</span>
+              <span *ngIf="showUnsubscribeFirst(subscription)" i18n="@@web_profile_pages_subscription_328">Unsubscribe first from app for your free month</span>
             </p>
         </div>
         <tsl-button className="btn-primary" *ngIf="!subscription.subscribed_from">{{getSubscriptionTextButton(subscription)}}</tsl-button>
-        <span *ngIf="subscription.subscribed_from" [hidden]="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n>          Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}
+        <span *ngIf="subscription.subscribed_from" [hidden]="subscription.subscribed_until" class="Subscriptions__subscribed-from" i18n="@@web_profile_pages_subscription_329">          Subscribed from {{subscription.subscribed_from | date:'dd/MM/yy' }}
         </span>
-        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-until" i18n>          Subscription ends on {{subscription.subscribed_until | date:'dd/MM/yy' }}
+        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-until" i18n="@@web_profile_pages_subscription_330">          Subscription ends on {{subscription.subscribed_until | date:'dd/MM/yy' }}
         </span>
-        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-continue" i18n>          Stay subscribed
+        <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-continue" i18n="@@web_profile_pages_subscription_331">          Stay subscribed
         </span>
       </div>
     </div>

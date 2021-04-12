@@ -4,7 +4,7 @@
     <tsl-header>
       <div class="col-9 col-md-11">
         <div class="header-row">
-          <h1 class="header-title" i18n>Your favorites</h1>
+          <h1 class="header-title" i18n="@@web_favorites_pages_201">Your favorites</h1>
         </div>
         <div class="header-row">
           <h4 class="header-subtitle" *ngIf="selectedStatus === 'products'" i18n="@@WallapopProductsLikeMost">These are the Wallapop products that you like the most</h4>
@@ -14,8 +14,8 @@
       <div class="col-3 col-md-1 header-numbers">
         <p class="header-numbers-top">{{numberOfFavorites}}</p>
         <p class="header-numbers-bottom">
-          <span *ngIf="numberOfFavorites > 1 || numberOfFavorites === 0" i18n>favorites</span>
-          <span *ngIf="numberOfFavorites === 1" i18n>favorite</span>
+          <span *ngIf="numberOfFavorites > 1 || numberOfFavorites === 0" i18n="@@web_favorites_pages_202">favorites</span>
+          <span *ngIf="numberOfFavorites === 1" i18n="@@web_favorites_pages_203">favorite</span>
         </p>
       </div>
     </tsl-header>
@@ -23,9 +23,9 @@
       <div class="col-12">
         <nav class="nav filters-nav">
           <a (click)="filterByStatus('products')" [ngClass]="{active: selectedStatus === 'products'}" class="nav-link"
-            i18n>Products</a>
+            i18n="@@web_favorites_pages_204">Products</a>
           <a (click)="filterByStatus('profiles')" [ngClass]="{active: selectedStatus === 'profiles'}" class="nav-link"
-            i18n="tab|plural">Profiles</a>
+            i18n="@@web_favorites_pages_205"="tab|plural">Profiles</a>
         </nav>
       </div>
     </div>
@@ -34,10 +34,10 @@
         *ngIf="!items.length && !loading && selectedStatus === 'products' || !profiles.length && !loading && selectedStatus === 'profiles'">
         <img src="/assets/images/placeholders/favorites-empty-state.svg" width="938" height="851" class="d-none d-md-block">
         <img src="/assets/images/placeholders/favorites-empty-state-mobile.svg" width="304" height="547" class="d-block d-md-none">
-        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'products'" i18n>In this list you can see all
+        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'products'" i18n="@@web_favorites_pages_206">In this list you can see all
           the products you
           saved as favourite</div>
-        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'profiles'" i18n>In this list you can see all
+        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'profiles'" i18n="@@web_favorites_pages_207">In this list you can see all
           the profiles you
           saved as favourite</div>
       </div>

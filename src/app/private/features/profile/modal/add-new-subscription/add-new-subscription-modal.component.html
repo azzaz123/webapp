@@ -77,7 +77,7 @@
           </div>
           <div>
             <div class="form-group">
-              <tsl-dropdown class="form-control" i18n-placeholder placeholder="Do you need an invoice?" (selected)="onInvoiceOptionSelect($event)"
+              <tsl-dropdown class="form-control" i18n-placeholder="@@web_profile_modal_add_new_subscription_216" placeholder="Do you need an invoice?" (selected)="onInvoiceOptionSelect($event)"
               id="invoiceOptions" [options]="invoiceOptions" [ngModel]="selectedInvoiceOption" noFilter="10">
               </tsl-dropdown>
             </div>
@@ -140,35 +140,35 @@
               <p class="AddNewSubscription__listing-limit-steps" i18n="@@step4of4">Step <span class="bold">4</span> of <span
                   class="bold">4</span></p>
             </div>
-            <div class="AddNewSubscription__listing-limit-title" i18n>Add payment details</div>
+            <div class="AddNewSubscription__listing-limit-title" i18n="@@web_profile_modal_add_new_subscription_217">Add payment details</div>
           </div>
           <div class="row AddNewSubscription__listing-limit-payment">
             <div
               class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--left">
               <div class="AddNewSubscription__listing-limit-quantity--selected">
-                <span *ngIf="selectedTier.limit" i18n>{{selectedTier.limit}} {{subscription.category_name}} Plan</span>
-                <span *ngIf="!selectedTier.limit" i18n>Unlimited {{subscription.category_name}} Plan</span>
+                <span *ngIf="selectedTier.limit" i18n="@@web_profile_modal_add_new_subscription_218">{{selectedTier.limit}} {{subscription.category_name}} Plan</span>
+                <span *ngIf="!selectedTier.limit" i18n="@@web_profile_modal_add_new_subscription_219">Unlimited {{subscription.category_name}} Plan</span>
               </div>
             </div>
             <div
               class="col-6 AddNewSubscription__listing-limit-selection AddNewSubscription__listing-limit-selection--right">
               <span *ngIf="!isDiscountedTier(selectedTier) && !isFreeTier(selectedTier) && !hasTrial(subscription)"
               class="AddNewSubscription__listing-limit-price--selected"
-                i18n>{{selectedTier.price}}{{selectedTier.currency}}/month</span>
+                i18n="@@web_profile_modal_add_new_subscription_220">{{selectedTier.price}}{{selectedTier.currency}}/month</span>
               <div *ngIf="isDiscountedTier(selectedTier) && !isFreeTier(selectedTier) && !hasTrial(subscription)"
               class="AddNewSubscription__listing-limit-price--selected"
-                i18n>{{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}/month</div>
+                i18n="@@web_profile_modal_add_new_subscription_221">{{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}/month</div>
               <div class="AddNewSubscription__free-months" *ngIf="isFreeTier(selectedTier) && !hasTrial(subscription)">
-                <b *ngIf="selectedTier.discount_available?.months === 1" i18n>One month free</b>
-                <b *ngIf="selectedTier.discount_available?.months > 1" i18n>{{selectedTier.discount_available.months}} months free</b>
+                <b *ngIf="selectedTier.discount_available?.months === 1" i18n="@@web_profile_modal_add_new_subscription_222">One month free</b>
+                <b *ngIf="selectedTier.discount_available?.months > 1" i18n="@@web_profile_modal_add_new_subscription_223">{{selectedTier.discount_available.months}} months free</b>
               </div>
               <div *ngIf="hasTrial(subscription)" class="Subscriptions__category-info-trial">
                 <div i18n="@@subscriptionNewModalUntilDate">{{0 | customCurrency}} until {{subscription.trial_days | dateUntilDay}}</div>
               </div>
               <div *ngIf="isDiscountedTier(selectedTier) || isFreeTier(selectedTier) || hasTrial(subscription)"
-                class="AddNewSubscription__price-after-discount" i18n>Then {{selectedTier.price}}{{selectedTier.currency}}/month</div>
+                class="AddNewSubscription__price-after-discount" i18n="@@web_profile_modal_add_new_subscription_224">Then {{selectedTier.price}}{{selectedTier.currency}}/month</div>
               <div *ngIf="subscription.tiers.length !== 1" class="AddNewSubscription__listing-limit-payment-edit"
-                (click)="carousel.select('step-1')" i18n>Change</div>
+                (click)="carousel.select('step-1')" i18n="@@web_profile_modal_add_new_subscription_225">Change</div>
             </div>
           </div>
           <div>
@@ -178,7 +178,7 @@
                 <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard"
                   (onSelectExistingCard)="setSavedCard($event)" (hasCard)="hasCard($event)"></tsl-stripe-card-selection>
               </div>
-              <div class="AddNewSubscription__payment-add-card" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add
+              <div class="AddNewSubscription__payment-add-card" (click)="addNewCard()" *ngIf="savedCard" i18n="@@web_profile_modal_add_new_subscription_226">+ Add
                 another credit card</div>
               <tsl-stripe-card-element *ngIf="showCard" [newLoading]="loading" [disabled]="!!paymentError"
                 [type]="'subscription'" [listingLimit]="selectedTier" [spaceBetween]="true" [action]="action"
@@ -187,15 +187,15 @@
                 (onStripeCardCreate)="addSubscription($event); trackClickPay(true);" (stripeCard)="setCardInfo($event)">
               </tsl-stripe-card-element>
 
-              <div [hidden]="!savedCard" class="AddNewSubscription__legal-info" i18n>                By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
+              <div [hidden]="!savedCard" class="AddNewSubscription__legal-info" i18n="@@web_profile_modal_add_new_subscription_227">                By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
                 and the <a href="{{privacyPolicyURL}}" target="_blank">privacy policy</a> of Wallapop S.L. and Stripe Ltd
             </div>
               <tsl-button [hidden]="!savedCard" [disabled]="!selectedCard || loading" [loading]="loading"
                 (click)="addSubscriptionFromSavedCard(); trackClickPay(false);" id="qa-checkout-subscription"
                 className="btn-primary btn-medium stripe">
                   <div *ngIf="!hasTrial(subscription)">
-                    <span *ngIf="!isDiscountedTier(selectedTier)" i18n>Pay {{selectedTier.price}}{{selectedTier.currency}}</span>
-                    <span *ngIf="isDiscountedTier(selectedTier)" i18n>Pay {{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}</span>
+                    <span *ngIf="!isDiscountedTier(selectedTier)" i18n="@@web_profile_modal_add_new_subscription_228">Pay {{selectedTier.price}}{{selectedTier.currency}}</span>
+                    <span *ngIf="isDiscountedTier(selectedTier)" i18n="@@web_profile_modal_add_new_subscription_229">Pay {{selectedTier.discount_available.discounted_price}}{{selectedTier.currency}}</span>
                   </div>
                   <div *ngIf="hasTrial(subscription)">
                     <span i18n="@@AddNewModalSubscribeNow">Try the {{subscription?.trial_days}}-day trial for free!</span>

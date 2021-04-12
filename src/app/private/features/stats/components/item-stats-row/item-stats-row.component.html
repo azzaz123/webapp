@@ -34,11 +34,11 @@
     <div class="graphs-container" *ngIf="statsData">
       <div class="charts-box">
         <div class="header">
-          <h2 i18n>Weekly stats</h2>
+          <h2 i18n="@@web_stats_components_item_row_337">Weekly stats</h2>
           <div class="legend">
             <ul>
-              <li class="views" i18n>Views</li>
-              <li class="chats" i18n>Chats</li>
+              <li class="views" i18n="@@web_stats_components_item_row_338">Views</li>
+              <li class="chats" i18n="@@web_stats_components_item_row_339">Chats</li>
               <li class="favorites" i18n>Favorites</li>
               <li class="featured" i18n>Featured</li>
             </ul>
@@ -47,27 +47,27 @@
         <div class="charts">
           <tsl-item-stats-graph [item]="item" [statsData]="statsData" *ngIf="!noData"></tsl-item-stats-graph>
           <tsl-item-stats-graph [item]="item" [statsData]="statsData" *ngIf="!noData" type="favs"></tsl-item-stats-graph>
-          <p class="no-data" *ngIf="noData" i18n>No data available for this product yet</p>
+          <p class="no-data" *ngIf="noData" i18n="@@web_stats_components_item_row_340">No data available for this product yet</p>
         </div>
       </div>
     </div>
     <div class="graphs-container graph-info" *ngIf="!item.featured && !item.flags.expired && !item.flags.onhold">
-      <h2 i18n>Get your listing in shape</h2>
-      <p class="note" i18n>Improve the stats of your listing. The more visits you get, the more you sell!</p>
-      <tsl-button className="btn-primary btn-block" *ngIf="price" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n>Feature it now from {{price | customCurrency}}</tsl-button>
+      <h2 i18n="@@web_stats_components_item_row_341">Get your listing in shape</h2>
+      <p class="note" i18n="@@web_stats_components_item_row_342">Improve the stats of your listing. The more visits you get, the more you sell!</p>
+      <tsl-button className="btn-primary btn-block" *ngIf="price" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n="@@web_stats_components_item_row_343">Feature it now from {{price | customCurrency}}</tsl-button>
     </div>
     <div class="graphs-container graph-info reactivate" *ngIf="item.flags.expired">
-      <h2 i18n>Reactivate your product</h2>
-      <p class="note" i18n>Reactivate your product to see your stats and so that other users can contact you.</p>
+      <h2 i18n="@@web_stats_components_item_row_344">Reactivate your product</h2>
+      <p class="note" i18n="@@web_stats_components_item_row_345">Reactivate your product to see your stats and so that other users can contact you.</p>
     </div>
     <div class="graphs-container graph-info reactivate" *ngIf="item.flags.onhold">
-      <h2 i18n>Publish your product</h2>
-      <p class="note" i18n>Publish your product to see your stats and so that other users can contact you.</p>
+      <h2 i18n="@@web_stats_components_item_row_346">Publish your product</h2>
+      <p class="note" i18n="@@web_stats_components_item_row_347">Publish your product to see your stats and so that other users can contact you.</p>
     </div>
     <div class="graphs-container graph-info" *ngIf="item.featured">
-      <h2 i18n>This product is Featured</h2>
-      <p class="note" i18n>You will get more views, chats and more interested people.</p>
-      <p class="bump-note" i18n>Your feature ends on {{item.bumpExpiringDate | date:momentConfig}}</p>
+      <h2 i18n="@@web_stats_components_item_row_348">This product is Featured</h2>
+      <p class="note" i18n="@@web_stats_components_item_row_349">You will get more views, chats and more interested people.</p>
+      <p class="bump-note" i18n="@@web_stats_components_item_row_350">Your feature ends on {{item.bumpExpiringDate | date:momentConfig}}</p>
     </div>
   </div>
 </div>

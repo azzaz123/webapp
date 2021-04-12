@@ -1,4 +1,4 @@
-<h1 i18n>My features</h1>
+<h1 i18n="@@web_cart_451">My features</h1>
 <div class="clean-cart" [hidden]="!cart?.total">
   <a (click)="clean()">
     <span i18n>Delete list</span>
@@ -17,8 +17,8 @@
             <div class="type">
               <span [ngSwitch]="type" class="bump-type">
                 <ng-container *ngSwitchCase="'zonebump'">
-                  <ng-container *ngIf="!provincialBump" i18n>Local bump</ng-container>
-                  <ng-container *ngIf="provincialBump" i18n>Provincial bump</ng-container>
+                  <ng-container *ngIf="!provincialBump" i18n="@@web_cart_452">Local bump</ng-container>
+                  <ng-container *ngIf="provincialBump" i18n="@@web_cart_453">Provincial bump</ng-container>
                 </ng-container>
                 <ng-container *ngSwitchCase="'citybump'" i18n>City bump</ng-container>
                 <ng-container *ngSwitchCase="'countrybump'" i18n>Country bump</ng-container>
@@ -39,8 +39,8 @@
                 <div class="type">
                   <span [ngSwitch]="type">
                     <ng-container *ngSwitchCase="'zonebump'">
-                      <ng-container *ngIf="!provincialBump" i18n>Local</ng-container>
-                      <ng-container *ngIf="provincialBump" i18n>Provincial</ng-container>
+                      <ng-container *ngIf="!provincialBump" i18n="@@web_cart_454">Local</ng-container>
+                      <ng-container *ngIf="provincialBump" i18n="@@web_cart_455">Provincial</ng-container>
                     </ng-container>
                     <ng-container *ngSwitchCase="'citybump'" i18n>City</ng-container>
                     <ng-container *ngSwitchCase="'countrybump'" i18n>Country</ng-container>

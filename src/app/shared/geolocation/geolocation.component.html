@@ -6,7 +6,7 @@
 </ng-template>
 <div class="header-location" #headerLocation>
     <tsl-svg-icon src="/assets/icons/geo.svg" class="topbar-icon" [class.active]="focus"></tsl-svg-icon>
-    <input id="pac-input-header" #pacInputHeader class="controls" type="text" placeholder="Where?" i18n-placeholder [(ngModel)]="model" [ngbTypeahead]="search"
+    <input id="pac-input-header" #pacInputHeader class="controls" type="text" placeholder="Where?" i18n-placeholder="@@web_geolocation_497" [(ngModel)]="model" [ngbTypeahead]="search"
            [inputFormatter]="formatter" [resultTemplate]="locations" (selectItem)="selectItem($event)" (focus)="focus=true"
            (blur)="focus=false" [class.active]="focus" />
 </div>

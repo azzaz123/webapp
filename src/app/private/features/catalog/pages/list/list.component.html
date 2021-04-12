@@ -16,11 +16,11 @@
                 <tsl-pro-badge></tsl-pro-badge>
               </div>
               <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
-              <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n>Edit</button>
-              <button (click)="logout()" class="logout edit-profile-btn" i18n>Logout</button>
+              <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n="@@web_catalog_pages_list_147">Edit</button>
+              <button (click)="logout()" class="logout edit-profile-btn" i18n="@@web_catalog_pages_list_148">Logout</button>
             </div>
             <div class="d-none d-md-flex align-items-center">
-              <div class="List__title" i18n>Your products</div>
+              <div class="List__title" i18n="@@web_catalog_pages_list_149">Your products</div>
               <tsl-pro-badge></tsl-pro-badge>
             </div>
           </h1>
@@ -41,8 +41,8 @@
           <span *ngIf="!loading">{{numberOfProducts}}</span>
         </p>
         <p class="header-numbers-bottom d-none d-md-block">
-          <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
-          <span *ngIf="numberOfProducts === 1" i18n>product</span>
+          <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n="@@web_catalog_pages_list_150">products</span>
+          <span *ngIf="numberOfProducts === 1" i18n="@@web_catalog_pages_list_151">product</span>
         </p>
         <a class="d-flex justify-content-end d-md-none" [routerLink]="['/profile/info']">
           <tsl-user-avatar [user]="user" size="80"></tsl-user-avatar>

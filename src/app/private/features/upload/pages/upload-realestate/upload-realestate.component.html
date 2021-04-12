@@ -3,7 +3,7 @@
   <div class="box">
     <div class="row">
       <div class="col-12">
-        <h2 i18n>Information about your property</h2>
+        <h2 i18n="@@web_upload_pages_realestate_424">Information about your property</h2>
       </div>
     </div>
     <div class="row">
@@ -11,7 +11,7 @@
         triggers="mouseenter:mouseleave">
         <div class="row">
           <div class="col-12">
-            <h3 class="selector-title" i18n>Rent or sale?</h3>
+            <h3 class="selector-title" i18n="@@web_upload_pages_realestate_425">Rent or sale?</h3>
           </div>
         </div>
         <div ngbRadioGroup class="row" name="radioBasic" formControlName="operation">
@@ -30,7 +30,7 @@
           </div>
         </div>
         <ng-template #coachmarkOperation>
-          <div i18n>Is your property for sale or for rent?</div>
+          <div i18n="@@web_upload_pages_realestate_426">Is your property for sale or for rent?</div>
         </ng-template>
       </div>
     </div>
@@ -39,7 +39,7 @@
         triggers="mouseenter:mouseleave">
         <div class="row">
           <div class="col">
-            <h3 class="selector-title" i18n>Type of space</h3>
+            <h3 class="selector-title" i18n="@@web_upload_pages_realestate_427">Type of space</h3>
           </div>
         </div>
         <div ngbRadioGroup class="row" name="radioBasic" formControlName="type">
@@ -58,7 +58,7 @@
           </div>
         </div>
         <ng-template #coachmarkType>
-          <div i18n>What kind of space is it?</div>
+          <div i18n="@@web_upload_pages_realestate_428">What kind of space is it?</div>
         </ng-template>
       </div>
     </div>
@@ -79,20 +79,20 @@
       </div>
       <div class="col-6 col-md-3">
         <div class="form-group">
-          <label for="surface" i18n>Area m2</label>
+          <label for="surface" i18n="@@web_upload_pages_realestate_429">Area m2</label>
           <input placeholder="m2" type="number" class="form-control" formControlName="surface" id="surface" min="0"
             max="999999999" />
         </div>
       </div>
       <div class="col-6 col-md-4">
         <div class="form-group">
-          <label for="condition" i18n>Status</label>
+          <label for="condition" i18n="@@web_upload_pages_realestate_430">Status</label>
           <tsl-dropdown id="condition" class="form-control" formControlName="condition" [options]="conditions"
             noFilter="10"></tsl-dropdown>
         </div>
       </div>
       <ng-template #coachmarkPrice>
-        <div i18n>          Add a fair price and the area in m2. Tell us also the state of the
+        <div i18n="@@web_upload_pages_realestate_431">          Add a fair price and the area in m2. Tell us also the state of the
           property.
         </div>
       </ng-template>
@@ -103,20 +103,20 @@
       " [ngbPopover]="coachmarkRooms" [autoClose]="false" popoverClass="ml-3">
       <div class="col-6 col-md-3">
         <div class="form-group">
-          <label for="rooms" i18n>Nº of rooms</label>
+          <label for="rooms" i18n="@@web_upload_pages_realestate_432">Nº of rooms</label>
           <input placeholder="1, 2, 3..." type="number" class="form-control" formControlName="rooms" id="rooms" min="0"
             max="999999999" />
         </div>
       </div>
       <div class="col-6 col-md-3">
         <div class="form-group">
-          <label for="bathrooms" i18n>Nº of bathrooms</label>
+          <label for="bathrooms" i18n="@@web_upload_pages_realestate_433">Nº of bathrooms</label>
           <input placeholder="1, 2, 3..." type="number" class="form-control" formControlName="bathrooms" id="bathrooms"
             min="0" max="999999999" />
         </div>
       </div>
       <ng-template #coachmarkRooms>
-        <div i18n>How many rooms and bathrooms does it have?</div>
+        <div i18n="@@web_upload_pages_realestate_434">How many rooms and bathrooms does it have?</div>
       </ng-template>
     </div>
     <div class="row" *ngIf="uploadForm.value?.type === 'house' || uploadForm.value?.type === 'apartment'"
@@ -124,7 +124,7 @@
       <div class="col">
         <div class="row">
           <div class="col">
-            <h3 class="selector-title" i18n>Features of the house</h3>
+            <h3 class="selector-title" i18n="@@web_upload_pages_realestate_435">Features of the house</h3>
           </div>
         </div>
         <div class="row">
@@ -144,7 +144,7 @@
         </div>
       </div>
       <ng-template #coachmarkExtras>
-        <div i18n>We would like to know more about your property.</div>
+        <div i18n="@@web_upload_pages_realestate_436">We would like to know more about your property.</div>
       </ng-template>
     </div>
     <div class="row" [ngbPopover]="coachmarkTitle" [autoClose]="false" popoverClass="ml-3">
@@ -157,7 +157,7 @@
         </div>
       </div>
       <ng-template #coachmarkTitle>
-        <div i18n>          Pay attention to spelling mistakes, so our users can find your
+        <div i18n="@@web_upload_pages_realestate_437">          Pay attention to spelling mistakes, so our users can find your
           property easily.
         </div>
       </ng-template>
@@ -167,17 +167,17 @@
         <div class="form-group last">
           <label for="storytelling" i18n>Description</label>
           <span class="chars-counter">{{ uploadForm.value?.storytelling?.length }}/650</span>
-          <textarea i18n-placeholder placeholder="Tell us more about your space" fz-elastic class="form-control"
+          <textarea i18n-placeholder="@@web_upload_pages_realestate_438" placeholder="Tell us more about your space" fz-elastic class="form-control"
             formControlName="storytelling" id="storytelling" maxlength="650"></textarea>
         </div>
       </div>
       <ng-template #coachmarkDescription>
-        <div i18n>Every detail counts, so tell us more!</div>
+        <div i18n="@@web_upload_pages_realestate_439">Every detail counts, so tell us more!</div>
       </ng-template>
     </div>
   </div>
   <div class="main-box">
-    <h2 i18n>Property location</h2>
+    <h2 i18n="@@web_upload_pages_realestate_440">Property location</h2>
     <div class="row" [ngbPopover]="coachmarkLocation" [autoClose]="false" popoverClass="ml-3"
       triggers="mouseenter:mouseleave">
       <div class="col-12">
@@ -188,7 +188,7 @@
               uploadForm.value.location.approximated_location
             "></tsl-here-maps>
           <div class="fake-map" *ngIf="!coordinates"></div>
-          <p i18n class="my-2">This is the spot where your space is located. This location could be
+          <p i18n="@@web_upload_pages_realestate_441" class="my-2">This is the spot where your space is located. This location could be
             different from your profile location.
           </p>
           <label class="checkbox checkbox-corporate" formGroupName="location">
@@ -198,12 +198,12 @@
               <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
               <input type="checkbox" formControlName="approximated_location" (change)="emitLocation()" />
             </div>
-            <span i18n>Show the property's approximate location</span>
+            <span i18n="@@web_upload_pages_realestate_442">Show the property's approximate location</span>
           </label>
         </div>
       </div>
       <ng-template #coachmarkLocation>
-        <div i18n>Set the location of the property.</div>
+        <div i18n="@@web_upload_pages_realestate_443">Set the location of the property.</div>
       </ng-template>
     </div>
   </div>
@@ -211,13 +211,13 @@
     <h2 [ngClass]="{
         'ng-invalid':
           !uploadForm.controls.images.valid && uploadForm.controls.images.dirty
-      }" i18n>      Photos
+      }" i18n="@@web_upload_pages_realestate_444">      Photos
     </h2>
     <tsl-drop-area 
       (onError)="onError($event)" formControlName="images" [isUpdatingItem]="!!item" (onOrderImages)="onOrderImages()" (onDeleteImage)="onDeleteImage($event)" (onAddImage)="onAddImage($event)"
       ></tsl-drop-area>
     <ng-template #coachmarkPictures>
-      <div i18n>        You can drag and drop your photos here. Also drag and drop to change the
+      <div i18n="@@web_upload_pages_realestate_445">        You can drag and drop your photos here. Also drag and drop to change the
         order. Max 4MB.
       </div>
     </ng-template>
@@ -233,7 +233,7 @@
     </div>
     <div class="col-md-3 d-none d-md-block">
       <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid"
-        i18n>        How does it look?
+        i18n="@@web_upload_pages_realestate_446">        How does it look?
       </button>
     </div>
   </div>

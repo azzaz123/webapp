@@ -4,14 +4,14 @@
       <div class="col-12 col-md-9">
         <div class="header-row">
           <h1 class="header-title">
-            <span class="Profile__title" i18n>Your profile</span>
+            <span class="Profile__title" i18n="@@web_profile_pages_315">Your profile</span>
             <tsl-pro-badge></tsl-pro-badge>
           </h1>
         </div>
         <div class="header-row">
-          <h4 class="header-subtitle" i18n>From here you can view and edit your profile</h4>
+          <h4 class="header-subtitle" i18n="@@web_profile_pages_316">From here you can view and edit your profile</h4>
           <div class="header-separator d-none d-md-flex">|</div>
-          <a class="header-link d-none d-md-flex" [href]="userUrl" target="_blank" i18n>View my public profile</a>
+          <a class="header-link d-none d-md-flex" [href]="userUrl" target="_blank" i18n="@@web_profile_pages_317">View my public profile</a>
         </div>
       </div>
       <div class="col-3 d-none d-md-block">
@@ -24,12 +24,12 @@
     <div class="row mb-3">
       <div class="col-12 col-md-9">
         <nav class="nav filters-nav d-flex d-md-inline-block">
-          <a class="nav-link" [routerLink]="['info']" routerLinkActive="active" i18n>Profile</a>
-          <a class="nav-link" [routerLink]="['account']" routerLinkActive="active" i18n>Account</a>
-          <a class="nav-link d-none d-md-inline-block" [routerLink]="['billing']" routerLinkActive="active" i18n>Billing
+          <a class="nav-link" [routerLink]="['info']" routerLinkActive="active" i18n="@@web_profile_pages_318">Profile</a>
+          <a class="nav-link" [routerLink]="['account']" routerLinkActive="active" i18n="@@web_profile_pages_319">Account</a>
+          <a class="nav-link d-none d-md-inline-block" [routerLink]="['billing']" routerLinkActive="active" i18n="@@web_profile_pages_320">Billing
             information</a>
           <a class="nav-link d-inline-block d-md-none" [routerLink]="['billing']" routerLinkActive="active"
-            i18n>Billing</a>
+            i18n="@@web_profile_pages_321">Billing</a>
           <a class="nav-link" [routerLink]="['subscriptions']" routerLinkActive="active"
             *ngxPermissionsExcept="['isProfessional']" (click)="trackClickSubscriptionTab()">{{getSubscriptionTabName()}}</a>
           <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active"
@@ -41,7 +41,7 @@
           <tsl-stars class="review-rating" [stars]="userStats?.ratings?.reviews" [normalized]="false"></tsl-stars>
           <span>
             <span>(<span class="reviews-rating-value">{{userStats?.counters?.reviews}}</span>&nbsp;</span>
-            <span i18n>reviews</span>)
+            <span i18n="@@web_profile_pages_322">reviews</span>)
           </span>
         </div>
       </div>
