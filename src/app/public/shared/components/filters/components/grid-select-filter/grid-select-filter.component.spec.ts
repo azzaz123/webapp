@@ -297,4 +297,43 @@ describe('GridSelectFilterComponent', () => {
       });
     });
   });
+
+  describe('when cleared', () => {
+    beforeEach(() => {
+      testComponent.variant = FILTER_VARIANT.BUBBLE;
+      testComponent.config = basicConfig;
+      testComponent.value = [{ key: 'key', value: 'gasoil' }];
+      fixture.detectChanges();
+    });
+
+    it('should init value', () => {
+      const filter: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+
+      filter.handleClear();
+      fixture.detectChanges();
+
+      expect(component.formGroup.controls.select.value).toEqual([]);
+    });
+
+    it('should init label', () => {
+      const filter: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+
+      filter.handleClear();
+      fixture.detectChanges();
+
+      const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+      expect(filterTemplate.label).toEqual(component.config.bubblePlaceholder);
+    });
+
+    it('should emit undefined-valued value change', () => {
+      spyOn(component.valueChange, 'emit');
+      const filter: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+
+      filter.handleClear();
+      fixture.detectChanges();
+
+      expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
+      expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
+    });
+  });
 });

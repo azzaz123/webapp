@@ -26,7 +26,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
             [value]="singleSelectValue"
             [config]="singleSelectConfig"
             (valueChange)="changeSingleSelect($event)"
-            (clear)="changeSingleSelect([])"
           >
           </tsl-grid-select-filter>
         </div>
@@ -36,7 +35,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
             [value]="multiselectValue"
             [config]="multiselectConfig"
             (valueChange)="changeMultiselect($event)"
-            (clear)="changeMultiselect([])"
           >
           </tsl-grid-select-filter>
         </div>
@@ -49,7 +47,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
           [value]="singleSelectValue"
           [config]="singleSelectConfig"
           (valueChange)="changeSingleSelect($event)"
-          (clear)="changeSingleSelect([])"
         >
         </tsl-grid-select-filter>
         <hr />
@@ -58,7 +55,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
           [value]="multiselectValue"
           [config]="multiselectConfig"
           (valueChange)="changeMultiselect($event)"
-          (clear)="changeMultiselect([])"
         >
         </tsl-grid-select-filter>
       </div>
@@ -66,8 +62,8 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
   `,
 })
 class FiltersComponent {
-  @Input() public singleSelectValue: FilterParameter[];
-  @Input() public multiselectValue: FilterParameter[];
+  @Input() public singleSelectValue: FilterParameter[] = [];
+  @Input() public multiselectValue: FilterParameter[] = [];
   @Input() public singleSelectConfig: GridSelectFilterConfig;
   @Input() public multiselectConfig: GridSelectFilterConfig;
 

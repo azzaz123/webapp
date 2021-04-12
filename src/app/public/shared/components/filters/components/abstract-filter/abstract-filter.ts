@@ -77,13 +77,12 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   }
 
   public hasValueChanged(previous: FilterParameter[], current: FilterParameter[]): boolean {
-    const keys = Object.keys(this.config.mapKey);
-
-    if (!previous && !current) {
+    if (!this.config || (!previous && !current)) {
       return false;
     } else if (!previous) {
       return true;
     } else {
+      const keys = Object.keys(this.config.mapKey);
       for (const key of keys) {
         const paramKey = this.config.mapKey[key];
         const previousValue = previous.find((parameter: FilterParameter) => parameter.key === paramKey)?.value;

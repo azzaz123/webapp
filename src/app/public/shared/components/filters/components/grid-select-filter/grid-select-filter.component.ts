@@ -62,14 +62,12 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
-    if (this.hasValueChanged(previousValue, currentValue)) {
-      if (this._value.length > 0) {
-        this.updateForm();
-        this.updateLabel();
-      } else {
-        this.clearForm();
-        this.initLabel();
-      }
+    if (this._value.length > 0) {
+      this.updateForm();
+      this.updateLabel();
+    } else {
+      this.clearForm();
+      this.initLabel();
     }
   }
 
@@ -94,13 +92,8 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
   }
 
   private handleValueChange(value: string[]): void {
-    if (value.length) {
-      this.writeValue([{ key: this.config.mapKey.parameterKey, value: value.join(',') }]);
-      this.updateLabel();
-    } else {
-      this.writeValue([]);
-      this.initLabel();
-    }
+    this.writeValue([{ key: this.config.mapKey.parameterKey, value: value.join(',') }]);
+    this.updateLabel();
   }
 
   private initForm(): void {
