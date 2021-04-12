@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { ToggleFilterConfig } from './interfaces/toggle-filter-config.interface';
@@ -11,7 +11,7 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
   styleUrls: ['./toggle-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> implements OnInit, OnChanges {
+export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> implements OnInit {
   @Input() config: ToggleFilterConfig;
 
   public toggle: boolean;
@@ -21,12 +21,12 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
     this.toggle = this.getBooleanValue();
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.value?.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
+    if (this.hasValueChanged(previousValue, currentValue)) {
       if (this._value.length > 0) {
         this.toggle = this.getBooleanValue();
       } else {
-        this.handleClear();
+        this.toggle = false;
       }
     }
   }
@@ -34,7 +34,6 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
   public writeValue(value: FilterParameter[]) {
     super.writeValue(value);
     this.toggle = this.getBooleanValue();
-    this.hasValueSubject.next(this.toggle);
   }
 
   public handleChange(): void {
@@ -49,21 +48,15 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
   }
 
   public handleClear(): void {
-    this.hasValueSubject.next(false);
     this.toggle = false;
-    this.clear.emit();
-  }
-
-  protected _hasValue(): boolean {
-    return this.toggle;
+    super.handleClear();
   }
 
   private setValue(value: boolean): void {
-    this._value = [{ key: this.config.mapKey.key, value: value.toString() }];
+    this.writeValue([{ key: this.config.mapKey.key, value: value.toString() }]);
   }
 
   private emitChange(): void {
-    this.hasValueSubject.next(true);
     this.setValue(this.toggle);
     this.valueChange.emit(this._value);
   }

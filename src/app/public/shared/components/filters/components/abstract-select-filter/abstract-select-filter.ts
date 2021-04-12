@@ -4,7 +4,7 @@ import { AbstractSelectFilterConfig } from './interfaces/abstract-select-filter-
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class AbstractSelectFilter<T extends Partial<Record<keyof T, string>>> extends AbstractFilter<T> {
+export abstract class AbstractSelectFilter<T extends Partial<Record<keyof T, string>>> extends AbstractFilter<T> {
   @Input() config: AbstractSelectFilterConfig<T>;
 
   constructor() {

@@ -11,22 +11,25 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export abstract class AbstractFilter<T extends Record<keyof T, string>> implements Filter<T>, OnInit {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Input() config: FilterConfig<T>;
+
   @Input()
   set value(value: FilterParameter[]) {
+    const previousValue = this._value;
     this.writeValue(value);
+    this.onValueChange(previousValue, value);
   }
+
   get value(): FilterParameter[] {
     return this._value;
   }
 
   @Output() valueChange = new EventEmitter<FilterParameter[]>();
-  @Output() clear = new EventEmitter<void>();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
 
   @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
 
   public label: string;
-  protected _value: FilterParameter[];
+  protected _value: FilterParameter[] = [];
 
   protected hasValueSubject = new BehaviorSubject<boolean>(false);
 
@@ -37,13 +40,14 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   protected _hasValue(): boolean {
     return this._value?.length > 0;
   }
+
   public ngOnInit(): void {
     this.label = this.config.bubblePlaceholder;
     this._value = this._value?.length ? this._value : this.config.defaultValue || [];
   }
 
   public writeValue(value: FilterParameter[]): void {
-    this._value = value;
+    this._value = [...value];
     this.hasValueSubject.next(this._hasValue());
   }
 
@@ -51,10 +55,14 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
     return this._value.length > 1 ? this._value.length : undefined;
   }
 
-  public handleApply(): void {}
+  public handleApply(): void {
+    this.valueChange.emit(this._value);
+  }
 
   public handleClear(): void {
-    this.clear.emit();
+    const keys = Object.keys(this.config.mapKey).map((key) => this.config.mapKey[key]);
+    this.valueChange.emit(keys.map((key) => ({ key, value: undefined })));
+    this.writeValue([]);
   }
 
   public handleOpenStateChange(isOpen: boolean): void {
@@ -64,6 +72,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   public getValue(key: keyof T): string {
     return this._value?.find((parameter: FilterParameter) => parameter.key === this.config.mapKey[key])?.value;
   }
+
   public hasValueChanged(previous: FilterParameter[], current: FilterParameter[]): boolean {
     const keys = Object.keys(this.config.mapKey);
 
@@ -85,4 +94,6 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
 
     return false;
   }
+
+  public abstract onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void;
 }

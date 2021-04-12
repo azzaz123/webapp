@@ -90,6 +90,4 @@ export class FiltersWrapperComponent {
   private getFilterValues(): void {
     this.filterValues = this.filterParameterStoreService.getParameters();
   }
-
-  private updateFilters(): void {}
 }

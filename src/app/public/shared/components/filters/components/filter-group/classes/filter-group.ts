@@ -53,10 +53,6 @@ export class FilterGroup {
       filter.openStateChange.subscribe((isOpen: boolean) => {
         this._openStateChange.next(isOpen);
       });
-
-      filter.clear.subscribe(() => {
-        this._clear.next(filter.value);
-      });
     });
   }
 }

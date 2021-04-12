@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { CategoriesFilterParams } from './interfaces/categories-filter-params.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
@@ -20,9 +20,7 @@ import { CategoriesFilterConfig } from './interfaces/categories-filter-config.in
   templateUrl: './categories-filter.component.html',
   styleUrls: ['./categories-filter.component.scss'],
 })
-export class CategoriesFilterComponent
-  extends AbstractFilter<CategoriesFilterParams>
-  implements OnInit, OnDestroy, OnChanges, AfterContentInit {
+export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterParams> implements OnInit, OnDestroy, AfterContentInit {
   @Input() config: CategoriesFilterConfig;
 
   public VARIANT = FILTER_VARIANT;
@@ -73,10 +71,8 @@ export class CategoriesFilterComponent
     }
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
-    const { value } = changes;
-
-    if (value && !value.firstChange && this.hasValueChanged(value.previousValue, value.currentValue)) {
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
+    if (this.hasValueChanged(previousValue, currentValue)) {
       if (this._value.length > 0) {
         this.updateValueFromParent();
       } else {
@@ -104,8 +100,13 @@ export class CategoriesFilterComponent
   }
 
   private handleValueChange(): void {
-    this.writeValue(this.getFilterParameterValue());
-    this.valueChange.emit(this._value);
+    const value = this.getFilterParameterValue();
+    if (value.length) {
+      this.writeValue(value);
+      this.valueChange.emit(this._value);
+    } else {
+      this.handleClear();
+    }
   }
 
   private getFilterParameterValue(): FilterParameter[] {
