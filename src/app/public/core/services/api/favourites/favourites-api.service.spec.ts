@@ -30,7 +30,7 @@ describe('FavouritesApiService', () => {
         service.getFavouriteItemsId(MOCK_IDS).subscribe((r) => (response = r));
         const req = httpMock.expectOne(GET_FAVOURITES);
         req.flush({
-          favourites: MOCK_IDS,
+          favorites: MOCK_IDS,
         });
 
         expect(req.request.url).toEqual(GET_FAVOURITES);
