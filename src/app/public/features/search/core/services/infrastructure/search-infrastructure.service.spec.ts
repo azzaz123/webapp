@@ -4,7 +4,7 @@ import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
 import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { of } from 'rxjs';
-import { SearchApiService } from './api/search-api.service';
+import { SearchAPIService } from './api/search-api.service';
 import { SearchInfrastructureService } from './search-infrastructure.service';
 
 function SearchPaginationFactory(hasMore: boolean = false): SearchPagination {
@@ -26,7 +26,7 @@ describe('SearchInfrastructureService', () => {
 
     TestBed.configureTestingModule({
       providers: [SearchInfrastructureService, {
-        provide: SearchApiService,
+        provide: SearchAPIService,
         useValue: searchApiServiceMock
       }]
     });
