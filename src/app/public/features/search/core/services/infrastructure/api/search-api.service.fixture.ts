@@ -1,6 +1,6 @@
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { wallParameters } from './search-api-url.factory';
-import { ItemSearchResponse, SearchResponse } from '../search-response.interface';
+import {  SearchResponse } from './search-response.interface';
 
 export function FilterParametersWallFactory(categoryId: string): FilterParameter[] {
   return wallParameters.map((key: string) => ({ key, value: key === 'category_ids' ? categoryId : `${key}-value` }));

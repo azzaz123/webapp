@@ -3,8 +3,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { SearchResponse, SearchResponseMapper } from '../search-response.interface';
-import { NEXT_HEADER_PAGE, SearchApiService } from './search-api.service';
+import { SearchResponse, SearchResponseMapper } from './search-response.interface';
 import { FilterParametersWallFactory, SearchResponseByCategoryIdFactory, X_NEXT_PAGE_HEADER } from './search-api.service.fixture';
 
 

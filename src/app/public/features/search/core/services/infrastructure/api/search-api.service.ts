@@ -1,38 +1,38 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { SearchItem } from '@public/features/search/interfaces/search-item.interface';
-import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { SearchResponse, SearchResponseMapper } from '../search-response.interface';
-import { SearchApiUrlFactory, SearchApiUrlSearchOrWall } from './search-api-url.factory';
+import { SearchPagination } from '../../../../interfaces/search-pagination.interface';
+import { SEARCH_ITEMS_MINIMAL_LENGTH } from '../../constants/search-item-max';
+import { SearchApiUrlSearchOrWall } from './search-api-url.factory';
+import { SearchResponse } from './search-response.interface';
 
-export const NEXT_HEADER_PAGE = 'X-NextPage';
+const NEXT_HEADER_PAGE = 'X-NextPage';
 
-@Injectable()
-export class SearchApiService {
-
-  private static BASE_URL = '/api/v3';
-
-  constructor(private httpClient: HttpClient) {
-  }
-
+export abstract class SearchAPIService<T = any> {
+  private static readonly BASE_URL: string = '/api/v3/cars/';
   private nextPageUrl: string = null;
 
-  private static buildNextPageUrl(url: string, nextPage: string): string {
+  protected static buildNextPageUrl(url: string, nextPage: string): string {
     return nextPage && url.split('?')[0] + '?' + nextPage;
   }
 
-  private static hasToLoadMoreItems({items, hasMore}: SearchPagination): boolean {
-    return items.length < 40 && hasMore;
+  protected static hasToLoadMoreItems({items, hasMore}: SearchPagination): boolean {
+    return items.length < SEARCH_ITEMS_MINIMAL_LENGTH && hasMore;
+  }
+
+  constructor(protected httpClient: HttpClient, private endpoint: string) {}
+
+  public loadMore(): Observable<SearchPagination> {
+    return this.nextPageUrl ? this.makeSearchApi(this.nextPageUrl) : of(null);
   }
 
   public search(params: FilterParameter[]): Observable<SearchPagination> {
     this.nextPageUrl = null;
 
     const paramCategoryId: FilterParameter = params.find(({key}: FilterParameter) => key === 'category_ids');
-    let url = `/${SearchApiUrlFactory(paramCategoryId?.value)}/${SearchApiUrlSearchOrWall(params)}`;
+    let url = `/${this.endpoint}/${SearchApiUrlSearchOrWall(params)}`;
 
     let httpParams: HttpParams = new HttpParams();
     params.forEach(({key, value}: FilterParameter) => httpParams = httpParams.set(key, value));
@@ -40,22 +40,20 @@ export class SearchApiService {
     return this.makeSearchApi(url);
   }
 
-  public loadMore(): Observable<SearchPagination> {
-    return this.nextPageUrl ? this.makeSearchApi(this.nextPageUrl) : of(null);
-  }
-
-  private makeSearchApi(url: string, cacheItems: SearchItem[] = []): Observable<SearchPagination> {
-    return this.httpClient.get<SearchResponse>(SearchApiService.BASE_URL + url, {observe: 'response'}).pipe(
-      tap(({headers}: HttpResponse<SearchResponse>) => {
+  protected makeSearchApi(url: string, cacheItems: SearchItem[] = []): Observable<SearchPagination> {
+    return this.httpClient.get<SearchResponse<T>>(SearchAPIService.BASE_URL + url, {observe: 'response'}).pipe(
+      tap(({headers}: HttpResponse<SearchResponse<T>>) => {
         const nextPage: string = headers.get(NEXT_HEADER_PAGE);
-        this.nextPageUrl = SearchApiService.buildNextPageUrl(url, nextPage);
+        this.nextPageUrl = SearchAPIService.buildNextPageUrl(url, nextPage);
       }),
-      map(({body}: HttpResponse<SearchResponse>) => ({
-        items: cacheItems.concat(SearchResponseMapper(body)),
+      map(({body}: HttpResponse<SearchResponse<T>>) => ({
+        items: cacheItems.concat(this.searchResponseMapper(body)),
         hasMore: !!this.nextPageUrl
       })),
       switchMap((search: SearchPagination) =>
-        SearchApiService.hasToLoadMoreItems(search) ? this.makeSearchApi(this.nextPageUrl, search.items) : of(search))
+        SearchAPIService.hasToLoadMoreItems(search) ? this.makeSearchApi(this.nextPageUrl, search.items) : of(search))
     );
   }
+
+  protected abstract searchResponseMapper(response: SearchResponse<T>): SearchItem[];
 }
