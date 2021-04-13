@@ -21,7 +21,7 @@ import { TypeCheckService } from '@public/core/services/type-check/type-check.se
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { take } from 'rxjs/operators';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
-import { RecommenderItemCardFavouriteCheckedService } from '@public/features/item-detail/core/services/recommender-item-card-favorite-checked/recommender-item-card-favorite-checked.service';
+import { RecommenderItemCardFavouriteCheckedService } from '@public/features/item-detail/core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
 import { ItemCard, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 

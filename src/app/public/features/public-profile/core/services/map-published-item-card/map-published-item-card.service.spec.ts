@@ -4,13 +4,13 @@ import { UuidService } from '@core/uuid/uuid.service';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import {
   MOCK_PUBLISHED_ITEM_CARD,
-  MOCK_PUBLISHED_ITEM_CARD_FAVORITED,
+  MOCK_PUBLISHED_ITEM_CARD_FAVOURITED,
   MOCK_PUBLISHED_ITEM_CARD_WITHOUT_IMAGES,
 } from '@fixtures/item-card.fixtures.spec';
-import { MOCK_ITEM_RESPONSE, MOCK_ITEM_RESPONSE_FAVORITED } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM_RESPONSE, MOCK_ITEM_RESPONSE_FAVOURITED } from '@fixtures/item.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
-import { ItemFavoritesService } from '@public/core/services/item-favorites/item-favorites.service';
+import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
+import { ItemFavouritesService } from '@public/core/services/item-favourites/item-favourites.service';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
 import { MapPublishedItemCardService } from './map-published-item-card.service';
@@ -18,11 +18,11 @@ import { MapPublishedItemCardService } from './map-published-item-card.service';
 describe('MapPublishedItemCardService', () => {
   let service: MapPublishedItemCardService;
   let uuidService: UuidService;
-  let itemFavoritesService: ItemFavoritesService;
+  let itemFavouritesService: ItemFavouritesService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ItemFavoritesModule],
+      imports: [HttpClientTestingModule, ItemFavouritesModule],
       providers: [
         MapPublishedItemCardService,
         UuidService,
@@ -34,7 +34,7 @@ describe('MapPublishedItemCardService', () => {
     });
     service = TestBed.inject(MapPublishedItemCardService);
     uuidService = TestBed.inject(UuidService);
-    itemFavoritesService = TestBed.inject(ItemFavoritesService);
+    itemFavouritesService = TestBed.inject(ItemFavouritesService);
     spyOn(uuidService, 'getUUID').and.returnValue('1213');
   });
 
@@ -42,30 +42,30 @@ describe('MapPublishedItemCardService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when we map items and check the favorite...', () => {
-    describe('and the item is NOT favorited...', () => {
-      it('should call and return the map published items with the favorited flag false', () => {
+  describe('when we map items and check the favourite...', () => {
+    describe('and the item is NOT favourited...', () => {
+      it('should call and return the map published items with the favourited flag false', () => {
         let cardsResponse: ItemCard[];
-        spyOn(itemFavoritesService, 'getFavouritedItemIds').and.returnValue(of([]));
+        spyOn(itemFavouritesService, 'getFavouritedItemIds').and.returnValue(of([]));
         spyOn(service, 'mapPublishedItems').and.callThrough();
 
-        service.mapPublishedItemsFavoriteCheck([MOCK_ITEM_RESPONSE]).subscribe((response: ItemCard[]) => (cardsResponse = response));
+        service.mapPublishedItemsFavouriteCheck([MOCK_ITEM_RESPONSE]).subscribe((response: ItemCard[]) => (cardsResponse = response));
 
         expect(service.mapPublishedItems).toHaveBeenCalledWith([MOCK_ITEM_RESPONSE]);
         expect(cardsResponse).toStrictEqual([MOCK_PUBLISHED_ITEM_CARD]);
       });
     });
 
-    describe('and the item is favorited...', () => {
-      it('should call and return the map published items with the favorited flag true', () => {
+    describe('and the item is favourited...', () => {
+      it('should call and return the map published items with the favourited flag true', () => {
         let cardsResponse: ItemCard[];
-        spyOn(itemFavoritesService, 'getFavouritedItemIds').and.returnValue(of([MOCK_ITEM_RESPONSE.id]));
+        spyOn(itemFavouritesService, 'getFavouritedItemIds').and.returnValue(of([MOCK_ITEM_RESPONSE.id]));
         spyOn(service, 'mapPublishedItems').and.callThrough();
 
-        service.mapPublishedItemsFavoriteCheck([MOCK_ITEM_RESPONSE]).subscribe((response: ItemCard[]) => (cardsResponse = response));
+        service.mapPublishedItemsFavouriteCheck([MOCK_ITEM_RESPONSE]).subscribe((response: ItemCard[]) => (cardsResponse = response));
 
-        expect(service.mapPublishedItems).toHaveBeenCalledWith([MOCK_ITEM_RESPONSE_FAVORITED]);
-        expect(cardsResponse).toStrictEqual([MOCK_PUBLISHED_ITEM_CARD_FAVORITED]);
+        expect(service.mapPublishedItems).toHaveBeenCalledWith([MOCK_ITEM_RESPONSE_FAVOURITED]);
+        expect(cardsResponse).toStrictEqual([MOCK_PUBLISHED_ITEM_CARD_FAVOURITED]);
       });
     });
   });

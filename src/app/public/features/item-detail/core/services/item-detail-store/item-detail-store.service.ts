@@ -10,7 +10,7 @@ import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { Item } from '@core/item/item';
 import { ItemDetailFlagsStoreService } from '../item-detail-flags-store/item-detail-flags-store.service';
 import { MarkAsFavouriteBodyResponse } from '@public/core/services/api/public-user/interfaces/public-user-response.interface';
-import { ItemFavoritesService } from '@public/core/services/item-favorites/item-favorites.service';
+import { ItemFavouritesService } from '@public/core/services/item-favourites/item-favourites.service';
 
 @Injectable()
 export class ItemDetailStoreService {
@@ -19,7 +19,7 @@ export class ItemDetailStoreService {
     private mapItemDetailStoreService: MapItemDetailStoreService,
     private router: Router,
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
-    private itemFavoritesService: ItemFavoritesService
+    private itemFavouritesService: ItemFavouritesService
   ) {}
 
   private readonly _itemDetail = new BehaviorSubject<ItemDetail>(null);
@@ -37,9 +37,9 @@ export class ItemDetailStoreService {
   }
 
   public initializeItemAndFlags(itemId: string): void {
-    forkJoin([this.itemDetailService.getItemDetail(itemId), this.itemFavoritesService.getFavouritedItemIds([itemId])]).subscribe(
-      ([itemDetail, favorites]: [ItemDetail, string[]]) => {
-        itemDetail.item.flags.favorite = !!favorites.length;
+    forkJoin([this.itemDetailService.getItemDetail(itemId), this.itemFavouritesService.getFavouritedItemIds([itemId])]).subscribe(
+      ([itemDetail, favourites]: [ItemDetail, string[]]) => {
+        itemDetail.item.flags.favorite = !!favourites.length;
         this.itemDetail = this.mapItemDetailStoreService.mapItemDetailStore(itemDetail);
         this.itemDetailFlagsStoreService.updateStatusFlag(itemDetail.item.flags);
         this.itemDetailFlagsStoreService.updateBumpedFlag(itemDetail.item.bumpFlags);

@@ -3,17 +3,17 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment.beta';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { FavoritesResponse } from './favorites-api.interface';
+import { FavouritesResponse } from './favourites-api.interface';
 
-export const GET_FAVORITES = `${environment.baseUrl}api/v3/items/check-favorites`;
+export const GET_FAVOURITES = `${environment.baseUrl}api/v3/items/check-favorites`;
 
 @Injectable()
-export class FavoritesApiService {
+export class FavouritesApiService {
   constructor(private http: HttpClient) {}
 
-  public getFavoriteItemsId(itemIds: string[]): Observable<string[]> {
+  public getFavouriteItemsId(itemIds: string[]): Observable<string[]> {
     return this.http
-      .post<FavoritesResponse>(GET_FAVORITES, { ids: itemIds })
+      .post<FavouritesResponse>(GET_FAVOURITES, { ids: itemIds })
       .pipe(
         map((response) => response.favorites),
         catchError(() => of([]))

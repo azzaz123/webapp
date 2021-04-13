@@ -3,24 +3,24 @@ import { TestBed } from '@angular/core/testing';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
-import { FavoritesApiService } from '../api/favorites/favorites-api.service';
+import { FavouritesApiService } from '../api/favourites/favourites-api.service';
 import { CheckSessionService } from '../check-session/check-session.service';
 
-import { ItemFavoritesService } from './item-favorites.service';
+import { ItemFavouritesService } from './item-favourites.service';
 
-describe('ItemFavoritesService', () => {
+describe('ItemFavouritesService', () => {
   const MOCK_ITEM_IDS = ['23n34ji', '3mjdfi934', '9fnmis34'];
-  const MOCK_ITEM_FAVORITE_IDS = ['23n34ji', '3mjdfi934'];
+  const MOCK_ITEM_FAVOURITE_IDS = ['23n34ji', '3mjdfi934'];
 
-  let service: ItemFavoritesService;
+  let service: ItemFavouritesService;
   let checkSessionService: CheckSessionService;
-  let favoritesApiService: FavoritesApiService;
+  let favouritesApiService: FavouritesApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        ItemFavoritesService,
+        ItemFavouritesService,
         {
           provide: CheckSessionService,
           useValue: {
@@ -30,10 +30,10 @@ describe('ItemFavoritesService', () => {
           },
         },
         {
-          provide: FavoritesApiService,
+          provide: FavouritesApiService,
           useValue: {
-            getFavoriteItemsId() {
-              return of(MOCK_ITEM_FAVORITE_IDS);
+            getFavouriteItemsId() {
+              return of(MOCK_ITEM_FAVOURITE_IDS);
             },
           },
         },
@@ -44,9 +44,9 @@ describe('ItemFavoritesService', () => {
       ],
     });
 
-    service = TestBed.inject(ItemFavoritesService);
+    service = TestBed.inject(ItemFavouritesService);
     checkSessionService = TestBed.inject(CheckSessionService);
-    favoritesApiService = TestBed.inject(FavoritesApiService);
+    favouritesApiService = TestBed.inject(FavouritesApiService);
   });
 
   it('should be created', () => {
@@ -58,20 +58,20 @@ describe('ItemFavoritesService', () => {
       spyOn(checkSessionService, 'hasSession').and.returnValue(true);
     });
 
-    it('should do a petition to get the favorites id', () => {
-      spyOn(favoritesApiService, 'getFavoriteItemsId');
+    it('should do a petition to get the favourites id', () => {
+      spyOn(favouritesApiService, 'getFavouriteItemsId');
 
       service.getFavouritedItemIds(MOCK_ITEM_IDS);
 
-      expect(favoritesApiService.getFavoriteItemsId).toHaveBeenCalledWith(MOCK_ITEM_IDS);
+      expect(favouritesApiService.getFavouriteItemsId).toHaveBeenCalledWith(MOCK_ITEM_IDS);
     });
 
-    it('should return the items from the favorites api service', () => {
+    it('should return the items from the favourites api service', () => {
       let response: string[];
 
       service.getFavouritedItemIds(MOCK_ITEM_IDS).subscribe((items) => (response = items));
 
-      expect(response).toEqual(MOCK_ITEM_FAVORITE_IDS);
+      expect(response).toEqual(MOCK_ITEM_FAVOURITE_IDS);
     });
   });
 
@@ -80,12 +80,12 @@ describe('ItemFavoritesService', () => {
       spyOn(checkSessionService, 'hasSession').and.returnValue(false);
     });
 
-    it('should not do a petition to get the favorites id', () => {
-      spyOn(favoritesApiService, 'getFavoriteItemsId');
+    it('should not do a petition to get the favourites id', () => {
+      spyOn(favouritesApiService, 'getFavouriteItemsId');
 
       service.getFavouritedItemIds(MOCK_ITEM_IDS);
 
-      expect(favoritesApiService.getFavoriteItemsId).not.toHaveBeenCalled();
+      expect(favouritesApiService.getFavouriteItemsId).not.toHaveBeenCalled();
     });
 
     it('should return an empty observable', () => {

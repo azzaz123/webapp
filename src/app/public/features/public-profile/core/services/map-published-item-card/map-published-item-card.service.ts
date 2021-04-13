@@ -3,20 +3,20 @@ import { ItemContent, ItemImagesURLs, ItemResponse } from '@core/item/item-respo
 import { Image } from '@core/user/user-response.interface';
 import { UuidService } from '@core/uuid/uuid.service';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { ItemFavoritesService } from '@public/core/services/item-favorites/item-favorites.service';
-import { Observable, of } from 'rxjs';
+import { ItemFavouritesService } from '@public/core/services/item-favourites/item-favourites.service';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class MapPublishedItemCardService {
-  constructor(private uuidService: UuidService, private itemFavoritesService: ItemFavoritesService) {}
+  constructor(private uuidService: UuidService, private itemFavouritesService: ItemFavouritesService) {}
 
-  public mapPublishedItemsFavoriteCheck(publishedItemsResponse: ItemResponse[]): Observable<ItemCard[]> {
+  public mapPublishedItemsFavouriteCheck(publishedItemsResponse: ItemResponse[]): Observable<ItemCard[]> {
     const itemsId = publishedItemsResponse.map((item: ItemResponse) => item.id);
-    return this.itemFavoritesService.getFavouritedItemIds(itemsId).pipe(
-      map((favoriteIds: string[]) => {
+    return this.itemFavouritesService.getFavouritedItemIds(itemsId).pipe(
+      map((favouriteIds: string[]) => {
         const itemsFavouriteChecked = publishedItemsResponse?.map((item: ItemResponse) => {
-          if (favoriteIds.includes(item.id)) {
+          if (favouriteIds.includes(item.id)) {
             item.content.flags.favorite = true;
           }
           return item;

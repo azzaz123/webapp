@@ -29,8 +29,8 @@ import { ItemSocialShareService } from './core/services/item-social-share/item-s
 import { ItemDetailFlagsStoreService } from './core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { MapItemDetailFlagsStoreService } from './core/services/map-item-detail-flags-store/map-item-detail-flags-store.service';
 import { ItemDetailTrackEventsService } from './core/services/item-detail-track-events/item-detail-track-events.service';
-import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
-import { RecommenderItemCardFavouriteCheckedService } from './core/services/recommender-item-card-favorite-checked/recommender-item-card-favorite-checked.service';
+import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
+import { RecommenderItemCardFavouriteCheckedService } from './core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents],
@@ -52,7 +52,7 @@ import { RecommenderItemCardFavouriteCheckedService } from './core/services/reco
     EllapsedTimeModule,
     ItemTaxonomiesModule,
     ItemExtraInfoModule,
-    ItemFavoritesModule,
+    ItemFavouritesModule,
   ],
   providers: [
     ItemDetailService,

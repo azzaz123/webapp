@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 import { PublicUserApiModule } from '@public/core/services/api/public-user/public-user-api.module';
-import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
+import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
 import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
 import { FavouriteUserModule } from './components/favourite-user/favourite-user.module';
@@ -24,7 +24,7 @@ import { publicProfileRoutedComponents, publicProfileRoutedModules, PublicProfil
     UserProfileHeaderModule,
     PublicPipesModule,
     PublicUserApiModule,
-    ItemFavoritesModule,
+    ItemFavouritesModule,
   ],
   providers: [PublicProfileService, IsCurrentUserPipe],
 })

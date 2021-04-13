@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { FavoritesApiService } from '../api/favorites/favorites-api.service';
+import { FavouritesApiService } from '../api/favourites/favourites-api.service';
 import { CheckSessionService } from '../check-session/check-session.service';
 
 @Injectable()
-export class ItemFavoritesService {
-  constructor(private checkSessionService: CheckSessionService, private favoritesApiService: FavoritesApiService) {}
+export class ItemFavouritesService {
+  constructor(private checkSessionService: CheckSessionService, private favouritesApiService: FavouritesApiService) {}
 
   public getFavouritedItemIds(itemsId: string[]): Observable<string[]> {
     if (this.checkSessionService.hasSession()) {
-      return this.favoritesApiService.getFavoriteItemsId(itemsId);
+      return this.favouritesApiService.getFavouriteItemsId(itemsId);
     }
     return of([]);
   }

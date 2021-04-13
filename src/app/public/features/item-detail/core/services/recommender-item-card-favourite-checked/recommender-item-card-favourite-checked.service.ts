@@ -16,7 +16,7 @@ export class RecommenderItemCardFavouriteCheckedService {
       switchMap((response: RecommendedItemsBodyResponse) => {
         return forkJoin([
           of(response.recommended_type),
-          this.mapRecommendedItemCardService.mapRecommendedItemsFavoriteCheck(response.recommended_items),
+          this.mapRecommendedItemCardService.mapRecommendedItemsFavouriteCheck(response.recommended_items),
         ]).pipe(
           map(([recommendedType, recommendedItems]: [RECOMMENDER_TYPE, ItemCard[]]) => {
             return {

@@ -692,7 +692,7 @@ export const MOCK_PAGINATION_ITEM_RESPONSE: PaginationResponse<ItemResponse> = {
   init: 2,
 };
 
-export const MOCK_ITEM_RESPONSE_FAVORITED: ItemResponse = {
+export const MOCK_ITEM_RESPONSE_FAVOURITED: ItemResponse = {
   id: '0j2ylvwrpmzy',
   type: 'consumer_goods',
   content: {

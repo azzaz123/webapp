@@ -13,9 +13,9 @@ import { ItemApiService } from '@public/core/services/api/item/item-api.service'
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { MOCK_ITEM_CARD, MOCK_ITEM_CARDS_WITH_PAGINATION } from '@fixtures/item-card.fixtures.spec';
 import { UuidService } from '@core/uuid/uuid.service';
-import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
-import { PublishedItemCardFavouriteCheckedModule } from '../../core/services/published-item-card-favorite-checked/published-item-card-favorite-checked.module';
-import { PublishedItemCardFavoriteCheckedService } from '../../core/services/published-item-card-favorite-checked/published-item-card-favorite-checked.service';
+import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
+import { PublishedItemCardFavouriteCheckedModule } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.module';
+import { PublishedItemCardFavouriteCheckedService } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.service';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { MockUserService } from '@fixtures/user.fixtures.spec';
@@ -27,11 +27,11 @@ describe('UserPublishedComponent', () => {
   let de: DebugElement;
   let el: HTMLElement;
   let fixture: ComponentFixture<UserPublishedComponent>;
-  let publishedItemCardFavoriteCheckedService: PublishedItemCardFavoriteCheckedService;
+  let publishedItemCardFavouriteCheckedService: PublishedItemCardFavouriteCheckedService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, PublishedItemCardFavouriteCheckedModule, ItemFavoritesModule],
+      imports: [HttpClientTestingModule, PublishedItemCardFavouriteCheckedModule, ItemFavouritesModule],
       declarations: [UserPublishedComponent, ItemCardListComponentStub, EmptyStateComponent],
       providers: [
         MapPublishedItemCardService,
@@ -41,7 +41,7 @@ describe('UserPublishedComponent', () => {
         ItemCardService,
         ItemApiService,
         {
-          provide: PublishedItemCardFavoriteCheckedService,
+          provide: PublishedItemCardFavouriteCheckedService,
           useValue: {
             getItems() {
               return of(MOCK_ITEM_CARDS_WITH_PAGINATION);
@@ -70,7 +70,7 @@ describe('UserPublishedComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserPublishedComponent);
-    publishedItemCardFavoriteCheckedService = TestBed.inject(PublishedItemCardFavoriteCheckedService);
+    publishedItemCardFavouriteCheckedService = TestBed.inject(PublishedItemCardFavouriteCheckedService);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
@@ -85,14 +85,14 @@ describe('UserPublishedComponent', () => {
     describe('and the petition succeed...', () => {
       beforeEach(() => {
         component.items = [];
-        spyOn(publishedItemCardFavoriteCheckedService, 'getItems').and.returnValue(of(MOCK_ITEM_CARDS_WITH_PAGINATION));
+        spyOn(publishedItemCardFavouriteCheckedService, 'getItems').and.returnValue(of(MOCK_ITEM_CARDS_WITH_PAGINATION));
 
         component.ngOnInit();
         fixture.detectChanges();
       });
 
       it('should ask for the items', () => {
-        expect(publishedItemCardFavoriteCheckedService.getItems).toHaveBeenCalledWith(component.nextPaginationItem);
+        expect(publishedItemCardFavouriteCheckedService.getItems).toHaveBeenCalledWith(component.nextPaginationItem);
       });
 
       it('should set same amount of items received', () => {
@@ -104,14 +104,14 @@ describe('UserPublishedComponent', () => {
     describe('and the petition fails...', () => {
       beforeEach(() => {
         component.items = [];
-        spyOn(publishedItemCardFavoriteCheckedService, 'getItems').and.returnValue(throwError('network error'));
+        spyOn(publishedItemCardFavouriteCheckedService, 'getItems').and.returnValue(throwError('network error'));
 
         component.ngOnInit();
         fixture.detectChanges();
       });
 
       it('should ask for the items', () => {
-        expect(publishedItemCardFavoriteCheckedService.getItems).toHaveBeenCalledWith(component.nextPaginationItem);
+        expect(publishedItemCardFavouriteCheckedService.getItems).toHaveBeenCalledWith(component.nextPaginationItem);
       });
 
       it('should set an empty array', () => {

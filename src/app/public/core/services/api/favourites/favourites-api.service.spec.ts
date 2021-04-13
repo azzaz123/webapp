@@ -1,21 +1,20 @@
-import { HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { GET_FAVORITES } from './favorites-api.service';
-import { FavoritesApiService } from './favorites-api.service';
+import { GET_FAVOURITES } from './favourites-api.service';
+import { FavouritesApiService } from './favourites-api.service';
 
-describe('FavoritesApiService', () => {
+describe('FavouritesApiService', () => {
   const MOCK_IDS = ['23bu382', 'sbdsu82329sd'];
-  let service: FavoritesApiService;
+  let service: FavouritesApiService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [FavoritesApiService],
+      providers: [FavouritesApiService],
     });
 
-    service = TestBed.inject(FavoritesApiService);
+    service = TestBed.inject(FavouritesApiService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -23,18 +22,18 @@ describe('FavoritesApiService', () => {
     httpMock.verify();
   });
 
-  describe('getFavoriteItemsId', () => {
+  describe('getFavouriteItemsId', () => {
     describe('and the petition succeed...', () => {
-      it('should return the favorites', () => {
+      it('should return the favourites', () => {
         let response: string[];
 
-        service.getFavoriteItemsId(MOCK_IDS).subscribe((r) => (response = r));
-        const req = httpMock.expectOne(GET_FAVORITES);
+        service.getFavouriteItemsId(MOCK_IDS).subscribe((r) => (response = r));
+        const req = httpMock.expectOne(GET_FAVOURITES);
         req.flush({
-          favorites: MOCK_IDS,
+          favourites: MOCK_IDS,
         });
 
-        expect(req.request.url).toEqual(GET_FAVORITES);
+        expect(req.request.url).toEqual(GET_FAVOURITES);
         expect(req.request.method).toBe('POST');
         expect(req.request.body).toEqual({
           ids: MOCK_IDS,
@@ -47,11 +46,11 @@ describe('FavoritesApiService', () => {
       it('should return an empty array', () => {
         let response: string[];
 
-        service.getFavoriteItemsId(MOCK_IDS).subscribe((r) => (response = r));
-        const req = httpMock.expectOne(GET_FAVORITES);
+        service.getFavouriteItemsId(MOCK_IDS).subscribe((r) => (response = r));
+        const req = httpMock.expectOne(GET_FAVOURITES);
         req.flush(null, { status: 400, statusText: 'Bad Request' });
 
-        expect(req.request.url).toEqual(GET_FAVORITES);
+        expect(req.request.url).toEqual(GET_FAVOURITES);
         expect(req.request.method).toBe('POST');
         expect(req.request.body).toEqual({
           ids: MOCK_IDS,

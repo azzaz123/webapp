@@ -29,7 +29,7 @@ export const RECOMMENDED_ITEM_MOCK: RecommenderItem = {
   web_slug: 'slug',
 };
 
-export const RECOMMENDED_ITEM_NON_FAVORITED_MOCK: RecommenderItem = {
+export const RECOMMENDED_ITEM_NON_FAVOURITED_MOCK: RecommenderItem = {
   ...RECOMMENDED_ITEM_MOCK,
   favorited: false,
 };

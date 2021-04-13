@@ -10,7 +10,7 @@ import { MapPublishedItemCardService } from '../map-published-item-card/map-publ
 import { PublicProfileService } from '../public-profile.service';
 
 @Injectable()
-export class PublishedItemCardFavoriteCheckedService {
+export class PublishedItemCardFavouriteCheckedService {
   constructor(
     private publicProfileService: PublicProfileService,
     private mapPublishedItemCardService: MapPublishedItemCardService,
@@ -25,7 +25,7 @@ export class PublishedItemCardFavoriteCheckedService {
       switchMap(([response, isOwner]: [PaginationResponse<ItemResponse>, boolean]) => {
         const recommendedItems$ = isOwner
           ? of(this.mapPublishedItemCardService.mapPublishedItems(response.results))
-          : this.mapPublishedItemCardService.mapPublishedItemsFavoriteCheck(response.results);
+          : this.mapPublishedItemCardService.mapPublishedItemsFavouriteCheck(response.results);
         return forkJoin([of(response.init), recommendedItems$]).pipe(
           map(([nextPaginationItem, items]: [number, ItemCard[]]) => {
             return {

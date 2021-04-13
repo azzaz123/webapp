@@ -7,7 +7,7 @@ import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
-import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
+import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
 import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
@@ -27,7 +27,7 @@ describe('ItemDetailStoreService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ItemFavoritesModule],
+      imports: [HttpClientTestingModule, ItemFavouritesModule],
       providers: [
         ItemDetailStoreService,
         PublicUserApiService,

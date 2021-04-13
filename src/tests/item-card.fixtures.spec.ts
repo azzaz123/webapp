@@ -2,7 +2,7 @@ import { Image } from '@core/user/user-response.interface';
 import { ItemCard, ItemCardsWithPagination, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
 import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
-import { ITEM_BUMP_FLAGS, ITEM_DATA, MOCK_ITEM_RESPONSE, ITEM_SALE_CONDITIONS, MOCK_ITEM_RESPONSE_FAVORITED } from './item.fixtures.spec';
+import { ITEM_BUMP_FLAGS, ITEM_DATA, MOCK_ITEM_RESPONSE, ITEM_SALE_CONDITIONS, MOCK_ITEM_RESPONSE_FAVOURITED } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';
 
 export const MOCK_ITEM_CARD: ItemCard = {
@@ -45,17 +45,17 @@ export const MOCK_PUBLISHED_ITEM_CARD: ItemCard = {
   currencyCode: MOCK_ITEM_RESPONSE.content.currency,
 };
 
-export const MOCK_PUBLISHED_ITEM_CARD_FAVORITED: ItemCard = {
-  id: MOCK_ITEM_RESPONSE_FAVORITED.id,
-  ownerId: MOCK_ITEM_RESPONSE_FAVORITED.content.user.id,
-  title: MOCK_ITEM_RESPONSE_FAVORITED.content.title,
-  description: MOCK_ITEM_RESPONSE_FAVORITED.content.description,
-  salePrice: MOCK_ITEM_RESPONSE_FAVORITED.content.price,
-  images: MOCK_ITEM_RESPONSE_FAVORITED.content.images,
-  flags: MOCK_ITEM_RESPONSE_FAVORITED.content.flags,
-  bumpFlags: MOCK_ITEM_RESPONSE_FAVORITED.content.visibility_flags,
-  webSlug: MOCK_ITEM_RESPONSE_FAVORITED.content.web_slug,
-  currencyCode: MOCK_ITEM_RESPONSE_FAVORITED.content.currency,
+export const MOCK_PUBLISHED_ITEM_CARD_FAVOURITED: ItemCard = {
+  id: MOCK_ITEM_RESPONSE_FAVOURITED.id,
+  ownerId: MOCK_ITEM_RESPONSE_FAVOURITED.content.user.id,
+  title: MOCK_ITEM_RESPONSE_FAVOURITED.content.title,
+  description: MOCK_ITEM_RESPONSE_FAVOURITED.content.description,
+  salePrice: MOCK_ITEM_RESPONSE_FAVOURITED.content.price,
+  images: MOCK_ITEM_RESPONSE_FAVOURITED.content.images,
+  flags: MOCK_ITEM_RESPONSE_FAVOURITED.content.flags,
+  bumpFlags: MOCK_ITEM_RESPONSE_FAVOURITED.content.visibility_flags,
+  webSlug: MOCK_ITEM_RESPONSE_FAVOURITED.content.web_slug,
+  currencyCode: MOCK_ITEM_RESPONSE_FAVOURITED.content.currency,
 };
 
 export const MOCK_PUBLISHED_ITEM_CARD_WITHOUT_IMAGES: ItemCard = {
@@ -103,7 +103,7 @@ export const MOCK_RECOMMENDED_ITEM_CARD: ItemCard = {
   },
 };
 
-export const MOCK_RECOMMENDED_ITEM_CARD_NON_FAVORITE: ItemCard = {
+export const MOCK_RECOMMENDED_ITEM_CARD_NON_FAVOURITE: ItemCard = {
   ...MOCK_RECOMMENDED_ITEM_CARD,
   flags: {
     pending: false,

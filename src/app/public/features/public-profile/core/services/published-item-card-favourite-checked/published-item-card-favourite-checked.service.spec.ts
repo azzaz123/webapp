@@ -7,29 +7,29 @@ import { MOCK_PAGINATION_ITEM_RESPONSE } from '@fixtures/item.fixtures.spec';
 import { MockUserService, MOCK_USER, MOCK_OTHER_USER } from '@fixtures/user.fixtures.spec';
 import { ItemCardsWithPagination } from '@public/core/interfaces/item-card.interface';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
-import { ItemFavoritesModule } from '@public/core/services/item-favorites/item-favorites.module';
+import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
 import { MapPublishedItemCardService } from '../map-published-item-card/map-published-item-card.service';
 import { PublicProfileService } from '../public-profile.service';
 
-import { PublishedItemCardFavoriteCheckedService } from './published-item-card-favorite-checked.service';
+import { PublishedItemCardFavouriteCheckedService } from './published-item-card-favourite-checked.service';
 
-describe('PublishedItemCardFavoriteCheckedService', () => {
+describe('PublishedItemCardFavouriteCheckedService', () => {
   const MOCK_MAP_PUBLISHED_ITEMS = [MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD];
-  const MOCK_MAP_PUBLISHED_ITEMS_FAVORITE_CHECK = [MOCK_ITEM_CARD, MOCK_ITEM_CARD];
+  const MOCK_MAP_PUBLISHED_ITEMS_FAVOURITE_CHECK = [MOCK_ITEM_CARD, MOCK_ITEM_CARD];
 
   const MOCK_NEXT_PAGINATION_ITEM = 2;
-  let service: PublishedItemCardFavoriteCheckedService;
+  let service: PublishedItemCardFavouriteCheckedService;
   let publicProfileService: PublicProfileService;
   let mapPublishedItemCardService: MapPublishedItemCardService;
   let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ItemFavoritesModule],
+      imports: [HttpClientTestingModule, ItemFavouritesModule],
       providers: [
-        PublishedItemCardFavoriteCheckedService,
+        PublishedItemCardFavouriteCheckedService,
         {
           provide: PublicProfileService,
           useValue: {
@@ -52,8 +52,8 @@ describe('PublishedItemCardFavoriteCheckedService', () => {
             mapPublishedItems() {
               of(MOCK_MAP_PUBLISHED_ITEMS);
             },
-            mapPublishedItemsFavoriteCheck() {
-              of(MOCK_MAP_PUBLISHED_ITEMS_FAVORITE_CHECK);
+            mapPublishedItemsFavouriteCheck() {
+              of(MOCK_MAP_PUBLISHED_ITEMS_FAVOURITE_CHECK);
             },
           },
         },
@@ -63,7 +63,7 @@ describe('PublishedItemCardFavoriteCheckedService', () => {
         },
       ],
     });
-    service = TestBed.inject(PublishedItemCardFavoriteCheckedService);
+    service = TestBed.inject(PublishedItemCardFavouriteCheckedService);
     publicProfileService = TestBed.inject(PublicProfileService);
     mapPublishedItemCardService = TestBed.inject(MapPublishedItemCardService);
     userService = TestBed.inject(UserService);
@@ -73,22 +73,22 @@ describe('PublishedItemCardFavoriteCheckedService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when getting the published item cards already favorite checked...', () => {
+  describe('when getting the published item cards already favourite checked...', () => {
     describe('and we are the owner of the published items...', () => {
       beforeEach(() => {
         jest.spyOn(publicProfileService, 'user', 'get').mockReturnValue(MOCK_USER);
         spyOn(userService, 'me').and.returnValue(of(MOCK_USER));
         spyOn(mapPublishedItemCardService, 'mapPublishedItems').and.returnValue(MOCK_MAP_PUBLISHED_ITEMS);
-        spyOn(mapPublishedItemCardService, 'mapPublishedItemsFavoriteCheck');
+        spyOn(mapPublishedItemCardService, 'mapPublishedItemsFavouriteCheck');
       });
 
-      it('should not ask for the favorite checking and return the correct data', () => {
+      it('should not ask for the favourite checking and return the correct data', () => {
         let itemCardsWithPagination: ItemCardsWithPagination;
 
         service.getItems(MOCK_NEXT_PAGINATION_ITEM).subscribe((data) => (itemCardsWithPagination = data));
 
         expect(mapPublishedItemCardService.mapPublishedItems).toHaveBeenCalled();
-        expect(mapPublishedItemCardService.mapPublishedItemsFavoriteCheck).not.toHaveBeenCalled();
+        expect(mapPublishedItemCardService.mapPublishedItemsFavouriteCheck).not.toHaveBeenCalled();
         expect(itemCardsWithPagination).toStrictEqual({
           nextPaginationItem: MOCK_PAGINATION_ITEM_RESPONSE.init,
           items: MOCK_MAP_PUBLISHED_ITEMS,
@@ -101,19 +101,19 @@ describe('PublishedItemCardFavoriteCheckedService', () => {
         jest.spyOn(publicProfileService, 'user', 'get').mockReturnValue(MOCK_OTHER_USER);
         spyOn(userService, 'me').and.returnValue(of(MOCK_USER));
         spyOn(mapPublishedItemCardService, 'mapPublishedItems');
-        spyOn(mapPublishedItemCardService, 'mapPublishedItemsFavoriteCheck').and.returnValue(of(MOCK_MAP_PUBLISHED_ITEMS_FAVORITE_CHECK));
+        spyOn(mapPublishedItemCardService, 'mapPublishedItemsFavouriteCheck').and.returnValue(of(MOCK_MAP_PUBLISHED_ITEMS_FAVOURITE_CHECK));
       });
 
-      it('should ask for the favorite checking and return the correct data', () => {
+      it('should ask for the favourite checking and return the correct data', () => {
         let itemCardsWithPagination: ItemCardsWithPagination;
 
         service.getItems(MOCK_NEXT_PAGINATION_ITEM).subscribe((data) => (itemCardsWithPagination = data));
 
         expect(mapPublishedItemCardService.mapPublishedItems).not.toHaveBeenCalled();
-        expect(mapPublishedItemCardService.mapPublishedItemsFavoriteCheck).toHaveBeenCalled();
+        expect(mapPublishedItemCardService.mapPublishedItemsFavouriteCheck).toHaveBeenCalled();
         expect(itemCardsWithPagination).toStrictEqual({
           nextPaginationItem: MOCK_PAGINATION_ITEM_RESPONSE.init,
-          items: MOCK_MAP_PUBLISHED_ITEMS_FAVORITE_CHECK,
+          items: MOCK_MAP_PUBLISHED_ITEMS_FAVOURITE_CHECK,
         });
       });
     });
