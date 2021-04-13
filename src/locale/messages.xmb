@@ -1070,7 +1070,7 @@
   <msg id="web_all_button_process_693"><source>src/app/shared/process-all-button/process-all-button.component.html:10</source>Cancel</msg>
   <msg id="web_all_button_process_673"><source>src/app/shared/process-all-button/process-all-button.component.html:11</source>Process all</msg>
   <msg id="web_pro_billing_delete_info_confirmation_modal_517"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:1</source>Are you sure you want to delete billing information?</msg>
-  <msg id="2159130950882492111"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:4</source>Cancel</msg>
+  <msg id="web_pro_billing_delete_info_confirmation_modal_694"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:4</source>Cancel</msg>
   <msg id="web_pro_billing_delete_info_confirmation_modal_630"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source>Yes, I am sure</msg>
   <msg id="ProfileProBillingSubtitle"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:9</source>For services other than subscriptions (e.g. visibility packs) you won&apos;t receive invoices.</msg>
   <msg id="ProfileProBillingFormType"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:15</source>Type of registration</msg>
