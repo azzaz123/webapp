@@ -84,16 +84,16 @@
           <div class="actions align-items-center justify-content-md-end col col-md-4" *ngIf="!item.flags.pending && !item.flags.expired" [hidden]="selectMode">
             <ng-container *ngIf="!item.flags.onhold">
               <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)"
-                [item]="item" ngbTooltip="Mark as sold"  placement="top">
+                [item]="item" ngbTooltip="{{tooltipMessages.markAsSold}}"  placement="top">
                 <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
               </button>
               <button class="btn-reserve" [hidden]="item.flags.onhold" [ngClass]="{active: item.reserved}"
-                (click)="reserve(item)" *ngIf="!item.sold" ngbTooltip="Mark as reserved"  placement="top">
+                (click)="reserve(item)" *ngIf="!item.sold" ngbTooltip="{{tooltipMessages.markAsReserved}}"  placement="top">
                 <tsl-svg-icon src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
               </button>
               <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]"
                 *ngIf="!item.sold"
-                ngbTooltip="Edit"  placement="top">
+                ngbTooltip="{{tooltipMessages.edit}}"  placement="top">
                 <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
               </button>
             </ng-container>
