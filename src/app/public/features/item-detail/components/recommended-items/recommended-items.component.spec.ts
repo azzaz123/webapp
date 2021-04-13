@@ -8,16 +8,13 @@ import { RECOMMENDED_ITEM_MOCK } from './constants/recommended-items.fixtures.sp
 import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 import { RecommendedItemsComponent } from './recommended-items.component';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
-import { MOCK_INTERSECTION_OBSERVER, MockIntersectionObserverClass } from './../../../../../../configs/jest/global-mocks.fixtures.spec';
+
 describe('RecommendedItemsComponent', () => {
   const itemCardListTag = 'tsl-public-item-card-list';
   let component: RecommendedItemsComponent;
   let fixture: ComponentFixture<RecommendedItemsComponent>;
-  let windowMock;
 
   beforeEach(async () => {
-    windowMock = jest.fn();
-    windowMock.mockReturnValue(MOCK_INTERSECTION_OBSERVER);
     await TestBed.configureTestingModule({
       declarations: [RecommendedItemsComponent],
       providers: [MapRecommendedItemCardService],
@@ -37,6 +34,7 @@ describe('RecommendedItemsComponent', () => {
 
   describe('when we have recommended items...', () => {
     beforeEach(() => {
+      spyOn(component.initRecommendedItemsSlider, 'emit');
       component.recommendedItems = [
         RECOMMENDED_ITEM_MOCK,
         RECOMMENDED_ITEM_MOCK,
@@ -56,17 +54,22 @@ describe('RecommendedItemsComponent', () => {
       expect(component.items.length).toBeLessThanOrEqual(6);
     });
 
-    it('should emit initRecommendedItemsSlider event', () => {
-      spyOn(component.initRecommendedItemsSlider, 'emit');
-      spyOn(window, 'IntersectionObserver').and.callFake(() => {});
-      component.ngOnChanges();
+    it('should emit initRecommendedItemsSlider event one time if the slider is scrolled to the view', () => {
       const recommendedItemIds: string = component.items.map((item: ItemCard) => item.id).toString();
+
+      window.dispatchEvent(new Event('scroll'));
+      window.dispatchEvent(new Event('scroll'));
       fixture.detectChanges();
 
       expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledWith({
         recommendedItemIds: recommendedItemIds,
         engine: SEARCH_TECHNIQUE_ENGINE.MORE_LIKE_THIS_SOLR,
       });
+      expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not emit initRecommendedItemsSlider event if the slider is not scrolled to the view', () => {
+      expect(component.initRecommendedItemsSlider.emit).not.toHaveBeenCalled();
     });
 
     describe('when we got more than six recommended items...', () => {
