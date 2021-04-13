@@ -1,6 +1,11 @@
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { wallParameters } from './search-api-url.factory';
-import {  SearchResponse } from './search-response.interface';
+import { SearchResponse } from './search-response.interface';
+import { SearchCustomerGoodsResponse } from '../customer-goods/search-costumer-goods-response.interface';
+import { SEARCH_ITEMS_MINIMAL_LENGTH } from '../../constants/search-item-max';
+import { SearchCarResponse } from '../cars/search-car-response';
+import { SearchBaseItemResponse } from '../models/search-base-item.response';
+import { SearchRealEstateResponse } from '../real_estate/search-item-real-state-response';
 
 export function FilterParametersWallFactory(categoryId: string): FilterParameter[] {
   return wallParameters.map((key: string) => ({ key, value: key === 'category_ids' ? categoryId : `${key}-value` }));
@@ -10,22 +15,73 @@ export function FilterParametersSearchFactory(categoryId: string, search: string
   return [...wallParameters, 'keywords'].map((key: string) => ({ key, value: key === 'category_ids' ? categoryId : `${key}-value` }));
 }
 
-export function ItemSearchResponseFactory(partial: Partial<ItemSearchResponse> = {}): ItemSearchResponse {
+function SearchBaseItemResponseFactory(): SearchBaseItemResponse {
   return {
-    id: partial.id || '52352',
-    title: partial.title || 'titleItem',
-    description: partial.description || 'descriptionItem',
-    distance: partial.distance || 32636,
-    images: partial.images || [{ small: 'http://cdn.wallapop.com/image' }],
-    flags: partial.flags || { reserved: true },
-    visibility_flags: partial.visibility_flags || { bumped: false },
-    price: partial.price || 2352,
-    currency: partial.currency || '€',
-    category_id: partial.category_id,
-  };
+    id: '52352',
+    title: 'titleItem',
+    distance: 32636,
+    images: [{ small: 'http://cdn.wallapop.com/image' }],
+    flags: { reserved: true },
+    visibility_flags: { bumped: false },
+    price: 2352,
+    currency: '€',
+    web_slug: 'www.webslug.com',
+    category_id: 1,
+  }
 }
 
-export function SearchResponseFactory(partial: Partial<SearchResponse> = {}): SearchResponse {
+export function SearchCustomerGoodsItemListResponseFactory(count: number = SEARCH_ITEMS_MINIMAL_LENGTH): SearchCustomerGoodsResponse[] {
+  return new Array(count).fill('').map(() => ({
+    ...SearchBaseItemResponseFactory(),
+    description: 'Description',
+    free_shipping: false,
+    shipping_allowed: false,
+    seller_id: '235235'
+  }));
+}
+
+export function SearchCarItemListResponseFactory(count: number = SEARCH_ITEMS_MINIMAL_LENGTH): SearchCarResponse[] {
+  return new Array(count).fill('').map(() => ({
+    id: '32532',
+    title: 'titleItem',
+    content: {
+      ...SearchBaseItemResponseFactory(),
+      brand: 'brand-value',
+      model: 'model-value',
+      year: 2010,
+      version: 'version-value',
+      km: 25000,
+      engine: 'engine-value',
+      gearbox: 'gearbox-value',
+      horsepower: 150,
+      storytelling: 'storytelling-value',
+    }
+  }));
+}
+
+export function SearchRealEstateItemlistResponseFactory(count: number = SEARCH_ITEMS_MINIMAL_LENGTH): SearchRealEstateResponse[] {
+  return new Array(count).fill('').map(() => ({
+    id: '32532',
+    title: 'titleItem',
+    content: {
+      ...SearchBaseItemResponseFactory(),
+      operation: 'operation',
+      type: 'type',
+      surface: 2,
+      rooms: 2,
+      bathrooms: 1,
+      garage: true,
+      terrace: true,
+      elevator: true,
+      pool: true,
+      garden: false,
+      condition: 'Conditions',
+      storytelling: 'storytelling'
+    }
+  }));
+}
+
+export function SearchResponseFactory<T>(partial: Partial<SearchResponse<T>> = {}): SearchResponse<T> {
   return {
     from: partial.from || 0,
     to: partial.to || 20,
@@ -34,20 +90,7 @@ export function SearchResponseFactory(partial: Partial<SearchResponse> = {}): Se
       latitude: 40,
       longitude: 20,
     },
-    search_objects: new Array(20).fill('').map(() => ItemSearchResponseFactory({ category_id: 21423 })),
-  };
-}
-
-export function SearchResponseByCategoryIdFactory(category_id, count: number = 40): SearchResponse {
-  return {
-    from: 0,
-    to: 20,
-    distance_ordered: true,
-    search_point: {
-      latitude: 40,
-      longitude: 20,
-    },
-    search_objects: new Array(count).fill('').map(() => ItemSearchResponseFactory({ category_id })),
+    search_objects: partial.search_objects || []
   };
 }
 

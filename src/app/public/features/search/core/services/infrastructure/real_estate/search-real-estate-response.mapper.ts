@@ -1,10 +1,10 @@
 import { SearchItem } from '@public/features/search/interfaces/search-item.interface';
 import { SearchResponse } from '../api/search-response.interface';
-import { SearchRealStateResponse } from './search-item-real-state-response';
+import { SearchRealEstateResponse } from './search-item-real-state-response';
 
 
-export function searchItemRealEstateResponseMapper({search_objects}: SearchResponse<SearchRealStateResponse>): SearchItem[] {
-  return search_objects.map(({id, title, content}: SearchRealStateResponse) => ({
+export function searchItemRealEstateResponseMapper({search_objects}: SearchResponse<SearchRealEstateResponse>): SearchItem[] {
+  return search_objects.map(({id, title, content}: SearchRealEstateResponse) => ({
     id,
     title,
     description: content.storytelling,

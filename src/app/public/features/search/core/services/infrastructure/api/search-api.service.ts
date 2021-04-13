@@ -10,11 +10,11 @@ import { SearchItemMapper, SearchApiItemMapperFactory } from './search-api-item-
 import { SearchApiUrlFactory, SearchApiUrlSearchOrWall } from './search-api-url.factory';
 import { SearchResponse } from './search-response.interface';
 
-const NEXT_HEADER_PAGE = 'X-NextPage';
+export const NEXT_HEADER_PAGE = 'X-NextPage';
 
 @Injectable()
 export class SearchAPIService {
-  private static readonly BASE_URL: string = '/api/v3/cars/';
+  private static readonly BASE_URL: string = '/api/v3';
   private nextPageUrl: string | null = null;
   private categoryId: string | null = null;
 

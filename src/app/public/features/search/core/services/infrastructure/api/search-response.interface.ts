@@ -1,6 +1,4 @@
-import { SearchItem } from '@public/features/search/interfaces/search-item.interface';
-
-export interface SearchResponse<T> {
+export interface SearchResponse<T = any> {
   search_objects: T[];
   from: number;
   to: number;

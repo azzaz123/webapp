@@ -1,22 +1,36 @@
-
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { SearchResponse, SearchResponseMapper } from './search-response.interface';
-import { FilterParametersWallFactory, SearchResponseByCategoryIdFactory, X_NEXT_PAGE_HEADER } from './search-api.service.fixture';
+import { SearchCarResponse } from '../cars/search-car-response';
+import { SearchItemCarResponseMapper } from '../cars/search-cars-response.mapper';
+import { SearchCustomerGoodsResponse } from '../customer-goods/search-costumer-goods-response.interface';
+import { SearchItemCustomerGoodsResponseMapper } from '../customer-goods/search-customer-goods-response.mapper';
+import { SearchRealEstateResponse } from '../real_estate/search-item-real-state-response';
+import { searchItemRealEstateResponseMapper } from '../real_estate/search-real-estate-response.mapper';
+import { CATEGORY_IDS } from './../../../../../../../core/category/category-ids';
+import { NEXT_HEADER_PAGE, SearchAPIService } from './search-api.service';
+import {
+  FilterParametersWallFactory,
+  SearchCarItemListResponseFactory,
+  SearchCustomerGoodsItemListResponseFactory,
+  SearchRealEstateItemlistResponseFactory,
+  SearchResponseFactory,
+  X_NEXT_PAGE_HEADER
+} from './search-api.service.fixture';
+import { SearchResponse } from './search-response.interface';
 
 
 describe('SearchApiService', () => {
-  let service: SearchApiService;
+  let service: SearchAPIService;
   let httpController: HttpTestingController;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [SearchApiService]
+      providers: [SearchAPIService]
     });
 
-    service = TestBed.inject(SearchApiService);
+    service = TestBed.inject(SearchAPIService);
     httpController = TestBed.inject(HttpTestingController);
   });
 
@@ -27,10 +41,13 @@ describe('SearchApiService', () => {
   describe('when we want to search...', () => {
 
     describe('generic category', () => {
+      const category_id = '1';
+      const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+      const searchResponse: SearchResponse<SearchCustomerGoodsResponse> = SearchResponseFactory<SearchCustomerGoodsResponse>({
+        search_objects: SearchCustomerGoodsItemListResponseFactory()
+      });
+
       it('should call to wall generic ', () => {
-        const category_id = '1';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
 
         service.search(filters).subscribe();
 
@@ -40,12 +57,8 @@ describe('SearchApiService', () => {
       });
 
       it('should get generic items and has more items', (done) => {
-        const category_id = '1';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
-
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: true});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: true});
           done();
         });
 
@@ -57,12 +70,8 @@ describe('SearchApiService', () => {
       });
 
       it('should get generic items and has not more items', (done) => {
-        const category_id = '1';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
-
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: false});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: false});
           done();
         });
 
@@ -74,11 +83,12 @@ describe('SearchApiService', () => {
 
 
     describe('cars', () => {
+      const category_id = CATEGORY_IDS.CAR.toString();
+      const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+      const searchResponse: SearchResponse<SearchCarResponse> = SearchResponseFactory<SearchCarResponse>({
+        search_objects: SearchCarItemListResponseFactory()
+      });
       it('should call to wall cars', () => {
-        const category_id = '100';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
-
         service.search(filters).subscribe();
 
         const request = httpController.expectOne(`/api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
@@ -87,12 +97,8 @@ describe('SearchApiService', () => {
       });
 
       it('should get item cars and has more items', (done) => {
-        const category_id = '100';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
-
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: true});
+          expect(response).toEqual({items: SearchItemCarResponseMapper(searchResponse), hasMore: true});
           done();
         });
 
@@ -104,12 +110,8 @@ describe('SearchApiService', () => {
       });
 
       it('should get item cars and has not more items', (done) => {
-        const category_id = '100';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
-
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: false});
+          expect(response).toEqual({items: SearchItemCarResponseMapper(searchResponse), hasMore: false});
           done();
         });
 
@@ -121,11 +123,13 @@ describe('SearchApiService', () => {
     });
 
     describe('realestate', () => {
-      it('should call to realestate realestate', () => {
-        const category_id = '200';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
+      const category_id = CATEGORY_IDS.REAL_ESTATE.toString();
+      const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+      const searchResponse: SearchResponse<SearchRealEstateResponse> = SearchResponseFactory<SearchRealEstateResponse>({
+        search_objects: SearchRealEstateItemlistResponseFactory()
+      });
 
+      it('should call to realestate realestate', () => {
         service.search(filters).subscribe();
 
         const request = httpController.expectOne(`/api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
@@ -134,12 +138,8 @@ describe('SearchApiService', () => {
       });
 
       it('should get item realestates and has more items', (done) => {
-        const category_id = '200';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
-
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: true});
+          expect(response).toEqual({items: searchItemRealEstateResponseMapper(searchResponse), hasMore: true});
           done();
         });
 
@@ -151,12 +151,8 @@ describe('SearchApiService', () => {
       });
 
       it('should get item realestates and has not more items', (done) => {
-        const category_id = '200';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
-
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: false});
+          expect(response).toEqual({items: searchItemRealEstateResponseMapper(searchResponse), hasMore: false});
           done();
         });
 
@@ -167,10 +163,13 @@ describe('SearchApiService', () => {
     });
 
     describe('fashion', () => {
+      const category_id: string = CATEGORY_IDS.FASHION_ACCESSORIES.toString();
+      const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+      const searchResponse: SearchResponse<SearchCustomerGoodsResponse> = SearchResponseFactory<SearchCustomerGoodsResponse>({
+        search_objects: SearchCustomerGoodsItemListResponseFactory()
+      });
+
       it('should call to wall fashion', () => {
-        const category_id = '12465';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
         service.search(filters).subscribe();
 
         const request = httpController.expectOne(`/api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
@@ -179,12 +178,8 @@ describe('SearchApiService', () => {
       });
 
       it('should get item fashion and has more items', (done) => {
-        const category_id = '12465';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
-
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: true});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: true});
           done();
         });
 
@@ -196,12 +191,8 @@ describe('SearchApiService', () => {
       });
 
       it('should get item fashion and has not more items', (done) => {
-        const category_id = '12465';
-        const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-        const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
-
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchResponseMapper(searchResponse), hasMore: false});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: false});
           done();
         });
 
@@ -213,7 +204,11 @@ describe('SearchApiService', () => {
   });
 
   describe('when we want to load more items', () => {
-
+    const category_id = '1';
+    const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+    const searchResponse: SearchResponse<SearchCustomerGoodsResponse> = SearchResponseFactory<SearchCustomerGoodsResponse>({
+      search_objects: SearchCustomerGoodsItemListResponseFactory()
+    });
     it('should return null if does not has more items', () => {
       service.loadMore();
 
@@ -221,9 +216,6 @@ describe('SearchApiService', () => {
     });
 
     it('should load next page', () => {
-      const category_id = '1';
-      const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-      const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id);
       service.search(filters).subscribe();
       const request = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
       request.flush(searchResponse, {
@@ -239,12 +231,15 @@ describe('SearchApiService', () => {
   });
 
   describe('when the list is less than 20 items', () => {
-    it('show load more items', () => {
-      const category_id = '1';
-      const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-      const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id, 20);
+    const category_id = '1';
+    const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
+    const searchResponse: SearchResponse<SearchCustomerGoodsResponse> = SearchResponseFactory<SearchCustomerGoodsResponse>({
+      search_objects: SearchCustomerGoodsItemListResponseFactory(20)
+    });
 
-      service.search(filters).subscribe()
+    it('show load more items', () => {
+
+      service.search(filters).subscribe();
 
       const request1 = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
       expect(request1.request.method).toBe('GET');
@@ -258,17 +253,13 @@ describe('SearchApiService', () => {
     });
 
     it('show load more items until 40 items length', (done) => {
-      const category_id = '1';
-      const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
-      const searchResponse: SearchResponse = SearchResponseByCategoryIdFactory(category_id, 20);
-
       service.search(filters).subscribe((response) => {
         expect(response).toEqual({
-          items: [...SearchResponseMapper(searchResponse), ...SearchResponseMapper(searchResponse)],
+          items: [...SearchItemCustomerGoodsResponseMapper(searchResponse), ...SearchItemCustomerGoodsResponseMapper(searchResponse)],
           hasMore: false
         });
         done();
-      })
+      });
 
       const request1 = httpController.expectOne(`/api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`);
       expect(request1.request.method).toBe('GET');
