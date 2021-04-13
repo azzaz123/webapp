@@ -157,12 +157,7 @@
   <translation id="web_sold_modal_509">¡Gracias!</translation>
   <translation id="web_sold_modal_510">Tu opinión es muy importante para la<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>comunidad Wallapop.</translation>
   <translation id="web_sold_modal_511">Continuar</translation>
-  <translation id="6071814986980529912">Esta vez, ¡véndelo!</translation>
-  <translation id="7814524838753447660">Reactiva tu producto con <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{price * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
-      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> y vuelve a las primeras posiciones.</translation>
-  <translation id="5107282366152603486"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Consigue más visibilidad y véndelo antes.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
   <translation id="web_catalog_modals_buy_product_modal_134">Reactivar + visibilidad</translation>
-  <translation id="3244863581909362906">Sólo reactivar que no quiero venderlo más rápido</translation>
   <translation id="web_catalog_components_item_106">Activo</translation>
   <translation id="web_calls_pages_15">Pendiente</translation>
   <translation id="web_catalog_components_checkout_item_110">No disponible</translation>
@@ -227,8 +222,6 @@
   <translation id="web_reviews_pages_332">Tus Opiniones</translation>
   <translation id="web_reviews_pages_333">Esto es lo que piensan de ti.</translation>
   <translation id="web_reviews_pages_334">Tu media</translation>
-  <translation id="5653113390991708232">Vendiste:</translation>
-  <translation id="4179349933130995178">Compraste:</translation>
   <translation id="web_review_item_1">Por</translation>
   <translation id="web_review_item_2">el</translation>
   <translation id="web_components_sidebar_449">Opiniones</translation>
@@ -372,8 +365,6 @@
   <translation id="web_dashboard_pages_199">Has procesado todos los contactos pendientes. ¡Buen trabajo!</translation>
   <translation id="web_dashboard_components_stats_graph_194">Últimos 12 meses</translation>
   <translation id="web_catalog_status_navbar_472">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="596181013964941327">Marcar como vendido</translation>
-  <translation id="853408948668135550">Marcar como reservado</translation>
   <translation id="web_catalog_pages_list_147">Editar</translation>
   <translation id="web_upload_pages_car_382">Selecciona otra marca</translation>
   <translation id="web_upload_pages_car_383">Selecciona una marca predefinida</translation>
@@ -404,22 +395,17 @@
   <translation id="web_upload_pages_realestate_443">Sitúa el punto en una zona donde está la propiedad.</translation>
   <translation id="web_components_topbar_8">saldo</translation>
   <translation id="web_catalog_modals_buy_product_modal_140">Total a pagar</translation>
-  <translation id="5378722151309930038">Comprar más wallacoins</translation>
   <translation id="web_catalog_modals_bump_confirmation_modal_116">¡Productos Destacados!</translation>
   <translation id="web_catalog_modals_bump_confirmation_modal_117">Todo ha ido bien y tus productos ya son más visibles. ¡Ahora a venderlo todo!</translation>
   <translation id="web_catalog_modals_bump_confirmation_modal_118">Has usado</translation>
   <translation id="web_catalog_modals_bump_confirmation_modal_119">Y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
   <translation id="web_catalog_modals_bump_confirmation_modal_120">Y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> de saldo</translation>
-  <translation id="5880798667461104338">Comprar más saldo</translation>
   <translation id="web_catalog_modals_bump_confirmation_modal_121">Ir a mi catálogo</translation>
   <translation id="web_catalog_modals_buy_product_modal_138">Que gastas</translation>
   <translation id="web_catalog_modals_buy_product_modal_139">Que te faltan</translation>
   <translation id="web_stats_components_item_row_339">Chats</translation>
   <translation id="web_stats_components_item_row_338">Visualizaciones</translation>
   <translation id="web_upload_components_category_selector_361">Empleo</translation>
-  <translation id="1666676372989024280">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
-  <translation id="3938280541945338173">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> de saldo</translation>
-  <translation id="349473182974314723">Tu producto se ha reactivado correctamente a Wallapop y ha subido a las primeras posiciones</translation>
   <translation id="web_upload_pages_car_407">Número de puertas</translation>
   <translation id="web_upload_pages_car_408">Caballos</translation>
   <translation id="web_upload_pages_car_401">Selecciona otra versión</translation>
@@ -526,7 +512,6 @@
   <translation id="web_chat_children_inbox_components_user_component_detail_157" desc="La distancia entre el usuario y el producto a"><ph name="INTERPOLATION"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos;}}</ex></ph>km de ti</translation>
   <translation id="web_catalog_components_item_104">Modificado</translation>
   <translation id="web_profile_pages_subscription_329">Suscrito desde <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
-  <translation id="5507433950760207486">Sin límite de tiempo</translation>
   <translation id="web_profile_modal_cancel_subscription_237">¿Seguro que quieres cancelar tu suscripción Wallapop PRO <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
   <translation id="web_profile_modal_cancel_subscription_238">Es triste que te vayas. Puedes volver cuando quieras, ¡te estaremos esperando!</translation>
   <translation id="web_profile_modal_cancel_subscription_239">Sí, quiero cancelar mi suscripción</translation>
