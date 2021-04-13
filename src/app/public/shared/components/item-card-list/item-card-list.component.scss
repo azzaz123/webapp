@@ -1,6 +1,6 @@
 @import '~style/common';
 
-$margin: $spacer * 0.5;
+$margin: $spacer * 0.75;
 
 @mixin grid-setup($numCols) {
   grid-template-columns: repeat($numCols, 1fr);
