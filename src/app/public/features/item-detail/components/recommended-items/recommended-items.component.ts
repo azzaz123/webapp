@@ -1,5 +1,5 @@
 import { RECOMMENDER_TYPE, SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RecommenderItem } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
@@ -12,7 +12,7 @@ import { RecommendedItemsInitEventEmitter } from '../../interfaces/recommended-i
   templateUrl: './recommended-items.component.html',
   styleUrls: ['./recommended-items.component.scss'],
 })
-export class RecommendedItemsComponent implements OnChanges {
+export class RecommendedItemsComponent implements AfterViewInit {
   @Input() recommendedItems: RecommenderItem[];
   @Output() initRecommendedItemsSlider: EventEmitter<RecommendedItemsInitEventEmitter> = new EventEmitter();
   @Output() clickedItemAndIndexEvent: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
@@ -30,7 +30,7 @@ export class RecommendedItemsComponent implements OnChanges {
 
   constructor(private mapRecommendedItemCardService: MapRecommendedItemCardService) {}
 
-  ngOnChanges() {
+  ngAfterViewInit() {
     if (this.recommendedItems) {
       this.items = this.mapRecommendedItemCardService.mapRecommendedItems(this.recommendedItems).slice(0, 6);
     }

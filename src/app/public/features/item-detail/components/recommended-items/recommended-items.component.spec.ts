@@ -43,7 +43,7 @@ describe('RecommendedItemsComponent', () => {
         RECOMMENDED_ITEM_MOCK,
       ];
 
-      component.ngOnChanges();
+      component.ngAfterViewInit();
       fixture.detectChanges();
     });
 
@@ -86,7 +86,7 @@ describe('RecommendedItemsComponent', () => {
           RECOMMENDED_ITEM_MOCK,
         ];
 
-        component.ngOnChanges();
+        component.ngAfterViewInit();
         fixture.detectChanges();
       });
 
