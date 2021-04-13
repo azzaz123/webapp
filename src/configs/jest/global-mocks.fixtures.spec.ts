@@ -118,39 +118,8 @@ class MockStorage {
   public removeItem = (key) => delete this.store[key];
 }
 
-export class MockIntersectionObserverClass {
-  constructor() {}
-  observe: () => {};
-  root: null;
-  rootMargin: null;
-  thresholds: null;
-  unobserve: () => {};
-  takeRecords: () => {};
-  disconnect: () => {};
-}
-/* export function setupIntersectionObserverMock({
-  root = null,
-  rootMargin = '',
-  thresholds = [],
-  disconnect = () => null,
-  observe = () => null,
-  takeRecords = () => [],
-  unobserve = () => null,
-} = {}): void {
-  class MockIntersectionObserver implements IntersectionObserver {
-    readonly root: Element | null = root;
-    readonly rootMargin: string = rootMargin;
-    readonly thresholds: ReadonlyArray<number> = thresholds;
-    disconnect: () => void = disconnect;
-    observe: (target: Element) => void = observe;
-    takeRecords: () => IntersectionObserverEntry[] = takeRecords;
-    unobserve: (target: Element) => void = unobserve;
-  }
-} */
-
 export const MOCK_LOCALSTORAGE = new MockStorage();
 export const MOCK_SESSIONSTORAGE = new MockStorage();
-export const MOCK_INTERSECTION_OBSERVER = new MockIntersectionObserverClass();
 
 export const MOCK_NAVIGATOR_CONNECTION = {
   rtt: 50,
