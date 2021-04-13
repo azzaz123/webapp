@@ -30,20 +30,14 @@ import { finalize, take } from 'rxjs/operators';
 export class ItemDetailTrackEventsService {
   constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
 
-  public trackFavoriteOrUnfavoriteEvent(item: Item | ItemCard, isPro: boolean, isRecommenededCArd: boolean): void {
+  public trackFavoriteOrUnfavoriteEvent(item: Item | ItemCard, isPro: boolean): void {
     const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
-      name: isRecommenededCArd
-        ? !item.flags.favorite
-          ? ANALYTICS_EVENT_NAMES.FavoriteItem
-          : ANALYTICS_EVENT_NAMES.UnfavoriteItem
-        : item.flags.favorite
-        ? ANALYTICS_EVENT_NAMES.FavoriteItem
-        : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+      name: item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes: {
         itemId: item.id,
         categoryId: item.categoryId,
-        screenId: isRecommenededCArd ? SCREEN_IDS.ItemDetailRecommendationSlider : SCREEN_IDS.ItemDetail,
+        screenId: item instanceof Item ? SCREEN_IDS.ItemDetail : SCREEN_IDS.ItemDetailRecommendationSlider,
         salePrice: item.salePrice,
         isPro: isPro,
         title: item.title,
