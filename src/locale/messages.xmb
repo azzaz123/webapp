@@ -708,6 +708,7 @@
   <msg id="web_upload_pages_car_418"><source>src/app/private/features/upload/pages/upload-car/upload-car.component.html:242</source>Don&apos;t leave anything out. The details are key to selling faster.</msg>
   <msg id="web_upload_pages_car_419"><source>src/app/private/features/upload/pages/upload-car/upload-car.component.html:248,250</source>Photos </msg>
   <msg id="web_upload_pages_car_420"><source>src/app/private/features/upload/pages/upload-car/upload-car.component.html:254,256</source>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.</msg>
+  <msg id="web_upload_pages_car_421"><source>src/app/private/features/upload/pages/upload-car/upload-car.component.html:260</source>Your car is in:</msg>
   <msg id="web_upload_pages_car_604"><source>src/app/private/features/upload/pages/upload-car/upload-car.component.html:264</source>Post Ad</msg>
   <msg id="web_upload_pages_car_605"><source>src/app/private/features/upload/pages/upload-car/upload-car.component.html:265</source>Update</msg>
   <msg id="UploadProductSubmitLoading"><source>src/app/private/features/upload/pages/upload-car/upload-car.component.html:266</source>Uploading... <ph name="INTERPOLATION"/>%</msg>

@@ -258,7 +258,7 @@
   </div>
 
   <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"
-    title="Your car is in:" i18n="@@web_upload_pages_car_421"-title></tsl-location-box>
+    title="Your car is in:" i18n-title="@@web_upload_pages_car_421"></tsl-location-box>
   <div class="row">
     <div class="col-12 col-md-5">
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
