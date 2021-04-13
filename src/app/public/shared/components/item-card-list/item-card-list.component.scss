@@ -6,7 +6,7 @@ $margin: $spacer * 0.75;
   grid-template-columns: repeat($numCols, 1fr);
 }
 
-$sizes: 'xs', 'sm', 'md', 'lg';
+$sizes: 'xs', 'sm', 'md', 'lg', 'xl';
 $numCols: 2, 3, 4, 5;
 
 @each $size in $sizes {
