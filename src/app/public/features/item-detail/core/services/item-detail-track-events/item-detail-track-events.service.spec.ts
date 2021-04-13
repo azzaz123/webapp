@@ -9,7 +9,10 @@ import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
+import { features } from 'process';
 import { of } from 'rxjs';
 
 import { ItemDetailTrackEventsService } from './item-detail-track-events.service';
@@ -59,7 +62,8 @@ describe('ItemDetailTrackEventsService', () => {
       spyOn(service, 'trackFavoriteOrUnfavoriteEvent').and.callThrough();
       spyOn(analyticsService, 'trackEvent');
     });
-    const itemDetail = MOCK_CAR_ITEM_DETAIL;
+    const itemDetail: ItemDetail = MOCK_CAR_ITEM_DETAIL;
+    const itemCard: ItemCard = MOCK_ITEM_CARD;
     describe('of the item not from recommended slider', () => {
       it('should send favorite item event if we favorite item', () => {
         itemDetail.item.flags.favorite = true;
@@ -81,17 +85,17 @@ describe('ItemDetailTrackEventsService', () => {
 
     describe('of the item from recommended slider', () => {
       it('should send favorite item event if we favorite item', () => {
-        itemDetail.item.flags.favorite = true;
+        itemCard.flags.favorite = true;
 
-        service.trackFavoriteOrUnfavoriteEvent(itemDetail.item, itemDetail.user?.featured);
+        service.trackFavoriteOrUnfavoriteEvent(itemCard, MOCK_USER?.featured);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
         expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
       });
       it('should send unfavorite item event if we unfavorite item', () => {
-        itemDetail.item.flags.favorite = false;
+        itemCard.flags.favorite = false;
 
-        service.trackFavoriteOrUnfavoriteEvent(itemDetail.item, itemDetail.user?.featured);
+        service.trackFavoriteOrUnfavoriteEvent(itemCard, MOCK_USER?.featured);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
         expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
