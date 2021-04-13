@@ -3,7 +3,7 @@
     <li class="list-group-item">
       <div>
         <tsl-svg-icon src="/assets/icons/location.svg"></tsl-svg-icon>
-        <span [hidden]="!user.itemDistance" i18n="@@web_chat_components_user_detail_170"="The distance between the user and the item">{{user.itemDistance | number:'1.0-1'}}km from you</span>
+        <span [hidden]="!user.itemDistance" i18n="@@web_chat_components_user_detail_170">{{user.itemDistance | number:'1.0-1'}}km from you</span>
         <span [hidden]="user.itemDistance" i18n="@@web_chat_components_user_detail_567">No location</span>
       </div>
     </li>

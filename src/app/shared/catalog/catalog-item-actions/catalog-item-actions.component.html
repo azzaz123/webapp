@@ -21,7 +21,7 @@
           [disabled]="!itemService.selectedItems.length" i18n="@@web_catalog_item_actions_684">Activate</button>
   <tsl-button [hidden]="selectedStatus !== 'active'" [disabled]="!itemService.selectedItems.length"
               className="btn-primary btn-big btn-feat" id="qa-catalog-feature-pro" (click)="feature()"
-              i18n="@@web_catalog_item_actions_465"="Continue to cart|selected-items-button">Feature</tsl-button>
+              i18n="@@web_catalog_item_actions_465">Feature</tsl-button>
 </div>
 
 <ng-template ngbModalContainer #deleteItemsModal let-c="close" let-d="dismiss">
