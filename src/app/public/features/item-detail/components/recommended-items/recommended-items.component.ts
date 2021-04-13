@@ -1,5 +1,5 @@
 import { RECOMMENDER_TYPE, SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
-import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RecommenderItem } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
@@ -26,33 +26,18 @@ export class RecommendedItemsComponent implements OnChanges {
     sm: 2,
     xs: 2,
   };
-  private;
+  private alreadyRendered: boolean = false;
 
   constructor(private mapRecommendedItemCardService: MapRecommendedItemCardService) {}
-  private alreadyRendered: boolean;
 
   ngOnChanges() {
     if (this.recommendedItems) {
       this.items = this.mapRecommendedItemCardService.mapRecommendedItems(this.recommendedItems).slice(0, 6);
-      console.log('iiii tt');
-      let observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-        console.log('en', entries);
-        this.emitInitRecommendedItemsSlider(entries[0].isIntersecting);
-        console.log('en', entries);
-      });
-      console.log(observer);
-      observer.observe(this.recommendedItemsSlider.nativeElement);
     }
   }
 
-  private emitInitRecommendedItemsSlider(isInView: boolean): void {
-    if (isInView && !this.alreadyRendered) {
-      this.alreadyRendered = true;
-      this.initRecommendedItemsSlider.emit({
-        recommendedItemIds: this.getRecommendedItemIds(this.items),
-        engine: this.getRecommendedItemSearchEngine(),
-      });
-    }
+  public clickedItemAndIndex(event: ClickedItemCard): void {
+    this.clickedItemAndIndexEvent.emit(event);
   }
 
   private getRecommendedItemIds(items: ItemCard[]): string {
@@ -67,7 +52,23 @@ export class RecommendedItemsComponent implements OnChanges {
     }
   }
 
-  public clickedItemAndIndex(event: ClickedItemCard): void {
-    this.clickedItemAndIndexEvent.emit(event);
+  private checkIsRecommenderSliderVisible(element: Element): void {
+    const rect = element.getBoundingClientRect();
+    const viewportWidth: number = window.innerWidth || document.documentElement.clientWidth;
+    const viewportHeight: number = window.innerHeight || document.documentElement.clientHeight;
+    if (rect.right < 0 || rect.bottom < 0 || rect.left > viewportWidth || rect.top > viewportHeight) {
+      return;
+    }
+    if (!this.alreadyRendered) {
+      this.initRecommendedItemsSlider.emit({
+        recommendedItemIds: this.getRecommendedItemIds(this.items),
+        engine: this.getRecommendedItemSearchEngine(),
+      });
+    }
+    this.alreadyRendered = true;
+  }
+
+  @HostListener('window:scroll', ['$event']) onScroll() {
+    this.checkIsRecommenderSliderVisible(this.recommendedItemsSlider.nativeElement);
   }
 }
