@@ -1013,11 +1013,23 @@ describe('UploadProductComponent', () => {
       });
     });
 
-    describe('and has object_type_2', () => {
+    describe('and object_type has children', () => {
       it('should get the sizes for the current object type 2 and gender', () => {
+        const objectTypeId = 465;
         const objectType2Id = 365;
         const gender = 'female';
+        component.objectTypes = [
+          {
+            id: objectTypeId.toString(),
+            name: '',
+            hierarchy: [],
+            has_children: true,
+          },
+        ];
         component.uploadForm.get('extra_info').patchValue({
+          object_type: {
+            id: objectTypeId,
+          },
           object_type_2: {
             id: objectType2Id,
           },
