@@ -1126,4 +1126,7 @@
   <translation id="web_catalog_mark_as_sold_tooltip">Marcar como vendido</translation>
   <translation id="web_catalog_mark_as_reserved_tooltip">Marcar como reservado</translation>
   <translation id="web_catalog_edit_tooltip">Editar</translation>
+  <translation id="web_stats_item_views_tooltip">Visualizaciones</translation>
+  <translation id="web_stats_item_chats_tooltip">Chats</translation>
+  <translation id="web_stats_item_favourites_tooltip">Favoritos</translation>
 </translationbundle>
