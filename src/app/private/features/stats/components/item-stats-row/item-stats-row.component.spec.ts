@@ -1,4 +1,4 @@
-import { ITEM_CONVERSATIONS, ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, MOCK_ITEM_V3 } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM_V3 } from '@fixtures/item.fixtures.spec';
 import { ITEM_STATISTIC_RESPONSE } from '@fixtures/statistics.fixtures.spec';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
@@ -16,7 +16,6 @@ describe('ItemStatsRowComponent', () => {
   let component: ItemStatsRowComponent;
   let fixture: ComponentFixture<ItemStatsRowComponent>;
   let itemStatsService: ItemStatsService;
-  let itemService: ItemService;
 
   beforeEach(
     waitForAsync(() => {
@@ -37,14 +36,6 @@ describe('ItemStatsRowComponent', () => {
               },
             },
           },
-          {
-            provide: ItemService,
-            useValue: {
-              getCounters() {
-                return of(ITEM_COUNTERS_DATA);
-              },
-            },
-          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -56,7 +47,6 @@ describe('ItemStatsRowComponent', () => {
     component = fixture.componentInstance;
     component.item = MOCK_ITEM_V3;
     itemStatsService = TestBed.inject(ItemStatsService);
-    itemService = TestBed.inject(ItemService);
     fixture.detectChanges();
   });
 
@@ -71,19 +61,6 @@ describe('ItemStatsRowComponent', () => {
       component.ngOnInit();
 
       expect(itemStatsService.getStatistics).toHaveBeenCalledWith(MOCK_ITEM_V3.id);
-    });
-
-    it('should call getCounters and set it', () => {
-      spyOn(itemService, 'getCounters').and.callThrough();
-      component.item.views = 0;
-      component.item.favorites = 0;
-
-      component.ngOnInit();
-
-      expect(itemService.getCounters).toHaveBeenCalledWith(MOCK_ITEM_V3.id);
-      expect(component.item.views).toBe(ITEM_VIEWS);
-      expect(component.item.favorites).toBe(ITEM_FAVORITES);
-      expect(component.item.conversations).toBe(ITEM_CONVERSATIONS);
     });
 
     it('should now show the current day stats', () => {

@@ -98,7 +98,7 @@ export class ItemService {
   public getCounters(id: string): Observable<ItemCounters> {
     return this.http
       .get<ItemCounters>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/counters`)
-      .pipe(catchError(() => of({ views: 0, favorites: 0 })));
+      .pipe(catchError(() => of({ views: 0, favorites: 0, conversations: 0 })));
   }
 
   public bulkDelete(type: string): Observable<ItemBulkResponse> {
@@ -408,6 +408,7 @@ export class ItemService {
               const item: Item = this.mapRecordData(i);
               item.views = i.content.views;
               item.favorites = i.content.favorites;
+              item.conversations = i.content.conversations;
               return item;
             });
           }
