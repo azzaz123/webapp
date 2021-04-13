@@ -42,6 +42,7 @@ describe('SearchInfrastructureService', () => {
       service.search(filters).subscribe();
 
       expect(searchApiServiceMock.search).toHaveBeenCalledWith(filters);
+      expect(searchApiServiceMock.search).toHaveBeenCalledTimes(1)
     });
 
     it('should receive items and if is has more items or not', (done) => {

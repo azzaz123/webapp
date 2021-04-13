@@ -5,8 +5,9 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { SearchPagination } from '../../../../interfaces/search-pagination.interface';
+import { FILTER_PARAMETERS_SEARCH } from '../../constants/filter-parameters';
 import { SEARCH_ITEMS_MINIMAL_LENGTH } from '../../constants/search-item-max';
-import { SearchItemMapper, SearchApiItemMapperFactory } from './search-api-item-mapper.factory';
+import { SearchApiItemMapperFactory, SearchItemMapper } from './search-api-item-mapper.factory';
 import { SearchApiUrlFactory, SearchApiUrlSearchOrWall } from './search-api-url.factory';
 import { SearchResponse } from './search-response.interface';
 
@@ -35,7 +36,7 @@ export class SearchAPIService {
   public search(params: FilterParameter[]): Observable<SearchPagination> {
     this.nextPageUrl = null;
 
-    const paramCategoryId: FilterParameter = params.find(({key}: FilterParameter) => key === 'category_ids');
+    const paramCategoryId: FilterParameter = params.find(({key}: FilterParameter) => key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID);
     this.categoryId = paramCategoryId?.value;
     let url = `/${SearchApiUrlFactory(this.categoryId)}/${SearchApiUrlSearchOrWall(params)}`;
 

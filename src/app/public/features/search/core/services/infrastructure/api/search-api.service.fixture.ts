@@ -1,18 +1,19 @@
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { wallParameters } from './search-api-url.factory';
-import { SearchResponse } from './search-response.interface';
-import { SearchCustomerGoodsResponse } from '../customer-goods/search-costumer-goods-response.interface';
+import { FILTER_PARAMETERS_SEARCH } from '../../constants/filter-parameters';
 import { SEARCH_ITEMS_MINIMAL_LENGTH } from '../../constants/search-item-max';
 import { SearchCarResponse } from '../cars/search-car-response';
+import { SearchCustomerGoodsResponse } from '../customer-goods/search-costumer-goods-response.interface';
 import { SearchBaseItemResponse } from '../models/search-base-item.response';
 import { SearchRealEstateResponse } from '../real_estate/search-item-real-state-response';
+import { wallParameters } from './search-api-url.factory';
+import { SearchResponse } from './search-response.interface';
 
 export function FilterParametersWallFactory(categoryId: string): FilterParameter[] {
-  return wallParameters.map((key: string) => ({ key, value: key === 'category_ids' ? categoryId : `${key}-value` }));
+  return wallParameters.map((key: string) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));
 }
 
 export function FilterParametersSearchFactory(categoryId: string, search: string): FilterParameter[] {
-  return [...wallParameters, 'keywords'].map((key: string) => ({ key, value: key === 'category_ids' ? categoryId : `${key}-value` }));
+  return [...wallParameters, 'keywords'].map((key: string) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));
 }
 
 function SearchBaseItemResponseFactory(): SearchBaseItemResponse {
