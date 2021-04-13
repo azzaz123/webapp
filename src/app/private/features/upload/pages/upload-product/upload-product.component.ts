@@ -297,6 +297,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.getSecondObjectTypes(typeOfbOjectId);
 
           if (+this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
+            this.getUploadExtraInfoControl('size').disable();
             this.getSizes();
           }
         } else {
@@ -573,10 +574,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getSizes(): void {
-    const objectTypeId =
-      this.getUploadExtraInfoControl('object_type_2').get('id').value || this.getUploadExtraInfoControl('object_type').get('id').value;
+    const objectTypeId = this.objectTypeHasChildren(this.getUploadExtraInfoControl('object_type').get('id').value?.toString())
+      ? this.getUploadExtraInfoControl('object_type_2').get('id').value
+      : this.getUploadExtraInfoControl('object_type').get('id').value;
     const gender = this.getUploadExtraInfoControl('gender').value;
     this.sizes = [];
+
     if (objectTypeId && gender) {
       this.generalSuggestionsService.getSizes(objectTypeId, gender).subscribe(
         (sizes: IOption[]) => {
@@ -820,5 +823,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       () => null,
       (error: HttpErrorResponse) => this.onError(error)
     );
+  }
+
+  private objectTypeHasChildren(objectTypeId: string): boolean {
+    return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
   }
 }
