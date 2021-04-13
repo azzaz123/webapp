@@ -49,7 +49,7 @@ export class RecommendedItemsComponent implements OnChanges {
       .get(item.ownerId)
       .pipe(take(1))
       .subscribe((user: User) => {
-        this.itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent(item, user && user.featured, true);
+        this.itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent(item, user?.featured);
       });
   }
 }
