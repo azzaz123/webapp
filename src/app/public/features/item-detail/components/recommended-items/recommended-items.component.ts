@@ -68,7 +68,7 @@ export class RecommendedItemsComponent implements OnChanges {
     this.alreadyRendered = true;
   }
 
-  @HostListener('window:scroll', ['$event']) onScroll() {
+  @HostListener('window:scroll', ['$event']) onScroll(): void {
     this.checkIsRecommenderSliderVisible(this.recommendedItemsSlider.nativeElement);
   }
 }
