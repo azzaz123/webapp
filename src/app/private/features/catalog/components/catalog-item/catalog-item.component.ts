@@ -21,9 +21,9 @@ export class CatalogItemComponent implements OnInit {
   public link: string;
   public selectMode = false;
   public tooltipMessages = {
-    markAsSold: $localize`:@@web_catalog_mark_as_sold_tooltip:Mark as sold`,
-    markAsReserved: $localize`:@@web_catalog_mark_as_reserved_tooltip:Mark as reserved`,
-    edit: $localize`:@@web_catalog_edit_tooltip:Edit`,
+    markAsSold: $localize`:@@web_mark_as_sold_tooltip:Mark as sold`,
+    markAsReserved: $localize`:@@web_mark_as_reserved_tooltip:Mark as reserved`,
+    edit: $localize`:@@web_edit_tooltip:Edit`,
   };
 
   constructor(

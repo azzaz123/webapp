@@ -1123,9 +1123,9 @@
   <translation id="web_modal_confirmation_692">Cancelar</translation>
   <translation id="web_all_button_process_693">Cancelar</translation>
   <translation id="web_pro_billing_delete_info_confirmation_modal_694">Cancelar</translation>
-  <translation id="web_catalog_mark_as_sold_tooltip">Marcar como vendido</translation>
-  <translation id="web_catalog_mark_as_reserved_tooltip">Marcar como reservado</translation>
-  <translation id="web_catalog_edit_tooltip">Editar</translation>
+  <translation id="web_mark_as_sold_tooltip">Marcar como vendido</translation>
+  <translation id="web_mark_as_reserved_tooltip">Marcar como reservado</translation>
+  <translation id="web_edit_tooltip">Editar</translation>
   <translation id="web_stats_item_views_tooltip">Visualizaciones</translation>
   <translation id="web_stats_item_chats_tooltip">Chats</translation>
   <translation id="web_stats_item_favourites_tooltip">Favoritos</translation>
