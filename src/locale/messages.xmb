@@ -204,6 +204,9 @@
   <msg id="web_catalog_components_item_108"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:75</source>Feature</msg>
   <msg id="web_catalog_components_item_109"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:104</source>Reactivate</msg>
   <msg id="web_catalog_components_item_640"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:111</source>Pending</msg>
+  <msg id="web_mark_as_sold_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:23</source>Mark as sold</msg>
+  <msg id="web_mark_as_reserved_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:24</source>Mark as reserved</msg>
+  <msg id="web_edit_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:25</source>Edit</msg>
   <msg id="web_catalog_components_checkout_item_556"><source>src/app/private/features/catalog/components/checkout-item/checkout-item.component.html:10</source>days</msg>
   <msg id="web_catalog_components_checkout_item_110"><source>src/app/private/features/catalog/components/checkout-item/checkout-item.component.html:25</source>Not Available</msg>
   <msg id="web_catalog_components_selected_items_111"><source>src/app/private/features/catalog/components/selected-items/selected-items.component.html:11</source>1 item selected</msg>
@@ -615,6 +618,9 @@
   <msg id="web_stats_components_item_row_348"><source>src/app/private/features/stats/components/item-stats-row/item-stats-row.component.html:67</source>This product is Featured</msg>
   <msg id="web_stats_components_item_row_349"><source>src/app/private/features/stats/components/item-stats-row/item-stats-row.component.html:68</source>You will get more views, chats and more interested people.</msg>
   <msg id="web_stats_components_item_row_350"><source>src/app/private/features/stats/components/item-stats-row/item-stats-row.component.html:69</source>Your feature ends on <ph name="INTERPOLATION"/></msg>
+  <msg id="web_stats_item_views_tooltip"><source>src/app/private/features/stats/components/item-stats-row/item-stats-row.component.ts:25</source>Views</msg>
+  <msg id="web_stats_item_chats_tooltip"><source>src/app/private/features/stats/components/item-stats-row/item-stats-row.component.ts:26</source>Chats</msg>
+  <msg id="web_stats_item_favourites_tooltip"><source>src/app/private/features/stats/components/item-stats-row/item-stats-row.component.ts:27</source>Favourites</msg>
   <msg id="web_stats_components_items_351"><source>src/app/private/features/stats/components/items-stats/items-stats.component.html:3</source>Product</msg>
   <msg id="web_stats_components_items_352"><source>src/app/private/features/stats/components/items-stats/items-stats.component.html:6</source>Listed on</msg>
   <msg id="web_stats_components_items_590"><source>src/app/private/features/stats/components/items-stats/items-stats.component.html:9</source>Views</msg>
