@@ -75,9 +75,11 @@ Object.defineProperty(window, 'H', {
   writable: true,
 });
 Object.defineProperty(window, 'IntersectionObserver', {
-  value: GLOBAL_MOCKS.MOCK_INTERSECTION_OBSERVER,
+  value: GLOBAL_MOCKS.MockIntersectionObserverClass,
+  configurable: true,
   writable: true,
 });
+
 Object.defineProperty(navigator, 'connection', {
   value: GLOBAL_MOCKS.MOCK_NAVIGATOR_CONNECTION,
 });
