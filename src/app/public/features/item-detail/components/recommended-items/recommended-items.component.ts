@@ -17,6 +17,7 @@ export class RecommendedItemsComponent implements OnChanges {
   public items: ItemCard[];
   public showDescription = false;
   public columnsConfig: ColumnsConfig = {
+    xl: 3,
     lg: 3,
     md: 3,
     sm: 2,

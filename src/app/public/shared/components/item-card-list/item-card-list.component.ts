@@ -18,9 +18,10 @@ export class ItemCardListComponent {
   @Input() items: ItemCard[];
   @Input() showDescription = true;
   @Input() columnsConfig: ColumnsConfig = {
-    lg: 5,
-    md: 4,
-    sm: 3,
+    xl: 5,
+    lg: 4,
+    md: 3,
+    sm: 2,
     xs: 2,
   };
   @Input() slotsConfig: SlotsConfig;
