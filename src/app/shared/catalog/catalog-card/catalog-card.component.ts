@@ -19,6 +19,14 @@ export class CatalogCardComponent implements OnInit {
   @Output() bumpCancel: EventEmitter<any> = new EventEmitter<any>();
   public link: string;
   public bumpName: string;
+  public tooltipMessages = {
+    markAsSold: $localize`:@@web_mark_as_sold_tooltip:Mark as sold`,
+    markAsReserved: $localize`:@@web_mark_as_reserved_tooltip:Mark as reserved`,
+    edit: $localize`:@@web_edit_tooltip:Edit`,
+    views: $localize`:@@web_stats_item_views_tooltip:Views`,
+    chats: $localize`:@@web_stats_item_chats_tooltip:Chats`,
+    favourites: $localize`:@@web_stats_item_favourites_tooltip:Favourites`,
+  };
 
   constructor(
     public itemService: ItemService,

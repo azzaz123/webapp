@@ -1,4 +1,4 @@
- <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE translationbundle [
 <!ELEMENT translationbundle (translation)*>
 <!ATTLIST translationbundle lang CDATA #REQUIRED>
@@ -19,556 +19,541 @@
   <translation id="deleteConversation">Borrar conversación</translation>
   <translation id="deleteConversationWarning">Se procederá a borrar la conversación.</translation>
   <translation id="archiveConversationWarning">Se procederá a archivar la conversación.</translation>
-  <translation id="2159130950882492111">Cancelar</translation>
+  <translation id="web_chat_modals_block_user_178">Cancelar</translation>
   <translation id="cancelButton">Cancelar</translation>
   <translation id="deleteButton">Borrar</translation>
-  <translation id="7022070615528435141">Borrar</translation>
-  <translation id="20327443157350316">Bloquear usuario</translation>
-  <translation id="5871136368461493241">No podrás enviar o recibir mensajes de este usuario. ¿Deseas continuar?</translation>
-  <translation id="420763834450076269">Bloquear</translation>
-  <translation id="5118689036165223498">Desbloquear usuario</translation>
-  <translation id="2565755719057925105">Podrás volver a enviar y recibir mensajes de este usuario. ¿Deseas continuar?</translation>
-  <translation id="4859202148272511129">Desbloquear</translation>
-  <translation id="3325766019344626759">No hay mensajes</translation>
+  <translation id="web_catalog_components_selected_items_113">Borrar</translation>
+  <translation id="web_chat_modals_block_user_176">Bloquear usuario</translation>
+  <translation id="web_chat_modals_block_user_177">No podrás enviar o recibir mensajes de este usuario. ¿Deseas continuar?</translation>
+  <translation id="web_chat_modals_block_user_179">Bloquear</translation>
+  <translation id="web_chat_modals_unblock_user_191">Desbloquear usuario</translation>
+  <translation id="web_chat_modals_unblock_user_192">Podrás volver a enviar y recibir mensajes de este usuario. ¿Deseas continuar?</translation>
+  <translation id="web_chat_modals_unblock_user_193">Desbloquear</translation>
+  <translation id="web_chat_components_current_conversation_168">No hay mensajes</translation>
   <translation id="newMessages">Nuevos mensajes</translation>
-  <translation id="4095254644079775415" desc="The distance between the user and the item">A <ph name="DISTANCE"><ex>DISTANCE</ex></ph>km de ti</translation>
-  <translation id="9119757647796405986">Sin localización</translation>
-  <translation id="1166265010439249641">Responde en menos de 1 hora</translation>
-  <translation id="1404539941798522798">Responde en menos de 3 horas</translation>
-  <translation id="5927748278732131263">Responde el mismo día</translation>
-  <translation id="6807057680918467236">Responde en 24 horas o más</translation>
-  <translation id="3894950702316166331">Cargando...</translation>
-  <translation id="8998211649643752990">Estamos cargando todos tus mensajes por primera vez. Estarán disponibles antes de que acaben las obras de la Sagrada Família, un abrazo.</translation>
-  <translation id="4814285799071780083">Eliminar</translation>
-  <translation id="4338022632676445411">Vendido</translation>
-  <translation id="8212177249756365917">Eliminar</translation>
-  <translation id="6452372740127749380">Mensajes</translation>
-  <translation id="2821179408673282599">Inicio</translation>
-  <translation id="5847549463396300276">Valora tu experiencia con <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
-  <translation id="4650730844441578299">Haz clic en las estrellas para dejar tu valoración. A más estrellas, mejor experiencia.</translation>
-  <translation id="8149407802234183277">Comenta la valoración</translation>
-  <translation id="7430416142942514215">Publícalo</translation>
-  <translation id="4915431133669985304">Perfil</translation>
-  <translation id="6932865105766151309">Subir</translation>
-  <translation id="4085930761302974863">Favoritos</translation>
-  <translation id="3797778920049399855">Cerrar sesión</translation>
-  <translation id="4053902008669548465">Mi zona</translation>
-  <translation id="3983509092263971640">Mi zona pro</translation>
-  <translation id="4359291232904891489">Marca la localización</translation>
-  <translation id="5371960677736303052">¿Dónde?</translation>
-  <translation id="958176169457402389">Tus productos se verán en:</translation>
-  <translation id="8931167307338687444">Sitúa el punto en una zona donde suelas estar. Esto facilitará que te encuentren usuarios cercanos y que mejore tu experiencia de uso.</translation>
-  <translation id="855735721940425245">¡Enhorabuena!</translation>
-  <translation id="9213119646873056135">Tu(s) producto(s) ha(n) sido destacado(s). Ahora podrás verlo(s) en las primeras posiciones del muro.</translation>
-  <translation id="8982629098121976758">A vender</translation>
-  <translation id="3174905759883607970">Ha ocurrido algo…</translation>
-  <translation id="3979232265698800722">No hemos podido destacar tu producto porque hay un error con la tarjeta de crédito.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Revisa los datos o utiliza otra tarjeta y empieza a destacar.</translation>
-  <translation id="3275068756845590930">Vamos</translation>
-  <translation id="2502391471711660975">Hmmm…</translation>
-  <translation id="6711831572034428010">Ha habido un error. Tu tarjeta bancaria parece sospechosa. ¿Por qué no pruebas con otra?</translation>
-  <translation id="833526722817345312">¡Vale!</translation>
-  <translation id="6811335180251341277">Ha habido un error</translation>
-  <translation id="4140116217223755546">La fecha de caducidad de tu tarjeta es incorrecta. Revísalo y vuelve a probar. </translation>
-  <translation id="8720977247725652816">Aplicar</translation>
-  <translation id="2044384665651917054">TPV… ¿qué?</translation>
-  <translation id="5578025610796640405">Ha habido un error inesperado en el sistema pago.  ¿Por qué no pruebas de nuevo?</translation>
-  <translation id="8766840274158243690">¡Ups!</translation>
-  <translation id="2785911750257412726">Un unicornio desbocado ha desmontado algo. Vuelve a probarlo más tarde. </translation>
-  <translation id="880177930328984754">De acuerdo</translation>
-  <translation id="1295676086551276396">Añadir nueva tarjeta</translation>
-  <translation id="4699023020194351074">Destacar por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</translation>
-  <translation id="4058575476871566236">Publicado</translation>
-  <translation id="5262427597279775777">1 producto seleccionado</translation>
-  <translation id="8061241481597934094"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
-  <translation id="4601810369894625886">Información de tu inmueble</translation>
-  <translation id="8781767917622107949">Información básica</translation>
-  <translation id="1511766279515968094">Marca</translation>
-  <translation id="3937675945889395823">Ej: Seat</translation>
-  <translation id="6532546314500089011">Lo básico: marca.</translation>
-  <translation id="1141886420788473147">Modelo</translation>
-  <translation id="2547360803785971520">Ej: Ibiza</translation>
-  <translation id="1464072562214937907">Año</translation>
-  <translation id="4990206185334832640">De fabricación</translation>
-  <translation id="8894377483833272091">Precio</translation>
-  <translation id="4614938265782792299">Con cariño...</translation>
-  <translation id="8975942198634017778">Dínos cuánto quieres por él que no se lo diremos a nadie ;)</translation>
-  <translation id="4327471061205783634">Moneda</translation>
-  <translation id="5701618810648052610">Título</translation>
-  <translation id="1502561792056358737">Esto es lo que se verá en tu anuncio</translation>
-  <translation id="2374867267744164173">Sin miedo, cuanto más descriptivo, más fácil será que lo encuentren.</translation>
-  <translation id="3180168824839484839">Información de tu vehículo</translation>
-  <translation id="3738144900818451024">Tu coche se verá en:</translation>
-  <translation id="2724055831234181057">Versión</translation>
-  <translation id="8422000809081880557">¿Es alguna versión o serie específica?</translation>
-  <translation id="764453674498400202">Número de plazas</translation>
-  <translation id="4486490403948802296">Escribe un número</translation>
-  <translation id="988756868045673037">¿Cabe toda tu familia o solo el perro?</translation>
-  <translation id="2068484566855301885">Tipo de coche</translation>
-  <translation id="980829858200282983">Pequeño, coupé, sedán, familiar, furgoneta...</translation>
-  <translation id="3817917717199474011">¿Es para hacer una escapadita el finde o para el día a día?</translation>
-  <translation id="5430617499425264578">Kilómetros</translation>
-  <translation id="1955180263634698200">¡Con precisión!</translation>
-  <translation id="8722082542322229824">Motor</translation>
-  <translation id="7493844856700299080">Gasolina</translation>
-  <translation id="1763954588841728713">Diesel</translation>
-  <translation id="3250359485015452319">Eléctrico</translation>
-  <translation id="8258001121894230907">Otros...</translation>
-  <translation id="6234112553577946460">Esto es importante, créenos.</translation>
-  <translation id="3577268427399505619">Cambio</translation>
-  <translation id="2233560223291461480">Manual</translation>
-  <translation id="810888510148304696">Automático</translation>
-  <translation id="4902817035128594900">Descripción</translation>
-  <translation id="4908480064602665904">Cuéntanos más. ¿Usado o nuevo? ¿Rojo o amarillo? ¿Tiene algún golpecito?</translation>
-  <translation id="6236574297221800719">No te dejes nada. Los detalles son clave para vender más rápido.</translation>
-  <translation id="4276238968704226281">Fotos</translation>
-  <translation id="1873519297986539008">Fotos</translation>
-  <translation id="258836646318650091">Puedes arrastrar las imágenes de tu producto aquí. Selecciona y mueve una imagen para cambiar el orden. Máximo 10MB. Sólo aceptamos formatos .jpg.</translation>
-  <translation id="7026441111090698984">Precio no negociable</translation>
-  <translation id="1292901362619782619">Acepto intercambios</translation>
-  <translation id="4770496043619864687">Subir coche</translation>
-  <translation id="4138346261331244869">¿Cómo quedará?</translation>
-  <translation id="4918814479561513634">¿Estas seguro que quieres abandonar esta página?</translation>
-  <translation id="6618892692857491514">Hay información que no has guardado. Si te vas sin guardar perderás los cambios que has hecho. </translation>
-  <translation id="3542042671420335679">No</translation>
-  <translation id="4510233521290203619">Sí, me voy</translation>
-  <translation id="5411836089142777830">¿Cómo te ayudarán los destacados?</translation>
-  <translation id="833919813165214228">Destácalo en tu barrio</translation>
-  <translation id="4721342773618175343">Destácalo en tu provincia</translation>
-  <translation id="4828515169928166764">Destácalo en tu ciudad</translation>
-  <translation id="7083003813535210826">Destácalo en todo el país</translation>
-  <translation id="8890553633144307762">Atrás</translation>
-  <translation id="8260444303636416171">Hago envíos</translation>
-  <translation id="4021752662928002901">Actualizar</translation>
-  <translation id="6622336784189066984">Subir producto</translation>
-  <translation id="5657739434954342535">Borrar producto</translation>
-  <translation id="5455708050129988024">Se borrará permanentemente el producto.</translation>
-  <translation id="321759774936322640">Borrar productos</translation>
-  <translation id="447264229278731832">Se borrarán permanentemente los productos.</translation>
-  <translation id="8607128558364427780">Reservar productos</translation>
-  <translation id="7498605020756139080">Se reservarán los productos.</translation>
-  <translation id="3870006899502072841">Borrar producto de favoritos</translation>
-  <translation id="3870268043917301466">¿Quieres eliminar definitivamente?</translation>
-  <translation id="2874924373232293084">Reservar</translation>
-  <translation id="596181013964941327">Reactivar</translation>
-  <translation id="3762527362373672599">¡Enhorabuena!</translation>
-  <translation id="8914444864521670589">Has vendido <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
-  <translation id="2882903364152951366">¿Quién lo ha comprado?</translation>
-  <translation id="3113301792677314615">Lo he vendido por:</translation>
-  <translation id="2286494898080570401">¡Gracias!</translation>
-  <translation id="2928844379959000123">Tu opinión es muy importante para la<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>comunidad Wallapop.</translation>
-  <translation id="6962699013778688473">Continuar</translation>
-  <translation id="6071814986980529912">Esta vez, ¡véndelo!</translation>
-  <translation id="7814524838753447660">Reactiva tu producto con <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{price * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
-      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> y vuelve a las primeras posiciones.</translation>
-  <translation id="5107282366152603486"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Consigue más visibilidad y véndelo antes.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
-  <translation id="2538912110902686738">Reactivar + visibilidad</translation>
-  <translation id="3244863581909362906">Sólo reactivar que no quiero venderlo más rápido</translation>
-  <translation id="8204176479746810612">Activo</translation>
-  <translation id="4416413576346763682">Pendiente</translation>
-  <translation id="8423596927659875793">No disponible</translation>
-  <translation id="1384194580053922814">Destácalo</translation>
-  <translation id="6261406176927621365">Borrar foto</translation>
-  <translation id="4267028037176582017">Se borrará permanentemente la foto. ¿Estás seguro que quieres proceder?</translation>
-  <translation id="5112037422043971210">Deja tus fotos aquí para subirlas</translation>
-  <translation id="7528717071298145350">Ya has llegado al límite de <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> fotos por producto.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Elimina una foto primero antes de añadir otra.</translation>
-  <translation id="6145572175629887249">Foto principal</translation>
-  <translation id="1526908168288421707">¿Qué subirás?</translation>
-  <translation id="4890891474174650184">En Wallapop hay sitio para (casi) todo</translation>
-  <translation id="7926180204931135155">Algo que ya no necesito</translation>
-  <translation id="7909550640012468315">Un vehículo</translation>
-  <translation id="6822624572232933913">Mis servicios</translation>
-  <translation id="4895100071976641944">Una propiedad</translation>
-  <translation id="8222521338018520589">Es importante que marques bien el tipo de producto o servicio para que lo encuentren el resto de Wallapopers.</translation>
-  <translation id="7036284206110282007">días</translation>
-  <translation id="2595297634596426795">Mis destacados</translation>
-  <translation id="6801638153695046345">Destacado de Barrio</translation>
-  <translation id="7379728362084736907">Destacado de Provincia</translation>
-  <translation id="2789162672363314854">Destacado ciudad</translation>
-  <translation id="2906587845957718064">Barrio</translation>
-  <translation id="1186759635333538896">Provincia</translation>
-  <translation id="2314075913167237221">Ciudad</translation>
-  <translation id="6377139538537882652">Eliminar lista</translation>
-  <translation id="3448462145758383019">Total</translation>
-  <translation id="6581598798517073714">+ Añadir nueva tarjeta</translation>
-  <translation id="7274286978511770772">Comprar</translation>
-  <translation id="2921056091899795948">¿Seguro que quieres darte de baja?</translation>
-  <translation id="6787712303097193375">Nunca es tarde para cambiar de opinión, ¿eh? Piensa que el equipo estará muy triste si te vas :(</translation>
-  <translation id="859827593140377121">Sí, quiero darme de baja</translation>
-  <translation id="3339283489391878454">No, va, quiero seguir con vosotros</translation>
-  <translation id="6908290931448223055">¿Podrías decirnos el motivo por el que quieres darte de baja? Descuida, no se lo diremos a nadie.</translation>
-  <translation id="7818739675790737204">Cuéntanos, que te ha ocurrido...</translation>
-  <translation id="6490688569532630280">Enviar</translation>
-  <translation id="3768927257183755959">Guardar</translation>
-  <translation id="7022993325750262876">Ver mi perfil público</translation>
-  <translation id="1897498190172236951">Subir foto</translation>
-  <translation id="3179148736830644140">Fecha de nacimiento</translation>
-  <translation id="3948439187870398089">Sexo</translation>
-  <translation id="8012344910054029733">Hombre</translation>
-  <translation id="5667840900782067941">Mujer</translation>
-  <translation id="8443942333850081361">Ubicación de tus productos</translation>
-  <translation id="4768749765465246664">Email</translation>
-  <translation id="1431416938026210429">Contraseña</translation>
-  <translation id="2322688793988378029">Quiero darme de baja</translation>
-  <translation id="4284869171317534738">¿Nuevo email?</translation>
-  <translation id="4200745758819613954">Aquí puedes actualizarlo</translation>
-  <translation id="6357315990612654699">Email actual</translation>
-  <translation id="264068562357780835">Email nuevo</translation>
-  <translation id="9216804565932710088">Cambiar email</translation>
-  <translation id="385940743851642574">Para cambiar correctamente tu email necesitaremos que lo confirmes. ¡Ve a tu bandeja de entrada y valida el cambio!</translation>
-  <translation id="9071783025483844562">Actualiza tu contraseña</translation>
-  <translation id="3978297542992522451">Tu seguridad es muy importante ;)</translation>
-  <translation id="5340498030552368470">Contraseña actual</translation>
-  <translation id="3588415639242079458">Nueva contraseña</translation>
-  <translation id="8656126574213649581">Confirmar nueva contraseña</translation>
-  <translation id="8735125837670622187">Aquí podrás ver estadísticas de visualizaciones de tus productos, número de chats y llamas recibidas. Además podrás ver que impacto tienen los destacados en tus métricas.</translation>
-  <translation id="4563965495368336177">Saltar explicación</translation>
-  <translation id="3885497195825665706">Siguiente</translation>
-  <translation id="7160029661601775341">¡Listo!</translation>
-  <translation id="4185227957442923918">Tus Opiniones</translation>
-  <translation id="5263225898611875859">Esto es lo que piensan de ti.</translation>
-  <translation id="5858407943986110221">Tu media</translation>
-  <translation id="5653113390991708232">Vendiste:</translation>
-  <translation id="4179349933130995178">Compraste:</translation>
-  <translation id="6629130724635125976">Por</translation>
-  <translation id="4101941266124151376">el</translation>
-  <translation id="9029286143304711365">Opiniones</translation>
-  <translation id="5327426729320041573">Nadie ha opinado sobre ti porque todavía no has comprado ni vendido nada ¡Espabila!</translation>
-  <translation id="6707361102856436710">Productos</translation>
-  <translation id="7492492990436838508">En esta lista podrás ver todos los productos que has guardado como favoritos</translation>
-  <translation id="4818441514225396186">Subir producto</translation>
-  <translation id="6763447295092579753">Destacando tus productos los harás más visibles para el resto de la comunidad, gracias a sus funciones especiales. ¿Qué te aportará eso? Básicamente que te contacten más personas y lo vendas más rápido. Mira a continuación cuál encaja mejor con tu tipo de productos:</translation>
-  <translation id="3358820219972327972">Destácalo en tu barrio</translation>
+  <translation id="web_chat_components_user_detail_170" desc="The distance between the user and the item">A <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>km de ti</translation>
+  <translation id="web_chat_children_inbox_components_user_component_detail_158">Sin localización</translation>
+  <translation id="web_chat_components_user_response_rate_172">Responde en menos de 1 hora</translation>
+  <translation id="web_chat_components_user_response_rate_173">Responde en menos de 3 horas</translation>
+  <translation id="web_chat_components_user_response_rate_174">Responde el mismo día</translation>
+  <translation id="web_chat_components_user_response_rate_175">Responde en 24 horas o más</translation>
+  <translation id="web_spinner_536">Cargando...</translation>
+  <translation id="web_spinner_537">Estamos cargando todos tus mensajes por primera vez. Estarán disponibles antes de que acaben las obras de la Sagrada Família, un abrazo.</translation>
+  <translation id="web_modal_confirmation_492">Eliminar</translation>
+  <translation id="web_chat_children_item_components_sold_160">Vendido</translation>
+  <translation id="web_favorites_components_item_cart_favorite_200">Eliminar</translation>
+  <translation id="web_components_tabbar_6">Mensajes</translation>
+  <translation id="web_components_tabbar_3">Inicio</translation>
+  <translation id="web_review_modal_502">Valora tu experiencia con <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
+  <translation id="web_review_modal_503">Haz clic en las estrellas para dejar tu valoración. A más estrellas, mejor experiencia.</translation>
+  <translation id="web_review_modal_505">Comenta la valoración</translation>
+  <translation id="web_review_modal_506">Publícalo</translation>
+  <translation id="web_profile_pages_318">Perfil</translation>
+  <translation id="web_components_tabbar_5">Subir</translation>
+  <translation id="web_components_tabbar_4">Favoritos</translation>
+  <translation id="web_catalog_pages_list_148">Cerrar sesión</translation>
+  <translation id="web_components_topbar_9">Mi zona</translation>
+  <translation id="web_components_topbar_10">Mi zona pro</translation>
+  <translation id="web_location_select_501">Marca la localización</translation>
+  <translation id="web_geolocation_497">¿Dónde?</translation>
+  <translation id="web_location_box_498">Tus productos se verán en:</translation>
+  <translation id="web_location_box_499">Sitúa el punto en una zona donde suelas estar. Esto facilitará que te encuentren usuarios cercanos y que mejore tu experiencia de uso.</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_66">¡Enhorabuena!</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_115">Tu(s) producto(s) ha(n) sido destacado(s). Ahora podrás verlo(s) en las primeras posiciones del muro.</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_68">A vender</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_75">Ha ocurrido algo…</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_122">No hemos podido destacar tu producto porque hay un error con la tarjeta de crédito.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Revisa los datos o utiliza otra tarjeta y empieza a destacar.</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_123">Vamos</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_124">Hmmm…</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_125">Ha habido un error. Tu tarjeta bancaria parece sospechosa. ¿Por qué no pruebas con otra?</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_126">¡Vale!</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_127">Ha habido un error</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_128">La fecha de caducidad de tu tarjeta es incorrecta. Revísalo y vuelve a probar. </translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_129">Aplicar</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_130">TPV… ¿qué?</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_131">Ha habido un error inesperado en el sistema pago.  ¿Por qué no pruebas de nuevo?</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_132">¡Ups!</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_133">Un unicornio desbocado ha desmontado algo. Vuelve a probarlo más tarde. </translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_77">De acuerdo</translation>
+  <translation id="web_profile_modal_add_new_subscription_226">Añadir nueva tarjeta</translation>
+  <translation id="web_catalog_pro_modals_credit_card_modal_65">Destacar por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</translation>
+  <translation id="web_catalog_components_item_103">Publicado</translation>
+  <translation id="web_catalog_components_selected_items_111">1 producto seleccionado</translation>
+  <translation id="web_catalog_components_selected_items_112"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> productos seleccionados</translation>
+  <translation id="web_upload_pages_realestate_424">Información de tu inmueble</translation>
+  <translation id="web_upload_pages_car_380">Información básica</translation>
+  <translation id="web_upload_pages_car_381">Marca</translation>
+  <translation id="web_upload_pages_car_384">Ej: Seat</translation>
+  <translation id="web_upload_pages_car_387">Lo básico: marca.</translation>
+  <translation id="web_upload_pages_car_385">Modelo</translation>
+  <translation id="web_upload_pages_car_386">Ej: Ibiza</translation>
+  <translation id="web_upload_pages_car_394">Año</translation>
+  <translation id="web_upload_pages_car_395">De fabricación</translation>
+  <translation id="web_catalog_modals_buy_product_modal_137">Precio</translation>
+  <translation id="web_upload_pages_car_389">Con cariño...</translation>
+  <translation id="web_upload_pages_car_393">Dínos cuánto quieres por él que no se lo diremos a nadie ;)</translation>
+  <translation id="web_upload_pages_car_392">Moneda</translation>
+  <translation id="web_upload_pages_car_396">Título</translation>
+  <translation id="web_upload_pages_car_397">Esto es lo que se verá en tu anuncio</translation>
+  <translation id="web_upload_pages_car_398">Sin miedo, cuanto más descriptivo, más fácil será que lo encuentren.</translation>
+  <translation id="web_upload_pages_car_399">Información de tu vehículo</translation>
+  <translation id="web_upload_pages_car_421">Tu coche se verá en:</translation>
+  <translation id="web_upload_pages_car_400">Versión</translation>
+  <translation id="web_upload_pages_car_403">¿Es alguna versión o serie específica?</translation>
+  <translation id="web_upload_pages_car_404">Número de plazas</translation>
+  <translation id="web_upload_pages_car_405">Escribe un número</translation>
+  <translation id="web_upload_pages_car_406">¿Cabe toda tu familia o solo el perro?</translation>
+  <translation id="web_upload_pages_car_409">Tipo de coche</translation>
+  <translation id="web_upload_pages_car_410">Pequeño, coupé, sedán, familiar, furgoneta...</translation>
+  <translation id="web_upload_pages_car_413">¿Es para hacer una escapadita el finde o para el día a día?</translation>
+  <translation id="web_upload_pages_car_411">Kilómetros</translation>
+  <translation id="web_upload_pages_car_412">¡Con precisión!</translation>
+  <translation id="web_upload_pages_car_414">Motor</translation>
+  <translation id="web_upload_modals_preview_modal_371">Gasolina</translation>
+  <translation id="web_upload_modals_preview_modal_372">Diesel</translation>
+  <translation id="web_upload_modals_preview_modal_373">Eléctrico</translation>
+  <translation id="web_upload_modals_preview_modal_374">Otros...</translation>
+  <translation id="web_upload_pages_car_415">Esto es importante, créenos.</translation>
+  <translation id="web_upload_pages_car_416">Cambio</translation>
+  <translation id="web_upload_modals_preview_modal_369">Manual</translation>
+  <translation id="web_upload_modals_preview_modal_370">Automático</translation>
+  <translation id="web_profile_pages_info_295">Descripción</translation>
+  <translation id="web_upload_pages_car_417">Cuéntanos más. ¿Usado o nuevo? ¿Rojo o amarillo? ¿Tiene algún golpecito?</translation>
+  <translation id="web_upload_pages_car_418">No te dejes nada. Los detalles son clave para vender más rápido.</translation>
+  <translation id="web_upload_pages_car_419">Fotos</translation>
+  <translation id="web_upload_pages_realestate_444">Fotos</translation>
+  <translation id="web_upload_pages_car_420">Puedes arrastrar las imágenes de tu producto aquí. Selecciona y mueve una imagen para cambiar el orden. Máximo 10MB. Sólo aceptamos formatos .jpg.</translation>
+  <translation id="web_upload_modals_preview_modal_375">Precio no negociable</translation>
+  <translation id="web_upload_modals_preview_modal_377">Acepto intercambios</translation>
+  <translation id="web_catalog_pro_pages_list_82">Subir coche</translation>
+  <translation id="web_upload_pages_car_422">¿Cómo quedará?</translation>
+  <translation id="web_confirmation_modal_exit_494">¿Estas seguro que quieres abandonar esta página?</translation>
+  <translation id="web_confirmation_modal_exit_495">Hay información que no has guardado. Si te vas sin guardar perderás los cambios que has hecho. </translation>
+  <translation id="web_catalog_card_461">No</translation>
+  <translation id="web_confirmation_modal_exit_496">Sí, me voy</translation>
+  <translation id="web_catalog_components_bump_tutorial_90">¿Cómo te ayudarán los destacados?</translation>
+  <translation id="web_catalog_pages_checkout_143">Destácalo en tu barrio</translation>
+  <translation id="web_catalog_pages_checkout_144">Destácalo en tu provincia</translation>
+  <translation id="web_catalog_pages_checkout_145">Destácalo en tu ciudad</translation>
+  <translation id="web_catalog_pages_checkout_146">Destácalo en todo el país</translation>
+  <translation id="web_catalog_pro_pages_checkout_extras_86">Atrás</translation>
+  <translation id="web_upload_modals_preview_modal_376">Hago envíos</translation>
+  <translation id="web_upload_modals_preview_modal_368">Actualizar</translation>
+  <translation id="web_upload_modals_preview_modal_367">Subir producto</translation>
+  <translation id="web_modal_confirmation_480">Borrar producto</translation>
+  <translation id="web_modal_confirmation_481">Se borrará permanentemente el producto.</translation>
+  <translation id="web_catalog_item_actions_466">Borrar productos</translation>
+  <translation id="web_catalog_item_actions_467">Se borrarán permanentemente los productos.</translation>
+  <translation id="web_modal_confirmation_482">Reservar productos</translation>
+  <translation id="web_modal_confirmation_483">Se reservarán los productos.</translation>
+  <translation id="web_modal_confirmation_484">Borrar producto de favoritos</translation>
+  <translation id="web_modal_confirmation_485">¿Quieres eliminar definitivamente?</translation>
+  <translation id="web_chat_children_inbox_components_item_component_detail_152">Reservar</translation>
+  <translation id="web_catalog_components_item_109">Reactivar</translation>
+  <translation id="web_catalog_modals_listingfee_confirmation_modal_141">¡Enhorabuena!</translation>
+  <translation id="web_sold_modal_507">Has vendido <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
+  <translation id="web_sold_modal_508">¿Quién lo ha comprado?</translation>
+  <translation id="web_review_modal_504">Lo he vendido por:</translation>
+  <translation id="web_sold_modal_509">¡Gracias!</translation>
+  <translation id="web_sold_modal_510">Tu opinión es muy importante para la<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>comunidad Wallapop.</translation>
+  <translation id="web_sold_modal_511">Continuar</translation>
+  <translation id="web_catalog_modals_buy_product_modal_134">Reactivar + visibilidad</translation>
+  <translation id="web_catalog_components_item_106">Activo</translation>
+  <translation id="web_calls_pages_15">Pendiente</translation>
+  <translation id="web_catalog_components_checkout_item_110">No disponible</translation>
+  <translation id="web_catalog_components_item_108">Destácalo</translation>
+  <translation id="web_upload_modals_remove_confirm_modal_378">Borrar foto</translation>
+  <translation id="web_upload_modals_remove_confirm_modal_379">Se borrará permanentemente la foto. ¿Estás seguro que quieres proceder?</translation>
+  <translation id="web_upload_components_drop_area_363">Deja tus fotos aquí para subirlas</translation>
+  <translation id="web_upload_components_drop_area_364">Ya has llegado al límite de <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> fotos por producto.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Elimina una foto primero antes de añadir otra.</translation>
+  <translation id="web_upload_components_drop_area_365">Foto principal</translation>
+  <translation id="web_upload_components_category_selector_355">¿Qué subirás?</translation>
+  <translation id="web_upload_components_category_selector_356">En Wallapop hay sitio para (casi) todo</translation>
+  <translation id="web_upload_components_category_selector_357">Algo que ya no necesito</translation>
+  <translation id="web_upload_components_category_selector_358">Un vehículo</translation>
+  <translation id="web_upload_components_category_selector_360">Mis servicios</translation>
+  <translation id="web_upload_components_category_selector_359">Una propiedad</translation>
+  <translation id="web_upload_components_category_selector_362">Es importante que marques bien el tipo de producto o servicio para que lo encuentren el resto de Wallapopers.</translation>
+  <translation id="web_catalog_pro_components_cart_extras_28">días</translation>
+  <translation id="web_cart_451">Mis destacados</translation>
+  <translation id="web_cart_452">Destacado de Barrio</translation>
+  <translation id="web_cart_453">Destacado de Provincia</translation>
+  <translation id="web_catalog_pro_components_cart_extras_24">Destacado ciudad</translation>
+  <translation id="web_cart_454">Barrio</translation>
+  <translation id="web_cart_455">Provincia</translation>
+  <translation id="web_catalog_pro_components_cart_extras_26">Ciudad</translation>
+  <translation id="web_catalog_pro_components_cart_extras_23">Eliminar lista</translation>
+  <translation id="web_catalog_pro_components_cart_extras_29">Total</translation>
+  <translation id="web_catalog_pro_components_cart_extras_30">+ Añadir nueva tarjeta</translation>
+  <translation id="web_stripe_card_element_514">Comprar</translation>
+  <translation id="web_profile_modal_unsubscribe_263">¿Seguro que quieres darte de baja?</translation>
+  <translation id="web_profile_modal_unsubscribe_264">Nunca es tarde para cambiar de opinión, ¿eh? Piensa que el equipo estará muy triste si te vas :(</translation>
+  <translation id="web_profile_modal_unsubscribe_265">Sí, quiero darme de baja</translation>
+  <translation id="web_profile_modal_unsubscribe_266">No, va, quiero seguir con vosotros</translation>
+  <translation id="web_profile_modal_unsubscribe_271">¿Podrías decirnos el motivo por el que quieres darte de baja? Descuida, no se lo diremos a nadie.</translation>
+  <translation id="web_profile_modal_unsubscribe_272">Cuéntanos, que te ha ocurrido...</translation>
+  <translation id="web_profile_modal_unsubscribe_273">Enviar</translation>
+  <translation id="web_profile_pages_account_285">Guardar</translation>
+  <translation id="web_profile_pages_317">Ver mi perfil público</translation>
+  <translation id="web_cover_upload_520">Subir foto</translation>
+  <translation id="web_profile_pages_account_281">Fecha de nacimiento</translation>
+  <translation id="web_profile_pages_account_282">Sexo</translation>
+  <translation id="web_profile_pages_account_283">Hombre</translation>
+  <translation id="web_profile_pages_account_284">Mujer</translation>
+  <translation id="web_profile_pages_info_294">Ubicación de tus productos</translation>
+  <translation id="web_profile_pages_account_287">Email</translation>
+  <translation id="web_profile_pages_account_288">Contraseña</translation>
+  <translation id="web_profile_pages_account_289">Quiero darme de baja</translation>
+  <translation id="web_edit_email_modal_522">¿Nuevo email?</translation>
+  <translation id="web_edit_email_modal_523">Aquí puedes actualizarlo</translation>
+  <translation id="web_edit_email_modal_524">Email actual</translation>
+  <translation id="web_edit_email_modal_525">Email nuevo</translation>
+  <translation id="web_edit_email_modal_526">Cambiar email</translation>
+  <translation id="web_edit_email_modal_527">Para cambiar correctamente tu email necesitaremos que lo confirmes. ¡Ve a tu bandeja de entrada y valida el cambio!</translation>
+  <translation id="web_edit_password_modal_528">Actualiza tu contraseña</translation>
+  <translation id="web_edit_password_modal_529">Tu seguridad es muy importante ;)</translation>
+  <translation id="web_edit_password_modal_530">Contraseña actual</translation>
+  <translation id="web_edit_password_modal_531">Nueva contraseña</translation>
+  <translation id="web_edit_password_modal_532">Confirmar nueva contraseña</translation>
+  <translation id="web_dashboard_pages_196">Aquí podrás ver estadísticas de visualizaciones de tus productos, número de chats y llamas recibidas. Además podrás ver que impacto tienen los destacados en tus métricas.</translation>
+  <translation id="web_catalog_components_bump_tutorial_100">Saltar explicación</translation>
+  <translation id="web_catalog_components_bump_tutorial_101">Siguiente</translation>
+  <translation id="web_catalog_components_bump_tutorial_102">¡Listo!</translation>
+  <translation id="web_reviews_pages_332">Tus Opiniones</translation>
+  <translation id="web_reviews_pages_333">Esto es lo que piensan de ti.</translation>
+  <translation id="web_reviews_pages_334">Tu media</translation>
+  <translation id="web_review_item_1">Por</translation>
+  <translation id="web_review_item_2">el</translation>
+  <translation id="web_components_sidebar_449">Opiniones</translation>
+  <translation id="web_reviews_pages_336">Nadie ha opinado sobre ti porque todavía no has comprado ni vendido nada ¡Espabila!</translation>
+  <translation id="web_favorites_pages_204">Productos</translation>
+  <translation id="web_favorites_pages_206">En esta lista podrás ver todos los productos que has guardado como favoritos</translation>
+  <translation id="web_components_topbar_11">Subir producto</translation>
+  <translation id="web_catalog_components_bump_tutorial_91">Destacando tus productos los harás más visibles para el resto de la comunidad, gracias a sus funciones especiales. ¿Qué te aportará eso? Básicamente que te contacten más personas y lo vendas más rápido. Mira a continuación cuál encaja mejor con tu tipo de productos:</translation>
+  <translation id="web_catalog_components_bump_tutorial_92">Destácalo en tu barrio</translation>
   <translation id="BumpTutorialAreaDescription">Sé más visible entre los que te rodean. Sube tu producto a las primeras posiciones del muro y promociónalo en tu zona.</translation>
-  <translation id="23518581647153834">desde</translation>
-  <translation id="5159395752955167009">Destácalo en tu ciudad</translation>
+  <translation id="web_catalog_components_bump_tutorial_93">desde</translation>
+  <translation id="web_catalog_components_bump_tutorial_94">Destácalo en tu ciudad</translation>
   <translation id="BumpTutorialCityDescription">Sé más visible en toda tu ciudad. Sube tu producto a las primeras posiciones del muro y promociónalo en tu ciudad.</translation>
-  <translation id="5670102462972301487">Destácalo en todo el país</translation>
-  <translation id="3737564338592079354">El más potente de todos nuestros destacados. Tu producto se verá en todo el país sin importar la distancia y aparecerá diferenciado del muro, dándote visibilidad más allá de tu zona. </translation>
-  <translation id="6730295275086165248">Descubre más ventajas</translation>
-  <translation id="4213947433233162088">Zonas especiales para tu producto</translation>
-  <translation id="2483251316426820393">Tus productos Destacados aparecerán en zonas exclusivas y bien diferenciadas del muro, que te darán más visibilidad y preferencia respecto a otros productos.</translation>
-  <translation id="4532380494593950343">Aquí podrás ver y editar los datos de tu perfil</translation>
-  <translation id="6938753357996446484">Tus favoritos</translation>
-  <translation id="1339317612974362100">favoritos</translation>
-  <translation id="6799485957303243139">favorito</translation>
-  <translation id="6306441078838263413">opiniones</translation>
-  <translation id="442085080206895883">productos</translation>
-  <translation id="776785241867401546">producto</translation>
-  <translation id="994157966875519838">opinión</translation>
+  <translation id="web_catalog_components_bump_tutorial_95">Destácalo en todo el país</translation>
+  <translation id="web_catalog_components_bump_tutorial_96">El más potente de todos nuestros destacados. Tu producto se verá en todo el país sin importar la distancia y aparecerá diferenciado del muro, dándote visibilidad más allá de tu zona. </translation>
+  <translation id="web_catalog_components_bump_tutorial_97">Descubre más ventajas</translation>
+  <translation id="web_catalog_components_bump_tutorial_98">Zonas especiales para tu producto</translation>
+  <translation id="web_catalog_components_bump_tutorial_99">Tus productos Destacados aparecerán en zonas exclusivas y bien diferenciadas del muro, que te darán más visibilidad y preferencia respecto a otros productos.</translation>
+  <translation id="web_profile_pages_316">Aquí podrás ver y editar los datos de tu perfil</translation>
+  <translation id="web_favorites_pages_201">Tus favoritos</translation>
+  <translation id="web_favorites_pages_202">favoritos</translation>
+  <translation id="web_favorites_pages_203">favorito</translation>
+  <translation id="web_profile_pages_322">opiniones</translation>
+  <translation id="web_catalog_pages_list_150">productos</translation>
+  <translation id="web_catalog_pages_list_151">producto</translation>
+  <translation id="web_reviews_pages_335">opinión</translation>
   <translation id="yourMessages">Tus Mensajes</translation>
-  <translation id="4749295647449765550">Procesado</translation>
-  <translation id="2020278898288143668">En venta</translation>
-  <translation id="8753092784115704500">Procesar todo</translation>
-  <translation id="4965764680155209445">Se marcarán todos los elementos en la página como Procesados.</translation>
-  <translation id="6570363013146073520">Panel</translation>
-  <translation id="5762151072276461448">Llamadas</translation>
-  <translation id="7911416166208830577">Ayuda</translation>
-  <translation id="4588618843305891254">Tu Catálogo</translation>
-  <translation id="2157586494270826789">¿Qué son los extras?</translation>
-  <translation id="9078334813317415148">Destacados ciudad</translation>
-  <translation id="308057973020043316">Destacados país</translation>
-  <translation id="1427434561610422238">Ahorra un <ph name="INTERPOLATION"><ex>{{ pack.discount }}</ex></ph>% </translation>
-  <translation id="3249513483374643425">Añadir</translation>
-  <translation id="4669498559280449685">Destacado país</translation>
-  <translation id="379883361840792630">Destacados extras</translation>
-  <translation id="7570446684738490913">Destacados extras de 24 horas</translation>
-  <translation id="2458848059908306406">Teléfono</translation>
-  <translation id="857364676078926106">Horario apertura</translation>
-  <translation id="6883076399412251073">Plan actual: Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.listing.quantity}}</ex></ph></translation>
-  <translation id="2732498404411727211">Aún no estas suscrito a ningún plan.</translation>
-  <translation id="4371626830398169808">Puedes publicar hasta <ph name="INTERPOLATION"><ex>{{bump.quantity}}</ex></ph> coches</translation>
-  <translation id="7154496186015922312">Plan personalizado</translation>
-  <translation id="2016810884599586784">Contáctanos para que te hagamos un plan a medida</translation>
-  <translation id="5736913742704520146">Destacado ciudad</translation>
-  <translation id="1387231030668423981">Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.bump.total}}</ex></ph> ciudad</translation>
-  <translation id="1906307008278702045">El plan de ciudad te permite destacar tus coches en tu ciudad y aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización diferente y aparecerás en la zona de destacados en toda tu ciudad.</translation>
-  <translation id="6703947649972852818">Destacados</translation>
-  <translation id="5540010184241331088">Ahorra un <ph name="INTERPOLATION"><ex>{{bump.discount}}</ex></ph>%</translation>
-  <translation id="2126069250654725782">Destacado país</translation>
-  <translation id="251613711454912353">Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.national.total}}</ex></ph> país</translation>
-  <translation id="7589031160907418094">El plan de país te permite destacar tus coches a nivel nacional y aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización diferente y aparecerás en la zona de destacados en todo el país.</translation>
-  <translation id="1144407473317535723">Suscríbete</translation>
-  <translation id="5868024112393513368">Cuéntame más sobre las opciones de visibilidad</translation>
-  <translation id="2303735769987845467">Productos de visibilidad</translation>
-  <translation id="5130627671872052700">Destácalo en tu ciudad</translation>
-  <translation id="1768872655561111284">Aparece en las primeras posiciones en el muro. Tu producto tendrá un diseño diferente en el muro. Aparecerás en la zona de destacados en toda tu ciudad.</translation>
-  <translation id="994112968931678611">Destácalo en tu país</translation>
-  <translation id="6008122510223331138">Aparecerás en la zona de destacados en todo el país. Tu producto tendrá un diseño diferente en el muro. Aparece en las primeras posiciones en el muro</translation>
-  <translation id="7413249870341285211">Contacta con nosotros para más información</translation>
-  <translation id="4662529977781351630">Llamadas</translation>
-  <translation id="4812531333997465">Aquí verás y podras gestionar las llamadas recibidas, las perdidas y los teléfonos que te han compartido</translation>
-  <translation id="8953033926734869941">Nombre</translation>
-  <translation id="3262236020277300799">Teléfono</translation>
-  <translation id="3973931101896534797">Fecha</translation>
-  <translation id="7410432243549869948">Duración</translation>
-  <translation id="1101605949675282361">Todavía no tienes llamadas</translation>
-  <translation id="7239750919884229270">Actualizado</translation>
-  <translation id="708449889891136724"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
-  <translation id="5322473252816589112">Desactivar</translation>
-  <translation id="4759723562137600498">Activar</translation>
-  <translation id="13886945388572438">Destácalo</translation>
-  <translation id="5943346117221479516">Desactivar productos</translation>
-  <translation id="1888437309536533541">Los productos seleccionados serán marcados como pendientes</translation>
-  <translation id="3576739165178660027">tu plan</translation>
-  <translation id="8756155295186418998">Plan Profesional</translation>
-  <translation id="4154831356233082418">Disponibles</translation>
-  <translation id="1859131936150262113">Inactivos</translation>
-  <translation id="7697915584663780042">visibilidad</translation>
-  <translation id="5439433189125089418">Plan Ciudad</translation>
-  <translation id="3955868613858648955">Disponibles</translation>
-  <translation id="2882470259260755892"> <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
-  <translation id="5092371717305178267">Plan País</translation>
-  <translation id="4772127996106888369">No tienes un Plan País</translation>
-  <translation id="1466012768716286509">Apúntate</translation>
-  <translation id="6463509780873643723"> <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
-  <translation id="9054202731560341408">En uso</translation>
-  <translation id="3286725018134496844">Ya tienes tus destacados extras disponibles para que los puedas utilizar.</translation>
-  <translation id="7542752854018206709">Tu compra no se ha podido realizar porque algo ha ido mal con la tarjeta. Comprueba y prueba otra vez. </translation>
-  <translation id="7392255340123577556">No tienes un Plan de Ciudad</translation>
-  <translation id="6850144876798655647">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
-  <translation id="2246851749264196483">Gestionar mi suscripción</translation>
-  <translation id="7122356013178226936">Estas intentando destacar coches que ya tienes planificados</translation>
-  <translation id="4011333478005344361">Destacar los productos disponibles</translation>
-  <translation id="4701510938988860546">Volver atrás para cancelar bumps</translation>
-  <translation id="3339663802248788155">Comprar extras</translation>
-  <translation id="5272763997595694217">Cancelar Autorenovados</translation>
-  <translation id="291347435854981703">Seguro que quieres cancelar el autorenovado para este producto?</translation>
-  <translation id="2807800733729323332">Sí</translation>
-  <translation id="8497824097226681583">Inactivos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="4403347238652124439">Vendidos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="516176798986294299">País</translation>
-  <translation id="3133191810308229654">Resumen de tus destacados</translation>
-  <translation id="1270706063203110386">No has planificado aún</translation>
-  <translation id="3598887185953670111">país</translation>
-  <translation id="9157216793820090491">Aplicar destacados</translation>
-  <translation id="888341446683346521">Fecha de inicio</translation>
-  <translation id="126074860850048964">Fecha de fin</translation>
-  <translation id="4391289919356861627">Aplicar</translation>
-  <translation id="6888797559367695264">Saldo</translation>
-  <translation id="44001008918173539">Planificados de Ciudad</translation>
-  <translation id="8307062044109434285">Planificados de País</translation>
-  <translation id="9139280231181462">ciudad</translation>
-  <translation id="7608224812897171071"> planificados</translation>
-  <translation id="4464028962645674576">Activos <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>/<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="6474953774520959911">Los coches que están planeados no pueden ser destacados de nuevo. Puedes cancelar los destacados para estos productos o continuar destacando los otros.</translation>
-  <translation id="4807588143683316694">Los coches que están planeados no pueden ser destacados de nuevo.</translation>
-  <translation id="445243100567221931">Ok, entiendo</translation>
-  <translation id="428164738594731840">Cancelar</translation>
-  <translation id="7166295046269696440">Desde <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> a <ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
-  <translation id="7291421467944217279">Activar coches</translation>
-  <translation id="1968377313585576070">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
-  <translation id="4624651686544699977">Puedes activar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
-  <translation id="4862629622121675984"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
-  <translation id="3780659623990720220"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
-  <translation id="1034935109316471792">Ya has aplicado los destacados a tus coches.</translation>
-  <translation id="53603691019051493">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
-  <translation id="6348395677948023023">Subir coche</translation>
-  <translation id="8458658926966860767">¿Estás seguro que quieres eliminar la información de facturación? </translation>
-  <translation id="7092318893814699678">Sí, estoy seguro/a</translation>
-  <translation id="773668064257926548">Eliminar tarjeta</translation>
-  <translation id="8843627277100451781">¿Estas seguro que quieres eliminar la tarjeta?</translation>
-  <translation id="7368172072093620772">Tus estadísticas</translation>
-  <translation id="2734780694152757859">Ver más</translation>
-  <translation id="8778531687214591857">Has procesado todos los contactos pendientes. ¡Buen trabajo!</translation>
-  <translation id="5554592740021607017">Últimos 12 meses</translation>
-  <translation id="466090356732378705">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="7514254130085804538">Marcar como vendido</translation>
-  <translation id="853408948668135550">Marcar como reservado</translation>
-  <translation id="7585826646011739428">Editar</translation>
-  <translation id="7990122896525380062">Selecciona otra marca</translation>
-  <translation id="6589788805402268888">Selecciona una marca predefinida</translation>
-  <translation id="6806883447514569994">Tu centro de ayuda</translation>
-  <translation id="7002268576514991178">Aquí esperemos que encuentres las respuestas a todas tus preguntas</translation>
-  <translation id="606929755258304715">Detalles de contacto</translation>
-  <translation id="8232450894993705823">Aquí tienes los detalles de cómo contactar con nuestro departamento comercial o el de soporte</translation>
-  <translation id="4907869765185411377">Gestión de suscripciones:</translation>
-  <translation id="5871405940994162095">Ayuda o incidencia:</translation>
-  <translation id="4039809737462883261">Lunes a jueves de 10:00 a 18:00</translation>
-  <translation id="4911360466860911169">Viernes de 09:00 a 15:00</translation>
-  <translation id="2368160689121002750">¿Alquiler o venta?</translation>
-  <translation id="6631700184695487302">Tipo de espacio</translation>
-  <translation id="535619815544108850">Superfície m2</translation>
-  <translation id="5611592591303869712">Estado</translation>
-  <translation id="5776258208162504805">Nº de habitaciones</translation>
-  <translation id="8139648533150237069">Nº de baños</translation>
-  <translation id="4750537799485477734">Características de la casa</translation>
-  <translation id="6250433850508570264">Cuéntanos más acerca de tu espacio</translation>
-  <translation id="325652884617305550">Localización del inmueble</translation>
-  <translation id="4551195994779724664">Mostrar dirección apróximada de tu inmueble</translation>
-  <translation id="87397333944060990">¿Tu inmueble es para alquilar o para vender?</translation>
-  <translation id="4222698529756167847">¿Qué tipo de inmueble es?</translation>
-  <translation id="8792574244784521102">Añade un precio justo y la superficie en m2. Dínos también en qué estado se encuentra la propiedad.</translation>
-  <translation id="2249392835431463782">¿Cuántas habitaciones y baños tiene?</translation>
-  <translation id="6916262870833373718">Cosas que le gusta saber a nuestros usuarios...</translation>
-  <translation id="1584726871995413701">Cada detalle cuenta, ¡así que cuéntanos más!</translation>
-  <translation id="3558440989058417740">Sitúa el punto en una zona donde está la propiedad.</translation>
-  <translation id="1660800252915157371">saldo</translation>
-  <translation id="6315786827665033981">Total a pagar</translation>
-  <translation id="5378722151309930038">Comprar más wallacoins</translation>
-  <translation id="8964250385363025364">¡Productos Destacados!</translation>
-  <translation id="4568163159205829962">Todo ha ido bien y tus productos ya son más visibles. ¡Ahora a venderlo todo!</translation>
-  <translation id="3799187930195457932">Has usado</translation>
-  <translation id="5579960282842930509">Y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
-  <translation id="3834459376438494911">Y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> de saldo</translation>
-  <translation id="5880798667461104338">Comprar más saldo</translation>
-  <translation id="8191075807274604024">Ir a mi catálogo</translation>
-  <translation id="5269877616047992907">Que gastas</translation>
-  <translation id="7484614059925376312">Que te faltan</translation>
-  <translation id="6181907632373133266">Chats</translation>
-  <translation id="2123659921722214537">Visualizaciones</translation>
-  <translation id="1895957424873987405">Empleo</translation>
-  <translation id="1666676372989024280">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
-  <translation id="3938280541945338173">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> de saldo</translation>
-  <translation id="349473182974314723">Tu producto se ha reactivado correctamente a Wallapop y ha subido a las primeras posiciones</translation>
-  <translation id="6818519335368680373">Número de puertas</translation>
-  <translation id="1673708681290091875">Caballos</translation>
-  <translation id="4239962849036412221">Selecciona otra versión</translation>
-  <translation id="1201618934317428295">Selecciona una versión predefinida</translation>
-  <translation id="4088311569349098646">Estadísticas</translation>
-  <translation id="605166699517966750">Echemos cuatro números... Controla cuáles de tus productos tienen más éxito para mejorar tus ventas.</translation>
-  <translation id="7616770651914901276">Producto</translation>
-  <translation id="2868602391152223921">Fecha de publicación</translation>
-  <translation id="292531598178810581">Estadísticas de la semana</translation>
-  <translation id="7201983182105391783">Pon en forma tu anuncio</translation>
-  <translation id="8983319195885091038">Mejora los números de tu anuncio. A más visitas, ¡más ventas! Destaca tu producto</translation>
-  <translation id="6818764209697915477">Destácalo desde <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></translation>
-  <translation id="6821183586555063962">Este producto está Destacado</translation>
-  <translation id="3879651736105644738">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
-  <translation id="7053754921723483950">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentConfig}}</ex></ph></translation>
-  <translation id="8413861205232330672">Todavía no disponemos de datos para este producto</translation>
-  <translation id="1900996506417052092">¡Vas a contactar con un Profesional! Para ofrecerte un servicio más personalizado, ¿podrías dejarnos un teléfono para que te llamemos?</translation>
-  <translation id="5694886960613125934">Vamos a hablarlo: </translation>
-  <translation id="305827802561975907">Lo que debes saber:</translation>
-  <translation id="807686572653733419">El hecho de facilitar tu número de teléfono a través del formulario web implica que aceptas el tratamiento de dicho dato en los términos que a continuación se detallan. </translation>
-  <translation id="430278916884204896">Wallapop, S.L, (en adelante, Wallapop), en condición de responsable del tratamiento, tratará el número de teléfono proporcionado con el fin de comunicarlo a un usuario profesional ajeno a la plataforma Wallapop (un concesionario), el cual, posteriormente, contactará por teléfono contigo a efectos de informarte sobre sus productos/servicios.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>La base legal para el tratamiento del mencionado dato es el consentimiento que has prestado vinculado al hecho de haber proporcionado, libremente, tu número de teléfono a través del formulario web.  El dato personal se conservará mientras no solicites su supresión. Una vez solicitada la supresión, el dato se conservará bloqueado impidiendo su tratamiento, excepto para la puesta a disposición del dato a los jueces y tribunales, el Ministerio Fiscal o las Administraciones Públicas competentes, para la exigencia de posibles responsabilidades derivadas del tratamiento y solo por el plazo de prescripción de las mismas (generalmente, 5 años). Una vez transcurrido el indicado periodo de tiempo, el dato se eliminará.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Podrás ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos, así como la revocación, en cualquier momento, del consentimiento prestado, ante Wallapop, CIF nº B-66.04.9057, en la Calle Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Podrás también ejercer tus derechos mediante comunicación dirigida a: privacidad@wallapop.com. Finalmente, te recordamos que puedes dirigir una reclamación ante la Agencia Española de Protección de Datos, si consideras que Wallapop ha vulnerado tus derechos en materia de protección de datos.</translation>
-  <translation id="5784720522096888528">Estos campos son para los usuarios PROS</translation>
-  <translation id="976362268569732073">Tus productos se verán más porque estarán en las primeras posiciones de las búsquedas</translation>
-  <translation id="2615367215367851425">Los compradores podrán guardar tu tienda / perfil como favorito</translation>
-  <translation id="834481573787357193">Los compradores podrán ver en tu perfil el teléfono y web para contactar fácilmente</translation>
-  <translation id="9213743536713966070">Tendrás una descripción de tu tienda o servicio y su situación</translation>
-  <translation id="4670889551195648197">Tu perfil tendrá un diseño diferente y ¡destacará!</translation>
-  <translation id="7373818560498277711">Tus productos no caducarán nunca</translation>
-  <translation id="2618743771935093938">Información personal</translation>
-  <translation id="7679042812456775772">Información pública</translation>
-  <translation id="3004455960309356224">Información cuenta</translation>
-  <translation id="3202305721451114390">Deja tu teléfono...</translation>
-  <translation id="5433688037539750263">Tus productos</translation>
-  <translation id="7811210420459773233">¿Seguro que quieres darte de baja de Wallapop?</translation>
-  <translation id="475161398925564146">Te estás dando de baja pero tienes activa una suscripción en Wallapop. Para cancelarla, deberás hacerlo a través de la Play Store o la App Store.</translation>
-  <translation id="1468205032926382389">Dame de baja y tramitaré la cancelación</translation>
-  <translation id="6555865224397311626">Vale, me lo pienso mejor</translation>
-  <translation id="351850805832815905">Perfiles</translation>
-  <translation id="8518412285806135836">En este listado puedes ver todos los perfiles que has favoriteado.</translation>
-  <translation id="5556202995949734730">El perfil será eliminado de los favoritos.</translation>
-  <translation id="968107342863651775">Este perfil ya no está destacado.</translation>
-  <translation id="1918694988070405915">Si lo eliminas no lo podrás favoritear de nuevo.</translation>
-  <translation id="7078772344681242222">Elimina el perfil destacado de los favoritos.</translation>
-  <translation id="2652477817167335614">Publica tu coche</translation>
-  <translation id="7588966777090643410">Tu coche esta publicado por 60 días. Lo encontrarás en tu catálogo.</translation>
-  <translation id="2323764505157256373">Reactiva tu producto</translation>
-  <translation id="5501995834284128332">Para poder ver estadísticas de tu producto reactívalo para que los demás usuarios lo vean y puedan contactarte.</translation>
-  <translation id="495907666381542902">En este momento no tienes destacados disponibles.</translation>
-  <translation id="397588615020669463">Si al llegar la fecha programada tienes destacados se te aplicará.</translation>
-  <translation id="7912483235847223622">Comprar Extras</translation>
-  <translation id="2600789092654025484">Tu producto se ha destacado correctamente para hoy.</translation>
-  <translation id="4472894989449368622">Se comprobará diariamente si tienes destacados disponibles para tus programados.</translation>
-  <translation id="4469663920044009823">Publica tu producto</translation>
-  <translation id="5448941415082762589">Para poder ver estadísticas de tu producto publícalo para que los demás usuarios lo vean y puedan contactarte.</translation>
-  <translation id="2828231996579923086">Aceptamos formatos .jpg y mínimo 400 x 400px</translation>
-  <translation id="2099215062285114503">Cambiar foto</translation>
-  <translation id="3395733106362662025">Imágenes de perfil</translation>
-  <translation id="5064069563768684657">Foto principal</translation>
-  <translation id="8493154674675875451">Foto de portada</translation>
-  <translation id="8871965642938314035">(<ph name="INTERPOLATION"><ex>{{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}}</ex></ph> planeado)</translation>
-  <translation id="5342432350421167093">Nombre</translation>
-  <translation id="3586674587150281199">Apellidos</translation>
-  <translation id="1061832772714507183">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_TSL_SVG_ICON"><ex>&lt;tsl-svg-icon&gt;</ex></ph><ph name="CLOSE_TAG_TSL_SVG_ICON"><ex>&lt;/tsl-svg-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="792930787826735850">Tu perfil</translation>
-  <translation id="4086606389696938932">Cuenta</translation>
-  <translation id="5722353260643724736">Método de pago</translation>
-  <translation id="3339021787040924237">Buscar en Todas las categorías</translation>
+  <translation id="web_calls_pages_16">Procesado</translation>
+  <translation id="web_chat_children_inbox_components_item_for_sell_155">En venta</translation>
+  <translation id="web_calls_pages_17">Procesar todo</translation>
+  <translation id="web_all_button_process_516">Se marcarán todos los elementos en la página como Procesados.</translation>
+  <translation id="web_components_sidebar_447">Panel</translation>
+  <translation id="web_dashboard_pages_198">Llamadas</translation>
+  <translation id="web_components_sidebar_450">Ayuda</translation>
+  <translation id="web_components_sidebar_448">Tu Catálogo</translation>
+  <translation id="web_catalog_pro_pages_checkout_extras_87">¿Qué son los extras?</translation>
+  <translation id="web_catalog_pro_pages_checkout_extras_88">Destacados ciudad</translation>
+  <translation id="web_catalog_pro_pages_checkout_extras_89">Destacados país</translation>
+  <translation id="web_catalog_pro_components_checkout_extras_item_43">Ahorra un <ph name="INTERPOLATION"><ex>{{ pack.discount }}</ex></ph>% </translation>
+  <translation id="web_catalog_pro_components_checkout_extras_item_44">Añadir</translation>
+  <translation id="web_catalog_pro_components_cart_extras_25">Destacado país</translation>
+  <translation id="web_catalog_pro_components_cart_extras_22">Destacados extras</translation>
+  <translation id="web_catalog_pro_components_checkout_extras_item_42">Destacados extras de 24 horas</translation>
+  <translation id="web_profile_pages_info_297">Teléfono</translation>
+  <translation id="web_profile_pages_info_296">Horario apertura</translation>
+  <translation id="web_profile_pages_pro_subscription_299">Plan actual: Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.listing.quantity}}</ex></ph></translation>
+  <translation id="web_profile_pages_pro_subscription_300">Aún no estas suscrito a ningún plan.</translation>
+  <translation id="web_profile_pages_pro_subscription_301">Puedes publicar hasta <ph name="INTERPOLATION"><ex>{{bump.quantity}}</ex></ph> coches</translation>
+  <translation id="web_profile_pages_pro_subscription_304">Plan personalizado</translation>
+  <translation id="web_profile_pages_pro_subscription_305">Contáctanos para que te hagamos un plan a medida</translation>
+  <translation id="web_profile_pages_pro_subscription_306">Destacado ciudad</translation>
+  <translation id="web_profile_pages_pro_subscription_307">Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.bump.total}}</ex></ph> ciudad</translation>
+  <translation id="web_profile_pages_pro_subscription_308">El plan de ciudad te permite destacar tus coches en tu ciudad y aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización diferente y aparecerás en la zona de destacados en toda tu ciudad.</translation>
+  <translation id="web_profile_pages_pro_subscription_309">Destacados</translation>
+  <translation id="web_profile_pages_pro_subscription_310">Ahorra un <ph name="INTERPOLATION"><ex>{{bump.discount}}</ex></ph>%</translation>
+  <translation id="web_profile_pages_pro_subscription_311">Destacado país</translation>
+  <translation id="web_profile_pages_pro_subscription_312">Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.national.total}}</ex></ph> país</translation>
+  <translation id="web_profile_pages_pro_subscription_313">El plan de país te permite destacar tus coches a nivel nacional y aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización diferente y aparecerás en la zona de destacados en todo el país.</translation>
+  <translation id="web_profile_pages_pro_subscription_302">Suscríbete</translation>
+  <translation id="web_profile_pages_pro_subscription_314">Cuéntame más sobre las opciones de visibilidad</translation>
+  <translation id="web_profile_modal_visibility_products_274">Productos de visibilidad</translation>
+  <translation id="web_profile_modal_visibility_products_275">Destácalo en tu ciudad</translation>
+  <translation id="web_profile_modal_visibility_products_276">Aparece en las primeras posiciones en el muro. Tu producto tendrá un diseño diferente en el muro. Aparecerás en la zona de destacados en toda tu ciudad.</translation>
+  <translation id="web_profile_modal_visibility_products_277">Destácalo en tu país</translation>
+  <translation id="web_profile_modal_visibility_products_278">Aparecerás en la zona de destacados en todo el país. Tu producto tendrá un diseño diferente en el muro. Aparece en las primeras posiciones en el muro</translation>
+  <translation id="web_profile_modal_visibility_products_279">Contacta con nosotros para más información</translation>
+  <translation id="web_calls_pages_13">Llamadas</translation>
+  <translation id="web_calls_pages_14">Aquí verás y podras gestionar las llamadas recibidas, las perdidas y los teléfonos que te han compartido</translation>
+  <translation id="web_profile_pages_info_293">Nombre</translation>
+  <translation id="web_calls_pages_19">Teléfono</translation>
+  <translation id="web_calls_pages_18">Fecha</translation>
+  <translation id="web_calls_pages_20">Duración</translation>
+  <translation id="web_calls_pages_21">Todavía no tienes llamadas</translation>
+  <translation id="web_catalog_card_456">Actualizado</translation>
+  <translation id="web_catalog_item_actions_463"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> productos seleccionados</translation>
+  <translation id="web_catalog_components_selected_items_114">Desactivar</translation>
+  <translation id="web_catalog_components_item_107">Activar</translation>
+  <translation id="web_catalog_item_actions_465">Destácalo</translation>
+  <translation id="web_catalog_item_actions_deactivate_items_modal_468">Desactivar productos</translation>
+  <translation id="web_catalog_item_actions_deactivate_items_modal_469">Los productos seleccionados serán marcados como pendientes</translation>
+  <translation id="web_catalog_pro_components_plan_data_47">tu plan</translation>
+  <translation id="web_catalog_pro_components_plan_data_48">Plan Profesional</translation>
+  <translation id="web_catalog_pro_components_plan_data_49">Disponibles</translation>
+  <translation id="web_catalog_pro_components_plan_data_50">Inactivos</translation>
+  <translation id="web_catalog_pro_components_plan_data_51">visibilidad</translation>
+  <translation id="web_catalog_pro_components_plan_data_52">Plan Ciudad</translation>
+  <translation id="web_catalog_pro_components_plan_data_55">Disponibles</translation>
+  <translation id="web_catalog_pro_components_plan_data_57"> <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
+  <translation id="web_catalog_pro_components_plan_data_60">Plan País</translation>
+  <translation id="web_catalog_pro_components_plan_data_61">No tienes un Plan País</translation>
+  <translation id="web_catalog_pro_components_plan_data_54">Apúntate</translation>
+  <translation id="web_catalog_pro_components_plan_data_63"> <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
+  <translation id="web_catalog_pro_components_plan_data_58">En uso</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_67">Ya tienes tus destacados extras disponibles para que los puedas utilizar.</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_76">Tu compra no se ha podido realizar porque algo ha ido mal con la tarjeta. Comprueba y prueba otra vez. </translation>
+  <translation id="web_catalog_pro_components_plan_data_53">No tienes un Plan de Ciudad</translation>
+  <translation id="web_catalog_pro_pages_list_79">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
+  <translation id="web_catalog_pro_pages_list_80">Gestionar mi suscripción</translation>
+  <translation id="web_modals_already_featured_modal_474">Estas intentando destacar coches que ya tienes planificados</translation>
+  <translation id="web_modals_already_featured_modal_476">Destacar los productos disponibles</translation>
+  <translation id="web_modals_already_featured_modal_477">Volver atrás para cancelar bumps</translation>
+  <translation id="web_catalog_pro_pages_list_81">Comprar extras</translation>
+  <translation id="web_catalog_card_459">Cancelar Autorenovados</translation>
+  <translation id="web_catalog_card_460">Seguro que quieres cancelar el autorenovado para este producto?</translation>
+  <translation id="web_catalog_card_462">Sí</translation>
+  <translation id="web_catalog_status_navbar_471">Inactivos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="web_catalog_status_navbar_473">Vendidos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="web_catalog_pro_components_cart_extras_27">País</translation>
+  <translation id="web_catalog_pro_components_cart_33">Resumen de tus destacados</translation>
+  <translation id="web_catalog_pro_components_cart_36">No has planificado aún</translation>
+  <translation id="web_catalog_pro_components_cart_40">país</translation>
+  <translation id="web_catalog_pro_components_cart_41">Aplicar destacados</translation>
+  <translation id="web_catalog_pro_components_checkout_item_45">Fecha de inicio</translation>
+  <translation id="web_catalog_pro_components_checkout_item_46">Fecha de fin</translation>
+  <translation id="web_location_select_modal_500">Aplicar</translation>
+  <translation id="web_catalog_pro_components_cart_38">Saldo</translation>
+  <translation id="web_catalog_pro_components_cart_34">Planificados de Ciudad</translation>
+  <translation id="web_catalog_pro_components_cart_35">Planificados de País</translation>
+  <translation id="web_catalog_pro_components_cart_39">ciudad</translation>
+  <translation id="web_catalog_pro_components_cart_37"> planificados</translation>
+  <translation id="web_catalog_status_navbar_470">Activos <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>/<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="web_modals_already_featured_modal_475">Los coches que están planeados no pueden ser destacados de nuevo. Puedes cancelar los destacados para estos productos o continuar destacando los otros.</translation>
+  <translation id="web_modals_already_featured_modal_478">Los coches que están planeados no pueden ser destacados de nuevo.</translation>
+  <translation id="web_modals_already_featured_modal_479">Ok, entiendo</translation>
+  <translation id="web_catalog_card_458">Cancelar</translation>
+  <translation id="web_catalog_card_457">Desde <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> a <ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
+  <translation id="web_catalog_pro_pages_list_85">Activar coches</translation>
+  <translation id="web_catalog_pro_pages_list_83">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="web_catalog_pro_pages_list_84">Puedes activar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="web_catalog_pro_components_plan_data_56"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
+  <translation id="web_catalog_pro_components_plan_data_62"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_69">Ya has aplicado los destacados a tus coches.</translation>
+  <translation id="web_catalog_pro_components_plan_data_64">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
+  <translation id="web_components_topbar_12">Subir coche</translation>
+  <translation id="web_pro_billing_delete_info_confirmation_modal_517">¿Estás seguro que quieres eliminar la información de facturación? </translation>
+  <translation id="web_modal_confirmation_493">Sí, estoy seguro/a</translation>
+  <translation id="web_modal_confirmation_486">Eliminar tarjeta</translation>
+  <translation id="web_modal_confirmation_487">¿Estas seguro que quieres eliminar la tarjeta?</translation>
+  <translation id="web_dashboard_pages_195">Tus estadísticas</translation>
+  <translation id="web_dashboard_pages_197">Ver más</translation>
+  <translation id="web_dashboard_pages_199">Has procesado todos los contactos pendientes. ¡Buen trabajo!</translation>
+  <translation id="web_dashboard_components_stats_graph_194">Últimos 12 meses</translation>
+  <translation id="web_catalog_status_navbar_472">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="web_catalog_pages_list_147">Editar</translation>
+  <translation id="web_upload_pages_car_382">Selecciona otra marca</translation>
+  <translation id="web_upload_pages_car_383">Selecciona una marca predefinida</translation>
+  <translation id="web_help_pages_208">Tu centro de ayuda</translation>
+  <translation id="web_help_pages_209">Aquí esperemos que encuentres las respuestas a todas tus preguntas</translation>
+  <translation id="web_help_pages_210">Detalles de contacto</translation>
+  <translation id="web_help_pages_211">Aquí tienes los detalles de cómo contactar con nuestro departamento comercial o el de soporte</translation>
+  <translation id="web_help_pages_212">Gestión de suscripciones:</translation>
+  <translation id="web_help_pages_213">Ayuda o incidencia:</translation>
+  <translation id="web_help_pages_214">Lunes a jueves de 10:00 a 18:00</translation>
+  <translation id="web_help_pages_215">Viernes de 09:00 a 15:00</translation>
+  <translation id="web_upload_pages_realestate_425">¿Alquiler o venta?</translation>
+  <translation id="web_upload_pages_realestate_427">Tipo de espacio</translation>
+  <translation id="web_upload_pages_realestate_429">Superfície m2</translation>
+  <translation id="web_upload_pages_realestate_430">Estado</translation>
+  <translation id="web_upload_pages_realestate_432">Nº de habitaciones</translation>
+  <translation id="web_upload_pages_realestate_433">Nº de baños</translation>
+  <translation id="web_upload_pages_realestate_435">Características de la casa</translation>
+  <translation id="web_upload_pages_realestate_438">Cuéntanos más acerca de tu espacio</translation>
+  <translation id="web_upload_pages_realestate_440">Localización del inmueble</translation>
+  <translation id="web_upload_pages_realestate_442">Mostrar dirección apróximada de tu inmueble</translation>
+  <translation id="web_upload_pages_realestate_426">¿Tu inmueble es para alquilar o para vender?</translation>
+  <translation id="web_upload_pages_realestate_428">¿Qué tipo de inmueble es?</translation>
+  <translation id="web_upload_pages_realestate_431">Añade un precio justo y la superficie en m2. Dínos también en qué estado se encuentra la propiedad.</translation>
+  <translation id="web_upload_pages_realestate_434">¿Cuántas habitaciones y baños tiene?</translation>
+  <translation id="web_upload_pages_realestate_436">Cosas que le gusta saber a nuestros usuarios...</translation>
+  <translation id="web_upload_pages_realestate_439">Cada detalle cuenta, ¡así que cuéntanos más!</translation>
+  <translation id="web_upload_pages_realestate_443">Sitúa el punto en una zona donde está la propiedad.</translation>
+  <translation id="web_components_topbar_8">saldo</translation>
+  <translation id="web_catalog_modals_buy_product_modal_140">Total a pagar</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_116">¡Productos Destacados!</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_117">Todo ha ido bien y tus productos ya son más visibles. ¡Ahora a venderlo todo!</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_118">Has usado</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_119">Y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_120">Y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> de saldo</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_121">Ir a mi catálogo</translation>
+  <translation id="web_catalog_modals_buy_product_modal_138">Que gastas</translation>
+  <translation id="web_catalog_modals_buy_product_modal_139">Que te faltan</translation>
+  <translation id="web_stats_components_item_row_339">Chats</translation>
+  <translation id="web_stats_components_item_row_338">Visualizaciones</translation>
+  <translation id="web_upload_components_category_selector_361">Empleo</translation>
+  <translation id="web_upload_pages_car_407">Número de puertas</translation>
+  <translation id="web_upload_pages_car_408">Caballos</translation>
+  <translation id="web_upload_pages_car_401">Selecciona otra versión</translation>
+  <translation id="web_upload_pages_car_402">Selecciona una versión predefinida</translation>
+  <translation id="web_stats_pages_353">Estadísticas</translation>
+  <translation id="web_stats_pages_354">Echemos cuatro números... Controla cuáles de tus productos tienen más éxito para mejorar tus ventas.</translation>
+  <translation id="web_stats_components_items_351">Producto</translation>
+  <translation id="web_stats_components_items_352">Fecha de publicación</translation>
+  <translation id="web_stats_components_item_row_337">Estadísticas de la semana</translation>
+  <translation id="web_stats_components_item_row_341">Pon en forma tu anuncio</translation>
+  <translation id="web_stats_components_item_row_342">Mejora los números de tu anuncio. A más visitas, ¡más ventas! Destaca tu producto</translation>
+  <translation id="web_stats_components_item_row_343">Destácalo desde <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></translation>
+  <translation id="web_stats_components_item_row_348">Este producto está Destacado</translation>
+  <translation id="web_stats_components_item_row_349">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
+  <translation id="web_stats_components_item_row_350">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentConfig}}</ex></ph></translation>
+  <translation id="web_stats_components_item_row_340">Todavía no disponemos de datos para este producto</translation>
+  <translation id="web_chat_modals_send_phone_182">¡Vas a contactar con un Profesional! Para ofrecerte un servicio más personalizado, ¿podrías dejarnos un teléfono para que te llamemos?</translation>
+  <translation id="web_chat_modals_send_phone_183">Vamos a hablarlo: </translation>
+  <translation id="web_chat_modals_send_phone_185">Lo que debes saber:</translation>
+  <translation id="web_chat_modals_send_phone_186">El hecho de facilitar tu número de teléfono a través del formulario web implica que aceptas el tratamiento de dicho dato en los términos que a continuación se detallan. </translation>
+  <translation id="web_chat_modals_send_phone_187">Wallapop, S.L, (en adelante, Wallapop), en condición de responsable del tratamiento, tratará el número de teléfono proporcionado con el fin de comunicarlo a un usuario profesional ajeno a la plataforma Wallapop (un concesionario), el cual, posteriormente, contactará por teléfono contigo a efectos de informarte sobre sus productos/servicios.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>La base legal para el tratamiento del mencionado dato es el consentimiento que has prestado vinculado al hecho de haber proporcionado, libremente, tu número de teléfono a través del formulario web.  El dato personal se conservará mientras no solicites su supresión. Una vez solicitada la supresión, el dato se conservará bloqueado impidiendo su tratamiento, excepto para la puesta a disposición del dato a los jueces y tribunales, el Ministerio Fiscal o las Administraciones Públicas competentes, para la exigencia de posibles responsabilidades derivadas del tratamiento y solo por el plazo de prescripción de las mismas (generalmente, 5 años). Una vez transcurrido el indicado periodo de tiempo, el dato se eliminará.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Podrás ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos, así como la revocación, en cualquier momento, del consentimiento prestado, ante Wallapop, CIF nº B-66.04.9057, en la Calle Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Podrás también ejercer tus derechos mediante comunicación dirigida a: privacidad@wallapop.com. Finalmente, te recordamos que puedes dirigir una reclamación ante la Agencia Española de Protección de Datos, si consideras que Wallapop ha vulnerado tus derechos en materia de protección de datos.</translation>
+  <translation id="web_profile_modal_become_pro_230">Estos campos son para los usuarios PROS</translation>
+  <translation id="web_profile_modal_become_pro_231">Tus productos se verán más porque estarán en las primeras posiciones de las búsquedas</translation>
+  <translation id="web_profile_modal_become_pro_232">Los compradores podrán guardar tu tienda / perfil como favorito</translation>
+  <translation id="web_profile_modal_become_pro_233">Los compradores podrán ver en tu perfil el teléfono y web para contactar fácilmente</translation>
+  <translation id="web_profile_modal_become_pro_234">Tendrás una descripción de tu tienda o servicio y su situación</translation>
+  <translation id="web_profile_modal_become_pro_235">Tu perfil tendrá un diseño diferente y ¡destacará!</translation>
+  <translation id="web_profile_modal_become_pro_236">Tus productos no caducarán nunca</translation>
+  <translation id="web_profile_pages_account_280">Información personal</translation>
+  <translation id="web_profile_pages_info_290">Información pública</translation>
+  <translation id="web_profile_pages_account_286">Información cuenta</translation>
+  <translation id="web_chat_modals_send_phone_184">Deja tu teléfono...</translation>
+  <translation id="web_catalog_pages_list_149">Tus productos</translation>
+  <translation id="web_profile_modal_unsubscribe_267">¿Seguro que quieres darte de baja de Wallapop?</translation>
+  <translation id="web_profile_modal_unsubscribe_268">Te estás dando de baja pero tienes activa una suscripción en Wallapop. Para cancelarla, deberás hacerlo a través de la Play Store o la App Store.</translation>
+  <translation id="web_profile_modal_unsubscribe_269">Dame de baja y tramitaré la cancelación</translation>
+  <translation id="web_profile_modal_unsubscribe_270">Vale, me lo pienso mejor</translation>
+  <translation id="web_favorites_pages_205">Perfiles</translation>
+  <translation id="web_favorites_pages_207">En este listado puedes ver todos los perfiles que has favoriteado.</translation>
+  <translation id="web_modal_confirmation_489">El perfil será eliminado de los favoritos.</translation>
+  <translation id="web_modal_confirmation_490">Este perfil ya no está destacado.</translation>
+  <translation id="web_modal_confirmation_491">Si lo eliminas no lo podrás favoritear de nuevo.</translation>
+  <translation id="web_modal_confirmation_488">Elimina el perfil destacado de los favoritos.</translation>
+  <translation id="web_catalog_modals_buy_product_modal_135">Publica tu coche</translation>
+  <translation id="web_catalog_modals_listingfee_confirmation_modal_142">Tu coche esta publicado por 60 días. Lo encontrarás en tu catálogo.</translation>
+  <translation id="web_stats_components_item_row_344">Reactiva tu producto</translation>
+  <translation id="web_stats_components_item_row_345">Para poder ver estadísticas de tu producto reactívalo para que los demás usuarios lo vean y puedan contactarte.</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_70">En este momento no tienes destacados disponibles.</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_71">Si al llegar la fecha programada tienes destacados se te aplicará.</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_72">Comprar Extras</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_73">Tu producto se ha destacado correctamente para hoy.</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_74">Se comprobará diariamente si tienes destacados disponibles para tus programados.</translation>
+  <translation id="web_stats_components_item_row_346">Publica tu producto</translation>
+  <translation id="web_stats_components_item_row_347">Para poder ver estadísticas de tu producto publícalo para que los demás usuarios lo vean y puedan contactarte.</translation>
+  <translation id="web_cover_upload_521">Aceptamos formatos .jpg y mínimo 400 x 400px</translation>
+  <translation id="web_cover_upload_519">Cambiar foto</translation>
+  <translation id="web_picture_upload_533">Imágenes de perfil</translation>
+  <translation id="web_picture_upload_534">Foto principal</translation>
+  <translation id="web_cover_upload_518">Foto de portada</translation>
+  <translation id="web_catalog_pro_components_plan_data_59">(<ph name="INTERPOLATION"><ex>{{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}}</ex></ph> planeado)</translation>
+  <translation id="web_profile_pages_info_291">Nombre</translation>
+  <translation id="web_profile_pages_info_292">Apellidos</translation>
+  <translation id="web_catalog_pro_pages_list_78">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_TSL_SVG_ICON"><ex>&lt;tsl-svg-icon&gt;</ex></ph><ph name="CLOSE_TAG_TSL_SVG_ICON"><ex>&lt;/tsl-svg-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="web_profile_pages_315">Tu perfil</translation>
+  <translation id="web_profile_pages_319">Cuenta</translation>
+  <translation id="web_stripe_cards_535">Método de pago</translation>
+  <translation id="web_components_suggester_7">Buscar en Todas las categorías</translation>
   <translation id="archiveButton">Archivar</translation>
   <translation id="inboxBox">Bandeja de Entrada</translation>
   <translation id="inboxArchivedBox">Mensajes Archivados</translation>
-  <translation id="8721026914522212662">Archivado</translation>
-  <translation id="5635139981490841331">En pocas palabras...</translation>
-  <translation id="3650030434919639531">Utilizar una tarjeta guardada</translation>
-  <translation id="7548733830385801837">Este teléfono nunca será público, se te asignará un número de tracking que será el que verán los clientes.</translation>
-  <translation id="6854882443364631275">Presta atención a los errores ortográficos, así nuestros usuarios podrán encontrar tu propiedad más facilmente.</translation>
-  <translation id="6419236949160000852">Este es el lugar donde se encuentra tu espacio. Esta ubicación podría ser diferente de la ubicación de tu perfil.</translation>
-  <translation id="591481955696105417">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 4MB.</translation>
-  <translation id="2852614655612881023">¿Que aspecto tiene?</translation>
+  <translation id="web_chat_components_archived_inbox_conversation_164">Archivado</translation>
+  <translation id="web_upload_pages_product_423">En pocas palabras...</translation>
+  <translation id="web_catalog_pro_components_cart_extras_31">Utilizar una tarjeta guardada</translation>
+  <translation id="web_profile_pages_info_298">Este teléfono nunca será público, se te asignará un número de tracking que será el que verán los clientes.</translation>
+  <translation id="web_upload_pages_realestate_437">Presta atención a los errores ortográficos, así nuestros usuarios podrán encontrar tu propiedad más facilmente.</translation>
+  <translation id="web_upload_pages_realestate_441">Este es el lugar donde se encuentra tu espacio. Esta ubicación podría ser diferente de la ubicación de tu perfil.</translation>
+  <translation id="web_upload_pages_realestate_445">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 4MB.</translation>
+  <translation id="web_upload_pages_realestate_446">¿Que aspecto tiene?</translation>
   <translation id="updateArchivedMessagesWarning">Hemos encontrado un problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
   <translation id="updateInboxWarning">Hemos encontrado un problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
-  <translation id="2094431645371030704">Precio financiado (opcional)</translation>
-  <translation id="8147495527699050606">Precio final financiado</translation>
-  <translation id="6904447978553402020">Precio al contado</translation>
+  <translation id="web_upload_pages_car_390">Precio financiado (opcional)</translation>
+  <translation id="web_upload_pages_car_391">Precio final financiado</translation>
+  <translation id="web_upload_pages_car_388">Precio al contado</translation>
   <translation id="blockedPersonError">Has bloqueado a esta persona. Para seguir charlando, desbloquéala</translation>
   <translation id="userIsNotAvailableWarning">Esta persona ya no es miembro de Wallapop</translation>
   <translation id="userIsBlocked">Esta persona ha sido excluida de Wallapop por actividad sospechosa.</translation>
   <translation id="itemIsNotAvailableWarning">El producto ha caducado o ha sido eliminado</translation>
   <translation id="itemIsUnpublishedWarning">El producto incumple las normas de convivencia de Wallapop</translation>
   <translation id="securityWarning">Por razones de seguridad, nunca compartas datos privados</translation>
-  <translation id="682982254050004818">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
-  <translation id="177886998911393770">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
-  <translation id="7962273932004201523">Vendido</translation>
-  <translation id="4467323362722952678">Desconocido</translation>
-  <translation id="3893097575013115653">+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex></ph> Más</translation>
-  <translation id="656874927403996411"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.limit}}</ex></ph> productos</translation>
-  <translation id="6319315156225724559"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.selected_tier.currency}}</ex></ph>/mes</translation>
-  <translation id="240806681889331244">Ilimitado</translation>
-  <translation id="8107784429181471644"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
-  <translation id="1230154438678955604">Cambiar</translation>
-  <translation id="5703774512613913053">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
-  <translation id="3072739349487522347"><ph name="INTERPOLATION"><ex>{{subscription?.tiers[i]?.limit}}</ex></ph></translation>
-  <translation id="3744004942164134121"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
-  <translation id="6998541290982927512">Confirmar cambio de suscripción</translation>
-  <translation id="6969584346860248976" desc="La distancia entre el usuario y el producto a"><ph name="DISTANCE"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km de ti</translation>
-  <translation id="3553216189604488439">Modificado</translation>
-  <translation id="457741553886180613">Suscrito desde <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
-  <translation id="5507433950760207486">Sin límite de tiempo</translation>
-  <translation id="8882282108983733420">¿Seguro que quieres cancelar tu suscripción Wallapop PRO <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
-  <translation id="8487121195517337235">Es triste que te vayas. Puedes volver cuando quieras, ¡te estaremos esperando!</translation>
-  <translation id="4152309547836555655">Sí, quiero cancelar mi suscripción</translation>
-  <translation id="6945361151381926075">No, quiero mantener mi suscripción</translation>
-  <translation id="2374240332008805382">Suscrito desde</translation>
-  <translation id="5018811059755976867">Cambia el límite de la suscripción</translation>
+  <translation id="web_chat_components_current_conversation_167">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
+  <translation id="web_chat_components_current_conversation_169">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
+  <translation id="web_chat_children_inbox_components_item_component_detail_154">Vendido</translation>
+  <translation id="web_chat_components_user_response_rate_171">Desconocido</translation>
+  <translation id="web_chat_children_inbox_components_item_for_sell_156">+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex></ph> Más</translation>
+  <translation id="web_profile_pages_subscription_325"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.limit}}</ex></ph> productos</translation>
+  <translation id="web_profile_pages_subscription_326"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.selected_tier.currency}}</ex></ph>/mes</translation>
+  <translation id="web_profile_modal_edit_subscription_255">Ilimitado</translation>
+  <translation id="web_profile_modal_add_new_subscription_220"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="web_profile_modal_add_new_subscription_225">Cambiar</translation>
+  <translation id="web_profile_modal_add_new_subscription_228">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
+  <translation id="web_profile_modal_edit_subscription_254"><ph name="INTERPOLATION"><ex>{{subscription?.tiers[i]?.limit}}</ex></ph></translation>
+  <translation id="web_profile_modal_edit_subscription_258"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="web_profile_modal_edit_subscription_260">Confirmar cambio de suscripción</translation>
+  <translation id="web_chat_children_inbox_components_user_component_detail_157" desc="La distancia entre el usuario y el producto a"><ph name="INTERPOLATION"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos;}}</ex></ph>km de ti</translation>
+  <translation id="web_catalog_components_item_104">Modificado</translation>
+  <translation id="web_profile_pages_subscription_329">Suscrito desde <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
+  <translation id="web_profile_modal_cancel_subscription_237">¿Seguro que quieres cancelar tu suscripción Wallapop PRO <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
+  <translation id="web_profile_modal_cancel_subscription_238">Es triste que te vayas. Puedes volver cuando quieras, ¡te estaremos esperando!</translation>
+  <translation id="web_profile_modal_cancel_subscription_239">Sí, quiero cancelar mi suscripción</translation>
+  <translation id="web_profile_modal_cancel_subscription_240">No, quiero mantener mi suscripción</translation>
+  <translation id="web_profile_pages_pro_subscription_303">Suscrito desde</translation>
+  <translation id="web_profile_modal_edit_subscription_252">Cambia el límite de la suscripción</translation>
   <translation id="archiveConversation">Archivar conversación</translation>
   <translation id="unarchiveConversation">Desarchivar conversación</translation>
   <translation id="reportListing">Denunciar producto</translation>
   <translation id="reportUser">Reportar usuario</translation>
   <translation id="blockUser">Bloquear usuario</translation>
   <translation id="unblockUser">Desbloquear usuario</translation>
-  <translation id="5189929163900690785">Sí, quiero mantener mi suscripción</translation>
-  <translation id="1355341408067809538">No, quiero cancelarla</translation>
-  <translation id="9098152328983851571">Comprar</translation>
-  <translation id="8720496095668778360">Límite sin suscripción: <ph name="INTERPOLATION"><ex>{{subscription.current_limit}}</ex></ph></translation>
-  <translation id="8079107042901096560">La suscripción finaliza el <ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
-  <translation id="6512533568413132940">Continuar suscrito</translation>
-  <translation id="7205093490438309267">Introduce tus datos de pago</translation>
-  <translation id="4504623795614136197">¡Nunca es demasiado tarde! Puedes deshacer la cancelación y seguir disfrutando de los beneficios.</translation>
-  <translation id="848453031482663640">Suscríbete ya</translation>
-  <translation id="3749157863216929849">Volver al catálogo</translation>
-  <translation id="708817521397622777">Paga con tu saldo o con tarjeta de crédito:</translation>
-  <translation id="2477437471140226346">¿Qué límite quieres poner a tu suscripción?</translation>
-  <translation id="1583909574923079873">Precio: </translation>
-  <translation id="930351548904901118">Nuevo precio: </translation>
-  <translation id="7063014133288240503">Este es tu plan actual</translation>
-  <translation id="8716359834484489616">Seleccionar todos</translation>
-  <translation id="931255636742351800">Sin límite</translation>
-  <translation id="3546316122339217988">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
+  <translation id="web_profile_modal_continue_subscription_246">Sí, quiero mantener mi suscripción</translation>
+  <translation id="web_profile_modal_continue_subscription_247">No, quiero cancelarla</translation>
+  <translation id="web_catalog_pro_components_cart_extras_32">Comprar</translation>
+  <translation id="web_profile_pages_subscription_323">Límite sin suscripción: <ph name="INTERPOLATION"><ex>{{subscription.current_limit}}</ex></ph></translation>
+  <translation id="web_profile_pages_subscription_330">La suscripción finaliza el <ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
+  <translation id="web_profile_pages_subscription_331">Continuar suscrito</translation>
+  <translation id="web_profile_modal_add_new_subscription_217">Introduce tus datos de pago</translation>
+  <translation id="web_profile_modal_continue_subscription_245">¡Nunca es demasiado tarde! Puedes deshacer la cancelación y seguir disfrutando de los beneficios.</translation>
+  <translation id="web_stripe_card_element_515">Suscríbete ya</translation>
+  <translation id="web_upload_components_edit_366">Volver al catálogo</translation>
+  <translation id="web_catalog_modals_buy_product_modal_136">Paga con tu saldo o con tarjeta de crédito:</translation>
+  <translation id="web_profile_modal_edit_subscription_253">¿Qué límite quieres poner a tu suscripción?</translation>
+  <translation id="web_profile_modal_edit_subscription_256">Precio: </translation>
+  <translation id="web_profile_modal_edit_subscription_257">Nuevo precio: </translation>
+  <translation id="web_profile_modal_edit_subscription_259">Este es tu plan actual</translation>
+  <translation id="web_catalog_item_actions_464">Seleccionar todos</translation>
+  <translation id="web_profile_pages_subscription_324">Sin límite</translation>
+  <translation id="web_profile_modal_add_new_subscription_219">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
   <translation id="thirdVoiceReviewFirstMessage">Has encontrado lo que buscabas. ¡Genial!</translation>
   <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Valora tu experiencia con este usuario, será útil para nuestra comunidad.</translation>
   <translation id="thirdVoiceRateMessage">¿Cómo ha ido? Valora tu experiencia, tu opinión es muy importante para nuestra comunidad.</translation>
   <translation id="thirdVoiceDoReview">Valorar</translation>
   <translation id="thirdVoiceThanksForRating">¡Gracias! Otras personas apreciarán tu valoración.</translation>
   <translation id="thirdVoiceDropPrice">El producto ha bajado de precio. ¿Quieres cerrar un trato?</translation>
-  <translation id="949044872815747177">Gestionar desde la app</translation>
-  <translation id="6488767812620715130"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Parece que quieres cambiar algo en tu suscripción<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
-  <translation id="6830193087899555637">Si quieres dar de baja tu suscripción actual, accede a la app store y cancélala.</translation>
-  <translation id="8438681505217357359">Si tienes dudas, <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>contacta con nosotros<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph>.</translation>
-  <translation id="5500835400289213295"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Tienes que darte de baja primero de tus subscripciones en la app<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
-  <translation id="3261431386963936058">Si quieres darte de alta, primero debes ir a la app store y cancelar cualquier suscripción activa.</translation>
+  <translation id="web_profile_pages_subscription_327">Gestionar desde la app</translation>
+  <translation id="web_profile_modal_check_subscription_in_app_241"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Parece que quieres cambiar algo en tu suscripción<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="web_profile_modal_check_subscription_in_app_242">Si quieres dar de baja tu suscripción actual, accede a la app store y cancélala.</translation>
+  <translation id="web_profile_modal_check_subscription_in_app_243">Si tienes dudas, <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>contacta con nosotros<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph>.</translation>
+  <translation id="web_profile_modal_unsubscribe_in_app_first_261"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Tienes que darte de baja primero de tus subscripciones en la app<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="web_profile_modal_unsubscribe_in_app_first_262">Si quieres darte de alta, primero debes ir a la app store y cancelar cualquier suscripción activa.</translation>
   <translation id="ngb.alert.close">Cerrar</translation>
   <translation id="ngb.toast.close-aria">Cerrar</translation>
   <translation id="ngb.carousel.previous">Anterior</translation>
@@ -600,31 +585,31 @@
   <translation id="ngb.timepicker.PM">PM</translation>
   <translation id="ngb.timepicker.AM">AM</translation>
   <translation id="ngb.progressbar.value"><ph name="INTERPOLATION"><ex>{{getPercentValue()}}</ex>{{getPercentValue()}}</ph>%</translation>
-  <translation id="3088405909522546815">Un mes gratis</translation>
-  <translation id="3502404552821595095"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex></ph> meses gratis</translation>
-  <translation id="2568045788105949140"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
-  <translation id="2404822514067336938">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
-  <translation id="7145885217817968593">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
-  <translation id="43721607585443490">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
-  <translation id="3953884740420390564">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
-  <translation id="8217404428211350288">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
-  <translation id="3388771596034096026"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Dispones de un mes gratuito<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
-  <translation id="214415473377752678">1. Cancela tu plan de suscripción actual. Para ello, accede a la aplicación de <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> o <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>Google Play<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> (depende del móvil que uses).</translation>
-  <translation id="2347321246651029433">2. Espera a que expire la vigencia del plan al que te habías suscrito. Consulta la fecha de expiración en el correo que te enviamos cuando te das de baja.</translation>
-  <translation id="7589681963132617331">3. Una vez expirado, escoge tu suscripción gratuita aquí en la web.</translation>
-  <translation id="5188534013459638497">Date de baja primero desde la app para tu mes gratis</translation>
-  <translation id="7008439939460403347">Reportar</translation>
-  <translation id="568597304214607466">Estoy reportando a este usuario porque..</translation>
-  <translation id="7913053333994057167">Desarchivar conversación</translation>
-  <translation id="3205414127595653303">Esto desarchivará la conversación.</translation>
-  <translation id="1121513541518618634">Desarchivar</translation>
-  <translation id="3093507871243266697">Esperando red...</translation>
-  <translation id="3208980041287937682">Conectado</translation>
-  <translation id="8016649850785953911">Anular reserva</translation>
-  <translation id="3537961834218859224">Te lo aseguramos</translation>
-  <translation id="5984580705945066559">Calcula el seguro gratis</translation>
-  <translation id="5856234352867328880">Financia esta compra</translation>
-  <translation id="6543433128416987560">Reservado</translation>
+  <translation id="web_profile_modal_add_new_subscription_222">Un mes gratis</translation>
+  <translation id="web_profile_modal_add_new_subscription_223"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex></ph> meses gratis</translation>
+  <translation id="web_profile_modal_add_new_subscription_221"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="web_profile_modal_add_new_subscription_227">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
+  <translation id="web_stripe_card_element_513">Al suscribirte estás aceptando las <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>condiciones de uso<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> y la <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>política de privacidad<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> de Wallapop S.L. y Stripe Ltd</translation>
+  <translation id="web_profile_modal_add_new_subscription_229">Pagar <ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.discounted_price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph></translation>
+  <translation id="web_profile_modal_add_new_subscription_218">Plan <ph name="INTERPOLATION"><ex> {{selectedTier.limit}}</ex></ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex></ph></translation>
+  <translation id="web_profile_modal_add_new_subscription_224">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
+  <translation id="web_profile_modal_discount_available_unsubscribe_in_app_248"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Dispones de un mes gratuito<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="web_profile_modal_discount_available_unsubscribe_in_app_249">1. Cancela tu plan de suscripción actual. Para ello, accede a la aplicación de <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Apple Store<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> o <ph name="START_LINK_1"><ex>&lt;a&gt;</ex></ph>Google Play<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph> (depende del móvil que uses).</translation>
+  <translation id="web_profile_modal_discount_available_unsubscribe_in_app_250">2. Espera a que expire la vigencia del plan al que te habías suscrito. Consulta la fecha de expiración en el correo que te enviamos cuando te das de baja.</translation>
+  <translation id="web_profile_modal_discount_available_unsubscribe_in_app_251">3. Una vez expirado, escoge tu suscripción gratuita aquí en la web.</translation>
+  <translation id="web_profile_pages_subscription_328">Date de baja primero desde la app para tu mes gratis</translation>
+  <translation id="web_chat_modals_report_listing_180">Reportar</translation>
+  <translation id="web_chat_modals_report_user_181">Estoy reportando a este usuario porque..</translation>
+  <translation id="web_chat_modals_unarchive_inbox_conversation_188">Desarchivar conversación</translation>
+  <translation id="web_chat_modals_unarchive_inbox_conversation_189">Esto desarchivará la conversación.</translation>
+  <translation id="web_chat_modals_unarchive_inbox_conversation_190">Desarchivar</translation>
+  <translation id="web_chat_components_connection_alert_165">Esperando red...</translation>
+  <translation id="web_chat_components_connection_alert_166">Conectado</translation>
+  <translation id="web_chat_children_inbox_components_item_component_detail_153">Anular reserva</translation>
+  <translation id="web_chat_children_item_161">Te lo aseguramos</translation>
+  <translation id="web_chat_children_item_162">Calcula el seguro gratis</translation>
+  <translation id="web_chat_children_item_163">Financia esta compra</translation>
+  <translation id="web_chat_children_item_components_reserved_159">Reservado</translation>
 
   <!--Translations using keys-->
   <translation id="SoldOutside">Lo he vendido fuera de Wallapop</translation>
@@ -703,12 +688,12 @@
   <translation id="CIFNumber">CIF de la empresa</translation>
   <translation id="NIFNumber">NIF de la persona</translation>
   <translation id="Save">Guardar</translation>
-  <translation id="5875130684997376720">Facturación</translation>
+  <translation id="web_profile_pages_321">Facturación</translation>
   <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
   <translation id="SelectSavedCard">Seleccionar tarjeta guardada</translation>
   <translation id="ChangeSelectSubscriptionCardTitle">Selecciona una tarjeta de crédito</translation>
   <translation id="ChangeSubscriptionCardSubtitle">Será el método de pago vinculado a tu suscripción</translation>
-  <translation id="2341832243359741366">Seleccionar tarjeta guardada</translation>
+  <translation id="web_stripe_card_selection_512">Seleccionar tarjeta guardada</translation>
   <translation id="AddCard">Añadir tarjeta</translation>
   <translation id="UseSavedCard">Utiliza tarjeta guardada</translation>
   <translation id="ConfirmDeleteCard">Sí, eliminar tarjeta</translation>
@@ -729,7 +714,7 @@
   <translation id="ContinueToInvoice">Continuar a facturación</translation>
   <translation id="ReceiveInvoices">¿Quieres recibir facturas?</translation>
   <translation id="Invoice">Facturación</translation>
-  <translation id="3086731599944442002">¿Necesitas una factura?</translation>
+  <translation id="web_profile_modal_add_new_subscription_216">¿Necesitas una factura?</translation>
   <translation id="ContinueToPayment">Continuar a pago</translation>
   <translation id="BackToInvoice">Volver a facturación</translation>
   <translation id="Perfect">¡Perfecto!</translation>
@@ -819,7 +804,7 @@
   <translation id="FooterLinksAboutLabel">¿Quiénes somos?</translation>
   <translation id="FooterLinksAboutHref">https://about.wallapop.com/</translation>
   <translation id="FooterLinksPressLabel">Prensa</translation>
-  <translation id="FooterLinksPressHref"><https://about.wallapop.com/prensa</translation>
+  <translation id="FooterLinksPressHref">https://about.wallapop.com/prensa</translation>
   <translation id="FooterLinksJobsLabel">Empleo</translation>
   <translation id="FooterLinksJobsHref">https://apply.workable.com/wallapop/</translation>
   <translation id="FooterLinksTeamLabel">Equipo</translation>
@@ -1000,4 +985,165 @@
   <translation id="NoPublishedItemsDescription">Al parecer, alguien usa todo lo que tiene. ¡Dale tiempo para subir algo a wallapop!</translation>
   <translation id="NoReviewsItemsTitle">Nadie ha opinado todavía</translation>
   <translation id="NoReviewsItemsDescription">Esta persona no ha recibido valoraciones. ¿Será la tuya la primera?</translation>
+  <translation id="web_components_topbar_538">Mensajes</translation>
+  <translation id="web_calls_pages_539">Procesado</translation>
+  <translation id="web_calls_pages_540">Pendiente</translation>
+  <translation id="web_catalog_pro_components_cart_extras_541">Comprar</translation>
+  <translation id="web_catalog_pro_components_plan_data_542">Apúntate</translation>
+  <translation id="web_catalog_pro_components_plan_data_543">Disponibles</translation>
+  <translation id="web_catalog_pro_components_plan_data_544">En uso</translation>
+  <translation id="web_catalog_pro_modals_credit_card_modal_545">+ Añadir nueva tarjeta</translation>
+  <translation id="web_catalog_pro_modals_credit_card_modal_546">Utilizar una tarjeta guardada</translation>
+  <translation id="web_catalog_pro_modals_credit_card_modal_547">Destacar por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_548">¡Enhorabuena!</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_549">A vender</translation>
+  <translation id="web_catalog_pro_modals_bump_confirmation_modal_550">Comprar Extras</translation>
+  <translation id="web_catalog_pro_pages_list_551">Subir coche</translation>
+  <translation id="web_catalog_pro_pages_checkout_extras_552">Atrás</translation>
+  <translation id="web_catalog_pro_pages_checkout_553">Ciudad</translation>
+  <translation id="web_catalog_pro_pages_checkout_554">País</translation>
+  <translation id="web_catalog_components_bump_tutorial_555">desde</translation>
+  <translation id="web_catalog_components_checkout_item_556">días</translation>
+  <translation id="web_catalog_components_selected_items_557">Activar</translation>
+  <translation id="web_catalog_components_selected_items_558">Destácalo</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_559">Ha ocurrido algo…</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_560">Aplicar</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_561">De acuerdo</translation>
+  <translation id="web_catalog_modals_buy_product_modal_562">saldo</translation>
+  <translation id="web_catalog_pages_checkout_563">¿Cómo te ayudarán los destacados?</translation>
+  <translation id="web_chat_children_item_564">Reservar</translation>
+  <translation id="web_chat_children_item_565">Anular reserva</translation>
+  <translation id="web_chat_children_item_566">Vendido</translation>
+  <translation id="web_chat_components_user_detail_567">Sin localización</translation>
+  <translation id="web_chat_components_user_response_rate_568">Desconocido</translation>
+  <translation id="web_chat_components_user_response_rate_569">Responde en menos de 1 hora</translation>
+  <translation id="web_chat_components_user_response_rate_570">Responde en menos de 3 horas</translation>
+  <translation id="web_chat_components_user_response_rate_571">Responde el mismo día</translation>
+  <translation id="web_chat_components_user_response_rate_572">Responde en 24 horas o más</translation>
+  <translation id="web_chat_modals_report_listing_573">Reportar</translation>
+  <translation id="web_chat_modals_unarchive_inbox_conversation_574">Cancelar</translation>
+  <translation id="web_dashboard_pages_575">Ver más</translation>
+  <translation id="web_dashboard_pages_576">¡Enhorabuena!</translation>
+  <translation id="web_favorites_components_profile_card_favorite_577">Eliminar</translation>
+  <translation id="web_profile_modal_discount_available_unsubscribe_in_app_578">Si tienes dudas, <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>contacta con nosotros<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph>.</translation>
+  <translation id="web_profile_pages_info_580">Guardar</translation>
+  <translation id="web_profile_pages_pro_subscription_581">Suscríbete</translation>
+  <translation id="web_profile_pages_pro_subscription_582">Suscrito desde</translation>
+  <translation id="web_profile_pages_pro_subscription_583">Destacados</translation>
+  <translation id="web_profile_pages_pro_subscription_584">Ahorra un <ph name="INTERPOLATION"><ex>{{bump.discount}}</ex></ph>%</translation>
+  <translation id="web_profile_pages_585">Cerrar sesión</translation>
+  <translation id="web_profile_pages_subscription_586">Sin límite</translation>
+  <translation id="web_profile_pages_subscription_587">Editar</translation>
+  <translation id="web_reviews_pages_588">opiniones</translation>
+  <translation id="web_stats_components_item_row_589">Favoritos</translation>
+  <translation id="web_stats_components_items_590">Visualizaciones</translation>
+  <translation id="web_stats_components_items_591">Chats</translation>
+  <translation id="web_upload_modals_remove_confirm_modal_592">Borrar</translation>
+  <translation id="web_upload_pages_car_593">Ej: Ibiza</translation>
+  <translation id="web_upload_pages_car_594">De fabricación</translation>
+  <translation id="web_upload_pages_car_595">¿Es alguna versión o serie específica?</translation>
+  <translation id="web_upload_pages_car_596">Escribe un número</translation>
+  <translation id="web_upload_pages_car_597">Gasolina</translation>
+  <translation id="web_upload_pages_car_598">Diesel</translation>
+  <translation id="web_upload_pages_car_599">Eléctrico</translation>
+  <translation id="web_upload_pages_car_600">Otros...</translation>
+  <translation id="web_upload_pages_car_601">Manual</translation>
+  <translation id="web_upload_pages_car_602">Automático</translation>
+  <translation id="web_upload_pages_car_603">Descripción</translation>
+  <translation id="web_upload_pages_car_604">Subir producto</translation>
+  <translation id="web_upload_pages_car_605">Actualizar</translation>
+  <translation id="web_upload_pages_realestate_606">Precio</translation>
+  <translation id="web_upload_pages_realestate_607">Con cariño...</translation>
+  <translation id="web_upload_pages_realestate_608">Moneda</translation>
+  <translation id="web_upload_pages_realestate_609">Título</translation>
+  <translation id="web_upload_pages_realestate_610">En pocas palabras...</translation>
+  <translation id="web_components_sidebar_611">Perfil</translation>
+  <translation id="web_components_sidebar_612">Productos</translation>
+  <translation id="web_components_sidebar_613">Llamadas</translation>
+  <translation id="web_components_sidebar_614">Estadísticas</translation>
+  <translation id="web_cart_615">Eliminar lista</translation>
+  <translation id="web_cart_616">Destacado ciudad</translation>
+  <translation id="web_cart_617">Destacado país</translation>
+  <translation id="web_cart_618">Total</translation>
+  <translation id="web_cart_619">Que gastas</translation>
+  <translation id="web_cart_620">Que te faltan</translation>
+  <translation id="web_cart_621">Total a pagar</translation>
+  <translation id="web_catalog_card_622">Publicado</translation>
+  <translation id="web_catalog_item_actions_623">1 producto seleccionado</translation>
+  <translation id="web_catalog_item_actions_624">Desactivar</translation>
+  <translation id="web_modal_confirmation_625">Borrar productos</translation>
+  <translation id="web_modal_confirmation_626">Se borrarán permanentemente los productos.</translation>
+  <translation id="web_confirmation_modal_exit_627">No</translation>
+  <translation id="web_confirmation_modal_exit_628">Sí, me voy</translation>
+  <translation id="web_all_button_process_629">Procesar todo</translation>
+  <translation id="web_pro_billing_delete_info_confirmation_modal_630">Sí, estoy seguro/a</translation>
+  <translation id="web_edit_email_modal_631">Email nuevo</translation>
+  <translation id="web_edit_password_modal_632">Contraseña actual</translation>
+  <translation id="web_edit_password_modal_633">Nueva contraseña</translation>
+  <translation id="web_edit_password_modal_634">Confirmar nueva contraseña</translation>
+  <translation id="web_picture_upload_635">Cambiar foto</translation>
+  <translation id="web_picture_upload_636">Subir foto</translation>
+  <translation id="web_picture_upload_637">Aceptamos formatos .jpg y mínimo 400 x 400px</translation>
+  <translation id="web_catalog_pro_pages_checkout_638">Atrás</translation>
+  <translation id="web_catalog_components_bump_tutorial_639">desde</translation>
+  <translation id="web_catalog_components_item_640">Pendiente</translation>
+  <translation id="web_catalog_components_selected_items_641">Activar</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_642">¡Enhorabuena!</translation>
+  <translation id="web_catalog_modals_bump_confirmation_modal_643">A vender</translation>
+  <translation id="web_catalog_modals_buy_product_modal_644">+ Añadir nueva tarjeta</translation>
+  <translation id="web_catalog_modals_buy_product_modal_645">Utilizar una tarjeta guardada</translation>
+  <translation id="web_catalog_modals_buy_product_modal_646">Comprar</translation>
+  <translation id="web_catalog_modals_listingfee_confirmation_modal_647">Aplicar</translation>
+  <translation id="web_catalog_pages_list_648">¿Cómo te ayudarán los destacados?</translation>
+  <translation id="web_chat_modals_report_user_649">Reportar</translation>
+  <translation id="web_chat_modals_unblock_user_650">Cancelar</translation>
+  <translation id="web_dashboard_pages_651">Mensajes</translation>
+  <translation id="web_profile_modal_unsubscribe_in_app_first_652">Si tienes dudas, <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>contacta con nosotros<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph>.</translation>
+  <translation id="web_profile_pages_pro_subscription_654">Suscríbete</translation>
+  <translation id="web_profile_pages_pro_subscription_655">Suscrito desde</translation>
+  <translation id="web_stats_components_item_row_656">Destacados</translation>
+  <translation id="web_stats_components_items_657">Favoritos</translation>
+  <translation id="web_upload_pages_car_658">Escribe un número</translation>
+  <translation id="web_upload_pages_realestate_659">Descripción</translation>
+  <translation id="web_upload_pages_realestate_660">Subir producto</translation>
+  <translation id="web_upload_pages_realestate_661">Actualizar</translation>
+  <translation id="web_archivable_662">Procesado</translation>
+  <translation id="web_cart_663">Ciudad</translation>
+  <translation id="web_cart_664">País</translation>
+  <translation id="web_cart_665">días</translation>
+  <translation id="web_cart_666">saldo</translation>
+  <translation id="web_catalog_card_667">Vendido</translation>
+  <translation id="web_catalog_item_actions_668">Borrar</translation>
+  <translation id="web_catalog_item_actions_deactivate_items_modal_669">Desactivar</translation>
+  <translation id="web_modal_confirmation_670">Reservar</translation>
+  <translation id="web_sold_modal_671">¡Enhorabuena!</translation>
+  <translation id="web_stripe_card_element_672">Guardar</translation>
+  <translation id="web_all_button_process_673">Procesar todo</translation>
+  <translation id="web_catalog_pages_checkout_674">Atrás</translation>
+  <translation id="web_chat_modals_report_user_675">Reportar</translation>
+  <translation id="web_dashboard_pages_676">Pendiente</translation>
+  <translation id="web_profile_pages_pro_subscription_677">Suscríbete</translation>
+  <translation id="web_profile_pages_subscription_678">Cancelar</translation>
+  <translation id="web_components_sidebar_679">Mensajes</translation>
+  <translation id="web_components_sidebar_680">Favoritos</translation>
+  <translation id="web_cart_681">+ Añadir nueva tarjeta</translation>
+  <translation id="web_cart_682">Utilizar una tarjeta guardada</translation>
+  <translation id="web_cart_683">Comprar</translation>
+  <translation id="web_catalog_item_actions_684">Activar</translation>
+  <translation id="web_catalog_item_actions_685">Borrar</translation>
+  <translation id="web_edit_password_modal_686">Actualizar</translation>
+  <translation id="web_upload_modals_remove_confirm_modal_687">Cancelar</translation>
+  <translation id="web_catalog_card_688">Pendiente</translation>
+  <translation id="web_modal_confirmation_689">Borrar</translation>
+  <translation id="web_catalog_item_actions_690">Cancelar</translation>
+  <translation id="web_catalog_item_actions_deactivate_items_modal_691">Cancelar</translation>
+  <translation id="web_modal_confirmation_692">Cancelar</translation>
+  <translation id="web_all_button_process_693">Cancelar</translation>
+  <translation id="web_pro_billing_delete_info_confirmation_modal_694">Cancelar</translation>
+  <translation id="web_mark_as_sold_tooltip">Marcar como vendido</translation>
+  <translation id="web_mark_as_reserved_tooltip">Marcar como reservado</translation>
+  <translation id="web_edit_tooltip">Editar</translation>
+  <translation id="web_stats_item_views_tooltip">Visualizaciones</translation>
+  <translation id="web_stats_item_chats_tooltip">Chats</translation>
+  <translation id="web_stats_item_favourites_tooltip">Favoritos</translation>
 </translationbundle>

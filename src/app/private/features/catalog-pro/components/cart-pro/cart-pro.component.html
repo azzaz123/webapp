@@ -1,6 +1,6 @@
 <div class="cart-content">
   <div class="cart-header">
-    <h1 class="cart-pro-title" i18n>Featured summary</h1>
+    <h1 class="cart-pro-title" i18n="@@web_catalog_pro_components_cart_33">Featured summary</h1>
     <tsl-svg-icon class="cancel-icon" [ngClass]="{disabled: cart.total === 0}" (click)="clean()" src="/assets/icons/delete.svg"></tsl-svg-icon>
   </div>
   <ul *ngIf="cart" class="items-list">
@@ -9,14 +9,14 @@
         <tsl-svg-icon class="wing-icon" [ngClass]="type" src="/assets/icons/wing-{{type.replace('bump', '')}}.svg"></tsl-svg-icon>
         <div class="type">
           <span [ngSwitch]="type">
-            <ng-container *ngSwitchCase="'citybump'" i18n>City planned</ng-container>
+            <ng-container *ngSwitchCase="'citybump'" i18n="@@web_catalog_pro_components_cart_34">City planned</ng-container>
             <ng-container *ngSwitchCase="'countrybump'">
-              <span i18n>Country planned</span>
+              <span i18n="@@web_catalog_pro_components_cart_35">Country planned</span>
             </ng-container>
           </span>
-          <span class="planned-label" [hidden]="cart[type].cartItems.length" i18n>Anything planned yet</span>
+          <span class="planned-label" [hidden]="cart[type].cartItems.length" i18n="@@web_catalog_pro_components_cart_36">Anything planned yet</span>
           <span class="planned-label" [hidden]="!cart[type].cartItems.length">{{cart[type].total}}
-            <span i18n> planned</span>
+            <span i18n="@@web_catalog_pro_components_cart_37"> planned</span>
           </span>
         </div>
         <tsl-svg-icon  class="arrow-icon" src="/assets/icons/arrow-right.svg" [hidden]="!cart[type].cartItems.length"></tsl-svg-icon>
@@ -34,10 +34,10 @@
       <div class="cart-separator"></div>
       <div class="cart-balance">
         <span class="cart-balance-title" [ngSwitch]="type">
-          <span i18n class="balance">Balance</span>
-          <ng-container *ngSwitchCase="'citybump'" i18n>city</ng-container>
+          <span i18n="@@web_catalog_pro_components_cart_38" class="balance">Balance</span>
+          <ng-container *ngSwitchCase="'citybump'" i18n="@@web_catalog_pro_components_cart_39">city</ng-container>
           <ng-container *ngSwitchCase="'countrybump'">
-            <span i18n>country</span>
+            <span i18n="@@web_catalog_pro_components_cart_40">country</span>
           </ng-container>
         </span>
         <div class="cart-balance-number" [ngSwitch]="type" *ngIf="status">
@@ -51,5 +51,5 @@
   </ul>
 </div>
 <div class="btn-wrapper">
-  <tsl-button id="qa-checkout-pro-featured" (click)="applyBumps()" [disabled]="cart.total === 0" i18n>Apply bumps</tsl-button>
+  <tsl-button id="qa-checkout-pro-featured" (click)="applyBumps()" [disabled]="cart.total === 0" i18n="@@web_catalog_pro_components_cart_41">Apply bumps</tsl-button>
 </div>

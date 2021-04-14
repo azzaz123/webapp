@@ -1,7 +1,7 @@
 <div class="main-box" [ngbPopover]="coachmarkLocation" [autoClose]="false" triggers="mouseenter:mouseleave">
   <h2>
     <span *ngIf="title">{{title}}</span>
-    <span *ngIf="!title" i18n>Your products are in:</span>
+    <span *ngIf="!title" i18n="@@web_location_box_498">Your products are in:</span>
   </h2>
   <div class="row">
     <div class="col-sm-12">
@@ -16,6 +16,6 @@
   </div>
 </div>
 <ng-template #coachmarkLocation>
-  <div i18n>Mark the location in a place where you usually are. This will help other users to find you and improve your
+  <div i18n="@@web_location_box_499">Mark the location in a place where you usually are. This will help other users to find you and improve your
     user experience.</div>
 </ng-template>

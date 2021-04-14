@@ -1,5 +1,5 @@
 <div class="modal-body">
-  <h1 class="text-center" i18n>Report</h1>
+  <h1 class="text-center" i18n="@@web_chat_modals_report_user_649">Report</h1>
   <div class="modal-close" (click)="activeModal.dismiss()">
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
@@ -19,11 +19,11 @@
   </div>
   <textarea [(ngModel)]="reportUserReasonMessage"
             class="report-listing-textarea"
-            i18n-placeholder placeholder="I'm reporting this user because..."></textarea>
+            i18n-placeholder="@@web_chat_modals_report_user_181" placeholder="I'm reporting this user because..."></textarea>
   <div class="text-center">
     <tsl-button className="btn btn-primary"
                 [disabled]="!reportUserReasonMessage || reportUserReasonMessage.trim() === ''"
                 (click)="close();"
-                i18n>Report</tsl-button>
+                i18n="@@web_chat_modals_report_user_675">Report</tsl-button>
   </div>
 

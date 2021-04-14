@@ -1,19 +1,28 @@
-import { CookieService } from 'ngx-cookie';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { BehaviorSubject, of } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, DebugElement, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
+import {
+  MOCK_EMPTY_ITEM_CARDS_WITH_RECOMMENDED_TYPE,
+  MOCK_ITEM_CARD,
+  MOCK_ITEM_CARDS_WITH_RECOMMENDED_TYPE,
+} from '@fixtures/item-card.fixtures.spec';
 import {
   MOCK_CAR_ITEM_DETAIL,
   MOCK_CAR_ITEM_DETAIL_WITHOUT_COUNTER,
+  MOCK_CAR_ITEM_DETAIL_WITHOUT_SOCIAL_SHARE,
   MOCK_CAR_ITEM_DETAIL_WITH_VIEWS,
   MOCK_ITEM_DETAIL_FASHION,
   MOCK_ITEM_DETAIL_GBP,
@@ -21,57 +30,48 @@ import {
   MOCK_ITEM_DETAIL_WITHOUT_ITEM,
   MOCK_ITEM_DETAIL_WITHOUT_LOCATION,
   MOCK_ITEM_DETAIL_WITHOUT_TAXONOMIES,
-  MOCK_CAR_ITEM_DETAIL_WITHOUT_SOCIAL_SHARE,
+  MOCK_OTHER_USER_CAR_ITEM_DETAIL,
+  MOCK_OTHER_USER_CG_ITEM_DETAIL,
   MOCK_OTHER_USER_REAL_ESTATE_ITEM_DETAIL,
   MOCK_OWN_REAL_ESTATE_ITEM_DETAIL,
-  MOCK_OTHER_USER_CG_ITEM_DETAIL,
-  MOCK_OTHER_USER_CAR_ITEM_DETAIL,
 } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM_CAR, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
+import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
+import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
+import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { CustomCurrencyPipe } from '@shared/pipes';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
+import { CookieService } from 'ngx-cookie';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { BehaviorSubject, of } from 'rxjs';
+import { ItemDetailHeaderComponent } from '../components/item-detail-header/item-detail-header.component';
+import { ItemDetailHeaderModule } from '../components/item-detail-header/item-detail-header.module';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { ItemSpecificationsComponent } from '../components/item-specifications/item-specifications.component';
 import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
 import { ItemTaxonomiesComponent } from '../components/item-taxonomies/item-taxonomies.component';
-import { ADS_ITEM_DETAIL } from '../core/ads/item-detail-ads.config';
+import { ADS_ITEM_DETAIL, FactoryAdAffiliationSlotConfiguration } from '../core/ads/item-detail-ads.config';
 import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
-import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
-import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
-import { ItemDetail } from '../interfaces/item-detail.interface';
-import { ItemDetailComponent } from './item-detail.component';
-import { ItemDetailHeaderComponent } from '../components/item-detail-header/item-detail-header.component';
-import { ItemDetailHeaderModule } from '../components/item-detail-header/item-detail-header.module';
-import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
-import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { UserService } from '@core/user/user.service';
-import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
-import { User } from '@core/user/user';
+import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { MockItemdDetailTrackEventService, MOCK_ITEM_INDEX } from '../core/services/item-detail-track-events/track-events.fixtures.spec';
-import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
-import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
-import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
-import {
-  MOCK_EMPTY_ITEM_CARDS_WITH_RECOMMENDED_TYPE,
-  MOCK_ITEM_CARD,
-  MOCK_ITEM_CARDS_WITH_RECOMMENDED_TYPE,
-} from '@fixtures/item-card.fixtures.spec';
-import { RecommenderItemCardFavouriteCheckedService } from '../core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
-import { MapRecommendedItemCardService } from '../core/services/map-recommended-item-card/map-recommended-item-card.service';
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
-import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
-import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
-import { MapItemService } from '@public/core/services/map-item/map-item.service';
-import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
+import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
+import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
+import { MapRecommendedItemCardService } from '../core/services/map-recommended-item-card/map-recommended-item-card.service';
+import { RecommenderItemCardFavouriteCheckedService } from '../core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
+import { ItemDetail } from '../interfaces/item-detail.interface';
+import { ItemDetailComponent } from './item-detail.component';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -110,6 +110,8 @@ describe('ItemDetailComponent', () => {
   let userService: UserService;
   let de: DebugElement;
   let el: HTMLElement;
+  let testAdsService;
+  let analyticsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -218,7 +220,8 @@ describe('ItemDetailComponent', () => {
     itemSocialShareService = TestBed.inject(ItemSocialShareService);
     recommenderItemCardFavouriteCheckedService = TestBed.inject(RecommenderItemCardFavouriteCheckedService);
     userService = TestBed.inject(UserService);
-    fixture.detectChanges();
+    analyticsService = TestBed.inject(AnalyticsService);
+    testAdsService = TestBed.inject(AdsService);
   });
 
   it('should create', () => {
@@ -226,46 +229,95 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we are on MOBILE...', () => {
-    it('should only show AD on description', () => {
+    beforeEach(() => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.MOBILE);
-
-      component.ngOnInit();
+    });
+    it('should only show AD on description', () => {
       fixture.detectChanges();
 
       const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(ads.length).toBe(2);
+      expect(ads.length).toBe(5);
+    });
+
+    it('should set ads configuration of mobile', () => {
+      itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
+      spyOn(testAdsService, 'setAdKeywords').and.callThrough();
+      spyOn(testAdsService, 'setSlots').and.callThrough();
+
+      fixture.detectChanges();
+
+      expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
+      expect(testAdsService.setSlots).toHaveBeenCalledWith([
+        ADS_ITEM_DETAIL.item1,
+        ADS_ITEM_DETAIL.item2l,
+        ADS_ITEM_DETAIL.item3r,
+        ...FactoryAdAffiliationSlotConfiguration(DeviceType.MOBILE),
+      ]);
     });
   });
 
   describe('when we are on TABLET...', () => {
-    it('should show only the top AD', () => {
+    beforeEach(() => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.TABLET);
+    });
 
+    it('should show only the top AD', () => {
       component.ngOnInit();
       fixture.detectChanges();
       const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(ads.length).toBe(2);
+      expect(ads.length).toBe(5);
+    });
+    it('should set ads configuration of tablet', () => {
+      itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
+      spyOn(testAdsService, 'setAdKeywords').and.callThrough();
+      spyOn(testAdsService, 'setSlots').and.callThrough();
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
+      expect(testAdsService.setSlots).toHaveBeenCalledWith([
+        ADS_ITEM_DETAIL.item1,
+        ADS_ITEM_DETAIL.item2l,
+        ADS_ITEM_DETAIL.item3r,
+        ...FactoryAdAffiliationSlotConfiguration(DeviceType.TABLET),
+      ]);
     });
   });
 
   describe('when we are on DESKTOP...', () => {
-    it('should show the three ADS', () => {
+    beforeEach(() => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
+    });
 
+    it('should show six ADS', () => {
       component.ngOnInit();
       fixture.detectChanges();
       const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(ads.length).toBe(3);
+      expect(ads.length).toBe(6);
+    });
+    it('should set ads configuration of desktop', () => {
+      itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
+      spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
+      spyOn(MockAdsService, 'setSlots').and.callThrough();
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
+      expect(MockAdsService.setSlots).toHaveBeenCalledWith([
+        ADS_ITEM_DETAIL.item1,
+        ADS_ITEM_DETAIL.item2l,
+        ADS_ITEM_DETAIL.item3r,
+        ...FactoryAdAffiliationSlotConfiguration(DeviceType.DESKTOP),
+      ]);
     });
   });
 
   describe('when component inits', () => {
-    beforeEach(() => {
-      fixture = TestBed.createComponent(ItemDetailComponent);
-    });
     describe('and we get the item...', () => {
       it('should send view own item detail event if it is the same user', () => {
         itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
@@ -401,18 +453,6 @@ describe('ItemDetailComponent', () => {
 
         expect(itemDetailStoreService.initializeItemAndFlags).toHaveBeenCalledWith(itemId);
       });
-
-      it('should set ads configuration', () => {
-        itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
-        spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
-        spyOn(MockAdsService, 'setSlots').and.callThrough();
-
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_CAR_ITEM_DETAIL.item.categoryId.toString() });
-        expect(MockAdsService.setSlots).toHaveBeenCalledWith([ADS_ITEM_DETAIL.item1, ADS_ITEM_DETAIL.item2l, ADS_ITEM_DETAIL.item3r]);
-      });
     });
 
     describe('and we NOT get the item...', () => {
@@ -428,14 +468,12 @@ describe('ItemDetailComponent', () => {
 
     describe('should handle the recommended items...', () => {
       describe('when the item have recommended items...', () => {
-        beforeEach(() => {
+        it('should show the recommended items', () => {
           itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
           spyOn(recommenderItemCardFavouriteCheckedService, 'getItems').and.returnValue(of(MOCK_ITEM_CARDS_WITH_RECOMMENDED_TYPE));
 
-          component.ngOnInit();
           fixture.detectChanges();
-        });
-        it('should show the recommended items', () => {
+
           expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeTruthy();
         });
       });
@@ -603,6 +641,10 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we handle the header actions...', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
     describe('when we reserve or unreserve an item...', () => {
       it('should call to the store to do the action', () => {
         spyOn(itemDetailStoreService, 'toggleReservedItem').and.returnValue(of());
@@ -645,6 +687,10 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we handle the location...', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
     describe('when the location is defined', () => {
       it('should show the specified location', () => {
         const map = fixture.debugElement.query(By.css(mapTag));
@@ -703,6 +749,9 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we handle the item extra info...', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
     describe('and the extra info is defined...', () => {
       it('should be shown the item extra info content', () => {
         const extraInfo = fixture.debugElement.query(By.css('tsl-item-extra-info'));
@@ -752,6 +801,10 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we handle the item taxonomies...', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
     describe('and the taxonomies are defined...', () => {
       it('should show the item specifications...', () => {
         expect(fixture.debugElement.query(By.directive(ItemTaxonomiesComponent))).toBeTruthy();
@@ -785,13 +838,16 @@ describe('ItemDetailComponent', () => {
   });
 
   describe('when we click one of the recommened item cards', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
     it('should send track click item card event', () => {
       const recommenedItemCard = fixture.debugElement.query(By.css(recommendedItemsTag));
       spyOn(userService, 'get').and.returnValue(of(MOCK_OTHER_USER));
       spyOn(itemDetailTrackEventsService, 'trackClickItemCardEvent');
 
       recommenedItemCard.triggerEventHandler('clickedItemAndIndexEvent', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
-      fixture.detectChanges();
 
       expect(itemDetailTrackEventsService.trackClickItemCardEvent).toHaveBeenCalled();
     });
@@ -799,6 +855,11 @@ describe('ItemDetailComponent', () => {
 
   describe('when we handle the social share...', () => {
     itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
+
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
     it('should send social share event with facebook channel if we share item with facebook', () => {
       spyOn(itemDetailTrackEventsService, 'trackShareItemEvent');
       const socialShare = fixture.debugElement.query(By.css(socialShareTag));

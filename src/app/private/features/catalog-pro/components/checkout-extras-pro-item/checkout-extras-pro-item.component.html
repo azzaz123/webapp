@@ -1,16 +1,16 @@
 <div class="item">
   <div class="info">
     <div class="quantity">{{pack.quantity}}</div>
-    <div class="title" i18n>Extra featured 24 hours</div>
+    <div class="title" i18n="@@web_catalog_pro_components_checkout_extras_item_42">Extra featured 24 hours</div>
   </div>
   <div class="packs-section">
     <div *ngFor="let pack of pack.packs" class="pack" [ngClass]="'pack-' + pack.name">
       <div class="price">
         <p>{{ pack.price | customCurrency:pack.currency }}</p>
-        <p class="discount" *ngIf="pack.discount > 0" i18n>Save {{ pack.discount }}% </p>
+        <p class="discount" *ngIf="pack.discount > 0" i18n="@@web_catalog_pro_components_checkout_extras_item_43">Save {{ pack.discount }}% </p>
       </div>
       <div class="action">
-        <button class="btn btn-price" (click)="select(pack)" i18n>Add</button>
+        <button class="btn btn-price" (click)="select(pack)" i18n="@@web_catalog_pro_components_checkout_extras_item_44">Add</button>
       </div>
     </div>
   </div>

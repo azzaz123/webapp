@@ -62,6 +62,10 @@ export class AdsService {
       .subscribe();
   }
 
+  public adSlotLoaded$(adSlot: AdSlotConfiguration): Observable<boolean> {
+    return this.googlePublisherTagService.isAdSlotLoaded$(adSlot);
+  }
+
   public displayAdShopping(adShoppingPageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingBaseConfiguration): void {
     this.adsReady$
       .pipe(

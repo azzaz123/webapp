@@ -39,6 +39,12 @@ $item-detail-carousel-height: 477px;
     text-overflow: ellipsis;
   }
 
+  &__affiliation {
+    tsl-sky {
+      flex: 1;
+    }
+  }
+
   &__description {
     white-space: pre-line;
     font-size: $font-size-m;
