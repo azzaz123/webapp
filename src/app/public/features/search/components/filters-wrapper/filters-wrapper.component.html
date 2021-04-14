@@ -12,11 +12,13 @@
 
 
 <tsl-drawer [isOpen]="drawerConfig.isOpen" [offsetTop]="drawerConfig.offsetTop" [hasApply]="drawerConfig.hasApply"
+            [noScroll]="isDrawerContentScrollable$ | async"
 (cancel)="closeDrawer()" (apply)="applyDrawer()" (clickBackdrop)="closeDrawer()">
   <tsl-filter-group
     [values]="filterValues"
     [config]="filterConfigurations.drawer"
     [variant]="FILTER_VARIANT.CONTENT"
+    (openStateChange)="drawerOpenStateChange($event)"
     (valueChange)="drawerChange($event)"></tsl-filter-group>
 </tsl-drawer>
 

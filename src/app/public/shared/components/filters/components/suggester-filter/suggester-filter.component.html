@@ -14,6 +14,7 @@
                               [placeholderLabel]="label$ | async"
                               [contentTitle]="contentTitle"
                               [isClearable]="hasValue$() | async"
+                              (placeholderOpenStateChange)="openStateChange.emit($event)"
                               (clear)="handleClear()">
 
     <div class="SuggesterFilter__search_box">
@@ -28,7 +29,7 @@
     </div>
 
     <div [class.SuggesterFilter--bubble]="variant | isBubble">
-      <form [formGroup]="formGroup" class="SuggesterFilter__form">
+      <form [formGroup]="formGroup" class="SuggesterFilter__form" [class.SuggesterFilter__form--drawer]="!(variant | isBubble)">
         <tsl-select-form
           formControlName="select"
           [options]="options$ | async">

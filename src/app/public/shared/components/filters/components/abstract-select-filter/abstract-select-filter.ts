@@ -7,10 +7,7 @@ import { AbstractSelectFilterConfig } from './interfaces/abstract-select-filter-
 export abstract class AbstractSelectFilter<T extends Partial<Record<keyof T, string>>> extends AbstractFilter<T> {
   @Input() config: AbstractSelectFilterConfig<T>;
 
-  constructor() {
-    super();
-  }
-
+  // BEFOREMERGE: check setter / getters on templates
   public get contentTitle(): string {
     return this.config.title;
   }

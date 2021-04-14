@@ -15,6 +15,7 @@
     [placeholderIcon]="getPlaceholderIcon()"
     [contentTitle]="contentTitle"
     [isClearable]="hasValue$() | async"
+    (placeholderOpenStateChange)="openStateChange.emit($event)"
     (clear)="handleClear()">
 
     <div [class.SelectFilter--bubble]="variant | isBubble">
