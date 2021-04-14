@@ -20,6 +20,11 @@ export class ItemStatsRowComponent implements OnInit {
   public momentConfig: any;
   public statsData: ItemStatisticFullResponse;
   public noData: boolean;
+  public tooltipMessages = {
+    views: $localize`:@@web_stats_item_views_tooltip:Views`,
+    chats: $localize`:@@web_stats_item_chats_tooltip:Chats`,
+    favourites: $localize`:@@web_stats_item_favourites_tooltip:Favourites`,
+  };
 
   constructor(@Inject('SUBDOMAIN') private subdomain: string, private itemStatsService: ItemStatsService) {
     this.momentConfig = 'dd MMM yyyy';

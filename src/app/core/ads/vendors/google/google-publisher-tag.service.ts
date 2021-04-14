@@ -1,17 +1,12 @@
+import { filter, map } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { CookieService } from 'ngx-cookie';
-import {
-  AdKeyWords,
-  AdShoppingPageOptions,
-  AdSlotConfiguration,
-  AdSlotId,
-  AdSlotShoppingBaseConfiguration,
-  AdSlotShoppingConfiguration,
-} from '../../models';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotShoppingBaseConfiguration } from '../../models';
 import { GoogCsa } from './google-ads-sense-shopping';
 
 @Injectable({
@@ -20,13 +15,7 @@ import { GoogCsa } from './google-ads-sense-shopping';
 export class GooglePublisherTagService {
   private static GOOGLE_ADS_SENSE_NAME = 'plas';
 
-  get googletag(): googletag.Googletag {
-    return this.window['googletag'];
-  }
-
-  private get googCsa(): GoogCsa {
-    return this.window && this.window['_googCsa'];
-  }
+  private adSlotsLoadedSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
   constructor(
     @Inject(WINDOW_TOKEN) private window: Window,
@@ -44,7 +33,12 @@ export class GooglePublisherTagService {
       this.definedSlots(adSlots);
       this.setPubads();
       this.googletag.enableServices();
+      this.googletag.pubads().addEventListener('slotOnload', (event: googletag.events.Event) => this.onSlotLoad(event));
     });
+  }
+
+  public isAdSlotLoaded$(adSlot: AdSlotConfiguration): Observable<boolean> {
+    return this.adSlotsLoaded$.pipe(map((slotNames: string[]) => slotNames.includes(adSlot.name)));
   }
 
   public setAdKeywords(adKeywords: AdKeyWords): void {
@@ -127,5 +121,25 @@ export class GooglePublisherTagService {
             .addService(this.googletag.pubads());
         }
       });
+  }
+
+  private onSlotLoad(event: googletag.events.Event): void {
+    const slotsName: string[] = this.adSlotsLoadedSubject.getValue();
+    const slotName = event.slot.getAdUnitPath();
+    slotsName.push(slotName);
+    const newSlotsName: string[] = [...new Set(slotsName).values()];
+    this.adSlotsLoadedSubject.next(newSlotsName);
+  }
+
+  get googletag(): googletag.Googletag {
+    return this.window['googletag'];
+  }
+
+  private get googCsa(): GoogCsa {
+    return this.window && this.window['_googCsa'];
+  }
+
+  private get adSlotsLoaded$(): Observable<string[]> {
+    return this.adSlotsLoadedSubject.asObservable();
   }
 }

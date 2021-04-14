@@ -1,10 +1,10 @@
 <nav class="nav filters-nav">
-  <a (click)="selectStatus('active')" [ngClass]="{active: selectedStatus === 'active'}" class="nav-link" i18n>Active
+  <a (click)="selectStatus('active')" [ngClass]="{active: selectedStatus === 'active'}" class="nav-link" i18n="@@web_catalog_status_navbar_470">Active
     <span *ngIf="counters">({{counters?.publish}}/<span>{{subscriptionPlan || '0'}}</span>)</span></a>
-  <a (click)="selectStatus('pending')" [ngClass]="{active: selectedStatus === 'pending'}" class="nav-link" i18n>Inactive
+  <a (click)="selectStatus('pending')" [ngClass]="{active: selectedStatus === 'pending'}" class="nav-link" i18n="@@web_catalog_status_navbar_471">Inactive
     <span *ngIf="counters">({{counters?.onHold}})</span></a>
-  <a (click)="selectStatus('featured')" [ngClass]="{active: selectedStatus === 'featured'}" class="nav-link" i18n>Bumped
+  <a (click)="selectStatus('featured')" [ngClass]="{active: selectedStatus === 'featured'}" class="nav-link" i18n="@@web_catalog_status_navbar_472">Bumped
     <span *ngIf="counters">({{bumpsCounter || '0'}})</span></a>
-  <a (click)="selectStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n>Sold
+  <a (click)="selectStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="@@web_catalog_status_navbar_473">Sold
     <span *ngIf="counters">({{counters?.sold}})</span></a>
 </nav>

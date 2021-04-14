@@ -13,10 +13,10 @@
   </div>
   <div class="actions-block" *ngIf='canEdit()'>
     <tsl-button className="btn-reserve" (click)="prevent($event, true); toggleReserve()">
-      <span i18n *ngIf='!item.reserved'>Reserve</span>
-      <span i18n *ngIf='item.reserved'>Unreserve</span>
+      <span i18n="@@web_chat_children_item_564" *ngIf='!item.reserved'>Reserve</span>
+      <span i18n="@@web_chat_children_item_565" *ngIf='item.reserved'>Unreserve</span>
     </tsl-button>
-    <tsl-button className="btn-sold" (click)="prevent($event, true)" tslItemSold (callback)="trackSoldEvent(item)" [item]="item" i18n>Sold</tsl-button>
+    <tsl-button className="btn-sold" (click)="prevent($event, true)" tslItemSold (callback)="trackSoldEvent(item)" [item]="item" i18n="@@web_chat_children_item_566">Sold</tsl-button>
   </div>
   <div class="card-block">
     <h5 class="card-title">{{item.title}}</h5>
@@ -34,20 +34,17 @@
       <a (click)="clickWillis($event)"
          *ngIf="showWillisLink"
          href="https://checkout.wallapopgarantia.com/?name={{ item.title }}&amount={{ item.salePrice }}&imageUrl={{ item.mainImage?.urls_by_size.large.replace('http://', 'https://') }}&tag={{ item.id }}"
-         target="_blank" i18n>
-        Add Insurance
+         target="_blank" i18n="@@web_chat_children_item_161">        Add Insurance
       </a>
       <a (click)="clickMapfreOrVerti($event)"
          *ngIf="showMapfreOrVertiLink"
          [href]="getMapfreOrVertiLink()"
-         target="_blank" i18n>
-        Add insurance to this product
+         target="_blank" i18n="@@web_chat_children_item_162">        Add insurance to this product
       </a>
       <a (click)="clickSolcredito($event)"
          *ngIf="showSolcreditoLink"
          href="https://www.solcredito.es/?xc=0ebf9b3e8fb3ddb330c0bb313690aceefd0ed01e&category={{getCategoryKeyById(item.categoryId)}}"
-         target="_blank" i18n>
-        Finance your purchase
+         target="_blank" i18n="@@web_chat_children_item_163">        Finance your purchase
       </a>
     </div>
   </div>

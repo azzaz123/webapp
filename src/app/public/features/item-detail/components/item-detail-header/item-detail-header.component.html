@@ -22,18 +22,18 @@
             <ng-container *ngIf="showOptions">
                 <!-- Sold -->
                 <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--sold mr-2 p-0"
-                    (click)="sellItem()" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
+                    (click)="sellItem()" ngbTooltip="{{tooltipMessages.markAsSold}}"  placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
                 </button>
                 <!-- Reserve -->
                 <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--reserve mr-2 p-0"
-                    [ngClass]="{active: item.reserved}" (click)="toggleReserveItem()" ngbTooltip="Mark as reserved"
-                    i18n-ngbTooltip placement="top">
+                    [ngClass]="{active: item.reserved}" (click)="toggleReserveItem()" ngbTooltip="{{tooltipMessages.markAsReserved}}"
+                     placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
                 </button>
                 <!-- Edit -->
                 <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--edit mr-2 p-0"
-                    [routerLink]="['/catalog/edit/' + item.id]" ngbTooltip="Edit" i18n-ngbTooltip placement="top">
+                    [routerLink]="['/catalog/edit/' + item.id]" ngbTooltip="{{tooltipMessages.edit}}"  placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
                 </button>
                 <!-- Edit dropdown -->
