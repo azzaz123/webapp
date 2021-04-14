@@ -24,8 +24,8 @@ export class FilterFactoryService {
     });
   }
 
-  public get filterGroup(): FilterGroup {
-    return new FilterGroup(this.filters);
+  public getFilterGroup(variant: FILTER_VARIANT): FilterGroup {
+    return new FilterGroup(this.filters.filter((filter) => filter.variant === variant));
   }
 
   private createFilter(

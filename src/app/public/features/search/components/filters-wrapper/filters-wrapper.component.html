@@ -2,7 +2,7 @@
   <div class="FiltersWrapper__bar d-flex p-2">
     <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
     <tsl-filter-group
-      [values]="filterValues"
+      [values]="bubbleValues$ | async"
       [config]="filterConfigurations.bubble"
       [variant]="FILTER_VARIANT.BUBBLE"
       (valueChange)="bubbleChange($event)"
@@ -15,7 +15,7 @@
             [noScroll]="isDrawerContentScrollable$ | async"
 (cancel)="closeDrawer()" (apply)="applyDrawer()" (clickBackdrop)="closeDrawer()">
   <tsl-filter-group
-    [values]="filterValues"
+    [values]="drawerValues$ | async"
     [config]="filterConfigurations.drawer"
     [variant]="FILTER_VARIANT.CONTENT"
     (openStateChange)="drawerOpenStateChange($event)"

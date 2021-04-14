@@ -75,7 +75,7 @@ describe('FilterFactoryService', () => {
     it('should add it correctly to the form group', () => {
       service.insertFilters(config, value, variant, component.host);
 
-      service.filterGroup['filters'].forEach((filter: AbstractFilter<unknown>, index: number) => {
+      service.getFilterGroup['filters'].forEach((filter: AbstractFilter<unknown>, index: number) => {
         expect(filter).toBeInstanceOf(FILTER_TYPE_COMPONENT[config[index].type]);
       });
     });

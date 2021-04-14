@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 
+// TODO: TechDebt. In the end, we need two instances that are the same. We need to slightly rethink how to better handle this
 @Injectable()
-export class FilterParameterStoreService extends FilterParameterDraftService {
-  public get parameters$(): Observable<FilterParameter[]> {
-    return this.getParameterObservable();
-  }
-}
+export class FilterParameterStoreService extends FilterParameterDraftService {}
