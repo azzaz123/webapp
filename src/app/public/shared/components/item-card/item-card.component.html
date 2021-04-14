@@ -9,7 +9,7 @@
         class="ItemCard__icon ItemCard__icon--right ItemCard__icon--medium position-absolute ItemCard__icon--wallapop d-flex justify-content-center align-items-center"
         src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon>
 
-    <div class="ItemCard__image">
+    <div class="ItemCard__image" [class.ItemCard__image--with-description]="showDescription">
         <img class="w-100 h-100" [src]="mainImage?.urls_by_size?.small" [fallback]="IMAGE_FALLBACK"
             [alt]="item.title" loading="lazy" />
     </div>

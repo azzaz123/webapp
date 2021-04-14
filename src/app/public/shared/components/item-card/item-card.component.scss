@@ -75,11 +75,18 @@ $box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
   }
 
   &__image {
-    background-color: $blue-grey-5;
-    height: $image-height;
+    height: $image-height-without-description;
 
     img {
       object-fit: cover;
+    }
+
+    &--with-description {
+      height: $image-height-with-description;
+      padding: 4px 4px 0;
+      img {
+        border-radius: 6px;
+      }
     }
   }
 
