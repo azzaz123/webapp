@@ -30,10 +30,12 @@ $box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
   &__data {
     border-bottom-left-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
-    height: $container-height-without-description - $image-height;
+    height: $container-height-without-description - $image-height-without-description;
+    padding: $spacer * 0.5;
 
     &--with-description {
-      height: $container-height-with-description - $image-height;
+      height: $container-height-with-description - $image-height-with-description;
+      padding: $spacer * 0.75;
     }
   }
 
