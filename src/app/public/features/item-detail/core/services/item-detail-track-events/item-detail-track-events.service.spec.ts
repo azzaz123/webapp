@@ -10,6 +10,7 @@ import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { of } from 'rxjs';
@@ -42,6 +43,7 @@ describe('ItemDetailTrackEventsService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         ItemDetailTrackEventsService,
+        TypeCheckService,
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         { provide: UserService, useClass: MockedUserService },
       ],
