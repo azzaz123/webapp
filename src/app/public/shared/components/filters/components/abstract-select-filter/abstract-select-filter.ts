@@ -7,7 +7,7 @@ import { AbstractSelectFilterConfig } from './interfaces/abstract-select-filter-
 export abstract class AbstractSelectFilter<T extends Partial<Record<keyof T, string>>> extends AbstractFilter<T> {
   @Input() config: AbstractSelectFilterConfig<T>;
 
-  // BEFOREMERGE: check setter / getters on templates
+  // TODO: TechDebt: check setter / getters on templates, they are treated as functions so we are processing unnecessary
   public get contentTitle(): string {
     return this.config.title;
   }
