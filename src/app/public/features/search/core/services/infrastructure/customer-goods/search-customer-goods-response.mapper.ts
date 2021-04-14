@@ -17,5 +17,5 @@ export function SearchItemCustomerGoodsResponseMapper({search_objects}: SearchRe
       reserved: item.flags.reserved,
       bumped: item.visibility_flags.bumped
     }
-  } as SearchItem));
+  }));
 }

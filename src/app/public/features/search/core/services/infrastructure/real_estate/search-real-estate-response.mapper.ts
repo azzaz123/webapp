@@ -16,5 +16,5 @@ export function searchItemRealEstateResponseMapper({search_objects}: SearchRespo
       reserved: content.flags.reserved,
       bumped: content.visibility_flags.bumped
     }
-  } as SearchItem));
+  }));
 }

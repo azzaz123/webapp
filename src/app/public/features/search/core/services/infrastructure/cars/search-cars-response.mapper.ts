@@ -17,5 +17,5 @@ export function SearchItemCarResponseMapper({search_objects}: SearchResponse<Sea
       reserved: content.flags.reserved,
       bumped: content.visibility_flags.bumped
     }
-  } as SearchItem));
+  }));
 }

@@ -9,11 +9,11 @@ export class SearchInfrastructureService {
 
   constructor(private searchApiService: SearchAPIService) {}
 
-  search(params: FilterParameter[]): Observable<SearchPagination> {
+  public search(params: FilterParameter[]): Observable<SearchPagination> {
     return this.searchApiService.search(params);
   }
 
-  loadMore(): Observable<SearchPagination> {
+  public loadMore(): Observable<SearchPagination> {
     return this.searchApiService.loadMore();
   }
 }
