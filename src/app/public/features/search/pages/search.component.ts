@@ -33,6 +33,7 @@ export class SearchComponent implements OnInit {
 
   public showBackdrop = false;
   public columnsConfig: ColumnsConfig = {
+    xl: 4,
     lg: 4,
     md: 3,
     sm: 2,

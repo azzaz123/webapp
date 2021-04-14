@@ -304,6 +304,9 @@ export const MockUser: Partial<User> = {
 
 export const MockUserService = {
   user: MockUser,
+  me() {
+    return of(MockUser);
+  },
 };
 
 export class MockedUserService {

@@ -30,7 +30,7 @@ export class SelectFormComponent extends AbstractFormComponent<ComplexSelectValu
     return this.isRecordValueActive(optionValue);
   }
 
-  public handleOptionClick(value: ComplexSelectValue) {
+  public handleOptionClick(value: ComplexSelectValue): void {
     this.writeValue(value);
     this.onChange(value);
   }
