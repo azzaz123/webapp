@@ -1,8 +1,7 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ItemDetailService } from '../item-detail/item-detail.service';
 import { ReserveItemBodyResponse } from '@public/core/services/api/item/interfaces/item-response.interface';
-import { ItemDetailResponse } from '@public/features/item-detail/interfaces/item-detail-response.interface';
 import { MapItemDetailStoreService } from '../map-item-detail-store/map-item-detail-store.service';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { Injectable } from '@angular/core';
@@ -11,6 +10,7 @@ import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { Item } from '@core/item/item';
 import { ItemDetailFlagsStoreService } from '../item-detail-flags-store/item-detail-flags-store.service';
 import { MarkAsFavouriteBodyResponse } from '@public/core/services/api/public-user/interfaces/public-user-response.interface';
+import { ItemFavouritesService } from '@public/core/services/item-favourites/item-favourites.service';
 
 @Injectable()
 export class ItemDetailStoreService {
@@ -18,7 +18,8 @@ export class ItemDetailStoreService {
     private itemDetailService: ItemDetailService,
     private mapItemDetailStoreService: MapItemDetailStoreService,
     private router: Router,
-    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
+    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
+    private itemFavouritesService: ItemFavouritesService
   ) {}
 
   private readonly _itemDetail = new BehaviorSubject<ItemDetail>(null);
@@ -36,8 +37,9 @@ export class ItemDetailStoreService {
   }
 
   public initializeItemAndFlags(itemId: string): void {
-    this.itemDetailService.getItemDetail(itemId).subscribe(
-      (itemDetail: ItemDetailResponse) => {
+    forkJoin([this.itemDetailService.getItemDetail(itemId), this.itemFavouritesService.getFavouritedItemIds([itemId])]).subscribe(
+      ([itemDetail, favourites]: [ItemDetail, string[]]) => {
+        itemDetail.item.flags.favorite = !!favourites.length;
         this.itemDetail = this.mapItemDetailStoreService.mapItemDetailStore(itemDetail);
         this.itemDetailFlagsStoreService.updateStatusFlag(itemDetail.item.flags);
         this.itemDetailFlagsStoreService.updateBumpedFlag(itemDetail.item.bumpFlags);

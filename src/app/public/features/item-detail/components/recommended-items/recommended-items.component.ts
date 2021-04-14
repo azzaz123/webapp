@@ -1,9 +1,8 @@
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
-import { RecommenderItem } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
-import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 
 @Component({
   selector: 'tsl-recommended-items',
@@ -11,7 +10,8 @@ import { MapRecommendedItemCardService } from '../../core/services/map-recommend
   styleUrls: ['./recommended-items.component.scss'],
 })
 export class RecommendedItemsComponent implements OnChanges {
-  @Input() recommendedItems: RecommenderItem[];
+  @Input() recommendedItems: ItemCard[];
+  @Input() recommendedType: RECOMMENDER_TYPE;
   @Output() clickedItemAndIndexEvent: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
 
   public items: ItemCard[];
@@ -24,11 +24,9 @@ export class RecommendedItemsComponent implements OnChanges {
     xs: 2,
   };
 
-  constructor(private mapRecommendedItemCardService: MapRecommendedItemCardService) {}
-
   ngOnChanges() {
     if (this.recommendedItems) {
-      this.items = this.mapRecommendedItemCardService.mapRecommendedItems(this.recommendedItems).slice(0, 6);
+      this.items = this.recommendedItems.slice(0, 6);
     }
   }
 
