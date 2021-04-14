@@ -1,11 +1,13 @@
-<div class="FiltersWrapper__bar d-flex p-2">
-  <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
-  <tsl-filter-group
-    [values]="filterValues"
-    [config]="filterConfigurations.bubble"
-    [variant]="FILTER_VARIANT.BUBBLE"
-    (valueChange)="bubbleChange($event)"
-    (openStateChange)="bubbleOpenStateChange($event)"></tsl-filter-group>
+<div class="FiltersWrapper__bar_wrapper" [class.FiltersWrapper__bar_wrapper--open]="isBubbleOpen$ | async">
+  <div class="FiltersWrapper__bar d-flex p-2">
+    <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
+    <tsl-filter-group
+      [values]="filterValues"
+      [config]="filterConfigurations.bubble"
+      [variant]="FILTER_VARIANT.BUBBLE"
+      (valueChange)="bubbleChange($event)"
+      (openStateChange)="bubbleOpenStateChange($event)"></tsl-filter-group>
+  </div>
 </div>
 
 

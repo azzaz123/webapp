@@ -1,5 +1,5 @@
 import { SearchItem } from '../interfaces/search-item.interface';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 export function mapSearchItems(items: SearchItem[]): ItemCard[] {
   return items.map((item) => {

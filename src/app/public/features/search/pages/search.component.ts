@@ -16,7 +16,7 @@ import {
 } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchStoreService } from '../core/services/search-store.service';
 import { mapSearchItems } from '../utils/search-item.mapper';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 @Component({
   selector: 'tsl-search',

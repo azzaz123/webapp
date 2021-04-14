@@ -1,11 +1,18 @@
 @import '~style/common';
 
 .FiltersWrapper {
-  &__bar {
-    @include media-breakpoint-down(md) {
-      overflow: auto;
+  &__bar_wrapper {
+    overflow: auto;
+    @include hide-scroll-bars;
 
-      @include hide-scroll-bars;
+    // Hacky way to be able to scroll and see the filter dropdown
+    &--open {
+      height: 100vh;
     }
+  }
+
+  &__bar {
+    background-color: $white;
+    height: 60px;
   }
 }
