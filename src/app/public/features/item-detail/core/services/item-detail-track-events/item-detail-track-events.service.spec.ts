@@ -9,12 +9,10 @@ import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
-import { features } from 'process';
 import { of } from 'rxjs';
-
 import { ItemDetailTrackEventsService } from './item-detail-track-events.service';
 import {
   MOCK_CLICK_CHAT_BUTTON_EVENT,
