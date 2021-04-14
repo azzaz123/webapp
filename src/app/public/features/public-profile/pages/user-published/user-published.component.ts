@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemResponse } from '@core/item/item-response.interface';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
-import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
+import { ItemCard, ItemCardsWithPagination } from '@public/core/interfaces/item-card.interface';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 import { finalize, take } from 'rxjs/operators';
-import { MapPublishedItemCardService } from '../../core/services/map-published-item-card/map-published-item-card.service';
-import { PublicProfileService } from '../../core/services/public-profile.service';
+import { PublishedItemCardFavouriteCheckedService } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.service';
 
 @Component({
   selector: 'tsl-user-published',
@@ -22,7 +19,7 @@ export class UserPublishedComponent implements OnInit {
   public nextPaginationItem = 0;
   public loading = true;
 
-  constructor(private publicProfileService: PublicProfileService, private mapPublishedItemCardService: MapPublishedItemCardService) {}
+  constructor(private publishedItemCardFavouriteCheckedService: PublishedItemCardFavouriteCheckedService) {}
 
   ngOnInit(): void {
     this.loadItems();
@@ -32,15 +29,15 @@ export class UserPublishedComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.publicProfileService
-        .getPublishedItems(this.publicProfileService.user.id, this.nextPaginationItem)
+      this.publishedItemCardFavouriteCheckedService
+        .getItems(this.nextPaginationItem)
         .pipe(
           finalize(() => (this.loading = false)),
           take(1)
         )
-        .subscribe((response: PaginationResponse<ItemResponse>) => {
-          this.items = this.items.concat(this.mapPublishedItemCardService.mapPublishedItems(response.results));
-          this.nextPaginationItem = response.init;
+        .subscribe((itemsWithPagination: ItemCardsWithPagination) => {
+          this.nextPaginationItem = itemsWithPagination.nextPaginationItem;
+          this.items = this.items.concat(itemsWithPagination.items);
         }, this.onError);
     } catch (err: any) {
       this.onError();

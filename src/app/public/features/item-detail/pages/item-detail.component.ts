@@ -10,9 +10,9 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
-import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
+import { ItemCard, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { RecommenderItemCardFavouriteCheckedService } from '@public/features/item-detail/core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
@@ -25,7 +25,6 @@ import { ADS_ITEM_DETAIL, FactoryAdAffiliationSlotConfiguration, ItemDetailAdSlo
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
-import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 
@@ -38,7 +37,7 @@ import { ItemDetail } from '../interfaces/item-detail.interface';
 export class ItemDetailComponent implements OnInit, OnDestroy {
   @ViewChild(ItemFullScreenCarouselComponent, { static: true })
   itemDetailImagesModal: ItemFullScreenCarouselComponent;
-  public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
+  public recommendedItems$: Observable<ItemCardsWithRecommenedType>;
   public readonly deviceType: typeof DeviceType = DeviceType;
   public device: DeviceType;
   private subscriptions: Subscription = new Subscription();
@@ -50,7 +49,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   constructor(
     private itemDetailStoreService: ItemDetailStoreService,
     private deviceService: DeviceService,
-    private itemDetailService: ItemDetailService,
     private itemDetailTrackEventsService: ItemDetailTrackEventsService,
     private route: ActivatedRoute,
     private adsService: AdsService,
@@ -58,7 +56,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private typeCheckService: TypeCheckService,
     private userService: UserService,
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private recommenderItemCardFavouriteCheckedService: RecommenderItemCardFavouriteCheckedService
   ) {}
 
   ngOnInit(): void {
@@ -130,7 +129,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   private initializeItemRecommendations(itemId: string, categoryId: number): void {
     if (this.isItemRecommendations(categoryId)) {
-      this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
+      this.recommendedItems$ = this.recommenderItemCardFavouriteCheckedService.getItems(itemId);
     }
   }
 

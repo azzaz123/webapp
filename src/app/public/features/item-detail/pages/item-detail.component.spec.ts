@@ -14,7 +14,11 @@ import { UserService } from '@core/user/user.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
-import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import {
+  MOCK_EMPTY_ITEM_CARDS_WITH_RECOMMENDED_TYPE,
+  MOCK_ITEM_CARD,
+  MOCK_ITEM_CARDS_WITH_RECOMMENDED_TYPE,
+} from '@fixtures/item-card.fixtures.spec';
 import {
   MOCK_CAR_ITEM_DETAIL,
   MOCK_CAR_ITEM_DETAIL_WITHOUT_COUNTER,
@@ -38,8 +42,12 @@ import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spe
 import { AdComponentStub } from '@fixtures/shared';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
+import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
+import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
+import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { CookieService } from 'ngx-cookie';
@@ -51,10 +59,6 @@ import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-c
 import { ItemSpecificationsComponent } from '../components/item-specifications/item-specifications.component';
 import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
 import { ItemTaxonomiesComponent } from '../components/item-taxonomies/item-taxonomies.component';
-import {
-  EMPTY_RECOMMENDED_ITEMS_MOCK,
-  RECOMMENDED_ITEMS_MOCK,
-} from '../components/recommended-items/constants/recommended-items.fixtures.spec';
 import { ADS_ITEM_DETAIL, FactoryAdAffiliationSlotConfiguration } from '../core/ads/item-detail-ads.config';
 import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
@@ -64,6 +68,8 @@ import { MockItemdDetailTrackEventService, MOCK_ITEM_INDEX } from '../core/servi
 import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { MapExtraInfoService } from '../core/services/map-extra-info/map-extra-info.service';
+import { MapRecommendedItemCardService } from '../core/services/map-recommended-item-card/map-recommended-item-card.service';
+import { RecommenderItemCardFavouriteCheckedService } from '../core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemDetailComponent } from './item-detail.component';
 
@@ -93,7 +99,6 @@ describe('ItemDetailComponent', () => {
 
   let component: ItemDetailComponent;
   let fixture: ComponentFixture<ItemDetailComponent>;
-  let itemDetailService: ItemDetailService;
   let mapExtraInfoService: MapExtraInfoService;
   let itemSocialShareService: ItemSocialShareService;
   let deviceService: DeviceService;
@@ -101,11 +106,12 @@ describe('ItemDetailComponent', () => {
   let itemDetailImagesModal: ItemFullScreenCarouselComponent;
   let itemDetailStoreService: ItemDetailStoreService;
   let itemDetailTrackEventsService: ItemDetailTrackEventsService;
+  let recommenderItemCardFavouriteCheckedService: RecommenderItemCardFavouriteCheckedService;
   let userService: UserService;
-  let analyticsService: AnalyticsService;
   let de: DebugElement;
   let el: HTMLElement;
   let testAdsService;
+  let analyticsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -118,7 +124,7 @@ describe('ItemDetailComponent', () => {
         ItemTaxonomiesComponent,
         ItemFullScreenCarouselComponent,
       ],
-      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule, ItemDetailHeaderModule],
+      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule, ItemDetailHeaderModule, ItemFavouritesModule],
       providers: [
         CheckSessionService,
         ItemCardService,
@@ -126,6 +132,12 @@ describe('ItemDetailComponent', () => {
         ItemApiService,
         ItemFullScreenCarouselComponent,
         Renderer2,
+        RecommenderItemCardFavouriteCheckedService,
+        MapRecommendedItemCardService,
+        ItemDetailService,
+        PublicUserApiService,
+        RecommenderApiService,
+        MapItemService,
         {
           provide: ItemDetailTrackEventsService,
           useClass: MockItemdDetailTrackEventService,
@@ -169,10 +181,10 @@ describe('ItemDetailComponent', () => {
           useValue: MockAdsService,
         },
         {
-          provide: ItemDetailService,
+          provide: RecommenderItemCardFavouriteCheckedService,
           useValue: {
-            getRecommendedItems: () => {
-              return of(RECOMMENDED_ITEMS_MOCK);
+            getItems: () => {
+              return of(MOCK_ITEM_CARDS_WITH_RECOMMENDED_TYPE);
             },
           },
         },
@@ -198,7 +210,6 @@ describe('ItemDetailComponent', () => {
     component = fixture.componentInstance;
     deviceService = TestBed.inject(DeviceService);
     decimalPipe = TestBed.inject(DecimalPipe);
-    itemDetailService = TestBed.inject(ItemDetailService);
     mapExtraInfoService = TestBed.inject(MapExtraInfoService);
     userService = TestBed.inject(UserService);
     de = fixture.debugElement;
@@ -207,6 +218,7 @@ describe('ItemDetailComponent', () => {
     itemDetailTrackEventsService = TestBed.inject(ItemDetailTrackEventsService);
     itemDetailImagesModal = TestBed.inject(ItemFullScreenCarouselComponent);
     itemSocialShareService = TestBed.inject(ItemSocialShareService);
+    recommenderItemCardFavouriteCheckedService = TestBed.inject(RecommenderItemCardFavouriteCheckedService);
     userService = TestBed.inject(UserService);
     analyticsService = TestBed.inject(AnalyticsService);
     testAdsService = TestBed.inject(AdsService);
@@ -458,7 +470,7 @@ describe('ItemDetailComponent', () => {
       describe('when the item have recommended items...', () => {
         it('should show the recommended items', () => {
           itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
-          spyOn(itemDetailService, 'getRecommendedItems').and.returnValue(of(RECOMMENDED_ITEMS_MOCK));
+          spyOn(recommenderItemCardFavouriteCheckedService, 'getItems').and.returnValue(of(MOCK_ITEM_CARDS_WITH_RECOMMENDED_TYPE));
 
           fixture.detectChanges();
 
@@ -469,7 +481,7 @@ describe('ItemDetailComponent', () => {
       describe(`when the item don't have recommended items`, () => {
         beforeEach(() => {
           itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
-          spyOn(itemDetailService, 'getRecommendedItems').and.returnValue(of(EMPTY_RECOMMENDED_ITEMS_MOCK));
+          spyOn(recommenderItemCardFavouriteCheckedService, 'getItems').and.returnValue(of(MOCK_EMPTY_ITEM_CARDS_WITH_RECOMMENDED_TYPE));
 
           component.ngOnInit();
           fixture.detectChanges();

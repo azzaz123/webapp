@@ -29,6 +29,11 @@ export const RECOMMENDED_ITEM_MOCK: RecommenderItem = {
   web_slug: 'slug',
 };
 
+export const RECOMMENDED_ITEM_NON_FAVOURITED_MOCK: RecommenderItem = {
+  ...RECOMMENDED_ITEM_MOCK,
+  favorited: false,
+};
+
 export const RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES: RecommenderItem = {
   category_id: 100,
   currency: 'EUR',

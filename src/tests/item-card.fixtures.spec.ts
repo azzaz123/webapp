@@ -1,7 +1,8 @@
 import { Image } from '@core/user/user-response.interface';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard, ItemCardsWithPagination, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
+import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
-import { ITEM_BUMP_FLAGS, ITEM_DATA, MOCK_ITEM_RESPONSE, ITEM_SALE_CONDITIONS } from './item.fixtures.spec';
+import { ITEM_BUMP_FLAGS, ITEM_DATA, MOCK_ITEM_RESPONSE, ITEM_SALE_CONDITIONS, MOCK_ITEM_RESPONSE_FAVOURITED } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';
 
 export const MOCK_ITEM_CARD: ItemCard = {
@@ -19,6 +20,10 @@ export const MOCK_ITEM_CARD: ItemCard = {
   saleConditions: ITEM_SALE_CONDITIONS,
 };
 
+export const MOCK_ITEM_CARDS_WITH_PAGINATION: ItemCardsWithPagination = {
+  nextPaginationItem: 2,
+  items: [MOCK_ITEM_CARD, MOCK_ITEM_CARD],
+};
 export const MOCK_PUBLISHED_ITEM_CARD_IMAGE: Image = {
   id: '1213',
   original_width: MOCK_ITEM_RESPONSE.content.image?.original_width || null,
@@ -38,6 +43,19 @@ export const MOCK_PUBLISHED_ITEM_CARD: ItemCard = {
   bumpFlags: MOCK_ITEM_RESPONSE.content.visibility_flags,
   webSlug: MOCK_ITEM_RESPONSE.content.web_slug,
   currencyCode: MOCK_ITEM_RESPONSE.content.currency,
+};
+
+export const MOCK_PUBLISHED_ITEM_CARD_FAVOURITED: ItemCard = {
+  id: MOCK_ITEM_RESPONSE_FAVOURITED.id,
+  ownerId: MOCK_ITEM_RESPONSE_FAVOURITED.content.user.id,
+  title: MOCK_ITEM_RESPONSE_FAVOURITED.content.title,
+  description: MOCK_ITEM_RESPONSE_FAVOURITED.content.description,
+  salePrice: MOCK_ITEM_RESPONSE_FAVOURITED.content.price,
+  images: MOCK_ITEM_RESPONSE_FAVOURITED.content.images,
+  flags: MOCK_ITEM_RESPONSE_FAVOURITED.content.flags,
+  bumpFlags: MOCK_ITEM_RESPONSE_FAVOURITED.content.visibility_flags,
+  webSlug: MOCK_ITEM_RESPONSE_FAVOURITED.content.web_slug,
+  currencyCode: MOCK_ITEM_RESPONSE_FAVOURITED.content.currency,
 };
 
 export const MOCK_PUBLISHED_ITEM_CARD_WITHOUT_IMAGES: ItemCard = {
@@ -75,14 +93,39 @@ export const MOCK_RECOMMENDED_ITEM_CARD: ItemCard = {
   images: [MOCK_RECOMMENDED_ITEM_CARD_IMAGE],
   webSlug: RECOMMENDED_ITEM_MOCK.web_slug,
   currencyCode: RECOMMENDED_ITEM_MOCK.currency,
+  flags: {
+    pending: false,
+    sold: false,
+    favorite: RECOMMENDED_ITEM_MOCK.favorited,
+    reserved: false,
+    banned: false,
+    expired: false,
+  },
+};
+
+export const MOCK_RECOMMENDED_ITEM_CARD_NON_FAVOURITE: ItemCard = {
+  ...MOCK_RECOMMENDED_ITEM_CARD,
+  flags: {
+    pending: false,
+    sold: false,
+    favorite: false,
+    reserved: false,
+    banned: false,
+    expired: false,
+  },
 };
 
 export const MOCK_RECOMMENDED_ITEM_CARD_WITHOUT_IMAGES: ItemCard = {
-  id: RECOMMENDED_ITEM_MOCK.id,
-  ownerId: RECOMMENDED_ITEM_MOCK.seller_id,
-  title: RECOMMENDED_ITEM_MOCK.title,
-  salePrice: RECOMMENDED_ITEM_MOCK.price,
+  ...MOCK_RECOMMENDED_ITEM_CARD,
   images: [],
-  webSlug: RECOMMENDED_ITEM_MOCK.web_slug,
-  currencyCode: RECOMMENDED_ITEM_MOCK.currency,
+};
+
+export const MOCK_ITEM_CARDS_WITH_RECOMMENDED_TYPE: ItemCardsWithRecommenedType = {
+  recommendedType: RECOMMENDER_TYPE.DEFAULT,
+  recommendedItems: [MOCK_ITEM_CARD, MOCK_ITEM_CARD],
+};
+
+export const MOCK_EMPTY_ITEM_CARDS_WITH_RECOMMENDED_TYPE: ItemCardsWithRecommenedType = {
+  recommendedType: RECOMMENDER_TYPE.DEFAULT,
+  recommendedItems: [],
 };
