@@ -21,9 +21,10 @@
                 (click)="toggleItemFavorite($event)"></tsl-favourite-icon>
         </div>
         <div class="ItemCard__info">
-            <p class="ItemCard__info__title my-2">{{item.title}}</p>
-            <p class="ItemCard__info__description ItemCard__info__description--light mb-0" *ngIf="showDescription">
-                {{item.description}}</p>
+            <p class="ItemCard__title my-2">{{item.title}}</p>
+            <p class="ItemCard__description ItemCard__description--light mb-0" *ngIf="showDescription">
+                {{item.description}}
+            </p>
         </div>
     </div>
 </div>

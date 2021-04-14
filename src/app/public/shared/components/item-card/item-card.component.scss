@@ -103,17 +103,17 @@ $box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
       width: 20px;
     }
   }
+  &__title {
+    @include vertical-ellipsis(1);
+  }
 
-  &__info {
-    &__title {
-      @include vertical-ellipsis(2);
-    }
-    &__description {
-      @include vertical-ellipsis(4);
+  &__description {
+    height: 85px;
+    overflow: hidden;
+    @include vertical-ellipsis(4);
 
-      &--light {
-        color: $blue-grey-2;
-      }
+    &--light {
+      color: $blue-grey-2;
     }
   }
 }
