@@ -606,7 +606,7 @@ describe('ItemDetailComponent', () => {
     });
 
     describe('when we favourite or unfavourite an item...', () => {
-      it('should call to the store to do the action and also trigger trackFavoriteOrUnfavoriteEvent in item detail track events service', () => {
+      it('should call to the store to do the action and also trigger trackFavouriteOrUnfavouriteEvent in item detail track events service', () => {
         spyOn(itemDetailStoreService, 'toggleFavouriteItem').and.returnValue(of({}));
         spyOn(itemDetailTrackEventsService, 'trackFavouriteOrUnfavouriteEvent');
         const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
