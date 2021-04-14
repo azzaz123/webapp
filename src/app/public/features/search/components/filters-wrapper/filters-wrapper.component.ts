@@ -25,13 +25,13 @@ export class FiltersWrapperComponent {
 
   public filterValues: FilterParameter[] = [];
   public scrollOffset = 0;
-  private isBubbleOpenSubject = new BehaviorSubject<boolean>(false);
+  private openBubbleCountSubject = new BehaviorSubject<number>(0);
   private isDrawerContentScrollableSubject = new BehaviorSubject<boolean>(false);
 
   @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  public get isBubbleOpen$(): Observable<boolean> {
-    return this.isBubbleOpenSubject.asObservable();
+  public get openBubbleCount$(): Observable<number> {
+    return this.openBubbleCountSubject.asObservable();
   }
 
   public get isDrawerContentScrollable$(): Observable<boolean> {
@@ -80,7 +80,8 @@ export class FiltersWrapperComponent {
       this.drawerConfig.isOpen = false;
     }
 
-    this.isBubbleOpenSubject.next(isOpen);
+    const count = this.openBubbleCountSubject.value;
+    this.openBubbleCountSubject.next(isOpen ? count + 1 : count - 1);
   }
 
   public drawerOpenStateChange(isOpen: boolean): void {

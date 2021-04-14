@@ -1,6 +1,6 @@
 <div class="Search">
   <tsl-filters-wrapper class="Search__filters position-fixed"
-    [class.Search__filters--with-backdrop]="showBackdrop"
+    [class.Search__filters--with-backdrop]="openBubbleCount$ | async"
     (bubbleFilterOpenStateChange)="toggleBubbleFilterBackdrop($event)">
   </tsl-filters-wrapper>
 

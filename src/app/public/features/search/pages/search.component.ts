@@ -5,7 +5,7 @@ import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
@@ -31,7 +31,6 @@ export class SearchComponent implements OnInit {
   public device: DeviceType;
   public DevicesType: typeof DeviceType = DeviceType;
 
-  public showBackdrop = false;
   public columnsConfig: ColumnsConfig = {
     xl: 4,
     lg: 4,
@@ -47,8 +46,14 @@ export class SearchComponent implements OnInit {
     AdShoppingChannel.SEARCH_LIST_SHOPPING
   );
 
+  private openBubbleCountSubject = new BehaviorSubject<number>(0);
+
   constructor(private adsService: AdsService, private deviceService: DeviceService, private searchStore: SearchStoreService) {
     this.device = this.deviceService.getDeviceType();
+  }
+
+  public get openBubbleCount$(): Observable<number> {
+    return this.openBubbleCountSubject.asObservable();
   }
 
   public ngOnInit(): void {
@@ -61,6 +66,7 @@ export class SearchComponent implements OnInit {
   }
 
   public toggleBubbleFilterBackdrop(active: boolean): void {
-    this.showBackdrop = active;
+    const count = this.openBubbleCountSubject.value;
+    this.openBubbleCountSubject.next(active ? count + 1 : count - 1);
   }
 }
