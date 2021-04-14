@@ -480,7 +480,7 @@ describe('ItemDetailComponent', () => {
 
         it('should send track view item detail recommendation slider event', () => {
           const recommendedItems = fixture.debugElement.query(By.css(recommendedItemsTag));
-          const recommendedIds = RECOMMENDED_ITEM_IDS_MOCK;
+          const recommendedIds = '9jd7ryx5odjk,9jd7ryx5odjk,9jd7ryx5odjk,9jd7ryx5odjk';
           const engine = RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR;
           spyOn(itemDetailTrackEventsService, 'trackViewItemDetailRecommendationSliderEvent');
 
