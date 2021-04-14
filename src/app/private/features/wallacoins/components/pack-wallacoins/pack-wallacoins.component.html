@@ -9,8 +9,7 @@
   <div class="label">{{pack.name}}</div>
 </ng-container>
 <div class="for-free">
-  <span *ngIf="pack.forFree > 0" i18n>
-    <span *ngIf="!withCredits">{{pack.forFree | number}}</span>
+  <span *ngIf="pack.forFree > 0" i18n>    <span *ngIf="!withCredits">{{pack.forFree | number}}</span>
     <span *ngIf="withCredits">{{pack.forFree | customCurrency}}</span> as a gift!
   </span>
 </div>

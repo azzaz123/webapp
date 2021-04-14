@@ -1,5 +1,5 @@
 <div class="wallapop-search-input">
-    <input i18n-placeholder placeholder="Search in All categories" type="text"
+    <input i18n-placeholder="@@web_components_suggester_7" placeholder="Search in All categories" type="text"
         maxlength="150" name="kws" #kwsEl value="" (focus)="focus=true" (blur)="focus=false" [class.active]="focus"
         [(ngModel)]="model" [ngbTypeahead]="suggest" (keyup)="updateKeyword()" (keyup.enter)="searchSubmit()"
         [inputFormatter]="formatter" [resultTemplate]="suggester" (selectItem)="selectSuggestion($event.item)"

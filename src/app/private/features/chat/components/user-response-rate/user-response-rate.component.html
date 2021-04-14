@@ -1,13 +1,13 @@
 <tsl-svg-icon *ngIf="showIcon" src="/assets/icons/time.svg" class="user-response-rate"></tsl-svg-icon>
-<span *ngIf="isNullOrUndefined()" i18n>Unknown</span>
+<span *ngIf="isNullOrUndefined()" i18n="@@web_chat_components_user_response_rate_171">Unknown</span>
 <span [ngSwitch]="responseRate" class="response-rate">
-  <ng-container *ngSwitchCase="'unknown'" i18n>Unknown</ng-container>
-  <ng-container *ngSwitchCase="'less than one hour'" i18n>Typically responds within an hour</ng-container>
-  <ng-container *ngSwitchCase="'less_than_one_hour'" i18n>Typically responds within an hour</ng-container>
-  <ng-container *ngSwitchCase="'less than three hours'" i18n>Typically responds within 3 hours</ng-container>
-  <ng-container *ngSwitchCase="'less_than_three_hours'" i18n>Typically responds within 3 hours</ng-container>
-  <ng-container *ngSwitchCase="'less than a day'" i18n>Typically responds within a day</ng-container>
-  <ng-container *ngSwitchCase="'less_than_a_day'" i18n>Typically responds within a day</ng-container>
-  <ng-container *ngSwitchCase="'more than a day'" i18n>Responds in more than 24 hours</ng-container>
-  <ng-container *ngSwitchCase="'more_than_a_day'" i18n>Responds in more than 24 hours</ng-container>
+  <ng-container *ngSwitchCase="'unknown'" i18n="@@web_chat_components_user_response_rate_568">Unknown</ng-container>
+  <ng-container *ngSwitchCase="'less than one hour'" i18n="@@web_chat_components_user_response_rate_172">Typically responds within an hour</ng-container>
+  <ng-container *ngSwitchCase="'less_than_one_hour'" i18n="@@web_chat_components_user_response_rate_569">Typically responds within an hour</ng-container>
+  <ng-container *ngSwitchCase="'less than three hours'" i18n="@@web_chat_components_user_response_rate_173">Typically responds within 3 hours</ng-container>
+  <ng-container *ngSwitchCase="'less_than_three_hours'" i18n="@@web_chat_components_user_response_rate_570">Typically responds within 3 hours</ng-container>
+  <ng-container *ngSwitchCase="'less than a day'" i18n="@@web_chat_components_user_response_rate_174">Typically responds within a day</ng-container>
+  <ng-container *ngSwitchCase="'less_than_a_day'" i18n="@@web_chat_components_user_response_rate_571">Typically responds within a day</ng-container>
+  <ng-container *ngSwitchCase="'more than a day'" i18n="@@web_chat_components_user_response_rate_175">Responds in more than 24 hours</ng-container>
+  <ng-container *ngSwitchCase="'more_than_a_day'" i18n="@@web_chat_components_user_response_rate_572">Responds in more than 24 hours</ng-container>
 </span>

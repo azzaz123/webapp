@@ -3,11 +3,11 @@
     <div class="modal-close" (click)="activeModal.dismiss()">
       <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
     </div>
-    <h1 i18n>Congratulations!</h1>
-    <p class="text" i18n>You sold <strong>{{item.title}}</strong>
+    <h1 i18n="@@web_sold_modal_671">Congratulations!</h1>
+    <p class="text" i18n="@@web_sold_modal_507">You sold <strong>{{item.title}}</strong>
     </p>
     <tsl-svg-icon class="congrats" src="/assets/icons/commons-congrats.svg"></tsl-svg-icon>
-    <p class="text" [hidden]="!conversationUsers.length" i18n>Who bought this from you?</p>
+    <p class="text" [hidden]="!conversationUsers.length" i18n="@@web_sold_modal_508">Who bought this from you?</p>
     <ul [hidden]="!conversationUsers.length">
       <li class="conv-user" *ngFor="let convUser of conversationUsers">
         <a href="" (click)="chooseUser(convUser); $event.preventDefault()">
@@ -34,8 +34,8 @@
       <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
     </div>
     <tsl-svg-icon class="congrats-icon" src="/assets/icons/congrats.svg"></tsl-svg-icon>
-    <h1 i18n>Thanks</h1>
-    <p class="text" i18n>Your feedback is important for the<br />Wallapop community.</p>
-    <tsl-button (click)="activeModal.close()" i18n>Continue</tsl-button>
+    <h1 i18n="@@web_sold_modal_509">Thanks</h1>
+    <p class="text" i18n="@@web_sold_modal_510">Your feedback is important for the<br />Wallapop community.</p>
+    <tsl-button (click)="activeModal.close()" i18n="@@web_sold_modal_511">Continue</tsl-button>
   </div>
 </div>
