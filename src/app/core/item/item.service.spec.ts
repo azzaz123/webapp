@@ -15,6 +15,7 @@ import {
   ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE,
   ITEMS_WITH_PRODUCTS,
   ITEM_CATEGORY_ID,
+  ITEM_CONVERSATIONS,
   ITEM_COUNTERS_DATA,
   ITEM_DATA,
   ITEM_DATA_V3,
@@ -120,6 +121,7 @@ describe('ItemService', () => {
       expect(req.request.url).toEqual(expectedUrl);
       expect(response.views).toEqual(ITEM_VIEWS);
       expect(response.favorites).toEqual(ITEM_FAVORITES);
+      expect(response.conversations).toEqual(ITEM_CONVERSATIONS);
       expect(req.request.method).toBe('GET');
     });
 
@@ -132,6 +134,7 @@ describe('ItemService', () => {
         httpMock.expectOne(expectedUrl).error(new ErrorEvent('network error'));
 
         expect(response.views).toEqual(0);
+        expect(response.conversations).toEqual(0);
         expect(response.favorites).toEqual(0);
       });
     });

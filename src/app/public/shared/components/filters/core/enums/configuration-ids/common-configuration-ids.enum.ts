@@ -1,4 +1,5 @@
 export enum COMMON_CONFIGURATION_ID {
+  CATEGORIES = 'categories',
   PRICE = 'default-price',
   CONDITION = 'condition',
   LOCATION = 'location',

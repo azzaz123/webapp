@@ -1,6 +1,8 @@
 export enum FILTER_TYPES {
+  CATEGORIES,
   RANGE,
   TOGGLE,
   SELECT,
   SUGGESTER,
+  ICON,
 }

@@ -61,6 +61,16 @@ const Template: Story<ItemCardListComponent> = (args: ItemCardListComponent) => 
 
 const ITEMS = [MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1, MOCK_ITEM_1];
 
+export const ExtraLarge = Template.bind({});
+ExtraLarge.args = {
+  items: ITEMS,
+};
+ExtraLarge.parameters = {
+  viewport: {
+    defaultViewport: CUSTOM_VIEWPORT_NAME.XL,
+  },
+};
+
 export const Large = Template.bind({});
 Large.args = {
   items: ITEMS,
@@ -105,9 +115,10 @@ export const ColumnsConfig = Template.bind({});
 ColumnsConfig.args = {
   items: ITEMS,
   columnsConfig: {
-    lg: 5,
-    md: 4,
-    sm: 3,
+    xl: 5,
+    lg: 4,
+    md: 3,
+    sm: 2,
     xs: 2,
   },
 };
