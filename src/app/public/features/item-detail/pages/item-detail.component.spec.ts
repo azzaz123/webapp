@@ -469,20 +469,23 @@ describe('ItemDetailComponent', () => {
 
     describe('should handle the recommended items...', () => {
       describe('when the item have recommended items...', () => {
-        it('should show the recommended items', () => {
+        const recommendedIds = '9jd7ryx5odjk,9jd7ryx5odjk,9jd7ryx5odjk,9jd7ryx5odjk';
+        const engine = RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR;
+
+        beforeEach(() => {
           itemDetailSubjectMock.next(MOCK_CAR_ITEM_DETAIL);
           spyOn(recommenderItemCardFavouriteCheckedService, 'getItems').and.returnValue(of(MOCK_ITEM_CARDS_WITH_RECOMMENDED_TYPE));
 
           fixture.detectChanges();
-
+        });
+        it('should show the recommended items', () => {
           expect(fixture.debugElement.query(By.css(recommendedItemsTag))).toBeTruthy();
         });
 
         it('should send track view item detail recommendation slider event', () => {
-          const recommendedItems = fixture.debugElement.query(By.css(recommendedItemsTag));
-          const recommendedIds = '9jd7ryx5odjk,9jd7ryx5odjk,9jd7ryx5odjk,9jd7ryx5odjk';
-          const engine = RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR;
           spyOn(itemDetailTrackEventsService, 'trackViewItemDetailRecommendationSliderEvent');
+
+          const recommendedItems = fixture.debugElement.query(By.css(recommendedItemsTag));
 
           recommendedItems.triggerEventHandler('initRecommendedItemsSlider', { recommendedItemIds: recommendedIds, engine });
           fixture.detectChanges();
