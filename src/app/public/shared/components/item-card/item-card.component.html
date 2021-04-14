@@ -14,14 +14,14 @@
             [alt]="item.title" loading="lazy" />
     </div>
 
-    <div class="ItemCard__data p-2 border-top-0" [class.ItemCard__data--with-description]="showDescription">
+    <div class="ItemCard__data border-top-0" [class.ItemCard__data--with-description]="showDescription">
         <div class="d-flex justify-content-between">
             <span class="ItemCard__price ItemCard__price--bold">{{item.salePrice | customCurrency:item.currencyCode }}</span>
             <tsl-favourite-icon *ngIf="showFavourite" class="ItemCard__favourite" [active]="item.flags?.favorite"
                 (click)="toggleItemFavorite($event)"></tsl-favourite-icon>
         </div>
         <div class="ItemCard__info">
-            <p class="ItemCard__info__title mb-1">{{item.title}}</p>
+            <p class="ItemCard__info__title my-2">{{item.title}}</p>
             <p class="ItemCard__info__description ItemCard__info__description--light mb-0" *ngIf="showDescription">
                 {{item.description}}</p>
         </div>
