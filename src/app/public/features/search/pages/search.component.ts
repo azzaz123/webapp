@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { AdsService } from '@core/ads/services/ads/ads.service';
@@ -22,7 +22,7 @@ import { ItemCard } from '@public/core/interfaces/item-card.interface';
   selector: 'tsl-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // TODO: TechDebt: changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit {
   public items$: Observable<ItemCard[]>;

@@ -52,13 +52,13 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   }
 
   public ngOnInit(): void {
-    super.ngOnInit();
     if (this.config.hasOptionsOnInit) {
       this.getOptions();
     }
     this.initLabel();
     this.initForm();
     this.initModel();
+    super.ngOnInit();
   }
 
   public ngAfterContentInit(): void {

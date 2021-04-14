@@ -27,7 +27,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
             [value]="conditionValue"
             [config]="conditionConfig"
             (valueChange)="changeCondition($event)"
-            (clear)="changeCondition([])"
           >
           </tsl-select-filter>
         </div>
@@ -37,7 +36,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
             [value]="genderValue"
             [config]="genderConfig"
             (valueChange)="changeGender($event)"
-            (clear)="changeGender([])"
           >
           </tsl-select-filter>
         </div>
@@ -50,7 +48,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
           [value]="conditionValue"
           [config]="conditionConfig"
           (valueChange)="changeCondition($event)"
-          (clear)="changeCondition([])"
         >
         </tsl-select-filter>
         <div style="height: 1px; width: 100%; background-color: #90A4AE;" class="my-3"></div>
@@ -59,7 +56,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
           [value]="genderValue"
           [config]="genderConfig"
           (valueChange)="changeGender($event)"
-          (clear)="changeGender([])"
         >
         </tsl-select-filter>
       </div>
@@ -67,8 +63,8 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
   `,
 })
 class FiltersComponent {
-  public conditionValue: FilterParameter[] = [];
-  public genderValue: FilterParameter[] = [];
+  @Input() public conditionValue: FilterParameter[] = [];
+  @Input() public genderValue: FilterParameter[] = [];
   @Input() public conditionConfig: SelectFilterConfig;
   @Input() public genderConfig: SelectFilterConfig;
 
@@ -144,4 +140,11 @@ WithIcons.args = {
     ...genderConfig,
     id: 'with_icon',
   },
+};
+
+export const WithDefaultValue = Template.bind({});
+WithDefaultValue.args = {
+  ...Default.args,
+  conditionValue: [{ key: 'condition', value: 'un_opened' }],
+  genderValue: [{ key: 'gender', value: 'male' }],
 };
