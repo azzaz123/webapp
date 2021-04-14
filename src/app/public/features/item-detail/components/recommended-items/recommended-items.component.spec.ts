@@ -106,7 +106,7 @@ describe('RecommendedItemsComponent', () => {
         spyOn(itemDetailTrackEventsService, 'trackFavouriteOrUnfavouriteEvent');
         spyOn(userService, 'get').and.returnValue(of(MOCK_USER));
 
-        itemCard.triggerEventHandler('toggleFavoriteEvent', MOCK_ITEM_CARD);
+        itemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD);
         fixture.detectChanges();
 
         expect(itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_USER?.featured);
