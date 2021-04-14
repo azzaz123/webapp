@@ -26,7 +26,7 @@ export class RecommendedItemsComponent implements AfterViewInit {
     sm: 2,
     xs: 2,
   };
-  private alreadyRendered: boolean = false;
+  private isInview: boolean = false;
 
   constructor(private mapRecommendedItemCardService: MapRecommendedItemCardService) {}
 
@@ -59,13 +59,13 @@ export class RecommendedItemsComponent implements AfterViewInit {
     if (rect.right < 0 || rect.bottom < 0 || rect.left > viewportWidth || rect.top > viewportHeight) {
       return;
     }
-    if (!this.alreadyRendered) {
+    if (!this.isInview) {
       this.initRecommendedItemsSlider.emit({
         recommendedItemIds: this.getRecommendedItemIds(this.items),
         engine: this.getRecommendedItemSearchEngine(),
       });
     }
-    this.alreadyRendered = true;
+    this.isInview = true;
   }
 
   @HostListener('window:scroll', ['$event']) onScroll(): void {
