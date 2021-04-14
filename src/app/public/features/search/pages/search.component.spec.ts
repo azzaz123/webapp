@@ -17,7 +17,7 @@ import { SearchLayoutComponent } from '../components/search-layout/search-layout
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchStoreService } from '../core/services/search-store.service';
 import { SearchComponent } from './search.component';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
