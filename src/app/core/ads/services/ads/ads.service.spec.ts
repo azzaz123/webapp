@@ -176,4 +176,24 @@ describe('AdsService', () => {
       expect(MockGooglePublisherTagService.displayAdBySlotId).toHaveBeenLastCalledWith(adSlotId);
     });
   });
+
+  describe('when get ad slot loaded', () => {
+    it('should return if ad is loaded', () => {
+      spyOn(MockGooglePublisherTagService, 'isAdSlotLoaded$').and.returnValue(of(true));
+
+      let expectedLoaded = false;
+      service.adSlotLoaded$(MockAdSlots[0]).subscribe((loaded) => (expectedLoaded = loaded));
+
+      expect(expectedLoaded).toEqual(true);
+    });
+
+    it('should return if ad is not loaded', () => {
+      spyOn(MockGooglePublisherTagService, 'isAdSlotLoaded$').and.returnValue(of(false));
+
+      let expectedLoaded = false;
+      service.adSlotLoaded$(MockAdSlots[0]).subscribe((loaded) => (expectedLoaded = loaded));
+
+      expect(expectedLoaded).toEqual(false);
+    });
+  });
 });
