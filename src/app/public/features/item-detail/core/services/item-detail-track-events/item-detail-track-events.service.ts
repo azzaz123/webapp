@@ -30,7 +30,7 @@ import { finalize, take } from 'rxjs/operators';
 export class ItemDetailTrackEventsService {
   constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
 
-  public trackFavoriteOrUnfavoriteEvent(item: Item | ItemCard, isPro: boolean): void {
+  public trackFavouriteOrUnfavouriteEvent(item: Item | ItemCard, isPro: boolean): void {
     const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
       name: item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,

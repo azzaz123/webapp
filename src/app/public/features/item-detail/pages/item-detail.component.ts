@@ -78,7 +78,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public toggleFavouriteItem(): void {
     this.itemDetailStoreService.toggleFavouriteItem().subscribe(() => {
-      this.itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent(this.itemDetail.item, this.itemDetail.user?.featured);
+      this.itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent(this.itemDetail.item, this.itemDetail.user?.featured);
     });
   }
 

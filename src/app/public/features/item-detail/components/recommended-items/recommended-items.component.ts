@@ -44,12 +44,12 @@ export class RecommendedItemsComponent implements OnChanges {
     this.clickedItemAndIndexEvent.emit(event);
   }
 
-  public trackFavoriteOrUnfavoriteEvent(item: ItemCard): void {
+  public trackFavouriteOrUnfavouriteEvent(item: ItemCard): void {
     this.userService
       .get(item.ownerId)
       .pipe(take(1))
       .subscribe((user: User) => {
-        this.itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent(item, user?.featured);
+        this.itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent(item, user?.featured);
       });
   }
 }

@@ -18,8 +18,8 @@ import { of } from 'rxjs';
 import { ItemDetailTrackEventsService } from './item-detail-track-events.service';
 import {
   MOCK_CLICK_CHAT_BUTTON_EVENT,
-  MOCK_FAVORITE_ITEM_EVENT,
-  MOCK_UNFAVORITE_ITEM_EVENT,
+  MOCK_FAVOURITE_ITEM_EVENT,
+  MOCK_UNFAVOURITE_ITEM_EVENT,
   MOCK_VIEW_OWN_ITEM_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_CG_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT,
@@ -30,8 +30,8 @@ import {
   MOCK_TWITTER_SHARE_ITEM_EVENT,
   MOCK_EMAIL_SHARE_ITEM_EVENT,
   MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER,
-  MOCK_UNFAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER,
-  MOCK_FAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER,
+  MOCK_UNFAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER,
+  MOCK_FAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER,
 } from './track-events.fixtures.spec';
 
 describe('ItemDetailTrackEventsService', () => {
@@ -59,7 +59,7 @@ describe('ItemDetailTrackEventsService', () => {
 
   describe('when user toggles favorite icon', () => {
     beforeEach(() => {
-      spyOn(service, 'trackFavoriteOrUnfavoriteEvent').and.callThrough();
+      spyOn(service, 'trackFavouriteOrUnfavouriteEvent').and.callThrough();
       spyOn(analyticsService, 'trackEvent');
     });
     const itemDetail: ItemDetail = MOCK_CAR_ITEM_DETAIL;
@@ -68,18 +68,18 @@ describe('ItemDetailTrackEventsService', () => {
       it('should send favorite item event if we favorite item', () => {
         itemDetail.item.flags.favorite = true;
 
-        service.trackFavoriteOrUnfavoriteEvent(itemDetail.item, itemDetail.user?.featured);
+        service.trackFavouriteOrUnfavouriteEvent(itemDetail.item, itemDetail.user?.featured);
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT);
-        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVOURITE_ITEM_EVENT);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_UNFAVOURITE_ITEM_EVENT);
       });
       it('should send unfavorite item event if we unfavorite item', () => {
         itemDetail.item.flags.favorite = false;
 
-        service.trackFavoriteOrUnfavoriteEvent(itemDetail.item, itemDetail.user?.featured);
+        service.trackFavouriteOrUnfavouriteEvent(itemDetail.item, itemDetail.user?.featured);
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT);
-        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVOURITE_ITEM_EVENT);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_FAVOURITE_ITEM_EVENT);
       });
     });
 
@@ -87,18 +87,18 @@ describe('ItemDetailTrackEventsService', () => {
       it('should send favorite item event if we favorite item', () => {
         itemCard.flags.favorite = true;
 
-        service.trackFavoriteOrUnfavoriteEvent(itemCard, MOCK_USER?.featured);
+        service.trackFavouriteOrUnfavouriteEvent(itemCard, MOCK_USER?.featured);
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
-        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_UNFAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
       });
       it('should send unfavorite item event if we unfavorite item', () => {
         itemCard.flags.favorite = false;
 
-        service.trackFavoriteOrUnfavoriteEvent(itemCard, MOCK_USER?.featured);
+        service.trackFavouriteOrUnfavouriteEvent(itemCard, MOCK_USER?.featured);
 
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
-        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_FAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
       });
     });
   });

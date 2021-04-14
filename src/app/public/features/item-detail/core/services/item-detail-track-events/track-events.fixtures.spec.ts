@@ -61,7 +61,7 @@ export const MOCK_VIEW_OTHERS_CG_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemC
   },
 };
 
-export const MOCK_FAVORITE_ITEM_EVENT: AnalyticsEvent<FavoriteItem> = {
+export const MOCK_FAVOURITE_ITEM_EVENT: AnalyticsEvent<FavoriteItem> = {
   name: ANALYTICS_EVENT_NAMES.FavoriteItem,
   eventType: ANALYTIC_EVENT_TYPES.UserPreference,
   attributes: {
@@ -75,7 +75,7 @@ export const MOCK_FAVORITE_ITEM_EVENT: AnalyticsEvent<FavoriteItem> = {
   },
 };
 
-export const MOCK_FAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER: AnalyticsEvent<FavoriteItem> = {
+export const MOCK_FAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER: AnalyticsEvent<FavoriteItem> = {
   name: ANALYTICS_EVENT_NAMES.FavoriteItem,
   eventType: ANALYTIC_EVENT_TYPES.UserPreference,
   attributes: {
@@ -89,7 +89,7 @@ export const MOCK_FAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER: AnalyticsEvent<Fa
   },
 };
 
-export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
+export const MOCK_UNFAVOURITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
   name: ANALYTICS_EVENT_NAMES.UnfavoriteItem,
   eventType: ANALYTIC_EVENT_TYPES.UserPreference,
   attributes: {
@@ -103,7 +103,7 @@ export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
   },
 };
 
-export const MOCK_UNFAVORITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER: AnalyticsEvent<FavoriteItem> = {
+export const MOCK_UNFAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER: AnalyticsEvent<FavoriteItem> = {
   name: ANALYTICS_EVENT_NAMES.UnfavoriteItem,
   eventType: ANALYTIC_EVENT_TYPES.UserPreference,
   attributes: {

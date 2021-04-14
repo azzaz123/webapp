@@ -101,15 +101,15 @@ describe('RecommendedItemsComponent', () => {
         expect(component.clickedItemAndIndexEvent.emit).toHaveBeenCalledWith({ itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
       });
 
-      it('should send favorite or unfavorite event if we favorite or unfavorite the item card in the slider', () => {
+      it('should send favourite or unfavourite event if we favourite or unfavourite the item card in the slider', () => {
         const itemCard: DebugElement = fixture.debugElement.query(By.css(itemCardListTag));
-        spyOn(itemDetailTrackEventsService, 'trackFavoriteOrUnfavoriteEvent');
+        spyOn(itemDetailTrackEventsService, 'trackFavouriteOrUnfavouriteEvent');
         spyOn(userService, 'get').and.returnValue(of(MOCK_USER));
 
         itemCard.triggerEventHandler('toggleFavoriteEvent', MOCK_ITEM_CARD);
         fixture.detectChanges();
 
-        expect(itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_USER?.featured);
+        expect(itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_USER?.featured);
       });
     });
   });
