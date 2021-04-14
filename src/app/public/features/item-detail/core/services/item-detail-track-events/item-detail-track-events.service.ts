@@ -22,7 +22,7 @@ import { Item } from '@core/item/item';
 import { Realestate } from '@core/item/realestate';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
-import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
@@ -157,7 +157,7 @@ export class ItemDetailTrackEventsService {
     item: Item,
     user: User,
     recommendedItemIds: string,
-    engine: SEARCH_TECHNIQUE_ENGINE
+    engine: RECOMMENDATIONS_ENGINE
   ): void {
     const event: AnalyticsPageView<ViewItemDetailRecommendationSlider> = {
       name: ANALYTICS_EVENT_NAMES.ViewItemDetailRecommendationSlider,

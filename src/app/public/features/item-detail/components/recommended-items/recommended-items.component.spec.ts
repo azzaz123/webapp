@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
-import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
 import { RECOMMENDED_ITEM_MOCK } from './constants/recommended-items.fixtures.spec';
 import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
@@ -63,7 +63,7 @@ describe('RecommendedItemsComponent', () => {
 
       expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledWith({
         recommendedItemIds: recommendedItemIds,
-        engine: SEARCH_TECHNIQUE_ENGINE.MORE_LIKE_THIS_SOLR,
+        engine: RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR,
       });
       expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledTimes(1);
     });

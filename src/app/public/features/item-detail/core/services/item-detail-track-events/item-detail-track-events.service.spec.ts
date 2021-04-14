@@ -29,7 +29,7 @@ import {
   MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER,
   MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT,
 } from './track-events.fixtures.spec';
-import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 
 describe('ItemDetailTrackEventsService', () => {
   let service: ItemDetailTrackEventsService;
@@ -206,7 +206,7 @@ describe('ItemDetailTrackEventsService', () => {
         MOCK_ITEM,
         MOCK_USER,
         RECOMMENDED_ITEM_IDS_MOCK,
-        SEARCH_TECHNIQUE_ENGINE.MORE_LIKE_THIS_SOLR
+        RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR
       );
 
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT);

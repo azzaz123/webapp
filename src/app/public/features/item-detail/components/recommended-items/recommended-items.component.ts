@@ -1,4 +1,4 @@
-import { RECOMMENDER_TYPE, SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { RECOMMENDATIONS_ENGINE, RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RecommenderItem } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
@@ -44,11 +44,11 @@ export class RecommendedItemsComponent implements AfterViewInit {
     return items.map((item: ItemCard) => item.id).toString();
   }
 
-  private getRecommendedItemSearchEngine(): SEARCH_TECHNIQUE_ENGINE {
+  private getRecommendedItemSearchEngine(): RECOMMENDATIONS_ENGINE {
     if (this.recommendedItems[0].recommended_type === RECOMMENDER_TYPE.MORE_LIKE_THIS) {
-      return SEARCH_TECHNIQUE_ENGINE.MORE_LIKE_THIS_SOLR;
+      return RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR;
     } else {
-      return SEARCH_TECHNIQUE_ENGINE.COLLABORATIVE_FILTER;
+      return RECOMMENDATIONS_ENGINE.COLLABORATIVE_FILTER;
     }
   }
 

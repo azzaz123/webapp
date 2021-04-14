@@ -66,7 +66,7 @@ import { MockItemdDetailTrackEventService, MOCK_ITEM_INDEX } from '../core/servi
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
-import { SEARCH_TECHNIQUE_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
@@ -434,7 +434,7 @@ describe('ItemDetailComponent', () => {
         it('should send track view item detail recommendation slider event', () => {
           const recommendedItems = fixture.debugElement.query(By.css(recommendedItemsTag));
           const recommendedIds = RECOMMENDED_ITEM_IDS_MOCK;
-          const engine = SEARCH_TECHNIQUE_ENGINE.MORE_LIKE_THIS_SOLR;
+          const engine = RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR;
           spyOn(itemDetailTrackEventsService, 'trackViewItemDetailRecommendationSliderEvent');
 
           recommendedItems.triggerEventHandler('initRecommendedItemsSlider', { recommendedItemIds: recommendedIds, engine });
