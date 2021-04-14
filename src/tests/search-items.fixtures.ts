@@ -17,3 +17,7 @@ export const MOCK_SEARCH_ITEM: SearchItem = {
     reserved: false,
   },
 };
+
+export function SearchItemListFactory(count: number = 20): SearchItem[] {
+  return new Array(count).fill('').map((_, index) => ({ ...MOCK_SEARCH_ITEM, id: '235325' + index }));
+}

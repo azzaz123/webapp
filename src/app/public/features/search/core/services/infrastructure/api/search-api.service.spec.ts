@@ -1,6 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { SearchCarResponse } from '../cars/search-car-response';
 import { SearchItemCarResponseMapper } from '../cars/search-cars-response.mapper';
@@ -8,7 +9,6 @@ import { SearchCustomerGoodsResponse } from '../customer-goods/search-costumer-g
 import { SearchItemCustomerGoodsResponseMapper } from '../customer-goods/search-customer-goods-response.mapper';
 import { SearchRealEstateResponse } from '../real_estate/search-item-real-state-response';
 import { searchItemRealEstateResponseMapper } from '../real_estate/search-real-estate-response.mapper';
-import { CATEGORY_IDS } from './../../../../../../../core/category/category-ids';
 import { NEXT_HEADER_PAGE, SearchAPIService } from './search-api.service';
 import {
   FilterParametersWallFactory,
