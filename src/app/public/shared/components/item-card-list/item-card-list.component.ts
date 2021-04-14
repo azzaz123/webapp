@@ -26,7 +26,7 @@ export class ItemCardListComponent {
   };
   @Input() slotsConfig: SlotsConfig;
   @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
-  @Output() toggleFavoriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
+  @Output() toggleFavouriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
 
   constructor(
     private deviceDetectionService: DeviceDetectorService,
@@ -40,7 +40,7 @@ export class ItemCardListComponent {
   public toggleFavourite(item: ItemCard): void {
     if (this.checkSessionService.hasSession()) {
       this.itemCardService.toggleFavourite(item);
-      this.toggleFavoriteEvent.emit(item);
+      this.toggleFavouriteEvent.emit(item);
     } else {
       this.checkSessionService.checkSessionAction();
     }

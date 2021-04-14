@@ -127,11 +127,11 @@ describe('ItemCardListComponent', () => {
       });
 
       it('should emit the itemCard data', () => {
-        spyOn(component.toggleFavoriteEvent, 'emit');
+        spyOn(component.toggleFavouriteEvent, 'emit');
 
         component.toggleFavourite(MOCK_ITEM_CARD);
 
-        expect(component.toggleFavoriteEvent.emit).toHaveBeenCalledWith(MOCK_ITEM_CARD);
+        expect(component.toggleFavouriteEvent.emit).toHaveBeenCalledWith(MOCK_ITEM_CARD);
       });
     });
     describe(`and we don't have session...`, () => {
@@ -146,11 +146,11 @@ describe('ItemCardListComponent', () => {
       });
 
       it('should not emit the itemCard data', () => {
-        spyOn(component.toggleFavoriteEvent, 'emit');
+        spyOn(component.toggleFavouriteEvent, 'emit');
 
         component.toggleFavourite(MOCK_ITEM_CARD);
 
-        expect(component.toggleFavoriteEvent.emit).not.toHaveBeenCalled();
+        expect(component.toggleFavouriteEvent.emit).not.toHaveBeenCalled();
       });
     });
   });
