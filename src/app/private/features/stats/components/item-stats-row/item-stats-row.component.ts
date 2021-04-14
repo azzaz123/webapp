@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Item } from '@core/item/item';
-import { ItemCounters } from '@core/item/item-response.interface';
-import { ItemService } from '@core/item/item.service';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from '@private/features/stats/core/item-stats-response.interface';
 import { ItemStatsService } from '@private/features/stats/core/services/item-stats.service';
 import { every, isEmpty } from 'lodash-es';
@@ -23,11 +21,7 @@ export class ItemStatsRowComponent implements OnInit {
   public statsData: ItemStatisticFullResponse;
   public noData: boolean;
 
-  constructor(
-    @Inject('SUBDOMAIN') private subdomain: string,
-    private itemStatsService: ItemStatsService,
-    private itemService: ItemService
-  ) {
+  constructor(@Inject('SUBDOMAIN') private subdomain: string, private itemStatsService: ItemStatsService) {
     this.momentConfig = 'dd MMM yyyy';
   }
 
@@ -38,13 +32,6 @@ export class ItemStatsRowComponent implements OnInit {
       this.statsData.entries = this.removeCurrentDay(response);
       this.noData = every(response.entries, (entry) => !entry.values || isEmpty(entry.values));
     });
-    if (this.item.views === 0 || this.item.favorites === 0) {
-      this.itemService.getCounters(this.item.id).subscribe((counters: ItemCounters) => {
-        this.item.views = counters.views;
-        this.item.favorites = counters.favorites;
-        this.item.conversations = counters.conversations;
-      });
-    }
   }
 
   changeExpandedState() {

@@ -235,7 +235,8 @@ describe('SuggesterFilterComponent', () => {
         testComponent.value = newValue;
         fixture.detectChanges();
 
-        expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith('value');
+        expect(component.formGroup.controls.select.setValue).toHaveBeenCalledTimes(1);
+        expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith('value', { emitEvent: false });
       });
 
       it('should update label', () => {
@@ -275,7 +276,8 @@ describe('SuggesterFilterComponent', () => {
           testComponent.value = complexFilterValue;
           fixture.detectChanges();
 
-          expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith(complexOptionValue);
+          expect(component.formGroup.controls.select.setValue).toHaveBeenCalledTimes(1);
+          expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith(complexOptionValue, { emitEvent: false });
         });
 
         it('should update label', () => {
@@ -348,7 +350,8 @@ describe('SuggesterFilterComponent', () => {
           testComponent.value = complexFilterValue;
           fixture.detectChanges();
 
-          expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith(complexOptionValue);
+          expect(component.formGroup.controls.select.setValue).toHaveBeenCalledTimes(1);
+          expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith(complexOptionValue, { emitEvent: false });
         });
 
         it('should update label', () => {
@@ -383,6 +386,7 @@ describe('SuggesterFilterComponent', () => {
         testComponent.value = [];
         fixture.detectChanges();
 
+        expect(component.formGroup.controls.select.setValue).toHaveBeenCalledTimes(1);
         expect(component.formGroup.controls.select.setValue).toHaveBeenCalledWith(undefined, { emitEvent: false });
       });
 
@@ -442,7 +446,7 @@ describe('SuggesterFilterComponent', () => {
 
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('default_1');
+          form.handleOptionClick('default_1');
 
           fixture.detectChanges();
 
@@ -453,7 +457,7 @@ describe('SuggesterFilterComponent', () => {
           spyOn(component.valueChange, 'emit');
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('default_1');
+          form.handleOptionClick('default_1');
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
@@ -469,7 +473,7 @@ describe('SuggesterFilterComponent', () => {
           const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('default_1');
+          form.handleOptionClick('default_1');
 
           fixture.detectChanges();
 
@@ -486,7 +490,7 @@ describe('SuggesterFilterComponent', () => {
     describe('... is closed', () => {
       describe('and we clean the value', () => {
         beforeEach(() => {
-          component.writeValue([{ key: 'key', value: 'default_1' }]);
+          testComponent.value = [{ key: 'key', value: 'default_1' }];
           fixture.detectChanges();
         });
 
@@ -560,7 +564,7 @@ describe('SuggesterFilterComponent', () => {
         it('should close the placeholder', () => {
           const formInstance: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          formInstance.writeValue('default_1');
+          formInstance.handleOptionClick('default_1');
           fixture.detectChanges();
 
           const formDebugElement = debugElement.query(selectFormPredicate);
@@ -574,7 +578,7 @@ describe('SuggesterFilterComponent', () => {
           spyOn(component.valueChange, 'emit');
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('default_1');
+          form.handleOptionClick('default_1');
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
@@ -589,7 +593,7 @@ describe('SuggesterFilterComponent', () => {
         it('should change label', () => {
           const formInstance: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          formInstance.writeValue('default_1');
+          formInstance.handleOptionClick('default_1');
           fixture.detectChanges();
 
           const selectTemplate: SelectFilterTemplateComponent = debugElement.query(By.directive(SelectFilterTemplateComponent))
@@ -607,7 +611,7 @@ describe('SuggesterFilterComponent', () => {
 
       describe('and we clean the value', () => {
         beforeEach(() => {
-          component.writeValue([{ key: 'key', value: 'default_1' }]);
+          testComponent.value = [{ key: 'key', value: 'default_1' }];
           fixture.detectChanges();
         });
         it('should restart values', () => {

@@ -35,6 +35,10 @@ $filter-content-height: 355px;
       max-height: calc(100vh - #{$actions-height + $toolbar-height});
       margin-bottom: $actions-height;
     }
+
+    &--no_max_height {
+      max-height: none !important;
+    }
   }
 
   &__actions {

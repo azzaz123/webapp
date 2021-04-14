@@ -19,15 +19,6 @@ import { ComplexSelectValue } from './types/complex-select-value';
 export class SelectFormComponent extends AbstractFormComponent<ComplexSelectValue> {
   @Input() options: SelectFormOption<ComplexSelectValue>[];
 
-  constructor() {
-    super();
-  }
-
-  writeValue(value: ComplexSelectValue) {
-    super.writeValue(value);
-    this.onChange(value);
-  }
-
   public isOptionActive(optionValue: ComplexSelectValue): boolean {
     if (!this.value || typeof optionValue !== typeof this.value) {
       return false;
@@ -37,6 +28,11 @@ export class SelectFormComponent extends AbstractFormComponent<ComplexSelectValu
     }
 
     return this.isRecordValueActive(optionValue);
+  }
+
+  public handleOptionClick(value: ComplexSelectValue): void {
+    this.writeValue(value);
+    this.onChange(value);
   }
 
   private isRecordValueActive(optionValue: Record<string, string>): boolean {

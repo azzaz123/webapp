@@ -23,7 +23,7 @@
       <p class="FilterTemplate__title--bubble m-0">{{title}}</p>
     </div>
 
-    <div class="FilterTemplate__filter px-4">
+    <div [class.FilterTemplate__filter--no_max_height]="!hasMaxHeight" class="FilterTemplate__filter px-4">
       <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
     </div>
 
