@@ -3,7 +3,6 @@ import { environment } from '@environments/environment';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { ClickedItemCard } from './interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from './interfaces/cols-config.interface';
 import { SlotsConfig } from './interfaces/slots-config.interface';
@@ -28,13 +27,10 @@ export class ItemCardListComponent {
   @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
 
   constructor(
-    private deviceDetectionService: DeviceDetectorService,
     private itemCardService: ItemCardService,
     private checkSessionService: CheckSessionService,
     @Inject('SUBDOMAIN') private subdomain: string
-  ) {
-    this.showDescription = !this.deviceDetectionService.isMobile();
-  }
+  ) {}
 
   public toggleFavourite(item: ItemCard): void {
     this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
