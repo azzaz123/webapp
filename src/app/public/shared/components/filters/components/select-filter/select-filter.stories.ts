@@ -133,3 +133,15 @@ Default.args = {
   conditionConfig,
   genderConfig,
 };
+
+export const WithIcons = Template.bind({});
+WithIcons.args = {
+  conditionConfig: {
+    ...conditionConfig,
+    id: 'with_icon',
+  },
+  genderConfig: {
+    ...genderConfig,
+    id: 'with_icon',
+  },
+};

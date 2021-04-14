@@ -49,7 +49,7 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !changes.value.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
       if (this._value.length > 0) {
-        this.updateForm();
+        this.updateValueFromParent();
       } else {
         this.handleClear();
       }
@@ -61,8 +61,15 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
     return value ? this.options.find((option) => option.value === value).label : this.getLabelPlaceholder();
   }
 
+  public getPlaceholderIcon(): string {
+    const value = this.getValue('parameterKey');
+    return value ? this.options.find((option) => option.value === value).icon : undefined;
+  }
+
   public handleClear(): void {
     this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
+    this.writeValue([]);
+    this.valueChange.emit([]);
     super.handleClear();
   }
 
@@ -75,8 +82,8 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
     this.subscriptions.add(subscription);
   }
 
-  private updateForm(): void {
-    this.formGroup.controls.select.setValue(this.getValue('parameterKey'));
+  private updateValueFromParent(): void {
+    this.formGroup.controls.select.setValue(this.getValue('parameterKey'), { emitEvent: false });
   }
 
   private handleValueChange(value: ComplexSelectValue): void {
@@ -91,7 +98,7 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
       this.writeValue(keys.map((key) => ({ key: key, value: value[key] })));
     }
 
-    this.valueChange.emit(this.value);
+    this.valueChange.emit(this._value);
   }
 
   private getLabelPlaceholder(): string {

@@ -18,15 +18,17 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
 export class GridSelectFormComponent extends AbstractFormComponent<string[]> {
   @Input() options: GridSelectFormOption[];
   @Input() columns: number;
+  @Input() columnsMd?: number;
+  @Input() columnsSm?: number;
   @Input() isBig?: boolean;
   @Input() isMultiselect?: boolean;
+  @Input() isHoverMainColor?: boolean;
 
   private selectedOptions: string[] = [];
 
   public writeValue(value: string[]) {
     super.writeValue(value);
     this.selectedOptions = value;
-    this.onChange(value);
   }
 
   public handleOptionClick(value: string): void {
@@ -39,6 +41,8 @@ export class GridSelectFormComponent extends AbstractFormComponent<string[]> {
     } else {
       this.writeValue([value]);
     }
+
+    this.onChange(this.value);
   }
 
   public isValueActive(value: string): boolean {
@@ -47,5 +51,6 @@ export class GridSelectFormComponent extends AbstractFormComponent<string[]> {
 
   private cleanValue(value: string) {
     this.writeValue(this.selectedOptions.filter((optionValue) => optionValue !== value));
+    this.onChange(this.value);
   }
 }

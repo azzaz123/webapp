@@ -154,7 +154,7 @@ describe('SelectFilterComponent', () => {
 
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('male');
+          form.handleOptionClick('male');
 
           fixture.detectChanges();
 
@@ -172,7 +172,7 @@ describe('SelectFilterComponent', () => {
           spyOn(component.valueChange, 'emit');
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('male');
+          form.handleOptionClick('male');
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
@@ -188,7 +188,7 @@ describe('SelectFilterComponent', () => {
     describe('... is closed', () => {
       describe('and we clean the value', () => {
         beforeEach(() => {
-          component.writeValue([{ key: 'key', value: 'male' }]);
+          testComponent.value = [{ key: 'key', value: 'male' }];
           fixture.detectChanges();
         });
 
@@ -261,7 +261,7 @@ describe('SelectFilterComponent', () => {
         it('should close the placeholder', () => {
           const formInstance: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          formInstance.writeValue('male');
+          formInstance.handleOptionClick('male');
           fixture.detectChanges();
 
           const selectTemplate: SelectFilterTemplateComponent = debugElement.query(By.directive(SelectFilterTemplateComponent))
@@ -284,7 +284,7 @@ describe('SelectFilterComponent', () => {
           spyOn(component.valueChange, 'emit');
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('male');
+          form.handleOptionClick('male');
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
@@ -299,7 +299,7 @@ describe('SelectFilterComponent', () => {
 
       describe('and we clean the value', () => {
         beforeEach(() => {
-          component.writeValue([{ key: 'key', value: 'male' }]);
+          testComponent.value = [{ key: 'key', value: 'male' }];
           fixture.detectChanges();
         });
         it('should restart values', () => {

@@ -4,13 +4,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { GridSelectFormOption } from './interfaces/grid-select-form-option.interface';
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { GridSelectFormFormModule } from '@shared/form/components/grid-select/grid-select-form-form.module';
+import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-select-form.module';
+import { FormComplexIcon } from '@shared/form/interfaces/form-complex-icon.interface';
 
 @Component({
   selector: 'tsl-story-grid-select-form',
   template: `
     <h4>NgModel: {{ select.join(', ') }}</h4>
-    <div style="width: 400px">
+    <div [style.width]="isWrapperBig ? '850px' : '400px'">
       <div style="background: white; border: 1px dashed black;">
         <tsl-grid-select-form
           [(ngModel)]="select"
@@ -18,11 +19,12 @@ import { GridSelectFormFormModule } from '@shared/form/components/grid-select/gr
           [columns]="columns"
           [isBig]="isBig"
           [isMultiselect]="isMultiselect"
+          [isHoverMainColor]="isHoverMainColor"
         ></tsl-grid-select-form>
       </div>
     </div>
     <h4 class="mt-4">FormGroup: {{ formGroup.value.select.join(', ') }}</h4>
-    <div style="width: 400px">
+    <div [style.width]="isWrapperBig ? '850px' : '400px'">
       <div style="background: white; border: 1px dashed black;">
         <form [formGroup]="formGroup">
           <tsl-grid-select-form
@@ -31,6 +33,7 @@ import { GridSelectFormFormModule } from '@shared/form/components/grid-select/gr
             [columns]="columns"
             [isBig]="isBig"
             [isMultiselect]="isMultiselect"
+            [isHoverMainColor]="isHoverMainColor"
           ></tsl-grid-select-form>
         </form>
       </div>
@@ -42,6 +45,8 @@ class StoryGridSelectFormFormComponent {
   @Input() columns: number;
   @Input() isBig?: boolean;
   @Input() isMultiselect?: boolean;
+  @Input() isHoverMainColor?: boolean;
+  @Input() isWrapperBig?: boolean;
 
   public formGroup = new FormGroup({
     select: new FormControl([]),
@@ -56,7 +61,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StoryGridSelectFormFormComponent],
-      imports: [HttpClientModule, ReactiveFormsModule, GridSelectFormFormModule],
+      imports: [HttpClientModule, ReactiveFormsModule, GridSelectFormModule],
     }),
   ],
 };
@@ -65,7 +70,12 @@ const Template: Story<StoryGridSelectFormFormComponent> = (args) => ({
   props: args,
   component: StoryGridSelectFormFormComponent,
   template: `
-    <tsl-story-grid-select-form [isBig]="isBig" [columns]="columns" [options]="options" [isMultiselect]="isMultiselect">
+    <tsl-story-grid-select-form [isBig]="isBig"
+                                [columns]="columns"
+                                [options]="options"
+                                [isMultiselect]="isMultiselect"
+                                [isHoverMainColor]="isHoverMainColor"
+                                [isWrapperBig]="isWrapperBig">
     </tsl-story-grid-select-form>
   `,
 });
@@ -96,7 +106,25 @@ Multiselect.args = {
   isMultiselect: true,
 };
 
-function getOptions(amount: number, icon: string, label: string, value: string): GridSelectFormOption[] {
+export const ComplexIcon = Template.bind({});
+ComplexIcon.args = {
+  isWrapperBig: true,
+  isHoverMainColor: true,
+  isBig: true,
+  options: getOptions(
+    12,
+    {
+      standard: '/assets/icons/filters/categories/all.svg',
+      hover: '/assets/icons/filters/categories/all_hover.svg',
+      active: '/assets/icons/filters/categories/all_selected.svg',
+    },
+    'All categories',
+    'categories'
+  ),
+  columns: 6,
+};
+
+function getOptions(amount: number, icon: string | FormComplexIcon, label: string, value: string): GridSelectFormOption[] {
   const arr = new Array(amount).fill(undefined);
   return arr.map((a, index) => ({
     label: `${label} ${index}`,

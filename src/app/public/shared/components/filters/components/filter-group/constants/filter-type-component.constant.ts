@@ -6,8 +6,10 @@ import { ToggleFilterComponent } from '../../toggle-filter/toggle-filter.compone
 import { SelectFilterComponent } from '../../select-filter/select-filter.component';
 import { SuggesterFilterComponent } from '../../suggester-filter/suggester-filter.component';
 import { GridSelectFilterComponent } from '../../grid-select-filter/grid-select-filter.component';
+import { CategoriesFilterComponent } from '../../categories-filter/categories-filter.component';
 
 export const FILTER_TYPE_COMPONENT: Record<FILTER_TYPES, Type<AbstractFilter<unknown>>> = {
+  [FILTER_TYPES.CATEGORIES]: CategoriesFilterComponent,
   [FILTER_TYPES.RANGE]: RangeFilterComponent,
   [FILTER_TYPES.TOGGLE]: ToggleFilterComponent,
   [FILTER_TYPES.SELECT]: SelectFilterComponent,

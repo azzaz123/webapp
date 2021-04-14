@@ -107,6 +107,14 @@ export class MockFilterOptionService implements Partial<FilterOptionService> {
             icon: '/assets/icons/joke.svg',
           },
         ]);
+
+      case ('with_icon' as unknown) as ConfigurationId:
+        return of(
+          this.getOptionsByText({ text: 'with_icons' }).map((option) => ({
+            ...option,
+            icon: '/assets/icons/joke.svg',
+          }))
+        );
       default:
         return of([]);
     }

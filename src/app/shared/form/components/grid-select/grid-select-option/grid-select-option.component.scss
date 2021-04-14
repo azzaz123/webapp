@@ -10,6 +10,7 @@ $min-size: 96px;
   &__label {
     margin-top: 5px;
     font-size: $font-size-s;
+    text-align: center;
 
     &--active {
       color: $walla-main !important;
@@ -27,6 +28,10 @@ $min-size: 96px;
   &:hover {
     .GridSelectOption__label {
       color: $blue-grey-4;
+
+      &--main-color-hover {
+        color: $walla-main;
+      }
     }
 
     .GridSelectOption__icon {
