@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { filterParametersMock } from '@fixtures/filter-parameter.fixtures';
 import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
+import { SearchItem } from '@public/features/search/interfaces/search-item.interface';
 import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { of } from 'rxjs';
 import { SearchAPIService } from './api/search-api.service';
+import { SearchFavouritesService } from './favorites/search-favourites.service';
 import { SearchInfrastructureService } from './search-infrastructure.service';
 
 function SearchPaginationFactory(hasMore: boolean = false): SearchPagination {
@@ -17,6 +19,7 @@ function SearchPaginationFactory(hasMore: boolean = false): SearchPagination {
 describe('SearchInfrastructureService', () => {
   let service: SearchInfrastructureService;
   let searchApiServiceMock;
+  let searchFavouritesServiceMock;
 
   beforeEach(() => {
     searchApiServiceMock = {
@@ -24,11 +27,21 @@ describe('SearchInfrastructureService', () => {
       loadMore: () => of(SearchPaginationFactory())
     };
 
+    searchFavouritesServiceMock = {
+      getFavouritesByItems: (searchItems: SearchItem[]) => of(searchItems)
+    };
+
     TestBed.configureTestingModule({
-      providers: [SearchInfrastructureService, {
-        provide: SearchAPIService,
-        useValue: searchApiServiceMock
-      }]
+      providers: [SearchInfrastructureService,
+        {
+          provide: SearchAPIService,
+          useValue: searchApiServiceMock
+        },
+        {
+          provide: SearchFavouritesService,
+          useValue: searchFavouritesServiceMock
+        }
+      ]
     });
     service = TestBed.inject(SearchInfrastructureService);
   });
