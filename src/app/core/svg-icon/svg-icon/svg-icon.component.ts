@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, SecurityContext } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, SecurityContext, SimpleChange, SimpleChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 import { SvgService } from '../svg.service';
@@ -13,7 +13,7 @@ export enum SVG_ATTRIBUTES {
   selector: 'tsl-svg-icon',
   template: '',
 })
-export class SvgIconComponent implements OnInit {
+export class SvgIconComponent implements OnInit, OnChanges {
   @Input() src: string;
   @Input() fill: string;
   @Input() width: number;
@@ -21,8 +21,15 @@ export class SvgIconComponent implements OnInit {
 
   constructor(private svgService: SvgService, private sanitizer: DomSanitizer, private element: ElementRef) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getIcon();
+  }
+
+  public ngOnChanges(changes: SimpleChanges) {
+    const { src } = changes;
+    if (this.hasIconSourceChanged(src)) {
+      this.getIcon();
+    }
   }
 
   private getIcon(): void {
@@ -38,6 +45,10 @@ export class SvgIconComponent implements OnInit {
           this.handleCustomAttributes();
         });
     }
+  }
+
+  private hasIconSourceChanged(srcChange: SimpleChange): boolean {
+    return srcChange && !srcChange.firstChange && srcChange.previousValue !== srcChange.currentValue;
   }
 
   private handleGenericAttributes(): void {

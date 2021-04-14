@@ -3,11 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
-import { MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
-import { RECOMMENDED_ITEM_MOCK } from './constants/recommended-items.fixtures.spec';
-import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 import { RecommendedItemsComponent } from './recommended-items.component';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
 
 describe('RecommendedItemsComponent', () => {
   const itemCardListTag = 'tsl-public-item-card-list';
@@ -17,7 +15,6 @@ describe('RecommendedItemsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RecommendedItemsComponent],
-      providers: [MapRecommendedItemCardService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -34,14 +31,7 @@ describe('RecommendedItemsComponent', () => {
 
   describe('when we have recommended items...', () => {
     beforeEach(() => {
-      spyOn(component.initRecommendedItemsSlider, 'emit');
-      component.recommendedItems = [
-        RECOMMENDED_ITEM_MOCK,
-        RECOMMENDED_ITEM_MOCK,
-        RECOMMENDED_ITEM_MOCK,
-        RECOMMENDED_ITEM_MOCK,
-        RECOMMENDED_ITEM_MOCK,
-      ];
+      component.recommendedItems = [MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD];
 
       component.ngAfterViewInit();
       fixture.detectChanges();
@@ -75,15 +65,15 @@ describe('RecommendedItemsComponent', () => {
     describe('when we got more than six recommended items...', () => {
       beforeEach(() => {
         component.recommendedItems = [
-          RECOMMENDED_ITEM_MOCK,
-          RECOMMENDED_ITEM_MOCK,
-          RECOMMENDED_ITEM_MOCK,
-          RECOMMENDED_ITEM_MOCK,
-          RECOMMENDED_ITEM_MOCK,
-          RECOMMENDED_ITEM_MOCK,
-          RECOMMENDED_ITEM_MOCK,
-          RECOMMENDED_ITEM_MOCK,
-          RECOMMENDED_ITEM_MOCK,
+          MOCK_ITEM_CARD,
+          MOCK_ITEM_CARD,
+          MOCK_ITEM_CARD,
+          MOCK_ITEM_CARD,
+          MOCK_ITEM_CARD,
+          MOCK_ITEM_CARD,
+          MOCK_ITEM_CARD,
+          MOCK_ITEM_CARD,
+          MOCK_ITEM_CARD,
         ];
 
         component.ngAfterViewInit();

@@ -61,14 +61,14 @@ export class SuggesterFilterComponent
 
   public ngAfterContentInit(): void {
     if (this.value.length > 0) {
-      this.updateForm();
+      this.updateValueFromParent();
     }
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !changes.value.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
       if (this._value.length > 0) {
-        this.updateForm();
+        this.updateValueFromParent();
       } else {
         this.handleClear();
       }
@@ -101,7 +101,10 @@ export class SuggesterFilterComponent
 
   public handleClear(): void {
     this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
+    this.writeValue([]);
+    this.valueChange.emit([]);
     this.clearSearch();
+    this.initLabel();
     super.handleClear();
   }
 
@@ -114,11 +117,6 @@ export class SuggesterFilterComponent
     this.subscriptions.unsubscribe();
   }
 
-  public writeValue(value: FilterParameter[]): void {
-    super.writeValue(value);
-    this.valueChange.emit(this.value);
-  }
-
   private initForm(): void {
     const labelSubscription = this.valueChange.subscribe(this.handleLabelChange.bind(this));
     const valueSubscription = this.formGroup.controls.select.valueChanges.subscribe(this.handleValueChange.bind(this));
@@ -127,15 +125,16 @@ export class SuggesterFilterComponent
     this.subscriptions.add(valueSubscription);
   }
 
-  private updateForm(): void {
-    this.formGroup.controls.select.setValue(this.getComplexValue());
+  private updateValueFromParent(): void {
+    this.formGroup.controls.select.setValue(this.getComplexValue(), { emitEvent: false });
+    this.handleLabelChange();
   }
 
   private getComplexValue(): string | Record<string, string> {
     if (this.config.mapKey.parameterKey) {
       return this.getValue('parameterKey');
     }
-    return this.value.reduce((acc, parameter) => {
+    return this._value.reduce((acc, parameter) => {
       const value = {
         [parameter.key]: parameter.value,
       };
@@ -163,6 +162,8 @@ export class SuggesterFilterComponent
       const keys = Object.keys(value);
       this.writeValue(keys.map((key) => ({ key: key, value: value[key] })));
     }
+
+    this.valueChange.emit(this._value);
   }
 
   private handleLabelChange(): void {

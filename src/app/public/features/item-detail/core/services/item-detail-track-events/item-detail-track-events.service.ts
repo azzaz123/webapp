@@ -23,7 +23,7 @@ import { Realestate } from '@core/item/realestate';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { finalize, take } from 'rxjs/operators';

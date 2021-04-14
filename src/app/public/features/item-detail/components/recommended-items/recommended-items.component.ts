@@ -1,11 +1,10 @@
 import { RECOMMENDATIONS_ENGINE, RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
-import { RecommenderItem } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
-import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
-import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 import { RecommendedItemsInitEventEmitter } from '../../interfaces/recommended-items-init-event-emitter.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
+import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 
 @Component({
   selector: 'tsl-recommended-items',
@@ -13,7 +12,8 @@ import { RecommendedItemsInitEventEmitter } from '../../interfaces/recommended-i
   styleUrls: ['./recommended-items.component.scss'],
 })
 export class RecommendedItemsComponent implements AfterViewInit {
-  @Input() recommendedItems: RecommenderItem[];
+  @Input() recommendedItems: ItemCard[];
+  @Input() recommendedType: RECOMMENDER_TYPE;
   @Output() initRecommendedItemsSlider: EventEmitter<RecommendedItemsInitEventEmitter> = new EventEmitter();
   @Output() clickedItemAndIndexEvent: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
   @ViewChild('recommendedItemsSlider', { static: true }) recommendedItemsSlider: ElementRef;
@@ -21,6 +21,7 @@ export class RecommendedItemsComponent implements AfterViewInit {
   public items: ItemCard[];
   public showDescription = false;
   public columnsConfig: ColumnsConfig = {
+    xl: 3,
     lg: 3,
     md: 3,
     sm: 2,
@@ -32,7 +33,7 @@ export class RecommendedItemsComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.recommendedItems) {
-      this.items = this.mapRecommendedItemCardService.mapRecommendedItems(this.recommendedItems).slice(0, 6);
+      this.items = this.recommendedItems.slice(0, 6);
     }
   }
 
