@@ -1,14 +1,14 @@
 <div class="modal-close" (click)="activeModal.dismiss()">
   <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
 </div>
-<h1 i18n> You are trying to feature items that are already planned</h1>
+<h1 i18n="@@web_modals_already_featured_modal_474"> You are trying to feature items that are already planned</h1>
 <div *ngIf="itemService.selectedItems.length > 1">
-  <p i18n>Items that are already planned can't be featured again. You can cancel the bumps for these items o continue featuring
+  <p i18n="@@web_modals_already_featured_modal_475">Items that are already planned can't be featured again. You can cancel the bumps for these items o continue featuring
     the other items.</p>
-  <tsl-button className="btn-feature" (click)="activeModal.close()" i18n>Feature the available items</tsl-button>
-  <a (click)="activeModal.dismiss()" i18n>Go back and cancel bumps</a>
+  <tsl-button className="btn-feature" (click)="activeModal.close()" i18n="@@web_modals_already_featured_modal_476">Feature the available items</tsl-button>
+  <a (click)="activeModal.dismiss()" i18n="@@web_modals_already_featured_modal_477">Go back and cancel bumps</a>
 </div>
 <div *ngIf="itemService.selectedItems.length === 1">
-  <p i18n>Items that are already planned can't be featured again.</p>
-  <tsl-button className="btn-feature" (click)="activeModal.dismiss()" i18n>Ok, got it</tsl-button>
+  <p i18n="@@web_modals_already_featured_modal_478">Items that are already planned can't be featured again.</p>
+  <tsl-button className="btn-feature" (click)="activeModal.dismiss()" i18n="@@web_modals_already_featured_modal_479">Ok, got it</tsl-button>
 </div>

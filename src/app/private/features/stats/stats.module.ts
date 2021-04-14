@@ -12,9 +12,19 @@ import { ItemStatsService } from './core/services/item-stats.service';
 import { SharedModule } from '@shared/shared.module';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  imports: [CommonModule, StatsRoutingModule, SharedModule, InfiniteScrollModule, NgxEchartsModule, ItemAvatarModule, CustomCurrencyModule],
+  imports: [
+    CommonModule,
+    StatsRoutingModule,
+    SharedModule,
+    InfiniteScrollModule,
+    NgxEchartsModule,
+    ItemAvatarModule,
+    CustomCurrencyModule,
+    NgbTooltipModule,
+  ],
   providers: [ItemStatsService],
   declarations: [statsRoutedComponents, ItemsStatsComponent, ItemStatsRowComponent, ItemStatsGraphComponent],
 })

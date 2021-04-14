@@ -30,6 +30,11 @@ export class ItemDetailHeaderComponent implements OnInit {
   public readonly USER_INFO_SIZE = USER_INFO_SIZE;
   public showOptions = false;
   public loading = true;
+  public tooltipMessages = {
+    markAsSold: $localize`:@@web_mark_as_sold_tooltip:Mark as sold`,
+    markAsReserved: $localize`:@@web_mark_as_reserved_tooltip:Mark as reserved`,
+    edit: $localize`:@@web_edit_tooltip:Edit`,
+  };
 
   constructor(
     private modalService: NgbModal,

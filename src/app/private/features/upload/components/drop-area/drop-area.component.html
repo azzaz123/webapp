@@ -3,13 +3,13 @@
   <div class="drag-area">
     <ng-container *ngIf="files.length < options.maxUploads; else maxUploadsReached">
       <tsl-svg-icon src="/assets/icons/upload-dnd.svg"></tsl-svg-icon>
-      <p i18n>Drop here your files to upload as a product photo</p>
+      <p i18n="@@web_upload_components_drop_area_363">Drop here your files to upload as a product photo</p>
     </ng-container>
     <ng-template #maxUploadsReached>
       <div class="denied-icon">
         <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
       </div>
-      <p i18n>You have reached the limit of {{maxUploads}} photos per product.<br />Remove one first if you want to add
+      <p i18n="@@web_upload_components_drop_area_364">You have reached the limit of {{maxUploads}} photos per product.<br />Remove one first if you want to add
         more.</p>
     </ng-template>
   </div>
@@ -29,7 +29,7 @@
           </div>
           <input *ngIf="!files[i]" type="file" (filesSelected)="onFilesAdded($event)" tslFileSelect multiple="true" />
         </label>
-        <span class="main-image-label d-none d-md-block" *ngIf="i === 0" i18n>Main photo</span>
+        <span class="main-image-label d-none d-md-block" *ngIf="i === 0" i18n="@@web_upload_components_drop_area_365">Main photo</span>
       </div>
     </div>
   </div>

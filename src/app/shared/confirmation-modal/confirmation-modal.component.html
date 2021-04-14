@@ -1,39 +1,39 @@
 <div class="modal-body">
   <div *ngIf="!type">
-    <h2 i18n>Delete item</h2>
-    <p i18n>This will delete the item.</p>
+    <h2 i18n="@@web_modal_confirmation_480">Delete item</h2>
+    <p i18n="@@web_modal_confirmation_481">This will delete the item.</p>
   </div>
   <div *ngIf="type === 1">
-    <h2 i18n>Delete items</h2>
-    <p i18n>The selected items will be permanently deleted.</p>
+    <h2 i18n="@@web_modal_confirmation_625">Delete items</h2>
+    <p i18n="@@web_modal_confirmation_626">The selected items will be permanently deleted.</p>
   </div>
   <div *ngIf="type === 2">
-    <h2 i18n>Reserve items</h2>
-    <p i18n>The selected items will be reserved.</p>
+    <h2 i18n="@@web_modal_confirmation_482">Reserve items</h2>
+    <p i18n="@@web_modal_confirmation_483">The selected items will be reserved.</p>
   </div>
   <div *ngIf="type === 3">
-    <h2 i18n>Remove item from favorites</h2>
-    <p i18n>The item will be removed from favorites.</p>
+    <h2 i18n="@@web_modal_confirmation_484">Remove item from favorites</h2>
+    <p i18n="@@web_modal_confirmation_485">The item will be removed from favorites.</p>
   </div>
   <div *ngIf="type === 4">
-    <h2 i18n>Delete card</h2>
-    <p i18n>Are you sure you want to delete the card saved?</p>
+    <h2 i18n="@@web_modal_confirmation_486">Delete card</h2>
+    <p i18n="@@web_modal_confirmation_487">Are you sure you want to delete the card saved?</p>
   </div>
   <div *ngIf="type === 5">
-    <h2 i18n>Remove featured profile from favorites</h2>
-    <p i18n>The profile will be removed from favorites.</p>
+    <h2 i18n="@@web_modal_confirmation_488">Remove featured profile from favorites</h2>
+    <p i18n="@@web_modal_confirmation_489">The profile will be removed from favorites.</p>
   </div>
   <div *ngIf="type === 6">
-    <h2 i18n>This profile is no longer featured</h2>
-    <p i18n>If you remove it you won't be able to save it again.</p>
+    <h2 i18n="@@web_modal_confirmation_490">This profile is no longer featured</h2>
+    <p i18n="@@web_modal_confirmation_491">If you remove it you won't be able to save it again.</p>
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn" i18n (click)="activeModal.dismiss()">Cancel</button>
+  <button type="button" class="btn" i18n="@@web_modal_confirmation_692" (click)="activeModal.dismiss()">Cancel</button>
   <button type="button" class="btn btn-warn" (click)="activeModal.close()">
-    <span i18n *ngIf="type === 1">Delete</span>
-    <span i18n *ngIf="type === 2">Reserve</span>
-    <span i18n *ngIf="type === 3 || type === 5 || type === 6">Remove</span>
-    <span i18n *ngIf="type === 4">Yes, I am sure</span>
+    <span i18n="@@web_modal_confirmation_689" *ngIf="type === 1">Delete</span>
+    <span i18n="@@web_modal_confirmation_670" *ngIf="type === 2">Reserve</span>
+    <span i18n="@@web_modal_confirmation_492" *ngIf="type === 3 || type === 5 || type === 6">Remove</span>
+    <span i18n="@@web_modal_confirmation_493" *ngIf="type === 4">Yes, I am sure</span>
   </button>
 </div>

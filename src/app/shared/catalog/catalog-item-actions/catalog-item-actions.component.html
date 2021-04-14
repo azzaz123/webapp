@@ -2,36 +2,35 @@
   <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0"
      [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
     <ng-container [ngPlural]="itemService.selectedItems.length">
-      <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
-      <ng-template ngPluralCase="other"><ng-container i18n>
-        {{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container>
+      <ng-template ngPluralCase="=1"><ng-container i18n="@@web_catalog_item_actions_623">1 item selected</ng-container></ng-template>
+      <ng-template ngPluralCase="other"><ng-container i18n="@@web_catalog_item_actions_463">        {{itemService.selectedItems.length}} items selected</ng-container>
       </ng-template>
     </ng-container>
   </a>
   <button class="btn-select-all dark" [hidden]="true" (click)="selectAll()">
-    <span i18n>Select All</span>
+    <span i18n="@@web_catalog_item_actions_464">Select All</span>
   </button>
   <button class="btn-delete dark" (click)="delete(deleteItemsModal)" [disabled]="!itemService.selectedItems.length">
     <tsl-svg-icon src="/assets/icons/delete.svg"></tsl-svg-icon>
-    <span i18n>Delete</span>
+    <span i18n="@@web_catalog_item_actions_668">Delete</span>
   </button>
   <button class="btn-delete dark" (click)="deactivate()" *ngIf="selectedStatus === 'active'
   || selectedStatus === 'featured'"
-          [disabled]="!itemService.selectedItems.length" i18n>Deactivate</button>
+          [disabled]="!itemService.selectedItems.length" i18n="@@web_catalog_item_actions_624">Deactivate</button>
   <button class="btn-activate" (click)="activate()" *ngIf="selectedStatus === 'pending'"
-          [disabled]="!itemService.selectedItems.length" i18n>Activate</button>
+          [disabled]="!itemService.selectedItems.length" i18n="@@web_catalog_item_actions_684">Activate</button>
   <tsl-button [hidden]="selectedStatus !== 'active'" [disabled]="!itemService.selectedItems.length"
               className="btn-primary btn-big btn-feat" id="qa-catalog-feature-pro" (click)="feature()"
-              i18n="Continue to cart|selected-items-button">Feature</tsl-button>
+              i18n="@@web_catalog_item_actions_465">Feature</tsl-button>
 </div>
 
 <ng-template ngbModalContainer #deleteItemsModal let-c="close" let-d="dismiss">
   <div class="modal-body">
-    <h2 i18n>Delete items</h2>
-    <p i18n>The selected items will be permanently deleted.</p>
+    <h2 i18n="@@web_catalog_item_actions_466">Delete items</h2>
+    <p i18n="@@web_catalog_item_actions_467">The selected items will be permanently deleted.</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
-    <button type="button" class="btn btn-warn" i18n (click)="c()">Delete</button>
+    <button type="button" class="btn" i18n="@@web_catalog_item_actions_690" (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-warn" i18n="@@web_catalog_item_actions_685" (click)="c()">Delete</button>
   </div>
 </ng-template>
