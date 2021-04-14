@@ -96,6 +96,7 @@ $box-shadow: 0 0 2px 0 rgba($black, 0.1);
 
   &__price {
     font-size: $font-size-l;
+    line-height: $font-size-l;
     &--bold {
       font-weight: $font-weight-chunky;
     }
