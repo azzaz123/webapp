@@ -27,6 +27,7 @@ import { ItemDetailStoreService } from '../core/services/item-detail-store/item-
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
+import { RecommendedItemsInitEventEmitter } from '../interfaces/recommended-items-init-event-emitter.interface';
 
 @Component({
   selector: 'tsl-item-detail',

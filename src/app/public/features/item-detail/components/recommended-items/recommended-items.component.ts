@@ -46,7 +46,7 @@ export class RecommendedItemsComponent implements AfterViewInit {
   }
 
   private getRecommendedItemSearchEngine(): RECOMMENDATIONS_ENGINE {
-    if (this.recommendedItems[0].recommended_type === RECOMMENDER_TYPE.MORE_LIKE_THIS) {
+    if (this.recommendedType === RECOMMENDER_TYPE.MORE_LIKE_THIS) {
       return RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR;
     } else {
       return RECOMMENDATIONS_ENGINE.COLLABORATIVE_FILTER;
