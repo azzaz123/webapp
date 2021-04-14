@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Item } from '@core/item/item';
+import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 
 @Component({
   selector: 'tsl-public-item-card-list',
@@ -9,4 +10,5 @@ import { Item } from '@core/item/item';
 export class ItemCardListComponentStub {
   @Input() items: Item[];
   @Input() showDescription = true;
+  @Input() columnsConfig: ColumnsConfig;
 }
