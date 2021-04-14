@@ -109,7 +109,7 @@ describe('RecommendedItemsComponent', () => {
         itemCard.triggerEventHandler('toggleFavoriteEvent', MOCK_ITEM_CARD);
         fixture.detectChanges();
 
-        expect(itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, false, true);
+        expect(itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_USER?.featured);
       });
     });
   });
