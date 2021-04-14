@@ -113,7 +113,7 @@ $box-shadow: 0 0 2px 0 rgba($black, 0.1);
   }
 
   &__description {
-    height: 85px;
+    height: $description-height;
     overflow: hidden;
     @include vertical-ellipsis(4);
 
