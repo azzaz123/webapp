@@ -223,7 +223,7 @@ export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER: AnalyticsPage
 };
 
 export class MockItemdDetailTrackEventService {
-  trackFavoriteOrUnfavoriteEvent() {}
+  trackFavouriteOrUnfavouriteEvent() {}
   trackClickChatButton() {}
   trackClickItemCardEvent() {}
   trackViewOwnItemDetail() {}
