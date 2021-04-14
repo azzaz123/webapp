@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { RECOMMENDATIONS_ENGINE, RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RecommendedItemsComponent } from './recommended-items.component';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
@@ -32,6 +32,8 @@ describe('RecommendedItemsComponent', () => {
   describe('when we have recommended items...', () => {
     beforeEach(() => {
       component.recommendedItems = [MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD];
+      component.recommendedType = RECOMMENDER_TYPE.MORE_LIKE_THIS;
+      spyOn(component.initRecommendedItemsSlider, 'emit');
 
       component.ngAfterViewInit();
       fixture.detectChanges();

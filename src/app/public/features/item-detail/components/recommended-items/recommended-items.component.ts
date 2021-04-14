@@ -1,6 +1,5 @@
 import { RECOMMENDATIONS_ENGINE, RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
-import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 import { RecommendedItemsInitEventEmitter } from '../../interfaces/recommended-items-init-event-emitter.interface';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
@@ -28,8 +27,6 @@ export class RecommendedItemsComponent implements AfterViewInit {
     xs: 2,
   };
   private isInview: boolean = false;
-
-  constructor(private mapRecommendedItemCardService: MapRecommendedItemCardService) {}
 
   ngAfterViewInit() {
     if (this.recommendedItems) {
