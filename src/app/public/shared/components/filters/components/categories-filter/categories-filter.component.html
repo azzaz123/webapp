@@ -24,7 +24,8 @@
                                 [hasContentPlaceholder]="true"
                                 [isClearable]="false"
                                 [placeholderLabel]="label$ | async"
-                                [placeholderIcon]="placeholderIcon$ | async">
+                                [placeholderIcon]="placeholderIcon$ | async"
+                                (placeholderOpenStateChange)="openStateChange.emit($event)">
         <tsl-select-form
           formControlName="select"
           [options]="this.config.options | formatSelectOptions">
