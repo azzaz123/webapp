@@ -123,7 +123,7 @@ export class GooglePublisherTagService {
       });
   }
 
-  private onSlotLoad(event: googletag.events.Event) {
+  private onSlotLoad(event: googletag.events.Event): void {
     const slotsName: string[] = this.adSlotsLoadedSubject.getValue();
     const slotName = event.slot.getAdUnitPath();
     slotsName.push(slotName);
