@@ -13,13 +13,13 @@
     <div class="buy-product-modal-icon" *ngIf="type === 'listing-fee'"></div>
   </div>
   <div class="right">
-    <h2 *ngIf="type === 'reactivate'" i18n>Reactivate + visibility</h2>
-    <h2 *ngIf="type === 'listing-fee'" i18n>Publish your car</h2>
+    <h2 *ngIf="type === 'reactivate'" i18n="@@web_catalog_modals_buy_product_modal_134">Reactivate + visibility</h2>
+    <h2 *ngIf="type === 'listing-fee'" i18n="@@web_catalog_modals_buy_product_modal_135">Publish your car</h2>
     <h3 *ngIf="creditInfo?.credit > 0 && creditInfo?.credit < orderEvent.total && !hasSavedCard">
-      <span *ngIf="withCredits" i18n>Pay with your credit and credit card:</span>
+      <span *ngIf="withCredits" i18n="@@web_catalog_modals_buy_product_modal_136">Pay with your credit and credit card:</span>
     </h3>
     <div class="price" [class.with-credit]="creditInfo?.credit > 0">
-      <div i18n>Price</div>
+      <div i18n="@@web_catalog_modals_buy_product_modal_137">Price</div>
       <div class="amount">
         {{orderEvent?.total * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
         <tsl-wallacoin [currency]="creditInfo?.currencyName" size="big" color="black"></tsl-wallacoin>
@@ -29,11 +29,11 @@
       <div class="credit" [hidden]="!creditInfo?.credit">
         <span class="label" [hidden]="!creditInfo?.credit">
           <span [hidden]="creditInfo?.currencyName !== 'wallacredits'">
-            {{creditInfo?.credit | customCurrency:creditInfo?.currencyName}} <span i18n>credit</span>
+            {{creditInfo?.credit | customCurrency:creditInfo?.currencyName}} <span i18n="@@web_catalog_modals_buy_product_modal_562">credit</span>
           </span>
           <span [hidden]="creditInfo?.currencyName === 'wallacredits'">
             <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="corporate"></tsl-wallacoin>
-            <span i18n>spending</span>
+            <span i18n="@@web_catalog_modals_buy_product_modal_138">spending</span>
           </span>
         </span>
         <span class="amount">
@@ -44,7 +44,7 @@
       <div class="missing" [hidden]="creditInfo?.currencyName === 'wallacredits' || !creditInfo?.credit">
         <div class="label">
           <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="strike"></tsl-wallacoin>
-          <span i18n>missing</span>
+          <span i18n="@@web_catalog_modals_buy_product_modal_139">missing</span>
         </div>
         <div class="amount">
           {{totalToPay * creditInfo?.factor | number}}
@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class="total">
-        <span class="label" i18n>Total to pay</span>
+        <span class="label" i18n="@@web_catalog_modals_buy_product_modal_140">Total to pay</span>
         <span class="amount">{{totalToPay | customCurrency}}</span>
       </div>
     </div>
@@ -60,8 +60,8 @@
       <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
                                 (hasCard)="hasCard($event)"
       ></tsl-stripe-card-selection>
-      <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
-      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
+      <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n="@@web_catalog_modals_buy_product_modal_644">+ Add another credit card</div>
+      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n="@@web_catalog_modals_buy_product_modal_645">Use saved card</div>
       <tsl-stripe-card-element *ngIf="showCard" [type]="'bump'" [cart]="cart" (stripeCardToken)="checkout($event)"
                               (stripeCard)="setCardInfo($event)" [loading]="loading"
       ></tsl-stripe-card-element>
@@ -73,7 +73,7 @@
                 [disabled]="!selectedCard && totalToPay > 0"
     >
       <div class="secure-payment-button">
-        <span i18n>Continue to checkout</span>
+        <span i18n="@@web_catalog_modals_buy_product_modal_646">Continue to checkout</span>
       </div>
     </tsl-button>
   </div>

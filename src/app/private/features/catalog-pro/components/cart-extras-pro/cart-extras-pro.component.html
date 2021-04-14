@@ -1,7 +1,7 @@
-<h1 i18n>Extra features</h1>
+<h1 i18n="@@web_catalog_pro_components_cart_extras_22">Extra features</h1>
 <div class="clean-cart" [hidden]="!cart?.total">
   <a (click)="clean()">
-    <span i18n>Delete list</span>
+    <span i18n="@@web_catalog_pro_components_cart_extras_23">Delete list</span>
   </a>
 </div>
 <div class="cart-wrapper" [ngClass]="{'has-financial-card': hasCard || hasSavedCard}">
@@ -13,8 +13,8 @@
           <tsl-svg-icon class="wing-icon" src="/assets/icons/wing-{{type}}.svg"></tsl-svg-icon>
           <div class="type">
             <span [ngSwitch]="type" class="bump-type">
-              <ng-container *ngSwitchCase="'citybump'" i18n>City bump</ng-container>
-              <ng-container *ngSwitchCase="'countrybump'" i18n>Country bump</ng-container>
+              <ng-container *ngSwitchCase="'citybump'" i18n="@@web_catalog_pro_components_cart_extras_24">City bump</ng-container>
+              <ng-container *ngSwitchCase="'countrybump'" i18n="@@web_catalog_pro_components_cart_extras_25">Country bump</ng-container>
             </span>
             <strong>x {{cart[type].cartItems.length}}</strong><br />
             <span class="price">{{cart[type].total | customCurrency}}</span>
@@ -28,10 +28,10 @@
               <div class="quantity">{{cartItem.pack.quantity}}</div>
               <div class="type">
                 <span [ngSwitch]="type">
-                  <ng-container *ngSwitchCase="'citybump'" i18n>City</ng-container>
-                  <ng-container *ngSwitchCase="'countrybump'" i18n>Country</ng-container>
+                  <ng-container *ngSwitchCase="'citybump'" i18n="@@web_catalog_pro_components_cart_extras_26">City</ng-container>
+                  <ng-container *ngSwitchCase="'countrybump'" i18n="@@web_catalog_pro_components_cart_extras_27">Country</ng-container>
                 </span>
-                x {{cartItem.pack.quantity}} <span i18n>days</span>
+                x {{cartItem.pack.quantity}} <span i18n="@@web_catalog_pro_components_cart_extras_28">days</span>
               </div>
               <div class="price">{{cartItem.pack.price | customCurrency:cartItem.pack.currency}}</div>
             </div>
@@ -42,14 +42,14 @@
   </div>
 </div>
 <div class="total">
-  <span class="pull-left" i18n>Total</span>
+  <span class="pull-left" i18n="@@web_catalog_pro_components_cart_extras_29">Total</span>
   <span class="pull-right price">{{cart?.total | customCurrency}}</span>
 </div>
 <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
                            (hasCard)="hasCard($event)"
 ></tsl-stripe-card-selection>
-<div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>
-<div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n>Use saved card</div>
+<div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n="@@web_catalog_pro_components_cart_extras_30">+ Add another credit card</div>
+<div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n="@@web_catalog_pro_components_cart_extras_31">Use saved card</div>
 <tsl-stripe-card-element *ngIf="showCard" [type]="'cart'" [cart]="cart" (stripeCardToken)="checkout($event)"
                          (stripeCard)="setCardInfo($event)" [loading]="loading"
 ></tsl-stripe-card-element>
@@ -61,7 +61,7 @@
             id="qa-checkout-pro-buy"
 >
   <div class="secure-payment-button">
-    <span i18n>Continue to checkout</span>
+    <span i18n="@@web_catalog_pro_components_cart_extras_32">Continue to checkout</span>
   </div>
 </tsl-button>
 <tsl-button [disabled]="!cart?.total || loading || !billingInfoForm?.valid || !selectedCard"
@@ -72,6 +72,6 @@
             id="qa-checkout-pro-save-buy"
 >
   <div class="secure-payment-button">
-    <span i18n>Continue to checkout</span>
+    <span i18n="@@web_catalog_pro_components_cart_extras_541">Continue to checkout</span>
   </div>
 </tsl-button>

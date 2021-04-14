@@ -84,3 +84,19 @@ export const ADS_ITEM_DETAIL: ItemDetailAdSlotsConfiguration = {
     device: [DeviceType.DESKTOP],
   },
 };
+
+const AD_AFFILIATION_SLOT_MOBILE = (index: number) => '130868815/App_Affiliation/Mobile_' + index;
+const AD_AFFILIATION_SLOT_DESKTOP = (index: number) => '130868815/Desktop_Affiliation/Web_' + index;
+
+export function FactoryAdAffiliationSlotConfiguration(deviceType: DeviceType): AdSlotConfiguration[] {
+  return new Array(3)
+    .fill('')
+    .map((_, index: number) => index + 1)
+    .map((index: number) => ({
+      id: 'item-affiliation-' + index,
+      name: deviceType === DeviceType.MOBILE ? AD_AFFILIATION_SLOT_MOBILE(index) : AD_AFFILIATION_SLOT_DESKTOP(index),
+      sizes: [['fluid']],
+      networkId: 6866,
+      device: deviceType === DeviceType.MOBILE ? [DeviceType.MOBILE] : [DeviceType.DESKTOP, DeviceType.TABLET],
+    }));
+}

@@ -18,6 +18,7 @@ export const MockAdsService = {
   setSlots: (adSlots) => {},
   setAdKeywords: (adKeywords: AdKeyWords) => {},
   displayAdShopping: (adSlotShopping: AdSlotShoppingConfiguration) => {},
+  adSlotLoaded$: () => of(true),
 };
 
 export const MockAmazonPublisherService = {
@@ -41,6 +42,7 @@ export const MockGooglePublisherTagService = {
   refreshAds: () => {},
   setAdKeywords: (adKeywords: AdKeyWords) => {},
   displayShopping: (pageOption, adSlotShopping: AdSlotShoppingConfiguration) => {},
+  isAdSlotLoaded$: () => of(true),
 };
 
 export const MockLoadAdsService = {

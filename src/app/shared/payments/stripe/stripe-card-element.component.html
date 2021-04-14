@@ -17,8 +17,7 @@
             <div *ngIf="showSavedCardOption()" class="card-feedback__action"(click)="clickUseSavedCard()" i18n="@@UseSavedCard">Use saved card</div>
         </div>
 
-        <div [hidden]="type !== 'subscription'" class="StripeCardElement__legal-info" i18n>
-            By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
+        <div [hidden]="type !== 'subscription'" class="StripeCardElement__legal-info" i18n="@@web_stripe_card_element_513">            By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
             and the <a href="{{policyPrivacyURL}}" target="_blank">privacy policy</a> of Wallapop S.L. and Stripe Ltd
         </div>
 
@@ -30,7 +29,7 @@
                     (click)="onSubmit()"
         >
             <div class="secure-payment">
-                <span i18n>Continue to Checkout</span>
+                <span i18n="@@web_stripe_card_element_514">Continue to Checkout</span>
             </div>
         </tsl-button>
         <tsl-button *ngIf="type === 'new'"
@@ -41,7 +40,7 @@
                     (click)="createNewCard()"
         >
             <div class="secure-payment">
-                <span i18n>Save</span>
+                <span i18n="@@web_stripe_card_element_672">Save</span>
             </div>
         </tsl-button>
         <tsl-button *ngIf="type === 'subscription'"
@@ -52,7 +51,7 @@
                     (click)="createNewCard()"
         >
             <div class="secure-payment">
-                <span i18n>Subscribe now</span>
+                <span i18n="@@web_stripe_card_element_515">Subscribe now</span>
             </div>
         </tsl-button>
         <tsl-button *ngIf="type === 'setDefault'"
