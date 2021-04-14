@@ -22,13 +22,13 @@ import { Realestate } from '@core/item/realestate';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { finalize, take } from 'rxjs/operators';
 
 @Injectable()
 export class ItemDetailTrackEventsService {
-  constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
+  constructor(private analyticsService: AnalyticsService, private userService: UserService, private typeCheckService: TypeCheckService) {}
 
   public trackFavouriteOrUnfavouriteEvent(item: Item | ItemCard, isPro: boolean): void {
     const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
@@ -37,7 +37,7 @@ export class ItemDetailTrackEventsService {
       attributes: {
         itemId: item.id,
         categoryId: item.categoryId,
-        screenId: item instanceof Item ? SCREEN_IDS.ItemDetail : SCREEN_IDS.ItemDetailRecommendationSlider,
+        screenId: this.typeCheckService.isItem(item) ? SCREEN_IDS.ItemDetail : SCREEN_IDS.ItemDetailRecommendationSlider,
         salePrice: item.salePrice,
         isPro: isPro,
         title: item.title,
