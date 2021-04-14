@@ -3,8 +3,8 @@
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
   <button class="btn btn-primary" (click)="activeModal.close()">
-    <span *ngIf="!itemPreview.id" i18n>Post Ad</span>
-    <span *ngIf="itemPreview.id" i18n>Update</span>
+    <span *ngIf="!itemPreview.id" i18n="@@web_upload_modals_preview_modal_367">Post Ad</span>
+    <span *ngIf="itemPreview.id" i18n="@@web_upload_modals_preview_modal_368">Update</span>
   </button>
   <ngb-carousel interval="0">
     <ng-template ngbSlide *ngFor="let image of itemPreview.images">
@@ -24,8 +24,8 @@
     <div *ngIf="itemPreview.gearbox">
       <tsl-svg-icon src="/assets/icons/{{itemPreview.gearbox}}.svg"></tsl-svg-icon>
       <span [ngSwitch]="itemPreview.gearbox">
-        <ng-container *ngSwitchCase="'manual'" i18n>Manual</ng-container>
-        <ng-container *ngSwitchCase="'automatic'" i18n>Automatic</ng-container>
+        <ng-container *ngSwitchCase="'manual'" i18n="@@web_upload_modals_preview_modal_369">Manual</ng-container>
+        <ng-container *ngSwitchCase="'automatic'" i18n="@@web_upload_modals_preview_modal_370">Automatic</ng-container>
       </span>
     </div>
     <div *ngIf="itemPreview.body_type && bodyType">
@@ -39,25 +39,25 @@
     <div *ngIf="itemPreview.engine">
       <tsl-svg-icon src="/assets/icons/{{itemPreview.engine}}.svg"></tsl-svg-icon>
       <span [ngSwitch]="itemPreview.engine">
-        <ng-container *ngSwitchCase="'gasoline'" i18n>Petrol</ng-container>
-        <ng-container *ngSwitchCase="'gasoil'" i18n>Diesel</ng-container>
-        <ng-container *ngSwitchCase="'electric-hybrid'" i18n>Electric</ng-container>
-        <ng-container *ngSwitchCase="'others'" i18n>Other...</ng-container>
+        <ng-container *ngSwitchCase="'gasoline'" i18n="@@web_upload_modals_preview_modal_371">Petrol</ng-container>
+        <ng-container *ngSwitchCase="'gasoil'" i18n="@@web_upload_modals_preview_modal_372">Diesel</ng-container>
+        <ng-container *ngSwitchCase="'electric-hybrid'" i18n="@@web_upload_modals_preview_modal_373">Electric</ng-container>
+        <ng-container *ngSwitchCase="'others'" i18n="@@web_upload_modals_preview_modal_374">Other...</ng-container>
       </span>
     </div>
   </div>
   <div class="extras" *ngIf="hasExtras">
     <div *ngIf="itemPreview.sale_conditions?.fix_price">
       <tsl-svg-icon src="/assets/icons/firm-price.svg"></tsl-svg-icon>
-      <span i18n>Firm Price</span>
+      <span i18n="@@web_upload_modals_preview_modal_375">Firm Price</span>
     </div>
     <div *ngIf="itemPreview.sale_conditions?.shipping_allowed">
       <tsl-svg-icon src="/assets/icons/shipping-available.svg"></tsl-svg-icon>
-      <span i18n>Shipping available</span>
+      <span i18n="@@web_upload_modals_preview_modal_376">Shipping available</span>
     </div>
     <div *ngIf="itemPreview.sale_conditions?.exchange_allowed">
       <tsl-svg-icon src="/assets/icons/accept-trades.svg"></tsl-svg-icon>
-      <span i18n>Accept trades</span>
+      <span i18n="@@web_upload_modals_preview_modal_377">Accept trades</span>
     </div>
   </div>
 </div>

@@ -8,10 +8,10 @@
     <tsl-header>
       <div class="col-12">
         <div class="header-row">
-          <h1 class="header-title"><span i18n>Calls</span> <span class="badge badge-pro"><tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>Pro</span></h1>
+          <h1 class="header-title"><span i18n="@@web_calls_pages_13">Calls</span> <span class="badge badge-pro"><tsl-svg-icon src="/assets/icons/pro-seal.svg"></tsl-svg-icon>Pro</span></h1>
         </div>
         <div class="header-row header-row--margin">
-          <h4 class="header-subtitle" i18n>Here you can manage and see the information related with your calls</h4>
+          <h4 class="header-subtitle" i18n="@@web_calls_pages_14">Here you can manage and see the information related with your calls</h4>
         </div>
       </div>
     </tsl-header>
@@ -19,29 +19,29 @@
       <div class="row">
         <div class="col-10">
             <nav class="nav filters-nav">
-              <a (click)="filterByArchived(false)" [ngClass]="{active: !archive}" class="nav-link" i18n>Pending</a>
-              <a (click)="filterByArchived(true)" [ngClass]="{active: archive}" class="nav-link" i18n>Processed</a>
+              <a (click)="filterByArchived(false)" [ngClass]="{active: !archive}" class="nav-link" i18n="@@web_calls_pages_15">Pending</a>
+              <a (click)="filterByArchived(true)" [ngClass]="{active: archive}" class="nav-link" i18n="@@web_calls_pages_16">Processed</a>
             </nav>
         </div>
         <div class="col-2 text-right">
-          <tsl-process-all-button type="calls" [hidden]="!calls.length || archive" i18n>Process all</tsl-process-all-button>
+          <tsl-process-all-button type="calls" [hidden]="!calls.length || archive" i18n="@@web_calls_pages_17">Process all</tsl-process-all-button>
         </div>
       </div>
     </div>
     <div class="calls-block" [hidden]="!calls.length || loading">
       <div class="row calls-header">
         <div class="col-md-3">
-          <h3 i18n>Date</h3>
+          <h3 i18n="@@web_calls_pages_18">Date</h3>
         </div>
         <div class="col-md-6">
-          <h3 i18n>Phone</h3>
+          <h3 i18n="@@web_calls_pages_19">Phone</h3>
         </div>
         <div class="col-md-2 duration">
-          <h3 i18n>Duration</h3>
+          <h3 i18n="@@web_calls_pages_20">Duration</h3>
         </div>
         <div class="col-md-1 status" >
-          <h3 i18n [hidden]="archive">Processed</h3>
-          <h3 i18n [hidden]="!archive">Pending</h3>
+          <h3 i18n="@@web_calls_pages_539" [hidden]="archive">Processed</h3>
+          <h3 i18n="@@web_calls_pages_540" [hidden]="!archive">Pending</h3>
         </div>
       </div>
       <div class="row">
@@ -57,7 +57,7 @@
     </div>
     <div class="empty-state-phones" [hidden]="calls.length || loading">
       <img src="/assets/images/placeholders/empty-state-phones.svg" width="1180" height="360">
-      <div class="message" i18n>You have no phone calls yet</div>
+      <div class="message" i18n="@@web_calls_pages_21">You have no phone calls yet</div>
     </div>
     <div class="row loading-center">
       <tsl-spinner [hidden]="!loading"></tsl-spinner>

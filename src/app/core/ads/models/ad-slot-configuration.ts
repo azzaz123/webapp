@@ -8,7 +8,7 @@ type AdSizeMapping = {
 export interface AdSlotConfiguration {
   id: AdSlotId;
   name: string;
-  sizes: number[][];
+  sizes: googletag.GeneralSize;
   networkId: number;
   sizeMapping?: AdSizeMapping;
   device: DeviceType[];
