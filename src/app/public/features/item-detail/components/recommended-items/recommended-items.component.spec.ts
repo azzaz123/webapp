@@ -37,8 +37,6 @@ describe('RecommendedItemsComponent', () => {
     fixture = TestBed.createComponent(RecommendedItemsComponent);
     component = fixture.componentInstance;
 
-    jest.doMock('intersection-observer-mock', () => MockObserver, { virtual: true });
-    window.IntersectionObserver = jest.requireMock('intersection-observer-mock');
     fixture.detectChanges();
   });
 
@@ -50,6 +48,8 @@ describe('RecommendedItemsComponent', () => {
     beforeEach(() => {
       component.recommendedItems = [MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD];
       component.recommendedType = RECOMMENDER_TYPE.MORE_LIKE_THIS;
+      jest.doMock('intersection-observer-mock', () => MockObserver, { virtual: true });
+      window.IntersectionObserver = jest.requireMock('intersection-observer-mock');
       spyOn(component.initRecommendedItemsSlider, 'emit');
 
       component.ngAfterViewInit();
