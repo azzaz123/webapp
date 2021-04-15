@@ -9,6 +9,10 @@
     max-width: 500px;
     overflow-y: auto;
 
+    &--unset-overflow {
+      overflow-y: unset;
+    }
+
     @include media-breakpoint-down(md) {
       top: 0 !important;
       right: 0;

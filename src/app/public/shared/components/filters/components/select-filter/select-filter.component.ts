@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractSelectFilter } from '../abstract-select-filter/abstract-select-filter';
 import { FilterOption } from '../../core/interfaces/filter-option.interface';
 import { take } from 'rxjs/operators';
@@ -11,6 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ComplexSelectValue } from '@shared/form/components/select/types/complex-select-value';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 @Component({
   selector: 'tsl-select-filter',
@@ -18,7 +19,7 @@ import { FilterOptionService } from '@public/shared/services/filter-option/filte
   styleUrls: ['./select-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterParams> implements OnInit, OnDestroy, OnChanges {
+export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterParams> implements OnInit, OnDestroy {
   @Input() config: SelectFilterConfig;
 
   @ViewChild('selectFilterTemplateComponent', { read: SelectFilterTemplateComponent })
@@ -46,14 +47,8 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
     this.initForm();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value && !changes.value.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
-      if (this._value.length > 0) {
-        this.updateValueFromParent();
-      } else {
-        this.handleClear();
-      }
-    }
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
+    this.updateValueFromParent();
   }
 
   public getLabel(): string {
@@ -68,8 +63,6 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
 
   public handleClear(): void {
     this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
-    this.writeValue([]);
-    this.valueChange.emit([]);
     super.handleClear();
   }
 

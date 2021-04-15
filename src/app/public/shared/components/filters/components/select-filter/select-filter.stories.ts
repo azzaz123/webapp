@@ -1,6 +1,5 @@
 import { moduleMetadata } from '@storybook/angular';
-import { Meta } from '@storybook/angular/types-6-0';
-import { Story } from '@storybook/angular/ts3.4/dist/client';
+import { Meta, Story } from '@storybook/angular/types-6-0';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { Component, Input } from '@angular/core';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
@@ -14,6 +13,7 @@ import { FilterOptionService } from '../../../../services/filter-option/filter-o
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 import { SelectFilterConfig } from '@public/shared/components/filters/components/select-filter/interfaces/select-filter-config.interface';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-filters',
@@ -67,8 +67,8 @@ import { SelectFormComponent } from '@shared/form/components/select/select-form.
   `,
 })
 class FiltersComponent {
-  public conditionValue: FilterParameter[];
-  public genderValue: FilterParameter[];
+  public conditionValue: FilterParameter[] = [];
+  public genderValue: FilterParameter[] = [];
   @Input() public conditionConfig: SelectFilterConfig;
   @Input() public genderConfig: SelectFilterConfig;
 
@@ -92,7 +92,7 @@ export default {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [FiltersComponent, SelectFilterComponent, SelectFormComponent, SelectParentOptionComponent],
+      declarations: [FiltersComponent, SelectFilterComponent, SelectFormComponent, SelectParentOptionComponent, IsBubblePipe],
     }),
   ],
 } as Meta;

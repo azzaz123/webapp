@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
-import { Item } from '@core/item/item';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
@@ -15,10 +14,10 @@ import { of } from 'rxjs/internal/observable/of';
 import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrapper.module';
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
-import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
-import { AdShoppingPageOptionPublicSearchFactory, AD_SHOPPING_PUBLIC_SEARCH } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchStoreService } from '../core/services/search-store.service';
 import { SearchComponent } from './search.component';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -38,7 +37,7 @@ describe('SearchComponent', () => {
       };
       TestBed.configureTestingModule({
         declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, ItemCardListComponentStub],
-        imports: [FiltersWrapperModule],
+        imports: [FiltersWrapperModule, HttpClientTestingModule],
         providers: [
           SearchStoreService,
           {
@@ -124,14 +123,13 @@ describe('SearchComponent', () => {
     });
     it('should update items', () => {
       const newItems = [MOCK_SEARCH_ITEM, MOCK_SEARCH_ITEM];
-      let nextItems: Item[] = [];
+      let nextItems: ItemCard[] = [];
       component.items$.subscribe((items) => (nextItems = items));
 
       searchStoreService.appendItems(newItems);
 
       expect(nextItems.length).toBe(3);
       nextItems.forEach((nextItem, index) => {
-        expect(nextItem).toBeInstanceOf(Item);
         expect(nextItem.id).toBe(index !== 0 ? MOCK_SEARCH_ITEM.id : 'old_item');
       });
     });

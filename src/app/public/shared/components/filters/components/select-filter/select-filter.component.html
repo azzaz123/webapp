@@ -1,6 +1,6 @@
 <tsl-filter-template #filterTemplateComponent
-  [isBubble]="isBubble()"
-  [isDropdown]="isDropdown()"
+  [isBubble]="variant | isBubble"
+  [isDropdown]="true"
   [isClearable]="true"
   [title]="config.title"
   [icon]="config.icon"
@@ -10,14 +10,15 @@
   (openStateChange)="openStateChange.emit($event)">
 
   <tsl-select-filter-template #selectFilterTemplateComponent
-    [hasContentPlaceholder]="hasContentPlaceholder()"
+    [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
     [placeholderLabel]="getLabel()"
     [placeholderIcon]="getPlaceholderIcon()"
     [contentTitle]="contentTitle"
     [isClearable]="hasValue$() | async"
+    (placeholderOpenStateChange)="openStateChange.emit($event)"
     (clear)="handleClear()">
 
-    <div [class.SelectFilter--bubble]="isBubble()">
+    <div [class.SelectFilter--bubble]="variant | isBubble">
       <form [formGroup]="formGroup">
         <tsl-select-form
           formControlName="select"

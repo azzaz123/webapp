@@ -6,6 +6,7 @@ import { FilterConfigurationService } from '@public/shared/services/filter-confi
 import { FilterConfigurations } from '@public/shared/services/filter-configuration/interfaces/filter-configurations.interface';
 import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'tsl-filters-wrapper',
@@ -23,8 +24,19 @@ export class FiltersWrapperComponent {
   public filterConfigurations: FilterConfigurations;
 
   public filterValues: FilterParameter[] = [];
+  public scrollOffset = 0;
+  private isBubbleOpenSubject = new BehaviorSubject<boolean>(false);
+  private isDrawerContentScrollableSubject = new BehaviorSubject<boolean>(false);
 
   @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  public get isBubbleOpen$(): Observable<boolean> {
+    return this.isBubbleOpenSubject.asObservable();
+  }
+
+  public get isDrawerContentScrollable$(): Observable<boolean> {
+    return this.isDrawerContentScrollableSubject.asObservable();
+  }
 
   constructor(
     private filterParameterDraftService: FilterParameterDraftService,
@@ -46,8 +58,7 @@ export class FiltersWrapperComponent {
 
   public closeDrawer(): void {
     this.drawerConfig.isOpen = false;
-    this.filterValues = [...this.filterValues];
-    this.filterParameterDraftService.setParameters(this.filterValues);
+    this.filterParameterDraftService.setParameters([...this.filterValues]);
   }
   public applyDrawer(): void {
     this.applyFilters();
@@ -65,9 +76,15 @@ export class FiltersWrapperComponent {
 
   public bubbleOpenStateChange(isOpen: boolean): void {
     this.bubbleFilterOpenStateChange.emit(isOpen);
-    if (!isOpen) {
-      this.filterValues = [...this.filterValues];
+    if (this.drawerConfig.isOpen && isOpen) {
+      this.drawerConfig.isOpen = false;
     }
+
+    this.isBubbleOpenSubject.next(isOpen);
+  }
+
+  public drawerOpenStateChange(isOpen: boolean): void {
+    this.isDrawerContentScrollableSubject.next(isOpen);
   }
 
   public bubbleClear(valuesToRemove: FilterParameter[]): void {
@@ -87,6 +104,4 @@ export class FiltersWrapperComponent {
   private getFilterValues(): void {
     this.filterValues = this.filterParameterStoreService.getParameters();
   }
-
-  private updateFilters(): void {}
 }

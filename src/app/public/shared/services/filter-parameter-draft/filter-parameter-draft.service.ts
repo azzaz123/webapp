@@ -19,12 +19,12 @@ export class FilterParameterDraftService {
   }
 
   public setParameters(parameters: FilterParameter[]): void {
-    this.parametersSubject.next(parameters);
+    this.parametersSubject.next(parameters.filter((parameter) => parameter.value));
   }
 
   public upsertParameters(parameters: FilterParameter[]): void {
     const mergedParameters = this.mergeParameters(parameters, this.getParameters());
-    this.parametersSubject.next(mergedParameters);
+    this.setParameters(mergedParameters);
   }
 
   public removeParameters(parameters: FilterParameter[]): void {
@@ -32,7 +32,7 @@ export class FilterParameterDraftService {
     const nextParameters = this.getParameters().filter((parameter) => {
       return !keysToRemove.includes(parameter.key);
     });
-    this.parametersSubject.next(nextParameters);
+    this.setParameters(nextParameters);
   }
 
   private mergeParameters(newParameters: FilterParameter[], oldParameters: FilterParameter[]): FilterParameter[] {

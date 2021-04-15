@@ -4,5 +4,5 @@ export enum FILTER_TYPES {
   TOGGLE,
   SELECT,
   SUGGESTER,
-  ICON,
+  GRID,
 }
