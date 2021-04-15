@@ -30,6 +30,7 @@ import { ExternalCommsService } from './external-comms.service';
 import { ReleaseVersionService } from './release-version/release-version.service';
 import { CorePipesModule } from './pipes/core-pipes.module';
 import { SlugsUtilService } from './services/slugs-util/slugs-util.service';
+import { MomentCalendarSpecsService } from './i18n/moment/moment-calendar-spec.service';
 
 @NgModule({
   imports: [
@@ -66,6 +67,7 @@ import { SlugsUtilService } from './services/slugs-util/slugs-util.service';
     ReleaseVersionService,
     ExternalCommsService,
     SlugsUtilService,
+    MomentCalendarSpecsService,
   ],
 })
 export class CoreModule {
