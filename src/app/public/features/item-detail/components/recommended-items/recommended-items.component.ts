@@ -27,10 +27,19 @@ export class RecommendedItemsComponent implements AfterViewInit {
     xs: 2,
   };
   private isInview: boolean = false;
+  private alreadyRendered: boolean;
 
   ngAfterViewInit() {
     if (this.recommendedItems) {
       this.items = this.recommendedItems.slice(0, 6);
+      console.log('iiii tt');
+      let observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+        console.log('en', entries);
+        this.emitInitRecommendedItemsSlider(entries[0].isIntersecting);
+        console.log('en', entries);
+      });
+      console.log(observer);
+      observer.observe(this.recommendedItemsSlider.nativeElement);
     }
   }
 
@@ -50,7 +59,17 @@ export class RecommendedItemsComponent implements AfterViewInit {
     }
   }
 
-  private checkIsRecommenderSliderVisible(element: Element): void {
+  private emitInitRecommendedItemsSlider(isInView: boolean): void {
+    if (isInView && !this.alreadyRendered) {
+      this.alreadyRendered = true;
+      this.initRecommendedItemsSlider.emit({
+        recommendedItemIds: this.getRecommendedItemIds(this.items),
+        engine: this.getRecommendedItemSearchEngine(),
+      });
+    }
+  }
+
+  /*   private checkIsRecommenderSliderVisible(element: Element): void {
     const rect = element.getBoundingClientRect();
     const viewportWidth: number = window.innerWidth || document.documentElement.clientWidth;
     const viewportHeight: number = window.innerHeight || document.documentElement.clientHeight;
@@ -65,8 +84,8 @@ export class RecommendedItemsComponent implements AfterViewInit {
     }
     this.isInview = true;
   }
-
-  @HostListener('window:scroll', ['$event']) onScroll(): void {
+ */
+  /* @HostListener('window:scroll', ['$event']) onScroll(): void {
     this.checkIsRecommenderSliderVisible(this.recommendedItemsSlider.nativeElement);
-  }
+  } */
 }
