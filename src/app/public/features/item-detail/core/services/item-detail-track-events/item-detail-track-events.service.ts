@@ -22,26 +22,26 @@ import { Realestate } from '@core/item/realestate';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { finalize, take } from 'rxjs/operators';
 
 @Injectable()
 export class ItemDetailTrackEventsService {
-  constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
+  constructor(private analyticsService: AnalyticsService, private userService: UserService, private typeCheckService: TypeCheckService) {}
 
-  public trackFavoriteOrUnfavoriteEvent(itemDetail: ItemDetail): void {
+  public trackFavouriteOrUnfavouriteEvent(item: Item | ItemCard, isPro: boolean): void {
     const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
-      name: itemDetail.item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+      name: item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes: {
-        itemId: itemDetail.item.id,
-        categoryId: itemDetail.item.categoryId,
-        screenId: SCREEN_IDS.ItemDetail,
-        salePrice: itemDetail.item.salePrice,
-        isPro: itemDetail.user.featured,
-        title: itemDetail.item.title,
-        isBumped: !!itemDetail.item.bumpFlags?.bumped,
+        itemId: item.id,
+        categoryId: item.categoryId,
+        screenId: this.typeCheckService.isItem(item) ? SCREEN_IDS.ItemDetail : SCREEN_IDS.ItemDetailRecommendationSlider,
+        salePrice: item.salePrice,
+        isPro: isPro,
+        title: item.title,
+        isBumped: !!item.bumpFlags?.bumped,
       },
     };
     this.analyticsService.trackEvent(event);

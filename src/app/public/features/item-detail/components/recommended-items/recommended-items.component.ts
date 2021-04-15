@@ -1,6 +1,10 @@
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { take } from 'rxjs/operators';
+import { ItemDetailTrackEventsService } from '../../core/services/item-detail-track-events/item-detail-track-events.service';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 
@@ -24,6 +28,8 @@ export class RecommendedItemsComponent implements OnChanges {
     xs: 2,
   };
 
+  constructor(private itemDetailTrackEventsService: ItemDetailTrackEventsService, private userService: UserService) {}
+
   ngOnChanges() {
     if (this.recommendedItems) {
       this.items = this.recommendedItems.slice(0, 6);
@@ -32,5 +38,14 @@ export class RecommendedItemsComponent implements OnChanges {
 
   public clickedItemAndIndex(event: ClickedItemCard): void {
     this.clickedItemAndIndexEvent.emit(event);
+  }
+
+  public trackFavouriteOrUnfavouriteEvent(item: ItemCard): void {
+    this.userService
+      .get(item.ownerId)
+      .pipe(take(1))
+      .subscribe((user: User) => {
+        this.itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent(item, user?.featured);
+      });
   }
 }

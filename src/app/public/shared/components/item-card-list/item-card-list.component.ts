@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Item } from '@core/item/item';
 import { environment } from '@environments/environment';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
@@ -25,6 +26,7 @@ export class ItemCardListComponent {
   };
   @Input() slotsConfig: SlotsConfig;
   @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
+  @Output() toggleFavouriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
 
   constructor(
     private itemCardService: ItemCardService,
@@ -33,7 +35,12 @@ export class ItemCardListComponent {
   ) {}
 
   public toggleFavourite(item: ItemCard): void {
-    this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
+    if (this.checkSessionService.hasSession()) {
+      this.itemCardService.toggleFavourite(item);
+      this.toggleFavouriteEvent.emit(item);
+    } else {
+      this.checkSessionService.checkSessionAction();
+    }
   }
 
   public openItemDetailPage({ itemCard, index }: ClickedItemCard): void {
