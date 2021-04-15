@@ -41,11 +41,11 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   public recommendedItems$: Observable<ItemCardsWithRecommenedType>;
   public readonly deviceType: typeof DeviceType = DeviceType;
   public device: DeviceType;
-  private subscriptions: Subscription = new Subscription();
-  private itemDetail: ItemDetail;
   public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
   public adsAffiliationSlotConfiguration: AdSlotConfiguration[];
   public adsAffiliationsLoaded$: Observable<boolean>;
+  private subscriptions: Subscription = new Subscription();
+  private itemDetail: ItemDetail;
 
   constructor(
     private itemDetailStoreService: ItemDetailStoreService,
