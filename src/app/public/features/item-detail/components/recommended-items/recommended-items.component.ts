@@ -35,7 +35,6 @@ export class RecommendedItemsComponent implements AfterViewInit {
       let observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
         this.emitInitRecommendedItemsSlider(entries[0].isIntersecting);
       });
-      console.log(observer);
       observer.observe(this.recommendedItemsSlider.nativeElement);
     }
   }
@@ -65,24 +64,4 @@ export class RecommendedItemsComponent implements AfterViewInit {
       });
     }
   }
-
-  /*   private checkIsRecommenderSliderVisible(element: Element): void {
-    const rect = element.getBoundingClientRect();
-    const viewportWidth: number = window.innerWidth || document.documentElement.clientWidth;
-    const viewportHeight: number = window.innerHeight || document.documentElement.clientHeight;
-    if (rect.right < 0 || rect.bottom < 0 || rect.left > viewportWidth || rect.top > viewportHeight) {
-      return;
-    }
-    if (!this.isInview) {
-      this.initRecommendedItemsSlider.emit({
-        recommendedItemIds: this.getRecommendedItemIds(this.items),
-        engine: this.getRecommendedItemSearchEngine(),
-      });
-    }
-    this.isInview = true;
-  }
- */
-  /* @HostListener('window:scroll', ['$event']) onScroll(): void {
-    this.checkIsRecommenderSliderVisible(this.recommendedItemsSlider.nativeElement);
-  } */
 }
