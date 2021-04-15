@@ -420,7 +420,7 @@
   <translation id="web_stats_components_item_row_343">Destácalo desde <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></translation>
   <translation id="web_stats_components_item_row_348">Este producto está Destacado</translation>
   <translation id="web_stats_components_item_row_349">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
-  <translation id="web_stats_components_item_row_350">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentConfig}}</ex></ph></translation>
+  <translation id="web_stats_components_item_row_350">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentCalendarSpec}}</ex></ph></translation>
   <translation id="web_stats_components_item_row_340">Todavía no disponemos de datos para este producto</translation>
   <translation id="web_chat_modals_send_phone_182">¡Vas a contactar con un Profesional! Para ofrecerte un servicio más personalizado, ¿podrías dejarnos un teléfono para que te llamemos?</translation>
   <translation id="web_chat_modals_send_phone_183">Vamos a hablarlo: </translation>
