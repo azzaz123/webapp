@@ -13,7 +13,6 @@ import { RangeFilterConfig } from '../range-filter/interfaces/range-filter-confi
 import { ToggleFilterConfig } from '../toggle-filter/interfaces/toggle-filter-config.interface';
 import { FilterHostDirective } from './directives/filter-host.directive';
 import { FilterGroupComponent } from './filter-group.component';
-import { FilterFactoryService } from './services/filter-factory.service';
 import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
@@ -37,7 +36,7 @@ export default {
     moduleMetadata({
       declarations: [FilterGroupComponent, FilterHostDirective],
       imports: [CommonModule, FiltersModule, HttpClientModule],
-      providers: [{ provide: CookieService, useValue: MockCookieService }, FilterFactoryService, IsBubblePipe],
+      providers: [{ provide: CookieService, useValue: MockCookieService }, IsBubblePipe],
     }),
   ],
   argTypes: { valueChange: { action: 'valueChange' } },

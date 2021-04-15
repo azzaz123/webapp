@@ -6,7 +6,7 @@ import { FilterConfigurationService } from '@public/shared/services/filter-confi
 import { FilterConfigurations } from '@public/shared/services/filter-configuration/interfaces/filter-configurations.interface';
 import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'tsl-filters-wrapper',
@@ -28,23 +28,14 @@ export class FiltersWrapperComponent {
   private bubbleValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
   private openBubbleCountSubject = new BehaviorSubject<number>(0);
   private isDrawerContentScrollableSubject = new BehaviorSubject<boolean>(false);
-
-  public openBubbleCount$: Observable<number> = this.openBubbleCountSubject.asObservable();
-
   private subscriptions = new Subscription();
 
+  public openBubbleCount$ = this.openBubbleCountSubject.asObservable();
+  public bubbleValues$ = this.bubbleValuesSubject.asObservable();
+  public drawerValues$ = this.drawerValuesSubject.asObservable();
+  public isDrawerContentScrollable$ = this.isDrawerContentScrollableSubject.asObservable();
+
   @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  public get isDrawerContentScrollable$(): Observable<boolean> {
-    return this.isDrawerContentScrollableSubject.asObservable();
-  }
-
-  public get bubbleValues$(): Observable<FilterParameter[]> {
-    return this.bubbleValuesSubject.asObservable();
-  }
-  public get drawerValues$(): Observable<FilterParameter[]> {
-    return this.drawerValuesSubject.asObservable();
-  }
 
   constructor(
     private drawerStore: FilterParameterDraftService,
@@ -88,8 +79,8 @@ export class FiltersWrapperComponent {
     this.bubbleStore.upsertParameters(values);
   }
 
-  public drawerChange(value): void {
-    this.drawerStore.upsertParameters(value);
+  public drawerChange(values: FilterParameter[]): void {
+    this.drawerStore.upsertParameters(values);
   }
 
   public bubbleOpenStateChange(isOpen: boolean): void {
