@@ -6,7 +6,7 @@
       <div class="title">{{item.title}}</div>
     </div>
     <div class="col-2 col-date">
-      <span>{{item.publishedDate | date:momentCalendarSpec}}</span>
+      <span>{{item.publishedDate | date:publishedItemDateFormat}}</span>
     </div>
     <div class="col-1 col-counters">
       <div class="counters" ngbTooltip="{{tooltipMessages.views}}"  placement="top">
