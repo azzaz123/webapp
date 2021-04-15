@@ -47,13 +47,10 @@ export class SearchComponent implements OnInit {
   );
 
   private openBubbleCountSubject = new BehaviorSubject<number>(0);
+  public openBubbleCount$: Observable<number> = this.openBubbleCountSubject.asObservable();
 
   constructor(private adsService: AdsService, private deviceService: DeviceService, private searchStore: SearchStoreService) {
     this.device = this.deviceService.getDeviceType();
-  }
-
-  public get openBubbleCount$(): Observable<number> {
-    return this.openBubbleCountSubject.asObservable();
   }
 
   public ngOnInit(): void {

@@ -40,6 +40,7 @@ export class FilterGroup {
   }
 
   private bindChangesListener(): void {
+    // BEFOREMERGE: Add subscription to onDestroy
     this.filters.forEach((filter: AbstractFilter<unknown>) => {
       filter.valueChange.subscribe((value: FilterParameter[]) => {
         this._valueChange.next(value);

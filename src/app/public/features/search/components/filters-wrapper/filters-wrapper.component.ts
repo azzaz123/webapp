@@ -29,13 +29,11 @@ export class FiltersWrapperComponent {
   private openBubbleCountSubject = new BehaviorSubject<number>(0);
   private isDrawerContentScrollableSubject = new BehaviorSubject<boolean>(false);
 
+  public openBubbleCount$: Observable<number> = this.openBubbleCountSubject.asObservable();
+
   private subscriptions = new Subscription();
 
   @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  public get openBubbleCount$(): Observable<number> {
-    return this.openBubbleCountSubject.asObservable();
-  }
 
   public get isDrawerContentScrollable$(): Observable<boolean> {
     return this.isDrawerContentScrollableSubject.asObservable();
