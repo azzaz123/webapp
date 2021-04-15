@@ -2,6 +2,12 @@ import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RECOMMENDATIONS_ENGINE, RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { MockItemdDetailTrackEventService } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
+import { ItemDetailTrackEventsService } from '../../core/services/item-detail-track-events/item-detail-track-events.service';
+import { UserService } from '@core/user/user.service';
+import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { of } from 'rxjs';
 import { RecommendedItemsComponent } from './recommended-items.component';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
@@ -11,10 +17,23 @@ describe('RecommendedItemsComponent', () => {
   const itemCardListTag = 'tsl-public-item-card-list';
   let component: RecommendedItemsComponent;
   let fixture: ComponentFixture<RecommendedItemsComponent>;
+  let itemDetailTrackEventsService: ItemDetailTrackEventsService;
+  let userService: UserService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RecommendedItemsComponent],
+      providers: [
+        MapRecommendedItemCardService,
+        {
+          provide: ItemDetailTrackEventsService,
+          useClass: MockItemdDetailTrackEventService,
+        },
+        {
+          provide: UserService,
+          useClass: MockedUserService,
+        },
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -22,7 +41,8 @@ describe('RecommendedItemsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RecommendedItemsComponent);
     component = fixture.componentInstance;
-
+    itemDetailTrackEventsService = TestBed.inject(ItemDetailTrackEventsService);
+    userService = TestBed.inject(UserService);
     fixture.detectChanges();
   });
 
@@ -110,6 +130,17 @@ describe('RecommendedItemsComponent', () => {
         fixture.detectChanges();
 
         expect(component.clickedItemAndIndexEvent.emit).toHaveBeenCalledWith({ itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+      });
+
+      it('should send favourite or unfavourite event if we favourite or unfavourite the item card in the slider', () => {
+        const itemCard: DebugElement = fixture.debugElement.query(By.css(itemCardListTag));
+        spyOn(itemDetailTrackEventsService, 'trackFavouriteOrUnfavouriteEvent');
+        spyOn(userService, 'get').and.returnValue(of(MOCK_USER));
+
+        itemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD);
+        fixture.detectChanges();
+
+        expect(itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_USER?.featured);
       });
     });
   });

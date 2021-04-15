@@ -64,7 +64,7 @@ export const MOCK_VIEW_OTHERS_CG_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemC
   },
 };
 
-export const MOCK_FAVORITE_ITEM_EVENT: AnalyticsEvent<FavoriteItem> = {
+export const MOCK_FAVOURITE_ITEM_EVENT: AnalyticsEvent<FavoriteItem> = {
   name: ANALYTICS_EVENT_NAMES.FavoriteItem,
   eventType: ANALYTIC_EVENT_TYPES.UserPreference,
   attributes: {
@@ -78,7 +78,21 @@ export const MOCK_FAVORITE_ITEM_EVENT: AnalyticsEvent<FavoriteItem> = {
   },
 };
 
-export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
+export const MOCK_FAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER: AnalyticsEvent<FavoriteItem> = {
+  name: ANALYTICS_EVENT_NAMES.FavoriteItem,
+  eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+  attributes: {
+    itemId: MOCK_ITEM_CARD.id,
+    categoryId: MOCK_ITEM_CARD.categoryId,
+    screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
+    salePrice: MOCK_ITEM_CARD.salePrice,
+    isPro: MOCK_USER.featured,
+    title: MOCK_ITEM_CARD.title,
+    isBumped: !!MOCK_ITEM_CARD.bumpFlags?.bumped,
+  },
+};
+
+export const MOCK_UNFAVOURITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
   name: ANALYTICS_EVENT_NAMES.UnfavoriteItem,
   eventType: ANALYTIC_EVENT_TYPES.UserPreference,
   attributes: {
@@ -89,6 +103,20 @@ export const MOCK_UNFAVORITE_ITEM_EVENT: AnalyticsEvent<UnfavoriteItem> = {
     isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
     title: MOCK_CAR_ITEM_DETAIL.item.title,
     isBumped: !!MOCK_CAR_ITEM_DETAIL.item.bumpFlags?.bumped,
+  },
+};
+
+export const MOCK_UNFAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER: AnalyticsEvent<FavoriteItem> = {
+  name: ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+  eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+  attributes: {
+    itemId: MOCK_ITEM_CARD.id,
+    categoryId: MOCK_ITEM_CARD.categoryId,
+    screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
+    salePrice: MOCK_ITEM_CARD.salePrice,
+    isPro: MOCK_USER.featured,
+    title: MOCK_ITEM_CARD.title,
+    isBumped: !!MOCK_ITEM_CARD.bumpFlags?.bumped,
   },
 };
 
@@ -210,7 +238,7 @@ export const MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT: AnalyticsPageVi
 };
 
 export class MockItemdDetailTrackEventService {
-  trackFavoriteOrUnfavoriteEvent() {}
+  trackFavouriteOrUnfavouriteEvent() {}
   trackClickChatButton() {}
   trackClickItemCardEvent() {}
   trackViewOwnItemDetail() {}

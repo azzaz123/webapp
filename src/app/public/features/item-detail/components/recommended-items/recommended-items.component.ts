@@ -1,7 +1,11 @@
 import { RECOMMENDATIONS_ENGINE, RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { RecommendedItemsInitEventEmitter } from '../../interfaces/recommended-items-init-event-emitter.interface';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { take } from 'rxjs/operators';
+import { ItemDetailTrackEventsService } from '../../core/services/item-detail-track-events/item-detail-track-events.service';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 
@@ -26,8 +30,9 @@ export class RecommendedItemsComponent implements AfterViewInit {
     sm: 2,
     xs: 2,
   };
-  private isInview: boolean = false;
-  private alreadyRendered: boolean;
+  private hasEventAlreadySent: boolean;
+
+  constructor(private itemDetailTrackEventsService: ItemDetailTrackEventsService, private userService: UserService) {}
 
   ngAfterViewInit() {
     if (this.recommendedItems) {
@@ -43,6 +48,15 @@ export class RecommendedItemsComponent implements AfterViewInit {
     this.clickedItemAndIndexEvent.emit(event);
   }
 
+  public trackFavouriteOrUnfavouriteEvent(item: ItemCard): void {
+    this.userService
+      .get(item.ownerId)
+      .pipe(take(1))
+      .subscribe((user: User) => {
+        this.itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent(item, user?.featured);
+      });
+  }
+
   private getRecommendedItemIds(items: ItemCard[]): string {
     return items.map((item: ItemCard) => item.id).toString();
   }
@@ -56,8 +70,8 @@ export class RecommendedItemsComponent implements AfterViewInit {
   }
 
   private emitInitRecommendedItemsSlider(isInView: boolean): void {
-    if (isInView && !this.alreadyRendered) {
-      this.alreadyRendered = true;
+    if (isInView && !this.hasEventAlreadySent) {
+      this.hasEventAlreadySent = true;
       this.initRecommendedItemsSlider.emit({
         recommendedItemIds: this.getRecommendedItemIds(this.items),
         engine: this.getRecommendedItemSearchEngine(),

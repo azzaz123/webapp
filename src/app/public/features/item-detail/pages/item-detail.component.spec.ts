@@ -679,15 +679,18 @@ describe('ItemDetailComponent', () => {
     });
 
     describe('when we favourite or unfavourite an item...', () => {
-      it('should call to the store to do the action and also trigger trackFavoriteOrUnfavoriteEvent in item detail track events service', () => {
+      it('should call to the store to do the action and also trigger trackFavouriteOrUnfavouriteEvent in item detail track events service', () => {
         spyOn(itemDetailStoreService, 'toggleFavouriteItem').and.returnValue(of({}));
-        spyOn(itemDetailTrackEventsService, 'trackFavoriteOrUnfavoriteEvent');
+        spyOn(itemDetailTrackEventsService, 'trackFavouriteOrUnfavouriteEvent');
         const itemDetailHeader = fixture.debugElement.query(By.directive(ItemDetailHeaderComponent));
         itemDetailHeader.triggerEventHandler('favouritedItemChange', {});
 
         fixture.detectChanges();
         expect(itemDetailStoreService.toggleFavouriteItem).toHaveBeenCalled();
-        expect(itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent).toHaveBeenCalledWith(MOCK_CAR_ITEM_DETAIL);
+        expect(itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent).toHaveBeenCalledWith(
+          MOCK_CAR_ITEM_DETAIL.item,
+          MOCK_CAR_ITEM_DETAIL.user?.featured
+        );
       });
     });
 
