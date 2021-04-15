@@ -11,20 +11,6 @@ describe('RecommendedItemsComponent', () => {
   const itemCardListTag = 'tsl-public-item-card-list';
   let component: RecommendedItemsComponent;
   let fixture: ComponentFixture<RecommendedItemsComponent>;
-  /* let mockEntries = [{ isIntersecting: true }]; */
-  const observeFn = jest.fn();
-  const unobserveFn = jest.fn();
-  /*  class MockObserver {
-    constructor(fn) {
-      fn(mockEntries, this);
-    }
-    observe() {
-      observeFn();
-    }
-    unobserve() {
-      unobserveFn();
-    }
-  } */
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -45,48 +31,25 @@ describe('RecommendedItemsComponent', () => {
   });
 
   describe('when we have recommended items...', () => {
-    let mockEntries;
-    let MockObserver;
+    const observeFn = jest.fn();
+    let mockEntries = [{ isIntersecting: true }];
+    class MockObserver {
+      constructor(fn) {
+        fn(mockEntries);
+      }
+      observe() {
+        observeFn();
+      }
+    }
     beforeEach(() => {
-      /* mockEntries = [{ isIntersecting: true }];
-      class MockObserver {
-        constructor(fn) {
-          console.log(mockEntries);
-          fn(mockEntries);
-        }
-        observe() {
-          observeFn();
-        }
-        unobserve() {
-          unobserveFn();
-        }
-      } */
-      component.recommendedItems = [MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD];
-      component.recommendedType = RECOMMENDER_TYPE.MORE_LIKE_THIS;
       jest.doMock('intersection-observer-mock', () => MockObserver, { virtual: true });
       window.IntersectionObserver = jest.requireMock('intersection-observer-mock');
+      component.recommendedItems = [MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD];
+      component.recommendedType = RECOMMENDER_TYPE.MORE_LIKE_THIS;
       spyOn(component.initRecommendedItemsSlider, 'emit');
-
-      /*  component.ngAfterViewInit();
-      fixture.detectChanges(); */
     });
 
     it('should show the item card list', () => {
-      mockEntries = [{ isIntersecting: true }];
-      class MockObserver {
-        constructor(fn) {
-          console.log(mockEntries);
-          fn(mockEntries);
-        }
-        observe() {
-          observeFn();
-        }
-        unobserve() {
-          unobserveFn();
-        }
-      }
-      jest.doMock('intersection-observer-mock', () => MockObserver, { virtual: true });
-      window.IntersectionObserver = jest.requireMock('intersection-observer-mock');
       component.ngAfterViewInit();
       fixture.detectChanges();
       const cardList = fixture.debugElement.query(By.css(itemCardListTag));
@@ -95,57 +58,26 @@ describe('RecommendedItemsComponent', () => {
       expect(component.items.length).toBeLessThanOrEqual(6);
     });
 
-    it('should not emit initRecommendedItemsSlider event if the slider is not scrolled to the view', () => {
-      mockEntries = [{ isIntersecting: false }];
-      class MockObserver {
-        constructor(fn) {
-          console.log('in the not', mockEntries);
-          fn(mockEntries);
-        }
-        observe() {
-          observeFn();
-        }
-        unobserve() {
-          unobserveFn();
-        }
-      }
-      jest.doMock('intersection-observer-mock', () => MockObserver, { virtual: true });
-      window.IntersectionObserver = jest.requireMock('intersection-observer-mock');
-      component.ngAfterViewInit();
-      fixture.detectChanges();
-      /* let mockRecommendedItemIds = component.recommendedItems.map((item: ItemCard) => item.id).toString();
-
-      expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledWith({
-        recommendedItemIds: mockRecommendedItemIds,
-        engine: RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR,
-      }); */
-      expect(component.initRecommendedItemsSlider.emit).not.toHaveBeenCalled();
-    });
-
     it('should emit initRecommendedItemsSlider event one time if the slider is scrolled to the view', () => {
-      mockEntries = [{ isIntersecting: true }];
-      class MockObserver {
-        constructor(fn) {
-          console.log(mockEntries);
-          fn(mockEntries);
-        }
-        observe() {
-          observeFn();
-        }
-        unobserve() {
-          unobserveFn();
-        }
-      }
-      jest.doMock('intersection-observer-mock', () => MockObserver, { virtual: true });
-      window.IntersectionObserver = jest.requireMock('intersection-observer-mock');
       let mockRecommendedItemIds = component.recommendedItems.map((item: ItemCard) => item.id).toString();
+
       component.ngAfterViewInit();
       fixture.detectChanges();
+
       expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledWith({
         recommendedItemIds: mockRecommendedItemIds,
         engine: RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR,
       });
       expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not emit initRecommendedItemsSlider event if the slider is not scrolled to the view', () => {
+      mockEntries = [{ isIntersecting: false }];
+
+      component.ngAfterViewInit();
+      fixture.detectChanges();
+
+      expect(component.initRecommendedItemsSlider.emit).not.toHaveBeenCalled();
     });
 
     describe('when we got more than six recommended items...', () => {
