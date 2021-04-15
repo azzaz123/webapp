@@ -112,13 +112,4 @@ describe('ProfileCardFavoriteComponent', () => {
       expect(component.removeFavorite).toHaveBeenCalled();
     }));
   });
-
-  // describe('goToProfileDetail', () => {
-  //   it('should change window url', () => {
-  //     spyOn(window, 'open');
-  //     const MOCK_PROFILE_URL: string = environment.siteUrl.replace('es', subdomain) + 'user/' + MOCK_PROFILE.screen_name;
-  //     component.goToProfileDetail();
-  //     expect(window.open).toHaveBeenCalledWith(MOCK_PROFILE_URL);
-  //   });
-  // });
 });
