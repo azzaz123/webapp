@@ -11,7 +11,7 @@ export class FilterParameterDraftService {
   }
 
   public getParameters(): FilterParameter[] {
-    return this.parametersSubject.value;
+    return this.parametersSubject.getValue();
   }
 
   public getParametersByKeys(keys: string[]): FilterParameter[] {

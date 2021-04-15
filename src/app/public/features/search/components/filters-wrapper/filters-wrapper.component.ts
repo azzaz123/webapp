@@ -100,7 +100,7 @@ export class FiltersWrapperComponent {
       this.drawerConfig.isOpen = false;
     }
 
-    const count = this.openBubbleCountSubject.value;
+    const count = this.openBubbleCountSubject.getValue();
     this.openBubbleCountSubject.next(isOpen ? count + 1 : count - 1);
   }
 

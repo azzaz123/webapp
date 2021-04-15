@@ -66,7 +66,7 @@ export class SearchComponent implements OnInit {
   }
 
   public toggleBubbleFilterBackdrop(active: boolean): void {
-    const count = this.openBubbleCountSubject.value;
+    const count = this.openBubbleCountSubject.getValue();
     this.openBubbleCountSubject.next(active ? count + 1 : count - 1);
   }
 }
