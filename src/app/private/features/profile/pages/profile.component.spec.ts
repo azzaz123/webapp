@@ -2,6 +2,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterLinkWithHref } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -11,8 +13,11 @@ import { environment } from '@environments/environment';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_NON_FEATURED_USER_RESPONSE, MOCK_USER_STATS_RESPONSE, USER_DATA } from '@fixtures/user.fixtures.spec';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { UserProfileRoutePipe } from '@shared/pipes';
 import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
 import { StarsComponent } from '@shared/stars/stars.component';
+import { APP_PATHS } from 'app/app-routing-constants';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -39,8 +44,8 @@ describe('ProfileComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule],
-        declarations: [ProfileComponent, StarsComponent, ProBadgeComponent],
+        imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
+        declarations: [ProfileComponent, StarsComponent, ProBadgeComponent, UserProfileRoutePipe],
         providers: [
           EventService,
           {
@@ -108,11 +113,11 @@ describe('ProfileComponent', () => {
   describe('when the component loads', () => {
     it('should set correctly the public url link', () => {
       mockBeforeEachInit();
-      const expectedPublicProfileUrl = `${environment.siteUrl.replace('es', 'www')}user/${USER_DATA.web_slug}`;
-      const publicProfileUrlHTML: HTMLElement = fixture.debugElement.query(By.css('.header-row > .header-link')).nativeElement;
+      const expectedPublicProfileRoute = `/${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.USER_DETAIL}/${USER_DATA.web_slug}`;
+      const publicProfileUrlHTML = fixture.debugElement.query(By.css('.header-row > .header-link'));
+      const routerLinkInstance = publicProfileUrlHTML.injector.get(RouterLinkWithHref);
 
-      expect(publicProfileUrlHTML.getAttribute('href')).toEqual(expectedPublicProfileUrl);
-      expect(component.userUrl).toEqual(expectedPublicProfileUrl);
+      expect(routerLinkInstance['href']).toEqual(expectedPublicProfileRoute);
     });
 
     it('should show user review numbers and stars', () => {
