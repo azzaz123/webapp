@@ -135,19 +135,26 @@ describe('SearchComponent', () => {
     });
   });
   describe('when bubble filter is open', () => {
-    beforeEach(() => {
-      component.toggleBubbleFilterBackdrop(true);
-    });
     it('should show white backdrop', () => {
-      expect(component.showBackdrop).toBeTruthy();
+      let bubbleOpenCount = 0;
+
+      component.openBubbleCount$.subscribe((count) => (bubbleOpenCount = count));
+      component.toggleBubbleFilterBackdrop(true);
+
+      expect(bubbleOpenCount).toBe(1);
     });
   });
   describe('when bubble filter is closed', () => {
     beforeEach(() => {
-      component.toggleBubbleFilterBackdrop(false);
+      component.toggleBubbleFilterBackdrop(true);
     });
     it('should hide white backdrop', () => {
-      expect(component.showBackdrop).toBeFalsy();
+      let bubbleOpenCount = 1;
+
+      component.openBubbleCount$.subscribe((count) => (bubbleOpenCount = count));
+      component.toggleBubbleFilterBackdrop(true);
+
+      expect(bubbleOpenCount).toBe(0);
     });
   });
 });

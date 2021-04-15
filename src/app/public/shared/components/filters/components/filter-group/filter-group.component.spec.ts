@@ -23,7 +23,9 @@ describe('FilterGroupComponent', () => {
           provide: FilterFactoryService,
           useValue: {
             insertFilters() {},
-            filterGroup: new FilterGroup([]),
+            getFilterGroup() {
+              return new FilterGroup([]);
+            },
           },
         },
       ],
