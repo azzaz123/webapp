@@ -73,6 +73,7 @@ import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
+import { UserProfileRoutePipe } from './pipes/user-profile-route/user-profile-route.pipe';
 
 @NgModule({
   imports: [
@@ -149,6 +150,7 @@ import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/sug
     StripeCardSelectionComponent,
     NavLinksComponent,
     LinkTransformPipe,
+    UserProfileRoutePipe,
     WebSlugConverterPipe,
     PreventDoubleClickDirective,
     ProBadgeModule,
@@ -212,6 +214,7 @@ import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/sug
     NavLinksComponent,
     LinkTransformPipe,
     WebSlugConverterPipe,
+    UserProfileRoutePipe,
     PreventDoubleClickDirective,
     DateUntilDayPipe,
     DateCalendarPipe,
