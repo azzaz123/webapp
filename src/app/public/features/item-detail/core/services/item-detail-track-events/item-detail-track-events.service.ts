@@ -166,7 +166,7 @@ export class ItemDetailTrackEventsService {
         categoryId: item.categoryId,
         engine: engine,
         recommendedItemIds: recommendedItemIds,
-        screenId: 115,
+        screenId: SCREEN_IDS.ItemDetail,
         isPro: user.featured,
       },
     };

@@ -204,7 +204,7 @@ export const MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT: AnalyticsPageVi
     categoryId: MOCK_ITEM.categoryId,
     engine: RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR,
     recommendedItemIds: RECOMMENDED_ITEM_IDS_MOCK,
-    screenId: 115,
+    screenId: SCREEN_IDS.ItemDetail,
     isPro: MOCK_USER.featured,
   },
 };
