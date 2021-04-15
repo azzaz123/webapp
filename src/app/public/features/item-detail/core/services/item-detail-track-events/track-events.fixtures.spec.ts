@@ -9,6 +9,7 @@ import {
   SCREEN_IDS,
   ShareItem,
   UnfavoriteItem,
+  ViewItemDetailRecommendationSlider,
   ViewOthersItemCarDetail,
   ViewOthersItemCGDetail,
   ViewOthersItemREDetail,
@@ -20,6 +21,8 @@ import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { RECOMMENDED_ITEM_IDS_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 
 export const MOCK_ITEM_INDEX: number = 2;
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
@@ -222,6 +225,18 @@ export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER: AnalyticsPage
   },
 };
 
+export const MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT: AnalyticsPageView<ViewItemDetailRecommendationSlider> = {
+  name: ANALYTICS_EVENT_NAMES.ViewItemDetailRecommendationSlider,
+  attributes: {
+    itemSourceId: MOCK_ITEM.id,
+    categoryId: MOCK_ITEM.categoryId,
+    engine: RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR,
+    recommendedItemIds: RECOMMENDED_ITEM_IDS_MOCK,
+    screenId: SCREEN_IDS.ItemDetail,
+    isPro: MOCK_USER.featured,
+  },
+};
+
 export class MockItemdDetailTrackEventService {
   trackFavouriteOrUnfavouriteEvent() {}
   trackClickChatButton() {}
@@ -230,5 +245,6 @@ export class MockItemdDetailTrackEventService {
   trackViewOthersCGDetailEvent() {}
   trackViewOthersItemREDetailEvent() {}
   trackViewOthersItemCarDetailEvent() {}
+  trackViewItemDetailRecommendationSliderEvent() {}
   trackShareItemEvent() {}
 }
