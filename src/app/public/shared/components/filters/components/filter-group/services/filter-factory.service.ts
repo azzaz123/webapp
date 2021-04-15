@@ -44,7 +44,9 @@ export class FilterFactoryService {
 
     componentRef.instance.config = config;
     componentRef.instance.variant = variant;
-    componentRef.instance.value = value;
+    if (value.length) {
+      componentRef.instance.value = value;
+    }
 
     this.filters.push(componentRef.instance);
   }

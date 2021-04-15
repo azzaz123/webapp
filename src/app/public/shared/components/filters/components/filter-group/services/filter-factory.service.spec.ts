@@ -11,6 +11,8 @@ import { FILTER_TYPE_COMPONENT } from '../constants/filter-type-component.consta
 import { FilterHostDirective } from '../directives/filter-host.directive';
 import { FilterFactoryService } from './filter-factory.service';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
+import { By } from '@angular/platform-browser';
+import { ToggleFilterComponent } from '../../toggle-filter/toggle-filter.component';
 
 @Component({
   template: `<div tslFilterHost></div>`,
@@ -22,8 +24,8 @@ class TestComponent {
 describe('FilterFactoryService', () => {
   let service: FilterFactoryService;
   let component: TestComponent;
-  let de: DebugElement;
-  let el: HTMLElement;
+  let debugElement: DebugElement;
+  let nativeElement: HTMLElement;
   let fixture: ComponentFixture<TestComponent>;
 
   const toggleFilterSelector = 'tsl-toggle-filter';
@@ -55,8 +57,8 @@ describe('FilterFactoryService', () => {
     service = TestBed.inject(FilterFactoryService);
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
-    de = fixture.debugElement;
-    el = de.nativeElement;
+    debugElement = fixture.debugElement;
+    nativeElement = debugElement.nativeElement;
 
     fixture.detectChanges();
   });
@@ -69,14 +71,32 @@ describe('FilterFactoryService', () => {
     it('should insert it on the template', () => {
       service.insertFilters(config, value, variant, component.host);
 
-      expect(el.querySelector(toggleFilterSelector)).toBeTruthy();
+      expect(nativeElement.querySelector(toggleFilterSelector)).toBeTruthy();
     });
 
     it('should add it correctly to the form group', () => {
       service.insertFilters(config, value, variant, component.host);
 
-      service.getFilterGroup['filters'].forEach((filter: AbstractFilter<unknown>, index: number) => {
+      service.getFilterGroup(variant)['filters'].forEach((filter: AbstractFilter<unknown>, index: number) => {
         expect(filter).toBeInstanceOf(FILTER_TYPE_COMPONENT[config[index].type]);
+      });
+    });
+
+    describe('and value is provided', () => {
+      it('should pass the value to the filter', () => {
+        service.insertFilters(config, value, variant, component.host);
+
+        const toggle: ToggleFilterComponent = debugElement.query(By.directive(ToggleFilterComponent)).componentInstance;
+        expect(toggle.value).toEqual(value);
+      });
+    });
+
+    describe('and no value is provided', () => {
+      it('should not pass value to the filter', () => {
+        service.insertFilters(config, [], variant, component.host);
+
+        const toggle: ToggleFilterComponent = debugElement.query(By.directive(ToggleFilterComponent)).componentInstance;
+        expect(toggle.value).toEqual([]);
       });
     });
   });
