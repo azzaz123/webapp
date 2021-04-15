@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { filterParametersMock } from '@fixtures/filter-parameter.fixtures';
-import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
+import { SearchPaginationFactory } from '@fixtures/search-items.fixtures';
 import { SearchItem } from '@public/features/search/interfaces/search-item.interface';
 import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
@@ -8,13 +8,6 @@ import { of } from 'rxjs';
 import { SearchAPIService } from './api/search-api.service';
 import { SearchFavouritesService } from './favorites/search-favourites.service';
 import { SearchInfrastructureService } from './search-infrastructure.service';
-
-function SearchPaginationFactory(hasMore: boolean = false): SearchPagination {
-  return {
-    items: new Array(40).fill(MOCK_SEARCH_ITEM),
-    hasMore
-  };
-}
 
 describe('SearchInfrastructureService', () => {
   let service: SearchInfrastructureService;
@@ -142,3 +135,4 @@ describe('SearchInfrastructureService', () => {
     });
   });
 });
+

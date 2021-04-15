@@ -1,4 +1,5 @@
 import { SearchItem } from '@public/features/search/interfaces/search-item.interface';
+import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
 
 export const MOCK_SEARCH_ITEM: SearchItem = {
   id: 'kmzn9k7wy0jn',
@@ -20,4 +21,11 @@ export const MOCK_SEARCH_ITEM: SearchItem = {
 
 export function SearchItemListFactory(count: number = 20): SearchItem[] {
   return new Array(count).fill('').map((_, index) => ({ ...MOCK_SEARCH_ITEM, id: '235325' + index }));
+}
+
+export function SearchPaginationFactory(hasMore: boolean = false): SearchPagination {
+  return {
+    items: SearchItemListFactory(40),
+    hasMore,
+  };
 }
