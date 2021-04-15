@@ -41,7 +41,7 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
 import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
-import { DateCalendarPipe, DateUntilDayPipe, LinkTransformPipe, WebSlugConverterPipe } from './pipes';
+import { DateCalendarPipe, DateUntilDayPipe, LinkTransformPipe, WebSlugConverterPipe, UserProfileRoutePipe } from './pipes';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
@@ -73,7 +73,6 @@ import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
-import { UserProfileRoutePipe } from './pipes/user-profile-route/user-profile-route.pipe';
 
 @NgModule({
   imports: [
