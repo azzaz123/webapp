@@ -5,13 +5,26 @@ import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/re
 import { RecommendedItemsComponent } from './recommended-items.component';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
-import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 describe('RecommendedItemsComponent', () => {
   const itemCardListTag = 'tsl-public-item-card-list';
-  const mockIntersectionObserver = new IntersectionObserver(() => {});
   let component: RecommendedItemsComponent;
   let fixture: ComponentFixture<RecommendedItemsComponent>;
+  let MockEntries = [{ isIntersecting: true }];
+  const observeFn = jest.fn();
+  const unobserveFn = jest.fn();
+  class MockObserver {
+    constructor(fn) {
+      fn(MockEntries, this);
+    }
+
+    observe() {
+      observeFn();
+    }
+    unobserve() {
+      unobserveFn();
+    }
+  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -23,6 +36,9 @@ describe('RecommendedItemsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RecommendedItemsComponent);
     component = fixture.componentInstance;
+
+    jest.doMock('intersection-observer-mock', () => MockObserver, { virtual: true });
+    window.IntersectionObserver = jest.requireMock('intersection-observer-mock');
     fixture.detectChanges();
   });
 
@@ -48,21 +64,7 @@ describe('RecommendedItemsComponent', () => {
     });
 
     it('should emit initRecommendedItemsSlider event one time if the slider is scrolled to the view', () => {
-      /* const recommendedItemIds: string = component.items.map((item: ItemCard) => item.id).toString();
-
-      window.dispatchEvent(new Event('scroll'));
-      window.dispatchEvent(new Event('scroll'));
-      fixture.detectChanges();
-
-      expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledWith({
-        recommendedItemIds: recommendedItemIds,
-        engine: RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR,
-      });
-      expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledTimes(1); */
-    });
-
-    it('should not emit initRecommendedItemsSlider event if the slider is not scrolled to the view', () => {
-      // expect(component.initRecommendedItemsSlider.emit).not.toHaveBeenCalled();
+      expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledTimes(1);
     });
 
     describe('when we got more than six recommended items...', () => {

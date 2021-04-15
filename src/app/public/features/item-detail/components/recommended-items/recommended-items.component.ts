@@ -32,11 +32,8 @@ export class RecommendedItemsComponent implements AfterViewInit {
   ngAfterViewInit() {
     if (this.recommendedItems) {
       this.items = this.recommendedItems.slice(0, 6);
-      console.log('iiii tt');
       let observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-        console.log('en', entries);
         this.emitInitRecommendedItemsSlider(entries[0].isIntersecting);
-        console.log('en', entries);
       });
       console.log(observer);
       observer.observe(this.recommendedItemsSlider.nativeElement);
