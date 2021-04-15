@@ -1,23 +1,23 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
+import { RECOMMENDATIONS_ENGINE, RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RecommendedItemsComponent } from './recommended-items.component';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 describe('RecommendedItemsComponent', () => {
   const itemCardListTag = 'tsl-public-item-card-list';
   let component: RecommendedItemsComponent;
   let fixture: ComponentFixture<RecommendedItemsComponent>;
-  let MockEntries = [{ isIntersecting: true }];
+  let mockEntries = [{ isIntersecting: true }];
   const observeFn = jest.fn();
   const unobserveFn = jest.fn();
   class MockObserver {
     constructor(fn) {
-      fn(MockEntries, this);
+      fn(mockEntries, this);
     }
-
     observe() {
       observeFn();
     }
@@ -64,6 +64,12 @@ describe('RecommendedItemsComponent', () => {
     });
 
     it('should emit initRecommendedItemsSlider event one time if the slider is scrolled to the view', () => {
+      let mockRecommendedItemIds = component.recommendedItems.map((item: ItemCard) => item.id).toString();
+
+      expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledWith({
+        recommendedItemIds: mockRecommendedItemIds,
+        engine: RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR,
+      });
       expect(component.initRecommendedItemsSlider.emit).toHaveBeenCalledTimes(1);
     });
 
