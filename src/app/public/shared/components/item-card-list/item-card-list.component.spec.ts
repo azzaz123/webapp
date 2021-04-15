@@ -82,35 +82,8 @@ describe('ItemCardListComponent', () => {
   });
 
   describe('when component inits', () => {
-    const cardShowDescriptionAttr = 'ng-reflect-show-description';
-
     it('should show as many cards as given', () => {
       expect(el.querySelectorAll(cardSelector).length).toEqual(component.items.length);
-    });
-
-    describe('when device is mobile', () => {
-      it('should NOT show card descriptions if device is mobile', () => {
-        const randomCardWithoutDescription = el.querySelectorAll(cardSelector)[0].getAttribute(cardShowDescriptionAttr) === 'false';
-        expect(randomCardWithoutDescription).toBeTruthy();
-      });
-    });
-
-    describe('when device is NOT mobile', () => {
-      beforeEach(() => {
-        spyOn(deviceDetectorService, 'isMobile').and.returnValue(false);
-        fixture = TestBed.createComponent(ItemCardListComponent);
-        component = fixture.componentInstance;
-        de = fixture.debugElement;
-        el = de.nativeElement;
-        component.items = [MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD];
-        fixture.detectChanges();
-      });
-
-      it('should show card descriptions', () => {
-        const randomCardWithDescription = el.querySelectorAll(cardSelector)[0].getAttribute(cardShowDescriptionAttr) === 'true';
-
-        expect(randomCardWithDescription).toBeTruthy();
-      });
     });
   });
 
