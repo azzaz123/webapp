@@ -1,0 +1,5 @@
+export enum CALENDAR_SPEC_TYPE {
+  DEFAULT,
+  DAYS,
+  SHORT,
+}

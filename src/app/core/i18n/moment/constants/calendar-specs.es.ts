@@ -19,7 +19,17 @@ export const daysCalendarConfig: CalendarSpec = {
   sameElse: 'MMM DD, YYYY',
 };
 
+export const shortCalendarConfig: CalendarSpec = {
+  lastDay: '[Ayer]',
+  sameDay: 'HH:mm',
+  nextDay: 'ddd',
+  lastWeek: 'D MMM.',
+  nextWeek: 'ddd',
+  sameElse: 'D MMM.',
+};
+
 export const esMomentCalendarSpecs: CalendarSpecsConfigs = {
   default: defaultCalendarSpec,
   days: daysCalendarConfig,
+  short: shortCalendarConfig,
 };
