@@ -2,7 +2,7 @@
 
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { SearchResponse } from '../api/search-response.interface';
-import { SearchItemImageMapper } from '../models/search-item-image.response';
+import { SearchItemImageMapper } from '../models/search-item-image-mapper.response';
 import { SearchCustomerGoodsResponse } from './search-costumer-goods-response.interface';
 
 

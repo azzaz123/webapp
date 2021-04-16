@@ -1,6 +1,7 @@
 
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { Observable, of } from 'rxjs';
@@ -8,7 +9,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { SearchPagination } from '../../../../interfaces/search-pagination.interface';
 import { FILTER_PARAMETERS_SEARCH } from '../../constants/filter-parameters';
 import { SEARCH_ITEMS_MINIMAL_LENGTH } from '../../constants/search-item-max';
-import { SearchApiItemMapperFactory, ItemCardMapper } from './search-api-item-mapper.factory';
+import { ItemCardMapper, SearchApiItemMapperFactory } from './search-api-item-mapper.factory';
 import { SearchApiUrlFactory, SearchApiUrlSearchOrWall } from './search-api-url.factory';
 import { SearchResponse } from './search-response.interface';
 
@@ -16,7 +17,7 @@ export const NEXT_HEADER_PAGE = 'X-NextPage';
 
 @Injectable()
 export class SearchAPIService {
-  private static readonly BASE_URL: string = '/api/v3';
+  private static readonly BASE_URL: string = `${environment.baseUrl}api/v3`;
   private nextPageUrl: string | null = null;
   private categoryId: string | null = null;
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { AdsService } from '@core/ads/services/ads/ads.service';
@@ -14,7 +14,7 @@ import {
   AD_SHOPPING_NATIVE_CONTAINER_PUBLIC_SEARCH,
   AD_SHOPPING_PUBLIC_SEARCH,
 } from '../core/ads/shopping/search-ads-shopping.config';
-import { SearchStoreService } from '../core/services/search-store.service';
+import { SearchService } from './../core/services/search.service';
 
 @Component({
   selector: 'tsl-search',
@@ -22,8 +22,8 @@ import { SearchStoreService } from '../core/services/search-store.service';
   styleUrls: ['./search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchComponent implements OnInit {
-  public items$: Observable<ItemCard[]> = this.searchStore.items$;
+export class SearchComponent implements OnInit, OnDestroy {
+  public items$: Observable<ItemCard[]> = this.searchService.items$;
 
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
   public device: DeviceType;
@@ -45,8 +45,9 @@ export class SearchComponent implements OnInit {
     AdShoppingChannel.SEARCH_LIST_SHOPPING
   );
 
-  constructor(private adsService: AdsService, private deviceService: DeviceService, private searchStore: SearchStoreService) {
+  constructor(private adsService: AdsService, private deviceService: DeviceService, private searchService: SearchService) {
     this.device = this.deviceService.getDeviceType();
+    this.searchService.init();
   }
 
   public ngOnInit(): void {
@@ -54,6 +55,10 @@ export class SearchComponent implements OnInit {
 
     this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
     // @TODO hardcoded the query to test ad shopping "Iphone 11"
+  }
+
+  public ngOnDestroy(): void {
+    this.searchService.close();
   }
 
   public toggleBubbleFilterBackdrop(active: boolean): void {

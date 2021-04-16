@@ -1,6 +1,6 @@
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { SearchResponse } from '../api/search-response.interface';
-import { SearchItemImageMapper } from '../models/search-item-image.response';
+import { SearchItemImageMapper } from '../models/search-item-image-mapper.response';
 import { SearchCarResponse } from './search-car-response';
 
 export function SearchItemCarResponseMapper({search_objects}: SearchResponse<SearchCarResponse>): ItemCard[] {

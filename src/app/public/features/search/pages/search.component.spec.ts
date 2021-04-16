@@ -12,19 +12,21 @@ import { Store } from '@ngrx/store';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { random } from 'faker';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { BehaviorSubject } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
 import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrapper.module';
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
-import { SearchStoreService } from '../core/services/search-store.service';
+import { SearchService } from '../core/services/search.service';
 import { SearchComponent } from './search.component';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
-  let searchStoreService: SearchStoreService;
   let deviceServiceMock;
   let storeMock;
+  let searchServiceMock;
+  const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
 
   beforeEach(
     waitForAsync(() => {
@@ -32,14 +34,24 @@ describe('SearchComponent', () => {
         getDeviceType: () => random.arrayElement([DeviceType.DESKTOP, DeviceType.MOBILE, DeviceType.TABLET]),
       };
       storeMock = {
-        select: () => of(),
+        select: () => itemsSubject.asObservable(),
         dispatch: () => {},
       };
+
+      searchServiceMock = {
+        init: () => {},
+        items$: itemsSubject.asObservable(),
+        loadMore: () => {},
+      };
+
       TestBed.configureTestingModule({
         declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, ItemCardListComponentStub],
         imports: [FiltersWrapperModule, HttpClientTestingModule],
         providers: [
-          SearchStoreService,
+          {
+            provide: SearchService,
+            useValue: searchServiceMock,
+          },
           {
             provide: Store,
             useValue: storeMock,
@@ -63,7 +75,6 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
-    searchStoreService = TestBed.inject(SearchStoreService);
     fixture.detectChanges();
   });
 
@@ -119,18 +130,18 @@ describe('SearchComponent', () => {
     const oldItems = [{ ...MOCK_ITEM_CARD, id: 'old_item' }];
     beforeEach(() => {
       component.ngOnInit();
-      searchStoreService.setItems(oldItems);
+      searchServiceMock.setItems(oldItems);
     });
-    it('should update items', () => {
+    it('should update items', (done) => {
       const newItems = [MOCK_ITEM_CARD, MOCK_ITEM_CARD];
-      let nextItems: ItemCard[] = [];
-      component.items$.subscribe((items) => (nextItems = items));
+      itemsSubject.next(newItems);
 
-      searchStoreService.appendItems(newItems);
-
-      expect(nextItems.length).toBe(3);
-      nextItems.forEach((nextItem, index) => {
-        expect(nextItem.id).toBe(index !== 0 ? MOCK_ITEM_CARD.id : 'old_item');
+      component.items$.subscribe((items) => {
+        expect(items.length).toBe(3);
+        items.forEach((nextItem, index) => {
+          expect(nextItem.id).toBe(index !== 0 ? MOCK_ITEM_CARD.id : 'old_item');
+        });
+        done();
       });
     });
   });
