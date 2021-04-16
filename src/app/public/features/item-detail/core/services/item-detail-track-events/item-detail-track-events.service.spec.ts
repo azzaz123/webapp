@@ -9,14 +9,17 @@ import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { of } from 'rxjs';
-
+import { RECOMMENDED_ITEM_IDS_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { ItemDetailTrackEventsService } from './item-detail-track-events.service';
 import {
   MOCK_CLICK_CHAT_BUTTON_EVENT,
-  MOCK_FAVORITE_ITEM_EVENT,
-  MOCK_UNFAVORITE_ITEM_EVENT,
+  MOCK_FAVOURITE_ITEM_EVENT,
+  MOCK_UNFAVOURITE_ITEM_EVENT,
   MOCK_VIEW_OWN_ITEM_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_CG_DETAIL_EVENT,
   MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT,
@@ -27,7 +30,11 @@ import {
   MOCK_TWITTER_SHARE_ITEM_EVENT,
   MOCK_EMAIL_SHARE_ITEM_EVENT,
   MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER,
+  MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT,
+  MOCK_UNFAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER,
+  MOCK_FAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER,
 } from './track-events.fixtures.spec';
+import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 
 describe('ItemDetailTrackEventsService', () => {
   let service: ItemDetailTrackEventsService;
@@ -39,6 +46,7 @@ describe('ItemDetailTrackEventsService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         ItemDetailTrackEventsService,
+        TypeCheckService,
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         { provide: UserService, useClass: MockedUserService },
       ],
@@ -52,27 +60,49 @@ describe('ItemDetailTrackEventsService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when user toggles favorite icon', () => {
+  describe('when user toggles favourite icon', () => {
     beforeEach(() => {
-      spyOn(service, 'trackFavoriteOrUnfavoriteEvent').and.callThrough();
+      spyOn(service, 'trackFavouriteOrUnfavouriteEvent').and.callThrough();
       spyOn(analyticsService, 'trackEvent');
     });
-    const itemDetail = MOCK_CAR_ITEM_DETAIL;
-    it('should send favorite item event if we favorite item', () => {
-      itemDetail.item.flags.favorite = true;
+    const itemDetail: ItemDetail = MOCK_CAR_ITEM_DETAIL;
+    const itemCard: ItemCard = MOCK_ITEM_CARD;
+    describe('of the item not from recommended slider', () => {
+      it('should send favourite item event if we favourite item', () => {
+        itemDetail.item.flags.favorite = true;
 
-      service.trackFavoriteOrUnfavoriteEvent(itemDetail);
+        service.trackFavouriteOrUnfavouriteEvent(itemDetail.item, itemDetail.user?.featured);
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT);
-      expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVOURITE_ITEM_EVENT);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_UNFAVOURITE_ITEM_EVENT);
+      });
+      it('should send unfavourite item event if we unfavourite item', () => {
+        itemDetail.item.flags.favorite = false;
+
+        service.trackFavouriteOrUnfavouriteEvent(itemDetail.item, itemDetail.user?.featured);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVOURITE_ITEM_EVENT);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_FAVOURITE_ITEM_EVENT);
+      });
     });
-    it('should send unfavorite item event if we unfavorite item', () => {
-      itemDetail.item.flags.favorite = false;
 
-      service.trackFavoriteOrUnfavoriteEvent(itemDetail);
+    describe('of the item from recommended slider', () => {
+      it('should send favourite item event if we favourite item', () => {
+        itemCard.flags.favorite = true;
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVORITE_ITEM_EVENT);
-      expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_FAVORITE_ITEM_EVENT);
+        service.trackFavouriteOrUnfavouriteEvent(itemCard, MOCK_USER?.featured);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_UNFAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+      });
+      it('should send unfavourite item event if we unfavourite item', () => {
+        itemCard.flags.favorite = false;
+
+        service.trackFavouriteOrUnfavouriteEvent(itemCard, MOCK_USER?.featured);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+        expect(analyticsService.trackEvent).not.toHaveBeenCalledWith(MOCK_FAVOURITE_ITEM_EVENT_FROM_RECOMMENDED_SLIDER);
+      });
     });
   });
 
@@ -192,6 +222,22 @@ describe('ItemDetailTrackEventsService', () => {
       service.trackViewOthersItemCarDetailEvent(item, user);
 
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT_NON_CARDEALER);
+    });
+  });
+
+  describe('when user view item detail recommendation slider', () => {
+    it('should send view item detail recommendation slider event', () => {
+      spyOn(service, 'trackViewItemDetailRecommendationSliderEvent').and.callThrough();
+      spyOn(analyticsService, 'trackPageView');
+
+      service.trackViewItemDetailRecommendationSliderEvent(
+        MOCK_ITEM,
+        MOCK_USER,
+        RECOMMENDED_ITEM_IDS_MOCK,
+        RECOMMENDATIONS_ENGINE.MORE_LIKE_THIS_SOLR
+      );
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT);
     });
   });
 });
