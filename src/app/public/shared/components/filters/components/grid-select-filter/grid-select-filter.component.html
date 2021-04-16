@@ -4,7 +4,7 @@
                      [title]="config.title"
                      [icon]="config.icon"
                      [label]="label$ | async"
-                     [hasValue]="hasValue$() | async"
+                     [hasValue]="hasValue$ | async"
                      [hasApply]="true"
                      (apply)="handleApply()"
                      (clear)="handleClear()"

@@ -29,7 +29,7 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
       [title]="config.title"
       [icon]="config.icon"
       [label]="label"
-      [hasValue]="hasValue$() | async"
+      [hasValue]="hasValue$ | async"
       (clear)="handleClear()"
       (openStateChange)="openStateChange.emit($event)"
     >

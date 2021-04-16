@@ -3,7 +3,7 @@
     <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
     <tsl-filter-group
       [values]="bubbleValues$ | async"
-      [config]="filterConfigurations.bubble"
+      [config]="bubbleFilterConfigurations$ | async"
       [variant]="FILTER_VARIANT.BUBBLE"
       (valueChange)="bubbleChange($event)"
       (openStateChange)="bubbleOpenStateChange($event)"></tsl-filter-group>
@@ -16,7 +16,7 @@
 (cancel)="closeDrawer()" (apply)="applyDrawer()" (clickBackdrop)="closeDrawer()">
   <tsl-filter-group
     [values]="drawerValues$ | async"
-    [config]="filterConfigurations.drawer"
+    [config]="drawerFilterConfigurations$ | async"
     [variant]="FILTER_VARIANT.CONTENT"
     (openStateChange)="drawerOpenStateChange($event)"
     (valueChange)="drawerChange($event)"></tsl-filter-group>

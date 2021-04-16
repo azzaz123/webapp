@@ -4,7 +4,7 @@ import { FilterConfig } from '@public/shared/components/filters/interfaces/filte
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -36,15 +36,14 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
 
   protected hasValueSubject = new BehaviorSubject<boolean>(false);
 
-  public hasValue$(): Observable<boolean> {
-    return this.hasValueSubject.asObservable();
-  }
+  public hasValue$ = this.hasValueSubject.asObservable();
 
   protected _hasValue(): boolean {
     return this._value?.length > 0;
   }
 
   public ngOnInit(): void {
+    console.log('I have been rendered', this.variant, this.config.id);
     this.label = this.config.bubblePlaceholder;
     if (this._value.length) {
       this.onValueChange([], this._value);
