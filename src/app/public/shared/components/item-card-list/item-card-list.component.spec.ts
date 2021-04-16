@@ -82,57 +82,48 @@ describe('ItemCardListComponent', () => {
   });
 
   describe('when component inits', () => {
-    const cardShowDescriptionAttr = 'ng-reflect-show-description';
-
     it('should show as many cards as given', () => {
       expect(el.querySelectorAll(cardSelector).length).toEqual(component.items.length);
-    });
-
-    describe('when device is mobile', () => {
-      it('should NOT show card descriptions if device is mobile', () => {
-        const randomCardWithoutDescription = el.querySelectorAll(cardSelector)[0].getAttribute(cardShowDescriptionAttr) === 'false';
-        expect(randomCardWithoutDescription).toBeTruthy();
-      });
-    });
-
-    describe('when device is NOT mobile', () => {
-      beforeEach(() => {
-        spyOn(deviceDetectorService, 'isMobile').and.returnValue(false);
-        fixture = TestBed.createComponent(ItemCardListComponent);
-        component = fixture.componentInstance;
-        de = fixture.debugElement;
-        el = de.nativeElement;
-        component.items = [MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD];
-        fixture.detectChanges();
-      });
-
-      it('should show card descriptions', () => {
-        const randomCardWithDescription = el.querySelectorAll(cardSelector)[0].getAttribute(cardShowDescriptionAttr) === 'true';
-
-        expect(randomCardWithDescription).toBeTruthy();
-      });
     });
   });
 
   describe('when we favourite the item...', () => {
     describe('and we have session...', () => {
-      it('should toggle the favourite item', () => {
+      beforeEach(() => {
         spyOn(itemCardService, 'toggleFavourite');
         spyOn(checkSessionService, 'hasSession').and.returnValue(true);
-
+      });
+      it('should toggle the favourite item', () => {
         component.toggleFavourite(MOCK_ITEM_CARD);
 
         expect(itemCardService.toggleFavourite).toHaveBeenCalledWith(MOCK_ITEM_CARD);
       });
-    });
-    describe(`and we don't have session...`, () => {
-      it('should check the session action', () => {
-        spyOn(checkSessionService, 'checkSessionAction');
-        spyOn(checkSessionService, 'hasSession').and.returnValue(false);
+
+      it('should emit the itemCard data', () => {
+        spyOn(component.toggleFavouriteEvent, 'emit');
 
         component.toggleFavourite(MOCK_ITEM_CARD);
 
+        expect(component.toggleFavouriteEvent.emit).toHaveBeenCalledWith(MOCK_ITEM_CARD);
+      });
+    });
+    describe(`and we don't have session...`, () => {
+      beforeEach(() => {
+        spyOn(checkSessionService, 'checkSessionAction');
+        spyOn(checkSessionService, 'hasSession').and.returnValue(false);
+      });
+      it('should check the session action', () => {
+        component.toggleFavourite(MOCK_ITEM_CARD);
+
         expect(checkSessionService.checkSessionAction).toHaveBeenCalled();
+      });
+
+      it('should not emit the itemCard data', () => {
+        spyOn(component.toggleFavouriteEvent, 'emit');
+
+        component.toggleFavourite(MOCK_ITEM_CARD);
+
+        expect(component.toggleFavouriteEvent.emit).not.toHaveBeenCalled();
       });
     });
   });

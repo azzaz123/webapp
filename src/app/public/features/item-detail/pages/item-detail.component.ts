@@ -27,6 +27,7 @@ import { ItemDetailStoreService } from '../core/services/item-detail-store/item-
 import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
+import { RecommendedItemsInitEventEmitter } from '../interfaces/recommended-items-init-event-emitter.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -40,11 +41,11 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   public recommendedItems$: Observable<ItemCardsWithRecommenedType>;
   public readonly deviceType: typeof DeviceType = DeviceType;
   public device: DeviceType;
-  private subscriptions: Subscription = new Subscription();
-  private itemDetail: ItemDetail;
   public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
   public adsAffiliationSlotConfiguration: AdSlotConfiguration[];
   public adsAffiliationsLoaded$: Observable<boolean>;
+  private subscriptions: Subscription = new Subscription();
+  private itemDetail: ItemDetail;
 
   constructor(
     private itemDetailStoreService: ItemDetailStoreService,
@@ -91,7 +92,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public toggleFavouriteItem(): void {
     this.itemDetailStoreService.toggleFavouriteItem().subscribe(() => {
-      this.itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent(this.itemDetail);
+      this.itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent(this.itemDetail.item, this.itemDetail.user?.featured);
     });
   }
 
@@ -109,6 +110,17 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS): void {
     this.itemDetailTrackEventsService.trackShareItemEvent(channel, this.itemDetail.item, this.itemDetail.user);
+  }
+
+  public trackViewItemDetailRecommendationSlider({ recommendedItemIds, engine }: RecommendedItemsInitEventEmitter) {
+    if (this.itemDetail) {
+      this.itemDetailTrackEventsService.trackViewItemDetailRecommendationSliderEvent(
+        this.itemDetail.item,
+        this.itemDetail.user,
+        recommendedItemIds,
+        engine
+      );
+    }
   }
 
   private initPage(itemId: string): void {

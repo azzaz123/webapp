@@ -122,12 +122,12 @@ export const MOCK_RECOMMENDED_ITEM_CARD_WITHOUT_IMAGES: ItemCard = {
 };
 
 export const MOCK_ITEM_CARDS_WITH_RECOMMENDED_TYPE: ItemCardsWithRecommenedType = {
-  recommendedType: RECOMMENDER_TYPE.DEFAULT,
+  recommendedType: RECOMMENDER_TYPE.SOCIAL_MEDIA_RECOMMENDATION,
   recommendedItems: [MOCK_ITEM_CARD, MOCK_ITEM_CARD],
 };
 
 export const MOCK_EMPTY_ITEM_CARDS_WITH_RECOMMENDED_TYPE: ItemCardsWithRecommenedType = {
-  recommendedType: RECOMMENDER_TYPE.DEFAULT,
+  recommendedType: RECOMMENDER_TYPE.SOCIAL_MEDIA_RECOMMENDATION,
   recommendedItems: [],
 };
 

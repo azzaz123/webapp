@@ -105,6 +105,7 @@
                         [recommendedItems]="(recommendedItems$ | async)?.recommendedItems"
                         [recommendedType]="(recommendedItems$ | async)?.recommendedType"
                         (clickedItemAndIndexEvent)="trackClickItemCardEvent($event)"
+                        (initRecommendedItemsSlider)="trackViewItemDetailRecommendationSlider($event)"
                         >
                     </tsl-recommended-items>
                     <div *ngIf="device === deviceType.MOBILE" class="pt-4">
