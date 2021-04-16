@@ -5,7 +5,10 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 import { CAR_FILTER_CONFIGURATION } from '@public/shared/components/filters/core/constants/filter-configuration-by-category/car/car-filter-configuration';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { ConfigurationId } from '@public/shared/components/filters/core/types/configuration-id.type';
-import { FilterIdConfiguration, ValueOf } from '@public/shared/components/filters/core/interfaces/filter-id-configuration.interface';
+import {
+  FilterWrapperConfiguration,
+  ValueOf,
+} from '@public/shared/components/filters/core/interfaces/filter-wrapper-configuration.interface';
 
 @Injectable()
 export class FilterConfigurationService {
@@ -19,7 +22,7 @@ export class FilterConfigurationService {
     return FILTER_CONFIGURATIONS.find((filterConfiguration) => filterConfiguration.id === filterConfigurationId);
   }
 
-  private getConfigGroupByParameters(parameters: FilterParameter[]): FilterIdConfiguration {
+  private getConfigGroupByParameters(parameters: FilterParameter[]): FilterWrapperConfiguration {
     return CAR_FILTER_CONFIGURATION;
   }
 }

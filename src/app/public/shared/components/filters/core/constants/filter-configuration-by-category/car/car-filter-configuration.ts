@@ -1,8 +1,8 @@
 import { CAR_FILTER_ID } from '../../../enums/filter-ids/cars.enum';
-import { FilterIdConfiguration } from '../../../interfaces/filter-id-configuration.interface';
+import { FilterWrapperConfiguration } from '../../../interfaces/filter-wrapper-configuration.interface';
 import { COMMON_CONFIGURATION_ID } from '../../../enums/configuration-ids/common-configuration-ids.enum';
 
-export const CAR_FILTER_CONFIGURATION: FilterIdConfiguration = {
+export const CAR_FILTER_CONFIGURATION: FilterWrapperConfiguration = {
   bubble: [
     COMMON_CONFIGURATION_ID.CATEGORIES,
     CAR_FILTER_ID.PRICE,
