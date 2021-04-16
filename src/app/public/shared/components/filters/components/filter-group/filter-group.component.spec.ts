@@ -14,6 +14,7 @@ import { FilterValuesPipe } from './pipes/filter-values.pipe';
 import { FilterHostDirective } from './directives/filter-host.directive';
 import { FiltersModule } from '@public/shared/components/filters/filters.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 describe('FilterGroupComponent', () => {
   let component: FilterGroupComponent;
@@ -22,7 +23,7 @@ describe('FilterGroupComponent', () => {
 
   const togglePredicate = By.directive(ToggleFilterComponent);
   const gridPredicate = By.directive(GridSelectFilterComponent);
-  const values = [{ key: 'key', value: 'true' }];
+  const values = [{ key: FILTER_QUERY_PARAM_KEY.warranty, value: 'true' }];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -75,7 +76,7 @@ describe('FilterGroupComponent', () => {
 
   describe('when filter value changes', () => {
     it('should emit value changes', () => {
-      const value: FilterParameter[] = [{ key: 'toggle', value: '1' }];
+      const value: FilterParameter[] = [{ key: FILTER_QUERY_PARAM_KEY.warranty, value: '1' }];
       spyOn(component.valueChange, 'emit');
 
       const grid: GridSelectFilterComponent = debugElement.query(gridPredicate).componentInstance;

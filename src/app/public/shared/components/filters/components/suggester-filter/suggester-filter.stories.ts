@@ -19,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-filters',
@@ -119,7 +120,7 @@ const clothingTypeConfig: SuggesterFilterConfig = {
   bubblePlaceholder: 'Clothing type',
   drawerPlaceholder: 'Select clothing type',
   mapKey: {
-    parameterKey: 'object_type_id',
+    parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
   },
   type: FILTER_TYPES.SUGGESTER,
   hasOptionsOnInit: true,
@@ -134,8 +135,8 @@ const brandConfig: SuggesterFilterConfig = {
   bubblePlaceholder: 'Brand',
   drawerPlaceholder: 'Select brand',
   mapKey: {
-    brand: 'brand',
-    model: 'model',
+    brand: FILTER_QUERY_PARAM_KEY.brand,
+    model: FILTER_QUERY_PARAM_KEY.model,
   },
   type: FILTER_TYPES.SUGGESTER,
   hasOptionsOnInit: false,

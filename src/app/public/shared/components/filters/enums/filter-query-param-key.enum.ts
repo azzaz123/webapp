@@ -4,6 +4,7 @@ export enum FILTER_QUERY_PARAM_KEY {
   maxPrice = 'max_sale_price',
   minPrice = 'min_sale_price',
   postedAgo = 'time_filter',
+  condition = 'condition',
 
   operation = 'operation',
   gender = 'gender',

@@ -13,6 +13,7 @@ import { ToggleFilterComponent } from '../../../toggle-filter/toggle-filter.comp
 import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
 import { FiltersModule } from '@public/shared/components/filters/filters.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-test-component',
@@ -88,7 +89,7 @@ describe('FilterHostComponent', () => {
       fixture.detectChanges();
     });
     it('should pass the value to the hosted filter', () => {
-      const value = [{ key: 'key', value: 'true' }];
+      const value = [{ key: FILTER_QUERY_PARAM_KEY.warranty, value: 'true' }];
       testComponent.values = value;
 
       fixture.detectChanges();
@@ -110,7 +111,7 @@ describe('FilterHostComponent', () => {
     });
     it('should emit value change', () => {
       spyOn(component.valueChange, 'emit');
-      const value = [{ key: 'key', value: 'true' }];
+      const value = [{ key: FILTER_QUERY_PARAM_KEY.warranty, value: 'true' }];
       const toggle: ToggleFilterComponent = debugElement.query(By.directive(ToggleFilterComponent)).componentInstance;
 
       toggle.valueChange.emit(value);

@@ -19,6 +19,7 @@ import { FilterTemplateComponent } from '../abstract-filter/filter-template/filt
 import { CAR_CONFIGURATION_ID } from '../../core/enums/configuration-ids/car-configuration-ids';
 import { GridSelectFormComponent } from '@shared/form/components/grid-select/grid-select-form.component';
 import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -46,7 +47,7 @@ describe('GridSelectFilterComponent', () => {
     icon: 'icon.svg',
     bubblePlaceholder: 'Placeholder',
     mapKey: {
-      parameterKey: 'key',
+      parameterKey: FILTER_QUERY_PARAM_KEY.engine,
     },
     type: FILTER_TYPES.GRID,
     isMultiselect: false,
@@ -147,7 +148,7 @@ describe('GridSelectFilterComponent', () => {
   describe('when provided a value from the parent', () => {
     beforeEach(() => {
       testComponent.config = basicConfig;
-      testComponent.value = [{ key: 'key', value: 'gasoil' }];
+      testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil' }];
       fixture.detectChanges();
     });
     it('should set corresponding label', () => {
@@ -165,7 +166,7 @@ describe('GridSelectFilterComponent', () => {
     describe('from the parent', () => {
       beforeEach(() => {
         testComponent.config = basicConfig;
-        testComponent.value = [{ key: 'key', value: 'gasoil' }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil' }];
         fixture.detectChanges();
       });
       describe('and is empty', () => {
@@ -195,7 +196,7 @@ describe('GridSelectFilterComponent', () => {
 
       describe('and has value', () => {
         beforeEach(() => {
-          testComponent.value = [{ key: 'key', value: 'gasoil,gasoline' }];
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil,gasoline' }];
         });
         it('should change label', () => {
           fixture.detectChanges();
@@ -221,7 +222,7 @@ describe('GridSelectFilterComponent', () => {
     describe('from form component', () => {
       beforeEach(() => {
         testComponent.config = basicConfig;
-        testComponent.value = [{ key: 'key', value: 'gasoil' }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil' }];
       });
 
       describe('and is bubble variant', () => {
@@ -255,7 +256,7 @@ describe('GridSelectFilterComponent', () => {
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: 'gasoline' }]);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoline' }]);
         });
       });
 
@@ -292,7 +293,7 @@ describe('GridSelectFilterComponent', () => {
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: 'gasoline' }]);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoline' }]);
         });
       });
     });
@@ -302,7 +303,7 @@ describe('GridSelectFilterComponent', () => {
     beforeEach(() => {
       testComponent.variant = FILTER_VARIANT.BUBBLE;
       testComponent.config = basicConfig;
-      testComponent.value = [{ key: 'key', value: 'gasoil' }];
+      testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil' }];
       fixture.detectChanges();
     });
 
@@ -333,7 +334,7 @@ describe('GridSelectFilterComponent', () => {
       fixture.detectChanges();
 
       expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-      expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
+      expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.engine, value: undefined }]);
     });
   });
 });

@@ -23,6 +23,7 @@ import { GridSelectFormComponent } from '@shared/form/components/grid-select/gri
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-test-component',
@@ -51,7 +52,7 @@ describe('CategoriesFilterComponent', () => {
     bubblePlaceholder: 'All categories',
     drawerPlaceholder: 'All categories',
     mapKey: {
-      parameterKey: 'category_ids',
+      parameterKey: FILTER_QUERY_PARAM_KEY.categoryId,
     },
     type: FILTER_TYPES.CATEGORIES,
     options: CATEGORY_OPTIONS,
@@ -105,7 +106,7 @@ describe('CategoriesFilterComponent', () => {
 
       describe('with parent value', () => {
         beforeEach(() => {
-          testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.CAR.toString() }];
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.CAR.toString() }];
         });
 
         it('should not emit value change', () => {
@@ -133,13 +134,13 @@ describe('CategoriesFilterComponent', () => {
 
     describe('on parent value change', () => {
       beforeEach(() => {
-        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.CAR.toString() }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.CAR.toString() }];
         fixture.detectChanges();
       });
 
       it('should not emit value change', () => {
         spyOn(component.valueChange, 'emit');
-        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
         fixture.detectChanges();
 
         expect(component.valueChange.emit).not.toHaveBeenCalled();
@@ -150,7 +151,7 @@ describe('CategoriesFilterComponent', () => {
           const previousValue = component.formGroup.controls.select.value;
           expect(previousValue).toEqual([CATEGORY_IDS.CAR.toString()]);
 
-          testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
           fixture.detectChanges();
 
           const nextValue = component.formGroup.controls.select.value;
@@ -161,7 +162,7 @@ describe('CategoriesFilterComponent', () => {
           const previousLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
           expect(previousLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.CAR.toString()));
 
-          testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
           fixture.detectChanges();
 
           const nextLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
@@ -196,7 +197,7 @@ describe('CategoriesFilterComponent', () => {
 
     describe('on form value change', () => {
       beforeEach(() => {
-        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.CAR.toString() }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.CAR.toString() }];
         fixture.detectChanges();
         component.filterTemplate.toggleDropdown();
         fixture.detectChanges();
@@ -208,7 +209,9 @@ describe('CategoriesFilterComponent', () => {
         fixture.detectChanges();
 
         expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-        expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }]);
+        expect(component.valueChange.emit).toHaveBeenCalledWith([
+          { key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() },
+        ]);
       });
 
       it('should change its value', () => {
@@ -267,7 +270,7 @@ describe('CategoriesFilterComponent', () => {
 
       describe('with parent value', () => {
         beforeEach(() => {
-          testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.CAR.toString() }];
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.CAR.toString() }];
         });
         it('should not emit value change', () => {
           spyOn(component.valueChange, 'emit');
@@ -294,13 +297,13 @@ describe('CategoriesFilterComponent', () => {
 
     describe('on parent value change', () => {
       beforeEach(() => {
-        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.CAR.toString() }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.CAR.toString() }];
         fixture.detectChanges();
       });
 
       it('should not emit value change', () => {
         spyOn(component.valueChange, 'emit');
-        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
         fixture.detectChanges();
 
         expect(component.valueChange.emit).not.toHaveBeenCalled();
@@ -310,7 +313,7 @@ describe('CategoriesFilterComponent', () => {
         const previousValue = component.formGroup.controls.select.value;
         expect(previousValue).toEqual(CATEGORY_IDS.CAR.toString());
 
-        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
         fixture.detectChanges();
 
         const nextValue = component.formGroup.controls.select.value;
@@ -321,7 +324,7 @@ describe('CategoriesFilterComponent', () => {
         const previousLabel = debugElement.query(placeholderTemplatePredicate).componentInstance.placeholderLabel;
         expect(previousLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.CAR.toString()));
 
-        testComponent.value = [{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
         fixture.detectChanges();
 
         const nextLabel = debugElement.query(placeholderTemplatePredicate).componentInstance.placeholderLabel;
@@ -343,7 +346,9 @@ describe('CategoriesFilterComponent', () => {
         fixture.detectChanges();
 
         expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-        expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'category_ids', value: CATEGORY_IDS.REAL_ESTATE.toString() }]);
+        expect(component.valueChange.emit).toHaveBeenCalledWith([
+          { key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() },
+        ]);
       });
 
       it('should change its value', () => {

@@ -7,13 +7,15 @@ import { SearchBaseItemResponse } from '../models/search-base-item.response';
 import { SearchRealEstateResponse } from '../real_estate/search-item-real-state-response';
 import { wallParameters } from './search-api-url.factory';
 import { SearchResponse } from './search-response.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 export function FilterParametersWallFactory(categoryId: string): FilterParameter[] {
-  return wallParameters.map((key: string) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));
+  return wallParameters.map((key: FILTER_QUERY_PARAM_KEY) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));
 }
 
 export function FilterParametersSearchFactory(categoryId: string, search: string): FilterParameter[] {
-  return [...wallParameters, 'keywords'].map((key: string) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));
+  return [...wallParameters, 'keywords']
+    .map((key: FILTER_QUERY_PARAM_KEY) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));
 }
 
 function SearchBaseItemResponseFactory(): SearchBaseItemResponse {
@@ -28,7 +30,7 @@ function SearchBaseItemResponseFactory(): SearchBaseItemResponse {
     currency: '€',
     web_slug: 'www.webslug.com',
     category_id: 1,
-  }
+  };
 }
 
 export function SearchCustomerGoodsItemListResponseFactory(count: number = SEARCH_ITEMS_MINIMAL_LENGTH): SearchCustomerGoodsResponse[] {

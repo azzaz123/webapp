@@ -13,6 +13,7 @@ import { GridSelectFilterConfig } from './interfaces/grid-select-filter-config.i
 import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
 import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-filters',
@@ -104,7 +105,7 @@ const singleSelectConfig: GridSelectFilterConfig = {
   bubblePlaceholder: 'Big icons',
   drawerPlaceholder: 'Big icons',
   mapKey: {
-    parameterKey: 'big_icons',
+    parameterKey: FILTER_QUERY_PARAM_KEY.categoryId,
   },
   type: FILTER_TYPES.GRID,
   isMultiselect: false,
@@ -118,7 +119,7 @@ const multiselectConfig: GridSelectFilterConfig = {
   bubblePlaceholder: 'Multiselect',
   drawerPlaceholder: 'Multiselect',
   mapKey: {
-    parameterKey: 'multiselect',
+    parameterKey: FILTER_QUERY_PARAM_KEY.engine,
   },
   type: FILTER_TYPES.GRID,
   isMultiselect: true,
