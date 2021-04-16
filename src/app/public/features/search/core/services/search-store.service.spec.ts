@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { SearchStoreService } from './search-store.service';
-import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
 
 describe('SearchStoreService', () => {
   let service: SearchStoreService;
@@ -19,10 +18,10 @@ describe('SearchStoreService', () => {
 
   describe('when value asked directly', () => {
     beforeEach(() => {
-      service.setItems([MOCK_SEARCH_ITEM]);
+      service.setItems([MOCK_ITEM_CARD]);
     });
     it('should return current item list', () => {
-      expect(service.getItems()).toEqual([MOCK_SEARCH_ITEM]);
+      expect(service.getItems()).toEqual([MOCK_ITEM_CARD]);
     });
   });
 
@@ -31,7 +30,7 @@ describe('SearchStoreService', () => {
       service.setItems([]);
     });
     it('should overwrite previous content with new one', () => {
-      const items = [MOCK_SEARCH_ITEM];
+      const items = [MOCK_ITEM_CARD];
       service.setItems(items);
 
       expect(service.getItems()).toEqual(items);
@@ -41,7 +40,7 @@ describe('SearchStoreService', () => {
       const callback = jest.fn();
       service.items$.subscribe(callback);
 
-      const items = [MOCK_SEARCH_ITEM];
+      const items = [MOCK_ITEM_CARD];
       service.setItems(items);
 
       expect(callback).toHaveBeenCalledWith(items);
@@ -50,14 +49,14 @@ describe('SearchStoreService', () => {
 
   describe('when items are appended', () => {
     const otherItem = {
-      ...MOCK_SEARCH_ITEM,
+      ...MOCK_ITEM_CARD,
       id: 'my-other-id',
     };
     beforeEach(() => {
       service.setItems([otherItem]);
     });
     it('should add items at the end of the list', () => {
-      const items = [MOCK_SEARCH_ITEM];
+      const items = [MOCK_ITEM_CARD];
       service.appendItems(items);
 
       expect(service.getItems()).toEqual([otherItem, ...items]);
@@ -67,7 +66,7 @@ describe('SearchStoreService', () => {
       const callback = jest.fn();
       service.items$.subscribe(callback);
 
-      const items = [MOCK_SEARCH_ITEM];
+      const items = [MOCK_ITEM_CARD];
       service.appendItems(items);
 
       expect(callback).toHaveBeenCalledWith([otherItem, ...items]);
@@ -76,7 +75,7 @@ describe('SearchStoreService', () => {
 
   describe('when item count is queried', () => {
     beforeEach(() => {
-      service.setItems([MOCK_SEARCH_ITEM, MOCK_SEARCH_ITEM, MOCK_SEARCH_ITEM]);
+      service.setItems([MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
     });
     it('should return item count', () => {
       expect(service.getItemCount()).toBe(3);

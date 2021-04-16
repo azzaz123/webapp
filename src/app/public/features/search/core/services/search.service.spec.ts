@@ -1,9 +1,9 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { filterParametersMock } from '@fixtures/filter-parameter.fixtures';
-import { SearchPaginationFactory } from '@fixtures/search-items.fixtures';
+import { SearchPaginationFactory } from '@fixtures/item-card.fixtures.spec';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { of } from 'rxjs';
-import { SearchItem } from '../../interfaces/search-item.interface';
+import { BehaviorSubject, of } from 'rxjs';
 import { SearchPagination } from '../../interfaces/search-pagination.interface';
 import { FilterParameterStoreService } from './filter-parameter-store.service';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
@@ -15,15 +15,18 @@ describe('SearchService', () => {
   let searchStoreServiceMock;
   let filterParameterStoreServiceMock;
   let searchInfrastructureServiceMock;
+  const filterParametersSubject: BehaviorSubject<FilterParameter[]> = new BehaviorSubject<FilterParameter[]>([]);
+  const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
 
   beforeEach(() => {
     searchStoreServiceMock = {
-      setItems: (items: SearchItem[]) => {},
-      appendItems: (items: SearchItem[]) => {},
+      items$: itemsSubject.asObservable(),
+      setItems: (items: ItemCard[]) => {},
+      appendItems: (items: ItemCard[]) => {},
     };
 
     filterParameterStoreServiceMock = {
-      parameters$: of(filterParametersMock),
+      parameters$: filterParametersSubject.asObservable(),
     };
 
     searchInfrastructureServiceMock = {
@@ -52,48 +55,52 @@ describe('SearchService', () => {
     service = TestBed.inject(SearchService);
   });
 
-  describe('when we want to search', () => {
-    it('should get the parameters to search with that parameters', () => {
-      spyOn(searchInfrastructureServiceMock, 'search').and.callThrough();
+  describe('when service initialize', () => {
+    beforeEach(() => {
+      service.init();
+    });
+    describe('without any change of parameters', () => {
+      it('should call to search with empty filters', () => {
+        spyOn(searchInfrastructureServiceMock, 'search').and.callThrough();
 
-      service.search();
+        filterParametersSubject.next([]);
 
-      expect(searchInfrastructureServiceMock.search).toHaveBeenCalledWith(filterParametersMock);
-      expect(searchInfrastructureServiceMock.search).toHaveBeenCalledTimes(1);
+        expect(searchInfrastructureServiceMock.search).toHaveBeenCalledTimes(1);
+        expect(searchInfrastructureServiceMock.search).toHaveBeenCalledWith([]);
+      });
     });
 
-    it('should set item on search store by search response', fakeAsync(() => {
-      const searchPagination: SearchPagination = SearchPaginationFactory();
-      spyOn(searchInfrastructureServiceMock, 'search').and.returnValue(of(searchPagination));
-      spyOn(searchStoreServiceMock, 'setItems').and.callThrough();
+    describe('and change the parameters', () => {
+      it('should get items by search infrastructure', () => {
+        spyOn(searchInfrastructureServiceMock, 'search').and.callThrough();
 
-      service.search();
-      tick(10000);
+        filterParametersSubject.next(filterParametersMock);
 
-      expect(searchStoreServiceMock.setItems).toHaveBeenCalledWith(searchPagination.items);
-      expect(searchStoreServiceMock.setItems).toHaveBeenCalledTimes(1);
-    }));
-  });
-
-  describe('when we want to load more', () => {
-    it('should load more on search infrastructure', () => {
-      spyOn(searchInfrastructureServiceMock, 'loadMore').and.callThrough();
-
-      service.loadMore();
-
-      expect(searchInfrastructureServiceMock.loadMore).toHaveBeenCalledWith();
-      expect(searchInfrastructureServiceMock.loadMore).toHaveBeenCalledTimes(1);
+        expect(searchInfrastructureServiceMock.search).toHaveBeenCalledTimes(1);
+        expect(searchInfrastructureServiceMock.search).toHaveBeenCalledWith(filterParametersMock);
+      });
     });
 
-    it('should append items on search store by load more response', () => {
-      const searchPagination: SearchPagination = SearchPaginationFactory();
-      spyOn(searchInfrastructureServiceMock, 'loadMore').and.returnValue(of(searchPagination));
-      spyOn(searchStoreServiceMock, 'appendItems').and.callThrough();
+    describe('when we want to load more', () => {
+      it('should load more on search infrastructure', () => {
+        spyOn(searchInfrastructureServiceMock, 'loadMore').and.callThrough();
 
-      service.loadMore();
+        service.loadMore();
 
-      expect(searchStoreServiceMock.appendItems).toHaveBeenCalledWith(searchPagination.items);
-      expect(searchStoreServiceMock.appendItems).toHaveBeenCalledTimes(1);
+        expect(searchInfrastructureServiceMock.loadMore).toHaveBeenCalledWith();
+        expect(searchInfrastructureServiceMock.loadMore).toHaveBeenCalledTimes(1);
+      });
+
+      it('should append items on search store by load more response', () => {
+        const searchPagination: SearchPagination = SearchPaginationFactory();
+        spyOn(searchInfrastructureServiceMock, 'loadMore').and.returnValue(of(searchPagination));
+        spyOn(searchStoreServiceMock, 'appendItems').and.callThrough();
+
+        service.loadMore();
+
+        expect(searchStoreServiceMock.appendItems).toHaveBeenCalledWith(searchPagination.items);
+        expect(searchStoreServiceMock.appendItems).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

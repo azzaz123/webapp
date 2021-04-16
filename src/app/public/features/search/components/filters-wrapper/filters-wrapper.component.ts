@@ -46,9 +46,7 @@ export class FiltersWrapperComponent {
     this.getFilterValues();
 
     this.filterParameterStoreService.parameters$.subscribe((filterValues: FilterParameter[]) => {
-      console.log('filters changed', filterValues);
       this.filterConfigurations = this.filterConfigurationService.getConfiguration(filterValues);
-      console.log('filterConfigurations!', this.filterConfigurations);
     });
   }
 

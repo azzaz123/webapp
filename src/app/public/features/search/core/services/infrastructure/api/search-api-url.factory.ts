@@ -3,8 +3,6 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_PARAMETERS_SEARCH } from '../../constants/filter-parameters';
 
-
-
 const CategoryIdUrlMap: Record<number, string> = {
   [CATEGORY_IDS.CAR]: 'cars',
   [CATEGORY_IDS.REAL_ESTATE]: 'real_estate',
@@ -13,11 +11,9 @@ const CategoryIdUrlMap: Record<number, string> = {
 
 const categoryIdDefault = 'general';
 
-
 export function SearchApiUrlFactory(categoryId: string): string {
   return CategoryIdUrlMap[+categoryId] || categoryIdDefault;
 }
-
 
 export const wallParameters: string[] = [
   FILTER_PARAMETERS_SEARCH.CATEGORY_ID,

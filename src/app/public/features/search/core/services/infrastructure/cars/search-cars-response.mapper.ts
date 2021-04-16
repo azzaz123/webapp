@@ -1,21 +1,36 @@
-
-import { SearchItem } from '@public/features/search/interfaces/search-item.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { SearchResponse } from '../api/search-response.interface';
+import { SearchItemImageMapper } from '../models/search-item-image.response';
 import { SearchCarResponse } from './search-car-response';
 
-
-export function SearchItemCarResponseMapper({search_objects}: SearchResponse<SearchCarResponse>): SearchItem[] {
+export function SearchItemCarResponseMapper({search_objects}: SearchResponse<SearchCarResponse>): ItemCard[] {
   return search_objects.map(({id, title, content}: SearchCarResponse) => ({
     id,
     title,
     description: content.storytelling,
-    price: content.price,
-    currency: content.currency,
-    images: content.images.map(({small}) => small),
+    salePrice: content.price,
+    currencyCode: content.currency,
+    ownerId: content.user.id,
+    webSlug: content.web_slug,
+    images: content.images.map(SearchItemImageMapper),
     flags: {
-      favourited: false,
+      pending: content.flags.pending,
+      sold: content.flags.sold,
+      favorite: false,
       reserved: content.flags.reserved,
-      bumped: content.visibility_flags.bumped
-    }
+      banned: content.flags.banned,
+      expired: content.flags.expired,
+      onhold: content.flags.onhold
+    },
+    bumpFlags: {
+      bumped: content.visibility_flags.bumped,
+      highlighted: content.visibility_flags.highlighted,
+      urgent: content.visibility_flags.urgent,
+      country_bumped: content.visibility_flags.country_bumped,
+      boosted: content.visibility_flags.boosted
+    },
+    categoryId: content.category_id,
+    saleConditions: null,
   }));
 }
+

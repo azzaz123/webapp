@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { SearchItemListFactory } from '@fixtures/search-items.fixtures';
+import { SearchItemListFactory } from '@fixtures/item-card.fixtures.spec';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';
-import { SearchItem } from '@public/features/search/interfaces/search-item.interface';
 import { of } from 'rxjs';
 import { SearchFavouritesService } from './search-favourites.service';
+
+
 
 
 describe('SearchFavouritesService', () => {
@@ -31,9 +33,9 @@ describe('SearchFavouritesService', () => {
   });
 
   describe('when we want to get favourits items', () => {
-    const searchItemList: SearchItem[] = SearchItemListFactory(20);
-    const searchItemIdsList: string[] = searchItemList.map(({id}: SearchItem) => id);
-    const itemIdsFavourites: string[] = searchItemList.slice(0, 5).map(({id}: SearchItem) => id);
+    const searchItemList: ItemCard[] = SearchItemListFactory(20);
+    const searchItemIdsList: string[] = searchItemList.map(({id}: ItemCard) => id);
+    const itemIdsFavourites: string[] = searchItemList.slice(0, 5).map(({id}: ItemCard) => id);
 
     it('should call favorite items id of favourite api service', () => {
       spyOn(favouritesApiServiceMock, 'getFavouriteItemsId').and.callThrough();
@@ -45,10 +47,10 @@ describe('SearchFavouritesService', () => {
     });
 
     it('should receive items favourites', (done) => {
-      const searchItemFavourites: SearchItem[] = searchItemList.map((searchItem: SearchItem) => {
-        const newSearchItem: SearchItem = {...searchItem};
+      const searchItemFavourites: ItemCard[] = searchItemList.map((searchItem: ItemCard) => {
+        const newSearchItem: ItemCard = {...searchItem};
         if (itemIdsFavourites.includes(newSearchItem.id)) {
-          newSearchItem.flags.favourited = true;
+          newSearchItem.flags.favorite = true;
         }
         return newSearchItem;
       });

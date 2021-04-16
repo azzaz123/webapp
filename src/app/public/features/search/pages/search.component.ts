@@ -4,9 +4,9 @@ import { AdSlotShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-c
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -15,8 +15,6 @@ import {
   AD_SHOPPING_PUBLIC_SEARCH,
 } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchStoreService } from '../core/services/search-store.service';
-import { mapSearchItems } from '../utils/search-item.mapper';
-import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 @Component({
   selector: 'tsl-search',
@@ -25,7 +23,7 @@ import { ItemCard } from '@public/core/interfaces/item-card.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit {
-  public items$: Observable<ItemCard[]>;
+  public items$: Observable<ItemCard[]> = this.searchStore.items$;
 
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
   public device: DeviceType;
@@ -52,8 +50,6 @@ export class SearchComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.items$ = this.searchStore.items$.pipe(map(mapSearchItems));
-
     this.adsService.setAdKeywords({ content: 'Iphone 11' });
 
     this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);

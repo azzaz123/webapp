@@ -1,6 +1,5 @@
-
 import { Injectable } from '@angular/core';
-import { SearchItem } from '@public/features/search/interfaces/search-item.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -28,7 +27,7 @@ export class SearchInfrastructureService {
     return this.searchFavouritesService
       .getFavouritesByItems(items)
       .pipe(
-        map((favItems: SearchItem[]) => ({ items: favItems, hasMore }))
+        map((favItems: ItemCard[]) => ({ items: favItems, hasMore }))
       );
   }
 }

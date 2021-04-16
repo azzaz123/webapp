@@ -1,13 +1,15 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
-import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { Store } from '@ngrx/store';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { random } from 'faker';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs/internal/observable/of';
@@ -16,8 +18,6 @@ import { SearchLayoutComponent } from '../components/search-layout/search-layout
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchStoreService } from '../core/services/search-store.service';
 import { SearchComponent } from './search.component';
-import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -116,13 +116,13 @@ describe('SearchComponent', () => {
   });
 
   describe('when items change', () => {
-    const oldItems = [{ ...MOCK_SEARCH_ITEM, id: 'old_item' }];
+    const oldItems = [{ ...MOCK_ITEM_CARD, id: 'old_item' }];
     beforeEach(() => {
       component.ngOnInit();
       searchStoreService.setItems(oldItems);
     });
     it('should update items', () => {
-      const newItems = [MOCK_SEARCH_ITEM, MOCK_SEARCH_ITEM];
+      const newItems = [MOCK_ITEM_CARD, MOCK_ITEM_CARD];
       let nextItems: ItemCard[] = [];
       component.items$.subscribe((items) => (nextItems = items));
 
@@ -130,7 +130,7 @@ describe('SearchComponent', () => {
 
       expect(nextItems.length).toBe(3);
       nextItems.forEach((nextItem, index) => {
-        expect(nextItem.id).toBe(index !== 0 ? MOCK_SEARCH_ITEM.id : 'old_item');
+        expect(nextItem.id).toBe(index !== 0 ? MOCK_ITEM_CARD.id : 'old_item');
       });
     });
   });
