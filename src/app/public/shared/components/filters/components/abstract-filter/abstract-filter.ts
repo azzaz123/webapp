@@ -5,10 +5,11 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
 import { BehaviorSubject } from 'rxjs';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class AbstractFilter<T extends Record<keyof T, string>> implements Filter<T>, OnInit {
+export abstract class AbstractFilter<T extends Record<keyof T, FILTER_QUERY_PARAM_KEY>> implements Filter<T>, OnInit {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Input() config: FilterConfig<T>;
 

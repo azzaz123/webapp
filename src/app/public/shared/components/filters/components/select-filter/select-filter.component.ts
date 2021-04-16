@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { ComplexSelectValue } from '@shared/form/components/select/types/complex-select-value';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-select-filter',
@@ -88,7 +89,7 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
       this.writeValue([{ key: this.config.mapKey.parameterKey, value: value }]);
     } else {
       const keys = Object.keys(value);
-      this.writeValue(keys.map((key) => ({ key: key, value: value[key] })));
+      this.writeValue(keys.map((key: FILTER_QUERY_PARAM_KEY) => ({ key: key, value: value[key] })));
     }
 
     this.valueChange.emit(this._value);

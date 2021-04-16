@@ -1,6 +1,7 @@
 import { CAR_CONFIGURATION_ID } from '../../../enums/configuration-ids/car-configuration-ids';
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
 import { AvailableFilterConfig } from '../../../types/available-filter-config.type';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
@@ -10,8 +11,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
     range: [0, 100000],
@@ -31,8 +32,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     drawerPlaceholder: $localize`:@@filterCarsBrandModelDrawerPlaceholder:Select brand and model`,
     icon: '/assets/icons/filters/brand_model.svg',
     mapKey: {
-      brand: 'brand',
-      model: 'model',
+      brand: FILTER_QUERY_PARAM_KEY.brand,
+      model: FILTER_QUERY_PARAM_KEY.model,
     },
     hasContentPlaceholder: true,
     isClearable: true,
@@ -45,8 +46,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/calendar.svg',
     bubblePlaceholder: $localize`:@@filterYearBubblePlaceholder:Year`,
     mapKey: {
-      minKey: 'min_year',
-      maxKey: 'max_year',
+      minKey: FILTER_QUERY_PARAM_KEY.minYear,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxYear,
     },
     range: [1978, new Date().getFullYear()],
   },
@@ -57,8 +58,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/km.svg',
     bubblePlaceholder: $localize`:@@filterMileageBubblePlaceholder:Km`,
     mapKey: {
-      minKey: 'min_km',
-      maxKey: 'max_km',
+      minKey: FILTER_QUERY_PARAM_KEY.minKm,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxKm,
     },
     units: 'km',
     range: [0, 300000],
@@ -77,7 +78,7 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     title: '',
     bubblePlaceholder: $localize`:@@filterProfessionalBubblePlaceholder:Only professionals`,
     mapKey: {
-      key: 'professional',
+      key: FILTER_QUERY_PARAM_KEY.professional,
     },
   },
   {
@@ -87,7 +88,7 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/warranty.svg',
     bubblePlaceholder: $localize`:@@filterWarrantyBubblePlaceholder:Warranty`,
     mapKey: {
-      key: 'warranty',
+      key: FILTER_QUERY_PARAM_KEY.warranty,
     },
   },
   {
@@ -96,8 +97,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     title: $localize`:@@filterNumOfSeatsTitle:Number of seats`,
     bubblePlaceholder: $localize`:@@filterNumOfSeatsBubblePlaceholder:Number of seats`,
     mapKey: {
-      minKey: 'min_seats',
-      maxKey: 'max_seats',
+      minKey: FILTER_QUERY_PARAM_KEY.minSeats,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxSeats,
     },
     range: [1, 9],
     limitless: true,
@@ -108,8 +109,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     title: $localize`:@@filterNumOfDoorsTitle:Number of doors`,
     bubblePlaceholder: $localize`:@@filterNumOfDoorsBubblePlaceholder:Number of doors`,
     mapKey: {
-      minKey: 'min_num_doors',
-      maxKey: 'max_num_doors',
+      minKey: FILTER_QUERY_PARAM_KEY.minDoors,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxDoors,
     },
     range: [2, 6],
     limitless: true,
@@ -120,8 +121,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     title: $localize`:@@filterHorsePowerTitle:Horse power`,
     bubblePlaceholder: $localize`:@@filterHorsePowerBubblePlaceholder:Horse power`,
     mapKey: {
-      minKey: 'min_horse_power',
-      maxKey: 'max_horse_power',
+      minKey: FILTER_QUERY_PARAM_KEY.minHorsePower,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxHorsePower,
     },
     units: 'cv',
     range: [0, 500],
@@ -137,7 +138,7 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     title: $localize`:@@filterBodyTypeTitle:Type of car`,
     bubblePlaceholder: $localize`:@@filterBodyTypePlaceholder:Type of car`,
     mapKey: {
-      parameterKey: 'body_type',
+      parameterKey: FILTER_QUERY_PARAM_KEY.bodyType,
     },
     hasBigIcons: false,
     isMultiselect: true,
@@ -148,7 +149,7 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     title: $localize`:@@filterEngineTypeTitle:Engine type`,
     bubblePlaceholder: $localize`:@@filterEngineTypePlaceholder:Engine type`,
     mapKey: {
-      parameterKey: 'engine',
+      parameterKey: FILTER_QUERY_PARAM_KEY.engine,
     },
     hasBigIcons: false,
     isMultiselect: true,
@@ -159,7 +160,7 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     title: $localize`:@@filterGearboxTypeTitle:Gear box`,
     bubblePlaceholder: $localize`:@@filterGearboxTypePlaceholder:Gear box`,
     mapKey: {
-      parameterKey: 'gearbox',
+      parameterKey: FILTER_QUERY_PARAM_KEY.gearbox,
     },
     hasBigIcons: false,
     isMultiselect: true,
