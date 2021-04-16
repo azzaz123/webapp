@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Item } from '@core/item/item';
 import { environment } from '@environments/environment';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { ClickedItemCard } from './interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from './interfaces/cols-config.interface';
 import { SlotsConfig } from './interfaces/slots-config.interface';
@@ -26,18 +26,21 @@ export class ItemCardListComponent {
   };
   @Input() slotsConfig: SlotsConfig;
   @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
+  @Output() toggleFavouriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
 
   constructor(
-    private deviceDetectionService: DeviceDetectorService,
     private itemCardService: ItemCardService,
     private checkSessionService: CheckSessionService,
     @Inject('SUBDOMAIN') private subdomain: string
-  ) {
-    this.showDescription = !this.deviceDetectionService.isMobile();
-  }
+  ) {}
 
   public toggleFavourite(item: ItemCard): void {
-    this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
+    if (this.checkSessionService.hasSession()) {
+      this.itemCardService.toggleFavourite(item);
+      this.toggleFavouriteEvent.emit(item);
+    } else {
+      this.checkSessionService.checkSessionAction();
+    }
   }
 
   public openItemDetailPage({ itemCard, index }: ClickedItemCard): void {
