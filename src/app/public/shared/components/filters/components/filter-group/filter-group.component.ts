@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, Output, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, QueryList, ViewChildren } from '@angular/core';
 import { FilterConfig } from '../../interfaces/filter-config.interface';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
@@ -25,7 +25,6 @@ export class FilterGroupComponent implements AfterViewInit, OnDestroy {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Output() valueChange = new EventEmitter<FilterParameter[]>();
   @Output() openStateChange = new EventEmitter<boolean>();
-  @Output() clear = new EventEmitter<FilterParameter[]>();
 
   readonly FILTER_VARIANT = FILTER_VARIANT;
 
@@ -47,12 +46,6 @@ export class FilterGroupComponent implements AfterViewInit, OnDestroy {
     this.filterGroupSubscriptions.push(
       this.filterGroup.openStateChange().subscribe((isOpen: boolean) => {
         this.openStateChange.emit(isOpen);
-      })
-    );
-
-    this.filterGroupSubscriptions.push(
-      this.filterGroup.clear().subscribe((value: FilterParameter[]) => {
-        this.clear.emit(value);
       })
     );
   }

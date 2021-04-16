@@ -1,10 +1,8 @@
-import { AfterContentInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { CategoriesFilterParams } from './interfaces/categories-filter-params.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
-import { GridSelectFormOption } from '@shared/form/components/grid-select/interfaces/grid-select-form-option.interface';
 import { FormControl, FormGroup } from '@angular/forms';
-import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { CATEGORY_OPTIONS } from './data/category_options';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CategoriesFilterIcon } from './interfaces/categories-filter-icon.interface';
@@ -20,9 +18,7 @@ import { CategoriesFilterConfig } from './interfaces/categories-filter-config.in
   templateUrl: './categories-filter.component.html',
   styleUrls: ['./categories-filter.component.scss'],
 })
-export class CategoriesFilterComponent
-  extends AbstractFilter<CategoriesFilterParams>
-  implements OnInit, OnDestroy, OnChanges, AfterContentInit {
+export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterParams> implements OnInit, OnDestroy, AfterContentInit {
   @Input() config: CategoriesFilterConfig;
 
   public VARIANT = FILTER_VARIANT;
@@ -50,17 +46,6 @@ export class CategoriesFilterComponent
     return this.labelSubject.asObservable();
   }
 
-  public static getGridOptions(): GridSelectFormOption[] {
-    return CATEGORY_OPTIONS;
-  }
-
-  public static getSelectOptions(): SelectFormOption<string>[] {
-    return CATEGORY_OPTIONS.map((option) => ({
-      ...option,
-      icon: option.icon.stroke,
-    }));
-  }
-
   public ngOnInit() {
     super.ngOnInit();
     this.updateSubjects();
@@ -73,15 +58,11 @@ export class CategoriesFilterComponent
     }
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
-    const { value } = changes;
-
-    if (value && !value.firstChange && this.hasValueChanged(value.previousValue, value.currentValue)) {
-      if (this._value.length > 0) {
-        this.updateValueFromParent();
-      } else {
-        this.cleanForm();
-      }
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
+    if (this._value.length > 0) {
+      this.updateValueFromParent();
+    } else {
+      this.cleanForm();
     }
   }
 
@@ -104,8 +85,13 @@ export class CategoriesFilterComponent
   }
 
   private handleValueChange(): void {
-    this.writeValue(this.getFilterParameterValue());
-    this.valueChange.emit(this._value);
+    const value = this.getFilterParameterValue();
+    if (value.length) {
+      this.writeValue(value);
+      this.valueChange.emit(this._value);
+    } else {
+      this.handleClear();
+    }
   }
 
   private getFilterParameterValue(): FilterParameter[] {

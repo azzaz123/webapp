@@ -1,5 +1,5 @@
-<tsl-filter-template [isBubble]="isBubble()"
-                     [isDropdown]="isDropdown()"
+<tsl-filter-template [isBubble]="variant | isBubble"
+                     [isDropdown]="true"
                      [title]="config.title"
                      [icon]="icon$ | async"
                      [label]="label$ | async"
@@ -7,7 +7,7 @@
                      [hasMaxHeight]="false"
                      (openStateChange)="openStateChange.emit($event)">
 
-  <form [formGroup]="formGroup" [class.CategoriesFilter__grid]="isBubble()">
+  <form [formGroup]="formGroup" [class.CategoriesFilter__grid]="variant | isBubble">
     <tsl-grid-select-form *ngIf="variant === VARIANT.BUBBLE"
                           formControlName="select"
                           [isHoverMainColor]="true"

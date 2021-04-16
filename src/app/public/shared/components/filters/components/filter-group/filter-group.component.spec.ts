@@ -84,15 +84,4 @@ describe('FilterGroupComponent', () => {
       expect(component.openStateChange.emit).toHaveBeenCalledWith(value);
     });
   });
-
-  describe('when some filter value is cleared', () => {
-    it('should emit clean', () => {
-      const value: FilterParameter[] = [];
-      spyOn(component.clear, 'emit');
-
-      component['filterGroup']['_clear'].next(value);
-
-      expect(component.clear.emit).toHaveBeenCalledWith(value);
-    });
-  });
 });

@@ -11,6 +11,7 @@ export class DrawerComponent implements OnChanges {
   @Input() isOpen = false;
   @Input() offsetTop = 0;
   @Input() hasApply = false;
+  @Input() noScroll = false;
   @Output() apply = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
   @Output() clickBackdrop = new EventEmitter<void>();

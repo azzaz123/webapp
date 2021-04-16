@@ -14,5 +14,5 @@ export const FILTER_TYPE_COMPONENT: Record<FILTER_TYPES, Type<AbstractFilter<unk
   [FILTER_TYPES.TOGGLE]: ToggleFilterComponent,
   [FILTER_TYPES.SELECT]: SelectFilterComponent,
   [FILTER_TYPES.SUGGESTER]: SuggesterFilterComponent,
-  [FILTER_TYPES.ICON]: GridSelectFilterComponent,
+  [FILTER_TYPES.GRID]: GridSelectFilterComponent,
 };
