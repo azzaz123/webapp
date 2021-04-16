@@ -62,7 +62,6 @@ describe('SearchComponent', () => {
     fixture = TestBed.createComponent(SearchComponent);
     searchStoreService = TestBed.inject(SearchStoreService);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -72,16 +71,11 @@ describe('SearchComponent', () => {
   describe('when the component init', () => {
     describe('on init', () => {
       it('should initialise items observable', () => {
-        // component.ngOnInit();
-
         fixture.detectChanges();
         expect(component.items$).toBeTruthy();
       });
 
       it('should initialise items observable', () => {
-        // component.ngOnInit();
-        console.log('PAPITO', component);
-
         fixture.detectChanges();
         expect(component.items$).toBeTruthy();
       });
