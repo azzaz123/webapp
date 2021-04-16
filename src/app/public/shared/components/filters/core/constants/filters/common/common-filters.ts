@@ -26,4 +26,42 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
     hasBigIcons: true,
     isMultiselect: false,
   },
+  {
+    id: COMMON_CONFIGURATION_ID.PRICE,
+    type: FILTER_TYPES.RANGE,
+    title: $localize`:@@filterPriceTitle:How much?`,
+    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    mapKey: {
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
+    },
+    icon: '/assets/icons/filters/price.svg',
+    units: '€',
+    range: [0, 20000],
+    stepsConfig: [
+      { range: [0, 50], step: 1 },
+      { range: [50, 100], step: 5 },
+      { range: [100, 300], step: 10 },
+      { range: [300, 500], step: 50 },
+      { range: [500, 1000], step: 100 },
+      { range: [1000, 3000], step: 250 },
+      { range: [3000, 5000], step: 500 },
+      { range: [5000, 10000], step: 1000 },
+      { range: [10000, 20000], step: 2500 },
+    ],
+    limitless: true,
+  },
+  {
+    id: COMMON_CONFIGURATION_ID.CONDITION,
+    type: FILTER_TYPES.SELECT,
+    title: $localize`:@@filterConditionTitle:Item condition`,
+    bubblePlaceholder: $localize`:@@filterConditionBubblePlaceholder:Item condition`,
+    drawerPlaceholder: $localize`:@@filterConditionDrawerPlaceholder:Any item condition`,
+    icon: '/assets/icons/joke.svg', // BEFOREMERGE: Add icon
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.condition,
+    },
+    isClearable: true,
+    hasContentPlaceholder: true,
+  },
 ];

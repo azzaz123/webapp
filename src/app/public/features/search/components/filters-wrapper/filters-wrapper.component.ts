@@ -48,6 +48,8 @@ export class FiltersWrapperComponent {
     this.bubbleFilterConfigurationsSubject.next(this.filterConfigurationService.getConfiguration(FILTER_VARIANT.BUBBLE, []));
     this.drawerFilterConfigurationsSubject.next(this.filterConfigurationService.getConfiguration(FILTER_VARIANT.CONTENT, []));
 
+    console.log(this.bubbleFilterConfigurationsSubject.getValue());
+
     this.subscriptions.add(
       this.bubbleStore.parameters$.subscribe((filterValues: FilterParameter[]) => {
         this.bubbleFilterConfigurationsSubject.next(this.filterConfigurationService.getConfiguration(FILTER_VARIANT.BUBBLE, filterValues));

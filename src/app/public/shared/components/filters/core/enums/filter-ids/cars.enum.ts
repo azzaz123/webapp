@@ -2,6 +2,7 @@ import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/
 import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
 
 export enum CAR_FILTER_ID {
+  CATEGORIES = COMMON_CONFIGURATION_ID.CATEGORIES,
   PRICE = CAR_CONFIGURATION_ID.PRICE,
   BRAND_N_MODEL = CAR_CONFIGURATION_ID.BRAND_N_MODEL,
   YEAR = CAR_CONFIGURATION_ID.YEAR,
