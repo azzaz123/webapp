@@ -54,7 +54,6 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('ondesctroy');
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
