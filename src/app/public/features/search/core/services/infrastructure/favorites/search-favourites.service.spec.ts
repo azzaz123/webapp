@@ -1,29 +1,26 @@
 import { TestBed } from '@angular/core/testing';
 import { SearchItemListFactory } from '@fixtures/item-card.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';
+import { ItemFavouritesService } from '@public/core/services/item-favourites/item-favourites.service';
 import { of } from 'rxjs';
 import { SearchFavouritesService } from './search-favourites.service';
 
-
-
-
 describe('SearchFavouritesService', () => {
   let service: SearchFavouritesService;
-  let favouritesApiServiceMock;
+  let itemFavouritesServiceMock;
 
   beforeEach(() => {
 
-    favouritesApiServiceMock = {
-      getFavouriteItemsId: (ids: string[]) => of(ids)
+    itemFavouritesServiceMock = {
+      getFavouritedItemIds: (ids: string[]) => of(ids)
     };
 
     TestBed.configureTestingModule({
       providers: [
         SearchFavouritesService,
         {
-          provide: FavouritesApiService,
-          useValue: favouritesApiServiceMock
+          provide: ItemFavouritesService,
+          useValue: itemFavouritesServiceMock
         }
       ],
     });
@@ -38,12 +35,12 @@ describe('SearchFavouritesService', () => {
     const itemIdsFavourites: string[] = searchItemList.slice(0, 5).map(({id}: ItemCard) => id);
 
     it('should call favorite items id of favourite api service', () => {
-      spyOn(favouritesApiServiceMock, 'getFavouriteItemsId').and.callThrough();
+      spyOn(itemFavouritesServiceMock, 'getFavouritedItemIds').and.callThrough();
 
       service.getFavouritesByItems(searchItemList).subscribe();
 
-      expect(favouritesApiServiceMock.getFavouriteItemsId).toHaveBeenCalledWith(searchItemIdsList);
-      expect(favouritesApiServiceMock.getFavouriteItemsId).toHaveBeenCalledTimes(1);
+      expect(itemFavouritesServiceMock.getFavouritedItemIds).toHaveBeenCalledWith(searchItemIdsList);
+      expect(itemFavouritesServiceMock.getFavouritedItemIds).toHaveBeenCalledTimes(1);
     });
 
     it('should receive items favourites', (done) => {
@@ -54,7 +51,7 @@ describe('SearchFavouritesService', () => {
         }
         return newSearchItem;
       });
-      spyOn(favouritesApiServiceMock, 'getFavouriteItemsId').and.returnValue(of(itemIdsFavourites));
+      spyOn(itemFavouritesServiceMock, 'getFavouritedItemIds').and.returnValue(of(itemIdsFavourites));
 
       service.getFavouritesByItems(searchItemList).subscribe((response) => {
         expect(response).toEqual(searchItemFavourites);

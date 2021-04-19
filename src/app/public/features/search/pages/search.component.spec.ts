@@ -128,13 +128,14 @@ describe('SearchComponent', () => {
 
   describe('when items change', () => {
     const oldItems = [{ ...MOCK_ITEM_CARD, id: 'old_item' }];
+
     beforeEach(() => {
-      component.ngOnInit();
-      searchServiceMock.setItems(oldItems);
+      fixture.detectChanges();
     });
+
     it('should update items', (done) => {
       const newItems = [MOCK_ITEM_CARD, MOCK_ITEM_CARD];
-      itemsSubject.next(newItems);
+      itemsSubject.next([...oldItems, ...newItems]);
 
       component.items$.subscribe((items) => {
         expect(items.length).toBe(3);
