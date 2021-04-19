@@ -81,6 +81,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [REAL_ESTATE_CONFIGURATION_ID.CONDITION]: {
     apiConfiguration: {
       method: 'getRealEstateConditions',
+      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.categoryId],
     },
     mapperConfiguration: {
       method: 'formatIconOptions',
@@ -146,10 +147,24 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
       requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.gender],
     },
   },
+  [FASHION_CONFIGURATION_ID.CLOTHING_TYPE]: {
+    apiConfiguration: {
+      method: 'getObjectTypesByCategoryId',
+      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.categoryId],
+      keyMappers: [
+        {
+          sourceParamKey: FILTER_QUERY_PARAM_KEY.categoryId,
+          destinationParamKey: 'category_id',
+        },
+      ],
+    },
+    mapperConfiguration: {
+      method: 'formatObjectType',
+    },
+  },
   [FASHION_CONFIGURATION_ID.BRAND]: {
     apiConfiguration: {
       method: 'getFashionBrandsByObjectTypeId',
-      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.objectType],
     },
     mapperConfiguration: {
       method: 'formatFashionBrand',

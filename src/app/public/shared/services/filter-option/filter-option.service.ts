@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { FilterOptionsApiService } from './services/filter-options-api.service';
 import { FilterOptionsMapperService } from './services/filter-options-mapper.service';
 import { QueryParams } from '../../components/filters/core/interfaces/query-params.interface';
@@ -10,14 +10,17 @@ import { HARDCODED_OPTIONS } from './data/hardcoded-options';
 import { KeyMapper, OptionsApiOrigin } from './interfaces/option-api-origin.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FilterParameterStoreService } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 @Injectable()
 export class FilterOptionService {
   constructor(
     private filterOptionsApiService: FilterOptionsApiService,
     private filterOptionsMapperService: FilterOptionsMapperService,
-    private filterParameterDraftService: FilterParameterStoreService
+    @Inject(FILTER_PARAMETER_DRAFT_STORE_TOKEN) private filterParameterDraftService: FilterParameterStoreService
   ) {}
 
   public getOptions(
@@ -94,13 +97,17 @@ export class FilterOptionService {
   }
 
   private getSiblingParams(paramKeys: string[] = []): Record<string, string> {
-    return this.filterParameterDraftService.getParametersByKeys(paramKeys).reduce(
-      (accumulatedParams, filterParameter) => ({
-        ...accumulatedParams,
-        [filterParameter.key]: filterParameter.value,
-      }),
-      {}
-    );
+    if (paramKeys.length) {
+      return this.filterParameterDraftService.getParametersByKeys(paramKeys).reduce(
+        (accumulatedParams, filterParameter) => ({
+          ...accumulatedParams,
+          [filterParameter.key]: filterParameter.value,
+        }),
+        {}
+      );
+    }
+
+    return {};
   }
 
   private isKeyMapper(mapper: KeyMapper | string): mapper is KeyMapper {

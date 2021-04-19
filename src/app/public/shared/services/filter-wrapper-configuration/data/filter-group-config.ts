@@ -27,13 +27,13 @@ import {
 } from '../../../components/filters/core/constants/filter-configuration-by-category/real-estate/real-estate-buy-filter-configuration';
 import { FILTER_GROUP_ID } from '../enum/filter-group-id.enum';
 
-export const DEFAULT_FILTER_GROUP_CONFIG: FilterWrapperConfiguration = {
+export const DEFAULT_FILTER_WRAPPER_CONFIG: FilterWrapperConfiguration = {
   id: FILTER_GROUP_ID.DEFAULT,
   config: DEFAULT_FILTER_CONFIGURATION,
   params: [],
 };
 
-export const FILTER_GROUP_CONFIG: FilterWrapperConfiguration[] = [
+export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
   {
     id: FILTER_GROUP_ID.CARS,
     config: CAR_FILTER_CONFIGURATION,
@@ -337,6 +337,16 @@ export const FILTER_GROUP_CONFIG: FilterWrapperConfiguration[] = [
       {
         key: FILTER_QUERY_PARAM_KEY.type,
         value: 'box_room',
+      },
+    ],
+  },
+  {
+    id: FILTER_GROUP_ID.FASHION,
+    config: FASHION_N_ACCESSORIES_FILTER_CONFIGURATION,
+    params: [
+      {
+        key: FILTER_QUERY_PARAM_KEY.categoryId,
+        value: CATEGORY_IDS.FASHION_ACCESSORIES.toString(),
       },
     ],
   },

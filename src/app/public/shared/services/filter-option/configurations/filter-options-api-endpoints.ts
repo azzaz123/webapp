@@ -1,5 +1,7 @@
 export const FILTER_OPTIONS_API_ENDPOINTS = {
-  CONDITION_BY_CATEGORY_ID: (categoryId: string) => `/consumer_goods/category/${categoryId}/keys/condition`,
+  CONDITION_BY_CATEGORY_ID: (categoryId: string) => {
+    return categoryId ? `/consumer_goods/category/${categoryId}/keys/condition` : '/consumergoods/keys/condition';
+  },
   OBJECT_TYPE: '/suggesters/general/object-type',
   BRAND_MODEL: '/suggesters/general/brand-model',
   CARS: {
