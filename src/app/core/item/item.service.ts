@@ -34,7 +34,7 @@ import {
 } from './item-response.interface';
 import { find, findIndex, reverse, without, map as lodashMap, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
-import { BanReason } from './ban-reason.interface';
+import { BanReason } from '../trust-and-safety/report/interfaces/ban-reason.interface';
 import { EventService } from '../event/event.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { Car } from './car';

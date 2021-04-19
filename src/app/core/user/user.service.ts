@@ -6,7 +6,7 @@ import { PERMISSIONS, User } from './user';
 import { EventService } from '../event/event.service';
 import { Item } from '../item/item';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
-import { BanReason } from '../item/ban-reason.interface';
+import { BanReason } from '../trust-and-safety/report/interfaces/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
