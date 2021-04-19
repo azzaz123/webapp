@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { BlockUserXmppService } from '@private/features/chat/core/block-user/block-user-xmpp.service';
@@ -18,17 +18,19 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReportService } from '@core/trust-and-safety/report/report.service';
 import { UserReportRequest } from '@core/trust-and-safety/report/interfaces/user/user-report-request.interface';
 import { ErrorsService } from '@core/errors/errors.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'tsl-conversation-details-bar',
   templateUrl: './conversation-details-bar.component.html',
   styleUrls: ['./conversation-details-bar.component.scss'],
 })
-export class ConversationDetailsBarComponent {
+export class ConversationDetailsBarComponent implements OnInit {
   @Input() currentConversation: InboxConversation;
   @Input() isExpanded = false;
   @Output() blockUserEvent = new EventEmitter();
   @Output() expandContainer = new EventEmitter();
+  public showReportListing = false;
 
   constructor(
     private eventService: EventService,
@@ -42,9 +44,8 @@ export class ConversationDetailsBarComponent {
     private inboxConversationService: InboxConversationService
   ) {}
 
-  public showReportListing(): boolean {
-    const { isMine, notAvailable } = this.currentConversation.item;
-    return !isMine && !notAvailable;
+  ngOnInit() {
+    this.setShowReportListing();
   }
 
   public currentConversationIsArchived(): boolean {
@@ -148,5 +149,10 @@ export class ConversationDetailsBarComponent {
         () => {}
       );
     });
+  }
+
+  private setShowReportListing(): void {
+    const { isMine, notAvailable } = this.currentConversation.item;
+    this.showReportListing = !isMine && !notAvailable;
   }
 }
