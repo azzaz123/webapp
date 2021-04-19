@@ -17,8 +17,8 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
   public toggle: boolean;
 
   public ngOnInit(): void {
-    super.ngOnInit();
     this.toggle = this.getBooleanValue();
+    super.ngOnInit();
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {

@@ -32,7 +32,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
             [value]="clothingTypeValue"
             [config]="clothingTypeConfig"
             (valueChange)="changeClothingType($event)"
-            (clear)="changeClothingType([])"
           >
           </tsl-suggester-filter>
         </div>
@@ -42,7 +41,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
             [value]="brandValue"
             [config]="brandConfig"
             (valueChange)="changeBrand($event)"
-            (clear)="changeBrand([])"
           >
           </tsl-suggester-filter>
         </div>
@@ -55,7 +53,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
           [value]="clothingTypeValue"
           [config]="clothingTypeConfig"
           (valueChange)="changeClothingType($event)"
-          (clear)="changeClothingType([])"
         >
         </tsl-suggester-filter>
         <div style="height: 1px; width: 100%; background-color: #90A4AE;" class="my-3"></div>
@@ -64,7 +61,6 @@ import { IsBubblePipe } from '@public/shared/components/filters/components/abstr
           [value]="brandValue"
           [config]="brandConfig"
           (valueChange)="changeBrand($event)"
-          (clear)="changeBrand([])"
         >
         </tsl-suggester-filter>
       </div>
@@ -137,7 +133,10 @@ const brandConfig: SuggesterFilterConfig = {
   icon: '/assets/icons/joke.svg',
   bubblePlaceholder: 'Brand',
   drawerPlaceholder: 'Select brand',
-  mapKey: {},
+  mapKey: {
+    brand: 'brand',
+    model: 'model',
+  },
   type: FILTER_TYPES.SUGGESTER,
   hasOptionsOnInit: false,
   hasContentPlaceholder: true,

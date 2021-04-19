@@ -224,4 +224,30 @@ describe('ToggleFilterComponent', () => {
       });
     });
   });
+
+  describe('when value changes from parent', () => {
+    describe('and original value is empty', () => {
+      beforeEach(() => {
+        component.value = [];
+      });
+
+      it('should set the provided value', () => {
+        component.value = [{ key: 'warranty', value: 'true' }];
+
+        expect(component.toggle).toBeTruthy();
+      });
+    });
+
+    describe('and original value has content', () => {
+      beforeEach(() => {
+        component.value = [{ key: 'warranty', value: 'true' }];
+      });
+
+      it('should clean up the value', () => {
+        component.value = [];
+
+        expect(component.toggle).toBeFalsy();
+      });
+    });
+  });
 });

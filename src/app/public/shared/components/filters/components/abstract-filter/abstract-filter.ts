@@ -16,8 +16,8 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   set value(value: FilterParameter[]) {
     const newValue = value.filter((param) => param.value);
     const previousValue = this._value;
-    if (this.hasValueChanged(previousValue, newValue)) {
-      this.writeValue(newValue);
+    this.writeValue(newValue);
+    if (this.config && this.hasValueChanged(previousValue, newValue)) {
       this.onValueChange(previousValue, newValue);
     }
   }
@@ -46,7 +46,9 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
 
   public ngOnInit(): void {
     this.label = this.config.bubblePlaceholder;
-    this._value = this._value?.length ? this._value : this.config.defaultValue || [];
+    if (this._value.length) {
+      this.onValueChange([], this._value);
+    }
   }
 
   public writeValue(value: FilterParameter[]): void {
@@ -77,20 +79,14 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
   }
 
   protected hasValueChanged(previous: FilterParameter[], current: FilterParameter[]): boolean {
-    if (!this.config || (!previous && !current)) {
-      return false;
-    } else if (!previous) {
-      return true;
-    } else {
-      const keys = Object.keys(this.config.mapKey);
-      for (const key of keys) {
-        const paramKey = this.config.mapKey[key];
-        const previousValue = previous.find((parameter: FilterParameter) => parameter.key === paramKey)?.value;
-        const currentValue = current.find((parameter: FilterParameter) => parameter.key === paramKey)?.value;
+    const keys = Object.keys(this.config.mapKey);
+    for (const key of keys) {
+      const paramKey = this.config.mapKey[key];
+      const previousValue = previous.find((parameter: FilterParameter) => parameter.key === paramKey)?.value;
+      const currentValue = current.find((parameter: FilterParameter) => parameter.key === paramKey)?.value;
 
-        if (previousValue !== currentValue) {
-          return true;
-        }
+      if (previousValue !== currentValue) {
+        return true;
       }
     }
 
