@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportReason } from '@core/trust-and-safety/report/interfaces/report-reason.interface';
-import { UserService } from '@core/user/user.service';
+import { ReportService } from '@core/trust-and-safety/report/report.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -8,15 +8,15 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './report-user.component.html',
 })
 export class ReportUserComponent implements OnInit {
-  public userBanReasons: ReportReason[];
+  public userReportReasons: ReportReason[];
   public selectedReportUserReason: number = null;
   public reportUserReasonMessage: string;
 
-  constructor(private userService: UserService, public activeModal: NgbActiveModal) {}
+  constructor(public activeModal: NgbActiveModal, private reportService: ReportService) {}
 
   ngOnInit() {
-    this.userService.getBanReasons().subscribe((data: ReportReason[]) => {
-      this.userBanReasons = data;
+    this.reportService.getUserReportReasons().subscribe((data: ReportReason[]) => {
+      this.userReportReasons = data;
     });
   }
 
