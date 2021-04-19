@@ -6,6 +6,7 @@ import { APP_VERSION } from '@environments/version';
 import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { USER_ID } from '@fixtures/user.fixtures.spec';
 import { ITEM_REPORT_REASONS } from './constants/item-report-reasons';
+import { UserReportRequest } from './interfaces/user/user-report-request.interface';
 
 import { ReportService, USER_REPORT_ENDPOINT } from './report.service';
 
@@ -29,7 +30,8 @@ describe('ReportService', () => {
       const ITEM_HASH = '9ke65g542jox';
       const REASON = 5;
       const COMMENT = 'bla bla bla';
-      const expectedBodyRequest = {
+      const expectedUserReportRequest: UserReportRequest = {
+        userId: USER_ID,
         itemHashId: ITEM_HASH,
         conversationHash: CONVERSATIONS_HASH,
         comments: COMMENT,
@@ -37,11 +39,11 @@ describe('ReportService', () => {
         targetCrm: 'zendesk',
       };
 
-      service.reportUser(USER_ID, ITEM_HASH, CONVERSATIONS_HASH, REASON, COMMENT).subscribe();
+      service.reportUser(expectedUserReportRequest).subscribe();
 
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_REPORT_ENDPOINT(USER_ID)}`);
       expect(req.request.method).toEqual('POST');
-      expect(req.request.body).toEqual(expectedBodyRequest);
+      expect(req.request.body).toEqual(expectedUserReportRequest);
       expect(req.request.headers.get('AppBuild')).toEqual(APP_VERSION);
     });
   });

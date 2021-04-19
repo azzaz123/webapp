@@ -19,6 +19,7 @@ import { of, throwError } from 'rxjs';
 import { ConversationDetailsBarComponent } from './conversation-details-bar.component';
 import { ReportService } from '@core/trust-and-safety/report/report.service';
 import { ITEM_REPORT_REASONS } from '@core/trust-and-safety/report/constants/item-report-reasons';
+import { UserReportRequest } from '@core/trust-and-safety/report/interfaces/user/user-report-request.interface';
 
 class MockConversationService {
   public loadMoreMessages() {}
@@ -111,17 +112,19 @@ describe('ConversationDetailsBarComponent', () => {
       spyOn(reportService, 'reportUser').and.returnValue(of({}));
       spyOn(toastService, 'show').and.callThrough();
       component.currentConversation = MOCK_CONVERSATION();
+      const expectedUserReportRequest: UserReportRequest = {
+        userId: component.currentConversation.user.id,
+        itemHashId: component.currentConversation.item.id,
+        conversationHash: component.currentConversation.id,
+        reason: 1,
+        comments: 'Report User Reason',
+        targetCrm: 'zendesk',
+      };
 
       component.reportUserAction();
       tick();
 
-      expect(reportService.reportUser).toHaveBeenCalledWith(
-        component.currentConversation.user.id,
-        component.currentConversation.item.id,
-        component.currentConversation.id,
-        1,
-        'Report User Reason'
-      );
+      expect(reportService.reportUser).toHaveBeenCalledWith(expectedUserReportRequest);
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'The user has been reported correctly',
         type: 'success',

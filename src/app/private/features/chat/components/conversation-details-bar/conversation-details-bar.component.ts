@@ -16,6 +16,7 @@ import {
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReportService } from '@core/trust-and-safety/report/report.service';
+import { UserReportRequest } from '@core/trust-and-safety/report/interfaces/user/user-report-request.interface';
 
 @Component({
   selector: 'tsl-conversation-details-bar',
@@ -83,20 +84,20 @@ export class ConversationDetailsBarComponent {
 
   public reportUserAction(): void {
     this.modalService.open(ReportUserComponent, { windowClass: 'report' }).result.then((result: any) => {
-      this.reportService
-        .reportUser(
-          this.currentConversation.user.id,
-          this.currentConversation.item.id,
-          this.currentConversation.id,
-          result.reason,
-          result.message
-        )
-        .subscribe(() => {
-          this.toastService.show({
-            text: this.i18n.getTranslations('reportUserSuccess'),
-            type: 'success',
-          });
+      const userReportRequest: UserReportRequest = {
+        userId: this.currentConversation.user.id,
+        itemHashId: this.currentConversation.item.id,
+        conversationHash: this.currentConversation.id,
+        reason: result.reason,
+        comments: result.message,
+        targetCrm: 'zendesk',
+      };
+      this.reportService.reportUser(userReportRequest).subscribe(() => {
+        this.toastService.show({
+          text: this.i18n.getTranslations('reportUserSuccess'),
+          type: 'success',
         });
+      });
     });
   }
 
