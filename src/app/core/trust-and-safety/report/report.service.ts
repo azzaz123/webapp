@@ -7,10 +7,10 @@ import { APP_VERSION } from '@environments/version';
 import { Observable, of } from 'rxjs';
 import { ITEM_REPORT_REASONS } from './constants/item-report-reasons';
 import { USER_REPORT_REASONS } from './constants/user-report-reasons';
-import { ItemReportReason } from './interfaces/item-report-reason.interface';
-import { ReportReason } from './interfaces/report-reason.interface';
 import { UserReportResponse } from './interfaces/user/user-report-response.interface';
 import { UserReportRequest } from './interfaces/user/user-report-request.interface';
+import { UserReportReason } from './interfaces/user/user-report-reason.interface';
+import { ItemReportReason } from './interfaces/item/item-report-reason.interface';
 
 export const USER_REPORT_ENDPOINT = (userId: string) => `${USER_ENDPOINT}report/user/${userId}`;
 export const LAST_USER_REPORT_REASON_ID = 0;
@@ -21,7 +21,7 @@ export const LAST_USER_REPORT_REASON_ID = 0;
 export class ReportService {
   constructor(private http: HttpClient) {}
 
-  public getUserReportReasons(): Observable<ReportReason[]> {
+  public getUserReportReasons(): Observable<UserReportReason[]> {
     return of(USER_REPORT_REASONS.sort(this.sortUserReportReasons));
   }
 
@@ -42,11 +42,11 @@ export class ReportService {
   public reportItem(itemId: number | string, comments: string, reason: ItemReportReason): Observable<any> {
     return this.http.post(`${environment.baseUrl}${ITEMS_API_URL}/${itemId}/report`, {
       comments: comments,
-      reason: reason.value,
+      reason: reason.id,
     });
   }
 
-  private sortUserReportReasons(a: ReportReason, b: ReportReason): number {
+  private sortUserReportReasons(a: UserReportReason, b: UserReportReason): number {
     if (a.id === LAST_USER_REPORT_REASON_ID) {
       return 1;
     }

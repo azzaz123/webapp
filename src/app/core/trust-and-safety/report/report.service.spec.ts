@@ -55,7 +55,7 @@ describe('ReportService', () => {
       const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/report`;
       const expectedBodyRequest = {
         comments,
-        reason: itemReportReason.value,
+        reason: itemReportReason.id,
       };
 
       service.reportItem(ITEM_ID, 'comments', itemReportReason).subscribe();

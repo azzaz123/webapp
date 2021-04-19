@@ -1,4 +1,4 @@
-export enum ITEM_REPORT_REASON_VALUE {
+export enum ITEM_REPORT_REASON_ID {
   PEOPLE_ANIMALS = 'people_or_animals',
   JOKE = 'joke',
   FAKE = 'fake_item',

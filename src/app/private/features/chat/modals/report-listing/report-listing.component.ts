@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReportReason } from '@core/trust-and-safety/report/interfaces/report-reason.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReportService } from '@core/trust-and-safety/report/report.service';
-import { ItemReportReason } from '@core/trust-and-safety/report/interfaces/item-report-reason.interface';
+import { ItemReportReason } from '@core/trust-and-safety/report/interfaces/item/item-report-reason.interface';
 
 @Component({
   selector: 'tsl-report-listing',
