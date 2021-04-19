@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
@@ -5,6 +6,7 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { Store } from '@ngrx/store';
@@ -18,9 +20,6 @@ import { SearchLayoutComponent } from '../components/search-layout/search-layout
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchService } from '../core/services/search.service';
 import { SearchComponent } from './search.component';
-import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -38,19 +37,19 @@ describe('SearchComponent', () => {
       select: () => of(),
       dispatch: () => {},
     };
-      searchServiceMock = {
-        init: () => {},
-        items$: itemsSubject.asObservable(),
-        loadMore: () => {},
-      };
+    searchServiceMock = {
+      init: () => {},
+      items$: itemsSubject.asObservable(),
+      loadMore: () => {},
+    };
     await TestBed.configureTestingModule({
       declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, AdSlotGroupShoppingComponentSub, ItemCardListComponentStub],
       imports: [FiltersWrapperModule, HttpClientTestingModule],
       providers: [
-          {
-            provide: SearchService,
-            useValue: searchServiceMock,
-          },
+        {
+          provide: SearchService,
+          useValue: searchServiceMock,
+        },
         {
           provide: Store,
           useValue: storeMock,
@@ -71,9 +70,8 @@ describe('SearchComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
-    searchStoreService = TestBed.inject(SearchStoreService);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should create', () => {

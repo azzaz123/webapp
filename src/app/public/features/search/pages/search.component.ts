@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { AdsService } from '@core/ads/services/ads/ads.service';
@@ -7,7 +7,6 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
