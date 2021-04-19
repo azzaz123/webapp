@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { ItemService } from '@core/item/item.service';
-import { UserService } from '@core/user/user.service';
 import { BlockUserXmppService } from '@private/features/chat/core/block-user/block-user-xmpp.service';
 import { BlockUserService } from '@private/features/chat/core/block-user/block-user.service';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
@@ -17,6 +16,7 @@ import {
 } from '@private/features/chat/modals';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ReportService } from '@core/trust-and-safety/report/report.service';
 
 @Component({
   selector: 'tsl-conversation-details-bar',
@@ -33,7 +33,7 @@ export class ConversationDetailsBarComponent {
     private eventService: EventService,
     private modalService: NgbModal,
     private toastService: ToastService,
-    private userService: UserService,
+    private reportService: ReportService,
     private itemService: ItemService,
     private blockUserService: BlockUserService,
     private blockUserXmppService: BlockUserXmppService,
@@ -84,7 +84,7 @@ export class ConversationDetailsBarComponent {
 
   public reportUserAction(): void {
     this.modalService.open(ReportUserComponent, { windowClass: 'report' }).result.then((result: any) => {
-      this.userService
+      this.reportService
         .reportUser(
           this.currentConversation.user.id,
           this.currentConversation.item.id,

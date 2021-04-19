@@ -6,7 +6,6 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { ItemService } from '@core/item/item.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { User } from '@core/user/user';
-import { UserService } from '@core/user/user.service';
 import { BlockUserXmppService } from '@private/features/chat/core/block-user/block-user-xmpp.service';
 import { BlockUserService } from '@private/features/chat/core/block-user/block-user.service';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
@@ -19,6 +18,7 @@ import { SharedModule } from '@shared/shared.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of, throwError } from 'rxjs';
 import { ConversationDetailsBarComponent } from './conversation-details-bar.component';
+import { ReportService } from '@core/trust-and-safety/report/report.service';
 
 class MockUserService {
   public user: User = new User(
@@ -45,10 +45,6 @@ class MockUserService {
     null,
     null
   );
-
-  public reportUser(): Observable<any> {
-    return of({});
-  }
 
   public isProfessional() {
     return of(true);
@@ -83,7 +79,7 @@ describe('ConversationDetailsBarComponent', () => {
   let eventService: EventService;
   let toastService: ToastService;
   let itemService: ItemService;
-  let userService: UserService;
+  let reportService: ReportService;
   let modalService: NgbModal;
   let blockUserService: BlockUserService;
   let blockUserXmppService: BlockUserXmppService;
@@ -97,6 +93,7 @@ describe('ConversationDetailsBarComponent', () => {
       providers: [
         EventService,
         ToastService,
+        { provide: ReportService, useValue: { reportUser: () => of({}) } },
         {
           provide: RealTimeService,
           useValue: {
@@ -105,7 +102,6 @@ describe('ConversationDetailsBarComponent', () => {
         },
 
         { provide: ItemService, useClass: MockItemService },
-        { provide: UserService, useClass: MockUserService },
         {
           provide: InboxConversationService,
           useClass: MockConversationService,
@@ -129,7 +125,7 @@ describe('ConversationDetailsBarComponent', () => {
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
     realTime = TestBed.inject(RealTimeService);
     eventService = TestBed.inject(EventService);
-    userService = TestBed.inject(UserService);
+    reportService = TestBed.inject(ReportService);
     itemService = TestBed.inject(ItemService);
     toastService = TestBed.inject(ToastService);
     modalService = TestBed.inject(NgbModal);
@@ -152,15 +148,15 @@ describe('ConversationDetailsBarComponent', () => {
       });
     });
 
-    it('should call the userService.reportUser and then close the modal and show a toast', fakeAsync(() => {
-      spyOn(userService, 'reportUser').and.callThrough();
+    it('should send report to server, close modal and show a toast', fakeAsync(() => {
+      spyOn(reportService, 'reportUser').and.callThrough();
       spyOn(toastService, 'show').and.callThrough();
       component.currentConversation = MOCK_CONVERSATION();
 
       component.reportUserAction();
       tick();
 
-      expect(userService.reportUser).toHaveBeenCalledWith(
+      expect(reportService.reportUser).toHaveBeenCalledWith(
         component.currentConversation.user.id,
         component.currentConversation.item.id,
         component.currentConversation.id,
