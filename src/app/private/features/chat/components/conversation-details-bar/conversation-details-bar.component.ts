@@ -41,8 +41,9 @@ export class ConversationDetailsBarComponent {
     private inboxConversationService: InboxConversationService
   ) {}
 
-  public itemIsMine(): boolean {
-    return this.currentConversation.item.isMine;
+  public showReportListing(): boolean {
+    const { isMine, notAvailable } = this.currentConversation.item;
+    return !isMine && !notAvailable;
   }
 
   public currentConversationIsArchived(): boolean {
