@@ -7,9 +7,7 @@ import { FavouritesResponse } from './favourites-api.interface';
 
 export const GET_FAVOURITES = `${environment.baseUrl}api/v3/items/check-favorites`;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class FavouritesApiService {
   constructor(private http: HttpClient) {}
 
