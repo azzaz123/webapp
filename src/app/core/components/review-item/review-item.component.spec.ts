@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { CategoryService } from 'app/core/category/category.service';
 import { SanitizedBackgroundDirective } from 'app/shared/sanitized-background/sanitized-background.directive';
 import { environment } from 'environments/environment';
+import { UserProfileRoutePipe } from '@shared/pipes';
 
 describe('ReviewItemComponent', () => {
   let component: ReviewItemComponent;
@@ -16,7 +17,7 @@ describe('ReviewItemComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ReviewItemComponent, SanitizedBackgroundDirective],
+        declarations: [ReviewItemComponent, SanitizedBackgroundDirective, UserProfileRoutePipe],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           { provide: 'SUBDOMAIN', useValue: 'www' },
@@ -46,8 +47,8 @@ describe('ReviewItemComponent', () => {
       expect(component.itemWebLink).toBe(environment.siteUrl.replace('es', 'www') + 'item/' + MOCK_REVIEWS[0].item.webSlug);
     });
 
-    it('should set userWebSlug', () => {
-      expect(component.userWebSlug).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + REVIEWS_RESPONSE[0].user.web_slug);
+    it('should set reviewUser', () => {
+      expect(component.reviewUser).toBe(MOCK_REVIEWS[0].user);
     });
   });
 

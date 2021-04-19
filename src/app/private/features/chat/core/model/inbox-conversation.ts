@@ -140,13 +140,12 @@ export class InboxConversation {
       return InboxUserPlaceholder;
     }
     const userBlocked = Boolean(user.available && user.blocked);
-    const profileUrl = `${environment.siteUrl}user/${user.slug}`;
     return new InboxUser(
       user.hash,
       user.name,
       userBlocked,
       user.available,
-      profileUrl,
+      user.slug,
       user.image_url,
       user.response_rate,
       null,

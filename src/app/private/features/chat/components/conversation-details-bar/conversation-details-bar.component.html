@@ -3,13 +3,16 @@
   <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="d-xl-none back-arrow" (click)="navigationBack()"></tsl-svg-icon>
 
   <div class="lg-device-container d-none d-xl-inline-flex">
-    <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
-       target="_blank" class="user-avatar">
+    <a 
+      *ngIf="currentConversation?.user.webSlug" 
+      [routerLink]="currentConversation?.user.webSlug | userProfileRoute: currentConversation?.user.id" 
+      class="user-avatar"
+    >
       <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
       <tsl-status-icon [blocked]="this.currentConversation.user.blocked"
                        [unavailable]="!this.currentConversation.user.available"></tsl-status-icon>
     </a>
-    <tsl-user-avatar *ngIf="!currentConversation?.user.profileUrl" [user]="this.currentConversation.user" size="40">
+    <tsl-user-avatar *ngIf="!currentConversation?.user.webSlug" [user]="this.currentConversation.user" size="40">
     </tsl-user-avatar>
 
     <h5>{{currentConversation?.user.microName}}</h5>
@@ -53,8 +56,11 @@
   <div ngbDropdown placement="bottom-right" class="conversation-header-menu" [ngClass]="{'expanded': isExpanded}">
 
     <div class="conversation-header-avatar d-xl-none">
-      <a *ngIf="currentConversation?.user.profileUrl" href="{{ currentConversation?.user.profileUrl }}"
-         target="_blank" class="user-avatar">
+      <a 
+        *ngIf="currentConversation?.user.webSlug" 
+        [routerLink]="currentConversation?.user.webSlug | userProfileRoute: currentConversation?.user.id"
+        class="user-avatar"
+      >
         <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
         <tsl-status-icon [blocked]="this.currentConversation.user.blocked"
                          [unavailable]="!this.currentConversation.user.available"></tsl-status-icon>

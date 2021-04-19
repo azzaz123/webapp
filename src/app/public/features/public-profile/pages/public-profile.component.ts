@@ -71,7 +71,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       forkJoin([
-        this.publicProfileService.getUser(this.userId),
+        this.publicProfileService.getUser(this.userId, false),
         this.publicProfileService.getStats(this.userId),
         this.publicProfileService.getShippingCounter(this.userId),
       ])

@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CustomCurrencyPipe } from '@shared/pipes';
+import { CustomCurrencyPipe, UserProfileRoutePipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ProfileCardFavoriteComponent } from './profile-card-favorite.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -32,7 +32,7 @@ describe('ProfileCardFavoriteComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [],
-        declarations: [ProfileCardFavoriteComponent, CustomCurrencyPipe],
+        declarations: [ProfileCardFavoriteComponent, CustomCurrencyPipe, UserProfileRoutePipe],
         providers: [
           DecimalPipe,
           {
@@ -111,14 +111,5 @@ describe('ProfileCardFavoriteComponent', () => {
       tick();
       expect(component.removeFavorite).toHaveBeenCalled();
     }));
-  });
-
-  describe('goToProfileDetail', () => {
-    it('should change window url', () => {
-      spyOn(window, 'open');
-      const MOCK_PROFILE_URL: string = environment.siteUrl.replace('es', subdomain) + 'user/' + MOCK_PROFILE.screen_name;
-      component.goToProfileDetail();
-      expect(window.open).toHaveBeenCalledWith(MOCK_PROFILE_URL);
-    });
   });
 });
