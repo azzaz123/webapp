@@ -1,5 +1,5 @@
 <div class="GridSelectOption p-2 d-flex flex-column justify-content-center align-items-center" (mouseenter)="handleMouseEnter()" (mouseleave)="handleMouseLeave()">
-  <tsl-svg-icon *ngIf="!(icon | isComplexIcon)" class="GridSelectOption__icon" [class.GridSelectOption__icon--active]="isActive" [height]="isBig ? BIG_SIZE : SMALL_SIZE" [width]="isBig ? BIG_SIZE : SMALL_SIZE" [src]="icon"></tsl-svg-icon>
+  <tsl-svg-icon *ngIf="!(icon | isComplexIcon)" class="GridSelectOption__icon GridSelectOption__icon-hover" [class.GridSelectOption__icon--active]="isActive" [height]="isBig ? BIG_SIZE : SMALL_SIZE" [width]="isBig ? BIG_SIZE : SMALL_SIZE" [src]="icon"></tsl-svg-icon>
 
   <tsl-svg-icon *ngIf="icon | isComplexIcon" [class.d-none]="iconStatus$ | async | shouldHideIcon:ICON_STATUS.STANDARD" class="GridSelectOption__icon" [height]="isBig ? BIG_SIZE : SMALL_SIZE" [width]="isBig ? BIG_SIZE : SMALL_SIZE" [src]="icon.standard"></tsl-svg-icon>
   <tsl-svg-icon *ngIf="icon | isComplexIcon" [class.d-none]="iconStatus$ | async | shouldHideIcon:ICON_STATUS.HOVER" class="GridSelectOption__icon" [height]="isBig ? BIG_SIZE : SMALL_SIZE" [width]="isBig ? BIG_SIZE : SMALL_SIZE" [src]="icon.hover"></tsl-svg-icon>

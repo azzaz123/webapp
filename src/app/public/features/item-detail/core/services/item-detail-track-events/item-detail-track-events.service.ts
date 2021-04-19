@@ -10,6 +10,7 @@ import {
   SCREEN_IDS,
   ShareItem,
   UnfavoriteItem,
+  ViewItemDetailRecommendationSlider,
   ViewOthersItemCarDetail,
   ViewOthersItemCGDetail,
   ViewOthersItemREDetail,
@@ -21,6 +22,7 @@ import { Item } from '@core/item/item';
 import { Realestate } from '@core/item/realestate';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
+import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
@@ -146,6 +148,26 @@ export class ItemDetailTrackEventsService {
         rooms: item.rooms,
         isPro: user.featured,
         screenId: SCREEN_IDS.ItemDetail,
+      },
+    };
+    this.analyticsService.trackPageView(event);
+  }
+
+  public trackViewItemDetailRecommendationSliderEvent(
+    item: Item,
+    user: User,
+    recommendedItemIds: string,
+    engine: RECOMMENDATIONS_ENGINE
+  ): void {
+    const event: AnalyticsPageView<ViewItemDetailRecommendationSlider> = {
+      name: ANALYTICS_EVENT_NAMES.ViewItemDetailRecommendationSlider,
+      attributes: {
+        itemSourceId: item.id,
+        categoryId: item.categoryId,
+        engine: engine,
+        recommendedItemIds: recommendedItemIds,
+        screenId: SCREEN_IDS.ItemDetail,
+        isPro: user.featured,
       },
     };
     this.analyticsService.trackPageView(event);

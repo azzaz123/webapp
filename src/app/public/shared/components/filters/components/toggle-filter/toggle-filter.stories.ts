@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
@@ -12,6 +12,7 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { ToggleFilterConfig } from './interfaces/toggle-filter-config.interface';
 import { ToggleFilterComponent } from './toggle-filter.component';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-filters',
@@ -29,8 +30,8 @@ import { ToggleFilterComponent } from './toggle-filter.component';
   `,
 })
 class FiltersComponent {
-  public value: FilterParameter[];
-  public config: ToggleFilterConfig;
+  @Input() public value: FilterParameter[] = [];
+  @Input() public config: ToggleFilterConfig;
 
   changeBubble(value: FilterParameter[]): void {
     this.value = value;
@@ -45,7 +46,7 @@ export default {
   title: 'Webapp/Public/Shared/Components/Filters/ToggleFilter',
   decorators: [
     moduleMetadata({
-      declarations: [ToggleFilterComponent],
+      declarations: [ToggleFilterComponent, IsBubblePipe],
       imports: [CommonModule, AbstractFilterModule, ToggleFormModule, HttpClientModule],
       providers: [{ provide: CookieService, useValue: MockCookieService }, DeviceDetectorService],
     }),
@@ -68,4 +69,10 @@ Default.args = {
     icon: '/assets/icons/joke.svg',
     bubblePlaceholder: 'Has warranty',
   },
+};
+
+export const WithDefaultValue = Template.bind({});
+WithDefaultValue.args = {
+  ...Default.args,
+  value: [{ key: 'warranty', value: 'true' }],
 };

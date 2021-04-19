@@ -15,6 +15,11 @@ $filter-content-height: 355px;
     margin-top: $search-height + 10px;
     max-height: $filter-content-height - $search-height - 40px;
     overflow-y: scroll;
+    @include hide-scroll-bars();
+
+    &--drawer {
+      max-height: unset;
+    }
   }
 
   &__search_box {

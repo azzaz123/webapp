@@ -27,6 +27,7 @@ export const RECOMMENDED_ITEM_MOCK: RecommenderItem = {
   shipping_allowed: false,
   title: 'Title',
   web_slug: 'slug',
+  recommended_type: RECOMMENDER_TYPE.MORE_LIKE_THIS,
 };
 
 export const RECOMMENDED_ITEM_NON_FAVOURITED_MOCK: RecommenderItem = {
@@ -45,10 +46,11 @@ export const RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES: RecommenderItem = {
   shipping_allowed: false,
   title: 'Title',
   web_slug: 'slug',
+  recommended_type: RECOMMENDER_TYPE.MORE_LIKE_THIS,
 };
 
 export const RECOMMENDED_ITEMS_MOCK: RecommendedItemsBodyResponse = {
-  recommended_type: RECOMMENDER_TYPE.DEFAULT,
+  recommended_type: RECOMMENDER_TYPE.MORE_LIKE_THIS,
   recommended_items: [
     RECOMMENDED_ITEM_MOCK,
     RECOMMENDED_ITEM_MOCK,
@@ -60,7 +62,7 @@ export const RECOMMENDED_ITEMS_MOCK: RecommendedItemsBodyResponse = {
 };
 
 export const EMPTY_RECOMMENDED_ITEMS_MOCK: RecommendedItemsBodyResponse = {
-  recommended_type: RECOMMENDER_TYPE.DEFAULT,
+  recommended_type: RECOMMENDER_TYPE.MORE_LIKE_THIS,
   recommended_items: [],
 };
 
@@ -111,3 +113,9 @@ export const MAPPED_RECOMMENDED_ITEM_MOCK: Item = new Item(
   null,
   RECOMMENDED_ITEMS_MOCK.recommended_type
 );
+
+export const RECOMMENDED_ITEM_IDS_MOCK: string = [
+  RECOMMENDED_ITEM_MOCK.id,
+  RECOMMENDED_ITEM_MOCK.id + '1',
+  RECOMMENDED_ITEM_MOCK.id + '2',
+].toString();
