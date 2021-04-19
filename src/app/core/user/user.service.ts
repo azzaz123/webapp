@@ -193,13 +193,6 @@ export class UserService {
     return this.getDistanceInKilometers(currentUserCoord, userCoord);
   }
 
-  public getBanReasons(): Observable<ReportReason[]> {
-    if (!this.banReasons) {
-      this.banReasons = this.i18n.getTranslations('reportUserReasons');
-    }
-    return of(this.banReasons);
-  }
-
   public reportUser(
     userId: string,
     itemHashId: string,
