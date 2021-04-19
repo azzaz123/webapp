@@ -15,6 +15,7 @@
             [noScroll]="isDrawerContentScrollable$ | async"
 (cancel)="closeDrawer()" (apply)="applyDrawer()" (clickBackdrop)="closeDrawer()">
   <tsl-filter-group
+    *ngIf="drawerConfig.isOpen"
     [values]="drawerValues$ | async"
     [config]="drawerFilterConfigurations$ | async"
     [variant]="FILTER_VARIANT.CONTENT"

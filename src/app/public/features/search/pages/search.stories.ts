@@ -19,6 +19,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
 import { FiltersWrapperModule } from '@public/features/search/components/filters-wrapper/filters-wrapper.module';
 import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopping.module';
+import { SearchService } from '@public/features/search/core/services/search.service';
+import { SearchInfrastructureService } from '@public/features/search/core/services/infrastructure/search-infrastructure.service';
+import { SearchAPIService } from '@public/features/search/core/services/infrastructure/api/search-api.service';
+import { SearchFavouritesService } from '@public/features/search/core/services/infrastructure/favorites/search-favourites.service';
 
 export default {
   title: 'Webapp/Public/Features/Search/Pages/Search',
@@ -32,7 +36,11 @@ export default {
         I18nService,
         ItemCardService,
         { provide: 'SUBDOMAIN', useValue: 'www' },
+        SearchService,
         SearchStoreService,
+        SearchInfrastructureService,
+        SearchAPIService,
+        SearchFavouritesService,
       ],
       declarations: [SearchComponent, SearchLayoutComponent],
       imports: [
