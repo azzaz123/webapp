@@ -6,9 +6,10 @@ import { FilterConfigurationService } from '@public/shared/services/filter-confi
 import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
 import { FiltersWrapperComponent } from './filters-wrapper.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  imports: [DrawerModule, BubbleModule, FilterGroupModule],
+  imports: [DrawerModule, BubbleModule, FilterGroupModule, CommonModule],
   providers: [FilterParameterDraftService, FilterParameterStoreService, FilterConfigurationService],
   declarations: [FiltersWrapperComponent],
   exports: [FiltersWrapperComponent],

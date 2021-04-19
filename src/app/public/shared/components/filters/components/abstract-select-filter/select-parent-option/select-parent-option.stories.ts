@@ -41,7 +41,7 @@ DefaultWithSublabel.args = {
 export const DefaultWithIcon = Template.bind({});
 DefaultWithIcon.args = {
   label: 'I am a father',
-  icon: '/assets/icons/categories/normal/All.svg',
+  icon: '/assets/icons/filters/categories/all.svg',
 };
 
 export const Clearable = Template.bind({});

@@ -1,3 +1,5 @@
+import { RECOMMENDER_TYPE } from '../enums/recomender-type.enum';
+
 export interface RecommenderItem {
   category_id: number;
   currency: string;
@@ -9,6 +11,7 @@ export interface RecommenderItem {
   shipping_allowed: boolean;
   title: string;
   web_slug: string;
+  recommended_type: RECOMMENDER_TYPE;
 }
 
 export interface RecommenderItemImage {

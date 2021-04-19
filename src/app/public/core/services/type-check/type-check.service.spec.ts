@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
-import { MOCK_ITEM_CELLPHONES, MOCK_ITEM_FASHION } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { MOCK_ITEM, MOCK_ITEM_CELLPHONES, MOCK_ITEM_FASHION } from '@fixtures/item.fixtures.spec';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { TypeCheckService } from './type-check.service';
 
@@ -78,6 +79,15 @@ describe('TypeCheckService', () => {
     it('should return false when is NOT a size', () => {
       expect(typeCheckService.isSize('Hello')).toBe(false);
       expect(typeCheckService.isSize(MOCK_ITEM_FASHION)).toBe(false);
+    });
+  });
+
+  describe('when we check if a property is a item...', () => {
+    it('should return true when is a item', () => {
+      expect(typeCheckService.isItem(MOCK_ITEM)).toBe(true);
+    });
+    it('should return false when is NOT a item', () => {
+      expect(typeCheckService.isItem(MOCK_ITEM_CARD)).toBe(false);
     });
   });
 });

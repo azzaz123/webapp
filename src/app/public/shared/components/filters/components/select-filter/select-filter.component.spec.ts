@@ -22,6 +22,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
+import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -30,7 +31,7 @@ import { SelectFormComponent } from '@shared/form/components/select/select-form.
 class TestWrapperComponent {
   @Input() config: SelectFilterConfig;
   @Input() variant: FILTER_VARIANT;
-  @Input() value: FilterParameter[];
+  @Input() value: FilterParameter[] = [];
 }
 
 describe('SelectFilterComponent', () => {
@@ -64,7 +65,7 @@ describe('SelectFilterComponent', () => {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [TestWrapperComponent, SelectFilterComponent],
+      declarations: [TestWrapperComponent, SelectFilterComponent, IsBubblePipe],
       imports: [
         HttpClientTestingModule,
         NgbDropdownModule,
@@ -218,16 +219,7 @@ describe('SelectFilterComponent', () => {
           filterTemplate.clear.emit();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
-        });
-
-        it('should emit clear event', () => {
-          spyOn(component.clear, 'emit');
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-
-          filterTemplate.clear.emit();
-
-          expect(component.clear.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
         });
       });
     });
@@ -328,16 +320,7 @@ describe('SelectFilterComponent', () => {
           selectTemplate.clear.emit();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
-        });
-
-        it('should emit clear event', () => {
-          spyOn(component.clear, 'emit');
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
-
-          selectTemplate.clear.emit();
-
-          expect(component.clear.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
         });
       });
     });

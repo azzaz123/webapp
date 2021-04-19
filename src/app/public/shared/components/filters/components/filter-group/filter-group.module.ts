@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 import { FiltersModule } from '../../filters.module';
 import { FilterHostDirective } from './directives/filter-host.directive';
 import { FilterGroupComponent } from './filter-group.component';
-import { FilterFactoryService } from './services/filter-factory.service';
+import { FilterHostComponent } from './components/filter-host/filter-host.component';
+import { FilterValuesPipe } from './pipes/filter-values.pipe';
 
 @NgModule({
-  declarations: [FilterGroupComponent, FilterHostDirective],
+  declarations: [FilterGroupComponent, FilterHostDirective, FilterHostComponent, FilterValuesPipe],
   exports: [FilterGroupComponent],
   imports: [CommonModule, FiltersModule],
-  providers: [FilterFactoryService],
 })
 export class FilterGroupModule {}

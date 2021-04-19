@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { CAR_FILTER_CONFIGURATION } from '@public/shared/components/filters/core/constants/filter-configuration-by-category/car/car-filter-configuration';
 import { FILTER_CONFIGURATIONS } from '@public/shared/components/filters/core/constants/filters/filter-configurations';
 import { AvailableFilterConfig } from '@public/shared/components/filters/core/types/available-filter-config.type';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FilterConfigurations } from './interfaces/filter-configurations.interface';
+import { CAR_FILTER_CONFIGURATION } from '@public/shared/components/filters/core/constants/filter-configuration-by-category/car/car-filter-configuration';
 
 @Injectable()
 export class FilterConfigurationService {
