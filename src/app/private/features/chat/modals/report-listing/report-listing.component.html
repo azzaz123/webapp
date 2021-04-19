@@ -6,7 +6,7 @@
   <div class="scroll">
     <div [ngClass]="{selected: selectedReportListingReason === reason.id}"
          class="report-ban-reason row align-items-center"
-         (click)="selectReportListingReason(reason.id)" *ngFor="let reason of listingBanReasons">
+         (click)="selectReportListingReason(reason)" *ngFor="let reason of listingBanReasons">
       <div class="col-3 d-flex justify-content-center">
         <div class="ban-reason-icon-container">
           <tsl-svg-icon src="{{reason.iconPath}}"></tsl-svg-icon>
