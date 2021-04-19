@@ -13,6 +13,7 @@ import { UserReportReason } from './interfaces/user/user-report-reason.interface
 import { ItemReportReason } from './interfaces/item/item-report-reason.interface';
 
 export const USER_REPORT_ENDPOINT = (userId: string) => `${USER_ENDPOINT}report/user/${userId}`;
+export const ITEM_REPORT_ENDPOINT = (itemId: number | string) => `${ITEMS_API_URL}/${itemId}/report`;
 export const LAST_USER_REPORT_REASON_ID = 0;
 
 @Injectable({
@@ -39,8 +40,8 @@ export class ReportService {
     );
   }
 
-  public reportItem(itemId: number | string, comments: string, reason: ItemReportReason): Observable<any> {
-    return this.http.post(`${environment.baseUrl}${ITEMS_API_URL}/${itemId}/report`, {
+  public reportItem(itemId: number | string, comments: string, reason: ItemReportReason): Observable<null> {
+    return this.http.post<null>(`${environment.baseUrl}${ITEM_REPORT_ENDPOINT(itemId)}`, {
       comments: comments,
       reason: reason.id,
     });
