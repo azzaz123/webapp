@@ -23,10 +23,12 @@ describe('SearchService', () => {
       items$: itemsSubject.asObservable(),
       setItems: (items: ItemCard[]) => {},
       appendItems: (items: ItemCard[]) => {},
+      clear: () => {},
     };
 
     filterParameterStoreServiceMock = {
       parameters$: filterParametersSubject.asObservable(),
+      clear: () => {},
     };
 
     searchInfrastructureServiceMock = {
@@ -101,6 +103,27 @@ describe('SearchService', () => {
         expect(searchStoreServiceMock.appendItems).toHaveBeenCalledWith(searchPagination.items);
         expect(searchStoreServiceMock.appendItems).toHaveBeenCalledTimes(1);
       });
+    });
+  });
+
+  describe('when we want to close', () => {
+    it('should clear all services', () => {
+      spyOn(searchStoreServiceMock, 'clear').and.callThrough();
+      spyOn(filterParameterStoreServiceMock, 'clear').and.callThrough();
+
+      service.close();
+
+      expect(searchStoreServiceMock.clear).toHaveBeenCalledTimes(1);
+      expect(filterParameterStoreServiceMock.clear).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not listen the changes of filter parameters', () => {
+      spyOn(searchInfrastructureServiceMock, 'search').and.callThrough();
+      filterParametersSubject.next(filterParametersMock);
+
+      service.close();
+
+      expect(searchInfrastructureServiceMock.search).toHaveBeenCalledTimes(0);
     });
   });
 });

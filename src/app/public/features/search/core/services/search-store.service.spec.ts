@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { SearchStoreService } from './search-store.service';
 
 describe('SearchStoreService', () => {
@@ -79,6 +80,17 @@ describe('SearchStoreService', () => {
     });
     it('should return item count', () => {
       expect(service.getItemCount()).toBe(3);
+    });
+  });
+
+  describe('when clear service', () => {
+    it('should to emit the initial state', (done) => {
+      service.clear();
+
+      service.items$.subscribe((items: ItemCard[]) => {
+        expect(items).toEqual([]);
+        done();
+      });
     });
   });
 });
