@@ -1146,4 +1146,10 @@
   <translation id="web_stats_item_views_tooltip">Visualizaciones</translation>
   <translation id="web_stats_item_chats_tooltip">Chats</translation>
   <translation id="web_stats_item_favourites_tooltip">Favoritos</translation>
+  <translation id="web_user_report_reason_other">Otras causas</translation>
+  <translation id="web_user_report_reason_fraud">Fraude</translation>
+  <translation id="web_user_report_reason_possible_fraud">Sospecha de fraude</translation>
+  <translation id="web_user_report_reason_bad_behavior">Mal comportamiento o abuso</translation>
+  <translation id="web_user_report_reason_did_not_show_up">No asistencia a la cita</translation>
+  <translation id="web_user_report_reason_bad_product">Artículo defectuoso o incorrecto</translation>
 </translationbundle>
