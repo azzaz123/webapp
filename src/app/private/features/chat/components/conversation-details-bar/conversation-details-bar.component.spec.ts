@@ -20,6 +20,7 @@ import { ConversationDetailsBarComponent } from './conversation-details-bar.comp
 import { ReportService } from '@core/trust-and-safety/report/report.service';
 import { ITEM_REPORT_REASONS } from '@core/trust-and-safety/report/constants/item-report-reasons';
 import { UserReportRequest } from '@core/trust-and-safety/report/interfaces/user/user-report-request.interface';
+import { ErrorsService } from '@core/errors/errors.service';
 
 class MockConversationService {
   public loadMoreMessages() {}
@@ -56,6 +57,7 @@ describe('ConversationDetailsBarComponent', () => {
       providers: [
         EventService,
         ToastService,
+        ErrorsService,
         ReportService,
         {
           provide: RealTimeService,
@@ -166,6 +168,7 @@ describe('ConversationDetailsBarComponent', () => {
         spyOn(reportService, 'reportItem').and.returnValue(
           throwError({
             status: 403,
+            error: 'Error',
           })
         );
         spyOn(toastService, 'show').and.callThrough();

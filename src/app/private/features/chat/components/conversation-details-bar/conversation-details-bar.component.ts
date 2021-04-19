@@ -17,6 +17,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReportService } from '@core/trust-and-safety/report/report.service';
 import { UserReportRequest } from '@core/trust-and-safety/report/interfaces/user/user-report-request.interface';
+import { ErrorsService } from '@core/errors/errors.service';
 
 @Component({
   selector: 'tsl-conversation-details-bar',
@@ -37,6 +38,7 @@ export class ConversationDetailsBarComponent {
     private blockUserService: BlockUserService,
     private blockUserXmppService: BlockUserXmppService,
     private i18n: I18nService,
+    private errorService: ErrorsService,
     private inboxConversationService: InboxConversationService
   ) {}
 
@@ -110,12 +112,7 @@ export class ConversationDetailsBarComponent {
             type: 'success',
           });
         },
-        () => {
-          this.toastService.show({
-            text: this.i18n.getTranslations('defaultErrorMessage'),
-            type: 'error',
-          });
-        }
+        (error) => this.errorService.show(error)
       );
     });
   }
