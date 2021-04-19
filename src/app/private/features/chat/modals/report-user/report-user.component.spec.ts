@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -14,7 +15,7 @@ describe('ReportUserComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [FormsModule],
+        imports: [HttpClientTestingModule, FormsModule],
         providers: [NgbActiveModal, ReportService],
         declarations: [ReportUserComponent],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],

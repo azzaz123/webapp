@@ -56,13 +56,16 @@ describe('ReportListingComponent', () => {
 
   describe('close', () => {
     it('should call close', () => {
+      const SELECTED_ITEM_REPORT_REASON = ITEM_REPORT_REASONS[0];
       spyOn(activeModal, 'close');
       component.reportListingReasonMessage = 'message';
-      component.selectedReportListingReason = ITEM_REPORT_REASONS[0];
+      component.selectedReportListingReason = SELECTED_ITEM_REPORT_REASON;
+
       component.close();
+
       expect(activeModal.close).toHaveBeenCalledWith({
         message: 'message',
-        reason: 1,
+        reason: SELECTED_ITEM_REPORT_REASON,
       });
     });
   });

@@ -102,25 +102,18 @@ export class ConversationDetailsBarComponent {
 
   public reportListingAction(): void {
     this.modalService.open(ReportListingComponent, { windowClass: 'report' }).result.then((result: any) => {
-      this.reportService.reportListing(this.currentConversation.item.id, result.message, result.reason).subscribe(
+      this.reportService.reportItem(this.currentConversation.item.id, result.message, result.reason).subscribe(
         () => {
           this.toastService.show({
             text: this.i18n.getTranslations('reportListingSuccess'),
             type: 'success',
           });
         },
-        (error: any) => {
-          if (error.status === 403) {
-            this.toastService.show({
-              text: this.i18n.getTranslations('reportListingSuccess'),
-              type: 'success',
-            });
-          } else {
-            this.toastService.show({
-              text: this.i18n.getTranslations('serverError') + ' ' + error.json().message,
-              type: 'error',
-            });
-          }
+        () => {
+          this.toastService.show({
+            text: this.i18n.getTranslations('defaultErrorMessage'),
+            type: 'error',
+          });
         }
       );
     });

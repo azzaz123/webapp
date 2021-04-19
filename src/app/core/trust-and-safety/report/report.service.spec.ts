@@ -56,7 +56,7 @@ describe('ReportService', () => {
         reason: itemReportReason.value,
       };
 
-      service.reportListing(ITEM_ID, 'comments', itemReportReason).subscribe();
+      service.reportItem(ITEM_ID, 'comments', itemReportReason).subscribe();
       const req = httpMock.expectOne(expectedUrl);
       req.flush({});
 

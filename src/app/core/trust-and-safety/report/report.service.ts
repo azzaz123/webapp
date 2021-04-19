@@ -50,7 +50,7 @@ export class ReportService {
     );
   }
 
-  public reportListing(itemId: number | string, comments: string, reason: ItemReportReason): Observable<any> {
+  public reportItem(itemId: number | string, comments: string, reason: ItemReportReason): Observable<any> {
     return this.http.post(`${environment.baseUrl}${ITEMS_API_URL}/${itemId}/report`, {
       comments: comments,
       reason: reason.value,
