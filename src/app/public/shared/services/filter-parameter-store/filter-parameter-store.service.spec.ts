@@ -1,18 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FilterParameterDraftService } from './filter-parameter-draft.service';
+import { FilterParameterStoreService } from './filter-parameter-store.service';
 import { filterParametersMock } from '@fixtures/filter-parameter.fixtures';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
-describe('FilterParameterDraftService', () => {
-  let service: FilterParameterDraftService;
+describe('FilterParameterStoreService', () => {
+  let service: FilterParameterStoreService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FilterParameterDraftService],
+      providers: [FilterParameterStoreService],
     });
-    service = TestBed.inject(FilterParameterDraftService);
+    service = TestBed.inject(FilterParameterStoreService);
   });
 
   it('should be created', () => {

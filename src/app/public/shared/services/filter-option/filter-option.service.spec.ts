@@ -10,7 +10,7 @@ import {
   MockFilterOptionMapperService,
   MockFilterParameterDraftService,
 } from '@fixtures/filter-option.fixtures';
-import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
+import { FilterParameterStoreService } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 jest.mock('./data/hardcoded-options', () => ({
   HARDCODED_OPTIONS: {
@@ -80,7 +80,7 @@ describe('FilterOptionService', () => {
       providers: [
         FilterOptionService,
         {
-          provide: FilterParameterDraftService,
+          provide: FilterParameterStoreService,
           useClass: MockFilterParameterDraftService,
         },
         {

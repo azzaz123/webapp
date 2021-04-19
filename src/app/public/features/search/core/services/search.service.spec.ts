@@ -5,7 +5,6 @@ import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { BehaviorSubject, of } from 'rxjs';
 import { SearchPagination } from '../../interfaces/search-pagination.interface';
-import { FilterParameterStoreService } from './filter-parameter-store.service';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
 import { SearchStoreService } from './search-store.service';
 import { SearchService } from './search.service';
@@ -40,10 +39,6 @@ describe('SearchService', () => {
         {
           provide: SearchStoreService,
           useValue: searchStoreServiceMock,
-        },
-        {
-          provide: FilterParameterStoreService,
-          useValue: filterParameterStoreServiceMock,
         },
         {
           provide: SearchInfrastructureService,

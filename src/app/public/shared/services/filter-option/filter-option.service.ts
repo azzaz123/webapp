@@ -10,14 +10,14 @@ import { HARDCODED_OPTIONS } from './data/hardcoded-options';
 import { KeyMapper, OptionsApiOrigin } from './interfaces/option-api-origin.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
+import { FilterParameterStoreService } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 @Injectable()
 export class FilterOptionService {
   constructor(
     private filterOptionsApiService: FilterOptionsApiService,
     private filterOptionsMapperService: FilterOptionsMapperService,
-    private filterParameterDraftService: FilterParameterDraftService
+    private filterParameterDraftService: FilterParameterStoreService
   ) {}
 
   public getOptions(
