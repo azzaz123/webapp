@@ -23,7 +23,11 @@ import { SearchService } from '@public/features/search/core/services/search.serv
 import { SearchInfrastructureService } from '@public/features/search/core/services/infrastructure/search-infrastructure.service';
 import { SearchAPIService } from '@public/features/search/core/services/infrastructure/api/search-api.service';
 import { SearchFavouritesService } from '@public/features/search/core/services/infrastructure/favorites/search-favourites.service';
-import { ExtractFilterConfigsPipe } from '@public/features/search/components/filters-wrapper/pipes/extract-filter-configs.pipe';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 export default {
   title: 'Webapp/Public/Features/Search/Pages/Search',
@@ -42,8 +46,16 @@ export default {
         SearchInfrastructureService,
         SearchAPIService,
         SearchFavouritesService,
+        {
+          provide: FILTER_PARAMETER_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+        {
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
       ],
-      declarations: [SearchComponent, SearchLayoutComponent, ExtractFilterConfigsPipe],
+      declarations: [SearchComponent, SearchLayoutComponent],
       imports: [
         CoreModule,
         SharedModule,

@@ -10,6 +10,7 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FilterWrapperConfiguration } from '@public/shared/services/filter-wrapper-configuration/interfaces/filter-group-config.interface';
+import { DEFAULT_FILTER_GROUP_CONFIG } from '@public/shared/services/filter-wrapper-configuration/data/filter-group-config';
 
 @Component({
   selector: 'tsl-filters-wrapper',
@@ -24,8 +25,8 @@ export class FiltersWrapperComponent {
     hasApply: true,
   };
   public activeFiltersCount = 0;
-  private drawerFilterConfigurationsSubject = new BehaviorSubject<FilterWrapperConfiguration>(null);
-  private bubbleFilterConfigurationsSubject = new BehaviorSubject<FilterWrapperConfiguration>(null);
+  private drawerFilterConfigurationsSubject = new BehaviorSubject<FilterWrapperConfiguration>(DEFAULT_FILTER_GROUP_CONFIG);
+  private bubbleFilterConfigurationsSubject = new BehaviorSubject<FilterWrapperConfiguration>(DEFAULT_FILTER_GROUP_CONFIG);
 
   public scrollOffset = 0;
   private drawerValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
@@ -46,20 +47,37 @@ export class FiltersWrapperComponent {
   constructor(
     @Inject(FILTER_PARAMETER_DRAFT_STORE_TOKEN) private drawerStore: FilterParameterStoreService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private bubbleStore: FilterParameterStoreService,
-    private filterConfigurationService: FilterWrapperConfigurationService
+    private filterWrapperConfigurationService: FilterWrapperConfigurationService
   ) {
     this.subscriptions.add(
       this.bubbleStore.parameters$.subscribe((filterValues: FilterParameter[]) => {
-        this.bubbleFilterConfigurationsSubject.next(this.filterConfigurationService.getConfiguration(FILTER_VARIANT.BUBBLE, filterValues));
-        this.bubbleValuesSubject.next(filterValues);
-        this.drawerStore.setParameters(filterValues);
+        const hasConfigurationChanged = this.handleConfigurationParametersChange(FILTER_VARIANT.BUBBLE, filterValues);
+
+        if (!hasConfigurationChanged) {
+          this.bubbleValuesSubject.next(filterValues);
+          this.drawerStore.setParameters(filterValues);
+        }
       })
     );
 
     this.subscriptions.add(
       this.drawerStore.parameters$.subscribe((filterValues: FilterParameter[]) => {
-        this.drawerFilterConfigurationsSubject.next(this.filterConfigurationService.getConfiguration(FILTER_VARIANT.CONTENT, filterValues));
-        this.drawerValuesSubject.next(filterValues);
+        const hasConfigurationChanged = this.handleConfigurationParametersChange(FILTER_VARIANT.CONTENT, filterValues);
+
+        if (!hasConfigurationChanged) {
+          this.drawerValuesSubject.next(filterValues);
+        }
+      })
+    );
+
+    this.subscriptions.add(
+      this.bubbleFilterConfigurationsSubject.subscribe((config) => {
+        this.bubbleStore.setParameters(config.params);
+      })
+    );
+    this.subscriptions.add(
+      this.drawerFilterConfigurationsSubject.subscribe((config) => {
+        this.drawerStore.setParameters(config.params);
       })
     );
   }
@@ -97,5 +115,19 @@ export class FiltersWrapperComponent {
 
   public drawerOpenStateChange(isOpen: boolean): void {
     this.isDrawerContentScrollableSubject.next(isOpen);
+  }
+
+  private handleConfigurationParametersChange(variant: FILTER_VARIANT, filterValues: FilterParameter[]): boolean {
+    const configurationSubject =
+      variant === FILTER_VARIANT.BUBBLE ? this.bubbleFilterConfigurationsSubject : this.drawerFilterConfigurationsSubject;
+
+    const wrapperConfiguration = this.filterWrapperConfigurationService.getConfiguration(variant, filterValues);
+
+    if (configurationSubject.getValue().id !== wrapperConfiguration.id) {
+      configurationSubject.next(wrapperConfiguration);
+      return true;
+    }
+
+    return false;
   }
 }
