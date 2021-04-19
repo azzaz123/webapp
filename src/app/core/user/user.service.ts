@@ -6,7 +6,7 @@ import { PERMISSIONS, User } from './user';
 import { EventService } from '../event/event.service';
 import { Item } from '../item/item';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
-import { BanReason } from '../trust-and-safety/report/interfaces/ban-reason.interface';
+import { ReportReason } from '../trust-and-safety/report/interfaces/report-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
@@ -63,7 +63,7 @@ export const LOCAL_STORAGE_TRY_PRO_SLOT = 'try-pro-slot';
 export class UserService {
   private _user: User;
   private _users: User[] = [];
-  private banReasons: BanReason[];
+  private banReasons: ReportReason[];
   private presenceInterval: any;
 
   constructor(
@@ -193,7 +193,7 @@ export class UserService {
     return this.getDistanceInKilometers(currentUserCoord, userCoord);
   }
 
-  public getBanReasons(): Observable<BanReason[]> {
+  public getBanReasons(): Observable<ReportReason[]> {
     if (!this.banReasons) {
       this.banReasons = this.i18n.getTranslations('reportUserReasons');
     }

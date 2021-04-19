@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { BanReason } from '@core/item/ban-reason.interface';
+import { ReportReason } from '@core/item/ban-reason.interface';
 import { ItemService } from '@core/item/item.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
@@ -13,7 +13,7 @@ describe('ReportListingComponent', () => {
   let itemService: ItemService;
   let activeModal: NgbActiveModal;
 
-  const BAN_REASONS: BanReason[] = [
+  const BAN_REASONS: ReportReason[] = [
     {
       id: 1,
       label: 'ban reason',
@@ -29,7 +29,7 @@ describe('ReportListingComponent', () => {
           {
             provide: ItemService,
             useValue: {
-              getBanReasons() {
+              getReportReasons() {
                 return of(BAN_REASONS);
               },
             },

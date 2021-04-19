@@ -34,7 +34,7 @@ import {
 } from './item-response.interface';
 import { find, findIndex, reverse, without, map as lodashMap, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
-import { BanReason } from '../trust-and-safety/report/interfaces/ban-reason.interface';
+import { ReportReason } from '../trust-and-safety/report/interfaces/report-reason.interface';
 import { EventService } from '../event/event.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { Car } from './car';
@@ -76,7 +76,7 @@ export const V1_API_URL = 'shnm-portlet/api/v1';
 export class ItemService {
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
-  private banReasons: BanReason[] = null;
+  private banReasons: ReportReason[] = null;
   protected items: ItemsStore = {
     active: [],
     pending: [],
@@ -143,7 +143,7 @@ export class ItemService {
     this.selectedAction = null;
   }
 
-  public getBanReasons(): Observable<BanReason[]> {
+  public getBanReasons(): Observable<ReportReason[]> {
     if (!this.banReasons) {
       this.banReasons = this.i18n.getTranslations('reportListingReasons');
     }
