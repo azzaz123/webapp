@@ -113,7 +113,7 @@ describe('ProfileComponent', () => {
   describe('when the component loads', () => {
     it('should set correctly the public url link', () => {
       mockBeforeEachInit();
-      const expectedPublicProfileRoute = `/${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.USER_DETAIL}/${USER_DATA.web_slug}`;
+      const expectedPublicProfileRoute = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.USER_DETAIL}/${USER_DATA.web_slug}`;
       const publicProfileUrlHTML = fixture.debugElement.query(By.css('.header-row > .header-link'));
       const routerLinkInstance = publicProfileUrlHTML.injector.get(RouterLinkWithHref);
 
