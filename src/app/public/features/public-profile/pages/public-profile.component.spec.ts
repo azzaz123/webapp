@@ -43,7 +43,6 @@ describe('PublicProfileComponent', () => {
           provide: PublicProfileTrackingEventsService,
           useClass: MockUserProfileTrackEventService,
         },
-
         {
           provide: ActivatedRoute,
           useValue: {

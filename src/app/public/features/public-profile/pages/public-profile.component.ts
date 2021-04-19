@@ -9,8 +9,8 @@ import { Image, UserFavourited } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { combineLatest, forkJoin, Subscription } from 'rxjs';
-import { finalize, take } from 'rxjs/operators';
+import { forkJoin, Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
 import { PublicProfileTrackingEventsService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { PublicProfileService } from '../core/services/public-profile.service';
@@ -78,7 +78,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         .pipe(
           finalize(() => {
             this.handleCoverImage();
-            this.trackVieProfileEvent();
+            this.trackViewProfileEvent();
           })
         )
         .subscribe(
@@ -120,7 +120,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  private trackVieProfileEvent(): void {
+  private trackViewProfileEvent(): void {
     this.isCurrentUserPipe.transform(this.userId).subscribe((isOwnUser: boolean) => {
       if (isOwnUser) {
         this.publicProfileTrackingEventsService.trackViewOwnProfile(this.userInfo.featured);
