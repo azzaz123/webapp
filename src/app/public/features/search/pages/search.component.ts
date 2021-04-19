@@ -28,6 +28,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
   public device: DeviceType;
   public DevicesType: typeof DeviceType = DeviceType;
+  public infiniteScrollDisabled = true;
 
   public columnsConfig: ColumnsConfig = {
     xl: 4,
@@ -65,5 +66,14 @@ export class SearchComponent implements OnInit, OnDestroy {
   public toggleBubbleFilterBackdrop(active: boolean): void {
     const count = this.openBubbleCountSubject.getValue();
     this.openBubbleCountSubject.next(active ? count + 1 : count - 1);
+  }
+
+  public setInfiniteScroll(): void {
+    this.infiniteScrollDisabled = false;
+    this.scrolled();
+  }
+
+  public scrolled(): void {
+    this.searchService.loadMore();
   }
 }
