@@ -38,7 +38,6 @@ import { ReportReason } from '../trust-and-safety/report/interfaces/report-reaso
 import { EventService } from '../event/event.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { Car } from './car';
-import { ITEM_BAN_REASONS } from './ban-reasons';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
@@ -141,13 +140,6 @@ export class ItemService {
       item.selected = false;
     });
     this.selectedAction = null;
-  }
-
-  public getBanReasons(): Observable<ReportReason[]> {
-    if (!this.banReasons) {
-      this.banReasons = this.i18n.getTranslations('reportListingReasons');
-    }
-    return of(this.banReasons);
   }
 
   public deselectItem(id: string) {
@@ -370,13 +362,6 @@ export class ItemService {
     }
 
     return item;
-  }
-
-  public reportListing(itemId: number | string, comments: string, reason: number): Observable<any> {
-    return this.http.post(`${environment.baseUrl}${ITEMS_API_URL}/${itemId}/report`, {
-      comments: comments,
-      reason: ITEM_BAN_REASONS[reason],
-    });
   }
 
   public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
