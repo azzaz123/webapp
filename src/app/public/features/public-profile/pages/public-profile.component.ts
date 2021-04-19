@@ -9,9 +9,10 @@ import { Image, UserFavourited } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { forkJoin, Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { combineLatest, forkJoin, Subscription } from 'rxjs';
+import { finalize, take } from 'rxjs/operators';
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
+import { PublicProfileTrackingEventsService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { PublicProfileService } from '../core/services/public-profile.service';
 
 @Component({
@@ -38,7 +39,8 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     private deviceService: DeviceService,
     private adsService: AdsService,
     private isCurrentUserPipe: IsCurrentUserPipe,
-    private slugsUtilService: SlugsUtilService
+    private slugsUtilService: SlugsUtilService,
+    private publicProfileTrackingEventsService: PublicProfileTrackingEventsService
   ) {}
 
   ngOnInit(): void {
@@ -76,6 +78,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         .pipe(
           finalize(() => {
             this.handleCoverImage();
+            this.trackVieProfileEvent();
           })
         )
         .subscribe(
@@ -113,6 +116,16 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.isCurrentUserPipe.transform(this.userId).subscribe((isOurOwnUser: boolean) => {
       if (!isOurOwnUser) {
         this.getFavouriteUser();
+      }
+    });
+  }
+
+  private trackVieProfileEvent(): void {
+    this.isCurrentUserPipe.transform(this.userId).subscribe((isOwnUser: boolean) => {
+      if (isOwnUser) {
+        this.publicProfileTrackingEventsService.trackViewOwnProfile(this.userInfo.featured);
+      } else {
+        this.publicProfileTrackingEventsService.trackViewOtherProfile(this.userInfo, this.userStats.counters.publish);
       }
     });
   }
