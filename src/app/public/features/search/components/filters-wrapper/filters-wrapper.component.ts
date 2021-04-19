@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { DrawerConfig } from '@public/shared/components/filters/interfaces/drawer-config.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { FilterConfigurationService } from '@public/shared/services/filter-configuration/filter-configuration.service';
+import { FilterWrapperConfigurationService } from '@public/shared/services/filter-wrapper-configuration/filter-wrapper-configuration.service';
 import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -43,7 +43,7 @@ export class FiltersWrapperComponent {
   constructor(
     private drawerStore: FilterParameterDraftService,
     private bubbleStore: FilterParameterStoreService,
-    private filterConfigurationService: FilterConfigurationService
+    private filterConfigurationService: FilterWrapperConfigurationService
   ) {
     this.subscriptions.add(
       this.bubbleStore.parameters$.subscribe((filterValues: FilterParameter[]) => {

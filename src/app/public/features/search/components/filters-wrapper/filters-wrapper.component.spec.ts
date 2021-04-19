@@ -5,7 +5,7 @@ import { DrawerModule } from '@public/shared/components/drawer/drawer.module';
 import { FilterGroupComponentStub } from '@public/shared/components/filters/components/filter-group/services/filter-group.component.stub';
 import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
-import { FilterConfigurationService } from '@public/shared/services/filter-configuration/filter-configuration.service';
+import { FilterWrapperConfigurationService } from '@public/shared/services/filter-wrapper-configuration/filter-wrapper-configuration.service';
 
 describe('FiltersWrapperComponent', () => {
   let component: FiltersWrapperComponent;
@@ -15,7 +15,7 @@ describe('FiltersWrapperComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [FiltersWrapperComponent, FilterGroupComponentStub],
       imports: [BubbleModule, DrawerModule],
-      providers: [FilterParameterStoreService, FilterParameterDraftService, FilterConfigurationService],
+      providers: [FilterParameterStoreService, FilterParameterDraftService, FilterWrapperConfigurationService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FiltersWrapperComponent);

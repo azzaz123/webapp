@@ -8,11 +8,11 @@ import {
   FilterWrapperConfiguration,
   ValueOf,
 } from '@public/shared/components/filters/core/interfaces/filter-wrapper-configuration.interface';
-import { FilterGroupConfig } from '@public/shared/services/filter-configuration/interfaces/filter-group-config.interface';
-import { FILTER_GROUP_CONFIG } from '@public/shared/services/filter-configuration/data/filter-group-config';
+import { FilterGroupConfig } from '@public/shared/services/filter-wrapper-configuration/interfaces/filter-group-config.interface';
+import { FILTER_GROUP_CONFIG } from '@public/shared/services/filter-wrapper-configuration/data/filter-group-config';
 
 @Injectable()
-export class FilterConfigurationService {
+export class FilterWrapperConfigurationService {
   public getConfiguration(variant: FILTER_VARIANT, parameters: FilterParameter[]): AvailableFilterConfig[] {
     const configGroup = this.getConfigGroupByParameters(parameters);
     const configIds = variant === FILTER_VARIANT.BUBBLE ? configGroup.bubble : configGroup.drawer;
