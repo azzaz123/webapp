@@ -7,11 +7,12 @@ import { FilterParameterDraftService } from '@public/shared/services/filter-para
 import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
 import { FiltersWrapperComponent } from './filters-wrapper.component';
 import { CommonModule } from '@angular/common';
+import { ExtractFilterConfigsPipe } from '@public/features/search/components/filters-wrapper/pipes/extract-filter-configs.pipe';
 
 @NgModule({
   imports: [DrawerModule, BubbleModule, FilterGroupModule, CommonModule],
   providers: [FilterParameterDraftService, FilterParameterStoreService, FilterWrapperConfigurationService],
-  declarations: [FiltersWrapperComponent],
+  declarations: [FiltersWrapperComponent, ExtractFilterConfigsPipe],
   exports: [FiltersWrapperComponent],
 })
 export class FiltersWrapperModule {}

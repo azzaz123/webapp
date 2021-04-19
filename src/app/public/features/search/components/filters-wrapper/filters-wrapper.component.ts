@@ -6,7 +6,7 @@ import { FilterWrapperConfigurationService } from '@public/shared/services/filte
 import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
 import { FilterParameterStoreService } from '../../core/services/filter-parameter-store.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { AvailableFilterConfig } from '@public/shared/components/filters/core/types/available-filter-config.type';
+import { FilterWrapperConfiguration } from '@public/shared/services/filter-wrapper-configuration/interfaces/filter-group-config.interface';
 
 @Component({
   selector: 'tsl-filters-wrapper',
@@ -21,8 +21,8 @@ export class FiltersWrapperComponent {
     hasApply: true,
   };
   public activeFiltersCount = 0;
-  private drawerFilterConfigurationsSubject = new BehaviorSubject<AvailableFilterConfig[]>([]);
-  private bubbleFilterConfigurationsSubject = new BehaviorSubject<AvailableFilterConfig[]>([]);
+  private drawerFilterConfigurationsSubject = new BehaviorSubject<FilterWrapperConfiguration>(null);
+  private bubbleFilterConfigurationsSubject = new BehaviorSubject<FilterWrapperConfiguration>(null);
 
   public scrollOffset = 0;
   private drawerValuesSubject = new BehaviorSubject<FilterParameter[]>([]);

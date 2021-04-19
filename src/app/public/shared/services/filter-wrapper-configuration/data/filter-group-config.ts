@@ -1,4 +1,4 @@
-import { FilterGroupConfig } from '../interfaces/filter-group-config.interface';
+import { FilterWrapperConfiguration } from '../interfaces/filter-group-config.interface';
 import { DEFAULT_FILTER_CONFIGURATION } from '../../../components/filters/core/constants/filter-configuration-by-category/default/default-filter-configuration';
 import { CAR_FILTER_CONFIGURATION } from '../../../components/filters/core/constants/filter-configuration-by-category/car/car-filter-configuration';
 import { FILTER_QUERY_PARAM_KEY } from '../../../components/filters/enums/filter-query-param-key.enum';
@@ -25,14 +25,17 @@ import {
   REAL_ESTATE_BUY_LAND_FILTER_CONFIGURATION,
   REAL_ESTATE_BUY_OFFICE_FILTER_CONFIGURATION,
 } from '../../../components/filters/core/constants/filter-configuration-by-category/real-estate/real-estate-buy-filter-configuration';
+import { FILTER_GROUP_ID } from '../enum/filter-group-id.enum';
 
-export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
-  {
-    config: DEFAULT_FILTER_CONFIGURATION,
-    params: [],
-  },
+export const DEFAULT_FILTER_GROUP_CONFIG: FilterWrapperConfiguration = {
+  id: FILTER_GROUP_ID.DEFAULT,
+  config: DEFAULT_FILTER_CONFIGURATION,
+  params: [],
+};
 
+export const FILTER_GROUP_CONFIG: FilterWrapperConfiguration[] = [
   {
+    id: FILTER_GROUP_ID.CARS,
     config: CAR_FILTER_CONFIGURATION,
     params: [
       {
@@ -43,6 +46,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
   },
 
   {
+    id: FILTER_GROUP_ID.MOTORBIKES,
     config: MOTORBIKES_FILTER_CONFIGURATION,
     params: [
       {
@@ -53,6 +57,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
   },
 
   {
+    id: FILTER_GROUP_ID.FASHION,
     config: FASHION_N_ACCESSORIES_FILTER_CONFIGURATION,
     params: [
       {
@@ -63,6 +68,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
   },
 
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_DEFAULT,
     config: REAL_ESTATE_FILTER_CONFIGURATION,
     params: [
       {
@@ -73,6 +79,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
   },
 
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_RENT_DEFAULT,
     config: REAL_ESTATE_RENT_DEFAULT_FILTER_CONFIGURATION,
     params: [
       {
@@ -86,6 +93,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_RENT_HOUSE,
     config: REAL_ESTATE_RENT_HOUSE_FILTER_CONFIGURATION,
     params: [
       {
@@ -103,6 +111,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_RENT_APARTMENT,
     config: REAL_ESTATE_RENT_FLAT_FILTER_CONFIGURATION,
     params: [
       {
@@ -120,6 +129,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_RENT_ROOM,
     config: REAL_ESTATE_RENT_ROOM_FILTER_CONFIGURATION,
     params: [
       {
@@ -137,6 +147,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_RENT_OFFICE,
     config: REAL_ESTATE_RENT_OFFICE_FILTER_CONFIGURATION,
     params: [
       {
@@ -154,6 +165,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_RENT_GARAGE,
     config: REAL_ESTATE_RENT_GARAGE_FILTER_CONFIGURATION,
     params: [
       {
@@ -171,6 +183,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_RENT_LAND,
     config: REAL_ESTATE_RENT_LAND_FILTER_CONFIGURATION,
     params: [
       {
@@ -188,6 +201,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_RENT_BOX_ROOM,
     config: REAL_ESTATE_RENT_BOX_ROOM_FILTER_CONFIGURATION,
     params: [
       {
@@ -205,6 +219,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_BUY_DEFAULT,
     config: REAL_ESTATE_BUY_DEFAULT_FILTER_CONFIGURATION,
     params: [
       {
@@ -218,6 +233,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_BUY_HOUSE,
     config: REAL_ESTATE_BUY_HOUSE_FILTER_CONFIGURATION,
     params: [
       {
@@ -235,6 +251,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_BUY_FLAT,
     config: REAL_ESTATE_BUY_FLAT_FILTER_CONFIGURATION,
     params: [
       {
@@ -252,6 +269,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_BUY_OFFICE,
     config: REAL_ESTATE_BUY_OFFICE_FILTER_CONFIGURATION,
     params: [
       {
@@ -269,6 +287,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_BUY_GARAGE,
     config: REAL_ESTATE_BUY_GARAGE_FILTER_CONFIGURATION,
     params: [
       {
@@ -286,6 +305,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_BUY_LAND,
     config: REAL_ESTATE_BUY_LAND_FILTER_CONFIGURATION,
     params: [
       {
@@ -303,6 +323,7 @@ export const FILTER_GROUP_CONFIG: FilterGroupConfig[] = [
     ],
   },
   {
+    id: FILTER_GROUP_ID.REAL_ESTATE_BUY_BOX_ROOM,
     config: REAL_ESTATE_BUY_BOX_ROOM_FILTER_CONFIGURATION,
     params: [
       {
