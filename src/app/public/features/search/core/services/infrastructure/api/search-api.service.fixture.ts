@@ -1,9 +1,11 @@
+import { IMAGE } from '@fixtures/user.fixtures.spec';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_PARAMETERS_SEARCH } from '../../constants/filter-parameters';
 import { SEARCH_ITEMS_MINIMAL_LENGTH } from '../../constants/search-item-max';
 import { SearchCarResponse } from '../cars/search-car-response';
 import { SearchCustomerGoodsResponse } from '../customer-goods/search-costumer-goods-response.interface';
 import { SearchBaseItemResponse } from '../models/search-base-item.response';
+import { SearchItemImageResponse } from '../models/search-item-image.response';
 import { SearchRealEstateResponse } from '../real_estate/search-item-real-state-response';
 import { wallParameters } from './search-api-url.factory';
 import { SearchResponse } from './search-response.interface';
@@ -23,13 +25,46 @@ function SearchBaseItemResponseFactory(): SearchBaseItemResponse {
     id: '52352',
     title: 'titleItem',
     distance: 32636,
-    images: [{ small: 'http://cdn.wallapop.com/image' }],
-    flags: { reserved: true },
-    visibility_flags: { bumped: false },
+    images: [SearchItemImageResponseFactory()],
+    flags: {
+      banned: false,
+      expired: false,
+      onhold: false,
+      pending: false,
+      reserved: false,
+      sold: false,
+     },
+    visibility_flags: {
+      boosted: false,
+      bumped: false,
+      country_bumped: false,
+      highlighted: false,
+      urgent: false,
+    },
     price: 2352,
     currency: '€',
     web_slug: 'www.webslug.com',
     category_id: 1,
+    user: {
+      id: '235325',
+      image: SearchItemImageResponseFactory(),
+      kind: 'kind',
+      micro_name: 'micro_name',
+      online: true
+    }
+  };
+}
+
+function SearchItemImageResponseFactory(): SearchItemImageResponse {
+  return {
+    large: 'cdn.wallapop.com/image/large/1',
+    medium: 'cdn.wallapop.com/image/medium/1',
+    original: 'cdn.wallapop.com/image/original/1',
+    original_height: 800,
+    original_width: 640,
+    small: 'cdn.wallapop.com/image/small/1',
+    xlarge: 'cdn.wallapop.com/image/xlarge/1',
+    xsmall: 'cdn.wallapop.com/image/xsmall/1'
   };
 }
 
