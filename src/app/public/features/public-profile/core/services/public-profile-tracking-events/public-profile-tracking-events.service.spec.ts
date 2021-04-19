@@ -1,16 +1,52 @@
 import { TestBed } from '@angular/core/testing';
-
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { PublicProfileTrackingEventsService } from './public-profile-tracking-events.service';
+import { MOCK_VIEW_OTHER_PROFILE_EVENT, MOCK_VIEW_OWN_PROFILE_EVENT } from './public-profile-tracking-events.fixtures.spec';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { UserService } from '@core/user/user.service';
 
 describe('PublicProfileTrackingEventsService', () => {
   let service: PublicProfileTrackingEventsService;
+  let analyticsService: AnalyticsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        PublicProfileTrackingEventsService,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        { provide: UserService, useClass: MockedUserService },
+      ],
+    });
     service = TestBed.inject(PublicProfileTrackingEventsService);
+    analyticsService = TestBed.inject(AnalyticsService);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('when user views their own profile', () => {
+    it('should send track view own item detail event', () => {
+      spyOn(service, 'trackViewOwnProfile').and.callThrough();
+      spyOn(analyticsService, 'trackPageView');
+
+      service.trackViewOwnProfile(MOCK_USER.featured);
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OWN_PROFILE_EVENT);
+    });
+  });
+
+  describe('when user views other profile', () => {
+    it('should send track view own item detail event', () => {
+      spyOn(service, 'trackViewOtherProfile').and.callThrough();
+      spyOn(analyticsService, 'trackPageView');
+
+      service.trackViewOtherProfile(MOCK_OTHER_USER, MOCK_USER_STATS.counters.publish);
+
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHER_PROFILE_EVENT);
+    });
   });
 });
