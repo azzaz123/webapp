@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { ItemService } from '@core/item/item.service';
 import { BlockUserXmppService } from '@private/features/chat/core/block-user/block-user-xmpp.service';
 import { BlockUserService } from '@private/features/chat/core/block-user/block-user.service';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
@@ -34,7 +33,6 @@ export class ConversationDetailsBarComponent {
     private modalService: NgbModal,
     private toastService: ToastService,
     private reportService: ReportService,
-    private itemService: ItemService,
     private blockUserService: BlockUserService,
     private blockUserXmppService: BlockUserXmppService,
     private i18n: I18nService,
@@ -104,7 +102,7 @@ export class ConversationDetailsBarComponent {
 
   public reportListingAction(): void {
     this.modalService.open(ReportListingComponent, { windowClass: 'report' }).result.then((result: any) => {
-      this.itemService.reportListing(this.currentConversation.item.id, result.message, result.reason).subscribe(
+      this.reportService.reportListing(this.currentConversation.item.id, result.message, result.reason).subscribe(
         () => {
           this.toastService.show({
             text: this.i18n.getTranslations('reportListingSuccess'),
