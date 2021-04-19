@@ -13,11 +13,13 @@ export class SelectFilterTemplateComponent {
   @Input() contentTitle?: string;
   @Input() isClearable?: boolean;
   @Output() clear = new EventEmitter<void>();
+  @Output() placeholderOpenStateChange = new EventEmitter<boolean>();
 
   public isPlaceholderOpen = false;
 
   public togglePlaceholderOpen(): void {
     this.isPlaceholderOpen = !this.isPlaceholderOpen;
+    this.placeholderOpenStateChange.emit(this.isPlaceholderOpen);
   }
 
   public handleClear(): void {

@@ -23,6 +23,22 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     limitless: true,
   },
   {
+    id: CAR_CONFIGURATION_ID.BRAND_N_MODEL,
+    type: FILTER_TYPES.SUGGESTER,
+    title: $localize`:@@filterCarsBrandModelTitle:Brand and Model`,
+    bubblePlaceholder: $localize`:@@filterCarsBrandModelBubblePlaceholder:Brand and Model`,
+    suggesterPlaceholder: $localize`:@@filterCarsBrandModelSuggesterPlaceholder:Looking for a certain brand?`,
+    drawerPlaceholder: $localize`:@@filterCarsBrandModelDrawerPlaceholder:Select brand and model`,
+    icon: '/assets/icons/filters/brand_model.svg',
+    mapKey: {
+      brand: 'brand',
+      model: 'model',
+    },
+    hasContentPlaceholder: true,
+    isClearable: true,
+    hasOptionsOnInit: false,
+  },
+  {
     id: CAR_CONFIGURATION_ID.YEAR,
     type: FILTER_TYPES.RANGE,
     title: $localize`:@@filterYearTitle:Registration date`,
@@ -114,5 +130,38 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
       { range: [100, 500], step: 50 },
     ],
     limitless: true,
+  },
+  {
+    id: CAR_CONFIGURATION_ID.BODY,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterBodyTypeTitle:Type of car`,
+    bubblePlaceholder: $localize`:@@filterBodyTypePlaceholder:Type of car`,
+    mapKey: {
+      parameterKey: 'body_type',
+    },
+    hasBigIcons: false,
+    isMultiselect: true,
+  },
+  {
+    id: CAR_CONFIGURATION_ID.ENGINE,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterEngineTypeTitle:Engine type`,
+    bubblePlaceholder: $localize`:@@filterEngineTypePlaceholder:Engine type`,
+    mapKey: {
+      parameterKey: 'engine',
+    },
+    hasBigIcons: false,
+    isMultiselect: true,
+  },
+  {
+    id: CAR_CONFIGURATION_ID.GEARBOX,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterGearboxTypeTitle:Gear box`,
+    bubblePlaceholder: $localize`:@@filterGearboxTypePlaceholder:Gear box`,
+    mapKey: {
+      parameterKey: 'gearbox',
+    },
+    hasBigIcons: false,
+    isMultiselect: true,
   },
 ];

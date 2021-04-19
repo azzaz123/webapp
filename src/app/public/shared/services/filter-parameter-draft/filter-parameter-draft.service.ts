@@ -6,12 +6,12 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 export class FilterParameterDraftService {
   private parametersSubject = new BehaviorSubject<FilterParameter[]>([]);
 
-  protected getParameterObservable(): Observable<FilterParameter[]> {
+  public get parameters$(): Observable<FilterParameter[]> {
     return this.parametersSubject.asObservable();
   }
 
   public getParameters(): FilterParameter[] {
-    return this.parametersSubject.value;
+    return this.parametersSubject.getValue();
   }
 
   public getParametersByKeys(keys: string[]): FilterParameter[] {
@@ -19,12 +19,12 @@ export class FilterParameterDraftService {
   }
 
   public setParameters(parameters: FilterParameter[]): void {
-    this.parametersSubject.next(parameters);
+    this.parametersSubject.next(parameters.filter((parameter) => parameter.value));
   }
 
   public upsertParameters(parameters: FilterParameter[]): void {
     const mergedParameters = this.mergeParameters(parameters, this.getParameters());
-    this.parametersSubject.next(mergedParameters);
+    this.setParameters(mergedParameters);
   }
 
   public removeParameters(parameters: FilterParameter[]): void {
@@ -32,7 +32,7 @@ export class FilterParameterDraftService {
     const nextParameters = this.getParameters().filter((parameter) => {
       return !keysToRemove.includes(parameter.key);
     });
-    this.parametersSubject.next(nextParameters);
+    this.setParameters(nextParameters);
   }
 
   private mergeParameters(newParameters: FilterParameter[], oldParameters: FilterParameter[]): FilterParameter[] {

@@ -1,8 +1,8 @@
 
 
 <tsl-filter-template
-[isBubble]="isBubble()"
-[isDropdown]="isDropdown()"
+[isBubble]="variant | isBubble"
+[isDropdown]="true"
 [hasApply]="true"
 [isClearable]="true"
 [title]="config.title"

@@ -14,6 +14,7 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { ToggleFilterComponent } from './toggle-filter.component';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
+import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 
 describe('ToggleFilterComponent', () => {
   let component: ToggleFilterComponent;
@@ -27,7 +28,7 @@ describe('ToggleFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ToggleFilterComponent],
+      declarations: [ToggleFilterComponent, IsBubblePipe],
       imports: [CommonModule, ToggleFormModule, FormsModule, AbstractFilterModule, HttpClientTestingModule],
       providers: [
         DeviceDetectorService,
@@ -220,6 +221,32 @@ describe('ToggleFilterComponent', () => {
       it('should format the value correctly on click', () => {
         toggleClick();
         expect(component.value).toEqual(formatValue(true));
+      });
+    });
+  });
+
+  describe('when value changes from parent', () => {
+    describe('and original value is empty', () => {
+      beforeEach(() => {
+        component.value = [];
+      });
+
+      it('should set the provided value', () => {
+        component.value = [{ key: 'warranty', value: 'true' }];
+
+        expect(component.toggle).toBeTruthy();
+      });
+    });
+
+    describe('and original value has content', () => {
+      beforeEach(() => {
+        component.value = [{ key: 'warranty', value: 'true' }];
+      });
+
+      it('should clean up the value', () => {
+        component.value = [];
+
+        expect(component.toggle).toBeFalsy();
       });
     });
   });
