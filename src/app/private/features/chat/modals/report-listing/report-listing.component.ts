@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportReason } from '@core/trust-and-safety/report/interfaces/report-reason.interface';
-import { ItemService } from '@core/item/item.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ReportService } from '@core/trust-and-safety/report/report.service';
 
 @Component({
   selector: 'tsl-report-listing',
@@ -12,10 +12,10 @@ export class ReportListingComponent implements OnInit {
   public selectedReportListingReason: number = null;
   public reportListingReasonMessage: string;
 
-  constructor(private itemService: ItemService, public activeModal: NgbActiveModal) {}
+  constructor(private reportService: ReportService, public activeModal: NgbActiveModal) {}
 
   ngOnInit() {
-    this.itemService.getBanReasons().subscribe((data: ReportReason[]) => {
+    this.reportService.getItemReportReasons().subscribe((data: ReportReason[]) => {
       this.listingBanReasons = data;
     });
   }
