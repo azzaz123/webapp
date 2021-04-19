@@ -1,7 +1,7 @@
 import { MOVIES_N_BOOKS_FILTER_ID } from '../../../enums/filter-ids/movies-n-books.enum';
-import { FilterWrapperConfiguration } from '../../../interfaces/filter-wrapper-configuration.interface';
+import { BubbleDrawerConfiguration } from '../../../interfaces/bubble-drawer-configuration.interface';
 
-export const MOVIES_N_BOOKS_FILTER_CONFIGURATION: FilterWrapperConfiguration = {
+export const MOVIES_N_BOOKS_FILTER_CONFIGURATION: BubbleDrawerConfiguration = {
   bubble: [MOVIES_N_BOOKS_FILTER_ID.PRICE],
   drawer: [MOVIES_N_BOOKS_FILTER_ID.PRICE],
 };

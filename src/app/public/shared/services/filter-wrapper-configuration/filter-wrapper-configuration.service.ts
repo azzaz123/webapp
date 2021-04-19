@@ -5,9 +5,9 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { ConfigurationId } from '@public/shared/components/filters/core/types/configuration-id.type';
 import {
-  FilterWrapperConfiguration,
+  BubbleDrawerConfiguration,
   ValueOf,
-} from '@public/shared/components/filters/core/interfaces/filter-wrapper-configuration.interface';
+} from '@public/shared/components/filters/core/interfaces/bubble-drawer-configuration.interface';
 import { FilterGroupConfig } from '@public/shared/services/filter-wrapper-configuration/interfaces/filter-group-config.interface';
 import { FILTER_GROUP_CONFIG } from '@public/shared/services/filter-wrapper-configuration/data/filter-group-config';
 
@@ -23,7 +23,7 @@ export class FilterWrapperConfigurationService {
     return FILTER_CONFIGURATIONS.find((filterConfiguration) => filterConfiguration.id === filterConfigurationId);
   }
 
-  private getConfigGroupByParameters(parameters: FilterParameter[]): FilterWrapperConfiguration {
+  private getConfigGroupByParameters(parameters: FilterParameter[]): BubbleDrawerConfiguration {
     return FILTER_GROUP_CONFIG.filter((config) => this.isConfigAMatch(config, parameters)).reduce((previousConfig, currentConfig) => {
       if (currentConfig.params.length > (previousConfig?.params.length || 0)) {
         return currentConfig;

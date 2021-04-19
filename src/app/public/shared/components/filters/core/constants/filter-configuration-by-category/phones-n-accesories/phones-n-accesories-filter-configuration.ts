@@ -1,7 +1,7 @@
 import { PHONE_N_ACCESSORIES_FILTER_ID } from '../../../enums/filter-ids/phones-n-accessories.enum';
-import { FilterWrapperConfiguration } from '../../../interfaces/filter-wrapper-configuration.interface';
+import { BubbleDrawerConfiguration } from '../../../interfaces/bubble-drawer-configuration.interface';
 
-export const PHONES_N_ACCESORIES_FILTER_CONFIGURATION: FilterWrapperConfiguration = {
+export const PHONES_N_ACCESORIES_FILTER_CONFIGURATION: BubbleDrawerConfiguration = {
   bubble: [PHONE_N_ACCESSORIES_FILTER_ID.PRICE],
   drawer: [PHONE_N_ACCESSORIES_FILTER_ID.PRICE],
 };
