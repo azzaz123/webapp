@@ -35,7 +35,6 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
   }
 
   public ngOnInit(): void {
-    super.ngOnInit();
     this.initForm();
     this.initLabel();
     this.optionService
@@ -48,6 +47,7 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
           label: option.label,
         }));
       });
+    super.ngOnInit();
   }
 
   public ngAfterContentInit(): void {

@@ -70,3 +70,9 @@ Default.args = {
     bubblePlaceholder: 'Has warranty',
   },
 };
+
+export const WithDefaultValue = Template.bind({});
+WithDefaultValue.args = {
+  ...Default.args,
+  value: [{ key: 'warranty', value: 'true' }],
+};

@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { CategoriesFilterParams } from './interfaces/categories-filter-params.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
@@ -18,7 +18,7 @@ import { CategoriesFilterConfig } from './interfaces/categories-filter-config.in
   templateUrl: './categories-filter.component.html',
   styleUrls: ['./categories-filter.component.scss'],
 })
-export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterParams> implements OnInit, OnDestroy, AfterContentInit {
+export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterParams> implements OnInit, OnDestroy {
   @Input() config: CategoriesFilterConfig;
 
   public VARIANT = FILTER_VARIANT;
@@ -47,15 +47,9 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   public ngOnInit() {
-    super.ngOnInit();
     this.updateSubjects();
     this.initializeForm();
-  }
-
-  public ngAfterContentInit(): void {
-    if (this.value.length > 0) {
-      this.updateValueFromParent();
-    }
+    super.ngOnInit();
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {

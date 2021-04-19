@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { AdsService } from '@core/ads/services/ads/ads.service';
@@ -6,7 +6,8 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -20,7 +21,7 @@ import { SearchService } from './../core/services/search.service';
   selector: 'tsl-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // TODO: TechDebt: changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit, OnDestroy {
   public items$: Observable<ItemCard[]> = this.searchService.items$;
@@ -29,7 +30,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public device: DeviceType;
   public DevicesType: typeof DeviceType = DeviceType;
 
-  public showBackdrop = false;
   public columnsConfig: ColumnsConfig = {
     xl: 4,
     lg: 4,
@@ -45,6 +45,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     AdShoppingChannel.SEARCH_LIST_SHOPPING
   );
 
+  private openBubbleCountSubject = new BehaviorSubject<number>(0);
+  public openBubbleCount$: Observable<number> = this.openBubbleCountSubject.asObservable();
   constructor(private adsService: AdsService, private deviceService: DeviceService, private searchService: SearchService) {
     this.device = this.deviceService.getDeviceType();
     this.searchService.init();
@@ -62,6 +64,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public toggleBubbleFilterBackdrop(active: boolean): void {
-    this.showBackdrop = active;
+    const count = this.openBubbleCountSubject.getValue();
+    this.openBubbleCountSubject.next(active ? count + 1 : count - 1);
   }
 }

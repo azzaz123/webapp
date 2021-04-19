@@ -8,12 +8,12 @@ export class FilterParameterDraftService {
 
   private parametersSubject = new BehaviorSubject<FilterParameter[]>(FilterParameterDraftService.INITIAL_PARAMETERS);
 
-  protected getParameterObservable(): Observable<FilterParameter[]> {
+  public get parameters$(): Observable<FilterParameter[]> {
     return this.parametersSubject.asObservable();
   }
 
   public getParameters(): FilterParameter[] {
-    return this.parametersSubject.value;
+    return this.parametersSubject.getValue();
   }
 
   public getParametersByKeys(keys: string[]): FilterParameter[] {

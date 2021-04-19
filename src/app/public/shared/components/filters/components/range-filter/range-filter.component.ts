@@ -27,9 +27,9 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
 
   public ngOnInit(): void {
     this.initRange();
-    super.ngOnInit();
     this.updateForm();
     this.bindFormValueChangesListeners();
+    super.ngOnInit();
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {

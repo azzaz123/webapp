@@ -1,5 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -19,6 +18,9 @@ import { SearchLayoutComponent } from '../components/search-layout/search-layout
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchService } from '../core/services/search.service';
 import { SearchComponent } from './search.component';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -28,52 +30,48 @@ describe('SearchComponent', () => {
   let searchServiceMock;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
 
-  beforeEach(
-    waitForAsync(() => {
-      deviceServiceMock = {
-        getDeviceType: () => random.arrayElement([DeviceType.DESKTOP, DeviceType.MOBILE, DeviceType.TABLET]),
-      };
-      storeMock = {
-        select: () => itemsSubject.asObservable(),
-        dispatch: () => {},
-      };
-
+  beforeEach(async () => {
+    deviceServiceMock = {
+      getDeviceType: () => random.arrayElement([DeviceType.DESKTOP, DeviceType.MOBILE, DeviceType.TABLET]),
+    };
+    storeMock = {
+      select: () => of(),
+      dispatch: () => {},
+    };
       searchServiceMock = {
         init: () => {},
         items$: itemsSubject.asObservable(),
         loadMore: () => {},
       };
-
-      TestBed.configureTestingModule({
-        declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, ItemCardListComponentStub],
-        imports: [FiltersWrapperModule, HttpClientTestingModule],
-        providers: [
+    await TestBed.configureTestingModule({
+      declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, AdSlotGroupShoppingComponentSub, ItemCardListComponentStub],
+      imports: [FiltersWrapperModule, HttpClientTestingModule],
+      providers: [
           {
             provide: SearchService,
             useValue: searchServiceMock,
           },
-          {
-            provide: Store,
-            useValue: storeMock,
-          },
-          { provide: DeviceDetectorService, useValue: { isMobile: () => false } },
-          { provide: ViewportService, useValue: { onViewportChange: of('') } },
-          {
-            provide: AdsService,
-            useValue: MockAdsService,
-          },
-          {
-            provide: DeviceService,
-            useValue: deviceServiceMock,
-          },
-          ViewportService,
-        ],
-      }).compileComponents();
-    })
-  );
+        {
+          provide: Store,
+          useValue: storeMock,
+        },
+        { provide: DeviceDetectorService, useValue: { isMobile: () => false } },
+        { provide: ViewportService, useValue: { onViewportChange: of('') } },
+        {
+          provide: AdsService,
+          useValue: MockAdsService,
+        },
+        {
+          provide: DeviceService,
+          useValue: deviceServiceMock,
+        },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
+    searchStoreService = TestBed.inject(SearchStoreService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -85,14 +83,12 @@ describe('SearchComponent', () => {
   describe('when the component init', () => {
     describe('on init', () => {
       it('should initialise items observable', () => {
-        component.ngOnInit();
-
+        fixture.detectChanges();
         expect(component.items$).toBeTruthy();
       });
 
       it('should initialise items observable', () => {
-        component.ngOnInit();
-
+        fixture.detectChanges();
         expect(component.items$).toBeTruthy();
       });
     });
@@ -105,7 +101,6 @@ describe('SearchComponent', () => {
       it('should set ad keywords', () => {
         spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
 
-        component.ngOnInit();
         fixture.detectChanges();
 
         expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ content: 'Iphone 11' });
@@ -114,7 +109,6 @@ describe('SearchComponent', () => {
       it('should configure ads', () => {
         spyOn(MockAdsService, 'setSlots').and.callThrough();
 
-        component.ngOnInit();
         fixture.detectChanges();
 
         expect(MockAdsService.setSlots).toHaveBeenCalledWith([
@@ -147,19 +141,27 @@ describe('SearchComponent', () => {
     });
   });
   describe('when bubble filter is open', () => {
-    beforeEach(() => {
-      component.toggleBubbleFilterBackdrop(true);
-    });
     it('should show white backdrop', () => {
-      expect(component.showBackdrop).toBeTruthy();
+      let bubbleOpenCount = 0;
+
+      component.openBubbleCount$.subscribe((count) => (bubbleOpenCount = count));
+      component.toggleBubbleFilterBackdrop(true);
+
+      expect(bubbleOpenCount).toBe(1);
     });
   });
   describe('when bubble filter is closed', () => {
     beforeEach(() => {
-      component.toggleBubbleFilterBackdrop(false);
+      fixture.detectChanges();
+      component.toggleBubbleFilterBackdrop(true);
     });
     it('should hide white backdrop', () => {
-      expect(component.showBackdrop).toBeFalsy();
+      let bubbleOpenCount = 1;
+
+      component.openBubbleCount$.subscribe((count) => (bubbleOpenCount = count));
+      component.toggleBubbleFilterBackdrop(false);
+
+      expect(bubbleOpenCount).toBe(0);
     });
   });
 });

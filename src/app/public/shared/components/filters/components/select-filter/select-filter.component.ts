@@ -39,12 +39,12 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
   }
 
   public ngOnInit(): void {
-    super.ngOnInit();
     this.optionService
       .getOptions(this.config.id)
       .pipe(take(1))
       .subscribe((options) => (this.options = options));
     this.initForm();
+    super.ngOnInit();
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {

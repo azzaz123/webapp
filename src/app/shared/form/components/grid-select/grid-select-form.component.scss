@@ -19,6 +19,12 @@
         }
       }
 
+      &_lg--#{$columns} {
+        @include media-breakpoint-down(lg) {
+          flex-basis: percentage(1 / $columns);
+        }
+      }
+
       &--#{$columns} {
         flex-basis: percentage(1 / $columns);
       }
