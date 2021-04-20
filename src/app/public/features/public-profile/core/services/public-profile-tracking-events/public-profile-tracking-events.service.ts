@@ -12,7 +12,6 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { User } from '@core/user/user';
-
 export type FavouriteUserAnalyticEvent = AnalyticsEvent<FavoriteUser | UnfavoriteUser>;
 
 @Injectable({
@@ -46,10 +45,10 @@ export class PublicProfileTrackingEventsService {
   }
 
   public trackFavouriteUserEvent(user: User, isFavourite: boolean): void {
-    const event: FavouriteUserAnalyticEvent = this.factoryAnalyticsEvent(isFavourite, user);
+    const event: FavouriteUserAnalyticEvent = this.factoryAnalyticsEvent(user, isFavourite);
     this.analyticsService.trackEvent(event);
   }
-  private factoryAnalyticsEvent(isFavourite: boolean, { featured, id }: User): FavouriteUserAnalyticEvent {
+  private factoryAnalyticsEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticEvent {
     return {
       name: isFavourite ? ANALYTICS_EVENT_NAMES.FavoriteUser : ANALYTICS_EVENT_NAMES.UnfavoriteUser,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,

@@ -10,7 +10,7 @@ import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserPipeMock } from '@fixtures/is-current-user.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { AdComponentStub } from '@fixtures/shared';
-import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_OTHER_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { of, throwError } from 'rxjs';
@@ -209,16 +209,11 @@ describe('PublicProfileComponent', () => {
 
             it('should send favourite user event', () => {
               spyOn(publicProfileTrackingEventsService, 'trackFavouriteUserEvent');
-              spyOn(publicProfileTrackingEventsService, 'trackUnfavouriteUserEvent');
               const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
 
               toggleFavourite.triggerEventHandler('isFavouriteChange', true);
 
-              expect(publicProfileTrackingEventsService.trackFavouriteUserEvent).toHaveBeenCalledWith(
-                component.userInfo.featured,
-                component.userId
-              );
-              expect(publicProfileTrackingEventsService.trackUnfavouriteUserEvent).not.toHaveBeenCalled();
+              expect(publicProfileTrackingEventsService.trackFavouriteUserEvent).toHaveBeenCalledWith(component.userInfo, true);
             });
           });
 
@@ -233,16 +228,11 @@ describe('PublicProfileComponent', () => {
 
             it('should send unfavourite user event', () => {
               spyOn(publicProfileTrackingEventsService, 'trackFavouriteUserEvent');
-              spyOn(publicProfileTrackingEventsService, 'trackUnfavouriteUserEvent');
               const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
 
               toggleFavourite.triggerEventHandler('isFavouriteChange', false);
 
-              expect(publicProfileTrackingEventsService.trackUnfavouriteUserEvent).toHaveBeenCalledWith(
-                component.userInfo.featured,
-                component.userId
-              );
-              expect(publicProfileTrackingEventsService.trackFavouriteUserEvent).not.toHaveBeenCalled();
+              expect(publicProfileTrackingEventsService.trackFavouriteUserEvent).toHaveBeenCalledWith(component.userInfo, false);
             });
           });
         });

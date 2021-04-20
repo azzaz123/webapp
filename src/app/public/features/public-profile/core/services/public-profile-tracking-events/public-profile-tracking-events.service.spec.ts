@@ -56,19 +56,17 @@ describe('PublicProfileTrackingEventsService', () => {
   });
 
   describe('when user toggle favourite user icon...', () => {
-    it('should send favourite user event when user is favourited', () => {
+    beforeEach(() => {
       spyOn(service, 'trackFavouriteUserEvent').and.callThrough();
       spyOn(analyticsService, 'trackEvent');
-
-      service.trackFavouriteUserEvent(MOCK_OTHER_USER.featured, MOCK_OTHER_USER.id);
+    });
+    it('should send favourite user event when user is favourited', () => {
+      service.trackFavouriteUserEvent(MOCK_OTHER_USER, true);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVOURITE_USER_EVENT);
     });
     it('should send favourite user event when user is unfavourited', () => {
-      spyOn(service, 'trackUnfavouriteUserEvent').and.callThrough();
-      spyOn(analyticsService, 'trackEvent');
-
-      service.trackUnfavouriteUserEvent(MOCK_OTHER_USER.featured, MOCK_OTHER_USER.id);
+      service.trackFavouriteUserEvent(MOCK_OTHER_USER, false);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVOURITE_USER_EVENT);
     });
