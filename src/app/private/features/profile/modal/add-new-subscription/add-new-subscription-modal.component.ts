@@ -119,9 +119,6 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   }
 
   public addSubscriptionFromSavedCard(selectedPlanId: string = this.selectedTier.id, paymentMethodId = this.card.id) {
-    if (!this.selectedCard || this.loading) {
-      return;
-    }
     this.loading = true;
 
     if (this.isRetryInvoice) {
