@@ -62,10 +62,10 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
-  public onActivate(event: any): void {
-    event.reviews &&
+  public onClickProfileTabs(routerOutletEvent: any): void {
+    routerOutletEvent.reviews &&
       setTimeout(() => {
-        this.trackViewOwnOrOtherReviews(event.reviews);
+        this.trackViewOwnOrOtherReviews(routerOutletEvent.reviews);
       }, 1000);
   }
 
