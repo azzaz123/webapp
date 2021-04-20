@@ -1,5 +1,7 @@
+import { ButtonComponent } from 'app/shared/button/button.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -41,6 +43,7 @@ describe('SearchComponent', () => {
       init: () => {},
       items$: itemsSubject.asObservable(),
       loadMore: () => {},
+      close: () => {},
     };
     await TestBed.configureTestingModule({
       declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, AdSlotGroupShoppingComponentSub, ItemCardListComponentStub],
@@ -71,7 +74,6 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -160,6 +162,64 @@ describe('SearchComponent', () => {
       component.toggleBubbleFilterBackdrop(false);
 
       expect(bubbleOpenCount).toBe(0);
+    });
+  });
+
+  describe('infinite scroll', () => {
+    describe('at the init', () => {
+      it('should appear the button to load more items', () => {
+        fixture.detectChanges();
+
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+
+        expect(buttonLoadMore.textContent).toBe('Ver más productos');
+      });
+    });
+
+    describe('when we click on load more products', () => {
+      it('should enable infinite scroll', () => {
+        fixture.detectChanges();
+
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+        buttonLoadMore.click();
+
+        expect(component.infiniteScrollDisabled).toBe(false);
+      });
+
+      it('should disapear the button to load more items', () => {
+        fixture.detectChanges();
+
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+        buttonLoadMore.click();
+
+        fixture.detectChanges();
+        const buttonLoadMoreExpected = fixture.debugElement.query(By.css('#btn-load-more'));
+
+        expect(buttonLoadMoreExpected).toBeNull();
+      });
+
+      it('should disapear bottom ads on DESKTOP', () => {
+        spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
+        fixture.detectChanges();
+
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+        buttonLoadMore.click();
+
+        fixture.detectChanges();
+        const slotGroupShopping = fixture.debugElement.query(By.css('tsl-sky-slot-group-shopping'));
+
+        expect(slotGroupShopping).toBeNull();
+      });
+
+      it('should ask more items to search service', () => {
+        spyOn(searchServiceMock, 'loadMore').and.callThrough();
+        fixture.detectChanges();
+
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+        buttonLoadMore.click();
+
+        expect(searchServiceMock.loadMore).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

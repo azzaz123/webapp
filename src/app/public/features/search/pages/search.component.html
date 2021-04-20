@@ -30,7 +30,7 @@
       <tsl-public-item-card-list [items]="items$ | async" [columnsConfig]="columnsConfig"></tsl-public-item-card-list>
       <ng-container *ngIf="infiniteScrollDisabled" >
         <div class="row justify-content-center my-4">
-          <tsl-button (click)="setInfiniteScroll()">Ver más productos</tsl-button>
+          <tsl-button id="btn-load-more" (click)="setInfiniteScroll()">Ver más productos</tsl-button>
         </div>
         <div *ngIf="device === DevicesType.DESKTOP" class="row justify-content-center my-4">
           <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
