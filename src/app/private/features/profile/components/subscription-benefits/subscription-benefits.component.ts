@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
-import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -12,14 +12,14 @@ export class SubscriptionBenefitsComponent implements OnInit {
   public loading = true;
   public benefits: SubscriptionBenefit[];
 
-  constructor(private subscriptionService: SubscriptionsService) {}
+  constructor(private subscriptionBenefitsService: SubscriptionBenefitsService) {}
 
   get faqUrl(): string {
     return $localize`:@@FooterLinksFaqHref:https://ayuda.wallapop.com/hc/en-us`;
   }
 
   ngOnInit() {
-    this.subscriptionService
+    this.subscriptionBenefitsService
       .getSubscriptionBenefits()
       .pipe(finalize(() => (this.loading = false)))
       .subscribe((response) => (this.benefits = response));

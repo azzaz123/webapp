@@ -15,10 +15,8 @@ import { CategoryResponse } from '../category/category-response.interface';
 import { CategoryService } from '../category/category.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { I18nService } from '../i18n/i18n.service';
 import { CURRENCY_SYMBOLS } from '../constants';
 import { UuidService } from '../uuid/uuid.service';
-import { SubscriptionBenefit } from './subscription-benefits/interfaces/subscription-benefit.interface';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -39,14 +37,12 @@ export class SubscriptionsService {
   public fullName: string;
   public subscriptions: SubscriptionsResponse[];
   private _userSubscriptionType: SUBSCRIPTION_TYPES;
-  private _subscriptionBenefits: SubscriptionBenefit[];
 
   constructor(
     private userService: UserService,
     private http: HttpClient,
     private categoryService: CategoryService,
-    private uuidService: UuidService,
-    private i18nService: I18nService
+    private uuidService: UuidService
   ) {
     this.userService.me().subscribe((user: User) => {
       this.fullName = user ? `${user.firstName} ${user.lastName}` : '';
@@ -290,13 +286,6 @@ export class SubscriptionsService {
     return subscriptions
       .filter((subscription) => this.hasTrial(subscription) && !subscription.subscribed_from)
       .map((subscription) => subscription.category_id);
-  }
-
-  public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]> {
-    if (useCache && this._subscriptionBenefits) {
-      return of(this._subscriptionBenefits);
-    }
-    return of(this.i18nService.getTranslations('subscriptionBenefits')).pipe(tap((response) => (this._subscriptionBenefits = response)));
   }
 
   public getTierDiscountPercentatge(tier: Tier): number {
