@@ -60,7 +60,10 @@ export class PublicProfileTrackingEventsService {
   }
 
   public trackFavouriteOrUnfavouriteUserEvent(user: User, isFavourite: boolean): void {
-    const event: FavouriteUserAnalyticsEvent = PublicProfileTrackingEventsService.factoryAnalyticsEvent(user, isFavourite);
+    const event: FavouriteUserAnalyticsEvent = PublicProfileTrackingEventsService.factoryFavouriteUserOrUnfavouriteUserEvent(
+      user,
+      isFavourite
+    );
     this.analyticsService.trackEvent(event);
   }
 
@@ -82,7 +85,7 @@ export class PublicProfileTrackingEventsService {
     };
   }
 
-  private static factoryAnalyticsEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticsEvent {
+  private static factoryFavouriteUserOrUnfavouriteUserEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticsEvent {
     return {
       name: isFavourite ? ANALYTICS_EVENT_NAMES.FavoriteUser : ANALYTICS_EVENT_NAMES.UnfavoriteUser,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
