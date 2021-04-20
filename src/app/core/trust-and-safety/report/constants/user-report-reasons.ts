@@ -5,11 +5,6 @@ export const USER_REPORT_REASONS_ICONS_FOLDER = '/assets/icons/';
 
 export const USER_REPORT_REASONS: UserReportReason[] = [
   {
-    id: USER_REPORT_REASON_ID.OTHER,
-    label: $localize`:@@web_user_report_reason_other:Other reason`,
-    iconPath: `${USER_REPORT_REASONS_ICONS_FOLDER}ghost.svg`,
-  },
-  {
     id: USER_REPORT_REASON_ID.SCAM,
     label: $localize`:@@web_user_report_reason_fraud:Scam`,
     iconPath: `${USER_REPORT_REASONS_ICONS_FOLDER}scam.svg`,
@@ -33,5 +28,10 @@ export const USER_REPORT_REASONS: UserReportReason[] = [
     id: USER_REPORT_REASON_ID.DEFECTIVE,
     label: $localize`:@@web_user_report_reason_bad_product:Defective or wrong item`,
     iconPath: `${USER_REPORT_REASONS_ICONS_FOLDER}defective.svg`,
+  },
+  {
+    id: USER_REPORT_REASON_ID.OTHER,
+    label: $localize`:@@web_user_report_reason_other:Other reason`,
+    iconPath: `${USER_REPORT_REASONS_ICONS_FOLDER}ghost.svg`,
   },
 ];

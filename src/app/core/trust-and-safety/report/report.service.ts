@@ -15,7 +15,6 @@ import { USER_REPORT_REASON_ID } from './enum/user-report-reasons.enum';
 
 export const USER_REPORT_ENDPOINT = (userId: string) => `${USER_ENDPOINT}report/user/${userId}`;
 export const ITEM_REPORT_ENDPOINT = (itemId: number | string) => `${ITEMS_API_URL}/${itemId}/report`;
-export const LAST_USER_REPORT_REASON_ID = USER_REPORT_REASON_ID.OTHER;
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +23,7 @@ export class ReportService {
   constructor(private http: HttpClient) {}
 
   public getUserReportReasons(): Observable<UserReportReason[]> {
-    return of(USER_REPORT_REASONS.sort(this.sortUserReportReasons));
+    return of(USER_REPORT_REASONS);
   }
 
   public getItemReportReasons(): Observable<ItemReportReason[]> {
@@ -46,15 +45,5 @@ export class ReportService {
       comments: comments,
       reason: reason.id,
     });
-  }
-
-  private sortUserReportReasons(a: UserReportReason, b: UserReportReason): number {
-    if (a.id === LAST_USER_REPORT_REASON_ID) {
-      return 1;
-    }
-
-    if (b.id === LAST_USER_REPORT_REASON_ID) {
-      return -1;
-    }
   }
 }
