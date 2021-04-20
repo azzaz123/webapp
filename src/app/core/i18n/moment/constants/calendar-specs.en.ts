@@ -1,4 +1,5 @@
 import { CalendarSpec } from 'moment';
+import { CALENDAR_SPEC_TYPE } from '../enums/calendar-spec-type.enum';
 import { CalendarSpecsConfigs } from '../interfaces/calendar-specs.interface';
 
 export const defaultCalendarSpec: CalendarSpec = {
@@ -29,7 +30,7 @@ export const shortCalendarConfig: CalendarSpec = {
 };
 
 export const enMomentCalendarSpecs: CalendarSpecsConfigs = {
-  default: defaultCalendarSpec,
-  days: daysCalendarConfig,
-  short: shortCalendarConfig,
+  [CALENDAR_SPEC_TYPE.DEFAULT]: defaultCalendarSpec,
+  [CALENDAR_SPEC_TYPE.DAYS]: daysCalendarConfig,
+  [CALENDAR_SPEC_TYPE.SHORT]: shortCalendarConfig,
 };
