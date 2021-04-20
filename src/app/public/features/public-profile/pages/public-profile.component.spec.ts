@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services/ads/ads.service';
@@ -8,9 +8,11 @@ import { DeviceService } from '@core/device/device.service';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserPipeMock } from '@fixtures/is-current-user.fixtures.spec';
+import { ITEM_SALE_CONDITIONS } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
+import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
-import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_OTHER_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { of, throwError } from 'rxjs';
@@ -174,6 +176,23 @@ describe('PublicProfileComponent', () => {
             expect(publicProfileTrackingEventsService.trackViewOwnProfile).toHaveBeenCalledWith(component.userInfo.featured);
             expect(publicProfileTrackingEventsService.trackViewOtherProfile).not.toHaveBeenCalled();
           });
+
+          describe('when we click on Reviews tab...', () => {
+            it('should send track view own reviews', fakeAsync(() => {
+              spyOn(component, 'onClickProfileTabs').and.callThrough();
+              spyOn(publicProfileTrackingEventsService, 'trackViewOwnReviewsorViewOtherReviews');
+
+              component.onClickProfileTabs({ reviews: MOCK_REVIEWS });
+              tick(1000);
+
+              expect(publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews).toHaveBeenLastCalledWith(
+                component.userInfo,
+                component.userStats,
+                MOCK_REVIEWS,
+                true
+              );
+            }));
+          });
         });
 
         describe('when is NOT our own user...', () => {
@@ -196,6 +215,23 @@ describe('PublicProfileComponent', () => {
               component.userStats.counters.publish
             );
             expect(publicProfileTrackingEventsService.trackViewOwnProfile).not.toHaveBeenCalled();
+          });
+
+          describe('when we click on Reviews tab...', () => {
+            it('should send track view other reviews event', fakeAsync(() => {
+              spyOn(component, 'onClickProfileTabs').and.callThrough();
+              spyOn(publicProfileTrackingEventsService, 'trackViewOwnReviewsorViewOtherReviews');
+
+              component.onClickProfileTabs({ reviews: MOCK_REVIEWS });
+              tick(1000);
+
+              expect(publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews).toHaveBeenLastCalledWith(
+                component.userInfo,
+                component.userStats,
+                MOCK_REVIEWS,
+                false
+              );
+            }));
           });
 
           describe('and the user is favourited...', () => {

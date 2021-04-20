@@ -77,5 +77,5 @@ export class MockUserProfileTrackEventService {
   trackViewOwnProfile() {}
   trackViewOtherProfile() {}
   trackFavouriteOrUnfavouriteUserEvent() {}
-  tracktrackViewOwnReviewsorViewOtherReviews() {}
+  trackViewOwnReviewsorViewOtherReviews() {}
 }
