@@ -39,4 +39,16 @@ describe('MomentCalendarSpecService', () => {
       });
     });
   });
+
+  describe('when the webapp is in a language that is not supported by this service', () => {
+    beforeEach(() => jest.spyOn(i18nService, 'locale', 'get').mockReturnValue('jp'));
+
+    describe('and when asking for date format', () => {
+      it('should get the English localized date format', () => {
+        const result = service.getCalendarSpec();
+
+        expect(result).toBe(defaultEnglishCalendarSpec);
+      });
+    });
+  });
 });
