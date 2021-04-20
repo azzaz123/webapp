@@ -44,7 +44,7 @@ export class PublicProfileTrackingEventsService {
     this.analyticsService.trackPageView(event);
   }
 
-  public trackFavoriteOrUnfavoriteUserEvent(user: User, isFavourite: boolean): void {
+  public trackFavouriteOrUnfavouriteUserEvent(user: User, isFavourite: boolean): void {
     const event: FavouriteUserAnalyticEvent = PublicProfileTrackingEventsService.factoryAnalyticsEvent(user, isFavourite);
     this.analyticsService.trackEvent(event);
   }

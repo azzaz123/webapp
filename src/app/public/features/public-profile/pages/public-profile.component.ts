@@ -62,7 +62,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   public userFavouriteChanged(isFavourite: boolean): void {
     this.isFavourited = isFavourite;
-    this.publicProfileTrackingEventsService.trackFavoriteOrUnfavoriteUserEvent(this.userInfo, isFavourite);
+    this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteUserEvent(this.userInfo, isFavourite);
   }
 
   private getUser(userUUID: string): void {
