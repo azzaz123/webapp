@@ -28,7 +28,6 @@ import { HammerModule } from '@angular/platform-browser';
 import { CategoryService } from './category/category.service';
 import { ExternalCommsService } from './external-comms.service';
 import { ReleaseVersionService } from './release-version/release-version.service';
-import { CorePipesModule } from './pipes/core-pipes.module';
 import { SlugsUtilService } from './services/slugs-util/slugs-util.service';
 
 @NgModule({
@@ -39,7 +38,6 @@ import { SlugsUtilService } from './services/slugs-util/slugs-util.service';
     AdsModule,
     HammerModule,
     CoreStoreModule,
-    CorePipesModule,
   ],
   providers: [
     LoggedGuard,

@@ -1,7 +1,6 @@
 import { Model } from '../resource/model.interface';
 import { UserExtrainfo, UserLocation, UserStatsOld, UserValidations, Image } from './user-response.interface';
 import { Item } from '../item/item';
-import { environment } from '../../../environments/environment';
 
 export const USER_BASE_PATH = 'http://es.wallapop.com/user/';
 export const PLACEHOLDER_AVATAR = '/assets/images/user.png';
@@ -14,9 +13,6 @@ export const PERMISSIONS = {
 
 export class User implements Model {
   private _itemDistance: number;
-
-  private _webLink: string;
-
   private _sellingItem: Item;
   private _itemsCount: number;
   private _blocked: boolean;
@@ -35,7 +31,7 @@ export class User implements Model {
     private _online?: boolean,
     private _type?: string,
     private _receivedReports?: number,
-    private webSlug?: string,
+    private _webSlug?: string,
     private _firstName?: string,
     private _lastName?: string,
     private _birthDate?: number,
@@ -46,7 +42,6 @@ export class User implements Model {
     private _coverImage?: Image,
     private _registerDate?: Date
   ) {
-    this._webLink = webSlug ? USER_BASE_PATH + webSlug : null;
     this._type = this.mapType(this._type);
   }
 
@@ -130,8 +125,12 @@ export class User implements Model {
     this._itemDistance = value;
   }
 
-  get webLink(): string {
-    return this._webLink;
+  set webSlug(value: string) {
+    this._webSlug = value;
+  }
+
+  get webSlug(): string {
+    return this._webSlug;
   }
 
   set online(value: boolean) {
@@ -256,9 +255,5 @@ export class User implements Model {
       this._coverImage.urls_by_size.medium = url;
       this._coverImage.urls_by_size.xlarge = url;
     }
-  }
-
-  getUrl(subdomain: string) {
-    return environment.siteUrl.replace('es', subdomain) + 'user/' + this.webSlug;
   }
 }
