@@ -1,5 +1,5 @@
 export interface SubscriptionBenefit {
-  iconId: string;
+  iconPath: string;
   title: string;
   description: string;
 }
