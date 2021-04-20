@@ -22,6 +22,7 @@ import { PublicProfileComponent } from './public-profile.component';
 
 describe('PublicProfileComponent', () => {
   const containerSelector = '.PublicProfile';
+  const favouriteUserTag = 'tsl-favourite-user';
   let component: PublicProfileComponent;
   let fixture: ComponentFixture<PublicProfileComponent>;
   let route: ActivatedRoute;
@@ -205,6 +206,20 @@ describe('PublicProfileComponent', () => {
 
               expect(component.isFavourited).toBe(true);
             });
+
+            it('should send favourite user event', () => {
+              spyOn(publicProfileTrackingEventsService, 'trackFavouriteUserEvent');
+              spyOn(publicProfileTrackingEventsService, 'trackUnfavouriteUserEvent');
+              const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
+
+              toggleFavourite.triggerEventHandler('isFavouriteChange', true);
+
+              expect(publicProfileTrackingEventsService.trackFavouriteUserEvent).toHaveBeenCalledWith(
+                component.userInfo.featured,
+                component.userId
+              );
+              expect(publicProfileTrackingEventsService.trackUnfavouriteUserEvent).not.toHaveBeenCalled();
+            });
           });
 
           describe('and the user is NOT favourited...', () => {
@@ -214,6 +229,20 @@ describe('PublicProfileComponent', () => {
               component.ngOnInit();
 
               expect(component.isFavourited).toBe(false);
+            });
+
+            it('should send unfavourite user event', () => {
+              spyOn(publicProfileTrackingEventsService, 'trackFavouriteUserEvent');
+              spyOn(publicProfileTrackingEventsService, 'trackUnfavouriteUserEvent');
+              const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
+
+              toggleFavourite.triggerEventHandler('isFavouriteChange', false);
+
+              expect(publicProfileTrackingEventsService.trackUnfavouriteUserEvent).toHaveBeenCalledWith(
+                component.userInfo.featured,
+                component.userId
+              );
+              expect(publicProfileTrackingEventsService.trackFavouriteUserEvent).not.toHaveBeenCalled();
             });
           });
         });
