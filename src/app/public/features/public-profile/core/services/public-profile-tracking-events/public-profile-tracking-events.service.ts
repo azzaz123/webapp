@@ -45,10 +45,10 @@ export class PublicProfileTrackingEventsService {
   }
 
   public trackFavouriteUserEvent(user: User, isFavourite: boolean): void {
-    const event: FavouriteUserAnalyticEvent = this.factoryAnalyticsEvent(user, isFavourite);
+    const event: FavouriteUserAnalyticEvent = PublicProfileTrackingEventsService.factoryAnalyticsEvent(user, isFavourite);
     this.analyticsService.trackEvent(event);
   }
-  private factoryAnalyticsEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticEvent {
+  private static factoryAnalyticsEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticEvent {
     return {
       name: isFavourite ? ANALYTICS_EVENT_NAMES.FavoriteUser : ANALYTICS_EVENT_NAMES.UnfavoriteUser,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,

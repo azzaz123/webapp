@@ -211,7 +211,7 @@ describe('PublicProfileComponent', () => {
               spyOn(publicProfileTrackingEventsService, 'trackFavouriteUserEvent');
               const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
 
-              toggleFavourite.triggerEventHandler('isFavouriteChange', true);
+              toggleFavourite.triggerEventHandler('userFavouriteChanged', true);
 
               expect(publicProfileTrackingEventsService.trackFavouriteUserEvent).toHaveBeenCalledWith(component.userInfo, true);
             });
@@ -230,7 +230,7 @@ describe('PublicProfileComponent', () => {
               spyOn(publicProfileTrackingEventsService, 'trackFavouriteUserEvent');
               const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
 
-              toggleFavourite.triggerEventHandler('isFavouriteChange', false);
+              toggleFavourite.triggerEventHandler('userFavouriteChanged', false);
 
               expect(publicProfileTrackingEventsService.trackFavouriteUserEvent).toHaveBeenCalledWith(component.userInfo, false);
             });
