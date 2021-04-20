@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { Item } from '@core/item/item';
+import { ChangeDetectionStrategy, Component, ContentChild, EventEmitter, Inject, Input, Output, TemplateRef } from '@angular/core';
 import { environment } from '@environments/environment';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
@@ -27,6 +26,8 @@ export class ItemCardListComponent {
   @Input() slotsConfig: SlotsConfig;
   @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
   @Output() toggleFavouriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
+
+  @ContentChild('slotTemplate') slotTemplate: TemplateRef<any>;
 
   constructor(
     private itemCardService: ItemCardService,
