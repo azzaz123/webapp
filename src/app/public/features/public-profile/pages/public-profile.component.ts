@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, SimpleChange } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services/ads/ads.service';
@@ -7,6 +7,7 @@ import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { User } from '@core/user/user';
 import { Image, UserFavourited } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
+import { Review } from '@private/features/reviews/core/review';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { forkJoin, Subscription } from 'rxjs';
@@ -26,6 +27,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   public userInfo: User;
   public loading = false;
   public isFavourited = false;
+  public reviews: Review[];
   private subscriptions: Subscription[] = [];
 
   isMobile: boolean;
@@ -57,6 +59,10 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
+  public onActivate(event: any) {
+    setTimeout(() => {}, 1000);
   }
 
   private getUser(userUUID: string): void {
