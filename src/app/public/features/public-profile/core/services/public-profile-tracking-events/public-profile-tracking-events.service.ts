@@ -5,9 +5,11 @@ import {
   SCREEN_IDS,
   ViewOtherProfile,
   ViewOwnProfile,
+  ViewOwnReviews,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { User } from '@core/user/user';
+import { Review } from '@private/features/reviews/core/review';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +36,19 @@ export class PublicProfileTrackingEventsService {
         isPro: user.featured,
         sellerUserId: user.id,
         numberOfItems: numberOfItems,
+      },
+    };
+    this.analyticsService.trackPageView(event);
+  }
+
+  public trackViewOwnReviews(user: User, reviews: Review[]) {
+    const event: AnalyticsPageView<ViewOwnReviews> = {
+      name: ANALYTICS_EVENT_NAMES.ViewOwnReviews,
+      attributes: {
+        screenId: SCREEN_IDS.OwnReviewsSection,
+        isPro: user.featured,
+        numberOfReviews: reviews.length,
+        //reviewsScore: reviews // later check
       },
     };
     this.analyticsService.trackPageView(event);
