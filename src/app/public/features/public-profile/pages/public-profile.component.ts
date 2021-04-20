@@ -65,7 +65,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   public onActivate(event: any): void {
     event.reviews &&
       setTimeout(() => {
-        this.trackViewUserReviews(event.reviews);
+        this.trackViewOwnOrOtherReviews(event.reviews);
       }, 1000);
   }
 
@@ -146,7 +146,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  private trackViewUserReviews(reviews: Review[]): void {
+  private trackViewOwnOrOtherReviews(reviews: Review[]): void {
     this.isCurrentUserPipe.transform(this.userId).subscribe((isOwnUser: boolean) => {
       this.publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews(this.userInfo, this.userStats, reviews, isOwnUser);
     });
