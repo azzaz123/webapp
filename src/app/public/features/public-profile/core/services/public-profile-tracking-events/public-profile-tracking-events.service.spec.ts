@@ -2,7 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { PublicProfileTrackingEventsService } from './public-profile-tracking-events.service';
-import { MOCK_VIEW_OTHER_PROFILE_EVENT, MOCK_VIEW_OWN_PROFILE_EVENT } from './public-profile-tracking-events.fixtures.spec';
+import {
+  MOCK_VIEW_OTHER_PROFILE_EVENT,
+  MOCK_VIEW_OWN_PROFILE_EVENT,
+  MOCK_FAVOURITE_USER_EVENT,
+  MOCK_UNFAVOURITE_USER_EVENT,
+} from './public-profile-tracking-events.fixtures.spec';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
@@ -47,6 +52,25 @@ describe('PublicProfileTrackingEventsService', () => {
       service.trackViewOtherProfile(MOCK_OTHER_USER, MOCK_USER_STATS.counters.publish);
 
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_OTHER_PROFILE_EVENT);
+    });
+  });
+
+  describe('when user toggle favourite user icon...', () => {
+    it('should send favourite user event when user is favourited', () => {
+      spyOn(service, 'trackFavouriteUserEvent').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+
+      service.trackFavouriteUserEvent(MOCK_OTHER_USER.featured, MOCK_OTHER_USER.id);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVOURITE_USER_EVENT);
+    });
+    it('should send favourite user event when user is unfavourited', () => {
+      spyOn(service, 'trackUnfavouriteUserEvent').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+
+      service.trackUnfavouriteUserEvent(MOCK_OTHER_USER.featured, MOCK_OTHER_USER.id);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVOURITE_USER_EVENT);
     });
   });
 });

@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
+  AnalyticsEvent,
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  FavoriteUser,
   SCREEN_IDS,
+  UnfavoriteUser,
   ViewOtherProfile,
   ViewOwnProfile,
 } from '@core/analytics/analytics-constants';
@@ -37,5 +41,31 @@ export class PublicProfileTrackingEventsService {
       },
     };
     this.analyticsService.trackPageView(event);
+  }
+
+  public trackFavouriteUserEvent(isPro: boolean, sellerUserId: string): void {
+    const event: AnalyticsEvent<FavoriteUser> = {
+      name: ANALYTICS_EVENT_NAMES.FavoriteUser,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+      attributes: {
+        screenId: SCREEN_IDS.Profile,
+        isPro: isPro,
+        sellerUserId: sellerUserId,
+      },
+    };
+    this.analyticsService.trackEvent(event);
+  }
+
+  public trackUnfavouriteUserEvent(isPro: boolean, sellerUserId: string): void {
+    const event: AnalyticsEvent<UnfavoriteUser> = {
+      name: ANALYTICS_EVENT_NAMES.UnfavoriteUser,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+      attributes: {
+        screenId: SCREEN_IDS.Profile,
+        isPro: isPro,
+        sellerUserId: sellerUserId,
+      },
+    };
+    this.analyticsService.trackEvent(event);
   }
 }
