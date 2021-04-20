@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, SimpleChange } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, SimpleChange } from '@angular/core';
 import { Subscription, forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -62,8 +62,11 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
-  public onActivate(event: any) {
-    setTimeout(() => {}, 1000);
+  public onActivate(event: any): void {
+    event.reviews &&
+      setTimeout(() => {
+        this.trackViewUserReviews(event.reviews);
+      }, 1000);
   }
 
   public userFavouriteChanged(isFavourite: boolean): void {
@@ -140,6 +143,12 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
       } else {
         this.publicProfileTrackingEventsService.trackViewOtherProfile(this.userInfo, this.userStats.counters.publish);
       }
+    });
+  }
+
+  private trackViewUserReviews(reviews: Review[]): void {
+    this.isCurrentUserPipe.transform(this.userId).subscribe((isOwnUser: boolean) => {
+      this.publicProfileTrackingEventsService.trackViewReviews(this.userInfo, this.userStats, reviews, isOwnUser);
     });
   }
 
