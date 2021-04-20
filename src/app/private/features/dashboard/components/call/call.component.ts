@@ -1,6 +1,8 @@
 import { Component, HostBinding, HostListener, Input } from '@angular/core';
 import { Call } from '@core/conversation/calls';
 import { CallsService } from '@core/conversation/calls.service';
+import { CALENDAR_SPEC_TYPE } from '@core/i18n/moment/enums/calendar-spec-type.enum';
+import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 import { Remove } from '@shared/archivable/animations';
 
 import { CalendarSpec } from 'moment';
@@ -17,16 +19,9 @@ export class CallComponent {
   @HostBinding('@remove')
   archived = false;
 
-  public momentConfig: CalendarSpec = {
-    lastDay: 'ddd',
-    sameDay: 'HH:mm',
-    nextDay: 'ddd',
-    lastWeek: 'ddd',
-    nextWeek: 'ddd',
-    sameElse: 'D MMM',
-  };
+  public momentCalendarSpec: CalendarSpec = this.momentCalendarSpecService.getCalendarSpec(CALENDAR_SPEC_TYPE.DAYS);
 
-  constructor(private callService: CallsService) {}
+  constructor(private callService: CallsService, private momentCalendarSpecService: MomentCalendarSpecService) {}
 
   @HostListener('@remove.done') onAnimationDone($event: Event) {
     if (this.archived) {

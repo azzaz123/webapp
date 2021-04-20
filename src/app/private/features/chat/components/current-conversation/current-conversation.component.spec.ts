@@ -37,6 +37,7 @@ import { DateCalendarPipe } from 'app/shared/pipes';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import * as Visibility from 'visibilityjs';
 import { CurrentConversationComponent } from './current-conversation.component';
+import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -94,6 +95,7 @@ describe('CurrentConversationComponent', () => {
             useValue: MockAdsService,
           },
           I18nService,
+          MomentCalendarSpecService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();

@@ -10,6 +10,7 @@ import { DateCalendarPipe } from 'app/shared/pipes';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of } from 'rxjs';
 import { InboxConversationComponent } from './inbox-conversation.component';
+import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 
 describe('Component: Conversation', () => {
   let inboxConversationService: InboxConversationService;
@@ -23,6 +24,7 @@ describe('Component: Conversation', () => {
         declarations: [InboxConversationComponent, DateCalendarPipe],
         providers: [
           I18nService,
+          MomentCalendarSpecService,
           {
             provide: InboxConversationService,
             useClass: InboxConversationServiceMock,

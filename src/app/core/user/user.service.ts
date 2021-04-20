@@ -6,7 +6,6 @@ import { PERMISSIONS, User } from './user';
 import { EventService } from '../event/event.service';
 import { Item } from '../item/item';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
-import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
@@ -20,8 +19,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { PhoneMethodResponse } from './phone-method.interface';
 
 import { APP_VERSION } from '../../../environments/version';
-import { UserReportApi } from './user-report.interface';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { InboxUser, InboxItem } from '@private/features/chat/core/model';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
@@ -42,7 +40,6 @@ export const USER_EMAIL_ENDPOINT = `${USER_ENDPOINT}email`;
 export const USER_PASSWORD_ENDPOINT = `${USER_ENDPOINT}password`;
 export const USER_UNSUBSCRIBE_ENDPOINT = `${USER_ENDPOINT}unsubscribe/`;
 export const USER_UNSUBSCRIBE_REASONS_ENDPOINT = `${USER_UNSUBSCRIBE_ENDPOINT}reason`;
-export const USER_REPORT_ENDPOINT = (userId: string) => `${USER_ENDPOINT}report/user/${userId}`;
 export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/stats`;
 export const USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT = `${USER_ENDPOINT}profile-subscription-info/`;
 export const USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT = `${USER_ENDPOINT}type`;
@@ -63,7 +60,6 @@ export const LOCAL_STORAGE_TRY_PRO_SLOT = 'try-pro-slot';
 export class UserService {
   private _user: User;
   private _users: User[] = [];
-  private banReasons: BanReason[];
   private presenceInterval: any;
 
   constructor(
@@ -191,35 +187,6 @@ export class UserService {
       longitude: user.location.approximated_longitude || user.location.longitude,
     };
     return this.getDistanceInKilometers(currentUserCoord, userCoord);
-  }
-
-  public getBanReasons(): Observable<BanReason[]> {
-    if (!this.banReasons) {
-      this.banReasons = this.i18n.getTranslations('reportUserReasons');
-    }
-    return of(this.banReasons);
-  }
-
-  public reportUser(
-    userId: string,
-    itemHashId: string,
-    conversationHash: string,
-    reason: number,
-    comments: string
-  ): Observable<UserReportApi> {
-    return this.http.post<UserReportApi>(
-      `${environment.baseUrl}${USER_REPORT_ENDPOINT(userId)}`,
-      {
-        itemHashId,
-        conversationHash,
-        comments,
-        reason,
-        targetCrm: 'zendesk',
-      },
-      {
-        headers: new HttpHeaders().append('AppBuild', APP_VERSION),
-      }
-    );
   }
 
   public getInfo(userId: string): Observable<UserInfoResponse> {
