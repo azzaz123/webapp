@@ -44,10 +44,11 @@ export class PublicProfileTrackingEventsService {
     this.analyticsService.trackPageView(event);
   }
 
-  public trackFavouriteUserEvent(user: User, isFavourite: boolean): void {
+  public trackFavoriteOrUnfavoriteUserEvent(user: User, isFavourite: boolean): void {
     const event: FavouriteUserAnalyticEvent = PublicProfileTrackingEventsService.factoryAnalyticsEvent(user, isFavourite);
     this.analyticsService.trackEvent(event);
   }
+
   private static factoryAnalyticsEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticEvent {
     return {
       name: isFavourite ? ANALYTICS_EVENT_NAMES.FavoriteUser : ANALYTICS_EVENT_NAMES.UnfavoriteUser,

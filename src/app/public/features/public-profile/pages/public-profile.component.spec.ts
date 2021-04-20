@@ -208,12 +208,12 @@ describe('PublicProfileComponent', () => {
             });
 
             it('should send favourite user event', () => {
-              spyOn(publicProfileTrackingEventsService, 'trackFavouriteUserEvent');
+              spyOn(publicProfileTrackingEventsService, 'trackFavoriteOrUnfavoriteUserEvent');
               const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
 
               toggleFavourite.triggerEventHandler('userFavouriteChanged', true);
 
-              expect(publicProfileTrackingEventsService.trackFavouriteUserEvent).toHaveBeenCalledWith(component.userInfo, true);
+              expect(publicProfileTrackingEventsService.trackFavoriteOrUnfavoriteUserEvent).toHaveBeenCalledWith(component.userInfo, true);
             });
           });
 
@@ -227,12 +227,12 @@ describe('PublicProfileComponent', () => {
             });
 
             it('should send unfavourite user event', () => {
-              spyOn(publicProfileTrackingEventsService, 'trackFavouriteUserEvent');
+              spyOn(publicProfileTrackingEventsService, 'trackFavoriteOrUnfavoriteUserEvent');
               const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
 
               toggleFavourite.triggerEventHandler('userFavouriteChanged', false);
 
-              expect(publicProfileTrackingEventsService.trackFavouriteUserEvent).toHaveBeenCalledWith(component.userInfo, false);
+              expect(publicProfileTrackingEventsService.trackFavoriteOrUnfavoriteUserEvent).toHaveBeenCalledWith(component.userInfo, false);
             });
           });
         });

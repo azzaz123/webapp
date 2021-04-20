@@ -60,9 +60,9 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
-  public trackFavouriteUserEvent(isFavourite: boolean): void {
+  public userFavouriteChanged(isFavourite: boolean): void {
     this.isFavourited = isFavourite;
-    this.publicProfileTrackingEventsService.trackFavouriteUserEvent(this.userInfo, isFavourite);
+    this.publicProfileTrackingEventsService.trackFavoriteOrUnfavoriteUserEvent(this.userInfo, isFavourite);
   }
 
   private getUser(userUUID: string): void {

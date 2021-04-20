@@ -52,5 +52,5 @@ export const MOCK_UNFAVOURITE_USER_EVENT: AnalyticsEvent<UnfavoriteUser> = {
 export class MockUserProfileTrackEventService {
   trackViewOwnProfile() {}
   trackViewOtherProfile() {}
-  trackFavouriteUserEvent() {}
+  trackFavoriteOrUnfavoriteUserEvent() {}
 }
