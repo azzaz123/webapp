@@ -77,7 +77,7 @@
               i18n="@@unarchiveConversation" [hidden]="!currentConversationIsArchived()">Unarchive conversation
       </button>
       <button class="dropdown-item" (click)="reportListingAction()"
-              *ngIf="!itemIsMine && !currentConversation.item.notAvailable"
+              *ngIf="showReportListing"
               i18n="@@reportListing">Report this Listing
       </button>
       <button *ngIf="currentConversation.user.available"
