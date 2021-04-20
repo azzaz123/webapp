@@ -11,7 +11,14 @@
         <div class="header-row">
           <h4 class="header-subtitle" i18n="@@web_profile_pages_316">From here you can view and edit your profile</h4>
           <div class="header-separator d-none d-md-flex">|</div>
-          <a class="header-link d-none d-md-flex" [href]="userUrl" target="_blank" i18n="@@web_profile_pages_317">View my public profile</a>
+          <a 
+            class="header-link d-none d-md-flex" 
+            i18n="@@web_profile_pages_317"
+            *ngIf="user"
+            [routerLink]="user.webSlug | userProfileRoute:user.id"
+          >
+              View my public profile
+          </a>
         </div>
       </div>
       <div class="col-3 d-none d-md-block">

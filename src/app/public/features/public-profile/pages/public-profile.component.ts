@@ -47,11 +47,12 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.route.params.subscribe((params) => {
       const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
       const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
+
+      this.adsService.setSlots([this.adSlot]);
       this.getUser(userUUID);
     });
 
     this.isMobile = this.deviceService.isMobile();
-    this.adsService.setSlots([this.adSlot]);
   }
 
   ngOnDestroy(): void {
@@ -71,7 +72,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       forkJoin([
-        this.publicProfileService.getUser(this.userId),
+        this.publicProfileService.getUser(this.userId, false),
         this.publicProfileService.getStats(this.userId),
         this.publicProfileService.getShippingCounter(this.userId),
       ])
