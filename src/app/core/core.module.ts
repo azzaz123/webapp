@@ -28,9 +28,9 @@ import { HammerModule } from '@angular/platform-browser';
 import { CategoryService } from './category/category.service';
 import { ExternalCommsService } from './external-comms.service';
 import { ReleaseVersionService } from './release-version/release-version.service';
-import { CorePipesModule } from './pipes/core-pipes.module';
 import { SlugsUtilService } from './services/slugs-util/slugs-util.service';
 import { MomentCalendarSpecService } from './i18n/moment/moment-calendar-spec.service';
+import { ReportService } from './trust-and-safety/report/report.service';
 
 @NgModule({
   imports: [
@@ -40,7 +40,6 @@ import { MomentCalendarSpecService } from './i18n/moment/moment-calendar-spec.se
     AdsModule,
     HammerModule,
     CoreStoreModule,
-    CorePipesModule,
   ],
   providers: [
     LoggedGuard,
@@ -68,6 +67,7 @@ import { MomentCalendarSpecService } from './i18n/moment/moment-calendar-spec.se
     ExternalCommsService,
     SlugsUtilService,
     MomentCalendarSpecService,
+    ReportService,
   ],
 })
 export class CoreModule {

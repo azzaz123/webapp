@@ -1,6 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { I18nService } from '@core/i18n/i18n.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { User } from '@core/user/user';
 import { UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
 import {
@@ -18,7 +19,7 @@ import { AnalyticsService } from 'app/core/analytics/analytics.service';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  public userUrl: string;
+  public user: User;
   public isPro: boolean;
   public userStats: UserStats;
   private hasOneTrialSubscription: boolean;
@@ -27,13 +28,12 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private analyticsService: AnalyticsService,
     private subscriptionService: SubscriptionsService,
-    private i18n: I18nService,
-    @Inject('SUBDOMAIN') private subdomain: string
+    private i18n: I18nService
   ) {}
 
   ngOnInit() {
     this.userService.me().subscribe((user) => {
-      this.userUrl = user.getUrl(this.subdomain);
+      this.user = user;
       this.isPro = user.featured;
     });
 

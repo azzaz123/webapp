@@ -22,6 +22,9 @@ $min-size: 96px;
       ::ng-deep svg g g {
         fill: $walla-main !important;
       }
+      ::ng-deep path {
+        fill: $walla-main !important;
+      }
     }
   }
 
@@ -34,8 +37,12 @@ $min-size: 96px;
       }
     }
 
-    .GridSelectOption__icon {
+    .GridSelectOption__icon-hover {
       ::ng-deep svg g g {
+        fill: $blue-grey-4;
+      }
+
+      ::ng-deep path {
         fill: $blue-grey-4;
       }
     }

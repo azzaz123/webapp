@@ -1,5 +1,5 @@
-<tsl-filter-template [isBubble]="isBubble()"
-                     [isDropdown]="isDropdown()"
+<tsl-filter-template [isBubble]="variant | isBubble"
+                     [isDropdown]="true"
                      [title]="config.title"
                      [icon]="icon$ | async"
                      [label]="label$ | async"
@@ -7,7 +7,7 @@
                      [hasMaxHeight]="false"
                      (openStateChange)="openStateChange.emit($event)">
 
-  <form [formGroup]="formGroup" [class.CategoriesFilter__grid]="isBubble()">
+  <form [formGroup]="formGroup" [class.CategoriesFilter__grid]="variant | isBubble">
     <tsl-grid-select-form *ngIf="variant === VARIANT.BUBBLE"
                           formControlName="select"
                           [isHoverMainColor]="true"
@@ -15,7 +15,8 @@
                           [isMultiselect]="false"
                           [options]="this.config.options"
                           [columns]="6"
-                          [columnsMd]="4"
+                          [columnsLg]="4"
+                          [columnsMd]="3"
                           [columnsSm]="3">
     </tsl-grid-select-form>
 
@@ -24,7 +25,8 @@
                                 [hasContentPlaceholder]="true"
                                 [isClearable]="false"
                                 [placeholderLabel]="label$ | async"
-                                [placeholderIcon]="placeholderIcon$ | async">
+                                [placeholderIcon]="placeholderIcon$ | async"
+                                (placeholderOpenStateChange)="openStateChange.emit($event)">
         <tsl-select-form
           formControlName="select"
           [options]="this.config.options | formatSelectOptions">

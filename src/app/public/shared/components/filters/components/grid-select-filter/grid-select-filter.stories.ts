@@ -1,6 +1,5 @@
 import { moduleMetadata } from '@storybook/angular';
-import { Meta } from '@storybook/angular/types-6-0';
-import { Story } from '@storybook/angular/ts3.4/dist/client';
+import { Meta, Story } from '@storybook/angular/types-6-0';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { Component, Input } from '@angular/core';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
@@ -13,6 +12,7 @@ import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-s
 import { GridSelectFilterConfig } from './interfaces/grid-select-filter-config.interface';
 import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
 import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-filters',
@@ -26,7 +26,6 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/
             [value]="singleSelectValue"
             [config]="singleSelectConfig"
             (valueChange)="changeSingleSelect($event)"
-            (clear)="changeSingleSelect([])"
           >
           </tsl-grid-select-filter>
         </div>
@@ -36,7 +35,6 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/
             [value]="multiselectValue"
             [config]="multiselectConfig"
             (valueChange)="changeMultiselect($event)"
-            (clear)="changeMultiselect([])"
           >
           </tsl-grid-select-filter>
         </div>
@@ -49,7 +47,6 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/
           [value]="singleSelectValue"
           [config]="singleSelectConfig"
           (valueChange)="changeSingleSelect($event)"
-          (clear)="changeSingleSelect([])"
         >
         </tsl-grid-select-filter>
         <hr />
@@ -58,7 +55,6 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/
           [value]="multiselectValue"
           [config]="multiselectConfig"
           (valueChange)="changeMultiselect($event)"
-          (clear)="changeMultiselect([])"
         >
         </tsl-grid-select-filter>
       </div>
@@ -66,8 +62,8 @@ import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/
   `,
 })
 class FiltersComponent {
-  @Input() public singleSelectValue: FilterParameter[];
-  @Input() public multiselectValue: FilterParameter[];
+  @Input() public singleSelectValue: FilterParameter[] = [];
+  @Input() public multiselectValue: FilterParameter[] = [];
   @Input() public singleSelectConfig: GridSelectFilterConfig;
   @Input() public multiselectConfig: GridSelectFilterConfig;
 
@@ -91,7 +87,7 @@ export default {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [FiltersComponent, GridSelectFilterComponent],
+      declarations: [FiltersComponent, GridSelectFilterComponent, IsBubblePipe],
     }),
   ],
 } as Meta;
@@ -110,7 +106,7 @@ const singleSelectConfig: GridSelectFilterConfig = {
   mapKey: {
     parameterKey: 'big_icons',
   },
-  type: FILTER_TYPES.ICON,
+  type: FILTER_TYPES.GRID,
   isMultiselect: false,
   hasBigIcons: true,
 };
@@ -124,7 +120,7 @@ const multiselectConfig: GridSelectFilterConfig = {
   mapKey: {
     parameterKey: 'multiselect',
   },
-  type: FILTER_TYPES.ICON,
+  type: FILTER_TYPES.GRID,
   isMultiselect: true,
   hasBigIcons: false,
 };

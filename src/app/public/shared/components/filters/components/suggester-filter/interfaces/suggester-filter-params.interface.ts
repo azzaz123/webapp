@@ -1,3 +1,3 @@
 export interface SuggesterFilterParams {
-  parameterKey?: string;
+  [key: string]: string;
 }

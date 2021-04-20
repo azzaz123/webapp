@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
+import { DevelopmentGuard } from '@core/user/development.guard';
 import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from './public-routing-constants';
 import { PublicComponent } from './public.component';
 
@@ -11,10 +12,12 @@ const routes: Route[] = [
       { path: '', pathMatch: 'full', redirectTo: PUBLIC_PATHS.LOGIN },
       {
         path: PUBLIC_PATHS.LOGIN,
+        canLoad: [DevelopmentGuard],
         loadChildren: () => import('./features/login/login.module').then((m) => m.LoginModule),
       },
       {
         path: PUBLIC_PATHS.REGISTER,
+        canLoad: [DevelopmentGuard],
         loadChildren: () => import('./features/register/register.module').then((m) => m.RegisterModule),
       },
       {
@@ -23,19 +26,17 @@ const routes: Route[] = [
       },
       {
         path: PUBLIC_PATHS.SEARCH,
+        canLoad: [DevelopmentGuard],
         loadChildren: () => import('./features/search/search.module').then((m) => m.SearchModule),
       },
       {
         path: `${PUBLIC_PATHS.ITEM_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
+        canLoad: [DevelopmentGuard],
         loadChildren: () => import('./features/item-detail/item-detail.module').then((m) => m.ItemDetailModule),
       },
       {
         path: PUBLIC_PATHS.NOT_FOUND,
         loadChildren: () => import('./features/error/error.module').then((m) => m.ErrorModule),
-      },
-      {
-        path: '**',
-        redirectTo: PUBLIC_PATHS.LOGIN,
       },
     ],
   },

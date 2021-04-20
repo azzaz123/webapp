@@ -1,6 +1,5 @@
 import { moduleMetadata } from '@storybook/angular';
-import { Meta } from '@storybook/angular/types-6-0';
-import { Story } from '@storybook/angular/ts3.4/dist/client';
+import { Meta, Story } from '@storybook/angular/types-6-0';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { Component, Input } from '@angular/core';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
@@ -19,6 +18,7 @@ import { AbstractSelectFilterModule } from '@public/shared/components/filters/co
 import { ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-filters',
@@ -32,7 +32,6 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
             [value]="clothingTypeValue"
             [config]="clothingTypeConfig"
             (valueChange)="changeClothingType($event)"
-            (clear)="changeClothingType([])"
           >
           </tsl-suggester-filter>
         </div>
@@ -42,7 +41,6 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
             [value]="brandValue"
             [config]="brandConfig"
             (valueChange)="changeBrand($event)"
-            (clear)="changeBrand([])"
           >
           </tsl-suggester-filter>
         </div>
@@ -55,7 +53,6 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
           [value]="clothingTypeValue"
           [config]="clothingTypeConfig"
           (valueChange)="changeClothingType($event)"
-          (clear)="changeClothingType([])"
         >
         </tsl-suggester-filter>
         <div style="height: 1px; width: 100%; background-color: #90A4AE;" class="my-3"></div>
@@ -64,7 +61,6 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
           [value]="brandValue"
           [config]="brandConfig"
           (valueChange)="changeBrand($event)"
-          (clear)="changeBrand([])"
         >
         </tsl-suggester-filter>
       </div>
@@ -72,8 +68,8 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
   `,
 })
 class FiltersComponent {
-  @Input() public clothingTypeValue: FilterParameter[];
-  @Input() public brandValue: FilterParameter[];
+  @Input() public clothingTypeValue: FilterParameter[] = [];
+  @Input() public brandValue: FilterParameter[] = [];
   @Input() public clothingTypeConfig: SuggesterFilterConfig;
   @Input() public brandConfig: SuggesterFilterConfig;
 
@@ -106,7 +102,7 @@ export default {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [FiltersComponent, SuggesterFilterComponent],
+      declarations: [FiltersComponent, SuggesterFilterComponent, IsBubblePipe],
     }),
   ],
 } as Meta;
@@ -137,7 +133,10 @@ const brandConfig: SuggesterFilterConfig = {
   icon: '/assets/icons/joke.svg',
   bubblePlaceholder: 'Brand',
   drawerPlaceholder: 'Select brand',
-  mapKey: {},
+  mapKey: {
+    brand: 'brand',
+    model: 'model',
+  },
   type: FILTER_TYPES.SUGGESTER,
   hasOptionsOnInit: false,
   hasContentPlaceholder: true,

@@ -11,7 +11,7 @@ export class InboxUser {
     private _microName: string,
     private _blocked: boolean,
     private _available: boolean,
-    private _profileUrl: string,
+    private _webSlug: string,
     private _avatarUrl: string,
     private _responseRate: string,
     private _sellingItem: Item,
@@ -50,12 +50,12 @@ export class InboxUser {
     this._available = value;
   }
 
-  get profileUrl(): string {
-    return this._profileUrl;
+  get webSlug(): string {
+    return this._webSlug;
   }
 
-  set profileUrl(value: string) {
-    this._profileUrl = value;
+  set webSlug(value: string) {
+    this._webSlug = value;
   }
 
   get avatarUrl(): string {

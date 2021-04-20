@@ -63,8 +63,7 @@ export class FilterOptionsMapperService {
     return iconOptions.map((condition) => ({
       value: condition.id,
       label: condition.text,
-      // TODO: We need to add assets, and update path if needed
-      icon: `${condition.icon_id}.svg`,
+      icon: `/assets/icons/filters/options/${condition.icon_id}.svg`,
     }));
   }
 
