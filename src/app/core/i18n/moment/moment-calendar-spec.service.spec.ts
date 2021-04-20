@@ -85,8 +85,24 @@ describe('MomentCalendarSpecService', () => {
     beforeEach(() => jest.spyOn(i18nService, 'locale', 'get').mockReturnValue('jp'));
 
     describe('and when asking for default date format', () => {
-      it('should get the English localized date format', () => {
+      it('should get the default English localized date format', () => {
         const result = service.getCalendarSpec();
+
+        expect(result).toBe(defaultEnglishCalendarSpec);
+      });
+    });
+
+    describe('and when asking for days date format', () => {
+      it('should get the default English localized date format', () => {
+        const result = service.getCalendarSpec(CALENDAR_SPEC_TYPE.DAYS);
+
+        expect(result).toBe(defaultEnglishCalendarSpec);
+      });
+    });
+
+    describe('and when asking for short date format', () => {
+      it('should get the default English localized date format', () => {
+        const result = service.getCalendarSpec(CALENDAR_SPEC_TYPE.SHORT);
 
         expect(result).toBe(defaultEnglishCalendarSpec);
       });
