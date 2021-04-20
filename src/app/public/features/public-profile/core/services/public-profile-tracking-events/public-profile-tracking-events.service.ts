@@ -49,7 +49,7 @@ export class PublicProfileTrackingEventsService {
     this.analyticsService.trackPageView(event);
   }
 
-  public trackViewReviews(user: User, userStats: UserStats, reviews: Review[], isOwnUser: boolean) {
+  public trackViewOwnReviewsorViewOtherReviews(user: User, userStats: UserStats, reviews: Review[], isOwnUser: boolean) {
     const event: ViewReviewsAnalyticsPageView = PublicProfileTrackingEventsService.factoryViewReviewsEvent(
       user,
       userStats,

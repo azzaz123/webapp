@@ -7,8 +7,11 @@ import {
   SCREEN_IDS,
   UnfavoriteUser,
   ViewOtherProfile,
+  ViewOtherReviews,
   ViewOwnProfile,
+  ViewOwnReviews,
 } from '@core/analytics/analytics-constants';
+import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 
 export const MOCK_VIEW_OWN_PROFILE_EVENT: AnalyticsPageView<ViewOwnProfile> = {
@@ -49,8 +52,30 @@ export const MOCK_UNFAVOURITE_USER_EVENT: AnalyticsEvent<UnfavoriteUser> = {
   },
 };
 
+export const MOCK_TRACK_VIEW_OWN_REVIEWS: AnalyticsPageView<ViewOwnReviews> = {
+  name: ANALYTICS_EVENT_NAMES.ViewOwnReviews,
+  attributes: {
+    screenId: SCREEN_IDS.OwnReviewsSection,
+    isPro: MOCK_USER.featured,
+    numberOfReviews: MOCK_REVIEWS.length,
+    reviewsScore: MOCK_USER_STATS.ratings.reviews,
+  },
+};
+
+export const MOCK_TRACK_VIEW_OTHERS_REVIEWS: AnalyticsPageView<ViewOtherReviews> = {
+  name: ANALYTICS_EVENT_NAMES.ViewOtherReviews,
+  attributes: {
+    screenId: SCREEN_IDS.OtherReviewsSection,
+    isPro: MOCK_OTHER_USER.featured,
+    sellerUserId: MOCK_OTHER_USER.id,
+    numberOfReviews: MOCK_REVIEWS.length,
+    reviewsScore: MOCK_USER_STATS.ratings.reviews,
+  },
+};
+
 export class MockUserProfileTrackEventService {
   trackViewOwnProfile() {}
   trackViewOtherProfile() {}
   trackFavouriteOrUnfavouriteUserEvent() {}
+  tracktrackViewOwnReviewsorViewOtherReviews() {}
 }

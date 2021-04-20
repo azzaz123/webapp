@@ -148,7 +148,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   private trackViewUserReviews(reviews: Review[]): void {
     this.isCurrentUserPipe.transform(this.userId).subscribe((isOwnUser: boolean) => {
-      this.publicProfileTrackingEventsService.trackViewReviews(this.userInfo, this.userStats, reviews, isOwnUser);
+      this.publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews(this.userInfo, this.userStats, reviews, isOwnUser);
     });
   }
 
