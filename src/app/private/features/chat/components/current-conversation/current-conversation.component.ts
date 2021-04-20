@@ -13,7 +13,7 @@ import {
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 import { EventService } from '@core/event/event.service';
-import { I18nService } from '@core/i18n/i18n.service';
+import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -35,6 +35,7 @@ import {
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { UserService } from 'app/core/user/user.service';
 import { eq, includes, isEmpty } from 'lodash-es';
+import { CalendarSpec } from 'moment';
 import { of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';
@@ -59,7 +60,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   private userWarringNotification: ElementRef;
 
   private chatContext: ViewBannedUserChatPopUp;
-  public momentConfig: any;
+  public momentCalendarSpec: CalendarSpec = this.momentCalendarSpecService.getCalendarSpec();
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
   private lastInboxMessage: InboxMessage;
@@ -73,17 +74,15 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   constructor(
     private eventService: EventService,
-    i18n: I18nService,
     private realTime: RealTimeService,
     private inboxConversationService: InboxConversationService,
     private remoteConsoleService: RemoteConsoleService,
     private modalService: NgbModal,
     private userService: UserService,
     private analyticsService: AnalyticsService,
-    private adsService: AdsService
-  ) {
-    this.momentConfig = i18n.getTranslations('defaultDaysMomentConfig');
-  }
+    private adsService: AdsService,
+    private momentCalendarSpecService: MomentCalendarSpecService
+  ) {}
 
   get emptyInbox(): boolean {
     return this.conversationsTotal === 0;

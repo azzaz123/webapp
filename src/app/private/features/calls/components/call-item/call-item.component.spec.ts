@@ -10,6 +10,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CallsService } from '@core/conversation/calls.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { CallStatusLabelPipe, DateCalendarPipe } from '@shared/pipes';
+import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 
 describe('CallItemComponent', () => {
   let component: CallItemComponent;
@@ -23,6 +24,7 @@ describe('CallItemComponent', () => {
         declarations: [CallItemComponent, CallStatusLabelPipe, DateCalendarPipe],
         providers: [
           I18nService,
+          MomentCalendarSpecService,
           {
             provide: ActivatedRoute,
             useValue: {

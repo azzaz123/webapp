@@ -17,7 +17,7 @@ export class ItemStatsRowComponent implements OnInit {
   @Input() open = false;
   @Input() price: string;
   public link: string;
-  public momentConfig: any;
+  public publishedItemDateFormat = 'dd MMM yyyy';
   public statsData: ItemStatisticFullResponse;
   public noData: boolean;
   public tooltipMessages = {
@@ -26,9 +26,7 @@ export class ItemStatsRowComponent implements OnInit {
     favourites: $localize`:@@web_stats_item_favourites_tooltip:Favourites`,
   };
 
-  constructor(@Inject('SUBDOMAIN') private subdomain: string, private itemStatsService: ItemStatsService) {
-    this.momentConfig = 'dd MMM yyyy';
-  }
+  constructor(@Inject('SUBDOMAIN') private subdomain: string, private itemStatsService: ItemStatsService) {}
 
   ngOnInit() {
     this.link = this.item.getUrl(this.subdomain);

@@ -29,6 +29,7 @@ import { CategoryService } from './category/category.service';
 import { ExternalCommsService } from './external-comms.service';
 import { ReleaseVersionService } from './release-version/release-version.service';
 import { SlugsUtilService } from './services/slugs-util/slugs-util.service';
+import { MomentCalendarSpecService } from './i18n/moment/moment-calendar-spec.service';
 import { ReportService } from './trust-and-safety/report/report.service';
 
 @NgModule({
@@ -65,6 +66,7 @@ import { ReportService } from './trust-and-safety/report/report.service';
     ReleaseVersionService,
     ExternalCommsService,
     SlugsUtilService,
+    MomentCalendarSpecService,
     ReportService,
   ],
 })
