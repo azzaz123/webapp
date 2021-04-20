@@ -8,10 +8,10 @@ import {
   SubscriptionSlot,
   SubscriptionSlotGeneralResponse,
   SUBSCRIPTION_MARKETS,
-  SubscriptionBenefit,
 } from '../app/core/subscriptions/subscriptions.interface';
 import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
+import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 
 export class MockSubscriptionService {
   getSubscriptions() {

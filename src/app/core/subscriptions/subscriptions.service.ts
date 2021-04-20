@@ -7,7 +7,6 @@ import {
   SubscriptionSlotResponse,
   SubscriptionSlotGeneralResponse,
   SUBSCRIPTION_MARKETS,
-  SubscriptionBenefit,
 } from './subscriptions.interface';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
@@ -19,6 +18,7 @@ import { environment } from '../../../environments/environment';
 import { I18nService } from '../i18n/i18n.service';
 import { CURRENCY_SYMBOLS } from '../constants';
 import { UuidService } from '../uuid/uuid.service';
+import { SubscriptionBenefit } from './subscription-benefits/interfaces/subscription-benefit.interface';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';

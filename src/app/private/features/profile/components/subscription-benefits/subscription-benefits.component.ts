@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SubscriptionBenefit } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { finalize } from 'rxjs/operators';
 
