@@ -11,7 +11,7 @@ import { take } from 'rxjs/operators';
 export class FavouriteUserComponent implements OnDestroy {
   @Input() isFavourite: boolean = false;
   @Input() userId: string;
-  @Output() isFavouriteChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() userFavouriteChanged: EventEmitter<boolean> = new EventEmitter();
 
   subscriptions: Subscription[] = [];
 
@@ -25,7 +25,7 @@ export class FavouriteUserComponent implements OnDestroy {
         .pipe(take(1))
         .subscribe(
           () => {
-            this.isFavouriteChange.emit(this.isFavourite);
+            this.userFavouriteChanged.emit(this.isFavourite);
           },
           () => {
             this.isFavourite = !this.isFavourite;
