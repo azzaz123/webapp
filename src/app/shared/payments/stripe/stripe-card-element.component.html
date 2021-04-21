@@ -47,6 +47,7 @@
                     id="checkout-card-button-new"
                     className="btn-primary btn-medium stripe"
                     [disabled]="!listingLimit || disabled || newLoading"
+                    [ngStyle]="{'pointer-events': !listingLimit || disabled || newLoading ? 'none' : 'auto' }"
                     [loading]="newLoading"
                     (click)="createNewCard()"
         >

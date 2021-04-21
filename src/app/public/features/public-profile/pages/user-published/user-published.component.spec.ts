@@ -21,6 +21,7 @@ import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { MockUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { UserService } from '@core/user/user.service';
 import { of, throwError } from 'rxjs';
+import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 import { PublicProfileTrackingEventsService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { MockUserProfileTrackEventService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.fixtures.spec';
 
@@ -30,9 +31,9 @@ describe('UserPublishedComponent', () => {
   let el: HTMLElement;
   let fixture: ComponentFixture<UserPublishedComponent>;
   let publishedItemCardFavouriteCheckedService: PublishedItemCardFavouriteCheckedService;
-  let publicProfileTrackingEventsService: PublicProfileTrackingEventsService;
   let publicItemCardListTag = 'tsl-public-item-card-list';
   let userService: UserService;
+  let publicProfileTrackingEventsService: PublicProfileTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -177,6 +178,19 @@ describe('UserPublishedComponent', () => {
 
         expect(publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent).toHaveBeenCalledWith(mockItemCard, MOCK_USER);
       });
+    });
+  });
+
+  describe('when the user clicks the item card', () => {
+    it('should send click item card event', () => {
+      let publicItemCardList = fixture.debugElement.query(By.css(publicItemCardListTag));
+      spyOn(publicProfileTrackingEventsService, 'trackClickItemCardEvent');
+      spyOn(userService, 'get').and.returnValue(of(MOCK_USER));
+
+      publicItemCardList.triggerEventHandler('clickedItemAndIndex', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+      fixture.detectChanges();
+
+      expect(publicProfileTrackingEventsService.trackClickItemCardEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_USER, MOCK_ITEM_INDEX);
     });
   });
 });
