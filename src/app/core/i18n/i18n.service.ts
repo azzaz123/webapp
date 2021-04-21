@@ -287,7 +287,7 @@ export class I18nService {
     return this.translations[this.locale][key];
   }
 
-  public translate(translationKey: TRANSLATION_KEY) {
+  public translate(translationKey: TRANSLATION_KEY): string {
     return translations[translationKey];
   }
 }
