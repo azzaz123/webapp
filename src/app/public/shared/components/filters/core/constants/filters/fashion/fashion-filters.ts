@@ -23,7 +23,7 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     bubblePlaceholder: $localize`:@@filterClothingTypeBubblePlaceholder:Type of clothing`,
     drawerPlaceholder: $localize`:@@filterClothingTypeDrawerPlaceholder:Select type of clothing`,
     suggesterPlaceholder: $localize`:@@filterClothingTypeSuggesterPlaceholder:Search`,
-    icon: '/assets/icons/joke.svg', // BEFOREMERGE: Add icon
+    icon: '/assets/icons/filters/fashion_type.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
     },
@@ -38,7 +38,7 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     bubblePlaceholder: $localize`:@@filterFashionBrandBubblePlaceholder:Brand`,
     drawerPlaceholder: $localize`:@@filterFashionBrandDrawerPlaceholder:Select brand`,
     suggesterPlaceholder: $localize`:@@filterFashionBrandSuggesterPlaceholder:Search brand`,
-    icon: '/assets/icons/joke.svg', // BEFOREMERGE: Add icon
+    icon: '/assets/icons/filters/fashion_brand.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.brand,
     },

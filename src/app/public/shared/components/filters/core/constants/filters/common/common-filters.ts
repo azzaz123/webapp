@@ -57,7 +57,7 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
     title: $localize`:@@filterConditionTitle:Item condition`,
     bubblePlaceholder: $localize`:@@filterConditionBubblePlaceholder:Item condition`,
     drawerPlaceholder: $localize`:@@filterConditionDrawerPlaceholder:Any item condition`,
-    icon: '/assets/icons/joke.svg', // BEFOREMERGE: Add icon
+    icon: '/assets/icons/filters/condition.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.condition,
     },
