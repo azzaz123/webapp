@@ -35,6 +35,7 @@ import {
   REAL_ESTATE_BUY_OFFICE_FILTER_CONFIGURATION,
 } from '../../../components/filters/core/constants/filter-configuration-by-category/real-estate/real-estate-buy-filter-configuration';
 import { FILTER_GROUP_ID } from '../enum/filter-group-id.enum';
+import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
 
 export const DEFAULT_FILTER_WRAPPER_CONFIG: FilterWrapperConfiguration = {
   id: FILTER_GROUP_ID.DEFAULT,
@@ -96,7 +97,7 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'apartment',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.FLAT,
       },
     ],
   },
@@ -110,7 +111,7 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'house',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.HOUSE,
       },
     ],
   },
@@ -124,7 +125,7 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'room',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.ROOM,
       },
     ],
   },
@@ -138,7 +139,7 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'office',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.OFFICE,
       },
     ],
   },
@@ -152,7 +153,7 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'garage',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.GARAGE,
       },
     ],
   },
@@ -166,7 +167,7 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'land',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.LAND,
       },
     ],
   },
@@ -180,7 +181,7 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'box_room',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.BOX_ROOM,
       },
     ],
   },
@@ -195,7 +196,7 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'rent',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.RENT,
       },
     ],
   },
@@ -209,11 +210,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'rent',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.RENT,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'house',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.HOUSE,
       },
     ],
   },
@@ -227,11 +228,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'rent',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.RENT,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'apartment',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.FLAT,
       },
     ],
   },
@@ -245,11 +246,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'rent',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.RENT,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'room',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.ROOM,
       },
     ],
   },
@@ -263,11 +264,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'rent',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.RENT,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'office',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.OFFICE,
       },
     ],
   },
@@ -281,11 +282,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'rent',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.RENT,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'garage',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.GARAGE,
       },
     ],
   },
@@ -299,11 +300,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'rent',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.RENT,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'land',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.LAND,
       },
     ],
   },
@@ -317,11 +318,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'rent',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.RENT,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'box_room',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.BOX_ROOM,
       },
     ],
   },
@@ -335,7 +336,7 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'buy',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.BUY,
       },
     ],
   },
@@ -349,11 +350,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'buy',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.BUY,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'house',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.HOUSE,
       },
     ],
   },
@@ -367,11 +368,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'buy',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.BUY,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'apartment',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.FLAT,
       },
     ],
   },
@@ -385,11 +386,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'buy',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.BUY,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'office',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.OFFICE,
       },
     ],
   },
@@ -403,11 +404,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'buy',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.BUY,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'garage',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.GARAGE,
       },
     ],
   },
@@ -421,11 +422,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'buy',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.BUY,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'land',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.LAND,
       },
     ],
   },
@@ -439,11 +440,11 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
       {
         key: FILTER_QUERY_PARAM_KEY.operation,
-        value: 'buy',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.BUY,
       },
       {
         key: FILTER_QUERY_PARAM_KEY.type,
-        value: 'box_room',
+        value: REAL_ESTATE_SPECIFICATION_TYPE.BOX_ROOM,
       },
     ],
   },
