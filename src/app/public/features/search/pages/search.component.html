@@ -1,5 +1,7 @@
 <div class="Search"
   infinite-scroll
+  [infiniteScrollDistance]="0"
+  [infiniteScrollThrottle]="150"
   [infiniteScrollDisabled]="infiniteScrollDisabled"
   (scrolled)="scrolled()">
   <tsl-filters-wrapper class="Search__filters position-fixed"
