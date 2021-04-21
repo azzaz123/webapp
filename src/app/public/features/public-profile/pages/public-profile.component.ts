@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, SimpleChange } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,6 @@ import { UserStats } from '@core/user/user-stats.interface';
 import { Review } from '@private/features/reviews/core/review';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
 import { PublicProfileTrackingEventsService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { PublicProfileService } from '../core/services/public-profile.service';

@@ -8,7 +8,6 @@ import { DeviceService } from '@core/device/device.service';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserPipeMock } from '@fixtures/is-current-user.fixtures.spec';
-import { ITEM_SALE_CONDITIONS } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
