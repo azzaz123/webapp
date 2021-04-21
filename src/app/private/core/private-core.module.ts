@@ -21,6 +21,7 @@ import { InvoiceService } from '@core/invoice/invoice.service';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
 import { RemoteConsoleModule } from '@core/remote-console';
 import { UploaderService } from '@shared/uploader/uploader.service';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 
 @NgModule({
   imports: [ConversationModule.forRoot(), ProfileModule, RemoteConsoleModule],
@@ -38,6 +39,7 @@ import { UploaderService } from '@shared/uploader/uploader.service';
     ConnectionService,
     StripeService,
     SubscriptionsService,
+    SubscriptionBenefitsService,
     TrustAndSafetyService,
     InvoiceService,
     CartService,

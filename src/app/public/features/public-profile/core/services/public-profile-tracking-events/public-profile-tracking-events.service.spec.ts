@@ -9,11 +9,14 @@ import {
   MOCK_UNFAVOURITE_USER_EVENT,
   MOCK_TRACK_VIEW_OWN_REVIEWS,
   MOCK_TRACK_VIEW_OTHERS_REVIEWS,
+  MOCK_TRACK_CLICK_ITEM_CARD_EVENT_FROM_PROFILE,
 } from './public-profile-tracking-events.fixtures.spec';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
 import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 
 describe('PublicProfileTrackingEventsService', () => {
   let service: PublicProfileTrackingEventsService;
@@ -34,6 +37,17 @@ describe('PublicProfileTrackingEventsService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('when user clicks on item card', () => {
+    it('should send click item card event', () => {
+      spyOn(service, 'trackClickItemCardEvent').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+
+      service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_USER, MOCK_ITEM_INDEX);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_TRACK_CLICK_ITEM_CARD_EVENT_FROM_PROFILE);
+    });
   });
 
   describe('when user views their own profile', () => {

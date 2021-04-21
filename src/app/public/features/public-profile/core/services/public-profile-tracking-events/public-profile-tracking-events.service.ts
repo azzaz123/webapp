@@ -11,19 +11,41 @@ import {
   ViewOwnProfile,
   ViewOwnReviews,
   ViewOtherReviews,
+  ClickItemCard,
 } from '@core/analytics/analytics-constants';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { User } from '@core/user/user';
 import { UserStats } from '@core/user/user-stats.interface';
 import { Review } from '@private/features/reviews/core/review';
-export type FavouriteUserAnalyticsEvent = AnalyticsEvent<FavoriteUser | UnfavoriteUser>;
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { User } from '@core/user/user';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 export type ViewReviewsAnalyticsPageView = AnalyticsPageView<ViewOwnReviews | ViewOtherReviews>;
+export type FavouriteUserAnalyticEvent = AnalyticsEvent<FavoriteUser | UnfavoriteUser>;
 
 @Injectable({
   providedIn: 'root',
 })
 export class PublicProfileTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
+
+  public trackClickItemCardEvent(itemCard: ItemCard, user: User, index: number): void {
+    const event: AnalyticsEvent<ClickItemCard> = {
+      name: ANALYTICS_EVENT_NAMES.ClickItemCard,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        itemId: itemCard.id,
+        categoryId: itemCard.categoryId,
+        position: index + 1,
+        screenId: SCREEN_IDS.Profile,
+        isPro: user.featured,
+        salePrice: itemCard.salePrice,
+        title: itemCard.title,
+        shippingAllowed: !!itemCard.saleConditions?.shipping_allowed,
+        sellerUserId: itemCard.ownerId,
+        isBumped: !!itemCard.bumpFlags?.bumped,
+      },
+    };
+    this.analyticsService.trackEvent(event);
+  }
 
   public trackViewOwnProfile(isPro: boolean): void {
     const event: AnalyticsPageView<ViewOwnProfile> = {
