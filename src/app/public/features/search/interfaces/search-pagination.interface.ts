@@ -1,6 +1,6 @@
-import { SearchItem } from './search-item.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 export interface SearchPagination {
-  items: SearchItem[];
+  items: ItemCard[];
   hasMore: boolean;
 }

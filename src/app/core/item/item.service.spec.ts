@@ -248,19 +248,6 @@ describe('ItemService', () => {
     });
   });
 
-  describe('reportListing', () => {
-    it('should report a listing', () => {
-      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/report`;
-
-      service.reportListing(ITEM_ID, 'comments', 2).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush({});
-
-      expect(req.request.url).toBe(expectedUrl);
-      expect(req.request.method).toBe('POST');
-    });
-  });
-
   describe('mine', () => {
     describe('no purchases', () => {
       it('should call endpoint', () => {

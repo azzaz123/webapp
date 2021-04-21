@@ -63,7 +63,7 @@ export class FilterOptionService {
     };
 
     return this.filterOptionsApiService.getApiOptions(apiConfiguration.method, unifiedApiParams, paginationOptions).pipe(
-      map((value) => {
+      map((value: FilterOption[]) => {
         if (mapperConfiguration) {
           const mapperSiblingParams = this.getSiblingParams(mapperConfiguration.requiredSiblingParams);
           return this.filterOptionsMapperService.formatApiResponse(
@@ -73,7 +73,7 @@ export class FilterOptionService {
           );
         }
 
-        return value as FilterOption[];
+        return value;
       })
     );
   }

@@ -1,0 +1,8 @@
+export enum USER_REPORT_REASON_ID {
+  OTHER = 0,
+  SCAM = 3,
+  SUSPICIOUS = 4,
+  BAD_BEHAVIOUR = 5,
+  NO_SHOW = 6,
+  DEFECTIVE = 7,
+}

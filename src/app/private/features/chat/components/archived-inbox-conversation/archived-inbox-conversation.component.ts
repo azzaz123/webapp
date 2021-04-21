@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { I18nService } from '@core/i18n/i18n.service';
+import { Component, Input } from '@angular/core';
+import { CALENDAR_SPEC_TYPE } from '@core/i18n/moment/enums/calendar-spec-type.enum';
+import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 import { InboxConversation } from '@private/features/chat/core/model';
 
 import { CalendarSpec } from 'moment';
@@ -12,16 +13,9 @@ export class ArchivedInboxConversationComponent {
   @Input() conversation: InboxConversation;
 
   public unreadCounterDisplayLimit = 99;
-  public momentConfig: CalendarSpec = {
-    lastDay: this.i18n.getTranslations('defaultDaysMomentConfig').lastDay,
-    sameDay: 'HH:mm',
-    nextDay: 'ddd',
-    lastWeek: 'D MMM.',
-    nextWeek: 'ddd',
-    sameElse: 'D MMM.',
-  };
+  public momentCalendarSpec: CalendarSpec = this.momentCalendarSpecService.getCalendarSpec(CALENDAR_SPEC_TYPE.SHORT);
 
-  constructor(private i18n: I18nService) {}
+  constructor(private momentCalendarSpecService: MomentCalendarSpecService) {}
 
   public dateIsThisYear(): boolean {
     if (this.conversation && this.conversation.modifiedDate) {
