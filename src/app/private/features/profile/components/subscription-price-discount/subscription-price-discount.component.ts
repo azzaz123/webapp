@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SubscriptionBenefit, SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
+import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 
 @Component({
