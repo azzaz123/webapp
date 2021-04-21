@@ -45,7 +45,7 @@ describe('CategoriesFilterComponent', () => {
   const placeholderTemplatePredicate = By.directive(SelectFilterTemplateComponent);
   const gridFormPredicate = By.directive(GridSelectFormComponent);
   const listFormPredicate = By.directive(SelectFormComponent);
-  const config = {
+  const config: CategoriesFilterConfig = {
     id: COMMON_CONFIGURATION_ID.CATEGORIES,
     title: 'Category',
     icon: '/assets/icons/joke.svg',
