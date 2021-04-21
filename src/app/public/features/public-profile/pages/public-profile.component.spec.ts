@@ -10,7 +10,7 @@ import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserPipeMock } from '@fixtures/is-current-user.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { AdComponentStub } from '@fixtures/shared';
-import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_OTHER_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { of, throwError } from 'rxjs';
@@ -22,6 +22,7 @@ import { PublicProfileComponent } from './public-profile.component';
 
 describe('PublicProfileComponent', () => {
   const containerSelector = '.PublicProfile';
+  const favouriteUserTag = 'tsl-favourite-user';
   let component: PublicProfileComponent;
   let fixture: ComponentFixture<PublicProfileComponent>;
   let route: ActivatedRoute;
@@ -205,6 +206,18 @@ describe('PublicProfileComponent', () => {
 
               expect(component.isFavourited).toBe(true);
             });
+
+            it('should send favourite user event', () => {
+              spyOn(publicProfileTrackingEventsService, 'trackFavouriteOrUnfavouriteUserEvent');
+              const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
+
+              toggleFavourite.triggerEventHandler('userFavouriteChanged', true);
+
+              expect(publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteUserEvent).toHaveBeenCalledWith(
+                component.userInfo,
+                true
+              );
+            });
           });
 
           describe('and the user is NOT favourited...', () => {
@@ -214,6 +227,18 @@ describe('PublicProfileComponent', () => {
               component.ngOnInit();
 
               expect(component.isFavourited).toBe(false);
+            });
+
+            it('should send unfavourite user event', () => {
+              spyOn(publicProfileTrackingEventsService, 'trackFavouriteOrUnfavouriteUserEvent');
+              const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
+
+              toggleFavourite.triggerEventHandler('userFavouriteChanged', false);
+
+              expect(publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteUserEvent).toHaveBeenCalledWith(
+                component.userInfo,
+                false
+              );
             });
           });
         });
