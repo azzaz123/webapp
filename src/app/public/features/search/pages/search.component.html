@@ -29,7 +29,7 @@
           <tsl-sky-native-shopping [adSlotContainer]="adSlotNativeShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index"></tsl-sky-native-shopping>
         </ng-template>
       </tsl-public-item-card-list>
-      <div  *ngIf="device === DevicesType.DESKTOP" class="mx-auto my-4">
+      <div *ngIf="device === DevicesType.DESKTOP" class="mx-auto my-4">
         <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
       </div>
     </ng-container>
