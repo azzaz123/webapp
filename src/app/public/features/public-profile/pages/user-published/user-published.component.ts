@@ -33,7 +33,7 @@ export class UserPublishedComponent implements OnInit {
     this.loadItems();
   }
 
-  public trackFavouriteOrUnfavouriteEvent(itemCard: ItemCard): void {
+  public toggleFavourite(itemCard: ItemCard): void {
     this.userService
       .get(itemCard.ownerId)
       .pipe(take(1))
