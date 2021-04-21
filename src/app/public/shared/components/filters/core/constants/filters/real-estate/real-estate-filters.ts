@@ -9,7 +9,7 @@ const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
     type: FILTER_TYPES.GRID,
     title: $localize`:@@filterPropertyTypeTitle:What are you looking for?`,
     bubblePlaceholder: $localize`:@@filterPropertyTypeBubblePlaceholder:Type of property`,
-    icon: '/assets/icons/joke.svg', // BEFOREMERGE: Add icon
+    icon: '/assets/icons/filters/real_estate_type.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
     },
@@ -21,7 +21,7 @@ const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
     type: FILTER_TYPES.GRID,
     title: $localize`:@@filterOperationTitle:Rent or buy?`,
     bubblePlaceholder: $localize`:@@filterOperationBubblePlaceholder:Rent or buy?`,
-    icon: '/assets/icons/joke.svg', // BEFOREMERGE: Add icon
+    icon: '/assets/icons/filters/real_estate_operation.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.operation,
     },

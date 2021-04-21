@@ -11,6 +11,7 @@ import { PaginationOptions } from '@public/shared/components/filters/core/interf
 import { FilterParameterStoreService } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { Condition } from '@public/shared/services/filter-option/interfaces/option-responses/condition.interface';
 
 export class MockFilterOptionApiService {
   public getApiOptions(method: string, params: QueryParams, paginationOptions: PaginationOptions): Observable<unknown> {
@@ -43,6 +44,12 @@ export const iconOption: IconOption = {
   icon_id: 'icon',
   id: 'id',
   text: 'text',
+};
+
+export const conditionOption: Condition = {
+  description: 'description',
+  id: 'id',
+  title: 'text',
 };
 
 export const formattedIconOption: FilterOption = {

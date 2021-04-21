@@ -16,7 +16,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [COMMON_CONFIGURATION_ID.CONDITION]: {
     apiConfiguration: {
       method: 'getConditionsByCategoryId',
-      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.categoryId],
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.categoryId }],
       keyMappers: [
         {
           sourceParamKey: FILTER_QUERY_PARAM_KEY.categoryId,
@@ -31,7 +31,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [COMMON_CONFIGURATION_ID.OBJECT_TYPE]: {
     apiConfiguration: {
       method: 'getObjectTypesByCategoryId',
-      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.categoryId],
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.categoryId }],
       keyMappers: [
         {
           sourceParamKey: FILTER_QUERY_PARAM_KEY.categoryId,
@@ -46,7 +46,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [COMMON_CONFIGURATION_ID.BRAND_MODEL]: {
     apiConfiguration: {
       method: 'getBrandModelByCategoryId',
-      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.categoryId],
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.categoryId }],
       keyMappers: [
         {
           sourceParamKey: FILTER_QUERY_PARAM_KEY.categoryId,
@@ -72,7 +72,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [REAL_ESTATE_CONFIGURATION_ID.TYPE]: {
     apiConfiguration: {
       method: 'getRealEstateTypeKeysByOperationId',
-      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.operation],
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.operation, defaultValue: 'rent' }],
     },
     mapperConfiguration: {
       method: 'formatIconOptions',
@@ -81,7 +81,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [REAL_ESTATE_CONFIGURATION_ID.CONDITION]: {
     apiConfiguration: {
       method: 'getRealEstateConditions',
-      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.categoryId],
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.categoryId }],
     },
     mapperConfiguration: {
       method: 'formatIconOptions',
@@ -90,7 +90,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [REAL_ESTATE_CONFIGURATION_ID.EXTRAS]: {
     apiConfiguration: {
       method: 'getRealEstateExtraKeysByTypeId',
-      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.operation],
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.operation }],
     },
     mapperConfiguration: {
       method: 'formatIconOptions',
@@ -140,17 +140,17 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [FASHION_CONFIGURATION_ID.SIZE]: {
     apiConfiguration: {
       method: 'getFashionSizeKeysByObjectId',
-      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.objectType],
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.objectType }],
     },
     mapperConfiguration: {
       method: 'formatSizeNGender',
-      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.gender],
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.gender }],
     },
   },
   [FASHION_CONFIGURATION_ID.CLOTHING_TYPE]: {
     apiConfiguration: {
       method: 'getObjectTypesByCategoryId',
-      requiredSiblingParams: [FILTER_QUERY_PARAM_KEY.categoryId],
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.categoryId }],
       keyMappers: [
         {
           sourceParamKey: FILTER_QUERY_PARAM_KEY.categoryId,

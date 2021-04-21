@@ -7,7 +7,7 @@ import { FilterOption } from '../../components/filters/core/interfaces/filter-op
 import { OPTIONS_ORIGIN_CONFIGURATION, OriginConfigurationValue } from './configurations/options-origin-configuration';
 import { ConfigurationId } from '../../components/filters/core/types/configuration-id.type';
 import { HARDCODED_OPTIONS } from './data/hardcoded-options';
-import { KeyMapper, OptionsApiOrigin } from './interfaces/option-api-origin.interface';
+import { KeyMapper, OptionsApiOrigin, RequiredSiblingParam } from './interfaces/option-api-origin.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
@@ -96,14 +96,26 @@ export class FilterOptionService {
     return mappedParams;
   }
 
-  private getSiblingParams(paramKeys: string[] = []): Record<string, string> {
-    if (paramKeys.length) {
+  private getSiblingParams(params: RequiredSiblingParam[] = []): Record<string, string> {
+    if (params.length) {
+      const paramKeys = params.map((param) => param.key);
+
+      const defaultParams = params.reduce((accumulatedParams, defaultParam) => {
+        if (defaultParam.defaultValue) {
+          return {
+            ...accumulatedParams,
+            [defaultParam.key]: defaultParam.defaultValue,
+          };
+        }
+        return accumulatedParams;
+      }, {});
+
       return this.filterParameterDraftService.getParametersByKeys(paramKeys).reduce(
         (accumulatedParams, filterParameter) => ({
           ...accumulatedParams,
           [filterParameter.key]: filterParameter.value,
         }),
-        {}
+        defaultParams
       );
     }
 

@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { FilterOptionsMapperService } from './filter-options-mapper.service';
 import {
   brandNModel,
+  conditionOption,
   fashionBrand,
   formattedCarBrandNModel,
   formattedFashionBrand,
@@ -35,7 +36,7 @@ describe('FilterOptionsMapperService', () => {
     it('should return FilterOption format', () => {
       const formattedOptions = service.formatConditionResponse({
         category_id: 'id',
-        conditions: [iconOption],
+        conditions: [conditionOption],
       });
 
       expect(formattedOptions).toEqual([formattedIconOption]);
