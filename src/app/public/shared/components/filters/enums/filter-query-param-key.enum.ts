@@ -30,4 +30,6 @@ export enum FILTER_QUERY_PARAM_KEY {
   minSurface = 'min_surface',
   maxSurface = 'max_surface',
   type = 'type',
+  rooms = 'rooms',
+  bathrooms = 'bathrooms',
 }

@@ -3,6 +3,42 @@ import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
 import { AvailableFilterConfig } from '../../../types/available-filter-config.type';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
+const REAL_ESTATE_FILTER_CONFIGURATION_COMMON: AvailableFilterConfig[] = [
+  {
+    id: REAL_ESTATE_CONFIGURATION_ID.ROOMS,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterRoomsTitle:Number of rooms`,
+    bubblePlaceholder: $localize`:@@filterRoomsBubblePlaceholder:Number of rooms`,
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.rooms,
+    },
+    isMultiselect: false,
+    hasBigIcons: true,
+  },
+  {
+    id: REAL_ESTATE_CONFIGURATION_ID.BATHROOMS,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterBathroomsTitle:Number of bathrooms`,
+    bubblePlaceholder: $localize`:@@filterBathroomsBubblePlaceholder:Number of bathrooms`,
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.bathrooms,
+    },
+    isMultiselect: false,
+    hasBigIcons: true,
+  },
+  {
+    id: REAL_ESTATE_CONFIGURATION_ID.CONDITION,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterRealEstateConditionTitle:Status`,
+    bubblePlaceholder: $localize`:@@filterRealEstateConditionBubblePlaceholder:Status`,
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.condition,
+    },
+    isMultiselect: false,
+    hasBigIcons: false,
+  },
+];
+
 const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.TYPE,
@@ -11,10 +47,11 @@ const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
     bubblePlaceholder: $localize`:@@filterPropertyTypeBubblePlaceholder:Type of property`,
     icon: '/assets/icons/filters/real_estate_type.svg',
     mapKey: {
-      parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
+      parameterKey: FILTER_QUERY_PARAM_KEY.type,
     },
-    isMultiselect: true,
+    isMultiselect: false,
     hasBigIcons: false,
+    mirrorsValueIcon: true,
   },
   {
     id: REAL_ESTATE_CONFIGURATION_ID.OPERATION,
@@ -25,8 +62,9 @@ const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.operation,
     },
-    isMultiselect: true,
+    isMultiselect: false,
     hasBigIcons: false,
+    mirrorsValueIcon: true,
   },
   {
     id: REAL_ESTATE_CONFIGURATION_ID.DEFAULT_PRICE,
@@ -386,6 +424,7 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
 
 export const REAL_ESTATE__FILTERS: AvailableFilterConfig[] = [
   ...REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT,
+  ...REAL_ESTATE_FILTER_CONFIGURATION_COMMON,
   ...REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE,
   ...REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE,
   ...REAL_ESTATE__FILTER_CONFIGURATION_SURFACE,

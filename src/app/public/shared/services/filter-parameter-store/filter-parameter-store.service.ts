@@ -1,5 +1,5 @@
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { InjectionToken } from '@angular/core';
 
 export const FILTER_PARAMETER_STORE_TOKEN = new InjectionToken<string>('filterParameterStore');
@@ -9,10 +9,7 @@ export class FilterParameterStoreService {
   private static INITIAL_PARAMETERS: FilterParameter[] = [];
 
   private parametersSubject = new BehaviorSubject<FilterParameter[]>(FilterParameterStoreService.INITIAL_PARAMETERS);
-
-  public get parameters$(): Observable<FilterParameter[]> {
-    return this.parametersSubject.asObservable();
-  }
+  public parameters$ = this.parametersSubject.asObservable();
 
   public getParameters(): FilterParameter[] {
     return this.parametersSubject.getValue();

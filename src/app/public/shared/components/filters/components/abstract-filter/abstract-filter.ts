@@ -44,7 +44,6 @@ export abstract class AbstractFilter<T extends Record<keyof T, FILTER_QUERY_PARA
   }
 
   public ngOnInit(): void {
-    console.log('I have been rendered', this.variant, this.config.id);
     this.label = this.config.bubblePlaceholder;
     if (this._value.length) {
       this.onValueChange([], this._value);

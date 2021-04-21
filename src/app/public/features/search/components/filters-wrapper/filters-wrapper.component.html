@@ -17,7 +17,7 @@
   <tsl-filter-group
     *ngIf="drawerConfig.isOpen"
     [values]="drawerValues$ | async"
-    [config]="drawerFilterConfigurations$ | async | extractFilterConfigs:FILTER_VARIANT.BUBBLE"
+    [config]="drawerFilterConfigurations$ | async | extractFilterConfigs:FILTER_VARIANT.CONTENT"
     [variant]="FILTER_VARIANT.CONTENT"
     (openStateChange)="drawerOpenStateChange($event)"
     (valueChange)="drawerChange($event)"></tsl-filter-group>
