@@ -1,4 +1,6 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { translations } from './translations/constants/translations';
+import { TRANSLATION_KEY } from './translations/enum/translation-keys.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -287,5 +289,9 @@ export class I18nService {
 
   getTranslations(key: string) {
     return this.translations[this.locale][key];
+  }
+
+  public translate(translationKey: TRANSLATION_KEY) {
+    return translations[translationKey];
   }
 }
