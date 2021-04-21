@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { ItemCard, ItemCardsWithPagination } from '@public/core/interfaces/item-card.interface';
-import { ItemDetailTrackEventsService } from '@public/features/item-detail/core/services/item-detail-track-events/item-detail-track-events.service';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 import { finalize, take } from 'rxjs/operators';
 import { PublicProfileTrackingEventsService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
