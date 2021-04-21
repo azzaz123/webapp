@@ -118,13 +118,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getUserInfo();
-
-    if (this.deviceService.isMobile()) {
-      this.normalNavLinks.push({
-        id: 'reviews',
-        display: this.i18n.getTranslations('reviews'),
-      });
-    }
     this.subscriptionSelectedNavLinks = [
       { id: STATUS.ACTIVE, display: this.i18n.translate(TRANSLATION_KEY.ACTIVE) },
       {
@@ -282,6 +275,13 @@ export class ListComponent implements OnInit, OnDestroy {
       { id: STATUS.SOLD, display: this.i18n.translate(TRANSLATION_KEY.SOLD) },
       { id: STATUS.INACTIVE, display: this.i18n.translate(TRANSLATION_KEY.INACTIVE), counter: { currentVal: this.counters?.onHold } },
     ];
+
+    if (this.deviceService.isMobile()) {
+      this.normalNavLinks.push({
+        id: 'reviews',
+        display: this.i18n.translate(TRANSLATION_KEY.REVIEWS),
+      });
+    }
   }
 
   private onOpenWallacoinsModal(): void {
@@ -827,6 +827,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.sortBy = SORTS[0];
   }
 
+  // FIXME: This seems to be broken for PROs
   public onSortChange(value: any) {
     this.sortBy = value;
     this.getItems();

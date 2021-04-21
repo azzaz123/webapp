@@ -9,6 +9,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.INACTIVE]: $localize`:@@web_catalog_inactive:Inactive`,
   [TRANSLATION_KEY.SOLD]: $localize`:@@web_catalog_sold:Sold`,
   [TRANSLATION_KEY.PUBLISHED]: $localize`:@@web_catalog_published:Selling`,
+  [TRANSLATION_KEY.REVIEWS]: $localize`:@@web_catalog_reviews:Reviews`,
   [TRANSLATION_KEY.SEARCH_BY_TITLE]: $localize`:@@web_catalog_filter_input:Search by title`,
   [TRANSLATION_KEY.DATE_DESC]: $localize`:@@web_catalog_filter_date_desc:Date: from recent to old`,
   [TRANSLATION_KEY.DATE_ASC]: $localize`:@@web_catalog_filter_date_asc:Date: from old to recent`,

@@ -1175,6 +1175,7 @@
   <translation id="web_catalog_inactive">Inactivos</translation>
   <translation id="web_catalog_sold">Vendidos</translation>
   <translation id="web_catalog_published">En venta</translation>
+  <translation id="web_catalog_reviews">Opiniones</translation>
   <translation id="web_catalog_filter_input">Buscar por título</translation>
   <translation id="web_catalog_filter_date_desc">Más recientes</translation>
   <translation id="web_catalog_filter_date_asc">Más antiguos</translation>
