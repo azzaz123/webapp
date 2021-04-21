@@ -5,6 +5,7 @@ import { ItemCard, ItemCardsWithPagination } from '@public/core/interfaces/item-
 import { ItemDetailTrackEventsService } from '@public/features/item-detail/core/services/item-detail-track-events/item-detail-track-events.service';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 import { finalize, take } from 'rxjs/operators';
+import { PublicProfileTrackingEventsService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { PublishedItemCardFavouriteCheckedService } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.service';
 
 @Component({
@@ -25,19 +26,19 @@ export class UserPublishedComponent implements OnInit {
   constructor(
     private publishedItemCardFavouriteCheckedService: PublishedItemCardFavouriteCheckedService,
     private userService: UserService,
-    private itemDetailTrackEventsService: ItemDetailTrackEventsService
+    private publicProfileTrackingEventsService: PublicProfileTrackingEventsService
   ) {}
 
   ngOnInit(): void {
     this.loadItems();
   }
 
-  public trackFavouriteOrUnfavouriteEvent(item: ItemCard): void {
+  public trackFavouriteOrUnfavouriteEvent(itemCard: ItemCard): void {
     this.userService
-      .get(item.ownerId)
+      .get(itemCard.ownerId)
       .pipe(take(1))
       .subscribe((user: User) => {
-        this.itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent(item, user?.featured);
+        this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent(itemCard, user, itemCard.flags?.favorite);
       });
   }
 
