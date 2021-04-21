@@ -307,6 +307,9 @@ export const MockUserService = {
   me() {
     return of(MockUser);
   },
+  get(userId: string) {
+    return of(MOCK_USER);
+  },
 };
 
 export class MockedUserService {
