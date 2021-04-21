@@ -60,6 +60,7 @@
   <msg id="ReviewSold"><source>src/app/core/components/review-item/review-item.component.ts:40</source>Sold</msg>
   <msg id="OwnReviewBought"><source>src/app/core/components/review-item/review-item.component.ts:41</source>Bought</msg>
   <msg id="ReviewBought"><source>src/app/core/components/review-item/review-item.component.ts:41</source>Bought</msg>
+  <msg id="web_consumer_goods_category_name"><source>src/app/core/i18n/translations/constants/translations.ts:4</source>Everything else</msg>
   <msg id="web_subscription_benefit_title_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:7</source>Empower your brand</msg>
   <msg id="web_subscription_benefit_description_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:8</source>Complete your profile with a cover photo and a description.</msg>
   <msg id="web_subscription_benefit_title_connect"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:12</source>Connect with more customers</msg>
@@ -1142,8 +1143,8 @@
   <msg id="web_stripe_card_element_513"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:19,22</source> By subscribing, you are accepting the <ph name="START_LINK"/>terms &amp; conditions<ph name="CLOSE_LINK"/> and the <ph name="START_LINK_1"/>privacy policy<ph name="CLOSE_LINK"/> of Wallapop S.L. and Stripe Ltd </msg>
   <msg id="web_stripe_card_element_514"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:31</source>Continue to Checkout</msg>
   <msg id="web_stripe_card_element_672"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:42</source>Save</msg>
-  <msg id="web_stripe_card_element_515"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:53</source>Subscribe now</msg>
-  <msg id="Save"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:64</source>Save</msg>
+  <msg id="web_stripe_card_element_515"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:54</source>Subscribe now</msg>
+  <msg id="Save"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:65</source>Save</msg>
   <msg id="web_all_button_process_629"><source>src/app/shared/process-all-button/process-all-button.component.html:6</source>Process all</msg>
   <msg id="web_all_button_process_516"><source>src/app/shared/process-all-button/process-all-button.component.html:7</source>This will process all the elements in this page.</msg>
   <msg id="web_all_button_process_693"><source>src/app/shared/process-all-button/process-all-button.component.html:10</source>Cancel</msg>

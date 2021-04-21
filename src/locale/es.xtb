@@ -610,8 +610,6 @@
   <translation id="web_chat_children_item_162">Calcula el seguro gratis</translation>
   <translation id="web_chat_children_item_163">Financia esta compra</translation>
   <translation id="web_chat_children_item_components_reserved_159">Reservado</translation>
-
-  <!--Translations using keys-->
   <translation id="SoldOutside">Lo he vendido fuera de Wallapop</translation>
   <translation id="WallapopProfileSpotDescription">Este es el punto donde está ubicado tu perfil de Wallapop y en él aparecerán todos tus productos.</translation>
   <translation id="WallapopItem">Un producto de Wallapop</translation>
@@ -835,7 +833,6 @@
   <translation id="FooterSocialFacebookLabel">Wallapop, la web y app para comprar y vender, también está en Facebook</translation>
   <translation id="FooterSocialTwitterLabel">Wallapop, la web y app para comprar y vender, también está en Twitter</translation>
   <translation id="FooterSocialInstagramLabel">Wallapop, la web y app para comprar y vender, también está en Instagram</translation>
-
   <translation id="EmptyHistory">Tu historial está vacío</translation>
   <translation id="LoadingData">Estamos cargando tu histórico de facturas...</translation>
   <translation id="NotLoadedInvoices">Lo sentimos, en estos momentos no podemos cargar tus facturas. Intenta de nuevo más tarde.</translation>
@@ -1171,4 +1168,5 @@
   <translation id="web_subscription_benefit_description_visibility">Ocupa los primeros resultados de búsqueda. ¡Atrae más clientes!</translation>
   <translation id="web_subscription_benefit_title_time">Ahorra tiempo de gestión</translation>
   <translation id="web_subscription_benefit_description_time">Tus productos siempre estarán activos y listos para la venta.</translation>
+  <translation id="web_consumer_goods_category_name">Todo lo demás</translation>
 </translationbundle>
