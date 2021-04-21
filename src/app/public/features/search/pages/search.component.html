@@ -1,8 +1,9 @@
 <div class="Search">
-  <tsl-filters-wrapper class="Search__filters position-fixed"
-    [class.Search__filters--with-backdrop]="(openBubbleCount$ | async) !== 0"
-    (bubbleFilterOpenStateChange)="toggleBubbleFilterBackdrop($event)">
-  </tsl-filters-wrapper>
+  <div class="Search__filters-container position-fixed" [class.Search__filters-container--with-backdrop]="(openBubbleCount$ | async) !== 0">
+    <tsl-filters-wrapper class="Search__filters d-block" (bubbleFilterOpenStateChange)="toggleBubbleFilterBackdrop($event)">
+    </tsl-filters-wrapper>
+    <tsl-sort-filter class="Search__sort d-block" (toggleBubble)="toggleBubbleFilterBackdrop($event)"></tsl-sort-filter>
+  </div>
 
   <tsl-search-layout class="Search__layout d-block" >
     <div top class="d-block h-100 position-relative">

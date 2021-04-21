@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
+import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { ViewportService } from '@core/viewport/viewport.service';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { CheckSessionModule } from '@public/core/directives/check-session/check-session.module';
 import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
 import { PublicLayoutModule } from '@public/layout/public-layout.module';
@@ -9,6 +11,7 @@ import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
 import { SharedModule } from '@shared/shared.module';
 import { FiltersWrapperModule } from './components/filters-wrapper/filters-wrapper.module';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
+import { SortFilterComponent } from './components/sort-filter/sort-filter.component';
 import { SearchAPIService } from './core/services/infrastructure/api/search-api.service';
 import { SearchFavouritesService } from './core/services/infrastructure/favorites/search-favourites.service';
 import { SearchInfrastructureService } from './core/services/infrastructure/search-infrastructure.service';
@@ -28,8 +31,10 @@ import { SearchRoutingModule } from './search.routing.module';
     AdSlotModule,
     AdSlotShoppingModule,
     ItemFavouritesModule,
+    SvgIconModule,
+    NgbDropdownModule,
   ],
   providers: [ViewportService, SearchStoreService, SearchService, SearchInfrastructureService, SearchAPIService, SearchFavouritesService],
-  declarations: [SearchComponent, SearchLayoutComponent],
+  declarations: [SearchComponent, SearchLayoutComponent, SortFilterComponent],
 })
 export class SearchModule {}
