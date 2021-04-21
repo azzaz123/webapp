@@ -1187,4 +1187,13 @@
   <translation id="web_chat_report_listing_success">La publicación se ha denunciado correctamente</translation>
   <translation id="web_chat_block_user_success">El usuario se ha bloqueado correctamente</translation>
   <translation id="web_chat_unblock_user_success">El usuario se ha desbloqueado correctamente</translation>
+  <translation id="web_stats_graph_no_data">No hay datos disponibles</translation>
+  <translation id="web_stats_graph_phones_shared">Teléfonos compartidos</translation>
+  <translation id="web_stats_graph_city_bump">Destacado Ciudad</translation>
+  <translation id="web_stats_graph_">Destacado País</translation>
+  <translation id="web_stats_graph_views">Visualizaciones</translation>
+  <translation id="web_stats_graph_chats">Chats</translation>
+  <translation id="web_stats_graph_last_thirty_days">Últimos 30 días</translation>
+  <translation id="web_stats_graph_last_fifteen_days">Últimos 15 días</translation>
+  <translation id="web_stats_graph_last_seven_days">Últimos 7 días</translation>
 </translationbundle>

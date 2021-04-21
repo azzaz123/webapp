@@ -21,4 +21,13 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DATE_ASC]: $localize`:@@web_catalog_filter_date_asc:Date: from old to recent`,
   [TRANSLATION_KEY.PRICE_DESC]: $localize`:@@web_catalog_filter_price_desc:Price: from high to low`,
   [TRANSLATION_KEY.PRICE_ASC]: $localize`:@@web_catalog_filter_price_asc:Price: from low to high`,
+  [TRANSLATION_KEY.STATS_GRAPH_NO_DATA]: $localize`:@@web_stats_graph_no_data:No data available`,
+  [TRANSLATION_KEY.STATS_GRAPH_PHONES_SHARED]: $localize`:@@web_stats_graph_phones_shared:Shared phones`,
+  [TRANSLATION_KEY.STATS_GRAPH_CITY_BUMP]: $localize`:@@web_stats_graph_city_bump:City Bump`,
+  [TRANSLATION_KEY.STATS_GRAPH_COUNTRY_BUMP]: $localize`:@@web_stats_graph_:Country Bump`,
+  [TRANSLATION_KEY.STATS_GRAPH_VIEWS]: $localize`:@@web_stats_graph_views:Views`,
+  [TRANSLATION_KEY.STATS_GRAPH_CHATS]: $localize`:@@web_stats_graph_chats:Chats`,
+  [TRANSLATION_KEY.STATS_GRAPH_LAST_THIRTY_DAYS]: $localize`:@@web_stats_graph_last_thirty_days:Last 30 days`,
+  [TRANSLATION_KEY.STATS_GRAPH_LAST_FIFTEEN_DAYS]: $localize`:@@web_stats_graph_last_fifteen_days:Last 15 days`,
+  [TRANSLATION_KEY.STATS_GRAPH_LAST_SEVEN_DAYS]: $localize`:@@web_stats_graph_last_seven_days:Last 7 days`,
 };

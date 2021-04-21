@@ -8,6 +8,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { StatisticsService } from '../../core/services/statistics.service';
 import { StatisticFullResponse, StatisticEntriesResponse } from '../../core/statistic-response.interface';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-stats-graph',
@@ -74,17 +75,17 @@ export class StatsGraphComponent implements OnInit {
           color: 'grey',
           fontSize: 20,
         },
-        text: this.i18n.getTranslations('nodata'),
+        text: this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_NO_DATA),
         left: 'center',
         top: 'center',
       },
       legend: {
         data: [
-          this.i18n.getTranslations('phonesShared'),
-          this.i18n.getTranslations('citybump'),
-          this.i18n.getTranslations('countrybump'),
-          this.i18n.getTranslations('views'),
-          this.i18n.getTranslations('chats'),
+          this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_PHONES_SHARED),
+          this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_CITY_BUMP),
+          this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_COUNTRY_BUMP),
+          this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_CHATS),
+          this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_VIEWS),
         ],
         align: 'left',
         textStyle: {
@@ -136,7 +137,7 @@ export class StatsGraphComponent implements OnInit {
       },
       series: [
         {
-          name: this.i18n.getTranslations('citybump'),
+          name: this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_CITY_BUMP),
           type: graphType || 'line',
           smooth: true,
           sampling: 'average',
@@ -152,7 +153,7 @@ export class StatsGraphComponent implements OnInit {
           },
         },
         {
-          name: this.i18n.getTranslations('countrybump'),
+          name: this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_COUNTRY_BUMP),
           type: graphType || 'line',
           smooth: true,
           sampling: 'average',
@@ -168,7 +169,7 @@ export class StatsGraphComponent implements OnInit {
           },
         },
         {
-          name: this.i18n.getTranslations('views'),
+          name: this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_VIEWS),
           type: graphType || 'line',
           itemStyle: {
             color: 'rgb(144, 164, 174)',
@@ -179,7 +180,7 @@ export class StatsGraphComponent implements OnInit {
           },
         },
         {
-          name: this.i18n.getTranslations('chats'),
+          name: this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_CHATS),
           type: graphType || 'bar',
           itemStyle: {
             color: 'rgb(61, 170, 191)',
@@ -190,7 +191,7 @@ export class StatsGraphComponent implements OnInit {
           },
         },
         {
-          name: this.i18n.getTranslations('phonesShared'),
+          name: this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_PHONES_SHARED),
           type: graphType || 'bar',
           itemStyle: {
             color: 'rgb(255, 178, 56)',
@@ -214,15 +215,15 @@ export class StatsGraphComponent implements OnInit {
     }
     this.statsDurations = [
       {
-        label: this.i18n.getTranslations('last30Days'),
+        label: this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_LAST_THIRTY_DAYS),
         value: '30',
       },
       {
-        label: this.i18n.getTranslations('last15Days'),
+        label: this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_LAST_FIFTEEN_DAYS),
         value: '15',
       },
       {
-        label: this.i18n.getTranslations('last7Days'),
+        label: this.i18n.translate(TRANSLATION_KEY.STATS_GRAPH_LAST_SEVEN_DAYS),
         value: '7',
       },
     ];
