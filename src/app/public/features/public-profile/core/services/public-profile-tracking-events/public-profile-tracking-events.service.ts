@@ -19,7 +19,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { User } from '@core/user/user';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 export type ViewReviewsAnalyticsPageView = AnalyticsPageView<ViewOwnReviews | ViewOtherReviews>;
-export type FavouriteUserAnalyticEvent = AnalyticsEvent<FavoriteUser | UnfavoriteUser>;
+export type FavouriteUserAnalyticsEvent = AnalyticsEvent<FavoriteUser | UnfavoriteUser>;
 
 @Injectable({
   providedIn: 'root',
