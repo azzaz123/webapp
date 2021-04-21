@@ -7,10 +7,13 @@ import {
   MOCK_VIEW_OWN_PROFILE_EVENT,
   MOCK_FAVOURITE_USER_EVENT,
   MOCK_UNFAVOURITE_USER_EVENT,
+  MOCK_FAVOURITE_ITEM_EVENT_PROFILE,
+  MOCK_UNFAVOURITE_ITEM_EVENT_PROFILE,
 } from './public-profile-tracking-events.fixtures.spec';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 
 describe('PublicProfileTrackingEventsService', () => {
   let service: PublicProfileTrackingEventsService;
@@ -69,6 +72,30 @@ describe('PublicProfileTrackingEventsService', () => {
       service.trackFavouriteOrUnfavouriteUserEvent(MOCK_OTHER_USER, false);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVOURITE_USER_EVENT);
+    });
+  });
+
+  describe('when user toggle favourite item icon...', () => {
+    let itemCard = MOCK_ITEM_CARD;
+    beforeEach(() => {
+      spyOn(service, 'trackFavouriteOrUnfavouriteItemEvent').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+    });
+
+    it('should send favourite item event when item is favourited', () => {
+      itemCard.flags.favorite = true;
+      MOCK_ITEM_CARD.flags.favorite = true;
+      console.log('card', MOCK_ITEM_CARD);
+      service.trackFavouriteOrUnfavouriteItemEvent(itemCard, MOCK_USER);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVOURITE_ITEM_EVENT_PROFILE);
+    });
+
+    it('should not send favourite item event when item is unfavourited', () => {
+      itemCard.flags.favorite = false;
+      service.trackFavouriteOrUnfavouriteItemEvent(itemCard, MOCK_USER);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_UNFAVOURITE_ITEM_EVENT_PROFILE);
     });
   });
 });

@@ -3,12 +3,15 @@ import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
+  FavoriteItem,
   FavoriteUser,
   SCREEN_IDS,
+  UnfavoriteItem,
   UnfavoriteUser,
   ViewOtherProfile,
   ViewOwnProfile,
 } from '@core/analytics/analytics-constants';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 
 export const MOCK_VIEW_OWN_PROFILE_EVENT: AnalyticsPageView<ViewOwnProfile> = {
@@ -49,8 +52,32 @@ export const MOCK_UNFAVOURITE_USER_EVENT: AnalyticsEvent<UnfavoriteUser> = {
   },
 };
 
+export const MOCK_FAVOURITE_ITEM_EVENT_PROFILE: AnalyticsEvent<FavoriteItem> = {
+  name: ANALYTICS_EVENT_NAMES.FavoriteItem,
+  eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+  attributes: {
+    itemId: MOCK_ITEM_CARD.id,
+    categoryId: MOCK_ITEM_CARD.categoryId,
+    screenId: SCREEN_IDS.Profile,
+    salePrice: MOCK_ITEM_CARD.salePrice,
+    isPro: MOCK_USER.featured,
+    title: MOCK_ITEM_CARD.title,
+    isBumped: !!MOCK_ITEM_CARD.bumpFlags?.bumped,
+  },
+};
+
+export const MOCK_UNFAVOURITE_ITEM_EVENT_PROFILE: AnalyticsEvent<UnfavoriteItem> = {
+  name: ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+  eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+  attributes: {
+    ...MOCK_FAVOURITE_ITEM_EVENT_PROFILE.attributes,
+    isPro: MOCK_USER.featured,
+  },
+};
+
 export class MockUserProfileTrackEventService {
   trackViewOwnProfile() {}
   trackViewOtherProfile() {}
   trackFavouriteOrUnfavouriteUserEvent() {}
+  trackFavouriteOrUnfavouriteItemEvent() {}
 }
