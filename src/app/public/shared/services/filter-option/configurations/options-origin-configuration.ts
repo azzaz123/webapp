@@ -1,7 +1,7 @@
 import { OptionsApiOrigin } from '../interfaces/option-api-origin.interface';
 import { REAL_ESTATE_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
 import { COMMON_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
-import { CAR_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/car-configuration-ids';
+import { CAR_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/car-configuration-ids.enum';
 import { FASHION_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/fashion-configuration-ids.enum';
 import { ConfigurationId } from '../../../components/filters/core/types/configuration-id.type';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';

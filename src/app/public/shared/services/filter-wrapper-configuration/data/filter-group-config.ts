@@ -36,6 +36,7 @@ import {
 } from '../../../components/filters/core/constants/filter-configuration-by-category/real-estate/real-estate-buy-filter-configuration';
 import { FILTER_GROUP_ID } from '../enum/filter-group-id.enum';
 import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
+import { PHONES_N_ACCESSORIES_FILTER_CONFIGURATION } from '@public/shared/components/filters/core/constants/filter-configuration-by-category/phones-n-accesories/phones-n-accesories-filter-configuration';
 
 export const DEFAULT_FILTER_WRAPPER_CONFIG: FilterWrapperConfiguration = {
   id: FILTER_GROUP_ID.DEFAULT,
@@ -76,6 +77,19 @@ export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
       },
     ],
   },
+
+  {
+    id: FILTER_GROUP_ID.CELL_PHONES_ACCESSORIES,
+    config: PHONES_N_ACCESSORIES_FILTER_CONFIGURATION,
+    params: [
+      {
+        key: FILTER_QUERY_PARAM_KEY.categoryId,
+        value: CATEGORY_IDS.CELL_PHONES_ACCESSORIES.toString(),
+      },
+    ],
+  },
+
+  // TODO: Real state has too many configuration groups. We might be able to add some of this cases with future visibility flag instead
 
   {
     id: FILTER_GROUP_ID.REAL_ESTATE_DEFAULT,

@@ -10,7 +10,7 @@ import { FilterOptionService } from '../../../../services/filter-option/filter-o
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 import { SuggesterFilterConfig } from './interfaces/suggester-filter-config.interface';
 import { SuggesterFilterComponent } from './suggester-filter.component';
-import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
+import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids.enum';
 import { CommonModule } from '@angular/common';
 import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
 import { AbstractFilterModule } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.module';

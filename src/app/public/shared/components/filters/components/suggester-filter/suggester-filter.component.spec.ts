@@ -17,7 +17,7 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { By } from '@angular/platform-browser';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
-import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
+import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { SelectParentOptionComponent } from '../abstract-select-filter/select-parent-option/select-parent-option.component';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';

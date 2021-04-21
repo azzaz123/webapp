@@ -10,7 +10,7 @@ import { MockFilterOptionService } from '@fixtures/filter-option-service.fixture
 import { GridSelectFilterComponent } from './grid-select-filter.component';
 import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-select-form.module';
 import { GridSelectFilterConfig } from './interfaces/grid-select-filter-config.interface';
-import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
+import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids.enum';
 import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';

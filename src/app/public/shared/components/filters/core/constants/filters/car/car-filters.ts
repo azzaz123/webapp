@@ -1,4 +1,4 @@
-import { CAR_CONFIGURATION_ID } from '../../../enums/configuration-ids/car-configuration-ids';
+import { CAR_CONFIGURATION_ID } from '../../../enums/configuration-ids/car-configuration-ids.enum';
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
 import { AvailableFilterConfig } from '../../../types/available-filter-config.type';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';

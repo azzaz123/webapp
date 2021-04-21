@@ -10,7 +10,7 @@ import { FILTER_VARIANT } from '../../../abstract-filter/abstract-filter.enum';
 import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
 import { FilterConfig } from '../../../../interfaces/filter-config.interface';
 import { ToggleFilterComponent } from '../../../toggle-filter/toggle-filter.component';
-import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
+import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids.enum';
 import { FiltersModule } from '@public/shared/components/filters/filters.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';

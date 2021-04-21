@@ -54,6 +54,7 @@ export class FiltersWrapperComponent {
         const hasConfigurationChanged = this.handleConfigurationParametersChange(FILTER_VARIANT.BUBBLE, filterValues);
 
         if (!hasConfigurationChanged) {
+          console.log('FiltersWrapperComponent.bubbleStore - Setting params', filterValues);
           this.bubbleValuesSubject.next(filterValues);
           this.drawerStore.setParameters(filterValues);
         }
@@ -62,21 +63,28 @@ export class FiltersWrapperComponent {
 
     this.subscriptions.add(
       this.drawerStore.parameters$.subscribe((filterValues: FilterParameter[]) => {
-        const hasConfigurationChanged = this.handleConfigurationParametersChange(FILTER_VARIANT.CONTENT, filterValues);
+        console.log('FiltersWrapperComponent.drawerStore - Setting params', filterValues);
+        this.handleConfigurationParametersChange(FILTER_VARIANT.CONTENT, filterValues);
 
-        if (!hasConfigurationChanged) {
-          this.drawerValuesSubject.next(filterValues);
-        }
+        this.drawerValuesSubject.next(filterValues);
       })
     );
 
     this.subscriptions.add(
       this.bubbleFilterConfigurationsSubject.subscribe((config) => {
-        this.bubbleStore.setParameters(config.params);
+        console.log('FiltersWrapperComponent.bubbleConfig - New config', config);
+        if (this.shouldBubbleConfigCleanParams()) {
+          console.log('FiltersWrapperComponent.bubbleConfig - Cleaning params', config.params);
+          this.bubbleStore.setParameters(config.params);
+        } else {
+          console.log('FiltersWrapperComponent.bubbleConfig - Setting drawer params', config.params);
+          this.bubbleStore.setParameters(this.drawerStore.getParameters());
+        }
       })
     );
     this.subscriptions.add(
       this.drawerFilterConfigurationsSubject.subscribe((config) => {
+        console.log('FiltersWrapperComponent.drawerConfig - Cleaning params', config.params);
         this.drawerStore.setParameters(config.params);
       })
     );
@@ -91,8 +99,8 @@ export class FiltersWrapperComponent {
     this.drawerStore.setParameters(this.bubbleStore.getParameters());
   }
   public applyDrawer(): void {
-    this.bubbleStore.upsertParameters(this.drawerStore.getParameters());
-    this.closeDrawer();
+    this.bubbleStore.setParameters(this.drawerStore.getParameters());
+    this.drawerConfig.isOpen = false;
   }
 
   public bubbleChange(values: FilterParameter[]): void {
@@ -129,5 +137,9 @@ export class FiltersWrapperComponent {
     }
 
     return false;
+  }
+
+  private shouldBubbleConfigCleanParams(): boolean {
+    return this.bubbleFilterConfigurationsSubject.getValue().id !== this.drawerFilterConfigurationsSubject.getValue().id;
   }
 }

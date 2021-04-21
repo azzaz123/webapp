@@ -16,7 +16,7 @@ import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-s
 import { By } from '@angular/platform-browser';
 import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
-import { CAR_CONFIGURATION_ID } from '../../core/enums/configuration-ids/car-configuration-ids';
+import { CAR_CONFIGURATION_ID } from '../../core/enums/configuration-ids/car-configuration-ids.enum';
 import { GridSelectFormComponent } from '@shared/form/components/grid-select/grid-select-form.component';
 import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';

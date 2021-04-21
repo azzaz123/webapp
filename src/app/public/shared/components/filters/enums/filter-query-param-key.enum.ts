@@ -32,4 +32,6 @@ export enum FILTER_QUERY_PARAM_KEY {
   type = 'type',
   rooms = 'rooms',
   bathrooms = 'bathrooms',
+
+  brandModel = 'brand_model',
 }
