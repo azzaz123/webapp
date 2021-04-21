@@ -56,7 +56,7 @@ export class UserPublishedComponent implements OnInit {
     this.loadItems();
   }
 
-  public trackClickItemCardEvent({ itemCard, index }: ClickedItemCard): void {
+  public itemCardClicked({ itemCard, index }: ClickedItemCard): void {
     this.userService.get(itemCard.ownerId).subscribe((user: User) => {
       this.publicProfileTrackingEventsService.trackClickItemCardEvent(itemCard, user, index);
     });
