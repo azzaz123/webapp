@@ -9,8 +9,13 @@ export interface KeyMapper {
 
 export interface ParamsConfiguration<T extends string> {
   method: T;
-  requiredSiblingParams?: FILTER_QUERY_PARAM_KEY[];
+  requiredSiblingParams?: RequiredSiblingParam[];
   keyMappers?: KeyMapper[];
+}
+
+export interface RequiredSiblingParam {
+  key: FILTER_QUERY_PARAM_KEY;
+  defaultValue?: string;
 }
 
 export interface OptionsApiOrigin {
