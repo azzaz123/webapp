@@ -420,7 +420,7 @@
   <translation id="web_stats_components_item_row_343">Destácalo desde <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></translation>
   <translation id="web_stats_components_item_row_348">Este producto está Destacado</translation>
   <translation id="web_stats_components_item_row_349">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
-  <translation id="web_stats_components_item_row_350">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentConfig}}</ex></ph></translation>
+  <translation id="web_stats_components_item_row_350">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | dateCalendar:momentCalendarSpec}}</ex></ph></translation>
   <translation id="web_stats_components_item_row_340">Todavía no disponemos de datos para este producto</translation>
   <translation id="web_chat_modals_send_phone_182">¡Vas a contactar con un Profesional! Para ofrecerte un servicio más personalizado, ¿podrías dejarnos un teléfono para que te llamemos?</translation>
   <translation id="web_chat_modals_send_phone_183">Vamos a hablarlo: </translation>
@@ -1146,4 +1146,21 @@
   <translation id="web_stats_item_views_tooltip">Visualizaciones</translation>
   <translation id="web_stats_item_chats_tooltip">Chats</translation>
   <translation id="web_stats_item_favourites_tooltip">Favoritos</translation>
+  <translation id="web_user_report_reason_other">Otras causas</translation>
+  <translation id="web_user_report_reason_fraud">Fraude</translation>
+  <translation id="web_user_report_reason_possible_fraud">Sospecha de fraude</translation>
+  <translation id="web_user_report_reason_bad_behavior">Mal comportamiento o abuso</translation>
+  <translation id="web_user_report_reason_did_not_show_up">No asistencia a la cita</translation>
+  <translation id="web_user_report_reason_bad_product">Artículo defectuoso o incorrecto</translation>
+  <translation id="web_item_report_reason_people_animals">Personas o Animales</translation>
+  <translation id="web_item_report_reason_joke">Broma</translation>
+  <translation id="web_item_report_reason_fake_product">Producto Falso</translation>
+  <translation id="web_item_report_reason_explicit_content">Contenido explícito</translation>
+  <translation id="web_item_report_reason_wrong_image">La foto no coincide</translation>
+  <translation id="web_item_report_reason_food_drink">Alimentos o bebidas</translation>
+  <translation id="web_item_report_reason_drugs_medicines">Drogas o medicinas</translation>
+  <translation id="web_item_report_reason_duplicated_product">Producto duplicado</translation>
+  <translation id="web_item_report_reason_forbidden_product_service">Producto o servicio prohibido</translation>
+  <translation id="web_item_report_reason_resale">Reventa (entradas, etc)</translation>
+  <translation id="web_item_report_reason_ads_spam">Publicidad o spam</translation>
 </translationbundle>

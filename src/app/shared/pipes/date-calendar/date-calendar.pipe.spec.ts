@@ -9,11 +9,11 @@ const ONE_DAY_IN_MS = ONE_HOUR_IN_MS * 24;
 const ELEVENTH_OF_JUNE_OF_2020_IN_MS = 1591867791429;
 
 @Component({
-  template: '{{timestamp | dateCalendar:momentConfig}}',
+  template: '{{timestamp | dateCalendar:momentCalendarSpec}}',
 })
 class MockComponent {
   public timestamp: number;
-  public momentConfig: moment.CalendarSpec;
+  public momentCalendarSpec: moment.CalendarSpec;
 }
 
 describe('DateCalendarPipe', () => {
@@ -26,7 +26,7 @@ describe('DateCalendarPipe', () => {
     });
     fixture = TestBed.createComponent(MockComponent);
     component = fixture.componentInstance;
-    component.momentConfig = {
+    component.momentCalendarSpec = {
       lastDay: '[Yesterday] - HH:mm',
       sameDay: '[Today] - HH:mm',
       nextDay: '[Tomorrow]',

@@ -1,40 +1,23 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { BanReason } from '@core/item/ban-reason.interface';
-import { ItemService } from '@core/item/item.service';
+import { ITEM_REPORT_REASONS } from '@core/trust-and-safety/report/constants/item-report-reasons';
+import { ReportService } from '@core/trust-and-safety/report/report.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { of } from 'rxjs';
 import { ReportListingComponent } from './report-listing.component';
 
 describe('ReportListingComponent', () => {
   let component: ReportListingComponent;
   let fixture: ComponentFixture<ReportListingComponent>;
-  let itemService: ItemService;
+  let reportService: ReportService;
   let activeModal: NgbActiveModal;
-
-  const BAN_REASONS: BanReason[] = [
-    {
-      id: 1,
-      label: 'ban reason',
-    },
-  ];
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [FormsModule],
-        providers: [
-          NgbActiveModal,
-          {
-            provide: ItemService,
-            useValue: {
-              getBanReasons() {
-                return of(BAN_REASONS);
-              },
-            },
-          },
-        ],
+        imports: [HttpClientTestingModule, FormsModule],
+        providers: [NgbActiveModal, ReportService],
         declarations: [ReportListingComponent],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
@@ -45,7 +28,7 @@ describe('ReportListingComponent', () => {
     fixture = TestBed.createComponent(ReportListingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    itemService = TestBed.inject(ItemService);
+    reportService = TestBed.inject(ReportService);
     activeModal = TestBed.inject(NgbActiveModal);
   });
 
@@ -54,30 +37,35 @@ describe('ReportListingComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should get and set ban reasons', () => {
-      spyOn(itemService, 'getBanReasons').and.callThrough();
+    it('should show item report reasons', () => {
+      spyOn(reportService, 'getItemReportReasons').and.callThrough();
       component.ngOnInit();
-      expect(itemService.getBanReasons).toHaveBeenCalled();
-      expect(component.listingBanReasons).toEqual(BAN_REASONS);
+      expect(reportService.getItemReportReasons).toHaveBeenCalled();
+      expect(component.listingBanReasons).toEqual(ITEM_REPORT_REASONS);
     });
   });
 
   describe('selectReportListingReason', () => {
     it('should set the selectedReportListingReason with the given value', () => {
-      component.selectReportListingReason(1);
-      expect(component.selectedReportListingReason).toBe(1);
+      const selectedItemReportReason = ITEM_REPORT_REASONS[0];
+
+      component.selectReportListingReason(selectedItemReportReason);
+      expect(component.selectedReportListingReason).toBe(selectedItemReportReason);
     });
   });
 
   describe('close', () => {
     it('should call close', () => {
+      const SELECTED_ITEM_REPORT_REASON = ITEM_REPORT_REASONS[0];
       spyOn(activeModal, 'close');
       component.reportListingReasonMessage = 'message';
-      component.selectedReportListingReason = 1;
+      component.selectedReportListingReason = SELECTED_ITEM_REPORT_REASON;
+
       component.close();
+
       expect(activeModal.close).toHaveBeenCalledWith({
         message: 'message',
-        reason: 1,
+        reason: SELECTED_ITEM_REPORT_REASON,
       });
     });
   });
