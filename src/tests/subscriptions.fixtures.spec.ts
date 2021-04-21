@@ -8,10 +8,10 @@ import {
   SubscriptionSlot,
   SubscriptionSlotGeneralResponse,
   SUBSCRIPTION_MARKETS,
-  SubscriptionBenefit,
 } from '../app/core/subscriptions/subscriptions.interface';
 import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
+import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 
 export class MockSubscriptionService {
   getSubscriptions() {
@@ -118,22 +118,22 @@ export class MockSubscriptionService {
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [
   {
-    iconId: 'empty-image',
+    iconPath: 'empty-image',
     title: 'Professionalize your profile',
     description: 'Stand out above the rest with a cover photo and a description of what you offer',
   },
   {
-    iconId: 'empty-image',
+    iconPath: 'empty-image',
     title: 'Connect with more clients',
     description: 'Share with millions of potential buyers your phone and website',
   },
   {
-    iconId: 'empty-image',
+    iconPath: 'empty-image',
     title: 'Without time limit',
     description: 'Your items will never expire, they will be always ready for a quick sell',
   },
   {
-    iconId: 'empty-image',
+    iconPath: 'empty-image',
     title: 'Without compromise',
     description: 'You can cancel your subscription whenever you want, without penalties',
   },

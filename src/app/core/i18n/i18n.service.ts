@@ -127,28 +127,6 @@ export class I18nService {
       SubscriptionCardNotSet: 'Your card could not be saved',
       SubscriptionCardSet: 'Your card has been saved successfully',
       SubscriptionCardDeleted: 'Your card has been deleted',
-      subscriptionBenefits: [
-        {
-          iconId: 'img-1',
-          title: 'Empower your brand',
-          description: 'Complete your profile with a cover photo and a description.',
-        },
-        {
-          iconId: 'img-4',
-          title: 'Connect with more customers',
-          description: 'Share your phone number and website with millions of people.',
-        },
-        {
-          iconId: 'img-3',
-          title: 'Gain more visibility',
-          description: 'Appear at the top of search results and attract more customers.',
-        },
-        {
-          iconId: 'img-2',
-          title: 'Save management time',
-          description: 'Your products will always be active and ready for sale.',
-        },
-      ],
       tooManyNewConversations: "We can't keep up with you. Wait a moment so you can open up new conversations.",
       invoiceCorrectlyDownloaded: 'Your invoice has been successfully downloaded',
       invoiceGenerated: 'Your invoice has been successfully generated',
@@ -286,28 +264,6 @@ export class I18nService {
       SubscriptionCardNotSet: 'Tu tarjeta no ha podido ser guardada',
       SubscriptionCardSet: 'Tu tarjeta se ha guardado correctamente',
       SubscriptionCardDeleted: 'Tu tarjeta se ha borrado correctamente',
-      subscriptionBenefits: [
-        {
-          iconId: 'img-1',
-          title: 'Potencia tu marca',
-          description: 'Añade a tu perfil foto de portada y descripción de lo que ofreces.',
-        },
-        {
-          iconId: 'img-4',
-          title: 'Conecta con más clientes',
-          description: 'Comparte con millones de potenciales compradores tu teléfono y tu página web.',
-        },
-        {
-          iconId: 'img-3',
-          title: 'Gana visibilidad en búsquedas',
-          description: 'Ocupa los primeros resultados de búsqueda. ¡Atrae más clientes!',
-        },
-        {
-          iconId: 'img-2',
-          title: 'Ahorra tiempo de gestión',
-          description: 'Tus productos siempre estarán activos y listos para la venta.',
-        },
-      ],
       tooManyNewConversations: 'No te podemos seguir el ritmo. Espera un momento para poder abrir nuevas conversaciones.',
       invoiceCorrectlyDownloaded: 'Tu factura se ha descargado correctamente',
       invoiceGenerated: 'Tu factura se ha generado correctamente',
