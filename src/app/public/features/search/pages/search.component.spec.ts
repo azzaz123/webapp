@@ -1,31 +1,33 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
-import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
+import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { Store } from '@ngrx/store';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { random } from 'faker';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { BehaviorSubject } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
 import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrapper.module';
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
-import { SearchStoreService } from '../core/services/search-store.service';
+import { SearchService } from '../core/services/search.service';
 import { SearchComponent } from './search.component';
-import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
-  let searchStoreService: SearchStoreService;
   let deviceServiceMock;
   let storeMock;
+  let searchServiceMock;
+  const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
 
   beforeEach(async () => {
     deviceServiceMock = {
@@ -35,11 +37,19 @@ describe('SearchComponent', () => {
       select: () => of(),
       dispatch: () => {},
     };
+    searchServiceMock = {
+      init: () => {},
+      items$: itemsSubject.asObservable(),
+      loadMore: () => {},
+    };
     await TestBed.configureTestingModule({
       declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, AdSlotGroupShoppingComponentSub, ItemCardListComponentStub],
       imports: [FiltersWrapperModule, HttpClientTestingModule],
       providers: [
-        SearchStoreService,
+        {
+          provide: SearchService,
+          useValue: searchServiceMock,
+        },
         {
           provide: Store,
           useValue: storeMock,
@@ -60,8 +70,8 @@ describe('SearchComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
-    searchStoreService = TestBed.inject(SearchStoreService);
     component = fixture.componentInstance;
+    // fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -109,21 +119,22 @@ describe('SearchComponent', () => {
   });
 
   describe('when items change', () => {
-    const oldItems = [{ ...MOCK_SEARCH_ITEM, id: 'old_item' }];
+    const oldItems = [{ ...MOCK_ITEM_CARD, id: 'old_item' }];
+
     beforeEach(() => {
       fixture.detectChanges();
-      searchStoreService.setItems(oldItems);
     });
-    it('should update items', () => {
-      const newItems = [MOCK_SEARCH_ITEM, MOCK_SEARCH_ITEM];
-      let nextItems: ItemCard[] = [];
-      component.items$.subscribe((items) => (nextItems = items));
 
-      searchStoreService.appendItems(newItems);
+    it('should update items', (done) => {
+      const newItems = [MOCK_ITEM_CARD, MOCK_ITEM_CARD];
+      itemsSubject.next([...oldItems, ...newItems]);
 
-      expect(nextItems.length).toBe(3);
-      nextItems.forEach((nextItem, index) => {
-        expect(nextItem.id).toBe(index !== 0 ? MOCK_SEARCH_ITEM.id : 'old_item');
+      component.items$.subscribe((items) => {
+        expect(items.length).toBe(3);
+        items.forEach((nextItem, index) => {
+          expect(nextItem.id).toBe(index !== 0 ? MOCK_ITEM_CARD.id : 'old_item');
+        });
+        done();
       });
     });
   });

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class FilterParameterDraftService {
-  private parametersSubject = new BehaviorSubject<FilterParameter[]>([]);
+  private static INITIAL_PARAMETERS: FilterParameter[] = [];
+
+  private parametersSubject = new BehaviorSubject<FilterParameter[]>(FilterParameterDraftService.INITIAL_PARAMETERS);
 
   public get parameters$(): Observable<FilterParameter[]> {
     return this.parametersSubject.asObservable();
@@ -33,6 +35,10 @@ export class FilterParameterDraftService {
       return !keysToRemove.includes(parameter.key);
     });
     this.setParameters(nextParameters);
+  }
+
+  public clear(): void {
+    this.parametersSubject.next(FilterParameterDraftService.INITIAL_PARAMETERS);
   }
 
   private mergeParameters(newParameters: FilterParameter[], oldParameters: FilterParameter[]): FilterParameter[] {
