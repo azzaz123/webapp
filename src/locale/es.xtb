@@ -1181,4 +1181,10 @@
   <translation id="web_catalog_filter_date_asc">Más antiguos</translation>
   <translation id="web_catalog_filter_price_desc">Precio mayor</translation>
   <translation id="web_catalog_filter_price_asc">Precio menor</translation>
+  <translation id="web_chat_archive_conversation_success">La conversación se ha archivado correctamente</translation>
+  <translation id="web_chat_unarchive_conversation_success">La conversación se ha desarchivado correctamente</translation>
+  <translation id="web_chat_report_user_success">El usuario se ha denunciado correctamente</translation>
+  <translation id="web_chat_report_listing_success">La publicación se ha denunciado correctamente</translation>
+  <translation id="web_chat_block_user_success">El usuario se ha bloqueado correctamente</translation>
+  <translation id="web_chat_unblock_user_success">El usuario se ha desbloqueado correctamente</translation>
 </translationbundle>

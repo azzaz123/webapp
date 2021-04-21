@@ -13,12 +13,7 @@ export class I18nService {
       defaultErrorMessage: 'Service not available at this moment. Try again later',
       male: 'Male',
       female: 'Female',
-      archiveConversationSuccess: 'The conversation has been archived correctly',
-      unarchiveConversationSuccess: 'The conversation has been unarchived correctly',
-      reportListingSuccess: 'The listing has been reported correctly',
-      reportUserSuccess: 'The user has been reported correctly',
-      blockUserSuccess: 'The user has been blocked',
-      unblockUserSuccess: 'The user has been unblocked',
+
       bulkDeleteError: 'Some listings have not been deleted due to an error',
       bulkReserveError: 'Some listings have not been reserved due to an error',
       bulkSoldError: 'Some listings have not been set as sold due to an error',
