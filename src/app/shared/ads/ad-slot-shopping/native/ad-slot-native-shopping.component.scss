@@ -4,10 +4,13 @@ $hover-box-shadow: 0 2px 10px 0 rgba($blue-grey-1, 0.1);
 
 .Sky__container {
   margin: 0 auto;
-  border-radius: $border-radius;
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: $hover-box-shadow;
+  }
+
+  & iframe {
+    border-radius: $border-radius;
   }
 }

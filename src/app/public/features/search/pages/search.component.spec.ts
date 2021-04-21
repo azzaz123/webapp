@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
@@ -5,9 +6,11 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
+import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { Store } from '@ngrx/store';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { random } from 'faker';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs/internal/observable/of';
@@ -16,9 +19,7 @@ import { SearchLayoutComponent } from '../components/search-layout/search-layout
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchStoreService } from '../core/services/search-store.service';
 import { SearchComponent } from './search.component';
-import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
+import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -30,6 +31,7 @@ describe('SearchComponent', () => {
   beforeEach(async () => {
     deviceServiceMock = {
       getDeviceType: () => random.arrayElement([DeviceType.DESKTOP, DeviceType.MOBILE, DeviceType.TABLET]),
+      isMobile: () => false,
     };
     storeMock = {
       select: () => of(),
@@ -149,6 +151,32 @@ describe('SearchComponent', () => {
       component.toggleBubbleFilterBackdrop(false);
 
       expect(bubbleOpenCount).toBe(0);
+    });
+  });
+
+  describe('when we want to show ads natives', () => {
+    describe('on desktop or tablet', () => {
+      beforeEach(() => {
+        spyOn(deviceServiceMock, 'isMobile').and.returnValue(false);
+      });
+
+      it('should set slots config of desktop config', () => {
+        fixture.detectChanges();
+
+        expect(component.slotsConfig).toEqual(SLOTS_CONFIG_DESKTOP);
+      });
+    });
+
+    describe('on mobile', () => {
+      beforeEach(() => {
+        spyOn(deviceServiceMock, 'isMobile').and.returnValue(true);
+      });
+
+      it('should set slots config of mobile config', () => {
+        fixture.detectChanges();
+
+        expect(component.slotsConfig).toEqual(SLOTS_CONFIG_MOBILE);
+      });
     });
   });
 });
