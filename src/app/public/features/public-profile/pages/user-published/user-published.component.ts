@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
 import { ItemCard, ItemCardsWithPagination } from '@public/core/interfaces/item-card.interface';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { finalize, take } from 'rxjs/operators';
+import { PublicProfileTrackingEventsService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { PublishedItemCardFavouriteCheckedService } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.service';
 
 @Component({
@@ -19,7 +23,11 @@ export class UserPublishedComponent implements OnInit {
   public nextPaginationItem = 0;
   public loading = true;
 
-  constructor(private publishedItemCardFavouriteCheckedService: PublishedItemCardFavouriteCheckedService) {}
+  constructor(
+    private publishedItemCardFavouriteCheckedService: PublishedItemCardFavouriteCheckedService,
+    private publicProfileTrackingEventsService: PublicProfileTrackingEventsService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.loadItems();
@@ -46,6 +54,12 @@ export class UserPublishedComponent implements OnInit {
 
   public loadMore(): void {
     this.loadItems();
+  }
+
+  public itemCardClicked({ itemCard, index }: ClickedItemCard): void {
+    this.userService.get(itemCard.ownerId).subscribe((user: User) => {
+      this.publicProfileTrackingEventsService.trackClickItemCardEvent(itemCard, user, index);
+    });
   }
 
   private onError(): void {
