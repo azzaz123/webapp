@@ -1163,4 +1163,12 @@
   <translation id="web_item_report_reason_forbidden_product_service">Producto o servicio prohibido</translation>
   <translation id="web_item_report_reason_resale">Reventa (entradas, etc)</translation>
   <translation id="web_item_report_reason_ads_spam">Publicidad o spam</translation>
+  <translation id="web_subscription_benefit_title_your_brand">Potencia tu marca</translation>
+  <translation id="web_subscription_benefit_description_your_brand">Añade a tu perfil foto de portada y descripción de lo que ofreces.</translation>
+  <translation id="web_subscription_benefit_title_connect">Conecta con más clientes</translation>
+  <translation id="web_subscription_benefit_description_connect">Comparte con millones de potenciales compradores tu teléfono y tu página web.</translation>
+  <translation id="web_subscription_benefit_title_visibility">Gana visibilidad en búsquedas</translation>
+  <translation id="web_subscription_benefit_description_visibility">Ocupa los primeros resultados de búsqueda. ¡Atrae más clientes!</translation>
+  <translation id="web_subscription_benefit_title_time">Ahorra tiempo de gestión</translation>
+  <translation id="web_subscription_benefit_description_time">Tus productos siempre estarán activos y listos para la venta.</translation>
 </translationbundle>
