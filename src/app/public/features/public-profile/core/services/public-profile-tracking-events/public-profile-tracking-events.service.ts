@@ -48,12 +48,8 @@ export class PublicProfileTrackingEventsService {
     this.analyticsService.trackPageView(event);
   }
 
-  public trackFavouriteOrUnfavouriteItemEvent(itemCard: ItemCard, user: User, isFavourite: boolean): void {
-    const event: FavouriteItemAnalyticEvent = PublicProfileTrackingEventsService.factoryFavouriteUserOrUnfavouriteItemEvent(
-      itemCard,
-      user,
-      isFavourite
-    );
+  public trackFavouriteOrUnfavouriteItemEvent(itemCard: ItemCard, user: User): void {
+    const event: FavouriteItemAnalyticEvent = PublicProfileTrackingEventsService.factoryFavouriteUserOrUnfavouriteItemEvent(itemCard, user);
     this.analyticsService.trackEvent(event);
   }
 
@@ -74,11 +70,7 @@ export class PublicProfileTrackingEventsService {
     };
   }
 
-  private static factoryFavouriteUserOrUnfavouriteItemEvent(
-    itemCard: ItemCard,
-    { featured }: User,
-    isFavourite: boolean
-  ): FavouriteItemAnalyticEvent {
+  private static factoryFavouriteUserOrUnfavouriteItemEvent(itemCard: ItemCard, { featured }: User): FavouriteItemAnalyticEvent {
     return {
       name: itemCard.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,

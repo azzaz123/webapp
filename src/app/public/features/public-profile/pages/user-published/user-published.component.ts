@@ -38,7 +38,7 @@ export class UserPublishedComponent implements OnInit {
       .get(itemCard.ownerId)
       .pipe(take(1))
       .subscribe((user: User) => {
-        this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent(itemCard, user, itemCard.flags?.favorite);
+        this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent(itemCard, user);
       });
   }
 
