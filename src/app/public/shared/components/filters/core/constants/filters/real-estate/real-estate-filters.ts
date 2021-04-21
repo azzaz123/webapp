@@ -5,6 +5,30 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 
 const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
   {
+    id: REAL_ESTATE_CONFIGURATION_ID.TYPE,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterPropertyTypeTitle:What are you looking for?`,
+    bubblePlaceholder: $localize`:@@filterPropertyTypeBubblePlaceholder:Type of property`,
+    icon: '/assets/icons/joke.svg', // BEFOREMERGE: Add icon
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
+    },
+    isMultiselect: true,
+    hasBigIcons: false,
+  },
+  {
+    id: REAL_ESTATE_CONFIGURATION_ID.OPERATION,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterOperationTitle:Rent or buy?`,
+    bubblePlaceholder: $localize`:@@filterOperationBubblePlaceholder:Rent or buy?`,
+    icon: '/assets/icons/joke.svg', // BEFOREMERGE: Add icon
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.operation,
+    },
+    isMultiselect: true,
+    hasBigIcons: false,
+  },
+  {
     id: REAL_ESTATE_CONFIGURATION_ID.DEFAULT_PRICE,
     type: FILTER_TYPES.RANGE,
     title: $localize`:@@filterPriceTitle:How much?`,

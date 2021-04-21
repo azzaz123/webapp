@@ -67,6 +67,6 @@ export class FilterGroupComponent implements OnChanges {
     const previousIds = previousConfig.map((prev) => prev.id);
     const currentIds = currentConfig.map((curr) => curr.id);
 
-    return currentIds.every((id) => previousIds.includes(id));
+    return !currentIds.every((id) => previousIds.includes(id));
   }
 }
