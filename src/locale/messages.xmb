@@ -62,6 +62,7 @@
   <msg id="ReviewBought"><source>src/app/core/components/review-item/review-item.component.ts:41</source>Bought</msg>
   <msg id="web_consumer_goods_category_name"><source>src/app/core/i18n/translations/constants/translations.ts:4</source>Everything else</msg>
   <msg id="web_chat_desktop_notification"><source>src/app/core/i18n/translations/constants/translations.ts:5</source>New message from</msg>
+  <msg id="web_chat_my_phone_number"><source>src/app/core/i18n/translations/constants/translations.ts:6</source>My phone number is</msg>
   <msg id="web_subscription_benefit_title_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:7</source>Empower your brand</msg>
   <msg id="web_subscription_benefit_description_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:8</source>Complete your profile with a cover photo and a description.</msg>
   <msg id="web_subscription_benefit_title_connect"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:12</source>Connect with more customers</msg>
