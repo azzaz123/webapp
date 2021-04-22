@@ -1214,4 +1214,6 @@
   <translation id="web_pro_subscription_edit_success_body">Tu suscripción se ha editado correctamente.</translation>
   <translation id="web_pro_subscription_edit_error_title">Ha habido un error</translation>
   <translation id="web_pro_subscription_edit_error_body">Tu suscripción no ha podido ser modificada.</translation>
+  <translation id="web_wallapop_pro">Wallapop PRO</translation>
+  <translation id="web_become_pro">Conviértete en PRO</translation>
 </translationbundle>
