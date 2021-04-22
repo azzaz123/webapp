@@ -53,9 +53,12 @@ $filter-content-height: 355px;
     }
   }
 
-  &__title--bubble {
-    color: $black;
-    font-weight: $font-weight-bold;
+  &__title {
+    color: $blue-grey-2;
+    &--bubble {
+      color: $black;
+      font-weight: $font-weight-bold;
+    }
   }
 
   &--warn {
