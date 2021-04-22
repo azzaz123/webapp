@@ -1,5 +1,5 @@
-import { ButtonComponent } from 'app/shared/button/button.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AdsService } from '@core/ads/services/ads/ads.service';
@@ -23,6 +23,15 @@ import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchService } from '../core/services/search.service';
 import { SearchComponent } from './search.component';
 
+@Directive({
+  selector: '[infinite-scroll]',
+})
+class InfiniteScrollStubDirective {
+  @Input() public infiniteScrollDistance: number;
+  @Input() public infiniteScrollThrottle: number;
+  @Input() public infiniteScrollDisabled: number;
+}
+
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
@@ -30,6 +39,7 @@ describe('SearchComponent', () => {
   let storeMock;
   let searchServiceMock;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
+  const hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   beforeEach(async () => {
     deviceServiceMock = {
@@ -42,11 +52,19 @@ describe('SearchComponent', () => {
     searchServiceMock = {
       init: () => {},
       items$: itemsSubject.asObservable(),
+      hasMore$: hasMoreSubject.asObservable(),
       loadMore: () => {},
       close: () => {},
     };
     await TestBed.configureTestingModule({
-      declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, AdSlotGroupShoppingComponentSub, ItemCardListComponentStub],
+      declarations: [
+        SearchComponent,
+        SearchLayoutComponent,
+        AdComponentStub,
+        AdSlotGroupShoppingComponentSub,
+        ItemCardListComponentStub,
+        InfiniteScrollStubDirective,
+      ],
       imports: [FiltersWrapperModule, HttpClientTestingModule],
       providers: [
         {
@@ -166,7 +184,12 @@ describe('SearchComponent', () => {
   });
 
   describe('infinite scroll', () => {
-    describe('at the init', () => {
+    describe('with items and has more items', () => {
+      beforeEach(() => {
+        itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
+        hasMoreSubject.next(true);
+      });
+
       it('should appear the button to load more items', () => {
         fixture.detectChanges();
 
@@ -174,16 +197,38 @@ describe('SearchComponent', () => {
 
         expect(buttonLoadMore.textContent).toBe('Ver más productos');
       });
+
+      describe('with items but has not more items', () => {
+        beforeEach(() => {
+          itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
+          hasMoreSubject.next(false);
+        });
+
+        it('should not appear the button to load more items', () => {
+          fixture.detectChanges();
+
+          const buttonLoadMore = fixture.debugElement.query(By.css('#btn-load-more'));
+
+          expect(buttonLoadMore).toBeNull();
+        });
+      });
     });
 
     describe('when we click on load more products', () => {
-      it('should enable infinite scroll', () => {
+      beforeEach(() => {
+        itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
+        hasMoreSubject.next(true);
+      });
+      it('should enable infinite scroll', (done) => {
         fixture.detectChanges();
 
         const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
         buttonLoadMore.click();
 
-        expect(component.infiniteScrollDisabled).toBe(false);
+        component.infiniteScrollDisabled$.subscribe((infiniteScrollDisabled) => {
+          expect(infiniteScrollDisabled).toBe(false);
+          done();
+        });
       });
 
       it('should disapear the button to load more items', () => {

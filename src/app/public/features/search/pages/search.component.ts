@@ -6,8 +6,8 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
-import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { map, share, tap } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -83,7 +83,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private buildInfiniteScrollDisabledObservable(): Observable<boolean> {
     return combineLatest([this.loadMoreProductsSubject.asObservable(), this.hasMoreItems$]).pipe(
-      map(([loadMoreProducts, hasMore]: [boolean, boolean]) => !(loadMoreProducts && hasMore))
+      map(([loadMoreProducts, hasMore]: [boolean, boolean]) => !(loadMoreProducts && hasMore)),
+      tap((value: boolean) => console.log('buildInfiniteScrollDisabledObservable', value))
     );
   }
 }
