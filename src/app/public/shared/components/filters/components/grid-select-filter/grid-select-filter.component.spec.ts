@@ -64,6 +64,11 @@ describe('GridSelectFilterComponent', () => {
     hasBigIcons: true,
   };
 
+  const mirrorIconConfig: GridSelectFilterConfig = {
+    ...basicConfig,
+    mirrorsValueIcon: true,
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TestWrapperComponent, GridSelectFilterComponent, IsBubblePipe],
@@ -335,6 +340,19 @@ describe('GridSelectFilterComponent', () => {
 
       expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
       expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.engine, value: undefined }]);
+    });
+  });
+
+  describe('when value icon needs to be mirrored in bubble', () => {
+    beforeEach(() => {
+      testComponent.config = mirrorIconConfig;
+      testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil' }];
+      fixture.detectChanges();
+    });
+    it('should update icon when value is selected', () => {
+      const filterTemplate: FilterTemplateComponent = debugElement.query(By.directive(FilterTemplateComponent)).componentInstance;
+
+      expect(filterTemplate.icon).toEqual('/assets/icons/joke.svg');
     });
   });
 });
