@@ -46,8 +46,6 @@ export class FiltersWrapperComponent {
 
     this.subscriptions.add(
       this.bubbleStore.parameters$.subscribe((filterValues: FilterParameter[]) => {
-        console.log('bubble filters changed', filterValues);
-
         this.bubbleValuesSubject.next(filterValues);
         this.drawerStore.setParameters(filterValues);
       })
@@ -55,8 +53,6 @@ export class FiltersWrapperComponent {
 
     this.subscriptions.add(
       this.drawerStore.parameters$.subscribe((filterValues: FilterParameter[]) => {
-        console.log('drawer filters changed!', filterValues);
-
         this.drawerValuesSubject.next(filterValues);
       })
     );

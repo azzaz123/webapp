@@ -83,8 +83,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private buildInfiniteScrollDisabledObservable(): Observable<boolean> {
     return combineLatest([this.loadMoreProductsSubject.asObservable(), this.hasMoreItems$]).pipe(
-      map(([loadMoreProducts, hasMore]: [boolean, boolean]) => !(loadMoreProducts && hasMore)),
-      tap((value: boolean) => console.log('buildInfiniteScrollDisabledObservable', value))
+      map(([loadMoreProducts, hasMore]: [boolean, boolean]) => !(loadMoreProducts && hasMore))
     );
   }
 }

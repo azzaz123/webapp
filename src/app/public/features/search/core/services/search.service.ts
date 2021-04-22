@@ -34,7 +34,6 @@ export class SearchService {
 
   public init(): void {
     this.subscription.add(this.onChangeParameters().subscribe());
-
     this.subscription.add(this.onLoadMore().subscribe());
   }
 
@@ -50,6 +49,7 @@ export class SearchService {
 
   private onChangeParameters(): Observable<SearchPagination> {
     return this.filterParameterStoreService.parameters$.pipe(
+      tap((parameters) => console.log('parameters::', parameters)),
       switchMap((filterParameters: FilterParameter[]) => this.searchInfrastructureService.search(filterParameters)),
       tap(({ items, hasMore }: SearchPagination) => {
         this.searchStoreService.setItems(items);
