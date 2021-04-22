@@ -8,6 +8,10 @@ import { SearchPagination } from '../../interfaces/search-pagination.interface';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
 import { SearchStoreService } from './search-store.service';
 import { SearchService } from './search.service';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 describe('SearchService', () => {
   let service: SearchService;
@@ -45,6 +49,14 @@ describe('SearchService', () => {
         {
           provide: SearchInfrastructureService,
           useValue: searchInfrastructureServiceMock,
+        },
+        {
+          provide: FILTER_PARAMETER_STORE_TOKEN,
+          useValue: filterParameterStoreServiceMock,
+        },
+        {
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useValue: filterParameterStoreServiceMock,
         },
       ],
     });

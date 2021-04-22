@@ -3,8 +3,13 @@ import { FiltersWrapperComponent } from './filters-wrapper.component';
 import { BubbleModule } from '@public/shared/components/bubble/bubble.module';
 import { DrawerModule } from '@public/shared/components/drawer/drawer.module';
 import { FilterGroupComponentStub } from '@public/shared/components/filters/components/filter-group/services/filter-group.component.stub';
-import { FilterParameterStoreService } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { FilterWrapperConfigurationService } from '@public/shared/services/filter-wrapper-configuration/filter-wrapper-configuration.service';
+import { ExtractFilterConfigsPipe } from '@public/features/search/components/filters-wrapper/pipes/extract-filter-configs.pipe';
 
 describe('FiltersWrapperComponent', () => {
   let component: FiltersWrapperComponent;
@@ -12,9 +17,19 @@ describe('FiltersWrapperComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FiltersWrapperComponent, FilterGroupComponentStub],
+      declarations: [FiltersWrapperComponent, FilterGroupComponentStub, ExtractFilterConfigsPipe],
       imports: [BubbleModule, DrawerModule],
-      providers: [FilterParameterStoreService, FilterWrapperConfigurationService],
+      providers: [
+        FilterWrapperConfigurationService,
+        {
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+        {
+          provide: FILTER_PARAMETER_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FiltersWrapperComponent);

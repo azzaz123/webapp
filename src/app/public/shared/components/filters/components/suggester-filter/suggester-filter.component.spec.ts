@@ -4,7 +4,6 @@ import { SuggesterFilterComponent } from './suggester-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
-import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
 import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-select-filter.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
@@ -26,6 +25,7 @@ import { BubbleComponent } from '../../../bubble/bubble.component';
 import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 import { of } from 'rxjs/internal/observable/of';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -81,11 +81,16 @@ describe('SuggesterFilterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TestWrapperComponent, SuggesterFilterComponent, IsBubblePipe],
+      providers: [
+        {
+          provide: FilterOptionService,
+          useClass: MockFilterOptionService,
+        },
+      ],
       imports: [
         HttpClientTestingModule,
         NgbDropdownModule,
         AbstractFilterModule,
-        FilterOptionServiceModule,
         AbstractSelectFilterModule,
         FormsModule,
         ReactiveFormsModule,

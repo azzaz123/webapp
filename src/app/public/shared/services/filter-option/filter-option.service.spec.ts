@@ -5,12 +5,8 @@ import { FilterOption } from '../../components/filters/core/interfaces/filter-op
 import { FilterOptionsApiService } from './services/filter-options-api.service';
 import { FilterOptionsMapperService } from './services/filter-options-mapper.service';
 import { ConfigurationId } from '../../components/filters/core/types/configuration-id.type';
-import {
-  MockFilterOptionApiService,
-  MockFilterOptionMapperService,
-  MockFilterParameterDraftService,
-} from '@fixtures/filter-option.fixtures';
-import { FilterParameterStoreService } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { MockFilterOptionApiService, MockFilterOptionMapperService, MockFilterParameterService } from '@fixtures/filter-option.fixtures';
+import { FILTER_PARAMETER_DRAFT_STORE_TOKEN } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 jest.mock('./data/hardcoded-options', () => ({
   HARDCODED_OPTIONS: {
@@ -35,7 +31,7 @@ jest.mock('./configurations/options-origin-configuration.ts', () => ({
     apiWithRelatedParams: {
       apiConfiguration: {
         method: 'apiMethod',
-        requiredSiblingParams: ['siblingParam1', 'siblingParam2'],
+        requiredSiblingParams: [{ key: 'siblingParam1' }, { key: 'siblingParam2' }],
         keyMappers: [
           {
             sourceParamKey: 'siblingParam1',
@@ -58,7 +54,7 @@ jest.mock('./configurations/options-origin-configuration.ts', () => ({
       },
       mapperConfiguration: {
         method: 'mapperMethod',
-        requiredSiblingParams: ['siblingParam1', 'siblingParam2'],
+        requiredSiblingParams: [{ key: 'siblingParam1' }, { key: 'siblingParam2' }],
         keyMappers: [
           {
             sourceParamKey: 'siblingParam2',
@@ -80,8 +76,8 @@ describe('FilterOptionService', () => {
       providers: [
         FilterOptionService,
         {
-          provide: FilterParameterStoreService,
-          useClass: MockFilterParameterDraftService,
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useClass: MockFilterParameterService,
         },
         {
           provide: FilterOptionsApiService,

@@ -84,6 +84,7 @@ export class FiltersWrapperComponent {
     );
     this.subscriptions.add(
       this.drawerFilterConfigurationsSubject.subscribe((config) => {
+        console.log('FiltersWrapperComponent.drawerConfig - New config', config);
         console.log('FiltersWrapperComponent.drawerConfig - Cleaning params', config.params);
         this.drawerStore.setParameters(config.params);
       })

@@ -31,7 +31,7 @@ export class MockFilterOptionMapperService {
   public mapperMethod(): void {}
 }
 
-export class MockFilterParameterDraftService implements Partial<FilterParameterStoreService> {
+export class MockFilterParameterService implements Partial<FilterParameterStoreService> {
   public getParametersByKeys(keys: FILTER_QUERY_PARAM_KEY[]): FilterParameter[] {
     return keys.map((key) => ({
       key,
@@ -50,6 +50,11 @@ export const conditionOption: Condition = {
   description: 'description',
   id: 'id',
   title: 'text',
+};
+
+export const formattedConditionOption: FilterOption = {
+  label: conditionOption.title,
+  value: conditionOption.id,
 };
 
 export const formattedIconOption: FilterOption = {

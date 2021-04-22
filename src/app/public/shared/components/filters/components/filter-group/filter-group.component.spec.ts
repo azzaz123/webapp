@@ -5,7 +5,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterGroupComponent } from './filter-group.component';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ToggleFilterComponent } from '../toggle-filter/toggle-filter.component';
 import { GridSelectFilterComponent } from '../grid-select-filter/grid-select-filter.component';
@@ -15,10 +15,26 @@ import { FilterHostDirective } from './directives/filter-host.directive';
 import { FiltersModule } from '@public/shared/components/filters/filters.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { FilterConfig } from '@public/shared/components/filters/interfaces/filter-config.interface';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+
+@Component({
+  selector: 'tsl-test-component',
+  template: ` <tsl-filter-group [values]="values" [config]="config" [variant]="variant"></tsl-filter-group> `,
+})
+class TestComponent {
+  @Input() values: FilterParameter[];
+  @Input() config: FilterConfig<unknown>[] = [];
+  @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
+}
 
 describe('FilterGroupComponent', () => {
   let component: FilterGroupComponent;
-  let fixture: ComponentFixture<FilterGroupComponent>;
+  let testComponent: TestComponent;
+  let fixture: ComponentFixture<TestComponent>;
   let debugElement: DebugElement;
 
   const togglePredicate = By.directive(ToggleFilterComponent);
@@ -27,17 +43,24 @@ describe('FilterGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FilterGroupComponent, FilterHostComponent, FilterValuesPipe, FilterHostDirective],
+      declarations: [TestComponent, FilterGroupComponent, FilterHostComponent, FilterValuesPipe, FilterHostDirective],
       imports: [CommonModule, FiltersModule, HttpClientTestingModule],
+      providers: [
+        {
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FilterGroupComponent);
+    fixture = TestBed.createComponent(TestComponent);
     debugElement = fixture.debugElement;
-    component = fixture.componentInstance;
+    testComponent = fixture.componentInstance;
+    component = debugElement.query(By.directive(FilterGroupComponent)).componentInstance;
 
-    component.config = [
+    testComponent.config = [
       {
         id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
         type: FILTER_TYPES.TOGGLE,
@@ -57,8 +80,8 @@ describe('FilterGroupComponent', () => {
         bubblePlaceholder: 'bubblePlaceholder',
       },
     ];
-    component.values = values;
-    component.variant = FILTER_VARIANT.BUBBLE;
+    testComponent.values = values;
+    testComponent.variant = FILTER_VARIANT.CONTENT;
     fixture.detectChanges();
   });
 

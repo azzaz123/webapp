@@ -6,6 +6,7 @@ import {
   conditionOption,
   fashionBrand,
   formattedCarBrandNModel,
+  formattedConditionOption,
   formattedFashionBrand,
   formattedFemaleSize,
   formattedIconOption,
@@ -39,7 +40,7 @@ describe('FilterOptionsMapperService', () => {
         conditions: [conditionOption],
       });
 
-      expect(formattedOptions).toEqual([formattedIconOption]);
+      expect(formattedOptions).toEqual([formattedConditionOption]);
     });
   });
 

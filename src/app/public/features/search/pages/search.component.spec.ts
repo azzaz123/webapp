@@ -20,6 +20,11 @@ import { SearchLayoutComponent } from '../components/search-layout/search-layout
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchService } from '../core/services/search.service';
 import { SearchComponent } from './search.component';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -63,6 +68,14 @@ describe('SearchComponent', () => {
         {
           provide: DeviceService,
           useValue: deviceServiceMock,
+        },
+        {
+          provide: FILTER_PARAMETER_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+        {
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
         },
       ],
     }).compileComponents();
