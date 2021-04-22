@@ -70,16 +70,16 @@ export class EditSubscriptionModalComponent implements OnInit {
     this.subscriptionsService.editSubscription(this.subscription, this.selectedTier.id).subscribe((response) => {
       if (response.status === 202) {
         this.toastService.show({
-          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUBSCRIPTION_SUCCESS_TITLE)}`,
-          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUBSCRIPTION_SUCCESS_BODY)}`,
+          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_TITLE)}`,
+          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_BODY)}`,
           type: 'success',
         });
         this.loading = false;
       } else {
         this.loading = false;
         this.toastService.show({
-          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUBSCRIPTION_SUCCESS_TITLE)}`,
-          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUBSCRIPTION_SUCCESS_BODY)}`,
+          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_TITLE)}`,
+          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_BODY)}`,
           type: 'error',
         });
       }

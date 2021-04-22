@@ -38,8 +38,8 @@ export class CancelSubscriptionModalComponent {
     this.subscriptionsService.cancelSubscription(this.subscription.selected_tier_id).subscribe((response) => {
       if (response.status === 202) {
         this.toastService.show({
-          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUBSCRIPTION_SUCCESS_TITLE)}`,
-          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUBSCRIPTION_SUCCESS_BODY)}`,
+          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUCCESS_TITLE)}`,
+          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUCCESS_BODY)}`,
           type: 'success',
         });
         this.loading = false;
@@ -47,8 +47,8 @@ export class CancelSubscriptionModalComponent {
       } else {
         this.loading = false;
         this.toastService.show({
-          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUBSCRIPTION_ERROR_TITLE)}`,
-          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUBSCRIPTION_ERROR_BODY)}`,
+          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_TITLE)}`,
+          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_BODY)}`,
           type: 'error',
         });
         this.activeModal.close(ModalStatuses.FAIL);

@@ -44,8 +44,8 @@ export class ContinueSubscriptionModalComponent {
         this.loading = false;
         this.close();
         this.toastService.show({
-          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_SUCCESS_TITLE)}`,
-          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_SUCCESS_BODY)}`,
+          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE)}`,
+          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_BODY)}`,
           type: 'success',
         });
       },
@@ -53,8 +53,8 @@ export class ContinueSubscriptionModalComponent {
         this.loading = false;
         this.close();
         this.toastService.show({
-          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_ERROR_TITLE)}`,
-          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_ERROR_BODY)}`,
+          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_ERROR_TITLE)}`,
+          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_ERROR_BODY)}`,
           type: 'error',
         });
       }
