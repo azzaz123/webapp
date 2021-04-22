@@ -1,4 +1,14 @@
+@import '~style/common';
+
+$search-layout-container-width: 1245px;
+
 .SearchLayout {
+  &__container {
+    @include media-breakpoint-up(xl) {
+      max-width: $search-layout-container-width;
+    }
+  }
+
   &__fixed-width-column {
     flex: 0 0 300px;
   }
