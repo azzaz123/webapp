@@ -36,4 +36,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.STATS_GRAPH_LAST_FIFTEEN_DAYS]: $localize`:@@web_stats_graph_last_fifteen_days:Last 15 days`,
   [TRANSLATION_KEY.STATS_GRAPH_LAST_SEVEN_DAYS]: $localize`:@@web_stats_graph_last_seven_days:Last 7 days`,
   [TRANSLATION_KEY.TOAST_ERROR_TITLE]: $localize`:@@web_toast_error_title:Oops!`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUBSCRIPTION_SUCCESS_TITLE]: $localize`:@@web_pro_subscription_cancel_success_title:Subscription cancelled.`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUBSCRIPTION_SUCCESS_BODY]: $localize`:@@web_pro_subscription_cancel_success_body:We are sad to see you go.`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUBSCRIPTION_ERROR_TITLE]: $localize`:@@web_pro_subscription_cancel_error_title:There was an error`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUBSCRIPTION_ERROR_BODY]: $localize`:@@web_pro_subscription_cancel_error_body:Your subscription could not be cancelled.`,
 };

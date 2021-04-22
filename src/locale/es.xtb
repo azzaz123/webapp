@@ -1202,4 +1202,8 @@
   <translation id="web_toast_error_title">¡Ups!</translation>
   <translation id="web_yes">Sí</translation>
   <translation id="web_no">No</translation>
+  <translation id="web_pro_subscription_cancel_success_title">Suscripción cancelada.</translation>
+  <translation id="web_pro_subscription_cancel_success_body">Lamentamos que te vayas :(</translation>
+  <translation id="web_pro_subscription_cancel_error_title">Ha habido un error</translation>
+  <translation id="web_pro_subscription_cancel_error_body">Tu suscripción no ha podido ser cancelada.</translation>
 </translationbundle>

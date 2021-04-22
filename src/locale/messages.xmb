@@ -94,6 +94,10 @@
   <msg id="web_stats_graph_last_fifteen_days"><source>src/app/core/i18n/translations/constants/translations.ts:35</source>Last 15 days</msg>
   <msg id="web_stats_graph_last_seven_days"><source>src/app/core/i18n/translations/constants/translations.ts:36</source>Last 7 days</msg>
   <msg id="web_toast_error_title"><source>src/app/core/i18n/translations/constants/translations.ts:37</source>Oops!</msg>
+  <msg id="web_pro_subscription_cancel_success_title"><source>src/app/core/i18n/translations/constants/translations.ts:38</source>Subscription cancelled.</msg>
+  <msg id="web_pro_subscription_cancel_success_body"><source>src/app/core/i18n/translations/constants/translations.ts:39</source>We are sad to see you go.</msg>
+  <msg id="web_pro_subscription_cancel_error_title"><source>src/app/core/i18n/translations/constants/translations.ts:40</source>There was an error</msg>
+  <msg id="web_pro_subscription_cancel_error_body"><source>src/app/core/i18n/translations/constants/translations.ts:41</source>Your subscription could not be cancelled.</msg>
   <msg id="web_subscription_benefit_title_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:7</source>Empower your brand</msg>
   <msg id="web_subscription_benefit_description_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:8</source>Complete your profile with a cover photo and a description.</msg>
   <msg id="web_subscription_benefit_title_connect"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:12</source>Connect with more customers</msg>
