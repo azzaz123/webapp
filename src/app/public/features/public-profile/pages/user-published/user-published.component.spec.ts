@@ -153,6 +153,32 @@ describe('UserPublishedComponent', () => {
       const emptyState = fixture.debugElement.query(By.directive(EmptyStateComponent));
       expect(emptyState).toBeFalsy();
     });
+
+    describe('when user toggle favourite icon in the item card', () => {
+      let mockItemCard = MOCK_ITEM_CARD;
+      beforeEach(() => {
+        spyOn(userService, 'get').and.returnValue(of(MOCK_USER));
+        spyOn(publicProfileTrackingEventsService, 'trackFavouriteOrUnfavouriteItemEvent');
+      });
+
+      it('should send favourite item event if user favourite item', () => {
+        mockItemCard.flags.favorite = true;
+        let publicItemCardList = fixture.debugElement.query(By.css(publicItemCardListTag));
+
+        publicItemCardList.triggerEventHandler('toggleFavouriteEvent', mockItemCard);
+
+        expect(publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent).toHaveBeenCalledWith(mockItemCard, MOCK_USER);
+      });
+
+      it('should send unfavourite item event if user unfavourite item', () => {
+        mockItemCard.flags.favorite = false;
+        let publicItemCardList = fixture.debugElement.query(By.css(publicItemCardListTag));
+
+        publicItemCardList.triggerEventHandler('toggleFavouriteEvent', mockItemCard);
+
+        expect(publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent).toHaveBeenCalledWith(mockItemCard, MOCK_USER);
+      });
+    });
   });
 
   describe('when the user clicks the item card', () => {
