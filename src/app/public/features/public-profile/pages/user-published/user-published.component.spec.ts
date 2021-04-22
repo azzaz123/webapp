@@ -18,9 +18,12 @@ import { PublishedItemCardFavouriteCheckedModule } from '../../core/services/pub
 import { PublishedItemCardFavouriteCheckedService } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.service';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
-import { MockUserService } from '@fixtures/user.fixtures.spec';
+import { MockUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { UserService } from '@core/user/user.service';
 import { of, throwError } from 'rxjs';
+import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
+import { PublicProfileTrackingEventsService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
+import { MockUserProfileTrackEventService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.fixtures.spec';
 
 describe('UserPublishedComponent', () => {
   let component: UserPublishedComponent;
@@ -28,6 +31,9 @@ describe('UserPublishedComponent', () => {
   let el: HTMLElement;
   let fixture: ComponentFixture<UserPublishedComponent>;
   let publishedItemCardFavouriteCheckedService: PublishedItemCardFavouriteCheckedService;
+  let publicItemCardListTag = 'tsl-public-item-card-list';
+  let userService: UserService;
+  let publicProfileTrackingEventsService: PublicProfileTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -40,6 +46,10 @@ describe('UserPublishedComponent', () => {
         DeviceDetectorService,
         ItemCardService,
         ItemApiService,
+        {
+          provide: PublicProfileTrackingEventsService,
+          useClass: MockUserProfileTrackEventService,
+        },
         {
           provide: PublishedItemCardFavouriteCheckedService,
           useValue: {
@@ -71,6 +81,8 @@ describe('UserPublishedComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UserPublishedComponent);
     publishedItemCardFavouriteCheckedService = TestBed.inject(PublishedItemCardFavouriteCheckedService);
+    userService = TestBed.inject(UserService);
+    publicProfileTrackingEventsService = TestBed.inject(PublicProfileTrackingEventsService);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
@@ -140,6 +152,19 @@ describe('UserPublishedComponent', () => {
 
       const emptyState = fixture.debugElement.query(By.directive(EmptyStateComponent));
       expect(emptyState).toBeFalsy();
+    });
+  });
+
+  describe('when the user clicks the item card', () => {
+    it('should send click item card event', () => {
+      let publicItemCardList = fixture.debugElement.query(By.css(publicItemCardListTag));
+      spyOn(publicProfileTrackingEventsService, 'trackClickItemCardEvent');
+      spyOn(userService, 'get').and.returnValue(of(MOCK_USER));
+
+      publicItemCardList.triggerEventHandler('clickedItemAndIndex', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+      fixture.detectChanges();
+
+      expect(publicProfileTrackingEventsService.trackClickItemCardEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_USER, MOCK_ITEM_INDEX);
     });
   });
 });
