@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 
-// TODO: Add TrackingTimelineComponent when created		Date: 2021/04/22
+// TODO: Add TransactionTrackingScreenComponent when created		Date: 2021/04/22
 const routes: Route[] = [
   {
     path: '',
@@ -12,6 +12,6 @@ const routes: Route[] = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TrackingTimelineRoutingModule {}
+export class TransactionTrackingScreenRoutingModule {}
 
-export const trackingTimelineRoutedComponents = [];
+export const transactionTrackingScreenRoutedComponents = [];
