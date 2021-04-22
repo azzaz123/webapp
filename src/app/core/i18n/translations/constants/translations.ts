@@ -40,4 +40,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUBSCRIPTION_SUCCESS_BODY]: $localize`:@@web_pro_subscription_cancel_success_body:We are sad to see you go.`,
   [TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUBSCRIPTION_ERROR_TITLE]: $localize`:@@web_pro_subscription_cancel_error_title:There was an error`,
   [TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUBSCRIPTION_ERROR_BODY]: $localize`:@@web_pro_subscription_cancel_error_body:Your subscription could not be cancelled.`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_SUCCESS_TITLE]: $localize`:@@web_pro_subscription_continue_success_title:Success`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_SUCCESS_BODY]: $localize`:@@web_pro_subscription_continue_success_body:Your subscription is active again`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_ERROR_TITLE]: $localize`:@@web_pro_subscription_continue_error_title:There was an error`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_ERROR_BODY]: $localize`:@@web_pro_subscription_continue_error_body:We could not proceed with your request.`,
 };

@@ -8,6 +8,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -43,10 +44,8 @@ export class ContinueSubscriptionModalComponent {
         this.loading = false;
         this.close();
         this.toastService.show({
-          text:
-            this.i18n.getTranslations('continueSubscriptionSuccessTitle') +
-            ' ' +
-            this.i18n.getTranslations('continueSubscriptionSuccessBody'),
+          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_SUCCESS_TITLE)}`,
+          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_SUCCESS_BODY)}`,
           type: 'success',
         });
       },
@@ -54,8 +53,8 @@ export class ContinueSubscriptionModalComponent {
         this.loading = false;
         this.close();
         this.toastService.show({
-          text:
-            this.i18n.getTranslations('continueSubscriptionErrorTitle') + ' ' + this.i18n.getTranslations('continueSubscriptionErrorBody'),
+          title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_ERROR_TITLE)}`,
+          text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_ERROR_BODY)}`,
           type: 'error',
         });
       }
