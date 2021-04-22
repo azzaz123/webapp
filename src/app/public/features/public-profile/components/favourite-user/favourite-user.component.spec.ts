@@ -70,11 +70,11 @@ describe('FavouriteUserComponent', () => {
 
         it('should emit the updated value', () => {
           spyOn(publicProfileService, 'markAsFavourite').and.returnValue(of({}));
-          spyOn(component.isFavouriteChange, 'emit');
+          spyOn(component.userFavouriteChanged, 'emit');
 
           component.toggleFavourite();
 
-          expect(component.isFavouriteChange.emit).toHaveBeenCalledWith(component.isFavourite);
+          expect(component.userFavouriteChanged.emit).toHaveBeenCalledWith(component.isFavourite);
         });
 
         it('should update the state correctly', () => {
@@ -91,11 +91,11 @@ describe('FavouriteUserComponent', () => {
 
         it('should emit the updated value', () => {
           spyOn(publicProfileService, 'unmarkAsFavourite').and.returnValue(of({}));
-          spyOn(component.isFavouriteChange, 'emit');
+          spyOn(component.userFavouriteChanged, 'emit');
 
           component.toggleFavourite();
 
-          expect(component.isFavouriteChange.emit).toHaveBeenCalledWith(component.isFavourite);
+          expect(component.userFavouriteChanged.emit).toHaveBeenCalledWith(component.isFavourite);
         });
 
         it('should update the state correctly', () => {

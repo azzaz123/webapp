@@ -3,10 +3,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { ItemService } from '@core/item/item.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { User } from '@core/user/user';
-import { UserService } from '@core/user/user.service';
 import { BlockUserXmppService } from '@private/features/chat/core/block-user/block-user-xmpp.service';
 import { BlockUserService } from '@private/features/chat/core/block-user/block-user.service';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
@@ -17,49 +15,12 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '@shared/shared.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ConversationDetailsBarComponent } from './conversation-details-bar.component';
-
-class MockUserService {
-  public user: User = new User(
-    'fakeId',
-    'microName',
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  );
-
-  public reportUser(): Observable<any> {
-    return of({});
-  }
-
-  public isProfessional() {
-    return of(true);
-  }
-}
-
-class MockItemService {
-  public reportListing(): Observable<any> {
-    return of({});
-  }
-}
+import { ReportService } from '@core/trust-and-safety/report/report.service';
+import { ITEM_REPORT_REASONS } from '@core/trust-and-safety/report/constants/item-report-reasons';
+import { UserReportRequest } from '@core/trust-and-safety/report/interfaces/user/user-report-request.interface';
+import { ErrorsService } from '@core/errors/errors.service';
 
 class MockConversationService {
   public loadMoreMessages() {}
@@ -82,8 +43,7 @@ describe('ConversationDetailsBarComponent', () => {
   let realTime: RealTimeService;
   let eventService: EventService;
   let toastService: ToastService;
-  let itemService: ItemService;
-  let userService: UserService;
+  let reportService: ReportService;
   let modalService: NgbModal;
   let blockUserService: BlockUserService;
   let blockUserXmppService: BlockUserXmppService;
@@ -97,15 +57,14 @@ describe('ConversationDetailsBarComponent', () => {
       providers: [
         EventService,
         ToastService,
+        ErrorsService,
+        ReportService,
         {
           provide: RealTimeService,
           useValue: {
             sendRead() {},
           },
         },
-
-        { provide: ItemService, useClass: MockItemService },
-        { provide: UserService, useClass: MockUserService },
         {
           provide: InboxConversationService,
           useClass: MockConversationService,
@@ -129,8 +88,7 @@ describe('ConversationDetailsBarComponent', () => {
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
     realTime = TestBed.inject(RealTimeService);
     eventService = TestBed.inject(EventService);
-    userService = TestBed.inject(UserService);
-    itemService = TestBed.inject(ItemService);
+    reportService = TestBed.inject(ReportService);
     toastService = TestBed.inject(ToastService);
     modalService = TestBed.inject(NgbModal);
     blockUserService = TestBed.inject(BlockUserService);
@@ -152,21 +110,23 @@ describe('ConversationDetailsBarComponent', () => {
       });
     });
 
-    it('should call the userService.reportUser and then close the modal and show a toast', fakeAsync(() => {
-      spyOn(userService, 'reportUser').and.callThrough();
+    it('should send report to server, close modal and show a toast', fakeAsync(() => {
+      spyOn(reportService, 'reportUser').and.returnValue(of({}));
       spyOn(toastService, 'show').and.callThrough();
       component.currentConversation = MOCK_CONVERSATION();
+      const expectedUserReportRequest: UserReportRequest = {
+        userId: component.currentConversation.user.id,
+        itemHashId: component.currentConversation.item.id,
+        conversationHash: component.currentConversation.id,
+        reason: 1,
+        comments: 'Report User Reason',
+        targetCrm: 'zendesk',
+      };
 
       component.reportUserAction();
       tick();
 
-      expect(userService.reportUser).toHaveBeenCalledWith(
-        component.currentConversation.user.id,
-        component.currentConversation.item.id,
-        component.currentConversation.id,
-        1,
-        'Report User Reason'
-      );
+      expect(reportService.reportUser).toHaveBeenCalledWith(expectedUserReportRequest);
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'The user has been reported correctly',
         type: 'success',
@@ -175,25 +135,27 @@ describe('ConversationDetailsBarComponent', () => {
   });
 
   describe('reportListingAction', () => {
+    const SELECTED_ITEM_REPORT_REASON = ITEM_REPORT_REASONS[0];
+
     beforeEach(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve({
           message: 'Report Listing Reason',
-          reason: 1,
+          reason: SELECTED_ITEM_REPORT_REASON,
         }),
       });
     });
 
     describe('success', () => {
-      it('should call the itemService.reportListing and then close the modal and show a toast', fakeAsync(() => {
-        spyOn(itemService, 'reportListing').and.callThrough();
+      it('should send report to backend, close modal and show a toast', fakeAsync(() => {
+        spyOn(reportService, 'reportItem').and.returnValue(of({}));
         spyOn(toastService, 'show').and.callThrough();
         component.currentConversation = MOCK_CONVERSATION();
 
         component.reportListingAction();
         tick();
 
-        expect(itemService.reportListing).toHaveBeenCalledWith(ITEM_ID, 'Report Listing Reason', 1);
+        expect(reportService.reportItem).toHaveBeenCalledWith(ITEM_ID, 'Report Listing Reason', SELECTED_ITEM_REPORT_REASON);
         expect(toastService.show).toHaveBeenCalledWith({
           text: 'The listing has been reported correctly',
           type: 'success',
@@ -202,10 +164,11 @@ describe('ConversationDetailsBarComponent', () => {
     });
 
     describe('error', () => {
-      it('should open toast if error 403', fakeAsync(() => {
-        spyOn(itemService, 'reportListing').and.returnValue(
+      it('should open toast if server errors', fakeAsync(() => {
+        spyOn(reportService, 'reportItem').and.returnValue(
           throwError({
             status: 403,
+            error: 'Error',
           })
         );
         spyOn(toastService, 'show').and.callThrough();

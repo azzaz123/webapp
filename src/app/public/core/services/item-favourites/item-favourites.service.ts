@@ -3,9 +3,7 @@ import { Observable, of } from 'rxjs';
 import { FavouritesApiService } from '../api/favourites/favourites-api.service';
 import { CheckSessionService } from '../check-session/check-session.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ItemFavouritesService {
   constructor(private checkSessionService: CheckSessionService, private favouritesApiService: FavouritesApiService) {}
 

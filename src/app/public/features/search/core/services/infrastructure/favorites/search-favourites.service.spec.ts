@@ -29,7 +29,7 @@ describe('SearchFavouritesService', () => {
 
   });
 
-  describe('when we want to get favourits items', () => {
+  describe('when we want to get favourite items', () => {
     const searchItemList: ItemCard[] = SearchItemListFactory(20);
     const searchItemIdsList: string[] = searchItemList.map(({id}: ItemCard) => id);
     const itemIdsFavourites: string[] = searchItemList.slice(0, 5).map(({id}: ItemCard) => id);

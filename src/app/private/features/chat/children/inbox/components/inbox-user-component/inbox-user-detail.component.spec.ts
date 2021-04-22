@@ -8,6 +8,7 @@ import { MOCKED_INBOX_CONVERSATIONS } from '@fixtures/inbox.fixtures.spec';
 import { RESPONSE_RATE, SCORING_STARS, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { of } from 'rxjs';
 import { InboxUserDetailComponent } from './inbox-user-detail.component';
+import { UserProfileRoutePipe } from '@shared/pipes';
 
 class MockUserService {
   getInfo() {
@@ -26,7 +27,7 @@ describe('InboxUserDetailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InboxUserDetailComponent],
+      declarations: [InboxUserDetailComponent, UserProfileRoutePipe],
       providers: [{ provide: UserService, useClass: MockUserService }],
       schemas: [NO_ERRORS_SCHEMA],
     });
