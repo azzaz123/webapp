@@ -27,7 +27,7 @@ export class ItemCardListComponent {
   @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
   @Output() toggleFavouriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
 
-  @ContentChild('slotTemplate') slotTemplate: TemplateRef<any>;
+  @ContentChild('slotTemplate') slotTemplate: TemplateRef<unknown>;
 
   constructor(
     private itemCardService: ItemCardService,

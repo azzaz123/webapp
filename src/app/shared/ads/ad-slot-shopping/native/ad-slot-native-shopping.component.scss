@@ -1,18 +1,16 @@
 @import '~style/common';
 
-$hover-box-shadow: 0 2px 10px 0 rgba($blue-grey-1, 0.1);
-
-tsl-sky-native-shopping {
+:host {
   .Sky__container {
     margin: 0 auto;
+    border-radius: $border-radius;
+    overflow: hidden;
+
+    box-shadow: $item-card-box-shadow;
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: $hover-box-shadow;
-    }
-
-    & iframe {
-      border-radius: $border-radius;
+      transform: $item-card-hover-translate;
+      box-shadow: $item-card-hover-box-shadow;
     }
   }
 }
