@@ -9,9 +9,11 @@ import {
   UnfavoriteUser,
   ViewOtherProfile,
   ViewOwnProfile,
+  ClickItemCard,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { User } from '@core/user/user';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 export type FavouriteUserAnalyticEvent = AnalyticsEvent<FavoriteUser | UnfavoriteUser>;
 
 @Injectable({
@@ -19,6 +21,26 @@ export type FavouriteUserAnalyticEvent = AnalyticsEvent<FavoriteUser | Unfavorit
 })
 export class PublicProfileTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
+
+  public trackClickItemCardEvent(itemCard: ItemCard, user: User, index: number): void {
+    const event: AnalyticsEvent<ClickItemCard> = {
+      name: ANALYTICS_EVENT_NAMES.ClickItemCard,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        itemId: itemCard.id,
+        categoryId: itemCard.categoryId,
+        position: index + 1,
+        screenId: SCREEN_IDS.Profile,
+        isPro: user.featured,
+        salePrice: itemCard.salePrice,
+        title: itemCard.title,
+        shippingAllowed: !!itemCard.saleConditions?.shipping_allowed,
+        sellerUserId: itemCard.ownerId,
+        isBumped: !!itemCard.bumpFlags?.bumped,
+      },
+    };
+    this.analyticsService.trackEvent(event);
+  }
 
   public trackViewOwnProfile(isPro: boolean): void {
     const event: AnalyticsPageView<ViewOwnProfile> = {
