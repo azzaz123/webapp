@@ -25,5 +25,3 @@ const routes: Route[] = [
 export class DeliveryRoutingModule {}
 
 export const deliveryRoutedComponents = [DeliveryComponent];
-
-export const deliveryRoutedModules = [DeliveryAddressModule];
