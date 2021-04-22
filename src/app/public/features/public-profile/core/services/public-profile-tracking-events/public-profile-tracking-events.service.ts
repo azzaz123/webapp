@@ -70,10 +70,7 @@ export class PublicProfileTrackingEventsService {
   }
 
   public trackFavouriteOrUnfavouriteItemEvent(itemCard: ItemCard, user: User): void {
-    const event: FavouriteItemAnalyticsEvent = PublicProfileTrackingEventsService.factoryFavouriteUserOrUnfavouriteItemEvent(
-      itemCard,
-      user
-    );
+    const event: FavouriteItemAnalyticsEvent = PublicProfileTrackingEventsService.getFavouriteItemAnalyticsEvent(itemCard, user);
     this.analyticsService.trackEvent(event);
   }
 
@@ -94,7 +91,7 @@ export class PublicProfileTrackingEventsService {
     };
   }
 
-  private static factoryFavouriteUserOrUnfavouriteItemEvent(itemCard: ItemCard, { featured }: User): FavouriteItemAnalyticsEvent {
+  private static getFavouriteItemAnalyticsEvent(itemCard: ItemCard, { featured }: User): FavouriteItemAnalyticsEvent {
     return {
       name: itemCard.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
