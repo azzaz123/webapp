@@ -1219,4 +1219,6 @@
   <translation id="web_stats_favorites">Favoritos</translation>
   <translation id="web_stats_views">Visualizaciones</translation>
   <translation id="web_stats_chats">Chats</translation>
+  <translation id="web_male">Hombre</translation>
+  <translation id="web_female">Mujer</translation>
 </translationbundle>

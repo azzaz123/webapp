@@ -9,8 +9,6 @@ export class I18nService {
   protected translations: any = {
     en: {
       defaultErrorMessage: 'Service not available at this moment. Try again later',
-      male: 'Male',
-      female: 'Female',
       bulkDeleteError: 'Some listings have not been deleted due to an error',
       bulkReserveError: 'Some listings have not been reserved due to an error',
       bulkSoldError: 'Some listings have not been set as sold due to an error',
@@ -100,8 +98,6 @@ export class I18nService {
     },
     es: {
       defaultErrorMessage: 'Servicio no disponible temporalmente. Inténtelo de nuevo más tarde',
-      male: 'Hombre',
-      female: 'Mujer',
       bulkDeleteError: 'Algunos productos no se han eliminado debido a un error',
       bulkReserveError: 'Algunos productos no se han reservado debido a un error',
       bulkSoldError: 'Algunos productos no se han marcado como vendido debido a un error',
