@@ -16,8 +16,8 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { User } from '@core/user/user';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-export type FavouriteUserAnalyticEvent = AnalyticsEvent<FavoriteUser | UnfavoriteUser>;
-export type FavouriteItemAnalyticEvent = AnalyticsEvent<FavoriteItem | UnfavoriteItem>;
+export type FavouriteUserAnalyticsEvent = AnalyticsEvent<FavoriteUser | UnfavoriteUser>;
+export type FavouriteItemAnalyticsEvent = AnalyticsEvent<FavoriteItem | UnfavoriteItem>;
 
 @Injectable({
   providedIn: 'root',
@@ -70,16 +70,19 @@ export class PublicProfileTrackingEventsService {
   }
 
   public trackFavouriteOrUnfavouriteItemEvent(itemCard: ItemCard, user: User): void {
-    const event: FavouriteItemAnalyticEvent = PublicProfileTrackingEventsService.factoryFavouriteUserOrUnfavouriteItemEvent(itemCard, user);
+    const event: FavouriteItemAnalyticsEvent = PublicProfileTrackingEventsService.factoryFavouriteUserOrUnfavouriteItemEvent(
+      itemCard,
+      user
+    );
     this.analyticsService.trackEvent(event);
   }
 
   public trackFavouriteOrUnfavouriteUserEvent(user: User, isFavourite: boolean): void {
-    const event: FavouriteUserAnalyticEvent = PublicProfileTrackingEventsService.factoryAnalyticsEvent(user, isFavourite);
+    const event: FavouriteUserAnalyticsEvent = PublicProfileTrackingEventsService.factoryAnalyticsEvent(user, isFavourite);
     this.analyticsService.trackEvent(event);
   }
 
-  private static factoryAnalyticsEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticEvent {
+  private static factoryAnalyticsEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticsEvent {
     return {
       name: isFavourite ? ANALYTICS_EVENT_NAMES.FavoriteUser : ANALYTICS_EVENT_NAMES.UnfavoriteUser,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
@@ -91,7 +94,7 @@ export class PublicProfileTrackingEventsService {
     };
   }
 
-  private static factoryFavouriteUserOrUnfavouriteItemEvent(itemCard: ItemCard, { featured }: User): FavouriteItemAnalyticEvent {
+  private static factoryFavouriteUserOrUnfavouriteItemEvent(itemCard: ItemCard, { featured }: User): FavouriteItemAnalyticsEvent {
     return {
       name: itemCard.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
