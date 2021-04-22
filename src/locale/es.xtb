@@ -1196,4 +1196,6 @@
   <translation id="web_stats_graph_last_thirty_days">Últimos 30 días</translation>
   <translation id="web_stats_graph_last_fifteen_days">Últimos 15 días</translation>
   <translation id="web_stats_graph_last_seven_days">Últimos 7 días</translation>
+  <translation id="web_chat_input_enabled_placeholder">Escribe un mensaje...</translation>
+  <translation id="web_chat_input_disabled_placeholder">Conversación deshabilitada</translation>
 </translationbundle>

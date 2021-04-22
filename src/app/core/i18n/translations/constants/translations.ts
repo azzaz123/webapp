@@ -11,6 +11,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.CHAT_REPORT_LISTING_SUCCESS]: $localize`:@@web_chat_report_listing_success:The listing has been reported correctly`,
   [TRANSLATION_KEY.CHAT_BLOCK_USER_SUCCESS]: $localize`:@@web_chat_block_user_success:The user has been blocked`,
   [TRANSLATION_KEY.CHAT_UNBLOCK_USER_SUCCESS]: $localize`:@@web_chat_unblock_user_success:The user has been unblocked`,
+  [TRANSLATION_KEY.CHAT_INPUT_ENABLED_PLACEHOLDER]: $localize`:@@web_chat_input_enabled_placeholder:Write a message...`,
+  [TRANSLATION_KEY.CHAT_INPUT_DISABLED_PLACEHOLDER]: $localize`:@@web_chat_input_disabled_placeholder:Conversation disabled`,
   [TRANSLATION_KEY.ACTIVE]: $localize`:@@web_catalog_active:Active`,
   [TRANSLATION_KEY.INACTIVE]: $localize`:@@web_catalog_inactive:Inactive`,
   [TRANSLATION_KEY.SOLD]: $localize`:@@web_catalog_sold:Sold`,
