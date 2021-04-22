@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
+import { deliveryAddressRoutedComponents, DeliveryAddressRoutingModule } from './delivery-address-routing.module';
 
 @NgModule({
-  declarations: [],
-  imports: [],
+  imports: [DeliveryAddressRoutingModule],
+  declarations: [deliveryAddressRoutedComponents],
 })
 export class DeliveryAddressModule {}
