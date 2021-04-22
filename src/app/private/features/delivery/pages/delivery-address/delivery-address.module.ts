@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { deliveryAddressRoutedComponents, DeliveryAddressRoutingModule } from './delivery-address-routing.module';
+import { deliveryAddressRoutedComponents, DeliveryAddressRoutingModule } from './delivery-address.routing.module';
 
 @NgModule({
   imports: [DeliveryAddressRoutingModule],
