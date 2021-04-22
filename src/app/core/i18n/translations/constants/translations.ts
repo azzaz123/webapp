@@ -13,6 +13,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.CHAT_UNBLOCK_USER_SUCCESS]: $localize`:@@web_chat_unblock_user_success:The user has been unblocked`,
   [TRANSLATION_KEY.CHAT_INPUT_ENABLED_PLACEHOLDER]: $localize`:@@web_chat_input_enabled_placeholder:Write a message...`,
   [TRANSLATION_KEY.CHAT_INPUT_DISABLED_PLACEHOLDER]: $localize`:@@web_chat_input_disabled_placeholder:Conversation disabled`,
+  [TRANSLATION_KEY.CHAT_TOO_MANY_CONVERSATIONS]: $localize`:@@web_chat_too_many_conversations:We can't keep up with you. Wait a moment so you can open up new conversations.`,
   [TRANSLATION_KEY.ACTIVE]: $localize`:@@web_catalog_active:Active`,
   [TRANSLATION_KEY.INACTIVE]: $localize`:@@web_catalog_inactive:Inactive`,
   [TRANSLATION_KEY.SOLD]: $localize`:@@web_catalog_sold:Sold`,
@@ -32,4 +33,5 @@ export const translations: Translations = {
   [TRANSLATION_KEY.STATS_GRAPH_LAST_THIRTY_DAYS]: $localize`:@@web_stats_graph_last_thirty_days:Last 30 days`,
   [TRANSLATION_KEY.STATS_GRAPH_LAST_FIFTEEN_DAYS]: $localize`:@@web_stats_graph_last_fifteen_days:Last 15 days`,
   [TRANSLATION_KEY.STATS_GRAPH_LAST_SEVEN_DAYS]: $localize`:@@web_stats_graph_last_seven_days:Last 7 days`,
+  [TRANSLATION_KEY.TOAST_ERROR_TITLE]: $localize`:@@web_toast_error_title:Oops!`,
 };

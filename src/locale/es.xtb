@@ -1198,4 +1198,6 @@
   <translation id="web_stats_graph_last_seven_days">Últimos 7 días</translation>
   <translation id="web_chat_input_enabled_placeholder">Escribe un mensaje...</translation>
   <translation id="web_chat_input_disabled_placeholder">Conversación deshabilitada</translation>
+  <translation id="web_chat_too_many_conversations">No te podemos seguir el ritmo. Espera un momento para poder abrir nuevas conversaciones.</translation>
+  <translation id="web_toast_error_title">¡Ups!</translation>
 </translationbundle>
