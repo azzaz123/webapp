@@ -1216,4 +1216,7 @@
   <translation id="web_pro_subscription_edit_error_body">Tu suscripción no ha podido ser modificada.</translation>
   <translation id="web_wallapop_pro">Wallapop PRO</translation>
   <translation id="web_become_pro">Conviértete en PRO</translation>
+  <translation id="web_stats_favorites">Favoritos</translation>
+  <translation id="web_stats_views">Visualizaciones</translation>
+  <translation id="web_stats_chats">Chats</translation>
 </translationbundle>

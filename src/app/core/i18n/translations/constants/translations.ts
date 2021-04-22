@@ -50,4 +50,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY]: $localize`:@@web_pro_subscription_edit_error_body:Your subscription could not be edited.`,
   [TRANSLATION_KEY.WALLAPOP_PRO]: $localize`:@@web_wallapop_pro:Wallapop PRO`,
   [TRANSLATION_KEY.BECOME_PRO]: $localize`:@@web_become_pro:Become a PRO`,
+  [TRANSLATION_KEY.STATS_FAVORITES]: $localize`:@@web_stats_favorites:Favorites`,
+  [TRANSLATION_KEY.STATS_VIEWS]: $localize`:@@web_stats_views:Views`,
+  [TRANSLATION_KEY.STATS_CHATS]: $localize`:@@web_stats_chats:Chats`,
 };

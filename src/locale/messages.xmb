@@ -108,6 +108,9 @@
   <msg id="web_pro_subscription_edit_error_body"><source>src/app/core/i18n/translations/constants/translations.ts:49</source>Your subscription could not be edited.</msg>
   <msg id="web_wallapop_pro"><source>src/app/core/i18n/translations/constants/translations.ts:50</source>Wallapop PRO</msg>
   <msg id="web_become_pro"><source>src/app/core/i18n/translations/constants/translations.ts:51</source>Become a PRO</msg>
+  <msg id="web_stats_favorites"><source>src/app/core/i18n/translations/constants/translations.ts:52</source>Favorites</msg>
+  <msg id="web_stats_views"><source>src/app/core/i18n/translations/constants/translations.ts:53</source>Views</msg>
+  <msg id="web_stats_chats"><source>src/app/core/i18n/translations/constants/translations.ts:54</source>Chats</msg>
   <msg id="web_subscription_benefit_title_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:7</source>Empower your brand</msg>
   <msg id="web_subscription_benefit_description_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:8</source>Complete your profile with a cover photo and a description.</msg>
   <msg id="web_subscription_benefit_title_connect"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:12</source>Connect with more customers</msg>
