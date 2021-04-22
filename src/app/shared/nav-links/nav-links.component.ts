@@ -89,6 +89,12 @@ export class NavLinksComponent implements OnInit, OnChanges {
     this.onSearchChange('');
   }
 
+  onClickSortSelector(id: string): void {
+    const sortLinks = this.mapSortToLink(this.sortItems);
+    const sortLinkSelected = sortLinks.find((link) => link.id === id);
+    this.onSortChange(sortLinkSelected);
+  }
+
   onSortChange(sort: NavLink) {
     this.sortChanged.emit(sort.id);
     this.selectedSort = sort;
