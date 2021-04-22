@@ -1,0 +1,48 @@
+@import '~style/common';
+
+.box-content {
+  color: $blue-grey-3;
+  padding: $spacing-xxl $spacing-xxxl * 1.93;
+  h4 {
+    color: $blue-grey-1;
+    text-align: center;
+    font-size: $font-size-l;
+    font-weight: bold;
+    margin: 0 0 $spacing-ms;
+  }
+  .section-subtitle {
+    text-align: center;
+  }
+}
+
+.Subscriptions {
+  justify-content: center;
+}
+
+.loading-center {
+  display: block;
+  margin: 0 auto;
+}
+
+@include media-breakpoint-down(md) {
+  .box-content {
+    padding: $spacing-l $spacing-m $spacing-m;
+  }
+
+  .Subscriptions__category {
+    width: 100%;
+    margin: 0px $spacing-m $spacing-m;
+    padding: $spacing-l $spacing-m;
+    height: unset;
+    min-height: 312px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
+
+    &--with-one-free {
+      height: unset;
+      min-height: unset;
+    }
+  }
+}

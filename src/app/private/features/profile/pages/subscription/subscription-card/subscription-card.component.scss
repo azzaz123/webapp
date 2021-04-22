@@ -1,0 +1,113 @@
+@import '~style/common';
+
+$subscription-card-height: 292px;
+$subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
+
+.SubscriptionCard {
+  border: 1px solid $blue-grey-5;
+  border-radius: 10px;
+  padding: $spacing-m;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  color: $blue-grey-2;
+  margin: 0 $spacing-xs;
+  flex: 1 1 0px;
+  min-height: $subscription-card-height;
+
+  &__trialBanner {
+    background-color: #c1f5e6;
+    border-radius: 2px;
+  }
+
+  &__base {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+  &-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: $font-size-s;
+    margin: 0;
+    white-space: nowrap;
+    flex-grow: 1;
+    justify-content: flex-start;
+    &--edit {
+      color: $walla-main;
+      text-align: center;
+      white-space: pre-wrap;
+    }
+    &--price {
+      font-weight: bold;
+    }
+  }
+  &-title {
+    font-size: $font-size-l;
+    font-weight: bold;
+    color: $blue-grey-2;
+    white-space: nowrap;
+  }
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 2px solid $blue-grey-5;
+    margin: $spacing-ms 0;
+    padding: 0;
+    width: 90%;
+  }
+  &-icon {
+    padding: 15px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    background-color: $blue-grey-5;
+    tsl-svg-icon {
+      height: 32px;
+      width: 32px;
+      ::ng-deep svg {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+  &--subscribed {
+    border: 2px solid $walla-main;
+    color: $blue-grey-1;
+    hr {
+      border-top: 2px solid $walla-main;
+    }
+    &-title {
+      color: $blue-grey-1;
+    }
+    &-info {
+      margin: 0;
+    }
+  }
+
+  &--with-one-free {
+    height: 355px;
+    min-height: 355px;
+  }
+}
+
+.Subscriptions__subscribed-from {
+  color: $walla-main;
+  font-weight: bold;
+  font-size: $font-size-s;
+}
+
+.Subscriptions__subscribed-until {
+  color: $blue-grey-2;
+  font-size: $font-size-s;
+  text-align: center;
+}
+
+.Subscriptions__subscribed-continue {
+  color: $walla-main;
+  font-size: $font-size-s;
+}

@@ -1,0 +1,19 @@
+<div class="box">
+    <ng-container *ngIf="!isLoading; else loading">
+        <div class="box-content">
+            <h4 class="section-title" i18n="@@wallapopPro">Wallapop PRO</h4>
+            <p class="section-subtitle" i18n="@@WallapopProSubscriptionSubTitle">Manage your subscriptions to Wallapop
+                PRO to increase your sales.</p>
+            <div class="Subscriptions d-flex flex-column flex-content-justify align-items-center flex-lg-row">
+                <tsl-subscription-card (click)="onOpenSubscriptionModal(subscription)" [subscription]="subscription" [textLink]="getLinkText(subscription)" [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
+                    *ngFor="let subscription of subscriptions">
+                </tsl-subscription-card>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #loading>
+        <div class="row loading-center">
+            <tsl-spinner></tsl-spinner>
+        </div>
+    </ng-template>
+</div>

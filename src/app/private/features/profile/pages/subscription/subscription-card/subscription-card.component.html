@@ -1,0 +1,52 @@
+<div class="SubscriptionCard d-flex flex-column" [ngClass]="{
+    'SubscriptionCard--subscribed': subscription.subscribed_from
+  }">
+    <div *ngIf="hasTrialAvailable" class="SubscriptionCard__trialBanner px-2 mb-3">
+        <span i18n="@@SubscriptionPriceDiscountDaysTrialFree">{{subscription?.trial_days}}-day trial for free</span>
+    </div>
+    <div class="d-flex flex-column align-items-center w-100">
+        <div class="SubscriptionCard-icon">
+            <tsl-svg-icon [src]="iconSrc" class="image">
+            </tsl-svg-icon>
+        </div>
+        <div class="SubscriptionCard-title mb-2">{{subscription.category_name}}</div>
+        <tsl-subscription-price-discount [subscription]="subscription">
+        </tsl-subscription-price-discount>
+        <hr />
+    </div>
+    <div *ngIf="!subscription.subscribed_from; else subscriptionBody" class="SubscriptionCard-info">
+        <span>
+            {{ noSubscriptionBodyText }}
+        </span>
+    </div>
+    <ng-template #subscriptionBody>
+        <div class="SubscriptionCard-info">
+            <span>
+                {{ subscriptionBodyText }}
+            </span>
+            <p class="SubscriptionCard-info--price" i18n="@@web_profile_pages_subscription_326">
+                {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
+            </p>
+            <p class="SubscriptionCard-info--edit" *ngIf="textLink">
+                {{textLink}}
+            </p>
+        </div>
+    </ng-template>
+    <ng-container *ngIf="subscription.subscribed_from; else subscriptionButton">
+        <ng-container *ngIf="subscription.subscribed_until; else noSubscriptionEnd">
+            <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-until"
+                i18n="@@web_profile_pages_subscription_330"> Subscription ends on
+                {{subscription.subscribed_until | date:'dd/MM/yy' }}
+            </span>
+        </ng-container>
+        <ng-template #noSubscriptionEnd>
+            <span class="Subscriptions__subscribed-from" i18n="@@web_profile_pages_subscription_329"> Subscribed
+                from {{subscription.subscribed_from | date:'dd/MM/yy' }}
+            </span>
+        </ng-template>
+    </ng-container>
+    <ng-template #subscriptionButton>
+        <tsl-button className="btn-primary">
+            {{buttonText}}</tsl-button>
+    </ng-template>
+</div>

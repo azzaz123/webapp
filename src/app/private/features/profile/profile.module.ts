@@ -23,6 +23,8 @@ import { UnsubscribeModalComponent } from './modal/unsubscribe-modal/unsubscribe
 import { VisibilityProductsModalComponent } from './modal/visibility-products-modal/visibility-products-modal.component';
 import { SubscriptionIconPipe } from './pipes/subscription-icon.pipe';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
+import { SubscriptionListComponent } from './pages/subscription/subscription-list/subscription-list.component';
+import { SubscriptionCardComponent } from './pages/subscription/subscription-card/subscription-card.component';
 
 @NgModule({
   imports: [
@@ -57,6 +59,8 @@ import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes'
     InvoiceHistoryComponent,
     InvoiceItemComponent,
     SubscriptionBenefitComponent,
+    SubscriptionListComponent,
+    SubscriptionCardComponent,
   ],
   entryComponents: [
     UnsubscribeModalComponent,
