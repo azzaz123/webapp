@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
-import { transactionTrackingScreenRoutedComponents } from './transaction-tracking-screen.routing.module';
+import {
+  transactionTrackingScreenRoutedComponents,
+  TransactionTrackingScreenRoutingModule,
+} from './transaction-tracking-screen.routing.module';
 
 @NgModule({
-  imports: [TransactionTrackingScreenModule],
+  imports: [TransactionTrackingScreenRoutingModule],
   declarations: [transactionTrackingScreenRoutedComponents],
 })
 export class TransactionTrackingScreenModule {}
