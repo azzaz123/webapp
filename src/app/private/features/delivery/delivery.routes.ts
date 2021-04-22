@@ -1,7 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
+import { DeliveryComponent } from './pages/delivery/delivery.component';
 
-const routes: Route[] = [];
+const routes: Route[] = [
+  {
+    path: '',
+    component: DeliveryComponent,
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
@@ -9,6 +15,6 @@ const routes: Route[] = [];
 })
 export class DeliveryRoutingModule {}
 
-export const deliveryRoutedComponents = [];
+export const deliveryRoutedComponents = [DeliveryComponent];
 
 export const deliveryRoutedModules = [];
