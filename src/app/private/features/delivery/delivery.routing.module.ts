@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { DELIVERY_PATHS } from './delivery-routing-constants';
+import { AcceptScreenModule } from './pages/accept-screen/accept-screen.module';
 import { DeliveryComponent } from './pages/delivery.component';
-import { DeliveryAcceptModule } from './pages/delivery-accept/delivery-accept.module';
 
 const routes: Route[] = [
   {
@@ -11,7 +11,7 @@ const routes: Route[] = [
     children: [
       {
         path: DELIVERY_PATHS.ACCEPT_SCREEN,
-        loadChildren: () => DeliveryAcceptModule,
+        loadChildren: () => AcceptScreenModule,
       },
     ],
   },
