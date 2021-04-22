@@ -2,7 +2,7 @@
   infinite-scroll
   [infiniteScrollDistance]="0"
   [infiniteScrollThrottle]="150"
-  [infiniteScrollDisabled]="infiniteScrollDisabled"
+  [infiniteScrollDisabled]="infiniteScrollDisabled$ | async"
   (scrolled)="scrolled()">
   <tsl-filters-wrapper class="Search__filters position-fixed"
     [class.Search__filters--with-backdrop]="(openBubbleCount$ | async) !== 0"
@@ -30,9 +30,9 @@
     </div>
     <ng-container main>
       <tsl-public-item-card-list [items]="items$ | async" [columnsConfig]="columnsConfig"></tsl-public-item-card-list>
-      <ng-container *ngIf="infiniteScrollDisabled" >
+      <ng-container *ngIf="infiniteScrollDisabled$ | async" >
         <div class="row justify-content-center my-4">
-          <tsl-button id="btn-load-more" (click)="setInfiniteScroll()" i18n="web_search_component_load_more_products">Ver más productos</tsl-button>
+          <tsl-button id="btn-load-more" (click)="loadMoreProducts()" i18n="web_search_component_load_more_products">Ver más productos</tsl-button>
         </div>
         <div *ngIf="device === DevicesType.DESKTOP" class="row justify-content-center my-4">
           <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>

@@ -6,7 +6,8 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -23,12 +24,16 @@ import { SearchService } from './../core/services/search.service';
   // TODO: TechDebt: changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  public items$: Observable<ItemCard[]> = this.searchService.items$;
+  private openBubbleCountSubject = new BehaviorSubject<number>(0);
+  private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  public items$: Observable<ItemCard[]> = this.searchService.items$;
+  public hasMoreItems$: Observable<boolean> = this.searchService.hasMore$;
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
   public device: DeviceType;
   public DevicesType: typeof DeviceType = DeviceType;
-  public infiniteScrollDisabled = true;
+
+  public infiniteScrollDisabled$: Observable<boolean> = this.buildInfiniteScrollDisabledObservable();
 
   public columnsConfig: ColumnsConfig = {
     xl: 4,
@@ -45,7 +50,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     AdShoppingChannel.SEARCH_LIST_SHOPPING
   );
 
-  private openBubbleCountSubject = new BehaviorSubject<number>(0);
   public openBubbleCount$: Observable<number> = this.openBubbleCountSubject.asObservable();
   constructor(private adsService: AdsService, private deviceService: DeviceService, private searchService: SearchService) {
     this.device = this.deviceService.getDeviceType();
@@ -68,12 +72,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.openBubbleCountSubject.next(active ? count + 1 : count - 1);
   }
 
-  public setInfiniteScroll(): void {
-    this.infiniteScrollDisabled = false;
+  public loadMoreProducts(): void {
+    this.loadMoreProductsSubject.next(true);
     this.scrolled();
   }
 
   public scrolled(): void {
     this.searchService.loadMore();
+  }
+
+  private buildInfiniteScrollDisabledObservable(): Observable<boolean> {
+    return combineLatest([this.loadMoreProductsSubject.asObservable(), this.hasMoreItems$]).pipe(
+      map(([loadMoreProducts, hasMore]: [boolean, boolean]) => !(loadMoreProducts && hasMore))
+    );
   }
 }
