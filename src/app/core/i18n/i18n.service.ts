@@ -8,8 +8,6 @@ import { TRANSLATION_KEY } from './translations/enum/translation-keys.enum';
 export class I18nService {
   protected translations: any = {
     en: {
-      yes: 'Yes',
-      no: 'No',
       defaultErrorMessage: 'Service not available at this moment. Try again later',
       male: 'Male',
       female: 'Female',
@@ -116,8 +114,6 @@ export class I18nService {
       citybump: 'City Bump',
     },
     es: {
-      yes: 'Sí',
-      no: 'No',
       defaultErrorMessage: 'Servicio no disponible temporalmente. Inténtelo de nuevo más tarde',
       male: 'Hombre',
       female: 'Mujer',

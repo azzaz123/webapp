@@ -1200,4 +1200,6 @@
   <translation id="web_chat_input_disabled_placeholder">Conversación deshabilitada</translation>
   <translation id="web_chat_too_many_conversations">No te podemos seguir el ritmo. Espera un momento para poder abrir nuevas conversaciones.</translation>
   <translation id="web_toast_error_title">¡Ups!</translation>
+  <translation id="web_yes">Sí</translation>
+  <translation id="web_no">No</translation>
 </translationbundle>
