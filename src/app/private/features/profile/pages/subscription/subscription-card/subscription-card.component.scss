@@ -12,28 +12,27 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
   align-items: center;
   justify-content: space-between;
   color: $blue-grey-2;
-  margin: 0 $spacing-xs;
   flex: 1 1 0px;
-  min-height: $subscription-card-height;
+  min-height: 505px;
+  height: 100%;
+  max-width: 245px;
+  margin-left: auto;
+  margin-right: auto;
 
   &__trialBanner {
-    background-color: #c1f5e6;
+    background-color: #edfcf8;
     border-radius: 2px;
+    &--hidden {
+      visibility: hidden;
+    }
   }
 
-  &__base {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-  }
-  &-info {
+  &__info {
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: $font-size-s;
     margin: 0;
-    white-space: nowrap;
     flex-grow: 1;
     justify-content: flex-start;
     &--edit {
@@ -45,12 +44,14 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
       font-weight: bold;
     }
   }
-  &-title {
+
+  &__title {
     font-size: $font-size-l;
     font-weight: bold;
     color: $blue-grey-2;
     white-space: nowrap;
   }
+
   hr {
     display: block;
     height: 1px;
@@ -60,54 +61,50 @@ $subscription-mobile-card-height: $subscription-card-height + $spacing-ms;
     padding: 0;
     width: 90%;
   }
-  &-icon {
+
+  &__icon {
     padding: 15px;
     border-radius: 50%;
     width: 80px;
     height: 80px;
     background-color: $blue-grey-5;
-    tsl-svg-icon {
-      height: 32px;
-      width: 32px;
-      ::ng-deep svg {
-        height: 100%;
-        width: 100%;
-      }
-    }
+    margin-bottom: 12px;
   }
+
   &--subscribed {
     border: 2px solid $walla-main;
     color: $blue-grey-1;
     hr {
       border-top: 2px solid $walla-main;
     }
-    &-title {
+    &__title {
       color: $blue-grey-1;
     }
-    &-info {
+    &__info {
       margin: 0;
     }
   }
 
-  &--with-one-free {
-    height: 355px;
-    min-height: 355px;
+  .icon-check {
+    ::ng-deep svg path {
+      fill: #607d8b;
+    }
+  }
+
+  &__from {
+    color: $walla-main;
+    font-weight: bold;
+    font-size: $font-size-s;
+  }
+
+  &__until {
+    color: $blue-grey-2;
+    font-size: $font-size-s;
+    text-align: center;
   }
 }
-
-.Subscriptions__subscribed-from {
-  color: $walla-main;
-  font-weight: bold;
-  font-size: $font-size-s;
-}
-
-.Subscriptions__subscribed-until {
-  color: $blue-grey-2;
-  font-size: $font-size-s;
-  text-align: center;
-}
-
-.Subscriptions__subscribed-continue {
-  color: $walla-main;
-  font-size: $font-size-s;
+@include media-breakpoint-down(lg) {
+  .SubscriptionCard {
+    // width: 200px;
+  }
 }

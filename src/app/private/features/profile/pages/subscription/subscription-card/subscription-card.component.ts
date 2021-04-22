@@ -16,6 +16,13 @@ export class SubscriptionCardComponent implements OnInit {
 
   constructor() {}
 
+  subcriptionBenefits = [
+    'Elige cuantos coches vas subir',
+    'Comparte tu web y número movil',
+    'Gana visibilidad en búsquedas',
+    'Ahorra tiempo de gestión',
+  ];
+
   ngOnInit(): void {
     console.log('TEST', this.subscription);
   }

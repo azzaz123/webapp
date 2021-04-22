@@ -1,46 +1,55 @@
 <div class="SubscriptionCard d-flex flex-column" [ngClass]="{
     'SubscriptionCard--subscribed': subscription.subscribed_from
   }">
-    <div *ngIf="hasTrialAvailable" class="SubscriptionCard__trialBanner px-2 mb-3">
+    <div class="SubscriptionCard__trialBanner px-2 mb-3"
+        [class.SubscriptionCard__trialBanner--hidden]="!hasTrialAvailable">
         <span i18n="@@SubscriptionPriceDiscountDaysTrialFree">{{subscription?.trial_days}}-day trial for free</span>
     </div>
     <div class="d-flex flex-column align-items-center w-100">
-        <div class="SubscriptionCard-icon">
+        <div class="SubscriptionCard__icon">
             <tsl-svg-icon [src]="iconSrc" class="image">
             </tsl-svg-icon>
         </div>
-        <div class="SubscriptionCard-title mb-2">{{subscription.category_name}}</div>
-        <tsl-subscription-price-discount [subscription]="subscription">
-        </tsl-subscription-price-discount>
+        <div class="SubscriptionCard__title mb-2">{{subscription.category_name}}</div>
+        <ng-container *ngIf="!subscription.subscribed_from; else subscriptionPrice">
+            <tsl-subscription-price-discount [subscription]="subscription">
+            </tsl-subscription-price-discount>
+        </ng-container>
+        <ng-template #subscriptionPrice>
+            <span class="SubscriptionCard-info--price" i18n="@@web_profile_pages_subscription_326">
+                {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
+            </span>
+        </ng-template>
         <hr />
     </div>
-    <div *ngIf="!subscription.subscribed_from; else subscriptionBody" class="SubscriptionCard-info">
-        <span>
-            {{ noSubscriptionBodyText }}
-        </span>
-    </div>
-    <ng-template #subscriptionBody>
-        <div class="SubscriptionCard-info">
+    <div class="SubscriptionCard__info">
+        <ng-container *ngIf="!subscription.subscribed_from; else subscriptionBody">
             <span>
+                {{ noSubscriptionBodyText }}
+            </span>
+            <div class="d-flex flex-column text-left">
+                <span class="d-flex mb-2" *ngFor="let benefit of subcriptionBenefits">
+                    <tsl-svg-icon class="mr-1 mt-2 icon-check" src="assets/icons/check.svg">
+                    </tsl-svg-icon>
+                    <span> {{ benefit }}</span>
+                </span>
+            </div>
+        </ng-container>
+        <ng-template #subscriptionBody>
+            <span class="mb-2">
                 {{ subscriptionBodyText }}
             </span>
-            <p class="SubscriptionCard-info--price" i18n="@@web_profile_pages_subscription_326">
-                {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
-            </p>
-            <p class="SubscriptionCard-info--edit" *ngIf="textLink">
-                {{textLink}}
-            </p>
-        </div>
-    </ng-template>
+        </ng-template>
+    </div>
     <ng-container *ngIf="subscription.subscribed_from; else subscriptionButton">
         <ng-container *ngIf="subscription.subscribed_until; else noSubscriptionEnd">
-            <span *ngIf="subscription.subscribed_until" class="Subscriptions__subscribed-until"
+            <span *ngIf="subscription.subscribed_until" class="SubscriptionCard__until"
                 i18n="@@web_profile_pages_subscription_330"> Subscription ends on
                 {{subscription.subscribed_until | date:'dd/MM/yy' }}
             </span>
         </ng-container>
         <ng-template #noSubscriptionEnd>
-            <span class="Subscriptions__subscribed-from" i18n="@@web_profile_pages_subscription_329"> Subscribed
+            <span class="SubscriptionCard__from" i18n="@@web_profile_pages_subscription_329"> Subscribed
                 from {{subscription.subscribed_from | date:'dd/MM/yy' }}
             </span>
         </ng-template>

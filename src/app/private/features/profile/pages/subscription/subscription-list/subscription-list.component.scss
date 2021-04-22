@@ -2,7 +2,7 @@
 
 .box-content {
   color: $blue-grey-3;
-  padding: $spacing-xxl $spacing-xxxl * 1.93;
+  padding: $spacing-xxl;
   h4 {
     color: $blue-grey-1;
     text-align: center;
@@ -29,20 +29,7 @@
     padding: $spacing-l $spacing-m $spacing-m;
   }
 
-  .Subscriptions__category {
-    width: 100%;
-    margin: 0px $spacing-m $spacing-m;
-    padding: $spacing-l $spacing-m;
-    height: unset;
-    min-height: 312px;
-
-    &:last-child {
-      margin-bottom: 0px;
-    }
-
-    &--with-one-free {
-      height: unset;
-      min-height: unset;
-    }
+  .Subscriptions > * {
+    margin-bottom: 8px;
   }
 }
