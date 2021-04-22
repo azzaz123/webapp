@@ -5,6 +5,7 @@ import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, share, tap } from 'rxjs/operators';
@@ -51,7 +52,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   );
 
   public openBubbleCount$: Observable<number> = this.openBubbleCountSubject.asObservable();
-  constructor(private adsService: AdsService, private deviceService: DeviceService, private searchService: SearchService) {
+
+  constructor(
+    private adsService: AdsService,
+    private deviceService: DeviceService,
+    private searchService: SearchService,
+    private publicFooterService: PublicFooterService
+  ) {
     this.device = this.deviceService.getDeviceType();
     this.searchService.init();
   }
@@ -65,6 +72,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.searchService.close();
+    this.publicFooterService.setShow(true);
   }
 
   public toggleBubbleFilterBackdrop(active: boolean): void {
@@ -83,7 +91,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private buildInfiniteScrollDisabledObservable(): Observable<boolean> {
     return combineLatest([this.loadMoreProductsSubject.asObservable(), this.hasMoreItems$]).pipe(
-      map(([loadMoreProducts, hasMore]: [boolean, boolean]) => !(loadMoreProducts && hasMore))
+      map(([loadMoreProducts, hasMore]: [boolean, boolean]) => !(loadMoreProducts && hasMore)),
+      tap((infiniteScrollDisabled: boolean) => this.publicFooterService.setShow(infiniteScrollDisabled))
     );
   }
 }

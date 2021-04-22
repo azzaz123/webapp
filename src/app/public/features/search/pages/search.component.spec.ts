@@ -1,3 +1,5 @@
+import { SearchStoreService } from './../core/services/search-store.service';
+import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -38,6 +40,7 @@ describe('SearchComponent', () => {
   let deviceServiceMock;
   let storeMock;
   let searchServiceMock;
+  let publicFooterServiceMock;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
   const hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -55,6 +58,9 @@ describe('SearchComponent', () => {
       hasMore$: hasMoreSubject.asObservable(),
       loadMore: () => {},
       close: () => {},
+    };
+    publicFooterServiceMock = {
+      setShow: (show: boolean) => {},
     };
     await TestBed.configureTestingModule({
       declarations: [
@@ -84,6 +90,10 @@ describe('SearchComponent', () => {
         {
           provide: DeviceService,
           useValue: deviceServiceMock,
+        },
+        {
+          provide: PublicFooterService,
+          useValue: publicFooterServiceMock,
         },
       ],
     }).compileComponents();
@@ -254,6 +264,27 @@ describe('SearchComponent', () => {
         const slotGroupShopping = fixture.debugElement.query(By.css('tsl-sky-slot-group-shopping'));
 
         expect(slotGroupShopping).toBeNull();
+      });
+
+      it('should hide footer and has items', () => {
+        hasMoreSubject.next(true);
+        spyOn(publicFooterServiceMock, 'setShow').and.callThrough();
+
+        fixture.detectChanges();
+
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+        buttonLoadMore.click();
+
+        expect(publicFooterServiceMock.setShow).toHaveBeenCalledWith(false);
+      });
+
+      it('should set footer when has not items', () => {
+        hasMoreSubject.next(false);
+        spyOn(publicFooterServiceMock, 'setShow').and.callThrough();
+
+        fixture.detectChanges();
+
+        expect(publicFooterServiceMock.setShow).toHaveBeenCalledWith(true);
       });
 
       it('should ask more items to search service', () => {

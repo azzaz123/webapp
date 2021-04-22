@@ -4,6 +4,7 @@ import { PublicCoreModule } from './core/public-core.module';
 import { PublicLayoutModule } from './layout/public-layout.module';
 import { PublicComponent } from './public.component';
 import * as Sentry from '@sentry/angular';
+import { CommonModule } from '@angular/common';
 
 const SENTRY_DSN = 'https://adc218616a9041d5aab6f5857f99fb47@o391386.ingest.sentry.io/5722534';
 
@@ -14,7 +15,7 @@ Sentry.init({
 });
 
 @NgModule({
-  imports: [PublicCoreModule, PublicLayoutModule, PublicRoutingModule],
+  imports: [CommonModule, PublicCoreModule, PublicLayoutModule, PublicRoutingModule],
   providers: [
     {
       provide: ErrorHandler,
