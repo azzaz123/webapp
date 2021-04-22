@@ -102,6 +102,10 @@
   <msg id="web_pro_subscription_continue_success_body"><source>src/app/core/i18n/translations/constants/translations.ts:43</source>Your subscription is active again</msg>
   <msg id="web_pro_subscription_continue_error_title"><source>src/app/core/i18n/translations/constants/translations.ts:44</source>There was an error</msg>
   <msg id="web_pro_subscription_continue_error_body"><source>src/app/core/i18n/translations/constants/translations.ts:45</source>We could not proceed with your request.</msg>
+  <msg id="web_pro_subscription_edit_success_title"><source>src/app/core/i18n/translations/constants/translations.ts:46</source>Great!</msg>
+  <msg id="web_pro_subscription_edit_success_body"><source>src/app/core/i18n/translations/constants/translations.ts:47</source>Your subscription has been edited correctly.</msg>
+  <msg id="web_pro_subscription_edit_error_title"><source>src/app/core/i18n/translations/constants/translations.ts:48</source>There was an error</msg>
+  <msg id="web_pro_subscription_edit_error_body"><source>src/app/core/i18n/translations/constants/translations.ts:49</source>Your subscription could not be edited.</msg>
   <msg id="web_subscription_benefit_title_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:7</source>Empower your brand</msg>
   <msg id="web_subscription_benefit_description_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:8</source>Complete your profile with a cover photo and a description.</msg>
   <msg id="web_subscription_benefit_title_connect"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:12</source>Connect with more customers</msg>

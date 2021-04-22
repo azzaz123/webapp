@@ -1210,4 +1210,8 @@
   <translation id="web_pro_subscription_continue_success_body">Tu suscripción se ha activado de nuevo.</translation>
   <translation id="web_pro_subscription_continue_error_title">Ha habido un error</translation>
   <translation id="web_pro_subscription_continue_error_body">Tu suscripción no ha podido ser restablecida.</translation>
+  <translation id="web_pro_subscription_edit_success_title">¡Bien!</translation>
+  <translation id="web_pro_subscription_edit_success_body">Tu suscripción se ha editado correctamente.</translation>
+  <translation id="web_pro_subscription_edit_error_title">Ha habido un error</translation>
+  <translation id="web_pro_subscription_edit_error_body">Tu suscripción no ha podido ser modificada.</translation>
 </translationbundle>

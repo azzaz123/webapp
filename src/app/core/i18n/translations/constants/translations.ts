@@ -44,4 +44,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_SUCCESS_BODY]: $localize`:@@web_pro_subscription_continue_success_body:Your subscription is active again`,
   [TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_ERROR_TITLE]: $localize`:@@web_pro_subscription_continue_error_title:There was an error`,
   [TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUBSCRIPTION_ERROR_BODY]: $localize`:@@web_pro_subscription_continue_error_body:We could not proceed with your request.`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUBSCRIPTION_SUCCESS_TITLE]: $localize`:@@web_pro_subscription_edit_success_title:Great!`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUBSCRIPTION_SUCCESS_BODY]: $localize`:@@web_pro_subscription_edit_success_body:Your subscription has been edited correctly.`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUBSCRIPTION_ERROR_TITLE]: $localize`:@@web_pro_subscription_edit_error_title:There was an error`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUBSCRIPTION_ERROR_BODY]: $localize`:@@web_pro_subscription_edit_error_body:Your subscription could not be edited.`,
 };
