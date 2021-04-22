@@ -33,8 +33,12 @@
       fill: $blue-grey-1 !important;
     }
 
+    .Bubble__dropdown_arrow {
+      opacity: 0.4;
+    }
+
     .Bubble__counter {
-      color: white;
+      color: $white;
       background-color: $walla-main;
     }
   }
