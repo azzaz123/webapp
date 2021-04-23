@@ -30,10 +30,15 @@ $filter-content-height: 355px;
   &__filter {
     max-height: $filter-content-height;
     overflow-x: scroll;
+    @include hide-scroll-bars();
 
     @include media-breakpoint-down(sm) {
       max-height: calc(100vh - #{$actions-height + $toolbar-height});
       margin-bottom: $actions-height;
+    }
+
+    &--no_max_height {
+      max-height: none !important;
     }
   }
 

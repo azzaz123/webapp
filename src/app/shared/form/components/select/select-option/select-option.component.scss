@@ -20,7 +20,8 @@
   }
 
   &__icon--active {
-    ::ng-deep g g {
+    ::ng-deep g g,
+    ::ng-deep path {
       fill: $walla-main;
     }
   }

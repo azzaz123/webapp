@@ -15,6 +15,7 @@ import {
   ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE,
   ITEMS_WITH_PRODUCTS,
   ITEM_CATEGORY_ID,
+  ITEM_CONVERSATIONS,
   ITEM_COUNTERS_DATA,
   ITEM_DATA,
   ITEM_DATA_V3,
@@ -120,6 +121,7 @@ describe('ItemService', () => {
       expect(req.request.url).toEqual(expectedUrl);
       expect(response.views).toEqual(ITEM_VIEWS);
       expect(response.favorites).toEqual(ITEM_FAVORITES);
+      expect(response.conversations).toEqual(ITEM_CONVERSATIONS);
       expect(req.request.method).toBe('GET');
     });
 
@@ -132,6 +134,7 @@ describe('ItemService', () => {
         httpMock.expectOne(expectedUrl).error(new ErrorEvent('network error'));
 
         expect(response.views).toEqual(0);
+        expect(response.conversations).toEqual(0);
         expect(response.favorites).toEqual(0);
       });
     });
@@ -242,19 +245,6 @@ describe('ItemService', () => {
       const car: Realestate = <Realestate>service['mapRecordData'](REALESTATE_DATA);
 
       expect(car).toEqual(MOCK_REALESTATE);
-    });
-  });
-
-  describe('reportListing', () => {
-    it('should report a listing', () => {
-      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/report`;
-
-      service.reportListing(ITEM_ID, 'comments', 2).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush({});
-
-      expect(req.request.url).toBe(expectedUrl);
-      expect(req.request.method).toBe('POST');
     });
   });
 

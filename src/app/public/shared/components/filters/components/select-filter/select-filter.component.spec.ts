@@ -22,15 +22,16 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
+import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-test-wrapper',
-  template: ` <tsl-option-select-filter [config]="config" [variant]="variant" [value]="value"></tsl-option-select-filter> `,
+  template: ` <tsl-select-filter [config]="config" [variant]="variant" [value]="value"></tsl-select-filter> `,
 })
 class TestWrapperComponent {
   @Input() config: SelectFilterConfig;
   @Input() variant: FILTER_VARIANT;
-  @Input() value: FilterParameter[];
+  @Input() value: FilterParameter[] = [];
 }
 
 describe('SelectFilterComponent', () => {
@@ -64,7 +65,7 @@ describe('SelectFilterComponent', () => {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [TestWrapperComponent, SelectFilterComponent],
+      declarations: [TestWrapperComponent, SelectFilterComponent, IsBubblePipe],
       imports: [
         HttpClientTestingModule,
         NgbDropdownModule,
@@ -154,7 +155,7 @@ describe('SelectFilterComponent', () => {
 
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('male');
+          form.handleOptionClick('male');
 
           fixture.detectChanges();
 
@@ -172,7 +173,7 @@ describe('SelectFilterComponent', () => {
           spyOn(component.valueChange, 'emit');
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('male');
+          form.handleOptionClick('male');
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
@@ -188,7 +189,7 @@ describe('SelectFilterComponent', () => {
     describe('... is closed', () => {
       describe('and we clean the value', () => {
         beforeEach(() => {
-          component.writeValue([{ key: 'key', value: 'male' }]);
+          testComponent.value = [{ key: 'key', value: 'male' }];
           fixture.detectChanges();
         });
 
@@ -218,16 +219,7 @@ describe('SelectFilterComponent', () => {
           filterTemplate.clear.emit();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
-        });
-
-        it('should emit clear event', () => {
-          spyOn(component.clear, 'emit');
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-
-          filterTemplate.clear.emit();
-
-          expect(component.clear.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
         });
       });
     });
@@ -261,7 +253,7 @@ describe('SelectFilterComponent', () => {
         it('should close the placeholder', () => {
           const formInstance: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          formInstance.writeValue('male');
+          formInstance.handleOptionClick('male');
           fixture.detectChanges();
 
           const selectTemplate: SelectFilterTemplateComponent = debugElement.query(By.directive(SelectFilterTemplateComponent))
@@ -284,7 +276,7 @@ describe('SelectFilterComponent', () => {
           spyOn(component.valueChange, 'emit');
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('male');
+          form.handleOptionClick('male');
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
@@ -299,7 +291,7 @@ describe('SelectFilterComponent', () => {
 
       describe('and we clean the value', () => {
         beforeEach(() => {
-          component.writeValue([{ key: 'key', value: 'male' }]);
+          testComponent.value = [{ key: 'key', value: 'male' }];
           fixture.detectChanges();
         });
         it('should restart values', () => {
@@ -328,16 +320,7 @@ describe('SelectFilterComponent', () => {
           selectTemplate.clear.emit();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
-        });
-
-        it('should emit clear event', () => {
-          spyOn(component.clear, 'emit');
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
-
-          selectTemplate.clear.emit();
-
-          expect(component.clear.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
         });
       });
     });

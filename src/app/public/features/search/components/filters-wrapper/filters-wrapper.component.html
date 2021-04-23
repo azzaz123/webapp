@@ -1,22 +1,24 @@
-<div class="FiltersWrapper__bar d-flex p-2"> 
-  <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
-  <tsl-filter-group 
-    [values]="filterValues"
-    [config]="bubbleFiltersConfig" 
-    [variant]="FILTER_VARIANT.BUBBLE"
-    (valueChange)="bubbleChange($event)"
-    (openStateChange)="bubbleOpenStateChange($event)"
-    (clear)="bubbleClear($event)"></tsl-filter-group>
+<div class="FiltersWrapper__bar_wrapper" [class.FiltersWrapper__bar_wrapper--open]="openBubbleCount$ | async">
+  <div class="FiltersWrapper__bar d-flex p-2">
+    <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
+    <tsl-filter-group
+      [values]="bubbleValues$ | async"
+      [config]="filterConfigurations.bubble"
+      [variant]="FILTER_VARIANT.BUBBLE"
+      (valueChange)="bubbleChange($event)"
+      (openStateChange)="bubbleOpenStateChange($event)"></tsl-filter-group>
+  </div>
 </div>
 
 
 <tsl-drawer [isOpen]="drawerConfig.isOpen" [offsetTop]="drawerConfig.offsetTop" [hasApply]="drawerConfig.hasApply"
+            [noScroll]="isDrawerContentScrollable$ | async"
 (cancel)="closeDrawer()" (apply)="applyDrawer()" (clickBackdrop)="closeDrawer()">
-  <tsl-filter-group 
-    [values]="filterValues"
-    [config]="drawerFiltersConfig" 
-    [variant]="FILTER_VARIANT.CONTENT" 
-    (valueChange)="drawerChange($event)"
-    (clear)="drawerClear($event)"></tsl-filter-group>
+  <tsl-filter-group
+    [values]="drawerValues$ | async"
+    [config]="filterConfigurations.drawer"
+    [variant]="FILTER_VARIANT.CONTENT"
+    (openStateChange)="drawerOpenStateChange($event)"
+    (valueChange)="drawerChange($event)"></tsl-filter-group>
 </tsl-drawer>
 

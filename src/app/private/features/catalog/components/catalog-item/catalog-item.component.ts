@@ -20,6 +20,11 @@ export class CatalogItemComponent implements OnInit {
   @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
   public link: string;
   public selectMode = false;
+  public tooltipMessages = {
+    markAsSold: $localize`:@@web_mark_as_sold_tooltip:Mark as sold`,
+    markAsReserved: $localize`:@@web_mark_as_reserved_tooltip:Mark as reserved`,
+    edit: $localize`:@@web_edit_tooltip:Edit`,
+  };
 
   constructor(
     public itemService: ItemService,

@@ -34,11 +34,9 @@ import {
 } from './item-response.interface';
 import { find, findIndex, reverse, without, map as lodashMap, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
-import { BanReason } from './ban-reason.interface';
 import { EventService } from '../event/event.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { Car } from './car';
-import { ITEM_BAN_REASONS } from './ban-reasons';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { Realestate } from './realestate';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
@@ -76,7 +74,6 @@ export const V1_API_URL = 'shnm-portlet/api/v1';
 export class ItemService {
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
-  private banReasons: BanReason[] = null;
   protected items: ItemsStore = {
     active: [],
     pending: [],
@@ -98,7 +95,7 @@ export class ItemService {
   public getCounters(id: string): Observable<ItemCounters> {
     return this.http
       .get<ItemCounters>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/counters`)
-      .pipe(catchError(() => of({ views: 0, favorites: 0 })));
+      .pipe(catchError(() => of({ views: 0, favorites: 0, conversations: 0 })));
   }
 
   public bulkDelete(type: string): Observable<ItemBulkResponse> {
@@ -141,13 +138,6 @@ export class ItemService {
       item.selected = false;
     });
     this.selectedAction = null;
-  }
-
-  public getBanReasons(): Observable<BanReason[]> {
-    if (!this.banReasons) {
-      this.banReasons = this.i18n.getTranslations('reportListingReasons');
-    }
-    return of(this.banReasons);
   }
 
   public deselectItem(id: string) {
@@ -372,13 +362,6 @@ export class ItemService {
     return item;
   }
 
-  public reportListing(itemId: number | string, comments: string, reason: number): Observable<any> {
-    return this.http.post(`${environment.baseUrl}${ITEMS_API_URL}/${itemId}/report`, {
-      comments: comments,
-      reason: ITEM_BAN_REASONS[reason],
-    });
-  }
-
   public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
     return this.http
       .get<HttpResponse<ItemResponse[]>>(`${environment.baseUrl}${url}`, {
@@ -408,6 +391,7 @@ export class ItemService {
               const item: Item = this.mapRecordData(i);
               item.views = i.content.views;
               item.favorites = i.content.favorites;
+              item.conversations = i.content.conversations;
               return item;
             });
           }

@@ -1,15 +1,15 @@
 <div class="modal-body">
-  <h1 class="text-center" i18n>Report</h1>
+  <h1 class="text-center" i18n="@@web_chat_modals_report_listing_180">Report</h1>
   <div class="modal-close" (click)="activeModal.dismiss()">
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
   <div class="scroll">
-    <div [ngClass]="{selected: selectedReportListingReason === reason.id}"
+    <div [ngClass]="{selected: selectedReportListingReason === reason}"
          class="report-ban-reason row align-items-center"
-         (click)="selectReportListingReason(reason.id)" *ngFor="let reason of listingBanReasons">
+         (click)="selectReportListingReason(reason)" *ngFor="let reason of listingBanReasons">
       <div class="col-3 d-flex justify-content-center">
         <div class="ban-reason-icon-container">
-          <tsl-svg-icon src="/assets/icons/report-listing-{{reason.id}}.svg"></tsl-svg-icon>
+          <tsl-svg-icon src="{{reason.iconPath}}"></tsl-svg-icon>
         </div>
       </div>
       <div class="col-9">
@@ -20,5 +20,5 @@
 <div class="text-center">
   <tsl-button [disabled]="!selectedReportListingReason"
               (click)="close();"
-              i18n>Report</tsl-button>
+              i18n="@@web_chat_modals_report_listing_573">Report</tsl-button>
 </div>

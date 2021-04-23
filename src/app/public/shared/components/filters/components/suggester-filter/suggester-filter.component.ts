@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractSelectFilter } from '../abstract-select-filter/abstract-select-filter';
 import { SuggesterFilterParams } from './interfaces/suggester-filter-params.interface';
 import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
@@ -21,9 +21,7 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
   styleUrls: ['./suggester-filter.component.scss'],
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SuggesterFilterComponent
-  extends AbstractSelectFilter<SuggesterFilterParams>
-  implements OnInit, OnDestroy, OnChanges, AfterContentInit {
+export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilterParams> implements OnInit, OnDestroy, AfterContentInit {
   @Input() config: SuggesterFilterConfig;
 
   @ViewChild('selectFilterTemplateComponent', { read: SelectFilterTemplateComponent })
@@ -35,14 +33,18 @@ export class SuggesterFilterComponent
     select: new FormControl(),
   });
   public searchQuery: string;
-  public options: FilterOption[] = [];
+  private optionsSubject = new BehaviorSubject<FilterOption[]>([]);
   private searchQuery$ = new Subject<string>();
   private labelSubject: BehaviorSubject<string> = new BehaviorSubject('');
 
   private subscriptions = new Subscription();
 
-  public constructor(private optionService: FilterOptionService) {
+  constructor(private optionService: FilterOptionService) {
     super();
+  }
+
+  public get options$(): Observable<FilterOption[]> {
+    return this.optionsSubject.asObservable();
   }
 
   public get label$(): Observable<string> {
@@ -50,59 +52,34 @@ export class SuggesterFilterComponent
   }
 
   public ngOnInit(): void {
-    super.ngOnInit();
     if (this.config.hasOptionsOnInit) {
       this.getOptions();
     }
     this.initLabel();
     this.initForm();
     this.initModel();
+    super.ngOnInit();
   }
 
   public ngAfterContentInit(): void {
     if (this.value.length > 0) {
-      this.updateForm();
+      this.updateValueFromParent();
     }
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value && !changes.value.firstChange && this.hasValueChanged(changes.value.previousValue, changes.value.currentValue)) {
-      if (this._value.length > 0) {
-        this.updateForm();
-      } else {
-        this.handleClear();
-      }
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
+    if (this._value.length > 0) {
+      this.updateValueFromParent();
+    } else {
+      this.handleClear();
     }
-  }
-
-  // TODO: TechDebt(brand/model). This overwrite is needed to be able to handle the brand/model filter. In this filter, we are not
-  //       able to use the mapKey configuration because this comes from the backend dynamically, and the hasValueChanged
-  //       check depends on the mapKey configuration. There should be a new filter type for this case.
-
-  public hasValueChanged(previousParameters: FilterParameter[], currentParameters: FilterParameter[]): boolean {
-    if (!previousParameters && !currentParameters) {
-      return false;
-    } else if (!previousParameters) {
-      return true;
-    } else if (previousParameters.length !== currentParameters.length) {
-      return true;
-    }
-
-    for (const currentParameter of currentParameters) {
-      const previousParameter = previousParameters.find((parameter) => parameter.key === currentParameter.key);
-
-      if (!previousParameter || previousParameter.value !== currentParameter.value) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   public handleClear(): void {
+    super.handleClear();
     this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
     this.clearSearch();
-    super.handleClear();
+    this.initLabel();
   }
 
   public clearSearch(): void {
@@ -114,11 +91,6 @@ export class SuggesterFilterComponent
     this.subscriptions.unsubscribe();
   }
 
-  public writeValue(value: FilterParameter[]): void {
-    super.writeValue(value);
-    this.valueChange.emit(this.value);
-  }
-
   private initForm(): void {
     const labelSubscription = this.valueChange.subscribe(this.handleLabelChange.bind(this));
     const valueSubscription = this.formGroup.controls.select.valueChanges.subscribe(this.handleValueChange.bind(this));
@@ -127,15 +99,16 @@ export class SuggesterFilterComponent
     this.subscriptions.add(valueSubscription);
   }
 
-  private updateForm(): void {
-    this.formGroup.controls.select.setValue(this.getComplexValue());
+  private updateValueFromParent(): void {
+    this.formGroup.controls.select.setValue(this.getComplexValue(), { emitEvent: false });
+    this.handleLabelChange();
   }
 
   private getComplexValue(): string | Record<string, string> {
     if (this.config.mapKey.parameterKey) {
       return this.getValue('parameterKey');
     }
-    return this.value.reduce((acc, parameter) => {
+    return this._value.reduce((acc, parameter) => {
       const value = {
         [parameter.key]: parameter.value,
       };
@@ -163,6 +136,8 @@ export class SuggesterFilterComponent
       const keys = Object.keys(value);
       this.writeValue(keys.map((key) => ({ key: key, value: value[key] })));
     }
+
+    this.valueChange.emit(this._value);
   }
 
   private handleLabelChange(): void {
@@ -175,13 +150,15 @@ export class SuggesterFilterComponent
       return this.labelSubject.next(value);
     }
 
-    // TODO: TechDebt(brand/model) On the case of a complex value, when it enters through query, we don't have the options loaded
-    //       Complex values (brand/model filter) are always concatenated strings so we can just directly grab it from its values
-    return this.labelSubject.next(
-      Object.keys(value)
-        .map((key) => value[key])
-        .join(', ')
-    );
+    return this.labelSubject.next(this.calculateComplexLabel(value));
+  }
+
+  private calculateComplexLabel(value: Record<string, string>): string {
+    const mapKeys = Object.keys(this.config.mapKey);
+    return mapKeys
+      .map((key) => value[this.config.mapKey[key]])
+      .filter((str) => str)
+      .join(', ');
   }
 
   private closeContent(): void {
@@ -197,14 +174,16 @@ export class SuggesterFilterComponent
     return typeof value === 'string';
   }
 
-  public modelChanged() {
+  public onModelChanged() {
     this.searchQuery$.next(this.searchQuery);
   }
 
   private getOptions(query?: string): void {
-    this.optionService
-      .getOptions(this.config.id, query ? { text: query } : undefined)
-      .pipe(take(1))
-      .subscribe((options) => (this.options = options));
+    if (this.config.hasOptionsOnInit || query) {
+      this.optionService
+        .getOptions(this.config.id, query ? { text: query } : undefined)
+        .pipe(take(1))
+        .subscribe((options) => this.optionsSubject.next(options));
+    }
   }
 }

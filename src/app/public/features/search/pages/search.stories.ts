@@ -16,15 +16,36 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
+import { FiltersWrapperModule } from '@public/features/search/components/filters-wrapper/filters-wrapper.module';
+import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopping.module';
 
 export default {
   title: 'Webapp/Public/Features/Search/Pages/Search',
   component: SearchComponent,
   decorators: [
     moduleMetadata({
-      providers: [ViewportService, ItemService, EventService, I18nService, ItemCardService, { provide: 'SUBDOMAIN', useValue: 'www' }],
+      providers: [
+        ViewportService,
+        ItemService,
+        EventService,
+        I18nService,
+        ItemCardService,
+        { provide: 'SUBDOMAIN', useValue: 'www' },
+        SearchStoreService,
+      ],
       declarations: [SearchComponent, SearchLayoutComponent],
-      imports: [CoreModule, SharedModule, HttpModule, ItemApiModule, CheckSessionModule, ItemCardListModule, RouterTestingModule],
+      imports: [
+        CoreModule,
+        SharedModule,
+        HttpModule,
+        ItemApiModule,
+        CheckSessionModule,
+        ItemCardListModule,
+        RouterTestingModule,
+        FiltersWrapperModule,
+        AdSlotShoppingModule,
+      ],
     }),
     styledWrapperDecorator('margin: -1rem;'),
   ],

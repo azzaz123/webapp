@@ -1,7 +1,8 @@
-<a class="user-info" [attr.href]="isNavigable ? user.profileUrl : null" target="_blank"
-   [ngClass]="{'faded': !user.available }"
-   class="device-{{deviceType}}">
-
+<a class="user-info" 
+  [routerLink]="isNavigable ? [user.webSlug | userProfileRoute:user.id] : []"
+  [ngClass]="{'faded': !user.available }"
+  class="device-{{deviceType}}"
+>
   <div class="card-block text-truncate">
     <h5 class="card-title text-truncate">{{user.microName}}</h5>
     <tsl-stars *ngIf="user.score > -1" [stars]="user.score" [normalized]="false"></tsl-stars>
@@ -11,10 +12,10 @@
     </div>
     <div class="user-location-distance text-truncate">
       <tsl-svg-icon *ngIf="isDeviceSmall()" src="/assets/icons/location.svg" class="d-lg-none"></tsl-svg-icon>
-      <div [hidden]="!user.distanceInKm" class="text-truncate" i18n="The distance between the user and the item">
-        {{user.distanceInKm | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you
+      <div [hidden]="!user.distanceInKm" class="text-truncate" i18n="@@web_chat_children_inbox_components_user_component_detail_157">
+        {{user.distanceInKm | number:'1.0-1'}}km from you
       </div>
-      <span [hidden]="user.distanceInKm" i18n>No location</span>
+      <span [hidden]="user.distanceInKm" i18n="@@web_chat_children_inbox_components_user_component_detail_158">No location</span>
     </div>
 
     <div class="user-response-rate text-truncate">

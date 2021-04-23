@@ -1,5 +1,7 @@
 @import '~style/common';
 
+$actions-height: 60px;
+
 .Drawer {
   &__content {
     background-color: $white;
@@ -8,12 +10,36 @@
     bottom: 0;
     max-width: 500px;
     overflow-y: auto;
+    padding-bottom: $actions-height;
+
+    &--unset-overflow {
+      overflow-y: unset;
+    }
 
     @include media-breakpoint-down(md) {
       top: 0 !important;
       right: 0;
       left: 0;
       max-width: unset;
+    }
+  }
+
+  &__actions {
+    position: fixed;
+    height: $actions-height;
+    bottom: 0;
+    width: 100%;
+    max-width: 484px;
+    left: 8px;
+    background-color: $white;
+    border-top: 1px solid $blue-grey-5;
+    z-index: 8;
+
+    @include media-breakpoint-down(md) {
+      right: 8px;
+      left: 8px;
+      max-width: unset;
+      width: unset;
     }
   }
 

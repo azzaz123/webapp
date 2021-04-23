@@ -1,6 +1,6 @@
 <div class="Search">
   <tsl-filters-wrapper class="Search__filters position-fixed"
-    [class.Search__filters--with-backdrop]="showBackdrop"
+    [class.Search__filters--with-backdrop]="(openBubbleCount$ | async) !== 0"
     (bubbleFilterOpenStateChange)="toggleBubbleFilterBackdrop($event)">
   </tsl-filters-wrapper>
 
@@ -24,8 +24,12 @@
       </ng-container>
     </div>
     <ng-container main>
-      <tsl-public-item-card-list [items]="items$ | async" [columnsConfig]="columnsConfig"></tsl-public-item-card-list>
-      <div  *ngIf="device === DevicesType.DESKTOP" class="mx-auto my-4">
+      <tsl-public-item-card-list [items]="items$ | async" [columnsConfig]="columnsConfig" [slotsConfig]="slotsConfig">
+        <ng-template #slotTemplate let-index>
+          <tsl-sky-native-shopping [adSlotContainer]="adSlotNativeShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index"></tsl-sky-native-shopping>
+        </ng-template>
+      </tsl-public-item-card-list>
+      <div *ngIf="device === DevicesType.DESKTOP" class="mx-auto my-4">
         <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
       </div>
     </ng-container>

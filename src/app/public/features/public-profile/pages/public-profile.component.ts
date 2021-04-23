@@ -1,3 +1,6 @@
+import { Subscription, forkJoin } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
@@ -9,9 +12,9 @@ import { Image, UserFavourited } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { forkJoin, Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
+import { PublicProfileTrackingEventsService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { PublicProfileService } from '../core/services/public-profile.service';
 
 @Component({
@@ -38,22 +41,29 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     private deviceService: DeviceService,
     private adsService: AdsService,
     private isCurrentUserPipe: IsCurrentUserPipe,
-    private slugsUtilService: SlugsUtilService
+    private slugsUtilService: SlugsUtilService,
+    private publicProfileTrackingEventsService: PublicProfileTrackingEventsService
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
       const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
+
+      this.adsService.setSlots([this.adSlot]);
       this.getUser(userUUID);
     });
 
     this.isMobile = this.deviceService.isMobile();
-    this.adsService.setSlots([this.adSlot]);
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
+  public userFavouriteChanged(isFavourite: boolean): void {
+    this.isFavourited = isFavourite;
+    this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteUserEvent(this.userInfo, isFavourite);
   }
 
   private getUser(userUUID: string): void {
@@ -69,13 +79,14 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       forkJoin([
-        this.publicProfileService.getUser(this.userId),
+        this.publicProfileService.getUser(this.userId, false),
         this.publicProfileService.getStats(this.userId),
         this.publicProfileService.getShippingCounter(this.userId),
       ])
         .pipe(
           finalize(() => {
             this.handleCoverImage();
+            this.trackViewProfileEvent();
           })
         )
         .subscribe(
@@ -113,6 +124,16 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.isCurrentUserPipe.transform(this.userId).subscribe((isOurOwnUser: boolean) => {
       if (!isOurOwnUser) {
         this.getFavouriteUser();
+      }
+    });
+  }
+
+  private trackViewProfileEvent(): void {
+    this.isCurrentUserPipe.transform(this.userId).subscribe((isOwnUser: boolean) => {
+      if (isOwnUser) {
+        this.publicProfileTrackingEventsService.trackViewOwnProfile(this.userInfo.featured);
+      } else {
+        this.publicProfileTrackingEventsService.trackViewOtherProfile(this.userInfo, this.userStats.counters.publish);
       }
     });
   }

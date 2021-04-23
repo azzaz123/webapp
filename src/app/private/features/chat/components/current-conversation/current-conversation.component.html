@@ -6,10 +6,10 @@
   </div>
   <div class="content" *ngIf="!emptyInbox || loadingError">
     <img class="image" src="/assets/images/empty-state.svg" />
-    <p *ngIf="!emptyInbox && !connectionError && !loadingError" i18n>Choose a conversation<br />
+    <p *ngIf="!emptyInbox && !connectionError && !loadingError" i18n="@@web_chat_components_current_conversation_167">Choose a conversation<br />
       from the list on the left</p>
-    <p *ngIf="emptyInbox && !connectionError && !loadingError" i18n>There are no messages</p>
-    <p *ngIf="connectionError || loadingError" i18n>Service not available at the moment.<br />
+    <p *ngIf="emptyInbox && !connectionError && !loadingError" i18n="@@web_chat_components_current_conversation_168">There are no messages</p>
+    <p *ngIf="connectionError || loadingError" i18n="@@web_chat_components_current_conversation_169">Service not available at the moment.<br />
       Try again later.</p>
   </div>
 </div>
@@ -63,7 +63,7 @@
           <div *ngFor="let message of currentConversation?.messages; let i = index" class="message-wrapper"
             [ngClass]="{'message-owner': message.fromSelf, 'not-message-owner': !message.fromSelf}">
             <div *ngIf="showDate(message, currentConversation.messages[i+1])" class="date-marker">
-              <span *ngIf="dateIsThisYear(message.date)">{{message.date | dateCalendar:momentConfig}}</span>
+              <span *ngIf="dateIsThisYear(message.date)">{{message.date | dateCalendar:momentCalendarSpec}}</span>
               <span *ngIf="!dateIsThisYear(message.date)">{{message.date | date:'d MMM. yyyy' }}</span>
             </div>
 

@@ -12,7 +12,8 @@
     "buildbeta": "ng build -c=beta --no-progress",
     "buildprod": "ng build -c=production --no-progress",
     "reinstall": "rm -rf node_modules && yarn install",
-    "i18n": "ng extract-i18n --format=xmb --output-path=src/locale",
+    "i18n": "yarn generate-angular-messages",
+    "generate-angular-messages": "ng extract-i18n --format=xmb --output-path=src/locale",
     "serve": "ng serve -c=es",
     "test-once": "jest -c=src/configs/jest/jest.config.js",
     "test": "yarn test-once --watch",
@@ -47,6 +48,8 @@
     "@ngrx/effects": "^10.1.2",
     "@ngrx/store": "^10.1.2",
     "@ngrx/store-devtools": "^10.1.2",
+    "@sentry/angular": "^6.2.5",
+    "@sentry/tracing": "^6.2.5",
     "@types/faker": "^5.1.5",
     "bootstrap": "4.0.0",
     "crypto-js": "^3.1.9-1",
@@ -80,8 +83,8 @@
     "@angular/compiler-cli": "^11.2.8",
     "@angular/language-service": "^11.2.8",
     "@babel/core": "^7.12.10",
-    "@storybook/addon-essentials": "^6.1.11",
-    "@storybook/angular": "^6.1.11",
+    "@storybook/addon-essentials": "^6.2.7",
+    "@storybook/angular": "^6.2.7",
     "@types/doubleclick-gpt": "^2019041801.0.4",
     "@types/echarts": "^4.6.0",
     "@types/heremaps": "3.0.12",
@@ -104,6 +107,7 @@
     "ts-node": "~7.0.0",
     "tslint": "~6.1.0",
     "typescript": "4.0.5",
-    "webpack-bundle-analyzer": "^3.6.0"
+    "webpack-bundle-analyzer": "^3.6.0",
+    "xml2json": "^0.12.0"
   }
 }

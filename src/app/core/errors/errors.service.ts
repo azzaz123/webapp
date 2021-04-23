@@ -8,7 +8,7 @@ export const DEFAULT_ERROR_MESSAGE = 'Servicio no disponible temporalmente. Int√
 
 @Injectable()
 export class ErrorsService {
-  constructor(private toastService: ToastService, private router: Router, private i18n: I18nService) {}
+  constructor(private toastService: ToastService, private i18n: I18nService) {}
 
   show(res: HttpErrorResponse): void {
     const error = res.error;

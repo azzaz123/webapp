@@ -13,7 +13,7 @@ export interface AmazonPublisherServiceLibrary {
 
 export interface AmazonPublisherServiceAdSlot {
   slotID: string;
-  sizes: number[][];
+  sizes: googletag.GeneralSize;
   slotName: string;
 }
 

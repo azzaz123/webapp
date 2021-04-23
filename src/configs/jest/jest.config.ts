@@ -74,6 +74,7 @@ Object.defineProperty(window, 'H', {
   value: GLOBAL_MOCKS.MOCK_HERE_MAPS,
   writable: true,
 });
+
 Object.defineProperty(navigator, 'connection', {
   value: GLOBAL_MOCKS.MOCK_NAVIGATOR_CONNECTION,
 });

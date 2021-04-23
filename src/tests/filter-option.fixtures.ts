@@ -46,7 +46,7 @@ export const iconOption: IconOption = {
 
 export const formattedIconOption: FilterOption = {
   label: iconOption.text,
-  icon: iconOption.icon_id.concat('.svg'),
+  icon: '/assets/icons/filters/options/'.concat(iconOption.icon_id.concat('.svg')),
   value: iconOption.id,
 };
 

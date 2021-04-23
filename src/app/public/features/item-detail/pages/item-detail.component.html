@@ -22,9 +22,9 @@
                         ></tsl-item-detail-header>
                         <div class="ItemDetail__carousel position-relative w-100">
                             <tsl-item-images-carousel
-                                [statusFlag]="statusFlag$ | async" 
+                                [statusFlag]="statusFlag$ | async"
                                 [bumpedFlag]="bumpedFlag$ | async"
-                                [isExpired]="itemDetail.item.flags?.expired" 
+                                [isExpired]="itemDetail.item.flags?.expired"
                                 [images]="itemDetail.images"
                                 (imageClick)="openItemDetailImage($event)">
                             </tsl-item-images-carousel>
@@ -33,30 +33,35 @@
                             <span class="ItemDetail__price d-block">{{itemDetail.item.salePrice |
                                     customCurrency:itemDetail.item.currencyCode}}</span>
                             <h1 class="ItemDetail__title my-0">{{itemDetail.item.title}}</h1>
-
-                            <tsl-item-extra-info 
+                            <tsl-item-extra-info
                                 *ngIf="itemDetail.extraInfo?.length > 0"
                                 class="horizontalScroll d-block mt-2"
                                 [ngClass]="{'ItemExtraInfo--car': itemDetail.isItemACar}"
                                 [extraInfo]="itemDetail.extraInfo">
                             </tsl-item-extra-info>
                             <ng-container *ngIf="(itemDetail.taxonomiesSpecifications | async) as taxonomiesSpecifications">
-                                <tsl-item-taxonomies class="horizontalScroll d-block mt-3" 
+                                <tsl-item-taxonomies class="horizontalScroll d-block mt-3"
                                 *ngIf="taxonomiesSpecifications.parentTaxonomy"
                                 [iconPath]="taxonomiesSpecifications.icon"
                                 [parentTaxonomy]="taxonomiesSpecifications.parentTaxonomy"
                                 [childTaxonomy]="taxonomiesSpecifications.childTaxonomy"
                                 ></tsl-item-taxonomies>
                             </ng-container>
+                            <div *ngIf="device !== deviceType.MOBILE" class="ItemDetail__affiliation d-flex flex-row mb-0" [ngClass]="{'borderBottom': adsAffiliationsLoaded$ | async, 'py-3': adsAffiliationsLoaded$ | async}">
+                              <tsl-sky *ngFor="let adAffiliation of adsAffiliationSlotConfiguration" class="d-block" [adSlot]="adAffiliation"></tsl-sky>
+                            </div>
                         </div>
                         <div *ngIf="itemDetail.counterSpecifications" class="borderBottom">
-                            <tsl-item-specifications 
+                            <tsl-item-specifications
                                 [itemSpecifications]="itemDetail.counterSpecifications"
                                 [isCar]="itemDetail.isItemACar"></tsl-item-specifications>
                         </div>
+                        <div *ngIf="device === deviceType.MOBILE" class="ItemDetail__affiliation d-flex flex-column mb-0" [ngClass]="{'borderBottom': adsAffiliationsLoaded$ | async, 'py-3':  adsAffiliationsLoaded$ | async}">
+                          <tsl-sky *ngFor="let adAffiliation of adsAffiliationSlotConfiguration" class="d-block" [adSlot]="adAffiliation"></tsl-sky>
+                        </div>
                             <p *ngIf="itemDetail.item.description" class="ItemDetail__description py-3 mb-0 text-break" [ngClass]="{'borderBottom': device !== deviceType.MOBILE}">{{itemDetail.item.description}}</p>
                             <div *ngIf="device === deviceType.MOBILE">
-                            <tsl-sky [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>
+                              <tsl-sky [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>
                             </div>
                             <div class="ItemDetail__stats py-3 d-flex align-items-center justify-content-between" [ngClass]="{'borderBottom': device !== deviceType.TABLET}">
 
@@ -77,7 +82,7 @@
                             </div>
                         </div>
                         <div class="pt-4" *ngIf="device === deviceType.TABLET">
-                        <tsl-sky [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
+                          <tsl-sky [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
                         </div>
                         <div class="ItemDetail__location py-3 d-flex align-items-center">
                             <tsl-svg-icon src="/assets/icons/location.svg" class="mr-2"></tsl-svg-icon>
@@ -96,9 +101,12 @@
                         </tsl-social-share>
                     </div>
                     <tsl-recommended-items
-                        *ngIf="(recommendedItems$ |async)?.recommended_items?.length"
-                        class="mt-3" [recommendedItems]="(recommendedItems$ | async).recommended_items"
-                        (clickedItemAndIndexEvent)="trackClickItemCardEvent($event)">
+                        *ngIf="(recommendedItems$ |async)?.recommendedItems?.length" class="mt-3"
+                        [recommendedItems]="(recommendedItems$ | async)?.recommendedItems"
+                        [recommendedType]="(recommendedItems$ | async)?.recommendedType"
+                        (clickedItemAndIndexEvent)="trackClickItemCardEvent($event)"
+                        (initRecommendedItemsSlider)="trackViewItemDetailRecommendationSlider($event)"
+                        >
                     </tsl-recommended-items>
                     <div *ngIf="device === deviceType.MOBILE" class="pt-4">
                     <tsl-sky [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>

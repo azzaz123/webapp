@@ -1,0 +1,20 @@
+@import '~style/common';
+
+.CategoriesFilter {
+  &__grid {
+    max-width: 890px;
+    width: 100vw;
+
+    @include media-breakpoint-down(lg) {
+      max-width: 600px;
+    }
+
+    @include media-breakpoint-down(md) {
+      max-width: 400px;
+    }
+
+    @include media-breakpoint-down(sm) {
+      max-width: none;
+    }
+  }
+}
