@@ -33,6 +33,15 @@ export class UserPublishedComponent implements OnInit {
     this.loadItems();
   }
 
+  public toggleFavourite(itemCard: ItemCard): void {
+    this.userService
+      .get(itemCard.ownerId)
+      .pipe(take(1))
+      .subscribe((user: User) => {
+        this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent(itemCard, user);
+      });
+  }
+
   private loadItems(): void {
     this.loading = true;
 
