@@ -1,4 +1,6 @@
-<div class="FiltersWrapper__bar_wrapper" [class.FiltersWrapper__bar_wrapper--open]="openBubbleCount$ | async">
+<div class="FiltersWrapper">
+  <div class="FiltersWrapper__backdrop" *ngIf="openBubbleCount$ | async"></div>
+
   <div class="FiltersWrapper__bar d-flex p-2">
     <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
     <tsl-filter-group
@@ -9,7 +11,6 @@
       (openStateChange)="bubbleOpenStateChange($event)"></tsl-filter-group>
   </div>
 </div>
-
 
 <tsl-drawer [isOpen]="drawerConfig.isOpen" [offsetTop]="drawerConfig.offsetTop" [hasApply]="drawerConfig.hasApply"
             [noScroll]="isDrawerContentScrollable$ | async"

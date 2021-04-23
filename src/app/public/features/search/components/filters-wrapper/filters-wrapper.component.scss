@@ -1,19 +1,30 @@
 @import '~style/common';
 
 .FiltersWrapper {
-  &__bar_wrapper {
-    overflow: auto;
-    @include hide-scroll-bars;
-
-    // Hacky way to be able to scroll and see the filter dropdown
-    &--open {
-      height: 100vh;
-    }
-  }
+  position: sticky;
+  top: $topbar-height;
+  width: 100%;
+  z-index: 1;
 
   &__bar {
-    min-width: fit-content;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
     background-color: $white;
-    height: 60px;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__backdrop {
+    position: absolute;
+    display: block;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    background-color: rgba($white, 0.8);
   }
 }
