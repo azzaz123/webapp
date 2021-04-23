@@ -15,10 +15,10 @@ $horizontal-margin: 10px;
       &::after {
         display: block;
         content: '';
-        background-color: $blue-grey-4;
+        background-color: $blue-grey-5;
         height: 1px;
-        width: calc(100% - #{2 * $horizontal-margin});
-        margin: 30px $horizontal-margin;
+        width: 100%;
+        margin: $spacer * 1.5 0;
       }
     }
   }
