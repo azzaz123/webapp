@@ -1,10 +1,19 @@
-<div class="SortFilter" ngbDropdown class="h-100" (openChange)="openChange($event)">
+<div class="SortFilter" #dropdown ngbDropdown class="h-100" (openChange)="openChange($event)">
   <div class="d-flex flex-row align-items-center h-100 pl-4" ngbDropdownToggle>
     <tsl-svg-icon class="ps-2" src="/assets/icons/filters/ic-sort-by.svg"></tsl-svg-icon>
-    <div class="ps-2">Ordenador por: </div>
-    <div>distancia</div>
+    <div class="ps-2" i18n="web_search_sort_filter_title">Ordenador por:</div>
+    <div class="SortFilter__value ps-2">{{ selected.label }}</div>
   </div>
-  <div ngbDropdownMenu>
-    <h1>HOLA</h1>
+  <div ngbDropdownMenu class="SortFilter__bubble">
+    <div class="SortFilter__toolbar d-flex align-items-center px-4">
+      <p class="SortFilter__title--bubble m-0" i18n="web_search_sort_filter_bubble_title">Ordenado por</p>
+    </div>
+    <div>
+      <tsl-select-form [options]="selectFormOptionsConfig" [formControl]="formControl" (ngModelChange)="onChangeValue($event)">
+      </tsl-select-form>
+    </div>
+    <div class="SortFilter__actions px-4 d-flex align-items-center justify-content-end" (click)="cancel()">
+      <tsl-button i18n="web_search_sort_filter_bubble_cancel" className="basic">Cancelar</tsl-button>
+    </div>
   </div>
 </div>
