@@ -75,16 +75,11 @@ export class PublicProfileTrackingEventsService {
   }
 
   public trackViewOwnReviewsorViewOtherReviews(user: User, userStats: UserStats, reviews: Review[], isOwnUser: boolean) {
-    const event: ViewReviewsAnalyticsPageView = PublicProfileTrackingEventsService.factoryViewReviewsEvent(
-      user,
-      userStats,
-      reviews,
-      isOwnUser
-    );
+    const event: ViewReviewsAnalyticsPageView = PublicProfileTrackingEventsService.getViewReviewsEvent(user, userStats, reviews, isOwnUser);
     this.analyticsService.trackPageView(event);
   }
 
-  private static factoryViewReviewsEvent(
+  private static getViewReviewsEvent(
     { featured, id }: User,
     { ratings }: UserStats,
     reviews: Review[],
