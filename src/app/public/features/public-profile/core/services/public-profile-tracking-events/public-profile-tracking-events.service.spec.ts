@@ -108,6 +108,4 @@ describe('PublicProfileTrackingEventsService', () => {
       expect(analyticsService.trackPageView).toHaveBeenLastCalledWith(MOCK_TRACK_VIEW_OTHERS_REVIEWS);
     });
   });
-  {
-  }
 });
