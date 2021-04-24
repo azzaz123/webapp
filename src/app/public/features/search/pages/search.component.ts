@@ -26,7 +26,7 @@ import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
 })
 export class SearchComponent implements OnInit, OnDestroy {
   public items$: Observable<ItemCard[]> = this.searchService.items$;
-  public isLoadingSearchResults$: Observable<boolean> = this.searchService.isLoadingResults$;
+  public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
 
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
   public device: DeviceType;

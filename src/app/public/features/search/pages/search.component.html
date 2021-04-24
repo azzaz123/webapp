@@ -35,6 +35,6 @@
     </ng-container>
   </tsl-search-layout>
 
-  <tsl-search-error-layout *ngIf="(items$ | async).length === 0 && (isLoadingSearchResults$ | async) === false">
+  <tsl-search-error-layout *ngIf="(items$ | async).length === 0 && (isLoadingResults$ | async) === false">
   </tsl-search-error-layout>
 </div>
