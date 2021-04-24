@@ -6,8 +6,10 @@ import { PublicLayoutModule } from '@public/layout/public-layout.module';
 import { ItemCardListModule } from '@public/shared/components/item-card-list/item-card-list.module';
 import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopping.module';
 import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
+import { ErrorBoxModule } from '@shared/error-box/error-box.module';
 import { SharedModule } from '@shared/shared.module';
 import { FiltersWrapperModule } from './components/filters-wrapper/filters-wrapper.module';
+import { SearchErrorLayoutComponent } from './components/search-error-layout/search-error-layout/search-error-layout.component';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
 import { SearchAPIService } from './core/services/infrastructure/api/search-api.service';
 import { SearchFavouritesService } from './core/services/infrastructure/favorites/search-favourites.service';
@@ -28,9 +30,9 @@ import { SearchRoutingModule } from './search.routing.module';
     AdSlotModule,
     AdSlotShoppingModule,
     ItemFavouritesModule,
-    ErrorBoxModule
+    ErrorBoxModule,
   ],
   providers: [ViewportService, SearchStoreService, SearchService, SearchInfrastructureService, SearchAPIService, SearchFavouritesService],
-  declarations: [SearchComponent, SearchLayoutComponent],
+  declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
 })
 export class SearchModule {}
