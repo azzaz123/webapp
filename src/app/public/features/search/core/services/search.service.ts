@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { SearchPagination } from '../../interfaces/search-pagination.interface';
 import { FilterParameterStoreService } from './filter-parameter-store.service';
@@ -10,6 +10,8 @@ import { SearchStoreService } from './search-store.service';
 
 @Injectable()
 export class SearchService {
+  private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(true);
+
   private subscription: Subscription = new Subscription();
 
   private loadMoreSubject: Subject<void> = new Subject<void>();
@@ -20,6 +22,14 @@ export class SearchService {
 
   get items$(): Observable<ItemCard[]> {
     return this.searchStoreService.items$;
+  }
+
+  get isLoadingResults$(): Observable<boolean> {
+    return this.isLoadingResultsSubject.asObservable();
+  }
+
+  private set isLoadingResults(loading: boolean) {
+    this.isLoadingResultsSubject.next(loading);
   }
 
   constructor(
@@ -46,8 +56,10 @@ export class SearchService {
 
   private onChangeParameters(): Observable<SearchPagination> {
     return this.filterParameterStoreService.parameters$.pipe(
+      tap(() => (this.isLoadingResults = true)),
       switchMap((filterParameters: FilterParameter[]) => this.searchInfrastructureService.search(filterParameters)),
-      tap(({ items }: SearchPagination) => this.searchStoreService.setItems(items))
+      tap(({ items }: SearchPagination) => this.searchStoreService.setItems(items)),
+      tap(() => (this.isLoadingResults = false))
     );
   }
 
