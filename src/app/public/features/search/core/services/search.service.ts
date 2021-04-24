@@ -10,7 +10,8 @@ import { SearchStoreService } from './search-store.service';
 
 @Injectable()
 export class SearchService {
-  private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(true);
+  private static INITIAL_LOADING_STATE = true;
+  private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_LOADING_STATE);
 
   private subscription: Subscription = new Subscription();
 
