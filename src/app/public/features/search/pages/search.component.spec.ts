@@ -1,11 +1,13 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { SearchErrorLayoutComponentStub } from '@fixtures/shared';
 import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
@@ -29,6 +31,7 @@ describe('SearchComponent', () => {
   let storeMock;
   let searchServiceMock;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
+  const isLoadingResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   beforeEach(async () => {
     deviceServiceMock = {
@@ -42,10 +45,19 @@ describe('SearchComponent', () => {
     searchServiceMock = {
       init: () => {},
       items$: itemsSubject.asObservable(),
+      isLoadingResults$: isLoadingResultsSubject.asObservable(),
       loadMore: () => {},
+      close: () => {},
     };
     await TestBed.configureTestingModule({
-      declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, AdSlotGroupShoppingComponentSub, ItemCardListComponentStub],
+      declarations: [
+        SearchComponent,
+        SearchLayoutComponent,
+        SearchErrorLayoutComponentStub,
+        AdComponentStub,
+        AdSlotGroupShoppingComponentSub,
+        ItemCardListComponentStub,
+      ],
       imports: [FiltersWrapperModule, HttpClientTestingModule],
       providers: [
         {
@@ -137,6 +149,22 @@ describe('SearchComponent', () => {
           expect(nextItem.id).toBe(index !== 0 ? MOCK_ITEM_CARD.id : 'old_item');
         });
         done();
+      });
+    });
+
+    describe('when no items are recieved', () => {
+      it('should show the no results layout', (done) => {
+        const items = [];
+        itemsSubject.next(items);
+        isLoadingResultsSubject.next(false);
+
+        component.items$.subscribe(() => {
+          fixture.detectChanges();
+          const noResultsLayout = fixture.debugElement.query(By.css('tsl-search-error-layout'));
+
+          expect(noResultsLayout).toBeTruthy();
+          done();
+        });
       });
     });
   });
