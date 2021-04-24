@@ -28,6 +28,7 @@ import { SearchRoutingModule } from './search.routing.module';
     AdSlotModule,
     AdSlotShoppingModule,
     ItemFavouritesModule,
+    ErrorBoxModule
   ],
   providers: [ViewportService, SearchStoreService, SearchService, SearchInfrastructureService, SearchAPIService, SearchFavouritesService],
   declarations: [SearchComponent, SearchLayoutComponent],
