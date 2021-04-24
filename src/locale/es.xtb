@@ -1171,4 +1171,7 @@
   <translation id="web_subscription_benefit_description_visibility">Ocupa los primeros resultados de búsqueda. ¡Atrae más clientes!</translation>
   <translation id="web_subscription_benefit_title_time">Ahorra tiempo de gestión</translation>
   <translation id="web_subscription_benefit_description_time">Tus productos siempre estarán activos y listos para la venta.</translation>
+  <translation id="web_search_no_results_title">Nada por aquí</translation>
+  <translation id="web_search_no_results_subtitle">Parece que por el momento lo que buscas no se encuentra en Wallapop. Mientras tanto, ¿por qué no echas un vistazo al resto de productos?</translation>
+  <translation id="web_search_no_results_button_text">Iniciar nueva búsqueda</translation>
 </translationbundle>
