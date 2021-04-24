@@ -4,7 +4,7 @@
   position: sticky;
   top: $topbar-height;
   width: 100%;
-  z-index: 1;
+  z-index: 101;
 
   &__bar {
     display: flex;
@@ -13,7 +13,6 @@
     height: 100%;
     background-color: $white;
     overflow-x: scroll;
-    -webkit-overflow-scrolling: touch;
   }
 
   &__backdrop {
