@@ -39,11 +39,14 @@
             <span class="mb-2">
                 {{ subscriptionBodyText }}
             </span>
+            <span class="SubscriptionCard__info--edit mb-2" (click)="onClickLink()">
+                {{ textLink }}
+            </span>
         </ng-template>
     </div>
     <ng-container *ngIf="subscription.subscribed_from; else subscriptionButton">
         <ng-container *ngIf="subscription.subscribed_until; else noSubscriptionEnd">
-            <span *ngIf="subscription.subscribed_until" class="SubscriptionCard__until"
+            <span class="SubscriptionCard__until"
                 i18n="@@web_profile_pages_subscription_330"> Subscription ends on
                 {{subscription.subscribed_until | date:'dd/MM/yy' }}
             </span>
@@ -55,7 +58,7 @@
         </ng-template>
     </ng-container>
     <ng-template #subscriptionButton>
-        <tsl-button className="btn-primary">
+        <tsl-button className="btn-primary" (click)="onClickButton()">
             {{buttonText}}</tsl-button>
     </ng-template>
 </div>

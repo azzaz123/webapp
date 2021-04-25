@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 
@@ -7,28 +7,26 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
   templateUrl: './subscription-list.component.html',
   styleUrls: ['./subscription-list.component.scss'],
 })
-export class SubscriptionListComponent implements OnInit {
+export class SubscriptionListComponent {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() openSubscriptionModal: EventEmitter<SubscriptionsResponse> = new EventEmitter();
 
   constructor(private subscriptionsService: SubscriptionsService) {}
 
-  ngOnInit(): void {}
-
-  public showEdit(subscription: SubscriptionsResponse): boolean {
+  private showEdit(subscription: SubscriptionsResponse): boolean {
     return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
   }
 
-  public showCancel(subscription: SubscriptionsResponse): boolean {
+  private showCancel(subscription: SubscriptionsResponse): boolean {
     return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length === 1;
   }
 
-  public showManageInApp(subscription: SubscriptionsResponse): boolean {
+  private showManageInApp(subscription: SubscriptionsResponse): boolean {
     return this.subscriptionsService.isSubscriptionInApp(subscription) && !this.subscriptionsService.hasOneFreeTier(subscription);
   }
 
-  public showUnsubscribeFirst(subscription: SubscriptionsResponse): boolean {
+  private showUnsubscribeFirst(subscription: SubscriptionsResponse): boolean {
     return this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneFreeTier(subscription);
   }
 
@@ -54,7 +52,7 @@ export class SubscriptionListComponent implements OnInit {
     }
   }
 
-  public onOpenSubscriptionModal(subscription) {
-    this.openSubscriptionModal.emit();
+  public onOpenSubscriptionModal(subscription: SubscriptionsResponse): void {
+    this.openSubscriptionModal.emit(subscription);
   }
 }

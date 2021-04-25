@@ -1,12 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SubscriptionResponse, SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-subscription-card',
   templateUrl: './subscription-card.component.html',
   styleUrls: ['./subscription-card.component.scss'],
 })
-export class SubscriptionCardComponent implements OnInit {
+export class SubscriptionCardComponent {
   @Input() subscription: SubscriptionsResponse;
   @Input() textLink: string;
   @Input() textButton: string;
@@ -22,10 +22,6 @@ export class SubscriptionCardComponent implements OnInit {
     'Gana visibilidad en búsquedas',
     'Ahorra tiempo de gestión',
   ];
-
-  ngOnInit(): void {
-    console.log('TEST', this.subscription);
-  }
 
   get buttonText(): string {
     return this.hasTrialAvailable ? $localize`:@@startFreeTrial:Start free trial` : $localize`:@@seePlans:See plans`;
@@ -46,5 +42,13 @@ export class SubscriptionCardComponent implements OnInit {
   get iconSrc(): string {
     const status = this.subscription.subscribed_from ? 'normal' : 'disabled';
     return `/assets/icons/categories/${status}/${this.subscription.category_icon}.svg`;
+  }
+
+  public onClickButton(): void {
+    this.clickButton.emit();
+  }
+
+  public onClickLink(): void {
+    this.clickLink.emit();
   }
 }
