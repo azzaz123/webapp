@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.enum';
 
 @Component({
@@ -23,8 +22,6 @@ export class FilterTemplateComponent {
   @Output() click: EventEmitter<void> = new EventEmitter();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
 
-  @ViewChild('dropdown', { read: NgbDropdown }) dropdown: NgbDropdown;
-
   public BUBBLE_VARIANT = BUBBLE_VARIANT;
 
   public isDropdownOpen = false;
@@ -40,27 +37,33 @@ export class FilterTemplateComponent {
   }
 
   public handleOpenChange(isOpen: boolean): void {
-    this.openStateChange.emit(isOpen);
     this.isDropdownOpen = isOpen;
+    this.openStateChange.emit(isOpen);
   }
 
   public handleCancel(event: MouseEvent): void {
     event.stopPropagation();
-    this.dropdown.close();
+    this.closeDropdown();
   }
 
   public handleAccept(event: MouseEvent): void {
     event.stopPropagation();
-    this.dropdown.close();
+    this.closeDropdown();
     this.apply.emit();
   }
 
   public handleClear(): void {
-    this.dropdown.close();
+    this.closeDropdown();
     this.clear.emit();
   }
 
   public toggleDropdown(): void {
-    this.dropdown.toggle();
+    this.isDropdownOpen = !this.isDropdownOpen;
+    this.openStateChange.emit(this.isDropdownOpen);
+  }
+
+  private closeDropdown(): void {
+    this.isDropdownOpen = false;
+    this.openStateChange.emit(this.isDropdownOpen);
   }
 }
