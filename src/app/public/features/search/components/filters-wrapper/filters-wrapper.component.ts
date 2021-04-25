@@ -26,11 +26,11 @@ export class FiltersWrapperComponent {
   public scrollOffset = 0;
   private drawerValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
   private bubbleValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
-  private openBubbleCountSubject = new BehaviorSubject<number>(0);
+  private openedBubbleSubject = new BehaviorSubject<boolean>(false);
   private isDrawerContentScrollableSubject = new BehaviorSubject<boolean>(false);
   private subscriptions = new Subscription();
 
-  public openBubbleCount$ = this.openBubbleCountSubject.asObservable();
+  public openBubbleCount$ = this.openedBubbleSubject.asObservable();
   public bubbleValues$ = this.bubbleValuesSubject.asObservable();
   public drawerValues$ = this.drawerValuesSubject.asObservable();
   public isDrawerContentScrollable$ = this.isDrawerContentScrollableSubject.asObservable();
@@ -88,9 +88,7 @@ export class FiltersWrapperComponent {
     if (this.drawerConfig.isOpen && isOpen) {
       this.drawerConfig.isOpen = false;
     }
-
-    const count = this.openBubbleCountSubject.getValue();
-    this.openBubbleCountSubject.next(isOpen ? count + 1 : count - 1);
+    this.openedBubbleSubject.next(isOpen);
   }
 
   public drawerOpenStateChange(isOpen: boolean): void {
