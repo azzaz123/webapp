@@ -1,22 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { SearchItem } from '../../interfaces/search-item.interface';
-import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class SearchStoreService {
-  private itemsSubject = new BehaviorSubject<SearchItem[]>([]);
+  private static INITIAL_STATE: ItemCard[] = [];
 
-  // TODO: This will disappear when the integration is done
-  constructor() {
-    const items = Array(10).fill(MOCK_SEARCH_ITEM);
-    this.setItems(items);
-    setTimeout(() => {
-      this.appendItems(items);
-    }, 2000);
-  }
+  private itemsSubject = new BehaviorSubject<ItemCard[]>(SearchStoreService.INITIAL_STATE);
 
-  public get items$(): Observable<SearchItem[]> {
+  public get items$(): Observable<ItemCard[]> {
     return this.itemsSubject.asObservable();
   }
 
@@ -24,15 +16,19 @@ export class SearchStoreService {
     return this.getItems().length;
   }
 
-  public getItems(): SearchItem[] {
+  public getItems(): ItemCard[] {
     return this.itemsSubject.getValue();
   }
 
-  public setItems(items: SearchItem[]): void {
+  public setItems(items: ItemCard[]): void {
     this.itemsSubject.next(items);
   }
 
-  public appendItems(items: SearchItem[]): void {
+  public appendItems(items: ItemCard[]): void {
     this.itemsSubject.next([...this.getItems(), ...items]);
+  }
+
+  public clear(): void {
+    this.itemsSubject.next(SearchStoreService.INITIAL_STATE);
   }
 }

@@ -2,7 +2,8 @@ import { Image } from '@core/user/user-response.interface';
 import { ItemCard, ItemCardsWithPagination, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
 import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
-import { ITEM_BUMP_FLAGS, ITEM_DATA, MOCK_ITEM_RESPONSE, ITEM_SALE_CONDITIONS, MOCK_ITEM_RESPONSE_FAVOURITED } from './item.fixtures.spec';
+import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
+import { ITEM_BUMP_FLAGS, ITEM_DATA, ITEM_SALE_CONDITIONS, MOCK_ITEM_RESPONSE, MOCK_ITEM_RESPONSE_FAVOURITED } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';
 
 export const MOCK_ITEM_CARD: ItemCard = {
@@ -129,3 +130,14 @@ export const MOCK_EMPTY_ITEM_CARDS_WITH_RECOMMENDED_TYPE: ItemCardsWithRecommene
   recommendedType: RECOMMENDER_TYPE.SOCIAL_MEDIA_RECOMMENDATION,
   recommendedItems: [],
 };
+
+export function SearchItemListFactory(count: number = 20): ItemCard[] {
+  return new Array(count).fill('').map((_, index) => ({ ...MOCK_ITEM_CARD, id: '235325' + index }));
+}
+
+export function SearchPaginationFactory(hasMore: boolean = false): SearchPagination {
+  return {
+    items: SearchItemListFactory(40),
+    hasMore,
+  };
+}
