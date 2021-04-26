@@ -1,5 +1,5 @@
 <div class="FiltersWrapper">
-  <div class="FiltersWrapper__backdrop" *ngIf="openBubbleCount$ | async"></div>
+  <div class="FiltersWrapper__backdrop" *ngIf="openedBubble$ | async"></div>
 
   <div class="FiltersWrapper__bar d-flex p-2">
     <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>

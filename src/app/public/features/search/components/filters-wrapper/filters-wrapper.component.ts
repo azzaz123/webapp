@@ -37,7 +37,7 @@ export class FiltersWrapperComponent {
 
   public drawerFilterConfigurations$ = this.drawerFilterConfigurationsSubject.asObservable();
   public bubbleFilterConfigurations$ = this.bubbleFilterConfigurationsSubject.asObservable();
-  public openBubbleCount$ = this.openedBubbleSubject.asObservable();
+  public openedBubble$ = this.openedBubbleSubject.asObservable();
   public bubbleValues$ = this.bubbleValuesSubject.asObservable();
   public drawerValues$ = this.drawerValuesSubject.asObservable();
   public isDrawerContentScrollable$ = this.isDrawerContentScrollableSubject.asObservable();
