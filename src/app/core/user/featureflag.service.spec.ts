@@ -106,8 +106,11 @@ describe('FeatureflagService', () => {
         it('should return true', () => {
           spyOn(localStorage, 'getItem').and.returnValue(true);
           isDevMode.and.returnValue(false);
+          let dataResponse: boolean;
 
-          expect(service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY)).toBe(true);
+          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+
+          expect(dataResponse).toBe(true);
         });
       });
 
@@ -115,8 +118,11 @@ describe('FeatureflagService', () => {
         it('should return true', () => {
           spyOn(localStorage, 'getItem').and.returnValue(false);
           isDevMode.and.returnValue(true);
+          let dataResponse: boolean;
 
-          expect(service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY)).toBe(true);
+          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+
+          expect(dataResponse).toBe(true);
         });
       });
 
@@ -124,8 +130,11 @@ describe('FeatureflagService', () => {
         it('should return false', () => {
           spyOn(localStorage, 'getItem').and.returnValue(false);
           isDevMode.and.returnValue(false);
+          let dataResponse: boolean;
 
-          expect(service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY)).toBe(false);
+          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+
+          expect(dataResponse).toBe(false);
         });
       });
     });
