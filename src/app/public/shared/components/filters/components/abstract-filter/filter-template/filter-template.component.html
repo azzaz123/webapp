@@ -1,19 +1,18 @@
 <div *ngIf="isBubble">
-  <tsl-bubble
-              (click)="handleBubbleClick($event)"
-              [variant]="hasValue ? BUBBLE_VARIANT.SELECTED : BUBBLE_VARIANT.ACTIVE"
-              [counter]="counter"
-              [icon]="icon"
-              [isDropdown]="isDropdown"
-              [isDropdownOpen]="isDropdownOpen"
-              [isClearable]="isClearable"
-              (clear)="handleClear()"
+  <tsl-bubble 
+    (click)="handleBubbleClick($event)" 
+    [variant]="hasValue ? BUBBLE_VARIANT.SELECTED : BUBBLE_VARIANT.ACTIVE"
+    [counter]="counter" [icon]="icon"
+    [isDropdown]="isDropdown"
+    [isDropdownOpen]="isDropdownOpen"
+    [isClearable]="isClearable"
+    (clear)="handleClear()"
   >
     {{label}}
   </tsl-bubble>
 
-  <div class="FilterTemplate__dropdown"
-    tslFilterDropdown
+  <div class="FilterTemplate__dropdown" 
+    tslFilterDropdown 
     *ngIf="isDropdownOpen"
     [dropdownOpened]="isDropdownOpen"
     [class.FilterTemplate__dropdown--opened]="isDropdownOpen"
@@ -27,13 +26,14 @@
       <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
     </div>
 
-    <div [class.FilterTemplate]="!hasApply" class="FilterTemplate__actions px-4 d-flex align-items-center justify-content-end">
+    <div [class.FilterTemplate]="!hasApply"
+      class="FilterTemplate__actions px-4 d-flex align-items-center justify-content-end">
       <tsl-button className="basic basic-dark btn-filter" class="mx-1" i18n="@@cancelButton"
-                  (click)="handleCancel($event)">
+        (click)="handleCancel($event)">
         Cancel
       </tsl-button>
       <tsl-button *ngIf="hasApply" i18n="@@Apply" className="btn-primary btn-filter" class="mx-1"
-                  (click)="handleAccept($event)">
+        (click)="handleAccept($event)">
         Apply
       </tsl-button>
     </div>
@@ -49,10 +49,7 @@
   <div #extendedContent>
     <ng-content></ng-content>
   </div>
-  <span *ngIf="extendedContent.children.length === 0" class="FilterTemplate--warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
+  <span *ngIf="extendedContent.children.length === 0" class="FilterTemplate--warn">
+    Please, avoid using abstract filter directly, use one of the extensions or create your own
+  </span>
 </ng-template>
-
-
-
-
-
