@@ -866,11 +866,14 @@
   <msg id="ProfileInfoSchedule"><source>src/app/public/features/public-profile/pages/user-info/user-info.component.html:51</source>Opening hours</msg>
   <msg id="ProfileInfoLocation"><source>src/app/public/features/public-profile/pages/user-info/user-info.component.html:57</source>Location</msg>
   <msg id="UserPublishedLoadMore"><source>src/app/public/features/public-profile/pages/user-published/user-published.component.html:12</source>Load more products</msg>
-  <msg id="NoPublishedItemsTitle"><source>src/app/public/features/public-profile/pages/user-published/user-published.component.ts:13</source>Nothing for sale yet</msg>
-  <msg id="NoPublishedItemsDescription"><source>src/app/public/features/public-profile/pages/user-published/user-published.component.ts:14</source>Seems like someone’s using all they have. Give them time to upload something to wallapop!</msg>
+  <msg id="NoPublishedItemsTitle"><source>src/app/public/features/public-profile/pages/user-published/user-published.component.ts:17</source>Nothing for sale yet</msg>
+  <msg id="NoPublishedItemsDescription"><source>src/app/public/features/public-profile/pages/user-published/user-published.component.ts:18</source>Seems like someone’s using all they have. Give them time to upload something to wallapop!</msg>
   <msg id="UserReviewsLoadMore"><source>src/app/public/features/public-profile/pages/user-reviews/user-reviews.component.html:12</source>Load more reviews</msg>
   <msg id="NoReviewsItemsTitle"><source>src/app/public/features/public-profile/pages/user-reviews/user-reviews.component.ts:16</source>No reviews yet</msg>
   <msg id="NoReviewsItemsDescription"><source>src/app/public/features/public-profile/pages/user-reviews/user-reviews.component.ts:17</source>This person hasn&apos;t received any reviews. Will yours be the first?</msg>
+  <msg id="web_search_no_results_title"><source>src/app/public/features/search/components/search-error-layout/search-error-layout/search-error-layout.component.ts:13</source>Sorry, we weren&apos;t able to find what you&apos;re looking for at the moment</msg>
+  <msg id="web_search_no_results_subtitle"><source>src/app/public/features/search/components/search-error-layout/search-error-layout/search-error-layout.component.ts:14</source>Try changing your search terms, or take a chance and discover something unexpected in the land of wallapop</msg>
+  <msg id="web_search_no_results_button_text"><source>src/app/public/features/search/components/search-error-layout/search-error-layout/search-error-layout.component.ts:18</source>New search</msg>
   <msg id="FooterLinksWallapopTitle"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:5</source>wallapop</msg>
   <msg id="FooterLinksAboutLabel"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:8</source>About</msg>
   <msg id="FooterLinksAboutHref"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:9</source>https://about.wallapop.com/en</msg>
@@ -1142,8 +1145,8 @@
   <msg id="web_stripe_card_element_513"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:19,22</source> By subscribing, you are accepting the <ph name="START_LINK"/>terms &amp; conditions<ph name="CLOSE_LINK"/> and the <ph name="START_LINK_1"/>privacy policy<ph name="CLOSE_LINK"/> of Wallapop S.L. and Stripe Ltd </msg>
   <msg id="web_stripe_card_element_514"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:31</source>Continue to Checkout</msg>
   <msg id="web_stripe_card_element_672"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:42</source>Save</msg>
-  <msg id="web_stripe_card_element_515"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:53</source>Subscribe now</msg>
-  <msg id="Save"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:64</source>Save</msg>
+  <msg id="web_stripe_card_element_515"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:54</source>Subscribe now</msg>
+  <msg id="Save"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:65</source>Save</msg>
   <msg id="web_all_button_process_629"><source>src/app/shared/process-all-button/process-all-button.component.html:6</source>Process all</msg>
   <msg id="web_all_button_process_516"><source>src/app/shared/process-all-button/process-all-button.component.html:7</source>This will process all the elements in this page.</msg>
   <msg id="web_all_button_process_693"><source>src/app/shared/process-all-button/process-all-button.component.html:10</source>Cancel</msg>
