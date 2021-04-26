@@ -34,6 +34,10 @@ export class SubscriptionListComponent {
     return this.subscriptionsService.hasTrial(subscription);
   }
 
+  public isSuscribed(subscription: SubscriptionsResponse): boolean {
+    return !!subscription.subscribed_from;
+  }
+
   public getTextButton(subscription: SubscriptionsResponse): string {
     if (!subscription.subscribed_from) {
       return this.hasOneFreeSubscription(subscription) ? $localize`:@@startFreeTrial:Start free trial` : $localize`:@@seePlans:See plans`;

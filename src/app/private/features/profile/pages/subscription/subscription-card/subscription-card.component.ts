@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
@@ -12,8 +12,6 @@ export class SubscriptionCardComponent {
   @Input() hasTrialAvailable: boolean;
   @Input() isSuscribed: boolean;
   @Output() clickButton: EventEmitter<void> = new EventEmitter();
-
-  constructor() {}
 
   subcriptionBenefits = [
     'Elige cuantos coches vas subir',
@@ -39,7 +37,7 @@ export class SubscriptionCardComponent {
   }
 
   get iconSrc(): string {
-    const status = this.subscription.subscribed_from ? 'normal' : 'disabled';
+    const status = this.isSuscribed ? 'normal' : 'disabled';
     return `/assets/icons/categories/${status}/${this.subscription.category_icon}.svg`;
   }
 
