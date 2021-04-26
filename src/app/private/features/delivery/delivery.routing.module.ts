@@ -11,7 +11,7 @@ const routes: Route[] = [
     component: DeliveryComponent,
     children: [
       {
-        path: DELIVERY_PATHS.DELIVERY_ADDRESS,
+        path: DELIVERY_PATHS.ADDRESS,
         loadChildren: () => DeliveryAddressModule,
       },
     ],
