@@ -8,7 +8,7 @@
             <tsl-favourite-user [userId]="userId" [isFavourite]="isFavourited" (userFavouriteChanged)="userFavouriteChanged($event)"></tsl-favourite-user>
         </div>
     </div>
-    <router-outlet (activate)="onClickProfileTabs($event)"></router-outlet>
+    <router-outlet></router-outlet>
     <tsl-sky *ngIf="isMobile" [adSlot]="adSlot"></tsl-sky>
 </div>
 <tsl-spinner [hidden]="!loading"></tsl-spinner>
