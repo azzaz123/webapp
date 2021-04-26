@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
-import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
@@ -9,7 +8,7 @@ import { PublicFooterService } from '@public/core/services/footer/public-footer.
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map, share, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -17,6 +16,7 @@ import {
   AD_SHOPPING_NATIVE_CONTAINER_PUBLIC_SEARCH,
   AD_SHOPPING_PUBLIC_SEARCH,
 } from '../core/ads/shopping/search-ads-shopping.config';
+import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
 
@@ -58,24 +58,23 @@ export class SearchComponent implements OnInit, OnDestroy {
   public slotsConfig: SlotsConfig;
 
   constructor(
-    private adsService: AdsService,
     private deviceService: DeviceService,
     private searchService: SearchService,
-    private publicFooterService: PublicFooterService
+    private publicFooterService: PublicFooterService,
+    private searchAdsService: SearchAdsService
   ) {
     this.device = this.deviceService.getDeviceType();
   }
 
   public ngOnInit(): void {
     this.slotsConfig = this.deviceService.isMobile() ? SLOTS_CONFIG_MOBILE : SLOTS_CONFIG_DESKTOP;
-    this.adsService.setAdKeywords({ content: 'Iphone 11' });
 
-    this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
-    // @TODO hardcoded the query to test ad shopping "Iphone 11"
+    this.searchAdsService.setSlots();
   }
 
   public ngOnDestroy(): void {
     this.searchService.close();
+    this.searchAdsService.close();
     this.publicFooterService.setShow(true);
   }
 
