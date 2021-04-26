@@ -5,7 +5,7 @@
                      [title]="config.title"
                      [icon]="config.icon"
                      [label]="label$ | async"
-                     [hasValue]="hasValue$() | async"
+                     [hasValue]="hasValue$ | async"
                      (clear)="handleClear()"
                      (openStateChange)="openStateChange.emit($event)">
 
@@ -13,7 +13,7 @@
                               [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
                               [placeholderLabel]="label$ | async"
                               [contentTitle]="contentTitle"
-                              [isClearable]="hasValue$() | async"
+                              [isClearable]="hasValue$ | async"
                               (placeholderOpenStateChange)="openStateChange.emit($event)"
                               (clear)="handleClear()">
 

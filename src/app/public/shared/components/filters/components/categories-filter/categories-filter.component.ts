@@ -4,10 +4,9 @@ import { CategoriesFilterParams } from './interfaces/categories-filter-params.in
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CATEGORY_OPTIONS } from './data/category_options';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { CategoriesFilterIcon } from './interfaces/categories-filter-icon.interface';
 import { CategoriesFilterOption } from './interfaces/categories-filter-option.interface';
-import { Subscription } from 'rxjs/internal/Subscription';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';

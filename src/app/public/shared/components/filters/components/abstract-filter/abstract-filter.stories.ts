@@ -26,7 +26,7 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
       [isClearable]="config.isClearable"
       [counter]="getFilterCounter()"
       [label]="getLabel()"
-      [hasValue]="hasValue$() | async"
+      [hasValue]="hasValue$ | async"
       (openStateChange)="handleOpenStateChange($event)"
       (apply)="handleApply()"
       (clear)="handleClear()"
