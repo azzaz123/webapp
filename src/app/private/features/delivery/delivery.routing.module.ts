@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { DELIVERY_PATHS } from './delivery-routing-constants';
+import { DeliveryComponent } from './pages/delivery.component';
+import { KYCModule } from './pages/kyc/kyc.module';
 import { AcceptScreenModule } from './pages/accept-screen/accept-screen.module';
 import { DeliveryAddressModule } from './pages/delivery-address/delivery-address.module';
-import { DeliveryComponent } from './pages/delivery.component';
 import { TransactionTrackingScreenModule } from './pages/transaction-tracking-screen/transaction-tracking-screen.module';
 import { PayviewModule } from './pages/payview/payview.module';
 import { ShipmentTrackingModule } from './pages/shipment-tracking/shipment-tracking.module';
@@ -14,6 +15,10 @@ const routes: Route[] = [
     path: '',
     component: DeliveryComponent,
     children: [
+      {
+        path: DELIVERY_PATHS.KYC,
+        loadChildren: () => KYCModule,
+      },
       {
         path: DELIVERY_PATHS.TIMELINE,
         loadChildren: () => TransactionTrackingScreenModule,
