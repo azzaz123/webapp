@@ -14,6 +14,7 @@ import { MockFilterOptionService } from '@fixtures/filter-option-service.fixture
 import { SelectFilterConfig } from '@public/shared/components/filters/components/select-filter/interfaces/select-filter-config.interface';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-filters',
@@ -106,7 +107,7 @@ const conditionConfig: SelectFilterConfig = {
   bubblePlaceholder: 'Condition',
   drawerPlaceholder: 'Select condition',
   mapKey: {
-    parameterKey: 'condition',
+    parameterKey: FILTER_QUERY_PARAM_KEY.condition,
   },
   type: FILTER_TYPES.SELECT,
 };
@@ -119,7 +120,7 @@ const genderConfig: SelectFilterConfig = {
   bubblePlaceholder: 'Gender',
   drawerPlaceholder: 'Select gender',
   mapKey: {
-    parameterKey: 'gender',
+    parameterKey: FILTER_QUERY_PARAM_KEY.gender,
   },
   type: FILTER_TYPES.SELECT,
 };

@@ -4,12 +4,18 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class SearchStoreService {
-  private static INITIAL_STATE: ItemCard[] = [];
+  private static INITIAL_ITEMS_STATE: ItemCard[] = [];
+  private static INITIAL_HAS_MORE_STATE: boolean = false;
 
-  private itemsSubject = new BehaviorSubject<ItemCard[]>(SearchStoreService.INITIAL_STATE);
+  private itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>(SearchStoreService.INITIAL_ITEMS_STATE);
+  private hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(SearchStoreService.INITIAL_HAS_MORE_STATE);
 
   public get items$(): Observable<ItemCard[]> {
     return this.itemsSubject.asObservable();
+  }
+
+  public get hasMore$(): Observable<boolean> {
+    return this.hasMoreSubject.asObservable();
   }
 
   public getItemCount(): number {
@@ -29,6 +35,11 @@ export class SearchStoreService {
   }
 
   public clear(): void {
-    this.itemsSubject.next(SearchStoreService.INITIAL_STATE);
+    this.itemsSubject.next(SearchStoreService.INITIAL_ITEMS_STATE);
+    this.hasMoreSubject.next(SearchStoreService.INITIAL_HAS_MORE_STATE);
+  }
+
+  public setHasMore(hasMore: boolean): void {
+    this.hasMoreSubject.next(hasMore);
   }
 }

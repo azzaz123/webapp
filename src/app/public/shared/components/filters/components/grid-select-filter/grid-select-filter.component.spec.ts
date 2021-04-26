@@ -16,9 +16,10 @@ import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-s
 import { By } from '@angular/platform-browser';
 import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
-import { CAR_CONFIGURATION_ID } from '../../core/enums/configuration-ids/car-configuration-ids';
+import { CAR_CONFIGURATION_ID } from '../../core/enums/configuration-ids/car-configuration-ids.enum';
 import { GridSelectFormComponent } from '@shared/form/components/grid-select/grid-select-form.component';
 import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -46,7 +47,7 @@ describe('GridSelectFilterComponent', () => {
     icon: 'icon.svg',
     bubblePlaceholder: 'Placeholder',
     mapKey: {
-      parameterKey: 'key',
+      parameterKey: FILTER_QUERY_PARAM_KEY.engine,
     },
     type: FILTER_TYPES.GRID,
     isMultiselect: false,
@@ -61,6 +62,11 @@ describe('GridSelectFilterComponent', () => {
   const bigIconsConfig: GridSelectFilterConfig = {
     ...basicConfig,
     hasBigIcons: true,
+  };
+
+  const mirrorIconConfig: GridSelectFilterConfig = {
+    ...basicConfig,
+    mirrorsValueIcon: true,
   };
 
   beforeEach(async () => {
@@ -147,7 +153,7 @@ describe('GridSelectFilterComponent', () => {
   describe('when provided a value from the parent', () => {
     beforeEach(() => {
       testComponent.config = basicConfig;
-      testComponent.value = [{ key: 'key', value: 'gasoil' }];
+      testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil' }];
       fixture.detectChanges();
     });
     it('should set corresponding label', () => {
@@ -165,7 +171,7 @@ describe('GridSelectFilterComponent', () => {
     describe('from the parent', () => {
       beforeEach(() => {
         testComponent.config = basicConfig;
-        testComponent.value = [{ key: 'key', value: 'gasoil' }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil' }];
         fixture.detectChanges();
       });
       describe('and is empty', () => {
@@ -195,7 +201,7 @@ describe('GridSelectFilterComponent', () => {
 
       describe('and has value', () => {
         beforeEach(() => {
-          testComponent.value = [{ key: 'key', value: 'gasoil,gasoline' }];
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil,gasoline' }];
         });
         it('should change label', () => {
           fixture.detectChanges();
@@ -221,7 +227,7 @@ describe('GridSelectFilterComponent', () => {
     describe('from form component', () => {
       beforeEach(() => {
         testComponent.config = basicConfig;
-        testComponent.value = [{ key: 'key', value: 'gasoil' }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil' }];
       });
 
       describe('and is bubble variant', () => {
@@ -255,7 +261,7 @@ describe('GridSelectFilterComponent', () => {
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: 'gasoline' }]);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoline' }]);
         });
       });
 
@@ -292,7 +298,7 @@ describe('GridSelectFilterComponent', () => {
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: 'gasoline' }]);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoline' }]);
         });
       });
     });
@@ -302,7 +308,7 @@ describe('GridSelectFilterComponent', () => {
     beforeEach(() => {
       testComponent.variant = FILTER_VARIANT.BUBBLE;
       testComponent.config = basicConfig;
-      testComponent.value = [{ key: 'key', value: 'gasoil' }];
+      testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil' }];
       fixture.detectChanges();
     });
 
@@ -333,7 +339,20 @@ describe('GridSelectFilterComponent', () => {
       fixture.detectChanges();
 
       expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-      expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
+      expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.engine, value: undefined }]);
+    });
+  });
+
+  describe('when value icon needs to be mirrored in bubble', () => {
+    beforeEach(() => {
+      testComponent.config = mirrorIconConfig;
+      testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'gasoil' }];
+      fixture.detectChanges();
+    });
+    it('should update icon when value is selected', () => {
+      const filterTemplate: FilterTemplateComponent = debugElement.query(By.directive(FilterTemplateComponent)).componentInstance;
+
+      expect(filterTemplate.icon).toEqual('/assets/icons/joke.svg');
     });
   });
 });
