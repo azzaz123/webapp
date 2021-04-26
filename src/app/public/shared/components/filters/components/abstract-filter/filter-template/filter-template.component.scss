@@ -4,6 +4,7 @@ $actions-height: 88px;
 $toolbar-height: 70px;
 $filter-content-height: 355px;
 $dropdown-border-radius: 10px;
+$dropdown-box-shadow: 0 3px 16px 3px;
 
 .FilterTemplate {
   &__dropdown {
@@ -11,7 +12,7 @@ $dropdown-border-radius: 10px;
     display: none;
     background-color: $white;
     border-radius: $dropdown-border-radius;
-    box-shadow: 0 3px 16px 3px rgba($blue-grey-1, 0.2);
+    box-shadow: $dropdown-box-shadow rgba($blue-grey-1, 0.2);
     z-index: 200;
     overflow: hidden;
     min-width: 380px;
@@ -27,7 +28,7 @@ $dropdown-border-radius: 10px;
       border-radius: $dropdown-border-radius $dropdown-border-radius 0 0;
       min-width: auto;
       &--opened {
-        animation: slideUp 450ms ease;
+        animation: slideUp 350ms ease;
       }
     }
   }

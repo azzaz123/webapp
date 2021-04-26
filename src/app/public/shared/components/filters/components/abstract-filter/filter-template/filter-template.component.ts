@@ -37,8 +37,8 @@ export class FilterTemplateComponent {
   }
 
   public handleOpenChange(isOpen: boolean): void {
-    this.isDropdownOpen = isOpen;
     this.openStateChange.emit(isOpen);
+    this.isDropdownOpen = isOpen;
   }
 
   public handleCancel(event: MouseEvent): void {
