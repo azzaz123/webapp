@@ -6,6 +6,13 @@ import { FeatureflagService, FEATURE_FLAGS_ENUM, FEATURE_FLAG_ENDPOINT } from '.
 import { environment } from '../../../environments/environment';
 import { mockFeatureFlagsResponses, mockFeatureFlagsEnum } from '../../../tests';
 import { AccessTokenService } from '../http/access-token.service';
+import * as coreLibrary from '@angular/core';
+
+const isDevMode = jasmine.createSpy().and.returnValue(true);
+
+Object.defineProperty(coreLibrary, 'isDevMode', {
+  value: isDevMode,
+});
 
 describe('FeatureflagService', () => {
   let injector: TestBed;
@@ -98,6 +105,7 @@ describe('FeatureflagService', () => {
       describe('and the experimentalFeatures are enabled...', () => {
         it('should return true', () => {
           spyOn(localStorage, 'getItem').and.returnValue(true);
+          isDevMode.and.returnValue(false);
 
           expect(service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY)).toBe(true);
         });
@@ -106,6 +114,7 @@ describe('FeatureflagService', () => {
       describe('and is dev mode...', () => {
         it('should return true', () => {
           spyOn(localStorage, 'getItem').and.returnValue(false);
+          isDevMode.and.returnValue(true);
 
           expect(service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY)).toBe(true);
         });
@@ -114,6 +123,7 @@ describe('FeatureflagService', () => {
       describe('and is NOT dev mode and the experimentalFeatures are not enabled...', () => {
         it('should return false', () => {
           spyOn(localStorage, 'getItem').and.returnValue(false);
+          isDevMode.and.returnValue(false);
 
           expect(service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY)).toBe(false);
         });

@@ -4,6 +4,13 @@ import { Router } from '@angular/router';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { DevelopmentGuard } from './development.guard';
 import { FeatureflagService } from './featureflag.service';
+import * as coreLibrary from '@angular/core';
+
+const isDevMode = jasmine.createSpy().and.returnValue(true);
+
+Object.defineProperty(coreLibrary, 'isDevMode', {
+  value: isDevMode,
+});
 
 describe('DevelopmentGuard', (): void => {
   let developmentGuard: DevelopmentGuard;
@@ -37,6 +44,7 @@ describe('DevelopmentGuard', (): void => {
     describe('when we are on dev mode...', () => {
       it('should return true', () => {
         spyOn(featureFlagService, 'isExpermientalFeaturesEnabled').and.returnValue(false);
+        isDevMode.and.returnValue(true);
 
         expect(developmentGuard.canLoad()).toBe(true);
       });
@@ -45,6 +53,7 @@ describe('DevelopmentGuard', (): void => {
     describe('when the experimental features are enabled...', () => {
       it('should return true', () => {
         spyOn(featureFlagService, 'isExpermientalFeaturesEnabled').and.returnValue(true);
+        isDevMode.and.returnValue(false);
 
         expect(developmentGuard.canLoad()).toBe(true);
       });
@@ -54,9 +63,12 @@ describe('DevelopmentGuard', (): void => {
       beforeEach(() => {
         spyOn(featureFlagService, 'isExpermientalFeaturesEnabled').and.returnValue(false);
         spyOn(router, 'navigate');
+        isDevMode.and.returnValue(false);
       });
 
       it('should redirect to the chat', () => {
+        developmentGuard.canLoad();
+
         expect(router.navigate).toHaveBeenCalledWith(['/chat']);
       });
 
