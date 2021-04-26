@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { SearchPagination } from '../../interfaces/search-pagination.interface';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
@@ -13,6 +13,9 @@ import {
 
 @Injectable()
 export class SearchService {
+  private static INITIAL_LOADING_STATE = true;
+  private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_LOADING_STATE);
+
   private subscription: Subscription = new Subscription();
 
   private loadMoreSubject: Subject<void> = new Subject<void>();
@@ -23,6 +26,14 @@ export class SearchService {
 
   get items$(): Observable<ItemCard[]> {
     return this.searchStoreService.items$;
+  }
+
+  get isLoadingResults$(): Observable<boolean> {
+    return this.isLoadingResultsSubject.asObservable();
+  }
+
+  private set isLoadingResults(loading: boolean) {
+    this.isLoadingResultsSubject.next(loading);
   }
 
   get hasMore$(): Observable<boolean> {
@@ -52,8 +63,10 @@ export class SearchService {
 
   private onChangeParameters(): Observable<SearchPagination> {
     return this.filterParameterStoreService.parameters$.pipe(
+      tap(() => (this.isLoadingResults = true)),
       switchMap((filterParameters: FilterParameter[]) => this.searchInfrastructureService.search(filterParameters)),
       tap(({ items, hasMore }: SearchPagination) => {
+        this.isLoadingResults = false;
         this.searchStoreService.setItems(items);
         this.searchStoreService.setHasMore(hasMore);
       })
