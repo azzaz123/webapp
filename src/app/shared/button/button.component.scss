@@ -15,7 +15,6 @@ $vertical-padding: $spacing-ms;
   padding: $vertical-padding $spacing-ml;
   border-radius: $button-border-radius;
   transition: all 0.2s ease-in-out, padding 0s;
-  font-weight: $font-weight-chunky;
   &:focus,
   &.focus {
     box-shadow: none;
@@ -33,6 +32,7 @@ $vertical-padding: $spacing-ms;
     opacity: 0.8;
   }
   &.btn-primary {
+    font-weight: $font-weight-chunky;
     &.disabled,
     &:disabled {
       cursor: inherit;
