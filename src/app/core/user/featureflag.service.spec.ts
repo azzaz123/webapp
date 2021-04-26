@@ -2,8 +2,7 @@ import { mergeMap } from 'rxjs/operators';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
-import { HttpModule } from '../http/http.module';
-import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { environment } from '../../../environments/environment';
 import { mockFeatureFlagsResponses, mockFeatureFlagsEnum } from '../../../tests';
 import { AccessTokenService } from '../http/access-token.service';
@@ -93,6 +92,32 @@ describe('FeatureflagService', () => {
       req.flush([mockResponse]);
 
       expect(dataResponse).toBe(mockResponse.active);
+    });
+
+    describe('when handling delivery flag...', () => {
+      describe('and the experimentalFeatures are enabled...', () => {
+        it('should return true', () => {
+          spyOn(localStorage, 'getItem').and.returnValue(true);
+
+          expect(service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY)).toBe(true);
+        });
+      });
+
+      describe('and is dev mode...', () => {
+        it('should return true', () => {
+          spyOn(localStorage, 'getItem').and.returnValue(false);
+
+          expect(service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY)).toBe(true);
+        });
+      });
+
+      describe('and is NOT dev mode and the experimentalFeatures are not enabled...', () => {
+        it('should return false', () => {
+          spyOn(localStorage, 'getItem').and.returnValue(false);
+
+          expect(service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY)).toBe(false);
+        });
+      });
     });
   });
 });
