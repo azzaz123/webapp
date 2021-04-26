@@ -8,6 +8,7 @@ import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopp
 import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
 import { ErrorBoxModule } from '@shared/error-box/error-box.module';
 import { SharedModule } from '@shared/shared.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FiltersWrapperModule } from './components/filters-wrapper/filters-wrapper.module';
 import { SearchErrorLayoutComponent } from './components/search-error-layout/search-error-layout.component';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
@@ -36,6 +37,7 @@ import { SearchStoreService } from '@public/features/search/core/services/search
     AdSlotShoppingModule,
     ItemFavouritesModule,
     ErrorBoxModule,
+    InfiniteScrollModule,
   ],
   providers: [
     ViewportService,

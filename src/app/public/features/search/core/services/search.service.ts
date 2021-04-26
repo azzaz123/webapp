@@ -36,6 +36,10 @@ export class SearchService {
     this.isLoadingResultsSubject.next(loading);
   }
 
+  get hasMore$(): Observable<boolean> {
+    return this.searchStoreService.hasMore$;
+  }
+
   constructor(
     private searchStoreService: SearchStoreService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStoreService: FilterParameterStoreService,
@@ -44,7 +48,6 @@ export class SearchService {
 
   public init(): void {
     this.subscription.add(this.onChangeParameters().subscribe());
-
     this.subscription.add(this.onLoadMore().subscribe());
   }
 
@@ -62,15 +65,21 @@ export class SearchService {
     return this.filterParameterStoreService.parameters$.pipe(
       tap(() => (this.isLoadingResults = true)),
       switchMap((filterParameters: FilterParameter[]) => this.searchInfrastructureService.search(filterParameters)),
-      tap(({ items }: SearchPagination) => this.searchStoreService.setItems(items)),
-      tap(() => (this.isLoadingResults = false))
+      tap(({ items, hasMore }: SearchPagination) => {
+        this.isLoadingResults = false;
+        this.searchStoreService.setItems(items);
+        this.searchStoreService.setHasMore(hasMore);
+      })
     );
   }
 
   private onLoadMore(): Observable<SearchPagination> {
     return this.loadMore$.pipe(
       switchMap(() => this.searchInfrastructureService.loadMore()),
-      tap(({ items }) => this.searchStoreService.appendItems(items))
+      tap(({ items, hasMore }: SearchPagination) => {
+        this.searchStoreService.appendItems(items);
+        this.searchStoreService.setHasMore(hasMore);
+      })
     );
   }
 }
