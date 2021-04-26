@@ -127,7 +127,7 @@ export class FiltersWrapperComponent {
     const configurationSubject =
       variant === FILTER_VARIANT.BUBBLE ? this.bubbleFilterConfigurationsSubject : this.drawerFilterConfigurationsSubject;
 
-    const wrapperConfiguration = this.filterWrapperConfigurationService.getConfiguration(variant, filterValues);
+    const wrapperConfiguration = this.filterWrapperConfigurationService.getConfiguration(filterValues);
 
     if (configurationSubject.getValue().id !== wrapperConfiguration.id) {
       configurationSubject.next(wrapperConfiguration);

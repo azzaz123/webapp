@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { FilterWrapperConfiguration } from '@public/shared/services/filter-wrapper-configuration/interfaces/filter-group-config.interface';
 import {
   DEFAULT_FILTER_WRAPPER_CONFIG,
@@ -9,7 +8,7 @@ import {
 
 @Injectable()
 export class FilterWrapperConfigurationService {
-  public getConfiguration(variant: FILTER_VARIANT, parameters: FilterParameter[]): FilterWrapperConfiguration {
+  public getConfiguration(parameters: FilterParameter[]): FilterWrapperConfiguration {
     return FILTER_WRAPPER_CONFIGS.filter((config) => this.isConfigAMatch(config, parameters)).reduce((previousConfig, currentConfig) => {
       if (currentConfig.params.length > (previousConfig?.params.length || 0)) {
         return currentConfig;
