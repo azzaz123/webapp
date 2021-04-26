@@ -1,5 +1,5 @@
 export enum DELIVERY_PATHS {
-  DELIVERY_ADDRESS = 'address',
+  ADDRESS = 'address',
   PAYVIEW = 'payview',
   ACCEPT_SCREEN = 'accept',
   TIMELINE = 'timeline',
