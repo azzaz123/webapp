@@ -5,7 +5,7 @@
   [title]="config.title"
   [icon]="config.icon"
   [label]="getLabel()"
-  [hasValue]="hasValue$() | async"
+  [hasValue]="hasValue$ | async"
   (clear)="handleClear()"
   (openStateChange)="openStateChange.emit($event)">
 
@@ -14,7 +14,7 @@
     [placeholderLabel]="getLabel()"
     [placeholderIcon]="getPlaceholderIcon()"
     [contentTitle]="contentTitle"
-    [isClearable]="hasValue$() | async"
+    [isClearable]="hasValue$ | async"
     (placeholderOpenStateChange)="openStateChange.emit($event)"
     (clear)="handleClear()">
 

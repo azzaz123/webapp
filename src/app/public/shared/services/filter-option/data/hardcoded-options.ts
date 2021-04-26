@@ -33,37 +33,45 @@ export const HARDCODED_OPTIONS: HardcodedOptions = {
   [REAL_ESTATE_CONFIGURATION_ID.ROOMS]: [
     {
       value: '1',
-      label: '1',
+      label: '',
+      icon: '/assets/icons/filters/options/1.svg',
     },
     {
       value: '2',
-      label: '2',
+      label: '',
+      icon: '/assets/icons/filters/options/2.svg',
     },
     {
       value: '3',
-      label: '3',
+      label: '',
+      icon: '/assets/icons/filters/options/3.svg',
     },
     {
       value: '4',
-      label: '4',
+      label: '',
+      icon: '/assets/icons/filters/options/4+.svg',
     },
   ],
   [REAL_ESTATE_CONFIGURATION_ID.BATHROOMS]: [
     {
       value: '1',
-      label: '1',
+      label: '',
+      icon: '/assets/icons/filters/options/1.svg',
     },
     {
       value: '2',
-      label: '2',
+      label: '',
+      icon: '/assets/icons/filters/options/2.svg',
     },
     {
       value: '3',
-      label: '3',
+      label: '',
+      icon: '/assets/icons/filters/options/3.svg',
     },
     {
       value: '4',
-      label: '4',
+      label: '',
+      icon: '/assets/icons/filters/options/4+.svg',
     },
   ],
   [FASHION_CONFIGURATION_ID.GENDER]: [

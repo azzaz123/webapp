@@ -10,6 +10,7 @@ import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module'
 import { RangeFilterComponent } from './range-filter.component';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 describe('RangeFilterComponent', () => {
   let component: RangeFilterComponent;
@@ -33,8 +34,8 @@ describe('RangeFilterComponent', () => {
     component.config = {
       type: FILTER_TYPES.RANGE,
       mapKey: {
-        maxKey: 'max',
-        minKey: 'min',
+        maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
+        minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       },
       title: 'How much do you want to pay?',
       icon: '/assets/icons/joke.svg',
@@ -201,8 +202,8 @@ describe('RangeFilterComponent', () => {
       component.handleClear();
 
       expect(component.valueChange.emit).toHaveBeenCalledWith([
-        { key: 'max', value: undefined },
-        { key: 'min', value: undefined },
+        { key: FILTER_QUERY_PARAM_KEY.maxPrice, value: undefined },
+        { key: FILTER_QUERY_PARAM_KEY.minPrice, value: undefined },
       ]);
     });
   });

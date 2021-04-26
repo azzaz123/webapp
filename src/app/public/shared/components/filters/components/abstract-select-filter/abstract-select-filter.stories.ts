@@ -17,6 +17,7 @@ import { SelectFilterParams } from '../select-filter/interfaces/select-filter-pa
 import { AbstractSelectFilterConfig } from './interfaces/abstract-select-filter-config.interface';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -29,7 +30,7 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
       [title]="config.title"
       [icon]="config.icon"
       [label]="label"
-      [hasValue]="hasValue$() | async"
+      [hasValue]="hasValue$ | async"
       (clear)="handleClear()"
       (openStateChange)="openStateChange.emit($event)"
     >
@@ -85,7 +86,7 @@ const Template: Story<StoryAbstractSelectFilterComponent> = (args) => ({
   `,
 });
 
-const defaultConfig: AbstractSelectFilterConfig<Record<string, string>> = {
+const defaultConfig: AbstractSelectFilterConfig<Record<string, FILTER_QUERY_PARAM_KEY>> = {
   id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
   type: null,
   mapKey: {},

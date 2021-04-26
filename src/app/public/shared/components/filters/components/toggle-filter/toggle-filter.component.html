@@ -8,7 +8,7 @@
 [title]="config.title"
 [icon]="config.icon"
 [label]="label"
-[hasValue]="hasValue$() | async"
+[hasValue]="hasValue$ | async"
 (click)="handleClick()"
 (clear)="handleClear()"
 (openStateChange)="openStateChange.emit($event)">
