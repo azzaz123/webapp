@@ -4,11 +4,12 @@ import { FilterConfig } from '@public/shared/components/filters/interfaces/filte
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class AbstractFilter<T extends Record<keyof T, string>> implements Filter<T>, OnInit {
+export abstract class AbstractFilter<T extends Record<keyof T, FILTER_QUERY_PARAM_KEY>> implements Filter<T>, OnInit {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Input() config: FilterConfig<T>;
 
@@ -36,9 +37,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, string>> implemen
 
   protected hasValueSubject = new BehaviorSubject<boolean>(false);
 
-  public hasValue$(): Observable<boolean> {
-    return this.hasValueSubject.asObservable();
-  }
+  public hasValue$ = this.hasValueSubject.asObservable();
 
   protected _hasValue(): boolean {
     return this._value?.length > 0;

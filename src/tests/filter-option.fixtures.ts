@@ -8,8 +8,10 @@ import { of } from 'rxjs/internal/observable/of';
 import { Observable } from 'rxjs';
 import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params.interface';
 import { PaginationOptions } from '@public/shared/components/filters/core/interfaces/pagination-options.interface';
-import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
+import { FilterParameterStoreService } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { Condition } from '@public/shared/services/filter-option/interfaces/option-responses/condition.interface';
 
 export class MockFilterOptionApiService {
   public getApiOptions(method: string, params: QueryParams, paginationOptions: PaginationOptions): Observable<unknown> {
@@ -29,8 +31,8 @@ export class MockFilterOptionMapperService {
   public mapperMethod(): void {}
 }
 
-export class MockFilterParameterDraftService implements Partial<FilterParameterDraftService> {
-  public getParametersByKeys(keys: string[]): FilterParameter[] {
+export class MockFilterParameterService implements Partial<FilterParameterStoreService> {
+  public getParametersByKeys(keys: FILTER_QUERY_PARAM_KEY[]): FilterParameter[] {
     return keys.map((key) => ({
       key,
       value: key,
@@ -42,6 +44,17 @@ export const iconOption: IconOption = {
   icon_id: 'icon',
   id: 'id',
   text: 'text',
+};
+
+export const conditionOption: Condition = {
+  description: 'description',
+  id: 'id',
+  title: 'text',
+};
+
+export const formattedConditionOption: FilterOption = {
+  label: conditionOption.title,
+  value: conditionOption.id,
 };
 
 export const formattedIconOption: FilterOption = {

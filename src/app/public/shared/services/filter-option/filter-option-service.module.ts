@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FilterOptionsApiService } from './services/filter-options-api.service';
 import { FilterOptionsMapperService } from './services/filter-options-mapper.service';
 import { FilterOptionService } from './filter-option.service';
-import { FilterParameterDraftServiceModule } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft-service.module';
+import { FilterParameterStoreService } from '../filter-parameter-store/filter-parameter-store.service';
 
 @NgModule({
-  providers: [FilterOptionsApiService, FilterOptionsMapperService, FilterOptionService],
-  imports: [CommonModule, FilterParameterDraftServiceModule],
+  providers: [FilterOptionsApiService, FilterOptionsMapperService, FilterOptionService, FilterParameterStoreService],
+  imports: [CommonModule],
 })
 export class FilterOptionServiceModule {}
