@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
-import { FiltersDropdownPosition } from '../interfaces/filter-dropdown-position.interface';
+import { FilterDropdownPosition } from '../interfaces/filter-dropdown-position.interface';
 
 @Directive({
   selector: '[tslFilterDropdown]',
@@ -39,12 +39,12 @@ export class FilterDropdownDirective implements OnChanges, OnDestroy {
     document.addEventListener('mousedown', this.closeDropdownHandler, true);
   }
 
-  private getDropdownPosition(): FiltersDropdownPosition {
+  private getDropdownPosition(): FilterDropdownPosition {
     const dropdownContentElement = this.elementRef.nativeElement;
     const dropdownAbsolutePosition = dropdownContentElement.getBoundingClientRect();
     const DROPDOWN_MARGIN = 50;
     const DROPDOWN_CONTENT_MIN_WIDTH = 380;
-    const dropdownContentPosition: FiltersDropdownPosition = { top: `${76 + DROPDOWN_MARGIN}px` };
+    const dropdownContentPosition: FilterDropdownPosition = { top: `${76 + DROPDOWN_MARGIN}px` };
 
     if (DROPDOWN_CONTENT_MIN_WIDTH + dropdownAbsolutePosition.left > window.innerWidth) {
       dropdownContentPosition.right = `${DROPDOWN_MARGIN}px`;
