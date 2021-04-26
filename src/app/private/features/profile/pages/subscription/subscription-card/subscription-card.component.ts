@@ -9,7 +9,6 @@ import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interfa
 export class SubscriptionCardComponent {
   @Input() subscription: SubscriptionsResponse;
   @Input() textLink: string;
-  @Input() textButton: string;
   @Input() hasTrialAvailable: boolean;
   @Output() clickLink: EventEmitter<void> = new EventEmitter();
   @Output() clickButton: EventEmitter<void> = new EventEmitter();
