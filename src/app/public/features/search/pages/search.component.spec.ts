@@ -20,6 +20,7 @@ import { SearchLayoutComponent } from '../components/search-layout/search-layout
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchService } from '../core/services/search.service';
 import { SearchComponent } from './search.component';
+import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -32,6 +33,7 @@ describe('SearchComponent', () => {
   beforeEach(async () => {
     deviceServiceMock = {
       getDeviceType: () => random.arrayElement([DeviceType.DESKTOP, DeviceType.MOBILE, DeviceType.TABLET]),
+      isMobile: () => false,
     };
     storeMock = {
       select: () => of(),
@@ -160,6 +162,32 @@ describe('SearchComponent', () => {
       component.toggleBubbleFilterBackdrop(false);
 
       expect(bubbleOpenCount).toBe(0);
+    });
+  });
+
+  describe('when we want to show ads natives', () => {
+    describe('on desktop or tablet', () => {
+      beforeEach(() => {
+        spyOn(deviceServiceMock, 'isMobile').and.returnValue(false);
+      });
+
+      it('should set slots config of desktop config', () => {
+        fixture.detectChanges();
+
+        expect(component.slotsConfig).toEqual(SLOTS_CONFIG_DESKTOP);
+      });
+    });
+
+    describe('on mobile', () => {
+      beforeEach(() => {
+        spyOn(deviceServiceMock, 'isMobile').and.returnValue(true);
+      });
+
+      it('should set slots config of mobile config', () => {
+        fixture.detectChanges();
+
+        expect(component.slotsConfig).toEqual(SLOTS_CONFIG_MOBILE);
+      });
     });
   });
 });

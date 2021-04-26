@@ -6,6 +6,7 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
+import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
@@ -15,6 +16,7 @@ import {
   AD_SHOPPING_PUBLIC_SEARCH,
 } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchService } from './../core/services/search.service';
+import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
 
 @Component({
   selector: 'tsl-search',
@@ -46,12 +48,15 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private openBubbleCountSubject = new BehaviorSubject<number>(0);
   public openBubbleCount$: Observable<number> = this.openBubbleCountSubject.asObservable();
+  public slotsConfig: SlotsConfig;
+
   constructor(private adsService: AdsService, private deviceService: DeviceService, private searchService: SearchService) {
     this.device = this.deviceService.getDeviceType();
     this.searchService.init();
   }
 
   public ngOnInit(): void {
+    this.slotsConfig = this.deviceService.isMobile() ? SLOTS_CONFIG_MOBILE : SLOTS_CONFIG_DESKTOP;
     this.adsService.setAdKeywords({ content: 'Iphone 11' });
 
     this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
