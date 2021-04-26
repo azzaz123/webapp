@@ -10,6 +10,7 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { SearchErrorLayoutComponentStub } from '@fixtures/shared';
 import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
@@ -48,6 +49,7 @@ describe('SearchComponent', () => {
   let searchServiceMock;
   let publicFooterServiceMock;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
+  const isLoadingResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   beforeEach(async () => {
@@ -63,6 +65,7 @@ describe('SearchComponent', () => {
       init: () => {},
       items$: itemsSubject.asObservable(),
       hasMore$: hasMoreSubject.asObservable(),
+      isLoadingResults$: isLoadingResultsSubject.asObservable(),
       loadMore: () => {},
       close: () => {},
     };
@@ -73,6 +76,7 @@ describe('SearchComponent', () => {
       declarations: [
         SearchComponent,
         SearchLayoutComponent,
+        SearchErrorLayoutComponentStub,
         AdComponentStub,
         AdSlotGroupShoppingComponentSub,
         ItemCardListComponentStub,
@@ -180,6 +184,22 @@ describe('SearchComponent', () => {
           expect(nextItem.id).toBe(index !== 0 ? MOCK_ITEM_CARD.id : 'old_item');
         });
         done();
+      });
+    });
+
+    describe('when no items are recieved', () => {
+      it('should show the no results layout', (done) => {
+        const items = [];
+        itemsSubject.next(items);
+        isLoadingResultsSubject.next(false);
+
+        component.items$.subscribe(() => {
+          fixture.detectChanges();
+          const noResultsLayout = fixture.debugElement.query(By.css('tsl-search-error-layout'));
+
+          expect(noResultsLayout).toBeTruthy();
+          done();
+        });
       });
     });
   });
