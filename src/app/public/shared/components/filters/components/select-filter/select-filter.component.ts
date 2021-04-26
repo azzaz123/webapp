@@ -60,6 +60,7 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
     this.updateValueFromParent();
+    this.updateLabel();
   }
 
   public handleClear(): void {
@@ -74,13 +75,13 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
   }
 
   private updateLabel(): void {
-    const value = this.getValue('parameterKey');
+    const value = this.formGroup.controls.select.value;
     this.labelSubject.next(value ? this.options.find((option) => option.value === value)?.label : this.getLabelPlaceholder());
   }
 
   private updatePlaceholderIcon(): void {
     if (this.variant === FILTER_VARIANT.CONTENT && this.config.hasContentPlaceholder) {
-      const value = this.getValue('parameterKey');
+      const value = this.formGroup.controls.select.value;
       this.placeholderIconSubject.next(value ? this.options.find((option) => option.value === value)?.icon : undefined);
     }
   }
