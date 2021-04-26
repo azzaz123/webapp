@@ -1,4 +1,4 @@
-import { CAR_CONFIGURATION_ID } from '../enums/configuration-ids/car-configuration-ids';
+import { CAR_CONFIGURATION_ID } from '../enums/configuration-ids/car-configuration-ids.enum';
 import { COMMON_CONFIGURATION_ID } from '../enums/configuration-ids/common-configuration-ids.enum';
 import { COMMON_CONSUMER_GOODS_CONFIGURATION_ID } from '../enums/configuration-ids/consumer-goods-configuration-ids.enum';
 import { FASHION_CONFIGURATION_ID } from '../enums/configuration-ids/fashion-configuration-ids.enum';
