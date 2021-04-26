@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   QueryList,
   SimpleChanges,
@@ -23,7 +22,7 @@ import { FILTER_TYPE_COMPONENT } from './constants/filter-type-component.constan
   templateUrl: './filter-group.component.html',
   styleUrls: ['./filter-group.component.scss'],
 })
-export class FilterGroupComponent implements OnInit, OnChanges {
+export class FilterGroupComponent implements OnChanges {
   @ViewChildren(FilterHostDirective) filterHosts: QueryList<FilterHostDirective>;
   @Input() values: FilterParameter[];
   @Input() config: FilterConfig<unknown>[] = [];
@@ -39,12 +38,12 @@ export class FilterGroupComponent implements OnInit, OnChanges {
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
-  public ngOnInit(): void {
-    this.updateHostConfigs();
-  }
-
   public ngOnChanges(changes: SimpleChanges) {
-    // TODO: React to changes on configuration
+    const { config } = changes;
+
+    if (config && this.hasConfigChanged(config.previousValue, config.currentValue)) {
+      this.updateHostConfigs();
+    }
   }
 
   private updateHostConfigs(): void {
@@ -58,5 +57,16 @@ export class FilterGroupComponent implements OnInit, OnChanges {
     });
 
     this.hostConfigsSubject.next(configs);
+  }
+
+  private hasConfigChanged(previousConfig: FilterConfig<unknown>[], currentConfig: FilterConfig<unknown>[]): boolean {
+    if (!previousConfig || previousConfig.length !== currentConfig.length) {
+      return true;
+    }
+
+    const previousIds = previousConfig.map((prev) => prev.id);
+    const currentIds = currentConfig.map((curr) => curr.id);
+
+    return !currentIds.every((id) => previousIds.includes(id));
   }
 }

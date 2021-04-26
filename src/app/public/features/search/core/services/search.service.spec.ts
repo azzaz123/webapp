@@ -5,10 +5,13 @@ import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { of, Subject } from 'rxjs';
 import { SearchPagination } from '../../interfaces/search-pagination.interface';
-import { FilterParameterStoreService } from './filter-parameter-store.service';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
 import { SearchStoreService } from './search-store.service';
 import { SearchService } from './search.service';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 describe('SearchService', () => {
   let service: SearchService;
@@ -47,12 +50,16 @@ describe('SearchService', () => {
           useValue: searchStoreServiceMock,
         },
         {
-          provide: FilterParameterStoreService,
+          provide: SearchInfrastructureService,
+          useValue: searchInfrastructureServiceMock,
+        },
+        {
+          provide: FILTER_PARAMETER_STORE_TOKEN,
           useValue: filterParameterStoreServiceMock,
         },
         {
-          provide: SearchInfrastructureService,
-          useValue: searchInfrastructureServiceMock,
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useValue: filterParameterStoreServiceMock,
         },
       ],
     });

@@ -1,12 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { SearchPagination } from '../../interfaces/search-pagination.interface';
-import { FilterParameterStoreService } from './filter-parameter-store.service';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
 import { SearchStoreService } from './search-store.service';
+import {
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 @Injectable()
 export class SearchService {
@@ -28,7 +31,7 @@ export class SearchService {
 
   constructor(
     private searchStoreService: SearchStoreService,
-    private filterParameterStoreService: FilterParameterStoreService,
+    @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStoreService: FilterParameterStoreService,
     private searchInfrastructureService: SearchInfrastructureService
   ) {}
 
