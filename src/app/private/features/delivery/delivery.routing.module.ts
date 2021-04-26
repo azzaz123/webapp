@@ -4,8 +4,9 @@ import { DELIVERY_PATHS } from './delivery-routing-constants';
 import { AcceptScreenModule } from './pages/accept-screen/accept-screen.module';
 import { DeliveryAddressModule } from './pages/delivery-address/delivery-address.module';
 import { DeliveryComponent } from './pages/delivery.component';
-import { TransactionTrackingScreenModule } from './pages/transaction-tracking-screen/transaction-tracking-screen';
+import { TransactionTrackingScreenModule } from './pages/transaction-tracking-screen/transaction-tracking-screen.module';
 import { PayviewModule } from './pages/payview/payview.module';
+import { ShipmentTrackingModule } from './pages/shipment-tracking/shipment-tracking.module';
 
 // NOTE: they childs are begin loaded in a NON LAZY way but with the module
 const routes: Route[] = [
@@ -28,6 +29,10 @@ const routes: Route[] = [
       {
         path: DELIVERY_PATHS.PAYVIEW,
         loadChildren: () => PayviewModule,
+      },
+      {
+        path: DELIVERY_PATHS.SHIPMENT_TRACKING,
+        loadChildren: () => ShipmentTrackingModule,
       },
     ],
   },
