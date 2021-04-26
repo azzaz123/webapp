@@ -7,6 +7,7 @@ import { ItemCardListModule } from '@public/shared/components/item-card-list/ite
 import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopping.module';
 import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
 import { SharedModule } from '@shared/shared.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FiltersWrapperModule } from './components/filters-wrapper/filters-wrapper.module';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
 import { SearchAPIService } from './core/services/infrastructure/api/search-api.service';
@@ -33,6 +34,7 @@ import { SearchStoreService } from '@public/features/search/core/services/search
     AdSlotModule,
     AdSlotShoppingModule,
     ItemFavouritesModule,
+    InfiniteScrollModule,
   ],
   providers: [
     ViewportService,
