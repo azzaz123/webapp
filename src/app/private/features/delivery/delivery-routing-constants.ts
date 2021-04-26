@@ -5,6 +5,7 @@ export enum DELIVERY_PATHS {
   TIMELINE = 'timeline',
   KYC = 'kyc',
   SHIPMENT_TRACKING = 'shipments',
+  BANK_ACCOUNT = 'bank-account',
 }
 
 export enum DELIVERY_PATH_PARAMS {}
