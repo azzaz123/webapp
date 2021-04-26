@@ -9,7 +9,7 @@ import { PublicFooterService } from '@public/core/services/footer/public-footer.
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map, share, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {

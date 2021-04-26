@@ -4,7 +4,7 @@ export const SELECT_FORM_OPTIONS_CONFIG: SelectFormOption<string>[] = [
   {
     label: 'Distancia',
     icon: '/assets/icons/filters/location.svg',
-    value: '',
+    value: 'default',
   },
   {
     label: 'De más barato a más caro',

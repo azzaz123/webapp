@@ -10,10 +10,13 @@ $actions-height: 88px;
     width: 20rem;
   }
 
+  &__toolbar {
+    height: 70px;
+  }
+
   &__title--bubble {
     color: $black;
     font-weight: $font-weight-bold;
-    height: 70px;
   }
 
   &__actions {
