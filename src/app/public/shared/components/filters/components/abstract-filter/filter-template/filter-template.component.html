@@ -1,4 +1,4 @@
-<div *ngIf="isBubble">
+<div *ngIf="isBubble" class="FilterTemplate__bubble" [class.FilterTemplate__bubble--open]="isDropdownOpen">
   <tsl-bubble 
     (click)="handleBubbleClick($event)" 
     [variant]="hasValue ? BUBBLE_VARIANT.SELECTED : BUBBLE_VARIANT.ACTIVE"

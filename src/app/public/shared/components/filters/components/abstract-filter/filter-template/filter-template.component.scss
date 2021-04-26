@@ -70,6 +70,7 @@ $dropdown-box-shadow: 0 3px 16px 3px;
   }
 
   &__bubble {
+    position: relative;
     &--open {
       z-index: 200;
     }
