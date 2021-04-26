@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { filterParametersMock } from '@fixtures/filter-parameter.fixtures';
 import { SearchPaginationFactory } from '@fixtures/item-card.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
@@ -92,6 +92,15 @@ describe('SearchService', () => {
         expect(searchInfrastructureServiceMock.search).toHaveBeenCalledWith(filterParametersMock);
       });
 
+      it('should enable the loading state', () => {
+        spyOn(searchInfrastructureServiceMock, 'search').and.callThrough();
+
+        filterParametersSubject.next(filterParametersMock);
+        service.isLoadingResults$.subscribe((isLoading: boolean) => {
+          expect(isLoading).toEqual(true);
+        });
+      });
+
       it('should save items and set has more if there has more', () => {
         const searchPagination: SearchPagination = SearchPaginationFactory();
         spyOn(searchInfrastructureServiceMock, 'search').and.returnValue(of(searchPagination));
@@ -104,6 +113,19 @@ describe('SearchService', () => {
         expect(searchStoreServiceMock.setItems).toHaveBeenCalledWith(searchPagination.items);
         expect(searchStoreServiceMock.setHasMore).toHaveBeenCalledTimes(1);
         expect(searchStoreServiceMock.setHasMore).toHaveBeenCalledWith(searchPagination.hasMore);
+      });
+
+      describe('when it has finished loading', () => {
+        it('should disable the loading state', fakeAsync(() => {
+          spyOn(searchInfrastructureServiceMock, 'search').and.callThrough();
+
+          filterParametersSubject.next(filterParametersMock);
+          service.isLoadingResults$.subscribe((isLoading: boolean) => {
+            expect(isLoading).toEqual(false);
+          });
+
+          tick();
+        }));
       });
     });
 
