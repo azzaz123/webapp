@@ -6,7 +6,6 @@ export enum FILTER_QUERY_PARAM_KEY {
   postedAgo = 'time_filter',
   condition = 'condition',
 
-  operation = 'operation',
   gender = 'gender',
 
   brand = 'brand',
@@ -27,6 +26,12 @@ export enum FILTER_QUERY_PARAM_KEY {
   minSeats = 'min_seats',
   maxSeats = 'max_seats',
 
+  operation = 'operation',
+  garage = 'garage',
+  terrace = 'terrace',
+  elevator = 'elevator',
+  garden = 'garden',
+  pool = 'pool',
   minSurface = 'min_surface',
   maxSurface = 'max_surface',
   type = 'type',

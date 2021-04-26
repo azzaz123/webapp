@@ -64,7 +64,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     private publicFooterService: PublicFooterService
   ) {
     this.device = this.deviceService.getDeviceType();
-    this.searchService.init();
   }
 
   public ngOnInit(): void {
