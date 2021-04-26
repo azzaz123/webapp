@@ -38,17 +38,11 @@ $dropdown-box-shadow: 0 3px 16px 3px;
   }
 
   &__filter {
-    max-height: $filter-content-height;
-    overflow-x: scroll;
+    overflow: auto;
     @include hide-scroll-bars();
 
     @include media-breakpoint-down(sm) {
-      max-height: calc(100vh - #{$actions-height + $toolbar-height});
-      margin-bottom: $actions-height;
-    }
-
-    &--no_max_height {
-      max-height: none !important;
+      max-height: calc(100% - #{$actions-height + $toolbar-height});
     }
   }
 

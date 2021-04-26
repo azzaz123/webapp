@@ -16,7 +16,6 @@ export class FilterTemplateComponent {
   @Input() title: string;
   @Input() hasApply?: boolean;
   @Input() isClearable?: boolean;
-  @Input() hasMaxHeight = true;
   @Output() apply: EventEmitter<void> = new EventEmitter();
   @Output() clear: EventEmitter<void> = new EventEmitter();
   @Output() click: EventEmitter<void> = new EventEmitter();
