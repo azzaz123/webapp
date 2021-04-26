@@ -4,9 +4,8 @@
   [infiniteScrollThrottle]="150"
   [infiniteScrollDisabled]="infiniteScrollDisabled$ | async"
   (scrolled)="scrolled()">
-  <tsl-filters-wrapper class="Search__filters"
-    (bubbleFilterOpenStateChange)="toggleBubbleFilterBackdrop($event)">
-  </tsl-filters-wrapper>
+
+  <tsl-filters-wrapper class="Search__filters"></tsl-filters-wrapper>
 
   <tsl-search-layout *ngIf="(items$ | async).length > 0">
     <div top class="d-block h-100 position-relative">

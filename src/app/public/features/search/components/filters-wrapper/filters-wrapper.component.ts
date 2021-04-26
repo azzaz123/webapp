@@ -42,8 +42,6 @@ export class FiltersWrapperComponent {
   public drawerValues$ = this.drawerValuesSubject.asObservable();
   public isDrawerContentScrollable$ = this.isDrawerContentScrollableSubject.asObservable();
 
-  @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
   constructor(
     @Inject(FILTER_PARAMETER_DRAFT_STORE_TOKEN) private drawerStore: FilterParameterStoreService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private bubbleStore: FilterParameterStoreService,
@@ -110,7 +108,6 @@ export class FiltersWrapperComponent {
   }
 
   public bubbleOpenStateChange(isOpen: boolean): void {
-    this.bubbleFilterOpenStateChange.emit(isOpen);
     if (isOpen && this.drawerConfig.isOpen) {
       this.closeDrawer();
     }
