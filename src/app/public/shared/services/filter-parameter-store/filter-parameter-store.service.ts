@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { InjectionToken } from '@angular/core';
 
-@Injectable()
-export class FilterParameterDraftService {
+export const FILTER_PARAMETER_STORE_TOKEN = new InjectionToken<string>('filterParameterStore');
+export const FILTER_PARAMETER_DRAFT_STORE_TOKEN = new InjectionToken<string>('filterParameterDraftStore');
+
+export class FilterParameterStoreService {
   private static INITIAL_PARAMETERS: FilterParameter[] = [];
 
-  private parametersSubject = new BehaviorSubject<FilterParameter[]>(FilterParameterDraftService.INITIAL_PARAMETERS);
-
-  public get parameters$(): Observable<FilterParameter[]> {
-    return this.parametersSubject.asObservable();
-  }
+  private parametersSubject = new BehaviorSubject<FilterParameter[]>(FilterParameterStoreService.INITIAL_PARAMETERS);
+  public parameters$ = this.parametersSubject.asObservable();
 
   public getParameters(): FilterParameter[] {
     return this.parametersSubject.getValue();
@@ -38,7 +37,7 @@ export class FilterParameterDraftService {
   }
 
   public clear(): void {
-    this.parametersSubject.next(FilterParameterDraftService.INITIAL_PARAMETERS);
+    this.parametersSubject.next(FilterParameterStoreService.INITIAL_PARAMETERS);
   }
 
   private mergeParameters(newParameters: FilterParameter[], oldParameters: FilterParameter[]): FilterParameter[] {

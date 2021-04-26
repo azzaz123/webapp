@@ -1,17 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FilterParameterDraftService } from './filter-parameter-draft.service';
+import { FilterParameterStoreService } from './filter-parameter-store.service';
 import { filterParametersMock } from '@fixtures/filter-parameter.fixtures';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
-describe('FilterParameterDraftService', () => {
-  let service: FilterParameterDraftService;
+describe('FilterParameterStoreService', () => {
+  let service: FilterParameterStoreService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FilterParameterDraftService],
+      providers: [FilterParameterStoreService],
     });
-    service = TestBed.inject(FilterParameterDraftService);
+    service = TestBed.inject(FilterParameterStoreService);
   });
 
   it('should be created', () => {
@@ -54,7 +55,7 @@ describe('FilterParameterDraftService', () => {
     describe('and the parameters do not exist', () => {
       it('should add them to the parameter set', () => {
         const newParameter: FilterParameter = {
-          key: 'newParameterKey',
+          key: FILTER_QUERY_PARAM_KEY.brand,
           value: 'newParameterValue',
         };
 
@@ -66,7 +67,7 @@ describe('FilterParameterDraftService', () => {
     describe('and the parameters do exist', () => {
       it('should overwrite the parameter values', () => {
         const newParameter: FilterParameter = {
-          key: 'filterParameter1',
+          key: FILTER_QUERY_PARAM_KEY.warranty,
           value: 'newParameterValue',
         };
 
@@ -84,7 +85,7 @@ describe('FilterParameterDraftService', () => {
     describe('and the parameters do not exist', () => {
       it('should do nothing', () => {
         const newParameter: FilterParameter = {
-          key: 'newParameterKey',
+          key: FILTER_QUERY_PARAM_KEY.brand,
           value: 'newParameterValue',
         };
 
