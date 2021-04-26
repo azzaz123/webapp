@@ -8,7 +8,7 @@
     (bubbleFilterOpenStateChange)="toggleBubbleFilterBackdrop($event)">
   </tsl-filters-wrapper>
 
-  <tsl-search-layout>
+  <tsl-search-layout *ngIf="(items$ | async).length > 0">
     <div top class="d-block h-100 position-relative">
       <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
     </div>
@@ -43,4 +43,7 @@
       </ng-container>
     </ng-container>
   </tsl-search-layout>
+
+  <tsl-search-error-layout *ngIf="(items$ | async).length === 0 && (isLoadingResults$ | async) === false">
+  </tsl-search-error-layout>
 </div>

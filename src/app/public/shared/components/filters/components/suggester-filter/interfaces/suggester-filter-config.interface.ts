@@ -7,4 +7,5 @@ export interface SuggesterFilterConfig extends AbstractSelectFilterConfig<Sugges
   hasContentPlaceholder: true;
   hasOptionsOnInit: boolean;
   suggesterPlaceholder: string;
+  isLabelInValue?: boolean;
 }

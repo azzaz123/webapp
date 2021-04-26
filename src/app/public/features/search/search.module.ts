@@ -6,9 +6,11 @@ import { PublicLayoutModule } from '@public/layout/public-layout.module';
 import { ItemCardListModule } from '@public/shared/components/item-card-list/item-card-list.module';
 import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopping.module';
 import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
+import { ErrorBoxModule } from '@shared/error-box/error-box.module';
 import { SharedModule } from '@shared/shared.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FiltersWrapperModule } from './components/filters-wrapper/filters-wrapper.module';
+import { SearchErrorLayoutComponent } from './components/search-error-layout/search-error-layout.component';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
 import { SearchAPIService } from './core/services/infrastructure/api/search-api.service';
 import { SearchFavouritesService } from './core/services/infrastructure/favorites/search-favourites.service';
@@ -22,6 +24,7 @@ import {
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
+import { SearchResolver } from './core/services/search.resolver';
 
 @NgModule({
   imports: [
@@ -34,6 +37,7 @@ import { SearchStoreService } from '@public/features/search/core/services/search
     AdSlotModule,
     AdSlotShoppingModule,
     ItemFavouritesModule,
+    ErrorBoxModule,
     InfiniteScrollModule,
   ],
   providers: [
@@ -51,7 +55,8 @@ import { SearchStoreService } from '@public/features/search/core/services/search
       provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
       useClass: FilterParameterStoreService,
     },
+    SearchResolver,
   ],
-  declarations: [SearchComponent, SearchLayoutComponent],
+  declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
 })
 export class SearchModule {}
