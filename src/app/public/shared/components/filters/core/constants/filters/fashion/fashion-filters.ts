@@ -45,5 +45,6 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     hasOptionsOnInit: true,
     isClearable: true,
     hasContentPlaceholder: true,
+    isLabelInValue: true,
   },
 ];

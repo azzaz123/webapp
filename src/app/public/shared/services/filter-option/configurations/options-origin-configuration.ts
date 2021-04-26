@@ -90,7 +90,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   [REAL_ESTATE_CONFIGURATION_ID.EXTRAS]: {
     apiConfiguration: {
       method: 'getRealEstateExtraKeysByTypeId',
-      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.operation }],
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.type }],
     },
     mapperConfiguration: {
       method: 'formatIconOptions',
