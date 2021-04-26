@@ -146,6 +146,10 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
       return this.initLabel();
     }
 
+    if (!this.config.isLabelInValue) {
+      return this.labelSubject.next(this.optionsSubject.getValue().find((option) => option.value === value)?.label);
+    }
+
     if (typeof value === 'string') {
       return this.labelSubject.next(value);
     }
@@ -183,7 +187,10 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
       this.optionService
         .getOptions(this.config.id, query ? { text: query } : undefined)
         .pipe(take(1))
-        .subscribe((options) => this.optionsSubject.next(options));
+        .subscribe((options) => {
+          this.optionsSubject.next(options);
+          this.handleLabelChange();
+        });
     }
   }
 }
