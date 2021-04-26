@@ -15,6 +15,7 @@ import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module'
 import { ToggleFilterComponent } from './toggle-filter.component';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 describe('ToggleFilterComponent', () => {
   let component: ToggleFilterComponent;
@@ -50,7 +51,7 @@ describe('ToggleFilterComponent', () => {
       id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
       type: FILTER_TYPES.TOGGLE,
       mapKey: {
-        key: 'warranty',
+        key: FILTER_QUERY_PARAM_KEY.warranty,
       },
       title: 'Warranty',
       icon: '/assets/icons/joke.svg',
@@ -169,7 +170,7 @@ describe('ToggleFilterComponent', () => {
         id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
         type: FILTER_TYPES.TOGGLE,
         mapKey: {
-          key: 'warranty',
+          key: FILTER_QUERY_PARAM_KEY.warranty,
         },
         title: 'Warranty',
         icon: '/assets/icons/joke.svg',
@@ -232,7 +233,7 @@ describe('ToggleFilterComponent', () => {
       });
 
       it('should set the provided value', () => {
-        component.value = [{ key: 'warranty', value: 'true' }];
+        component.value = [{ key: FILTER_QUERY_PARAM_KEY.warranty, value: 'true' }];
 
         expect(component.toggle).toBeTruthy();
       });
@@ -240,7 +241,7 @@ describe('ToggleFilterComponent', () => {
 
     describe('and original value has content', () => {
       beforeEach(() => {
-        component.value = [{ key: 'warranty', value: 'true' }];
+        component.value = [{ key: FILTER_QUERY_PARAM_KEY.warranty, value: 'true' }];
       });
 
       it('should clean up the value', () => {

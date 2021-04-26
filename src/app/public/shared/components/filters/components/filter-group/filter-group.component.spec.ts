@@ -5,7 +5,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterGroupComponent } from './filter-group.component';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ToggleFilterComponent } from '../toggle-filter/toggle-filter.component';
 import { GridSelectFilterComponent } from '../grid-select-filter/grid-select-filter.component';
@@ -14,50 +14,100 @@ import { FilterValuesPipe } from './pipes/filter-values.pipe';
 import { FilterHostDirective } from './directives/filter-host.directive';
 import { FiltersModule } from '@public/shared/components/filters/filters.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { FilterConfig } from '@public/shared/components/filters/interfaces/filter-config.interface';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { FASHION_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/fashion-configuration-ids.enum';
+import { SelectFilterComponent } from '@public/shared/components/filters/components/select-filter/select-filter.component';
+
+@Component({
+  selector: 'tsl-test-component',
+  template: ` <tsl-filter-group [values]="values" [config]="config" [variant]="variant"></tsl-filter-group> `,
+})
+class TestComponent {
+  @Input() values: FilterParameter[];
+  @Input() config: FilterConfig<unknown>[] = [];
+  @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
+}
 
 describe('FilterGroupComponent', () => {
   let component: FilterGroupComponent;
-  let fixture: ComponentFixture<FilterGroupComponent>;
+  let testComponent: TestComponent;
+  let fixture: ComponentFixture<TestComponent>;
   let debugElement: DebugElement;
 
   const togglePredicate = By.directive(ToggleFilterComponent);
+  const selectPredicate = By.directive(SelectFilterComponent);
   const gridPredicate = By.directive(GridSelectFilterComponent);
-  const values = [{ key: 'key', value: 'true' }];
+  const values = [{ key: FILTER_QUERY_PARAM_KEY.warranty, value: 'true' }];
+
+  const initialConfig: FilterConfig<unknown>[] = [
+    {
+      id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+      type: FILTER_TYPES.TOGGLE,
+      mapKey: {
+        key: 'toggle',
+      },
+      title: 'title',
+      bubblePlaceholder: 'bubblePlaceholder',
+    },
+    {
+      id: COMMON_CONFIGURATION_ID.POSTED_AGO,
+      type: FILTER_TYPES.GRID,
+      mapKey: {
+        key: 'grid',
+      },
+      title: 'title',
+      bubblePlaceholder: 'bubblePlaceholder',
+    },
+  ];
+
+  const modifiedConfig: FilterConfig<unknown>[] = [
+    {
+      id: FASHION_CONFIGURATION_ID.GENDER,
+      type: FILTER_TYPES.SELECT,
+      mapKey: {
+        key: 'gender',
+      },
+      title: 'title',
+      bubblePlaceholder: 'bubblePlaceholder',
+    },
+    {
+      id: COMMON_CONFIGURATION_ID.POSTED_AGO,
+      type: FILTER_TYPES.GRID,
+      mapKey: {
+        key: 'grid',
+      },
+      title: 'title',
+      bubblePlaceholder: 'bubblePlaceholder',
+    },
+  ];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FilterGroupComponent, FilterHostComponent, FilterValuesPipe, FilterHostDirective],
+      declarations: [TestComponent, FilterGroupComponent, FilterHostComponent, FilterValuesPipe, FilterHostDirective],
       imports: [CommonModule, FiltersModule, HttpClientTestingModule],
+      providers: [
+        {
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FilterGroupComponent);
+    fixture = TestBed.createComponent(TestComponent);
     debugElement = fixture.debugElement;
-    component = fixture.componentInstance;
+    testComponent = fixture.componentInstance;
+    component = debugElement.query(By.directive(FilterGroupComponent)).componentInstance;
 
-    component.config = [
-      {
-        id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
-        type: FILTER_TYPES.TOGGLE,
-        mapKey: {
-          key: 'toggle',
-        },
-        title: 'title',
-        bubblePlaceholder: 'bubblePlaceholder',
-      },
-      {
-        id: COMMON_CONFIGURATION_ID.POSTED_AGO,
-        type: FILTER_TYPES.GRID,
-        mapKey: {
-          key: 'grid',
-        },
-        title: 'title',
-        bubblePlaceholder: 'bubblePlaceholder',
-      },
-    ];
-    component.values = values;
-    component.variant = FILTER_VARIANT.BUBBLE;
+    testComponent.config = initialConfig;
+    testComponent.values = values;
+    testComponent.variant = FILTER_VARIANT.CONTENT;
     fixture.detectChanges();
   });
 
@@ -75,7 +125,7 @@ describe('FilterGroupComponent', () => {
 
   describe('when filter value changes', () => {
     it('should emit value changes', () => {
-      const value: FilterParameter[] = [{ key: 'toggle', value: '1' }];
+      const value: FilterParameter[] = [{ key: FILTER_QUERY_PARAM_KEY.warranty, value: '1' }];
       spyOn(component.valueChange, 'emit');
 
       const grid: GridSelectFilterComponent = debugElement.query(gridPredicate).componentInstance;
@@ -93,6 +143,21 @@ describe('FilterGroupComponent', () => {
       grid.openStateChange.emit(true);
 
       expect(component.openStateChange.emit).toHaveBeenCalledWith(true);
+    });
+  });
+
+  describe('when filter group config changes', () => {
+    beforeEach(() => {
+      testComponent.config = modifiedConfig;
+      fixture.detectChanges();
+    });
+
+    it('should render updated filters', () => {
+      const gender = debugElement.query(selectPredicate);
+      const grid = debugElement.query(gridPredicate);
+
+      expect(gender).toBeTruthy();
+      expect(grid).toBeTruthy();
     });
   });
 });

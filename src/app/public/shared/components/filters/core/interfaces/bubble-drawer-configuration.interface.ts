@@ -1,8 +1,8 @@
 import { ConfigurationId } from '../types/configuration-id.type';
 
-type ValueOf<T> = T[keyof T];
+export type ValueOf<T> = T[keyof T];
 
-export interface FilterIdConfiguration {
+export interface BubbleDrawerConfiguration {
   bubble: ValueOf<ConfigurationId>[];
   drawer: ValueOf<ConfigurationId>[];
 }
