@@ -39,26 +39,25 @@
             <span class="mb-2">
                 {{ subscriptionBodyText }}
             </span>
-            <span class="SubscriptionCard__info--edit mb-2" (click)="onClickLink()">
-                {{ textLink }}
-            </span>
+            <ng-container *ngIf="subscription.subscribed_until; else noSubscriptionEnd">
+                <span class="SubscriptionCard__until"
+                    i18n="@@web_profile_pages_subscription_330"> Subscription ends on
+                    {{subscription.subscribed_until | date:'dd/MM/yy' }}
+                </span>
+            </ng-container>
+            <ng-template #noSubscriptionEnd>
+                <span class="SubscriptionCard__from" i18n="@@web_profile_pages_subscription_329"> Subscribed
+                    from {{subscription.subscribed_from | date:'dd/MM/yy' }}
+                </span>
+            </ng-template>
         </ng-template>
     </div>
     <ng-container *ngIf="subscription.subscribed_from; else subscriptionButton">
-        <ng-container *ngIf="subscription.subscribed_until; else noSubscriptionEnd">
-            <span class="SubscriptionCard__until"
-                i18n="@@web_profile_pages_subscription_330"> Subscription ends on
-                {{subscription.subscribed_until | date:'dd/MM/yy' }}
-            </span>
-        </ng-container>
-        <ng-template #noSubscriptionEnd>
-            <span class="SubscriptionCard__from" i18n="@@web_profile_pages_subscription_329"> Subscribed
-                from {{subscription.subscribed_from | date:'dd/MM/yy' }}
-            </span>
-        </ng-template>
+        <tsl-button class="w-100" className="btn-secondary btn--width" (click)="onClickButton()">
+            {{textLink}}</tsl-button>
     </ng-container>
     <ng-template #subscriptionButton>
-        <tsl-button className="btn-primary" (click)="onClickButton()">
-            {{buttonText}}</tsl-button>
+        <tsl-button class="w-100" className="btn-primary btn-primary--bold btn--width" (click)="onClickButton()">
+            {{textLink}}</tsl-button>
     </ng-template>
 </div>

@@ -10,7 +10,7 @@ export class SubscriptionCardComponent {
   @Input() subscription: SubscriptionsResponse;
   @Input() textLink: string;
   @Input() hasTrialAvailable: boolean;
-  @Output() clickLink: EventEmitter<void> = new EventEmitter();
+  @Input() isSuscribed: boolean;
   @Output() clickButton: EventEmitter<void> = new EventEmitter();
 
   constructor() {}
@@ -45,9 +45,5 @@ export class SubscriptionCardComponent {
 
   public onClickButton(): void {
     this.clickButton.emit();
-  }
-
-  public onClickLink(): void {
-    this.clickLink.emit();
   }
 }
