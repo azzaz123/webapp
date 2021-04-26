@@ -4,9 +4,8 @@ import { FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbDropdown, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { FilterParameterStoreService } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { FILTER_PARAMETER_STORE_TOKEN } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
-
 import { SortFilterComponent } from './sort-filter.component';
 import { SELECT_FORM_OPTIONS_CONFIG } from './sort-filter.config';
 
@@ -39,7 +38,7 @@ describe('SortFilterComponent', () => {
       declarations: [SortFilterComponent, SelectFormStubComponent],
       providers: [
         {
-          provide: FilterParameterStoreService,
+          provide: FILTER_PARAMETER_STORE_TOKEN,
           useValue: filterParameterStoreServiceMock,
         },
       ],
