@@ -3,6 +3,7 @@ import { Route, RouterModule } from '@angular/router';
 import { DELIVERY_PATHS } from './delivery-routing-constants';
 import { DeliveryComponent } from './pages/delivery.component';
 import { TransactionTrackingScreenModule } from './pages/transaction-tracking-screen/transaction-tracking-screen';
+import { PayviewModule } from './pages/payview/payview.module';
 
 const routes: Route[] = [
   {
@@ -12,6 +13,10 @@ const routes: Route[] = [
       {
         path: DELIVERY_PATHS.TIMELINE,
         loadChildren: () => TransactionTrackingScreenModule,
+      },
+      {
+        path: DELIVERY_PATHS.PAYVIEW,
+        loadChildren: () => PayviewModule,
       },
     ],
   },
