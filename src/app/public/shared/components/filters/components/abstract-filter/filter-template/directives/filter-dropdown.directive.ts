@@ -29,10 +29,12 @@ export class FilterDropdownDirective implements OnChanges, OnDestroy {
 
   private closeAndRemoveListener(event: MouseEvent) {
     const clickedElement = event.target;
+    const parentElement = this.elementRef.nativeElement.parentNode;
 
-    if (!this.elementRef.nativeElement.contains(clickedElement)) {
-      this.openChange.emit(false);
+    if (parentElement.contains(clickedElement)) {
+      return;
     }
+    this.openChange.emit(false);
   }
 
   private setDropdownPosition() {
