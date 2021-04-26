@@ -11,15 +11,17 @@
             </tsl-svg-icon>
         </div>
         <div class="SubscriptionCard__title text-center mb-2">{{subscription.category_name}}</div>
-        <ng-container *ngIf="!subscription.subscribed_from; else subscriptionPrice">
-            <tsl-subscription-price-discount [subscription]="subscription">
-            </tsl-subscription-price-discount>
-        </ng-container>
-        <ng-template #subscriptionPrice>
-            <span class="SubscriptionCard-info--price" i18n="@@web_profile_pages_subscription_326">
-                {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
-            </span>
-        </ng-template>
+        <div class="SubscriptionCard__price">
+            <ng-container *ngIf="!subscription.subscribed_from; else subscriptionPrice">
+                <tsl-subscription-price-discount [subscription]="subscription">
+                </tsl-subscription-price-discount>
+            </ng-container>
+            <ng-template #subscriptionPrice>
+                <span i18n="@@web_profile_pages_subscription_326">
+                    {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
+                </span>
+            </ng-template>
+        </div>
         <hr />
     </div>
     <div class="SubscriptionCard__info">

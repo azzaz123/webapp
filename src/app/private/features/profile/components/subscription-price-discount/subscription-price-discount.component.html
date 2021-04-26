@@ -1,10 +1,12 @@
 <div class="SubscriptionPriceDiscount">
   <div [ngClass]="{ 'Subscriptions__category-info--discounted': hasOneTierDiscount(subscription) }">
-    <span i18n="@@SubscriptionPriceDiscountFromPrice" *ngIf="subscription.tiers.length !== 1">From: </span>
-    {{subscription?.tiers[0]?.price}}{{subscription?.tiers[0]?.currency}}
+    <span i18n="@@SubscriptionPriceDiscountFromPrice" *ngIf="subscription.tiers.length !== 1">From:
+      {{subscription?.tiers[0]?.price}}{{subscription?.tiers[0]?.currency}}/month
+    </span>
   </div>
   <div *ngIf="hasOneFreeTier(subscription) && !hasTrial(subscription)" class="Subscriptions__category-info-discount">
-    <div *ngIf="subscription.tiers[0].discount_available.months === 1" i18n="@@SubscriptionPriceDiscountMonthFree">One month free</div>
+    <div *ngIf="subscription.tiers[0].discount_available.months === 1" i18n="@@SubscriptionPriceDiscountMonthFree">One
+      month free</div>
     <div *ngIf="subscription.tiers[0].discount_available.months > 1" i18n="@@SubscriptionPriceDiscountMonthsFree">
       {{subscription?.tiers[0]?.discount_available.months}} months free
     </div>
