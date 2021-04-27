@@ -8,8 +8,8 @@ export const DROPDOWN_CONTENT_MIN_WIDTH = 380;
   selector: '[tslFilterDropdown]',
 })
 export class FilterDropdownDirective implements OnChanges, OnDestroy {
-  @Output() openChange: EventEmitter<boolean> = new EventEmitter();
   @Input() public dropdownOpened: boolean;
+  @Output() openChange: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private elementRef: ElementRef) {}
 
