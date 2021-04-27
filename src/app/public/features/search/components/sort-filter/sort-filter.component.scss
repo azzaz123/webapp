@@ -1,0 +1,36 @@
+@import '~style/common';
+
+$actions-height: 88px;
+
+.SortFilter {
+  cursor: pointer;
+  width: max-content;
+
+  &__bubble {
+    width: 20rem;
+  }
+
+  &__toolbar {
+    height: 70px;
+  }
+
+  &__title--bubble {
+    color: $black;
+    font-weight: $font-weight-bold;
+  }
+
+  &__actions {
+    background-color: $white;
+    height: $actions-height;
+    @include media-breakpoint-down(sm) {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
+  }
+
+  &__value {
+    color: $walla-main;
+  }
+}

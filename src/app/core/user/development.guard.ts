@@ -1,17 +1,15 @@
 import { Injectable, isDevMode } from '@angular/core';
 import { CanLoad, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { FeatureflagService } from './featureflag.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DevelopmentGuard implements CanLoad {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private featureFlagService: FeatureflagService) {}
 
-  canLoad(): Observable<boolean> | Promise<boolean> | boolean {
-    const experimentalFeaturesEnabled = !!localStorage.getItem('experimentalFeatures');
-    const devEnv = isDevMode() || experimentalFeaturesEnabled;
-
+  public canLoad(): boolean {
+    const devEnv = isDevMode() || this.featureFlagService.isExpermientalFeaturesEnabled();
     if (!devEnv) {
       this.router.navigate(['/chat']);
     }

@@ -1,6 +1,12 @@
 @import '~style/common';
 
 .Search {
+  &__sort {
+    height: 38px;
+    background-color: $color-inbox-background;
+    border-bottom: thin solid $color-social-background;
+  }
+
   &__ad {
     &--top {
       height: 58%;
@@ -8,10 +14,6 @@
 
     &--bottom {
       height: 40%;
-    }
-
-    &--topSpace {
-      top: calc(2 * #{$topbar-height} + #{$spacing-xs});
     }
   }
 }

@@ -12,6 +12,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FiltersWrapperModule } from './components/filters-wrapper/filters-wrapper.module';
 import { SearchErrorLayoutComponent } from './components/search-error-layout/search-error-layout.component';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
+import { SortFilterModule } from './components/sort-filter/sort-filter.module';
 import { SearchAPIService } from './core/services/infrastructure/api/search-api.service';
 import { SearchFavouritesService } from './core/services/infrastructure/favorites/search-favourites.service';
 import { SearchInfrastructureService } from './core/services/infrastructure/search-infrastructure.service';
@@ -39,6 +40,7 @@ import { SearchResolver } from './core/services/search.resolver';
     ItemFavouritesModule,
     ErrorBoxModule,
     InfiniteScrollModule,
+    SortFilterModule,
   ],
   providers: [
     ViewportService,
