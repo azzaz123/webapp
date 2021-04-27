@@ -98,14 +98,14 @@ describe('PublicProfileTrackingEventsService', () => {
       spyOn(analyticsService, 'trackPageView');
     });
     it('should send view own review event if it is own user review', () => {
-      service.trackViewOwnReviewsorViewOtherReviews(MOCK_USER, MOCK_USER_STATS, MOCK_REVIEWS, isOwnUser);
+      service.trackViewOwnReviewsorViewOtherReviews(MOCK_USER, MOCK_USER_STATS, isOwnUser);
 
       expect(analyticsService.trackPageView).toHaveBeenLastCalledWith(MOCK_TRACK_VIEW_OWN_REVIEWS);
     });
 
     it('should send view other reviews event if it is other user review', () => {
       isOwnUser = false;
-      service.trackViewOwnReviewsorViewOtherReviews(MOCK_OTHER_USER, MOCK_USER_STATS, MOCK_REVIEWS, isOwnUser);
+      service.trackViewOwnReviewsorViewOtherReviews(MOCK_OTHER_USER, MOCK_USER_STATS, isOwnUser);
 
       expect(analyticsService.trackPageView).toHaveBeenLastCalledWith(MOCK_TRACK_VIEW_OTHERS_REVIEWS);
     });
@@ -121,7 +121,6 @@ describe('PublicProfileTrackingEventsService', () => {
     it('should send favourite item event when item is favourited', () => {
       itemCard.flags.favorite = true;
       MOCK_ITEM_CARD.flags.favorite = true;
-      console.log('card', MOCK_ITEM_CARD);
       service.trackFavouriteOrUnfavouriteItemEvent(itemCard, MOCK_USER);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVOURITE_ITEM_EVENT_PROFILE);

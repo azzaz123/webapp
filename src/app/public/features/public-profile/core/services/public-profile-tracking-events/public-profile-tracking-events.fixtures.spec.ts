@@ -79,7 +79,7 @@ export const MOCK_TRACK_VIEW_OWN_REVIEWS: AnalyticsPageView<ViewOwnReviews> = {
   attributes: {
     screenId: SCREEN_IDS.OwnReviewsSection,
     isPro: MOCK_USER.featured,
-    numberOfReviews: MOCK_REVIEWS.length,
+    numberOfReviews: MOCK_USER_STATS.counters.publish,
     reviewsScore: MOCK_USER_STATS.ratings.reviews,
   },
 };
@@ -90,7 +90,7 @@ export const MOCK_TRACK_VIEW_OTHERS_REVIEWS: AnalyticsPageView<ViewOtherReviews>
     screenId: SCREEN_IDS.OtherReviewsSection,
     isPro: MOCK_OTHER_USER.featured,
     sellerUserId: MOCK_OTHER_USER.id,
-    numberOfReviews: MOCK_REVIEWS.length,
+    numberOfReviews: MOCK_USER_STATS.counters.publish,
     reviewsScore: MOCK_USER_STATS.ratings.reviews,
   },
 };
