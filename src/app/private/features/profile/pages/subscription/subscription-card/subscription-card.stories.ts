@@ -4,8 +4,6 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { SubscriptionCardComponent } from './subscription-card.component';
 import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
 import { HttpClientModule } from '@angular/common/http';
-import { ButtonModule } from '@shared/button/button.module';
-import { ProfileModule } from '@private/features/profile/profile.module';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SubscriptionPriceDiscountComponent } from '@private/features/profile/components/subscription-price-discount/subscription-price-discount.component';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -37,23 +35,27 @@ const Template: Story<SubscriptionCardComponent> = (args: SubscriptionCardCompon
     '<tsl-subscription-card [subscription]="subscription" [textButton]="textButton" [hasTrialAvailable]="hasTrialAvailable" [isSubscribed]="isSubscribed" (buttonClick)="buttonClick()"></tsl-subscription-card>',
 });
 
+const MOCK_SUBSCRIPTION = { ...MAPPED_SUBSCRIPTIONS[2], category_icon: 'helmet' };
+
 export const NoSubscribedNoTrial = Template.bind({});
 NoSubscribedNoTrial.args = {
-  subscription: MAPPED_SUBSCRIPTIONS[0],
+  subscription: MOCK_SUBSCRIPTION,
   hasTrialAvailable: true,
   textButton: 'Trial available',
+  isSubscribed: false,
 };
 
 export const NoSubscribedTrial = Template.bind({});
 NoSubscribedTrial.args = {
-  subscription: MAPPED_SUBSCRIPTIONS[0],
+  subscription: MOCK_SUBSCRIPTION,
   hasTrialAvailable: false,
   textButton: 'No trial available',
+  isSubscribed: false,
 };
 
 export const SubscribedUntil = Template.bind({});
 SubscribedUntil.args = {
-  subscription: { ...MAPPED_SUBSCRIPTIONS[2], subscribed_until: 1567675697 },
+  subscription: { ...MOCK_SUBSCRIPTION, subscribed_until: 1567675697 },
   hasTrialAvailable: false,
   textButton: 'Edit',
   isSubscribed: true,
@@ -61,7 +63,7 @@ SubscribedUntil.args = {
 
 export const SubscribedFrom = Template.bind({});
 SubscribedFrom.args = {
-  subscription: MAPPED_SUBSCRIPTIONS[2],
+  subscription: MOCK_SUBSCRIPTION,
   hasTrialAvailable: false,
   textButton: 'Cancel',
   isSubscribed: true,

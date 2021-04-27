@@ -1,5 +1,5 @@
 <div class="SubscriptionCard d-flex flex-column align-items-center justify-content-between" [ngClass]="{
-    'SubscriptionCard--subscribed': subscription.subscribed_from
+    'SubscriptionCard--subscribed': isSubscribed
   }">
     <div class="SubscriptionCard__trialBanner text-center px-2 mb-3"
         [class.SubscriptionCard__trialBanner--hidden]="!hasTrialAvailable || isSubscribed">
@@ -12,7 +12,7 @@
         </div>
         <div class="SubscriptionCard__title text-center mb-2">{{subscription.category_name}}</div>
         <div class="SubscriptionCard__price">
-            <ng-container *ngIf="!subscription.subscribed_from; else subscriptionPrice">
+            <ng-container *ngIf="!isSubscribed; else subscriptionPrice">
                 <tsl-subscription-price-discount [subscription]="subscription">
                 </tsl-subscription-price-discount>
             </ng-container>
@@ -25,7 +25,7 @@
         <hr />
     </div>
     <div class="d-flex flex-column SubscriptionCard__info w-100">
-        <ng-container *ngIf="!subscription.subscribed_from; else subscriptionBody">
+        <ng-container *ngIf="!isSubscribed; else subscriptionBody">
             <div class="d-flex flex-column text-left">
                 <div class="d-flex mb-2">
                     <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
@@ -59,7 +59,7 @@
                 </ng-container>
                 <ng-template #noSubscriptionEnd>
                     <span i18n="@@web_profile_pages_subscription_329"> Subscribed
-                        from <strong>{{subscription.subscribed_from | date:'dd/MM/yy' }}</strong>
+                        from <strong>{{isSubscribed | date:'dd/MM/yy' }}</strong>
                     </span>
                 </ng-template>
             </span>
