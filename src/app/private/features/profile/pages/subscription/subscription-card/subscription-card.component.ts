@@ -9,7 +9,7 @@ import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interfa
 })
 export class SubscriptionCardComponent {
   @Input() subscription: SubscriptionsResponse;
-  @Input() textLink: string;
+  @Input() textButton: string;
   @Input() hasTrialAvailable: boolean;
   @Input() isSuscribed: boolean;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter();
@@ -20,10 +20,6 @@ export class SubscriptionCardComponent {
     'Gana visibilidad en búsquedas',
     'Ahorra tiempo de gestión',
   ];
-
-  get buttonText(): string {
-    return this.hasTrialAvailable ? $localize`:@@startFreeTrial:Start free trial` : $localize`:@@seePlans:See plans`;
-  }
 
   get noSubscriptionBodyText(): string {
     return this.subscription.current_limit

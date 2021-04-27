@@ -49,7 +49,7 @@
                     {{ subscriptionBodyText }}
                 </span>
             </div>
-            <span class="SubscriptionCard__from">
+            <span class="SubscriptionCard__date">
                 <ng-container *ngIf="subscription.subscribed_until; else noSubscriptionEnd">
                     <span i18n="@@web_profile_pages_subscription_330"> Subscription ends on
                         <strong>
@@ -65,12 +65,12 @@
             </span>
         </ng-template>
     </div>
-    <ng-container *ngIf="subscription.subscribed_from; else subscriptionButton">
+    <ng-container *ngIf="isSuscribed; else subscriptionButton">
         <tsl-button class="w-100" className="btn-secondary btn--width" (click)="onButtonClick()">
-            {{textLink}}</tsl-button>
+            {{textButton}}</tsl-button>
     </ng-container>
     <ng-template #subscriptionButton>
         <tsl-button class="w-100" className="btn-primary btn-primary--bold btn--width" (click)="onButtonClick()">
-            {{textLink}}</tsl-button>
+            {{textButton}}</tsl-button>
     </ng-template>
 </div>

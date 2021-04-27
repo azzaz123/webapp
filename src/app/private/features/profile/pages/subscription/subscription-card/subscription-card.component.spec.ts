@@ -1,10 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED } from '@fixtures/subscriptions.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
 import { ButtonComponent } from '@shared/button/button.component';
-
 import { SubscriptionCardComponent } from './subscription-card.component';
 
 describe('SubscriptionCardComponent', () => {
@@ -15,7 +14,11 @@ describe('SubscriptionCardComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SubscriptionCardComponent, ButtonComponent],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(SubscriptionCardComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -26,17 +29,18 @@ describe('SubscriptionCardComponent', () => {
   describe('when has an active subscription ', () => {
     beforeEach(() => {
       component.subscription = MAPPED_SUBSCRIPTIONS[2];
+      component.isSuscribed = true;
       fixture.detectChanges();
     });
 
     it('should be shown as suscribed card design', () => {
-      const card: DebugElement = fixture.debugElement.query(By.css('.SubscriptionCard--subscribed'));
+      const card = fixture.debugElement.query(By.css('.SubscriptionCard--subscribed'));
 
       expect(card).toBeTruthy();
     });
 
     it('should not show trial banner', () => {
-      const trialBanner: DebugElement = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
+      const trialBanner = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
 
       expect(trialBanner).toBeTruthy();
     });
@@ -52,7 +56,7 @@ describe('SubscriptionCardComponent', () => {
     });
 
     it('should show subscription price', () => {
-      const price: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard-info--price')).nativeElement;
+      const price: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__price')).nativeElement;
 
       expect(price.textContent).toContain(component.subscription.selected_tier.price);
       expect(price.textContent).toContain(component.subscription.selected_tier.currency);
@@ -79,38 +83,13 @@ describe('SubscriptionCardComponent', () => {
       });
     });
 
-    describe('and has text link', () => {
-      beforeEach(() => {
-        component.textLink = 'test';
-        fixture.detectChanges();
-      });
-
-      it('should show text link', () => {
-        const link: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info--edit')).nativeElement;
-
-        expect(link.textContent).toContain(component.textLink);
-      });
-
-      describe('and click on text link', () => {
-        it('should emit click', () => {
-          spyOn(component.clickLink, 'emit');
-
-          const link: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info--edit')).nativeElement;
-          link.click();
-
-          expect(component.clickLink.emit).toHaveBeenCalledTimes(1);
-          expect(component.clickLink.emit).toHaveBeenLastCalledWith();
-        });
-      });
-    });
-
     describe('and has subscription end', () => {
       beforeEach(() => {
         component.subscription.subscribed_until = 1567675697;
         fixture.detectChanges();
       });
       it('should show subscription end date', () => {
-        const subscriptionEnd: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__until')).nativeElement;
+        const subscriptionEnd: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__date')).nativeElement;
 
         expect(subscriptionEnd.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_until, 'dd/MM/yy'));
       });
@@ -122,7 +101,7 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should show subscription start date', () => {
-        const subscriptionStart: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__from')).nativeElement;
+        const subscriptionStart: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__date')).nativeElement;
 
         expect(subscriptionStart.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_from, 'dd/MM/yy'));
       });
@@ -136,7 +115,7 @@ describe('SubscriptionCardComponent', () => {
     });
 
     it('should not be shown as suscribed card design', () => {
-      const card: DebugElement = fixture.debugElement.query(By.css('.SubscriptionCard--subscribed'));
+      const card = fixture.debugElement.query(By.css('.SubscriptionCard--subscribed'));
 
       expect(card).toBeFalsy();
     });
@@ -147,28 +126,13 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should show trial banner', () => {
-        const trialBannerHidden: DebugElement = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
 
         expect(trialBannerHidden).toBeFalsy();
       });
       it('should show free days amount', () => {
         const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner')).nativeElement;
         expect(trialBanner.textContent).toContain(component.subscription.trial_days);
-      });
-      it('should show free trial CTA', () => {
-        const ctaButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
-        expect(ctaButton.textContent).toContain($localize`:@@startFreeTrial:Start free trial`);
-      });
-      describe('and click on CTA button', () => {
-        it('should emit click', () => {
-          spyOn(component.buttonClick, 'emit');
-
-          const ctaButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
-          ctaButton.click();
-
-          expect(component.buttonClick.emit).toHaveBeenCalledTimes(1);
-          expect(component.buttonClick.emit).toHaveBeenLastCalledWith();
-        });
       });
     });
 
@@ -178,24 +142,9 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should show trial banner', () => {
-        const trialBannerHidden: DebugElement = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
 
         expect(trialBannerHidden).toBeTruthy();
-      });
-      it('should show free trial CTA', () => {
-        const ctaButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
-        expect(ctaButton.textContent).toContain($localize`:@@seePlans:See plans`);
-      });
-      describe('and click on CTA button', () => {
-        it('should emit click', () => {
-          spyOn(component.buttonClick, 'emit');
-
-          const ctaButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
-          ctaButton.click();
-
-          expect(component.buttonClick.emit).toHaveBeenCalledTimes(1);
-          expect(component.buttonClick.emit).toHaveBeenLastCalledWith();
-        });
       });
     });
 
@@ -232,14 +181,37 @@ describe('SubscriptionCardComponent', () => {
 
     describe('and has text link', () => {
       beforeEach(() => {
-        component.textLink = 'test';
+        component.textButton = 'test';
         fixture.detectChanges();
       });
 
       it('should not show text link', () => {
-        const link: DebugElement = fixture.debugElement.query(By.css('.SubscriptionCard__info--edit'));
+        const link = fixture.debugElement.query(By.css('.SubscriptionCard__info--edit'));
 
         expect(link).toBeFalsy();
+      });
+    });
+  });
+
+  describe('CTA button', () => {
+    beforeEach(() => {
+      component.subscription = MAPPED_SUBSCRIPTIONS[2];
+      component.textButton = 'test';
+      fixture.detectChanges();
+    });
+    it('should show text', () => {
+      const ctaButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+      expect(ctaButton.textContent).toContain(component.textButton);
+    });
+    describe('and click on CTA button', () => {
+      it('should emit click', () => {
+        spyOn(component.buttonClick, 'emit');
+
+        const ctaButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+        ctaButton.click();
+
+        expect(component.buttonClick.emit).toHaveBeenCalledTimes(1);
+        expect(component.buttonClick.emit).toHaveBeenLastCalledWith();
       });
     });
   });
