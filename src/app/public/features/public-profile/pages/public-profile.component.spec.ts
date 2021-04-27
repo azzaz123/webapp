@@ -2,19 +2,18 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserPipeMock } from '@fixtures/is-current-user.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
-import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
 import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
 import { MockUserProfileTrackEventService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.fixtures.spec';
 import { PublicProfileTrackingEventsService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
@@ -33,6 +32,8 @@ describe('PublicProfileComponent', () => {
   let mockDeviceService;
   let isCurrentUserPipe: IsCurrentUserPipe;
   let publicProfileTrackingEventsService: PublicProfileTrackingEventsService;
+
+  const routerEvents: Subject<any> = new Subject();
 
   beforeEach(async () => {
     mockDeviceService = {
@@ -89,6 +90,7 @@ describe('PublicProfileComponent', () => {
           useValue: {
             navigate() {},
             url: PUBLIC_PROFILE_PATHS.REVIEWS,
+            events: routerEvents,
           },
         },
         { provide: IsCurrentUserPipe, useClass: IsCurrentUserPipeMock },
@@ -182,7 +184,7 @@ describe('PublicProfileComponent', () => {
             it('should send track view own reviews', () => {
               spyOn(publicProfileTrackingEventsService, 'trackViewOwnReviewsorViewOtherReviews');
 
-              component.ngOnInit();
+              routerEvents.next(new NavigationEnd(1, PUBLIC_PROFILE_PATHS.REVIEWS, PUBLIC_PROFILE_PATHS.PUBLISHED));
 
               expect(publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews).toHaveBeenLastCalledWith(
                 component.userInfo,

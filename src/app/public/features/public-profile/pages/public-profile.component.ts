@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, forkJoin } from 'rxjs';
-import { finalize } from 'rxjs/operators';
-import { ActivatedRoute, Event as NavigationEvent, NavigationEnd, Router } from '@angular/router';
+import { filter, finalize } from 'rxjs/operators';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
@@ -53,6 +53,9 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
       this.adsService.setSlots([this.adSlot]);
       this.getUser(userUUID);
     });
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+      this.trackViewEvents(event.url);
+    });
     this.isMobile = this.deviceService.isMobile();
   }
 
@@ -95,7 +98,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
               ratings: userStats.ratings,
               counters: { ...userStats.counters, shipping_counter: shippingCounter },
             };
-            this.routerOnActivate();
+            this.isReviewsUrl(this.router.url) && this.trackViewOwnOrOtherReviews();
           },
           () => {
             this.router.navigate([`/${PUBLIC_PATHS.NOT_FOUND}`]);
@@ -104,23 +107,14 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     );
   }
 
-  private routerOnActivate(): void {
-    this.initateRouterOnActivate();
-    this.routerNavigationChange();
+  private isReviewsUrl(url: string): boolean {
+    return url.endsWith(PUBLIC_PROFILE_PATHS.REVIEWS);
   }
 
-  private initateRouterOnActivate(): void {
-    if (this.router.url.endsWith(PUBLIC_PROFILE_PATHS.REVIEWS)) {
+  private trackViewEvents(url: string): void {
+    if (this.isReviewsUrl(url)) {
       this.trackViewOwnOrOtherReviews();
     }
-  }
-
-  private routerNavigationChange(): void {
-    this.router.events.subscribe((event: NavigationEvent) => {
-      if (event instanceof NavigationEnd && event.url.endsWith(PUBLIC_PROFILE_PATHS.REVIEWS)) {
-        this.trackViewOwnOrOtherReviews();
-      }
-    });
   }
 
   private handleCoverImage(): void {
