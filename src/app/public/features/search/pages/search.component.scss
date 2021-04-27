@@ -1,6 +1,6 @@
 @import '~style/common';
 
-$filters-height: 44px;
+$filters-height: 82px;
 
 .has-backdrop {
   &::before {
@@ -20,14 +20,19 @@ $filters-height: 44px;
     padding-top: $filters-height;
   }
 
-  &__filters {
+  &__filters-container {
     left: 0;
     right: 0;
     z-index: 200;
-
     &--with-backdrop {
       @extend .has-backdrop;
     }
+  }
+
+  &__sort {
+    height: 38px;
+    background-color: $color-inbox-background;
+    border-bottom: thin solid $color-social-background;
   }
 
   &__ad {
@@ -40,7 +45,7 @@ $filters-height: 44px;
     }
 
     &--topSpace {
-      top: calc(2 * #{$topbar-height} + #{$spacing-xs});
+      top: calc(2 * #{$filters-height} + #{$spacing-xs});
     }
   }
 }
