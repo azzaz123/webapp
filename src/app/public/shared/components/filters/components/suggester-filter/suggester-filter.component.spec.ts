@@ -62,6 +62,7 @@ describe('SuggesterFilterComponent', () => {
     isClearable: true,
     hasOptionsOnInit: false,
     suggesterPlaceholder: 'Search for stuff',
+    isLabelInValue: true,
   };
 
   const optionsOnInitConfig: SuggesterFilterConfig = {

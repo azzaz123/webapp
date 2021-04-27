@@ -9,6 +9,7 @@ import { GridSelectFormOption } from '@shared/form/components/grid-select/interf
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-grid-select-filter',
@@ -76,7 +77,7 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
   }
 
   private handleValueChange(value: string[]): void {
-    this.writeValue([{ key: this.config.mapKey.parameterKey, value: value.join(',') }]);
+    this.writeValue(this.formatValue(value));
     this.updateLabel();
     this.updateIcon();
   }
@@ -96,7 +97,24 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
   }
 
   private updateForm(): void {
-    this.formGroup.controls.select.setValue(this.deserializeValue(this.getValue('parameterKey')), { emitEvent: false });
+    this.formGroup.controls.select.setValue(this.deserializeValue(this.getFormattedValue()), { emitEvent: false });
+  }
+
+  private formatValue(values: string[]): FilterParameter[] {
+    if (this.config.isBooleanFormat) {
+      return this.getClearedBooleanFormatValues(values);
+    }
+
+    return [{ key: this.config.mapKey.parameterKey, value: values.join(',') }];
+  }
+
+  private getFormattedValue(): string {
+    if (this.config.isBooleanFormat) {
+      const values = this._value.map((value) => value.key);
+      return values.length ? values.join(',') : undefined;
+    }
+
+    return this.getValue('parameterKey');
   }
 
   private updateLabel(): void {
@@ -129,5 +147,18 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
     const icon = this.options.find((option) => currentValues.includes(option.value))?.icon;
 
     return typeof icon === 'string' ? icon : icon?.standard;
+  }
+
+  private getClearedBooleanFormatValues(values: string[]): FilterParameter[] {
+    const oldParameters = this._value;
+    const newParameters = values.map((value: FILTER_QUERY_PARAM_KEY) => ({ key: value, value: 'true' }));
+
+    oldParameters.forEach(({ key }) => {
+      if (!values.includes(key)) {
+        newParameters.push({ key: key, value: undefined });
+      }
+    });
+
+    return newParameters;
   }
 }

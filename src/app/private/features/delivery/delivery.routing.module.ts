@@ -8,6 +8,7 @@ import { DeliveryAddressModule } from './pages/delivery-address/delivery-address
 import { TransactionTrackingScreenModule } from './pages/transaction-tracking-screen/transaction-tracking-screen.module';
 import { PayviewModule } from './pages/payview/payview.module';
 import { ShipmentTrackingModule } from './pages/shipment-tracking/shipment-tracking.module';
+import { BankAccountModule } from './pages/bank-account/bank-account.module';
 import { CreateDisputeModule } from './pages/create-dispute/create-dispute.module';
 
 // NOTE: they childs are begin loaded in a NON LAZY way but with the module
@@ -39,6 +40,10 @@ const routes: Route[] = [
       {
         path: DELIVERY_PATHS.SHIPMENT_TRACKING,
         loadChildren: () => ShipmentTrackingModule,
+      },
+      {
+        path: DELIVERY_PATHS.BANK_ACCOUNT,
+        loadChildren: () => BankAccountModule,
       },
       {
         path: DELIVERY_PATHS.DISPUTE,

@@ -8,4 +8,5 @@ export interface GridSelectFilterConfig extends FilterConfig<GridSelectFilterPar
   hasBigIcons: boolean;
   mirrorsValueIcon?: boolean;
   hideLabels?: boolean;
+  isBooleanFormat?: boolean;
 }

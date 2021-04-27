@@ -37,6 +37,22 @@ const REAL_ESTATE_FILTER_CONFIGURATION_COMMON: AvailableFilterConfig[] = [
     isMultiselect: false,
     hasBigIcons: false,
   },
+  {
+    id: REAL_ESTATE_CONFIGURATION_ID.EXTRAS,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterRealEstateFeaturesTitle:Features`,
+    bubblePlaceholder: $localize`:@@filterRealEstateFeaturesBubblePlaceholder:Features`,
+    mapKey: {
+      garage: FILTER_QUERY_PARAM_KEY.garage,
+      terrace: FILTER_QUERY_PARAM_KEY.terrace,
+      elevator: FILTER_QUERY_PARAM_KEY.elevator,
+      garden: FILTER_QUERY_PARAM_KEY.garden,
+      pool: FILTER_QUERY_PARAM_KEY.pool,
+    },
+    isMultiselect: true,
+    hasBigIcons: false,
+    isBooleanFormat: true,
+  },
 ];
 
 const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [

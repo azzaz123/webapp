@@ -69,6 +69,11 @@ describe('GridSelectFilterComponent', () => {
     mirrorsValueIcon: true,
   };
 
+  const booleanFormatConfig: GridSelectFilterConfig = {
+    ...basicConfig,
+    isBooleanFormat: true,
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TestWrapperComponent, GridSelectFilterComponent, IsBubblePipe],
@@ -353,6 +358,59 @@ describe('GridSelectFilterComponent', () => {
       const filterTemplate: FilterTemplateComponent = debugElement.query(By.directive(FilterTemplateComponent)).componentInstance;
 
       expect(filterTemplate.icon).toEqual('/assets/icons/joke.svg');
+    });
+  });
+
+  describe('when is boolean formatted values', () => {
+    beforeEach(() => {
+      testComponent.variant = FILTER_VARIANT.CONTENT;
+      testComponent.config = booleanFormatConfig;
+      fixture.detectChanges();
+    });
+
+    describe('when value changes from form', () => {
+      describe('and value is not yet selected', () => {
+        it('should emit value as boolean when selected', () => {
+          spyOn(component.valueChange, 'emit');
+          const form: GridSelectFormComponent = debugElement.query(formPredicate).componentInstance;
+
+          form.handleOptionClick('engine');
+          fixture.detectChanges();
+
+          expect(component.formGroup.controls.select.value).toEqual(['engine']);
+          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'engine', value: 'true' }]);
+        });
+      });
+
+      describe('and value is already selected', () => {
+        beforeEach(() => {
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'true' }];
+          fixture.detectChanges();
+        });
+
+        it('should emit undefined value to be cleared', () => {
+          spyOn(component.valueChange, 'emit');
+          const form: GridSelectFormComponent = debugElement.query(formPredicate).componentInstance;
+
+          form.handleOptionClick('engine');
+          fixture.detectChanges();
+
+          expect(component.formGroup.controls.select.value).toEqual([]);
+          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'engine', value: undefined }]);
+        });
+      });
+    });
+
+    describe('when value changes from parent', () => {
+      beforeEach(() => {
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.engine, value: 'true' }];
+        fixture.detectChanges();
+      });
+      it('should apply value', () => {
+        expect(component.formGroup.controls.select.value).toEqual(['engine']);
+      });
     });
   });
 });
