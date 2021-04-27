@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-subscription-card',
   templateUrl: './subscription-card.component.html',
   styleUrls: ['./subscription-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubscriptionCardComponent {
   @Input() subscription: SubscriptionsResponse;

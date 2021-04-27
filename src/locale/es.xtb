@@ -511,7 +511,7 @@
   <translation id="web_profile_modal_edit_subscription_260">Confirmar cambio de suscripción</translation>
   <translation id="web_chat_children_inbox_components_user_component_detail_157" desc="La distancia entre el usuario y el producto a"><ph name="INTERPOLATION"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos;}}</ex></ph>km de ti</translation>
   <translation id="web_catalog_components_item_104">Modificado</translation>
-  <translation id="web_profile_pages_subscription_329">Suscrito desde <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
+  <translation id="web_profile_pages_subscription_329">Suscrito desde <ph name="START_TAG_STRONG"/><ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph><ph name="CLOSE_TAG_STRONG"/></translation>
   <translation id="web_profile_modal_cancel_subscription_237">¿Seguro que quieres cancelar tu suscripción Wallapop PRO <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
   <translation id="web_profile_modal_cancel_subscription_238">Es triste que te vayas. Puedes volver cuando quieras, ¡te estaremos esperando!</translation>
   <translation id="web_profile_modal_cancel_subscription_239">Sí, quiero cancelar mi suscripción</translation>
@@ -528,7 +528,7 @@
   <translation id="web_profile_modal_continue_subscription_247">No, quiero cancelarla</translation>
   <translation id="web_catalog_pro_components_cart_extras_32">Comprar</translation>
   <translation id="web_profile_pages_subscription_323">Límite sin suscripción: <ph name="PH"><ex>{{subscription.current_limit}}</ex></ph></translation>
-  <translation id="web_profile_pages_subscription_330">La suscripción finaliza el <ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
+  <translation id="web_profile_pages_subscription_330">La suscripción finaliza el <ph name="START_TAG_STRONG"/><ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph><ph name="CLOSE_TAG_STRONG"/></translation>
   <translation id="web_profile_pages_subscription_331">Continuar suscrito</translation>
   <translation id="web_profile_modal_add_new_subscription_217">Introduce tus datos de pago</translation>
   <translation id="web_profile_modal_continue_subscription_245">¡Nunca es demasiado tarde! Puedes deshacer la cancelación y seguir disfrutando de los beneficios.</translation>

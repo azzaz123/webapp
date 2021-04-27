@@ -24,26 +24,31 @@
         </div>
         <hr />
     </div>
-    <div class="SubscriptionCard__info">
+    <div class="d-flex flex-column SubscriptionCard__info w-100">
         <ng-container *ngIf="!subscription.subscribed_from; else subscriptionBody">
-            <span>
-                {{ noSubscriptionBodyText }}
-            </span>
             <div class="d-flex flex-column text-left">
-                <span class="d-flex mb-2" *ngFor="let benefit of subcriptionBenefits">
-                    <tsl-svg-icon class="mr-1 mt-2 icon-check" src="assets/icons/check.svg">
+                <div class="d-flex mb-2">
+                    <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
+                    </tsl-svg-icon>
+                    <span>
+                        {{ noSubscriptionBodyText }}
+                    </span>
+                </div>
+                <div class="d-flex mb-2" *ngFor="let benefit of subcriptionBenefits">
+                    <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
                     </tsl-svg-icon>
                     <span> {{ benefit }}</span>
-                </span>
+                </div>
             </div>
         </ng-container>
         <ng-template #subscriptionBody>
-            <span class="mb-2">
-                {{ subscriptionBodyText }}
-            </span>
-            <span class="mb-2">
-                {{ subscriptionBodyText }}
-            </span>
+            <div class="d-flex mb-2 text-left w-100">
+                <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
+                </tsl-svg-icon>
+                <span class="mb-2">
+                    {{ subscriptionBodyText }}
+                </span>
+            </div>
             <span class="SubscriptionCard__from">
                 <ng-container *ngIf="subscription.subscribed_until; else noSubscriptionEnd">
                     <span i18n="@@web_profile_pages_subscription_330"> Subscription ends on

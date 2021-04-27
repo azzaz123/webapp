@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 
@@ -6,6 +6,7 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
   selector: 'tsl-subscription-list',
   templateUrl: './subscription-list.component.html',
   styleUrls: ['./subscription-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubscriptionListComponent {
   @Input() isLoading: boolean;

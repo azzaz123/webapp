@@ -21,13 +21,8 @@
   }
 
   &__info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     font-size: $font-size-s;
-    margin: 0;
     flex-grow: 1;
-    justify-content: flex-start;
     &--edit {
       color: $walla-main;
       text-align: center;
