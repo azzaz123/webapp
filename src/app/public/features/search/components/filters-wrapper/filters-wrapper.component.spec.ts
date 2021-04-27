@@ -171,15 +171,6 @@ describe('FiltersWrapperComponent', () => {
   });
 
   describe('when filter bubble open state changes', () => {
-    it('should emit open state change event with the same value', () => {
-      const value = true;
-      spyOn(component.bubbleFilterOpenStateChange, 'emit');
-
-      component.bubbleOpenStateChange(value);
-
-      expect(component.bubbleFilterOpenStateChange.emit).toBeCalledWith(value);
-    });
-
     describe('and drawer was open', () => {
       beforeEach(() => {
         component.drawerConfig.isOpen = true;

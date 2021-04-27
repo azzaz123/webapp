@@ -5,9 +5,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonModule } from '@angular/common';
 import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
 import { BubbleModule } from '@public/shared/components/bubble/bubble.module';
-import { NgbDropdown, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonModule } from '@shared/button/button.module';
 import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
+import { FilterDropdownDirective } from './directives/filter-dropdown.directive';
 
 describe('FilterTemplateComponent', () => {
   const bubbleSelector = By.css('.Bubble');
@@ -18,8 +18,8 @@ describe('FilterTemplateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CommonModule, BubbleModule, NgbDropdownModule, ButtonModule],
-      declarations: [FilterTemplateComponent],
+      imports: [HttpClientTestingModule, CommonModule, BubbleModule, ButtonModule],
+      declarations: [FilterTemplateComponent, FilterDropdownDirective],
     }).compileComponents();
   });
 
@@ -75,18 +75,22 @@ describe('FilterTemplateComponent', () => {
     });
 
     describe('and is dropdown', () => {
-      let dropdown: NgbDropdown;
+      let dropdown: DebugElement;
       beforeEach(async () => {
         await setInputs({
           isDropdown: true,
         });
-        dropdown = component.dropdown;
+        dropdown = fixture.debugElement.query(By.directive(FilterDropdownDirective));
       });
 
       describe('and dropdown state change', () => {
         it('should emit openStateChange', () => {
+          component.isDropdownOpen = true;
+          fixture.detectChanges();
+          const dropdown = fixture.debugElement.query(By.directive(FilterDropdownDirective));
           spyOn(component.openStateChange, 'emit');
-          component.dropdown.openChange.emit(true);
+
+          dropdown.triggerEventHandler('openChange', true);
 
           expect(component.openStateChange.emit).toHaveBeenCalledTimes(1);
           expect(component.openStateChange.emit).toHaveBeenCalledWith(true);
@@ -95,25 +99,16 @@ describe('FilterTemplateComponent', () => {
 
       describe('when clicked on bubble', () => {
         it('should toggle dropdown', () => {
-          spyOn(dropdown, 'toggle');
+          spyOn(component, 'toggleDropdown').and.callThrough();
           debugElement.query(bubbleSelector).nativeElement.click();
 
-          expect(dropdown.toggle).toHaveBeenCalledTimes(1);
-        });
-      });
-
-      describe('when asked to toggle dropdown', () => {
-        it('should toggle dropdown', () => {
-          spyOn(dropdown, 'toggle');
-          component.toggleDropdown();
-
-          expect(dropdown.toggle).toHaveBeenCalledTimes(1);
+          expect(component.toggleDropdown).toHaveBeenCalledTimes(1);
         });
       });
 
       describe('and dropdown is open', () => {
         beforeEach(async () => {
-          dropdown.open();
+          component.isDropdownOpen = true;
           fixture.detectChanges();
           await fixture.whenStable();
         });
@@ -124,10 +119,9 @@ describe('FilterTemplateComponent', () => {
 
         describe('on cancel click', () => {
           it('should close dropdown', () => {
-            spyOn(dropdown, 'close');
             debugElement.query(By.css('tsl-button .basic-dark')).nativeElement.click();
 
-            expect(dropdown.close).toHaveBeenCalledTimes(1);
+            expect(component.isDropdownOpen).toBe(false);
           });
         });
 
@@ -144,15 +138,14 @@ describe('FilterTemplateComponent', () => {
 
           describe('on apply click', () => {
             it('should close modal', () => {
-              spyOn(dropdown.openChange, 'emit');
               debugElement.query(applySelector).nativeElement.click();
 
-              expect(dropdown.openChange.emit).toHaveBeenCalledTimes(1);
-              expect(dropdown.openChange.emit).toHaveBeenCalledWith(false);
+              expect(component.isDropdownOpen).toBe(false);
             });
 
             it('should emit apply', () => {
               spyOn(component.openStateChange, 'emit');
+              component.isDropdownOpen = true;
               debugElement.query(applySelector).nativeElement.click();
 
               expect(component.openStateChange.emit).toHaveBeenCalledTimes(1);
@@ -181,12 +174,10 @@ describe('FilterTemplateComponent', () => {
 
         it('should close dropdown', () => {
           const bubbleInstance: BubbleComponent = debugElement.query(By.directive(BubbleComponent)).componentInstance;
-          const dropdownInstance: NgbDropdown = component.dropdown;
-          spyOn(dropdownInstance, 'close');
 
           bubbleInstance.clear.emit(new MouseEvent(''));
 
-          expect(dropdownInstance.close).toHaveBeenCalledTimes(1);
+          expect(component.isDropdownOpen).toBe(false);
         });
       });
     });
