@@ -24,6 +24,7 @@ export class ItemCardListComponent {
     xs: 2,
   };
   @Input() slotsConfig: SlotsConfig;
+  @Input() isLoading: boolean;
   @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
   @Output() toggleFavouriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
 
