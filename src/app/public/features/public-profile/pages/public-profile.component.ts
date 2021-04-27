@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Event as NavigationEvent, NavigationEnd, Router } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
@@ -15,6 +15,7 @@ import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from '@public/public-routing-constan
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
 import { PublicProfileTrackingEventsService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { PublicProfileService } from '../core/services/public-profile.service';
+import { PUBLIC_PROFILE_PATHS } from '../public-profile-routing-constants';
 
 @Component({
   selector: 'tsl-public-profile',
@@ -49,23 +50,14 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.route.params.subscribe((params) => {
       const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
       const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
-
       this.adsService.setSlots([this.adSlot]);
       this.getUser(userUUID);
     });
-
     this.isMobile = this.deviceService.isMobile();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
-  }
-
-  public onClickProfileTabs(routerOutletEvent: any): void {
-    routerOutletEvent.reviews &&
-      setTimeout(() => {
-        this.trackViewOwnOrOtherReviews(routerOutletEvent.reviews);
-      }, 1000);
   }
 
   public userFavouriteChanged(isFavourite: boolean): void {
@@ -103,12 +95,32 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
               ratings: userStats.ratings,
               counters: { ...userStats.counters, shipping_counter: shippingCounter },
             };
+            this.routerOnActivate();
           },
           () => {
             this.router.navigate([`/${PUBLIC_PATHS.NOT_FOUND}`]);
           }
         )
     );
+  }
+
+  private routerOnActivate(): void {
+    this.initateRouterOnActivate();
+    this.routerNavigationChange();
+  }
+
+  private initateRouterOnActivate(): void {
+    if (this.router.url.endsWith(PUBLIC_PROFILE_PATHS.REVIEWS)) {
+      this.trackViewOwnOrOtherReviews();
+    }
+  }
+
+  private routerNavigationChange(): void {
+    this.router.events.subscribe((event: NavigationEvent) => {
+      if (event instanceof NavigationEnd && event.url.endsWith(PUBLIC_PROFILE_PATHS.REVIEWS)) {
+        this.trackViewOwnOrOtherReviews();
+      }
+    });
   }
 
   private handleCoverImage(): void {
@@ -145,9 +157,9 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  private trackViewOwnOrOtherReviews(reviews: Review[]): void {
+  private trackViewOwnOrOtherReviews(): void {
     this.isCurrentUserPipe.transform(this.userId).subscribe((isOwnUser: boolean) => {
-      this.publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews(this.userInfo, this.userStats, reviews, isOwnUser);
+      this.publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews(this.userInfo, this.userStats, isOwnUser);
     });
   }
 
