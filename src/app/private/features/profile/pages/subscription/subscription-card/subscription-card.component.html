@@ -1,7 +1,7 @@
 <div class="SubscriptionCard d-flex flex-column align-items-center justify-content-between" [ngClass]="{
     'SubscriptionCard--subscribed': subscription.subscribed_from
   }">
-    <div class="SubscriptionCard__trialBanner px-2 mb-3"
+    <div class="SubscriptionCard__trialBanner text-center px-2 mb-3"
         [class.SubscriptionCard__trialBanner--hidden]="!hasTrialAvailable || isSuscribed">
         <span i18n="@@SubscriptionPriceDiscountDaysTrialFree">{{subscription?.trial_days}}-day trial for free</span>
     </div>

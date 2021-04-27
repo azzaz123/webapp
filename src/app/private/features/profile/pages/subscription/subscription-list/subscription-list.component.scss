@@ -5,18 +5,10 @@
   padding: $spacing-xxl;
   h4 {
     color: $blue-grey-1;
-    text-align: center;
     font-size: $font-size-l;
     font-weight: bold;
     margin: 0 0 $spacing-ms;
   }
-  .section-subtitle {
-    text-align: center;
-  }
-}
-
-.Subscriptions {
-  justify-content: center;
 }
 
 .loading-center {
@@ -27,9 +19,5 @@
 @include media-breakpoint-down(md) {
   .box-content {
     padding: $spacing-l $spacing-m $spacing-m;
-  }
-
-  .Subscriptions > * {
-    margin-bottom: 8px;
   }
 }
