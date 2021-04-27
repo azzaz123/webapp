@@ -1,4 +1,3 @@
-import { NumberFormatStyle } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -8,13 +7,14 @@ import { ObjectType, SizesResponse } from '@private/features/upload/core/models/
 import { ACCEPT_HEADERS } from '@public/core/constants/header-constants';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ITEM_DATA_FIELD } from './constants/item-data-field-constants';
 import {
   CATEGORY_IDS_WITH_REQUIRED_SECOND_LEVEL_OBJECT_TYPE,
   ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID,
 } from './constants/item-required-data-constants';
 
-export const SUGGESTERS_API_URL = 'api/v3/suggesters/general';
-export const FASHION_KEYS_API_URL = 'api/v3/fashion/keys';
+export const OBJECT_TYPE_API_URL = 'api/v3/suggesters/general/object-type';
+export const FASHION_SIZE_KEYS_API_URL = 'api/v3/fashion/keys/size';
 export const ITEMS_API_URL = (itemId: string) => `${environment.baseUrl}api/v3/items/${itemId}`;
 export const GET_ITEM_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}`;
 
@@ -41,21 +41,28 @@ export class ItemRequiredDataService {
 
   private hasRequiredData(dataToCheck: Object, categoryId: number): boolean {
     if (CATEGORY_IDS_WITH_REQUIRED_SECOND_LEVEL_OBJECT_TYPE.includes(categoryId)) {
-      this.hasToCheckForSecondLevelObjectType(categoryId, dataToCheck['extra_info']['object_type']['id']).subscribe(
-        (hasToCheck: boolean) => {
-          if (hasToCheck) {
-            ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID[categoryId].push('extra_info.object_type.parent_object_type.id');
-          }
+      this.hasToCheckForSecondLevelObjectType(
+        categoryId,
+        dataToCheck[ITEM_DATA_FIELD.EXTRA_INFO][ITEM_DATA_FIELD.OBJECT_TYPE][ITEM_DATA_FIELD.ID]
+      ).subscribe((hasToCheck: boolean) => {
+        if (hasToCheck) {
+          ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID[categoryId].push(
+            `${ITEM_DATA_FIELD.EXTRA_INFO}.${ITEM_DATA_FIELD.OBJECT_TYPE}.${ITEM_DATA_FIELD.PARENT_OBJECT_TYPE}.${ITEM_DATA_FIELD.ID}`
+          );
         }
-      );
+      });
     }
 
     if (categoryId === CATEGORY_IDS.FASHION_ACCESSORIES) {
-      this.hasToCheckForSize(dataToCheck['extra_info']['object_type']['id']).subscribe((hasToCheck: boolean) => {
-        if (hasToCheck) {
-          ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID[categoryId].push('extra_info.size.id');
+      this.hasToCheckForSize(dataToCheck[ITEM_DATA_FIELD.EXTRA_INFO][ITEM_DATA_FIELD.OBJECT_TYPE][ITEM_DATA_FIELD.ID]).subscribe(
+        (hasToCheck: boolean) => {
+          if (hasToCheck) {
+            ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID[categoryId].push(
+              `${ITEM_DATA_FIELD.EXTRA_INFO}.${ITEM_DATA_FIELD.SIZE}.${ITEM_DATA_FIELD.ID}`
+            );
+          }
         }
-      });
+      );
     }
 
     return ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID[categoryId].every((fieldComposedName: string) => {
@@ -104,7 +111,7 @@ export class ItemRequiredDataService {
 
   private getObjectTypes(category_id: number, parent_id: number): Observable<ObjectType[]> {
     const headers = new HttpHeaders().set('Accept', ACCEPT_HEADERS.SUGGESTERS_V3);
-    return this.http.get<ObjectType[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/object-type`, {
+    return this.http.get<ObjectType[]>(`${environment.baseUrl}${OBJECT_TYPE_API_URL}`, {
       params: {
         category_id,
         parent_id,
@@ -114,7 +121,7 @@ export class ItemRequiredDataService {
   }
 
   private getSizes(object_type_id: number): Observable<any> {
-    return this.http.get<any>(`${environment.baseUrl}${FASHION_KEYS_API_URL}/size`, {
+    return this.http.get<any>(`${environment.baseUrl}${FASHION_SIZE_KEYS_API_URL}`, {
       params: {
         object_type_id,
       } as any,
