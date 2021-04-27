@@ -4,8 +4,8 @@ import { deliveryRoutedComponents, DeliveryRoutingModule } from './delivery.rout
 import { DeliveryDevelopmentDirective } from './directives/delivery-development.directive';
 
 @NgModule({
-  declarations: [deliveryRoutedComponents],
-  imports: [CommonModule, DeliveryRoutingModule, DeliveryDevelopmentDirective],
+  declarations: [deliveryRoutedComponents, DeliveryDevelopmentDirective],
+  imports: [CommonModule, DeliveryRoutingModule],
   exports: [DeliveryDevelopmentDirective],
 })
 export class DeliveryModule {}
