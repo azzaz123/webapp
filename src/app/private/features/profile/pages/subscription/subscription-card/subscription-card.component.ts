@@ -12,7 +12,7 @@ export class SubscriptionCardComponent {
   @Input() textLink: string;
   @Input() hasTrialAvailable: boolean;
   @Input() isSuscribed: boolean;
-  @Output() clickButton: EventEmitter<void> = new EventEmitter();
+  @Output() buttonClick: EventEmitter<void> = new EventEmitter();
 
   subcriptionBenefits = [
     'Elige cuantos coches vas subir',
@@ -42,7 +42,7 @@ export class SubscriptionCardComponent {
     return `/assets/icons/categories/${status}/${this.subscription.category_icon}.svg`;
   }
 
-  public onClickButton(): void {
-    this.clickButton.emit();
+  public onButtonClick(): void {
+    this.buttonClick.emit();
   }
 }

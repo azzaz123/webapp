@@ -161,13 +161,13 @@ describe('SubscriptionCardComponent', () => {
       });
       describe('and click on CTA button', () => {
         it('should emit click', () => {
-          spyOn(component.clickButton, 'emit');
+          spyOn(component.buttonClick, 'emit');
 
           const ctaButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
           ctaButton.click();
 
-          expect(component.clickButton.emit).toHaveBeenCalledTimes(1);
-          expect(component.clickButton.emit).toHaveBeenLastCalledWith();
+          expect(component.buttonClick.emit).toHaveBeenCalledTimes(1);
+          expect(component.buttonClick.emit).toHaveBeenLastCalledWith();
         });
       });
     });
@@ -188,13 +188,13 @@ describe('SubscriptionCardComponent', () => {
       });
       describe('and click on CTA button', () => {
         it('should emit click', () => {
-          spyOn(component.clickButton, 'emit');
+          spyOn(component.buttonClick, 'emit');
 
           const ctaButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
           ctaButton.click();
 
-          expect(component.clickButton.emit).toHaveBeenCalledTimes(1);
-          expect(component.clickButton.emit).toHaveBeenLastCalledWith();
+          expect(component.buttonClick.emit).toHaveBeenCalledTimes(1);
+          expect(component.buttonClick.emit).toHaveBeenLastCalledWith();
         });
       });
     });

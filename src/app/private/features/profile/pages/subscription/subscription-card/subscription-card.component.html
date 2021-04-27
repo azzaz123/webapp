@@ -66,11 +66,11 @@
         </ng-template>
     </div>
     <ng-container *ngIf="subscription.subscribed_from; else subscriptionButton">
-        <tsl-button class="w-100" className="btn-secondary btn--width" (click)="onClickButton()">
+        <tsl-button class="w-100" className="btn-secondary btn--width" (click)="onButtonClick()">
             {{textLink}}</tsl-button>
     </ng-container>
     <ng-template #subscriptionButton>
-        <tsl-button class="w-100" className="btn-primary btn-primary--bold btn--width" (click)="onClickButton()">
+        <tsl-button class="w-100" className="btn-primary btn-primary--bold btn--width" (click)="onButtonClick()">
             {{textLink}}</tsl-button>
     </ng-template>
 </div>
