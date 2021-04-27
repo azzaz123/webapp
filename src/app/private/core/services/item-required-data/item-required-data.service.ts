@@ -1,13 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CATEGORY_IDS } from '@core/category/category-ids';
+import { ITEM_TYPES } from '@core/item/item';
 import { ItemResponse } from '@core/item/item-response.interface';
 import { environment } from '@environments/environment';
 import { ObjectType, SizesResponse } from '@private/features/upload/core/models/brand-model.interface';
 import { ACCEPT_HEADERS } from '@public/core/constants/header-constants';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ITEM_DATA_FIELD, ITEM_TYPES } from './constants/item-data-field-constants';
+import { ITEM_DATA_FIELD } from './constants/item-data-field-constants';
 import {
   CATEGORY_IDS_WITH_REQUIRED_SECOND_LEVEL_OBJECT_TYPE,
   ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID,
