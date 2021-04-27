@@ -27,10 +27,11 @@ import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
   // TODO: TechDebt: changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
   private openBubbleCountSubject = new BehaviorSubject<number>(0);
   private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
+  public isLoadingPaginationResults$: Observable<boolean> = this.searchService.isLoadingPaginationResults$;
   public items$: Observable<ItemCard[]> = this.searchService.items$;
   public hasMoreItems$: Observable<boolean> = this.searchService.hasMore$;
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;

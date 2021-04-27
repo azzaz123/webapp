@@ -14,7 +14,9 @@ import {
 @Injectable()
 export class SearchService {
   private static INITIAL_LOADING_STATE = true;
+  private static INITIAL_PAGINATION_LOADING_STATE = false;
   private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_LOADING_STATE);
+  private readonly isLoadingPaginationResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_PAGINATION_LOADING_STATE);
 
   private subscription: Subscription = new Subscription();
 
@@ -34,6 +36,14 @@ export class SearchService {
 
   private set isLoadingResults(loading: boolean) {
     this.isLoadingResultsSubject.next(loading);
+  }
+
+  get isLoadingPaginationResults$(): Observable<boolean> {
+    return this.isLoadingPaginationResultsSubject.asObservable();
+  }
+
+  private set isLoadingPaginationResults(loading: boolean) {
+    this.isLoadingPaginationResultsSubject.next(loading);
   }
 
   get hasMore$(): Observable<boolean> {
@@ -75,8 +85,10 @@ export class SearchService {
 
   private onLoadMore(): Observable<SearchPagination> {
     return this.loadMore$.pipe(
+      tap(() => (this.isLoadingPaginationResults = true)),
       switchMap(() => this.searchInfrastructureService.loadMore()),
       tap(({ items, hasMore }: SearchPagination) => {
+        this.isLoadingPaginationResults = false;
         this.searchStoreService.appendItems(items);
         this.searchStoreService.setHasMore(hasMore);
       })
