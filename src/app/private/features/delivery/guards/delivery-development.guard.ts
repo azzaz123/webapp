@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanLoad, Router } from '@angular/router';
 import { FeatureflagService } from '@core/user/featureflag.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class DeliveryDevelopmentGuard implements CanLoad {
   constructor(private router: Router, private featureflagService: FeatureflagService) {}
 
