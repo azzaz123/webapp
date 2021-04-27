@@ -43,8 +43,8 @@ describe('DeliveryDevelopmentDirective', () => {
       spyOn(featureflagService, 'getDeliveryFeatureFlag').and.returnValue(true);
 
       fixture.detectChanges();
-      const spanElement = fixture.debugElement.query(By.directive(DeliveryDevelopmentDirective));
 
+      const spanElement = fixture.debugElement.query(By.css('span'));
       expect(spanElement).toBeTruthy();
     });
   });
@@ -54,8 +54,8 @@ describe('DeliveryDevelopmentDirective', () => {
       spyOn(featureflagService, 'getDeliveryFeatureFlag').and.returnValue(false);
 
       fixture.detectChanges();
-      const spanElement = fixture.debugElement.query(By.directive(DeliveryDevelopmentDirective));
 
+      const spanElement = fixture.debugElement.query(By.css('span'));
       expect(spanElement).toBeFalsy();
     });
   });

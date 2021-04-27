@@ -13,7 +13,6 @@ export class DeliveryDevelopmentDirective implements OnInit {
 
   ngOnInit() {
     if (this.featureflagService.getDeliveryFeatureFlag()) {
-      console.log('inside iff!!!');
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       this.viewContainer.clear();
