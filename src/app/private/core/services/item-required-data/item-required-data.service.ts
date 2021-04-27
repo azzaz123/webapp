@@ -7,7 +7,7 @@ import { ObjectType, SizesResponse } from '@private/features/upload/core/models/
 import { ACCEPT_HEADERS } from '@public/core/constants/header-constants';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ITEM_DATA_FIELD } from './constants/item-data-field-constants';
+import { ITEM_DATA_FIELD, ITEM_TYPES } from './constants/item-data-field-constants';
 import {
   CATEGORY_IDS_WITH_REQUIRED_SECOND_LEVEL_OBJECT_TYPE,
   ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID,
@@ -27,7 +27,18 @@ export class ItemRequiredDataService {
       map(
         (item: ItemResponse) => {
           try {
-            return !this.hasRequiredData(item.content, item.content.category_id);
+            let categoryId = item.content.category_id;
+
+            if (!categoryId) {
+              if (item.type === ITEM_TYPES.CARS) {
+                categoryId = CATEGORY_IDS.CAR;
+              }
+
+              if (item.type === ITEM_TYPES.REAL_ESTATE) {
+                categoryId = CATEGORY_IDS.REAL_ESTATE;
+              }
+            }
+            return !this.hasRequiredData(item.content, categoryId);
           } catch (e) {
             return true;
           }
@@ -65,6 +76,8 @@ export class ItemRequiredDataService {
       );
     }
 
+    console.log('HOLA', ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID[categoryId], categoryId);
+
     return ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID[categoryId].every((fieldComposedName: string) => {
       const fieldNames = fieldComposedName.split('.');
       const fieldLevelCount = fieldNames.length;
@@ -74,11 +87,14 @@ export class ItemRequiredDataService {
         value = this.getValue(value, fieldNames[i]);
       }
 
+      console.log(categoryId, fieldNames, value);
+
       return !!value;
     });
   }
 
   private getValue(object: Object, propertyName: string): Object | string {
+    console.log(object, propertyName);
     return object[propertyName];
   }
 
@@ -120,8 +136,8 @@ export class ItemRequiredDataService {
     });
   }
 
-  private getSizes(object_type_id: number): Observable<any> {
-    return this.http.get<any>(`${environment.baseUrl}${FASHION_SIZE_KEYS_API_URL}`, {
+  private getSizes(object_type_id: number): Observable<SizesResponse> {
+    return this.http.get<SizesResponse>(`${environment.baseUrl}${FASHION_SIZE_KEYS_API_URL}`, {
       params: {
         object_type_id,
       } as any,
