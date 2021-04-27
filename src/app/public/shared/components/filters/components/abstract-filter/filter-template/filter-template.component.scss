@@ -13,7 +13,7 @@ $dropdown-box-shadow: 0 3px 16px 3px;
     background-color: $white;
     border-radius: $dropdown-border-radius;
     box-shadow: $dropdown-box-shadow rgba($blue-grey-1, 0.2);
-    z-index: 200;
+    z-index: $filter-content-z-index;
     overflow: hidden;
     min-width: 380px;
     &--opened {

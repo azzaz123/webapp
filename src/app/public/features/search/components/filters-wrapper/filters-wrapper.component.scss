@@ -4,7 +4,7 @@
   position: sticky;
   top: $topbar-height;
   width: 100%;
-  z-index: 101;
+  z-index: $filters-bar-z-index;
 
   &__bar {
     display: flex;
