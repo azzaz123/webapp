@@ -187,30 +187,6 @@ describe('SearchComponent', () => {
       });
     });
   });
-  describe('when bubble filter is open', () => {
-    it('should show white backdrop', () => {
-      let bubbleOpenCount = 0;
-
-      component.openBubbleCount$.subscribe((count) => (bubbleOpenCount = count));
-      component.toggleBubbleFilterBackdrop(true);
-
-      expect(bubbleOpenCount).toBe(1);
-    });
-  });
-  describe('when bubble filter is closed', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-      component.toggleBubbleFilterBackdrop(true);
-    });
-    it('should hide white backdrop', () => {
-      let bubbleOpenCount = 1;
-
-      component.openBubbleCount$.subscribe((count) => (bubbleOpenCount = count));
-      component.toggleBubbleFilterBackdrop(false);
-
-      expect(bubbleOpenCount).toBe(0);
-    });
-  });
 
   describe('infinite scroll', () => {
     describe('with items and has more items', () => {

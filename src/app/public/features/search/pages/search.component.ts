@@ -30,7 +30,6 @@ import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
 })
 export class SearchComponent implements OnInit, OnDestroy {
   public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
-  private openBubbleCountSubject = new BehaviorSubject<number>(0);
   private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   public items$: Observable<ItemCard[]> = this.searchService.items$;
@@ -81,11 +80,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchService.close();
     this.searchAdsService.close();
     this.publicFooterService.setShow(true);
-  }
-
-  public toggleBubbleFilterBackdrop(active: boolean): void {
-    const count = this.openBubbleCountSubject.getValue();
-    this.openBubbleCountSubject.next(active ? count + 1 : count - 1);
   }
 
   public loadMoreProducts(): void {

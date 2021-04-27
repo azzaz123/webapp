@@ -4,12 +4,11 @@
   [infiniteScrollThrottle]="150"
   [infiniteScrollDisabled]="infiniteScrollDisabled$ | async"
   (scrolled)="scrolled()">
-  <tsl-filters-wrapper class="Search__filters position-fixed"
-    [class.Search__filters--with-backdrop]="(openBubbleCount$ | async) !== 0"
-    (bubbleFilterOpenStateChange)="toggleBubbleFilterBackdrop($event)">
-  </tsl-filters-wrapper>
 
-  <tsl-search-layout class="Search__layout d-block" *ngIf="(items$ | async).length > 0">
+  <tsl-filters-wrapper class="Search__filters"></tsl-filters-wrapper>
+  <tsl-sort-filter class="Search__sort d-block"></tsl-sort-filter>
+
+  <tsl-search-layout *ngIf="(items$ | async).length > 0">
     <div top class="d-block h-100 position-relative">
       <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
     </div>
@@ -17,12 +16,12 @@
     <div right class="d-block h-100 position-relative">
       <ng-container *ngIf="device === DevicesType.DESKTOP">
         <div class="w-100 mb-3 Search__ad--top">
-          <div class="position-sticky w-100 Search__ad--topSpace">
+          <div class="position-sticky w-100">
             <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
           </div>
         </div>
         <div class="w-100 Search__ad--bottom">
-          <div class="position-sticky w-100 Search__ad--topSpace">
+          <div class="position-sticky w-100">
             <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
           </div>
         </div>

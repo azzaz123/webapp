@@ -1,0 +1,19 @@
+<div class="SortFilter h-100 pl-4" #dropdown ngbDropdown (openChange)="openChange($event)">
+  <div class="d-flex flex-row align-items-center h-100" ngbDropdownToggle>
+    <tsl-svg-icon class="pl-1" src="/assets/icons/filters/ic-sort-by.svg"></tsl-svg-icon>
+    <div class="pr-1" i18n="web_search_sort_filter_title">Ordenador por:&nbsp;</div>
+    <div class="SortFilter__value">{{ selected.label }}</div>
+  </div>
+  <div ngbDropdownMenu class="SortFilter__bubble">
+    <div class="SortFilter__toolbar d-flex align-items-center px-4">
+      <p class="SortFilter__title--bubble m-0" i18n="web_search_sort_filter_bubble_title">Ordenado por</p>
+    </div>
+    <div>
+      <tsl-select-form [options]="selectFormOptionsConfig" [formControl]="formControl" (ngModelChange)="onChangeValue($event)">
+      </tsl-select-form>
+    </div>
+    <div class="SortFilter__actions px-4 d-flex align-items-center justify-content-end">
+      <tsl-button i18n="web_search_sort_filter_bubble_cancel" className="basic basic-dark" (click)="cancel()">Cancelar</tsl-button>
+    </div>
+  </div>
+</div>
