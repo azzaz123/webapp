@@ -1,10 +1,10 @@
+import { NumberFormatStyle } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { ItemResponse } from '@core/item/item-response.interface';
 import { environment } from '@environments/environment';
-import { ObjectType } from '@private/features/upload/core/models/brand-model.interface';
-import { SUGGESTERS_API_URL } from '@private/features/upload/core/services/general-suggestions/general-suggestions.service';
+import { ObjectType, SizesResponse } from '@private/features/upload/core/models/brand-model.interface';
 import { ACCEPT_HEADERS } from '@public/core/constants/header-constants';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,8 +13,8 @@ import {
   ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID,
 } from './constants/item-required-data-constants';
 
-export interface Item {}
-
+export const SUGGESTERS_API_URL = 'api/v3/suggesters/general';
+export const FASHION_KEYS_API_URL = 'api/v3/fashion/keys';
 export const ITEMS_API_URL = (itemId: string) => `${environment.baseUrl}api/v3/items/${itemId}`;
 export const GET_ITEM_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}`;
 
@@ -50,6 +50,14 @@ export class ItemRequiredDataService {
       );
     }
 
+    if (categoryId === CATEGORY_IDS.FASHION_ACCESSORIES) {
+      this.hasToCheckForSize(dataToCheck['extra_info']['object_type']['id']).subscribe((hasToCheck: boolean) => {
+        if (hasToCheck) {
+          ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID[categoryId].push('extra_info.size.id');
+        }
+      });
+    }
+
     return ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID[categoryId].every((fieldComposedName: string) => {
       const fieldNames = fieldComposedName.split('.');
       const fieldLevelCount = fieldNames.length;
@@ -81,6 +89,19 @@ export class ItemRequiredDataService {
     );
   }
 
+  private hasToCheckForSize(objectTypeId: number): Observable<boolean> {
+    return this.getSizes(objectTypeId).pipe(
+      map(
+        (sizes: SizesResponse) => {
+          return !!sizes.female;
+        },
+        () => {
+          return false;
+        }
+      )
+    );
+  }
+
   private getObjectTypes(category_id: number, parent_id: number): Observable<ObjectType[]> {
     const headers = new HttpHeaders().set('Accept', ACCEPT_HEADERS.SUGGESTERS_V3);
     return this.http.get<ObjectType[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/object-type`, {
@@ -89,6 +110,14 @@ export class ItemRequiredDataService {
         parent_id,
       } as any,
       headers,
+    });
+  }
+
+  private getSizes(object_type_id: number): Observable<any> {
+    return this.http.get<any>(`${environment.baseUrl}${FASHION_KEYS_API_URL}/size`, {
+      params: {
+        object_type_id,
+      } as any,
     });
   }
 }
