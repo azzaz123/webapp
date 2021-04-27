@@ -31,7 +31,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 })
 class TestWrapperComponent {
   @Input() config: SelectFilterConfig;
-  @Input() variant: FILTER_VARIANT;
+  @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Input() value: FilterParameter[] = [];
 }
 
@@ -86,15 +86,16 @@ describe('SelectFilterComponent', () => {
     testComponent = fixture.componentInstance;
     testComponent.config = basicConfig;
     component = debugElement.query(By.directive(SelectFilterComponent)).componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   describe('when the component inits', () => {
     it('should retrieve corresponding options from backend', () => {
+      fixture.detectChanges();
       expect(component.options).toEqual([
         {
           value: 'male',

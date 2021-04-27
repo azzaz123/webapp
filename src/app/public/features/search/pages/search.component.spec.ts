@@ -62,7 +62,6 @@ describe('SearchComponent', () => {
       dispatch: () => {},
     };
     searchServiceMock = {
-      init: () => {},
       items$: itemsSubject.asObservable(),
       hasMore$: hasMoreSubject.asObservable(),
       isLoadingResults$: isLoadingResultsSubject.asObservable(),

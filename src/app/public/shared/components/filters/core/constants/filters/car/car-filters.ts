@@ -38,6 +38,7 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     hasContentPlaceholder: true,
     isClearable: true,
     hasOptionsOnInit: false,
+    isLabelInValue: true,
   },
   {
     id: CAR_CONFIGURATION_ID.YEAR,
