@@ -15,6 +15,7 @@ describe('DeliveryDevelopmentGuard', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
+        DeliveryDevelopmentGuard,
         FeatureFlagServiceMock,
         {
           provide: Router,
