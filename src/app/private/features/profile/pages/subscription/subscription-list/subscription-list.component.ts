@@ -35,7 +35,7 @@ export class SubscriptionListComponent {
     return this.subscriptionsService.hasTrial(subscription);
   }
 
-  public isSuscribed(subscription: SubscriptionsResponse): boolean {
+  public isSubscribed(subscription: SubscriptionsResponse): boolean {
     return !!subscription.subscribed_from;
   }
 

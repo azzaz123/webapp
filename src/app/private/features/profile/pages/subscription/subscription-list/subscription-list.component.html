@@ -5,7 +5,7 @@
             <p class="section-subtitle" i18n="@@WallapopProSubscriptionSubTitle">Manage your subscriptions to Wallapop
                 PRO to increase your sales.</p>
             <div class="Subscriptions d-flex justify-content-between row">
-                <tsl-subscription-card class="col-lg-3 col-md-6 col-sm-12 p-0 px-md-2 mb-lg-0 mb-2" (buttonClick)="onOpenSubscriptionModal(subscription)" (clickLink)="onOpenSubscriptionModal(subscription)" [isSuscribed]="isSuscribed(subscription)"  [subscription]="subscription" [textButton]="getTextButton(subscription)" [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
+                <tsl-subscription-card class="col-lg-3 col-md-6 col-sm-12 p-0 px-md-2 mb-lg-0 mb-2" (buttonClick)="onOpenSubscriptionModal(subscription)" (clickLink)="onOpenSubscriptionModal(subscription)" [isSubscribed]="isSubscribed(subscription)"  [subscription]="subscription" [textButton]="getTextButton(subscription)" [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
                     *ngFor="let subscription of subscriptions">
                 </tsl-subscription-card>
             </div>

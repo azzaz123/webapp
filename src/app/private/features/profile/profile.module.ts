@@ -21,10 +21,10 @@ import { PaymentSuccessModalComponent } from './modal/payment-success/payment-su
 import { UnsubscribeInAppFirstModal } from './modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { UnsubscribeModalComponent } from './modal/unsubscribe-modal/unsubscribe-modal.component';
 import { VisibilityProductsModalComponent } from './modal/visibility-products-modal/visibility-products-modal.component';
+import { SubscriptionCardComponent } from './pages/subscription/subscription-card/subscription-card.component';
+import { SubscriptionListComponent } from './pages/subscription/subscription-list/subscription-list.component';
 import { SubscriptionIconPipe } from './pipes/subscription-icon.pipe';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
-import { SubscriptionListComponent } from './pages/subscription/subscription-list/subscription-list.component';
-import { SubscriptionCardComponent } from './pages/subscription/subscription-card/subscription-card.component';
 
 @NgModule({
   imports: [

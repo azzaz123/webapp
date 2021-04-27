@@ -29,7 +29,7 @@ describe('SubscriptionCardComponent', () => {
   describe('when has an active subscription ', () => {
     beforeEach(() => {
       component.subscription = MAPPED_SUBSCRIPTIONS[2];
-      component.isSuscribed = true;
+      component.isSubscribed = true;
       fixture.detectChanges();
     });
 

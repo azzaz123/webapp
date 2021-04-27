@@ -11,7 +11,7 @@ export class SubscriptionCardComponent {
   @Input() subscription: SubscriptionsResponse;
   @Input() textButton: string;
   @Input() hasTrialAvailable: boolean;
-  @Input() isSuscribed: boolean;
+  @Input() isSubscribed: boolean;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter();
 
   subcriptionBenefits = [
@@ -34,7 +34,7 @@ export class SubscriptionCardComponent {
   }
 
   get iconSrc(): string {
-    const status = this.isSuscribed ? 'normal' : 'disabled';
+    const status = this.isSubscribed ? 'normal' : 'disabled';
     return `/assets/icons/categories/${status}/${this.subscription.category_icon}.svg`;
   }
 

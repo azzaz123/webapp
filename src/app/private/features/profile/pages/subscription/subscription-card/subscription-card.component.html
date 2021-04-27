@@ -2,7 +2,7 @@
     'SubscriptionCard--subscribed': subscription.subscribed_from
   }">
     <div class="SubscriptionCard__trialBanner text-center px-2 mb-3"
-        [class.SubscriptionCard__trialBanner--hidden]="!hasTrialAvailable || isSuscribed">
+        [class.SubscriptionCard__trialBanner--hidden]="!hasTrialAvailable || isSubscribed">
         <span i18n="@@SubscriptionPriceDiscountDaysTrialFree">{{subscription?.trial_days}}-day trial for free</span>
     </div>
     <div class="d-flex flex-column align-items-center w-100">
@@ -65,7 +65,7 @@
             </span>
         </ng-template>
     </div>
-    <ng-container *ngIf="isSuscribed; else subscriptionButton">
+    <ng-container *ngIf="isSubscribed; else subscriptionButton">
         <tsl-button class="w-100" className="btn-secondary btn--width" (click)="onButtonClick()">
             {{textButton}}</tsl-button>
     </ng-container>
