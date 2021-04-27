@@ -2,7 +2,7 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { AdSlotId } from './ad-slot-id';
 
 type AdSizeMapping = {
-  [key in DeviceType]: { screenSize: number[]; mapping: number[][] };
+  [key in DeviceType]: { screenSize: number[]; mapping: (number[] | string)[] };
 };
 
 export interface AdSlotConfiguration {

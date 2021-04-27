@@ -1,15 +1,16 @@
 import { Inject, Injectable } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import {
+  FilterParameterStoreService,
+  FILTER_PARAMETER_STORE_TOKEN,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { SearchPagination } from '../../interfaces/search-pagination.interface';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
 import { SearchStoreService } from './search-store.service';
-import {
-  FILTER_PARAMETER_STORE_TOKEN,
-  FilterParameterStoreService,
-} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 @Injectable()
 export class SearchService {
@@ -39,6 +40,13 @@ export class SearchService {
   get hasMore$(): Observable<boolean> {
     return this.searchStoreService.hasMore$;
   }
+
+  public isWall$: Observable<boolean> = this.filterParameterStoreService.parameters$.pipe(
+    map((filterParameters: FilterParameter[]) =>
+      filterParameters.find(({ key }: FilterParameter) => key === FILTER_QUERY_PARAM_KEY.keywords)
+    ),
+    map((filterKeyowrd: FilterParameter) => !filterKeyowrd)
+  );
 
   constructor(
     private searchStoreService: SearchStoreService,

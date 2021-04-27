@@ -1,21 +1,21 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { AD_SHOPPING_STYLE_ID_DESKTOP, AD_SHOPPING_STYLE_ID_MOBILE, AD_SHOPPING_STYLE_ID_WIDE } from '@core/ads/constants';
-import { AdShoppingPageOptions, AdSlotNativeShoppingConfiguration } from '@core/ads/models';
+import { AdShoppingPageOptions, AdSlotGroupShoppingConfiguration, AdSlotShoppingConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 import { DeviceService } from '@core/device/device.service';
 
 @Component({
-  selector: 'tsl-sky-native-shopping',
-  templateUrl: 'ad-slot-native-shopping.component.html',
-  styleUrls: ['./ad-slot-native-shopping.component.scss'],
+  selector: 'tsl-sky-shopping',
+  templateUrl: 'ad-slot-shopping.component.html',
+  styleUrls: ['./ad-slot-shopping.component.scss'],
 })
-export class AdSlotNativeShoppingComponent implements OnInit, AfterViewInit {
+export class AdSlotShoppingComponent implements OnInit, AfterViewInit {
   @Input() adShoppingPageOptions: AdShoppingPageOptions;
   @Input() adSlotContainer: string;
   @Input() index: number;
   @Input() isWide = false;
 
-  public adSlotShoppingConfiguration: AdSlotNativeShoppingConfiguration;
+  public adSlotShoppingConfiguration: AdSlotShoppingConfiguration;
 
   constructor(private adsService: AdsService, private deviceService: DeviceService) {}
 

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
-import { AdSlotShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
+import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
@@ -9,13 +9,15 @@ import { ColumnsConfig } from '@public/shared/components/item-card-list/interfac
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { ADS_NATIVE_SLOTS } from '../core/ads/natives/search-ads-nataive.config';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
   AdShoppingPageOptionPublicSearchFactory,
-  AD_SHOPPING_NATIVE_CONTAINER_PUBLIC_SEARCH,
+  AD_SHOPPING_CONTAINER_PUBLIC_SEARCH,
   AD_SHOPPING_PUBLIC_SEARCH,
 } from '../core/ads/shopping/search-ads-shopping.config';
+import { AdsNativeSlotSearch } from './../core/ads/natives/search-ads-nataive.config';
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
@@ -47,12 +49,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     xs: 2,
   };
 
-  public adSlotGroupShoppingConfiguration: AdSlotShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
-  public adSlotNativeShoppingContainer: string = AD_SHOPPING_NATIVE_CONTAINER_PUBLIC_SEARCH;
+  public adSlotGroupShoppingConfiguration: AdSlotGroupShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
+  public adSlotShoppingContainer: string = AD_SHOPPING_CONTAINER_PUBLIC_SEARCH;
   public adShoppingGroupPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE);
   public adShoppingNativeListPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(
     AdShoppingChannel.SEARCH_LIST_SHOPPING
   );
+  public adNativeSlotsConfiguration: AdsNativeSlotSearch = ADS_NATIVE_SLOTS;
+
+  public isWall$: Observable<boolean> = this.searchService.isWall$.pipe(tap((isWall: boolean) => console.log('IS WALL', isWall)));
 
   public openBubbleCount$: Observable<number> = this.openBubbleCountSubject.asObservable();
   public slotsConfig: SlotsConfig;

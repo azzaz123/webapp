@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingBaseConfiguration, AdSlotShoppingConfiguration } from '@core/ads/models';
+import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
 import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
 import { AdSlotId } from '@core/ads/models/ad-slot-id';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
@@ -41,6 +41,7 @@ export class AdsService {
   }
 
   public setSlots(adSlots: AdSlotConfiguration[]): void {
+    console.log('setSlots', adSlots);
     this.setSlotsSubject.next(adSlots);
   }
 
@@ -49,6 +50,7 @@ export class AdsService {
   }
 
   public refresh(): void {
+    console.log('refresh');
     this.refreshEventSubject.next();
   }
 
@@ -96,6 +98,7 @@ export class AdsService {
           this.googlePublisherTagService.setAdsSegmentation(allowSegmentation);
           this.googlePublisherTagService.setTargetingByAdsKeywords(allowSegmentation);
           this.googlePublisherTagService.refreshAds();
+          console.log('listenerToRefresh TAP');
         }),
         switchMap(() => this.fetchHeaderBids())
       )
