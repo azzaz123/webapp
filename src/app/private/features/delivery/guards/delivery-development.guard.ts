@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
-import { CanLoad } from '@angular/router';
+import { CanLoad, Router } from '@angular/router';
 import { FeatureflagService } from '@core/user/featureflag.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DeliveryDevelopmentGuard implements CanLoad {
-  constructor(private featureflagService: FeatureflagService) {}
+  constructor(private router: Router, private featureflagService: FeatureflagService) {}
 
-  canLoad(): boolean {
-    return this.featureflagService.getDeliveryFeatureFlag();
+  public canLoad(): boolean {
+    const deliveryEnv = this.featureflagService.getDeliveryFeatureFlag();
+
+    if (!deliveryEnv) {
+      this.router.navigate(['/chat']);
+    }
+
+    return deliveryEnv;
   }
 }
