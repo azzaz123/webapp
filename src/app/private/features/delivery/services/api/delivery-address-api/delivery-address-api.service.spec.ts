@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MOCK_DELIVERY_ADDRESS } from '@fixtures/delivery/delivery-address.fixtures.spec';
+import { MOCK_DELIVERY_ADDRESS } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 
 import { DeliveryAddressApiService, DELIVERY_ADDRESS_API_URL, DELIVERY_ADDRESS_ID } from './delivery-address-api.service';
