@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { DrawerConfig } from '@public/shared/components/filters/interfaces/drawer-config.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
@@ -8,8 +8,9 @@ import {
   FILTER_PARAMETER_STORE_TOKEN,
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { FilterWrapperConfiguration } from '@public/shared/services/filter-wrapper-configuration/interfaces/filter-group-config.interface';
+import { FILTER_GROUP_ID } from '@public/shared/services/filter-wrapper-configuration/enum/filter-group-id.enum';
 import { DEFAULT_FILTER_WRAPPER_CONFIG } from '@public/shared/services/filter-wrapper-configuration/data/filter-group-config';
 
 @Component({
@@ -25,8 +26,10 @@ export class FiltersWrapperComponent {
     hasApply: true,
   };
   public activeFiltersCount = 0;
-  private drawerFilterConfigurationsSubject = new BehaviorSubject<FilterWrapperConfiguration>(DEFAULT_FILTER_WRAPPER_CONFIG);
-  private bubbleFilterConfigurationsSubject = new BehaviorSubject<FilterWrapperConfiguration>(DEFAULT_FILTER_WRAPPER_CONFIG);
+  private currentDrawerConfigurationId = DEFAULT_FILTER_WRAPPER_CONFIG.id;
+  private currentBubbleConfigurationId = DEFAULT_FILTER_WRAPPER_CONFIG.id;
+  private drawerFilterConfigurationsSubject = new Subject<FilterWrapperConfiguration>();
+  private bubbleFilterConfigurationsSubject = new Subject<FilterWrapperConfiguration>();
 
   public scrollOffset = 0;
   private drawerValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
@@ -119,13 +122,10 @@ export class FiltersWrapperComponent {
   }
 
   private handleConfigurationParametersChange(variant: FILTER_VARIANT, filterValues: FilterParameter[]): boolean {
-    const configurationSubject =
-      variant === FILTER_VARIANT.BUBBLE ? this.bubbleFilterConfigurationsSubject : this.drawerFilterConfigurationsSubject;
-
     const wrapperConfiguration = this.filterWrapperConfigurationService.getConfiguration(filterValues);
 
-    if (configurationSubject.getValue().id !== wrapperConfiguration.id) {
-      configurationSubject.next(wrapperConfiguration);
+    if (this.getConfigurationId(variant) !== wrapperConfiguration.id) {
+      this.setFilterConfiguration(variant, wrapperConfiguration);
       return true;
     }
 
@@ -133,6 +133,20 @@ export class FiltersWrapperComponent {
   }
 
   private shouldBubbleConfigCleanParams(): boolean {
-    return this.bubbleFilterConfigurationsSubject.getValue().id !== this.drawerFilterConfigurationsSubject.getValue().id;
+    return this.currentBubbleConfigurationId !== this.currentDrawerConfigurationId;
+  }
+
+  private getConfigurationId(variant: FILTER_VARIANT): FILTER_GROUP_ID {
+    return variant === FILTER_VARIANT.BUBBLE ? this.currentBubbleConfigurationId : this.currentDrawerConfigurationId;
+  }
+
+  private setFilterConfiguration(variant: FILTER_VARIANT, newConfiguration: FilterWrapperConfiguration): void {
+    if (variant === FILTER_VARIANT.BUBBLE) {
+      this.currentBubbleConfigurationId = newConfiguration.id;
+      this.bubbleFilterConfigurationsSubject.next(newConfiguration);
+    } else {
+      this.currentDrawerConfigurationId = newConfiguration.id;
+      this.drawerFilterConfigurationsSubject.next(newConfiguration);
+    }
   }
 }
