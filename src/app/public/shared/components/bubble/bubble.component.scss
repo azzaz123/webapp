@@ -1,9 +1,7 @@
 @import '~style/common';
 
 .Bubble {
-  min-width: 150px;
   height: 36px;
-
   border-radius: 21px;
 
   cursor: pointer;
@@ -14,7 +12,7 @@
   transition: all 0.15s ease;
 
   &--active {
-    box-shadow: 0 1px 4px rgba($walla-main, 0.1);
+    box-shadow: 0 1px 4px rgba($blue-grey-1, 0.1);
     background-color: $white;
 
     &:hover {
@@ -35,8 +33,12 @@
       fill: $blue-grey-1 !important;
     }
 
+    .Bubble__dropdown_arrow {
+      opacity: 0.4;
+    }
+
     .Bubble__counter {
-      color: white;
+      color: $white;
       background-color: $walla-main;
     }
   }

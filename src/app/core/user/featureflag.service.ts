@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
@@ -13,6 +13,7 @@ export interface FeatureFlag {
 export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
 
 export enum FEATURE_FLAGS_ENUM {
+  DELIVERY = 'web_delivery',
   STRIPE = 'web_stripe',
 }
 
@@ -26,6 +27,10 @@ export class FeatureflagService {
 
   public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
     const storedFeatureFlag = this.storedFeatureFlags.find((sff) => sff.name === name);
+
+    if (name === FEATURE_FLAGS_ENUM.DELIVERY) {
+      return of(this.getDeliveryFeatureFlag());
+    }
 
     if (storedFeatureFlag && cache) {
       return of(storedFeatureFlag).pipe(map((sff) => sff.isActive));
@@ -48,5 +53,13 @@ export class FeatureflagService {
           })
         );
     }
+  }
+
+  public isExpermientalFeaturesEnabled(): boolean {
+    return !!localStorage.getItem('experimentalFeatures');
+  }
+
+  private getDeliveryFeatureFlag(): boolean {
+    return isDevMode() || this.isExpermientalFeaturesEnabled();
   }
 }

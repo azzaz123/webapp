@@ -10,7 +10,7 @@
 
 <div *ngIf="hasContentPlaceholder && isPlaceholderOpen" class="SelectFilterTemplate--open">
   <div class="d-flex justify-content-center align-items-center SelectFilterTemplate__toolbar">
-    <span *ngIf="contentTitle" class="SelectFilterTemplate__OpenPlaceholder_title">{{contentTitle}}</span>
+    <span *ngIf="contentTitle" class="SelectFilterTemplate__title">{{contentTitle}}</span>
     <tsl-svg-icon src="/assets/icons/arrow-back.svg" class="SelectFilterTemplate__back_icon p-3"
                   (click)="togglePlaceholderOpen()">
     </tsl-svg-icon>
