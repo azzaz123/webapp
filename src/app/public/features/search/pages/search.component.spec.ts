@@ -24,7 +24,7 @@ import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrap
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchService } from '../core/services/search.service';
-import { SearchComponent, REGULAR_CARD_COLUMNS_CONFIG, WIDE_CARD_COLUMNS_CONFIG } from './search.component';
+import { SearchComponent, REGULAR_CARDS_COLUMNS_CONFIG, WIDE_CARDS_COLUMNS_CONFIG } from './search.component';
 import {
   FILTER_PARAMETER_DRAFT_STORE_TOKEN,
   FILTER_PARAMETER_STORE_TOKEN,
@@ -234,7 +234,7 @@ describe('SearchComponent', () => {
         component.listColumnsConfig$.subscribe(() => {
           fixture.detectChanges();
 
-          expect(getItemCardListInstance().columnsConfig).toEqual(WIDE_CARD_COLUMNS_CONFIG);
+          expect(getItemCardListInstance().columnsConfig).toEqual(WIDE_CARDS_COLUMNS_CONFIG);
           done();
         });
       });
@@ -258,7 +258,7 @@ describe('SearchComponent', () => {
         component.listColumnsConfig$.subscribe(() => {
           fixture.detectChanges();
 
-          expect(getItemCardListInstance().columnsConfig).toEqual(WIDE_CARD_COLUMNS_CONFIG);
+          expect(getItemCardListInstance().columnsConfig).toEqual(WIDE_CARDS_COLUMNS_CONFIG);
           done();
         });
       });
@@ -282,7 +282,7 @@ describe('SearchComponent', () => {
         component.listColumnsConfig$.subscribe(() => {
           fixture.detectChanges();
 
-          expect(getItemCardListInstance().columnsConfig).toEqual(REGULAR_CARD_COLUMNS_CONFIG);
+          expect(getItemCardListInstance().columnsConfig).toEqual(REGULAR_CARDS_COLUMNS_CONFIG);
           done();
         });
       });

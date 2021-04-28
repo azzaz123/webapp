@@ -22,14 +22,14 @@ import {
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
 
-export const REGULAR_CARD_COLUMNS_CONFIG: ColumnsConfig = {
+export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
   lg: 4,
   md: 3,
   sm: 2,
   xs: 2,
 };
-export const WIDE_CARD_COLUMNS_CONFIG: ColumnsConfig = {
+export const WIDE_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 1,
   lg: 1,
   md: 1,
@@ -122,9 +122,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private getColumnsConfigByCategory(categoryId): ColumnsConfig {
     if (+categoryId === CATEGORY_IDS.REAL_ESTATE || +categoryId === CATEGORY_IDS.CAR) {
-      return WIDE_CARD_COLUMNS_CONFIG;
+      return WIDE_CARDS_COLUMNS_CONFIG;
     }
-    return REGULAR_CARD_COLUMNS_CONFIG;
+    return REGULAR_CARDS_COLUMNS_CONFIG;
   }
 
   private getCardTypeByCategory(categoryId): CARD_TYPES {
