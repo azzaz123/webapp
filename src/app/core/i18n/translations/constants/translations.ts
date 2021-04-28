@@ -62,4 +62,5 @@ export const translations: Translations = {
   [TRANSLATION_KEY.CARD_NUMBER_INVALID]: $localize`:@@web_card_number_invalid:Card number isn't valid.`,
   [TRANSLATION_KEY.CARD_DATE_INVALID]: $localize`:@@web_card_date_invalid:Card date isn't valid.`,
   [TRANSLATION_KEY.CARD_CVC_INVALID]: $localize`:@@web_card_cvc_invalid:CVC number isn't valid.`,
+  [TRANSLATION_KEY.NO_RESULTS_FOUND]: $localize`:@@web_no_results_found:No results found`,
 };
