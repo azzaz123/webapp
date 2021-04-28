@@ -1233,4 +1233,5 @@
   <translation id="web_pro_subscription_card_deleted">Tu tarjeta se ha borrado correctamente</translation>
   <translation id="web_search_input_placeholder">Busca productos</translation>
   <translation id="web_default_error_message">Servicio no disponible temporalmente. Inténtelo de nuevo más tarde</translation>
+  <translation id="web_toast_default_success_title">¡Bien!</translation>
 </translationbundle>

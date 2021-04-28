@@ -25,18 +25,23 @@ export class ErrorsService {
   i18nError(key: string, concatText: string = '', titleKey?: string) {
     const translatedText = this.i18n.getTranslations(key);
     const text = `${translatedText ? translatedText : this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE)} ${concatText}`;
+    const title = titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE);
 
     this.toastService.show({
       text,
-      title: titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE),
+      title,
       type: 'error',
     });
   }
 
-  i18nSuccess(key: string, contacText: string = '', titleKey?: string) {
+  i18nSuccess(key: string, concatText: string = '', titleKey?: string) {
+    const translatedText = this.i18n.getTranslations(key);
+    const text = `${translatedText ? translatedText : ''} ${concatText}`;
+    const title = titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE);
+
     this.toastService.show({
-      text: this.i18n.getTranslations(key) + contacText,
-      title: titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.getTranslations('defaultSuccessTitle'),
+      text,
+      title,
       type: 'success',
     });
   }

@@ -67,4 +67,5 @@ export const translations: Translations = {
   [TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED]: $localize`:@@web_pro_subscription_card_deleted:Your card has been deleted`,
   [TRANSLATION_KEY.SEARCH_INPUT_PLACEHOLDER]: $localize`:@@web_search_input_placeholder:Search items`,
   [TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE]: $localize`:@@web_default_error_message:Service unavailable temporarily. Try it later`,
+  [TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE]: $localize`:@@web_toast_default_success_title:Yup!`,
 };

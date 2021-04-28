@@ -125,6 +125,7 @@
   <msg id="web_pro_subscription_card_deleted"><source>src/app/core/i18n/translations/constants/translations.ts:66</source>Your card has been deleted</msg>
   <msg id="web_search_input_placeholder"><source>src/app/core/i18n/translations/constants/translations.ts:67</source>Search items</msg>
   <msg id="web_default_error_message"><source>src/app/core/i18n/translations/constants/translations.ts:68</source>Service unavailable temporarily. Try it later</msg>
+  <msg id="web_toast_default_success_title"><source>src/app/core/i18n/translations/constants/translations.ts:69</source>Yup!</msg>
   <msg id="web_subscription_benefit_title_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:7</source>Empower your brand</msg>
   <msg id="web_subscription_benefit_description_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:8</source>Complete your profile with a cover photo and a description.</msg>
   <msg id="web_subscription_benefit_title_connect"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:12</source>Connect with more customers</msg>
