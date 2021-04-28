@@ -24,7 +24,7 @@ describe('DeliveryDevelopmentDirective', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         declarations: [DeliveryDevelopmentDirective, TestComponent],
-        providers: [TemplateRef, ViewContainerRef, FeatureFlagServiceMock],
+        providers: [{ provide: FeatureflagService, useClass: FeatureFlagServiceMock }, TemplateRef, ViewContainerRef],
       }).compileComponents();
     })
   );

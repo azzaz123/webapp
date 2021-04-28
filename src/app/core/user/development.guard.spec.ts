@@ -27,7 +27,7 @@ describe('DevelopmentGuard', (): void => {
             navigate() {},
           },
         },
-        FeatureFlagServiceMock,
+        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
       ],
     });
 
@@ -43,7 +43,7 @@ describe('DevelopmentGuard', (): void => {
   describe('canLoad', (): void => {
     describe('when we are on dev mode...', () => {
       it('should return true', () => {
-        spyOn(featureFlagService, 'isExpermientalFeaturesEnabled').and.returnValue(false);
+        spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
         isDevMode.and.returnValue(true);
 
         expect(developmentGuard.canLoad()).toBe(true);
@@ -52,7 +52,7 @@ describe('DevelopmentGuard', (): void => {
 
     describe('when the experimental features are enabled...', () => {
       it('should return true', () => {
-        spyOn(featureFlagService, 'isExpermientalFeaturesEnabled').and.returnValue(true);
+        spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
         isDevMode.and.returnValue(false);
 
         expect(developmentGuard.canLoad()).toBe(true);
@@ -61,7 +61,7 @@ describe('DevelopmentGuard', (): void => {
 
     describe('when the experimental features are not enabled and is not dev mode...', () => {
       beforeEach(() => {
-        spyOn(featureFlagService, 'isExpermientalFeaturesEnabled').and.returnValue(false);
+        spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
         spyOn(router, 'navigate');
         isDevMode.and.returnValue(false);
       });
