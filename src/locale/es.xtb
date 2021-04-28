@@ -1231,4 +1231,5 @@
   <translation id="web_no_results_found">No hay resultados</translation>
   <translation id="web_pro_subscription_card_set">Tu tarjeta se ha guardado correctamente</translation>
   <translation id="web_pro_subscription_card_deleted">Tu tarjeta se ha borrado correctamente</translation>
+  <translation id="web_search_input_placeholder">Busca productos</translation>
 </translationbundle>
