@@ -22,14 +22,14 @@ import {
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
 
-const REGULAR_CARD_COLUMNS_CONFIG: ColumnsConfig = {
+export const REGULAR_CARD_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
   lg: 4,
   md: 3,
   sm: 2,
   xs: 2,
 };
-const WIDE_CARD_COLUMNS_CONFIG: ColumnsConfig = {
+export const WIDE_CARD_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 1,
   lg: 1,
   md: 1,
