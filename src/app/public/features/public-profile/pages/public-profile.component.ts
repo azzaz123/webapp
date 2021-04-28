@@ -98,7 +98,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
               ratings: userStats.ratings,
               counters: { ...userStats.counters, shipping_counter: shippingCounter },
             };
-            this.isReviewsUrl(this.router.url) && this.trackViewOwnOrOtherReviews();
+            this.trackViewEvents(this.router.url);
           },
           () => {
             this.router.navigate([`/${PUBLIC_PATHS.NOT_FOUND}`]);
