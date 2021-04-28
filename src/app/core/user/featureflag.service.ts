@@ -59,7 +59,7 @@ export class FeatureflagService {
     return !!localStorage.getItem('experimentalFeatures');
   }
 
-  public getDeliveryFeatureFlag(): boolean {
+  private getDeliveryFeatureFlag(): boolean {
     return isDevMode() || this.isExpermientalFeaturesEnabled();
   }
 }
