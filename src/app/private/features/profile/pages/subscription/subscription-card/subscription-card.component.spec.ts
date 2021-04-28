@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SubscriptionCardComponent } from './subscription-card.component';
@@ -67,7 +68,7 @@ describe('SubscriptionCardComponent', () => {
         const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
 
         expect(info.textContent).toContain(
-          $localize`:@@web_profile_pages_subscription_325:${component.subscription.selected_tier.limit} products`
+          $localize`:@@web_profile_pages_subscription_325:List up to ${component.subscription.selected_tier.limit} items`
         );
       });
     });
@@ -79,7 +80,7 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
         const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
 
-        expect(info.textContent).toContain($localize`:@@web_profile_pages_subscription_586:No limit`);
+        expect(info.textContent).toContain($localize`:@@web_profile_pages_subscription_586:List without limits`);
       });
     });
 
@@ -158,24 +159,22 @@ describe('SubscriptionCardComponent', () => {
       expect(title.textContent).toEqual(component.subscription.category_name);
     });
 
-    describe('and has limit', () => {
-      it('should show current limit', () => {
+    describe('and the category is different to everything else', () => {
+      it('should show set limit benefit', () => {
         const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
 
-        expect(info.textContent).toContain(
-          $localize`:@@web_profile_pages_subscription_323:Limit without subscription: ${component.subscription.current_limit}`
-        );
+        expect(info.textContent).toContain($localize`:@@web_subscription_benefit_title_limit:Set your listing limit`);
       });
     });
 
-    describe('and has not limit', () => {
-      it('should not show limit', () => {
-        component.subscription.current_limit = null;
+    describe('and the category is different to everything else', () => {
+      it('should show bost your branding benefit', () => {
+        component.subscription.category_id = CATEGORY_IDS.EVERYTHING_ELSE;
 
         fixture.detectChanges();
         const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
 
-        expect(info.textContent).toContain($localize`:@@web_profile_pages_subscription_586:No limit`);
+        expect(info.textContent).toContain($localize`:@@web_subscription_benefit_title_branding:Boost your branding`);
       });
     });
 
