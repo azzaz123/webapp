@@ -1229,4 +1229,6 @@
   <translation id="web_card_date_invalid">La fecha de la tarjeta no es válida.</translation>
   <translation id="web_card_cvc_invalid">El CVC de la tarjeta no es válido.</translation>
   <translation id="web_no_results_found">No hay resultados</translation>
+  <translation id="web_pro_subscription_card_set">Tu tarjeta se ha guardado correctamente</translation>
+  <translation id="web_pro_subscription_card_deleted">Tu tarjeta se ha borrado correctamente</translation>
 </translationbundle>

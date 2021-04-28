@@ -63,4 +63,6 @@ export const translations: Translations = {
   [TRANSLATION_KEY.CARD_DATE_INVALID]: $localize`:@@web_card_date_invalid:Card date isn't valid.`,
   [TRANSLATION_KEY.CARD_CVC_INVALID]: $localize`:@@web_card_cvc_invalid:CVC number isn't valid.`,
   [TRANSLATION_KEY.NO_RESULTS_FOUND]: $localize`:@@web_no_results_found:No results found`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_SET]: $localize`:@@web_pro_subscription_card_set:Your card has been saved successfully`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED]: $localize`:@@web_pro_subscription_card_deleted:Your card has been deleted`,
 };
