@@ -31,30 +31,24 @@
                 <div class="d-flex mb-2">
                     <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
                     </tsl-svg-icon>
-                    <span>
-                        {{ noSubscriptionBodyText }}
-                    </span>
+                    <span>{{ noSubscriptionBodyText }}</span>
                 </div>
                 <div class="d-flex mb-2" *ngFor="let benefit of subcriptionBenefits">
                     <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
                     </tsl-svg-icon>
-                    <span> {{ benefit }}</span>
+                    <span>{{ benefit }}</span>
                 </div>
             </div>
         </ng-container>
         <ng-template #subscriptionBody>
             <div class="d-flex flex-column mb-2 text-left w-100">
                 <div class="mb-2" i18n="@@your_current_plan">
-                    <strong>
-                        Your current plan
-                    </strong>
+                    <strong>Your current plan</strong>
                 </div>
                 <div class="d-flex">
                     <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
                     </tsl-svg-icon>
-                    <span class="mb-2">
-                        {{ subscriptionBodyText }}
-                    </span>
+                    <span class="mb-2">{{ subscriptionBodyText }}</span>
                 </div>
             </div>
             <span class="SubscriptionCard__date">

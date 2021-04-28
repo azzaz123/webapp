@@ -22,14 +22,20 @@ export class SubscriptionCardComponent {
     [CATEGORY_IDS.EVERYTHING_ELSE]: $localize`:@@web_profile_pages_subscription_other_desc:Your best plan to sell all kinds of items`,
   };
 
-  subcriptionBenefits = ['Gain more visibility', 'Save management time', 'Share your phone and website'];
+  subcriptionBenefits: string[] = [
+    $localize`:@@web_subscription_benefit_title_visibility:Gain more visibility`,
+    $localize`:@@web_subscription_benefit_title_time:Save management time`,
+    $localize`:@@web_subscription_benefit_title_share:Share your phone and website`,
+  ];
 
   get descriptionText(): string {
     return this.titleConfig[this.subscription.category_id];
   }
 
   get noSubscriptionBodyText(): string {
-    return this.subscription.category_id !== CATEGORY_IDS.EVERYTHING_ELSE ? 'Set your listing limit' : 'Boost your brandin';
+    return this.subscription.category_id !== CATEGORY_IDS.EVERYTHING_ELSE
+      ? $localize`:@@web_subscription_benefit_title_limit:Set your listing limit`
+      : $localize`:@@web_subscription_benefit_title_branding:Boost your branding`;
   }
 
   get subscriptionBodyText(): string {

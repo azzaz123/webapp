@@ -500,7 +500,7 @@
   <translation id="web_chat_children_inbox_components_item_component_detail_154">Vendido</translation>
   <translation id="web_chat_components_user_response_rate_171">Desconocido</translation>
   <translation id="web_chat_children_inbox_components_item_for_sell_156">+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex></ph> Más</translation>
-  <translation id="web_profile_pages_subscription_325"><ph name="PH"><ex>{{subscription.selected_tier.limit}}</ex></ph> productos</translation>
+  <translation id="web_profile_pages_subscription_325">Publica hasta <ph name="PH"><ex>{{subscription.selected_tier.limit}}</ex></ph> artículos</translation>
   <translation id="web_profile_pages_subscription_326"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.selected_tier.currency}}</ex></ph>/mes</translation>
   <translation id="web_profile_modal_edit_subscription_255">Ilimitado</translation>
   <translation id="web_profile_modal_add_new_subscription_220"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
@@ -1032,7 +1032,7 @@
   <translation id="web_profile_pages_pro_subscription_583">Destacados</translation>
   <translation id="web_profile_pages_pro_subscription_584">Ahorra un <ph name="INTERPOLATION"><ex>{{bump.discount}}</ex></ph>%</translation>
   <translation id="web_profile_pages_585">Cerrar sesión</translation>
-  <translation id="web_profile_pages_subscription_586">Sin límite</translation>
+  <translation id="web_profile_pages_subscription_586">Publica sin límites</translation>
   <translation id="web_profile_pages_subscription_587">Editar</translation>
   <translation id="web_reviews_pages_588">opiniones</translation>
   <translation id="web_stats_components_item_row_589">Favoritos</translation>
@@ -1174,4 +1174,14 @@
   <translation id="web_search_no_results_title">Nada por aquí</translation>
   <translation id="web_search_no_results_subtitle">Parece que por el momento lo que buscas no se encuentra en Wallapop. Mientras tanto, ¿por qué no echas un vistazo al resto de productos?</translation>
   <translation id="web_search_no_results_button_text">Iniciar nueva búsqueda</translation>
+  <translation id="web_profile_pages_subscription_cars_desc">Publica todos tus coches</translation>
+  <translation id="web_profile_pages_subscription_motorbike_desc">Publica todas tus motos</translation>
+  <translation id="web_profile_pages_subscription_motor_acc_desc">Publica todos tus artículos de Motor y Accesorios</translation>
+  <translation id="web_profile_pages_subscription_other_desc">Tu mejor plan para vender todo tipo de artículos</translation>
+  <translation id="web_subscription_benefit_title_share">Comparte tu web y teléfono</translation>
+  <translation id="web_subscription_benefit_title_branding">Potencia tu marca</translation>
+  <translation id="web_subscription_benefit_title_limit">Define tu límite de publicación</translation>
+  <translation id="WallapopProSubscriptionTitle">Impulsa tu negocio online con Wallapop PRO</translation>
+  <translation id="WallapopProSubscriptionSubTitle">Elige una suscripción para llevar tus ventas al siguiente nivel</translation>
+  <translation id="your_current_plan"><ph name="START_TAG_STRONG"/>Tu plan actual<ph name="CLOSE_TAG_STRONG"/></translation>
 </translationbundle>
