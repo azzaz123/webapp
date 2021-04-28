@@ -4,8 +4,6 @@ import { I18nService } from '../i18n/i18n.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
-export const DEFAULT_ERROR_MESSAGE = 'Servicio no disponible temporalmente. Inténtelo de nuevo más tarde';
-
 @Injectable()
 export class ErrorsService {
   constructor(private toastService: ToastService, private i18n: I18nService) {}
@@ -18,15 +16,18 @@ export class ErrorsService {
       if (error[0] && error[0].message) {
         message = error[0].message;
       } else {
-        message = error.message ? error.message : DEFAULT_ERROR_MESSAGE;
+        message = error.message ? error.message : this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
       }
       this.toastService.show({ text: message, title: this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE), type: 'error' });
     }
   }
 
-  i18nError(key: string, contacText: string = '', titleKey?: string) {
+  i18nError(key: string, concatText: string = '', titleKey?: string) {
+    const translatedText = this.i18n.getTranslations(key);
+    const text = `${translatedText ? translatedText : this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE)} ${concatText}`;
+
     this.toastService.show({
-      text: this.i18n.getTranslations(key) + contacText,
+      text,
       title: titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE),
       type: 'error',
     });
