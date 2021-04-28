@@ -4,10 +4,10 @@ import { environment } from '@environments/environment';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 import { Observable } from 'rxjs';
 
-const ADDRESS_ACCEPT_HEADER = (action: 'get' | 'create' | 'update') => {
+export const ADDRESS_ACCEPT_HEADER = (action: 'get' | 'create' | 'update') => {
   return { Accept: `application/vnd.${action}.address.v2+json` };
 };
-const DELIVERY_ADDRESS_API_URL = `${environment.baseUrl}api/v3/delivery/addresses/main/`;
+export const DELIVERY_ADDRESS_API_URL = `${environment.baseUrl}api/v3/delivery/addresses/main/`;
 export const DELIVERY_ADDRESS_ID = (addressId: string) => `${DELIVERY_ADDRESS_API_URL}${addressId}`;
 
 @Injectable()
