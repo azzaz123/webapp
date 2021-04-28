@@ -1,30 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '@environments/environment.beta';
-import { DeliveryAddressApiModel } from '@private/features/delivery/interfaces/delivery-address/delivery-address.interface';
+import { environment } from '@environments/environment';
+import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 import { Observable } from 'rxjs';
 
-const DELIVERY_ADDRESS_API_URL = `${environment.baseUrl}api/v3/delivery/addresses/`;
-export const MAIN_DELIVERY_ADDRESS = `${DELIVERY_ADDRESS_API_URL}main`;
-export const DELIVERY_ADDRESS_ID = (addressId: string) => `${DELIVERY_ADDRESS_API_URL}main/${addressId}`;
+const ADDRESS_ACCEPT_HEADER = (action: 'get' | 'create' | 'update') => {
+  return { Accept: `application/vnd.${action}.address.v2+json` };
+};
+const DELIVERY_ADDRESS_API_URL = `${environment.baseUrl}api/v3/delivery/addresses/main/`;
+export const DELIVERY_ADDRESS_ID = (addressId: string) => `${DELIVERY_ADDRESS_API_URL}${addressId}`;
 
 @Injectable()
 export class DeliveryAddressApiService {
   constructor(private http: HttpClient) {}
 
-  public getDeliveryAddress(): Observable<DeliveryAddressApiModel> {
-    return this.http.get<any>(MAIN_DELIVERY_ADDRESS);
+  public get(): Observable<DeliveryAddressApi> {
+    return this.http.get<DeliveryAddressApi>(DELIVERY_ADDRESS_API_URL, { headers: ADDRESS_ACCEPT_HEADER('get') });
   }
 
-  public createDeliveryAddress(address: DeliveryAddressApiModel): Observable<any> {
-    return this.http.post<any>(MAIN_DELIVERY_ADDRESS, address);
+  public create(address: DeliveryAddressApi): Observable<null> {
+    return this.http.post<null>(DELIVERY_ADDRESS_API_URL, address, { headers: ADDRESS_ACCEPT_HEADER('create') });
   }
 
-  public updateDeliveryAddress(address: DeliveryAddressApiModel): Observable<null> {
-    return this.http.put<any>(MAIN_DELIVERY_ADDRESS, address);
+  public update(address: DeliveryAddressApi): Observable<null> {
+    return this.http.put<null>(DELIVERY_ADDRESS_API_URL, address, { headers: ADDRESS_ACCEPT_HEADER('update') });
   }
 
-  public deleteDeliveryAddress(addressId: string): Observable<any> {
-    return this.http.delete<any>(DELIVERY_ADDRESS_ID(addressId));
+  public delete(id: string): Observable<null> {
+    return this.http.delete<null>(DELIVERY_ADDRESS_ID(id));
   }
 }
