@@ -26,6 +26,7 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
 import { SearchResolver } from './core/services/search.resolver';
+import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { SearchResolver } from './core/services/search.resolver';
       useClass: FilterParameterStoreService,
     },
     SearchResolver,
+    SearchQueryStringService,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
 })
