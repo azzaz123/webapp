@@ -38,6 +38,10 @@
     color: $blue-grey-2;
   }
 
+  &__subtitle {
+    min-height: 48px;
+  }
+
   hr {
     display: block;
     height: 1px;
