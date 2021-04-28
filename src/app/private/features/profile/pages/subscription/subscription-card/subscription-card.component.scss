@@ -1,0 +1,88 @@
+@import '~style/common';
+
+.SubscriptionCard {
+  border: 1px solid $blue-grey-5;
+  border-radius: 10px;
+  padding: $spacing-m;
+  flex-wrap: wrap;
+  color: $blue-grey-2;
+  min-height: 505px;
+  height: 100%;
+  max-width: 245px;
+  margin: 0 auto;
+
+  &__trialBanner {
+    background-color: #edfcf8;
+    border-radius: 2px;
+    &--hidden {
+      visibility: hidden;
+    }
+  }
+
+  &__info {
+    font-size: $font-size-s;
+    flex-grow: 1;
+    &--edit {
+      color: $walla-main;
+      text-align: center;
+      cursor: pointer;
+    }
+    &--price {
+      font-weight: bold;
+    }
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    font-weight: bold;
+    color: $blue-grey-2;
+  }
+
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 2px solid $blue-grey-5;
+    margin: $spacing-ms 0;
+    padding: 0;
+    width: 90%;
+  }
+
+  &__icon {
+    padding: 15px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    background-color: $blue-grey-5;
+    margin-bottom: 12px;
+  }
+
+  &--subscribed {
+    border: 2px solid $walla-main;
+    color: $blue-grey-1;
+    hr {
+      border-top: 2px solid $walla-main;
+    }
+    .SubscriptionCard__title {
+      color: $blue-grey-1;
+    }
+  }
+
+  .icon-check {
+    ::ng-deep svg path {
+      fill: $blue-grey-2;
+    }
+  }
+
+  &__date {
+    color: $walla-main;
+    font-size: $font-size-s;
+    text-align: center;
+  }
+
+  &__price {
+    color: $walla-main;
+    font-size: $font-size-m;
+    font-weight: bold;
+  }
+}
