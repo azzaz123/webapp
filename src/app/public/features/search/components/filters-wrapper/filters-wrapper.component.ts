@@ -31,18 +31,16 @@ export class FiltersWrapperComponent {
   public scrollOffset = 0;
   private drawerValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
   private bubbleValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
-  private openBubbleCountSubject = new BehaviorSubject<number>(0);
+  private openedBubbleSubject = new BehaviorSubject<boolean>(false);
   private isDrawerContentScrollableSubject = new BehaviorSubject<boolean>(false);
   private subscriptions = new Subscription();
 
   public drawerFilterConfigurations$ = this.drawerFilterConfigurationsSubject.asObservable();
   public bubbleFilterConfigurations$ = this.bubbleFilterConfigurationsSubject.asObservable();
-  public openBubbleCount$ = this.openBubbleCountSubject.asObservable();
+  public openedBubble$ = this.openedBubbleSubject.asObservable();
   public bubbleValues$ = this.bubbleValuesSubject.asObservable();
   public drawerValues$ = this.drawerValuesSubject.asObservable();
   public isDrawerContentScrollable$ = this.isDrawerContentScrollableSubject.asObservable();
-
-  @Output() bubbleFilterOpenStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
     @Inject(FILTER_PARAMETER_DRAFT_STORE_TOKEN) private drawerStore: FilterParameterStoreService,
@@ -110,13 +108,10 @@ export class FiltersWrapperComponent {
   }
 
   public bubbleOpenStateChange(isOpen: boolean): void {
-    this.bubbleFilterOpenStateChange.emit(isOpen);
     if (isOpen && this.drawerConfig.isOpen) {
       this.closeDrawer();
     }
-
-    const count = this.openBubbleCountSubject.getValue();
-    this.openBubbleCountSubject.next(isOpen ? count + 1 : count - 1);
+    this.openedBubbleSubject.next(isOpen);
   }
 
   public drawerOpenStateChange(isOpen: boolean): void {

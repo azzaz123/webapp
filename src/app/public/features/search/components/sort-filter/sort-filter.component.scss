@@ -4,10 +4,11 @@ $actions-height: 88px;
 
 .SortFilter {
   cursor: pointer;
-  width: max-content;
+  font-size: $font-size-xs;
 
   &__bubble {
-    width: 20rem;
+    padding: 0;
+    min-width: 380px;
   }
 
   &__toolbar {
