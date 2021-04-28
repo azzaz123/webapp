@@ -1234,4 +1234,7 @@
   <translation id="web_search_input_placeholder">Busca productos</translation>
   <translation id="web_default_error_message">Servicio no disponible temporalmente. Inténtelo de nuevo más tarde</translation>
   <translation id="web_toast_default_success_title">¡Bien!</translation>
+  <translation id="web_search_no_results_title">Nada por aquí</translation>
+  <translation id="web_search_no_results_subtitle">Parece que por el momento lo que buscas no se encuentra en Wallapop. Mientras tanto, ¿por qué no echas un vistazo al resto de productos?</translation>
+  <translation id="web_search_no_results_button_text">Iniciar nueva búsqueda</translation>
 </translationbundle>

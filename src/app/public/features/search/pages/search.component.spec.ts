@@ -1,11 +1,16 @@
+import { SearchStoreService } from './../core/services/search-store.service';
+import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { SearchErrorLayoutComponentStub } from '@fixtures/shared';
 import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
@@ -20,6 +25,21 @@ import { SearchLayoutComponent } from '../components/search-layout/search-layout
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchService } from '../core/services/search.service';
 import { SearchComponent } from './search.component';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
+
+@Directive({
+  selector: '[infinite-scroll]',
+})
+class InfiniteScrollStubDirective {
+  @Input() public infiniteScrollDistance: number;
+  @Input() public infiniteScrollThrottle: number;
+  @Input() public infiniteScrollDisabled: number;
+}
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -27,23 +47,40 @@ describe('SearchComponent', () => {
   let deviceServiceMock;
   let storeMock;
   let searchServiceMock;
+  let publicFooterServiceMock;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
+  const isLoadingResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  const hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   beforeEach(async () => {
     deviceServiceMock = {
       getDeviceType: () => random.arrayElement([DeviceType.DESKTOP, DeviceType.MOBILE, DeviceType.TABLET]),
+      isMobile: () => false,
     };
     storeMock = {
       select: () => of(),
       dispatch: () => {},
     };
     searchServiceMock = {
-      init: () => {},
       items$: itemsSubject.asObservable(),
+      hasMore$: hasMoreSubject.asObservable(),
+      isLoadingResults$: isLoadingResultsSubject.asObservable(),
       loadMore: () => {},
+      close: () => {},
+    };
+    publicFooterServiceMock = {
+      setShow: (show: boolean) => {},
     };
     await TestBed.configureTestingModule({
-      declarations: [SearchComponent, SearchLayoutComponent, AdComponentStub, AdSlotGroupShoppingComponentSub, ItemCardListComponentStub],
+      declarations: [
+        SearchComponent,
+        SearchLayoutComponent,
+        SearchErrorLayoutComponentStub,
+        AdComponentStub,
+        AdSlotGroupShoppingComponentSub,
+        ItemCardListComponentStub,
+        InfiniteScrollStubDirective,
+      ],
       imports: [FiltersWrapperModule, HttpClientTestingModule],
       providers: [
         {
@@ -64,6 +101,18 @@ describe('SearchComponent', () => {
           provide: DeviceService,
           useValue: deviceServiceMock,
         },
+        {
+          provide: FILTER_PARAMETER_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+        {
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+        {
+          provide: PublicFooterService,
+          useValue: publicFooterServiceMock,
+        },
       ],
     }).compileComponents();
   });
@@ -71,7 +120,6 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -137,29 +185,153 @@ describe('SearchComponent', () => {
         done();
       });
     });
-  });
-  describe('when bubble filter is open', () => {
-    it('should show white backdrop', () => {
-      let bubbleOpenCount = 0;
 
-      component.openBubbleCount$.subscribe((count) => (bubbleOpenCount = count));
-      component.toggleBubbleFilterBackdrop(true);
+    describe('when no items are recieved', () => {
+      it('should show the no results layout', (done) => {
+        const items = [];
+        itemsSubject.next(items);
+        isLoadingResultsSubject.next(false);
 
-      expect(bubbleOpenCount).toBe(1);
+        component.items$.subscribe(() => {
+          fixture.detectChanges();
+          const noResultsLayout = fixture.debugElement.query(By.css('tsl-search-error-layout'));
+
+          expect(noResultsLayout).toBeTruthy();
+          done();
+        });
+      });
     });
   });
-  describe('when bubble filter is closed', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-      component.toggleBubbleFilterBackdrop(true);
+
+  describe('infinite scroll', () => {
+    describe('with items and has more items', () => {
+      beforeEach(() => {
+        itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
+        hasMoreSubject.next(true);
+      });
+
+      it('should appear the button to load more items', () => {
+        fixture.detectChanges();
+
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+
+        expect(buttonLoadMore.textContent).toBe('Ver más productos');
+      });
+
+      describe('with items but has not more items', () => {
+        beforeEach(() => {
+          itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
+          hasMoreSubject.next(false);
+        });
+
+        it('should not appear the button to load more items', () => {
+          fixture.detectChanges();
+
+          const buttonLoadMore = fixture.debugElement.query(By.css('#btn-load-more'));
+
+          expect(buttonLoadMore).toBeNull();
+        });
+      });
     });
-    it('should hide white backdrop', () => {
-      let bubbleOpenCount = 1;
 
-      component.openBubbleCount$.subscribe((count) => (bubbleOpenCount = count));
-      component.toggleBubbleFilterBackdrop(false);
+    describe('when we click on load more products', () => {
+      beforeEach(() => {
+        itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
+        hasMoreSubject.next(true);
+      });
+      it('should enable infinite scroll', (done) => {
+        fixture.detectChanges();
 
-      expect(bubbleOpenCount).toBe(0);
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+        buttonLoadMore.click();
+
+        component.infiniteScrollDisabled$.subscribe((infiniteScrollDisabled) => {
+          expect(infiniteScrollDisabled).toBe(false);
+          done();
+        });
+      });
+
+      it('should disapear the button to load more items', () => {
+        fixture.detectChanges();
+
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+        buttonLoadMore.click();
+
+        fixture.detectChanges();
+        const buttonLoadMoreExpected = fixture.debugElement.query(By.css('#btn-load-more'));
+
+        expect(buttonLoadMoreExpected).toBeNull();
+      });
+
+      it('should disapear bottom ads on DESKTOP', () => {
+        spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
+        fixture.detectChanges();
+
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+        buttonLoadMore.click();
+
+        fixture.detectChanges();
+        const slotGroupShopping = fixture.debugElement.query(By.css('tsl-sky-slot-group-shopping'));
+
+        expect(slotGroupShopping).toBeNull();
+      });
+
+      it('should hide footer and has items', () => {
+        hasMoreSubject.next(true);
+        spyOn(publicFooterServiceMock, 'setShow').and.callThrough();
+
+        fixture.detectChanges();
+
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+        buttonLoadMore.click();
+
+        expect(publicFooterServiceMock.setShow).toHaveBeenCalledWith(false);
+      });
+
+      it('should set footer when has not items', () => {
+        hasMoreSubject.next(false);
+        spyOn(publicFooterServiceMock, 'setShow').and.callThrough();
+
+        fixture.detectChanges();
+
+        expect(publicFooterServiceMock.setShow).toHaveBeenCalledWith(true);
+      });
+
+      it('should ask more items to search service', () => {
+        spyOn(searchServiceMock, 'loadMore').and.callThrough();
+        fixture.detectChanges();
+
+        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+        buttonLoadMore.click();
+
+        expect(searchServiceMock.loadMore).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('when we want to show ads natives', () => {
+    describe('on desktop or tablet', () => {
+      beforeEach(() => {
+        spyOn(deviceServiceMock, 'isMobile').and.returnValue(false);
+      });
+
+      it('should set slots config of desktop config', () => {
+        fixture.detectChanges();
+
+        expect(component.slotsConfig).toEqual(SLOTS_CONFIG_DESKTOP);
+      });
+    });
+
+    describe('on mobile', () => {
+      beforeEach(() => {
+        spyOn(deviceServiceMock, 'isMobile').and.returnValue(true);
+      });
+
+      it('should set slots config of mobile config', () => {
+        fixture.detectChanges();
+
+        expect(component.slotsConfig).toEqual(SLOTS_CONFIG_MOBILE);
+      });
     });
   });
 });

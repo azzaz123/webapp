@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { GridSelectFilterParams } from './interfaces/grid-select-filter-params.interface';
 import { GridSelectFilterConfig } from './interfaces/grid-select-filter-config.interface';
@@ -6,55 +6,47 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { take } from 'rxjs/operators';
 import { GridSelectFormOption } from '@shared/form/components/grid-select/interfaces/grid-select-form-option.interface';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-grid-select-filter',
   templateUrl: './grid-select-filter.component.html',
   styleUrls: ['./grid-select-filter.component.scss'],
 })
-export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterParams> implements OnInit, OnDestroy, AfterContentInit {
+export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterParams> implements OnInit, OnDestroy {
   @Input() config: GridSelectFilterConfig;
+
+  private labelSubject = new BehaviorSubject<string>('');
+  private iconSubject = new BehaviorSubject<string>('');
+  private subscriptions = new Subscription();
 
   public options: GridSelectFormOption[] = [];
   public formGroup = new FormGroup({
     select: new FormControl([]),
   });
-  public labelSubject = new BehaviorSubject<string>('');
-
-  private subscriptions = new Subscription();
+  public label$ = this.labelSubject.asObservable();
+  public icon$ = this.iconSubject.asObservable();
 
   constructor(private optionService: FilterOptionService) {
     super();
   }
 
-  public get label$(): Observable<string> {
-    return this.labelSubject.asObservable();
-  }
-
   public ngOnInit(): void {
     this.initForm();
-    this.initLabel();
+    this.updateLabel();
+    this.updateIcon();
     this.optionService
       .getOptions(this.config.id)
       .pipe(take(1))
       .subscribe((options) => {
-        this.options = options.map((option) => ({
-          icon: option.icon,
-          value: option.value as string,
-          label: option.label,
-        }));
+        this.options = options as GridSelectFormOption[];
+        this.updateLabel();
+        this.updateIcon();
       });
     super.ngOnInit();
-  }
-
-  public ngAfterContentInit(): void {
-    if (this.value.length > 0) {
-      this.updateForm();
-      this.updateLabel();
-    }
   }
 
   public ngOnDestroy() {
@@ -62,13 +54,9 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
-    if (this._value.length > 0) {
-      this.updateForm();
-      this.updateLabel();
-    } else {
-      this.clearForm();
-      this.initLabel();
-    }
+    this.updateForm();
+    this.updateLabel();
+    this.updateIcon();
   }
 
   public handleApply() {
@@ -84,16 +72,14 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
   public handleClear() {
     super.handleClear();
     this.updateForm();
-    this.initLabel();
-  }
-
-  public clearForm(): void {
-    this.formGroup.controls.select.reset([]);
+    this.updateLabel();
+    this.updateIcon();
   }
 
   private handleValueChange(value: string[]): void {
-    this.writeValue([{ key: this.config.mapKey.parameterKey, value: value.join(',') }]);
+    this.writeValue(this.formatValue(value));
     this.updateLabel();
+    this.updateIcon();
   }
 
   private initForm(): void {
@@ -110,21 +96,69 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
     }
   }
 
-  private initLabel(): void {
-    this.labelSubject.next(this.config.bubblePlaceholder);
+  private updateForm(): void {
+    this.formGroup.controls.select.setValue(this.deserializeValue(this.getFormattedValue()), { emitEvent: false });
+  }
+
+  private formatValue(values: string[]): FilterParameter[] {
+    if (this.config.isBooleanFormat) {
+      return this.getClearedBooleanFormatValues(values);
+    }
+
+    return [{ key: this.config.mapKey.parameterKey, value: values.join(',') }];
+  }
+
+  private getFormattedValue(): string {
+    if (this.config.isBooleanFormat) {
+      const values = this._value.map((value) => value.key);
+      return values.length ? values.join(',') : undefined;
+    }
+
+    return this.getValue('parameterKey');
   }
 
   private updateLabel(): void {
     const currentValues = this.formGroup.controls.select.value;
-    const currentLabels = this.options.filter((option) => currentValues.includes(option.value)).map((option) => option.label);
-    this.labelSubject.next(currentLabels.join(', '));
+
+    if (currentValues.length) {
+      const currentLabels = this.options.filter((option) => currentValues.includes(option.value)).map((option) => option.label);
+      this.labelSubject.next(currentLabels.join(', '));
+    } else {
+      this.labelSubject.next(this.config.bubblePlaceholder);
+    }
   }
 
-  private updateForm(): void {
-    this.formGroup.controls.select.setValue(this.deserializeValue(this.getValue('parameterKey')), { emitEvent: false });
+  private updateIcon(): void {
+    const icon = this.getSelectedIcon();
+
+    if (this.config.mirrorsValueIcon && icon) {
+      this.iconSubject.next(icon);
+    } else {
+      this.iconSubject.next(this.config.icon);
+    }
   }
 
   private deserializeValue(commaSeparatedValue: string): string[] {
     return commaSeparatedValue?.split(',') || [];
+  }
+
+  private getSelectedIcon(): string {
+    const currentValues = this.formGroup.controls.select.value;
+    const icon = this.options.find((option) => currentValues.includes(option.value))?.icon;
+
+    return typeof icon === 'string' ? icon : icon?.standard;
+  }
+
+  private getClearedBooleanFormatValues(values: string[]): FilterParameter[] {
+    const oldParameters = this._value;
+    const newParameters = values.map((value: FILTER_QUERY_PARAM_KEY) => ({ key: value, value: 'true' }));
+
+    oldParameters.forEach(({ key }) => {
+      if (!values.includes(key)) {
+        newParameters.push({ key: key, value: undefined });
+      }
+    });
+
+    return newParameters;
   }
 }

@@ -4,7 +4,6 @@ import { SuggesterFilterComponent } from './suggester-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
-import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
 import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-select-filter.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
@@ -17,7 +16,7 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { By } from '@angular/platform-browser';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
-import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
+import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { SelectParentOptionComponent } from '../abstract-select-filter/select-parent-option/select-parent-option.component';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
@@ -25,6 +24,8 @@ import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-
 import { BubbleComponent } from '../../../bubble/bubble.component';
 import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 import { of } from 'rxjs/internal/observable/of';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -54,13 +55,14 @@ describe('SuggesterFilterComponent', () => {
     bubblePlaceholder: 'Bubble placeholder',
     drawerPlaceholder: 'Drawer placeholder',
     mapKey: {
-      parameterKey: 'key',
+      parameterKey: FILTER_QUERY_PARAM_KEY.brand,
     },
     title: 'My select',
     id: FASHION_CONFIGURATION_ID.BRAND,
     isClearable: true,
     hasOptionsOnInit: false,
     suggesterPlaceholder: 'Search for stuff',
+    isLabelInValue: true,
   };
 
   const optionsOnInitConfig: SuggesterFilterConfig = {
@@ -72,19 +74,24 @@ describe('SuggesterFilterComponent', () => {
     ...basicConfig,
     id: CAR_CONFIGURATION_ID.BRAND_N_MODEL,
     mapKey: {
-      brand: 'brand',
-      model: 'model',
+      brand: FILTER_QUERY_PARAM_KEY.brand,
+      model: FILTER_QUERY_PARAM_KEY.model,
     },
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TestWrapperComponent, SuggesterFilterComponent, IsBubblePipe],
+      providers: [
+        {
+          provide: FilterOptionService,
+          useClass: MockFilterOptionService,
+        },
+      ],
       imports: [
         HttpClientTestingModule,
         NgbDropdownModule,
         AbstractFilterModule,
-        FilterOptionServiceModule,
         AbstractSelectFilterModule,
         FormsModule,
         ReactiveFormsModule,
@@ -134,7 +141,7 @@ describe('SuggesterFilterComponent', () => {
     });
 
     describe('and has value from parent', () => {
-      const parentValue = [{ key: 'key', value: 'value' }];
+      const parentValue = [{ key: FILTER_QUERY_PARAM_KEY.brand, value: 'value' }];
       beforeEach(() => {
         testComponent.config = basicConfig;
         testComponent.value = parentValue;
@@ -226,7 +233,7 @@ describe('SuggesterFilterComponent', () => {
       });
 
       it('should update value', () => {
-        const newValue = [{ key: 'key', value: 'value' }];
+        const newValue = [{ key: FILTER_QUERY_PARAM_KEY.brand, value: 'value' }];
         expect(component.value).toEqual([]);
 
         testComponent.value = newValue;
@@ -236,7 +243,7 @@ describe('SuggesterFilterComponent', () => {
       });
 
       it('should update form', () => {
-        const newValue = [{ key: 'key', value: 'value' }];
+        const newValue = [{ key: FILTER_QUERY_PARAM_KEY.brand, value: 'value' }];
         spyOn(component.formGroup.controls.select, 'setValue');
 
         testComponent.value = newValue;
@@ -247,7 +254,7 @@ describe('SuggesterFilterComponent', () => {
       });
 
       it('should update label', () => {
-        testComponent.value = [{ key: 'key', value: 'value' }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.brand, value: 'value' }];
         fixture.detectChanges();
 
         expect(debugElement.query(filterPredicate).componentInstance.label).toEqual('value');
@@ -256,8 +263,8 @@ describe('SuggesterFilterComponent', () => {
 
     describe('and is complex value', () => {
       const complexFilterValue = [
-        { key: 'brand', value: 'Audi' },
-        { key: 'model', value: 'A4' },
+        { key: FILTER_QUERY_PARAM_KEY.brand, value: 'Audi' },
+        { key: FILTER_QUERY_PARAM_KEY.model, value: 'A4' },
       ];
       const complexOptionValue = {
         brand: 'Audi',
@@ -297,8 +304,8 @@ describe('SuggesterFilterComponent', () => {
 
       describe('and component had same value', () => {
         const previousValue = [
-          { key: 'brand', value: 'Audi' },
-          { key: 'model', value: 'A4' },
+          { key: FILTER_QUERY_PARAM_KEY.brand, value: 'Audi' },
+          { key: FILTER_QUERY_PARAM_KEY.model, value: 'A4' },
         ];
         beforeEach(() => {
           testComponent.config = complexValueConfig;
@@ -334,8 +341,8 @@ describe('SuggesterFilterComponent', () => {
 
       describe('and component had different value', () => {
         const previousValue = [
-          { key: 'brand', value: 'Mercedes' },
-          { key: 'model', value: 'Coupe' },
+          { key: FILTER_QUERY_PARAM_KEY.brand, value: 'Mercedes' },
+          { key: FILTER_QUERY_PARAM_KEY.model, value: 'Coupe' },
         ];
         beforeEach(() => {
           testComponent.config = complexValueConfig;
@@ -371,7 +378,7 @@ describe('SuggesterFilterComponent', () => {
     });
 
     describe('and is empty value', () => {
-      const initialValue = [{ key: 'key', value: 'value' }];
+      const initialValue = [{ key: FILTER_QUERY_PARAM_KEY.brand, value: 'value' }];
       beforeEach(() => {
         testComponent.config = basicConfig;
         testComponent.value = initialValue;
@@ -470,7 +477,7 @@ describe('SuggesterFilterComponent', () => {
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
           expect(component.valueChange.emit).toHaveBeenCalledWith([
             {
-              key: 'key',
+              key: FILTER_QUERY_PARAM_KEY.brand,
               value: 'default_1',
             },
           ]);
@@ -486,7 +493,7 @@ describe('SuggesterFilterComponent', () => {
 
           expect(component.value).toEqual([
             {
-              key: 'key',
+              key: FILTER_QUERY_PARAM_KEY.brand,
               value: 'default_1',
             },
           ]);
@@ -497,13 +504,13 @@ describe('SuggesterFilterComponent', () => {
     describe('... is closed', () => {
       describe('and we clean the value', () => {
         beforeEach(() => {
-          testComponent.value = [{ key: 'key', value: 'default_1' }];
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.brand, value: 'default_1' }];
           fixture.detectChanges();
         });
 
         it('should restart values', () => {
           const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-          expect(component.value).toEqual([{ key: 'key', value: 'default_1' }]);
+          expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.brand, value: 'default_1' }]);
 
           filterTemplate.clear.emit();
 
@@ -527,7 +534,7 @@ describe('SuggesterFilterComponent', () => {
           filterTemplate.clear.emit();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.brand, value: undefined }]);
         });
       });
     });
@@ -582,7 +589,7 @@ describe('SuggesterFilterComponent', () => {
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
           expect(component.valueChange.emit).toHaveBeenCalledWith([
             {
-              key: 'key',
+              key: FILTER_QUERY_PARAM_KEY.brand,
               value: 'default_1',
             },
           ]);
@@ -599,7 +606,7 @@ describe('SuggesterFilterComponent', () => {
 
           expect(component.value).toEqual([
             {
-              key: 'key',
+              key: FILTER_QUERY_PARAM_KEY.brand,
               value: 'default_1',
             },
           ]);
@@ -609,12 +616,12 @@ describe('SuggesterFilterComponent', () => {
 
       describe('and we clean the value', () => {
         beforeEach(() => {
-          testComponent.value = [{ key: 'key', value: 'default_1' }];
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.brand, value: 'default_1' }];
           fixture.detectChanges();
         });
         it('should restart values', () => {
           const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
-          expect(component.value).toEqual([{ key: 'key', value: 'default_1' }]);
+          expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.brand, value: 'default_1' }]);
 
           selectTemplate.clear.emit();
 
@@ -638,7 +645,7 @@ describe('SuggesterFilterComponent', () => {
           selectTemplate.clear.emit();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.brand, value: undefined }]);
         });
       });
     });
