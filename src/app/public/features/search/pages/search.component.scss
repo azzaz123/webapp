@@ -1,34 +1,6 @@
 @import '~style/common';
 
-$filters-height: 82px;
-
-.has-backdrop {
-  &::before {
-    background-color: hsla(0, 0%, 100%, 0.8);
-    content: '';
-    display: block;
-    height: 100%;
-    position: fixed;
-    top: $topbar-height;
-    width: 100%;
-    z-index: 200;
-  }
-}
-
 .Search {
-  &__layout {
-    padding-top: $filters-height;
-  }
-
-  &__filters-container {
-    left: 0;
-    right: 0;
-    z-index: 200;
-    &--with-backdrop {
-      @extend .has-backdrop;
-    }
-  }
-
   &__sort {
     height: 38px;
     background-color: $color-inbox-background;
@@ -42,10 +14,6 @@ $filters-height: 82px;
 
     &--bottom {
       height: 40%;
-    }
-
-    &--topSpace {
-      top: calc(2 * #{$filters-height} + #{$spacing-xs});
     }
   }
 }
