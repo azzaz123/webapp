@@ -55,7 +55,7 @@ export class FeatureflagService {
     }
   }
 
-  public isExpermientalFeaturesEnabled(): boolean {
+  private isExpermientalFeaturesEnabled(): boolean {
     return !!localStorage.getItem('experimentalFeatures');
   }
 

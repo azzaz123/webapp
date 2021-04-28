@@ -1,5 +1,5 @@
 import { Directive, TemplateRef, ViewContainerRef, OnInit } from '@angular/core';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureflagService, FEATURE_FLAGS_ENUM } from '@core/user/featureflag.service';
 
 @Directive({
   selector: '[tslDeliveryDevelopment]',
@@ -12,10 +12,12 @@ export class DeliveryDevelopmentDirective implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.featureflagService.getDeliveryFeatureFlag()) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainer.clear();
-    }
+    this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
+      if (isActive) {
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      } else {
+        this.viewContainer.clear();
+      }
+    });
   }
 }

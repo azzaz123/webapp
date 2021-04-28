@@ -5,6 +5,7 @@ import { DeliveryDevelopmentDirective } from './delivery-development.directive';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
+import { of } from 'rxjs';
 
 @Component({
   template: `<span *tslDeliveryDevelopment></span>`,
@@ -40,7 +41,7 @@ describe('DeliveryDevelopmentDirective', () => {
 
   describe('when the delivery feature flag have experimental features or is dev mode...', () => {
     it('should show the dom element', () => {
-      spyOn(featureflagService, 'getDeliveryFeatureFlag').and.returnValue(true);
+      spyOn(featureflagService, 'getFlag').and.returnValue(of(true));
 
       fixture.detectChanges();
 
@@ -51,7 +52,7 @@ describe('DeliveryDevelopmentDirective', () => {
 
   describe(`when the delivery feature flag don't have experimental features and is not dev mode...`, () => {
     it('should NOT show the dom element', () => {
-      spyOn(featureflagService, 'getDeliveryFeatureFlag').and.returnValue(false);
+      spyOn(featureflagService, 'getFlag').and.returnValue(of(false));
 
       fixture.detectChanges();
 
