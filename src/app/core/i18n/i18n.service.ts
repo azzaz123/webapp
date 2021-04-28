@@ -172,6 +172,7 @@ export class I18nService {
     return this._locale === 'en-US' ? 'en' : this._locale;
   }
 
+  // TODO: Remove this method and use only "translate" one
   getTranslations(key: string) {
     return this.translations[this.locale][key];
   }
