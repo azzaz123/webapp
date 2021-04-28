@@ -17,7 +17,10 @@ describe('DeliveryDevelopmentGuard', () => {
       imports: [HttpClientTestingModule],
       providers: [
         DeliveryDevelopmentGuard,
-        FeatureFlagServiceMock,
+        {
+          provide: FeatureflagService,
+          useClass: FeatureFlagServiceMock,
+        },
         {
           provide: Router,
           useValue: {
