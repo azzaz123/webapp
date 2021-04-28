@@ -6,7 +6,6 @@
   padding: $spacing-m;
   flex-wrap: wrap;
   color: $blue-grey-2;
-  min-height: 505px;
   height: 100%;
   max-width: 245px;
   margin: 0 auto;
@@ -47,9 +46,8 @@
     height: 1px;
     border: 0;
     border-top: 2px solid $blue-grey-5;
-    margin: $spacing-ms 0;
-    padding: 0;
-    width: 90%;
+    margin: $spacing-xs 0;
+    width: 100%;
   }
 
   &__icon {
@@ -64,9 +62,6 @@
   &--subscribed {
     border: 2px solid $walla-main;
     color: $blue-grey-1;
-    hr {
-      border-top: 2px solid $walla-main;
-    }
     .SubscriptionCard__title {
       color: $blue-grey-1;
     }

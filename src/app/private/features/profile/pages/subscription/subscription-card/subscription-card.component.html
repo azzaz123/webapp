@@ -11,7 +11,7 @@
             </tsl-svg-icon>
         </div>
         <div class="SubscriptionCard__title text-center mb-2">{{subscription.category_name}}</div>
-        <div class="SubscriptionCard__subtitle text-center mb-2">{{descriptionText}}</div>
+        <div class="SubscriptionCard__subtitle d-flex align-items-center text-center mb-2">{{descriptionText}}</div>
         <div class="SubscriptionCard__price">
             <ng-container *ngIf="!isSubscribed; else subscriptionPrice">
                 <tsl-subscription-price-discount [subscription]="subscription">
@@ -25,7 +25,7 @@
         </div>
         <hr />
     </div>
-    <div class="d-flex flex-column SubscriptionCard__info w-100">
+    <div class="d-flex flex-column SubscriptionCard__info w-100 mb-2">
         <ng-container *ngIf="!isSubscribed; else subscriptionBody">
             <div class="d-flex flex-column text-left">
                 <div class="d-flex mb-2">
@@ -43,12 +43,19 @@
             </div>
         </ng-container>
         <ng-template #subscriptionBody>
-            <div class="d-flex mb-2 text-left w-100">
-                <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
-                </tsl-svg-icon>
-                <span class="mb-2">
-                    {{ subscriptionBodyText }}
-                </span>
+            <div class="d-flex flex-column mb-2 text-left w-100">
+                <div class="mb-2" i18n="@@your_current_plan">
+                    <strong>
+                        Your current plan
+                    </strong>
+                </div>
+                <div class="d-flex">
+                    <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
+                    </tsl-svg-icon>
+                    <span class="mb-2">
+                        {{ subscriptionBodyText }}
+                    </span>
+                </div>
             </div>
             <span class="SubscriptionCard__date">
                 <ng-container *ngIf="subscription.subscribed_until; else noSubscriptionEnd">

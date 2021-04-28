@@ -22,27 +22,20 @@ export class SubscriptionCardComponent {
     [CATEGORY_IDS.EVERYTHING_ELSE]: $localize`:@@web_profile_pages_subscription_other_desc:Your best plan to sell all kinds of items`,
   };
 
-  subcriptionBenefits = [
-    'Elige cuantos coches vas subir',
-    'Comparte tu web y número movil',
-    'Gana visibilidad en búsquedas',
-    'Ahorra tiempo de gestión',
-  ];
+  subcriptionBenefits = ['Gain more visibility', 'Save management time', 'Share your phone and website'];
 
   get descriptionText(): string {
     return this.titleConfig[this.subscription.category_id];
   }
 
   get noSubscriptionBodyText(): string {
-    return this.subscription.current_limit
-      ? $localize`:@@web_profile_pages_subscription_323:Limit without subscription: ${this.subscription.current_limit}`
-      : $localize`:@@web_profile_pages_subscription_586:No limit`;
+    return this.subscription.category_id !== CATEGORY_IDS.EVERYTHING_ELSE ? 'Set your listing limit' : 'Boost your brandin';
   }
 
   get subscriptionBodyText(): string {
     return this.subscription.selected_tier.limit
-      ? $localize`:@@web_profile_pages_subscription_325:${this.subscription.selected_tier.limit} products`
-      : $localize`:@@web_profile_pages_subscription_586:No limit`;
+      ? $localize`:@@web_profile_pages_subscription_325:List up to ${this.subscription.selected_tier.limit} items`
+      : $localize`:@@web_profile_pages_subscription_586:List without limits`;
   }
 
   get iconSrc(): string {
