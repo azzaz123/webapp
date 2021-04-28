@@ -82,4 +82,18 @@ export class SearchService {
       })
     );
   }
+
+  private mapSearchResponse(pagination: SearchPagination, filterParameters: FilterParameter[]): SearchPaginationWithCategory {
+    const { items, hasMore } = pagination;
+
+    return {
+      items,
+      hasMore,
+      categoryId: this.getCategoryIdFromParams(filterParameters)
+    };
+  }
+
+  private getCategoryIdFromParams(filterParameters: FilterParameter[]) {
+    return filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
+  }
 }
