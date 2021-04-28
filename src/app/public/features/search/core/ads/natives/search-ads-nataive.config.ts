@@ -17,8 +17,8 @@ export interface AdsNativeSlotSearch {
 
 export const ADS_NATIVE_SLOTS: AdsNativeSlotSearch = {
   regular: {
-    id: 'sky-desktop-native-wall',
     name: '130868815/desktop_native_wall',
+    id: 'div-gpt-ad-1544456358821-0',
     sizes: AD_DESKTOP_NATIVE_MAPPING,
     sizeMapping: {
       desktop: {
@@ -38,8 +38,8 @@ export const ADS_NATIVE_SLOTS: AdsNativeSlotSearch = {
     networkId: 1442702,
   },
   wide: {
-    id: 'sky-desktop-native-wall-wide',
     name: '130868815/desktop_native_wall_wide',
+    id: 'div-gpt-ad-1544456358821-0',
     sizes: AD_DESKTOP_NATIVE_WIDE_MAPPING,
     sizeMapping: {
       desktop: {

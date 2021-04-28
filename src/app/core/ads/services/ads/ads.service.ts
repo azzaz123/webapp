@@ -4,7 +4,7 @@ import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
 import { AdSlotId } from '@core/ads/models/ad-slot-id';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
-import { filter, finalize, map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, finalize, map, switchMap, take, tap, debounceTime } from 'rxjs/operators';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '../../vendors';
 import { LoadAdsService } from '../load-ads/load-ads.service';
 
@@ -41,8 +41,13 @@ export class AdsService {
   }
 
   public setSlots(adSlots: AdSlotConfiguration[]): void {
-    console.log('setSlots', adSlots);
+    this.googlePublisherTagService.reset();
     this.setSlotsSubject.next(adSlots);
+  }
+
+  public addSlots(adSlots: AdSlotConfiguration[]): void {
+    const actualSlots: AdSlotConfiguration[] = this.setSlotsSubject.getValue();
+    this.setSlotsSubject.next([...actualSlots, ...adSlots]);
   }
 
   public setAdKeywords(adKeywords: AdKeyWords): void {
@@ -50,7 +55,6 @@ export class AdsService {
   }
 
   public refresh(): void {
-    console.log('refresh');
     this.refreshEventSubject.next();
   }
 
@@ -79,7 +83,8 @@ export class AdsService {
   }
 
   private listenToSlots(): void {
-    combineLatest([this.adsReady$, this.setSlotsSubject.asObservable()])
+    const setSlotsObservable: Observable<AdSlotConfiguration[]> = this.setSlotsSubject.asObservable().pipe(debounceTime(500));
+    combineLatest([this.adsReady$, setSlotsObservable])
       .pipe(
         filter(([adsReady, adSlots]: [boolean, AdSlotConfiguration[]]) => adsReady && adSlots.length > 0),
         map(([_, adSlots]: [boolean, AdSlotConfiguration[]]) => adSlots),
@@ -98,7 +103,6 @@ export class AdsService {
           this.googlePublisherTagService.setAdsSegmentation(allowSegmentation);
           this.googlePublisherTagService.setTargetingByAdsKeywords(allowSegmentation);
           this.googlePublisherTagService.refreshAds();
-          console.log('listenerToRefresh TAP');
         }),
         switchMap(() => this.fetchHeaderBids())
       )

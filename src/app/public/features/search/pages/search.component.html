@@ -10,6 +10,7 @@
 
   <tsl-search-layout *ngIf="(items$ | async).length > 0">
     <div top class="d-block h-100 position-relative">
+      <tsl-button (click)="test()">CLICK ME TEST</tsl-button>
       <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
     </div>
     <div bottom class="d-block h-100 position-relative">This should be an ad - Bottom</div>
@@ -31,7 +32,7 @@
       <tsl-public-item-card-list [items]="items$ | async" [columnsConfig]="columnsConfig" [slotsConfig]="slotsConfig">
         <ng-template #slotTemplate let-index>
           <ng-container *ngIf="isWall$ | async; else templateSearchAds">
-            <tsl-sky [adSlot]="adNativeSlotsConfiguration.regular"></tsl-sky>
+            <tsl-sky-native [adSlot]="adNativeSlotsConfiguration.regular" [index]="index"></tsl-sky-native>
           </ng-container>
         </ng-template>
       </tsl-public-item-card-list>

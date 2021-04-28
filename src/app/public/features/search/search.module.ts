@@ -36,7 +36,6 @@ import { SearchAdsService } from './core/ads/search-ads.service';
     ItemCardListModule,
     CheckSessionModule,
     FiltersWrapperModule,
-    AdSlotModule,
     AdSlotShoppingModule,
     ItemFavouritesModule,
     ErrorBoxModule,

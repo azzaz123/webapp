@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
@@ -17,6 +18,10 @@ import {
   AD_SHOPPING_CONTAINER_PUBLIC_SEARCH,
   AD_SHOPPING_PUBLIC_SEARCH,
 } from '../core/ads/shopping/search-ads-shopping.config';
+import {
+  FilterParameterStoreService,
+  FILTER_PARAMETER_STORE_TOKEN,
+} from './../../../shared/services/filter-parameter-store/filter-parameter-store.service';
 import { AdsNativeSlotSearch } from './../core/ads/natives/search-ads-nataive.config';
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
@@ -56,16 +61,16 @@ export class SearchComponent implements OnInit, OnDestroy {
   );
   public adNativeSlotsConfiguration: AdsNativeSlotSearch = ADS_NATIVE_SLOTS;
 
-  public isWall$: Observable<boolean> = this.searchService.isWall$.pipe(tap((isWall: boolean) => console.log('IS WALL', isWall)));
+  public isWall$: Observable<boolean> = this.searchService.isWall$;
 
-  public openBubbleCount$: Observable<number> = this.openBubbleCountSubject.asObservable();
   public slotsConfig: SlotsConfig;
 
   constructor(
     private deviceService: DeviceService,
     private searchService: SearchService,
     private publicFooterService: PublicFooterService,
-    private searchAdsService: SearchAdsService
+    private searchAdsService: SearchAdsService,
+    @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStoreService: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
   }
@@ -89,6 +94,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public scrolled(): void {
     this.searchService.loadMore();
+  }
+
+  public test(): void {
+    this.filterParameterStoreService.setParameters([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: 'patinete' }]);
   }
 
   private buildInfiniteScrollDisabledObservable(): Observable<boolean> {
