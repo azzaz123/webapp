@@ -1221,4 +1221,8 @@
   <translation id="web_stats_chats">Chats</translation>
   <translation id="web_male">Hombre</translation>
   <translation id="web_female">Mujer</translation>
+  <translation id="web_day">día</translation>
+  <translation id="web_hour">hora</translation>
+  <translation id="web_minute">minuto</translation>
+  <translation id="web_left">Quedan</translation>
 </translationbundle>

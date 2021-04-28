@@ -55,4 +55,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.STATS_FAVORITES]: $localize`:@@web_stats_favorites:Favorites`,
   [TRANSLATION_KEY.STATS_VIEWS]: $localize`:@@web_stats_views:Views`,
   [TRANSLATION_KEY.STATS_CHATS]: $localize`:@@web_stats_chats:Chats`,
+  [TRANSLATION_KEY.DAY]: $localize`:@@web_day:day`,
+  [TRANSLATION_KEY.HOUR]: $localize`:@@web_hour:hour`,
+  [TRANSLATION_KEY.MINUTE]: $localize`:@@web_minute:minute`,
+  [TRANSLATION_KEY.LEFT]: $localize`:@@web_left:left`,
 };

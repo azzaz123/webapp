@@ -113,6 +113,10 @@
   <msg id="web_stats_favorites"><source>src/app/core/i18n/translations/constants/translations.ts:54</source>Favorites</msg>
   <msg id="web_stats_views"><source>src/app/core/i18n/translations/constants/translations.ts:55</source>Views</msg>
   <msg id="web_stats_chats"><source>src/app/core/i18n/translations/constants/translations.ts:56</source>Chats</msg>
+  <msg id="web_day"><source>src/app/core/i18n/translations/constants/translations.ts:57</source>day</msg>
+  <msg id="web_hour"><source>src/app/core/i18n/translations/constants/translations.ts:58</source>hour</msg>
+  <msg id="web_minute"><source>src/app/core/i18n/translations/constants/translations.ts:59</source>minute</msg>
+  <msg id="web_left"><source>src/app/core/i18n/translations/constants/translations.ts:60</source>left</msg>
   <msg id="web_subscription_benefit_title_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:7</source>Empower your brand</msg>
   <msg id="web_subscription_benefit_description_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:8</source>Complete your profile with a cover photo and a description.</msg>
   <msg id="web_subscription_benefit_title_connect"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:12</source>Connect with more customers</msg>
