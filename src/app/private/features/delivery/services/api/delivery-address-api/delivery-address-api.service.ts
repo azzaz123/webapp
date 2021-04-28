@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment.beta';
+import { DeliveryAddressResponse } from '@private/features/delivery/interfaces/delivery-address/delivery-address-response.interface';
 import { DeliveryAddress } from '@private/features/delivery/interfaces/delivery-address/delivery-address.interface';
 import { Observable } from 'rxjs';
 
@@ -12,7 +13,7 @@ export const DELIVERY_ADDRESS_ID = (addressId: string) => `${DELIVERY_ADDRESS_AP
 export class DeliveryAddressApiService {
   constructor(private http: HttpClient) {}
 
-  public getDeliveryAddress(): Observable<any> {
+  public getDeliveryAddress(): Observable<DeliveryAddressResponse> {
     return this.http.get<any>(MAIN_DELIVERY_ADDRESS);
   }
 
