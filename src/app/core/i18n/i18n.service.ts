@@ -84,9 +84,6 @@ export class I18nService {
       invoiceCannotDownload: 'Your invoice could not be downloaded. Please try again',
       invoiceCannotGenerate: 'Your invoice could not be generated. Please try again',
       errorSavingData: 'Error while saving data. Please try again',
-      cardNumberIsNotValid: "Card number isn't valid.",
-      cvcNumberIsNotValid: "CVC number isn't valid.",
-      cardDateIsNotValid: "Card date isn't valid.",
       deleteItemError: 'There was an error deleting your product',
 
       // TODO: Remove when not shared
@@ -170,9 +167,6 @@ export class I18nService {
       invoiceCannotDownload: 'Tu factura no se ha podido descargar. Intenta de nuevo',
       invoiceCannotGenerate: 'Tu factura no se ha podido generar. Intenta de nuevo',
       errorSavingData: 'Error al guardar los datos. Intenta de nuevo',
-      cardNumberIsNotValid: 'El número de la tarjeta no es válido.',
-      cvcNumberIsNotValid: 'El CVC de la tarjeta no es válido.',
-      cardDateIsNotValid: 'La fecha de la tarjeta no es válida.',
       deleteItemError: 'Hubo un error borrando tu producto',
 
       // TODO: Remove when not shared

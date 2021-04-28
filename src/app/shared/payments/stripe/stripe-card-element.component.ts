@@ -20,6 +20,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { Tier } from '../../../core/subscriptions/subscriptions.interface';
 import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
 import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -40,6 +41,12 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
   public card: stripe.elements.Element;
   public termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
   public policyPrivacyURL = PRIVACY_POLICY_URL;
+  public errorTextConfig = {
+    [STRIPE_ERROR.card_declined]: this.i18n.translate(TRANSLATION_KEY.CARD_NUMBER_INVALID),
+    [STRIPE_ERROR.expired_card]: this.i18n.translate(TRANSLATION_KEY.CARD_DATE_INVALID),
+    [STRIPE_ERROR.incorrect_cvc]: this.i18n.translate(TRANSLATION_KEY.CARD_CVC_INVALID),
+  };
+
   @Input() type: string;
   @Input() cart: CartBase;
   @Input() loading: boolean;
@@ -70,12 +77,6 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
     private stripeService: StripeService,
     private toastService: ToastService
   ) {}
-
-  public errorTextConfig = {
-    [STRIPE_ERROR.card_declined]: this.i18n.getTranslations('cardNumberIsNotValid'),
-    [STRIPE_ERROR.expired_card]: this.i18n.getTranslations('cardDateIsNotValid'),
-    [STRIPE_ERROR.incorrect_cvc]: this.i18n.getTranslations('cvcNumberIsNotValid'),
-  };
 
   ngAfterViewInit() {
     this.initStripe();

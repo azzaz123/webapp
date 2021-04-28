@@ -117,6 +117,9 @@
   <msg id="web_hour"><source>src/app/core/i18n/translations/constants/translations.ts:58</source>hour</msg>
   <msg id="web_minute"><source>src/app/core/i18n/translations/constants/translations.ts:59</source>minute</msg>
   <msg id="web_left"><source>src/app/core/i18n/translations/constants/translations.ts:60</source>left</msg>
+  <msg id="web_card_number_invalid"><source>src/app/core/i18n/translations/constants/translations.ts:61</source>Card number isn&apos;t valid.</msg>
+  <msg id="web_card_date_invalid"><source>src/app/core/i18n/translations/constants/translations.ts:62</source>Card date isn&apos;t valid.</msg>
+  <msg id="web_card_cvc_invalid"><source>src/app/core/i18n/translations/constants/translations.ts:63</source>CVC number isn&apos;t valid.</msg>
   <msg id="web_subscription_benefit_title_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:7</source>Empower your brand</msg>
   <msg id="web_subscription_benefit_description_your_brand"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:8</source>Complete your profile with a cover photo and a description.</msg>
   <msg id="web_subscription_benefit_title_connect"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:12</source>Connect with more customers</msg>
