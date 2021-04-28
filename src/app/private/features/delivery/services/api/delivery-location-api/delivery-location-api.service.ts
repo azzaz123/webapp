@@ -10,7 +10,7 @@ export const DELIVERY_LOCATION_API_URL = (postalCode: string) => `${environment.
 export class DeliveryLocationApiService {
   constructor(private http: HttpClient) {}
 
-  get(postalCode: string): Observable<DeliveryLocationApi> {
+  public get(postalCode: string): Observable<DeliveryLocationApi> {
     return this.http.get<DeliveryLocationApi>(DELIVERY_LOCATION_API_URL(postalCode));
   }
 }
