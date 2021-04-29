@@ -36,7 +36,9 @@ describe('ItemReactictivationService', () => {
         expect(toastService.show).toHaveBeenCalledWith(service['toastValidationError']);
       });
       it('should mark form as pending to trigger validations', () => {
-        expect(form.markAsPending).toHaveBeenCalled();
+        setTimeout(() => {
+          expect(form.markAsPending).toHaveBeenCalled();
+        });
       });
     });
 

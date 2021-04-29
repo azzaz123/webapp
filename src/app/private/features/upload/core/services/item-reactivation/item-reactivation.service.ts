@@ -16,7 +16,9 @@ export class ItemReactivationService {
     if (!form.valid) {
       this.toastService.show(this.toastValidationError);
 
-      form.markAsPending();
+      setTimeout(() => {
+        form.markAsPending();
+      });
     }
   }
 }
