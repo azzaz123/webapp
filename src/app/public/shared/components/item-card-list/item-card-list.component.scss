@@ -1,6 +1,8 @@
 @import '~style/common';
 
 $margin: $spacer * 0.75;
+$loading-opacity: 0.4;
+$loaded-opacity: 1;
 
 @mixin grid-setup($numCols) {
   grid-template-columns: repeat($numCols, minmax(0, 1fr));
@@ -22,7 +24,7 @@ $numCols: 1, 2, 3, 4, 5;
 .ItemCardList {
   display: grid;
   grid-gap: $margin;
-  opacity: 1;
+  opacity: $loaded-opacity;
   transition: opacity 150ms ease-in-out;
 
   &__slot {
@@ -31,6 +33,6 @@ $numCols: 1, 2, 3, 4, 5;
   }
 
   &--loading {
-    opacity: 0.4;
+    opacity: $loading-opacity;
   }
 }
