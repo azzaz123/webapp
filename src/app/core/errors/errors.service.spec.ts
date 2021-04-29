@@ -94,13 +94,13 @@ describe('Service: Errors', () => {
       });
     });
 
-    it('should call toastService.show method for type error with i18n message, concatenting text', () => {
+    it('should call toastService.show method for type error with i18n message, concatenating text', () => {
       spyOn(i18n, 'translate').and.returnValues('message', 'title');
 
       service.i18nError(('key' as unknown) as TRANSLATION_KEY, 'text');
 
       expect(toastService.show).toHaveBeenCalledWith({
-        text: 'messagetext',
+        text: 'message text',
         title: 'title',
         type: 'error',
       });
@@ -119,13 +119,13 @@ describe('Service: Errors', () => {
         type: 'success',
       });
     });
-    it('should call toastService.show method for type success with i18n message, concatenting text', () => {
+    it('should call toastService.show method for type success with i18n message, concatenating text', () => {
       spyOn(i18n, 'translate').and.returnValues('message', 'title');
 
       service.i18nSuccess(('key' as unknown) as TRANSLATION_KEY, 'text');
 
       expect(toastService.show).toHaveBeenCalledWith({
-        text: 'messagetext',
+        text: 'message text',
         title: 'title',
         type: 'success',
       });

@@ -23,30 +23,24 @@ export class ErrorsService {
   }
 
   public i18nError(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY) {
-    const translatedText = this.i18n.translate(key);
-    // FIXME: We sould not add an space between the translation and the concatText, as this is already being done by the copy.
-    //        Should we change the way we handle this so the space is added by the method? Or do we need the copies to handle it?
-    const text = `${translatedText ? translatedText : this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE)}${concatText}`;
-    const title = titleKey ? this.i18n.translate(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE);
-
-    this.toastService.show({
-      text,
-      title,
-      type: 'error',
-    });
+    this.showToast('error', key, concatText, titleKey);
   }
 
   public i18nSuccess(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY) {
-    const translatedText = this.i18n.translate(key);
-    // FIXME: We sould not add an space between the translation and the concatText, as this is already being done by the copy.
-    //        Should we change the way we handle this so the space is added by the method? Or do we need the copies to handle it?
-    const text = `${translatedText ? translatedText : ''}${concatText}`;
+    this.showToast('success', key, concatText, titleKey);
+  }
+
+  private showToast(type: 'error' | 'success', key: TRANSLATION_KEY, concatText: string, titleKey?: TRANSLATION_KEY) {
+    const translatedText = this.i18n.translate(key) || this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+    const spacedConcatText = concatText ? ` ${concatText}` : '';
+
+    const text = `${translatedText}${spacedConcatText}`;
     const title = titleKey ? this.i18n.translate(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE);
 
     this.toastService.show({
       text,
       title,
-      type: 'success',
+      type: type,
     });
   }
 }
