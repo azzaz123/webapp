@@ -1,4 +1,4 @@
-type NumberColumns = 2 | 3 | 4 | 5;
+type NumberColumns = 1 | 2 | 3 | 4 | 5;
 
 export interface ColumnsConfig {
   xl: NumberColumns;

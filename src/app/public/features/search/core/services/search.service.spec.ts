@@ -1,5 +1,5 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { filterParametersMock } from '@fixtures/filter-parameter.fixtures';
+import { TestBed } from '@angular/core/testing';
+import { filterParametersMock, filterParametersMockWithCategory } from '@fixtures/filter-parameter.fixtures';
 import { SearchPaginationFactory } from '@fixtures/item-card.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
@@ -12,6 +12,7 @@ import {
   FILTER_PARAMETER_DRAFT_STORE_TOKEN,
   FILTER_PARAMETER_STORE_TOKEN,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 describe('SearchService', () => {
   let service: SearchService;
@@ -116,16 +117,28 @@ describe('SearchService', () => {
       });
 
       describe('when it has finished loading', () => {
-        it('should disable the loading state', fakeAsync(() => {
+        it('should disable the loading state', (done) => {
           spyOn(searchInfrastructureServiceMock, 'search').and.callThrough();
 
           filterParametersSubject.next(filterParametersMock);
           service.isLoadingResults$.subscribe((isLoading: boolean) => {
             expect(isLoading).toEqual(false);
+            done();
           });
+        });
 
-          tick();
-        }));
+        it('should set the state for the new category', (done) => {
+          const expectedCategoryId = filterParametersMockWithCategory.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)
+            ?.value;
+
+          spyOn(searchInfrastructureServiceMock, 'search').and.callThrough();
+
+          filterParametersSubject.next(filterParametersMockWithCategory);
+          service.currentCategoryId$.subscribe((categoryId: string) => {
+            expect(categoryId).toEqual(expectedCategoryId);
+            done();
+          });
+        });
       });
     });
 

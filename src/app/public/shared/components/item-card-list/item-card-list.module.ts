@@ -6,10 +6,11 @@ import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 import { ShowSlotPipe } from './pipes/show-slot.pipe';
+import { ItemCardWideModule } from '../item-card-wide/item-card-wide.module';
 
 @NgModule({
   declarations: [ItemCardListComponent, ShowSlotPipe],
-  imports: [CommonModule, ItemCardModule, ItemApiModule, PublicPipesModule],
+  imports: [CommonModule, ItemCardModule, ItemCardWideModule, ItemApiModule, PublicPipesModule],
   exports: [ItemCardListComponent],
   providers: [ItemCardService],
 })
