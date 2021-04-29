@@ -3,6 +3,7 @@ import { AD_SHOPPING_STYLE_ID_DESKTOP, AD_SHOPPING_STYLE_ID_MOBILE, AD_SHOPPING_
 import { AdShoppingPageOptions, AdSlotShoppingConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 import { DeviceService } from '@core/device/device.service';
+import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
 
 @Component({
   selector: 'tsl-sky-shopping',
@@ -13,7 +14,7 @@ export class AdSlotShoppingComponent implements OnInit, AfterViewInit {
   @Input() adShoppingPageOptions: AdShoppingPageOptions;
   @Input() adSlotContainer: string;
   @Input() index: number;
-  @Input() isWide = false;
+  @Input() cardType: CARD_TYPES = CARD_TYPES.REGULAR;
 
   public adSlotShoppingConfiguration: AdSlotShoppingConfiguration;
 
@@ -32,7 +33,7 @@ export class AdSlotShoppingComponent implements OnInit, AfterViewInit {
   }
 
   private factoryStyleIdSlot(): string {
-    if (this.isWide) {
+    if (this.cardType === CARD_TYPES.WIDE) {
       return AD_SHOPPING_STYLE_ID_WIDE;
     }
 

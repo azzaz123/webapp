@@ -4,6 +4,7 @@ import { AD_SHOPPING_STYLE_ID_DESKTOP, AD_SHOPPING_STYLE_ID_MOBILE, AD_SHOPPING_
 import { AdsService } from '@core/ads/services';
 import { DeviceService } from '@core/device/device.service';
 import { MockAdShoppingPageOptions, MockAdsService } from '@fixtures/ads.fixtures.spec';
+import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
 import { AdSlotShoppingComponent } from './ad-slot-shopping.component';
 
 describe('AdSlotShoppingComponent', () => {
@@ -53,7 +54,7 @@ describe('AdSlotShoppingComponent', () => {
 
   describe('when the view init', () => {
     it('should display ad wide shopping', () => {
-      component.isWide = true;
+      component.cardType = CARD_TYPES.WIDE;
       spyOn(MockAdsService, 'displayAdShopping').and.callThrough();
 
       fixture.detectChanges();

@@ -86,8 +86,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private deviceService: DeviceService,
     private searchService: SearchService,
     private publicFooterService: PublicFooterService,
-    private searchAdsService: SearchAdsService,
-    @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStoreService: FilterParameterStoreService
+    private searchAdsService: SearchAdsService
   ) {
     this.device = this.deviceService.getDeviceType();
   }
