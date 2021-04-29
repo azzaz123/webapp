@@ -1,0 +1,25 @@
+@import '~style/common';
+
+$container-height-with-description: 420px;
+$container-height-without-description: 202px;
+$image-height-with-description: 210px;
+$image-border-radius: 6px;
+$card-max-width: 685px;
+
+.ItemCardWidePlaceholder {
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: $item-card-box-shadow;
+  height: $container-height-without-description;
+  overflow: hidden;
+  max-width: $card-max-width;
+
+  &__text {
+    @include TextPlaceholder;
+  }
+
+  &__image {
+    @include ImagePlaceholder;
+    border-radius: 10px;
+  }
+}
