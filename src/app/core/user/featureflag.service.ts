@@ -55,11 +55,11 @@ export class FeatureflagService {
     }
   }
 
-  public isExpermientalFeaturesEnabled(): boolean {
+  public isExperimentalFeaturesEnabled(): boolean {
     return !!localStorage.getItem('experimentalFeatures');
   }
 
   private getDeliveryFeatureFlag(): boolean {
-    return isDevMode() || this.isExpermientalFeaturesEnabled();
+    return isDevMode() || this.isExperimentalFeaturesEnabled();
   }
 }
