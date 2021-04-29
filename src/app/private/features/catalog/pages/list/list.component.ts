@@ -827,7 +827,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.sortBy = SORTS[0];
   }
 
-  // FIXME: This seems to be broken for PROs
   public onSortChange(value: any) {
     this.sortBy = value;
     this.getItems();
