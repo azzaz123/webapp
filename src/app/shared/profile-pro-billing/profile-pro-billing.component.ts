@@ -145,7 +145,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
         )
         .subscribe(
           () => {
-            this.errorsService.i18nSuccess('userEdited');
+            this.errorsService.i18nSuccess(TRANSLATION_KEY.USER_EDITED);
             this.billingInfoFormSaved.emit(this.billingForm);
             this.formComponent.initFormControl();
             this.isNewBillingInfoForm = false;
@@ -174,7 +174,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
       if (result) {
         this.paymentService.deleteBillingInfo(this.billingForm.value.id).subscribe(
           () => {
-            this.errorsService.i18nSuccess('deleteBillingInfoSuccess');
+            this.errorsService.i18nSuccess(TRANSLATION_KEY.DELETE_BILLING_INFO);
             this.initForm(false);
           },
           () => {

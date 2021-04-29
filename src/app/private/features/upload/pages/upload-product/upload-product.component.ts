@@ -472,7 +472,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.uploadService.uploadSingleImage(file, this.item.id, ITEM_TYPES.CONSUMER_GOODS).subscribe(
         (value: UploadOutput) => {
           if (value.type === OUTPUT_TYPE.done) {
-            this.errorsService.i18nSuccess('imageUploaded');
+            this.errorsService.i18nSuccess(TRANSLATION_KEY.IMAGE_UPLOADED);
             file.id = value.file.response;
           }
         },
@@ -793,7 +793,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     const formCategoryValue = this.uploadForm.get('category_id').value;
     if (this.isFormCategoryChangeNeeded(formCategoryValue, suggestedId)) {
       if (!!formCategoryValue.length) {
-        this.errorsService.i18nSuccess('suggestedCategory');
+        this.errorsService.i18nSuccess(TRANSLATION_KEY.SUGGESTED_CATEGORY);
       }
       this.uploadForm.patchValue({
         category_id: suggestedId,

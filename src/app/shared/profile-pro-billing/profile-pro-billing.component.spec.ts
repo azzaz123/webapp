@@ -206,7 +206,7 @@ describe('ProfileProBillingComponent', () => {
           component.deleteBillingInfo();
           tick();
 
-          expect(errorsService.i18nSuccess).toHaveBeenCalledWith('deleteBillingInfoSuccess');
+          expect(errorsService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.DELETE_BILLING_INFO);
         }));
 
         it('all reset form and set true isnewbillinginfo boolean', fakeAsync(() => {

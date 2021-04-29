@@ -617,7 +617,7 @@ describe('UploadRealestateComponent', () => {
       expect(uploadService.uploadSingleImage).toHaveBeenCalledTimes(1);
       expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(images[1], MOCK_REALESTATE.id, ITEM_TYPES.REAL_ESTATE);
       expect(errorService.i18nSuccess).toHaveBeenCalledTimes(1);
-      expect(errorService.i18nSuccess).toHaveBeenCalledWith('imageUploaded');
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.IMAGE_UPLOADED);
     });
     it('should show image from form if fails', () => {
       component.item = MOCK_REALESTATE;

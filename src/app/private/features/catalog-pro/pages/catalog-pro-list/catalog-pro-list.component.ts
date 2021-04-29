@@ -143,7 +143,7 @@ export class CatalogProListComponent implements OnInit {
             this.selectedStatus = ITEM_STATUS.PENDING;
           }
           this.getItems();
-          this.errorService.i18nSuccess('itemUpdated');
+          this.errorService.i18nSuccess(TRANSLATION_KEY.ITEM_UPDATED);
         } else if (params && params.createdOnHold) {
           // FIXME: This text does not seem like an error. Probably needs to use method i18nSuccess
           this.errorService.i18nError(TRANSLATION_KEY.PRODUCT_CREATED, 'contactMotor');

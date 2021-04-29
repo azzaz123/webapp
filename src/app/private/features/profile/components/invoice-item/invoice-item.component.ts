@@ -43,7 +43,7 @@ export class InvoiceItemComponent {
       .subscribe(
         () => {
           invoiceTransaction.invoice_generated = true;
-          this.errorsService.i18nSuccess('invoiceGenerated');
+          this.errorsService.i18nSuccess(TRANSLATION_KEY.INVOICE_GENERATED);
         },
         () => {
           this.errorsService.i18nError(TRANSLATION_KEY.INVOICE_CANNOT_GENERATE_ERROR);
@@ -62,7 +62,7 @@ export class InvoiceItemComponent {
       )
       .subscribe(
         (blob: Blob) => {
-          this.errorsService.i18nSuccess('invoiceCorrectlyDownloaded');
+          this.errorsService.i18nSuccess(TRANSLATION_KEY.INVOICE_DOWNLOADED);
           const invoiceDate = this.invoiceDateFormatted(new Date(invoiceTransaction.date));
           const invoiceDescription = this.invoiceDescriptionformatted(invoiceTransaction.description);
           const fileURL = URL.createObjectURL(blob);

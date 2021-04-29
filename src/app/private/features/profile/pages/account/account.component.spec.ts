@@ -121,7 +121,7 @@ describe('AccountComponent', () => {
       });
 
       it('should call i18nSuccess', () => {
-        expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
+        expect(errorsService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.USER_EDITED);
       });
     });
 

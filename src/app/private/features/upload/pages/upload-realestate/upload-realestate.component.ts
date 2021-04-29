@@ -356,7 +356,7 @@ export class UploadRealestateComponent implements OnInit {
       this.uploadService.uploadSingleImage(file, this.item.id, ITEM_TYPES.REAL_ESTATE).subscribe(
         (value: UploadOutput) => {
           if (value.type === OUTPUT_TYPE.done) {
-            this.errorsService.i18nSuccess('imageUploaded');
+            this.errorsService.i18nSuccess(TRANSLATION_KEY.IMAGE_UPLOADED);
             file.id = value.file.response;
           }
         },

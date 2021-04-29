@@ -89,7 +89,7 @@ describe('InvoiceItemComponent', () => {
 
           expect(invoiceService.generateInvoice).toHaveBeenCalledWith(invoiceNotGenerated);
           expect(invoiceNotGenerated.invoice_generated).toEqual(true);
-          expect(errorService.i18nSuccess).toHaveBeenCalledWith('invoiceGenerated');
+          expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.INVOICE_GENERATED);
         });
 
         it('should download the invoice and show success message', () => {
@@ -98,7 +98,7 @@ describe('InvoiceItemComponent', () => {
           component.handleInvoice(new Event('click'), component.invoice);
 
           expect(invoiceService.downloadInvoice).toHaveBeenCalledWith(component.invoice);
-          expect(errorService.i18nSuccess).toHaveBeenCalledWith('invoiceCorrectlyDownloaded');
+          expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.INVOICE_DOWNLOADED);
         });
       });
 

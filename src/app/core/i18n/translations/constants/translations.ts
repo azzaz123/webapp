@@ -98,4 +98,11 @@ export const translations: Translations = {
   [TRANSLATION_KEY.UPLOAD_EXTENSION_NOT_ALLOWED_ERROR]: $localize`:@@web_upload_extension_not_allowed_error:You tried to upload an inadequate format. Only photos in JPG or JPEG formats are accepted: `,
   [TRANSLATION_KEY.UPLOAD_MAX_UPLOADS_ERROR]: $localize`:@@web_upload_max_uploads_error:This file exceeds the limit of photos: `,
   [TRANSLATION_KEY.UPLOAD_MAX_SIZE_ERROR]: $localize`:@@web_upload_max_size_error:This file exceeds the limit of size: `,
+  [TRANSLATION_KEY.ITEM_UPDATED]: $localize`:@@web_item_updated:The item has been updated correctly`,
+  [TRANSLATION_KEY.INVOICE_GENERATED]: $localize`:@@web_invoice_generated:Your invoice has been successfully generated`,
+  [TRANSLATION_KEY.INVOICE_DOWNLOADED]: $localize`:@@web_invoice_downloaded:Your invoice has been successfully downloaded`,
+  [TRANSLATION_KEY.USER_EDITED]: $localize`:@@web_user_edited:Your data has been edited correctly`,
+  [TRANSLATION_KEY.IMAGE_UPLOADED]: $localize`:@@web_image_uploaded:Image uploaded!`,
+  [TRANSLATION_KEY.SUGGESTED_CATEGORY]: $localize`:@@web_suggested_category:It seems that your product belongs to another category, so we’ve changed it.`,
+  [TRANSLATION_KEY.DELETE_BILLING_INFO]: $localize`:@@web_delete_billing_info:Your billing info has been deleted`,
 };

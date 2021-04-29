@@ -20,16 +20,11 @@ export class I18nService {
       featured: 'Featured',
       contactMotor:
         ' According to your plan you cannot activate more items. Contact ventas.motor@wallapop.com if you want to increase your plan or deactivate other items in order to activate this one.',
-      suggestedCategory: 'It seems that your product belongs to another category, so we’ve changed it.',
       errorPurchasingItems: 'It was not possible to feature these products: ',
-      userEdited: 'Your data has been edited correctly',
-      itemUpdated: 'The item has been updated correctly',
-      imageUploaded: 'Image uploaded!',
       settingsEdited: 'Your setting has been updated',
       twitterShare: 'Look what I found on @Wallapop:',
       countrybump: 'Country Bump',
       zonebump: 'City Bump',
-      deleteBillingInfoSuccess: 'Your billing info has been deleted',
       cars_subscription_tutorial_listinglimit5: 'Upload 5 cars.',
       cars_subscription_tutorial_listinglimit9: 'Upload 9 cars.',
       cars_subscription_tutorial_listinglimit15: 'Upload 15 cars.',
@@ -47,8 +42,6 @@ export class I18nService {
       fashion_brand_example: 'E.g: Zara',
       model_example: 'E.g: iPhone',
       reviews: 'Reviews',
-      invoiceCorrectlyDownloaded: 'Your invoice has been successfully downloaded',
-      invoiceGenerated: 'Your invoice has been successfully generated',
       errorSavingData: 'Error while saving data. Please try again',
 
       // TODO: Remove when not shared
@@ -69,15 +62,10 @@ export class I18nService {
       countryFeatured: 'Destacados país',
       contactMotor:
         ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.',
-      suggestedCategory: 'Todo indica que tu producto corresponde a otra categoría, por eso la hemos cambiado.',
       errorPurchasingItems: 'No se han podido destacar estos productos:',
-      userEdited: 'Tus datos se han editado correctamente',
-      itemUpdated: 'El producto se ha editado correctamente',
-      imageUploaded: 'La imagen se ha cargado!',
       settingsEdited: 'Se ha actualizado tu configuración',
       twitterShare: 'Mira que acabo de encontrar en @Wallapop:',
       zonebump: 'Destacado Ciudad',
-      deleteBillingInfoSuccess: 'Tu información de facturación ha sido borrada',
       cars_subscription_tutorial_listinglimit5: 'Publica hasta 5 coches.',
       cars_subscription_tutorial_listinglimit9: 'Publica hasta 9 coches.',
       cars_subscription_tutorial_listinglimit15: 'Publica hasta 15 coches.',
@@ -95,8 +83,6 @@ export class I18nService {
       fashion_brand_example: 'P. ej: Zara',
       model_example: 'P. ej: iPhone',
       reviews: 'Opiniones',
-      invoiceCorrectlyDownloaded: 'Tu factura se ha descargado correctamente',
-      invoiceGenerated: 'Tu factura se ha generado correctamente',
       errorSavingData: 'Error al guardar los datos. Intenta de nuevo',
 
       // TODO: Remove when not shared

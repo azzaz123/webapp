@@ -1489,7 +1489,7 @@ describe('UploadProductComponent', () => {
       component.searchSuggestedCategories();
 
       expect(component.uploadForm.get('category_id').value).toBe(CATEGORY_IDS.TV_AUDIO_CAMERAS.toString());
-      expect(errorService.i18nSuccess).toHaveBeenCalledWith('suggestedCategory');
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.SUGGESTED_CATEGORY);
     });
     it('should search categories after the user stop tipyng', fakeAsync(() => {
       spyOn(component, 'searchSuggestedCategories');
@@ -1565,7 +1565,7 @@ describe('UploadProductComponent', () => {
       expect(uploadService.uploadSingleImage).toHaveBeenCalledTimes(1);
       expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(images[1], MOCK_ITEM.id, ITEM_TYPES.CONSUMER_GOODS);
       expect(errorService.i18nSuccess).toHaveBeenCalledTimes(1);
-      expect(errorService.i18nSuccess).toHaveBeenCalledWith('imageUploaded');
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.IMAGE_UPLOADED);
     });
     it('should show image from form if fails', () => {
       component.item = MOCK_ITEM;

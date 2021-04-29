@@ -214,7 +214,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
                 });
               }
 
-              this.errorsService.i18nSuccess('userEdited');
+              this.errorsService.i18nSuccess(TRANSLATION_KEY.USER_EDITED);
             },
             (errorResponse) => {
               this.errorsService.show(errorResponse);

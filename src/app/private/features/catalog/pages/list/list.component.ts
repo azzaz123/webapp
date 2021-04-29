@@ -230,7 +230,7 @@ export class ListComponent implements OnInit, OnDestroy {
         if (params && params.created) {
           this.showBumpSuggestionModal(params.itemId);
         } else if (params && params.updated) {
-          this.errorService.i18nSuccess('itemUpdated');
+          this.errorService.i18nSuccess(TRANSLATION_KEY.ITEM_UPDATED);
         } else if (params && params.createdOnHold) {
           this.tooManyItemsModalRef = this.modalService.open(TooManyItemsModalComponent, {
             windowClass: 'modal-standard',

@@ -8,7 +8,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 export class ErrorsService {
   constructor(private toastService: ToastService, private i18n: I18nService) {}
 
-  show(res: HttpErrorResponse): void {
+  public show(res: HttpErrorResponse): void {
     const error = res.error;
 
     if (error) {
@@ -22,9 +22,11 @@ export class ErrorsService {
     }
   }
 
-  i18nError(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY) {
+  public i18nError(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY) {
     const translatedText = this.i18n.translate(key);
-    const text = `${translatedText ? translatedText : this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE)} ${concatText}`;
+    // FIXME: We sould not add an space between the translation and the concatText, as this is already being done by the copy.
+    //        Should we change the way we handle this so the space is added by the method? Or do we need the copies to handle it?
+    const text = `${translatedText ? translatedText : this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE)}${concatText}`;
     const title = titleKey ? this.i18n.translate(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE);
 
     this.toastService.show({
@@ -34,10 +36,12 @@ export class ErrorsService {
     });
   }
 
-  i18nSuccess(key: string, concatText: string = '', titleKey?: string) {
-    const translatedText = this.i18n.getTranslations(key);
-    const text = `${translatedText ? translatedText : ''} ${concatText}`;
-    const title = titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE);
+  public i18nSuccess(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY) {
+    const translatedText = this.i18n.translate(key);
+    // FIXME: We sould not add an space between the translation and the concatText, as this is already being done by the copy.
+    //        Should we change the way we handle this so the space is added by the method? Or do we need the copies to handle it?
+    const text = `${translatedText ? translatedText : ''}${concatText}`;
+    const title = titleKey ? this.i18n.translate(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE);
 
     this.toastService.show({
       text,

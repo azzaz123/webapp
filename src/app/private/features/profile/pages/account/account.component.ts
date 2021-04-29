@@ -55,7 +55,7 @@ export class AccountComponent implements CanComponentDeactivate {
         })
         .pipe(finalize(() => (this.loading = false)))
         .subscribe(() => {
-          this.errorsService.i18nSuccess('userEdited');
+          this.errorsService.i18nSuccess(TRANSLATION_KEY.USER_EDITED);
           this.formComponent.initFormControl();
         });
     } else {

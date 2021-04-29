@@ -352,7 +352,7 @@ describe('ListComponent', () => {
       });
       component.ngOnInit();
       tick();
-      expect(errorService.i18nSuccess).toHaveBeenCalledWith('itemUpdated');
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.ITEM_UPDATED);
     }));
 
     describe('bump suggestion modal', () => {

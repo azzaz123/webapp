@@ -1002,7 +1002,7 @@ describe('UploadCarComponent', () => {
       expect(uploadService.uploadSingleImage).toHaveBeenCalledTimes(1);
       expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(images[1], MOCK_CAR.id, ITEM_TYPES.CARS);
       expect(errorService.i18nSuccess).toHaveBeenCalledTimes(1);
-      expect(errorService.i18nSuccess).toHaveBeenCalledWith('imageUploaded');
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.IMAGE_UPLOADED);
     });
     it('should show image from form if fails', () => {
       component.item = MOCK_CAR;
