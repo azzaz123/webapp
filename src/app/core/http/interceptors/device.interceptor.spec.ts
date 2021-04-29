@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 
-import { DeviceInterceptor, DEVICE_HEADER_NAME } from './device.interceptor';
+import { DeviceInterceptor, DEVICE_HEADER_NAME, DEVICE_OS } from './device.interceptor';
 
 describe('DeviceInterceptor', () => {
   let http: HttpClient;
@@ -32,14 +32,14 @@ describe('DeviceInterceptor', () => {
   describe('when doing a request to wallapop monolith server', () => {
     it('should add the device header', () => {
       const expectedUrl = environment.baseUrl;
-      const expectedLanguageHeaderValue = '0';
+      const expectedHeaderValue = DEVICE_OS.WEB.toString();
 
       http.get(expectedUrl).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
       expect(req.request.headers.has(DEVICE_HEADER_NAME)).toBe(true);
-      expect(req.request.headers.get(DEVICE_HEADER_NAME)).toEqual(expectedLanguageHeaderValue);
+      expect(req.request.headers.get(DEVICE_HEADER_NAME)).toEqual(expectedHeaderValue);
     });
   });
 

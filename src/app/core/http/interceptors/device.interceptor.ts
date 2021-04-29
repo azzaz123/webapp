@@ -4,7 +4,11 @@ import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
 
 export const DEVICE_HEADER_NAME = 'DeviceOS';
-
+export enum DEVICE_OS {
+  WEB,
+  ANDROID,
+  IOS,
+}
 @Injectable()
 export class DeviceInterceptor implements HttpInterceptor {
   constructor() {}
@@ -14,7 +18,7 @@ export class DeviceInterceptor implements HttpInterceptor {
 
     if (isMonolithRequest) {
       const setHeaders = {
-        [DEVICE_HEADER_NAME]: '0',
+        [DEVICE_HEADER_NAME]: DEVICE_OS.WEB.toString(),
       };
 
       request = request.clone({ setHeaders });
