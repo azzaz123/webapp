@@ -5,7 +5,6 @@ import { ItemFavouritesModule } from '@public/core/services/item-favourites/item
 import { PublicLayoutModule } from '@public/layout/public-layout.module';
 import { ItemCardListModule } from '@public/shared/components/item-card-list/item-card-list.module';
 import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopping.module';
-import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
 import { ErrorBoxModule } from '@shared/error-box/error-box.module';
 import { SharedModule } from '@shared/shared.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -28,6 +27,7 @@ import { SearchStoreService } from '@public/features/search/core/services/search
 import { SearchResolver } from './core/services/search.resolver';
 import { SearchAdsService } from './core/ads/search-ads.service';
 import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
+import { LocationService } from '@public/features/search/core/services/location.service';
 
 @NgModule({
   imports: [
@@ -61,6 +61,7 @@ import { SearchQueryStringService } from '@public/features/search/core/services/
     SearchResolver,
     SearchAdsService,
     SearchQueryStringService,
+    LocationService,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
 })
