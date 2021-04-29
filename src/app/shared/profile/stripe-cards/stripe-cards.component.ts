@@ -10,6 +10,7 @@ import { SubscriptionsResponse } from 'app/core/subscriptions/subscriptions.inte
 import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/change-card-modal.component';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -38,8 +39,8 @@ export class StripeCardsComponent implements OnInit {
 
   public onDeleteCard(): void {
     this.toastService.show({
-      title: this.i18n.getTranslations('continueSubscriptionSuccessTitle'),
-      text: this.i18n.getTranslations('SubscriptionCardDeleted'),
+      title: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
+      text: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED),
       type: 'success',
     });
     this.getAllCards();
@@ -80,8 +81,8 @@ export class StripeCardsComponent implements OnInit {
           modalRef = null;
           this.getAllCards();
           this.toastService.show({
-            title: this.i18n.getTranslations('continueSubscriptionSuccessTitle'),
-            text: this.i18n.getTranslations('SubscriptionCardSet'),
+            title: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
+            text: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_SET),
             type: 'success',
           });
         },

@@ -1,38 +1,35 @@
-import { SearchStoreService } from './../core/services/search-store.service';
-import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { AdsService } from '@core/ads/services/ads/ads.service';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ViewportService } from '@core/viewport/viewport.service';
-import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
-import { SearchErrorLayoutComponentStub } from '@fixtures/shared';
 import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
+import { SearchErrorLayoutComponentStub } from '@fixtures/shared/components/search-error-layout.component.stub';
 import { Store } from '@ngrx/store';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
+import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
+import {
+  FilterParameterStoreService,
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { random } from 'faker';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BehaviorSubject } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
 import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrapper.module';
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
-import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
+import { SearchAdsService } from '../core/ads/search-ads.service';
 import { SearchService } from '../core/services/search.service';
-import { SearchComponent, REGULAR_CARDS_COLUMNS_CONFIG, WIDE_CARDS_COLUMNS_CONFIG } from './search.component';
-import {
-  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
-  FILTER_PARAMETER_STORE_TOKEN,
-  FilterParameterStoreService,
-} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { REGULAR_CARDS_COLUMNS_CONFIG, SearchComponent, WIDE_CARDS_COLUMNS_CONFIG } from './search.component';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
-import { CATEGORY_IDS } from '@core/category/category-ids';
-import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -50,6 +47,7 @@ describe('SearchComponent', () => {
   let storeMock;
   let searchServiceMock;
   let publicFooterServiceMock;
+  let searchAdsServiceMock;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
   const isLoadingResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const currentCategoryIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
@@ -75,6 +73,9 @@ describe('SearchComponent', () => {
     publicFooterServiceMock = {
       setShow: (show: boolean) => {},
     };
+    searchAdsServiceMock = {
+      setSlots: () => {},
+    };
     await TestBed.configureTestingModule({
       declarations: [
         SearchComponent,
@@ -98,8 +99,8 @@ describe('SearchComponent', () => {
         { provide: DeviceDetectorService, useValue: { isMobile: () => false } },
         { provide: ViewportService, useValue: { onViewportChange: of('') } },
         {
-          provide: AdsService,
-          useValue: MockAdsService,
+          provide: SearchAdsService,
+          useValue: searchAdsServiceMock,
         },
         {
           provide: DeviceService,
@@ -141,23 +142,14 @@ describe('SearchComponent', () => {
         fixture.detectChanges();
         expect(component.items$).toBeTruthy();
       });
-    });
 
-    describe('when is desktop', () => {
-      beforeEach(() => {
-        spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
-      });
-
-      it('should configure ads', () => {
-        spyOn(MockAdsService, 'setSlots').and.callThrough();
+      it('should initialize ads slots', () => {
+        spyOn(searchAdsServiceMock, 'setSlots').and.callThrough();
 
         fixture.detectChanges();
 
-        expect(MockAdsService.setSlots).toHaveBeenCalledWith([
-          AD_PUBLIC_SEARCH.search1,
-          AD_PUBLIC_SEARCH.search2r,
-          AD_PUBLIC_SEARCH.search3r,
-        ]);
+        expect(searchAdsServiceMock.setSlots).toHaveBeenCalledWith();
+        expect(searchAdsServiceMock.setSlots).toHaveBeenCalledTimes(1);
       });
     });
   });

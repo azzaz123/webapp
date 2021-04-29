@@ -4,9 +4,10 @@ import { ItemService } from '@core/item/item.service';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { Order, Product } from '@core/item/item-response.interface';
 import { OrderEvent } from '../selected-items/selected-product.interface';
-import { DEFAULT_ERROR_MESSAGE } from '@core/errors/errors.service';
 import { Item } from '@core/item/item';
 import { EventService } from '@core/event/event.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { I18nService } from '@core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -30,6 +31,7 @@ export class CatalogItemComponent implements OnInit {
     public itemService: ItemService,
     private toastService: ToastService,
     private eventService: EventService,
+    private i18nService: I18nService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {}
 
@@ -75,7 +77,7 @@ export class CatalogItemComponent implements OnInit {
           action: ITEM_CHANGE_ACTION.REACTIVATED,
         });
       },
-      () => this.toastService.show({ text: DEFAULT_ERROR_MESSAGE, type: 'error' })
+      () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: 'error' })
     );
   }
 
