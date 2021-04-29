@@ -7,7 +7,7 @@ $margin: $spacer * 0.75;
 }
 
 $sizes: 'xs', 'sm', 'md', 'lg', 'xl';
-$numCols: 2, 3, 4, 5;
+$numCols: 1, 2, 3, 4, 5;
 
 @each $size in $sizes {
   @each $numCol in $numCols {

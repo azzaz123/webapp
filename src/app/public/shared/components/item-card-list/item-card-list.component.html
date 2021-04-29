@@ -8,8 +8,21 @@
           <ng-container *ngTemplateOutlet="slotTemplate;context: {$implicit: i}"></ng-container>
        </div>
        <tsl-public-item-card
-        [item]="item" [showDescription]="showDescription"
-        [showFavourite]="!(item.ownerId | isCurrentUser | async)" (toggleFavourite)="toggleFavourite(item)" (click)="openItemDetailPage({itemCard: item, index: i})"></tsl-public-item-card>
+            *ngIf="cardType === cardTypes.REGULAR"
+            [item]="item" [showDescription]="showDescription"
+            [showFavourite]="!(item.ownerId | isCurrentUser | async)"
+            (toggleFavourite)="toggleFavourite(item)"
+            (click)="openItemDetailPage({itemCard: item, index: i})"
+        >
+        </tsl-public-item-card>
+        <tsl-item-card-wide
+            *ngIf="cardType === cardTypes.WIDE"
+            [item]="item"
+            [showFavourite]="!(item.ownerId | isCurrentUser | async)"
+            (toggleFavourite)="toggleFavourite(item)"
+            (click)="openItemDetailPage({itemCard: item, index: i})"
+        >
+        </tsl-item-card-wide>
     </ng-container>
 
 </div>

@@ -24,13 +24,15 @@ import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrap
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchService } from '../core/services/search.service';
-import { SearchComponent } from './search.component';
+import { SearchComponent, REGULAR_CARDS_COLUMNS_CONFIG, WIDE_CARDS_COLUMNS_CONFIG } from './search.component';
 import {
   FILTER_PARAMETER_DRAFT_STORE_TOKEN,
   FILTER_PARAMETER_STORE_TOKEN,
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -50,6 +52,7 @@ describe('SearchComponent', () => {
   let publicFooterServiceMock;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
   const isLoadingResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  const currentCategoryIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
   const hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   beforeEach(async () => {
@@ -65,6 +68,7 @@ describe('SearchComponent', () => {
       items$: itemsSubject.asObservable(),
       hasMore$: hasMoreSubject.asObservable(),
       isLoadingResults$: isLoadingResultsSubject.asObservable(),
+      currentCategoryId$: currentCategoryIdSubject.asObservable(),
       loadMore: () => {},
       close: () => {},
     };
@@ -197,6 +201,88 @@ describe('SearchComponent', () => {
           const noResultsLayout = fixture.debugElement.query(By.css('tsl-search-error-layout'));
 
           expect(noResultsLayout).toBeTruthy();
+          done();
+        });
+      });
+    });
+  });
+
+  describe('when search category changes', () => {
+    function getItemCardListInstance() {
+      return fixture.debugElement.query(By.css('tsl-public-item-card-list')).componentInstance;
+    }
+
+    beforeEach(() => {
+      itemsSubject.next([MOCK_ITEM_CARD]);
+    });
+
+    describe('and new serch category is cars', () => {
+      it('should show wide cards', (done) => {
+        currentCategoryIdSubject.next(`${CATEGORY_IDS.CAR}`);
+
+        component.listCardType$.subscribe(() => {
+          fixture.detectChanges();
+
+          expect(getItemCardListInstance().cardType).toEqual(CARD_TYPES.WIDE);
+          done();
+        });
+      });
+
+      it('should change the list columns configuration for using wide cards', (done) => {
+        currentCategoryIdSubject.next(`${CATEGORY_IDS.CAR}`);
+
+        component.listColumnsConfig$.subscribe(() => {
+          fixture.detectChanges();
+
+          expect(getItemCardListInstance().columnsConfig).toEqual(WIDE_CARDS_COLUMNS_CONFIG);
+          done();
+        });
+      });
+    });
+
+    describe('and new serch category is real estate', () => {
+      it('should show wide cards', (done) => {
+        currentCategoryIdSubject.next(`${CATEGORY_IDS.REAL_ESTATE}`);
+
+        component.listCardType$.subscribe(() => {
+          fixture.detectChanges();
+
+          expect(getItemCardListInstance().cardType).toEqual(CARD_TYPES.WIDE);
+          done();
+        });
+      });
+
+      it('should change the list columns configuration for using wide cards', (done) => {
+        currentCategoryIdSubject.next(`${CATEGORY_IDS.REAL_ESTATE}`);
+
+        component.listColumnsConfig$.subscribe(() => {
+          fixture.detectChanges();
+
+          expect(getItemCardListInstance().columnsConfig).toEqual(WIDE_CARDS_COLUMNS_CONFIG);
+          done();
+        });
+      });
+    });
+
+    describe('and new serch category is from consumer goods', () => {
+      it('should show regular cards', (done) => {
+        currentCategoryIdSubject.next(`${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`);
+
+        component.listCardType$.subscribe(() => {
+          fixture.detectChanges();
+
+          expect(getItemCardListInstance().cardType).toEqual(CARD_TYPES.REGULAR);
+          done();
+        });
+      });
+
+      it('should change the list columns configuration for using regular cards', (done) => {
+        currentCategoryIdSubject.next(`${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`);
+
+        component.listColumnsConfig$.subscribe(() => {
+          fixture.detectChanges();
+
+          expect(getItemCardListInstance().columnsConfig).toEqual(REGULAR_CARDS_COLUMNS_CONFIG);
           done();
         });
       });

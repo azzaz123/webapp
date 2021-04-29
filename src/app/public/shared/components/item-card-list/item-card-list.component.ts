@@ -3,6 +3,7 @@ import { environment } from '@environments/environment';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { CARD_TYPES } from './enums/card-types.enum';
 import { ClickedItemCard } from './interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from './interfaces/cols-config.interface';
 import { SlotsConfig } from './interfaces/slots-config.interface';
@@ -23,12 +24,15 @@ export class ItemCardListComponent {
     sm: 2,
     xs: 2,
   };
+  @Input() cardType: CARD_TYPES = CARD_TYPES.REGULAR;
   @Input() slotsConfig: SlotsConfig;
   @Input() isLoading: boolean;
   @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
   @Output() toggleFavouriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
 
   @ContentChild('slotTemplate') slotTemplate: TemplateRef<unknown>;
+
+  public cardTypes = CARD_TYPES;
 
   constructor(
     private itemCardService: ItemCardService,
