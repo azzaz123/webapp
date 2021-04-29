@@ -25,12 +25,7 @@ describe('StatsGraphComponent', () => {
               },
             },
           },
-          {
-            provide: I18nService,
-            useValue: {
-              getTranslations() {},
-            },
-          },
+          I18nService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();

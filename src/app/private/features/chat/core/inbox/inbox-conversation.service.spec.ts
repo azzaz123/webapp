@@ -24,6 +24,7 @@ import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-cha
 import { InboxMessage, MessageStatus, MessageType, InboxConversation } from '../model';
 import { ChatSignal, ChatSignalType } from '../model/chat-signal';
 import { ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS, InboxConversationService } from './inbox-conversation.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('InboxConversationService', () => {
   let service: InboxConversationService;
@@ -725,8 +726,8 @@ describe('InboxConversationService', () => {
       it('should display toast with error', () => {
         spyOn(toastService, 'show');
         const expectedToast: Toast = {
-          title: i18nService.getTranslations('defaultErrorTitle'),
-          text: i18nService.getTranslations('tooManyNewConversations'),
+          title: i18nService.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE),
+          text: i18nService.translate(TRANSLATION_KEY.CHAT_TOO_MANY_CONVERSATIONS),
           type: 'error',
         };
 

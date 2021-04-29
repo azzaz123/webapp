@@ -22,14 +22,7 @@ describe('KeywordSuggesterComponent', () => {
       TestBed.configureTestingModule({
         declarations: [KeywordSuggesterComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          {
-            provide: I18nService,
-            useValue: {
-              getTranslations() {},
-            },
-          },
-        ],
+        providers: [I18nService],
       }).compileComponents();
     })
   );

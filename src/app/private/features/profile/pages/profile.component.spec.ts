@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService, USER_ENDPOINT, USER_STATS_ENDPOINT } from '@core/user/user.service';
 import { environment } from '@environments/environment';
@@ -51,7 +52,7 @@ describe('ProfileComponent', () => {
           {
             provide: I18nService,
             useValue: {
-              getTranslations() {},
+              translate() {},
             },
           },
           AccessTokenService,
@@ -169,7 +170,7 @@ describe('ProfileComponent', () => {
       let subscriptionTabElement;
       it('should should show tab title Become a PRO', () => {
         const expectedText = 'Become a PRO';
-        spyOn(i18n, 'getTranslations').and.returnValue(expectedText);
+        spyOn(i18n, 'translate').and.returnValue(expectedText);
 
         fixture.detectChanges();
 
@@ -177,7 +178,7 @@ describe('ProfileComponent', () => {
           .queryAll(By.css('a'))
           .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
 
-        expect(i18n.getTranslations).toHaveBeenCalledWith('becomePro');
+        expect(i18n.translate).toHaveBeenCalledWith(TRANSLATION_KEY.BECOME_PRO);
         expect(subscriptionTabElement).toBeTruthy();
       });
     });
@@ -186,7 +187,7 @@ describe('ProfileComponent', () => {
       let subscriptionTabElement;
       it('should should show tab title Wallapop PRO', () => {
         const expectedText = 'Wallapop PRO';
-        spyOn(i18n, 'getTranslations').and.returnValue(expectedText);
+        spyOn(i18n, 'translate').and.returnValue(expectedText);
         jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
 
         fixture.detectChanges();
@@ -195,7 +196,7 @@ describe('ProfileComponent', () => {
           .queryAll(By.css('a'))
           .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
 
-        expect(i18n.getTranslations).toHaveBeenCalledWith('wallapopPro');
+        expect(i18n.translate).toHaveBeenCalledWith(TRANSLATION_KEY.WALLAPOP_PRO);
         expect(subscriptionTabElement).toBeTruthy();
       });
     });
@@ -206,7 +207,7 @@ describe('ProfileComponent', () => {
       beforeEach(() => {
         const expectedText = 'Become a PRO';
         spyOn(analyticsService, 'trackEvent');
-        spyOn(i18n, 'getTranslations').and.returnValue(expectedText);
+        spyOn(i18n, 'translate').and.returnValue(expectedText);
 
         fixture.detectChanges();
 

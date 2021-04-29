@@ -49,8 +49,4 @@ export class InboxConversationComponent {
   public isThirdVoiceReview(messageType: MessageType): boolean {
     return includes(ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES, messageType);
   }
-
-  public getThirdVoiceTranslation(inboxMessage: InboxMessage): string {
-    return this.i18n.getTranslations(inboxMessage.type);
-  }
 }
