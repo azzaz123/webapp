@@ -9,7 +9,7 @@ export class DevelopmentGuard implements CanLoad {
   constructor(private router: Router, private featureFlagService: FeatureflagService) {}
 
   public canLoad(): boolean {
-    const devEnv = isDevMode() || this.featureFlagService.isExpermientalFeaturesEnabled();
+    const devEnv = isDevMode() || this.featureFlagService.isExperimentalFeaturesEnabled();
     if (!devEnv) {
       this.router.navigate(['/chat']);
     }
