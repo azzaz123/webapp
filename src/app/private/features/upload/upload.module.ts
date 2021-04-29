@@ -14,6 +14,7 @@ import { ItemResolverService } from './core/resolvers/item-resolver.service';
 import { CarKeysService } from './core/services/car-keys/car-keys.service';
 import { CarSuggestionsService } from './core/services/car-suggestions/car-suggestions.service';
 import { GeneralSuggestionsService } from './core/services/general-suggestions/general-suggestions.service';
+import { ItemReactivationService } from './core/services/item-reactivation/item-reactivation.service';
 import { RealestateKeysService } from './core/services/realstate-keys/realestate-keys.service';
 import { UploadService } from './core/services/upload/upload.service';
 import { PreviewModalComponent } from './modals/preview-modal/preview-modal.component';
@@ -51,7 +52,15 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.mo
     UploadRealestateComponent,
     UploadComponent,
   ],
-  providers: [UploadService, CarKeysService, CarSuggestionsService, RealestateKeysService, ItemResolverService, GeneralSuggestionsService],
+  providers: [
+    UploadService,
+    CarKeysService,
+    CarSuggestionsService,
+    RealestateKeysService,
+    ItemResolverService,
+    GeneralSuggestionsService,
+    ItemReactivationService,
+  ],
   entryComponents: [RemoveConfirmModalComponent, PreviewModalComponent],
 })
 export class UploadModule {}
