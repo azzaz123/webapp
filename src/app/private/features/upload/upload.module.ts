@@ -22,7 +22,7 @@ import { UploadCarComponent } from './pages/upload-car/upload-car.component';
 import { UploadProductComponent } from './pages/upload-product/upload-product.component';
 import { UploadRealestateComponent } from './pages/upload-realestate/upload-realestate.component';
 import { UploadComponent } from './pages/upload.component';
-import { uploadRoutedComponents, UploadRoutingModule } from './upload.routes';
+import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
 
 @NgModule({
   imports: [
