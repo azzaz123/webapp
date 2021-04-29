@@ -1,8 +1,4 @@
-import {
-  FilterParameterStoreService,
-  FILTER_PARAMETER_STORE_TOKEN,
-} from './../../../shared/services/filter-parameter-store/filter-parameter-store.service';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -25,7 +21,6 @@ import {
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
-import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,

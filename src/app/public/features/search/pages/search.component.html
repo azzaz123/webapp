@@ -36,9 +36,7 @@
         >
         <ng-container *ngIf="(isWall$ | async) === false">
           <ng-template #slotTemplate let-index>
-            <ng-container *ngIf="(isWall$ | async) === false">
-              <tsl-sky-shopping [adSlotContainer]="adSlotNativeShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index" [cardType]="listCardType$ | async"></tsl-sky-shopping>
-            </ng-container>
+            <tsl-sky-shopping [adSlotContainer]="adSlotShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index" [cardType]="listCardType$ | async"></tsl-sky-shopping>
           </ng-template>
         </ng-container>
       </tsl-public-item-card-list>

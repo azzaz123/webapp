@@ -8,7 +8,6 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ADS_NATIVE_SLOTS } from './natives/search-ads-nataive.config';
 import { AD_PUBLIC_SEARCH } from './search-ads.config';
 
 @Injectable()
@@ -21,7 +20,7 @@ export class SearchAdsService {
   ) {}
 
   public init(): void {
-    this.subscription.add(this.setAdKeyowrdsObservable());
+    this.subscription.add(this.setAdKeywordsObservable());
   }
 
   public setSlots(): void {
@@ -32,7 +31,7 @@ export class SearchAdsService {
     this.subscription.unsubscribe();
   }
 
-  private setAdKeyowrdsObservable(): Subscription {
+  private setAdKeywordsObservable(): Subscription {
     return this.filterParameterStoreService.parameters$
       .pipe(map((filterParameters: FilterParameter[]) => filterParameters.find(({ key }) => key === FILTER_QUERY_PARAM_KEY.keywords)))
       .subscribe((filterKeyword: FilterParameter) => {

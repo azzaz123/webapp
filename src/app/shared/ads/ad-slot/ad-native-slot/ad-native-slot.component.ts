@@ -1,7 +1,6 @@
-import { AdsService } from './../../../../core/ads/services/ads/ads.service';
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AdSlotConfiguration } from '@core/ads/models';
-import { WINDOW_TOKEN } from '@core/window/window.token';
+import { AdsService } from '@core/ads/services/ads/ads.service';
 
 @Component({
   selector: 'tsl-sky-native',
