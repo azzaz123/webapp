@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { SubscriptionResponse } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-subscription-tier-selector',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./subscription-tier-selector.component.scss'],
 })
 export class SubscriptionTierSelectorComponent implements OnInit {
+  @Input() subscription: SubscriptionResponse;
+
   constructor() {}
 
   ngOnInit(): void {}

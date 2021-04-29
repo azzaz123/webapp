@@ -1,4 +1,4 @@
-<ng-container *ngIf="!isNewSubscriptionPurchase; newSubscription">
+<ng-container *ngIf="!newSubscription; else newSubscriptionCard">
   <div class="box">
     <div class="box-content" [hidden]="loading">
       <h4 class="section-title" i18n="@@wallapopPro">Wallapop PRO</h4>
@@ -53,6 +53,6 @@
 <tsl-subscription-benefits [hidden]="loading"></tsl-subscription-benefits>
 </ng-container>
 
-<ng-template #newSubscription>
-
+<ng-template #newSubscriptionCard>
+  <tsl-new-subscription [subscription]="newSubscription"></tsl-new-subscription>
 </ng-template>

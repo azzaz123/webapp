@@ -47,7 +47,7 @@ export class SubscriptionsComponent implements OnInit {
   public subscriptions: SubscriptionsResponse[];
   public loading = false;
   public user: User;
-  public isNewSubscriptionPurchase: boolean;
+  public newSubscription: SubscriptionsResponse = null;
 
   constructor(
     private modalService: NgbModal,
@@ -93,12 +93,12 @@ export class SubscriptionsComponent implements OnInit {
     }
   }
 
-  public newSubscription() {
-    this.isNewSubscriptionPurchase = true;
+  public setNewSubscription(subscription: SubscriptionsResponse) {
+    this.newSubscription = subscription;
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
-    this.newSubscription();
+    this.setNewSubscription(subscription);
     return;
     const modal = this.getModalTypeDependingOnSubscription(subscription);
     let modalRef: NgbModalRef = this.modalService.open(modal, {

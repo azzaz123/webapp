@@ -21,3 +21,20 @@
     border-radius: $border-radius;
   }
 }
+.card-generic {
+  border-radius: $border-radius;
+  padding: $spacing-ml;
+  margin-bottom: $spacing-ml;
+  background-color: $white;
+
+  &__title {
+    font-size: $font-size-m;
+    color: $blue-grey-1;
+    font-weight: $font-weight-chunky;
+  }
+  &__subtitle {
+    font-size: $font-size-m;
+    color: $blue-grey-1;
+    font-weight: $font-weight-chunky;
+  }
+}
