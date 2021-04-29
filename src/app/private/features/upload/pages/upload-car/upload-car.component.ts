@@ -41,6 +41,7 @@ export class UploadCarComponent implements OnInit {
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Car;
+  @Input() isReactivation: false;
 
   public uploadForm: FormGroup;
   public models: IOption[];

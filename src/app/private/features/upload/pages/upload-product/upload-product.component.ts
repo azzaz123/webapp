@@ -70,6 +70,7 @@ function isObjectTypeRequiredValidator(formControl: AbstractControl) {
 export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
   @Input() categoryId: string;
   @Input() item: Item;
+  @Input() isReactivation: false;
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() onCategorySelect = new EventEmitter<string>();

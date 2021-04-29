@@ -41,6 +41,7 @@ export class UploadRealestateComponent implements OnInit {
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Realestate;
+  @Input() isReactivation: false;
   public coordinates: ItemLocation;
 
   public uploadForm: FormGroup;
