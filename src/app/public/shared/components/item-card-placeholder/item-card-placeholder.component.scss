@@ -1,0 +1,39 @@
+@import '~style/common';
+
+$container-height-with-description: 420px;
+$container-height-without-description: 262px;
+$image-height-with-description: 253px;
+$image-height-without-description: 177px;
+$image-border-radius: 6px;
+
+.ItemCardPlaceholder {
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: $item-card-box-shadow;
+  height: $container-height-without-description;
+  overflow: hidden;
+  width: 100%;
+
+  &__content {
+    flex: 1;
+    padding: $spacer * 0.5;
+  }
+
+  &__text {
+    @include TextPlaceholder;
+  }
+
+  &__image {
+    @include ImagePlaceholder;
+    height: $image-height-without-description;
+    &--with-description {
+      margin: 4px 4px 0;
+      height: $image-height-with-description;
+      border-radius: $image-border-radius;
+    }
+  }
+
+  &--with-description {
+    height: $container-height-with-description;
+  }
+}
