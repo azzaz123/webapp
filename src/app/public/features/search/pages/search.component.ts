@@ -1,20 +1,16 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
-import { AdSlotShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
-import { AdsService } from '@core/ads/services/ads/ads.service';
-import { CATEGORY_IDS } from '@core/category/category-ids';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
-import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { ADS_NATIVE_SLOTS } from '../core/ads/natives/search-ads-nataive.config';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -22,11 +18,6 @@ import {
   AD_SHOPPING_CONTAINER_PUBLIC_SEARCH,
   AD_SHOPPING_PUBLIC_SEARCH,
 } from '../core/ads/shopping/search-ads-shopping.config';
-import {
-  FilterParameterStoreService,
-  FILTER_PARAMETER_STORE_TOKEN,
-} from './../../../shared/services/filter-parameter-store/filter-parameter-store.service';
-import { AdsNativeSlotSearch } from './../core/ads/natives/search-ads-nataive.config';
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
@@ -81,7 +72,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public adShoppingNativeListPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(
     AdShoppingChannel.SEARCH_LIST_SHOPPING
   );
-  public adNativeSlotsConfiguration: AdsNativeSlotSearch = ADS_NATIVE_SLOTS;
 
   public isWall$: Observable<boolean> = this.searchService.isWall$;
 
@@ -91,8 +81,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private deviceService: DeviceService,
     private searchService: SearchService,
     private publicFooterService: PublicFooterService,
-    private searchAdsService: SearchAdsService,
-    @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStoreService: FilterParameterStoreService
+    private searchAdsService: SearchAdsService
   ) {
     this.device = this.deviceService.getDeviceType();
   }

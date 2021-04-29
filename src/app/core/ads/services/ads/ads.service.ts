@@ -83,8 +83,7 @@ export class AdsService {
   }
 
   private listenToSlots(): void {
-    const setSlotsObservable: Observable<AdSlotConfiguration[]> = this.setSlotsSubject.asObservable().pipe(debounceTime(500));
-    combineLatest([this.adsReady$, setSlotsObservable])
+    combineLatest([this.adsReady$, this.setSlotsSubject.asObservable()])
       .pipe(
         filter(([adsReady, adSlots]: [boolean, AdSlotConfiguration[]]) => adsReady && adSlots.length > 0),
         map(([_, adSlots]: [boolean, AdSlotConfiguration[]]) => adSlots),

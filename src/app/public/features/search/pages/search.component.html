@@ -29,15 +29,15 @@
       </ng-container>
     </div>
     <ng-container main>
-        <tsl-public-item-card-list 
-          [items]="items$ | async" 
+        <tsl-public-item-card-list
+          [items]="items$ | async"
           [columnsConfig]="listColumnsConfig$ | async"
           [cardType]="listCardType$ | async"
           [slotsConfig]="slotsConfig"
         >
         <ng-template #slotTemplate let-index>
-          <ng-container *ngIf="isWall$ | async; else templateSearchAds">
-            <tsl-sky-native [adSlot]="adNativeSlotsConfiguration.regular" [index]="index"></tsl-sky-native>
+          <ng-container *ngIf="(isWall$ | async) === false">
+            <tsl-sky-shopping [adSlotContainer]="adSlotNativeShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index"></tsl-sky-shopping>
           </ng-container>
         </ng-template>
       </tsl-public-item-card-list>
@@ -55,7 +55,3 @@
   <tsl-search-error-layout *ngIf="(items$ | async).length === 0 && (isLoadingResults$ | async) === false">
   </tsl-search-error-layout>
 </div>
-
-<ng-template #templateSearchAds>
-  <tsl-sky-shopping [adSlotContainer]="adSlotNativeShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index"></tsl-sky-shopping>
-</ng-template>

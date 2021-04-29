@@ -3,7 +3,7 @@ import { AdsService } from '@core/ads/services';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { FilterParameterStoreService } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { FILTER_PARAMETER_STORE_TOKEN } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { Subject } from 'rxjs';
 import { AD_PUBLIC_SEARCH } from './search-ads.config';
 import { SearchAdsService } from './search-ads.service';
@@ -25,7 +25,7 @@ describe('SearchAdsService', () => {
       providers: [
         SearchAdsService,
         {
-          provide: FilterParameterStoreService,
+          provide: FILTER_PARAMETER_STORE_TOKEN,
           useValue: filterParametersStoreServiceMock,
         },
         {

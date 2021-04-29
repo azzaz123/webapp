@@ -43,6 +43,7 @@ export const MockGooglePublisherTagService = {
   setAdKeywords: (adKeywords: AdKeyWords) => {},
   displayShopping: (pageOption, adSlotShopping: AdSlotGroupShoppingConfiguration) => {},
   isAdSlotLoaded$: () => of(true),
+  reset: () => {},
 };
 
 export const MockLoadAdsService = {
