@@ -10,6 +10,7 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FilterGroupConfiguration } from '@public/shared/services/filter-group-configuration/interfaces/filter-group-config.interface';
+import { DEFAULT_FILTER_GROUP_CONFIG } from '@public/shared/services/filter-group-configuration/data/filter-group-config';
 
 @Component({
   selector: 'tsl-filters-wrapper',
@@ -24,8 +25,8 @@ export class FiltersWrapperComponent {
     hasApply: true,
   };
   public activeFiltersCount = 0;
-  private drawerFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(null);
-  private bubbleFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(null);
+  private drawerFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(DEFAULT_FILTER_GROUP_CONFIG);
+  private bubbleFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(DEFAULT_FILTER_GROUP_CONFIG);
 
   public scrollOffset = 0;
   private drawerValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
@@ -91,22 +92,20 @@ export class FiltersWrapperComponent {
   private handleBubbleStoreChange(parameters: FilterParameter[]): void {
     const currentConfiguration = this.bubbleFilterConfigurationsSubject.getValue();
     const newConfiguration = this.filterGroupConfigurationService.getConfiguration(parameters);
+    const drawerConfigurationId = this.drawerFilterConfigurationsSubject.getValue()?.id;
 
-    const isNewConfigurationFromDrawer = this.bubbleFilterConfigurationsSubject.getValue()?.id === newConfiguration.id;
+    const isDrawerConfigurationUpdated = drawerConfigurationId === newConfiguration.id;
     const needsNewConfiguration = !currentConfiguration || currentConfiguration.id !== newConfiguration.id;
-    const needsParameterCleanup = !isNewConfigurationFromDrawer && currentConfiguration && needsNewConfiguration;
+    const needsParameterCleanup = !isDrawerConfigurationUpdated && currentConfiguration && needsNewConfiguration;
 
     if (needsNewConfiguration) {
       this.bubbleFilterConfigurationsSubject.next(newConfiguration);
     }
 
     if (needsParameterCleanup) {
-      this.bubbleValuesSubject.next(newConfiguration.params);
+      this.bubbleStore.setParameters(newConfiguration.params);
     } else {
       this.bubbleValuesSubject.next(parameters);
-    }
-
-    if (!isNewConfigurationFromDrawer) {
       this.drawerStore.setParameters(parameters);
     }
   }
@@ -123,7 +122,7 @@ export class FiltersWrapperComponent {
     }
 
     if (needsParameterCleanup) {
-      this.drawerValuesSubject.next(newConfiguration.params);
+      this.drawerStore.setParameters(newConfiguration.params);
     } else {
       this.drawerValuesSubject.next(parameters);
     }
