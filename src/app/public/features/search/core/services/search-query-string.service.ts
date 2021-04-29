@@ -7,7 +7,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 
 @Injectable()
 export class SearchQueryStringService {
-  private currentParams: Params;
+  private currentParams: Params = {};
   private queryStringSubject = new Subject<FilterParameter[]>();
   public queryStringParams$ = this.queryStringSubject.asObservable();
 
@@ -69,7 +69,7 @@ export class SearchQueryStringService {
 
       const currentValue = this.currentParams[currentKey];
 
-      if (currentValue !== newKeys[currentKey]) {
+      if (currentValue !== newParameters[currentKey]) {
         return true;
       }
     }
