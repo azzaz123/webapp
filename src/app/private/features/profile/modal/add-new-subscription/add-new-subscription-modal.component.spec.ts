@@ -42,6 +42,7 @@ import { PaymentService } from 'app/core/payments/payment.service';
 import { of, throwError } from 'rxjs';
 import { PaymentSuccessModalComponent } from '../payment-success/payment-success-modal.component';
 import { AddNewSubscriptionModalComponent } from './add-new-subscription-modal.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('AddNewSubscriptionModalComponent', () => {
   let component: AddNewSubscriptionModalComponent;
@@ -159,32 +160,18 @@ describe('AddNewSubscriptionModalComponent', () => {
       expect(component.selectedTier).toEqual(MAPPED_SUBSCRIPTIONS[2].tiers[1]);
     });
 
-    describe('and when the webapp is in English', () => {
-      it('should set the English invoice options', () => {
-        const expectedEnglishInvoiceOptions = [
-          { value: 'true', label: 'Yes' },
-          { value: 'false', label: 'No' },
-        ];
+    it('should set the invoice options', () => {
+      const expectedEnglishInvoiceOptions = [
+        { value: 'true', label: i18nService.translate(TRANSLATION_KEY.YES) },
+        { value: 'false', label: i18nService.translate(TRANSLATION_KEY.NO) },
+      ];
+      spyOn(i18nService, 'translate').and.callThrough();
 
-        component.ngOnInit();
+      component.ngOnInit();
 
-        expect(component.invoiceOptions).toEqual(expectedEnglishInvoiceOptions);
-      });
-    });
-
-    describe('and when the webapp is in Spanish', () => {
-      beforeEach(() => (i18nService['_locale'] = 'es'));
-
-      it('should set the Spanish invoice options', () => {
-        const expectedSpanishInvoiceOptions = [
-          { value: 'true', label: 'Sí' },
-          { value: 'false', label: 'No' },
-        ];
-
-        component.ngOnInit();
-
-        expect(component.invoiceOptions).toEqual(expectedSpanishInvoiceOptions);
-      });
+      expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.YES);
+      expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.NO);
+      expect(component.invoiceOptions).toEqual(expectedEnglishInvoiceOptions);
     });
   });
 
