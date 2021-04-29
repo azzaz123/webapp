@@ -12,7 +12,7 @@ const routes: Route[] = [
     component: UploadComponent,
   },
   {
-    path: `:${UPLOAD_PATHS.ID}`,
+    path: `:${UPLOAD_PATH_PARAMS.ID}`,
     component: EditComponent,
     canDeactivate: [ExitConfirmGuard],
     resolve: {
@@ -20,7 +20,7 @@ const routes: Route[] = [
     },
   },
   {
-    path: `:${UPLOAD_PATH_PARAMS.ID}/${EDIT_PATHS.REACTIVATE}`,
+    path: `:${UPLOAD_PATH_PARAMS.ID}/${UPLOAD_PATHS.REACTIVATE}`,
     component: EditComponent,
     canDeactivate: [ExitConfirmGuard],
     resolve: {
