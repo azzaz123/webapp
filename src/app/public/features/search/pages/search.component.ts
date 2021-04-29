@@ -10,8 +10,8 @@ import { PublicFooterService } from '@public/core/services/footer/public-footer.
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -45,7 +45,7 @@ export const WIDE_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
 })
 export class SearchComponent implements OnInit, OnDestroy {
   private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
+  private subscription: Subscription = new Subscription();
   public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
   public currentCategoryId$: Observable<string> = this.searchService.currentCategoryId$;
   public items$: Observable<ItemCard[]> = this.searchService.items$;
@@ -81,19 +81,19 @@ export class SearchComponent implements OnInit, OnDestroy {
     private publicFooterService: PublicFooterService
   ) {
     this.device = this.deviceService.getDeviceType();
+    this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
   }
 
   public ngOnInit(): void {
     this.slotsConfig = this.deviceService.isMobile() ? SLOTS_CONFIG_MOBILE : SLOTS_CONFIG_DESKTOP;
-    this.adsService.setAdKeywords({ content: 'Iphone 11' });
 
     this.adsService.setSlots([this.adSlots.search1, this.adSlots.search2r, this.adSlots.search3r]);
-    // @TODO hardcoded the query to test ad shopping "Iphone 11"
   }
 
   public ngOnDestroy(): void {
     this.searchService.close();
     this.publicFooterService.setShow(true);
+    this.subscription.unsubscribe();
   }
 
   public loadMoreProducts(): void {

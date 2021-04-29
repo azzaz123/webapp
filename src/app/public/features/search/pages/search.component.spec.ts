@@ -392,6 +392,22 @@ describe('SearchComponent', () => {
 
         expect(searchServiceMock.loadMore).toHaveBeenCalledTimes(1);
       });
+
+      describe('when categoryId changes', () => {
+        it('should disable infinite scroll', (done) => {
+          fixture.detectChanges();
+
+          const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+          buttonLoadMore.click();
+
+          component.infiniteScrollDisabled$.subscribe((infiniteScrollDisabled) => {
+            expect(infiniteScrollDisabled).toBe(false);
+            done();
+          });
+
+          currentCategoryIdSubject.next(CATEGORY_IDS.MOTORBIKE.toString());
+        });
+      });
     });
   });
 
