@@ -43,6 +43,13 @@ export class SearchService {
     return this.searchStoreService.hasMore$;
   }
 
+  public isWall$: Observable<boolean> = this.parameterStoreService.parameters$.pipe(
+    map((filterParameters: FilterParameter[]) =>
+      filterParameters.find(({ key }: FilterParameter) => key === FILTER_QUERY_PARAM_KEY.keywords)
+    ),
+    map((filterKeyowrd: FilterParameter) => !filterKeyowrd)
+  );
+
   get currentCategoryId$(): Observable<string> {
     return this.currentCategoryIdSubject.asObservable();
   }

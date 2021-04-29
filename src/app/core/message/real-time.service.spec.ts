@@ -1,15 +1,11 @@
 import { TestBed } from '@angular/core/testing';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '@private/features/chat/core/model';
 import { of, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment.docker';
 import { MockConnectionService, MockRemoteConsoleService } from '../../../tests';
 import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
 import { CONVERSATION_ID, MOCKED_CONVERSATIONS, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import {
-  CREATE_MOCK_INBOX_CONVERSATION,
-  CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE,
-  MOCK_INBOX_CONVERSATION,
-} from '../../../tests/inbox.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE, MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
 import { ACCESS_TOKEN, MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import {
   AnalyticsEvent,
@@ -410,7 +406,7 @@ describe('RealTimeService', () => {
     });
 
     it('should add the phone number as a message to the conversation', () => {
-      const phoneMsg = `${i18nService.getTranslations('phoneMessage')}${phone}`;
+      const phoneMsg = `${i18nService.translate(TRANSLATION_KEY.CHAT_MY_PHONE_NUMBER)} ${phone}`;
 
       service.addPhoneNumberMessageToConversation(inboxConversation, phone);
       eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');

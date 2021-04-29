@@ -3,6 +3,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { Observable, interval, Subscription } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-countdown',
@@ -76,12 +77,14 @@ export class CountdownComponent implements OnInit, OnDestroy {
     const durationMinutes = Math.floor(duration.asMinutes());
     if (durationDays >= 1) {
       const durationDaysRound = Math.ceil(duration.asDays());
-      timeText = `${durationDaysRound} ${this.i18n.getTranslations('day')}${durationDaysRound === 1 ? '' : 's'}`;
+      timeText = `${durationDaysRound} ${this.i18n.translate(TRANSLATION_KEY.DAY)}${durationDaysRound === 1 ? '' : 's'}`;
     } else if (durationHours >= 1) {
-      timeText = `${durationHours} ${this.i18n.getTranslations('hour')}${durationHours === 1 ? '' : 's'}`;
+      timeText = `${durationHours} ${this.i18n.translate(TRANSLATION_KEY.HOUR)}${durationHours === 1 ? '' : 's'}`;
     } else {
-      timeText = `${durationMinutes} ${this.i18n.getTranslations('minute')}${durationMinutes === 1 ? '' : 's'}`;
+      timeText = `${durationMinutes} ${this.i18n.translate(TRANSLATION_KEY.MINUTE)}${durationMinutes === 1 ? '' : 's'}`;
     }
-    return locale === 'en' ? `${timeText} ${this.i18n.getTranslations('left')}` : `${this.i18n.getTranslations('left')} ${timeText}`;
+    return locale === 'en'
+      ? `${timeText} ${this.i18n.translate(TRANSLATION_KEY.LEFT)}`
+      : `${this.i18n.translate(TRANSLATION_KEY.LEFT)} ${timeText}`;
   }
 }

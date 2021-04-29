@@ -26,6 +26,7 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
 import { SearchResolver } from './core/services/search.resolver';
+import { SearchAdsService } from './core/ads/search-ads.service';
 import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
 
 @NgModule({
@@ -36,7 +37,6 @@ import { SearchQueryStringService } from '@public/features/search/core/services/
     ItemCardListModule,
     CheckSessionModule,
     FiltersWrapperModule,
-    AdSlotModule,
     AdSlotShoppingModule,
     ItemFavouritesModule,
     ErrorBoxModule,
@@ -59,6 +59,7 @@ import { SearchQueryStringService } from '@public/features/search/core/services/
       useClass: FilterParameterStoreService,
     },
     SearchResolver,
+    SearchAdsService,
     SearchQueryStringService,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],

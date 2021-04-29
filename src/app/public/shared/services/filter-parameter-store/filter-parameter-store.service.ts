@@ -1,6 +1,6 @@
+import { InjectionToken } from '@angular/core';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { Subject } from 'rxjs';
-import { InjectionToken } from '@angular/core';
 
 export const FILTER_PARAMETER_STORE_TOKEN = new InjectionToken<string>('filterParameterStore');
 export const FILTER_PARAMETER_DRAFT_STORE_TOKEN = new InjectionToken<string>('filterParameterDraftStore');

@@ -10,7 +10,7 @@ import { AdsService } from '@core/ads/services';
 export class AdSlotComponent implements AfterViewInit {
   @Input() adSlot: AdSlotConfiguration;
 
-  constructor(private adsService: AdsService) {}
+  constructor(protected adsService: AdsService) {}
 
   ngAfterViewInit() {
     this.adsService.displayAdBySlotId(this.adSlot.id);
