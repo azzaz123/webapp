@@ -1,0 +1,32 @@
+@mixin PlaceholderContent {
+  background-color: $blue-grey-5;
+  animation: PlaceholderAnimation 2000ms linear infinite;
+}
+
+@mixin TextPlaceholder {
+  @include PlaceholderContent;
+  height: 12px;
+  border-radius: 3px;
+  width: 100%;
+  &--half {
+    width: 50%;
+  }
+}
+
+@mixin ImagePlaceholder {
+  @include PlaceholderContent;
+}
+
+@keyframes PlaceholderAnimation {
+  0% {
+    background-color: $blue-grey-5;
+  }
+
+  50% {
+    background-color: $blue-grey-4;
+  }
+
+  100% {
+    background-color: $blue-grey-5;
+  }
+}
