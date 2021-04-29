@@ -48,7 +48,7 @@ export const AD_MOBILE_MAPPING: { [key in MobileSize]: number[][] } = {
     [300, 600],
   ],
 };
-export const AD_DESKTOP_NATIVE_MAPPING = ['fluid', [220, 420]];
-export const AD_MOBILE_NATIVE_MAPPING = ['fluid', [170, 420]];
-export const AD_DESKTOP_NATIVE_WIDE_MAPPING = ['fluid', [680, 200]];
-export const AD_MOBILE_NATIVE_WIDE_MAPPING = ['fluid', [336, 280]];
+export const AD_DESKTOP_NATIVE_MAPPING: (number[] | string)[] = ['fluid', [220, 420]];
+export const AD_MOBILE_NATIVE_MAPPING: (number[] | string)[] = ['fluid', [170, 420]];
+export const AD_DESKTOP_NATIVE_WIDE_MAPPING: (number[] | string)[] = ['fluid', [680, 200]];
+export const AD_MOBILE_NATIVE_WIDE_MAPPING: (number[] | string)[] = ['fluid', [336, 280]];

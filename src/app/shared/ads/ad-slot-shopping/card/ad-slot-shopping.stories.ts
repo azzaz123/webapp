@@ -5,14 +5,14 @@ import { AdsService } from '@core/ads/services';
 import { CoreModule } from '@core/core.module';
 import { DeviceService } from '@core/device/device.service';
 import { moduleMetadata, Story } from '@storybook/angular';
-import { AdSlotNativeShoppingComponent } from './ad-slot-native-shopping.component';
+import { AdSlotShoppingComponent } from './ad-slot-shopping.component';
 
 @Component({
   selector: 'stories-ad-slot-shopping',
   template:
-    '<tsl-sky-native-shopping [isWide]="isWide" [adSlotContainer]="adSlotContainer" [adShoppingPageOptions]="adShoppingPageOptions" [index]="index"></tsl-sky-native-shopping>',
+    '<tsl-sky-shopping [isWide]="isWide" [adSlotContainer]="adSlotContainer" [adShoppingPageOptions]="adShoppingPageOptions" [index]="index"></tsl-sky-shopping>',
 })
-class StoryAdSlotShoppingComponent extends AdSlotNativeShoppingComponent {
+class StoryAdSlotShoppingComponent extends AdSlotShoppingComponent {
   constructor(adsService: AdsService, deviceService: DeviceService) {
     super(adsService, deviceService);
     adsService.init();
@@ -25,7 +25,7 @@ export default {
   component: StoryAdSlotShoppingComponent,
   decorators: [
     moduleMetadata({
-      declarations: [StoryAdSlotShoppingComponent, AdSlotNativeShoppingComponent],
+      declarations: [StoryAdSlotShoppingComponent, AdSlotShoppingComponent],
       providers: [{ provide: 'SUBDOMAIN', useValue: 'www' }],
       imports: [CoreModule, HttpClientModule],
     }),
