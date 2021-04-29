@@ -10,6 +10,7 @@ import { FINANCIAL_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
 import { EventService } from '../../../core/event/event.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('StripeCardSelectionComponent', () => {
   let component: StripeCardSelectionComponent;
@@ -73,12 +74,12 @@ describe('StripeCardSelectionComponent', () => {
     });
 
     it('should ask to i18nService for `noResultsFound` translation', () => {
-      spyOn(i18nService, 'getTranslations').and.callThrough();
+      spyOn(i18nService, 'translate').and.callThrough();
 
       component.ngOnInit();
 
-      expect(i18nService.getTranslations).toHaveBeenCalledTimes(1);
-      expect(i18nService.getTranslations).toHaveBeenCalledWith('noResultsFound');
+      expect(i18nService.translate).toHaveBeenCalledTimes(1);
+      expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.NO_RESULTS_FOUND);
     });
   });
 });

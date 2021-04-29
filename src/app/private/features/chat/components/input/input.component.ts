@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { RealTimeService } from '@core/message/real-time.service';
 import { InboxConversation } from '@private/features/chat/core/model';
 import { LinkTransformPipe } from '@shared/pipes';
@@ -74,8 +75,8 @@ export class InputComponent implements OnChanges, OnInit, AfterViewInit {
 
   public getPlaceholder(): string {
     return this.isUserBlocked || !this.isMessagingAvailable()
-      ? this.i18n.getTranslations('disableMessage')
-      : this.i18n.getTranslations('writeMessage');
+      ? this.i18n.translate(TRANSLATION_KEY.CHAT_INPUT_DISABLED_PLACEHOLDER)
+      : this.i18n.translate(TRANSLATION_KEY.CHAT_INPUT_ENABLED_PLACEHOLDER);
   }
 
   public isMessagingAvailable(): boolean {
