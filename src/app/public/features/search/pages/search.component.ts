@@ -58,6 +58,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   public infiniteScrollDisabled$: Observable<boolean> = this.buildInfiniteScrollDisabledObservable();
   public listCardType$: Observable<CARD_TYPES> = this.buildCardTypeObservable();
   public listColumnsConfig$: Observable<ColumnsConfig> = this.buildListConfigObservable();
+  public showPlaceholder$: Observable<boolean> = this.buildShowPlaceholderObservable();
+  public searchWithNoResults$: Observable<boolean> = this.buildShowNoResultsObservable();
 
   public columnsConfig: ColumnsConfig = {
     xl: 4,
@@ -118,6 +120,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     return combineLatest([this.loadMoreProductsSubject.asObservable(), this.hasMoreItems$]).pipe(
       map(([loadMoreProducts, hasMore]: [boolean, boolean]) => !(loadMoreProducts && hasMore)),
       tap((infiniteScrollDisabled: boolean) => this.publicFooterService.setShow(infiniteScrollDisabled))
+    );
+  }
+
+  private buildShowPlaceholderObservable(): Observable<boolean> {
+    return combineLatest([this.items$, this.isLoadingResults$]).pipe(
+      map(([items, isLoadingResults]) => items.length === 0 && isLoadingResults)
+    );
+  }
+
+  private buildShowNoResultsObservable(): Observable<boolean> {
+    return combineLatest([this.items$, this.isLoadingResults$]).pipe(
+      map(([items, isLoadingResults]) => items.length === 0 && !isLoadingResults)
     );
   }
 

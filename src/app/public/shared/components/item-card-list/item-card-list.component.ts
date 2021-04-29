@@ -17,6 +17,7 @@ import { SlotsConfig } from './interfaces/slots-config.interface';
 export class ItemCardListComponent {
   @Input() items: ItemCard[];
   @Input() showDescription = true;
+  @Input() showPlaceholder = false;
   @Input() columnsConfig: ColumnsConfig = {
     xl: 5,
     lg: 4,

@@ -8,7 +8,7 @@
   <tsl-filters-wrapper class="Search__filters"></tsl-filters-wrapper>
   <tsl-sort-filter class="Search__sort d-block"></tsl-sort-filter>
 
-  <tsl-search-layout *ngIf="(items$ | async).length > 0">
+  <tsl-search-layout *ngIf="!(searchWithNoResults$ | async)">
     <div top class="d-block h-100 position-relative">
       <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
     </div>
@@ -31,6 +31,7 @@
         <tsl-public-item-card-list 
           [items]="items$ | async"
           [isLoading]="isLoadingResults$ | async" 
+          [showPlaceholder]="showPlaceholder$ | async"
           [columnsConfig]="listColumnsConfig$ | async"
           [cardType]="listCardType$ | async"
           [slotsConfig]="slotsConfig"
@@ -55,6 +56,6 @@
     </ng-container>
   </tsl-search-layout>
 
-  <tsl-search-error-layout *ngIf="(items$ | async).length === 0 && (isLoadingResults$ | async) === false">
+  <tsl-search-error-layout *ngIf="searchWithNoResults$ | async">
   </tsl-search-error-layout>
 </div>
