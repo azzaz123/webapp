@@ -239,6 +239,19 @@ describe('FiltersWrapperComponent', () => {
     });
   });
 
+  describe('on initialization', () => {
+    const newValues: FilterParameter[] = [
+      { key: FILTER_QUERY_PARAM_KEY.categoryId, value: '100' },
+      { key: FILTER_QUERY_PARAM_KEY.postedAgo, value: 'lastWeek' },
+    ];
+
+    it('should not clean values', () => {
+      bubbleStore.setParameters(newValues);
+
+      expect(bubbleStore.getParameters()).toEqual(newValues);
+    });
+  });
+
   describe('when configuration change happens', () => {
     const oldValues: FilterParameter[] = [
       { key: FILTER_QUERY_PARAM_KEY.categoryId, value: '200' },
@@ -249,6 +262,11 @@ describe('FiltersWrapperComponent', () => {
       { key: FILTER_QUERY_PARAM_KEY.postedAgo, value: 'lastWeek' },
     ];
     const cleanValues: FilterParameter[] = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: '100' }];
+
+    beforeEach(() => {
+      bubbleStore.setParameters([]);
+      drawerStore.setParameters([]);
+    });
 
     describe('... in the drawer', () => {
       beforeEach(() => {

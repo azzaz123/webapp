@@ -10,7 +10,6 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FilterGroupConfiguration } from '@public/shared/services/filter-group-configuration/interfaces/filter-group-config.interface';
-import { DEFAULT_FILTER_GROUP_CONFIG } from '@public/shared/services/filter-group-configuration/data/filter-group-config';
 
 @Component({
   selector: 'tsl-filters-wrapper',
@@ -25,8 +24,8 @@ export class FiltersWrapperComponent {
     hasApply: true,
   };
   public activeFiltersCount = 0;
-  private drawerFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(DEFAULT_FILTER_GROUP_CONFIG);
-  private bubbleFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(DEFAULT_FILTER_GROUP_CONFIG);
+  private drawerFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(null);
+  private bubbleFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(null);
 
   public scrollOffset = 0;
   private drawerValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
