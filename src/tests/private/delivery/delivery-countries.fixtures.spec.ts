@@ -1,6 +1,6 @@
 import { DeliveryCountriesApi } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
 
-export const MOCK_DELIVERY_ADDRESS_API: DeliveryCountriesApi = {
+export const MOCK_DELIVERY_COUNTRIES_API: DeliveryCountriesApi = {
   countries: [
     {
       iso_code: 'ES',
