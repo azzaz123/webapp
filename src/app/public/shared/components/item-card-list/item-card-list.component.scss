@@ -23,7 +23,7 @@ $numCols: 1, 2, 3, 4, 5;
   display: grid;
   grid-gap: $margin;
   opacity: 1;
-  transition: opacity 150ms ease-in;
+  transition: opacity 150ms ease-in-out;
 
   &__slot {
     background-color: $blue-grey-5;
