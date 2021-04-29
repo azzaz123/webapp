@@ -22,6 +22,7 @@ import { InboxConversationService } from '@private/features/chat/core/inbox/inbo
 import { RemoteConsoleModule } from '@core/remote-console';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
+import { DeliveryDevelopmentGuard } from '@private/features/delivery/guards/delivery-development.guard';
 
 @NgModule({
   imports: [ConversationModule.forRoot(), ProfileModule, RemoteConsoleModule],
@@ -46,6 +47,7 @@ import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-be
     ExitConfirmGuard,
     InboxConversationService,
     UploaderService,
+    DeliveryDevelopmentGuard,
   ],
 })
 export class PrivateCoreModule {}
