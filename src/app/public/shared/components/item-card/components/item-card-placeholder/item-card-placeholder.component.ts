@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CARD_TYPES } from '../item-card-list/enums/card-types.enum';
+import { CARD_TYPES } from '../../../item-card-list/enums/card-types.enum';
 
 @Component({
   selector: 'tsl-item-card-placeholder',
