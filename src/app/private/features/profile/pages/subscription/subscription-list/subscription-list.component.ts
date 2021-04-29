@@ -44,7 +44,7 @@ export class SubscriptionListComponent {
       return this.hasOneFreeSubscription(subscription) ? $localize`:@@startFreeTrial:Start free trial` : $localize`:@@seePlans:See plans`;
     }
     if (subscription.subscribed_until) {
-      return $localize`:web_profile_pages_subscription_331:Stay subscribed`;
+      return $localize`:@@web_profile_pages_subscription_331:Stay subscribed`;
     }
     if (this.showEdit(subscription)) {
       return $localize`:@@web_profile_pages_subscription_587:Edit`;
