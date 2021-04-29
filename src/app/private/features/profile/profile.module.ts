@@ -24,6 +24,9 @@ import { VisibilityProductsModalComponent } from './modal/visibility-products-mo
 import { SubscriptionIconPipe } from './pipes/subscription-icon.pipe';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
 import { NewSubscriptionComponent } from './pages/subscription/new-subscription/new-subscription.component';
+import { NewSubscriptionViewComponent } from './pages/subscription/new-subscription/new-subscription-view/new-subscription-view.component';
+import { SubscriptionTierSelectorComponent } from './pages/subscription/subscription-tier-selector/subscription-tier-selector.component';
+import { SubscriptionCardSelectorComponent } from './pages/subscription/subscription-card-selector/subscription-card-selector.component';
 
 @NgModule({
   imports: [
@@ -59,6 +62,9 @@ import { NewSubscriptionComponent } from './pages/subscription/new-subscription/
     InvoiceItemComponent,
     SubscriptionBenefitComponent,
     NewSubscriptionComponent,
+    NewSubscriptionViewComponent,
+    SubscriptionTierSelectorComponent,
+    SubscriptionCardSelectorComponent,
   ],
   entryComponents: [
     UnsubscribeModalComponent,
