@@ -607,7 +607,7 @@
   <msg id="web_profile_pages_322"><source>src/app/private/features/profile/pages/profile.component.html:50</source>reviews</msg>
   <msg id="SubscriptionPriceDiscountDaysTrialFree"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:5</source><ph name="INTERPOLATION"/>-day trial for free</msg>
   <msg id="web_profile_pages_subscription_326"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:22,25</source> <ph name="INTERPOLATION"/><ph name="INTERPOLATION_1"/>/month </msg>
-  <msg id="your_current_plan"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:47</source><ph name="START_TAG_STRONG"/>Your current plan<ph name="CLOSE_TAG_STRONG"/></msg>
+  <msg id="your_current_plan"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:47</source>Your current plan</msg>
   <msg id="web_profile_pages_subscription_330"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:57,61</source> Subscription ends on <ph name="START_TAG_STRONG"/> <ph name="INTERPOLATION"/> <ph name="CLOSE_TAG_STRONG"/></msg>
   <msg id="web_profile_pages_subscription_329"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:64,66</source> Subscribed from <ph name="START_TAG_STRONG"/><ph name="INTERPOLATION"/><ph name="CLOSE_TAG_STRONG"/></msg>
   <msg id="web_profile_pages_subscription_cars_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:18</source>List all your cars</msg>

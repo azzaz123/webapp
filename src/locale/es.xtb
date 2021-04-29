@@ -1183,5 +1183,5 @@
   <translation id="web_subscription_benefit_title_limit">Define tu límite de publicación</translation>
   <translation id="WallapopProSubscriptionTitle">Impulsa tu negocio online con Wallapop PRO</translation>
   <translation id="WallapopProSubscriptionSubTitle">Elige una suscripción para llevar tus ventas al siguiente nivel</translation>
-  <translation id="your_current_plan"><ph name="START_TAG_STRONG"/>Tu plan actual<ph name="CLOSE_TAG_STRONG"/></translation>
+  <translation id="your_current_plan">Tu plan actual</translation>
 </translationbundle>
