@@ -3,6 +3,7 @@ import { Component, EventEmitter, Output, Input, OnChanges, ViewChild, ElementRe
 import { Subject } from 'rxjs';
 
 import { I18nService } from '../../core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-search-input',
@@ -17,9 +18,9 @@ export class SearchInputComponent implements OnChanges {
   @ViewChild('input') input: ElementRef;
   private term: Subject<string> = new Subject<string>();
 
-  constructor(private i18nService: I18nService) {
+  constructor(i18nService: I18nService) {
     if (!this.placeholder) {
-      this.placeholder = i18nService.getTranslations('searchDefault');
+      this.placeholder = i18nService.translate(TRANSLATION_KEY.SEARCH_INPUT_PLACEHOLDER);
     }
     this.term$ = <any>this.term.asObservable().pipe(debounceTime(400), distinctUntilChanged());
   }

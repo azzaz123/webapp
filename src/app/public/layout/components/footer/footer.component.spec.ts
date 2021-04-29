@@ -24,16 +24,7 @@ describe('FooterComponent', () => {
       TestBed.configureTestingModule({
         imports: [SvgIconModule, HttpClientTestingModule],
         declarations: [FooterComponent],
-        providers: [
-          {
-            provide: I18nService,
-            useValue: {
-              getTranslations() {},
-              locale: 'en',
-            },
-          },
-          { provide: AnalyticsService, useClass: MockAnalyticsService },
-        ],
+        providers: [I18nService, { provide: AnalyticsService, useClass: MockAnalyticsService }],
       }).compileComponents();
     })
   );

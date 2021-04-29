@@ -1,11 +1,11 @@
-import { filter, map } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { CookieService } from 'ngx-cookie';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotShoppingBaseConfiguration } from '../../models';
 import { GoogCsa } from './google-ads-sense-shopping';
 
@@ -14,7 +14,7 @@ import { GoogCsa } from './google-ads-sense-shopping';
 })
 export class GooglePublisherTagService {
   private static GOOGLE_ADS_SENSE_NAME = 'plas';
-
+  private adSlotsNamesDefinedSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   private adSlotsLoadedSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
   constructor(
@@ -29,12 +29,19 @@ export class GooglePublisherTagService {
   }
 
   public setSlots(adSlots: AdSlotConfiguration[]): void {
+    const oldSlots: string[] = this.adSlotsNamesDefinedSubject.getValue();
+    const newAdSlots: AdSlotConfiguration[] = adSlots.filter(({ name }: AdSlotConfiguration) => !oldSlots.includes(name));
     this.googletag.cmd.push(() => {
-      this.definedSlots(adSlots);
+      this.definedSlots(newAdSlots);
       this.setPubads();
       this.googletag.enableServices();
       this.googletag.pubads().addEventListener('slotOnload', (event: googletag.events.Event) => this.onSlotLoad(event));
     });
+  }
+
+  public reset(): void {
+    this.adSlotsNamesDefinedSubject.next([]);
+    this.adSlotsLoadedSubject.next([]);
   }
 
   public isAdSlotLoaded$(adSlot: AdSlotConfiguration): Observable<boolean> {
@@ -119,6 +126,9 @@ export class GooglePublisherTagService {
             .setTargeting('ad_group', 'ad_opt')
             .setTargeting('ad_h', new Date().getUTCHours().toString())
             .addService(this.googletag.pubads());
+
+          const slotsDefined: string[] = this.adSlotsNamesDefinedSubject.getValue();
+          this.adSlotsNamesDefinedSubject.next([...slotsDefined, slot.name]);
         }
       });
   }
