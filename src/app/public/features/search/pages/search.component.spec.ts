@@ -148,14 +148,6 @@ describe('SearchComponent', () => {
         spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
       });
 
-      it('should set ad keywords', () => {
-        spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
-
-        fixture.detectChanges();
-
-        expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ content: 'Iphone 11' });
-      });
-
       it('should configure ads', () => {
         spyOn(MockAdsService, 'setSlots').and.callThrough();
 
