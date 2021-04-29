@@ -8,6 +8,7 @@ import { AccessTokenService } from '@core/http/access-token.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
@@ -16,6 +17,7 @@ import { ItemCardService } from '@public/core/services/item-card/item-card.servi
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { CARD_TYPES } from './enums/card-types.enum';
 import { SlotsConfig } from './interfaces/slots-config.interface';
 import { ItemCardListComponent } from './item-card-list.component';
 import { ShowSlotPipe } from './pipes/show-slot.pipe';
@@ -23,10 +25,10 @@ import { ShowSlotPipe } from './pipes/show-slot.pipe';
 @Component({
   selector: 'tsl-item-card-list-wrapper',
   template: `
-    <tsl-public-item-card-list [items]="items" [slotsConfig]="slotConfig">
-      <ng-template #slotTemplate let-index
-        ><div class="adSlot">ad-{{ index }}</div></ng-template
-      >
+    <tsl-public-item-card-list [items]="items" [cardType]="cardType" [slotsConfig]="slotConfig">
+      <ng-template #slotTemplate let-index>
+        <div class="adSlot">ad-{{ index }}</div>
+      </ng-template>
     </tsl-public-item-card-list>
   `,
 })
@@ -36,6 +38,7 @@ export class ItemCardListWrapperComponent {
     start: 1,
     offset: 2,
   };
+  cardType: CARD_TYPES = CARD_TYPES.REGULAR;
 }
 
 describe('ItemCardListComponent', () => {
@@ -190,6 +193,50 @@ describe('ItemCardListComponent', () => {
       adSlotList.forEach((adSlot, index) => {
         expect(adSlot.nativeElement.textContent).toBe('ad-' + (slotConfig.start + index * slotConfig.offset));
       });
+    });
+  });
+
+  describe('when having a wide acards configuration', () => {
+    let component: ItemCardListWrapperComponent;
+    let fixture: ComponentFixture<ItemCardListWrapperComponent>;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(ItemCardListWrapperComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('should show wide cards', () => {
+      component.cardType = CARD_TYPES.WIDE;
+      component.items = [MOCK_ITEM_CARD];
+
+      fixture.detectChanges();
+      const wideItemCardElement = fixture.debugElement.query(By.css('tsl-item-card-wide'));
+      const regularItemCardElement = fixture.debugElement.query(By.css('tsl-public-item-card'));
+
+      expect(wideItemCardElement).toBeTruthy();
+      expect(regularItemCardElement).toBeFalsy();
+    });
+  });
+
+  describe('when having a regular cards configuration', () => {
+    let component: ItemCardListWrapperComponent;
+    let fixture: ComponentFixture<ItemCardListWrapperComponent>;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(ItemCardListWrapperComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('should show regular cards', () => {
+      component.cardType = CARD_TYPES.REGULAR;
+      component.items = [MOCK_ITEM_CARD];
+
+      fixture.detectChanges();
+      const regularItemCardElement = fixture.debugElement.query(By.css('tsl-public-item-card'));
+      const wideItemCardElement = fixture.debugElement.query(By.css('tsl-item-card-wide'));
+
+      expect(regularItemCardElement).toBeTruthy();
+      expect(wideItemCardElement).toBeFalsy();
     });
   });
 });
