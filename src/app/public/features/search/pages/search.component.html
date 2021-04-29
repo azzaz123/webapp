@@ -8,7 +8,10 @@
   <tsl-filters-wrapper class="Search__filters"></tsl-filters-wrapper>
   <tsl-sort-filter class="Search__sort d-block"></tsl-sort-filter>
 
-  <tsl-search-layout *ngIf="!(searchWithNoResults$ | async)">
+  <tsl-search-error-layout *ngIf="searchWithoutResults$ | async">
+</tsl-search-error-layout>
+
+  <tsl-search-layout *ngIf="!(searchWithoutResults$ | async)">
     <div top class="d-block h-100 position-relative">
       <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
     </div>
@@ -55,7 +58,4 @@
       </ng-container>
     </ng-container>
   </tsl-search-layout>
-
-  <tsl-search-error-layout *ngIf="searchWithNoResults$ | async">
-  </tsl-search-error-layout>
 </div>

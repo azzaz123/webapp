@@ -59,7 +59,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public listCardType$: Observable<CARD_TYPES> = this.buildCardTypeObservable();
   public listColumnsConfig$: Observable<ColumnsConfig> = this.buildListConfigObservable();
   public showPlaceholder$: Observable<boolean> = this.buildShowPlaceholderObservable();
-  public searchWithNoResults$: Observable<boolean> = this.buildShowNoResultsObservable();
+  public searchWithoutResults$: Observable<boolean> = this.buildSearchWithoutResultsObservable();
 
   public columnsConfig: ColumnsConfig = {
     xl: 4,
@@ -129,7 +129,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     );
   }
 
-  private buildShowNoResultsObservable(): Observable<boolean> {
+  private buildSearchWithoutResultsObservable(): Observable<boolean> {
     return combineLatest([this.items$, this.isLoadingResults$]).pipe(
       map(([items, isLoadingResults]) => items.length === 0 && !isLoadingResults)
     );
