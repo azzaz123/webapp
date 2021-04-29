@@ -1,12 +1,5 @@
 @import '~style/common';
-
-$container-height-with-description: 420px;
-$container-height-without-description: 262px;
-$image-height-with-description: 253px;
-$image-height-without-description: 177px;
-$image-border-radius: 6px;
-$description-height: 85px;
-$icon-margin: $spacer * 0.5;
+@import 'styles/item-card-variables';
 
 .ItemCard {
   background-color: $white;
