@@ -12,6 +12,7 @@ import { BILLING_INFO_RESPONSE, BILLING_INFO_RESPONSE_LEGAL } from '../../../tes
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { EventService } from 'app/core/event/event.service';
 import { By } from '@angular/platform-browser';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('ProfileProBillingComponent', () => {
   let component: ProfileProBillingComponent;
@@ -226,7 +227,7 @@ describe('ProfileProBillingComponent', () => {
           component.deleteBillingInfo();
           tick();
 
-          expect(errorsService.i18nError).toHaveBeenCalledWith('deleteBillingInfoError');
+          expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DELETE_BILLING_INFO_ERROR);
         }));
       });
 

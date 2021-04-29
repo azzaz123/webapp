@@ -9,6 +9,7 @@ import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.
 import { of } from 'rxjs';
 import { UnsubscribeModalComponent } from '../../modal/unsubscribe-modal/unsubscribe-modal.component';
 import { AccountComponent } from './account.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -139,7 +140,7 @@ describe('AccountComponent', () => {
       });
 
       it('should call i18nError if form is invalid', () => {
-        expect(errorsService.i18nError).toHaveBeenCalledWith('formErrors');
+        expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FORM_FIELD_ERROR);
       });
     });
 

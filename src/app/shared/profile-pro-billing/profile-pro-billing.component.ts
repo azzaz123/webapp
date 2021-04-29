@@ -13,6 +13,7 @@ import { EventService } from 'app/core/event/event.service';
 import { validDNI, validNIE, validCIF } from 'spain-id';
 import { UuidService } from '../../core/uuid/uuid.service';
 import { whitespaceValidator } from 'app/core/form-validators/formValidators.func';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 export enum BILLING_TYPE {
   NATURAL = 'natural',
@@ -155,7 +156,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
           }
         );
     } else {
-      this.errorsService.i18nError('formErrors');
+      this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
       for (const control in this.billingForm.controls) {
         if (this.billingForm.controls.hasOwnProperty(control) && !this.billingForm.controls[control].valid) {
           this.billingForm.controls[control].markAsDirty();
@@ -177,7 +178,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
             this.initForm(false);
           },
           () => {
-            this.errorsService.i18nError('deleteBillingInfoError');
+            this.errorsService.i18nError(TRANSLATION_KEY.DELETE_BILLING_INFO_ERROR);
           }
         );
       }

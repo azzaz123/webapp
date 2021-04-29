@@ -11,6 +11,7 @@ import createSpy = jasmine.createSpy;
 import { Item } from '../../../core/item/item';
 import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { SoldModalComponent } from './sold-modal.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   template: `<button tslItemSold (callback)="setSold(item)" [item]="item"></button>`,
@@ -148,7 +149,7 @@ describe('ItemSoldDirective', () => {
     });
 
     it('should throw error', () => {
-      expect(errorsService.i18nError).toHaveBeenCalledWith('cantEditError');
+      expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.EDIT_ITEM_ERROR);
     });
   });
 });

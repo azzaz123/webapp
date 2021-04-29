@@ -3,6 +3,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { InvoiceTransaction } from '@core/invoice/invoice.interface';
 import { InvoiceService } from '@core/invoice/invoice.service';
 import { finalize, take } from 'rxjs/operators';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-invoice-item',
@@ -45,7 +46,7 @@ export class InvoiceItemComponent {
           this.errorsService.i18nSuccess('invoiceGenerated');
         },
         () => {
-          this.errorsService.i18nError('invoiceCannotGenerate');
+          this.errorsService.i18nError(TRANSLATION_KEY.INVOICE_CANNOT_GENERATE_ERROR);
         }
       );
   }
@@ -72,7 +73,7 @@ export class InvoiceItemComponent {
           fileLink.click();
         },
         () => {
-          this.errorsService.i18nError('invoiceCannotDownload');
+          this.errorsService.i18nError(TRANSLATION_KEY.INVOICE_CANNOT_DOWNLOAD_ERROR);
         }
       );
   }

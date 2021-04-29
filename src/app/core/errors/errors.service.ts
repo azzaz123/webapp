@@ -22,10 +22,10 @@ export class ErrorsService {
     }
   }
 
-  i18nError(key: string, concatText: string = '', titleKey?: string) {
-    const translatedText = this.i18n.getTranslations(key);
+  i18nError(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY) {
+    const translatedText = this.i18n.translate(key);
     const text = `${translatedText ? translatedText : this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE)} ${concatText}`;
-    const title = titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE);
+    const title = titleKey ? this.i18n.translate(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE);
 
     this.toastService.show({
       text,

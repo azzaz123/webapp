@@ -4,7 +4,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
-import { ItemService, ITEM_STATUS } from '@core/item/item.service';
+import { ITEM_STATUS, ItemService } from '@core/item/item.service';
 import { Pack } from '@core/payments/pack';
 import { FinancialCard, Packs } from '@core/payments/payment.interface';
 import { PerksModel } from '@core/payments/payment.model';
@@ -15,7 +15,7 @@ import { UuidService } from '@core/uuid/uuid.service';
 import { CreditCardModalComponent } from '@private/features/catalog-pro/modals/credit-card-modal/credit-card-modal.component';
 import { ProBumpConfirmationModalComponent } from '@private/features/catalog-pro/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { OrderEvent } from '@private/features/catalog/components/selected-items/selected-product.interface';
-import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '@private/features/catalog/core/item-change.interface';
+import { ITEM_CHANGE_ACTION, ItemChangeEvent } from '@private/features/catalog/core/item-change.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
@@ -145,7 +145,8 @@ export class CatalogProListComponent implements OnInit {
           this.getItems();
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
-          this.errorService.i18nError('productCreated', 'contactMotor');
+          // FIXME: This text does not seem like an error. Probably needs to use method i18nSuccess
+          this.errorService.i18nError(TRANSLATION_KEY.PRODUCT_CREATED, 'contactMotor');
         } else if (params && params.sold && params.itemId) {
           this.itemService.get(params.itemId).subscribe((item: Item) => {
             this.soldButton.item = item;
@@ -160,7 +161,7 @@ export class CatalogProListComponent implements OnInit {
             });
           });
         } else if (params && params.alreadyFeatured) {
-          this.errorService.i18nError('alreadyFeatured');
+          this.errorService.i18nError(TRANSLATION_KEY.ALREADY_FEATURED_ERROR);
         }
       });
     });
@@ -245,7 +246,7 @@ export class CatalogProListComponent implements OnInit {
     this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe(
       (failedProducts: string[]) => {
         if (failedProducts && failedProducts.length) {
-          this.errorService.i18nError('bumpError');
+          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
         } else {
           this.chooseCreditCard(orderId, orderEvent.total);
         }

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { isPresent } from 'ngx-cookie';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../../core/user/user.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-email-modal',
@@ -33,7 +33,7 @@ export class EmailModalComponent {
           this.activeModal.close(email);
         },
         () => {
-          this.errorsService.i18nError('serverError');
+          this.errorsService.i18nError(TRANSLATION_KEY.SERVER_ERROR);
         }
       );
     } else {
@@ -42,7 +42,7 @@ export class EmailModalComponent {
           this.emailForm.controls[control].markAsDirty();
         }
       }
-      this.errorsService.i18nError('formErrors');
+      this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
     }
   }
 

@@ -10,6 +10,7 @@ import { OUTPUT_TYPE, UploadFile } from '@shared/uploader/upload.interface';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { RemoveConfirmModalComponent } from '../../modals/remove-confirm-modal/remove-confirm-modal.component';
 import { DropAreaComponent } from './drop-area.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('DropAreaComponent', () => {
   let component: DropAreaComponent;
@@ -154,7 +155,7 @@ describe('DropAreaComponent', () => {
       component.onUploadOutput({
         type: OUTPUT_TYPE.rejected,
         file: UPLOAD_FILE,
-        reason: 'reason',
+        reason: ('reason' as unknown) as TRANSLATION_KEY,
       });
 
       expect(errorsService.i18nError).toHaveBeenCalledWith('reason', UPLOAD_FILE_NAME);

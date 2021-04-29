@@ -38,7 +38,7 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
+import { fromEvent, Observable, Subject } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
@@ -385,9 +385,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.uploadForm.get('location.address').markAsDirty();
     }
     if (!this.uploadForm.get('images').valid) {
-      this.errorsService.i18nError('missingImageError');
+      this.errorsService.i18nError(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
     } else {
-      this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
+      this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
       this.onValidationError.emit();
     }
   }
@@ -486,7 +486,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public onError(error: HttpErrorResponse | any): void {
     this.loading = false;
-    this.errorsService.i18nError('serverError', error.message ? error.message : '');
+    this.errorsService.i18nError(TRANSLATION_KEY.SERVER_ERROR, error.message ? error.message : '');
   }
 
   preview() {

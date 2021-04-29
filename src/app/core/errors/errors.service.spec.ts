@@ -86,7 +86,7 @@ describe('Service: Errors', () => {
     it('should call toastService.show method for type error with i18n message', () => {
       spyOn(i18n, 'translate').and.returnValues('message', 'title');
 
-      service.i18nError('key');
+      service.i18nError(('key' as unknown) as TRANSLATION_KEY);
 
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'message',
@@ -97,7 +97,7 @@ describe('Service: Errors', () => {
     it('should call toastService.show method for type error with i18n message, concatenting text', () => {
       spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
 
-      service.i18nError('key', 'text');
+      service.i18nError(('key' as unknown) as TRANSLATION_KEY, 'text');
 
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'messagetext',

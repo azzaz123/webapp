@@ -261,7 +261,7 @@ export class ListComponent implements OnInit, OnDestroy {
             });
           });
         } else if (params && params.alreadyFeatured) {
-          this.errorService.i18nError('alreadyFeatured');
+          this.errorService.i18nError(TRANSLATION_KEY.ALREADY_FEATURED_ERROR);
         } else if (params && params.disableWallacoinsModal) {
           this.onOpenWallacoinsModal();
         }
@@ -504,7 +504,7 @@ export class ListComponent implements OnInit, OnDestroy {
             this.items.splice(index, 1);
           });
           if (response.failedIds.length) {
-            this.errorService.i18nError('bulkDeleteError');
+            this.errorService.i18nError(TRANSLATION_KEY.BULK_DELETE_ERROR);
           } else {
             this.getNumberOfProducts();
           }
@@ -525,7 +525,7 @@ export class ListComponent implements OnInit, OnDestroy {
         }
       });
       if (response.failedIds.length) {
-        this.errorService.i18nError('bulkReserveError');
+        this.errorService.i18nError(TRANSLATION_KEY.BULK_RESERVE_ERROR);
       }
     });
   }

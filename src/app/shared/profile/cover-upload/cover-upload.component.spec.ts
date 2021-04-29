@@ -16,6 +16,7 @@ import { AccessTokenService } from '@core/http/access-token.service';
 import { of, throwError } from 'rxjs';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { MockUploaderService } from '@fixtures/uploader.fixtures.spec';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('CoverUploadComponent', () => {
   let component: CoverUploadComponent;
@@ -126,12 +127,12 @@ describe('CoverUploadComponent', () => {
 
       fixture.detectChanges();
 
-      expect(errorsService.i18nError).toHaveBeenCalledWith('serverError', ERROR);
+      expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.SERVER_ERROR, ERROR);
     });
 
     it('should throw error if event is rejected', () => {
       spyOn(errorsService, 'i18nError');
-      const ERROR = 'error';
+      const ERROR = ('error' as unknown) as TRANSLATION_KEY;
       uploaderService.serviceEvents$ = of({
         type: OUTPUT_TYPE.rejected,
         file: UPLOAD_FILE,

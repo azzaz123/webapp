@@ -63,6 +63,7 @@ import { ListComponent } from './list.component';
 import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { Counters } from '@core/user/user-stats.interface';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -716,7 +717,7 @@ describe('ListComponent', () => {
         tick();
       }));
       it('should open error toast', () => {
-        expect(errorService.i18nError).toHaveBeenCalledWith('bulkDeleteError');
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.BULK_DELETE_ERROR);
       });
     });
   });
@@ -774,7 +775,7 @@ describe('ListComponent', () => {
         tick();
       }));
       it('should open error toast', () => {
-        expect(errorService.i18nError).toHaveBeenCalledWith('bulkReserveError');
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.BULK_RESERVE_ERROR);
       });
     });
   });
