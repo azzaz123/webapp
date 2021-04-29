@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { CARD_TYPES } from '../../../item-card-list/enums/card-types.enum';
 
 @Component({
   selector: 'tsl-item-card-placeholder',
@@ -8,7 +7,4 @@ import { CARD_TYPES } from '../../../item-card-list/enums/card-types.enum';
 })
 export class ItemCardPlaceholderComponent {
   @Input() showDescription: boolean = true;
-  @Input() cardType: CARD_TYPES;
-
-  public cardTypes = CARD_TYPES;
 }

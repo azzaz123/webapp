@@ -1,18 +1,17 @@
 @import '~style/common';
-
-$container-height-with-description: 420px;
-$container-height-without-description: 202px;
-$image-height-with-description: 210px;
-$image-border-radius: 6px;
-$card-max-width: 685px;
+@import '../../styles/item-card-wide-variables';
 
 .ItemCardWidePlaceholder {
   background-color: $white;
   border-radius: $border-radius;
   box-shadow: $item-card-box-shadow;
-  height: $container-height-without-description;
+  height: $card-height-small-view;
   overflow: hidden;
   max-width: $card-max-width;
+
+  @include media-breakpoint-up(md) {
+    height: $card-height-big-view;
+  }
 
   &__text {
     @include TextPlaceholder;
@@ -20,6 +19,10 @@ $card-max-width: 685px;
 
   &__image {
     @include ImagePlaceholder;
+    height: $image-height-small-view;
     border-radius: 10px;
+    @include media-breakpoint-up(md) {
+      height: 100%;
+    }
   }
 }
