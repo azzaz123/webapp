@@ -1,0 +1,7 @@
+<ng-container *ngIf="cardType === cardTypes.REGULAR">
+    <tsl-item-card-placeholder *ngFor="let i of [].constructor(numberOfCards)"></tsl-item-card-placeholder>
+</ng-container>
+
+<ng-container *ngIf="cardType === cardTypes.WIDE">
+    <tsl-item-card-wide-placeholder *ngFor="let i of [].constructor(numberOfCards)"></tsl-item-card-wide-placeholder>
+</ng-container>
