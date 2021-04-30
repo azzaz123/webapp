@@ -8,6 +8,7 @@ import { LOCALE_ID } from '@angular/core';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from 'environments/environment';
 import { of, throwError } from 'rxjs';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('CategoryService', () => {
   const defaultIcon = '/assets/icons/categories/stroke/All.svg';
@@ -86,7 +87,7 @@ describe('CategoryService', () => {
       const consumerGoodsCategory = service.getConsumerGoodsCategory();
 
       expect(consumerGoodsCategory.category_id).toBe(0);
-      expect(consumerGoodsCategory.name).toBe(i18nService.getTranslations('consumerGoodsGeneralCategoryTitle'));
+      expect(consumerGoodsCategory.name).toBe(i18nService.translate(TRANSLATION_KEY.CONSUMER_GOODS_GENERAL_CATEGORY_TITLE));
       expect(consumerGoodsCategory.icon_id).toBe('All');
     });
   });

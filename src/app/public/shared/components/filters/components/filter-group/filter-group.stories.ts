@@ -15,6 +15,7 @@ import { FilterHostDirective } from './directives/filter-host.directive';
 import { FilterGroupComponent } from './filter-group.component';
 import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-filters',
@@ -52,8 +53,8 @@ const CONFIG: [RangeFilterConfig, ToggleFilterConfig] = [
     id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
     type: FILTER_TYPES.RANGE,
     mapKey: {
-      maxKey: 'max',
-      minKey: 'min',
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
     },
     title: 'How much do you want to pay?',
     icon: '/assets/icons/joke.svg',
@@ -65,7 +66,7 @@ const CONFIG: [RangeFilterConfig, ToggleFilterConfig] = [
     id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
     type: FILTER_TYPES.TOGGLE,
     mapKey: {
-      key: 'warranty',
+      key: FILTER_QUERY_PARAM_KEY.warranty,
     },
     title: 'Warranty',
     icon: '/assets/icons/joke.svg',

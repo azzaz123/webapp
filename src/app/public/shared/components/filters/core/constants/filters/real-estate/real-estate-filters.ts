@@ -1,8 +1,87 @@
 import { REAL_ESTATE_CONFIGURATION_ID } from '../../../enums/configuration-ids/real-estate-configuration-ids.enum';
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
 import { AvailableFilterConfig } from '../../../types/available-filter-config.type';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+
+const REAL_ESTATE_FILTER_CONFIGURATION_COMMON: AvailableFilterConfig[] = [
+  {
+    id: REAL_ESTATE_CONFIGURATION_ID.ROOMS,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterRoomsTitle:Number of rooms`,
+    bubblePlaceholder: $localize`:@@filterRoomsBubblePlaceholder:Number of rooms`,
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.rooms,
+    },
+    isMultiselect: false,
+    hasBigIcons: true,
+  },
+  {
+    id: REAL_ESTATE_CONFIGURATION_ID.BATHROOMS,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterBathroomsTitle:Number of bathrooms`,
+    bubblePlaceholder: $localize`:@@filterBathroomsBubblePlaceholder:Number of bathrooms`,
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.bathrooms,
+    },
+    isMultiselect: false,
+    hasBigIcons: true,
+  },
+  {
+    id: REAL_ESTATE_CONFIGURATION_ID.CONDITION,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterRealEstateConditionTitle:Status`,
+    bubblePlaceholder: $localize`:@@filterRealEstateConditionBubblePlaceholder:Status`,
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.condition,
+    },
+    isMultiselect: false,
+    hasBigIcons: false,
+  },
+  {
+    id: REAL_ESTATE_CONFIGURATION_ID.EXTRAS,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterRealEstateFeaturesTitle:Features`,
+    bubblePlaceholder: $localize`:@@filterRealEstateFeaturesBubblePlaceholder:Features`,
+    mapKey: {
+      garage: FILTER_QUERY_PARAM_KEY.garage,
+      terrace: FILTER_QUERY_PARAM_KEY.terrace,
+      elevator: FILTER_QUERY_PARAM_KEY.elevator,
+      garden: FILTER_QUERY_PARAM_KEY.garden,
+      pool: FILTER_QUERY_PARAM_KEY.pool,
+    },
+    isMultiselect: true,
+    hasBigIcons: false,
+    isBooleanFormat: true,
+  },
+];
 
 const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
+  {
+    id: REAL_ESTATE_CONFIGURATION_ID.TYPE,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterPropertyTypeTitle:What are you looking for?`,
+    bubblePlaceholder: $localize`:@@filterPropertyTypeBubblePlaceholder:Type of property`,
+    icon: '/assets/icons/filters/real_estate_type.svg',
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.type,
+    },
+    isMultiselect: false,
+    hasBigIcons: false,
+    mirrorsValueIcon: true,
+  },
+  {
+    id: REAL_ESTATE_CONFIGURATION_ID.OPERATION,
+    type: FILTER_TYPES.GRID,
+    title: $localize`:@@filterOperationTitle:Rent or buy?`,
+    bubblePlaceholder: $localize`:@@filterOperationBubblePlaceholder:Rent or buy?`,
+    icon: '/assets/icons/filters/real_estate_operation.svg',
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.operation,
+    },
+    isMultiselect: false,
+    hasBigIcons: false,
+    mirrorsValueIcon: true,
+  },
   {
     id: REAL_ESTATE_CONFIGURATION_ID.DEFAULT_PRICE,
     type: FILTER_TYPES.RANGE,
@@ -10,8 +89,8 @@ const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
     range: [0, 5000000],
@@ -33,12 +112,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [1000, 100000],
-    stepsConfig: [{ range: [1000, 100000], step: 1000 }],
+    range: [0, 100000],
+    stepsConfig: [{ range: [0, 100000], step: 1000 }],
     limitless: true,
   },
   {
@@ -48,8 +127,8 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
     range: [0, 5000000],
@@ -68,12 +147,15 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [50000, 3000000],
-    stepsConfig: [{ range: [50000, 3000000], step: 25000 }],
+    range: [0, 3000000],
+    stepsConfig: [
+      { range: [0, 50000], step: 50000 },
+      { range: [50000, 3000000], step: 25000 },
+    ],
     limitless: true,
   },
   {
@@ -83,12 +165,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [1000, 100000],
-    stepsConfig: [{ range: [1000, 100000], step: 1000 }],
+    range: [0, 100000],
+    stepsConfig: [{ range: [0, 100000], step: 1000 }],
     limitless: true,
   },
   {
@@ -98,12 +180,15 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [50000, 3000000],
-    stepsConfig: [{ range: [50000, 3000000], step: 25000 }],
+    range: [0, 3000000],
+    stepsConfig: [
+      { range: [0, 50000], step: 50000 },
+      { range: [50000, 3000000], step: 25000 },
+    ],
     limitless: true,
   },
   {
@@ -113,12 +198,15 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [50000, 3000000],
-    stepsConfig: [{ range: [50000, 3000000], step: 25000 }],
+    range: [0, 3000000],
+    stepsConfig: [
+      { range: [0, 50000], step: 50000 },
+      { range: [50000, 3000000], step: 25000 },
+    ],
     limitless: true,
   },
   {
@@ -128,12 +216,15 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [50000, 3000000],
-    stepsConfig: [{ range: [50000, 3000000], step: 25000 }],
+    range: [0, 3000000],
+    stepsConfig: [
+      { range: [0, 50000], step: 50000 },
+      { range: [50000, 3000000], step: 25000 },
+    ],
     limitless: true,
   },
   {
@@ -143,12 +234,15 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [50000, 3000000],
-    stepsConfig: [{ range: [50000, 3000000], step: 25000 }],
+    range: [0, 3000000],
+    stepsConfig: [
+      { range: [0, 50000], step: 50000 },
+      { range: [50000, 3000000], step: 25000 },
+    ],
     limitless: true,
   },
 ];
@@ -161,12 +255,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [10, 1000],
-    stepsConfig: [{ range: [10, 1000], step: 10 }],
+    range: [0, 1000],
+    stepsConfig: [{ range: [0, 1000], step: 10 }],
     limitless: true,
   },
   {
@@ -176,8 +270,8 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
     range: [0, 5000000],
@@ -196,12 +290,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [100, 3000],
-    stepsConfig: [{ range: [100, 3000], step: 100 }],
+    range: [0, 3000],
+    stepsConfig: [{ range: [0, 3000], step: 100 }],
     limitless: true,
   },
   {
@@ -211,12 +305,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [25, 700],
-    stepsConfig: [{ range: [25, 700], step: 25 }],
+    range: [0, 700],
+    stepsConfig: [{ range: [0, 700], step: 25 }],
     limitless: true,
   },
   {
@@ -226,12 +320,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [100, 3000],
-    stepsConfig: [{ range: [100, 3000], step: 100 }],
+    range: [0, 3000],
+    stepsConfig: [{ range: [0, 3000], step: 100 }],
     limitless: true,
   },
   {
@@ -241,12 +335,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [100, 30000],
-    stepsConfig: [{ range: [100, 30000], step: 100 }],
+    range: [0, 30000],
+    stepsConfig: [{ range: [0, 30000], step: 100 }],
     limitless: true,
   },
   {
@@ -256,12 +350,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [100, 30000],
-    stepsConfig: [{ range: [100, 30000], step: 100 }],
+    range: [0, 30000],
+    stepsConfig: [{ range: [0, 30000], step: 100 }],
     limitless: true,
   },
   {
@@ -271,12 +365,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
-    range: [50, 1000],
-    stepsConfig: [{ range: [50, 1000], step: 50 }],
+    range: [0, 1000],
+    stepsConfig: [{ range: [0, 1000], step: 50 }],
     limitless: true,
   },
 ];
@@ -289,12 +383,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/surface.svg',
     bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
     mapKey: {
-      minKey: 'min_surface',
-      maxKey: 'max_surface',
+      minKey: FILTER_QUERY_PARAM_KEY.minSurface,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxSurface,
     },
     units: 'm²',
-    range: [40, 1000],
-    stepsConfig: [{ range: [40, 1000], step: 20 }],
+    range: [0, 1000],
+    stepsConfig: [{ range: [0, 1000], step: 20 }],
     limitless: true,
   },
   {
@@ -304,12 +398,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/surface.svg',
     bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
     mapKey: {
-      minKey: 'min_surface',
-      maxKey: 'max_surface',
+      minKey: FILTER_QUERY_PARAM_KEY.minSurface,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxSurface,
     },
     units: 'm²',
-    range: [100, 10000],
-    stepsConfig: [{ range: [100, 1000], step: 100 }],
+    range: [0, 10000],
+    stepsConfig: [{ range: [0, 1000], step: 100 }],
     limitless: true,
   },
   {
@@ -319,12 +413,15 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/surface.svg',
     bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
     mapKey: {
-      minKey: 'min_surface',
-      maxKey: 'max_surface',
+      minKey: FILTER_QUERY_PARAM_KEY.minSurface,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxSurface,
     },
     units: 'm²',
-    range: [40, 1000],
-    stepsConfig: [{ range: [40, 1000], step: 20 }],
+    range: [0, 1000],
+    stepsConfig: [
+      { range: [0, 40], step: 40 },
+      { range: [40, 1000], step: 20 },
+    ],
     limitless: true,
   },
   {
@@ -334,12 +431,12 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/surface.svg',
     bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
     mapKey: {
-      minKey: 'min_surface',
-      maxKey: 'max_surface',
+      minKey: FILTER_QUERY_PARAM_KEY.minSurface,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxSurface,
     },
     units: 'm²',
-    range: [50, 1000],
-    stepsConfig: [{ range: [40, 1000], step: 50 }],
+    range: [0, 1000],
+    stepsConfig: [{ range: [0, 1000], step: 50 }],
     limitless: true,
   },
   {
@@ -349,18 +446,19 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/surface.svg',
     bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
     mapKey: {
-      minKey: 'min_surface',
-      maxKey: 'max_surface',
+      minKey: FILTER_QUERY_PARAM_KEY.minSurface,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxSurface,
     },
     units: 'm²',
-    range: [2, 200],
-    stepsConfig: [{ range: [2, 200], step: 2 }],
+    range: [0, 200],
+    stepsConfig: [{ range: [0, 200], step: 2 }],
     limitless: true,
   },
 ];
 
 export const REAL_ESTATE__FILTERS: AvailableFilterConfig[] = [
   ...REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT,
+  ...REAL_ESTATE_FILTER_CONFIGURATION_COMMON,
   ...REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE,
   ...REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE,
   ...REAL_ESTATE__FILTER_CONFIGURATION_SURFACE,

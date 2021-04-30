@@ -1,6 +1,7 @@
 import { COMMON_CONSUMER_GOODS_CONFIGURATION_ID } from '../../../enums/configuration-ids/consumer-goods-configuration-ids.enum';
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
 import { AvailableFilterConfig } from '../../../types/available-filter-config.type';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 export const CONSUMER_GOODS_FILTERS: AvailableFilterConfig[] = [
   {
@@ -10,8 +11,8 @@ export const CONSUMER_GOODS_FILTERS: AvailableFilterConfig[] = [
     icon: '/assets/icons/filters/price.svg',
     bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
     mapKey: {
-      minKey: 'min_sale_price',
-      maxKey: 'max_sale_price',
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
     },
     units: '€',
     range: [0, 20000],

@@ -4,17 +4,17 @@
   [isClearable]="true"
   [title]="config.title"
   [icon]="config.icon"
-  [label]="getLabel()"
-  [hasValue]="hasValue$() | async"
+  [label]="label$ | async"
+  [hasValue]="hasValue$ | async"
   (clear)="handleClear()"
   (openStateChange)="openStateChange.emit($event)">
 
   <tsl-select-filter-template #selectFilterTemplateComponent
     [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
-    [placeholderLabel]="getLabel()"
-    [placeholderIcon]="getPlaceholderIcon()"
+    [placeholderLabel]="label$ | async"
+    [placeholderIcon]="placeholderIcon$ | async"
     [contentTitle]="contentTitle"
-    [isClearable]="hasValue$() | async"
+    [isClearable]="hasValue$ | async"
     (placeholderOpenStateChange)="openStateChange.emit($event)"
     (clear)="handleClear()">
 
