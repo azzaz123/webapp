@@ -64,4 +64,22 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
     isClearable: true,
     hasContentPlaceholder: true,
   },
+  {
+    id: COMMON_CONFIGURATION_ID.LOCATION,
+    type: FILTER_TYPES.LOCATION,
+    title: $localize`:@@filterConditionTitle:Item condition`,
+    bubblePlaceholder: $localize`:@@filterConditionBubblePlaceholder:Item condition`,
+    drawerPlaceholder: $localize`:@@filterConditionDrawerPlaceholder:Any item condition`,
+    icon: '/assets/icons/filters/condition.svg',
+    mapKey: {
+      latitude: FILTER_QUERY_PARAM_KEY.latitude,
+      longitude: FILTER_QUERY_PARAM_KEY.longitude,
+      distance: FILTER_QUERY_PARAM_KEY.distance,
+    },
+    options: {
+      maxDistance: 500,
+      minDistance: 1,
+    },
+    hasContentPlaceholder: true,
+  },
 ];
