@@ -5,6 +5,7 @@ import { SelectFilterModule } from './components/select-filter/select-filter.mod
 import { GridSelectFilterModule } from './components/grid-select-filter/grid-select-filter.module';
 import { SuggesterFilterModule } from './components/suggester-filter/suggester-filter.module';
 import { CategoriesFilterModule } from './components/categories-filter/categories-filter.module';
+import { LocationFilterModule } from './components/location-filter/location-filter.module';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { CategoriesFilterModule } from './components/categories-filter/categorie
     SuggesterFilterModule,
     GridSelectFilterModule,
     CategoriesFilterModule,
+    LocationFilterModule,
   ],
 })
 export class FiltersModule {}
