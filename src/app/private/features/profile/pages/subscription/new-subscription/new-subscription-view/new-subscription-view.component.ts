@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SubscriptionResponse } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionResponse, SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-new-subscription-view',
@@ -7,7 +7,7 @@ import { SubscriptionResponse } from '@core/subscriptions/subscriptions.interfac
   styleUrls: ['./new-subscription-view.component.scss'],
 })
 export class NewSubscriptionViewComponent implements OnInit {
-  @Input() subscription: SubscriptionResponse;
+  @Input() subscription: SubscriptionsResponse;
   constructor() {}
 
   ngOnInit(): void {}

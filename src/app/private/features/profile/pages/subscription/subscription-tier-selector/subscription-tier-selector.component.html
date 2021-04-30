@@ -1,1 +1,12 @@
-<p>subscription-tier-selector works!</p>
+<div class="d-flex">
+    <ng-container *ngFor="let tier of subscription.tiers">
+        <div class="card-generic flex-1">
+            <div class="card-generic__title">
+                {{ tier.limit}}
+            </div>
+            <div class="card-generic__subtitle">
+                {{ tier.price }}
+            </div>
+        </div>
+    </ng-container>
+</div>

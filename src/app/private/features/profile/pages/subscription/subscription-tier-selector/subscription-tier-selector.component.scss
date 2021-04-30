@@ -1,0 +1,11 @@
+@import '~style/common';
+.card-generic {
+  border: solid 2px #eceff1;
+  flex: 1;
+  margin-right: 12px;
+
+  &:hover {
+    transform: $item-card-hover-translate;
+    box-shadow: $item-card-hover-box-shadow;
+  }
+}
