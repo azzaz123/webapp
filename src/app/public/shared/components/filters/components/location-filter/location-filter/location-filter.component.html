@@ -1,0 +1,10 @@
+<tsl-filter-template [isBubble]="variant | isBubble"
+                     [isDropdown]="true"
+                     [title]="config.title"
+                     [icon]="config.icon"
+                     [label]=""
+                     [hasValue]="hasValue$ | async"
+                     (openStateChange)="openStateChange.emit($event)">
+    <div>AAA</div>
+                     
+</tsl-filter-template>
