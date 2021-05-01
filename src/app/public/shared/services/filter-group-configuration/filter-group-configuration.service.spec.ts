@@ -1,22 +1,22 @@
 import { TestBed } from '@angular/core/testing';
-import { FilterWrapperConfigurationService } from './filter-wrapper-configuration.service';
-import { FILTER_GROUP_ID } from '@public/shared/services/filter-wrapper-configuration/enum/filter-group-id.enum';
+import { FilterGroupConfigurationService } from './filter-group-configuration.service';
+import { FILTER_GROUP_ID } from '@public/shared/services/filter-group-configuration/enum/filter-group-id.enum';
 import {
-  DEFAULT_FILTER_WRAPPER_CONFIG,
-  FILTER_WRAPPER_CONFIGS,
-} from '@public/shared/services/filter-wrapper-configuration/data/filter-group-config';
+  DEFAULT_FILTER_GROUP_CONFIG,
+  FILTER_GROUP_CONFIGS,
+} from '@public/shared/services/filter-group-configuration/data/filter-group-config';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
 
-describe('FilterWrapperConfigurationService', () => {
-  let service: FilterWrapperConfigurationService;
+describe('FilterGroupConfigurationService', () => {
+  let service: FilterGroupConfigurationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FilterWrapperConfigurationService],
+      providers: [FilterGroupConfigurationService],
     });
-    service = TestBed.inject(FilterWrapperConfigurationService);
+    service = TestBed.inject(FilterGroupConfigurationService);
   });
 
   it('should be created', () => {
@@ -27,7 +27,7 @@ describe('FilterWrapperConfigurationService', () => {
     it('should return default configuration group', () => {
       const config = service.getConfiguration([]);
 
-      expect(config).toEqual(DEFAULT_FILTER_WRAPPER_CONFIG);
+      expect(config).toEqual(DEFAULT_FILTER_GROUP_CONFIG);
     });
   });
 
@@ -52,6 +52,6 @@ describe('FilterWrapperConfigurationService', () => {
   });
 
   function findConfigById(id: FILTER_GROUP_ID) {
-    return FILTER_WRAPPER_CONFIGS.find((config) => config.id === id);
+    return FILTER_GROUP_CONFIGS.find((config) => config.id === id);
   }
 });
