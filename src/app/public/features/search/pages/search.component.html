@@ -5,8 +5,10 @@
   [infiniteScrollDisabled]="infiniteScrollDisabled$ | async"
   (scrolled)="scrolled()">
 
-  <tsl-filters-wrapper class="Search__filters"></tsl-filters-wrapper>
-  <tsl-sort-filter class="Search__sort d-block"></tsl-sort-filter>
+  <div class="Search__filters w-100">
+    <tsl-filters-wrapper></tsl-filters-wrapper>
+    <tsl-sort-filter></tsl-sort-filter>
+  </div>
 
   <tsl-search-layout *ngIf="(items$ | async).length > 0">
     <div top class="d-block h-100 position-relative">

@@ -6,6 +6,10 @@ $actions-height: 88px;
   cursor: pointer;
   font-size: $font-size-xs;
 
+  height: 38px;
+  background-color: $color-inbox-background;
+  border-bottom: thin solid $color-social-background;
+
   &__bubble {
     padding: 0;
     min-width: 380px;
