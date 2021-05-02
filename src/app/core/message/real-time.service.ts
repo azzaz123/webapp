@@ -15,6 +15,7 @@ import { ConnectionService } from '../connection/connection.service';
 import { ConnectionType } from '../remote-console/connection-type';
 import { I18nService } from '../i18n/i18n.service';
 import { InboxConversation, InboxMessage, ChatSignal, ChatSignalType } from '@private/features/chat/core/model';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 export const SEARCHID_STORAGE_NAME = 'searchId';
 
@@ -100,7 +101,7 @@ export class RealTimeService {
   }
 
   public addPhoneNumberMessageToConversation(conversation: InboxConversation, phone: string) {
-    const message = `${this.i18n.getTranslations('phoneMessage')}${phone}`;
+    const message = `${this.i18n.translate(TRANSLATION_KEY.CHAT_MY_PHONE_NUMBER)} ${phone}`;
     this.sendMessage(conversation, message);
   }
 

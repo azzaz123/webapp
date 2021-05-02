@@ -4,9 +4,13 @@
     [class.ItemCardList--loading]="isLoading"
 >
    <ng-container  *ngFor="let item of items; let i = index">
-       <div *ngIf="slotsConfig && (i | showSlot: slotsConfig)" class="ItemCardList__slot d-flex justify-content-center align-items-center">
-          <ng-container *ngTemplateOutlet="slotTemplate;context: {$implicit: i}"></ng-container>
-       </div>
+
+
+        <ng-container *ngIf="slotTemplate">
+          <div *ngIf="slotsConfig && (i | showSlot: slotsConfig)" class="ItemCardList__slot d-flex justify-content-center align-items-center">
+            <ng-container *ngTemplateOutlet="slotTemplate;context: {$implicit: i}"></ng-container>
+         </div>
+        </ng-container>
        <tsl-public-item-card
             *ngIf="cardType === cardTypes.REGULAR"
             [item]="item" [showDescription]="showDescription"

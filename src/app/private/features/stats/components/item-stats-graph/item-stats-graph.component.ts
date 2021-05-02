@@ -5,6 +5,7 @@ import { EChartOption } from 'echarts';
 import * as moment from 'moment';
 import { ItemStatisticFullResponse, ItemStatisticEntriesResponse } from '../../core/item-stats-response.interface';
 import { UuidService } from '@core/uuid/uuid.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 const GRAPH_COLORS = {
   CHAT: '#EEAA42',
@@ -102,7 +103,7 @@ export class ItemStatsGraphComponent implements OnInit {
       },
       series: [
         {
-          name: this.i18n.getTranslations('favorites'),
+          name: this.i18n.translate(TRANSLATION_KEY.STATS_FAVORITES),
           type: 'bar',
           smooth: true,
           sampling: 'average',
@@ -116,7 +117,7 @@ export class ItemStatsGraphComponent implements OnInit {
           },
         },
         {
-          name: this.i18n.getTranslations('views'),
+          name: this.i18n.translate(TRANSLATION_KEY.STATS_VIEWS),
           type: 'bar',
           smooth: true,
           sampling: 'average',
@@ -129,7 +130,7 @@ export class ItemStatsGraphComponent implements OnInit {
           },
         },
         {
-          name: this.i18n.getTranslations('chats'),
+          name: this.i18n.translate(TRANSLATION_KEY.STATS_CHATS),
           type: 'bar',
           itemStyle: {
             color: colorChats,

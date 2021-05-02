@@ -45,12 +45,7 @@ describe('CreditCardModalComponent', () => {
               navigate() {},
             },
           },
-          {
-            provide: I18nService,
-            useValue: {
-              getTranslations() {},
-            },
-          },
+          I18nService,
         ],
         declarations: [CreditCardModalComponent],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
