@@ -18,6 +18,7 @@ export class ItemCardListComponent {
   @Input() items: ItemCard[];
   @Input() showDescription = true;
   @Input() showPlaceholder = false;
+  @Input() placeholderCards = 15;
   @Input() columnsConfig: ColumnsConfig = {
     xl: 5,
     lg: 4,

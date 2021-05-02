@@ -1,11 +1,8 @@
 <div 
     class="ItemCardList w-100 m-auto grid-xs-{{columnsConfig.xs}} grid-sm-{{columnsConfig.sm}} grid-md-{{columnsConfig.md}} grid-lg-{{columnsConfig.lg}} grid-xl-{{columnsConfig.xl}}"
-    *ngIf="!showPlaceholder else placeholder"
-    [class.ItemCardList--loading]="isLoading"
+    [class.ItemCardList--loading]="isLoading && !showPlaceholder"
 >
-   <ng-container  *ngFor="let item of items; let i = index">
-
-
+   <ng-container *ngFor="let item of items; let i = index">
         <ng-container *ngIf="slotTemplate">
           <div *ngIf="slotsConfig && (i | showSlot: slotsConfig)" class="ItemCardList__slot d-flex justify-content-center align-items-center">
             <ng-container *ngTemplateOutlet="slotTemplate;context: {$implicit: i}"></ng-container>
@@ -28,14 +25,12 @@
         >
         </tsl-item-card-wide>
     </ng-container>
+
+    <ng-container *ngIf="showPlaceholder && (cardType === cardTypes.REGULAR)">
+        <tsl-item-card-placeholder *ngFor="let i of [].constructor(placeholderCards)"></tsl-item-card-placeholder>
+    </ng-container>
+    
+    <ng-container *ngIf="showPlaceholder && (cardType === cardTypes.WIDE)">
+        <tsl-item-card-wide-placeholder *ngFor="let i of [].constructor(placeholderCards)"></tsl-item-card-wide-placeholder>
+    </ng-container>
 </div>
-
-<ng-template #placeholder>
-    <div 
-        class="ItemCardList w-100 m-auto grid-xs-{{columnsConfig.xs}} grid-sm-{{columnsConfig.sm}} grid-md-{{columnsConfig.md}} grid-lg-{{columnsConfig.lg}} grid-xl-{{columnsConfig.xl}}"
-        [cardType]="cardType"
-        item-card-list-placeholder
-    >
-    </div>
-</ng-template>
-

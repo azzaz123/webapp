@@ -7,10 +7,9 @@ import { ItemCardService } from '@public/core/services/item-card/item-card.servi
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 import { ShowSlotPipe } from './pipes/show-slot.pipe';
 import { ItemCardWideModule } from '../item-card-wide/item-card-wide.module';
-import { ItemCardListPlaceholderComponent } from './components/item-card-list-placeholder/item-card-list-placeholder.component';
 
 @NgModule({
-  declarations: [ItemCardListComponent, ItemCardListPlaceholderComponent, ShowSlotPipe],
+  declarations: [ItemCardListComponent, ShowSlotPipe],
   imports: [CommonModule, ItemCardModule, ItemCardWideModule, ItemApiModule, PublicPipesModule],
   exports: [ItemCardListComponent],
   providers: [ItemCardService],
