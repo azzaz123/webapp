@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CATEGORY_IDS } from '@core/category/category-ids';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
@@ -15,14 +15,14 @@ export class SubscriptionCardComponent {
   @Input() isSubscribed: boolean;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter();
 
-  titleConfig = {
-    [CATEGORY_IDS.CAR]: $localize`:@@web_profile_pages_subscription_cars_desc:List all your cars`,
-    [CATEGORY_IDS.MOTORBIKE]: $localize`:@@web_profile_pages_subscription_motorbike_desc:List all your motorbikes`,
-    [CATEGORY_IDS.MOTOR_ACCESSORIES]: $localize`:@@web_profile_pages_subscription_motor_acc_desc:List all your Motor and Accessories items`,
-    [CATEGORY_IDS.EVERYTHING_ELSE]: $localize`:@@web_profile_pages_subscription_other_desc:Your best plan to sell <strong>all kinds of items<strong>`,
+  public readonly titleConfig = {
+    [CATEGORY_SUBSCRIPTIONS_IDS.CAR]: $localize`:@@web_profile_pages_subscription_cars_desc:List all your cars`,
+    [CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE]: $localize`:@@web_profile_pages_subscription_motorbike_desc:List all your motorbikes`,
+    [CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES]: $localize`:@@web_profile_pages_subscription_motor_acc_desc:List all your Motor and Accessories items`,
+    [CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE]: $localize`:@@web_profile_pages_subscription_other_desc:Your best plan to sell all kinds of items`,
   };
 
-  subcriptionBenefits: string[] = [
+  public readonly subcriptionBenefits: string[] = [
     $localize`:@@web_subscription_benefit_title_visibility:Gain more visibility`,
     $localize`:@@web_subscription_benefit_title_time:Save management time`,
     $localize`:@@web_subscription_benefit_title_share:Share your phone and website`,
@@ -33,7 +33,7 @@ export class SubscriptionCardComponent {
   }
 
   get noSubscriptionBodyText(): string {
-    return this.subscription.category_id !== CATEGORY_IDS.EVERYTHING_ELSE
+    return this.subscription.category_id !== CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE
       ? $localize`:@@web_subscription_benefit_title_limit:Set your listing limit`
       : $localize`:@@web_subscription_benefit_title_branding:Boost your branding`;
   }
@@ -45,7 +45,7 @@ export class SubscriptionCardComponent {
   }
 
   get iconSrc(): string {
-    const status = this.isSubscribed ? 'disabled': 'normal';
+    const status = this.isSubscribed ? 'disabled' : 'normal';
     return `/assets/icons/categories/${status}/${this.subscription.category_icon}.svg`;
   }
 
