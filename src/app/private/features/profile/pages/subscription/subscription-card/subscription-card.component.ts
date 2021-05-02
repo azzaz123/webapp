@@ -45,7 +45,7 @@ export class SubscriptionCardComponent {
   }
 
   get iconSrc(): string {
-    const status = this.isSubscribed ? 'normal' : 'disabled';
+    const status = this.isSubscribed ? 'disabled': 'normal';
     return `/assets/icons/categories/${status}/${this.subscription.category_icon}.svg`;
   }
 
