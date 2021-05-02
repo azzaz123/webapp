@@ -11,7 +11,6 @@
 
   &__content {
     flex: 1;
-    padding: $spacer * 0.5;
   }
 
   &__text {
@@ -22,7 +21,6 @@
     @include ImagePlaceholder;
     height: $image-height-without-description;
     &--with-description {
-      margin: 4px 4px 0;
       height: $image-height-with-description;
       border-radius: $image-border-radius;
     }
