@@ -58,8 +58,6 @@ export class I18nService {
       missed: 'Llamada perdida',
       answered: 'Llamada recibida',
       featured: 'Destacado',
-      cityFeatured: 'Destacados ciudad',
-      countryFeatured: 'Destacados país',
       contactMotor:
         ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.',
       errorPurchasingItems: 'No se han podido destacar estos productos:',
