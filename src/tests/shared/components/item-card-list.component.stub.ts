@@ -15,4 +15,6 @@ export class ItemCardListComponentStub {
   @Input() columnsConfig: ColumnsConfig;
   @Input() slotsConfig: SlotsConfig;
   @Input() cardType: CARD_TYPES;
+  @Input() isLoading: boolean;
+  @Input() showPlaceholder: boolean;
 }

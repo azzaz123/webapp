@@ -40,5 +40,7 @@ export enum FILTER_QUERY_PARAM_KEY {
 
   brandModel = 'brand_model',
 
+  keywords = 'keywords',
+
   orderBy = 'order_by',
 }

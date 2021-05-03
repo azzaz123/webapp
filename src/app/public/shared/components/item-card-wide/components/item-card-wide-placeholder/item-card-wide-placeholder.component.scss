@@ -1,0 +1,28 @@
+@import '~style/common';
+@import '../../styles/item-card-wide-variables';
+
+.ItemCardWidePlaceholder {
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: $item-card-box-shadow;
+  height: $card-height-small-view;
+  overflow: hidden;
+  max-width: $card-max-width;
+
+  @include media-breakpoint-up(md) {
+    height: $card-height-big-view;
+  }
+
+  &__text {
+    @include TextPlaceholder;
+  }
+
+  &__image {
+    @include ImagePlaceholder;
+    height: $image-height-small-view;
+    border-radius: 10px;
+    @include media-breakpoint-up(md) {
+      height: 100%;
+    }
+  }
+}

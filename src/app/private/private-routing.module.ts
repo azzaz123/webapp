@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DevelopmentGuard } from '@core/user/development.guard';
+import { DeliveryDevelopmentGuard } from './features/delivery/guards/delivery-development.guard';
 import { PERMISSIONS } from '@core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PRIVATE_PATHS } from './private-routing-constants';
@@ -114,7 +114,7 @@ const routes: Routes = [
       },
       {
         path: PRIVATE_PATHS.DELIVERY,
-        canLoad: [DevelopmentGuard],
+        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => import('@private/features/delivery/delivery.module').then((m) => m.DeliveryModule),
       },
       {

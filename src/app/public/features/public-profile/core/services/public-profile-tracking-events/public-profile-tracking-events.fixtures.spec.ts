@@ -10,8 +10,11 @@ import {
   UnfavoriteItem,
   UnfavoriteUser,
   ViewOtherProfile,
+  ViewOtherReviews,
   ViewOwnProfile,
+  ViewOwnReviews,
 } from '@core/analytics/analytics-constants';
+import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
@@ -71,6 +74,26 @@ export const MOCK_UNFAVOURITE_USER_EVENT: AnalyticsEvent<UnfavoriteUser> = {
   },
 };
 
+export const MOCK_TRACK_VIEW_OWN_REVIEWS: AnalyticsPageView<ViewOwnReviews> = {
+  name: ANALYTICS_EVENT_NAMES.ViewOwnReviews,
+  attributes: {
+    screenId: SCREEN_IDS.OwnReviewsSection,
+    isPro: MOCK_USER.featured,
+    numberOfReviews: MOCK_USER_STATS.counters.publish,
+    reviewsScore: MOCK_USER_STATS.ratings.reviews,
+  },
+};
+
+export const MOCK_TRACK_VIEW_OTHERS_REVIEWS: AnalyticsPageView<ViewOtherReviews> = {
+  name: ANALYTICS_EVENT_NAMES.ViewOtherReviews,
+  attributes: {
+    screenId: SCREEN_IDS.OtherReviewsSection,
+    isPro: MOCK_OTHER_USER.featured,
+    sellerUserId: MOCK_OTHER_USER.id,
+    numberOfReviews: MOCK_USER_STATS.counters.publish,
+    reviewsScore: MOCK_USER_STATS.ratings.reviews,
+  },
+};
 export const MOCK_FAVOURITE_ITEM_EVENT_PROFILE: AnalyticsEvent<FavoriteItem> = {
   name: ANALYTICS_EVENT_NAMES.FavoriteItem,
   eventType: ANALYTIC_EVENT_TYPES.UserPreference,
@@ -98,6 +121,7 @@ export class MockUserProfileTrackEventService {
   trackViewOwnProfile() {}
   trackViewOtherProfile() {}
   trackFavouriteOrUnfavouriteUserEvent() {}
+  trackViewOwnReviewsorViewOtherReviews() {}
   trackFavouriteOrUnfavouriteItemEvent() {}
   trackClickItemCardEvent() {}
 }
