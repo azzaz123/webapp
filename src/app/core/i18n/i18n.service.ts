@@ -13,6 +13,6 @@ export class I18nService {
   }
 
   public translate(translationKey: TRANSLATION_KEY): string {
-    return translations[translationKey];
+    return translations[translationKey] || '';
   }
 }
