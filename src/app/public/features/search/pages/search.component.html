@@ -8,7 +8,9 @@
   <tsl-filters-wrapper class="Search__filters"></tsl-filters-wrapper>
   <tsl-sort-filter class="Search__sort d-block"></tsl-sort-filter>
 
-  <tsl-search-layout *ngIf="(items$ | async).length > 0">
+  <tsl-search-error-layout *ngIf="searchWithoutResults$ | async"></tsl-search-error-layout>
+
+  <tsl-search-layout *ngIf="!(searchWithoutResults$ | async)">
     <div top class="d-block h-100 position-relative">
       <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
     </div>
@@ -28,22 +30,33 @@
       </ng-container>
     </div>
     <ng-container main>
-      <tsl-public-item-card-list [items]="items$ | async" [columnsConfig]="columnsConfig" [slotsConfig]="slotsConfig">
-        <ng-template #slotTemplate let-index>
-          <tsl-sky-native-shopping [adSlotContainer]="adSlotNativeShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index"></tsl-sky-native-shopping>
-        </ng-template>
+        <tsl-public-item-card-list 
+          [items]="items$ | async"
+          [isLoading]="isLoadingResults$ | async" 
+          [showPlaceholder]="showPlaceholder$ | async"
+          [columnsConfig]="listColumnsConfig$ | async"
+          [cardType]="listCardType$ | async"
+          [slotsConfig]="slotsConfig"
+        >
+        <ng-container *ngIf="(isWall$ | async) === false">
+          <ng-template #slotTemplate let-index>
+            <tsl-sky-shopping [adSlotContainer]="adSlotShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index" [cardType]="listCardType$ | async"></tsl-sky-shopping>
+          </ng-template>
+        </ng-container>
       </tsl-public-item-card-list>
+      
+      <div class="Search__spinner d-flex align-items-center justify-content-center py-5" *ngIf="(isLoadingPaginationResults$ | async)">
+        <img width="50" height="50" src="/assets/images/spinner.gif" />
+      </div>
+
       <ng-container *ngIf="infiniteScrollDisabled$ | async" >
         <div class="row justify-content-center my-4" *ngIf="hasMoreItems$ | async">
           <tsl-button id="btn-load-more" (click)="loadMoreProducts()" i18n="web_search_component_load_more_products">Ver más productos</tsl-button>
         </div>
-        <div *ngIf="device === DevicesType.DESKTOP" class="row justify-content-center my-4">
+        <div *ngIf="device === DevicesType.DESKTOP && (isWall$ | async) === false" class="row justify-content-center my-4">
           <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
         </div>
       </ng-container>
     </ng-container>
   </tsl-search-layout>
-
-  <tsl-search-error-layout *ngIf="(items$ | async).length === 0 && (isLoadingResults$ | async) === false">
-  </tsl-search-error-layout>
 </div>

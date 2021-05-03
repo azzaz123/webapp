@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { CategoryResponse, SuggestedCategory } from './category-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { environment } from '../../../environments/environment';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 export const CATEGORIES_ENDPOINT = 'api/v3/categories/keys/';
 export const SUGGESTED_CATEGORIES_ENDPOINT = 'api/v3/classifier/upload-blackbox';
@@ -50,7 +51,7 @@ export class CategoryService {
   public getConsumerGoodsCategory(): CategoryResponse {
     return {
       category_id: 0,
-      name: this.i18n.getTranslations('consumerGoodsGeneralCategoryTitle'),
+      name: this.i18n.translate(TRANSLATION_KEY.CONSUMER_GOODS_GENERAL_CATEGORY_TITLE),
       icon_id: 'All',
       vertical_id: 'consumer_goods',
       fields: {},

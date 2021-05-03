@@ -1,20 +1,24 @@
 import { Inject, Injectable } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import {
+  FilterParameterStoreService,
+  FILTER_PARAMETER_STORE_TOKEN,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
-import { SearchPagination } from '../../interfaces/search-pagination.interface';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { SearchPagination, SearchPaginationWithCategory } from '../../interfaces/search-pagination.interface';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
 import { SearchStoreService } from './search-store.service';
-import {
-  FILTER_PARAMETER_STORE_TOKEN,
-  FilterParameterStoreService,
-} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 @Injectable()
 export class SearchService {
   private static INITIAL_LOADING_STATE = true;
+  private static INITIAL_PAGINATION_LOADING_STATE = false;
   private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_LOADING_STATE);
+  private readonly isLoadingPaginationResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_PAGINATION_LOADING_STATE);
+  private readonly currentCategoryIdSubject = new BehaviorSubject<string>(undefined);
 
   private subscription: Subscription = new Subscription();
 
@@ -36,8 +40,31 @@ export class SearchService {
     this.isLoadingResultsSubject.next(loading);
   }
 
+  get isLoadingPaginationResults$(): Observable<boolean> {
+    return this.isLoadingPaginationResultsSubject.asObservable();
+  }
+
+  private set isLoadingPaginationResults(loading: boolean) {
+    this.isLoadingPaginationResultsSubject.next(loading);
+  }
+
   get hasMore$(): Observable<boolean> {
     return this.searchStoreService.hasMore$;
+  }
+
+  public isWall$: Observable<boolean> = this.filterParameterStoreService.parameters$.pipe(
+    map((filterParameters: FilterParameter[]) =>
+      filterParameters.find(({ key }: FilterParameter) => key === FILTER_QUERY_PARAM_KEY.keywords)
+    ),
+    map((filterKeyowrd: FilterParameter) => !filterKeyowrd)
+  );
+
+  get currentCategoryId$(): Observable<string> {
+    return this.currentCategoryIdSubject.asObservable();
+  }
+
+  private set currentCategoryId(categoryId: string) {
+    this.currentCategoryIdSubject.next(categoryId);
   }
 
   constructor(
@@ -61,12 +88,15 @@ export class SearchService {
     this.filterParameterStoreService.clear();
   }
 
-  private onChangeParameters(): Observable<SearchPagination> {
+  private onChangeParameters(): Observable<SearchPaginationWithCategory> {
     return this.filterParameterStoreService.parameters$.pipe(
       tap(() => (this.isLoadingResults = true)),
-      switchMap((filterParameters: FilterParameter[]) => this.searchInfrastructureService.search(filterParameters)),
-      tap(({ items, hasMore }: SearchPagination) => {
+      switchMap((filterParameters: FilterParameter[]) =>
+        this.searchInfrastructureService.search(filterParameters).pipe(map((r) => this.mapSearchResponse(r, filterParameters)))
+      ),
+      tap(({ items, hasMore, categoryId }: SearchPaginationWithCategory) => {
         this.isLoadingResults = false;
+        this.currentCategoryId = categoryId;
         this.searchStoreService.setItems(items);
         this.searchStoreService.setHasMore(hasMore);
       })
@@ -75,11 +105,27 @@ export class SearchService {
 
   private onLoadMore(): Observable<SearchPagination> {
     return this.loadMore$.pipe(
+      tap(() => (this.isLoadingPaginationResults = true)),
       switchMap(() => this.searchInfrastructureService.loadMore()),
       tap(({ items, hasMore }: SearchPagination) => {
+        this.isLoadingPaginationResults = false;
         this.searchStoreService.appendItems(items);
         this.searchStoreService.setHasMore(hasMore);
       })
     );
+  }
+
+  private mapSearchResponse(pagination: SearchPagination, filterParameters: FilterParameter[]): SearchPaginationWithCategory {
+    const { items, hasMore } = pagination;
+
+    return {
+      items,
+      hasMore,
+      categoryId: this.getCategoryIdFromParams(filterParameters),
+    };
+  }
+
+  private getCategoryIdFromParams(filterParameters: FilterParameter[]) {
+    return filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
   }
 }

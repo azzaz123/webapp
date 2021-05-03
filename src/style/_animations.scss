@@ -23,3 +23,17 @@
     -webkit-transform: rotate(360deg);
   }
 }
+
+@keyframes placeholderAnimation {
+  0% {
+    background-color: $blue-grey-5;
+  }
+
+  50% {
+    background-color: $blue-grey-4;
+  }
+
+  100% {
+    background-color: $blue-grey-5;
+  }
+}

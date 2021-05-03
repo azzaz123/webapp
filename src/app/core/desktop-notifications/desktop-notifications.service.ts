@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { InboxConversation, InboxMessage } from '@private/features/chat/core/model';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -55,7 +56,7 @@ export class DesktopNotificationsService {
   }
 
   private buildTitleFromConversation(conversation: InboxConversation): string {
-    return `${this.i18n.getTranslations('newMessageNotification')}${conversation.user.microName}`;
+    return `${this.i18n.translate(TRANSLATION_KEY.CHAT_DESKTOP_NOTIFICATION_TITLE)} ${conversation.user.microName}`;
   }
 
   private buildOptionsFromConversation(message: InboxMessage, conversation: InboxConversation): NotificationOptions {
