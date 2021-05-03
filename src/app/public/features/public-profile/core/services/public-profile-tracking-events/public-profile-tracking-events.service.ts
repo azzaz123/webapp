@@ -16,7 +16,6 @@ import {
   ClickItemCard,
 } from '@core/analytics/analytics-constants';
 import { UserStats } from '@core/user/user-stats.interface';
-import { Review } from '@private/features/reviews/core/review';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { User } from '@core/user/user';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
@@ -74,7 +73,7 @@ export class PublicProfileTrackingEventsService {
     this.analyticsService.trackPageView(event);
   }
 
-  public trackViewOwnReviewsorViewOtherReviews(user: User, userStats: UserStats, isOwnUser: boolean) {
+  public trackViewOwnReviewsorViewOtherReviews(user: User, userStats: UserStats, isOwnUser: boolean): void {
     const event: ViewReviewsAnalyticsPageView = PublicProfileTrackingEventsService.getViewReviewsEvent(user, userStats, isOwnUser);
     this.analyticsService.trackPageView(event);
   }
@@ -104,17 +103,17 @@ export class PublicProfileTrackingEventsService {
           reviewsScore: ratings.reviews,
         },
       };
-    } else
-      return {
-        name: ANALYTICS_EVENT_NAMES.ViewOtherReviews,
-        attributes: {
-          screenId: SCREEN_IDS.OtherReviewsSection,
-          isPro: featured,
-          sellerUserId: id,
-          numberOfReviews: counters.reviews,
-          reviewsScore: ratings.reviews,
-        },
-      };
+    }
+    return {
+      name: ANALYTICS_EVENT_NAMES.ViewOtherReviews,
+      attributes: {
+        screenId: SCREEN_IDS.OtherReviewsSection,
+        isPro: featured,
+        sellerUserId: id,
+        numberOfReviews: counters.reviews,
+        reviewsScore: ratings.reviews,
+      },
+    };
   }
 
   private static getFavouriteUserAnalyticsEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticsEvent {
