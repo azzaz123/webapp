@@ -14,8 +14,8 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 })
 export class SuggesterComponent implements OnInit {
   private static SEARCH_BOX_INITIAL_VALUE = '';
-  private readonly searchBoxValueSubject = new BehaviorSubject<SearchBoxValue>({ keywords: SuggesterComponent.SEARCH_BOX_INITIAL_VALUE });
 
+  private readonly searchBoxValueSubject = new BehaviorSubject<SearchBoxValue>({ keywords: SuggesterComponent.SEARCH_BOX_INITIAL_VALUE });
   @Output() public searchSubmit = new EventEmitter<SearchBoxValue>();
 
   constructor(private suggesterService: SuggesterService, private route: ActivatedRoute) {}
@@ -51,6 +51,11 @@ export class SuggesterComponent implements OnInit {
 
   public onSuggestionClick(suggestion: SuggesterResponse) {
     this.searchBoxValue = this.mapSearchBoxValue(suggestion);
+    this.onSearchSubmit();
+  }
+
+  public onResetKeyword(): void {
+    this.searchBoxValue = this.mapSearchBoxValue(SuggesterComponent.SEARCH_BOX_INITIAL_VALUE);
     this.onSearchSubmit();
   }
 

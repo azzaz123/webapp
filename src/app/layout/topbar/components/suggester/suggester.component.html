@@ -1,5 +1,6 @@
-<div class="wallapop-search-input">
-    <input 
+<div class="SearchBox" [class.SearchBox--active]="(searchBoxValue$ | async).keywords">
+    <input
+        class="SearchBox__input"
         type="text"
         i18n-placeholder="@@web_components_suggester_7" 
         placeholder="Search in All categories" 
@@ -12,7 +13,12 @@
         (ngModelChange)="onSearchBoxValueChange($event)"
         (keydown.enter)="onSearchSubmit()"
     />
-    <tsl-svg-icon src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
+    <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
+    <tsl-svg-icon 
+        *ngIf="(searchBoxValue$ | async).keywords" 
+        (click)="onResetKeyword()"
+        class="SearchBox__reset" src="/assets/icons/top-bar/search-box-reset.svg" width="21" height="21">
+    </tsl-svg-icon>
 </div>
 
 <ng-template #suggester let-r="result">
