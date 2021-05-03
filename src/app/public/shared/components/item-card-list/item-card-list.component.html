@@ -1,29 +1,28 @@
-<div class="ItemCardList w-100 m-auto grid-xs-{{columnsConfig.xs}} grid-sm-{{columnsConfig.sm}} grid-md-{{columnsConfig.md}} grid-lg-{{columnsConfig.lg}} grid-xl-{{columnsConfig.xl}}">
-
-   <ng-container  *ngFor="let item of items; let i = index">
-
-
+<div class="ItemCardList w-100 m-auto grid-xs-{{columnsConfig.xs}} grid-sm-{{columnsConfig.sm}} grid-md-{{columnsConfig.md}} grid-lg-{{columnsConfig.lg}} grid-xl-{{columnsConfig.xl}}"
+    [class.ItemCardList--loading]="isLoading && !showPlaceholder">
+    <ng-container *ngFor="let item of items; let i = index">
         <ng-container *ngIf="slotTemplate">
-          <div *ngIf="slotsConfig && (i | showSlot: slotsConfig)" class="ItemCardList__slot d-flex justify-content-center align-items-center">
-            <ng-container *ngTemplateOutlet="slotTemplate;context: {$implicit: i}"></ng-container>
-         </div>
+            <div *ngIf="slotsConfig && (i | showSlot: slotsConfig)"
+                class="ItemCardList__slot d-flex justify-content-center align-items-center">
+                <ng-container *ngTemplateOutlet="slotTemplate;context: {$implicit: i}"></ng-container>
+            </div>
         </ng-container>
-       <tsl-public-item-card
-            *ngIf="cardType === cardTypes.REGULAR"
-            [item]="item" [showDescription]="showDescription"
-            [showFavourite]="!(item.ownerId | isCurrentUser | async)"
-            (toggleFavourite)="toggleFavourite(item)"
-            (click)="openItemDetailPage({itemCard: item, index: i})"
-        >
+        <tsl-public-item-card *ngIf="cardType === cardTypes.REGULAR" [item]="item" [showDescription]="showDescription"
+            [showFavourite]="!(item.ownerId | isCurrentUser | async)" (toggleFavourite)="toggleFavourite(item)"
+            (click)="openItemDetailPage({itemCard: item, index: i})">
         </tsl-public-item-card>
-        <tsl-item-card-wide
-            *ngIf="cardType === cardTypes.WIDE"
-            [item]="item"
-            [showFavourite]="!(item.ownerId | isCurrentUser | async)"
-            (toggleFavourite)="toggleFavourite(item)"
-            (click)="openItemDetailPage({itemCard: item, index: i})"
-        >
+        <tsl-item-card-wide *ngIf="cardType === cardTypes.WIDE" [item]="item"
+            [showFavourite]="!(item.ownerId | isCurrentUser | async)" (toggleFavourite)="toggleFavourite(item)"
+            (click)="openItemDetailPage({itemCard: item, index: i})">
         </tsl-item-card-wide>
     </ng-container>
 
+    <ng-container *ngIf="showPlaceholder && (cardType === cardTypes.REGULAR)">
+        <tsl-item-card-placeholder *ngFor="let i of [].constructor(placeholderCards)"></tsl-item-card-placeholder>
+    </ng-container>
+
+    <ng-container *ngIf="showPlaceholder && (cardType === cardTypes.WIDE)">
+        <tsl-item-card-wide-placeholder *ngFor="let i of [].constructor(placeholderCards)">
+        </tsl-item-card-wide-placeholder>
+    </ng-container>
 </div>
