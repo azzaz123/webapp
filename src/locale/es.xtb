@@ -1171,4 +1171,8 @@
   <translation id="web_subscription_benefit_description_visibility">Ocupa los primeros resultados de búsqueda. ¡Atrae más clientes!</translation>
   <translation id="web_subscription_benefit_title_time">Ahorra tiempo de gestión</translation>
   <translation id="web_subscription_benefit_description_time">Tus productos siempre estarán activos y listos para la venta.</translation>
+  <translation id="web_upload_seller_reactivation_button">Reactivar producto</translation>
+  <translation id="web_upload_seller_reactivation_toast_title">Añade información indispensable</translation>
+  <translation id="web_upload_seller_reactivation_toast_text">Reactiva tu producto completando los nuevos campos de información obligatoria.</translation>
+
 </translationbundle>
