@@ -9,13 +9,17 @@ import {
   UnfavoriteUser,
   ViewOtherProfile,
   ViewOwnProfile,
+  ViewOwnReviews,
+  ViewOtherReviews,
   UnfavoriteItem,
   FavoriteItem,
   ClickItemCard,
 } from '@core/analytics/analytics-constants';
+import { UserStats } from '@core/user/user-stats.interface';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { User } from '@core/user/user';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+export type ViewReviewsAnalyticsPageView = AnalyticsPageView<ViewOwnReviews | ViewOtherReviews>;
 export type FavouriteUserAnalyticsEvent = AnalyticsEvent<FavoriteUser | UnfavoriteUser>;
 export type FavouriteItemAnalyticsEvent = AnalyticsEvent<FavoriteItem | UnfavoriteItem>;
 
@@ -69,6 +73,11 @@ export class PublicProfileTrackingEventsService {
     this.analyticsService.trackPageView(event);
   }
 
+  public trackViewOwnReviewsorViewOtherReviews(user: User, userStats: UserStats, isOwnUser: boolean): void {
+    const event: ViewReviewsAnalyticsPageView = PublicProfileTrackingEventsService.getViewReviewsEvent(user, userStats, isOwnUser);
+    this.analyticsService.trackPageView(event);
+  }
+
   public trackFavouriteOrUnfavouriteItemEvent(itemCard: ItemCard, user: User): void {
     const event: FavouriteItemAnalyticsEvent = PublicProfileTrackingEventsService.getFavouriteItemAnalyticsEvent(itemCard, user);
     this.analyticsService.trackEvent(event);
@@ -77,6 +86,34 @@ export class PublicProfileTrackingEventsService {
   public trackFavouriteOrUnfavouriteUserEvent(user: User, isFavourite: boolean): void {
     const event: FavouriteUserAnalyticsEvent = PublicProfileTrackingEventsService.getFavouriteUserAnalyticsEvent(user, isFavourite);
     this.analyticsService.trackEvent(event);
+  }
+
+  private static getViewReviewsEvent(
+    { featured, id }: User,
+    { ratings, counters }: UserStats,
+    isOwnUser: boolean
+  ): ViewReviewsAnalyticsPageView {
+    if (isOwnUser) {
+      return {
+        name: ANALYTICS_EVENT_NAMES.ViewOwnReviews,
+        attributes: {
+          screenId: SCREEN_IDS.OwnReviewsSection,
+          isPro: featured,
+          numberOfReviews: counters.reviews,
+          reviewsScore: ratings.reviews,
+        },
+      };
+    }
+    return {
+      name: ANALYTICS_EVENT_NAMES.ViewOtherReviews,
+      attributes: {
+        screenId: SCREEN_IDS.OtherReviewsSection,
+        isPro: featured,
+        sellerUserId: id,
+        numberOfReviews: counters.reviews,
+        reviewsScore: ratings.reviews,
+      },
+    };
   }
 
   private static getFavouriteUserAnalyticsEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticsEvent {
