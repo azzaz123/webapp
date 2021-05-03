@@ -9,8 +9,8 @@ import { PublicFooterService } from '@public/core/services/footer/public-footer.
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -45,8 +45,9 @@ export const WIDE_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
 })
 export class SearchComponent implements OnInit, OnDestroy {
   private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
+  private subscription: Subscription = new Subscription();
   public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
+  public isLoadingPaginationResults$: Observable<boolean> = this.searchService.isLoadingPaginationResults$;
   public currentCategoryId$: Observable<string> = this.searchService.currentCategoryId$;
   public items$: Observable<ItemCard[]> = this.searchService.items$;
   public hasMoreItems$: Observable<boolean> = this.searchService.hasMore$;
@@ -57,6 +58,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   public infiniteScrollDisabled$: Observable<boolean> = this.buildInfiniteScrollDisabledObservable();
   public listCardType$: Observable<CARD_TYPES> = this.buildCardTypeObservable();
   public listColumnsConfig$: Observable<ColumnsConfig> = this.buildListConfigObservable();
+  public showPlaceholder$: Observable<boolean> = this.buildShowPlaceholderObservable();
+  public searchWithoutResults$: Observable<boolean> = this.buildSearchWithoutResultsObservable();
 
   public columnsConfig: ColumnsConfig = {
     xl: 4,
@@ -84,6 +87,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private searchAdsService: SearchAdsService
   ) {
     this.device = this.deviceService.getDeviceType();
+    this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
   }
 
   public ngOnInit(): void {
@@ -96,6 +100,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchService.close();
     this.searchAdsService.close();
     this.publicFooterService.setShow(true);
+    this.subscription.unsubscribe();
   }
 
   public loadMoreProducts(): void {
@@ -119,6 +124,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     return combineLatest([this.loadMoreProductsSubject.asObservable(), this.hasMoreItems$]).pipe(
       map(([loadMoreProducts, hasMore]: [boolean, boolean]) => !(loadMoreProducts && hasMore)),
       tap((infiniteScrollDisabled: boolean) => this.publicFooterService.setShow(infiniteScrollDisabled))
+    );
+  }
+
+  private buildShowPlaceholderObservable(): Observable<boolean> {
+    return combineLatest([this.items$, this.isLoadingResults$]).pipe(
+      map(([items, isLoadingResults]) => items.length === 0 && isLoadingResults)
+    );
+  }
+
+  private buildSearchWithoutResultsObservable(): Observable<boolean> {
+    return combineLatest([this.items$, this.isLoadingResults$]).pipe(
+      map(([items, isLoadingResults]) => items.length === 0 && !isLoadingResults)
     );
   }
 

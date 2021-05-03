@@ -30,6 +30,7 @@ export const SORTS_TRANSLATION_KEYS: TRANSLATION_KEY[] = [
   TRANSLATION_KEY.PRICE_DESC,
   TRANSLATION_KEY.PRICE_ASC,
 ];
+export const CONTACT_MOTOR_TOAST_TEXT = $localize`:@@web_toast_cardealer_error_contact:According to your plan you cannot activate more items. Contact ventas.motor@wallapop.com if you want to increase your plan or deactivate other items in order to activate this one.!`;
 
 @Component({
   selector: 'tsl-catalog-pro-list',
@@ -145,7 +146,7 @@ export class CatalogProListComponent implements OnInit {
           this.getItems();
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
-          this.errorService.i18nError('productCreated', 'contactMotor');
+          this.errorService.i18nError('productCreated', CONTACT_MOTOR_TOAST_TEXT);
         } else if (params && params.sold && params.itemId) {
           this.itemService.get(params.itemId).subscribe((item: Item) => {
             this.soldButton.item = item;

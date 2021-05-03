@@ -7,6 +7,8 @@ import {
   MOCK_VIEW_OWN_PROFILE_EVENT,
   MOCK_FAVOURITE_USER_EVENT,
   MOCK_UNFAVOURITE_USER_EVENT,
+  MOCK_TRACK_VIEW_OWN_REVIEWS,
+  MOCK_TRACK_VIEW_OTHERS_REVIEWS,
   MOCK_FAVOURITE_ITEM_EVENT_PROFILE,
   MOCK_UNFAVOURITE_ITEM_EVENT_PROFILE,
   MOCK_TRACK_CLICK_ITEM_CARD_EVENT_FROM_PROFILE,
@@ -14,6 +16,7 @@ import {
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
+import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 
@@ -88,6 +91,26 @@ describe('PublicProfileTrackingEventsService', () => {
     });
   });
 
+  describe('when user view reviews...', () => {
+    let isOwnUser: boolean = true;
+    beforeEach(() => {
+      spyOn(service, 'trackViewOwnReviewsorViewOtherReviews').and.callThrough();
+      spyOn(analyticsService, 'trackPageView');
+    });
+    it('should send view own review event if it is own user review', () => {
+      service.trackViewOwnReviewsorViewOtherReviews(MOCK_USER, MOCK_USER_STATS, isOwnUser);
+
+      expect(analyticsService.trackPageView).toHaveBeenLastCalledWith(MOCK_TRACK_VIEW_OWN_REVIEWS);
+    });
+
+    it('should send view other reviews event if it is other user review', () => {
+      isOwnUser = false;
+      service.trackViewOwnReviewsorViewOtherReviews(MOCK_OTHER_USER, MOCK_USER_STATS, isOwnUser);
+
+      expect(analyticsService.trackPageView).toHaveBeenLastCalledWith(MOCK_TRACK_VIEW_OTHERS_REVIEWS);
+    });
+  });
+
   describe('when user toggle favourite item icon...', () => {
     let itemCard = MOCK_ITEM_CARD;
     beforeEach(() => {
@@ -98,7 +121,6 @@ describe('PublicProfileTrackingEventsService', () => {
     it('should send favourite item event when item is favourited', () => {
       itemCard.flags.favorite = true;
       MOCK_ITEM_CARD.flags.favorite = true;
-      console.log('card', MOCK_ITEM_CARD);
       service.trackFavouriteOrUnfavouriteItemEvent(itemCard, MOCK_USER);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_FAVOURITE_ITEM_EVENT_PROFILE);

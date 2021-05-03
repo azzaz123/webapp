@@ -1,10 +1,5 @@
 @import '~style/common';
-
-$card-height-small-view: 390px;
-$card-height-big-view: 210px;
-$card-max-width: 685px;
-$image-height-small-view: 190px;
-$icon-margin: $spacer * 0.5;
+@import 'styles/item-card-wide-variables';
 
 .ItemCardWide {
   height: $card-height-small-view;
