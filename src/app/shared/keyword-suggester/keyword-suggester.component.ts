@@ -34,7 +34,7 @@ export class KeywordSuggesterComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes?) {
     if (changes.placeholder) {
-      this.placeholderValue = this.i18n.getTranslations(changes.placeholder.currentValue);
+      this.placeholderValue = this.i18n.translate(changes.placeholder.currentValue);
     }
   }
 
