@@ -20,12 +20,14 @@ import {
   FILTER_PARAMETER_DRAFT_STORE_TOKEN,
   FILTER_PARAMETER_STORE_TOKEN,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { ButtonModule } from '@shared/button/button.module';
 import { random } from 'faker';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BehaviorSubject } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
 import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrapper.module';
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
+import { SortFilterModule } from '../components/sort-filter/sort-filter.module';
 import { SearchAdsService } from '../core/ads/search-ads.service';
 import { SearchService } from '../core/services/search.service';
 import { REGULAR_CARDS_COLUMNS_CONFIG, SearchComponent, WIDE_CARDS_COLUMNS_CONFIG } from './search.component';
@@ -50,6 +52,7 @@ describe('SearchComponent', () => {
   let searchAdsServiceMock;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
   const isLoadingResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  const isLoadingPaginationResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const currentCategoryIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
   const hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -66,6 +69,7 @@ describe('SearchComponent', () => {
       items$: itemsSubject.asObservable(),
       hasMore$: hasMoreSubject.asObservable(),
       isLoadingResults$: isLoadingResultsSubject.asObservable(),
+      isLoadingPaginationResults$: isLoadingPaginationResultsSubject.asObservable(),
       currentCategoryId$: currentCategoryIdSubject.asObservable(),
       loadMore: () => {},
       close: () => {},
@@ -75,6 +79,7 @@ describe('SearchComponent', () => {
     };
     searchAdsServiceMock = {
       setSlots: () => {},
+      close: () => {},
     };
     await TestBed.configureTestingModule({
       declarations: [
@@ -86,7 +91,7 @@ describe('SearchComponent', () => {
         ItemCardListComponentStub,
         InfiniteScrollStubDirective,
       ],
-      imports: [FiltersWrapperModule, HttpClientTestingModule],
+      imports: [FiltersWrapperModule, HttpClientTestingModule, SortFilterModule, ButtonModule],
       providers: [
         {
           provide: SearchService,
@@ -174,18 +179,50 @@ describe('SearchComponent', () => {
       });
     });
 
+    it('should show the loading state', (done) => {
+      const newItems = [MOCK_ITEM_CARD];
+      itemsSubject.next(newItems);
+      isLoadingResultsSubject.next(true);
+
+      component.items$.subscribe(() => {
+        fixture.detectChanges();
+        const itemCardList = fixture.debugElement.query(By.css('tsl-public-item-card-list')).componentInstance;
+
+        expect(itemCardList.isLoading).toBe(true);
+        done();
+      });
+    });
+
     describe('when no items are recieved', () => {
-      it('should show the no results layout', (done) => {
-        const items = [];
-        itemsSubject.next(items);
-        isLoadingResultsSubject.next(false);
+      describe('and not loading new results', () => {
+        it('should show the no results layout', (done) => {
+          const items = [];
+          itemsSubject.next(items);
+          isLoadingResultsSubject.next(false);
 
-        component.items$.subscribe(() => {
-          fixture.detectChanges();
-          const noResultsLayout = fixture.debugElement.query(By.css('tsl-search-error-layout'));
+          component.items$.subscribe(() => {
+            fixture.detectChanges();
+            const noResultsLayout = fixture.debugElement.query(By.css('tsl-search-error-layout'));
 
-          expect(noResultsLayout).toBeTruthy();
-          done();
+            expect(noResultsLayout).toBeTruthy();
+            done();
+          });
+        });
+      });
+
+      describe('and loading new results', () => {
+        it('should show the loading placeholder', (done) => {
+          const items = [];
+          itemsSubject.next(items);
+          isLoadingResultsSubject.next(true);
+
+          component.items$.subscribe(() => {
+            fixture.detectChanges();
+            const itemCardList = fixture.debugElement.query(By.css('tsl-public-item-card-list')).componentInstance;
+
+            expect(itemCardList.showPlaceholder).toBe(true);
+            done();
+          });
         });
       });
     });
@@ -375,6 +412,38 @@ describe('SearchComponent', () => {
         buttonLoadMore.click();
 
         expect(searchServiceMock.loadMore).toHaveBeenCalledTimes(1);
+      });
+
+      describe('when categoryId changes', () => {
+        it('should disable infinite scroll', (done) => {
+          fixture.detectChanges();
+
+          const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+          buttonLoadMore.click();
+
+          component.infiniteScrollDisabled$.subscribe((infiniteScrollDisabled) => {
+            expect(infiniteScrollDisabled).toBe(false);
+            done();
+          });
+
+          currentCategoryIdSubject.next(CATEGORY_IDS.MOTORBIKE.toString());
+        });
+      });
+
+      describe('when loading pagination results', () => {
+        it('should show the pagination loading spinner', (done) => {
+          const newItems = [MOCK_ITEM_CARD];
+          itemsSubject.next(newItems);
+          isLoadingPaginationResultsSubject.next(true);
+
+          component.isLoadingPaginationResults$.subscribe(() => {
+            fixture.detectChanges();
+            const loadingSpinner = fixture.debugElement.query(By.css('.Search__spinner'));
+
+            expect(loadingSpinner).toBeTruthy();
+            done();
+          });
+        });
       });
     });
   });

@@ -17,6 +17,8 @@ import { SlotsConfig } from './interfaces/slots-config.interface';
 export class ItemCardListComponent {
   @Input() items: ItemCard[];
   @Input() showDescription = true;
+  @Input() showPlaceholder = false;
+  @Input() placeholderCards = ItemCardListComponent.DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS;
   @Input() columnsConfig: ColumnsConfig = {
     xl: 5,
     lg: 4,
@@ -26,12 +28,14 @@ export class ItemCardListComponent {
   };
   @Input() cardType: CARD_TYPES = CARD_TYPES.REGULAR;
   @Input() slotsConfig: SlotsConfig;
+  @Input() isLoading: boolean;
   @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
   @Output() toggleFavouriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
 
   @ContentChild('slotTemplate') slotTemplate: TemplateRef<unknown>;
 
   public cardTypes = CARD_TYPES;
+  private static DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS = 15;
 
   constructor(
     private itemCardService: ItemCardService,

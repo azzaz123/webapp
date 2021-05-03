@@ -25,8 +25,6 @@ export class I18nService {
       MaxSizeExceeded: 'This file exceeds the limit of size: ',
       serverError: 'Server error: ',
       productCreated: 'The product has been created successfully!',
-      contactMotor:
-        ' According to your plan you cannot activate more items. Contact ventas.motor@wallapop.com if you want to increase your plan or deactivate other items in order to activate this one.',
       missingImageError: 'You should upload at least one image',
       suggestedCategory: 'It seems that your product belongs to another category, so we’ve changed it.',
       errorPurchasingItems: 'It was not possible to feature these products: ',
@@ -104,8 +102,6 @@ export class I18nService {
       MaxSizeExceeded: 'Este fichero excede el limite de peso: ',
       serverError: 'Error del servidor: ',
       productCreated: 'El producto se ha creado correctamente!',
-      contactMotor:
-        ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.',
       missingImageError: 'Tienes que subir por lo menos una imagen',
       suggestedCategory: 'Todo indica que tu producto corresponde a otra categoría, por eso la hemos cambiado.',
       errorPurchasingItems: 'No se han podido destacar estos productos:',
