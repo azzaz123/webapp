@@ -30,6 +30,7 @@ export const SORTS_TRANSLATION_KEYS: TRANSLATION_KEY[] = [
   TRANSLATION_KEY.PRICE_DESC,
   TRANSLATION_KEY.PRICE_ASC,
 ];
+export const CONTACT_MOTOR_TOAST_TEXT = $localize`:@@web_toast_cardealer_error_contact:According to your plan you cannot activate more items. Contact ventas.motor@wallapop.com if you want to increase your plan or deactivate other items in order to activate this one.!`;
 
 @Component({
   selector: 'tsl-catalog-pro-list',
@@ -146,7 +147,7 @@ export class CatalogProListComponent implements OnInit {
           this.errorService.i18nSuccess(TRANSLATION_KEY.ITEM_UPDATED);
         } else if (params && params.createdOnHold) {
           // FIXME: This text does not seem like an error. Probably needs to use method i18nSuccess
-          this.errorService.i18nError(TRANSLATION_KEY.PRODUCT_CREATED, 'contactMotor');
+          this.errorService.i18nError(TRANSLATION_KEY.PRODUCT_CREATED, CONTACT_MOTOR_TOAST_TEXT);
         } else if (params && params.sold && params.itemId) {
           this.itemService.get(params.itemId).subscribe((item: Item) => {
             this.soldButton.item = item;
