@@ -18,7 +18,7 @@ export class ItemCardListComponent {
   @Input() items: ItemCard[];
   @Input() showDescription = true;
   @Input() showPlaceholder = false;
-  @Input() placeholderCards = 15;
+  @Input() placeholderCards = ItemCardListComponent.DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS;
   @Input() columnsConfig: ColumnsConfig = {
     xl: 5,
     lg: 4,
@@ -35,6 +35,7 @@ export class ItemCardListComponent {
   @ContentChild('slotTemplate') slotTemplate: TemplateRef<unknown>;
 
   public cardTypes = CARD_TYPES;
+  private static DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS = 15;
 
   constructor(
     private itemCardService: ItemCardService,

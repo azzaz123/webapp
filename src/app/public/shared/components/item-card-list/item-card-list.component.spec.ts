@@ -25,7 +25,7 @@ import { ShowSlotPipe } from './pipes/show-slot.pipe';
 @Component({
   selector: 'tsl-item-card-list-wrapper',
   template: `
-    <tsl-public-item-card-list [items]="items" [cardType]="cardType" [slotsConfig]="slotConfig">
+    <tsl-public-item-card-list [showPlaceholder]="showPlaceholder" [items]="items" [cardType]="cardType" [slotsConfig]="slotConfig">
       <ng-template #slotTemplate let-index>
         <div class="adSlot">ad-{{ index }}</div>
       </ng-template>
@@ -33,12 +33,16 @@ import { ShowSlotPipe } from './pipes/show-slot.pipe';
   `,
 })
 export class ItemCardListWrapperComponent {
+  private static DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS = 15;
+
   items: ItemCard[] = [MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD];
   slotConfig: SlotsConfig = {
     start: 1,
     offset: 2,
   };
   cardType: CARD_TYPES = CARD_TYPES.REGULAR;
+  showPlaceholder = false;
+  placeholderCards = ItemCardListWrapperComponent.DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS;
 }
 
 describe('ItemCardListComponent', () => {
@@ -237,6 +241,41 @@ describe('ItemCardListComponent', () => {
 
       expect(regularItemCardElement).toBeTruthy();
       expect(wideItemCardElement).toBeFalsy();
+    });
+  });
+
+  describe('when the property for showing the placeholder is active', () => {
+    let component: ItemCardListWrapperComponent;
+    let fixture: ComponentFixture<ItemCardListWrapperComponent>;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(ItemCardListWrapperComponent);
+      component = fixture.componentInstance;
+    });
+
+    describe('and the type of card is wide', () => {
+      it('should show 15 wide empty cards', () => {
+        component.cardType = CARD_TYPES.WIDE;
+        component.showPlaceholder = true;
+
+        fixture.detectChanges();
+        const regularItemCardPlaceholders = fixture.debugElement.queryAll(By.css('tsl-item-card-wide-placeholder'));
+
+        console.log(fixture.debugElement.nativeElement.innerHTML);
+
+        expect(regularItemCardPlaceholders.length).toBe(component.placeholderCards);
+      });
+    });
+    describe('and the type of card is regular', () => {
+      it('should show 15 regular empty cards', () => {
+        component.cardType = CARD_TYPES.REGULAR;
+        component.showPlaceholder = true;
+
+        fixture.detectChanges();
+        const regularItemCardPlaceholders = fixture.debugElement.queryAll(By.css('tsl-item-card-placeholder'));
+
+        expect(regularItemCardPlaceholders.length).toBe(component.placeholderCards);
+      });
     });
   });
 });
