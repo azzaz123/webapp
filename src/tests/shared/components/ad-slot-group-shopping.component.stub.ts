@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AdShoppingPageOptions, AdSlotShoppingConfiguration } from '@core/ads/models';
+import { AdShoppingPageOptions, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
 
 @Component({
   selector: 'tsl-sky-slot-group-shopping',
@@ -8,5 +8,5 @@ import { AdShoppingPageOptions, AdSlotShoppingConfiguration } from '@core/ads/mo
 // tslint:disable-next-line:component-class-suffix
 export class AdSlotGroupShoppingComponentSub {
   @Input() adShoppingPageOptions: AdShoppingPageOptions;
-  @Input() adSlotShoppingConfiguration: AdSlotShoppingConfiguration;
+  @Input() adSlotShoppingConfiguration: AdSlotGroupShoppingConfiguration;
 }

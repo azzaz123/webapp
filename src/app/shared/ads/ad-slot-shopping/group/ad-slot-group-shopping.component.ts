@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
-import { AdShoppingPageOptions, AdSlotShoppingConfiguration } from '@core/ads/models';
+import { AdShoppingPageOptions, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 
 @Component({
@@ -9,7 +9,7 @@ import { AdsService } from '@core/ads/services';
 })
 export class AdSlotGroupShoppingComponent implements AfterViewInit {
   @Input() adShoppingPageOptions: AdShoppingPageOptions;
-  @Input() adSlotShoppingConfiguration: AdSlotShoppingConfiguration;
+  @Input() adSlotShoppingConfiguration: AdSlotGroupShoppingConfiguration;
 
   constructor(private adsService: AdsService) {}
 
