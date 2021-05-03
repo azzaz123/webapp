@@ -7,6 +7,9 @@ import { OrderEvent } from '../selected-items/selected-product.interface';
 import { DEFAULT_ERROR_MESSAGE } from '@core/errors/errors.service';
 import { Item } from '@core/item/item';
 import { EventService } from '@core/event/event.service';
+import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
+import { Router } from '@angular/router';
+import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -30,6 +33,8 @@ export class CatalogItemComponent implements OnInit {
     public itemService: ItemService,
     private toastService: ToastService,
     private eventService: EventService,
+    private itemRequiredDataService: ItemRequiredDataService,
+    private router: Router,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {}
 
@@ -68,17 +73,22 @@ export class CatalogItemComponent implements OnInit {
   }
 
   private reactivateItem(item: Item): void {
-    this.itemService.reactivateItem(item.id).subscribe(
-      () => {
-        this.itemChange.emit({
-          item,
-          action: ITEM_CHANGE_ACTION.REACTIVATED,
-        });
-      },
-      () => this.toastService.show({ text: DEFAULT_ERROR_MESSAGE, type: 'error' })
-    );
+    this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
+      if (missingRequiredData) {
+        this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
+      } else {
+        this.itemService.reactivateItem(item.id).subscribe(
+          () => {
+            this.itemChange.emit({
+              item,
+              action: ITEM_CHANGE_ACTION.REACTIVATED,
+            });
+          },
+          () => this.toastService.show({ text: DEFAULT_ERROR_MESSAGE, type: 'error' })
+        );
+      }
+    });
   }
-
   public select(item: Item) {
     item.selected = !item.selected;
     this.itemService.selectedAction = this.itemService.selectedAction === 'feature' ? 'feature' : '';
