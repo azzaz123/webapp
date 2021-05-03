@@ -22,8 +22,12 @@
 </div>
 
 <ng-template #suggester let-r="result">
-    <div class="suggestion" (click)="onSuggestionClick(r)">
-        <span class="title">{{ r.suggestion }}</span>
-        <span class="category">{{ r.category_name }}</span>
+    <div class="SearchBox__suggestion d-flex flex-column justify-content-center" (click)="onSuggestionClick(r)">
+        <span class="SearchBox__suggestionTitle">
+            {{ r.suggestion }}
+        </span>
+        <span class="SearchBox__suggestionCategory">
+            {{ r.category_name }}
+        </span>
     </div>
 </ng-template>
