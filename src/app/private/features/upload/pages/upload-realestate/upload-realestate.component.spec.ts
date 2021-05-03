@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import {
   AnalyticsEvent,
@@ -33,6 +34,7 @@ import { IOption } from '@shared/dropdown/utils/option.interface';
 import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { of, throwError } from 'rxjs';
 import { Key } from '../../core/models/key.interface';
+import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { RealestateKeysService } from '../../core/services/realstate-keys/realestate-keys.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
@@ -48,6 +50,7 @@ describe('UploadRealestateComponent', () => {
   let analyticsService: AnalyticsService;
   let itemService: ItemService;
   let uploadService: UploadService;
+  let itemReactivationService: ItemReactivationService;
   const RESPONSE: Key[] = [{ id: 'test', icon_id: 'test', text: 'test' }];
   const RESPONSE_OPTION: IOption[] = [{ value: 'test', label: 'test' }];
   const componentInstance: any = {};
@@ -62,6 +65,12 @@ describe('UploadRealestateComponent', () => {
           NgbPopoverConfig,
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UploadService, useClass: MockUploadService },
+          {
+            provide: ItemReactivationService,
+            useValue: {
+              reactivationValidation() {},
+            },
+          },
           {
             provide: UserService,
             useValue: {
@@ -135,6 +144,7 @@ describe('UploadRealestateComponent', () => {
     itemService = TestBed.inject(ItemService);
     analyticsService = TestBed.inject(AnalyticsService);
     uploadService = TestBed.inject(UploadService);
+    itemReactivationService = TestBed.inject(ItemReactivationService);
     fixture.detectChanges();
   });
 
@@ -634,6 +644,37 @@ describe('UploadRealestateComponent', () => {
       expect(errorService.i18nError).toHaveBeenCalledTimes(1);
       expect(component.uploadForm.get('images').value).not.toContain(UPLOAD_FILE_2);
       expect(component.uploadForm.get('images').value).toContain(UPLOAD_FILE_DONE);
+    });
+  });
+
+  describe('is reactivation mode', () => {
+    beforeEach(() => {
+      component.isReactivation = true;
+      component.item = MOCK_REALESTATE;
+
+      fixture.detectChanges();
+    });
+
+    it('should check reactivation validation on form init', () => {
+      spyOn(itemReactivationService, 'reactivationValidation');
+
+      component.ngOnInit();
+
+      expect(itemReactivationService.reactivationValidation).toHaveBeenCalledWith(component.uploadForm);
+    });
+
+    describe('and loading has ended', () => {
+      beforeEach(() => {
+        component.loading = false;
+
+        fixture.detectChanges();
+      });
+
+      it('should show correct button text', () => {
+        const submitButtonTextElement: HTMLElement = fixture.debugElement.query(By.css('tsl-button span')).nativeElement;
+
+        expect(submitButtonTextElement.innerHTML).toEqual('Reactivate item');
+      });
     });
   });
 });
