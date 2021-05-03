@@ -613,7 +613,7 @@
   <msg id="web_profile_pages_subscription_cars_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:18</source>List all your cars</msg>
   <msg id="web_profile_pages_subscription_motorbike_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:19</source>List all your motorbikes</msg>
   <msg id="web_profile_pages_subscription_motor_acc_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:20</source>List all your Motor and Accessories items</msg>
-  <msg id="web_profile_pages_subscription_other_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:21</source>Your best plan to sell &lt;strong&gt;all kinds of items&lt;strong&gt;</msg>
+  <msg id="web_profile_pages_subscription_other_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:21</source>Your best plan to sell all kinds of items</msg>
   <msg id="web_subscription_benefit_title_share"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:27</source>Share your phone and website</msg>
   <msg id="web_subscription_benefit_title_limit"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:36</source>Set your listing limit</msg>
   <msg id="web_subscription_benefit_title_branding"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:37</source>Boost your branding</msg>
@@ -624,7 +624,7 @@
   <msg id="startFreeTrial"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:43</source>Start free trial</msg>
   <msg id="seePlans"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:43</source>See plans</msg>
   <msg id="web_profile_pages_subscription_331"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:46</source>Stay subscribed</msg>
-  <msg id="web_profile_pages_subscription_587"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:49</source>Edit</msg>
+  <msg id="web_profile_pages_subscription_587"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:49</source>Modify</msg>
   <msg id="web_profile_pages_subscription_678"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:52</source>Cancel</msg>
   <msg id="web_profile_pages_subscription_327"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:55</source>Manage in app</msg>
   <msg id="web_profile_pages_subscription_328"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:58</source>Unsubscribe first from app for your free month</msg>

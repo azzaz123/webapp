@@ -47,7 +47,7 @@ export class SubscriptionListComponent {
       return $localize`:@@web_profile_pages_subscription_331:Stay subscribed`;
     }
     if (this.showEdit(subscription)) {
-      return $localize`:@@web_profile_pages_subscription_587:Edit`;
+      return $localize`:@@web_profile_pages_subscription_587:Modify`;
     }
     if (this.showCancel(subscription)) {
       return $localize`:@@web_profile_pages_subscription_678:Cancel`;
