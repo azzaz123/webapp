@@ -53,6 +53,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public hasMoreItems$: Observable<boolean> = this.searchService.hasMore$;
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
   public device: DeviceType;
+  public filterOpened: boolean;
   public DevicesType: typeof DeviceType = DeviceType;
 
   public infiniteScrollDisabled$: Observable<boolean> = this.buildInfiniteScrollDisabledObservable();
@@ -110,6 +111,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public scrolled(): void {
     this.searchService.loadMore();
+  }
+
+  public handleFilterOpened(opened: boolean) {
+    this.filterOpened = opened;
   }
 
   private buildListConfigObservable(): Observable<ColumnsConfig> {

@@ -5,6 +5,9 @@
     position: sticky;
     top: $topbar-height;
     z-index: $filters-bar-z-index;
+    &--opened {
+      z-index: #{$filters-bar-z-index + 1};
+    }
   }
 
   &__ad {
