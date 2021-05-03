@@ -5,6 +5,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { Router } from '@angular/router';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
 import { SelectedItemsAction } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
@@ -91,6 +92,7 @@ describe('CatalogItemComponent', () => {
               i18nError() {},
             },
           },
+          I18nService,
           { provide: 'SUBDOMAIN', useValue: 'es' },
         ],
         imports: [HttpClientTestingModule],

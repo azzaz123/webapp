@@ -5,7 +5,7 @@
   display: flex;
   bottom: 0;
   background-color: $white;
-  z-index: 20;
+  z-index: $tabbar-z-index;
   border-top: 1px solid $blue-grey-5;
   min-height: 64px;
   @supports (padding: unquote('max(0px)')) {

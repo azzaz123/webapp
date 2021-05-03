@@ -5,14 +5,14 @@ import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOption } from '../../core/interfaces/filter-option.interface';
-import { Subscription } from 'rxjs/internal/Subscription';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { debounceTime, distinctUntilChanged, take } from 'rxjs/operators';
 import { ComplexSelectValue } from '@shared/form/components/select/types/complex-select-value';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { SuggesterFilterConfig } from './interfaces/suggester-filter-config.interface';
-import { BehaviorSubject, Subject, Observable } from 'rxjs';
+import { BehaviorSubject, Subject, Observable, Subscription } from 'rxjs';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 // TODO: Tech debt. Need to set to onpush
 @Component({
@@ -134,7 +134,7 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
       this.writeValue([{ key: this.config.mapKey.parameterKey, value: value }]);
     } else {
       const keys = Object.keys(value);
-      this.writeValue(keys.map((key) => ({ key: key, value: value[key] })));
+      this.writeValue(keys.map((key: FILTER_QUERY_PARAM_KEY) => ({ key: key, value: value[key] })));
     }
 
     this.valueChange.emit(this._value);
@@ -144,6 +144,10 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     const value = this.getComplexValue();
     if (!value) {
       return this.initLabel();
+    }
+
+    if (!this.config.isLabelInValue) {
+      return this.labelSubject.next(this.optionsSubject.getValue().find((option) => option.value === value)?.label);
     }
 
     if (typeof value === 'string') {
@@ -183,7 +187,10 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
       this.optionService
         .getOptions(this.config.id, query ? { text: query } : undefined)
         .pipe(take(1))
-        .subscribe((options) => this.optionsSubject.next(options));
+        .subscribe((options) => {
+          this.optionsSubject.next(options);
+          this.handleLabelChange();
+        });
     }
   }
 }

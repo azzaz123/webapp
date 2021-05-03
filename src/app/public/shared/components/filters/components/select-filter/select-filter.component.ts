@@ -8,10 +8,11 @@ import { FilterTemplateComponent } from '../abstract-filter/filter-template/filt
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { SelectFilterConfig } from './interfaces/select-filter-config.interface';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs/internal/Subscription';
 import { ComplexSelectValue } from '@shared/form/components/select/types/complex-select-value';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'tsl-select-filter',
@@ -27,12 +28,17 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
   @ViewChild('filterTemplateComponent', { read: FilterTemplateComponent })
   public filterTemplate: FilterTemplateComponent;
 
+  private subscriptions = new Subscription();
+  private labelSubject = new BehaviorSubject(undefined);
+  private placeholderIconSubject = new BehaviorSubject(undefined);
+
   public formGroup = new FormGroup({
     select: new FormControl(),
   });
   public options: FilterOption[] = [];
 
-  private subscriptions = new Subscription();
+  public label$ = this.labelSubject.asObservable();
+  public placeholderIcon$ = this.labelSubject.asObservable();
 
   public constructor(private optionService: FilterOptionService) {
     super();
@@ -42,32 +48,42 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
     this.optionService
       .getOptions(this.config.id)
       .pipe(take(1))
-      .subscribe((options) => (this.options = options));
+      .subscribe((options) => {
+        this.options = options;
+        this.updateLabel();
+      });
     this.initForm();
+    this.updateLabel();
+    this.updatePlaceholderIcon();
     super.ngOnInit();
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
     this.updateValueFromParent();
-  }
-
-  public getLabel(): string {
-    const value = this.getValue('parameterKey');
-    return value ? this.options.find((option) => option.value === value).label : this.getLabelPlaceholder();
-  }
-
-  public getPlaceholderIcon(): string {
-    const value = this.getValue('parameterKey');
-    return value ? this.options.find((option) => option.value === value).icon : undefined;
+    this.updateLabel();
   }
 
   public handleClear(): void {
     this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
+    this.updateLabel();
+    this.updatePlaceholderIcon();
     super.handleClear();
   }
 
   public ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  private updateLabel(): void {
+    const value = this.formGroup.controls.select.value;
+    this.labelSubject.next(value ? this.options.find((option) => option.value === value)?.label : this.getLabelPlaceholder());
+  }
+
+  private updatePlaceholderIcon(): void {
+    if (this.variant === FILTER_VARIANT.CONTENT && this.config.hasContentPlaceholder) {
+      const value = this.formGroup.controls.select.value;
+      this.placeholderIconSubject.next(value ? this.options.find((option) => option.value === value)?.icon : undefined);
+    }
   }
 
   private initForm(): void {
@@ -88,8 +104,11 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
       this.writeValue([{ key: this.config.mapKey.parameterKey, value: value }]);
     } else {
       const keys = Object.keys(value);
-      this.writeValue(keys.map((key) => ({ key: key, value: value[key] })));
+      this.writeValue(keys.map((key: FILTER_QUERY_PARAM_KEY) => ({ key: key, value: value[key] })));
     }
+
+    this.updateLabel();
+    this.updatePlaceholderIcon();
 
     this.valueChange.emit(this._value);
   }

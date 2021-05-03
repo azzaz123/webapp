@@ -28,6 +28,7 @@ import { CategoryOption, CategoryResponse, SuggestedCategory } from '@core/categ
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { Item, ITEM_TYPES } from '@core/item/item';
 import { DeliveryInfo, ItemContent, ItemResponse } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
@@ -134,8 +135,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private itemReactivationService: ItemReactivationService
   ) {
     this.genders = [
-      { value: 'male', label: this.i18n.getTranslations('male') },
-      { value: 'female', label: this.i18n.getTranslations('female') },
+      { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
+      { value: 'female', label: this.i18n.translate(TRANSLATION_KEY.FEMALE) },
     ];
     this.fillForm();
     config.placement = 'right';

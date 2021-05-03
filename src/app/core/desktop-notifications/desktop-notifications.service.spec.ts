@@ -1,4 +1,5 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '@private/features/chat/core/model';
 import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
 import { I18nService } from '../i18n/i18n.service';
@@ -175,7 +176,7 @@ describe('Service: DesktopNotifications', () => {
       }));
 
       it('should send notification', () => {
-        const expectedTitle = `${i18nService.getTranslations('newMessageNotification')}${conversation.user.microName}`;
+        const expectedTitle = `${i18nService.translate(TRANSLATION_KEY.CHAT_DESKTOP_NOTIFICATION_TITLE)} ${conversation.user.microName}`;
         const image = conversation.user.avatarUrl;
         const expectedNotificationOptions = {
           body: message.text,

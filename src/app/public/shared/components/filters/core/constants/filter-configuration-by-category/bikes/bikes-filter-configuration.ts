@@ -1,7 +1,7 @@
 import { BIKES_FILTER_ID } from '../../../enums/filter-ids/bikes.enum';
-import { FilterIdConfiguration } from '../../../interfaces/filter-id-configuration.interface';
+import { BubbleDrawerConfiguration } from '../../../interfaces/bubble-drawer-configuration.interface';
 
-export const BIKES_FILTER_CONFIGURATION: FilterIdConfiguration = {
-  bubble: [BIKES_FILTER_ID.PRICE],
-  drawer: [BIKES_FILTER_ID.PRICE],
+export const BIKES_FILTER_CONFIGURATION: BubbleDrawerConfiguration = {
+  bubble: [BIKES_FILTER_ID.CATEGORIES, BIKES_FILTER_ID.PRICE, BIKES_FILTER_ID.CONDITION],
+  drawer: [BIKES_FILTER_ID.CATEGORIES, BIKES_FILTER_ID.PRICE, BIKES_FILTER_ID.CONDITION, BIKES_FILTER_ID.POSTED_AGO],
 };

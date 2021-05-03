@@ -15,6 +15,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { Item } from '@core/item/item';
 import { CheapestProducts, ItemBulkResponse, ItemsData } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
@@ -45,6 +46,12 @@ import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-pro
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 
 export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
+export const SORTS_TRANSLATION_KEYS: TRANSLATION_KEY[] = [
+  TRANSLATION_KEY.DATE_DESC,
+  TRANSLATION_KEY.DATE_ASC,
+  TRANSLATION_KEY.PRICE_DESC,
+  TRANSLATION_KEY.PRICE_ASC,
+];
 
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'purchaseListingFeeWithCredits'];
 
@@ -111,21 +118,13 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getUserInfo();
-
-    if (this.deviceService.isMobile()) {
-      this.normalNavLinks.push({
-        id: 'reviews',
-        display: this.i18n.getTranslations('reviews'),
-      });
-    }
-
     this.subscriptionSelectedNavLinks = [
-      { id: STATUS.ACTIVE, display: this.i18n.getTranslations(STATUS.ACTIVE) },
+      { id: STATUS.ACTIVE, display: this.i18n.translate(TRANSLATION_KEY.ACTIVE) },
       {
         id: STATUS.INACTIVE,
-        display: this.i18n.getTranslations(STATUS.INACTIVE),
+        display: this.i18n.translate(TRANSLATION_KEY.INACTIVE),
       },
-      { id: STATUS.SOLD, display: this.i18n.getTranslations(STATUS.SOLD) },
+      { id: STATUS.SOLD, display: this.i18n.translate(TRANSLATION_KEY.SOLD) },
     ];
 
     this.activateNormalLinks();
@@ -272,10 +271,17 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private setNormalLinks(): void {
     this.normalNavLinks = [
-      { id: STATUS.PUBLISHED, display: this.i18n.getTranslations('selling') },
-      { id: STATUS.SOLD, display: this.i18n.getTranslations(STATUS.SOLD) },
-      { id: STATUS.INACTIVE, display: this.i18n.getTranslations(STATUS.INACTIVE), counter: { currentVal: this.counters?.onHold } },
+      { id: STATUS.PUBLISHED, display: this.i18n.translate(TRANSLATION_KEY.PUBLISHED) },
+      { id: STATUS.SOLD, display: this.i18n.translate(TRANSLATION_KEY.SOLD) },
+      { id: STATUS.INACTIVE, display: this.i18n.translate(TRANSLATION_KEY.INACTIVE), counter: { currentVal: this.counters?.onHold } },
     ];
+
+    if (this.deviceService.isMobile()) {
+      this.normalNavLinks.push({
+        id: 'reviews',
+        display: this.i18n.translate(TRANSLATION_KEY.REVIEWS),
+      });
+    }
   }
 
   private onOpenWallacoinsModal(): void {
@@ -738,7 +744,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private setSubscriptionSlots(slots: SubscriptionSlot[]) {
     this.subscriptionSlots = slots;
-    this.searchPlaceholder = this.i18n.getTranslations('searchByTitle');
+    this.searchPlaceholder = this.i18n.translate(TRANSLATION_KEY.SEARCH_BY_TITLE);
     this.setSortItems();
   }
 
@@ -815,8 +821,9 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public setSortItems() {
-    this.sortItems = [];
-    SORTS.forEach((value) => this.sortItems.push({ value, label: this.i18n.getTranslations(value) }));
+    this.sortItems = SORTS.map((value, i) => {
+      return { value, label: this.i18n.translate(SORTS_TRANSLATION_KEYS[i]) };
+    });
     this.sortBy = SORTS[0];
   }
 
