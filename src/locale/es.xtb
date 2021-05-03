@@ -686,6 +686,7 @@
   <translation id="CIFNumber">CIF de la empresa</translation>
   <translation id="NIFNumber">NIF de la persona</translation>
   <translation id="Save">Guardar</translation>
+  <translation id="web_profile_pages_320">Información de facturación</translation>
   <translation id="web_profile_pages_321">Facturación</translation>
   <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
   <translation id="SelectSavedCard">Seleccionar tarjeta guardada</translation>
@@ -1237,4 +1238,5 @@
   <translation id="web_search_no_results_title">Nada por aquí</translation>
   <translation id="web_search_no_results_subtitle">Parece que por el momento lo que buscas no se encuentra en Wallapop. Mientras tanto, ¿por qué no echas un vistazo al resto de productos?</translation>
   <translation id="web_search_no_results_button_text">Iniciar nueva búsqueda</translation>
+  <translation id="web_toast_cardealer_error_contact">¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.</translation>
 </translationbundle>
