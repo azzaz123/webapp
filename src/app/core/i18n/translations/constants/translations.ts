@@ -115,7 +115,6 @@ export const translations: Translations = {
   [TRANSLATION_KEY.TO_CLEAN_MISSED_CALL]: $localize`:@@web_to_clean_missed_call:Missed Call`,
   [TRANSLATION_KEY.TO_CLEAN_ANSWERED_CALL]: $localize`:@@web_to_clean_answered_call:Call`,
   [TRANSLATION_KEY.TO_CLEAN_FEATURED]: $localize`:@@web_to_clean_featured:Featured`,
-  [TRANSLATION_KEY.TO_CLEAN_CONTACT_MOTOR]: $localize`:@@web_to_clean_contact_motor:According to your plan you cannot activate more items. Contact ventas.motor@wallapop.com if you want to increase your plan or deactivate other items in order to activate this one.`,
   [TRANSLATION_KEY.TO_CLEAN_ERROR_PURCHASING_ITEMS]: $localize`:@@web_to_clean_error_purchasing_items:It was not possible to feature these products:`,
   [TRANSLATION_KEY.TO_CLEAN_SETTINGS_EDITED]: $localize`:@@web_to_clean_settings_edited:Your setting has been updated`,
   [TRANSLATION_KEY.TO_CLEAN_TWITTER_SHARE]: $localize`:@@web_to_clean_twitter_share:Look what I found on @Wallapop:`,

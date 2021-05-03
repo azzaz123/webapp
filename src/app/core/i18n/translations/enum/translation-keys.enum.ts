@@ -117,7 +117,6 @@ export enum TRANSLATION_KEY {
   TO_CLEAN_MISSED_CALL = 'missed',
   TO_CLEAN_ANSWERED_CALL = 'answered',
   TO_CLEAN_FEATURED = 'featured',
-  TO_CLEAN_CONTACT_MOTOR = 'contactMotor',
   TO_CLEAN_ERROR_PURCHASING_ITEMS = 'errorPurchasingItems',
   TO_CLEAN_SETTINGS_EDITED = 'settingsEdited',
   TO_CLEAN_TWITTER_SHARE = 'twitterShare',
