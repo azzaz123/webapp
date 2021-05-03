@@ -79,7 +79,7 @@ describe('SuggesterComponent', () => {
       };
       spyOn(component.newSearchSubmit, 'emit');
 
-      component.searchSubmit();
+      component.onSearchSubmit();
 
       expect(component.newSearchSubmit.emit).toHaveBeenCalledWith('mesa');
     });
