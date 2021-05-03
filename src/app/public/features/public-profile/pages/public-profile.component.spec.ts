@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
@@ -10,14 +10,15 @@ import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserPipeMock } from '@fixtures/is-current-user.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { AdComponentStub } from '@fixtures/shared';
-import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_OTHER_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
 import { MockUserProfileTrackEventService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.fixtures.spec';
 import { PublicProfileTrackingEventsService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { PublicProfileService } from '../core/services/public-profile.service';
+import { PUBLIC_PROFILE_PATHS } from '../public-profile-routing-constants';
 import { PublicProfileComponent } from './public-profile.component';
 
 describe('PublicProfileComponent', () => {
@@ -31,6 +32,8 @@ describe('PublicProfileComponent', () => {
   let mockDeviceService;
   let isCurrentUserPipe: IsCurrentUserPipe;
   let publicProfileTrackingEventsService: PublicProfileTrackingEventsService;
+
+  const routerEvents: Subject<any> = new Subject();
 
   beforeEach(async () => {
     mockDeviceService = {
@@ -86,6 +89,8 @@ describe('PublicProfileComponent', () => {
           provide: Router,
           useValue: {
             navigate() {},
+            url: PUBLIC_PROFILE_PATHS.REVIEWS,
+            events: routerEvents,
           },
         },
         { provide: IsCurrentUserPipe, useClass: IsCurrentUserPipeMock },
@@ -174,6 +179,20 @@ describe('PublicProfileComponent', () => {
             expect(publicProfileTrackingEventsService.trackViewOwnProfile).toHaveBeenCalledWith(component.userInfo.featured);
             expect(publicProfileTrackingEventsService.trackViewOtherProfile).not.toHaveBeenCalled();
           });
+
+          describe('when we click on Reviews tab...', () => {
+            it('should send track view own reviews', () => {
+              spyOn(publicProfileTrackingEventsService, 'trackViewOwnReviewsorViewOtherReviews');
+
+              routerEvents.next(new NavigationEnd(1, PUBLIC_PROFILE_PATHS.REVIEWS, PUBLIC_PROFILE_PATHS.PUBLISHED));
+
+              expect(publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews).toHaveBeenLastCalledWith(
+                component.userInfo,
+                component.userStats,
+                true
+              );
+            });
+          });
         });
 
         describe('when is NOT our own user...', () => {
@@ -196,6 +215,20 @@ describe('PublicProfileComponent', () => {
               component.userStats.counters.publish
             );
             expect(publicProfileTrackingEventsService.trackViewOwnProfile).not.toHaveBeenCalled();
+          });
+
+          describe('when we click on Reviews tab...', () => {
+            it('should send track view other reviews event', () => {
+              spyOn(publicProfileTrackingEventsService, 'trackViewOwnReviewsorViewOtherReviews');
+
+              component.ngOnInit();
+
+              expect(publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews).toHaveBeenLastCalledWith(
+                component.userInfo,
+                component.userStats,
+                false
+              );
+            });
           });
 
           describe('and the user is favourited...', () => {
