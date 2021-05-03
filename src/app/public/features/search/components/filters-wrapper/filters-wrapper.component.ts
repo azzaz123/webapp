@@ -10,6 +10,7 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FilterGroupConfiguration } from '@public/shared/services/filter-group-configuration/interfaces/filter-group-config.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-filters-wrapper',
@@ -24,6 +25,14 @@ export class FiltersWrapperComponent {
     hasApply: true,
   };
   public activeFiltersCount = 0;
+
+  private PARAMETER_CLEANUP_EXCEPTIONS: FILTER_QUERY_PARAM_KEY[] = [
+    FILTER_QUERY_PARAM_KEY.latitude,
+    FILTER_QUERY_PARAM_KEY.longitude,
+    FILTER_QUERY_PARAM_KEY.distance,
+    FILTER_QUERY_PARAM_KEY.keywords,
+  ];
+
   private drawerFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(null);
   private bubbleFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(null);
 
@@ -102,7 +111,7 @@ export class FiltersWrapperComponent {
     }
 
     if (needsParameterCleanup) {
-      this.bubbleStore.setParameters(newConfiguration.params);
+      this.bubbleStore.setParameters(this.cleanParameters(parameters, newConfiguration.params));
     } else {
       this.bubbleValuesSubject.next(parameters);
       this.drawerStore.setParameters(parameters);
@@ -121,9 +130,15 @@ export class FiltersWrapperComponent {
     }
 
     if (needsParameterCleanup) {
-      this.drawerStore.setParameters(newConfiguration.params);
+      this.drawerStore.setParameters(this.cleanParameters(parameters, newConfiguration.params));
     } else {
       this.drawerValuesSubject.next(parameters);
     }
+  }
+
+  private cleanParameters(parameters: FilterParameter[], configurationParameters: FilterParameter[]): FilterParameter[] {
+    const exceptionParameters = parameters.filter(({ key }) => this.PARAMETER_CLEANUP_EXCEPTIONS.includes(key));
+
+    return [...configurationParameters, ...exceptionParameters];
   }
 }

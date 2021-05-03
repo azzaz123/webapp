@@ -27,7 +27,7 @@ import { SearchStoreService } from '@public/features/search/core/services/search
 import { SearchResolver } from './core/services/search.resolver';
 import { SearchAdsService } from './core/ads/search-ads.service';
 import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
-import { LocationService } from '@public/features/search/core/services/location.service';
+import { QueryStringLocationService } from '@public/features/search/core/services/query-string-location.service';
 
 @NgModule({
   imports: [
@@ -61,7 +61,7 @@ import { LocationService } from '@public/features/search/core/services/location.
     SearchResolver,
     SearchAdsService,
     SearchQueryStringService,
-    LocationService,
+    QueryStringLocationService,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
 })

@@ -278,6 +278,25 @@ describe('FiltersWrapperComponent', () => {
 
         expect(drawerStore.getParameters()).toEqual(cleanValues);
       });
+
+      describe('and cleanup exception present', () => {
+        const locationValues = [
+          { key: FILTER_QUERY_PARAM_KEY.longitude, value: '0' },
+          { key: FILTER_QUERY_PARAM_KEY.latitude, value: '0' },
+        ];
+        const oldValuesWithLocation = [...oldValues, ...locationValues];
+        const newValuesWithLocation = [...newValues, ...locationValues];
+        const cleanValuesWithLocation = [...cleanValues, ...locationValues];
+
+        beforeEach(() => {
+          drawerStore.setParameters(oldValuesWithLocation);
+        });
+        it('should not clean exceptions', () => {
+          drawerStore.setParameters(newValuesWithLocation);
+
+          expect(drawerStore.getParameters()).toEqual(cleanValuesWithLocation);
+        });
+      });
     });
 
     describe('... in the bubbles', () => {
@@ -286,6 +305,25 @@ describe('FiltersWrapperComponent', () => {
           bubbleStore.setParameters(newValues);
 
           expect(bubbleStore.getParameters()).toEqual(cleanValues);
+        });
+
+        describe('and cleanup exception present', () => {
+          const locationValues = [
+            { key: FILTER_QUERY_PARAM_KEY.longitude, value: '0' },
+            { key: FILTER_QUERY_PARAM_KEY.latitude, value: '0' },
+          ];
+          const oldValuesWithLocation = [...oldValues, ...locationValues];
+          const newValuesWithLocation = [...newValues, ...locationValues];
+          const cleanValuesWithLocation = [...cleanValues, ...locationValues];
+
+          beforeEach(() => {
+            bubbleStore.setParameters(oldValuesWithLocation);
+          });
+          it('should not clean exceptions', () => {
+            bubbleStore.setParameters(newValuesWithLocation);
+
+            expect(bubbleStore.getParameters()).toEqual(cleanValuesWithLocation);
+          });
         });
       });
 
