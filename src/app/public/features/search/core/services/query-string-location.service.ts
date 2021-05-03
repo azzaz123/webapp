@@ -3,7 +3,7 @@ import { SearchLocation } from './interfaces/search-location.interface';
 import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
 import { CookieService } from 'ngx-cookie';
 import { SEO_COOKIE_LOCATION_KEY } from '@public/features/search/core/services/enums/seo-cookie-location-key.enum';
-import { LOCAL_STORAGE_LOCATION_KEY } from '@public/features/search/core/services/enums/local-storage-location-key.enum';
+import { SEARCH_LOCATION_KEY } from '@public/features/search/core/services/enums/local-storage-location-key.enum';
 
 @Injectable()
 export class QueryStringLocationService {
@@ -43,8 +43,8 @@ export class QueryStringLocationService {
   }
 
   private getLocalStorageLocation(): SearchLocation {
-    const latitude = localStorage.getItem(LOCAL_STORAGE_LOCATION_KEY.LATITUDE);
-    const longitude = localStorage.getItem(LOCAL_STORAGE_LOCATION_KEY.LONGITUDE);
+    const latitude = localStorage.getItem(SEARCH_LOCATION_KEY.LATITUDE);
+    const longitude = localStorage.getItem(SEARCH_LOCATION_KEY.LONGITUDE);
 
     if (latitude && longitude) {
       return {

@@ -5,7 +5,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
 import { CookieService } from 'ngx-cookie';
 import { SEO_COOKIE_LOCATION_KEY } from '@public/features/search/core/services/enums/seo-cookie-location-key.enum';
-import { LOCAL_STORAGE_LOCATION_KEY } from '@public/features/search/core/services/enums/local-storage-location-key.enum';
+import { SEARCH_LOCATION_KEY } from '@public/features/search/core/services/enums/local-storage-location-key.enum';
 
 describe('QueryStringLocationService', () => {
   let service: QueryStringLocationService;
@@ -88,8 +88,8 @@ describe('QueryStringLocationService', () => {
 
             expect(cookieService.get).toHaveBeenCalledTimes(2);
             expect(localStorage.getItem).toHaveBeenCalledTimes(2);
-            expect(localStorage.getItem).toHaveBeenCalledWith(LOCAL_STORAGE_LOCATION_KEY.LATITUDE);
-            expect(localStorage.getItem).toHaveBeenCalledWith(LOCAL_STORAGE_LOCATION_KEY.LONGITUDE);
+            expect(localStorage.getItem).toHaveBeenCalledWith(SEARCH_LOCATION_KEY.LATITUDE);
+            expect(localStorage.getItem).toHaveBeenCalledWith(SEARCH_LOCATION_KEY.LONGITUDE);
           });
         });
 

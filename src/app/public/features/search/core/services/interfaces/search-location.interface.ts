@@ -4,3 +4,7 @@ export interface SearchLocation {
   [FILTER_QUERY_PARAM_KEY.latitude]: string;
   [FILTER_QUERY_PARAM_KEY.longitude]: string;
 }
+
+export interface LabeledSearchLocation extends SearchLocation {
+  label: string;
+}
