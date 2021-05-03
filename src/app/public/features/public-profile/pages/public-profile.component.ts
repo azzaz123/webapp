@@ -47,15 +47,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
-      const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
-      this.adsService.setSlots([this.adSlot]);
-      this.getUser(userUUID);
-    });
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-      this.trackViewEvents(event.url);
-    });
+    this.subscriptions.push(this.routeParamsSubscription(), this.routerEventsSubscription());
     this.isMobile = this.deviceService.isMobile();
   }
 
@@ -66,6 +58,21 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   public userFavouriteChanged(isFavourite: boolean): void {
     this.isFavourited = isFavourite;
     this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteUserEvent(this.userInfo, isFavourite);
+  }
+
+  private routeParamsSubscription(): Subscription {
+    return this.route.params.subscribe((params) => {
+      const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
+      const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
+      this.adsService.setSlots([this.adSlot]);
+      this.getUser(userUUID);
+    });
+  }
+
+  private routerEventsSubscription(): Subscription {
+    return this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+      this.trackViewEvents(event.url);
+    });
   }
 
   private getUser(userUUID: string): void {
