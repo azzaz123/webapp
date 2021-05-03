@@ -155,7 +155,7 @@ describe('DropAreaComponent', () => {
       component.onUploadOutput({
         type: OUTPUT_TYPE.rejected,
         file: UPLOAD_FILE,
-        reason: ('reason' as unknown) as TRANSLATION_KEY,
+        reason: 'reason' as TRANSLATION_KEY,
       });
 
       expect(errorsService.i18nError).toHaveBeenCalledWith('reason', UPLOAD_FILE_NAME);

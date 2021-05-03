@@ -131,7 +131,7 @@ describe('PictureUploadComponent', () => {
 
     it('should throw error if event is rejected', () => {
       spyOn(errorsService, 'i18nError');
-      const ERROR = ('error' as unknown) as TRANSLATION_KEY;
+      const ERROR = 'error' as TRANSLATION_KEY;
       uploaderService.serviceEvents$ = of({
         type: OUTPUT_TYPE.rejected,
         file: UPLOAD_FILE,

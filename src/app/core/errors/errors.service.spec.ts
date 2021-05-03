@@ -85,7 +85,7 @@ describe('Service: Errors', () => {
     it('should call toastService.show method for type error with i18n message', () => {
       spyOn(i18n, 'translate').and.returnValues('message', 'title');
 
-      service.i18nError(('key' as unknown) as TRANSLATION_KEY);
+      service.i18nError('key' as TRANSLATION_KEY);
 
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'message',
@@ -97,7 +97,7 @@ describe('Service: Errors', () => {
     it('should call toastService.show method for type error with i18n message, concatenating text', () => {
       spyOn(i18n, 'translate').and.returnValues('message', 'title');
 
-      service.i18nError(('key' as unknown) as TRANSLATION_KEY, 'text');
+      service.i18nError('key' as TRANSLATION_KEY, 'text');
 
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'message text',
@@ -111,7 +111,7 @@ describe('Service: Errors', () => {
     it('should call toastService.show method for type success with i18n message', () => {
       spyOn(i18n, 'translate').and.returnValues('message', 'title');
 
-      service.i18nSuccess(('key' as unknown) as TRANSLATION_KEY);
+      service.i18nSuccess('key' as TRANSLATION_KEY);
 
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'message',
@@ -122,7 +122,7 @@ describe('Service: Errors', () => {
     it('should call toastService.show method for type success with i18n message, concatenating text', () => {
       spyOn(i18n, 'translate').and.returnValues('message', 'title');
 
-      service.i18nSuccess(('key' as unknown) as TRANSLATION_KEY, 'text');
+      service.i18nSuccess('key' as TRANSLATION_KEY, 'text');
 
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'message text',
