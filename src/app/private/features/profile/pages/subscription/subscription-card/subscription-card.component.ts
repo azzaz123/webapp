@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
@@ -14,27 +15,37 @@ export class SubscriptionCardComponent {
   @Input() isSubscribed: boolean;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter();
 
-  subcriptionBenefits = [
-    'Elige cuantos coches vas subir',
-    'Comparte tu web y número movil',
-    'Gana visibilidad en búsquedas',
-    'Ahorra tiempo de gestión',
+  public readonly titleConfig = {
+    [CATEGORY_SUBSCRIPTIONS_IDS.CAR]: $localize`:@@web_profile_pages_subscription_cars_desc:List all your cars`,
+    [CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE]: $localize`:@@web_profile_pages_subscription_motorbike_desc:List all your motorbikes`,
+    [CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES]: $localize`:@@web_profile_pages_subscription_motor_acc_desc:List all your Motor and Accessories items`,
+    [CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE]: $localize`:@@web_profile_pages_subscription_other_desc:Your best plan to sell all kinds of items`,
+  };
+
+  public readonly subcriptionBenefits: string[] = [
+    $localize`:@@web_subscription_benefit_title_visibility:Gain more visibility`,
+    $localize`:@@web_subscription_benefit_title_time:Save management time`,
+    $localize`:@@web_subscription_benefit_title_share:Share your phone and website`,
   ];
 
+  get descriptionText(): string {
+    return this.titleConfig[this.subscription.category_id];
+  }
+
   get noSubscriptionBodyText(): string {
-    return this.subscription.current_limit
-      ? $localize`:@@web_profile_pages_subscription_323:Limit without subscription: ${this.subscription.current_limit}`
-      : $localize`:@@web_profile_pages_subscription_586:No limit`;
+    return this.subscription.category_id !== CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE
+      ? $localize`:@@web_subscription_benefit_title_limit:Set your listing limit`
+      : $localize`:@@web_subscription_benefit_title_branding:Boost your branding`;
   }
 
   get subscriptionBodyText(): string {
     return this.subscription.selected_tier.limit
-      ? $localize`:@@web_profile_pages_subscription_325:${this.subscription.selected_tier.limit} products`
-      : $localize`:@@web_profile_pages_subscription_586:No limit`;
+      ? $localize`:@@web_profile_pages_subscription_325:List up to ${this.subscription.selected_tier.limit} items`
+      : $localize`:@@web_profile_pages_subscription_586:List without limits`;
   }
 
   get iconSrc(): string {
-    const status = this.isSubscribed ? 'normal' : 'disabled';
+    const status = this.isSubscribed ? 'disabled' : 'normal';
     return `/assets/icons/categories/${status}/${this.subscription.category_icon}.svg`;
   }
 

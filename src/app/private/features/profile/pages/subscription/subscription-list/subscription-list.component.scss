@@ -2,12 +2,11 @@
 
 .box-content {
   color: $blue-grey-3;
-  padding: $spacing-xxl;
+  padding: $spacing-ml (4 * $spacing-ml);
   h4 {
     color: $blue-grey-1;
     font-size: $font-size-l;
     font-weight: bold;
-    margin: 0 0 $spacing-ms;
   }
 }
 
@@ -16,8 +15,8 @@
   margin: 0 auto;
 }
 
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(lg) {
   .box-content {
-    padding: $spacing-l $spacing-m $spacing-m;
+    padding: $spacing-m;
   }
 }

@@ -1,6 +1,6 @@
 <div class="SubscriptionPriceDiscount">
   <div [ngClass]="{ 'Subscriptions__category-info--discounted': hasOneTierDiscount(subscription) }">
-    <span i18n="@@SubscriptionPriceDiscountFromPrice" *ngIf="subscription.tiers.length !== 1">From:
+    <span i18n="@@SubscriptionPriceDiscountFromPrice" *ngIf="subscription.tiers.length">From:
       {{subscription?.tiers[0]?.price}}{{subscription?.tiers[0]?.currency}}/month
     </span>
   </div>
