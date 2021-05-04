@@ -21,6 +21,7 @@ export class ChangeCardModalComponent implements OnInit {
   public savedCard = true;
   public selectedCard = false;
   public newLoading = false;
+  public isNewSubscription: boolean;
   errorService: any;
 
   constructor(
@@ -85,6 +86,10 @@ export class ChangeCardModalComponent implements OnInit {
 
   public setExistingDefaultCard() {
     if (!this.selectedCard) return;
+    if (this.isNewSubscription) {
+      this.activeModal.close(this.card);
+      return;
+    }
     let modalRef: NgbModalRef = this.modalService.open(ConfirmCardModalComponent, { windowClass: 'review' });
     modalRef.componentInstance.financialCard = this.card.stripeCard;
     modalRef.result.then((action: string) => {

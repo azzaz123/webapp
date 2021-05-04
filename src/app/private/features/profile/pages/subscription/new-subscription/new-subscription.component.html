@@ -12,5 +12,7 @@
 <div class="card-generic">
     <div class="card-generic__title">Wallapop PRo</div>
     <div class="card-generic__subtitle">Súscribete a Wallapop PRO y lleva tus ventas al siguiente nivel.</div>
-    <tsl-subscription-card-selector> </tsl-subscription-card-selector>
+    <ng-container *ngIf="stripeCards">
+        <tsl-subscription-card-selector [stripeCards]="stripeCards"> </tsl-subscription-card-selector>
+    </ng-container>
 </div>

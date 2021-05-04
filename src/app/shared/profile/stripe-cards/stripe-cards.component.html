@@ -9,7 +9,7 @@
       <div *ngIf="isSubscribed" class="col-12 col-md-4 offset-md-2">
           <h4 i18n="@@SubscriptionCard">Card linked to subscriptions</h4>
           <div class="StripeCards__card" *ngFor="let subscriptionStripeCard of subscriptionStripeCards">
-            <tsl-credit-card-info [financialCard]="subscriptionStripeCard"
+            <tsl-credit-card-info [financialCard]="subscriptionStripeCard" [disableEdit]="!subscriptionStripeCard.invoices_default"
               (onSetChangeCard)="onSetChangeCard($event)" (onDeleteStripeCard)="onDeleteCard($event)">
             </tsl-credit-card-info>
           </div>
@@ -21,7 +21,7 @@
         <h4 i18n="@@CurrentCards">Saved cards</h4>
         <div class="StripeCards__group">
           <div class="StripeCards__card" *ngFor="let stripeCard of stripeCards">
-            <tsl-credit-card-info [financialCard]="stripeCard"
+            <tsl-credit-card-info [financialCard]="stripeCard" [disableEdit]="!stripeCard.invoices_default"
               (onDeleteStripeCard)="onDeleteCard($event)">
             </tsl-credit-card-info>
           </div>
