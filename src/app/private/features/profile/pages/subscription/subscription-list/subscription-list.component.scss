@@ -1,0 +1,22 @@
+@import '~style/common';
+
+.box-content {
+  color: $blue-grey-3;
+  padding: $spacing-ml (4 * $spacing-ml);
+  h4 {
+    color: $blue-grey-1;
+    font-size: $font-size-l;
+    font-weight: bold;
+  }
+}
+
+.loading-center {
+  display: block;
+  margin: 0 auto;
+}
+
+@include media-breakpoint-down(lg) {
+  .box-content {
+    padding: $spacing-m;
+  }
+}
