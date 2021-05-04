@@ -182,6 +182,26 @@ describe('FiltersWrapperComponent', () => {
 
         expect(component.closeDrawer).toHaveBeenCalledTimes(1);
       });
+
+      describe('and the filter is closed', () => {
+        it('should notify that the filter content is closed', () => {
+          spyOn(component.filterOpened, 'emit');
+
+          component.bubbleOpenStateChange(false);
+
+          expect(component.filterOpened.emit).toHaveBeenCalledWith(false);
+        });
+      });
+
+      describe('and the filter is opened', () => {
+        it('should notify that the filter content is opened', () => {
+          spyOn(component.filterOpened, 'emit');
+
+          component.bubbleOpenStateChange(true);
+
+          expect(component.filterOpened.emit).toHaveBeenCalledWith(true);
+        });
+      });
     });
   });
 
