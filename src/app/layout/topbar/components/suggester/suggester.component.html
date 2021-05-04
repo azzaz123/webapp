@@ -8,7 +8,7 @@
         [ngModel]="searchBoxValue$ | async" 
         [inputFormatter]="inputFormatter"
         [ngbTypeahead]="suggest" 
-        [resultTemplate]="suggester" 
+        [resultTemplate]="suggesterTemplate" 
         [focusFirst]="false"
         (ngModelChange)="onSearchBoxValueChange($event)"
         (keydown.enter)="onSearchSubmit()"
@@ -21,13 +21,13 @@
     </tsl-svg-icon>
 </div>
 
-<ng-template #suggester let-r="result">
+<ng-template #suggesterTemplate let-suggestion="result">
     <div class="SearchBox__suggestion d-flex flex-column justify-content-center" (click)="onSuggestionClick(r)">
         <span class="SearchBox__suggestionTitle">
-            {{ r.suggestion }}
+            {{ suggestion.suggestion }}
         </span>
         <span class="SearchBox__suggestionCategory">
-            {{ r.category_name }}
+            {{ suggestion.category_name }}
         </span>
     </div>
 </ng-template>
