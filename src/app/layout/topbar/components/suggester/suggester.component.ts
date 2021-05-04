@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
-import { distinctUntilChanged, catchError, switchMap, tap, map, debounceTime } from 'rxjs/operators';
+import { distinctUntilChanged, catchError, switchMap, tap, map, debounceTime, filter } from 'rxjs/operators';
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { SearchBoxValue, SuggesterResponse } from '../../core/interfaces/suggester-response.interface';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
@@ -66,8 +66,10 @@ export class SuggesterComponent implements OnInit {
   private onQueryParamsChange(): Observable<SearchBoxValue> {
     return this.route.queryParams.pipe(
       distinctUntilChanged(),
-      map((params: Params) => this.mapSearchBoxValue(params[FILTER_QUERY_PARAM_KEY.keywords])),
-      tap((keyword) => (this.searchBoxValue = keyword))
+      map((params: Params) => params[FILTER_QUERY_PARAM_KEY.keywords]),
+      filter((keyword: string) => !!keyword),
+      map((keyword: string) => this.mapSearchBoxValue(keyword)),
+      tap((searchBoxValue: SearchBoxValue) => (this.searchBoxValue = searchBoxValue))
     );
   }
 
