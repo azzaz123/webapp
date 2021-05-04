@@ -238,7 +238,7 @@ describe('SearchComponent', () => {
       fixture.detectChanges();
 
       expect(component.filterOpened).toBe(true);
-      expect(searchFilters.classes[expectedClass]).toBe(true);
+      expect(searchFilters.nativeElement.classList).toContain(expectedClass);
     });
   });
 
