@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 
 import { distinctUntilChanged, catchError, switchMap, tap, map, debounceTime, filter } from 'rxjs/operators';
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
@@ -14,14 +14,19 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 })
 export class SuggesterComponent implements OnInit {
   private static SEARCH_BOX_INITIAL_VALUE = '';
-
   private readonly searchBoxValueSubject = new BehaviorSubject<SearchBoxValue>({ keywords: SuggesterComponent.SEARCH_BOX_INITIAL_VALUE });
+  private queryParamsSubscription: Subscription;
+
   @Output() public searchSubmit = new EventEmitter<SearchBoxValue>();
 
   constructor(private suggesterService: SuggesterService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.onQueryParamsChange().subscribe();
+    this.queryParamsSubscription = this.onQueryParamsChange().subscribe();
+  }
+
+  ngOnDestroy() {
+    this.queryParamsSubscription.unsubscribe();
   }
 
   get searchBoxValue(): SearchBoxValue {
