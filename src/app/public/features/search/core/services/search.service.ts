@@ -19,6 +19,7 @@ export class SearchService {
   private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_LOADING_STATE);
   private readonly isLoadingPaginationResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_PAGINATION_LOADING_STATE);
   private readonly currentCategoryIdSubject = new BehaviorSubject<string>(undefined);
+  private readonly searchIdSubject = new BehaviorSubject<string>(null);
 
   private subscription: Subscription = new Subscription();
 
@@ -67,6 +68,14 @@ export class SearchService {
     this.currentCategoryIdSubject.next(categoryId);
   }
 
+  get searchId$(): Observable<string> {
+    return this.searchIdSubject.asObservable();
+  }
+
+  private set searchId(searchId: string) {
+    this.searchIdSubject.next(searchId);
+  }
+
   constructor(
     private searchStoreService: SearchStoreService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStoreService: FilterParameterStoreService,
@@ -90,9 +99,16 @@ export class SearchService {
 
   private onChangeParameters(): Observable<SearchPaginationWithCategory> {
     return this.filterParameterStoreService.parameters$.pipe(
-      tap(() => (this.isLoadingResults = true)),
+      tap(() => {
+        this.isLoadingResults = true;
+      }),
       switchMap((filterParameters: FilterParameter[]) =>
-        this.searchInfrastructureService.search(filterParameters).pipe(map((r) => this.mapSearchResponse(r, filterParameters)))
+        this.searchInfrastructureService.search(filterParameters).pipe(
+          map((r) => {
+            this.searchId = this.searchInfrastructureService.getSearchId();
+            return this.mapSearchResponse(r, filterParameters);
+          })
+        )
       ),
       tap(({ items, hasMore, categoryId }: SearchPaginationWithCategory) => {
         this.isLoadingResults = false;

@@ -14,12 +14,15 @@ import { SearchApiUrlFactory, SearchApiUrlSearchOrWall } from './search-api-url.
 import { SearchResponse } from './search-response.interface';
 
 export const NEXT_HEADER_PAGE = 'X-NextPage';
+export const SEARCH_ID = 'x-wallapop-search-id';
 
 @Injectable()
 export class SearchAPIService {
+
   private static readonly BASE_URL: string = `${environment.baseUrl}api/v3`;
   private nextPageUrl: string | null = null;
   private categoryId: string | null = null;
+  private _searchId: string | null = null;
 
   protected static buildNextPageUrl(url: string, nextPage: string): string {
     return nextPage && url.split('?')[0] + '?' + nextPage;
@@ -30,6 +33,14 @@ export class SearchAPIService {
   }
 
   constructor(protected httpClient: HttpClient) {}
+
+  public get searchId(): string {
+    return this._searchId;
+  }
+
+  public set searchId(searchId: string) {
+    this._searchId = searchId;
+  } 
 
   public loadMore(): Observable<SearchPagination> {
     return this.nextPageUrl ? this.makeSearchApi(this.nextPageUrl) : of(null);
@@ -52,6 +63,7 @@ export class SearchAPIService {
     return this.httpClient.get<SearchResponse<T>>(SearchAPIService.BASE_URL + url, {observe: 'response'}).pipe(
       tap(({headers}: HttpResponse<SearchResponse<T>>) => {
         const nextPage: string = headers.get(NEXT_HEADER_PAGE);
+        this.searchId = headers.get(SEARCH_ID);
         this.nextPageUrl = SearchAPIService.buildNextPageUrl(url, nextPage);
       }),
       map(({body}: HttpResponse<SearchResponse<T>>) => {

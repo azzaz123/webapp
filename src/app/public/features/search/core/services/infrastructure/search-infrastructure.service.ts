@@ -23,6 +23,10 @@ export class SearchInfrastructureService {
       .pipe(switchMap((searchPagination: SearchPagination) => this.setFavourites(searchPagination)));
   }
 
+  public getSearchId(): string {
+    return this.searchApiService.searchId
+  }
+
   private setFavourites({items, hasMore}: SearchPagination): Observable<SearchPagination> {
     return this.searchFavouritesService
       .getFavouritesByItems(items)

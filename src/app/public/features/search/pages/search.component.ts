@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -83,6 +84,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   constructor(
     private deviceService: DeviceService,
     private searchService: SearchService,
+    private route: ActivatedRoute,
     private publicFooterService: PublicFooterService,
     private searchAdsService: SearchAdsService
   ) {
@@ -92,7 +94,12 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.slotsConfig = this.deviceService.isMobile() ? SLOTS_CONFIG_MOBILE : SLOTS_CONFIG_DESKTOP;
-
+    this.searchService.searchId$.subscribe((searchId: string) => {
+      console.log('searchId tt', searchId);
+    });
+    this.route.data.subscribe((n) => {
+      console.log('date', n);
+    });
     this.searchAdsService.setSlots();
   }
 
