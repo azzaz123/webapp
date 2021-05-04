@@ -77,8 +77,6 @@ export class ItemRequiredDataService {
       );
     }
 
-    console.log('HOLA', ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID[categoryId], categoryId);
-
     return ITEM_REQUIRED_FIELDS_BY_CATEGORY_ID[categoryId].every((fieldComposedName: string) => {
       const fieldNames = fieldComposedName.split('.');
       const fieldLevelCount = fieldNames.length;
@@ -88,14 +86,11 @@ export class ItemRequiredDataService {
         value = this.getValue(value, fieldNames[i]);
       }
 
-      console.log(categoryId, fieldNames, value);
-
       return !!value;
     });
   }
 
   private getValue(object: Object, propertyName: string): Object | string {
-    console.log(object, propertyName);
     return object[propertyName];
   }
 
