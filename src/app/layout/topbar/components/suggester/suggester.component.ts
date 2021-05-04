@@ -45,21 +45,21 @@ export class SuggesterComponent implements OnInit {
 
   public inputFormatter = (value: SearchBoxValue) => value.keywords;
 
-  public onSearchBoxValueChange(value: string | SuggesterResponse) {
+  public searchBoxValueChange(value: string | SuggesterResponse) {
     this.searchBoxValue = this.mapSearchBoxValue(value);
   }
 
-  public onSuggestionClick(suggestion: SuggesterResponse) {
+  public suggestionClick(suggestion: SuggesterResponse) {
     this.searchBoxValue = this.mapSearchBoxValue(suggestion);
-    this.onSearchSubmit();
+    this.submitSearch();
   }
 
-  public onResetKeyword(): void {
+  public resetKeyword(): void {
     this.searchBoxValue = this.mapSearchBoxValue(SuggesterComponent.SEARCH_BOX_INITIAL_VALUE);
-    this.onSearchSubmit();
+    this.submitSearch();
   }
 
-  public onSearchSubmit(): void {
+  public submitSearch(): void {
     this.searchSubmit.emit(this.searchBoxValue);
   }
 

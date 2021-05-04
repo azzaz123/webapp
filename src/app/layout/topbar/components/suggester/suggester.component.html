@@ -10,19 +10,19 @@
         [ngbTypeahead]="suggest" 
         [resultTemplate]="suggesterTemplate" 
         [focusFirst]="false"
-        (ngModelChange)="onSearchBoxValueChange($event)"
-        (keydown.enter)="onSearchSubmit()"
+        (ngModelChange)="searchBoxValueChange($event)"
+        (keydown.enter)="submitSearch()"
     />
     <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
     <tsl-svg-icon 
         *ngIf="(searchBoxValue$ | async).keywords" 
-        (click)="onResetKeyword()"
+        (click)="resetKeyword()"
         class="SearchBox__reset" src="/assets/icons/top-bar/search-box-reset.svg" width="21" height="21">
     </tsl-svg-icon>
 </div>
 
 <ng-template #suggesterTemplate let-suggestion="result">
-    <div class="SearchBox__suggestion d-flex flex-column justify-content-center" (click)="onSuggestionClick(r)">
+    <div class="SearchBox__suggestion d-flex flex-column justify-content-center" (click)="suggestionClick(suggestion)">
         <span class="SearchBox__suggestionTitle">
             {{ suggestion.suggestion }}
         </span>

@@ -107,7 +107,7 @@ describe('SuggesterComponent', () => {
           const inputElement = fixture.debugElement.query(By.css('.SearchBox__input'));
           spyOn(component.searchSubmit, 'emit');
 
-          component.onSearchBoxValueChange(MOCK_SUGGESTER_RESPONSE);
+          component.searchBoxValueChange(MOCK_SUGGESTER_RESPONSE);
           inputElement.triggerEventHandler('keydown.enter', {});
           fixture.detectChanges();
 
@@ -127,7 +127,7 @@ describe('SuggesterComponent', () => {
       it('should apply the search with the selected suggestion', () => {
         spyOn(component.searchSubmit, 'emit');
 
-        component.onSuggestionClick(MOCK_SUGGESTER_RESPONSE);
+        component.suggestionClick(MOCK_SUGGESTER_RESPONSE);
 
         expect(component.searchSubmit.emit).toHaveBeenCalledWith({
           [FILTER_QUERY_PARAM_KEY.keywords]: MOCK_SUGGESTER_RESPONSE.suggestion,
