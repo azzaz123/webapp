@@ -1,12 +1,13 @@
 @import '~style/common';
 
 $actions-height: 88px;
+$sort-filter-height: 38px;
 
 .SortFilter {
   cursor: pointer;
   font-size: $font-size-xs;
 
-  height: 38px;
+  height: $sort-filter-height;
   background-color: $color-inbox-background;
   border-bottom: thin solid $color-social-background;
 
