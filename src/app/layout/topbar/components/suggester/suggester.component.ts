@@ -60,7 +60,7 @@ export class SuggesterComponent implements OnInit {
   }
 
   public onSearchSubmit(): void {
-    this.searchSubmit.next(this.searchBoxValue);
+    this.searchSubmit.emit(this.searchBoxValue);
   }
 
   private onQueryParamsChange(): Observable<SearchBoxValue> {
