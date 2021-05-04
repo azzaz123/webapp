@@ -78,12 +78,14 @@ export class SuggesterComponent implements OnInit {
   }
 
   private mapSearchBoxValue(value: string | SuggesterResponse): SearchBoxValue {
-    if (typeof value === 'string') {
-      return { keywords: value };
+    if (typeof value === 'object') {
+      const searchBoxValue = { [FILTER_QUERY_PARAM_KEY.keywords]: value.suggestion };
+
+      if (value.category_id) {
+        searchBoxValue[FILTER_QUERY_PARAM_KEY.categoryId] = `${value.category_id}`;
+      }
+      return searchBoxValue;
     }
-    return {
-      keywords: value.suggestion,
-      category_ids: `${value.category_id}`,
-    };
+    return { [FILTER_QUERY_PARAM_KEY.keywords]: value };
   }
 }
