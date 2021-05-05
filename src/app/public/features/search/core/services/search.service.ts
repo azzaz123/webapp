@@ -1,16 +1,17 @@
 import { Inject, Injectable } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import {
-  FilterParameterStoreService,
-  FILTER_PARAMETER_STORE_TOKEN,
-} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { SearchPagination, SearchPaginationWithCategory } from '../../interfaces/search-pagination.interface';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
 import { SearchStoreService } from './search-store.service';
+import {
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
 
 @Injectable()
 export class SearchService {
@@ -52,7 +53,7 @@ export class SearchService {
     return this.searchStoreService.hasMore$;
   }
 
-  public isWall$: Observable<boolean> = this.filterParameterStoreService.parameters$.pipe(
+  public isWall$: Observable<boolean> = this.parameterStoreService.parameters$.pipe(
     map((filterParameters: FilterParameter[]) =>
       filterParameters.find(({ key }: FilterParameter) => key === FILTER_QUERY_PARAM_KEY.keywords)
     ),
@@ -69,12 +70,14 @@ export class SearchService {
 
   constructor(
     private searchStoreService: SearchStoreService,
-    @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStoreService: FilterParameterStoreService,
-    private searchInfrastructureService: SearchInfrastructureService
+    @Inject(FILTER_PARAMETER_STORE_TOKEN) private parameterStoreService: FilterParameterStoreService,
+    private infrastructureService: SearchInfrastructureService,
+    private queryStringService: SearchQueryStringService
   ) {}
 
   public init(): void {
     this.subscription.add(this.onChangeParameters().subscribe());
+    this.subscription.add(this.onChangeQueryStringParameters().subscribe());
     this.subscription.add(this.onLoadMore().subscribe());
   }
 
@@ -85,14 +88,17 @@ export class SearchService {
   public close(): void {
     this.subscription.unsubscribe();
     this.searchStoreService.clear();
-    this.filterParameterStoreService.clear();
+    this.parameterStoreService.clear();
   }
 
   private onChangeParameters(): Observable<SearchPaginationWithCategory> {
-    return this.filterParameterStoreService.parameters$.pipe(
-      tap(() => (this.isLoadingResults = true)),
+    return this.parameterStoreService.parameters$.pipe(
+      tap((parameters: FilterParameter[]) => {
+        this.queryStringService.setQueryParams(parameters);
+        this.isLoadingResults = true;
+      }),
       switchMap((filterParameters: FilterParameter[]) =>
-        this.searchInfrastructureService.search(filterParameters).pipe(map((r) => this.mapSearchResponse(r, filterParameters)))
+        this.infrastructureService.search(filterParameters).pipe(map((r) => this.mapSearchResponse(r, filterParameters)))
       ),
       tap(({ items, hasMore, categoryId }: SearchPaginationWithCategory) => {
         this.isLoadingResults = false;
@@ -103,10 +109,18 @@ export class SearchService {
     );
   }
 
+  private onChangeQueryStringParameters(): Observable<FilterParameter[]> {
+    return this.queryStringService.queryStringParams$.pipe(
+      tap((parameters: FilterParameter[]) => {
+        this.parameterStoreService.setParameters(parameters);
+      })
+    );
+  }
+
   private onLoadMore(): Observable<SearchPagination> {
     return this.loadMore$.pipe(
       tap(() => (this.isLoadingPaginationResults = true)),
-      switchMap(() => this.searchInfrastructureService.loadMore()),
+      switchMap(() => this.infrastructureService.loadMore()),
       tap(({ items, hasMore }: SearchPagination) => {
         this.isLoadingPaginationResults = false;
         this.searchStoreService.appendItems(items);

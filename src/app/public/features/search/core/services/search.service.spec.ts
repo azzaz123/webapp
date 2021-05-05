@@ -13,15 +13,18 @@ import {
   FILTER_PARAMETER_STORE_TOKEN,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
 
 describe('SearchService', () => {
   let service: SearchService;
   let searchStoreServiceMock;
   let filterParameterStoreServiceMock;
   let searchInfrastructureServiceMock;
+  let queryStringServiceMock;
   const filterParametersSubject: Subject<FilterParameter[]> = new Subject<FilterParameter[]>();
   const itemsSubject: Subject<ItemCard[]> = new Subject<ItemCard[]>();
   const hasMoreSubject: Subject<boolean> = new Subject<boolean>();
+  const queryParamsSubject: Subject<FilterParameter[]> = new Subject<FilterParameter[]>();
 
   beforeEach(() => {
     searchStoreServiceMock = {
@@ -35,12 +38,18 @@ describe('SearchService', () => {
 
     filterParameterStoreServiceMock = {
       parameters$: filterParametersSubject.asObservable(),
+      setParameters: () => {},
       clear: () => {},
     };
 
     searchInfrastructureServiceMock = {
       search: (params: FilterParameter) => of(SearchPaginationFactory()),
       loadMore: () => of(SearchPaginationFactory()),
+    };
+
+    queryStringServiceMock = {
+      queryStringParams$: queryParamsSubject.asObservable(),
+      setQueryParams: () => {},
     };
 
     TestBed.configureTestingModule({
@@ -61,6 +70,10 @@ describe('SearchService', () => {
         {
           provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
           useValue: filterParameterStoreServiceMock,
+        },
+        {
+          provide: SearchQueryStringService,
+          useValue: queryStringServiceMock,
         },
       ],
     });
@@ -214,6 +227,21 @@ describe('SearchService', () => {
       });
 
       hasMoreSubject.next(searchPagination.hasMore);
+    });
+  });
+
+  describe('when query params change', () => {
+    beforeEach(() => {
+      service.init();
+    });
+
+    it('should set parameters', () => {
+      spyOn(filterParameterStoreServiceMock, 'setParameters');
+
+      queryParamsSubject.next([]);
+
+      expect(filterParameterStoreServiceMock.setParameters).toHaveBeenCalledTimes(1);
+      expect(filterParameterStoreServiceMock.setParameters).toHaveBeenCalledWith([]);
     });
   });
 });

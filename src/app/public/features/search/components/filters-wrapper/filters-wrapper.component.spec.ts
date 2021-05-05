@@ -8,7 +8,7 @@ import {
   FILTER_PARAMETER_STORE_TOKEN,
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
-import { FilterWrapperConfigurationService } from '@public/shared/services/filter-wrapper-configuration/filter-wrapper-configuration.service';
+import { FilterGroupConfigurationService } from '@public/shared/services/filter-group-configuration/filter-group-configuration.service';
 import { ExtractFilterConfigsPipe } from '@public/features/search/components/filters-wrapper/pipes/extract-filter-configs.pipe';
 import { DrawerComponent } from '@public/shared/components/drawer/drawer.component';
 import { Component, DebugElement } from '@angular/core';
@@ -37,7 +37,7 @@ describe('FiltersWrapperComponent', () => {
       declarations: [TestComponent, FiltersWrapperComponent, FilterGroupComponentStub, ExtractFilterConfigsPipe],
       imports: [BubbleModule, DrawerModule],
       providers: [
-        FilterWrapperConfigurationService,
+        FilterGroupConfigurationService,
         {
           provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
           useClass: FilterParameterStoreService,
@@ -182,6 +182,26 @@ describe('FiltersWrapperComponent', () => {
 
         expect(component.closeDrawer).toHaveBeenCalledTimes(1);
       });
+
+      describe('and the filter is closed', () => {
+        it('should notify that the filter content is closed', () => {
+          spyOn(component.filterOpened, 'emit');
+
+          component.bubbleOpenStateChange(false);
+
+          expect(component.filterOpened.emit).toHaveBeenCalledWith(false);
+        });
+      });
+
+      describe('and the filter is opened', () => {
+        it('should notify that the filter content is opened', () => {
+          spyOn(component.filterOpened, 'emit');
+
+          component.bubbleOpenStateChange(true);
+
+          expect(component.filterOpened.emit).toHaveBeenCalledWith(true);
+        });
+      });
     });
   });
 
@@ -239,6 +259,19 @@ describe('FiltersWrapperComponent', () => {
     });
   });
 
+  describe('on initialization', () => {
+    const newValues: FilterParameter[] = [
+      { key: FILTER_QUERY_PARAM_KEY.categoryId, value: '100' },
+      { key: FILTER_QUERY_PARAM_KEY.postedAgo, value: 'lastWeek' },
+    ];
+
+    it('should not clean values', () => {
+      bubbleStore.setParameters(newValues);
+
+      expect(bubbleStore.getParameters()).toEqual(newValues);
+    });
+  });
+
   describe('when configuration change happens', () => {
     const oldValues: FilterParameter[] = [
       { key: FILTER_QUERY_PARAM_KEY.categoryId, value: '200' },
@@ -249,6 +282,11 @@ describe('FiltersWrapperComponent', () => {
       { key: FILTER_QUERY_PARAM_KEY.postedAgo, value: 'lastWeek' },
     ];
     const cleanValues: FilterParameter[] = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: '100' }];
+
+    beforeEach(() => {
+      bubbleStore.setParameters([]);
+      drawerStore.setParameters([]);
+    });
 
     describe('... in the drawer', () => {
       beforeEach(() => {
