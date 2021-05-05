@@ -49,9 +49,7 @@ export class LocationFilterServiceService {
   }
 
   private getDefaultLocations(): LabeledSearchLocation[] {
-    const keys = Object.keys(DEFAULT_LOCATIONS);
-
-    return keys.map((key) => DEFAULT_LOCATIONS[key]);
+    return Object.values(DEFAULT_LOCATIONS);
   }
 
   private getSeoLocation(): LabeledSearchLocation {
