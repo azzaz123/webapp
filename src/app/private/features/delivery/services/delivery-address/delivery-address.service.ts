@@ -3,16 +3,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DeliveryAddressApiService } from '../api/delivery-address-api/delivery-address-api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class DeliveryAddressService {
   private deliveryAddress: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(private deliveryAddressApiService: DeliveryAddressApiService) {}
 
   public get(cache = true): Observable<any> {
-    if (cache && this.deliveryAddress) {
+    if (cache && this.deliveryAddress.value) {
       return this.deliveryAddress.asObservable();
     }
 
