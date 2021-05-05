@@ -1249,4 +1249,9 @@
   <translation id="WallapopProSubscriptionSubTitle">Elige una suscripción para llevar tus ventas al siguiente nivel</translation>
   <translation id="your_current_plan">Tu plan actual</translation>
   <translation id="web_toast_cardealer_error_contact">¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.</translation>
+  <translation id="nameAndSurname">Nombre y apellidos</translation>
+  <translation id="streetAndNumber">Calle y número</translation>
+  <translation id="floorAndDoorNumber">Piso y puerta</translation>
+  <translation id="population">Población</translation>
+  <translation id="contactPhone">Teléfono de contacto</translation>
 </translationbundle>
