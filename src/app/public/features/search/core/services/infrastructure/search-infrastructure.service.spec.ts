@@ -5,6 +5,7 @@ import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { of } from 'rxjs';
+import { MOCK_SEARCH_ID } from '../search-list-tracking-events.fixtures.spec';
 import { SearchAPIService } from './api/search-api.service';
 import { SearchFavouritesService } from './favorites/search-favourites.service';
 import { SearchInfrastructureService } from './search-infrastructure.service';
@@ -17,6 +18,7 @@ describe('SearchInfrastructureService', () => {
 
   beforeEach(() => {
     searchApiServiceMock = {
+      searchId: MOCK_SEARCH_ID,
       search: (params: FilterParameter[]) => of(SearchPaginationFactory()),
       loadMore: () => of(SearchPaginationFactory())
     };
