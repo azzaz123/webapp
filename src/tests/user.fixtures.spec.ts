@@ -327,7 +327,8 @@ export class MockedUserService {
         data.scoring_stars,
         data.scoring_starts,
         data.response_rate,
-        data.online
+        data.online,
+        data.featured
       )
     );
   }
@@ -338,6 +339,10 @@ export class MockedUserService {
 
   get user(): User {
     return new User(USER_ID);
+  }
+
+  get isPro(): boolean {
+    return this.user.featured;
   }
 
   public me(): Observable<User> {
