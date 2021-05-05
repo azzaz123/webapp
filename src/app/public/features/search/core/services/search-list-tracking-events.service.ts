@@ -30,7 +30,7 @@ export class SearchListTrackingEventsService {
         isPro: this.isPro(),
         salePrice: itemCard.salePrice,
         title: itemCard.title,
-        itemDistance: this.itemDistance(),
+        itemDistance: itemCard.distance,
         shippingAllowed: !!itemCard.saleConditions?.shipping_allowed,
         sellerUserId: itemCard.ownerId,
         isBumped: !!itemCard.bumpFlags?.bumped,
@@ -41,9 +41,5 @@ export class SearchListTrackingEventsService {
 
   private isPro(): boolean | undefined {
     return this.userService.isPro;
-  }
-
-  private itemDistance(): number | undefined {
-    return this.userService.user?.itemDistance;
   }
 }
