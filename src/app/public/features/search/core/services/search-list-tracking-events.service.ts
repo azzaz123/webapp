@@ -1,3 +1,4 @@
+import { isPromise } from '@angular/compiler/src/util';
 import { Injectable } from '@angular/core';
 import {
   AnalyticsEvent,
@@ -9,33 +10,42 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchListTrackingEventsService {
-  constructor(private analyticsService: AnalyticsService) {}
+  constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
 
-  public trackClickItemCardEvent(recommendedItemCard: ItemCard, sourceItem: Item, recommenedItemOwner: User, index: number): void {
+  public trackClickItemCardEvent(itemCard: ItemCard, index: number, searchId: string): void {
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
-        itemId: recommendedItemCard.id,
-        categoryId: recommendedItemCard.categoryId,
+        itemId: itemCard.id,
+        categoryId: itemCard.categoryId,
         position: index + 1,
-        screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
-        isPro: recommenedItemOwner.featured,
-        salePrice: recommendedItemCard.salePrice,
-        title: recommendedItemCard.title,
-        itemSourceRecommendationId: sourceItem.id,
-        itemDistance: recommenedItemOwner.itemDistance,
-        shippingAllowed: !!recommendedItemCard.saleConditions?.shipping_allowed,
-        sellerUserId: recommendedItemCard.ownerId,
-        isBumped: !!recommendedItemCard.bumpFlags?.bumped,
+        searchId: searchId,
+        screenId: SCREEN_IDS.Search,
+        isPro: this.isPro(),
+        salePrice: itemCard.salePrice,
+        title: itemCard.title,
+        itemDistance: this.itemDistance(),
+        shippingAllowed: !!itemCard.saleConditions?.shipping_allowed,
+        sellerUserId: itemCard.ownerId,
+        isBumped: !!itemCard.bumpFlags?.bumped,
       },
     };
     this.analyticsService.trackEvent(event);
+  }
+
+  private isPro(): boolean | undefined {
+    return this.userService.isPro;
+  }
+
+  private itemDistance(): number | undefined {
+    return this.userService.user?.itemDistance;
   }
 }
