@@ -1,12 +1,109 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
+import { whitespaceValidator } from '@core/form-validators/formValidators.func';
+import { UuidService } from '@core/uuid/uuid.service';
+import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
+import { finalize } from 'rxjs/operators';
+import { DeliveryAddressService } from '../../services/delivery-address/delivery-address.service';
 
 @Component({
   selector: 'tsl-delivery-address',
   templateUrl: './delivery-address.component.html',
   styleUrls: ['./delivery-address.component.scss'],
 })
-export class DeliveryAddressComponent implements OnInit {
-  constructor() {}
+export class DeliveryAddressComponent {
+  public deliveryAddressForm: FormGroup;
+  public loading = true;
+  public isNewForm = true;
+  private readonly formSubmittedEventKey = 'formSubmitted';
 
-  ngOnInit(): void {}
+  @ViewChild(ProfileFormComponent, { static: true })
+  formComponent: ProfileFormComponent;
+
+  constructor(
+    private fb: FormBuilder,
+    private deliveryAddressService: DeliveryAddressService,
+    private eventService: EventService,
+    private errorsService: ErrorsService,
+    private uuidService: UuidService
+  ) {
+    this.buildForm();
+    this.eventService.subscribe(this.formSubmittedEventKey, () => {
+      this.onSubmit();
+    });
+  }
+
+  ngOnDestroy() {
+    this.eventService.unsubscribeAll(this.formSubmittedEventKey);
+  }
+
+  public initForm(cache: boolean = true): void {
+    this.deliveryAddressService
+      .get(cache)
+      .subscribe(
+        (deliveryAddress: any) => {
+          this.isNewForm = false;
+          this.deliveryAddressForm.patchValue(deliveryAddress);
+          // this.patchFormValues();
+          this.formComponent.initFormControl();
+        },
+        () => {
+          // this.patchFormValues();
+          this.formComponent.initFormControl();
+          this.isNewForm = true;
+          this.buildForm();
+        }
+      )
+      .add(() => {
+        // this.updateFieldsValidity();
+        // this.onChanges();
+        this.loading = false;
+      });
+  }
+
+  public onSubmit(): void {
+    if (this.deliveryAddressForm.valid) {
+      this.loading = true;
+      this.deliveryAddressService
+        .update(this.deliveryAddressForm.getRawValue())
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+          })
+        )
+        .subscribe(
+          () => {
+            this.errorsService.i18nSuccess('');
+            this.formComponent.initFormControl();
+            this.isNewForm = false;
+            this.initForm(false);
+          },
+          (error: HttpErrorResponse) => {
+            this.errorsService.show(error);
+          }
+        );
+    } else {
+      this.errorsService.i18nError('');
+      for (const control in this.deliveryAddressForm.controls) {
+        if (this.deliveryAddressForm.controls.hasOwnProperty(control) && !this.deliveryAddressForm.controls[control].valid) {
+          this.deliveryAddressForm.controls[control].markAsDirty();
+        }
+      }
+    }
+  }
+
+  private buildForm(): void {
+    this.deliveryAddressForm = this.fb.group({
+      id: this.uuidService.getUUID(),
+      country: ['', [Validators.required, whitespaceValidator]],
+      full_name: ['', [Validators.required, whitespaceValidator]],
+      street: ['', [Validators.required, whitespaceValidator]],
+      flat_and_floor: [''],
+      postal_code: ['', [Validators.required, whitespaceValidator]],
+      city: ['', [Validators.required, whitespaceValidator]],
+    });
+  }
 }
