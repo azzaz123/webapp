@@ -22,15 +22,15 @@ export class ErrorsService {
     }
   }
 
-  public i18nError(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY) {
+  public i18nError(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY): void {
     this.showToast('error', key, concatText, titleKey);
   }
 
-  public i18nSuccess(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY) {
+  public i18nSuccess(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY): void {
     this.showToast('success', key, concatText, titleKey);
   }
 
-  private showToast(type: 'error' | 'success', key: TRANSLATION_KEY, concatText: string, titleKey?: TRANSLATION_KEY) {
+  private showToast(type: 'error' | 'success', key: TRANSLATION_KEY, concatText: string, titleKey?: TRANSLATION_KEY): void {
     const translatedText = this.i18n.translate(key) || this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
     const spacedConcatText = concatText ? ` ${concatText}` : '';
 
