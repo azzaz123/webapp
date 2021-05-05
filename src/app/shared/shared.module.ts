@@ -166,6 +166,7 @@ import { ProfileFormModule } from './profile/profile-form/profile-form.module';
     DateCountDownModule,
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
+    ProfileFormModule,
   ],
   declarations: [
     ConfirmationModalComponent,
