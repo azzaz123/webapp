@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { GeolocationService, MAPS_PLACES_API, MAPS_PROVIDER, MAPS_PLACE_API } from './geolocation.service';
+import { GeolocationService, MAPS_PLACES_API, MAPS_PROVIDER, MAPS_PLACE_API, MAPS_REVERSE_GEOCODE } from './geolocation.service';
 import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
 import { GeolocationResponse } from './geolocation-response.interface';
 import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
@@ -55,6 +55,23 @@ describe('GeolocationService', () => {
 
       expect(req.request.urlWithParams).toEqual(expectedUrl);
       expect(response).toEqual({ ...COORDINATE_DATA_WEB, name: MOCK_PLACE_ID });
+      expect(req.request.method).toBe('GET');
+    });
+  });
+
+  describe('reverseGeocode', () => {
+    it('should return location label', () => {
+      const responseBody = { label: 'Madrid, 0000, España' };
+      const expectedUrlParams = `latitude=0&longitude=0`;
+      const expectedUrl = `${environment.siteUrl}${MAPS_REVERSE_GEOCODE}?${expectedUrlParams}`;
+      let response: string;
+
+      service.reverseGeocode('0', '0').subscribe((r) => (response = r));
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(responseBody);
+
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
+      expect(response).toEqual(responseBody.label);
       expect(req.request.method).toBe('GET');
     });
   });

@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, merge, Observable, Subject, Subscription } from 'rxjs';
+import { map, skip, switchMap, take, tap } from 'rxjs/operators';
 import { SearchPagination, SearchPaginationWithCategory } from '../../interfaces/search-pagination.interface';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
 import { SearchStoreService } from './search-store.service';
@@ -12,6 +12,8 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
+import { SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
+import { QueryStringLocationService } from '@public/features/search/core/services/query-string-location.service';
 
 @Injectable()
 export class SearchService {
@@ -72,7 +74,8 @@ export class SearchService {
     private searchStoreService: SearchStoreService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private parameterStoreService: FilterParameterStoreService,
     private infrastructureService: SearchInfrastructureService,
-    private queryStringService: SearchQueryStringService
+    private queryStringService: SearchQueryStringService,
+    private locationService: QueryStringLocationService
   ) {}
 
   public init(): void {
@@ -110,11 +113,17 @@ export class SearchService {
   }
 
   private onChangeQueryStringParameters(): Observable<FilterParameter[]> {
-    return this.queryStringService.queryStringParams$.pipe(
-      tap((parameters: FilterParameter[]) => {
-        this.parameterStoreService.setParameters(parameters);
+    const locationObservable = this.queryStringService.queryStringParams$.pipe(
+      take(1),
+      map((parameters: FilterParameter[]) => {
+        const location: SearchLocation = this.locationService.getLocationParameters(this.getLocationFromParameters(parameters));
+
+        return this.injectLocationToParameters(location, parameters);
       })
     );
+    const genericObservable = this.queryStringService.queryStringParams$.pipe(skip(1));
+
+    return merge(locationObservable, genericObservable).pipe(tap((parameters) => this.parameterStoreService.setParameters(parameters)));
   }
 
   private onLoadMore(): Observable<SearchPagination> {
@@ -141,5 +150,33 @@ export class SearchService {
 
   private getCategoryIdFromParams(filterParameters: FilterParameter[]) {
     return filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
+  }
+
+  private getLocationFromParameters(parameters: FilterParameter[]): SearchLocation {
+    const locationParams = parameters.filter(({ key }) => this.isLocationKey(key));
+
+    if (locationParams.length === 2) {
+      return locationParams.reduce((accumulated, param) => {
+        return {
+          ...accumulated,
+          [param.key]: param.value,
+        };
+      }, {} as SearchLocation);
+    }
+  }
+
+  private injectLocationToParameters(location: SearchLocation, parameters: FilterParameter[]): FilterParameter[] {
+    const cleanedParameters = parameters.filter(({ key }) => !this.isLocationKey(key));
+    return [
+      ...cleanedParameters,
+      ...[
+        { key: FILTER_QUERY_PARAM_KEY.longitude, value: location[FILTER_QUERY_PARAM_KEY.longitude] },
+        { key: FILTER_QUERY_PARAM_KEY.latitude, value: location[FILTER_QUERY_PARAM_KEY.latitude] },
+      ],
+    ];
+  }
+
+  private isLocationKey(key: FILTER_QUERY_PARAM_KEY): boolean {
+    return key === FILTER_QUERY_PARAM_KEY.longitude || key === FILTER_QUERY_PARAM_KEY.latitude;
   }
 }
