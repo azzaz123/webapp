@@ -75,7 +75,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.BUMP_ERROR]: $localize`:@@web_bump_error:Some listings have not been bumped due to an error`,
   [TRANSLATION_KEY.PRODUCT_CREATED]: $localize`:@@web_product_created:The product has been created successfully!`,
   [TRANSLATION_KEY.ALREADY_FEATURED_ERROR]: $localize`:@@web_already_featured_error:You are trying to feature an item that is already planned.`,
-  [TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE]: $localize`@@:web_form_field_error_title:Oops!`,
+  [TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE]: $localize`:@@web_form_field_error_title:Oops!`,
   [TRANSLATION_KEY.FORM_FIELD_ERROR]: $localize`:@@web_form_field_error:Check the red fields`,
   [TRANSLATION_KEY.BULK_DELETE_ERROR]: $localize`:@@web_bulk_delete_error:Some listings have not been deleted due to an error`,
   [TRANSLATION_KEY.BULK_RESERVE_ERROR]: $localize`:@@web_bulk_reserve_error:Some listings have not been reserved due to an error`,
