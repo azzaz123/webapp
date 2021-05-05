@@ -40,7 +40,7 @@ export class ErrorsService {
     this.toastService.show({
       text,
       title,
-      type: type,
+      type,
     });
   }
 }
