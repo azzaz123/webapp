@@ -1269,7 +1269,7 @@
   <translation id="web_upload_extension_not_allowed_error">Has intentado subir un formato no adecuado. Solo se pueden añadir fotos en jpg o jpeg: </translation>
   <translation id="web_upload_max_uploads_error">Este fichero excede el limite de fotos: </translation>
   <translation id="web_upload_max_size_error">Este fichero excede el limite de peso: </translation>
-  <translation id="web_item_updated_error">El producto se ha editado correctamente</translation>
+  <translation id="web_item_updated">El producto se ha editado correctamente</translation>
   <translation id="web_invoice_generated">Tu factura se ha generado correctamente</translation>
   <translation id="web_invoice_downloaded">Tu factura se ha descargado correctamente</translation>
   <translation id="web_user_edited">Tus datos se han editado correctamente</translation>
