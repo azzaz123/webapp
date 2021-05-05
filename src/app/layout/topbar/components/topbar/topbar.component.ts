@@ -1,19 +1,21 @@
-import { Component, ElementRef, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '@core/event/event.service';
-import { Coordinate } from '@core/geolocation/address-response.interface';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
-import { SuggesterResponse } from '@layout/topbar/core/interfaces/suggester-response.interface';
+import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
 import { Subscription } from 'rxjs';
+import { FeatureflagService } from '@core/user/featureflag.service';
+import { Router } from '@angular/router';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-topbar',
@@ -23,19 +25,13 @@ import { Subscription } from 'rxjs';
 export class TopbarComponent implements OnInit, OnDestroy {
   public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
   public user: User;
-  public coordinates: Coordinate;
-  public category: number;
-  public kws: string;
-  public focus: boolean;
   public homeUrl: string;
-  public model: any;
-  @Input() isMyZone: boolean;
-  @ViewChild('categoryEl') categoryEl: ElementRef;
-  @ViewChild('kwsEl') kwsEl: ElementRef;
   public isProfessional: boolean;
   public wallacoins: number = 0;
   public currencyName: string;
   public isLogged: boolean;
+
+  @Input() isMyZone: boolean;
 
   private componentSubscriptions: Subscription[] = [];
 
@@ -46,6 +42,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private cookieService: CookieService,
     private modalService: NgbModal,
+    private featureFlagService: FeatureflagService,
+    private router: Router,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
@@ -100,25 +98,32 @@ export class TopbarComponent implements OnInit, OnDestroy {
     this.cookieService.put('creditQuantity', this.wallacoins.toString(), cookieOptions);
   }
 
-  public submitForm() {
-    const categoryId = this.category ? this.category : '';
-    const kws = this.kws ? this.kws : '';
-    window.location.href = `${this.homeUrl}search?category_ids=${categoryId}&keywords=${kws}`;
+  public onSearchSubmit(searchValue: SearchBoxValue): void {
+    //TODO: This can be removed after tests
+    const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
+
+    if (isExperimentalFeaturesEnabled) {
+      this.redirectToSearchPage(searchValue);
+    } else {
+      this.redirectToOldSearch(searchValue);
+    }
   }
 
-  public onSearchSubmit(newSearchSubmit: string) {
-    this.kws = newSearchSubmit;
-    this.submitForm();
+  private redirectToSearchPage(searchParams: SearchBoxValue) {
+    this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.SEARCH}`], {
+      queryParams: { ...searchParams },
+    });
   }
 
-  public onSearchUpdate(newSearch: SuggesterResponse) {
-    this.kws = newSearch.suggestion;
-    this.category = newSearch.category_id;
-    this.submitForm();
-  }
+  private redirectToOldSearch(searchParams: SearchBoxValue) {
+    const oldSearchURL = new URL(`${this.homeUrl}search`);
 
-  public onKeywordUpdate(newKeyword: string) {
-    this.kws = newKeyword;
+    if (searchParams[FILTER_QUERY_PARAM_KEY.categoryId]) {
+      oldSearchURL.searchParams.set(FILTER_QUERY_PARAM_KEY.categoryId, searchParams[FILTER_QUERY_PARAM_KEY.categoryId]);
+    }
+    oldSearchURL.searchParams.set(FILTER_QUERY_PARAM_KEY.keywords, searchParams[FILTER_QUERY_PARAM_KEY.keywords]);
+
+    window.location.href = `${oldSearchURL}`;
   }
 
   public onOpenWallacoinsModal(): void {

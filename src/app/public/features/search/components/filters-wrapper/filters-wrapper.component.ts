@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { DrawerConfig } from '@public/shared/components/filters/interfaces/drawer-config.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
@@ -17,6 +17,8 @@ import { FilterGroupConfiguration } from '@public/shared/services/filter-group-c
   styleUrls: ['./filters-wrapper.component.scss'],
 })
 export class FiltersWrapperComponent {
+  @Output() filterOpened: EventEmitter<boolean> = new EventEmitter();
+
   public readonly FILTER_VARIANT = FILTER_VARIANT;
   public drawerConfig: DrawerConfig = {
     isOpen: false,
@@ -82,6 +84,7 @@ export class FiltersWrapperComponent {
       this.closeDrawer();
     }
     this.openedBubbleSubject.next(isOpen);
+    this.filterOpened.emit(isOpen);
   }
 
   public drawerOpenStateChange(isOpen: boolean): void {

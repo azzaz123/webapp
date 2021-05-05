@@ -18,6 +18,16 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 import { TopbarComponent } from './topbar.component';
+import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
+import { By } from '@angular/platform-browser';
+import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { Router } from '@angular/router';
+import { APP_PATHS } from 'app/app-routing-constants';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -35,6 +45,11 @@ const MOCK_USER = new User(
   USER_DATA.received_reports,
   USER_DATA.web_slug
 );
+const windowMock = {
+  location: {
+    href: '',
+  },
+};
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
@@ -48,6 +63,8 @@ describe('TopbarComponent', () => {
   let paymentService: PaymentService;
   let cookieService: CookieService;
   let modalService: NgbModal;
+  let featureFlagService: FeatureFlagServiceMock;
+  let router: Router;
 
   beforeEach(
     waitForAsync(() => {
@@ -107,6 +124,14 @@ describe('TopbarComponent', () => {
               },
             },
           },
+          {
+            provide: FeatureflagService,
+            useClass: FeatureFlagServiceMock,
+          },
+          {
+            provide: WINDOW_TOKEN,
+            useValue: windowMock,
+          },
           EventService,
         ],
         declarations: [TopbarComponent, CustomCurrencyPipe],
@@ -126,6 +151,8 @@ describe('TopbarComponent', () => {
     paymentService = TestBed.inject(PaymentService);
     cookieService = TestBed.inject(CookieService);
     modalService = TestBed.inject(NgbModal);
+    featureFlagService = TestBed.inject(FeatureflagService);
+    router = TestBed.inject(Router);
   });
 
   it('should be created', () => {
@@ -263,70 +290,41 @@ describe('TopbarComponent', () => {
     });
   });
 
-  describe('update keyword', () => {
-    const newKeyword = 'iphone';
-    it('should update the keyword', () => {
-      component.kws = 'iphone';
-      component.onKeywordUpdate(newKeyword);
-      expect(component.kws).toEqual(newKeyword);
-    });
-  });
-
-  describe('update keyword', () => {
-    const newKeyword = 'iphone';
-    it('should update the keyword', () => {
-      component.kws = 'iphone';
-      component.onKeywordUpdate(newKeyword);
-      expect(component.kws).toEqual(newKeyword);
-    });
-  });
-
-  describe('search form', () => {
-    beforeEach(() => {
-      component.kwsEl = {
-        nativeElement: {
-          value: 'iphone',
-        },
+  describe('Search box', () => {
+    describe('when a new search has been submitted from the search box', () => {
+      const MOCK_SEARCH_BOX_VALUE: SearchBoxValue = {
+        [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone',
+        [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
       };
-    });
 
-    describe('update search', () => {
-      it('should update the category and keyword and call the form submit', () => {
-        spyOn(component, 'submitForm').and.callThrough();
+      describe('and the experimental features flag is enabled', () => {
+        it('should navigate to the new search page', () => {
+          const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
+          spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
+          spyOn(router, 'navigate');
 
-        component.onSearchUpdate(SUGGESTER_DATA_WEB[0]);
+          searchBox.triggerEventHandler('searchSubmit', MOCK_SEARCH_BOX_VALUE);
 
-        expect(component.category).toEqual(SUGGESTER_DATA_WEB[0].category_id);
-        expect(component.kws).toEqual(SUGGESTER_DATA_WEB[0].suggestion);
-        expect(component.submitForm).toHaveBeenCalled();
+          expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.SEARCH}`], {
+            queryParams: { ...MOCK_SEARCH_BOX_VALUE },
+          });
+        });
       });
-    });
 
-    describe('search submit', () => {
-      it('should update the keyword and call the form submit', () => {
-        spyOn(component, 'submitForm').and.callThrough();
+      describe('and the experimental features flag is not enabled', () => {
+        it('should redirect to the old search page', () => {
+          const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
+          const { category_ids, keywords } = MOCK_SEARCH_BOX_VALUE;
+          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.categoryId}=${category_ids}&${FILTER_QUERY_PARAM_KEY.keywords}=${keywords}`;
+          spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
+          spyOn(router, 'navigate');
 
-        component.onSearchSubmit(SUGGESTER_DATA_WEB[0].suggestion);
+          searchBox.triggerEventHandler('searchSubmit', MOCK_SEARCH_BOX_VALUE);
 
-        expect(component.kws).toEqual(SUGGESTER_DATA_WEB[0].suggestion);
-        expect(component.submitForm).toHaveBeenCalled();
+          expect(router.navigate).not.toHaveBeenCalled();
+          expect(window.location.href).toEqual(expectedUrl);
+        });
       });
-    });
-
-    it('should redirect to the web when category is set', () => {
-      component.category = CATEGORY_DATA_WEB[1].category_id;
-
-      component.submitForm();
-
-      expect(window.location.href).toEqual(environment.siteUrl.replace('es', 'www') + 'search?category_ids=15000' + '&keywords=');
-    });
-
-    it('should submit the search form for cars', () => {
-      component.category = CATEGORY_DATA_WEB[0].category_id;
-
-      component.submitForm();
-
-      expect(window.location.href).toEqual(environment.siteUrl.replace('es', 'www') + 'search?category_ids=100' + '&keywords=');
     });
   });
 
