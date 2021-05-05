@@ -5,6 +5,9 @@ export enum FILTER_QUERY_PARAM_KEY {
   minPrice = 'min_sale_price',
   postedAgo = 'time_filter',
   condition = 'condition',
+  longitude = 'longitude',
+  latitude = 'latitude',
+  distance = 'distance',
 
   gender = 'gender',
 
