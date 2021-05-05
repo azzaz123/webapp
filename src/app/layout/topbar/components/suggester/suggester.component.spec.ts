@@ -43,9 +43,7 @@ describe('SuggesterComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
-              queryParams: of({
-                [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone',
-              }),
+              queryParams: of(MOCK_SEARCH_KEYWORD),
             },
           },
           EventService,
@@ -77,13 +75,12 @@ describe('SuggesterComponent', () => {
   });
 
   describe('when setting a new search value', () => {
-    it('should get suggestions', (done) => {
+    it('should get suggestions', () => {
       spyOn(suggesterService, 'getSuggestions').and.callThrough();
 
       component.suggest(of('ps4')).subscribe();
 
       expect(suggesterService.getSuggestions).toHaveBeenCalledWith('ps4');
-      done();
     });
 
     describe('and pressing the return key', () => {
