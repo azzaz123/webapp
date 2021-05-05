@@ -1,10 +1,13 @@
 @import '~style/common';
 
 .Search {
-  &__sort {
-    height: 38px;
-    background-color: $color-inbox-background;
-    border-bottom: thin solid $color-social-background;
+  &__filters {
+    position: sticky;
+    top: $topbar-height;
+    z-index: $filters-bar-z-index;
+    &--opened {
+      z-index: #{$filters-bar-z-index + 1};
+    }
   }
 
   &__ad {

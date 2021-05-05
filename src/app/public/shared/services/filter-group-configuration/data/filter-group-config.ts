@@ -1,4 +1,4 @@
-import { FilterWrapperConfiguration } from '../interfaces/filter-group-config.interface';
+import { FilterGroupConfiguration } from '../interfaces/filter-group-config.interface';
 import { DEFAULT_FILTER_CONFIGURATION } from '../../../components/filters/core/constants/filter-configuration-by-category/default/default-filter-configuration';
 import { CAR_FILTER_CONFIGURATION } from '../../../components/filters/core/constants/filter-configuration-by-category/car/car-filter-configuration';
 import { FILTER_QUERY_PARAM_KEY } from '../../../components/filters/enums/filter-query-param-key.enum';
@@ -54,13 +54,13 @@ import { SERVICES_FILTER_CONFIGURATION } from '@public/shared/components/filters
 import { OTHER_FILTER_CONFIGURATION } from '@public/shared/components/filters/core/constants/filter-configuration-by-category/other/other-filter-configuration';
 import { AUDIO_N_PHOTO_FILTER_CONFIGURATION } from '@public/shared/components/filters/core/constants/filter-configuration-by-category/audio-n-photo/audio-n-photo-filter-configuration';
 
-export const DEFAULT_FILTER_WRAPPER_CONFIG: FilterWrapperConfiguration = {
+export const DEFAULT_FILTER_GROUP_CONFIG: FilterGroupConfiguration = {
   id: FILTER_GROUP_ID.DEFAULT,
   config: DEFAULT_FILTER_CONFIGURATION,
   params: [],
 };
 
-export const FILTER_WRAPPER_CONFIGS: FilterWrapperConfiguration[] = [
+export const FILTER_GROUP_CONFIGS: FilterGroupConfiguration[] = [
   {
     id: FILTER_GROUP_ID.CARS,
     config: CAR_FILTER_CONFIGURATION,

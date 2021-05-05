@@ -56,6 +56,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public hasMoreItems$: Observable<boolean> = this.searchService.hasMore$;
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
   public device: DeviceType;
+  public filterOpened: boolean;
   public DevicesType: typeof DeviceType = DeviceType;
   public infiniteScrollDisabled$: Observable<boolean> = this.buildInfiniteScrollDisabledObservable();
   public listCardType$: Observable<CARD_TYPES> = this.buildCardTypeObservable();
@@ -126,6 +127,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   public trackClickItemCardEvent(ClickedItemCard: ClickedItemCard): void {
     const { itemCard, index } = ClickedItemCard;
     this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, this.searchId);
+  }
+
+  public handleFilterOpened(opened: boolean) {
+    this.filterOpened = opened;
   }
 
   private buildListConfigObservable(): Observable<ColumnsConfig> {
