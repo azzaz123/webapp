@@ -5,9 +5,11 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { UuidService } from '@core/uuid/uuid.service';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { finalize } from 'rxjs/operators';
 import { DeliveryAddressService } from '../../services/delivery-address/delivery-address.service';
+import { CountryOptionsAndDefault, DeliveryCountriesService } from '../../services/delivery-countries/delivery-countries.service';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -15,8 +17,10 @@ import { DeliveryAddressService } from '../../services/delivery-address/delivery
   styleUrls: ['./delivery-address.component.scss'],
 })
 export class DeliveryAddressComponent {
+  public countries: IOption[];
   public deliveryAddressForm: FormGroup;
   public loading = true;
+  public loadingRequest = true;
   public isNewForm = true;
   private readonly formSubmittedEventKey = 'formSubmitted';
 
@@ -26,6 +30,7 @@ export class DeliveryAddressComponent {
   constructor(
     private fb: FormBuilder,
     private deliveryAddressService: DeliveryAddressService,
+    private deliveryCountriesService: DeliveryCountriesService,
     private eventService: EventService,
     private errorsService: ErrorsService,
     private uuidService: UuidService
@@ -45,21 +50,21 @@ export class DeliveryAddressComponent {
       .get(cache)
       .subscribe(
         (deliveryAddress: any) => {
-          this.isNewForm = false;
-          this.deliveryAddressForm.patchValue(deliveryAddress);
-          // this.patchFormValues();
-          this.formComponent.initFormControl();
+          if (deliveryAddress) {
+            this.isNewForm = false;
+            this.deliveryAddressForm.patchValue(deliveryAddress);
+            this.patchFormValues();
+            this.formComponent.initFormControl();
+          } else {
+            this.handleNewForm();
+          }
         },
         () => {
-          // this.patchFormValues();
-          this.formComponent.initFormControl();
-          this.isNewForm = true;
-          this.buildForm();
+          this.handleNewForm();
         }
       )
       .add(() => {
         // this.updateFieldsValidity();
-        // this.onChanges();
         this.loading = false;
       });
   }
@@ -95,15 +100,39 @@ export class DeliveryAddressComponent {
     }
   }
 
+  private handleNewForm(): void {
+    this.initializeCountriesAndSetDefault();
+    this.patchFormValues();
+    this.formComponent.initFormControl();
+    this.isNewForm = true;
+    this.buildForm();
+  }
+
+  private patchFormValues(): void {
+    for (const control in this.deliveryAddressForm.controls) {
+      if (this.deliveryAddressForm.controls.hasOwnProperty(control)) {
+        this.deliveryAddressForm.controls[control].markAsPristine();
+      }
+    }
+  }
+
+  private initializeCountriesAndSetDefault(): void {
+    this.deliveryCountriesService.get().subscribe((countryOptionsAndDefault: CountryOptionsAndDefault) => {
+      this.countries = countryOptionsAndDefault.countryOptions;
+      this.deliveryAddressForm.get('country').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
+    });
+  }
+
   private buildForm(): void {
     this.deliveryAddressForm = this.fb.group({
       id: this.uuidService.getUUID(),
-      country: ['', [Validators.required, whitespaceValidator]],
+      country_iso_code: ['', [Validators.required]],
       full_name: ['', [Validators.required, whitespaceValidator]],
       street: ['', [Validators.required, whitespaceValidator]],
       flat_and_floor: [''],
       postal_code: ['', [Validators.required, whitespaceValidator]],
       city: ['', [Validators.required, whitespaceValidator]],
+      phone_number: ['', [Validators.required, whitespaceValidator]],
     });
   }
 }
