@@ -50,6 +50,7 @@ export const ITEM_TITLE = 'The title';
 export const ITEM_TITLE2 = 'The title2';
 export const ITEM_DESCRIPTION = 'The description';
 export const ITEM_DESCRIPTION2 = 'The description2';
+export const ITEM_DISTANCE = 2353;
 
 export const ITEM_LOCATION: UserLocation = {
   id: 101,
