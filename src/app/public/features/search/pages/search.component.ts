@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -8,6 +7,7 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
@@ -19,6 +19,7 @@ import {
   AD_SHOPPING_CONTAINER_PUBLIC_SEARCH,
   AD_SHOPPING_PUBLIC_SEARCH,
 } from '../core/ads/shopping/search-ads-shopping.config';
+import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events.service';
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
@@ -50,17 +51,19 @@ export class SearchComponent implements OnInit, OnDestroy {
   public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
   public isLoadingPaginationResults$: Observable<boolean> = this.searchService.isLoadingPaginationResults$;
   public currentCategoryId$: Observable<string> = this.searchService.currentCategoryId$;
+  public searchId$: Observable<string> = this.searchService.searchId$;
   public items$: Observable<ItemCard[]> = this.searchService.items$;
   public hasMoreItems$: Observable<boolean> = this.searchService.hasMore$;
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
   public device: DeviceType;
   public DevicesType: typeof DeviceType = DeviceType;
-
   public infiniteScrollDisabled$: Observable<boolean> = this.buildInfiniteScrollDisabledObservable();
   public listCardType$: Observable<CARD_TYPES> = this.buildCardTypeObservable();
   public listColumnsConfig$: Observable<ColumnsConfig> = this.buildListConfigObservable();
   public showPlaceholder$: Observable<boolean> = this.buildShowPlaceholderObservable();
   public searchWithoutResults$: Observable<boolean> = this.buildSearchWithoutResultsObservable();
+  public categoryId: string;
+  public searchId: string;
 
   public columnsConfig: ColumnsConfig = {
     xl: 4,
@@ -84,22 +87,23 @@ export class SearchComponent implements OnInit, OnDestroy {
   constructor(
     private deviceService: DeviceService,
     private searchService: SearchService,
-    private route: ActivatedRoute,
     private publicFooterService: PublicFooterService,
-    private searchAdsService: SearchAdsService
+    private searchAdsService: SearchAdsService,
+    private searchListTrackingEventsService: SearchListTrackingEventsService
   ) {
     this.device = this.deviceService.getDeviceType();
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
+    this.subscription.add(
+      this.searchId$.subscribe((searchId: string) => {
+        if (!!searchId) {
+          this.searchId = searchId;
+        }
+      })
+    );
   }
 
   public ngOnInit(): void {
     this.slotsConfig = this.deviceService.isMobile() ? SLOTS_CONFIG_MOBILE : SLOTS_CONFIG_DESKTOP;
-    this.searchService.searchId$.subscribe((searchId: string) => {
-      console.log('searchId tt', searchId);
-    });
-    this.route.data.subscribe((n) => {
-      console.log('date', n);
-    });
     this.searchAdsService.setSlots();
   }
 
@@ -117,6 +121,11 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public scrolled(): void {
     this.searchService.loadMore();
+  }
+
+  public trackClickItemCardEvent(ClickedItemCard: ClickedItemCard): void {
+    const { itemCard, index } = ClickedItemCard;
+    this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, this.searchId);
   }
 
   private buildListConfigObservable(): Observable<ColumnsConfig> {

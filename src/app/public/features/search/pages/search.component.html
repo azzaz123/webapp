@@ -37,6 +37,7 @@
           [columnsConfig]="listColumnsConfig$ | async"
           [cardType]="listCardType$ | async"
           [slotsConfig]="slotsConfig"
+          (clickedItemAndIndex)="trackClickItemCardEvent($event)"
         >
         <ng-container *ngIf="(isWall$ | async) === false">
           <ng-template #slotTemplate let-index>
