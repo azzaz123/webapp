@@ -8,8 +8,6 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { Item } from '@core/item/item';
-import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
