@@ -48,11 +48,9 @@ export class SearchAPIService {
 
   public search(params: FilterParameter[]): Observable<SearchPagination> {
     this.nextPageUrl = null;
-
     const paramCategoryId: FilterParameter = params.find(({key}: FilterParameter) => key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID);
     this.categoryId = paramCategoryId?.value;
     let url = `/${SearchApiUrlFactory(this.categoryId)}/${SearchApiUrlSearchOrWall(params)}`;
-
     let httpParams: HttpParams = new HttpParams();
     params.forEach(({key, value}: FilterParameter) => httpParams = httpParams.set(key, value));
     url += '?' + httpParams.toString();

@@ -24,7 +24,7 @@ export class SearchInfrastructureService {
   }
 
   public getSearchId(): string {
-    return this.searchApiService.searchId
+    return this.searchApiService.searchId;
   }
 
   private setFavourites({items, hasMore}: SearchPagination): Observable<SearchPagination> {
