@@ -2,7 +2,7 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 import { BubbleDrawerConfiguration } from '@public/shared/components/filters/core/interfaces/bubble-drawer-configuration.interface';
 import { FILTER_GROUP_ID } from '../enum/filter-group-id.enum';
 
-export interface FilterWrapperConfiguration {
+export interface FilterGroupConfiguration {
   id: FILTER_GROUP_ID;
   params: FilterParameter[];
   config: BubbleDrawerConfiguration;
