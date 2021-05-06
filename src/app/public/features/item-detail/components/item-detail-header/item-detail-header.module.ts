@@ -5,7 +5,7 @@ import { UserBasicInfoModule } from '@public/shared/components/user-basic-info/u
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { ButtonModule } from '@shared/button/button.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DateCountDownModule } from '@shared/date-countdown/date-countdown.module';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '@core/errors/errors.service';

@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from './item-flag-constants';
 import { ItemFlagComponent } from './item-flag.component';
