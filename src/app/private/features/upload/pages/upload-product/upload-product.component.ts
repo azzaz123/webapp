@@ -434,7 +434,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       values.extra_info.object_type.id = values.extra_info.object_type_2.id;
       delete values.extra_info.object_type_2;
     }
-    delete values.extra_info.object_type;
+
     return values;
   }
 
