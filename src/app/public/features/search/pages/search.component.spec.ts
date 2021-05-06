@@ -29,9 +29,12 @@ import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrap
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { SortFilterModule } from '../components/sort-filter/sort-filter.module';
 import { SearchAdsService } from '../core/ads/search-ads.service';
+import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events.service';
 import { SearchService } from '../core/services/search.service';
 import { REGULAR_CARDS_COLUMNS_CONFIG, SearchComponent, WIDE_CARDS_COLUMNS_CONFIG } from './search.component';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
+import { MockSearchListTrackingEventService, MOCK_SEARCH_ID } from '../../search/core/services/search-list-tracking-events.fixtures.spec';
+import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -43,6 +46,7 @@ class InfiniteScrollStubDirective {
 }
 
 describe('SearchComponent', () => {
+  const itemCardListTag = 'tsl-public-item-card-list';
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let deviceServiceMock;
@@ -50,10 +54,12 @@ describe('SearchComponent', () => {
   let searchServiceMock;
   let publicFooterServiceMock;
   let searchAdsServiceMock;
+  let searchListTrackingEventsService: SearchListTrackingEventsService;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
   const isLoadingResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const isLoadingPaginationResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const currentCategoryIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
+  const searchIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   const hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   beforeEach(async () => {
@@ -71,6 +77,7 @@ describe('SearchComponent', () => {
       isLoadingResults$: isLoadingResultsSubject.asObservable(),
       isLoadingPaginationResults$: isLoadingPaginationResultsSubject.asObservable(),
       currentCategoryId$: currentCategoryIdSubject.asObservable(),
+      searchId$: searchIdSubject.asObservable(),
       loadMore: () => {},
       close: () => {},
     };
@@ -123,12 +130,17 @@ describe('SearchComponent', () => {
           provide: PublicFooterService,
           useValue: publicFooterServiceMock,
         },
+        {
+          provide: SearchListTrackingEventsService,
+          useClass: MockSearchListTrackingEventService,
+        },
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
+    searchListTrackingEventsService = TestBed.inject(SearchListTrackingEventsService);
     component = fixture.componentInstance;
   });
 
@@ -157,6 +169,16 @@ describe('SearchComponent', () => {
         expect(searchAdsServiceMock.setSlots).toHaveBeenCalledTimes(1);
       });
     });
+
+    /*  describe('when click on item card', () => {
+      it('should send track click item card event', () => {
+        const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
+
+        fixture.detectChanges();
+
+        publicItemCard.triggerEventHandler('clickedItemAndIndexEvent', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+      });
+    }); */
   });
 
   describe('when items change', () => {
@@ -186,7 +208,7 @@ describe('SearchComponent', () => {
 
       component.items$.subscribe(() => {
         fixture.detectChanges();
-        const itemCardList = fixture.debugElement.query(By.css('tsl-public-item-card-list')).componentInstance;
+        const itemCardList = fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
 
         expect(itemCardList.isLoading).toBe(true);
         done();
@@ -218,7 +240,7 @@ describe('SearchComponent', () => {
 
           component.items$.subscribe(() => {
             fixture.detectChanges();
-            const itemCardList = fixture.debugElement.query(By.css('tsl-public-item-card-list')).componentInstance;
+            const itemCardList = fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
 
             expect(itemCardList.showPlaceholder).toBe(true);
             done();
@@ -244,14 +266,14 @@ describe('SearchComponent', () => {
 
   describe('when search category changes', () => {
     function getItemCardListInstance() {
-      return fixture.debugElement.query(By.css('tsl-public-item-card-list')).componentInstance;
+      return fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
     }
 
     beforeEach(() => {
       itemsSubject.next([MOCK_ITEM_CARD]);
     });
 
-    describe('and new serch category is cars', () => {
+    describe('and new search category is cars', () => {
       it('should show wide cards', (done) => {
         currentCategoryIdSubject.next(`${CATEGORY_IDS.CAR}`);
 
@@ -275,7 +297,7 @@ describe('SearchComponent', () => {
       });
     });
 
-    describe('and new serch category is real estate', () => {
+    describe('and new search category is real estate', () => {
       it('should show wide cards', (done) => {
         currentCategoryIdSubject.next(`${CATEGORY_IDS.REAL_ESTATE}`);
 
@@ -299,7 +321,7 @@ describe('SearchComponent', () => {
       });
     });
 
-    describe('and new serch category is from consumer goods', () => {
+    describe('and new search category is from consumer goods', () => {
       it('should show regular cards', (done) => {
         currentCategoryIdSubject.next(`${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`);
 
@@ -459,6 +481,20 @@ describe('SearchComponent', () => {
           });
         });
       });
+    });
+  });
+
+  describe('when click on item card', () => {
+    it('should send track click item card event', () => {
+      spyOn(searchListTrackingEventsService, 'trackClickItemCardEvent');
+      searchIdSubject.next(MOCK_SEARCH_ID);
+      itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
+      fixture.detectChanges();
+      const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
+
+      publicItemCard.triggerEventHandler('clickedItemAndIndex', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+
+      expect(searchListTrackingEventsService.trackClickItemCardEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
     });
   });
 
