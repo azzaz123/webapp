@@ -5,8 +5,10 @@ export enum FILTER_QUERY_PARAM_KEY {
   minPrice = 'min_sale_price',
   postedAgo = 'time_filter',
   condition = 'condition',
+  longitude = 'longitude',
+  latitude = 'latitude',
+  distance = 'distance',
 
-  operation = 'operation',
   gender = 'gender',
 
   brand = 'brand',
@@ -27,6 +29,12 @@ export enum FILTER_QUERY_PARAM_KEY {
   minSeats = 'min_seats',
   maxSeats = 'max_seats',
 
+  operation = 'operation',
+  garage = 'garage',
+  terrace = 'terrace',
+  elevator = 'elevator',
+  garden = 'garden',
+  pool = 'pool',
   minSurface = 'min_surface',
   maxSurface = 'max_surface',
   type = 'type',
@@ -34,4 +42,8 @@ export enum FILTER_QUERY_PARAM_KEY {
   bathrooms = 'bathrooms',
 
   brandModel = 'brand_model',
+
+  keywords = 'keywords',
+
+  orderBy = 'order_by',
 }

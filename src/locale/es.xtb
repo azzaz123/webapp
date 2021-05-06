@@ -500,7 +500,7 @@
   <translation id="web_chat_children_inbox_components_item_component_detail_154">Vendido</translation>
   <translation id="web_chat_components_user_response_rate_171">Desconocido</translation>
   <translation id="web_chat_children_inbox_components_item_for_sell_156">+<ph name="INTERPOLATION"><ex>{{user?.sellingItemCount}}</ex></ph> Más</translation>
-  <translation id="web_profile_pages_subscription_325"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.limit}}</ex></ph> productos</translation>
+  <translation id="web_profile_pages_subscription_325">Publica hasta <ph name="PH"><ex>{{subscription.selected_tier.limit}}</ex></ph> artículos</translation>
   <translation id="web_profile_pages_subscription_326"><ph name="INTERPOLATION"><ex>{{subscription.selected_tier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscription.selected_tier.currency}}</ex></ph>/mes</translation>
   <translation id="web_profile_modal_edit_subscription_255">Ilimitado</translation>
   <translation id="web_profile_modal_add_new_subscription_220"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex></ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex></ph>/mes</translation>
@@ -511,7 +511,7 @@
   <translation id="web_profile_modal_edit_subscription_260">Confirmar cambio de suscripción</translation>
   <translation id="web_chat_children_inbox_components_user_component_detail_157" desc="La distancia entre el usuario y el producto a"><ph name="INTERPOLATION"><ex>{{user.distanceInKm | number:&apos;1.0-1&apos;}}</ex></ph>km de ti</translation>
   <translation id="web_catalog_components_item_104">Modificado</translation>
-  <translation id="web_profile_pages_subscription_329">Suscrito desde <ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
+  <translation id="web_profile_pages_subscription_329">Suscrito desde <ph name="START_BOLD_TEXT"/><ph name="INTERPOLATION"><ex>{{subscription.subscribed_from | date:&apos;dd/MM/yy&apos; }}</ex></ph><ph name="CLOSE_BOLD_TEXT"/></translation>
   <translation id="web_profile_modal_cancel_subscription_237">¿Seguro que quieres cancelar tu suscripción Wallapop PRO <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
   <translation id="web_profile_modal_cancel_subscription_238">Es triste que te vayas. Puedes volver cuando quieras, ¡te estaremos esperando!</translation>
   <translation id="web_profile_modal_cancel_subscription_239">Sí, quiero cancelar mi suscripción</translation>
@@ -527,8 +527,8 @@
   <translation id="web_profile_modal_continue_subscription_246">Sí, quiero mantener mi suscripción</translation>
   <translation id="web_profile_modal_continue_subscription_247">No, quiero cancelarla</translation>
   <translation id="web_catalog_pro_components_cart_extras_32">Comprar</translation>
-  <translation id="web_profile_pages_subscription_323">Límite sin suscripción: <ph name="INTERPOLATION"><ex>{{subscription.current_limit}}</ex></ph></translation>
-  <translation id="web_profile_pages_subscription_330">La suscripción finaliza el <ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph></translation>
+  <translation id="web_profile_pages_subscription_323">Límite sin suscripción: <ph name="PH"><ex>{{subscription.current_limit}}</ex></ph></translation>
+  <translation id="web_profile_pages_subscription_330">La suscripción finaliza el <ph name="START_BOLD_TEXT"/><ph name="INTERPOLATION"><ex>{{subscription.subscribed_until | date:&apos;dd/MM/yy&apos; }}</ex></ph><ph name="CLOSE_BOLD_TEXT"/></translation>
   <translation id="web_profile_pages_subscription_331">Continuar suscrito</translation>
   <translation id="web_profile_modal_add_new_subscription_217">Introduce tus datos de pago</translation>
   <translation id="web_profile_modal_continue_subscription_245">¡Nunca es demasiado tarde! Puedes deshacer la cancelación y seguir disfrutando de los beneficios.</translation>
@@ -610,8 +610,6 @@
   <translation id="web_chat_children_item_162">Calcula el seguro gratis</translation>
   <translation id="web_chat_children_item_163">Financia esta compra</translation>
   <translation id="web_chat_children_item_components_reserved_159">Reservado</translation>
-
-  <!--Translations using keys-->
   <translation id="SoldOutside">Lo he vendido fuera de Wallapop</translation>
   <translation id="WallapopProfileSpotDescription">Este es el punto donde está ubicado tu perfil de Wallapop y en él aparecerán todos tus productos.</translation>
   <translation id="WallapopItem">Un producto de Wallapop</translation>
@@ -643,7 +641,7 @@
   <translation id="TooManyItemsModalTryTrial">Para publicar más <ph name="INTERPOLATION"/>, <ph name="START_BOLD_TEXT"/>prueba gratis Wallapop PRO durante <ph name="INTERPOLATION_1"/> días.<ph name="CLOSE_BOLD_TEXT"/> Profesionalizarás tus ventas online. ¡Venderás más! <ph name="LINE_BREAK"/><ph name="LINE_BREAK"/>Si decides que Wallapop PRO no es para ti, este artículo quedará inactivo y nadie podrá comprarlo.</translation>>
   <translation id="subscriptionNewModalUntilDate"><ph name="INTERPOLATION"><ex>{{0 | customCurrency}}</ex>{{0 | customCurrency}}</ph> hasta <ph name="INTERPOLATION_1"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
   <translation id="subscriptionEditModalUntilDate"> Empieza en <ph name="INTERPOLATION"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
-  <translation id="SubscriptionPriceDiscountFromPrice">Desde: </translation>
+  <translation id="SubscriptionPriceDiscountFromPrice">Desde: <ph name="INTERPOLATION"/><ph name="INTERPOLATION_1"/>/mes </translation>
   <translation id="SubscriptionPriceDiscountMonthFree">Un mes gratis</translation>
   <translation id="SubscriptionPriceDiscountMonthsFree"><ph name="INTERPOLATION"><ex>{{subscription?.tiers[0]?.discount_available.months}}</ex>{{subscription?.tiers[0]?.discount_available.months}}</ph> meses gratis</translation>
   <translation id="SubscriptionPriceDiscountDaysTrialFree">Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días</translation>
@@ -688,6 +686,7 @@
   <translation id="CIFNumber">CIF de la empresa</translation>
   <translation id="NIFNumber">NIF de la persona</translation>
   <translation id="Save">Guardar</translation>
+  <translation id="web_profile_pages_320">Información de facturación</translation>
   <translation id="web_profile_pages_321">Facturación</translation>
   <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
   <translation id="SelectSavedCard">Seleccionar tarjeta guardada</translation>
@@ -835,7 +834,6 @@
   <translation id="FooterSocialFacebookLabel">Wallapop, la web y app para comprar y vender, también está en Facebook</translation>
   <translation id="FooterSocialTwitterLabel">Wallapop, la web y app para comprar y vender, también está en Twitter</translation>
   <translation id="FooterSocialInstagramLabel">Wallapop, la web y app para comprar y vender, también está en Instagram</translation>
-
   <translation id="EmptyHistory">Tu historial está vacío</translation>
   <translation id="LoadingData">Estamos cargando tu histórico de facturas...</translation>
   <translation id="NotLoadedInvoices">Lo sentimos, en estos momentos no podemos cargar tus facturas. Intenta de nuevo más tarde.</translation>
@@ -1032,8 +1030,8 @@
   <translation id="web_profile_pages_pro_subscription_583">Destacados</translation>
   <translation id="web_profile_pages_pro_subscription_584">Ahorra un <ph name="INTERPOLATION"><ex>{{bump.discount}}</ex></ph>%</translation>
   <translation id="web_profile_pages_585">Cerrar sesión</translation>
-  <translation id="web_profile_pages_subscription_586">Sin límite</translation>
-  <translation id="web_profile_pages_subscription_587">Editar</translation>
+  <translation id="web_profile_pages_subscription_586">Publica sin límites</translation>
+  <translation id="web_profile_pages_subscription_587">Modificar</translation>
   <translation id="web_reviews_pages_588">opiniones</translation>
   <translation id="web_stats_components_item_row_589">Favoritos</translation>
   <translation id="web_stats_components_items_590">Visualizaciones</translation>
@@ -1171,4 +1169,84 @@
   <translation id="web_subscription_benefit_description_visibility">Ocupa los primeros resultados de búsqueda. ¡Atrae más clientes!</translation>
   <translation id="web_subscription_benefit_title_time">Ahorra tiempo de gestión</translation>
   <translation id="web_subscription_benefit_description_time">Tus productos siempre estarán activos y listos para la venta.</translation>
+  <translation id="web_consumer_goods_category_name">Todo lo demás</translation>
+  <translation id="web_chat_desktop_notification">Nuevo mensaje de</translation>
+  <translation id="web_chat_my_phone_number">Mi número de teléfono es</translation>
+  <translation id="web_catalog_active">Activos</translation>
+  <translation id="web_catalog_inactive">Inactivos</translation>
+  <translation id="web_catalog_sold">Vendidos</translation>
+  <translation id="web_catalog_published">En venta</translation>
+  <translation id="web_catalog_reviews">Opiniones</translation>
+  <translation id="web_catalog_filter_input">Buscar por título</translation>
+  <translation id="web_catalog_filter_date_desc">Más recientes</translation>
+  <translation id="web_catalog_filter_date_asc">Más antiguos</translation>
+  <translation id="web_catalog_filter_price_desc">Precio mayor</translation>
+  <translation id="web_catalog_filter_price_asc">Precio menor</translation>
+  <translation id="web_chat_archive_conversation_success">La conversación se ha archivado correctamente</translation>
+  <translation id="web_chat_unarchive_conversation_success">La conversación se ha desarchivado correctamente</translation>
+  <translation id="web_chat_report_user_success">El usuario se ha denunciado correctamente</translation>
+  <translation id="web_chat_report_listing_success">La publicación se ha denunciado correctamente</translation>
+  <translation id="web_chat_block_user_success">El usuario se ha bloqueado correctamente</translation>
+  <translation id="web_chat_unblock_user_success">El usuario se ha desbloqueado correctamente</translation>
+  <translation id="web_stats_graph_no_data">No hay datos disponibles</translation>
+  <translation id="web_stats_graph_phones_shared">Teléfonos compartidos</translation>
+  <translation id="web_stats_graph_city_bump">Destacado Ciudad</translation>
+  <translation id="web_stats_graph_">Destacado País</translation>
+  <translation id="web_stats_graph_views">Visualizaciones</translation>
+  <translation id="web_stats_graph_chats">Chats</translation>
+  <translation id="web_stats_graph_last_thirty_days">Últimos 30 días</translation>
+  <translation id="web_stats_graph_last_fifteen_days">Últimos 15 días</translation>
+  <translation id="web_stats_graph_last_seven_days">Últimos 7 días</translation>
+  <translation id="web_chat_input_enabled_placeholder">Escribe un mensaje...</translation>
+  <translation id="web_chat_input_disabled_placeholder">Conversación deshabilitada</translation>
+  <translation id="web_chat_too_many_conversations">No te podemos seguir el ritmo. Espera un momento para poder abrir nuevas conversaciones.</translation>
+  <translation id="web_toast_error_title">¡Ups!</translation>
+  <translation id="web_yes">Sí</translation>
+  <translation id="web_no">No</translation>
+  <translation id="web_pro_subscription_cancel_success_title">Suscripción cancelada.</translation>
+  <translation id="web_pro_subscription_cancel_success_body">Lamentamos que te vayas :(</translation>
+  <translation id="web_pro_subscription_cancel_error_title">Ha habido un error</translation>
+  <translation id="web_pro_subscription_cancel_error_body">Tu suscripción no ha podido ser cancelada.</translation>
+  <translation id="web_pro_subscription_continue_success_title">¡Bien!</translation>
+  <translation id="web_pro_subscription_continue_success_body">Tu suscripción se ha activado de nuevo.</translation>
+  <translation id="web_pro_subscription_continue_error_title">Ha habido un error</translation>
+  <translation id="web_pro_subscription_continue_error_body">Tu suscripción no ha podido ser restablecida.</translation>
+  <translation id="web_pro_subscription_edit_success_title">¡Bien!</translation>
+  <translation id="web_pro_subscription_edit_success_body">Tu suscripción se ha editado correctamente.</translation>
+  <translation id="web_pro_subscription_edit_error_title">Ha habido un error</translation>
+  <translation id="web_pro_subscription_edit_error_body">Tu suscripción no ha podido ser modificada.</translation>
+  <translation id="web_wallapop_pro">Wallapop PRO</translation>
+  <translation id="web_become_pro">Conviértete en PRO</translation>
+  <translation id="web_stats_favorites">Favoritos</translation>
+  <translation id="web_stats_views">Visualizaciones</translation>
+  <translation id="web_stats_chats">Chats</translation>
+  <translation id="web_male">Hombre</translation>
+  <translation id="web_female">Mujer</translation>
+  <translation id="web_day">día</translation>
+  <translation id="web_hour">hora</translation>
+  <translation id="web_minute">minuto</translation>
+  <translation id="web_left">Quedan</translation>
+  <translation id="web_card_number_invalid">El número de la tarjeta no es válido.</translation>
+  <translation id="web_card_date_invalid">La fecha de la tarjeta no es válida.</translation>
+  <translation id="web_card_cvc_invalid">El CVC de la tarjeta no es válido.</translation>
+  <translation id="web_no_results_found">No hay resultados</translation>
+  <translation id="web_pro_subscription_card_set">Tu tarjeta se ha guardado correctamente</translation>
+  <translation id="web_pro_subscription_card_deleted">Tu tarjeta se ha borrado correctamente</translation>
+  <translation id="web_search_input_placeholder">Busca productos</translation>
+  <translation id="web_default_error_message">Servicio no disponible temporalmente. Inténtelo de nuevo más tarde</translation>
+  <translation id="web_toast_default_success_title">¡Bien!</translation>
+  <translation id="web_search_no_results_title">Nada por aquí</translation>
+  <translation id="web_search_no_results_subtitle">Parece que por el momento lo que buscas no se encuentra en Wallapop. Mientras tanto, ¿por qué no echas un vistazo al resto de productos?</translation>
+  <translation id="web_search_no_results_button_text">Iniciar nueva búsqueda</translation>
+  <translation id="web_profile_pages_subscription_cars_desc">Publica todos tus coches</translation>
+  <translation id="web_profile_pages_subscription_motorbike_desc">Publica todas tus motos</translation>
+  <translation id="web_profile_pages_subscription_motor_acc_desc">Publica todos tus artículos de Motor y Accesorios</translation>
+  <translation id="web_profile_pages_subscription_other_desc">Tu mejor plan para vender todo tipo de artículos</translation>
+  <translation id="web_subscription_benefit_title_share">Comparte tu web y teléfono</translation>
+  <translation id="web_subscription_benefit_title_branding">Potencia tu marca</translation>
+  <translation id="web_subscription_benefit_title_limit">Define tu límite de publicación</translation>
+  <translation id="WallapopProSubscriptionTitle">Impulsa tu negocio online con Wallapop PRO</translation>
+  <translation id="WallapopProSubscriptionSubTitle">Elige una suscripción para llevar tus ventas al siguiente nivel</translation>
+  <translation id="your_current_plan">Tu plan actual</translation>
+  <translation id="web_toast_cardealer_error_contact">¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.</translation>
 </translationbundle>

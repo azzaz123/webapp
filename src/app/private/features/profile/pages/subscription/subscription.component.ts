@@ -280,32 +280,6 @@ export class SubscriptionsComponent implements OnInit {
     }
   }
 
-  public showEdit(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
-  }
-
-  public showCancel(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length === 1;
-  }
-
-  public showManageInApp(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription) && !this.subscriptionsService.hasOneFreeTier(subscription);
-  }
-
-  public showUnsubscribeFirst(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneFreeTier(subscription);
-  }
-
-  public hasOneFreeSubscription() {
-    return this.subscriptionsService.hasOneFreeSubscription(this.subscriptions);
-  }
-
-  public getSubscriptionTextButton(subscription: SubscriptionsResponse): string {
-    return this.subscriptionsService.hasTrial(subscription)
-      ? $localize`:@@startFreeTrial:Start free trial`
-      : $localize`:@@seePlans:See plans`;
-  }
-
   private trackClickProSubscription(): void {
     const event: AnalyticsEvent<ClickProSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickProSubscription,

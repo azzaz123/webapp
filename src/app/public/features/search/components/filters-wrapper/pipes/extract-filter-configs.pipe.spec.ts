@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { FilterWrapperConfiguration } from '@public/shared/services/filter-wrapper-configuration/interfaces/filter-group-config.interface';
-import { FILTER_GROUP_ID } from '@public/shared/services/filter-wrapper-configuration/enum/filter-group-id.enum';
+import { FilterGroupConfiguration } from '@public/shared/services/filter-group-configuration/interfaces/filter-group-config.interface';
+import { FILTER_GROUP_ID } from '@public/shared/services/filter-group-configuration/enum/filter-group-id.enum';
 import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 import { ExtractFilterConfigsPipe } from './extract-filter-configs.pipe';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
@@ -12,7 +12,7 @@ import { FILTER_CONFIGURATIONS } from '@public/shared/components/filters/core/co
 describe('IsComplexIconPipe', () => {
   const pipe: ExtractFilterConfigsPipe = new ExtractFilterConfigsPipe();
 
-  const config: FilterWrapperConfiguration = {
+  const config: FilterGroupConfiguration = {
     id: FILTER_GROUP_ID.OTHER,
     config: {
       bubble: [COMMON_CONFIGURATION_ID.CATEGORIES],

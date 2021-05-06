@@ -1,0 +1,12 @@
+<div class="ItemCardPlaceholder d-flex flex-column" [class.ItemCardPlaceholder--with-description]="showDescription">
+    <div class="ItemCardPlaceholder__image" [ngClass]="{'ItemCardPlaceholder__image--with-description mx-1 mt-1' : showDescription}">
+    </div>
+    <div class="ItemCardPlaceholder__content p-2 d-flex flex-column justify-content-around">
+        <div class="ItemCardPlaceholder__text"></div>
+        <div class="ItemCardPlaceholder__text"></div>
+        <div class="ItemCardPlaceholder__text" *ngIf="showDescription"></div>
+        <div class="ItemCardPlaceholder__text" *ngIf="showDescription"></div>
+        <div class="ItemCardPlaceholder__text" *ngIf="showDescription"></div>
+        <div class="ItemCardPlaceholder__text ItemCardPlaceholder__text--half"></div>
+    </div>
+</div>

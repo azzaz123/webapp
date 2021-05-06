@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { EventService } from '../../../core/event/event.service';
 import { DeactivateItemsModalComponent } from './deactivate-items-modal/deactivate-items-modal.component';
 import { SUBSCRIPTION_TYPES } from '../../../core/subscriptions/subscriptions.service';
+import { ErrorsService } from '@core/errors/errors.service';
 
 @Component({
   selector: 'tsl-catalog-item-actions',
@@ -31,6 +32,7 @@ export class CatalogItemActionsComponent implements OnInit {
     private modalService: NgbModal,
     private toastService: ToastService,
     private i18n: I18nService,
+    private errorService: ErrorsService,
     private router: Router,
     private eventService: EventService
   ) {}
@@ -95,10 +97,7 @@ export class CatalogItemActionsComponent implements OnInit {
             this.getCounters.emit();
           });
           if (response.failedIds.length) {
-            this.toastService.show({
-              text: this.i18n.getTranslations('bulkDeleteError'),
-              type: 'error',
-            });
+            this.errorService.i18nError('bulkDeleteError');
           }
         });
     });

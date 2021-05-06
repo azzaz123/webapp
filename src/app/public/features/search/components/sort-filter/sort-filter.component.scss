@@ -1,0 +1,42 @@
+@import '~style/common';
+
+$actions-height: 88px;
+$sort-filter-height: 38px;
+
+.SortFilter {
+  cursor: pointer;
+  font-size: $font-size-xs;
+
+  height: $sort-filter-height;
+  background-color: $color-inbox-background;
+  border-bottom: thin solid $color-social-background;
+
+  &__bubble {
+    padding: 0;
+    min-width: 380px;
+  }
+
+  &__toolbar {
+    height: 70px;
+  }
+
+  &__title--bubble {
+    color: $black;
+    font-weight: $font-weight-bold;
+  }
+
+  &__actions {
+    background-color: $white;
+    height: $actions-height;
+    @include media-breakpoint-down(sm) {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
+  }
+
+  &__value {
+    color: $walla-main;
+  }
+}

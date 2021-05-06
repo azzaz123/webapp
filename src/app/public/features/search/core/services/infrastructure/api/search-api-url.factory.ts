@@ -1,4 +1,3 @@
-
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_PARAMETERS_SEARCH } from '../../constants/filter-parameters';
@@ -22,9 +21,9 @@ export const wallParameters: string[] = [
   FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE
 ];
 
+
+
 export function SearchApiUrlSearchOrWall(parameters: FilterParameter[]): string {
-  const parametersAreOnWall = wallParameters
-    .every((filterWall: string) => !!parameters.find(({key}: FilterParameter) => key === filterWall));
-  const parametersLengthAreWall = parameters.length === wallParameters.length;
-  return parametersAreOnWall && parametersLengthAreWall ? 'wall' : 'search';
+  const isWall: boolean = parameters.every(({key}: FilterParameter) => wallParameters.includes(key));
+  return isWall ? 'wall' : 'search'
 }

@@ -17,6 +17,7 @@ import { CAR_DEALER_TYPEFORM_URL, PRIVACY_POLICY_URL, TERMS_AND_CONDITIONS_URL }
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { FinancialCardOption, PaymentMethodResponse } from '@core/payments/payment.interface';
 import { PaymentService, PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { PaymentError, STRIPE_ERROR } from '@core/stripe/stripe.interface';
@@ -95,8 +96,8 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
 
   private generateInvoiceOptions() {
     this.invoiceOptions = [
-      { value: 'true', label: this.i18nService.getTranslations('yes') },
-      { value: 'false', label: this.i18nService.getTranslations('no') },
+      { value: 'true', label: this.i18nService.translate(TRANSLATION_KEY.YES) },
+      { value: 'false', label: this.i18nService.translate(TRANSLATION_KEY.NO) },
     ];
   }
 

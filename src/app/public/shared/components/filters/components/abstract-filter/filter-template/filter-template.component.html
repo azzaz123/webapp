@@ -1,39 +1,39 @@
-<div *ngIf="isBubble"
-    [class.FilterTemplate__bubble--open]="isDropdownOpen"
-     ngbDropdown #dropdown="ngbDropdown"
-     (openChange)="handleOpenChange($event)">
+<div *ngIf="isBubble" class="FilterTemplate__bubble" [class.FilterTemplate__bubble--open]="isDropdownOpen">
+  <tsl-bubble 
+    (click)="handleBubbleClick($event)" 
+    [variant]="hasValue ? BUBBLE_VARIANT.SELECTED : BUBBLE_VARIANT.ACTIVE"
+    [counter]="counter" [icon]="icon"
+    [isDropdown]="isDropdown"
+    [isDropdownOpen]="isDropdownOpen"
+    [isClearable]="isClearable"
+    (clear)="handleClear()"
+  >
+    {{label}}
+  </tsl-bubble>
 
-  <div ngbDropdownToggle>
-    <tsl-bubble
-                (click)="handleBubbleClick($event)"
-                [variant]="hasValue ? BUBBLE_VARIANT.SELECTED : BUBBLE_VARIANT.ACTIVE"
-                [counter]="counter"
-                [icon]="icon"
-                [isDropdown]="isDropdown"
-                [isDropdownOpen]="isDropdownOpen"
-                [isClearable]="isClearable"
-                (clear)="handleClear()"
-    >
-      {{label}}
-    </tsl-bubble>
-  </div>
-
-  <div ngbDropdownMenu class="FilterTemplate__dropdown_menu">
+  <div class="FilterTemplate__dropdown" 
+    tslFilterDropdown 
+    *ngIf="isDropdownOpen"
+    [dropdownOpened]="isDropdownOpen"
+    [class.FilterTemplate__dropdown--opened]="isDropdownOpen"
+    (openChange)="handleOpenChange($event)"
+  >
     <div class="FilterTemplate__toolbar d-flex align-items-center px-4">
       <p class="FilterTemplate__title--bubble m-0">{{title}}</p>
     </div>
 
-    <div [class.FilterTemplate__filter--no_max_height]="!hasMaxHeight" class="FilterTemplate__filter px-4">
+    <div class="FilterTemplate__filter px-4">
       <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
     </div>
 
-    <div [class.FilterTemplate]="!hasApply" class="FilterTemplate__actions px-4 d-flex align-items-center justify-content-end">
+    <div [class.FilterTemplate]="!hasApply"
+      class="FilterTemplate__actions px-4 d-flex align-items-center justify-content-end">
       <tsl-button className="basic basic-dark btn-filter" class="mx-1" i18n="@@cancelButton"
-                  (click)="handleCancel($event)">
+        (click)="handleCancel($event)">
         Cancel
       </tsl-button>
       <tsl-button *ngIf="hasApply" i18n="@@Apply" className="btn-primary btn-filter" class="mx-1"
-                  (click)="handleAccept($event)">
+        (click)="handleAccept($event)">
         Apply
       </tsl-button>
     </div>
@@ -46,13 +46,10 @@
 </div>
 
 <ng-template #contentWrapper>
-    <div #extendedContent>
-      <ng-content></ng-content>
-    </div>
-    <span *ngIf="extendedContent.children.length === 0" class="FilterTemplate--warn">Please, avoid using abstract filter directly, use one of the extensions or create your own</span>
+  <div #extendedContent>
+    <ng-content></ng-content>
+  </div>
+  <span *ngIf="extendedContent.children.length === 0" class="FilterTemplate--warn">
+    Please, avoid using abstract filter directly, use one of the extensions or create your own
+  </span>
 </ng-template>
-
-
-
-
-
