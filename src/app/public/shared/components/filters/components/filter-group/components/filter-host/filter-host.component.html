@@ -1,1 +1,1 @@
-<div *ngIf="isVisible$ | async" tslFilterHost></div>
+<div [class.d-none]="!(isVisible$ | async)" tslFilterHost></div>

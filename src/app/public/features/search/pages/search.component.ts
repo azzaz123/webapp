@@ -21,6 +21,7 @@ import {
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -85,19 +86,22 @@ export class SearchComponent implements OnInit, OnDestroy {
     private deviceService: DeviceService,
     private searchService: SearchService,
     private publicFooterService: PublicFooterService,
-    private searchAdsService: SearchAdsService
+    private searchAdsService: SearchAdsService,
+    private hostVisibilityService: HostVisibilityService
   ) {
     this.device = this.deviceService.getDeviceType();
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
   }
 
   public ngOnInit(): void {
+    this.hostVisibilityService.init();
     this.slotsConfig = this.deviceService.isMobile() ? SLOTS_CONFIG_MOBILE : SLOTS_CONFIG_DESKTOP;
 
     this.searchAdsService.setSlots();
   }
 
   public ngOnDestroy(): void {
+    this.hostVisibilityService.clear();
     this.searchService.close();
     this.searchAdsService.close();
     this.publicFooterService.setShow(true);

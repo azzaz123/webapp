@@ -32,6 +32,7 @@ import { SearchAdsService } from '../core/ads/search-ads.service';
 import { SearchService } from '../core/services/search.service';
 import { REGULAR_CARDS_COLUMNS_CONFIG, SearchComponent, WIDE_CARDS_COLUMNS_CONFIG } from './search.component';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -123,6 +124,7 @@ describe('SearchComponent', () => {
           provide: PublicFooterService,
           useValue: publicFooterServiceMock,
         },
+        HostVisibilityService,
       ],
     }).compileComponents();
   });
@@ -133,6 +135,7 @@ describe('SearchComponent', () => {
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 

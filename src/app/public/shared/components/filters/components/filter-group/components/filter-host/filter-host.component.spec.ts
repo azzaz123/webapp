@@ -14,6 +14,12 @@ import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enu
 import { FiltersModule } from '@public/shared/components/filters/filters.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 @Component({
   selector: 'tsl-test-component',
@@ -45,6 +51,17 @@ describe('FilterHostComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TestComponent, FilterHostComponent, FilterHostDirective],
       imports: [FiltersModule, HttpClientTestingModule],
+      providers: [
+        HostVisibilityService,
+        {
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+        {
+          provide: FILTER_PARAMETER_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+      ],
     }).compileComponents();
   });
 
@@ -54,10 +71,6 @@ describe('FilterHostComponent', () => {
     testComponent = fixture.componentInstance;
     debugElement = fixture.debugElement;
     component = debugElement.query(By.directive(FilterHostComponent)).componentInstance;
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   describe('on init', () => {

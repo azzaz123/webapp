@@ -5,7 +5,6 @@ import { SelectFilterModule } from './components/select-filter/select-filter.mod
 import { GridSelectFilterModule } from './components/grid-select-filter/grid-select-filter.module';
 import { SuggesterFilterModule } from './components/suggester-filter/suggester-filter.module';
 import { CategoriesFilterModule } from './components/categories-filter/categories-filter.module';
-import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 
 @NgModule({
   imports: [
@@ -16,6 +15,5 @@ import { HostVisibilityService } from '@public/shared/components/filters/compone
     GridSelectFilterModule,
     CategoriesFilterModule,
   ],
-  providers: [HostVisibilityService],
 })
 export class FiltersModule {}
