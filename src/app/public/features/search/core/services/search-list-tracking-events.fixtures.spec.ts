@@ -28,3 +28,7 @@ export const MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH: AnalyticsEvent<ClickItemCar
     isBumped: !!MOCK_ITEM_CARD.bumpFlags?.bumped,
   },
 };
+
+export class MockSearchListTrackingEventService {
+  trackClickItemCardEvent() {}
+}
