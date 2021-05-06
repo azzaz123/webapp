@@ -1,11 +1,16 @@
-<div class="d-flex">
+<div class="d-flex SubscriptionTierSelector">
     <ng-container *ngFor="let tier of subscription.tiers">
-        <div class="GenericCard flex-1" [class.GenericCard--selected]="selectedTier?.id === tier.id" (click)="onTierSelectedChanged(tier)">
-            <div class="GenericCard__title">
-                {{ tier.limit}}
+        <div class="GenericCard Card flex-1" [class.Card--selected]="selectedTier?.id === tier.id"
+            (click)="onTierSelectedChanged(tier)">
+            <div class="GenericCard__title Card__title">
+                {{ getLimitText(tier) }}
             </div>
             <div class="GenericCard__subtitle">
-                {{ tier.price }}
+                <b>
+                    <span i18n="@@web_profile_pages_subscription_326">
+                        {{tier.price}}{{tier.currency}}/month
+                    </span>
+                </b>
             </div>
         </div>
     </ng-container>

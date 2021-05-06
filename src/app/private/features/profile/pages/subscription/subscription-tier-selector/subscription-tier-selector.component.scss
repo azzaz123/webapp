@@ -1,15 +1,27 @@
 @import '~style/common';
-.GenericCard {
-  border: solid 2px #eceff1;
-  flex: 1;
-  margin-right: 12px;
+.SubscriptionTierSelector {
+  .Card {
+    border: solid 2px #eceff1;
+    flex: 1;
+    margin-right: 12px;
 
-  &:hover {
-    transform: $item-card-hover-translate;
-    box-shadow: $item-card-hover-box-shadow;
-  }
+    &__title {
+      color: #607d8b;
+    }
 
-  &--selected {
-    border: solid 2px #607d8b;
+    &:hover {
+      transform: $item-card-hover-translate;
+      box-shadow: $item-card-hover-box-shadow;
+      .Card__title {
+        color: #253238;
+      }
+    }
+
+    &--selected {
+      border: solid 2px #607d8b;
+      .Card__title {
+        color: #253238;
+      }
+    }
   }
 }
