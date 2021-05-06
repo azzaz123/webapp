@@ -1256,4 +1256,26 @@
   <translation id="web_profile_modal_unsubscribe_in_app_first_653">Entendido</translation>
   <translation id="From">Desde</translation>
   <translation id="To">Hasta</translation>
+  <translation id="filtersCategoryAllCategories">Todas las categorías</translation>
+  <translation id="filtersCategoryCars">Coches</translation>
+  <translation id="filtersCategoryMotorbike">Motos</translation>
+  <translation id="filtersCategoryMotorsNAccessories">Motor y Accesorios</translation>
+  <translation id="filtersCategoryFashion">Moda y Accesorios</translation>
+  <translation id="filtersCategoryRealEstate">Inmobiliaria</translation>
+  <translation id="filtersCategoryTVAudioNCameras">TV, Audio y Foto</translation>
+  <translation id="filtersCategoryCellPhonesNAccessories">Móviles y Telefonía</translation>
+  <translation id="filtersCategoryComputersNElectronics">Informática y Electrónica</translation>
+  <translation id="filtersCategorySportsNLeisure">Deporte y Ocio</translation>
+  <translation id="filtersCategoryBikes">Bicicletas</translation>
+  <translation id="filtersCategoryGamesNConsoles">Consolas y Videojuegos</translation>
+  <translation id="filtersCategoryHomeNGarden">Hogar y Jardín</translation>
+  <translation id="filtersCategoryAppliances">Electrodomésticos</translation>
+  <translation id="filtersCategoryMoviesBooksNMusic">Cine, Libros y Música</translation>
+  <translation id="filtersCategoryBabyNChild">Niños y Bebés</translation>
+  <translation id="filtersCategoryCollectiblesNArt">Coleccionismo</translation>
+  <translation id="filtersCategoryBuildingMaterials">Materiales de construcción</translation>
+  <translation id="filtersCategoryIndustrialNAgriculture">Industria y Agricultura</translation>
+  <translation id="filtersCategoryJobs">Empleo</translation>
+  <translation id="filtersCategoryServices">Servicios</translation>
+  <translation id="filtersCategoryOther">Otros</translation>
 </translationbundle>
