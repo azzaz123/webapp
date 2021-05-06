@@ -132,7 +132,7 @@ export const MOCK_CLICK_ITEM_CARD_EVENT: AnalyticsEvent<ClickItemCard> = {
     salePrice: MOCK_ITEM_CARD.salePrice,
     title: MOCK_ITEM_CARD.title,
     itemSourceRecommendationId: MOCK_ITEM.id,
-    itemDistance: MOCK_OTHER_USER.itemDistance,
+    itemDistance: MOCK_ITEM_CARD.distance,
     shippingAllowed: !!MOCK_ITEM_CARD.saleConditions?.shipping_allowed,
     sellerUserId: MOCK_ITEM_CARD.ownerId,
     isBumped: !!MOCK_ITEM_CARD.bumpFlags?.bumped,
