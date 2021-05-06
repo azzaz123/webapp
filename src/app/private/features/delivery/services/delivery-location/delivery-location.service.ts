@@ -13,4 +13,10 @@ export class DeliveryLocationService {
   public getLocationsByPostalCode(postalCode: string): Observable<DeliveryLocationApi[]> {
     return this.deliveryLocationApiService.get(postalCode).pipe(tap((locations) => this.deliveryLocations.next(locations)));
   }
+
+  public getLocationsByPostalCodeAndCountry(postalCode: string, countryISOCode): Observable<DeliveryLocationApi[]> {
+    return this.deliveryLocationApiService
+      .getByPostalCodeAndCountry(postalCode, countryISOCode)
+      .pipe(tap((locations) => this.deliveryLocations.next(locations)));
+  }
 }
