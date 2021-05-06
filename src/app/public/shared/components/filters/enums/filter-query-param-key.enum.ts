@@ -9,6 +9,7 @@ export enum FILTER_QUERY_PARAM_KEY {
   latitude = 'latitude',
   distance = 'distance',
 
+  size = 'size',
   gender = 'gender',
 
   brand = 'brand',
