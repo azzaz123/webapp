@@ -1254,4 +1254,7 @@
   <translation id="floorAndDoorNumber">Piso y puerta</translation>
   <translation id="population">Población</translation>
   <translation id="contactPhone">Teléfono de contacto</translation>
+  <translation id="addYourAddress">Añade tu dirección</translation>
+  <translation id="switchCountryWarningMessage">Cada país tiene sus propios métodos de envío. Al cambiar de país cambiarán los servicios de envío disponibles. ¿Quieres continuar?</translation>
+  <translation id="continue">Continuar</translation>
 </translationbundle>
