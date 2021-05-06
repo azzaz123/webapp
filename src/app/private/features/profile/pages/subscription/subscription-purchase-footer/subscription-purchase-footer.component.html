@@ -1,0 +1,10 @@
+<div class="SubscriptionPurchaseFooter">
+    <div class="container h-100">
+        <div>
+            {{selectedTier.price}}
+        </div>
+        <tsl-button className="btn btn-primary" [disabled]="buttonDisable" preventDoubleClick (click)="onClickButton()">
+            Comprar
+        </tsl-button>
+    </div>
+</div>

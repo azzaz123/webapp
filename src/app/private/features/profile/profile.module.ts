@@ -27,6 +27,7 @@ import { NewSubscriptionComponent } from './pages/subscription/new-subscription/
 import { NewSubscriptionViewComponent } from './pages/subscription/new-subscription/new-subscription-view/new-subscription-view.component';
 import { SubscriptionTierSelectorComponent } from './pages/subscription/subscription-tier-selector/subscription-tier-selector.component';
 import { SubscriptionCardSelectorComponent } from './pages/subscription/subscription-card-selector/subscription-card-selector.component';
+import { SubscriptionPurchaseFooterComponent } from './pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component';
 
 @NgModule({
   imports: [
@@ -65,6 +66,7 @@ import { SubscriptionCardSelectorComponent } from './pages/subscription/subscrip
     NewSubscriptionViewComponent,
     SubscriptionTierSelectorComponent,
     SubscriptionCardSelectorComponent,
+    SubscriptionPurchaseFooterComponent,
   ],
   entryComponents: [
     UnsubscribeModalComponent,
