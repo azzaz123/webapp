@@ -10,10 +10,20 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { DeliveryAddressApiService } from '../../services/api/delivery-address-api/delivery-address-api.service';
 import { DeliveryCountriesApiService } from '../../services/api/delivery-countries-api/delivery-countries-api.service';
 import { ButtonModule } from '@shared/button/button.module';
+import { DeliveryLocationService } from '../../services/delivery-location/delivery-location.service';
+import { DeliveryLocationApiService } from '../../services/api/delivery-location-api/delivery-location-api.service';
 
 @NgModule({
   imports: [DeliveryAddressRoutingModule, ProfileFormModule, SpinnerModule, ReactiveFormsModule, DropdownModule, ButtonModule],
   declarations: [deliveryAddressRoutedComponents],
-  providers: [DeliveryAddressService, DeliveryAddressApiService, DeliveryCountriesService, DeliveryCountriesApiService, ErrorsService],
+  providers: [
+    DeliveryAddressService,
+    DeliveryAddressApiService,
+    DeliveryCountriesService,
+    DeliveryCountriesApiService,
+    DeliveryLocationService,
+    DeliveryLocationApiService,
+    ErrorsService,
+  ],
 })
 export class DeliveryAddressModule {}

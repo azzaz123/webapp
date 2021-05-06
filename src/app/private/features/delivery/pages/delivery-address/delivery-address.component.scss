@@ -1,0 +1,21 @@
+@import '~style/common';
+
+form {
+  input {
+    &.ng-dirty.ng-invalid {
+      border: 1px solid $negative-main !important;
+    }
+  }
+
+  &.disabled {
+    .form-control:disabled {
+      cursor: auto;
+      border: 0;
+    }
+  }
+
+  .alert {
+    font-size: $font-size-s;
+    color: $negative-main;
+  }
+}

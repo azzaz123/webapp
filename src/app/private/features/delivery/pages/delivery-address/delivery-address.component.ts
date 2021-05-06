@@ -5,11 +5,16 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { UuidService } from '@core/uuid/uuid.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { finalize } from 'rxjs/operators';
 import { DeliveryAddressService } from '../../services/delivery-address/delivery-address.service';
 import { CountryOptionsAndDefault, DeliveryCountriesService } from '../../services/delivery-countries/delivery-countries.service';
+import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
+import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
+import { DeliveryCountryISOCode, DeliveryLocationApi } from '../../interfaces/delivery-location/delivery-location-api.interface';
+import { DeliveryLocationService } from '../../services/delivery-location/delivery-location.service';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -18,10 +23,13 @@ import { CountryOptionsAndDefault, DeliveryCountriesService } from '../../servic
 })
 export class DeliveryAddressComponent {
   public countries: IOption[];
+  public cities: IOption[];
   public deliveryAddressForm: FormGroup;
   public loading = true;
   public loadingRequest = true;
   public isNewForm = true;
+  private isCountryEditable = false;
+  private initialCountryISOCode: DeliveryCountryISOCode;
   private readonly formSubmittedEventKey = 'formSubmitted';
 
   @ViewChild(ProfileFormComponent, { static: true })
@@ -33,7 +41,9 @@ export class DeliveryAddressComponent {
     private deliveryCountriesService: DeliveryCountriesService,
     private eventService: EventService,
     private errorsService: ErrorsService,
-    private uuidService: UuidService
+    private uuidService: UuidService,
+    private modalService: NgbModal,
+    private deliveryLocationService: DeliveryLocationService
   ) {
     this.buildForm();
     this.eventService.subscribe(this.formSubmittedEventKey, () => {
@@ -49,9 +59,13 @@ export class DeliveryAddressComponent {
     this.deliveryAddressService
       .get(cache)
       .subscribe(
-        (deliveryAddress: any) => {
+        (deliveryAddress: DeliveryAddressApi) => {
           if (deliveryAddress) {
+            console.log('deliveryAddress => ', deliveryAddress);
+            this.initialCountryISOCode = deliveryAddress.country_iso_code;
             this.isNewForm = false;
+            this.initializeCountries(false);
+            this.getLocations(deliveryAddress.postal_code);
             this.deliveryAddressForm.patchValue(deliveryAddress);
             this.patchFormValues();
             this.formComponent.initFormControl();
@@ -91,7 +105,7 @@ export class DeliveryAddressComponent {
           }
         );
     } else {
-      this.errorsService.i18nError('');
+      this.errorsService.i18nError('formErrors');
       for (const control in this.deliveryAddressForm.controls) {
         if (this.deliveryAddressForm.controls.hasOwnProperty(control) && !this.deliveryAddressForm.controls[control].valid) {
           this.deliveryAddressForm.controls[control].markAsDirty();
@@ -100,12 +114,58 @@ export class DeliveryAddressComponent {
     }
   }
 
+  public handleShowWarningCountry(e: Event): void {
+    if (!this.isNewForm && !this.isCountryEditable) {
+      e.stopPropagation();
+      e.preventDefault();
+
+      this.modalService.open(ChangeCountryConfirmationModalComponent).result.then((result: boolean) => {
+        if (result) {
+          this.isCountryEditable = true;
+        }
+      });
+    }
+  }
+
+  public searchLocation(): void {
+    setTimeout(() => {
+      const newPostalCode = this.deliveryAddressForm.get('postal_code').value;
+      this.deliveryAddressForm.get('city').reset();
+      this.deliveryAddressForm.get('region').reset();
+      if (newPostalCode) {
+        this.getLocations(newPostalCode);
+      }
+    }, 2000);
+  }
+
+  public handleClearFrom(selectedOption: IOption): void {
+    if (selectedOption.value !== this.initialCountryISOCode && !this.isNewForm) {
+      this.deliveryAddressForm.clearValidators();
+      this.deliveryAddressForm.get('full_name').reset();
+      this.deliveryAddressForm.get('street').reset();
+      this.deliveryAddressForm.get('flat_and_floor').reset();
+      this.deliveryAddressForm.get('postal_code').reset();
+      this.deliveryAddressForm.get('city').reset();
+      this.deliveryAddressForm.get('phone_number').reset();
+    }
+  }
+
   private handleNewForm(): void {
-    this.initializeCountriesAndSetDefault();
+    this.initializeCountries();
     this.patchFormValues();
     this.formComponent.initFormControl();
     this.isNewForm = true;
     this.buildForm();
+  }
+
+  private getLocations(postalCode: string): void {
+    this.deliveryLocationService.getLocationsByPostalCode(postalCode).subscribe((locations: DeliveryLocationApi[]) => {
+      this.cities = locations.map((location) => {
+        return { label: location.city, value: location.city };
+      });
+      console.log('location!!! => ', locations);
+      console.log('cities!!! => ', this.cities);
+    });
   }
 
   private patchFormValues(): void {
@@ -116,10 +176,13 @@ export class DeliveryAddressComponent {
     }
   }
 
-  private initializeCountriesAndSetDefault(): void {
+  private initializeCountries(setDefaultOption = true): void {
     this.deliveryCountriesService.get().subscribe((countryOptionsAndDefault: CountryOptionsAndDefault) => {
       this.countries = countryOptionsAndDefault.countryOptions;
-      this.deliveryAddressForm.get('country').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
+      console.log('countries ==> ', this.countries);
+      if (setDefaultOption) {
+        this.deliveryAddressForm.get('country').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
+      }
     });
   }
 
@@ -127,11 +190,12 @@ export class DeliveryAddressComponent {
     this.deliveryAddressForm = this.fb.group({
       id: this.uuidService.getUUID(),
       country_iso_code: ['', [Validators.required]],
+      region: ['', [Validators.required]],
       full_name: ['', [Validators.required, whitespaceValidator]],
       street: ['', [Validators.required, whitespaceValidator]],
       flat_and_floor: [''],
       postal_code: ['', [Validators.required, whitespaceValidator]],
-      city: ['', [Validators.required, whitespaceValidator]],
+      city: [{ value: '', disabled: true }, [Validators.required]],
       phone_number: ['', [Validators.required, whitespaceValidator]],
     });
   }

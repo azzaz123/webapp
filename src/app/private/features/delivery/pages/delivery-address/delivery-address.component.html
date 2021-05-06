@@ -3,7 +3,7 @@
     <tsl-profile-form [profileForm]="deliveryAddressForm" (onInit)="initForm()">
       <form [formGroup]="deliveryAddressForm" (submit)="onSubmit()">
         <div class="box profile-box" [hidden]="loading">
-          <div class="content" [hidden]="loading">
+          <div class="col-12 col-md-11 offset-md-1">
             <div class="row" >
               <div class="col-12">
                 <h3 i18n="@@addYourAddress">Add your address</h3>
@@ -13,8 +13,8 @@
               <div class="col-sm-12 col-md-12">
                 <div class="form-group row align-items-center">
                   <label for="country_iso_code" class="col-sm-12 col-md-5" i18n="@@Country">Country</label>
-                  <div class="col-sm-12 col-md-5">
-                    <tsl-dropdown i18n-placeholder="@@Country" class="form-control" formControlName="country_iso_code" id="country_iso_code" [options]="countries">
+                  <div class="col-sm-12 col-md-5" (click)="handleShowWarningCountry($event)">
+                    <tsl-dropdown i18n-placeholder="@@Country" class="form-control" formControlName="country_iso_code" id="country_iso_code" [options]="countries" (selected)="handleClearFrom($event)">
                     </tsl-dropdown>
                   </div>
                 </div>
@@ -39,13 +39,14 @@
                 <div class="form-group row align-items-center">
                   <label for="postal_code" class="col-sm-12 col-md-5" i18n="@@PostalCode">Postal code</label>
                   <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="postal_code" formControlName="postal_code"/>
+                    <input type="text" class="form-control" id="postal_code" formControlName="postal_code" (keyup)="searchLocation()"/>
                   </div>
                 </div>
                 <div class="form-group row align-items-center">
                   <label for="city" class="col-sm-12 col-md-5" i18n="@@population">City</label>
                   <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="city" formControlName="city"/>
+                    <tsl-dropdown i18n-placeholder="@@population" class="form-control" formControlName="city" id="city" [options]="cities" [disabled]="cities?.length <= 1">
+                    </tsl-dropdown>
                   </div>
                 </div>
                 <div class="form-group row align-items-center">
@@ -62,10 +63,10 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row loading-center">
-            <tsl-spinner [hidden]="!loading"></tsl-spinner>
-          </div>
+        </div>
+        <div class="row loading-center">
+          <tsl-spinner [hidden]="!loading"></tsl-spinner>
+        </div>
         </div>
       </form>
     </tsl-profile-form>
