@@ -43,7 +43,6 @@ import { PaginationResponse } from '@public/core/services/pagination/pagination.
 
 export const PICTURE_ID = '9jd7ryx5odjk';
 export const ITEM_CATEGORY_ID = 12545;
-
 export const ITEM_ID = '9jd7ryx5odjk';
 export const ITEM_LEGACY_ID = 500002512;
 export const ITEM_TITLE = 'The title';

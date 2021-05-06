@@ -1,4 +1,3 @@
-
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
@@ -76,5 +75,4 @@ export class SearchAPIService {
         SearchAPIService.hasToLoadMoreItems(search) ? this.makeSearchApi(this.nextPageUrl, search.items) : of(search))
     );
   }
-
 }

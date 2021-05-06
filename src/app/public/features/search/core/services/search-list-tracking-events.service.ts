@@ -1,4 +1,3 @@
-import { isPromise } from '@angular/compiler/src/util';
 import { Injectable } from '@angular/core';
 import {
   AnalyticsEvent,
