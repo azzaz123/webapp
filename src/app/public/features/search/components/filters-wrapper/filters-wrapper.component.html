@@ -1,22 +1,26 @@
-<div class="FiltersWrapper__bar d-flex p-2"> 
-  <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
-  <tsl-filter-group 
-    [values]="filterValues"
-    [config]="bubbleFiltersConfig" 
-    [variant]="FILTER_VARIANT.BUBBLE"
-    (valueChange)="bubbleChange($event)"
-    (openStateChange)="bubbleOpenStateChange($event)"
-    (clear)="bubbleClear($event)"></tsl-filter-group>
+<div class="FiltersWrapper">
+  <div class="FiltersWrapper__backdrop" *ngIf="openedBubble$ | async"></div>
+
+  <div class="FiltersWrapper__bar d-flex pl-3 py-2" [class.FiltersWrapper__bar--opened]="openedBubble$ | async">
+    <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
+    <tsl-filter-group
+      [values]="bubbleValues$ | async"
+      [config]="bubbleFilterConfigurations$ | async | extractFilterConfigs:FILTER_VARIANT.BUBBLE"
+      [variant]="FILTER_VARIANT.BUBBLE"
+      (valueChange)="bubbleChange($event)"
+      (openStateChange)="bubbleOpenStateChange($event)"></tsl-filter-group>
+  </div>
 </div>
 
-
 <tsl-drawer [isOpen]="drawerConfig.isOpen" [offsetTop]="drawerConfig.offsetTop" [hasApply]="drawerConfig.hasApply"
+            [noScroll]="isDrawerContentScrollable$ | async"
 (cancel)="closeDrawer()" (apply)="applyDrawer()" (clickBackdrop)="closeDrawer()">
-  <tsl-filter-group 
-    [values]="filterValues"
-    [config]="drawerFiltersConfig" 
-    [variant]="FILTER_VARIANT.CONTENT" 
-    (valueChange)="drawerChange($event)"
-    (clear)="drawerClear($event)"></tsl-filter-group>
+  <tsl-filter-group
+    *ngIf="drawerConfig.isOpen"
+    [values]="drawerValues$ | async"
+    [config]="drawerFilterConfigurations$ | async | extractFilterConfigs:FILTER_VARIANT.CONTENT"
+    [variant]="FILTER_VARIANT.CONTENT"
+    (openStateChange)="drawerOpenStateChange($event)"
+    (valueChange)="drawerChange($event)"></tsl-filter-group>
 </tsl-drawer>
 

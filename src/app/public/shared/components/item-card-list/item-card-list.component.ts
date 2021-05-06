@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, EventEmitter, Inject, Input, Output, TemplateRef } from '@angular/core';
 import { environment } from '@environments/environment';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
-import { DeviceDetectorService } from 'ngx-device-detector';
+import { CARD_TYPES } from './enums/card-types.enum';
 import { ClickedItemCard } from './interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from './interfaces/cols-config.interface';
 import { SlotsConfig } from './interfaces/slots-config.interface';
@@ -17,26 +17,39 @@ import { SlotsConfig } from './interfaces/slots-config.interface';
 export class ItemCardListComponent {
   @Input() items: ItemCard[];
   @Input() showDescription = true;
+  @Input() showPlaceholder = false;
+  @Input() placeholderCards = ItemCardListComponent.DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS;
   @Input() columnsConfig: ColumnsConfig = {
-    lg: 5,
-    md: 4,
-    sm: 3,
+    xl: 5,
+    lg: 4,
+    md: 3,
+    sm: 2,
     xs: 2,
   };
+  @Input() cardType: CARD_TYPES = CARD_TYPES.REGULAR;
   @Input() slotsConfig: SlotsConfig;
+  @Input() isLoading: boolean;
   @Output() clickedItemAndIndex: EventEmitter<ClickedItemCard> = new EventEmitter<ClickedItemCard>();
+  @Output() toggleFavouriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
+
+  @ContentChild('slotTemplate') slotTemplate: TemplateRef<unknown>;
+
+  public cardTypes = CARD_TYPES;
+  private static DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS = 15;
 
   constructor(
-    private deviceDetectionService: DeviceDetectorService,
     private itemCardService: ItemCardService,
     private checkSessionService: CheckSessionService,
     @Inject('SUBDOMAIN') private subdomain: string
-  ) {
-    this.showDescription = !this.deviceDetectionService.isMobile();
-  }
+  ) {}
 
   public toggleFavourite(item: ItemCard): void {
-    this.checkSessionService.hasSession() ? this.itemCardService.toggleFavourite(item) : this.checkSessionService.checkSessionAction();
+    if (this.checkSessionService.hasSession()) {
+      this.itemCardService.toggleFavourite(item);
+      this.toggleFavouriteEvent.emit(item);
+    } else {
+      this.checkSessionService.checkSessionAction();
+    }
   }
 
   public openItemDetailPage({ itemCard, index }: ClickedItemCard): void {

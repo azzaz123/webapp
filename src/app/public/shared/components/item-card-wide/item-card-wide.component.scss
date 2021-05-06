@@ -1,25 +1,20 @@
 @import '~style/common';
-
-$hover-box-shadow: 0 2px 10px 0 rgba($blue-grey-1, 0.1);
-$box-shadow: 0 0 2px 0 rgba($black, 0.1);
-$card-height-small-view: 390px;
-$card-height-big-view: 210px;
-$image-height-small-view: 190px;
-$icon-margin: $spacer * 0.5;
+@import 'styles/item-card-wide-variables';
 
 .ItemCardWide {
   height: $card-height-small-view;
+  max-width: $card-max-width;
   background-color: $white;
   border-radius: $border-radius;
-  box-shadow: $box-shadow;
+  box-shadow: $item-card-box-shadow;
   font-size: $font-size-s;
   @include media-breakpoint-up(md) {
     font-size: $font-size-m;
   }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: $hover-box-shadow;
+    transform: $item-card-hover-translate;
+    box-shadow: $item-card-hover-box-shadow;
   }
 
   cursor: pointer;

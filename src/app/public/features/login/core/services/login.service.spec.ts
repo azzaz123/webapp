@@ -3,11 +3,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { AccessTokenService } from '@core/http/access-token.service';
 import { EventService } from '@core/event/event.service';
 import { environment } from '@environments/environment';
-import { LoginResponse } from './../login-response.interface';
-import { HttpParams } from '@angular/common/http';
 import { LoginService, LOGIN_ENDPOINT } from './login.service';
 import { MOCK_USER_RESPONSE_BODY } from '@fixtures/user.fixtures.spec';
-import { CookieModule, CookieService } from 'ngx-cookie';
+import { CookieModule } from 'ngx-cookie';
+import { DeviceService } from '@core/device/device.service';
+import { MockDeviceService } from '@fixtures/device.fixtures.spec';
+import { LoginRequest } from '../interfaces/login.request';
 
 describe('LoginService', () => {
   let injector: TestBed;
@@ -15,6 +16,9 @@ describe('LoginService', () => {
   let accessTokenService: AccessTokenService;
   let httpMock: HttpTestingController;
   let eventService: EventService;
+  let deviceService: DeviceService;
+
+  const MOCK_DEVICE_ID = 'lel123';
 
   beforeEach(() => {
     injector = getTestBed();
@@ -29,13 +33,17 @@ describe('LoginService', () => {
           },
         },
         EventService,
+        { provide: DeviceService, useValue: MockDeviceService },
       ],
     });
 
     service = injector.inject(LoginService);
     accessTokenService = injector.inject(AccessTokenService);
     eventService = injector.inject(EventService);
+    deviceService = injector.inject(DeviceService);
     httpMock = injector.inject(HttpTestingController);
+
+    spyOn(deviceService, 'getDeviceId').and.returnValue(MOCK_DEVICE_ID);
   });
 
   afterEach(() => {
@@ -46,33 +54,35 @@ describe('LoginService', () => {
     expect(service).toBeTruthy();
   });
 
-  const MOCK_LOGIN_INPUT = {
+  const MOCK_LOGIN_REQUEST: LoginRequest = {
     emailAddress: 'test@test.it',
-    installationType: 'ANDROID',
     password: 'test',
   };
 
   describe('when requesting login', () => {
     describe('and when request is successful', () => {
       it('should ask server for response', () => {
-        const expectedBody = new HttpParams()
-          .set('emailAddress', MOCK_LOGIN_INPUT.emailAddress)
-          .set('installationType', MOCK_LOGIN_INPUT.installationType)
-          .set('password', MOCK_LOGIN_INPUT.password)
-          .toString();
+        const expectedBody: LoginRequest = {
+          ...MOCK_LOGIN_REQUEST,
+          metadata: {
+            installationId: MOCK_DEVICE_ID,
+            installationType: 'WEB',
+            pushToken: '',
+          },
+        };
 
-        service.login(MOCK_LOGIN_INPUT).subscribe();
+        service.login(MOCK_LOGIN_REQUEST).subscribe();
         const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
         req.flush(MOCK_USER_RESPONSE_BODY);
 
         expect(req.request.method).toBe('POST');
-        expect(req.request.body.toString()).toEqual(expectedBody);
+        expect(req.request.body).toEqual(expectedBody);
       });
 
       it('should emit login event', () => {
         spyOn(eventService, 'emit').and.callThrough();
 
-        service.login(MOCK_LOGIN_INPUT).subscribe();
+        service.login(MOCK_LOGIN_REQUEST).subscribe();
         const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
         req.flush(MOCK_USER_RESPONSE_BODY);
 
@@ -82,7 +92,7 @@ describe('LoginService', () => {
       it('should store access token', () => {
         spyOn(accessTokenService, 'storeAccessToken');
 
-        service.login(MOCK_LOGIN_INPUT).subscribe();
+        service.login(MOCK_LOGIN_REQUEST).subscribe();
         const req = httpMock.expectOne(`${environment.baseUrl}${LOGIN_ENDPOINT}`);
         req.flush(MOCK_USER_RESPONSE_BODY);
 

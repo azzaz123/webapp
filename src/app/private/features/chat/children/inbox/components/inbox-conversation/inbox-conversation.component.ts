@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { I18nService } from '@core/i18n/i18n.service';
+import { CALENDAR_SPEC_TYPE } from '@core/i18n/moment/enums/calendar-spec-type.enum';
+import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 import { ThirdVoiceDropPriceComponent } from '@private/features/chat/children/message/components/third-voice-drop-price';
 import { ThirdVoiceReviewComponent } from '@private/features/chat/children/message/components/third-voice-review';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
@@ -17,16 +19,13 @@ export class InboxConversationComponent {
   @Input() archiveConversation = false;
 
   public unreadCounterDisplayLimit = 99;
-  public momentConfig: CalendarSpec = {
-    lastDay: this.i18n.getTranslations('defaultDaysMomentConfig').lastDay,
-    sameDay: 'HH:mm',
-    nextDay: 'ddd',
-    lastWeek: 'D MMM.',
-    nextWeek: 'ddd',
-    sameElse: 'D MMM.',
-  };
+  public momentCalendarSpec: CalendarSpec = this.momentCalendarSpecService.getCalendarSpec(CALENDAR_SPEC_TYPE.SHORT);
 
-  constructor(private inboxConversationService: InboxConversationService, private i18n: I18nService) {}
+  constructor(
+    private inboxConversationService: InboxConversationService,
+    private i18n: I18nService,
+    private momentCalendarSpecService: MomentCalendarSpecService
+  ) {}
 
   public dateIsThisYear(): boolean {
     return this.conversation && this.conversation.modifiedDate
@@ -49,9 +48,5 @@ export class InboxConversationComponent {
 
   public isThirdVoiceReview(messageType: MessageType): boolean {
     return includes(ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES, messageType);
-  }
-
-  public getThirdVoiceTranslation(inboxMessage: InboxMessage): string {
-    return this.i18n.getTranslations(inboxMessage.type);
   }
 }

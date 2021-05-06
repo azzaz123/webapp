@@ -27,6 +27,7 @@ import { CategoryOption, CategoryResponse, SuggestedCategory } from '@core/categ
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { Item, ITEM_TYPES } from '@core/item/item';
 import { DeliveryInfo, ItemContent, ItemResponse } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
@@ -37,7 +38,7 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, Subject } from 'rxjs';
+import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
@@ -130,8 +131,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private subscriptionService: SubscriptionsService
   ) {
     this.genders = [
-      { value: 'male', label: this.i18n.getTranslations('male') },
-      { value: 'female', label: this.i18n.getTranslations('female') },
+      { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
+      { value: 'female', label: this.i18n.translate(TRANSLATION_KEY.FEMALE) },
     ];
     this.fillForm();
     config.placement = 'right';
@@ -178,7 +179,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           id: [{ value: null, disabled: true }, [isObjectTypeRequiredValidator]],
         }),
         object_type_2: this.fb.group({
-          id: [{ value: null, disabled: true }],
+          id: [{ value: null, disabled: true }, [isObjectTypeRequiredValidator]],
         }),
         brand: [{ value: null, disabled: true }, [Validators.required]],
         model: [{ value: null, disabled: true }, [Validators.required]],
@@ -293,14 +294,27 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       .get('id')
       .valueChanges.subscribe((typeOfbOjectId: number) => {
         if (!!typeOfbOjectId) {
+          this.getUploadExtraInfoControl('object_type_2').reset();
           this.getSecondObjectTypes(typeOfbOjectId);
+
           if (+this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
+            this.getUploadExtraInfoControl('size').disable();
             this.getSizes();
           }
         } else {
           this.clearSecondObjectTypes();
+          this.clearSizes();
         }
       });
+
+    this.getUploadExtraInfoControl('object_type_2')
+      .get('id')
+      .valueChanges.subscribe((typeOfbSecondOjectId: number) => {
+        if (!!typeOfbSecondOjectId && +this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
+          this.getSizes();
+        }
+      });
+
     this.getUploadExtraInfoControl('gender').valueChanges.subscribe((gender: string) => {
       if (!!gender && +this.uploadForm.get('category_id').value === CATEGORY_IDS.FASHION_ACCESSORIES) {
         this.getSizes();
@@ -561,7 +575,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getSizes(): void {
-    const objectTypeId = this.getUploadExtraInfoControl('object_type').get('id').value;
+    const objectTypeId = this.objectTypeHasChildren(this.getUploadExtraInfoControl('object_type').get('id').value?.toString())
+      ? this.getUploadExtraInfoControl('object_type_2').get('id').value
+      : this.getUploadExtraInfoControl('object_type').get('id').value;
     const gender = this.getUploadExtraInfoControl('gender').value;
     this.sizes = [];
 
@@ -572,8 +588,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.sizes = sizes;
         },
         () => {
-          this.getUploadExtraInfoControl('size').disable();
-          this.sizes = [];
+          this.clearSizes();
         }
       );
     }
@@ -616,6 +631,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private clearSecondObjectTypes(): void {
     this.objectTypesOptions2 = [];
     this.getUploadExtraInfoControl('object_type_2').disable();
+  }
+
+  private clearSizes(): void {
+    this.sizes = [];
+    this.getUploadExtraInfoControl('size').disable();
   }
 
   public autoCompleteCellphonesModel(brandModelObj: BrandModel): void {
@@ -804,5 +824,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       () => null,
       (error: HttpErrorResponse) => this.onError(error)
     );
+  }
+
+  private objectTypeHasChildren(objectTypeId: string): boolean {
+    return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
   }
 }

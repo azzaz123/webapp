@@ -52,7 +52,6 @@ import {
   USER_ONLINE_ENDPOINT,
   USER_PASSWORD_ENDPOINT,
   USER_PHONE_INFO_ENDPOINT,
-  USER_REPORT_ENDPOINT,
   USER_STATS_BY_ID_ENDPOINT,
   USER_STATS_ENDPOINT,
   USER_STORE_LOCATION_ENDPOINT,
@@ -704,28 +703,6 @@ describe('Service: User', () => {
       service.isProUser().subscribe((response) => (resp = response));
 
       expect(resp).toBe(false);
-    });
-  });
-
-  describe('reportUser', () => {
-    it('should check parameters of request to report user', () => {
-      const CONVERSATIONS_HASH = 'vdqjwyk1kzon';
-      const ITEM_HASH = '9ke65g542jox';
-      const REASON = 5;
-      const COMMENT = 'bla bla bla';
-      accessTokenService.storeAccessToken('ACCESS_TOKEN');
-      service.reportUser(USER_ID, ITEM_HASH, CONVERSATIONS_HASH, REASON, COMMENT).subscribe();
-
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_REPORT_ENDPOINT(USER_ID)}`);
-      expect(req.request.method).toEqual('POST');
-      expect(req.request.body).toEqual({
-        itemHashId: ITEM_HASH,
-        conversationHash: CONVERSATIONS_HASH,
-        comments: COMMENT,
-        reason: REASON,
-        targetCrm: 'zendesk',
-      });
-      expect(req.request.headers.get('AppBuild')).toEqual(APP_VERSION);
     });
   });
 

@@ -1,0 +1,50 @@
+@import '~style/common';
+
+$min-size: 96px;
+
+.GridSelectOption {
+  min-height: $min-size;
+  min-width: $min-size;
+  cursor: pointer;
+
+  &__label {
+    margin-top: 5px;
+    font-size: $font-size-s;
+    text-align: center;
+
+    &--active {
+      color: $walla-main !important;
+    }
+  }
+
+  &__icon {
+    &--active {
+      ::ng-deep svg g g {
+        fill: $walla-main !important;
+      }
+      ::ng-deep path {
+        fill: $walla-main !important;
+      }
+    }
+  }
+
+  &:hover {
+    .GridSelectOption__label {
+      color: $blue-grey-4;
+
+      &--main-color-hover {
+        color: $walla-main;
+      }
+    }
+
+    .GridSelectOption__icon-hover {
+      ::ng-deep svg g g {
+        fill: $blue-grey-4;
+      }
+
+      ::ng-deep path {
+        fill: $blue-grey-4;
+      }
+    }
+  }
+}

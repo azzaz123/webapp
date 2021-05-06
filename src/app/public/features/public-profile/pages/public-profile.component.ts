@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription, forkJoin } from 'rxjs';
+import { filter, finalize } from 'rxjs/operators';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
@@ -7,12 +9,13 @@ import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { User } from '@core/user/user';
 import { Image, UserFavourited } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
+import { Review } from '@private/features/reviews/core/review';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { forkJoin, Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
+import { PublicProfileTrackingEventsService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { PublicProfileService } from '../core/services/public-profile.service';
+import { PUBLIC_PROFILE_PATHS } from '../public-profile-routing-constants';
 
 @Component({
   selector: 'tsl-public-profile',
@@ -25,6 +28,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   public userInfo: User;
   public loading = false;
   public isFavourited = false;
+  public reviews: Review[];
   private subscriptions: Subscription[] = [];
 
   isMobile: boolean;
@@ -38,22 +42,37 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     private deviceService: DeviceService,
     private adsService: AdsService,
     private isCurrentUserPipe: IsCurrentUserPipe,
-    private slugsUtilService: SlugsUtilService
+    private slugsUtilService: SlugsUtilService,
+    private publicProfileTrackingEventsService: PublicProfileTrackingEventsService
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
-      const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
-      this.getUser(userUUID);
-    });
-
+    this.subscriptions.push(this.routeParamsSubscription(), this.routerEventsSubscription());
     this.isMobile = this.deviceService.isMobile();
-    this.adsService.setSlots([this.adSlot]);
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
+  public userFavouriteChanged(isFavourite: boolean): void {
+    this.isFavourited = isFavourite;
+    this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteUserEvent(this.userInfo, isFavourite);
+  }
+
+  private routeParamsSubscription(): Subscription {
+    return this.route.params.subscribe((params) => {
+      const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
+      const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
+      this.adsService.setSlots([this.adSlot]);
+      this.getUser(userUUID);
+    });
+  }
+
+  private routerEventsSubscription(): Subscription {
+    return this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+      this.trackViewEvents(event.url);
+    });
   }
 
   private getUser(userUUID: string): void {
@@ -69,13 +88,14 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       forkJoin([
-        this.publicProfileService.getUser(this.userId),
+        this.publicProfileService.getUser(this.userId, false),
         this.publicProfileService.getStats(this.userId),
         this.publicProfileService.getShippingCounter(this.userId),
       ])
         .pipe(
           finalize(() => {
             this.handleCoverImage();
+            this.trackViewProfileEvent();
           })
         )
         .subscribe(
@@ -85,12 +105,23 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
               ratings: userStats.ratings,
               counters: { ...userStats.counters, shipping_counter: shippingCounter },
             };
+            this.trackViewEvents(this.router.url);
           },
           () => {
             this.router.navigate([`/${PUBLIC_PATHS.NOT_FOUND}`]);
           }
         )
     );
+  }
+
+  private isReviewsUrl(url: string): boolean {
+    return url.endsWith(PUBLIC_PROFILE_PATHS.REVIEWS);
+  }
+
+  private trackViewEvents(url: string): void {
+    if (this.isReviewsUrl(url)) {
+      this.trackViewOwnOrOtherReviews();
+    }
   }
 
   private handleCoverImage(): void {
@@ -114,6 +145,22 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
       if (!isOurOwnUser) {
         this.getFavouriteUser();
       }
+    });
+  }
+
+  private trackViewProfileEvent(): void {
+    this.isCurrentUserPipe.transform(this.userId).subscribe((isOwnUser: boolean) => {
+      if (isOwnUser) {
+        this.publicProfileTrackingEventsService.trackViewOwnProfile(this.userInfo.featured);
+      } else {
+        this.publicProfileTrackingEventsService.trackViewOtherProfile(this.userInfo, this.userStats.counters.publish);
+      }
+    });
+  }
+
+  private trackViewOwnOrOtherReviews(): void {
+    this.isCurrentUserPipe.transform(this.userId).subscribe((isOwnUser: boolean) => {
+      this.publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews(this.userInfo, this.userStats, isOwnUser);
     });
   }
 

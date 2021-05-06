@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
@@ -13,13 +13,17 @@ import { AdComponentStub } from '@fixtures/shared';
 import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
+import { MockUserProfileTrackEventService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.fixtures.spec';
+import { PublicProfileTrackingEventsService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { PublicProfileService } from '../core/services/public-profile.service';
+import { PUBLIC_PROFILE_PATHS } from '../public-profile-routing-constants';
 import { PublicProfileComponent } from './public-profile.component';
 
 describe('PublicProfileComponent', () => {
   const containerSelector = '.PublicProfile';
+  const favouriteUserTag = 'tsl-favourite-user';
   let component: PublicProfileComponent;
   let fixture: ComponentFixture<PublicProfileComponent>;
   let route: ActivatedRoute;
@@ -27,6 +31,9 @@ describe('PublicProfileComponent', () => {
   let publicProfileService: PublicProfileService;
   let mockDeviceService;
   let isCurrentUserPipe: IsCurrentUserPipe;
+  let publicProfileTrackingEventsService: PublicProfileTrackingEventsService;
+
+  const routerEvents: Subject<any> = new Subject();
 
   beforeEach(async () => {
     mockDeviceService = {
@@ -36,6 +43,10 @@ describe('PublicProfileComponent', () => {
       imports: [HttpClientTestingModule],
       declarations: [PublicProfileComponent, IsCurrentUserStub, AdComponentStub],
       providers: [
+        {
+          provide: PublicProfileTrackingEventsService,
+          useClass: MockUserProfileTrackEventService,
+        },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -78,6 +89,8 @@ describe('PublicProfileComponent', () => {
           provide: Router,
           useValue: {
             navigate() {},
+            url: PUBLIC_PROFILE_PATHS.REVIEWS,
+            events: routerEvents,
           },
         },
         { provide: IsCurrentUserPipe, useClass: IsCurrentUserPipeMock },
@@ -95,6 +108,7 @@ describe('PublicProfileComponent', () => {
     router = TestBed.inject(Router);
     isCurrentUserPipe = TestBed.inject(IsCurrentUserPipe);
     publicProfileService = TestBed.inject(PublicProfileService);
+    publicProfileTrackingEventsService = TestBed.inject(PublicProfileTrackingEventsService);
   });
 
   it('should create', () => {
@@ -145,13 +159,39 @@ describe('PublicProfileComponent', () => {
         });
 
         describe('when is our own user...', () => {
-          it('should NOT ask for the favourited user flag', () => {
+          beforeEach(() => {
             spyOn(isCurrentUserPipe, 'transform').and.returnValue(of(true));
+          });
+          it('should NOT ask for the favourited user flag', () => {
             spyOn(publicProfileService, 'isFavourite');
 
             component.ngOnInit();
 
             expect(publicProfileService.isFavourite).not.toHaveBeenCalled();
+          });
+
+          it('should send view own profile event', () => {
+            spyOn(publicProfileTrackingEventsService, 'trackViewOwnProfile');
+            spyOn(publicProfileTrackingEventsService, 'trackViewOtherProfile');
+
+            component.ngOnInit();
+
+            expect(publicProfileTrackingEventsService.trackViewOwnProfile).toHaveBeenCalledWith(component.userInfo.featured);
+            expect(publicProfileTrackingEventsService.trackViewOtherProfile).not.toHaveBeenCalled();
+          });
+
+          describe('when we click on Reviews tab...', () => {
+            it('should send track view own reviews', () => {
+              spyOn(publicProfileTrackingEventsService, 'trackViewOwnReviewsorViewOtherReviews');
+
+              routerEvents.next(new NavigationEnd(1, PUBLIC_PROFILE_PATHS.REVIEWS, PUBLIC_PROFILE_PATHS.PUBLISHED));
+
+              expect(publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews).toHaveBeenLastCalledWith(
+                component.userInfo,
+                component.userStats,
+                true
+              );
+            });
           });
         });
 
@@ -164,6 +204,33 @@ describe('PublicProfileComponent', () => {
             expect(publicProfileService.isFavourite).toHaveBeenCalled();
           });
 
+          it('should send view other profile event', () => {
+            spyOn(publicProfileTrackingEventsService, 'trackViewOtherProfile');
+            spyOn(publicProfileTrackingEventsService, 'trackViewOwnProfile');
+
+            component.ngOnInit();
+
+            expect(publicProfileTrackingEventsService.trackViewOtherProfile).toHaveBeenCalledWith(
+              component.userInfo,
+              component.userStats.counters.publish
+            );
+            expect(publicProfileTrackingEventsService.trackViewOwnProfile).not.toHaveBeenCalled();
+          });
+
+          describe('when we click on Reviews tab...', () => {
+            it('should send track view other reviews event', () => {
+              spyOn(publicProfileTrackingEventsService, 'trackViewOwnReviewsorViewOtherReviews');
+
+              component.ngOnInit();
+
+              expect(publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews).toHaveBeenLastCalledWith(
+                component.userInfo,
+                component.userStats,
+                false
+              );
+            });
+          });
+
           describe('and the user is favourited...', () => {
             it('should update isFavourited flag to true', () => {
               spyOn(publicProfileService, 'isFavourite').and.returnValue(of({ favorited: true }));
@@ -171,6 +238,18 @@ describe('PublicProfileComponent', () => {
               component.ngOnInit();
 
               expect(component.isFavourited).toBe(true);
+            });
+
+            it('should send favourite user event', () => {
+              spyOn(publicProfileTrackingEventsService, 'trackFavouriteOrUnfavouriteUserEvent');
+              const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
+
+              toggleFavourite.triggerEventHandler('userFavouriteChanged', true);
+
+              expect(publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteUserEvent).toHaveBeenCalledWith(
+                component.userInfo,
+                true
+              );
             });
           });
 
@@ -181,6 +260,18 @@ describe('PublicProfileComponent', () => {
               component.ngOnInit();
 
               expect(component.isFavourited).toBe(false);
+            });
+
+            it('should send unfavourite user event', () => {
+              spyOn(publicProfileTrackingEventsService, 'trackFavouriteOrUnfavouriteUserEvent');
+              const toggleFavourite = fixture.debugElement.query(By.css(favouriteUserTag));
+
+              toggleFavourite.triggerEventHandler('userFavouriteChanged', false);
+
+              expect(publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteUserEvent).toHaveBeenCalledWith(
+                component.userInfo,
+                false
+              );
             });
           });
         });

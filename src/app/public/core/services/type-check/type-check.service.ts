@@ -36,4 +36,8 @@ export class TypeCheckService {
   public isSize(property: unknown): property is Size {
     return typeof property === 'object' && property !== null ? 'text' in property && 'id' in property : false;
   }
+
+  public isItem(item: unknown): item is Item {
+    return item instanceof Item;
+  }
 }

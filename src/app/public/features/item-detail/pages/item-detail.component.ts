@@ -1,30 +1,33 @@
-import { Observable, Subscription } from 'rxjs';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
+import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOthersItemCGDetail } from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { Item } from '@core/item/item';
-import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { ItemCard, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
+import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
+import { RecommenderItemCardFavouriteCheckedService } from '@public/features/item-detail/core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
-import { ADS_ITEM_DETAIL, ItemDetailAdSlotsConfiguration } from './../core/ads/item-detail-ads.config';
-import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
-import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
-import { ItemDetailService } from '../core/services/item-detail/item-detail.service';
-import { ItemDetail } from '../interfaces/item-detail.interface';
-import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
-import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
-import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
-import { UserService } from '@core/user/user.service';
-import { User } from '@core/user/user';
-import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
-import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
-import { take } from 'rxjs/operators';
-import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
+import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
+import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { filter, map, take } from 'rxjs/operators';
+import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
+import { ADS_ITEM_DETAIL, FactoryAdAffiliationSlotConfiguration, ItemDetailAdSlotsConfiguration } from '../core/ads/item-detail-ads.config';
+import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
+import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
+import { ItemDetailTrackEventsService } from '../core/services/item-detail-track-events/item-detail-track-events.service';
+import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
+import { ItemDetail } from '../interfaces/item-detail.interface';
+import { RecommendedItemsInitEventEmitter } from '../interfaces/recommended-items-init-event-emitter.interface';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -35,34 +38,45 @@ import { ClickedItemCard } from '@public/shared/components/item-card-list/interf
 export class ItemDetailComponent implements OnInit, OnDestroy {
   @ViewChild(ItemFullScreenCarouselComponent, { static: true })
   itemDetailImagesModal: ItemFullScreenCarouselComponent;
-  public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
-  public recommendedItems$: Observable<RecommendedItemsBodyResponse>;
-  public readonly deviceType = DeviceType;
+  public recommendedItems$: Observable<ItemCardsWithRecommenedType>;
+  public readonly deviceType: typeof DeviceType = DeviceType;
   public device: DeviceType;
-  private subscriptions: Subscription[] = [];
+  public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
+  public adsAffiliationSlotConfiguration: AdSlotConfiguration[];
+  public adsAffiliationsLoaded$: Observable<boolean>;
+  private subscriptions: Subscription = new Subscription();
   private itemDetail: ItemDetail;
 
   constructor(
     private itemDetailStoreService: ItemDetailStoreService,
     private deviceService: DeviceService,
-    private itemDetailService: ItemDetailService,
     private itemDetailTrackEventsService: ItemDetailTrackEventsService,
     private route: ActivatedRoute,
     private adsService: AdsService,
     private itemSocialShareService: ItemSocialShareService,
     private typeCheckService: TypeCheckService,
     private userService: UserService,
-    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService
+    private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
+    private analyticsService: AnalyticsService,
+    private recommenderItemCardFavouriteCheckedService: RecommenderItemCardFavouriteCheckedService
   ) {}
 
   ngOnInit(): void {
     this.device = this.deviceService.getDeviceType();
+    this.adsAffiliationSlotConfiguration = FactoryAdAffiliationSlotConfiguration(this.device);
+
+    const observables: Observable<boolean>[] = this.adsAffiliationSlotConfiguration.map((adSlot: AdSlotConfiguration) =>
+      this.adsService.adSlotLoaded$(adSlot)
+    );
+    this.adsAffiliationsLoaded$ = combineLatest(observables).pipe(
+      map((adsLoaded: boolean[]) => adsLoaded.some((loaded: boolean) => loaded))
+    );
     // TBD the url may change to match one more similar to production one
     this.initPage(this.route.snapshot.paramMap.get(PUBLIC_PATH_PARAMS.ID));
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.subscriptions.unsubscribe();
   }
 
   public openItemDetailImage($event: CarouselSlide): void {
@@ -78,7 +92,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   public toggleFavouriteItem(): void {
     this.itemDetailStoreService.toggleFavouriteItem().subscribe(() => {
-      this.itemDetailTrackEventsService.trackFavoriteOrUnfavoriteEvent(this.itemDetail);
+      this.itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent(this.itemDetail.item, this.itemDetail.user?.featured);
     });
   }
 
@@ -98,30 +112,37 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     this.itemDetailTrackEventsService.trackShareItemEvent(channel, this.itemDetail.item, this.itemDetail.user);
   }
 
+  public trackViewItemDetailRecommendationSlider({ recommendedItemIds, engine }: RecommendedItemsInitEventEmitter) {
+    if (this.itemDetail) {
+      this.itemDetailTrackEventsService.trackViewItemDetailRecommendationSliderEvent(
+        this.itemDetail.item,
+        this.itemDetail.user,
+        recommendedItemIds,
+        engine
+      );
+    }
+  }
+
   private initPage(itemId: string): void {
     this.itemDetailStoreService.initializeItemAndFlags(itemId);
-    this.subscriptions.push(
-      this.itemDetailStoreService.itemDetail$.subscribe((itemDetail: ItemDetail) => {
-        if (itemDetail && !this.itemDetail) {
-          this.setAdSlot(itemDetail.item);
+    const subscription: Subscription = this.itemDetailStoreService.itemDetail$
+      .pipe(filter((itemDetail: ItemDetail) => !!itemDetail))
+      .subscribe((itemDetail: ItemDetail) => {
+        if (!this.itemDetail) {
+          this.setAdSlot(itemDetail);
           this.initializeItemRecommendations(itemId, itemDetail.item.categoryId);
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
           this.trackViewEvents(itemDetail);
         }
         this.itemDetail = itemDetail;
-      })
-    );
+      });
+    this.subscriptions.add(subscription);
   }
 
   private initializeItemRecommendations(itemId: string, categoryId: number): void {
     if (this.isItemRecommendations(categoryId)) {
-      this.recommendedItems$ = this.itemDetailService.getRecommendedItems(itemId);
+      this.recommendedItems$ = this.recommenderItemCardFavouriteCheckedService.getItems(itemId);
     }
-  }
-
-  private setAdSlot(item: Item): void {
-    this.adsService.setAdKeywords({ category: item.categoryId.toString() });
-    this.adsService.setSlots([this.adsSlotsItemDetail?.item1, this.adsSlotsItemDetail?.item2l, this.adsSlotsItemDetail?.item3r]);
   }
 
   private isItemRecommendations(itemCategoryId: number): boolean {
@@ -132,7 +153,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private trackViewEvents(itemDetail: ItemDetail): void {
     const item = itemDetail.item;
     const user = itemDetail.user;
-    this.userService
+    const subscription: Subscription = this.userService
       .me()
       .pipe(take(1))
       .subscribe((userMe: User) => {
@@ -150,6 +171,35 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+    this.subscriptions.add(subscription);
+  }
+
+  private setAdSlot({ item }: ItemDetail): void {
+    this.adsService.setAdKeywords({ category: item.categoryId.toString() });
+    this.adsService.setSlots([
+      this.adsSlotsItemDetail.item1,
+      this.adsSlotsItemDetail.item2l,
+      this.adsSlotsItemDetail.item3r,
+      ...this.adsAffiliationSlotConfiguration,
+    ]);
+  }
+
+  private trackViewOthersCGDetailEvent(itemDetail: ItemDetail): void {
+    const item = itemDetail.item;
+    const user = itemDetail.user;
+    const event: AnalyticsPageView<ViewOthersItemCGDetail> = {
+      name: ANALYTICS_EVENT_NAMES.ViewOthersItemCGDetail,
+      attributes: {
+        itemId: item.id,
+        categoryId: item.categoryId,
+        salePrice: item.salePrice,
+        title: item.title,
+        isPro: user.featured,
+        screenId: SCREEN_IDS.ItemDetail,
+      },
+    };
+    this.analyticsService.trackPageView(event);
   }
 
   get itemDetail$(): Observable<ItemDetail> {

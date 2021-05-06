@@ -1,5 +1,5 @@
 import { ITEM_DATA } from '@fixtures/item.fixtures.spec';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 export const MOCK_ITEM_CARD_WIDE: ItemCard = {
   id: ITEM_DATA.id,

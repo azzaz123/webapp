@@ -1,15 +1,33 @@
-<div class="wallapop-search-input">
-    <input i18n-placeholder placeholder="Search in All categories" type="text"
-        maxlength="150" name="kws" #kwsEl value="" (focus)="focus=true" (blur)="focus=false" [class.active]="focus"
-        [(ngModel)]="model" [ngbTypeahead]="suggest" (keyup)="updateKeyword()" (keyup.enter)="searchSubmit()"
-        [inputFormatter]="formatter" [resultTemplate]="suggester" (selectItem)="selectSuggestion($event.item)"
-        autocomplete="off" />
-        <tsl-svg-icon src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
+<div class="SearchBox" [class.SearchBox--active]="(searchBoxValue$ | async).keywords">
+    <input
+        class="SearchBox__input"
+        type="text"
+        i18n-placeholder="@@web_components_suggester_7" 
+        placeholder="Search in All categories" 
+        maxlength="150"
+        [ngModel]="searchBoxValue$ | async" 
+        [inputFormatter]="inputFormatter"
+        [ngbTypeahead]="suggest" 
+        [resultTemplate]="suggesterTemplate" 
+        [focusFirst]="false"
+        (ngModelChange)="searchBoxValueChange($event)"
+        (keydown.enter)="submitSearch()"
+    />
+    <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
+    <tsl-svg-icon 
+        *ngIf="(searchBoxValue$ | async).keywords" 
+        (click)="resetKeyword()"
+        class="SearchBox__reset" src="/assets/icons/top-bar/search-box-reset.svg" width="21" height="21">
+    </tsl-svg-icon>
 </div>
 
-<ng-template #suggester let-r="result">
-    <div class="suggestion">
-        <span class="title">{{ r.suggestion }}</span>
-        <span class="category">{{ r.category_name }}</span>
+<ng-template #suggesterTemplate let-suggestion="result">
+    <div class="SearchBox__suggestion d-flex flex-column justify-content-center" (click)="suggestionClick(suggestion)">
+        <span class="SearchBox__suggestionTitle">
+            {{ suggestion.suggestion }}
+        </span>
+        <span class="SearchBox__suggestionCategory">
+            {{ suggestion.category_name }}
+        </span>
     </div>
 </ng-template>

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemResponse } from '@core/item/item-response.interface';
-import { ItemCard } from '@public/core/interfaces/item-card-core.interface';
-import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
+import { ItemCard, ItemCardsWithPagination } from '@public/core/interfaces/item-card.interface';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { finalize, take } from 'rxjs/operators';
-import { MapPublishedItemCardService } from '../../core/services/map-published-item-card/map-published-item-card.service';
-import { PublicProfileService } from '../../core/services/public-profile.service';
+import { PublicProfileTrackingEventsService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
+import { PublishedItemCardFavouriteCheckedService } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.service';
 
 @Component({
   selector: 'tsl-user-published',
@@ -22,25 +23,38 @@ export class UserPublishedComponent implements OnInit {
   public nextPaginationItem = 0;
   public loading = true;
 
-  constructor(private publicProfileService: PublicProfileService, private mapPublishedItemCardService: MapPublishedItemCardService) {}
+  constructor(
+    private publishedItemCardFavouriteCheckedService: PublishedItemCardFavouriteCheckedService,
+    private publicProfileTrackingEventsService: PublicProfileTrackingEventsService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.loadItems();
+  }
+
+  public toggleFavourite(itemCard: ItemCard): void {
+    this.userService
+      .get(itemCard.ownerId)
+      .pipe(take(1))
+      .subscribe((user: User) => {
+        this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent(itemCard, user);
+      });
   }
 
   private loadItems(): void {
     this.loading = true;
 
     try {
-      this.publicProfileService
-        .getPublishedItems(this.publicProfileService.user.id, this.nextPaginationItem)
+      this.publishedItemCardFavouriteCheckedService
+        .getItems(this.nextPaginationItem)
         .pipe(
           finalize(() => (this.loading = false)),
           take(1)
         )
-        .subscribe((response: PaginationResponse<ItemResponse>) => {
-          this.items = this.items.concat(this.mapPublishedItemCardService.mapPublishedItems(response.results));
-          this.nextPaginationItem = response.init;
+        .subscribe((itemsWithPagination: ItemCardsWithPagination) => {
+          this.nextPaginationItem = itemsWithPagination.nextPaginationItem;
+          this.items = this.items.concat(itemsWithPagination.items);
         }, this.onError);
     } catch (err: any) {
       this.onError();
@@ -49,6 +63,12 @@ export class UserPublishedComponent implements OnInit {
 
   public loadMore(): void {
     this.loadItems();
+  }
+
+  public itemCardClicked({ itemCard, index }: ClickedItemCard): void {
+    this.userService.get(itemCard.ownerId).subscribe((user: User) => {
+      this.publicProfileTrackingEventsService.trackClickItemCardEvent(itemCard, user, index);
+    });
   }
 
   private onError(): void {

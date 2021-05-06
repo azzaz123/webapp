@@ -1,33 +1,12 @@
 @import '~style/common';
 
-$filters-height: 44px;
-
-.has-backdrop {
-  &::before {
-    background-color: hsla(0, 0%, 100%, 0.8);
-    content: '';
-    display: block;
-    height: 100%;
-    position: fixed;
-    top: $topbar-height;
-    width: 100%;
-    z-index: 200;
-  }
-}
-
 .Search {
-  &__layout {
-    padding-top: $filters-height;
-  }
-
   &__filters {
-    background-color: $white;
-    left: 0;
-    right: 0;
-    z-index: 200;
-
-    &--with-backdrop {
-      @extend .has-backdrop;
+    position: sticky;
+    top: $topbar-height;
+    z-index: $filters-bar-z-index;
+    &--opened {
+      z-index: #{$filters-bar-z-index + 1};
     }
   }
 
@@ -38,10 +17,6 @@ $filters-height: 44px;
 
     &--bottom {
       height: 40%;
-    }
-
-    &--topSpace {
-      top: calc(2 * #{$topbar-height} + #{$spacing-xs});
     }
   }
 }

@@ -22,15 +22,17 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
+import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-test-wrapper',
-  template: ` <tsl-option-select-filter [config]="config" [variant]="variant" [value]="value"></tsl-option-select-filter> `,
+  template: ` <tsl-select-filter [config]="config" [variant]="variant" [value]="value"></tsl-select-filter> `,
 })
 class TestWrapperComponent {
   @Input() config: SelectFilterConfig;
-  @Input() variant: FILTER_VARIANT;
-  @Input() value: FilterParameter[];
+  @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
+  @Input() value: FilterParameter[] = [];
 }
 
 describe('SelectFilterComponent', () => {
@@ -49,7 +51,7 @@ describe('SelectFilterComponent', () => {
     bubblePlaceholder: 'Bubble placeholder',
     drawerPlaceholder: 'Drawer placeholder',
     mapKey: {
-      parameterKey: 'key',
+      parameterKey: FILTER_QUERY_PARAM_KEY.gender,
     },
     title: 'My select',
     id: FASHION_CONFIGURATION_ID.GENDER,
@@ -64,7 +66,7 @@ describe('SelectFilterComponent', () => {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [TestWrapperComponent, SelectFilterComponent],
+      declarations: [TestWrapperComponent, SelectFilterComponent, IsBubblePipe],
       imports: [
         HttpClientTestingModule,
         NgbDropdownModule,
@@ -84,15 +86,16 @@ describe('SelectFilterComponent', () => {
     testComponent = fixture.componentInstance;
     testComponent.config = basicConfig;
     component = debugElement.query(By.directive(SelectFilterComponent)).componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   describe('when the component inits', () => {
     it('should retrieve corresponding options from backend', () => {
+      fixture.detectChanges();
       expect(component.options).toEqual([
         {
           value: 'male',
@@ -154,13 +157,13 @@ describe('SelectFilterComponent', () => {
 
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('male');
+          form.handleOptionClick('male');
 
           fixture.detectChanges();
 
           expect(component.value).toEqual([
             {
-              key: 'key',
+              key: FILTER_QUERY_PARAM_KEY.gender,
               value: 'male',
             },
           ]);
@@ -172,13 +175,13 @@ describe('SelectFilterComponent', () => {
           spyOn(component.valueChange, 'emit');
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('male');
+          form.handleOptionClick('male');
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
           expect(component.valueChange.emit).toHaveBeenCalledWith([
             {
-              key: 'key',
+              key: FILTER_QUERY_PARAM_KEY.gender,
               value: 'male',
             },
           ]);
@@ -188,13 +191,13 @@ describe('SelectFilterComponent', () => {
     describe('... is closed', () => {
       describe('and we clean the value', () => {
         beforeEach(() => {
-          component.writeValue([{ key: 'key', value: 'male' }]);
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.gender, value: 'male' }];
           fixture.detectChanges();
         });
 
         it('should restart values', () => {
           const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-          expect(component.value).toEqual([{ key: 'key', value: 'male' }]);
+          expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.gender, value: 'male' }]);
 
           filterTemplate.clear.emit();
 
@@ -218,16 +221,7 @@ describe('SelectFilterComponent', () => {
           filterTemplate.clear.emit();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
-        });
-
-        it('should emit clear event', () => {
-          spyOn(component.clear, 'emit');
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-
-          filterTemplate.clear.emit();
-
-          expect(component.clear.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.gender, value: undefined }]);
         });
       });
     });
@@ -261,7 +255,7 @@ describe('SelectFilterComponent', () => {
         it('should close the placeholder', () => {
           const formInstance: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          formInstance.writeValue('male');
+          formInstance.handleOptionClick('male');
           fixture.detectChanges();
 
           const selectTemplate: SelectFilterTemplateComponent = debugElement.query(By.directive(SelectFilterTemplateComponent))
@@ -273,7 +267,7 @@ describe('SelectFilterComponent', () => {
           expect(parent).toBeTruthy();
           expect(component.value).toEqual([
             {
-              key: 'key',
+              key: FILTER_QUERY_PARAM_KEY.gender,
               value: 'male',
             },
           ]);
@@ -284,13 +278,13 @@ describe('SelectFilterComponent', () => {
           spyOn(component.valueChange, 'emit');
           const form: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;
 
-          form.writeValue('male');
+          form.handleOptionClick('male');
           fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
           expect(component.valueChange.emit).toHaveBeenCalledWith([
             {
-              key: 'key',
+              key: FILTER_QUERY_PARAM_KEY.gender,
               value: 'male',
             },
           ]);
@@ -299,12 +293,12 @@ describe('SelectFilterComponent', () => {
 
       describe('and we clean the value', () => {
         beforeEach(() => {
-          component.writeValue([{ key: 'key', value: 'male' }]);
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.gender, value: 'male' }];
           fixture.detectChanges();
         });
         it('should restart values', () => {
           const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
-          expect(component.value).toEqual([{ key: 'key', value: 'male' }]);
+          expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.gender, value: 'male' }]);
 
           selectTemplate.clear.emit();
 
@@ -328,16 +322,7 @@ describe('SelectFilterComponent', () => {
           selectTemplate.clear.emit();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([]);
-        });
-
-        it('should emit clear event', () => {
-          spyOn(component.clear, 'emit');
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
-
-          selectTemplate.clear.emit();
-
-          expect(component.clear.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.gender, value: undefined }]);
         });
       });
     });

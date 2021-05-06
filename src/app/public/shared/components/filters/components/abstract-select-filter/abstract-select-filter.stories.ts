@@ -15,24 +15,27 @@ import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { SelectFilterParams } from '../select-filter/interfaces/select-filter-params.interface';
 import { AbstractSelectFilterConfig } from './interfaces/abstract-select-filter-config.interface';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'story-abstract-select-filter',
   template: `
     <tsl-filter-template
-      [isBubble]="isBubble()"
-      [isDropdown]="isDropdown()"
+      [isBubble]="variant | isBubble"
+      [isDropdown]="true"
       [isClearable]="true"
       [title]="config.title"
       [icon]="config.icon"
       [label]="label"
-      [hasValue]="hasValue$() | async"
+      [hasValue]="hasValue$ | async"
       (clear)="handleClear()"
       (openStateChange)="openStateChange.emit($event)"
     >
       <tsl-select-filter-template
-        [hasContentPlaceholder]="hasContentPlaceholder()"
+        [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
         [placeholderLabel]="drawerPlaceholder"
         [contentTitle]="contentTitle"
       >
@@ -44,14 +47,16 @@ import { AbstractSelectFilterConfig } from './interfaces/abstract-select-filter-
     </tsl-filter-template>
   `,
 })
-class StoryAbstractSelectFilterComponent extends AbstractSelectFilter<SelectFilterParams> {}
+class StoryAbstractSelectFilterComponent extends AbstractSelectFilter<SelectFilterParams> {
+  onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {}
+}
 
 export default {
   title: 'Webapp/Public/Shared/Components/Filters/AbstractSelectFilter',
   decorators: [
     moduleMetadata({
       imports: [AbstractSelectFilterModule, AbstractFilterModule, SvgIconModule, HttpClientModule, CommonModule],
-      declarations: [StoryAbstractSelectFilterComponent, LoremIpsumComponent],
+      declarations: [StoryAbstractSelectFilterComponent, LoremIpsumComponent, IsBubblePipe],
       providers: [
         { provide: CookieService, useValue: MockCookieService },
         { provide: FilterOptionService, useValue: {} },
@@ -81,7 +86,7 @@ const Template: Story<StoryAbstractSelectFilterComponent> = (args) => ({
   `,
 });
 
-const defaultConfig: AbstractSelectFilterConfig<Record<string, string>> = {
+const defaultConfig: AbstractSelectFilterConfig<Record<string, FILTER_QUERY_PARAM_KEY>> = {
   id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
   type: null,
   mapKey: {},

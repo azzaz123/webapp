@@ -1,22 +1,24 @@
 <tsl-filter-template #filterTemplateComponent
-  [isBubble]="isBubble()"
-  [isDropdown]="isDropdown()"
+  [isBubble]="variant | isBubble"
+  [isDropdown]="true"
   [isClearable]="true"
   [title]="config.title"
   [icon]="config.icon"
-  [label]="getLabel()"
-  [hasValue]="hasValue$() | async"
+  [label]="label$ | async"
+  [hasValue]="hasValue$ | async"
   (clear)="handleClear()"
   (openStateChange)="openStateChange.emit($event)">
 
   <tsl-select-filter-template #selectFilterTemplateComponent
-    [hasContentPlaceholder]="hasContentPlaceholder()"
-    [placeholderLabel]="getLabel()"
+    [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
+    [placeholderLabel]="label$ | async"
+    [placeholderIcon]="placeholderIcon$ | async"
     [contentTitle]="contentTitle"
-    [isClearable]="hasValue$() | async"
+    [isClearable]="hasValue$ | async"
+    (placeholderOpenStateChange)="openStateChange.emit($event)"
     (clear)="handleClear()">
 
-    <div [class.SelectFilter--bubble]="isBubble()">
+    <div [class.SelectFilter--bubble]="variant | isBubble">
       <form [formGroup]="formGroup">
         <tsl-select-form
           formControlName="select"

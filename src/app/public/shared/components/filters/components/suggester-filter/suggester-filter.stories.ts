@@ -1,6 +1,5 @@
 import { moduleMetadata } from '@storybook/angular';
-import { Meta } from '@storybook/angular/types-6-0';
-import { Story } from '@storybook/angular/ts3.4/dist/client';
+import { Meta, Story } from '@storybook/angular/types-6-0';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { Component, Input } from '@angular/core';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
@@ -11,7 +10,7 @@ import { FilterOptionService } from '../../../../services/filter-option/filter-o
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 import { SuggesterFilterConfig } from './interfaces/suggester-filter-config.interface';
 import { SuggesterFilterComponent } from './suggester-filter.component';
-import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids';
+import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids.enum';
 import { CommonModule } from '@angular/common';
 import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
 import { AbstractFilterModule } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.module';
@@ -19,6 +18,8 @@ import { AbstractSelectFilterModule } from '@public/shared/components/filters/co
 import { ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-filters',
@@ -32,7 +33,6 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
             [value]="clothingTypeValue"
             [config]="clothingTypeConfig"
             (valueChange)="changeClothingType($event)"
-            (clear)="changeClothingType([])"
           >
           </tsl-suggester-filter>
         </div>
@@ -42,7 +42,6 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
             [value]="brandValue"
             [config]="brandConfig"
             (valueChange)="changeBrand($event)"
-            (clear)="changeBrand([])"
           >
           </tsl-suggester-filter>
         </div>
@@ -55,7 +54,6 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
           [value]="clothingTypeValue"
           [config]="clothingTypeConfig"
           (valueChange)="changeClothingType($event)"
-          (clear)="changeClothingType([])"
         >
         </tsl-suggester-filter>
         <div style="height: 1px; width: 100%; background-color: #90A4AE;" class="my-3"></div>
@@ -64,7 +62,6 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
           [value]="brandValue"
           [config]="brandConfig"
           (valueChange)="changeBrand($event)"
-          (clear)="changeBrand([])"
         >
         </tsl-suggester-filter>
       </div>
@@ -72,8 +69,8 @@ import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
   `,
 })
 class FiltersComponent {
-  @Input() public clothingTypeValue: FilterParameter[];
-  @Input() public brandValue: FilterParameter[];
+  @Input() public clothingTypeValue: FilterParameter[] = [];
+  @Input() public brandValue: FilterParameter[] = [];
   @Input() public clothingTypeConfig: SuggesterFilterConfig;
   @Input() public brandConfig: SuggesterFilterConfig;
 
@@ -106,7 +103,7 @@ export default {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [FiltersComponent, SuggesterFilterComponent],
+      declarations: [FiltersComponent, SuggesterFilterComponent, IsBubblePipe],
     }),
   ],
 } as Meta;
@@ -123,7 +120,7 @@ const clothingTypeConfig: SuggesterFilterConfig = {
   bubblePlaceholder: 'Clothing type',
   drawerPlaceholder: 'Select clothing type',
   mapKey: {
-    parameterKey: 'object_type_id',
+    parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
   },
   type: FILTER_TYPES.SUGGESTER,
   hasOptionsOnInit: true,
@@ -137,7 +134,10 @@ const brandConfig: SuggesterFilterConfig = {
   icon: '/assets/icons/joke.svg',
   bubblePlaceholder: 'Brand',
   drawerPlaceholder: 'Select brand',
-  mapKey: {},
+  mapKey: {
+    brand: FILTER_QUERY_PARAM_KEY.brand,
+    model: FILTER_QUERY_PARAM_KEY.model,
+  },
   type: FILTER_TYPES.SUGGESTER,
   hasOptionsOnInit: false,
   hasContentPlaceholder: true,

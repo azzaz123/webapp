@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { FilterOptionsApiService } from './services/filter-options-api.service';
 import { FilterOptionsMapperService } from './services/filter-options-mapper.service';
 import { QueryParams } from '../../components/filters/core/interfaces/query-params.interface';
@@ -7,17 +7,20 @@ import { FilterOption } from '../../components/filters/core/interfaces/filter-op
 import { OPTIONS_ORIGIN_CONFIGURATION, OriginConfigurationValue } from './configurations/options-origin-configuration';
 import { ConfigurationId } from '../../components/filters/core/types/configuration-id.type';
 import { HARDCODED_OPTIONS } from './data/hardcoded-options';
-import { KeyMapper, OptionsApiOrigin } from './interfaces/option-api-origin.interface';
+import { KeyMapper, OptionsApiOrigin, RequiredSiblingParam } from './interfaces/option-api-origin.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FilterParameterDraftService } from '@public/shared/services/filter-parameter-draft/filter-parameter-draft.service';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 @Injectable()
 export class FilterOptionService {
   constructor(
     private filterOptionsApiService: FilterOptionsApiService,
     private filterOptionsMapperService: FilterOptionsMapperService,
-    private filterParameterDraftService: FilterParameterDraftService
+    @Inject(FILTER_PARAMETER_DRAFT_STORE_TOKEN) private filterParameterDraftService: FilterParameterStoreService
   ) {}
 
   public getOptions(
@@ -63,7 +66,7 @@ export class FilterOptionService {
     };
 
     return this.filterOptionsApiService.getApiOptions(apiConfiguration.method, unifiedApiParams, paginationOptions).pipe(
-      map((value) => {
+      map((value: FilterOption[]) => {
         if (mapperConfiguration) {
           const mapperSiblingParams = this.getSiblingParams(mapperConfiguration.requiredSiblingParams);
           return this.filterOptionsMapperService.formatApiResponse(
@@ -73,7 +76,7 @@ export class FilterOptionService {
           );
         }
 
-        return value as FilterOption[];
+        return value;
       })
     );
   }
@@ -93,14 +96,30 @@ export class FilterOptionService {
     return mappedParams;
   }
 
-  private getSiblingParams(paramKeys: string[] = []): Record<string, string> {
-    return this.filterParameterDraftService.getParametersByKeys(paramKeys).reduce(
-      (accumulatedParams, filterParameter) => ({
-        ...accumulatedParams,
-        [filterParameter.key]: filterParameter.value,
-      }),
-      {}
-    );
+  private getSiblingParams(params: RequiredSiblingParam[] = []): Record<string, string> {
+    if (params.length) {
+      const paramKeys = params.map((param) => param.key);
+
+      const defaultParams = params.reduce((accumulatedParams, defaultParam) => {
+        if (defaultParam.defaultValue) {
+          return {
+            ...accumulatedParams,
+            [defaultParam.key]: defaultParam.defaultValue,
+          };
+        }
+        return accumulatedParams;
+      }, {});
+
+      return this.filterParameterDraftService.getParametersByKeys(paramKeys).reduce(
+        (accumulatedParams, filterParameter) => ({
+          ...accumulatedParams,
+          [filterParameter.key]: filterParameter.value,
+        }),
+        defaultParams
+      );
+    }
+
+    return {};
   }
 
   private isKeyMapper(mapper: KeyMapper | string): mapper is KeyMapper {

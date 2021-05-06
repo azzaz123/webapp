@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { moduleMetadata } from '@storybook/angular';
 import { Meta, Story } from '@storybook/angular/types-6-0';
@@ -13,8 +13,9 @@ import { RangeFilterConfig } from '../range-filter/interfaces/range-filter-confi
 import { ToggleFilterConfig } from '../toggle-filter/interfaces/toggle-filter-config.interface';
 import { FilterHostDirective } from './directives/filter-host.directive';
 import { FilterGroupComponent } from './filter-group.component';
-import { FilterFactoryService } from './services/filter-factory.service';
 import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-filters',
@@ -23,11 +24,11 @@ import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/comm
   `,
 })
 class FiltersComponent {
-  public variant: FILTER_VARIANT;
-  public config: [RangeFilterConfig, ToggleFilterConfig];
-  public values: FilterParameter[];
+  @Input() variant: FILTER_VARIANT;
+  @Input() config: [RangeFilterConfig, ToggleFilterConfig];
+  @Input() values: FilterParameter[];
 
-  public valueChange(): void {}
+  public valueChange(parameters: FilterParameter[]): void {}
 }
 
 export default {
@@ -36,7 +37,7 @@ export default {
     moduleMetadata({
       declarations: [FilterGroupComponent, FilterHostDirective],
       imports: [CommonModule, FiltersModule, HttpClientModule],
-      providers: [{ provide: CookieService, useValue: MockCookieService }, FilterFactoryService],
+      providers: [{ provide: CookieService, useValue: MockCookieService }, IsBubblePipe],
     }),
   ],
   argTypes: { valueChange: { action: 'valueChange' } },
@@ -52,8 +53,8 @@ const CONFIG: [RangeFilterConfig, ToggleFilterConfig] = [
     id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
     type: FILTER_TYPES.RANGE,
     mapKey: {
-      maxKey: 'max',
-      minKey: 'min',
+      maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
+      minKey: FILTER_QUERY_PARAM_KEY.minPrice,
     },
     title: 'How much do you want to pay?',
     icon: '/assets/icons/joke.svg',
@@ -65,7 +66,7 @@ const CONFIG: [RangeFilterConfig, ToggleFilterConfig] = [
     id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
     type: FILTER_TYPES.TOGGLE,
     mapKey: {
-      key: 'warranty',
+      key: FILTER_QUERY_PARAM_KEY.warranty,
     },
     title: 'Warranty',
     icon: '/assets/icons/joke.svg',

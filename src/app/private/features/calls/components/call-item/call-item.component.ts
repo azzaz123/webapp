@@ -1,9 +1,11 @@
 import { Component, OnChanges, Input, HostBinding, HostListener } from '@angular/core';
 import { Call } from '@core/conversation/calls';
 import { CallsService } from '@core/conversation/calls.service';
-import { I18nService } from '@core/i18n/i18n.service';
+import { CALENDAR_SPEC_TYPE } from '@core/i18n/moment/enums/calendar-spec-type.enum';
+import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 import { Message } from '@core/message/message';
 import { Remove } from '@shared/archivable/animations';
+import { CalendarSpec } from 'moment';
 
 @Component({
   selector: 'tsl-call-item',
@@ -21,11 +23,9 @@ export class CallItemComponent implements OnChanges {
 
   public formattedDuration = '-';
   public messages: Message[];
-  public momentConfig: any;
+  public momentCalendarSpec: CalendarSpec = this.momentCalendarSpecService.getCalendarSpec(CALENDAR_SPEC_TYPE.DAYS);
 
-  constructor(private i18n: I18nService, private callService: CallsService) {
-    this.momentConfig = i18n.getTranslations('daysMomentConfig');
-  }
+  constructor(private momentCalendarSpecService: MomentCalendarSpecService, private callService: CallsService) {}
 
   ngOnChanges() {
     this.messages = this.call.messages.slice(-4);

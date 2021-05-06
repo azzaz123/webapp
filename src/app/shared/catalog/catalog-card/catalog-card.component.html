@@ -15,21 +15,21 @@
       <div class="title" *ngIf="item.km">{{item.km | number}} km</div>
     </a>
     <div class="published" [hidden]="item.sold || item.purchases && !item.flags.onhold">
-      <div i18n>Published</div>
+      <div i18n="@@web_catalog_card_622">Published</div>
       <div class="date">{{item.publishedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
     <div class="updated" [hidden]="item.sold || item.purchases && !item.flags.onhold">
-      <div i18n>Updated</div>
+      <div i18n="@@web_catalog_card_456">Updated</div>
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
     <div class="sold" *ngIf="item.sold">
-      <div i18n>Sold</div>
+      <div i18n="@@web_catalog_card_667">Sold</div>
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
     <div class="bumped" *ngIf="item.purchases && !item.flags.onhold && !item.flags.sold">
       <div class="type {{item.purchases.bump_type || item.purchases.scheduled_bump_type}}">{{bumpName}}</div>
       <div class="date">
-        <span i18n *ngIf="item.purchases.scheduled_bump_type && !item.plannedStartsToday">
+        <span i18n="@@web_catalog_card_457" *ngIf="item.purchases.scheduled_bump_type && !item.plannedStartsToday">
           From {{item.purchases.scheduled_start_date | date:'dd/MM/yy'}} to {{item.purchases.scheduled_end_date | date:'dd/MM/yy'}}
         </span>
         <span *ngIf="!item.purchases.scheduled_bump_type && !item.plannedStartsToday">
@@ -40,51 +40,50 @@
         </span>
         <span class="cancel-bump {{item.purchases.bump_type || item.purchases.scheduled_bump_type}}"
               (click)="cancelAutorenew(item, cancelAutorenewModal)"
-              *ngIf="item.purchases.scheduled_end_date && !item.bumpLast24h" i18n>
-          Cancel</span>
+              *ngIf="item.purchases.scheduled_end_date && !item.bumpLast24h" i18n="@@web_catalog_card_458">          Cancel</span>
       </div>
     </div>
     <div class="visibility">
-      <div class="counters" ngbTooltip="Views" i18n-ngbTooltip placement="top">
+      <div class="counters" ngbTooltip="{{tooltipMessages.views}}"  placement="top">
         <tsl-svg-icon src="/assets/icons/views.svg"></tsl-svg-icon>
         <span>{{item.views}}</span>
       </div>
-      <div class="counters" ngbTooltip="Favorites" i18n-ngbTooltip placement="top">
+      <div class="counters" ngbTooltip="{{tooltipMessages.favourites}}"  placement="top">
         <tsl-svg-icon src="/assets/icons/heart.svg"></tsl-svg-icon>
         <span>{{item.favorites}}</span>
       </div>
-      <div class="counters" ngbTooltip="Chats" i18n-ngbTooltip placement="top">
+      <div class="counters" ngbTooltip="{{tooltipMessages.chats}}"  placement="top">
         <tsl-svg-icon src="/assets/icons/ico-message.svg"></tsl-svg-icon>
         <span>{{item.conversations}}</span>
       </div>
     </div>
     <div class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
-        <button ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top" class="btn-sold" [hidden]="item.sold" tslItemSold (callback)="setSold(item)" [item]="item" *ngIf="!item.flags.onhold">
+        <button ngbTooltip="{{tooltipMessages.markAsSold}}"  placement="top" class="btn-sold" [hidden]="item.sold" tslItemSold (callback)="setSold(item)" [item]="item" *ngIf="!item.flags.onhold">
           <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
         </button>
-        <button ngbTooltip="Mark as reserved" i18n-ngbTooltip placement="top" class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.onhold">
+        <button ngbTooltip="{{tooltipMessages.markAsReserved}}" placement="top" class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.onhold">
           <tsl-svg-icon src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
         </button>
-        <button ngbTooltip="Edit" i18n-ngbTooltip placement="top" class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" *ngIf="!item.sold">
+        <button ngbTooltip="{{tooltipMessages.edit}}"  placement="top" class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" *ngIf="!item.sold">
           <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
         </button>
       </span>
     </div>
     <button class="btn-pending" *ngIf="item.flags.pending">
       <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner grey"></tsl-svg-icon>
-      <span i18n>Pending</span>
+      <span i18n="@@web_catalog_card_688">Pending</span>
     </button>
   </div>
 </div>
 
 <ng-template ngbModalContainer #cancelAutorenewModal let-c="close" let-d="dismiss">
   <div class="modal-body">
-    <h2 i18n>Cancel Autorenew</h2>
-    <p i18n>Do you really want to cancel the autorenew for this item?</p>
+    <h2 i18n="@@web_catalog_card_459">Cancel Autorenew</h2>
+    <p i18n="@@web_catalog_card_460">Do you really want to cancel the autorenew for this item?</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn" i18n (click)="d()">No</button>
-    <button type="button" class="btn btn-warn" i18n (click)="c()">Yes</button>
+    <button type="button" class="btn" i18n="@@web_catalog_card_461" (click)="d()">No</button>
+    <button type="button" class="btn btn-warn" i18n="@@web_catalog_card_462" (click)="c()">Yes</button>
   </div>
 </ng-template>

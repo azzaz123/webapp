@@ -41,7 +41,7 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
 import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
-import { DateCalendarPipe, DateUntilDayPipe, LinkTransformPipe } from './pipes';
+import { DateCalendarPipe, DateUntilDayPipe, LinkTransformPipe, WebSlugConverterPipe, UserProfileRoutePipe } from './pipes';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
@@ -73,6 +73,7 @@ import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
+import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 
 @NgModule({
   imports: [
@@ -149,6 +150,8 @@ import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/sug
     StripeCardSelectionComponent,
     NavLinksComponent,
     LinkTransformPipe,
+    WebSlugConverterPipe,
+    UserProfileRoutePipe,
     PreventDoubleClickDirective,
     ProBadgeModule,
     DateUntilDayPipe,
@@ -162,6 +165,7 @@ import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/sug
     ButtonModule,
     DateCountDownModule,
     SuggestProModalComponent,
+    DeliveryDevelopmentDirective,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -210,6 +214,8 @@ import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/sug
     StripeCardSelectionComponent,
     NavLinksComponent,
     LinkTransformPipe,
+    WebSlugConverterPipe,
+    UserProfileRoutePipe,
     PreventDoubleClickDirective,
     DateUntilDayPipe,
     DateCalendarPipe,
@@ -220,6 +226,7 @@ import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/sug
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
     SuggestProModalComponent,
+    DeliveryDevelopmentDirective,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [

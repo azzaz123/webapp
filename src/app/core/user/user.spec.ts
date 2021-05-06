@@ -54,7 +54,7 @@ describe('User', () => {
     expect(user.online).toBe(ONLINE);
     expect(user.type).toBe(USER_TYPE);
     expect(user.receivedReports).toBe(RECEIVED_REPORTS);
-    expect(user.webLink).toBe(USER_BASE_PATH + USER_WEB_SLUG);
+    expect(user.webSlug).toBe(USER_WEB_SLUG);
   });
   it('should set item distance', () => {
     const user: User = new User(USER_ID);

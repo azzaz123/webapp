@@ -16,15 +16,57 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { ViewportService } from '@core/viewport/viewport.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
+import { FiltersWrapperModule } from '@public/features/search/components/filters-wrapper/filters-wrapper.module';
+import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopping.module';
+import { SearchService } from '@public/features/search/core/services/search.service';
+import { SearchInfrastructureService } from '@public/features/search/core/services/infrastructure/search-infrastructure.service';
+import { SearchAPIService } from '@public/features/search/core/services/infrastructure/api/search-api.service';
+import { SearchFavouritesService } from '@public/features/search/core/services/infrastructure/favorites/search-favourites.service';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 export default {
   title: 'Webapp/Public/Features/Search/Pages/Search',
   component: SearchComponent,
   decorators: [
     moduleMetadata({
-      providers: [ViewportService, ItemService, EventService, I18nService, ItemCardService, { provide: 'SUBDOMAIN', useValue: 'www' }],
+      providers: [
+        ViewportService,
+        ItemService,
+        EventService,
+        I18nService,
+        ItemCardService,
+        { provide: 'SUBDOMAIN', useValue: 'www' },
+        SearchService,
+        SearchStoreService,
+        SearchInfrastructureService,
+        SearchAPIService,
+        SearchFavouritesService,
+        {
+          provide: FILTER_PARAMETER_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+        {
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+      ],
       declarations: [SearchComponent, SearchLayoutComponent],
-      imports: [CoreModule, SharedModule, HttpModule, ItemApiModule, CheckSessionModule, ItemCardListModule, RouterTestingModule],
+      imports: [
+        CoreModule,
+        SharedModule,
+        HttpModule,
+        ItemApiModule,
+        CheckSessionModule,
+        ItemCardListModule,
+        RouterTestingModule,
+        FiltersWrapperModule,
+        AdSlotShoppingModule,
+      ],
     }),
     styledWrapperDecorator('margin: -1rem;'),
   ],

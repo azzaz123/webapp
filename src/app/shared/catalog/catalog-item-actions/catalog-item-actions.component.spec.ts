@@ -56,12 +56,7 @@ describe('CatalogItemActionsComponent', () => {
               },
             },
           },
-          {
-            provide: ErrorsService,
-            useValue: {
-              i18nError() {},
-            },
-          },
+          ErrorsService,
           {
             provide: Router,
             useValue: {
@@ -86,6 +81,7 @@ describe('CatalogItemActionsComponent', () => {
     eventService = TestBed.inject(EventService);
     spyOn(modalService, 'open').and.callThrough();
     spyOn(toastService, 'show');
+    spyOn(errorsService, 'i18nError');
   });
 
   describe('ngOnInit', () => {
@@ -144,10 +140,7 @@ describe('CatalogItemActionsComponent', () => {
       }));
 
       it('should open error toastService', () => {
-        expect(toastService.show).toHaveBeenCalledWith({
-          text: 'Some listings have not been deleted due to an error',
-          type: 'error',
-        });
+        expect(errorsService.i18nError).toHaveBeenCalledWith('bulkDeleteError');
       });
     });
   });

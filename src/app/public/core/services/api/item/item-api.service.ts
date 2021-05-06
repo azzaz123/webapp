@@ -59,7 +59,7 @@ export class ItemApiService {
   }
 
   private fallbackItemCounters(): Observable<ItemCounters> {
-    return of({ views: 0, favorites: 0 });
+    return of({ views: 0, favorites: 0, conversations: 0 });
   }
 
   private fallbackItemVisibilityFlags(): Observable<ItemVisibilityFlags> {

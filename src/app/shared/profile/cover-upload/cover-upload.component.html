@@ -1,6 +1,6 @@
 <div class="row form-group mb-0" [class.not-pro]="!isPro">
   <div class="col-12 col-md-3 text-md-right title" i18>
-    <label i18n>Cover image</label>
+    <label i18n="@@web_cover_upload_518">Cover image</label>
   </div>
   <div class="col-12 col-md-6 offset-md-1">
     <div class="row mb-2">
@@ -17,11 +17,11 @@
             <span class="loader" *ngIf="isLoading">
               <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
             </span>
-            <span i18n *ngIf="user?.coverImage" class="d-none d-md-block">Update picture</span>
-            <span i18n *ngIf="!user?.coverImage" class="d-none d-md-block">Upload picture</span>
+            <span i18n="@@web_cover_upload_519" *ngIf="user?.coverImage" class="d-none d-md-block">Update picture</span>
+            <span i18n="@@web_cover_upload_520" *ngIf="!user?.coverImage" class="d-none d-md-block">Upload picture</span>
           </label>
           <div>
-            <p i18n>JPG format and a minimum size of 400 x 400px are accepted.</p>
+            <p i18n="@@web_cover_upload_521">JPG format and a minimum size of 400 x 400px are accepted.</p>
           </div>
         </div>
       </div>

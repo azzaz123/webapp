@@ -6,7 +6,7 @@ import {
   AD_TABLET_SCREEN_SIZE,
   AD_TABLET_MAPPING,
 } from '@core/ads/constants';
-import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotShoppingConfiguration } from '@core/ads/models';
+import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { of } from 'rxjs';
 
@@ -17,7 +17,8 @@ export const MockAdsService = {
   displayAdBySlotId: (adSlotId) => {},
   setSlots: (adSlots) => {},
   setAdKeywords: (adKeywords: AdKeyWords) => {},
-  displayAdShopping: (adSlotShopping: AdSlotShoppingConfiguration) => {},
+  displayAdShopping: (adSlotShopping: AdSlotGroupShoppingConfiguration) => {},
+  adSlotLoaded$: () => of(true),
 };
 
 export const MockAmazonPublisherService = {
@@ -40,7 +41,9 @@ export const MockGooglePublisherTagService = {
   setSlots: (slots: AdSlotConfiguration) => {},
   refreshAds: () => {},
   setAdKeywords: (adKeywords: AdKeyWords) => {},
-  displayShopping: (pageOption, adSlotShopping: AdSlotShoppingConfiguration) => {},
+  displayShopping: (pageOption, adSlotShopping: AdSlotGroupShoppingConfiguration) => {},
+  isAdSlotLoaded$: () => of(true),
+  reset: () => {},
 };
 
 export const MockLoadAdsService = {
@@ -94,7 +97,7 @@ export const MockAdSlots: AdSlotConfiguration[] = [
   },
 ];
 
-export const MockAdSlotShopping: AdSlotShoppingConfiguration = {
+export const MockAdSlotShopping: AdSlotGroupShoppingConfiguration = {
   slotId: 'afshcontainer',
   container: 'afshcontainer',
   width: 500,

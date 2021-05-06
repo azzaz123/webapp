@@ -18,8 +18,13 @@ export class FilterOptionsMapperService {
 
   public formatConditionResponse(conditionResponse: ConditionResponse): FilterOption[];
   public formatConditionResponse(response: unknown, params: QueryParams): FilterOption[];
-  public formatConditionResponse(conditionResponse: ConditionResponse): FilterOption[] {
-    return this.formatIconOptions(conditionResponse.conditions);
+  public formatConditionResponse(response: ConditionResponse | ConditionResponse[]): FilterOption[] {
+    const conditionResponse = response instanceof Array ? response.find((condition) => condition.category_id === 'default') : response;
+
+    return conditionResponse.conditions.map((condition) => ({
+      value: condition.id,
+      label: condition.title,
+    }));
   }
 
   public formatObjectType(objectTypes: ObjectType[]): FilterOption[];
@@ -60,11 +65,10 @@ export class FilterOptionsMapperService {
   public formatIconOptions(iconOptions: IconOption[]): FilterOption[];
   public formatIconOptions(response: unknown, params: QueryParams): FilterOption[];
   public formatIconOptions(iconOptions: IconOption[]): FilterOption[] {
-    return iconOptions.map((condition) => ({
-      value: condition.id,
-      label: condition.text,
-      // TODO: We need to add assets, and update path if needed
-      icon: `${condition.icon_id}.svg`,
+    return iconOptions.map((option) => ({
+      value: option.id,
+      label: option.text,
+      icon: `/assets/icons/filters/options/${option.icon_id}.svg`,
     }));
   }
 

@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Item } from '@core/item/item';
-import { ItemCounters } from '@core/item/item-response.interface';
-import { ItemService } from '@core/item/item.service';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from '@private/features/stats/core/item-stats-response.interface';
 import { ItemStatsService } from '@private/features/stats/core/services/item-stats.service';
 import { every, isEmpty } from 'lodash-es';
@@ -19,17 +17,16 @@ export class ItemStatsRowComponent implements OnInit {
   @Input() open = false;
   @Input() price: string;
   public link: string;
-  public momentConfig: any;
+  public publishedItemDateFormat = 'dd MMM yyyy';
   public statsData: ItemStatisticFullResponse;
   public noData: boolean;
+  public tooltipMessages = {
+    views: $localize`:@@web_stats_item_views_tooltip:Views`,
+    chats: $localize`:@@web_stats_item_chats_tooltip:Chats`,
+    favourites: $localize`:@@web_stats_item_favourites_tooltip:Favourites`,
+  };
 
-  constructor(
-    @Inject('SUBDOMAIN') private subdomain: string,
-    private itemStatsService: ItemStatsService,
-    private itemService: ItemService
-  ) {
-    this.momentConfig = 'dd MMM yyyy';
-  }
+  constructor(@Inject('SUBDOMAIN') private subdomain: string, private itemStatsService: ItemStatsService) {}
 
   ngOnInit() {
     this.link = this.item.getUrl(this.subdomain);
@@ -38,13 +35,6 @@ export class ItemStatsRowComponent implements OnInit {
       this.statsData.entries = this.removeCurrentDay(response);
       this.noData = every(response.entries, (entry) => !entry.values || isEmpty(entry.values));
     });
-    if (this.item.views === 0 || this.item.favorites === 0) {
-      this.itemService.getCounters(this.item.id).subscribe((counters: ItemCounters) => {
-        this.item.views = counters.views;
-        this.item.favorites = counters.favorites;
-        this.item.conversations = counters.conversations;
-      });
-    }
   }
 
   changeExpandedState() {

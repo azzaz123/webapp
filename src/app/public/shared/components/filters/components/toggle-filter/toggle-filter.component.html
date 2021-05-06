@@ -1,19 +1,19 @@
 
 
 <tsl-filter-template
-[isBubble]="isBubble()"
+[isBubble]="variant | isBubble"
 [isDropdown]="false"
 [hasApply]="true"
 [isClearable]="true"
 [title]="config.title"
 [icon]="config.icon"
 [label]="label"
-[hasValue]="hasValue$() | async"
+[hasValue]="hasValue$ | async"
 (click)="handleClick()"
 (clear)="handleClear()"
 (openStateChange)="openStateChange.emit($event)">
 
-    <div class="w-100 d-flex align-items-center" *ngIf="!isBubble()">
+    <div class="w-100 d-flex align-items-center" *ngIf="!(variant | isBubble)">
         <span class="ToggleFilter__content-label">{{config.bubblePlaceholder}}</span>
         <tsl-toggle-form [(ngModel)]="toggle" (ngModelChange)="handleChange()"></tsl-toggle-form>
     </div>

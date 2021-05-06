@@ -3,6 +3,7 @@ import { CategoryResponse } from '@core/category/category-response.interface';
 import { CategoryService } from 'app/core/category/category.service';
 import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from 'app/core/item/item';
 import { Review } from '@private/features/reviews/core/review';
+import { User } from '@core/user/user';
 
 export interface ReviewItemCopys {
   soldCopy: string;
@@ -19,7 +20,7 @@ export class ReviewItemComponent implements OnInit {
   @Input() review: Review;
   public fallback: string;
   public itemWebLink: string;
-  public userWebSlug: string;
+  public reviewUser: User;
   public category: CategoryResponse;
   public reviewItemCopys: ReviewItemCopys;
 
@@ -28,7 +29,7 @@ export class ReviewItemComponent implements OnInit {
   ngOnInit() {
     this.fallback = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
     this.itemWebLink = this.review.item ? this.review.item.getUrl(this.subdomain) : null;
-    this.userWebSlug = this.review.user ? this.review.user.getUrl(this.subdomain) : null;
+    this.reviewUser = this.review.user;
     this.initializeCopys();
     this.categoryService.getCategoryById(this.review.item.categoryId).subscribe((category: CategoryResponse) => {
       this.category = category;

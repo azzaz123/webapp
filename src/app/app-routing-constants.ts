@@ -1,4 +1,4 @@
 export enum APP_PATHS {
-  PUBLIC = 'public',
+  PUBLIC = '',
   PRIVATE = '',
 }

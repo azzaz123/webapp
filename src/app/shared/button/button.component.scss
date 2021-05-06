@@ -32,6 +32,9 @@ $vertical-padding: $spacing-ms;
     opacity: 0.8;
   }
   &.btn-primary {
+    &--bold {
+      font-weight: $font-weight-chunky;
+    }
     &.disabled,
     &:disabled {
       cursor: inherit;
@@ -45,6 +48,20 @@ $vertical-padding: $spacing-ms;
         background-color: $walla-dark;
         border-color: transparent;
       }
+    }
+  }
+  &.btn-secondary {
+    color: $walla-main;
+    background-color: $white;
+    border-color: $blue-grey-4;
+    &:hover {
+      color: #0f9989;
+      border-color: #0f9989;
+    }
+    &:focus {
+      color: $walla-main;
+      border-color: $blue-grey-4;
+      background-color: $white;
     }
   }
   &.loading {
@@ -183,5 +200,9 @@ $vertical-padding: $spacing-ms;
     font-weight: bold;
     width: 100%;
     max-width: 371px;
+  }
+
+  &--width {
+    width: 100%;
   }
 }

@@ -1,6 +1,5 @@
 import { moduleMetadata } from '@storybook/angular';
-import { Meta } from '@storybook/angular/types-6-0';
-import { Story } from '@storybook/angular/ts3.4/dist/client';
+import { Meta, Story } from '@storybook/angular/types-6-0';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { Component, Input } from '@angular/core';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
@@ -14,6 +13,8 @@ import { FilterOptionService } from '../../../../services/filter-option/filter-o
 import { MockFilterOptionService } from '@fixtures/filter-option-service.fixtures.spec';
 import { SelectFilterConfig } from '@public/shared/components/filters/components/select-filter/interfaces/select-filter-config.interface';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-filters',
@@ -22,53 +23,49 @@ import { SelectFormComponent } from '@shared/form/components/select/select-form.
       <h1>Bubble variant</h1>
       <div style="display: flex;">
         <div class="m-2" style="width: 100%">
-          <tsl-option-select-filter
+          <tsl-select-filter
             [variant]="${FILTER_VARIANT.BUBBLE}"
             [value]="conditionValue"
             [config]="conditionConfig"
             (valueChange)="changeCondition($event)"
-            (clear)="changeCondition([])"
           >
-          </tsl-option-select-filter>
+          </tsl-select-filter>
         </div>
         <div class="m-2" style="width: 100%">
-          <tsl-option-select-filter
+          <tsl-select-filter
             [variant]="${FILTER_VARIANT.BUBBLE}"
             [value]="genderValue"
             [config]="genderConfig"
             (valueChange)="changeGender($event)"
-            (clear)="changeGender([])"
           >
-          </tsl-option-select-filter>
+          </tsl-select-filter>
         </div>
       </div>
 
       <h1>Content variant</h1>
       <div style="border: 1px dashed black; background-color: white; position: relative; min-height: 400px;" class="p-3">
-        <tsl-option-select-filter
+        <tsl-select-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="conditionValue"
           [config]="conditionConfig"
           (valueChange)="changeCondition($event)"
-          (clear)="changeCondition([])"
         >
-        </tsl-option-select-filter>
+        </tsl-select-filter>
         <div style="height: 1px; width: 100%; background-color: #90A4AE;" class="my-3"></div>
-        <tsl-option-select-filter
+        <tsl-select-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
           [value]="genderValue"
           [config]="genderConfig"
           (valueChange)="changeGender($event)"
-          (clear)="changeGender([])"
         >
-        </tsl-option-select-filter>
+        </tsl-select-filter>
       </div>
     </div>
   `,
 })
 class FiltersComponent {
-  public conditionValue: FilterParameter[];
-  public genderValue: FilterParameter[];
+  @Input() public conditionValue: FilterParameter[] = [];
+  @Input() public genderValue: FilterParameter[] = [];
   @Input() public conditionConfig: SelectFilterConfig;
   @Input() public genderConfig: SelectFilterConfig;
 
@@ -82,7 +79,7 @@ class FiltersComponent {
 }
 
 export default {
-  title: 'Webapp/Public/Shared/Components/Filters/SelectFilterComponent',
+  title: 'Webapp/Public/Shared/Components/Filters/SelectFilter',
   decorators: [
     moduleMetadata({
       imports: [HttpClientModule],
@@ -92,7 +89,7 @@ export default {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [FiltersComponent, SelectFilterComponent, SelectFormComponent, SelectParentOptionComponent],
+      declarations: [FiltersComponent, SelectFilterComponent, SelectFormComponent, SelectParentOptionComponent, IsBubblePipe],
     }),
   ],
 } as Meta;
@@ -110,7 +107,7 @@ const conditionConfig: SelectFilterConfig = {
   bubblePlaceholder: 'Condition',
   drawerPlaceholder: 'Select condition',
   mapKey: {
-    parameterKey: 'condition',
+    parameterKey: FILTER_QUERY_PARAM_KEY.condition,
   },
   type: FILTER_TYPES.SELECT,
 };
@@ -123,7 +120,7 @@ const genderConfig: SelectFilterConfig = {
   bubblePlaceholder: 'Gender',
   drawerPlaceholder: 'Select gender',
   mapKey: {
-    parameterKey: 'gender',
+    parameterKey: FILTER_QUERY_PARAM_KEY.gender,
   },
   type: FILTER_TYPES.SELECT,
 };
@@ -132,4 +129,23 @@ export const Default = Template.bind({});
 Default.args = {
   conditionConfig,
   genderConfig,
+};
+
+export const WithIcons = Template.bind({});
+WithIcons.args = {
+  conditionConfig: {
+    ...conditionConfig,
+    id: 'with_icon',
+  },
+  genderConfig: {
+    ...genderConfig,
+    id: 'with_icon',
+  },
+};
+
+export const WithDefaultValue = Template.bind({});
+WithDefaultValue.args = {
+  ...Default.args,
+  conditionValue: [{ key: 'condition', value: 'un_opened' }],
+  genderValue: [{ key: 'gender', value: 'male' }],
 };

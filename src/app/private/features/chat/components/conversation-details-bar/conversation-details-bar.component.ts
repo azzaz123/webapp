@@ -1,8 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { ItemService } from '@core/item/item.service';
-import { UserService } from '@core/user/user.service';
 import { BlockUserXmppService } from '@private/features/chat/core/block-user/block-user-xmpp.service';
 import { BlockUserService } from '@private/features/chat/core/block-user/block-user.service';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
@@ -17,32 +15,38 @@ import {
 } from '@private/features/chat/modals';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ReportService } from '@core/trust-and-safety/report/report.service';
+import { UserReportRequest } from '@core/trust-and-safety/report/interfaces/user/user-report-request.interface';
+import { ErrorsService } from '@core/errors/errors.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-conversation-details-bar',
   templateUrl: './conversation-details-bar.component.html',
   styleUrls: ['./conversation-details-bar.component.scss'],
 })
-export class ConversationDetailsBarComponent {
+export class ConversationDetailsBarComponent implements OnInit {
   @Input() currentConversation: InboxConversation;
   @Input() isExpanded = false;
   @Output() blockUserEvent = new EventEmitter();
   @Output() expandContainer = new EventEmitter();
+  public showReportListing = false;
 
   constructor(
     private eventService: EventService,
     private modalService: NgbModal,
     private toastService: ToastService,
-    private userService: UserService,
-    private itemService: ItemService,
+    private reportService: ReportService,
     private blockUserService: BlockUserService,
     private blockUserXmppService: BlockUserXmppService,
     private i18n: I18nService,
+    private errorService: ErrorsService,
     private inboxConversationService: InboxConversationService
   ) {}
 
-  public itemIsMine(): boolean {
-    return this.currentConversation.item.isMine;
+  ngOnInit() {
+    this.setShowReportListing();
   }
 
   public currentConversationIsArchived(): boolean {
@@ -62,7 +66,7 @@ export class ConversationDetailsBarComponent {
     this.modalService.open(ArchiveInboxConversationComponent).result.then(() => {
       this.inboxConversationService.archive$(this.currentConversation).subscribe(() => {
         this.toastService.show({
-          text: this.i18n.getTranslations('archiveConversationSuccess'),
+          text: this.i18n.translate(TRANSLATION_KEY.CHAT_ARCHIVE_CONVERSATION_SUCCESS),
           type: 'success',
         });
         this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
@@ -74,7 +78,7 @@ export class ConversationDetailsBarComponent {
     this.modalService.open(UnarchiveInboxConversationComponent).result.then(() => {
       this.inboxConversationService.unarchive(this.currentConversation).subscribe(() => {
         this.toastService.show({
-          text: this.i18n.getTranslations('unarchiveConversationSuccess'),
+          text: this.i18n.translate(TRANSLATION_KEY.CHAT_UNARCHIVE_CONVERSATION_SUCCESS),
           type: 'success',
         });
         this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
@@ -84,45 +88,33 @@ export class ConversationDetailsBarComponent {
 
   public reportUserAction(): void {
     this.modalService.open(ReportUserComponent, { windowClass: 'report' }).result.then((result: any) => {
-      this.userService
-        .reportUser(
-          this.currentConversation.user.id,
-          this.currentConversation.item.id,
-          this.currentConversation.id,
-          result.reason,
-          result.message
-        )
-        .subscribe(() => {
-          this.toastService.show({
-            text: this.i18n.getTranslations('reportUserSuccess'),
-            type: 'success',
-          });
+      const userReportRequest: UserReportRequest = {
+        userId: this.currentConversation.user.id,
+        itemHashId: this.currentConversation.item.id,
+        conversationHash: this.currentConversation.id,
+        reason: result.reason,
+        comments: result.message,
+        targetCrm: 'zendesk',
+      };
+      this.reportService.reportUser(userReportRequest).subscribe(() => {
+        this.toastService.show({
+          text: this.i18n.translate(TRANSLATION_KEY.CHAT_REPORT_USER_SUCCESS),
+          type: 'success',
         });
+      });
     });
   }
 
   public reportListingAction(): void {
     this.modalService.open(ReportListingComponent, { windowClass: 'report' }).result.then((result: any) => {
-      this.itemService.reportListing(this.currentConversation.item.id, result.message, result.reason).subscribe(
+      this.reportService.reportItem(this.currentConversation.item.id, result.message, result.reason).subscribe(
         () => {
           this.toastService.show({
-            text: this.i18n.getTranslations('reportListingSuccess'),
+            text: this.i18n.translate(TRANSLATION_KEY.CHAT_REPORT_LISTING_SUCCESS),
             type: 'success',
           });
         },
-        (error: any) => {
-          if (error.status === 403) {
-            this.toastService.show({
-              text: this.i18n.getTranslations('reportListingSuccess'),
-              type: 'success',
-            });
-          } else {
-            this.toastService.show({
-              text: this.i18n.getTranslations('serverError') + ' ' + error.json().message,
-              type: 'error',
-            });
-          }
-        }
+        (error) => this.errorService.show(error)
       );
     });
   }
@@ -134,7 +126,7 @@ export class ConversationDetailsBarComponent {
           this.blockUserXmppService.blockUser(this.currentConversation.user).subscribe(() => {
             this.blockUserEvent.emit();
             this.toastService.show({
-              text: this.i18n.getTranslations('blockUserSuccess'),
+              text: this.i18n.translate(TRANSLATION_KEY.CHAT_BLOCK_USER_SUCCESS),
               type: 'success',
             });
           });
@@ -150,7 +142,7 @@ export class ConversationDetailsBarComponent {
         () => {
           this.blockUserXmppService.unblockUser(this.currentConversation.user).subscribe(() => {
             this.toastService.show({
-              text: this.i18n.getTranslations('unblockUserSuccess'),
+              text: this.i18n.translate(TRANSLATION_KEY.CHAT_UNBLOCK_USER_SUCCESS),
               type: 'success',
             });
           });
@@ -158,5 +150,10 @@ export class ConversationDetailsBarComponent {
         () => {}
       );
     });
+  }
+
+  private setShowReportListing(): void {
+    const { isMine, notAvailable } = this.currentConversation.item;
+    this.showReportListing = !isMine && !notAvailable;
   }
 }

@@ -1,38 +1,45 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { SearchItem } from '../../interfaces/search-item.interface';
-import { MOCK_SEARCH_ITEM } from '@fixtures/search-items.fixtures';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class SearchStoreService {
-  private itemsSubject = new BehaviorSubject<SearchItem[]>([]);
+  private static INITIAL_ITEMS_STATE: ItemCard[] = [];
+  private static INITIAL_HAS_MORE_STATE: boolean = false;
 
-  // TODO: This will disappear when the integration is done
-  constructor() {
-    const items = Array(10).fill(MOCK_SEARCH_ITEM);
-    this.setItems(items);
-    setTimeout(() => {
-      this.appendItems(items);
-    }, 2000);
+  private itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>(SearchStoreService.INITIAL_ITEMS_STATE);
+  private hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(SearchStoreService.INITIAL_HAS_MORE_STATE);
+
+  public get items$(): Observable<ItemCard[]> {
+    return this.itemsSubject.asObservable();
   }
 
-  public get items$(): Observable<SearchItem[]> {
-    return this.itemsSubject.asObservable();
+  public get hasMore$(): Observable<boolean> {
+    return this.hasMoreSubject.asObservable();
   }
 
   public getItemCount(): number {
     return this.getItems().length;
   }
 
-  public getItems(): SearchItem[] {
+  public getItems(): ItemCard[] {
     return this.itemsSubject.getValue();
   }
 
-  public setItems(items: SearchItem[]): void {
+  public setItems(items: ItemCard[]): void {
     this.itemsSubject.next(items);
   }
 
-  public appendItems(items: SearchItem[]): void {
+  public appendItems(items: ItemCard[]): void {
     this.itemsSubject.next([...this.getItems(), ...items]);
+  }
+
+  public clear(): void {
+    this.itemsSubject.next(SearchStoreService.INITIAL_ITEMS_STATE);
+    this.hasMoreSubject.next(SearchStoreService.INITIAL_HAS_MORE_STATE);
+  }
+
+  public setHasMore(hasMore: boolean): void {
+    this.hasMoreSubject.next(hasMore);
   }
 }

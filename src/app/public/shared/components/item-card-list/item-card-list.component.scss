@@ -1,13 +1,15 @@
 @import '~style/common';
 
-$margin: $spacer * 0.5;
+$margin: $spacer * 0.75;
+$loading-opacity: 0.4;
+$loaded-opacity: 1;
 
 @mixin grid-setup($numCols) {
-  grid-template-columns: repeat($numCols, 1fr);
+  grid-template-columns: repeat($numCols, minmax(0, 1fr));
 }
 
-$sizes: 'xs', 'sm', 'md', 'lg';
-$numCols: 2, 3, 4, 5;
+$sizes: 'xs', 'sm', 'md', 'lg', 'xl';
+$numCols: 1, 2, 3, 4, 5;
 
 @each $size in $sizes {
   @each $numCol in $numCols {
@@ -22,9 +24,15 @@ $numCols: 2, 3, 4, 5;
 .ItemCardList {
   display: grid;
   grid-gap: $margin;
+  opacity: $loaded-opacity;
+  transition: opacity 150ms ease-in-out;
 
   &__slot {
     background-color: $blue-grey-5;
     border-radius: $border-radius;
+  }
+
+  &--loading {
+    opacity: $loading-opacity;
   }
 }

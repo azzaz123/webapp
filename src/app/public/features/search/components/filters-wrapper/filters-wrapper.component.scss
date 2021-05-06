@@ -2,10 +2,26 @@
 
 .FiltersWrapper {
   &__bar {
-    @include media-breakpoint-down(md) {
-      overflow: auto;
-
-      @include hide-scroll-bars;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: $white;
+    overflow: auto;
+    &--opened {
+      overflow: hidden;
     }
+  }
+
+  &__backdrop {
+    position: absolute;
+    display: block;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    background-color: rgba($white, 0.8);
   }
 }

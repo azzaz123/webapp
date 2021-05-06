@@ -1,14 +1,14 @@
 
 
 <tsl-filter-template
-[isBubble]="isBubble()"
-[isDropdown]="isDropdown()"
+[isBubble]="variant | isBubble"
+[isDropdown]="true"
 [hasApply]="true"
 [isClearable]="true"
 [title]="config.title"
 [icon]="config.icon"
 [label]="label"
-[hasValue]="hasValue$() | async"
+[hasValue]="hasValue$ | async"
 (apply)="handleApply()"
 (clear)="handleClear()"
 (openStateChange)="openStateChange.emit($event)">

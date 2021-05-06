@@ -5,21 +5,21 @@
   <div class="modal-close" (click)="activeModal.dismiss()">
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
-  <h2 i18n>Rate your experience with <strong>{{userName}}</strong></h2>
-  <p i18n>Click on the stars to leave your review. The more stars, the better your experience.</p>
+  <h2 i18n="@@web_review_modal_502">Rate your experience with <strong>{{userName}}</strong></h2>
+  <p i18n="@@web_review_modal_503">Click on the stars to leave your review. The more stars, the better your experience.</p>
   <tsl-stars-rate (onChange)="onRated($event)"></tsl-stars-rate>
   <div *ngIf="isSeller">
-    <p class="text" i18n>I sold this for:</p>
+    <p class="text" i18n="@@web_review_modal_504">I sold this for:</p>
     <input type="number" class="form-control" id="price" name="price" [(ngModel)]="price" min="0" tslRestrictInputNumber /> <span class="currency">{{item.currencyCode}}</span>
   </div>
   <div>
     <span class="chars-counter">{{reviewCommentLength}}/150</span>
-    <textarea i18n-placeholder placeholder="Leave a review..." class="form-control" [(ngModel)]="comments"
+    <textarea i18n-placeholder="@@web_review_modal_505" placeholder="Leave a review..." class="form-control" [(ngModel)]="comments"
               (keyup)="countChars($event)" maxlength="150"></textarea>
   </div>
   <div class="centered">
     <tsl-button [disabled]="!score"
                 (click)="sumbitReview()"
-                i18n>Publish</tsl-button>
+                i18n="@@web_review_modal_506">Publish</tsl-button>
   </div>
 </div>

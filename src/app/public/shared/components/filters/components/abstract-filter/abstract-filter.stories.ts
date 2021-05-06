@@ -8,6 +8,8 @@ import { FilterTemplateComponent } from '@public/shared/components/filters/compo
 import { HttpClientModule } from '@angular/common/http';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonModule } from '@shared/button/button.module';
+import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 // TODO: Investigate how to implement filter template though a directive
 
@@ -16,15 +18,15 @@ import { ButtonModule } from '@shared/button/button.module';
   selector: 'stories-abstract-filter',
   template: `
     <tsl-filter-template
-      [isBubble]="isBubble()"
-      [title]="getTitle()"
-      [icon]="getIcon()"
-      [hasApply]="hasApply()"
-      [isDropdown]="isDropdown()"
-      [isClearable]="isClearable()"
+      [isBubble]="variant | isBubble"
+      [title]="config.title"
+      [icon]="storyIcon"
+      [hasApply]="config.actions?.apply"
+      [isDropdown]="!storyHasNoArrow"
+      [isClearable]="config.isClearable"
       [counter]="getFilterCounter()"
       [label]="getLabel()"
-      [hasValue]="hasValue$() | async"
+      [hasValue]="hasValue$ | async"
       (openStateChange)="handleOpenStateChange($event)"
       (apply)="handleApply()"
       (clear)="handleClear()"
@@ -49,10 +51,6 @@ class StoryAbstractFilterComponent extends AbstractFilter<{}> {
   @Output() storyBubbleApply: EventEmitter<void> = new EventEmitter();
   @Output() storyClick: EventEmitter<void> = new EventEmitter();
 
-  public isDropdown(): boolean {
-    return this.storyHasNoArrow ? false : super.isDropdown();
-  }
-
   protected _hasValue(): boolean {
     return this.storyHasCustomValue ? true : super._hasValue();
   }
@@ -65,10 +63,6 @@ class StoryAbstractFilterComponent extends AbstractFilter<{}> {
     return this.storyLabel || 'I am an extended label!';
   }
 
-  public getIcon(): string {
-    return this.storyIcon;
-  }
-
   public handleApply(): void {
     this.storyBubbleApply.emit();
   }
@@ -76,6 +70,8 @@ class StoryAbstractFilterComponent extends AbstractFilter<{}> {
   public handleClick(): void {
     this.storyClick.emit();
   }
+
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {}
 }
 
 export default {
@@ -92,7 +88,7 @@ export default {
     moduleMetadata({
       providers: [],
       imports: [BubbleModule, HttpClientModule, NgbDropdownModule, ButtonModule],
-      declarations: [StoryAbstractFilterComponent, FilterTemplateComponent],
+      declarations: [StoryAbstractFilterComponent, FilterTemplateComponent, IsBubblePipe],
     }),
   ],
 };
@@ -102,11 +98,11 @@ const Template: Story<StoryAbstractFilterComponent> = (args) => ({
     variant: FILTER_VARIANT.BUBBLE,
     ...args,
     config: {
-      ...args.config,
       title: 'I am the title',
+      bubblePlaceholder: 'I am the bubble placeholder',
+      ...args.config,
     },
   },
-  component: StoryAbstractFilterComponent,
 });
 
 const VariantTemplate: Story<StoryAbstractFilterComponent> = (args) => ({
@@ -115,10 +111,10 @@ const VariantTemplate: Story<StoryAbstractFilterComponent> = (args) => ({
     ...args,
     config: {
       title: 'I am the title',
+      bubblePlaceholder: 'I am the bubble placeholder',
       ...args.config,
     },
   },
-  component: StoryAbstractFilterComponent,
   template: `
     <div>
       <h1>Bubble variant</h1>

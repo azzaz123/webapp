@@ -21,6 +21,16 @@ import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-mod
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { findIndex } from 'lodash-es';
 import { takeWhile } from 'rxjs/operators';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+
+export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
+export const SORTS_TRANSLATION_KEYS: TRANSLATION_KEY[] = [
+  TRANSLATION_KEY.DATE_DESC,
+  TRANSLATION_KEY.DATE_ASC,
+  TRANSLATION_KEY.PRICE_DESC,
+  TRANSLATION_KEY.PRICE_ASC,
+];
+export const CONTACT_MOTOR_TOAST_TEXT = $localize`:@@web_toast_cardealer_error_contact:According to your plan you cannot activate more items. Contact ventas.motor@wallapop.com if you want to increase your plan or deactivate other items in order to activate this one.!`;
 
 @Component({
   selector: 'tsl-catalog-pro-list',
@@ -70,13 +80,9 @@ export class CatalogProListComponent implements OnInit {
   ngOnInit() {
     this.getCounters();
     this.getItems();
-    const sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
-    this.orderBy = [];
-    sorting.forEach((sort) => {
-      this.orderBy.push({
-        value: sort,
-        label: this.i18n.getTranslations(sort),
-      });
+    // TODO: Use the same sorts from list.component
+    this.orderBy = SORTS.map((value, i) => {
+      return { value, label: this.i18n.translate(SORTS_TRANSLATION_KEYS[i]) };
     });
 
     this.eventService.subscribe('itemChangeStatus', (items) => {
@@ -140,7 +146,7 @@ export class CatalogProListComponent implements OnInit {
           this.getItems();
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
-          this.errorService.i18nError('productCreated', 'contactMotor');
+          this.errorService.i18nError('productCreated', CONTACT_MOTOR_TOAST_TEXT);
         } else if (params && params.sold && params.itemId) {
           this.itemService.get(params.itemId).subscribe((item: Item) => {
             this.soldButton.item = item;

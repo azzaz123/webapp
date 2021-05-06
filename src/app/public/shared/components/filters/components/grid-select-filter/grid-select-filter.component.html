@@ -1,0 +1,20 @@
+<tsl-filter-template [isBubble]="variant | isBubble"
+                     [isDropdown]="true"
+                     [isClearable]="true"
+                     [title]="config.title"
+                     [icon]="icon$ | async"
+                     [label]="label$ | async"
+                     [hasValue]="hasValue$ | async"
+                     [hasApply]="true"
+                     (apply)="handleApply()"
+                     (clear)="handleClear()"
+                     (openStateChange)="openStateChange.emit($event)">
+  <form [formGroup]="formGroup">
+    <tsl-grid-select-form formControlName="select"
+                          [options]="options"
+                          [isMultiselect]="config.isMultiselect"
+                          [isBig]="config.hasBigIcons">
+    </tsl-grid-select-form>
+  </form>
+
+</tsl-filter-template>

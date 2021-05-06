@@ -1,9 +1,9 @@
 <div class="plan">
   <div class="car">
-    <h3 i18n>your plan</h3>
+    <h3 i18n="@@web_catalog_pro_components_plan_data_47">your plan</h3>
     <div class="numbers">
       <div class="col-number gold">
-        <span class="number">{{perks?.subscription.listing.quantity}}</span><span i18n>Pro Plan</span>
+        <span class="number">{{perks?.subscription.listing.quantity}}</span><span i18n="@@web_catalog_pro_components_plan_data_48">Pro Plan</span>
       </div>
       <div class="border"></div>
       <div class="col-number">
@@ -12,21 +12,22 @@
           {{perks?.subscription.listing.quantity - counters?.publish}}</span>
           <span *ngIf="perks?.subscription.listing.quantity - counters?.publish <= 0">0</span>
         </span>
-        <span class="grey" i18n>Free Space</span>
+        <span class="grey" i18n="@@web_catalog_pro_components_plan_data_49">Free Space</span>
       </div>
       <div class="border"></div>
-      <div class="col-number"><span class="number">{{counters?.onHold}}</span><span class="grey" i18n>Inactive</span></div>
+      <div class="col-number"><span class="number">{{counters?.onHold}}</span><span class="grey" i18n="@@web_catalog_pro_components_plan_data_50">Inactive</span></div>
     </div>
   </div>
   <div class="visibility">
-    <h3 i18n>visibility</h3>
+    <h3 i18n="@@web_catalog_pro_components_plan_data_51">visibility</h3>
     <div class="row-visibility">
       <div class="numbers">
         <div class="col-number city" *ngIf="true">
-          <span class="number">{{perks?.subscription.bump.total}}</span><span i18n>City Plan</span>
+          <span class="number">{{perks?.subscription.bump.total}}</span><span i18n="@@web_catalog_pro_components_plan_data_52">City Plan</span>
         </div>
         <div class="no-plan" [hidden]="true">
-          <span i18n>You don't have a City Plan.</span><a href="#" i18n>Sign Up</a>
+          <span i18n="@@web_catalog_pro_components_plan_data_53">You don't have a City Plan.</span>
+          <a href="#" i18n="@@web_catalog_pro_components_plan_data_54">Sign Up</a>
         </div>
         <div class="border"></div>
         <div>
@@ -35,28 +36,29 @@
               {{perks?.subscription.bump.quantity + perks?.extra.bump.quantity}}</span>
             <span *ngIf="perks?.subscription.bump.quantity + perks?.extra.bump.quantity < 0">0</span>
           </span>
-          <span class="text grey" i18n>Available</span>
+          <span class="text grey" i18n="@@web_catalog_pro_components_plan_data_55">Available</span>
           <div class="extras">
-            <span class="city" i18n>{{perks?.subscription.bump.quantity}} plan</span>
-            <span class="grey" i18n> {{perks?.extra.bump.quantity}} extra</span>
+            <span class="city" i18n="@@web_catalog_pro_components_plan_data_56">{{perks?.subscription.bump.quantity}} plan</span>
+            <span class="grey" i18n="@@web_catalog_pro_components_plan_data_57"> {{perks?.extra.bump.quantity}} extra</span>
           </div>
         </div>
         <div class="border"></div>
         <div>
           <span class="number">{{(status?.purchased?.citybump || 0) + (status?.purchased?.zonebump || 0)}}</span>
-          <span class="text grey" i18n>In Use</span>
+          <span class="text grey" i18n="@@web_catalog_pro_components_plan_data_58">In Use</span>
           <div class="extras">
-            <span class="grey" i18n>({{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}} planned)</span>
+            <span class="grey" i18n="@@web_catalog_pro_components_plan_data_59">({{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}} planned)</span>
           </div>
         </div>
       </div>
       <div class="border-full"></div>
       <div class="numbers">
         <div class="country" *ngIf="true">
-          <span class="number">{{perks?.subscription.national.total}}</span><span class="text" i18n>Country Plan</span>
+          <span class="number">{{perks?.subscription.national.total}}</span><span class="text" i18n="@@web_catalog_pro_components_plan_data_60">Country Plan</span>
         </div>
         <div class="no-plan" [hidden]="true">
-          <span i18n>You don't have a Country Plan</span><a href="#" i18n>Sign Up</a>
+          <span i18n="@@web_catalog_pro_components_plan_data_61">You don't have a Country Plan</span>
+          <a href="#" i18n="@@web_catalog_pro_components_plan_data_542">Sign Up</a>
         </div>
         <div class="border"></div>
         <div>
@@ -65,18 +67,18 @@
               {{perks?.subscription.national.quantity + perks?.extra.national.quantity}}</span>
             <span *ngIf="perks?.subscription.national.quantity + perks?.extra.national.quantity < 0">0</span>
           </span>
-          <span class="text grey" i18n>Available</span>
+          <span class="text grey" i18n="@@web_catalog_pro_components_plan_data_543">Available</span>
           <div class="extras">
-            <span class="country" i18n>{{perks?.subscription.national.quantity}} plan</span>
-            <span class="grey" i18n> {{perks?.extra.national.quantity}} extra</span>
+            <span class="country" i18n="@@web_catalog_pro_components_plan_data_62">{{perks?.subscription.national.quantity}} plan</span>
+            <span class="grey" i18n="@@web_catalog_pro_components_plan_data_63"> {{perks?.extra.national.quantity}} extra</span>
           </div>
         </div>
         <div class="border"></div>
         <div>
           <span class="number">{{status?.purchased?.countrybump || '0'}}</span>
-          <span class="text grey" i18n>In Use</span>
+          <span class="text grey" i18n="@@web_catalog_pro_components_plan_data_544">In Use</span>
           <div class="extras">
-            <span class="grey" i18n>({{status?.autorenew_scheduled?.countrybump || '0'}} planned)</span>
+            <span class="grey" i18n="@@web_catalog_pro_components_plan_data_64">({{status?.autorenew_scheduled?.countrybump || '0'}} planned)</span>
           </div>
         </div>
       </div>
