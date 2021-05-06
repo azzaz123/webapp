@@ -1,10 +1,30 @@
-<tsl-filter-template [isBubble]="variant | isBubble"
-                     [isDropdown]="true"
-                     [title]="config.title"
-                     [icon]="config.icon"
-                     [label]=""
-                     [hasValue]="hasValue$ | async"
-                     (openStateChange)="openStateChange.emit($event)">
-    <div>AAA</div>
-                     
+<tsl-filter-template [isBubble]="variant | isBubble" [hasApply]="true" [isDropdown]="true" [title]="config.title"
+    [icon]="config.icon" [label]="" (apply)="handleApply()" [hasValue]="hasValue$ | async"
+    (openStateChange)="openStateChange.emit($event)">
+
+    <div class="LocationFilter py-2 ">
+
+        <div>
+            <tsl-svg-icon class="LocationFilter__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
+            <input class="LocationFilter__input form-control" type="text" [ngModel]="labeledSearchLocation$ | async"
+                (ngModelChange)="selectLocationSuggestion($event)" [editable]="false" [ngbTypeahead]="search"
+                [resultTemplate]="locationTemplate" [inputFormatter]="inputFormatter" />
+        </div>
+
+        <img src="https://image.maps.api.here.com/mia/1.6/mapview?&z=6&app_id=RgPrXX1bXt123UgUFc7B&app_code=HtfX0DsqZ2Y0x-44GfujFA&w=700&h=270&u=500k&c=40.4893538,-3.6827461"
+            class="LocationFilter__image my-3" />
+
+        <tsl-slider-form [formControl]="distanceControl" [stepsConfig]="config.stepsConfig" [min]="config.range[0]"
+            [max]="config.range[1]" [valueTooltip]="true" [limitless]="config.limitless" [limitTooltip]="false">
+        </tsl-slider-form>
+
+        <ng-template #locationTemplate let-location="result">
+            <div class="SearchBox__suggestion d-flex flex-column justify-content-center">
+                <span class="SearchBox__suggestionTitle">
+                    {{ location.description }}
+                </span>
+            </div>
+        </ng-template>
+    </div>
+
 </tsl-filter-template>
