@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
@@ -21,14 +21,14 @@ import { DeliveryLocationService } from '../../services/delivery-location/delive
   templateUrl: './delivery-address.component.html',
   styleUrls: ['./delivery-address.component.scss'],
 })
-export class DeliveryAddressComponent {
+export class DeliveryAddressComponent implements OnInit {
   public countries: IOption[];
   public cities: IOption[];
   public deliveryAddressForm: FormGroup;
   public loading = true;
   public loadingRequest = true;
   public isNewForm = true;
-  private isCountryEditable = false;
+  public isCountryEditable = false;
   private initialCountryISOCode: DeliveryCountryISOCode;
   private readonly formSubmittedEventKey = 'formSubmitted';
 
@@ -51,6 +51,10 @@ export class DeliveryAddressComponent {
     });
   }
 
+  ngOnInit() {
+    this.handlePostalCode();
+  }
+
   ngOnDestroy() {
     this.eventService.unsubscribeAll(this.formSubmittedEventKey);
   }
@@ -61,11 +65,9 @@ export class DeliveryAddressComponent {
       .subscribe(
         (deliveryAddress: DeliveryAddressApi) => {
           if (deliveryAddress) {
-            console.log('deliveryAddress => ', deliveryAddress);
             this.initialCountryISOCode = deliveryAddress.country_iso_code;
             this.isNewForm = false;
             this.initializeCountries(false);
-            this.getLocations(deliveryAddress.postal_code);
             this.deliveryAddressForm.patchValue(deliveryAddress);
             this.patchFormValues();
             this.formComponent.initFormControl();
@@ -114,28 +116,14 @@ export class DeliveryAddressComponent {
     }
   }
 
-  public handleShowWarningCountry(e: Event): void {
+  public handleShowWarningCountry(): void {
     if (!this.isNewForm && !this.isCountryEditable) {
-      e.stopPropagation();
-      e.preventDefault();
-
       this.modalService.open(ChangeCountryConfirmationModalComponent).result.then((result: boolean) => {
         if (result) {
           this.isCountryEditable = true;
         }
       });
     }
-  }
-
-  public searchLocation(): void {
-    setTimeout(() => {
-      const newPostalCode = this.deliveryAddressForm.get('postal_code').value;
-      this.deliveryAddressForm.get('city').reset();
-      this.deliveryAddressForm.get('region').reset();
-      if (newPostalCode) {
-        this.getLocations(newPostalCode);
-      }
-    }, 2000);
   }
 
   public handleClearFrom(selectedOption: IOption): void {
@@ -158,14 +146,34 @@ export class DeliveryAddressComponent {
     this.buildForm();
   }
 
-  private getLocations(postalCode: string): void {
-    this.deliveryLocationService.getLocationsByPostalCode(postalCode).subscribe((locations: DeliveryLocationApi[]) => {
-      this.cities = locations.map((location) => {
-        return { label: location.city, value: location.city };
-      });
-      console.log('location!!! => ', locations);
-      console.log('cities!!! => ', this.cities);
+  private handlePostalCode(): void {
+    const postalCode = this.deliveryAddressForm.get('postal_code');
+    const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
+
+    postalCode.valueChanges.subscribe((newPostalCode: string) => {
+      if (postalCode.valid && countryISOCode.value) {
+        this.deliveryAddressForm.get('city').reset();
+        this.deliveryAddressForm.get('region').reset();
+
+        if (newPostalCode) {
+          this.getLocations(newPostalCode, 'ES');
+        }
+      }
     });
+  }
+
+  private getLocations(postalCode: string, countryISOCode: 'ES' | 'IT'): void {
+    this.deliveryLocationService
+      .getLocationsByPostalCodeAndCountry(postalCode, countryISOCode)
+      .subscribe((locations: DeliveryLocationApi[]) => {
+        this.cities = locations.map((location) => {
+          return { label: location.city, value: location.city };
+        });
+        if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {
+          this.deliveryAddressForm.get('city').setValue(locations[0].city);
+          this.deliveryAddressForm.get('region').setValue(locations[0].region);
+        }
+      });
   }
 
   private patchFormValues(): void {
@@ -179,7 +187,6 @@ export class DeliveryAddressComponent {
   private initializeCountries(setDefaultOption = true): void {
     this.deliveryCountriesService.get().subscribe((countryOptionsAndDefault: CountryOptionsAndDefault) => {
       this.countries = countryOptionsAndDefault.countryOptions;
-      console.log('countries ==> ', this.countries);
       if (setDefaultOption) {
         this.deliveryAddressForm.get('country').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
       }

@@ -13,8 +13,8 @@
               <div class="col-sm-12 col-md-12">
                 <div class="form-group row align-items-center">
                   <label for="country_iso_code" class="col-sm-12 col-md-5" i18n="@@Country">Country</label>
-                  <div class="col-sm-12 col-md-5" (click)="handleShowWarningCountry($event)">
-                    <tsl-dropdown i18n-placeholder="@@Country" class="form-control" formControlName="country_iso_code" id="country_iso_code" [options]="countries" (selected)="handleClearFrom($event)">
+                  <div class="col-sm-12 col-md-5">
+                    <tsl-dropdown i18n-placeholder="@@Country" class="form-control" formControlName="country_iso_code" id="country_iso_code" [isLoading]="!isCountryEditable" [options]="countries" (click)="handleShowWarningCountry()" (selected)="handleClearFrom($event)">
                     </tsl-dropdown>
                   </div>
                 </div>
@@ -39,7 +39,7 @@
                 <div class="form-group row align-items-center">
                   <label for="postal_code" class="col-sm-12 col-md-5" i18n="@@PostalCode">Postal code</label>
                   <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="postal_code" formControlName="postal_code" (keyup)="searchLocation()"/>
+                    <input type="text" class="form-control" id="postal_code" formControlName="postal_code"/>
                   </div>
                 </div>
                 <div class="form-group row align-items-center">
