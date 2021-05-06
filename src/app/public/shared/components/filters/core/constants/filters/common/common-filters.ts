@@ -76,10 +76,16 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
       longitude: FILTER_QUERY_PARAM_KEY.longitude,
       distance: FILTER_QUERY_PARAM_KEY.distance,
     },
-    options: {
-      maxDistance: 500,
-      minDistance: 1,
-    },
+    units: 'km',
+    range: [0, 500],
+    stepsConfig: [
+      { range: [0, 10], step: 5 },
+      { range: [10, 50], step: 20 },
+      { range: [50, 100], step: 50 },
+      { range: [100, 200], step: 100 },
+      { range: [200, 500], step: 300 },
+    ],
+    limitless: true,
     hasContentPlaceholder: true,
   },
 ];
