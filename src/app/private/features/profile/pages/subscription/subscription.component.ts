@@ -98,9 +98,13 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public openSubscriptionModal(subscription: SubscriptionsResponse): void {
-    this.setNewSubscription(subscription);
-    return;
     const modal = this.getModalTypeDependingOnSubscription(subscription);
+
+    if (!modal) {
+      this.setNewSubscription(subscription);
+      return;
+    }
+
     let modalRef: NgbModalRef = this.modalService.open(modal, {
       windowClass: 'review',
     });
@@ -290,5 +294,9 @@ export class SubscriptionsComponent implements OnInit {
       },
     };
     return this.analyticsService.trackEvent(event);
+  }
+
+  public onUnselectSubcription(): void {
+    this.newSubscription = null;
   }
 }

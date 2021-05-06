@@ -22,6 +22,7 @@ export class NewSubscriptionComponent implements OnInit {
   @Input() subscription: SubscriptionsResponse;
   @Input() user: User;
   @Output() purchaseSuccessful: EventEmitter<void> = new EventEmitter();
+  @Output() unselectSubcription: EventEmitter<void> = new EventEmitter();
   public stripeCards: FinancialCard[];
   public selectedCard: FinancialCard;
   public isInvoiceRequired = false;
@@ -47,6 +48,10 @@ export class NewSubscriptionComponent implements OnInit {
 
   get isSavedCard(): boolean {
     return !!this.stripeCards.find((card) => card.id === this.selectedCard.id);
+  }
+
+  public onChageSubscription(): void {
+    this.unselectSubcription.emit();
   }
 
   private getAllCards(): void {
