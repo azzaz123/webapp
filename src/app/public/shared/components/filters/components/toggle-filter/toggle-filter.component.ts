@@ -29,11 +29,6 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
     }
   }
 
-  public writeValue(value: FilterParameter[]) {
-    super.writeValue(value);
-    this.toggle = this.getBooleanValue();
-  }
-
   public handleChange(): void {
     this.toggle ? this.emitChange() : this.handleClear();
   }
@@ -52,6 +47,7 @@ export class ToggleFilterComponent extends AbstractFilter<ToggleFilterParams> im
 
   private setValue(value: boolean): void {
     this.writeValue([{ key: this.config.mapKey.key, value: value.toString() }]);
+    this.toggle = this.getBooleanValue();
   }
 
   private emitChange(): void {
