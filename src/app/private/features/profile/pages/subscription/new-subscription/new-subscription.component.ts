@@ -1,12 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorsService } from '@core/errors/errors.service';
+import { PaymentMethodResponse } from '@core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { PaymentError, STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { StripeService } from '@core/stripe/stripe.service';
-import { SubscriptionResponse, SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { User } from '@core/user/user';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from '@private/features/profile/modal/payment-success/payment-success-modal.component';
 import { FinancialCard } from '@shared/profile/credit-card-info/financial-card';
@@ -18,6 +20,8 @@ import { FinancialCard } from '@shared/profile/credit-card-info/financial-card';
 })
 export class NewSubscriptionComponent implements OnInit {
   @Input() subscription: SubscriptionsResponse;
+  @Input() user: User;
+  @Output() purchaseSuccessful: EventEmitter<void> = new EventEmitter();
   public stripeCards: FinancialCard[];
   public selectedCard: FinancialCard;
   public isInvoiceRequired = false;
@@ -38,6 +42,10 @@ export class NewSubscriptionComponent implements OnInit {
   ngOnInit(): void {
     this.getAllCards();
     this.selectedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.default_tier_id);
+  }
+
+  get isSavedCard(): boolean {
+    return !!this.stripeCards.find((card) => card.id === this.selectedCard.id);
   }
 
   private getAllCards(): void {
@@ -66,20 +74,40 @@ export class NewSubscriptionComponent implements OnInit {
   onBillingInfoFormSaved() {}
 
   onPurchaseButtonClick() {
-    this.addSubscriptionFromSavedCard();
+    this.isLoading;
+    if (this.isSavedCard) {
+      this.addSubscriptionFromSavedCard();
+      return;
+    }
+    this.addSubscription();
   }
 
   onChangeSelectedCard(card: FinancialCard) {
     this.selectedCard = card;
   }
 
-  public addSubscriptionFromSavedCard(selectedPlanId: string = this.selectedTier.id, paymentMethodId = this.selectedCard.id) {
+  private addSubscription() {
+    const cardId = this.selectedCard.id;
+    this.isLoading = true;
+    this.stripeService.addNewCard(cardId).subscribe(
+      () => {
+        if (this.isRetryInvoice) {
+          this.retrySubscription(cardId);
+        } else {
+          this.addSubscriptionFromSavedCard();
+        }
+      },
+      (error: HttpErrorResponse) => this.requestNewPayment(error)
+    );
+  }
+
+  private addSubscriptionFromSavedCard() {
     this.isLoading = true;
 
     if (this.isRetryInvoice) {
       this.retrySubscription();
     } else {
-      this.subscriptionsService.newSubscription(selectedPlanId, paymentMethodId, this.isInvoiceRequired).subscribe(
+      this.subscriptionsService.newSubscription(this.selectedTier.id, this.selectedCard.id, this.isInvoiceRequired).subscribe(
         (response) => {
           if (response.status === 202) {
             this.subscriptionsService.checkNewSubscriptionStatus().subscribe(
@@ -181,16 +209,14 @@ export class NewSubscriptionComponent implements OnInit {
     let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
     const modalComponent: PaymentSuccessModalComponent = modalRef.componentInstance;
     modalComponent.tier = this.selectedTier.id;
-    /*     modalComponent.isNewSubscriber = this.isNewSubscriber;
-    modalComponent.isNewCard = !this.hasSavedCard;
-    modalComponent.isInvoice = this.selectedInvoiceOption;
-    modalComponent.subscriptionCategoryId = this.subscription.category_id as SUBSCRIPTION_CATEGORIES; */
+    modalComponent.isNewSubscriber = !this.user.featured;
+    modalComponent.isNewCard = !this.isSavedCard;
+    modalComponent.isInvoice = this.isInvoiceRequired;
+    modalComponent.subscriptionCategoryId = this.subscription.category_id as SUBSCRIPTION_CATEGORIES;
 
     modalRef.result.then(
-      () => {
-        // this.rou
-      },
-      () => {}
+      () => this.purchaseSuccessful.emit(),
+      () => this.purchaseSuccessful.emit()
     );
   }
 

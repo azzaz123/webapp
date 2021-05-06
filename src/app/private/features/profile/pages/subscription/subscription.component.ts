@@ -109,12 +109,7 @@ export class SubscriptionsComponent implements OnInit {
     modalRef.result.then(
       (action: ModalStatuses) => {
         if (action) {
-          this.loading = true;
-          if (this.user && this.user.featured) {
-            this.isSubscriptionUpdated();
-          } else {
-            this.isUserUpdated();
-          }
+          this.subscriptionChangeSuccessful();
         }
         modalRef = null;
       },
@@ -124,6 +119,15 @@ export class SubscriptionsComponent implements OnInit {
     );
 
     this.trackOpenModalEvent(subscription, modal);
+  }
+
+  public subscriptionChangeSuccessful() {
+    this.loading = true;
+    if (this.user.featured) {
+      this.isSubscriptionUpdated();
+      return;
+    }
+    this.isUserUpdated();
   }
 
   private isUserUpdated() {

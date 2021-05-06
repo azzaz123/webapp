@@ -285,7 +285,7 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
     modalComponent.tier = this.selectedTier.id;
     modalComponent.isNewSubscriber = this.isNewSubscriber;
     modalComponent.isNewCard = !this.hasSavedCard;
-    modalComponent.isInvoice = this.selectedInvoiceOption;
+    // modalComponent.isInvoice = this.selectedInvoiceOption;
     modalComponent.subscriptionCategoryId = this.subscription.category_id as SUBSCRIPTION_CATEGORIES;
 
     modalRef.result.then(
