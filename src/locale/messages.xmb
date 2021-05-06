@@ -157,14 +157,14 @@
   <msg id="web_components_tabbar_6"><source>src/app/layout/tabbar/components/tabbar.component.html:38</source>Messages</msg>
   <msg id="TabBarButtonMyZone"><source>src/app/layout/tabbar/components/tabbar.component.html:58</source>My Zone</msg>
   <msg id="TabBarButtonLogin"><source>src/app/layout/tabbar/components/tabbar.component.html:59</source>Log in</msg>
-  <msg id="web_components_suggester_7"><source>src/app/layout/topbar/components/suggester/suggester.component.html:1</source>Search in All categories</msg>
-  <msg id="web_components_topbar_8"><source>src/app/layout/topbar/components/topbar/topbar.component.html:13</source>credit</msg>
-  <msg id="web_components_topbar_538"><source>src/app/layout/topbar/components/topbar/topbar.component.html:20</source>Messages</msg>
-  <msg id="web_components_topbar_9"><source>src/app/layout/topbar/components/topbar/topbar.component.html:27</source>My Zone</msg>
-  <msg id="web_components_topbar_10"><source>src/app/layout/topbar/components/topbar/topbar.component.html:28</source>My Pro Zone</msg>
-  <msg id="TopBarButtonRegisteOrSignin"><source>src/app/layout/topbar/components/topbar/topbar.component.html:32</source>Register or sign in</msg>
-  <msg id="web_components_topbar_11"><source>src/app/layout/topbar/components/topbar/topbar.component.html:36</source>List a product</msg>
-  <msg id="web_components_topbar_12"><source>src/app/layout/topbar/components/topbar/topbar.component.html:37</source>List a car</msg>
+  <msg id="web_components_suggester_7"><source>src/app/layout/topbar/components/suggester/suggester.component.html:5</source>Search in All categories</msg>
+  <msg id="web_components_topbar_8"><source>src/app/layout/topbar/components/topbar/topbar.component.html:12</source>credit</msg>
+  <msg id="web_components_topbar_538"><source>src/app/layout/topbar/components/topbar/topbar.component.html:19</source>Messages</msg>
+  <msg id="web_components_topbar_9"><source>src/app/layout/topbar/components/topbar/topbar.component.html:26</source>My Zone</msg>
+  <msg id="web_components_topbar_10"><source>src/app/layout/topbar/components/topbar/topbar.component.html:27</source>My Pro Zone</msg>
+  <msg id="TopBarButtonRegisteOrSignin"><source>src/app/layout/topbar/components/topbar/topbar.component.html:31</source>Register or sign in</msg>
+  <msg id="web_components_topbar_11"><source>src/app/layout/topbar/components/topbar/topbar.component.html:35</source>List a product</msg>
+  <msg id="web_components_topbar_12"><source>src/app/layout/topbar/components/topbar/topbar.component.html:36</source>List a car</msg>
   <msg id="web_calls_pages_13"><source>src/app/private/features/calls/pages/calls.component.html:10</source>Calls</msg>
   <msg id="web_calls_pages_14"><source>src/app/private/features/calls/pages/calls.component.html:13</source>Here you can manage and see the information related with your calls</msg>
   <msg id="web_calls_pages_15"><source>src/app/private/features/calls/pages/calls.component.html:21</source>Pending</msg>
@@ -290,12 +290,12 @@
   <msg id="web_catalog_components_bump_tutorial_102"><source>src/app/private/features/catalog/components/bump-tutorial/bump-tutorial.component.html:66</source>Ready!</msg>
   <msg id="web_catalog_components_item_103"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:36</source>Published</msg>
   <msg id="web_catalog_components_item_104"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:42</source>Modified</msg>
-  <msg id="web_catalog_components_item_105"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:47,49</source> Inactive </msg>
-  <msg id="web_catalog_components_item_106"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:55</source>Active</msg>
-  <msg id="web_catalog_components_item_107"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:64</source>Activate</msg>
-  <msg id="web_catalog_components_item_108"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:75</source>Feature</msg>
-  <msg id="web_catalog_components_item_109"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:104</source>Reactivate</msg>
-  <msg id="web_catalog_components_item_640"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:111</source>Pending</msg>
+  <msg id="web_catalog_components_item_105"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:47</source>Inactive</msg>
+  <msg id="web_catalog_components_item_106"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:54</source>Active</msg>
+  <msg id="web_catalog_components_item_107"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:63</source>Activate</msg>
+  <msg id="web_catalog_components_item_108"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:74</source>Feature</msg>
+  <msg id="web_catalog_components_item_109"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:103</source>Reactivate</msg>
+  <msg id="web_catalog_components_item_640"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:110</source>Pending</msg>
   <msg id="web_mark_as_sold_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:24</source>Mark as sold</msg>
   <msg id="web_mark_as_reserved_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:25</source>Mark as reserved</msg>
   <msg id="web_edit_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:26</source>Edit</msg>
@@ -951,7 +951,7 @@
   <msg id="8499959580096706757" desc="web_search_sort_filter_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:3</source>Ordenador por: </msg>
   <msg id="7994828817141708719" desc="web_search_sort_filter_bubble_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:8</source>Ordenado por</msg>
   <msg id="6402951927316857780" desc="web_search_sort_filter_bubble_cancel"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:15</source>Cancelar</msg>
-  <msg id="4026193177292289663" desc="web_search_component_load_more_products"><source>src/app/public/features/search/pages/search.component.html:44</source>Ver más productos</msg>
+  <msg id="4026193177292289663" desc="web_search_component_load_more_products"><source>src/app/public/features/search/pages/search.component.html:55</source>Ver más productos</msg>
   <msg id="FooterLinksWallapopTitle"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:5</source>wallapop</msg>
   <msg id="FooterLinksAboutLabel"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:8</source>About</msg>
   <msg id="FooterLinksAboutHref"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:9</source>https://about.wallapop.com/en</msg>
