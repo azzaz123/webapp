@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { SubscriptionResponse, SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SubscriptionResponse, SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-subscription-tier-selector',
@@ -8,8 +8,14 @@ import { SubscriptionResponse, SubscriptionsResponse } from '@core/subscriptions
 })
 export class SubscriptionTierSelectorComponent implements OnInit {
   @Input() subscription: SubscriptionsResponse;
+  @Input() selectedTier: Tier;
+  @Output() changeSelectedTier: EventEmitter<Tier> = new EventEmitter();
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  onTierSelectedChanged(event: Tier) {
+    this.changeSelectedTier.emit(event);
+  }
 }

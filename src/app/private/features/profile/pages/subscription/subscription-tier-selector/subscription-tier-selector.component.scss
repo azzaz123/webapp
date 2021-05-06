@@ -8,4 +8,8 @@
     transform: $item-card-hover-translate;
     box-shadow: $item-card-hover-box-shadow;
   }
+
+  &--selected {
+    border: solid 2px #607d8b;
+  }
 }
