@@ -8,7 +8,12 @@ import { SubscriptionResponse, SubscriptionsResponse } from '@core/subscriptions
 })
 export class NewSubscriptionViewComponent implements OnInit {
   @Input() subscription: SubscriptionsResponse;
+  @Input() benefits: string[];
   constructor() {}
 
   ngOnInit(): void {}
+
+  get iconSrc(): string {
+    return `/assets/icons/categories/normal/${this.subscription.category_icon}.svg`;
+  }
 }

@@ -1,19 +1,19 @@
 
     <div class="SubscriptionPurchase">
-        <div class="card-generic">
-            <div class="card-generic__title">Wallapop PRo</div>
-            <div class="card-generic__subtitle">Súscribete a Wallapop PRO y lleva tus ventas al siguiente nivel.</div>
-            <tsl-new-subscription-view [subscription]="subscription"> </tsl-new-subscription-view>
+        <div class="GenericCard">
+            <div class="GenericCard__title" i18n="@@WallapopProSubscriptionTitle">Boost your online business with Wallapop PRO</div>
+            <div class="GenericCard__subtitle" i18n="@@WallapopProSubscriptionSubTitle">Choose a subscription to take your sales to the next level</div>
+            <tsl-new-subscription-view [subscription]="subscription" [benefits]="benefits"> </tsl-new-subscription-view>
         </div>
         
-        <div class="card-generic">
-            <div class="card-generic__title">Wallapop PRo</div>
-            <div class="card-generic__subtitle">Súscribete a Wallapop PRO y lleva tus ventas al siguiente nivel.</div>
+        <div class="GenericCard">
+            <div class="GenericCard__title">Wallapop PRo</div>
+            <div class="GenericCard__subtitle">Súscribete a Wallapop PRO y lleva tus ventas al siguiente nivel.</div>
             <tsl-subscription-tier-selector [subscription]="subscription" [selectedTier]="selectedTier" (changeSelectedTier)="onSelectedTierChanged($event)"> </tsl-subscription-tier-selector>
         </div>
-        <div class="card-generic">
-            <div class="card-generic__title">Wallapop PRo</div>
-            <div class="card-generic__subtitle">Súscribete a Wallapop PRO y lleva tus ventas al siguiente nivel.</div>
+        <div class="GenericCard">
+            <div class="GenericCard__title">Wallapop PRo</div>
+            <div class="GenericCard__subtitle">Súscribete a Wallapop PRO y lleva tus ventas al siguiente nivel.</div>
             <ng-container *ngIf="stripeCards">
                 <tsl-subscription-card-selector [stripeCards]="stripeCards" [selectedCard]="selectedCard" (changeSelectedCard)="onChangeSelectedCard($event)" (isInvoiceRequired)="onInvoiceRequired($event)">
                 </tsl-subscription-card-selector>

@@ -25,13 +25,13 @@ export class NewSubscriptionComponent implements OnInit {
   public stripeCards: FinancialCard[];
   public selectedCard: FinancialCard;
   public isInvoiceRequired = false;
-  public selectedTier;
+  public selectedTier: Tier;
   public paymentError: STRIPE_ERROR;
+  public benefits: string[];
   constructor(
     private stripeService: StripeService,
     private errorService: ErrorsService,
     private subscriptionsService: SubscriptionsService,
-    private router: Router,
     private modalService: NgbModal
   ) {}
   public isLoading: boolean;
@@ -42,6 +42,7 @@ export class NewSubscriptionComponent implements OnInit {
   ngOnInit(): void {
     this.getAllCards();
     this.selectedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.default_tier_id);
+    this.benefits = this.subscriptionsService.getBenefits(this.subscription.category_id);
   }
 
   get isSavedCard(): boolean {

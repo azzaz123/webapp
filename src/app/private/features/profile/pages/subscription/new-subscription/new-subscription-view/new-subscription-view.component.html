@@ -1,1 +1,23 @@
-<p>new-subscription-view works!</p>
+<div class="GenericCard GenericCard--dark d-flex">
+    <div class="SubscriptionPurchaseHeader__icon mr-5">
+        <tsl-svg-icon [src]="iconSrc" class="image">
+        </tsl-svg-icon>
+    </div>
+    <div class="w-100">
+        <div class="mb-2">
+            <b><span i18n="@@SubscriptionPurchaseSubscriptionTitle" class="SubscriptionPurchaseHeader__title">{{subscription.category_name.toUpperCase()}}
+                    subscription
+                </span></b>
+        </div>
+        <div class="mb-2 SubscriptionPurchaseHeader__subtitle">
+            Turn your sales into a real business
+        </div>
+        <div class="d-flex justify-content-between SubscriptionPurchaseHeader__benefits">
+            <span class="d-flex align-items-center" *ngFor="let benefit of benefits">
+                <tsl-svg-icon class="mr-1 SubscriptionPurchaseHeader__iconCheck" src="assets/icons/check.svg">
+                </tsl-svg-icon>
+                {{benefit}}
+            </span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+@import '~style/common';
+
+.SubscriptionPurchaseHeader {
+  &__icon {
+    padding: 15px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    background-color: $blue-grey-5;
+  }
+
+  &__title {
+    font-size: 20px;
+  }
+
+  &__subtitle {
+    font-size: 16px;
+    color: #607d8b;
+  }
+
+  &__benefits {
+    font-size: 14px;
+    color: #607d8b;
+  }
+
+  &__iconCheck {
+    ::ng-deep svg path {
+      fill: $blue-grey-2;
+    }
+  }
+}

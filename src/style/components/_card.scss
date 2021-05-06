@@ -21,11 +21,12 @@
     border-radius: $border-radius;
   }
 }
-.card-generic {
+.GenericCard {
   border-radius: $border-radius;
   padding: $spacing-ml;
   margin-bottom: $spacing-ml;
   background-color: $white;
+  border: 1px solid #eceff1;
 
   &__title {
     font-size: $font-size-m;
@@ -37,5 +38,9 @@
     font-size: $font-size-m;
     color: $blue-grey-2;
     margin-bottom: 8px;
+  }
+
+  &--dark {
+    background-color: #f9fafa;
   }
 }

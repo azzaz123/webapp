@@ -63,4 +63,8 @@ export class SubscriptionListComponent {
   public onOpenSubscriptionModal(subscription: SubscriptionsResponse): void {
     this.openSubscriptionModal.emit(subscription);
   }
+
+  public getBenefits(subscription: SubscriptionsResponse): string[] {
+    return this.subscriptionsService.getBenefits(subscription.category_id);
+  }
 }

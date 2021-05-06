@@ -1,10 +1,10 @@
 <div class="d-flex">
     <ng-container *ngFor="let tier of subscription.tiers">
-        <div class="card-generic flex-1" [class.card-generic--selected]="selectedTier?.id === tier.id" (click)="onTierSelectedChanged(tier)">
-            <div class="card-generic__title">
+        <div class="GenericCard flex-1" [class.GenericCard--selected]="selectedTier?.id === tier.id" (click)="onTierSelectedChanged(tier)">
+            <div class="GenericCard__title">
                 {{ tier.limit}}
             </div>
-            <div class="card-generic__subtitle">
+            <div class="GenericCard__subtitle">
                 {{ tier.price }}
             </div>
         </div>
