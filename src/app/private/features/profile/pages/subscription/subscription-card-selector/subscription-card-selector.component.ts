@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SubscriptionResponse } from '@core/subscriptions/subscriptions.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeCardModalComponent } from '@shared/modals/change-card-modal/change-card-modal.component';
@@ -14,9 +14,9 @@ export const test = 'AAAA';
 })
 export class SubscriptionCardSelectorComponent implements OnInit {
   @Input() stripeCards: FinancialCard[];
+  @Input() selectedCard: FinancialCard;
+  @Output() changeSelectedCard: EventEmitter<FinancialCard> = new EventEmitter();
   loading;
-
-  selectedCard;
 
   constructor(private modalService: NgbModal) {}
 
@@ -24,7 +24,6 @@ export class SubscriptionCardSelectorComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('stripe', this.stripeCards);
-    this.selectedCard = this.stripeCards.find((card) => card.invoices_default) || this.stripeCards[0];
   }
 
   onSetChangeCard(event) {}
@@ -39,7 +38,7 @@ export class SubscriptionCardSelectorComponent implements OnInit {
           this.loading = true;
           console.log('test', financialCard);
           const existingCard = this.stripeCards.filter((stripeCard) => stripeCard.id === financialCard.id);
-          this.selectedCard = financialCard;
+          this.changeSelectedCard.emit(financialCard);
 
           /*           if (!existingCard.length) {
             this.stripeService
@@ -63,7 +62,7 @@ export class SubscriptionCardSelectorComponent implements OnInit {
     modalRef.result
       .then(
         (card) => {
-          this.selectedCard = card;
+          this.changeSelectedCard.emit(card);
         },
         () => (this.loading = false)
       )

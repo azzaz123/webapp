@@ -1,5 +1,5 @@
 <div class="SubscriptionCardSelector d-flex justify-content-between">
-    <tsl-credit-card-info [financialCard]="selectedCard" [disableDelete]="true" (onSetChangeCard)="addNewSubscriptionCard()">
+    <tsl-credit-card-info [financialCard]="selectedCard" [disableDelete]="true" [disableEdit]="!stripeCards?.length" (onSetChangeCard)="addNewSubscriptionCard()">
     </tsl-credit-card-info>
     <div class="SubscriptionCardSelector__newCard">
         <span (click)="addNewCard()" i18n="@@AddCard">Add card</span>
