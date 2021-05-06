@@ -24,7 +24,7 @@ export class ItemRequiredDataService {
   constructor(private http: HttpClient) {}
 
   public hasMissingRequiredDataByItemId(itemId: string): any {
-    return this.http.get<ItemResponse>(GET_ITEM_ENDPOINT(itemId)).pipe(
+    return this.getItem(itemId).pipe(
       map(
         (item: ItemResponse) => {
           try {
@@ -85,7 +85,6 @@ export class ItemRequiredDataService {
       for (let i = 0; i < fieldLevelCount; i++) {
         value = this.getValue(value, fieldNames[i]);
       }
-
       return !!value;
     });
   }
@@ -119,6 +118,10 @@ export class ItemRequiredDataService {
         }
       )
     );
+  }
+
+  private getItem(itemId: string): Observable<ItemResponse> {
+    return this.http.get<ItemResponse>(GET_ITEM_ENDPOINT(itemId));
   }
 
   private getObjectTypes(category_id: number, parent_id: number): Observable<ObjectType[]> {
