@@ -1278,4 +1278,14 @@
   <translation id="filtersCategoryJobs">Empleo</translation>
   <translation id="filtersCategoryServices">Servicios</translation>
   <translation id="filtersCategoryOther">Otros</translation>
+  <translation id="filterCarsBrandModelTitle">Marca y modelo</translation>
+  <translation id="filterCarsBrandModelBubblePlaceholder">Marca y modelo</translation>
+  <translation id="filterCarsBrandModelSuggesterPlaceholder">¿Buscas alguna marca?</translation>
+  <translation id="filterCarsBrandModelDrawerPlaceholder">Selecciona marca y modelo</translation>
+  <translation id="filterBodyTypeTitle">Tipo de coche</translation>
+  <translation id="filterBodyTypePlaceholder">Tipo de coche</translation>
+  <translation id="filterEngineTypeTitle">Tipo de combustible</translation>
+  <translation id="filterEngineTypePlaceholder">Tipo de combustible</translation>
+  <translation id="filterGearboxTypeTitle">Cambio de marchas</translation>
+  <translation id="filterGearboxTypePlaceholder">Cambio de marchas</translation>
 </translationbundle>
