@@ -10,6 +10,7 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     title: $localize`:@@filterGenderTitle:Gender`,
     bubblePlaceholder: $localize`:@@filterGenderBubblePlaceholder:Gender`,
     drawerPlaceholder: $localize`:@@filterGenderBubblePlaceholder:Select gender`,
+    icon: '/assets/icons/filters/gender.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.gender,
     },
@@ -46,5 +47,18 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     isClearable: true,
     hasContentPlaceholder: true,
     isLabelInValue: true,
+  },
+  {
+    id: FASHION_CONFIGURATION_ID.SIZE,
+    type: FILTER_TYPES.SELECT,
+    title: $localize`:@@filterFashionBrandTitle:Size`,
+    bubblePlaceholder: $localize`:@@filterFashionSizeBubblePlaceholder:Size`,
+    drawerPlaceholder: $localize`:@@filterFashionSizeDrawerPlaceholder:Select size`,
+    icon: '/assets/icons/filters/size.svg',
+    mapKey: {
+      parameterKey: FILTER_QUERY_PARAM_KEY.size,
+    },
+    isClearable: true,
+    hasContentPlaceholder: true,
   },
 ];

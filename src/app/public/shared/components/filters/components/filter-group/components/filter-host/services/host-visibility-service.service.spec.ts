@@ -106,7 +106,10 @@ describe('HostVisibilityService', () => {
 
     describe('... in the drawer store', () => {
       it('should ONLY notify listeners whose visibility change', () => {
-        drawerStore.setParameters([{ key: FILTER_QUERY_PARAM_KEY.gender, value: 'any' }]);
+        drawerStore.setParameters([
+          { key: FILTER_QUERY_PARAM_KEY.gender, value: 'any' },
+          { key: FILTER_QUERY_PARAM_KEY.objectType, value: 'any' },
+        ]);
 
         expect(conditionDrawerVisibility).toBe(true);
         expect(sizeDrawerVisibility).toBe(true);
@@ -117,7 +120,10 @@ describe('HostVisibilityService', () => {
 
     describe('... in the bubble store', () => {
       it('should ONLY notify listeners whose visibility change', () => {
-        bubbleStore.setParameters([{ key: FILTER_QUERY_PARAM_KEY.gender, value: 'any' }]);
+        bubbleStore.setParameters([
+          { key: FILTER_QUERY_PARAM_KEY.gender, value: 'any' },
+          { key: FILTER_QUERY_PARAM_KEY.objectType, value: 'any' },
+        ]);
 
         expect(conditionDrawerVisibility).toBe(true);
         expect(sizeDrawerVisibility).toBe(false);
@@ -150,7 +156,7 @@ describe('HostVisibilityService', () => {
     const initialConditions: QueryParamVisibilityCondition[] = [
       {
         queryParam: FILTER_QUERY_PARAM_KEY.size,
-        requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender],
+        requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender, FILTER_QUERY_PARAM_KEY.objectType],
         excludingParameters: [],
       },
     ];
@@ -162,7 +168,7 @@ describe('HostVisibilityService', () => {
           requiredQueryParams: [FILTER_QUERY_PARAM_KEY.latitude],
           excludingParameters: [],
         };
-        service.addVisibilityCondition(newCondition);
+        service.addVisibilityConditions([newCondition]);
 
         expect(service['visibilityConditionsSubject'].getValue()).toEqual([...initialConditions, newCondition]);
       });
@@ -176,12 +182,12 @@ describe('HostVisibilityService', () => {
             requiredQueryParams: [FILTER_QUERY_PARAM_KEY.latitude],
             excludingParameters: [],
           };
-          service.addVisibilityCondition(newCondition);
+          service.addVisibilityConditions([newCondition]);
 
           expect(service['visibilityConditionsSubject'].getValue()).toEqual([
             {
               queryParam: FILTER_QUERY_PARAM_KEY.size,
-              requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender, FILTER_QUERY_PARAM_KEY.latitude],
+              requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender, FILTER_QUERY_PARAM_KEY.objectType, FILTER_QUERY_PARAM_KEY.latitude],
               excludingParameters: [],
             },
           ]);
@@ -195,12 +201,12 @@ describe('HostVisibilityService', () => {
             requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender],
             excludingParameters: [],
           };
-          service.addVisibilityCondition(newCondition);
+          service.addVisibilityConditions([newCondition]);
 
           expect(service['visibilityConditionsSubject'].getValue()).toEqual([
             {
               queryParam: FILTER_QUERY_PARAM_KEY.size,
-              requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender],
+              requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender, FILTER_QUERY_PARAM_KEY.objectType],
               excludingParameters: [],
             },
           ]);
@@ -219,12 +225,12 @@ describe('HostVisibilityService', () => {
               },
             ],
           };
-          service.addVisibilityCondition(newCondition);
+          service.addVisibilityConditions([newCondition]);
 
           expect(service['visibilityConditionsSubject'].getValue()).toEqual([
             {
               queryParam: FILTER_QUERY_PARAM_KEY.size,
-              requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender],
+              requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender, FILTER_QUERY_PARAM_KEY.objectType],
               excludingParameters: [
                 {
                   queryParam: FILTER_QUERY_PARAM_KEY.objectType,
@@ -248,7 +254,7 @@ describe('HostVisibilityService', () => {
               },
             ],
           };
-          service.addVisibilityCondition(newCondition);
+          service.addVisibilityConditions([newCondition]);
         });
 
         describe('with new values', () => {
@@ -263,12 +269,12 @@ describe('HostVisibilityService', () => {
                 },
               ],
             };
-            service.addVisibilityCondition(newCondition);
+            service.addVisibilityConditions([newCondition]);
 
             expect(service['visibilityConditionsSubject'].getValue()).toEqual([
               {
                 queryParam: FILTER_QUERY_PARAM_KEY.size,
-                requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender],
+                requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender, FILTER_QUERY_PARAM_KEY.objectType],
                 excludingParameters: [
                   {
                     queryParam: FILTER_QUERY_PARAM_KEY.objectType,
@@ -292,12 +298,12 @@ describe('HostVisibilityService', () => {
                 },
               ],
             };
-            service.addVisibilityCondition(newCondition);
+            service.addVisibilityConditions([newCondition]);
 
             expect(service['visibilityConditionsSubject'].getValue()).toEqual([
               {
                 queryParam: FILTER_QUERY_PARAM_KEY.size,
-                requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender],
+                requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender, FILTER_QUERY_PARAM_KEY.objectType],
                 excludingParameters: [
                   {
                     queryParam: FILTER_QUERY_PARAM_KEY.objectType,
@@ -324,11 +330,13 @@ describe('HostVisibilityService', () => {
       });
 
       it('should ONLY notify listeners whose visibility change', () => {
-        service.addVisibilityCondition({
-          queryParam: FILTER_QUERY_PARAM_KEY.condition,
-          requiredQueryParams: [FILTER_QUERY_PARAM_KEY.latitude],
-          excludingParameters: [],
-        });
+        service.addVisibilityConditions([
+          {
+            queryParam: FILTER_QUERY_PARAM_KEY.condition,
+            requiredQueryParams: [FILTER_QUERY_PARAM_KEY.latitude],
+            excludingParameters: [],
+          },
+        ]);
 
         expect(conditionVisibility).toBe(false);
       });

@@ -31,7 +31,7 @@ export class HostVisibilityService {
   private static INITIAL_CONDITIONS: QueryParamVisibilityCondition[] = [
     {
       queryParam: FILTER_QUERY_PARAM_KEY.size,
-      requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender],
+      requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender, FILTER_QUERY_PARAM_KEY.objectType],
       excludingParameters: [],
     },
   ];
@@ -61,23 +61,25 @@ export class HostVisibilityService {
     this.drawerListeners = [];
   }
 
-  public addVisibilityCondition(condition: QueryParamVisibilityCondition): void {
+  public addVisibilityConditions(conditions: QueryParamVisibilityCondition[]): void {
     let newConditions = [...this.visibilityConditionsSubject.getValue()];
 
-    const foundCondition = newConditions.find((cond) => cond.queryParam === condition.queryParam);
+    for (const condition of conditions) {
+      const foundCondition = newConditions.find((cond) => cond.queryParam === condition.queryParam);
 
-    if (!foundCondition) {
-      newConditions.push(condition);
-    } else {
-      const newCondition = { ...foundCondition };
+      if (!foundCondition) {
+        newConditions.push(condition);
+      } else {
+        const newCondition = { ...foundCondition };
 
-      newCondition.requiredQueryParams = [...newCondition.requiredQueryParams, ...condition.requiredQueryParams].filter(
-        (value, index, array) => array.indexOf(value) === index
-      );
-      newCondition.excludingParameters = this.mergeExcludingParameters(newCondition.excludingParameters, condition.excludingParameters);
+        newCondition.requiredQueryParams = [...newCondition.requiredQueryParams, ...condition.requiredQueryParams].filter(
+          (value, index, array) => array.indexOf(value) === index
+        );
+        newCondition.excludingParameters = this.mergeExcludingParameters(newCondition.excludingParameters, condition.excludingParameters);
 
-      newConditions = newConditions.filter((cond) => cond.queryParam !== newCondition.queryParam);
-      newConditions.push(newCondition);
+        newConditions = newConditions.filter((cond) => cond.queryParam !== newCondition.queryParam);
+        newConditions.push(newCondition);
+      }
     }
 
     this.visibilityConditionsSubject.next(newConditions);
@@ -147,19 +149,20 @@ export class HostVisibilityService {
     if (excludingParameters) {
       const currentParams = store.getParametersByKeys(excludingParameters.map((excludingParam) => excludingParam.queryParam));
 
-      currentParams.forEach((currentParam) => {
+      for (const currentParam of currentParams) {
         const excludingParameter = excludingParameters.find((excludingParam) => excludingParam.queryParam === currentParam.key);
 
         if (excludingParameter.values.includes(currentParam.value)) {
           return false;
         }
-      });
+      }
     }
 
     return true;
   }
 
   private handleDrawerParametersChange(): void {
+    console.log('HostVisibilityService.handleDrawerParametersChange - parameters changed', this.drawerStore.getParameters());
     this.drawerListeners.forEach((listener) => this.updateListener(listener, FILTER_VARIANT.CONTENT));
   }
 
