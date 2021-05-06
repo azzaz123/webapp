@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { FilterHostComponent } from '../filter-host.component';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
@@ -20,18 +20,19 @@ interface ExcludingParameter {
   values: string[];
 }
 
-interface QueryParamVisibilityCondition {
+export interface QueryParamVisibilityCondition {
   queryParam: FILTER_QUERY_PARAM_KEY;
-  requiredQueryParams?: FILTER_QUERY_PARAM_KEY[];
-  excludingParameters?: ExcludingParameter[];
+  requiredQueryParams: FILTER_QUERY_PARAM_KEY[];
+  excludingParameters: ExcludingParameter[];
 }
 
 @Injectable()
-export class HostVisibilityService implements OnInit, OnDestroy {
+export class HostVisibilityService {
   private static INITIAL_CONDITIONS: QueryParamVisibilityCondition[] = [
     {
       queryParam: FILTER_QUERY_PARAM_KEY.size,
       requiredQueryParams: [FILTER_QUERY_PARAM_KEY.gender],
+      excludingParameters: [],
     },
   ];
 
@@ -39,35 +40,44 @@ export class HostVisibilityService implements OnInit, OnDestroy {
   private drawerListeners: VisibilityListener[] = [];
 
   private visibilityConditionsSubject = new BehaviorSubject<QueryParamVisibilityCondition[]>(HostVisibilityService.INITIAL_CONDITIONS);
-  private subscriptions = new Subscription();
+  private subscriptions: Subscription;
 
   public constructor(
     @Inject(FILTER_PARAMETER_DRAFT_STORE_TOKEN) private drawerStore: FilterParameterStoreService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private bubbleStore: FilterParameterStoreService
   ) {}
 
-  public ngOnInit(): void {
-    this.subscriptions.add(this.drawerStore.parameters$.subscribe(this.handleDrawerParametersChange));
-    this.subscriptions.add(this.bubbleStore.parameters$.subscribe(this.handleBubbleParametersChange));
-    this.subscriptions.add(this.visibilityConditionsSubject.subscribe(this.handleVisibilityConditionsChange));
+  public init(): void {
+    this.subscriptions = new Subscription();
+    this.subscriptions.add(this.drawerStore.parameters$.subscribe(this.handleDrawerParametersChange.bind(this)));
+    this.subscriptions.add(this.bubbleStore.parameters$.subscribe(this.handleBubbleParametersChange.bind(this)));
+    this.subscriptions.add(this.visibilityConditionsSubject.subscribe(this.handleVisibilityConditionsChange.bind(this)));
   }
 
-  public ngOnDestroy(): void {
+  public clear(): void {
     this.subscriptions.unsubscribe();
+    this.visibilityConditionsSubject.next(HostVisibilityService.INITIAL_CONDITIONS);
+    this.bubbleListeners = [];
+    this.drawerListeners = [];
   }
 
   public addVisibilityCondition(condition: QueryParamVisibilityCondition): void {
-    const newConditions = [...this.visibilityConditionsSubject.getValue()];
+    let newConditions = [...this.visibilityConditionsSubject.getValue()];
 
     const foundCondition = newConditions.find((cond) => cond.queryParam === condition.queryParam);
 
     if (!foundCondition) {
       newConditions.push(condition);
     } else {
-      foundCondition.requiredQueryParams = [...foundCondition.requiredQueryParams, ...condition.requiredQueryParams].filter(
+      const newCondition = { ...foundCondition };
+
+      newCondition.requiredQueryParams = [...newCondition.requiredQueryParams, ...condition.requiredQueryParams].filter(
         (value, index, array) => array.indexOf(value) === index
       );
-      foundCondition.excludingParameters = this.mergeExcludingParameters(foundCondition.excludingParameters, condition.excludingParameters);
+      newCondition.excludingParameters = this.mergeExcludingParameters(newCondition.excludingParameters, condition.excludingParameters);
+
+      newConditions = newConditions.filter((cond) => cond.queryParam !== newCondition.queryParam);
+      newConditions.push(newCondition);
     }
 
     this.visibilityConditionsSubject.next(newConditions);
@@ -106,11 +116,11 @@ export class HostVisibilityService implements OnInit, OnDestroy {
   private isHostVisible(queryParams: FILTER_QUERY_PARAM_KEY[], variant: FILTER_VARIANT): boolean {
     const relatedConditions = this.visibilityConditionsSubject.getValue().filter((condition) => queryParams.includes(condition.queryParam));
 
-    relatedConditions.forEach((condition) => {
+    for (const condition of relatedConditions) {
       if (!this.isConditionVisible(condition, variant)) {
         return false;
       }
-    });
+    }
 
     return true;
   }
@@ -171,7 +181,7 @@ export class HostVisibilityService implements OnInit, OnDestroy {
     }
   }
 
-  private mergeExcludingParameters(parameters1: ExcludingParameter[], parameters2: ExcludingParameter[]): ExcludingParameter[] {
+  private mergeExcludingParameters(parameters1: ExcludingParameter[] = [], parameters2: ExcludingParameter[] = []): ExcludingParameter[] {
     return [...parameters1, ...parameters2].reduce((acc, excludingParameter) => {
       const existingParameter = acc.find((accExcludingParameter) => accExcludingParameter.queryParam === excludingParameter.queryParam);
 
