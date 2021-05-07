@@ -16,6 +16,7 @@ import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-a
 import { DeliveryCountryISOCode, DeliveryLocationApi } from '../../interfaces/delivery-location/delivery-location-api.interface';
 import { DeliveryLocationService } from '../../services/delivery-location/delivery-location.service';
 import { postalCodeValidator } from '@core/form-validators/postalCodeValidator.func';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -98,7 +99,7 @@ export class DeliveryAddressComponent implements OnInit {
         )
         .subscribe(
           () => {
-            this.errorsService.i18nSuccess('');
+            this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_EDITED);
             this.formComponent.initFormControl();
             this.isNewForm = false;
             this.initForm(false);
@@ -108,7 +109,7 @@ export class DeliveryAddressComponent implements OnInit {
           }
         );
     } else {
-      this.errorsService.i18nError('formErrors');
+      this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
       for (const control in this.deliveryAddressForm.controls) {
         if (this.deliveryAddressForm.controls.hasOwnProperty(control) && !this.deliveryAddressForm.controls[control].valid) {
           this.deliveryAddressForm.controls[control].markAsDirty();

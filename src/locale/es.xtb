@@ -1270,6 +1270,7 @@
   <translation id="address_view_all_users_form_textfield_postalcode_missmatch_location_inline_error">El código postal debe pertenecer al país en el que estás</translation>
   <translation id="address_view_all_users_modal_warning_country_selection_continue_button">Continuar</translation>
   <translation id="address_view_all_users_modal_warning_country_selection_cancel_button">Cancelar</translation>
+  <translation id="web_delivery_address_updated">La dirección de envío se ha editado correctamente</translation>
   <translation id="web_subscription_card_not_set_error">Tu tarjeta no ha podido ser guardada</translation>
   <translation id="web_stripe_cards_retrieval_error">No se han podido mostrar tus tarjetas</translation>
   <translation id="web_no_card_selected_error">Por favor selecciona una tarjeta de crédito</translation>
