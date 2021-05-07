@@ -9,9 +9,9 @@
                 <h3 i18n="@@address_view_all_users_top_bar_add_title">Add your address</h3>
               </div>
             </div>
-            <div class="row mb-md-4 mb-3">
+            <div class="row mb-3" *ngIf="userComesFromPayView">
               <div class="col-12">
-                <span *ngIf="userComesFromPayView" i18n="@@address_view_all_users_form_plain_text_sender_need_explanation_text" class="payViewInfoMessage">We need your address to be the sender in case of return</span>
+                <span i18n="@@address_view_all_users_form_plain_text_sender_need_explanation_text" class="payViewInfoMessage">We need your address to be the sender in case of return</span>
               </div>
             </div>
             <div class="row">
