@@ -15,6 +15,7 @@ import { ChangeCountryConfirmationModalComponent } from '../../modals/change-cou
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { DeliveryCountryISOCode, DeliveryLocationApi } from '../../interfaces/delivery-location/delivery-location-api.interface';
 import { DeliveryLocationService } from '../../services/delivery-location/delivery-location.service';
+import { postalCodeValidator } from '@core/form-validators/postalCodeValidator.func';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -201,7 +202,7 @@ export class DeliveryAddressComponent implements OnInit {
       full_name: ['', [Validators.required, whitespaceValidator]],
       street: ['', [Validators.required, whitespaceValidator]],
       flat_and_floor: [''],
-      postal_code: ['', [Validators.required, whitespaceValidator]],
+      postal_code: ['', [Validators.required, whitespaceValidator, postalCodeValidator]],
       city: [{ value: '', disabled: true }, [Validators.required]],
       phone_number: ['', [Validators.required, whitespaceValidator]],
     });
