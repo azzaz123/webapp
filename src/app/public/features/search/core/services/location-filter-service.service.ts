@@ -48,6 +48,24 @@ export class LocationFilterServiceService {
     );
   }
 
+  public getLocationFromBrowserAPI() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          return { latitude, longitude };
+        },
+        (error) => {},
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+        }
+      );
+    }
+  }
+
   private getDefaultLocations(): LabeledSearchLocation[] {
     return Object.values(DEFAULT_LOCATIONS);
   }

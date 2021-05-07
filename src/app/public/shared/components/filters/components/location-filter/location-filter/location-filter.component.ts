@@ -133,6 +133,10 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     this.selectedLocationSuggestion = suggestion;
   }
 
+  public requestBrowserLocation() {
+    this.locationService.getLocationFromBrowserAPI();
+  }
+
   private getLatitudeAndLongitudeFromLocationName(locationName: string): Observable<LabeledSearchLocation> {
     return this.geolocationService
       .geocode(locationName)

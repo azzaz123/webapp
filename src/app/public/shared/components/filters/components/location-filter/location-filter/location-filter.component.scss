@@ -10,6 +10,33 @@
   }
 }
 
+.LocationFilter__map {
+  position: relative;
+  button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    appearance: none;
+    background-color: rgba($white, 0.9);
+    width: 46px;
+    height: 46px;
+    border: thin solid rgba($blue-grey-3, 0.5);
+    border-radius: 10px;
+    padding: 0;
+    z-index: 1;
+    &:disabled {
+      cursor: not-allowed;
+      svg g {
+        fill: $blue-grey-3;
+      }
+    }
+  }
+}
+
 .LocationFilter__search {
   position: relative;
   .LocationFilter__glass {
