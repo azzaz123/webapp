@@ -1,5 +1,5 @@
 import { takeWhile } from 'rxjs/operators';
-import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
 import { Cart } from './cart';
 import { CartChange, CartItem } from './cart-item.interface';
@@ -14,6 +14,7 @@ import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UuidService } from '../../../core/uuid/uuid.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-cart',
@@ -97,7 +98,7 @@ export class CartComponent implements OnInit, OnDestroy {
           if (e.error) {
             this.errorService.show(e);
           } else {
-            this.errorService.i18nError('bumpError');
+            this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
           }
         }
       );
@@ -128,7 +129,7 @@ export class CartComponent implements OnInit, OnDestroy {
       this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {
       this.loading = false;
-      this.errorService.i18nError('noCardSelectedError');
+      this.errorService.i18nError(TRANSLATION_KEY.NO_CARD_SELECTED_ERROR);
     }
   }
 

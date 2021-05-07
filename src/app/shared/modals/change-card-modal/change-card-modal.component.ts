@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCardOption, FinancialCard, SetupIntent } from '../../../core/payments/payment.interface';
+import { FinancialCardOption } from '../../../core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from 'app/core/payments/payment.service';
 import { EventService } from 'app/core/event/event.service';
 import { StripeService } from 'app/core/stripe/stripe.service';
 import { finalize } from 'rxjs/operators';
 import { ConfirmCardModalComponent } from '../confirm-card-modal/confirm-card-modal.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-change-card-modal',
@@ -72,7 +73,9 @@ export class ChangeCardModalComponent implements OnInit {
         .pipe(finalize(() => (this.loading = false)))
         .subscribe(
           () => this.activeModal.close(this.card),
-          () => this.errorService.i18nError('setDefaultCardError')
+          // FIXME: 'setDefaultCardError' has no value. Need to find one for it
+          // () => this.errorService.i18nError('setDefaultCardError')
+          () => this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE)
         );
     } else {
       this.activeModal.close(this.card.id);

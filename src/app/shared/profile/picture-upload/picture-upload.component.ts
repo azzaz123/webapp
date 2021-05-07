@@ -14,6 +14,7 @@ import { UploaderService } from '@shared/uploader/uploader.service';
 import { filter, finalize, take } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-picture-upload',
@@ -104,7 +105,7 @@ export class PictureUploadComponent implements OnInit {
   }
 
   private showError(message?: string): void {
-    this.errorsService.i18nError('serverError', message || '');
+    this.errorsService.i18nError(TRANSLATION_KEY.SERVER_ERROR, message || '');
   }
 
   public onFilesAdded(event: FileList): void {

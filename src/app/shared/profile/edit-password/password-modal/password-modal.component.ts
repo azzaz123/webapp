@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../../core/user/user.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-password-modal',
@@ -39,9 +40,9 @@ export class PasswordModalComponent {
         },
         (response) => {
           if (response.status === 403) {
-            this.errorsService.i18nError('notValidPassword');
+            this.errorsService.i18nError(TRANSLATION_KEY.INVALID_PASSWORD_ERROR);
           } else {
-            this.errorsService.i18nError('serverError');
+            this.errorsService.i18nError(TRANSLATION_KEY.SERVER_ERROR);
           }
         }
       );
@@ -52,11 +53,11 @@ export class PasswordModalComponent {
         }
       }
       if (this.passwordForm.get('new_password').errors && this.passwordForm.get('new_password').errors.minlength) {
-        this.errorsService.i18nError('passwordMinLength');
+        this.errorsService.i18nError(TRANSLATION_KEY.PASSWORD_MIN_LENGTH_ERROR);
       } else if (this.passwordForm.errors && this.passwordForm.errors.match) {
-        this.errorsService.i18nError('passwordMatch');
+        this.errorsService.i18nError(TRANSLATION_KEY.PASSWORD_DO_NOT_MATCH_ERROR);
       } else {
-        this.errorsService.i18nError('formErrors');
+        this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
       }
     }
   }
