@@ -1306,4 +1306,15 @@
   <translation id="filterConditionTitle">Estado del producto</translation>
   <translation id="filterConditionBubblePlaceholder">Estado del producto</translation>
   <translation id="filterConditionDrawerPlaceholder">Cualquier estado</translation>
+  <translation id="filterGenderTitle">Género</translation>
+  <translation id="filterGenderBubblePlaceholder">Género</translation>
+  <translation id="filterGenderDrawerPlaceholder">Selecciona género</translation>
+  <translation id="filterClothingTypeTitle">Tipo de prenda</translation>
+  <translation id="filterClothingTypeBubblePlaceholder">Tipo de prenda</translation>
+  <translation id="filterClothingTypeDrawerPlaceholder">Selecciona tipo de prenda</translation>
+  <translation id="filterClothingTypeSuggesterPlaceholder">Buscar</translation>
+  <translation id="filterFashionBrandTitle">Marca</translation>
+  <translation id="filterFashionBrandBubblePlaceholder">Marca</translation>
+  <translation id="filterFashionBrandDrawerPlaceholder">Selecciona marca</translation>
+  <translation id="filterFashionBrandSuggesterPlaceholder">Buscar una marca</translation>
 </translationbundle>

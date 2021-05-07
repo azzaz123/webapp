@@ -1074,6 +1074,7 @@
   <msg id="filterConditionDrawerPlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:58</source>Any item condition</msg>
   <msg id="filterGenderTitle"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:9</source>Gender</msg>
   <msg id="filterGenderBubblePlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:10</source>Gender</msg>
+  <msg id="filterGenderDrawerPlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:11</source>Select gender</msg>
   <msg id="filterClothingTypeTitle"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:21</source>Type of clothing</msg>
   <msg id="filterClothingTypeBubblePlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:22</source>Type of clothing</msg>
   <msg id="filterClothingTypeDrawerPlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:23</source>Select type of clothing</msg>
