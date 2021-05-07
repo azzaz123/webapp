@@ -82,7 +82,7 @@ export class DeliveryAddressComponent implements OnInit {
         }
       )
       .add(() => {
-        // this.updateFieldsValidity();
+        this.deliveryAddressForm.updateValueAndValidity();
         this.loading = false;
       });
   }
