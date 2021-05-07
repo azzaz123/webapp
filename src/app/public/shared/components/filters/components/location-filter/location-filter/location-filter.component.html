@@ -1,11 +1,12 @@
-<tsl-filter-template [isBubble]="variant | isBubble" [hasApply]="true" [isDropdown]="true" [title]="config.title"
-    [icon]="config.icon" [label]="" (apply)="handleApply()" [hasValue]="hasValue$ | async"
+<tsl-filter-template [isBubble]="variant | isBubble" [label]="label" [hasApply]="true" [isDropdown]="true"
+    [title]="config.title" [icon]="config.icon" [label]="" (apply)="handleApply()" [hasValue]="hasValue$ | async"
     (openStateChange)="openStateChange.emit($event)">
 
     <div class="LocationFilter py-2 ">
 
-        <div>
-            <tsl-svg-icon class="LocationFilter__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
+        <div class="LocationFilter__search">
+            <tsl-svg-icon class="LocationFilter__glass" src="/assets/icons/glass_icon.svg" width="28" height="28">
+            </tsl-svg-icon>
             <input class="LocationFilter__input form-control" type="text" [ngModel]="labeledSearchLocation$ | async"
                 (ngModelChange)="selectLocationSuggestion($event)" [editable]="false" [ngbTypeahead]="search"
                 [resultTemplate]="locationTemplate" [inputFormatter]="inputFormatter" />

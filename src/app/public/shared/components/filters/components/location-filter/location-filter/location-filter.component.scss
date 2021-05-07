@@ -10,6 +10,18 @@
   }
 }
 
+.LocationFilter__search {
+  position: relative;
+  .LocationFilter__glass {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 13px;
+    width: 16px;
+    z-index: 1;
+  }
+}
+
 .LocationFilter__input {
   height: 50px;
   position: relative;
@@ -19,6 +31,7 @@
   border-radius: 6px;
   text-overflow: ellipsis;
   outline: none;
+  box-shadow: none;
   &:focus {
     border: 1px solid $walla-main;
   }

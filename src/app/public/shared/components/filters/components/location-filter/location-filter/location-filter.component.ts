@@ -96,6 +96,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   public onSelectSuggestion(): Observable<LabeledSearchLocation> {
     return this.selectedLocationSuggestion$.pipe(
+      filter((location) => !!location),
       map((selectedLocation: ItemPlace) => selectedLocation.description),
       switchMap((locationName: string) => this.getLatitudeAndLongitudeFromLocationName(locationName)),
       tap((location: LabeledSearchLocation) => (this.labeledSearchLocation = location))
@@ -112,7 +113,8 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
           )
         )
       ),
-      tap((location: LabeledSearchLocation) => (this.labeledSearchLocation = location))
+      tap((location: LabeledSearchLocation) => (this.labeledSearchLocation = location)),
+      tap((location: LabeledSearchLocation) => (this.label = location.label))
     );
   }
 

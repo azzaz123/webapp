@@ -67,10 +67,10 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONFIGURATION_ID.LOCATION,
     type: FILTER_TYPES.LOCATION,
-    title: $localize`:@@filterConditionTitle:Item condition`,
-    bubblePlaceholder: $localize`:@@filterConditionBubblePlaceholder:Item condition`,
-    drawerPlaceholder: $localize`:@@filterConditionDrawerPlaceholder:Any item condition`,
-    icon: '/assets/icons/filters/condition.svg',
+    title: $localize`:@@filterLocationTitle:Where?`,
+    bubblePlaceholder: $localize`:@@filterLocationBubblePlaceholder:Location`,
+    drawerPlaceholder: $localize`:@@filterLocationDrawerPlaceholder:Any location`,
+    icon: '/assets/icons/filters/location.svg',
     mapKey: {
       latitude: FILTER_QUERY_PARAM_KEY.latitude,
       longitude: FILTER_QUERY_PARAM_KEY.longitude,
