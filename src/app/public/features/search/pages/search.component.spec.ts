@@ -228,6 +228,20 @@ describe('SearchComponent', () => {
     });
   });
 
+  describe('when a filter is opened', () => {
+    it('should show the filter content above the top bar', () => {
+      const filtersWrapper = fixture.debugElement.query(By.css('tsl-filters-wrapper'));
+      const searchFilters = fixture.debugElement.query(By.css('.Search__filters'));
+      const expectedClass = 'Search__filters--opened';
+
+      filtersWrapper.triggerEventHandler('filterOpened', true);
+      fixture.detectChanges();
+
+      expect(component.filterOpened).toBe(true);
+      expect(searchFilters.nativeElement.classList).toContain(expectedClass);
+    });
+  });
+
   describe('when search category changes', () => {
     function getItemCardListInstance() {
       return fixture.debugElement.query(By.css('tsl-public-item-card-list')).componentInstance;
