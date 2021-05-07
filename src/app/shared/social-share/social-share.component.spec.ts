@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SocialShareComponent } from './social-share.component';
 import { SocialShareService } from '@core/social-share/social-share.service';
 import { DebugElement } from '@angular/core';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FacebookShare } from './interfaces/facebook-share.interface';
 import { TwitterShare } from './interfaces/twitter-share.interface';
