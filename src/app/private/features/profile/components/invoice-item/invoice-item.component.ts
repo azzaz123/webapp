@@ -3,6 +3,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { InvoiceTransaction } from '@core/invoice/invoice.interface';
 import { InvoiceService } from '@core/invoice/invoice.service';
 import { finalize, take } from 'rxjs/operators';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-invoice-item',
@@ -42,10 +43,10 @@ export class InvoiceItemComponent {
       .subscribe(
         () => {
           invoiceTransaction.invoice_generated = true;
-          this.errorsService.i18nSuccess('invoiceGenerated');
+          this.errorsService.i18nSuccess(TRANSLATION_KEY.INVOICE_GENERATED);
         },
         () => {
-          this.errorsService.i18nError('invoiceCannotGenerate');
+          this.errorsService.i18nError(TRANSLATION_KEY.INVOICE_CANNOT_GENERATE_ERROR);
         }
       );
   }
@@ -61,7 +62,7 @@ export class InvoiceItemComponent {
       )
       .subscribe(
         (blob: Blob) => {
-          this.errorsService.i18nSuccess('invoiceCorrectlyDownloaded');
+          this.errorsService.i18nSuccess(TRANSLATION_KEY.INVOICE_DOWNLOADED);
           const invoiceDate = this.invoiceDateFormatted(new Date(invoiceTransaction.date));
           const invoiceDescription = this.invoiceDescriptionformatted(invoiceTransaction.description);
           const fileURL = URL.createObjectURL(blob);
@@ -72,7 +73,7 @@ export class InvoiceItemComponent {
           fileLink.click();
         },
         () => {
-          this.errorsService.i18nError('invoiceCannotDownload');
+          this.errorsService.i18nError(TRANSLATION_KEY.INVOICE_CANNOT_DOWNLOAD_ERROR);
         }
       );
   }

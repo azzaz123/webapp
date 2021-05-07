@@ -15,6 +15,7 @@ import { EventService } from '../../../core/event/event.service';
 import { DeactivateItemsModalComponent } from './deactivate-items-modal/deactivate-items-modal.component';
 import { SUBSCRIPTION_TYPES } from '../../../core/subscriptions/subscriptions.service';
 import { ErrorsService } from '@core/errors/errors.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-catalog-item-actions',
@@ -97,7 +98,7 @@ export class CatalogItemActionsComponent implements OnInit {
             this.getCounters.emit();
           });
           if (response.failedIds.length) {
-            this.errorService.i18nError('bulkDeleteError');
+            this.errorService.i18nError(TRANSLATION_KEY.BULK_DELETE_ERROR);
           }
         });
     });

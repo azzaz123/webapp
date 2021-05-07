@@ -58,10 +58,12 @@ export class PublicProfileService {
     return this.publicUserApiService.getSoldItems(userId);
   }
 
+  // FIXME: Seems its not being used
   public getBuyTransactions(userId: string): Observable<any> {
     return this.publicUserApiService.getBuyTransactions(userId);
   }
 
+  // FIXME: Seems its not being used
   public getSoldsTransactions(userId: string): Observable<any> {
     return this.publicUserApiService.getSoldsTransactions(userId);
   }

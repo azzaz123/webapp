@@ -26,6 +26,7 @@ import {
   SCREEN_IDS,
   ViewProBenefitsPopup,
 } from '@core/analytics/analytics-constants';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
@@ -152,7 +153,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     if (this.isPro && phoneNumberControl.value) {
       if (!isValidNumber(phoneNumberControl.value, 'ES', metadata)) {
         phoneNumberControl.setErrors({ incorrect: true });
-        this.errorsService.i18nError('phoneNumberError');
+        this.errorsService.i18nError(TRANSLATION_KEY.PHONE_NUMBER_ERROR);
         return;
       }
     }
@@ -167,7 +168,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
         }
       });
       if (!linkControl.valid) {
-        this.errorsService.i18nError('linkError');
+        this.errorsService.i18nError(TRANSLATION_KEY.LINK_ERROR);
         return;
       }
     }
@@ -213,7 +214,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
                 });
               }
 
-              this.errorsService.i18nSuccess('userEdited');
+              this.errorsService.i18nSuccess(TRANSLATION_KEY.USER_EDITED);
             },
             (errorResponse) => {
               this.errorsService.show(errorResponse);
@@ -233,7 +234,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
           );
       });
     } else {
-      this.errorsService.i18nError('formErrors');
+      this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
     }
   }
 

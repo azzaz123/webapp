@@ -207,7 +207,11 @@ describe('AddNewSubscriptionModalComponent', () => {
 
       expect(component.loading).toBe(false);
       expect(component.paymentError).toBe(STRIPE_ERROR.card_declined);
-      expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailed', '', 'paymentFailedToastTitle');
+      expect(errorsService.i18nError).toHaveBeenCalledWith(
+        TRANSLATION_KEY.PAYMENT_FAILED_ERROR,
+        '',
+        TRANSLATION_KEY.PAYMENT_FAILED_ERROR_TITLE
+      );
     }));
 
     it('should call addSubscriptionFromSavedCard if card is attached and it is no retry', fakeAsync(() => {
@@ -296,7 +300,11 @@ describe('AddNewSubscriptionModalComponent', () => {
       tick();
 
       expect(component.loading).toBe(false);
-      expect(errorsService.i18nError).toHaveBeenCalledWith('paymentFailedUnknown', '', 'paymentFailedToastTitle');
+      expect(errorsService.i18nError).toHaveBeenCalledWith(
+        TRANSLATION_KEY.PAYMENT_FAILED_UNKNOWN_ERROR,
+        '',
+        TRANSLATION_KEY.PAYMENT_FAILED_ERROR_TITLE
+      );
     }));
   });
 

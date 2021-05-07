@@ -7,6 +7,7 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '@private/features/catalog/core/item-change.interface';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-catalog-card',
@@ -90,6 +91,7 @@ export class CatalogCardComponent implements OnInit {
 
   private setBumpName(): string {
     const bumpType = this.item.purchases.bump_type || this.item.purchases.scheduled_bump_type;
-    return this.i18n.getTranslations(bumpType);
+    // TODO: Should be correctly typed after key cleanup
+    return this.i18n.translate(bumpType as TRANSLATION_KEY);
   }
 }

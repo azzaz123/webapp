@@ -1,5 +1,4 @@
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import { $localize } from '@angular/localize/init';
 import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 
 export const DEFAULT_LOCATIONS: Record<string, LabeledSearchLocation> = {
