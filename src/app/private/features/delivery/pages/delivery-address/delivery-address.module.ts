@@ -12,9 +12,18 @@ import { DeliveryCountriesApiService } from '../../services/api/delivery-countri
 import { ButtonModule } from '@shared/button/button.module';
 import { DeliveryLocationService } from '../../services/delivery-location/delivery-location.service';
 import { DeliveryLocationApiService } from '../../services/api/delivery-location-api/delivery-location-api.service';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  imports: [DeliveryAddressRoutingModule, ProfileFormModule, SpinnerModule, ReactiveFormsModule, DropdownModule, ButtonModule],
+  imports: [
+    DeliveryAddressRoutingModule,
+    ProfileFormModule,
+    SpinnerModule,
+    ReactiveFormsModule,
+    DropdownModule,
+    ButtonModule,
+    CommonModule,
+  ],
   declarations: [deliveryAddressRoutedComponents],
   providers: [
     DeliveryAddressService,

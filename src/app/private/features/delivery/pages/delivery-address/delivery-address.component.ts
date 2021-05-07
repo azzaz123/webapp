@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { whitespaceValidator } from '@core/form-validators/formValidators.func';
@@ -23,6 +23,9 @@ import { postalCodeValidator } from '@core/form-validators/postalCodeValidator.f
   styleUrls: ['./delivery-address.component.scss'],
 })
 export class DeliveryAddressComponent implements OnInit {
+  @Input() userComesFromPayView: boolean;
+  @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
+
   public countries: IOption[];
   public cities: IOption[];
   public deliveryAddressForm: FormGroup;
@@ -32,9 +35,6 @@ export class DeliveryAddressComponent implements OnInit {
   public isCountryEditable = false;
   private initialCountryISOCode: DeliveryCountryISOCode;
   private readonly formSubmittedEventKey = 'formSubmitted';
-
-  @ViewChild(ProfileFormComponent, { static: true })
-  formComponent: ProfileFormComponent;
 
   constructor(
     private fb: FormBuilder,
@@ -137,6 +137,10 @@ export class DeliveryAddressComponent implements OnInit {
       this.deliveryAddressForm.get('city').reset();
       this.deliveryAddressForm.get('phone_number').reset();
     }
+  }
+
+  public isIncorrectFormcontrol(formControlAtr: AbstractControl): boolean {
+    return formControlAtr.invalid && (formControlAtr.dirty || formControlAtr.touched);
   }
 
   private handleNewForm(): void {
