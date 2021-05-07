@@ -1300,4 +1300,10 @@
   <translation id="filterPropertyTypeBubblePlaceholder">Tipo de inmuebe</translation>
   <translation id="filterOperationTitle">¿En qué estás interesado?</translation>
   <translation id="filterOperationBubblePlaceholder">¿Alquiler o compra?</translation>
+  <translation id="filterCategoriesTitle">Categoría</translation>
+  <translation id="filterCategoriesPlaceholder">Todas las categorías</translation>
+  <translation id="filterTimeOfListing">Publicado hace</translation>
+  <translation id="filterConditionTitle">Estado del producto</translation>
+  <translation id="filterConditionBubblePlaceholder">Estado del producto</translation>
+  <translation id="filterConditionDrawerPlaceholder">Cualquier estado</translation>
 </translationbundle>
