@@ -1,19 +1,20 @@
 import { takeWhile } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { BUMP_TYPES, CartBase } from '@shared/catalog/cart/cart-base';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { CartProExtras } from '@shared/catalog/cart/cart-pro-extras';
 import { ErrorsService } from '@core/errors/errors.service';
-import { PaymentService, PAYMENT_METHOD, PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
+import { PAYMENT_METHOD, PAYMENT_RESPONSE_STATUS, PaymentService } from '@core/payments/payment.service';
 import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { Pack } from '@core/payments/pack';
-import { OrderProExtras, FinancialCardOption } from '@core/payments/payment.interface';
+import { FinancialCardOption, OrderProExtras } from '@core/payments/payment.interface';
 import { StripeService } from '@core/stripe/stripe.service';
 import { EventService } from '@core/event/event.service';
 import { UuidService } from '@core/uuid/uuid.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
@@ -111,7 +112,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
         if (e.error) {
           this.errorService.show(e);
         } else {
-          this.errorService.i18nError('bumpError');
+          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
         }
       }
     );

@@ -30,6 +30,7 @@ import { UploadEvent } from '../../core/models/upload-event.interface';
 import { RealestateKeysService } from '../../core/services/realstate-keys/realestate-keys.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -213,9 +214,9 @@ export class UploadRealestateComponent implements OnInit {
       this.uploadForm.get('location.address').markAsDirty();
     }
     if (!this.uploadForm.get('images').valid) {
-      this.errorsService.i18nError('missingImageError');
+      this.errorsService.i18nError(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
     } else {
-      this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
+      this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
       this.onValidationError.emit();
     }
   }
@@ -263,7 +264,7 @@ export class UploadRealestateComponent implements OnInit {
 
   onError(error: HttpErrorResponse | any): void {
     this.loading = false;
-    this.errorsService.i18nError('serverError', error.message ? error.message : '');
+    this.errorsService.i18nError(TRANSLATION_KEY.SERVER_ERROR, error.message ? error.message : '');
   }
 
   hasErrorToShow(controlName: string): boolean {
@@ -355,7 +356,7 @@ export class UploadRealestateComponent implements OnInit {
       this.uploadService.uploadSingleImage(file, this.item.id, ITEM_TYPES.REAL_ESTATE).subscribe(
         (value: UploadOutput) => {
           if (value.type === OUTPUT_TYPE.done) {
-            this.errorsService.i18nSuccess('imageUploaded');
+            this.errorsService.i18nSuccess(TRANSLATION_KEY.IMAGE_UPLOADED);
             file.id = value.file.response;
           }
         },
