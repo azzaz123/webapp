@@ -1288,4 +1288,16 @@
   <translation id="filterEngineTypePlaceholder">Tipo de combustible</translation>
   <translation id="filterGearboxTypeTitle">Cambio de marchas</translation>
   <translation id="filterGearboxTypePlaceholder">Cambio de marchas</translation>
+  <translation id="filterRoomsTitle">Número de habitaciones</translation>
+  <translation id="filterRoomsBubblePlaceholder">Número de habitaciones</translation>
+  <translation id="filterBathroomsTitle">Número de baños</translation>
+  <translation id="filterBathroomsBubblePlaceholder">Número de baños</translation>
+  <translation id="filterRealEstateConditionTitle">Estado</translation>
+  <translation id="filterRealEstateConditionBubblePlaceholder">Estado</translation>
+  <translation id="filterRealEstateFeaturesTitle">Características</translation>
+  <translation id="filterRealEstateFeaturesBubblePlaceholder">Características</translation>
+  <translation id="filterPropertyTypeTitle">¿Qué buscas?</translation>
+  <translation id="filterPropertyTypeBubblePlaceholder">Tipo de inmuebe</translation>
+  <translation id="filterOperationTitle">¿En qué estás interesado?</translation>
+  <translation id="filterOperationBubblePlaceholder">¿Alquiler o compra?</translation>
 </translationbundle>
