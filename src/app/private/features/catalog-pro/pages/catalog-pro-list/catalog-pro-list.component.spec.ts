@@ -4,7 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { ItemService, ITEM_STATUS } from '@core/item/item.service';
+import { ItemService } from '@core/item/item.service';
 import { PaymentService } from '@core/payments/payment.service';
 import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
@@ -19,6 +19,7 @@ import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive
 import { of, Subject } from 'rxjs';
 import { CatalogProListComponent } from './catalog-pro-list.component';
 import { ITEM_CHANGE_ACTION } from '@private/features/catalog/core/item-change.interface';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;
@@ -344,7 +345,7 @@ describe('CatalogProListComponent', () => {
       component.ngOnInit();
       tick();
 
-      expect(errorService.i18nError).toHaveBeenCalledWith('alreadyFeatured');
+      expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.ALREADY_FEATURED_ERROR);
     }));
   });
 

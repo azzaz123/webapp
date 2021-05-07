@@ -8,7 +8,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 export class ErrorsService {
   constructor(private toastService: ToastService, private i18n: I18nService) {}
 
-  show(res: HttpErrorResponse): void {
+  public show(res: HttpErrorResponse): void {
     const error = res.error;
 
     if (error) {
@@ -22,27 +22,25 @@ export class ErrorsService {
     }
   }
 
-  i18nError(key: string, concatText: string = '', titleKey?: string) {
-    const translatedText = this.i18n.getTranslations(key);
-    const text = `${translatedText ? translatedText : this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE)} ${concatText}`;
-    const title = titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE);
-
-    this.toastService.show({
-      text,
-      title,
-      type: 'error',
-    });
+  public i18nError(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY): void {
+    this.showToast('error', key, concatText, titleKey);
   }
 
-  i18nSuccess(key: string, concatText: string = '', titleKey?: string) {
-    const translatedText = this.i18n.getTranslations(key);
-    const text = `${translatedText ? translatedText : ''} ${concatText}`;
-    const title = titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE);
+  public i18nSuccess(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY): void {
+    this.showToast('success', key, concatText, titleKey);
+  }
+
+  private showToast(type: 'error' | 'success', key: TRANSLATION_KEY, concatText: string, titleKey?: TRANSLATION_KEY): void {
+    const translatedText = this.i18n.translate(key) || this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+    const spacedConcatText = concatText ? ` ${concatText}` : '';
+
+    const text = `${translatedText}${spacedConcatText}`;
+    const title = titleKey ? this.i18n.translate(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE);
 
     this.toastService.show({
       text,
       title,
-      type: 'success',
+      type,
     });
   }
 }

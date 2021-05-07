@@ -17,6 +17,7 @@ import { metadata } from 'assets/js/metadata-phonenumber';
 import { format } from 'libphonenumber-js/custom';
 import { EMPTY } from 'rxjs';
 import { SendPhoneComponent } from './send-phone.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;
@@ -143,7 +144,7 @@ describe('SendPhoneComponent', () => {
 
         component.handleSubmit();
 
-        expect(errorsService.i18nError).toHaveBeenCalledWith('formErrors');
+        expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FORM_FIELD_ERROR);
       });
     });
 

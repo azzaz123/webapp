@@ -4,7 +4,6 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { ItemChangeEvent } from '@private/features/catalog/core/item-change.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { getMockItemWithPurchases, ITEM_ID, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { EventService } from '../../../core/event/event.service';
@@ -207,12 +206,12 @@ describe('CatalogCardComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set the bump name', () => {
-      spyOn(i18nService, 'getTranslations').and.callThrough();
+      spyOn(i18nService, 'translate').and.callThrough();
       component.item = getMockItemWithPurchases();
 
       component.ngOnInit();
 
-      expect(i18nService.getTranslations).toHaveBeenCalledWith(component.item.purchases.bump_type);
+      expect(i18nService.translate).toHaveBeenCalledWith(component.item.purchases.bump_type);
       expect(component.bumpName).toBe('City Bump');
     });
   });

@@ -25,6 +25,7 @@ import { SwitchComponent } from '@shared/switch/switch.component';
 import { of, throwError } from 'rxjs';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 import { ANALYTICS_FIELDS, BAD_USERNAME_ERROR_CODE, competitorLinks, ProfileInfoComponent } from './profile-info.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -215,7 +216,7 @@ describe('ProfileInfoComponent', () => {
         });
 
         it('should call i18nSuccess', () => {
-          expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
+          expect(errorsService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.USER_EDITED);
         });
 
         it('should call updateLocation', () => {
@@ -327,7 +328,7 @@ describe('ProfileInfoComponent', () => {
       });
 
       it('should call i18nError if form is invalid', () => {
-        expect(errorsService.i18nError).toHaveBeenCalledWith('formErrors');
+        expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FORM_FIELD_ERROR);
       });
     });
 
@@ -355,7 +356,7 @@ describe('ProfileInfoComponent', () => {
           component.profileForm.get('link').setValue(competitorLink);
           component.onSubmit();
 
-          expect(errorsService.i18nError).toHaveBeenCalledWith('linkError');
+          expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.LINK_ERROR);
         });
       });
     });
@@ -380,7 +381,7 @@ describe('ProfileInfoComponent', () => {
         component.profileForm.get('phone_number').patchValue('invalid_number123');
         component.onSubmit();
 
-        expect(errorsService.i18nError).toHaveBeenCalledWith('phoneNumberError');
+        expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.PHONE_NUMBER_ERROR);
       });
     });
   });

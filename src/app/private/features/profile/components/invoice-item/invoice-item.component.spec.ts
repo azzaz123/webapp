@@ -6,6 +6,7 @@ import { InvoiceService } from '@core/invoice/invoice.service';
 import { MOCK_INVOICE_HISTORY } from '@fixtures/invoice.fixtures.spec';
 import { of, throwError } from 'rxjs';
 import { InvoiceItemComponent } from './invoice-item.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('InvoiceItemComponent', () => {
   const invoiceNotGenerated = MOCK_INVOICE_HISTORY[1];
@@ -88,7 +89,7 @@ describe('InvoiceItemComponent', () => {
 
           expect(invoiceService.generateInvoice).toHaveBeenCalledWith(invoiceNotGenerated);
           expect(invoiceNotGenerated.invoice_generated).toEqual(true);
-          expect(errorService.i18nSuccess).toHaveBeenCalledWith('invoiceGenerated');
+          expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.INVOICE_GENERATED);
         });
 
         it('should download the invoice and show success message', () => {
@@ -97,7 +98,7 @@ describe('InvoiceItemComponent', () => {
           component.handleInvoice(new Event('click'), component.invoice);
 
           expect(invoiceService.downloadInvoice).toHaveBeenCalledWith(component.invoice);
-          expect(errorService.i18nSuccess).toHaveBeenCalledWith('invoiceCorrectlyDownloaded');
+          expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.INVOICE_DOWNLOADED);
         });
       });
 
@@ -109,7 +110,7 @@ describe('InvoiceItemComponent', () => {
 
           expect(invoiceService.generateInvoice).toHaveBeenCalledWith(invoiceNotGenerated);
           expect(invoiceNotGenerated.invoice_generated).toEqual(false);
-          expect(errorService.i18nError).toHaveBeenCalledWith('invoiceCannotGenerate');
+          expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.INVOICE_CANNOT_GENERATE_ERROR);
         });
 
         it('shouldnt download the invoice and should show an error', () => {
@@ -118,7 +119,7 @@ describe('InvoiceItemComponent', () => {
           component.handleInvoice(new Event('click'), component.invoice);
 
           expect(invoiceService.downloadInvoice).toHaveBeenCalledWith(component.invoice);
-          expect(errorService.i18nError).toHaveBeenCalledWith('invoiceCannotDownload');
+          expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.INVOICE_CANNOT_DOWNLOAD_ERROR);
         });
       });
     });
