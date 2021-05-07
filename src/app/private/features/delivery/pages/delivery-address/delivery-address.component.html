@@ -19,7 +19,7 @@
                 <div class="form-group row align-items-center">
                   <label for="country_iso_code" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_country_label">Country</label>
                   <div class="col-sm-12 col-md-5">
-                    <tsl-dropdown i18n-placeholder="@@address_view_all_users_form_textfield_country_label" class="form-control" formControlName="country_iso_code" id="country_iso_code" [isLoading]="!isCountryEditable" [options]="countries" (click)="handleShowWarningCountry()" (selected)="handleClearFrom($event)">
+                    <tsl-dropdown i18n-placeholder="@@address_view_all_users_form_textfield_country_label" class="form-control" formControlName="country_iso_code" id="country_iso_code" #country_iso_code [isLoading]="!isCountryEditable" [options]="countries" (click)="handleShowWarningCountry()" (selected)="handleClearFrom($event)">
                     </tsl-dropdown>
                   </div>
                 </div>
@@ -60,8 +60,11 @@
                         <span *ngIf="postalCodeError.required" i18n="@@address_view_all_users_form_textfield_postalcode_missing_info_inline_error">
                           The ZIP code field can't be empty
                         </span>
-                        <span *ngIf="!postalCodeError.required && postalCodeError.postal_code_pattern" i18n="@@delivery_address_invalid_postal_code_error">
+                        <span *ngIf="!postalCodeError.required && postalCodeError.postal_code" i18n="@@delivery_address_invalid_postal_code_error">
                           This postal code isn't valid
+                        </span>
+                        <span *ngIf="!postalCodeError.required && postalCodeError.postal_code_not_available" i18n="@@delivery_address_postal_code_not_allowed_error">
+                          Postal code not accepted
                         </span>
                         <span *ngIf="false" i18n="@@address_view_all_users_form_textfield_postalcode_missmatch_location_inline_error">
                           The ZIP code must be from the country you are located
@@ -106,12 +109,12 @@
               </div>
             </div>
         </div>
-        <div class="row loading-center">
-          <tsl-spinner [hidden]="!loading"></tsl-spinner>
-        </div>
-        </div>
-      </form>
-    </tsl-profile-form>
+      </div>
+    </form>
+  </tsl-profile-form>
+  <div class="row loading-center justify-content-center">
+    <tsl-spinner [hidden]="!loading"></tsl-spinner>
+  </div>
   </div>
 </div>
   

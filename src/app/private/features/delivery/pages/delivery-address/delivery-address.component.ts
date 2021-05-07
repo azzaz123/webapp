@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
@@ -17,6 +17,7 @@ import { DeliveryCountryISOCode, DeliveryLocationApi } from '../../interfaces/de
 import { DeliveryLocationService } from '../../services/delivery-location/delivery-location.service';
 import { postalCodeValidator } from '@core/form-validators/postalCodeValidator.func';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -26,6 +27,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 export class DeliveryAddressComponent implements OnInit {
   @Input() userComesFromPayView: boolean;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
+  @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
   public countries: IOption[];
   public cities: IOption[];
@@ -99,13 +101,13 @@ export class DeliveryAddressComponent implements OnInit {
         )
         .subscribe(
           () => {
-            this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_EDITED);
+            this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS);
             this.formComponent.initFormControl();
             this.isNewForm = false;
             this.initForm(false);
           },
-          (error: HttpErrorResponse) => {
-            this.errorsService.show(error);
+          () => {
+            this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
           }
         );
     } else {
@@ -122,6 +124,9 @@ export class DeliveryAddressComponent implements OnInit {
     if (!this.isNewForm && !this.isCountryEditable) {
       this.modalService.open(ChangeCountryConfirmationModalComponent).result.then((result: boolean) => {
         if (result) {
+          setTimeout(() => {
+            this.countriesDropdown.open();
+          }, 100);
           this.isCountryEditable = true;
         }
       });
@@ -162,24 +167,39 @@ export class DeliveryAddressComponent implements OnInit {
         this.deliveryAddressForm.get('region').reset();
 
         if (newPostalCode) {
-          this.getLocations(newPostalCode, 'ES');
+          this.getLocationsAndHandlePostalCode(newPostalCode, 'ES');
         }
       }
     });
   }
 
-  private getLocations(postalCode: string, countryISOCode: 'ES' | 'IT'): void {
-    this.deliveryLocationService
-      .getLocationsByPostalCodeAndCountry(postalCode, countryISOCode)
-      .subscribe((locations: DeliveryLocationApi[]) => {
+  private getLocationsAndHandlePostalCode(postalCode: string, countryISOCode: 'ES' | 'IT'): void {
+    this.deliveryLocationService.getLocationsByPostalCodeAndCountry(postalCode, countryISOCode).subscribe(
+      (locations: DeliveryLocationApi[]) => {
         this.cities = locations.map((location) => {
           return { label: location.city, value: location.city };
         });
-        if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {
-          this.deliveryAddressForm.get('city').setValue(locations[0].city);
-          this.deliveryAddressForm.get('region').setValue(locations[0].region);
-        }
-      });
+        this.handlePostalCodeChange(locations);
+      },
+      (error: HttpErrorResponse) => {
+        // if (error?.error[0]?.error_code === 'postal code is not allowed') {
+        //   this.deliveryAddressForm.get('postal_code').setErrors({ postal_code_not_available: true });
+        // }
+        // if (error?.error[0]?.error_code === 'invalid postal code') {
+        //   this.deliveryAddressForm.get('postal_code').setErrors({ postal_code: true });
+        // }
+      }
+    );
+  }
+
+  private handlePostalCodeChange(locations: DeliveryLocationApi[]): void {
+    if (!locations.length) {
+      this.deliveryAddressForm.get('postal_code').setErrors({ postal_code: true });
+    }
+    if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {
+      this.deliveryAddressForm.get('city').setValue(locations[0].city);
+      this.deliveryAddressForm.get('region').setValue(locations[0].region);
+    }
   }
 
   private patchFormValues(): void {
