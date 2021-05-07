@@ -1,5 +1,5 @@
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { CommonModule } from '@angular/common';
 import { SubscriptionBenefitComponent } from './subscription-benefit.component';
 import { HttpClientModule } from '@angular/common/http';

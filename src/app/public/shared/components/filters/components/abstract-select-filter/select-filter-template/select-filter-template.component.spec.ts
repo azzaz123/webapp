@@ -5,7 +5,7 @@ import { Component, DebugElement, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { SelectOptionComponent } from '@shared/form/components/select/select-option/select-option.component';
 import { SelectParentOptionComponent } from '../select-parent-option/select-parent-option.component';
-import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
