@@ -94,7 +94,6 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   public inputFormatter = (location: LabeledSearchLocation) => location.label;
 
   public handleApply() {
-    console.log(this.distanceControl.value);
     const { latitude, longitude, label } = this.labeledSearchLocation;
     const distance = this.distanceControl.value;
 
@@ -135,7 +134,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
         )
       ),
       tap((location: LabeledSearchLocation) => (this.labeledSearchLocation = location)),
-      tap((location: LabeledSearchLocation) => (this.label = location.label))
+      tap(() => this.setBubbleLabel())
     );
   }
 
@@ -149,7 +148,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
     const latitude = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.latitude).value;
     const longitude = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.longitude).value;
-    const distance = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.distance).value;
+    const distance = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.distance)?.value || 500;
 
     if (distance) {
       this.distanceControl.setValue(+distance / 100);
@@ -163,6 +162,17 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   public requestBrowserLocation() {
     this.locationService.getLocationFromBrowserAPI();
+  }
+
+  private setBubbleLabel() {
+    const distance = this.distanceControl.value;
+    const { label } = this.labeledSearchLocation;
+
+    if (distance) {
+      this.label = `${distance / 100}km · ${label}`;
+    } else {
+      this.label = label;
+    }
   }
 
   private getLatitudeAndLongitudeFromLocationName(locationName: string): Observable<LabeledSearchLocation> {
