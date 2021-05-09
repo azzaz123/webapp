@@ -13,6 +13,11 @@ import { AbstractFilter } from '../../abstract-filter/abstract-filter';
 import { LocationFilterConfig } from '../interfaces/location-filter-config.interface';
 import { LocationFilterParams } from '../interfaces/location-filter-params.interface';
 
+export const HERE_MAPS_ENDPOINT = 'https://image.maps.api.here.com/mia/1.6/mapview?';
+export const HERE_MAPS_APP_ID = 'RgPrXX1bXt123UgUFc7B';
+export const HERE_MAPS_APP_CODE = 'HtfX0DsqZ2Y0x-44GfujFA';
+export const HERE_MAPS_CONFIG = `app_id=${HERE_MAPS_APP_ID}&app_code=${HERE_MAPS_APP_CODE}`;
+
 @Component({
   selector: 'tsl-location-filter',
   templateUrl: './location-filter.component.html',
@@ -21,6 +26,7 @@ import { LocationFilterParams } from '../interfaces/location-filter-params.inter
 export class LocationFilterComponent extends AbstractFilter<LocationFilterParams> implements OnInit, OnDestroy {
   private readonly labeledSearchLocationSubject = new BehaviorSubject<LabeledSearchLocation>(null);
   private readonly searchLocationSubject = new BehaviorSubject<SearchLocation>(null);
+  private readonly locationMapURLSubject = new BehaviorSubject<string>(null);
   private readonly selectedLocationSuggestionSubject = new Subject<ItemPlace>();
 
   public distanceControl: FormControl = new FormControl(500);
@@ -36,6 +42,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
     this.onSelectSuggestion().subscribe();
     this.onSearchLocationChange().subscribe();
+    this.onDistanceChange().subscribe();
   }
 
   ngOnDestroy(): void {}
@@ -50,6 +57,18 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   set searchLocation(location: SearchLocation) {
     this.searchLocationSubject.next(location);
+  }
+
+  get locationMapURL(): string {
+    return this.locationMapURLSubject.getValue();
+  }
+
+  get locationMapURL$(): Observable<string> {
+    return this.locationMapURLSubject.asObservable();
+  }
+
+  set locationMapURL(url: string) {
+    this.locationMapURLSubject.next(url);
   }
 
   get labeledSearchLocation(): LabeledSearchLocation {
@@ -99,13 +118,15 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
       filter((location) => !!location),
       map((selectedLocation: ItemPlace) => selectedLocation.description),
       switchMap((locationName: string) => this.getLatitudeAndLongitudeFromLocationName(locationName)),
-      tap((location: LabeledSearchLocation) => (this.labeledSearchLocation = location))
+      tap((location: LabeledSearchLocation) => (this.labeledSearchLocation = location)),
+      tap(({ latitude, longitude }) => (this.locationMapURL = this.getLocationMapURL({ latitude, longitude })))
     );
   }
 
   public onSearchLocationChange() {
     return this.searchLocation$.pipe(
       filter((location) => !!location),
+      tap(({ latitude, longitude }) => (this.locationMapURL = this.getLocationMapURL({ latitude, longitude }))),
       switchMap((location: SearchLocation) =>
         this.getLocationLabelFromLatitudeAndLongitude(location).pipe(
           map((label: string) =>
@@ -115,6 +136,13 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
       ),
       tap((location: LabeledSearchLocation) => (this.labeledSearchLocation = location)),
       tap((location: LabeledSearchLocation) => (this.label = location.label))
+    );
+  }
+
+  private onDistanceChange() {
+    return this.distanceControl.valueChanges.pipe(
+      filter((searchLocation) => !!searchLocation),
+      tap(() => this.getLocationMapURL({ latitude: this.searchLocation.latitude, longitude: this.searchLocation.longitude }))
     );
   }
 
@@ -161,5 +189,27 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
       longitude: `${coordinate.longitude}`,
       label: `${coordinate.name}`,
     };
+  }
+
+  private getLocationMapURL({ latitude, longitude }): string {
+    const distance = this.distanceControl.value;
+    let zoom = 1;
+
+    if (distance > 1000 && distance <= 5000) {
+      zoom = 11;
+    } else if (distance > 5000 && distance <= 10000) {
+      zoom = 10;
+    } else if (distance > 10000 && distance <= 50000) {
+      zoom = 8;
+    } else if (distance > 50000 && distance <= 500000) {
+      zoom = 6;
+    } else {
+      zoom = 13;
+    }
+
+    const hereMapsParams = `&z=${zoom}&${HERE_MAPS_CONFIG}&w=700&h=270&u=${distance / 100}k`;
+    const hereMapsCoordinates = `&c=${latitude},${longitude}`;
+
+    return HERE_MAPS_ENDPOINT + hereMapsParams + hereMapsCoordinates;
   }
 }

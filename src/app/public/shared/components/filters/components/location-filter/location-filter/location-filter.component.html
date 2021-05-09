@@ -17,8 +17,7 @@
                     width="36" height="36">
                 </tsl-svg-icon>
             </button>
-            <img src="https://image.maps.api.here.com/mia/1.6/mapview?&z=6&app_id=RgPrXX1bXt123UgUFc7B&app_code=HtfX0DsqZ2Y0x-44GfujFA&w=700&h=270&u=500k&c=40.4893538,-3.6827461"
-                class="LocationFilter__image my-3" />
+            <img [src]="locationMapURL$ | async " class="LocationFilter__image my-3" />
         </div>
 
         <tsl-slider-form [formControl]="distanceControl" [stepsConfig]="config.stepsConfig" [min]="config.range[0]"
