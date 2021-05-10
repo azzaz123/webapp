@@ -1,6 +1,7 @@
 const fs = require('fs');
 const xmlParser = require('xml2json');
 const { execSync } = require('child_process');
+const readline = require('readline');
 
 const keyPrefix = 'web_';
 
@@ -42,6 +43,14 @@ interface SubstitutionKey {
 }
 
 class I18nNormalizer {
+  private menuString = '\n\n' +
+    'What should I do?\n' +
+    '1. Run i18n\n' +
+    '2. Print missing translations\n' +
+    '3. Clean up keys\n' +
+    'e. Exit\n' +
+    'Ans: ';
+
   private copyLocations: CopyLocation[] = [{
     language: LANGUAGE.ENGLISH,
     file: 'src/locale/messages.xmb'
@@ -55,32 +64,38 @@ class I18nNormalizer {
   ];
   private escapeLesserThan = '$LESSER_THAN';
   private escapeGreaterThan = '$GREATER_THAN';
-  private copies: Copy[] = [];
 
   private originalLanguage = LANGUAGE.ENGLISH;
 
   private cumulativeIndex = 0;
-  private missingTranslations: MissingTranslation[];
 
-  public exec(runI18n: boolean = false): void {
-    if (runI18n) {
-      this.runI18n();
+  public async menu(): Promise<void> {
+    const readlineInterface = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    const answer = await new Promise(resolve => readlineInterface.question(this.menuString, (ans) => {
+      readlineInterface.close();
+      resolve(ans);
+    }));
+
+    switch (answer) {
+      case '1':
+        this.runI18n();
+        break;
+      case '2':
+        this.printMissingTranslations();
+        break;
+      case '3':
+        this.addMissingKeys();
+        this.normalizeKeys();
+        break;
+      case 'e':
+        return;
     }
 
-    this.copies = this.getCopies();
-
-    this.addMissingKeys();
-
-    this.missingTranslations = this.getMissingTranslations(this.copies);
-
-    console.warn(
-      'Missing translations: \n',
-      this.missingTranslations.map(missingTranslation => `${missingTranslation.id}: ${missingTranslation.missingLanguages.join(', ')}`)
-        .join('\n')
-    );
-
-    // // Format all keys with snake_case, add prefix and simplify key name
-    // this.normalizeKeys();
+    return this.menu();
   }
 
   private getCopies(): Copy[] {
@@ -103,33 +118,90 @@ class I18nNormalizer {
     });
   }
 
+  private runI18n() {
+    execSync('yarn i18n');
+  }
+
   private addMissingKeys(): void {
-    const copiesWithoutKey = this.copies.filter(copy => this.isNumericKey(copy.key));
-    const substitutionKeys: SubstitutionKey[] = [];
-
+    const copies = this.getCopies();
+    const copiesWithoutKey = copies.filter(copy => this.isNumericKey(copy.key));
     if (copiesWithoutKey.length > 0) {
-      copiesWithoutKey.forEach((copy) => {
-        const newKey = this.getNewKey(copy);
-        substitutionKeys.push({
-          oldKey: copy.key,
-          source: copy.source,
-          newKey
-        });
+      const substitutionKeys = copiesWithoutKey.map((copy) => ({
+        oldKey: copy.key,
+        source: copy.source,
+        newKey: this.getNewKey(copy)
+      }));
 
-        copy.key = newKey;
-      });
+      this.substituteKeys(substitutionKeys);
 
-      substitutionKeys.forEach(({newKey, source}) => {
-        this.setNewKeyInHTML(source, newKey);
-      });
-
-      this.setNewKeysInFiles(substitutionKeys);
-
-      this.runI18n();
+      console.log(
+        '\nAdded keys:\n',
+        substitutionKeys.map(({ source, oldKey, newKey }) => `${source}: ${oldKey} -> ${newKey}`).join('\n')
+      );
+    } else {
+      console.log('\nNo missing keys\n');
     }
   }
 
-  // FIXME: This should take more cases into account (same line i18n tag?)
+  private printMissingTranslations(): void {
+    const copies = this.getCopies();
+    const missingTranslations = copies.reduce((acc, copy) => {
+      const languageKeys: LANGUAGE[] = Object.keys(copy.translation) as LANGUAGE[];
+
+      const missingLanguages = languageKeys.filter(lang => copy.translation[lang] === undefined);
+
+      if (missingLanguages.length > 0) {
+        acc.push({
+          id: copy.key,
+          missingLanguages
+        });
+      }
+
+      return acc;
+    }, [] as MissingTranslation[]);
+
+    console.log(
+      '\nMissing translations:\n',
+      missingTranslations.map(missingTranslation => `${missingTranslation.id}: ${missingTranslation.missingLanguages.join(', ')}`)
+        .join('\n')
+    );
+  }
+
+  private normalizeKeys(): void {
+    const copies = this.getCopies();
+    const processedCopies: Copy[] = copies.map(copy => ({
+      ...copy,
+      key: this.generateNormalizedKey(copy.key)
+    }));
+
+    const substitutionKeys: SubstitutionKey[] = processedCopies.map((copy, index) => ({
+      newKey: copy.key,
+      oldKey: copies[index].key,
+      source: copy.source
+    })).filter(copy => copy.newKey !== copy.oldKey);
+
+    if (substitutionKeys) {
+      this.substituteKeys(substitutionKeys);
+      console.log(
+        `\nNormalized keys:\n`,
+        substitutionKeys.map(({ source, oldKey, newKey }) => `${source}: ${oldKey} -> ${newKey}`).join('\n')
+      );
+    } else {
+      console.log('No keys to normalize');
+    }
+
+  }
+
+  private substituteKeys(substitutionKeys: SubstitutionKey[]): void {
+    substitutionKeys.forEach(({newKey, source}) => {
+      this.setNewKeyInHTML(source, newKey);
+    });
+
+    this.setNewKeysInFiles(substitutionKeys);
+
+    this.runI18n();
+  }
+
   private setNewKeyInHTML(source: string, newKey: string): void {
     const splitPath = source.split(':');
     const filePath = splitPath[0];
@@ -177,23 +249,6 @@ class I18nNormalizer {
     }, {} as TranslatedNodes);
   }
 
-  private getMissingTranslations(copies: Copy[]): MissingTranslation[] {
-    return copies.reduce((acc, copy) => {
-      const languageKeys: LANGUAGE[] = Object.keys(copy.translation) as LANGUAGE[];
-
-      const missingLanguages = languageKeys.filter(lang => copy.translation[lang] === undefined);
-
-      if (missingLanguages.length > 0) {
-        acc.push({
-          id: copy.key,
-          missingLanguages
-        });
-      }
-
-      return acc;
-    }, [] as MissingTranslation[]);
-  }
-
   private getNodeMessages(copiesFileLocation): CopyNode[] {
     const copyNodes = this.getTranslationNodesFromFile(copiesFileLocation);
     return copyNodes.filter(node => !this.shouldSkipPath(node));
@@ -224,11 +279,11 @@ class I18nNormalizer {
 
   private shouldSkipPath(node: CopyNode): boolean {
     if (node.source) {
-      this.pathsToSkip.forEach((path: string) => {
+      for (const path of this.pathsToSkip) {
         if (node.source.startsWith(path)) {
           return true;
         }
-      });
+      }
     }
 
     return false;
@@ -287,53 +342,6 @@ class I18nNormalizer {
     }
   }
 
-  // private setKeysInOtherCopies(keysToBeUpdated, filePath) {
-  //   let rawFile = fs.readFileSync(filePath, 'utf8');
-  //   const newTranslations = [];
-  //
-  //   keysToBeUpdated.forEach(key => {
-  //     const isOldKeyInFile = rawFile.includes(key.old);
-  //     if (isOldKeyInFile) {
-  //       rawFile = rawFile.replace(key.old, key.new);
-  //       return;
-  //     }
-  //
-  //     const wasNumeric = this.isNumericKey(key.old);
-  //     if (wasNumeric) {
-  //       const translation = this.copies.find(t => t.numericKey && t.numericKey === key.old);
-  //
-  //       if (!translation) {
-  //         return;
-  //       }
-  //
-  //       const replaceGreaterThanRegExp = new RegExp(this.escapeGreaterThan, 'g');
-  //       const replaceLesserThanRegExp = new RegExp(this.escapeLesserThan, 'g');
-  //       const cleanTranslation = translation.es
-  //         .replace(replaceLesserThanRegExp, '<')
-  //         .replace(replaceGreaterThanRegExp, '>');
-  //
-  //       const newTranslation = `<translation id="${key.new}">${cleanTranslation}</translation>`;
-  //       newTranslations.push(newTranslation);
-  //     }
-  //   });
-  //
-  //   // Touring is crying in a corner right now
-  //   const hasPendingTranslations = newTranslations.length !== 0;
-  //   if (hasPendingTranslations) {
-  //     let allLines = rawFile.split('\n');
-  //     const lastTwoLines = allLines.splice(allLines.length - 2, 2);
-  //     allLines = allLines.concat(newTranslations);
-  //     allLines = allLines.concat(lastTwoLines);
-  //     rawFile = allLines.join('\n');
-  //   }
-  //
-  //   fs.writeFileSync(`${filePath}`, rawFile);
-  // }
-
-  private runI18n() {
-    execSync('yarn i18n');
-  }
-
   private snakeCase(string) {
     return string.charAt(0).toLowerCase() + string.slice(1)
       .replace(/\W+/g, ' ')
@@ -358,25 +366,8 @@ class I18nNormalizer {
 
     return newKey.split('_').filter(onlyUniqueFilter).join('_');
   }
-
-  // private normalizeKeys() {
-  //   const keysToNormalize: { old: string, new: string }[] = [];
-  //
-  //   const allNodes = this.getNodeMessages();
-  //
-  //   allNodes.forEach(node => {
-  //     const oldKey = node.key;
-  //     const normalizedKey = this.generateNormalizedKey(oldKey);
-  //
-  //     const needsModification = normalizedKey !== oldKey;
-  //     if (needsModification) {
-  //       keysToNormalize.push({ old: oldKey, new: normalizedKey });
-  //       this.setNewKeyInHTML(node, normalizedKey);
-  //     }
-  //   });
-  //
-  //   this.setNewKeyInMainCopies(keysToNormalize);
-  // }
 }
 
-new I18nNormalizer().exec(false);
+new I18nNormalizer().menu().then(() => {
+  console.log('Bye!');
+});
