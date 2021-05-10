@@ -169,16 +169,6 @@ describe('SearchComponent', () => {
         expect(searchAdsServiceMock.setSlots).toHaveBeenCalledTimes(1);
       });
     });
-
-    /*  describe('when click on item card', () => {
-      it('should send track click item card event', () => {
-        const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
-
-        fixture.detectChanges();
-
-        publicItemCard.triggerEventHandler('clickedItemAndIndexEvent', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
-      });
-    }); */
   });
 
   describe('when items change', () => {
