@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
 import { PaymentMethodResponse } from '@core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
@@ -40,7 +41,8 @@ export class NewSubscriptionComponent implements OnInit {
     private subscriptionsService: SubscriptionsService,
     private modalService: NgbModal,
     private deviceService: DeviceDetectorService,
-    private scrollIntoViewService: ScrollIntoViewService
+    private scrollIntoViewService: ScrollIntoViewService,
+    private eventService: EventService
   ) {}
   public isLoading: boolean;
 
@@ -88,22 +90,32 @@ export class NewSubscriptionComponent implements OnInit {
     this.selectedTier = tier;
   }
 
-  onBillingInfoFormSaved() {}
+  onBillingInfoFormSaved() {
+    this.purchaseSubscription();
+  }
 
   onPurchaseButtonClick() {
+    if (this.isInvoiceRequired) {
+      this.eventService.emit('formSubmited');
+    } else {
+      this.purchaseSubscription();
+    }
+  }
+
+  private purchaseSubscription() {
     this.isLoading = true;
     if (this.isSavedCard) {
       this.addSubscriptionFromSavedCard();
-      return;
+    } else {
+      this.addSubscriptionFromNewCard();
     }
-    this.addSubscription();
   }
 
   onChangeSelectedCard(card: FinancialCard) {
     this.selectedCard = card;
   }
 
-  private addSubscription() {
+  private addSubscriptionFromNewCard() {
     const cardId = this.selectedCard.id;
     this.stripeService.addNewCard(cardId).subscribe(
       () => {
