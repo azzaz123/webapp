@@ -44,8 +44,9 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   private readonly locationMapURLSubject = new ReplaySubject<string>();
   private readonly bubbleLabelSubject = new ReplaySubject<string>();
   private readonly selectedLocationSuggestionSubject = new Subject<ItemPlace>();
+  private readonly applyBtnClickSubject = new Subject();
 
-  public readonly distanceControl: FormControl = new FormControl(500);
+  public readonly distanceControl: FormControl = new FormControl(MAX_FILTER_DISTANCE);
   public readonly inputFormatter = (location: LabeledSearchLocation) => location.label;
 
   @Input() config: LocationFilterConfig;
@@ -60,6 +61,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     this.onSelectSuggestion().subscribe();
     this.onSearchLocationChange().subscribe();
     this.onDistanceChange().subscribe();
+    this.onApplyBtnClick().subscribe();
   }
 
   ngOnDestroy(): void {}
@@ -112,6 +114,10 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     this.distanceControl.setValue(distance);
   }
 
+  get applyBtnClick$(): Observable<unknown> {
+    return this.applyBtnClickSubject.asObservable();
+  }
+
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
     const latitude = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.latitude).value;
     const longitude = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.longitude).value;
@@ -122,23 +128,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   }
 
   public handleApply(): void {
-    const distance = this.distanceControl.value;
-
-    this.labeledSearchLocation$
-      .pipe(
-        take(1),
-        tap((location: LabeledSearchLocation) => this.locationService.setUserLocation(location)),
-        tap(() => this.setBubbleLabel())
-      )
-      .subscribe((location: LabeledSearchLocation) => {
-        const { latitude, longitude } = location;
-
-        this.valueChange.emit([
-          { key: this.config.mapKey.latitude, value: latitude },
-          { key: this.config.mapKey.longitude, value: longitude },
-          { key: this.config.mapKey.distance, value: `${distance * DISTANCE_FACTOR}` },
-        ]);
-      });
+    this.applyBtnClickSubject.next();
   }
 
   public search = (text$: Observable<string>) =>
@@ -168,7 +158,21 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
         )
       ),
       tap((location: LabeledSearchLocation) => (this.labeledSearchLocation = location)),
-      tap((location) => (this.locationMapURL = this.getLocationMapURL(location)))
+      tap((location: LabeledSearchLocation) => (this.locationMapURL = this.getLocationMapURL(location))),
+      tap((location: LabeledSearchLocation) => (this.bubbleLabel = this.getBubbleLabel(location.label, this.searchDistance)))
+    );
+  }
+
+  private onApplyBtnClick() {
+    return this.applyBtnClick$.pipe(
+      mergeMap(() => this.labeledSearchLocation$),
+      tap(({ latitude, longitude }: LabeledSearchLocation) => {
+        this.valueChange.emit([
+          { key: this.config.mapKey.latitude, value: latitude },
+          { key: this.config.mapKey.longitude, value: longitude },
+          { key: this.config.mapKey.distance, value: `${this.searchDistance * DISTANCE_FACTOR}` },
+        ]);
+      })
     );
   }
 
@@ -189,18 +193,13 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     this.locationService.getLocationFromBrowserAPI();
   }
 
-  private setBubbleLabel(): void {
-    combineLatest([this.labeledSearchLocation$, of(this.searchDistance)]).pipe(
-      map(([{ label }, distance]) => {
-        if (distance) {
-          this.label = `${distance / DISTANCE_FACTOR}km · ${label}`;
-        } else {
-          this.label = label;
-        }
-        return label;
-      }),
-      tap((label) => (this.bubbleLabel = label))
-    );
+  private getBubbleLabel(locationName: string, distance: number): string {
+    let label = locationName;
+
+    if (distance) {
+      label = `${distance / DISTANCE_FACTOR}km · ${label}`;
+    }
+    return label;
   }
 
   private getLatitudeAndLongitudeFromLocationName(locationName: string): Observable<LabeledSearchLocation> {
