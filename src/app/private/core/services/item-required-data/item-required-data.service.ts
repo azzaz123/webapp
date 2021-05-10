@@ -23,7 +23,7 @@ export const GET_ITEM_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}`;
 export class ItemRequiredDataService {
   constructor(private http: HttpClient) {}
 
-  public hasMissingRequiredDataByItemId(itemId: string): any {
+  public hasMissingRequiredDataByItemId(itemId: string): Observable<boolean> {
     return this.getItem(itemId).pipe(
       map(
         (item: ItemResponse) => {
