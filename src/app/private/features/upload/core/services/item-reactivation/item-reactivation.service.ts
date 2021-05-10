@@ -12,7 +12,7 @@ export class ItemReactivationService {
   };
   constructor(private toastService: ToastService) {}
 
-  public reactivationValidation(form: FormGroup) {
+  public reactivationValidation(form: FormGroup): void {
     if (!form.valid) {
       this.toastService.show(this.toastValidationError);
 
