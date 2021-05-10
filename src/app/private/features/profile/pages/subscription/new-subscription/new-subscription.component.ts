@@ -80,7 +80,7 @@ export class NewSubscriptionComponent implements OnInit {
   onBillingInfoFormSaved() {}
 
   onPurchaseButtonClick() {
-    this.isLoading;
+    this.isLoading = true;
     if (this.isSavedCard) {
       this.addSubscriptionFromSavedCard();
       return;
@@ -94,7 +94,6 @@ export class NewSubscriptionComponent implements OnInit {
 
   private addSubscription() {
     const cardId = this.selectedCard.id;
-    this.isLoading = true;
     this.stripeService.addNewCard(cardId).subscribe(
       () => {
         if (this.isRetryInvoice) {
@@ -108,8 +107,6 @@ export class NewSubscriptionComponent implements OnInit {
   }
 
   private addSubscriptionFromSavedCard() {
-    this.isLoading = true;
-
     if (this.isRetryInvoice) {
       this.retrySubscription();
     } else {

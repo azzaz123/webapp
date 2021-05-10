@@ -126,6 +126,7 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public subscriptionChangeSuccessful() {
+    this.newSubscription = null;
     this.loading = true;
     if (this.user.featured) {
       this.isSubscriptionUpdated();
