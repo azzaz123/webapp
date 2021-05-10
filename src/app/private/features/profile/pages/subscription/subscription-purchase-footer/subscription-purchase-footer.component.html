@@ -1,10 +1,29 @@
 <div class="SubscriptionPurchaseFooter">
-    <div class="container h-100">
+    <div class="container h-100 d-flex align-items-center justify-content-between">
         <div>
-            {{selectedTier.price}}
+            <div>
+                <b>
+                    <span>
+                        Total
+                    </span>
+                </b>
+            </div>
+            <div class="SubscriptionPurchaseFooter__amount">
+                <b>
+                    {{subscription.trial_available ? "0,00" : selectedTier.price}}{{selectedTier.currency}}
+                </b>
+            </div>
+            <div class="SubscriptionPurchaseFooter__description"> 
+                {{descriptionText}}
+            </div>
+            <div>
+                <span class="SubscriptionPurchaseFooter__legal" i18n="@@web_stripe_card_element_513">By subscribing, you accept the <a href="{{termsAndConditionsURL}}" target="_blank">Terms of use</a>
+            and <a href="{{policyPrivacyURL}}" target="_blank">Privacy policy</a> of Wallapop S.L. and Stripe Ltd
+                </span>
+            </div>
         </div>
-        <tsl-button className="btn btn-primary" [disabled]="buttonDisable" preventDoubleClick (click)="onClickButton()">
-            Comprar
+        <tsl-button className="btn btn-primary btn-primary--bold btn--width" [loading]="isLoading" [disabled]="buttonDisable" preventDoubleClick (click)="onClickButton()">
+            Pagar
         </tsl-button>
     </div>
 </div>

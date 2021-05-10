@@ -8,5 +8,28 @@
   bottom: 0;
   box-shadow: 0 -2px 6px 0 rgb(37 50 56 / 10%);
   color: #253238;
-  height: 100px;
+  padding: 12px 0;
+
+  &__amount {
+    font-size: 32px;
+    line-height: normal;
+  }
+
+  &__description {
+    color: #607d8b;
+    font-size: 14px;
+  }
+
+  &__legal {
+    color: #607d8b;
+    font-size: 14px;
+    a {
+      color: #607d8b;
+      font-weight: bold;
+    }
+  }
+
+  tsl-button {
+    width: 147px;
+  }
 }
