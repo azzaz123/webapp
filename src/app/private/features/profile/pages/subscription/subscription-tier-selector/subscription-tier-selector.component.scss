@@ -4,9 +4,14 @@
     border: solid 2px #eceff1;
     flex: 1;
     margin-right: 12px;
+    cursor: pointer;
 
     &__title {
       color: #607d8b;
+    }
+
+    &__subtitle {
+      margin: 0;
     }
 
     &:hover {

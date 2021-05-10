@@ -5,12 +5,13 @@
             <div class="GenericCard__title Card__title">
                 {{ getLimitText(tier) }}
             </div>
-            <div class="GenericCard__subtitle">
+            <div class="GenericCard__subtitle Card__subtitle">
                 <b>
                     <span i18n="@@web_profile_pages_subscription_326">
                         {{tier.price}}{{tier.currency}}/month
                     </span>
                 </b>
+                <span i18n="@@AfterFreeTrial">after free trial</span>
             </div>
         </div>
     </ng-container>

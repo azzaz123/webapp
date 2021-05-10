@@ -1,3 +1,9 @@
+@import '~style/common';
+
 .SubscriptionPurchase {
   margin-bottom: 100px;
+
+  > .GenericCard {
+    margin-bottom: $spacing-ml;
+  }
 }
