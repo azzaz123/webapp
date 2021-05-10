@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
-import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { AdSlotModule } from './ads/ad-slot/ad-slot.module';
 import { ArchivableComponent } from './archivable/archivable.component';

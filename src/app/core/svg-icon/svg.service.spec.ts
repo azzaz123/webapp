@@ -5,6 +5,8 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 describe('SvgService', () => {
   let service: SvgService;
   let httpMock: HttpTestingController;
+  const iconPath = '/assets/icons/home.svg';
+  const emptySvg = `<svg></svg>`;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,19 +24,31 @@ describe('SvgService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when requesting svg icon...', () => {
-    it('should get svg icon', () => {
-      const expectedUrl = '/assets/icons/home.svg';
-      const svg = '<svg></svg>';
-      let response: string;
+  describe('when requesting svg icon', () => {
+    describe('and when the icon is not cached in memory', () => {
+      it('should do a network request to get the icon', () => {
+        const expectedUrl = iconPath;
+        let response: string;
 
-      service.getIconByPath(expectedUrl).subscribe((r) => (response = r));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(svg);
+        service.getIconByPath(expectedUrl).subscribe((r) => (response = r));
+        const req: TestRequest = httpMock.expectOne(expectedUrl);
+        req.flush(emptySvg);
 
-      expect(req.request.url).toEqual(expectedUrl);
-      expect(response).toEqual(svg);
-      expect(req.request.method).toBe('GET');
+        expect(req.request.url).toEqual(expectedUrl);
+        expect(response).toEqual(emptySvg);
+        expect(req.request.method).toBe('GET');
+      });
+    });
+
+    describe('and when the icon is cached in memory', () => {
+      it('should not do an extra network request', () => {
+        service.getIconByPath(iconPath).subscribe();
+        httpMock.expectOne(iconPath).flush(emptySvg);
+
+        service.getIconByPath(iconPath).subscribe();
+
+        httpMock.expectNone(iconPath);
+      });
     });
   });
 });

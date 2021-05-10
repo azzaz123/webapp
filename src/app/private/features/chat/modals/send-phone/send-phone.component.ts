@@ -8,6 +8,7 @@ import { AsYouType, format, getCountryCallingCode, isValidNumber } from 'libphon
 import { metadata } from 'assets/js/metadata-phonenumber';
 
 import { RealTimeService } from 'app/core/message/real-time.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -44,7 +45,7 @@ export class SendPhoneComponent implements OnInit {
 
     if (!this.sendPhoneForm.valid) {
       this.sendPhoneForm.controls.phone.markAsDirty();
-      this.errorsService.i18nError('formErrors');
+      this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
       return;
     }
 

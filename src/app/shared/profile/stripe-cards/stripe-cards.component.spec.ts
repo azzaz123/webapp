@@ -14,6 +14,7 @@ import { NewCardModalComponent } from 'app/shared/modals/new-card-modal/new-card
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('StripeCardsComponent', () => {
   let component: StripeCardsComponent;
@@ -109,7 +110,7 @@ describe('StripeCardsComponent', () => {
 
       component.ngOnInit();
 
-      expect(errorService.i18nError).toHaveBeenCalledWith('getStripeCardsError');
+      expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.STRIPE_CARDS_RETRIEVAL_ERROR);
     });
 
     it('should call getSubscriptions service', () => {

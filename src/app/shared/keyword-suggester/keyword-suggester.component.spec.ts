@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { KeywordSuggesterComponent } from './keyword-suggester.component';
-import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { Subject } from 'rxjs';
 import { KeywordSuggestion } from './keyword-suggestion.interface';
@@ -38,11 +37,11 @@ describe('KeywordSuggesterComponent', () => {
 
   describe('ngOnChanges', () => {
     it('should get the translation for the placeholder', () => {
-      spyOn(i18n, 'getTranslations').and.callThrough();
+      spyOn(i18n, 'translate').and.callThrough();
 
       component.ngOnChanges({ placeholder: { currentValue: 'Brand' } });
 
-      expect(i18n.getTranslations).toHaveBeenCalledWith('Brand');
+      expect(i18n.translate).toHaveBeenCalledWith('Brand');
     });
   });
 

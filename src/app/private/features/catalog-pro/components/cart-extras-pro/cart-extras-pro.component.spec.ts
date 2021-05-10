@@ -16,6 +16,7 @@ import { BILLING_INFO_RESPONSE, ORDER_CART_EXTRAS_PRO, PACK_ID, PREPARED_PACKS }
 import { StripeService } from '@core/stripe/stripe.service';
 import { EventService } from '@core/event/event.service';
 import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
@@ -249,7 +250,7 @@ describe('CartExtrasProComponent', () => {
 
           component.checkout();
 
-          expect(errorsService.i18nError).toHaveBeenCalledWith('bumpError');
+          expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.BUMP_ERROR);
         });
       });
     });
