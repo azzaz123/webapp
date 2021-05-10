@@ -1317,4 +1317,11 @@
   <translation id="filterFashionBrandBubblePlaceholder">Marca</translation>
   <translation id="filterFashionBrandDrawerPlaceholder">Selecciona marca</translation>
   <translation id="filterFashionBrandSuggesterPlaceholder">Buscar una marca</translation>
+  <translation id="filterPhoneNAccessoriesBrandTitle">Marca y modelo</translation>
+  <translation id="filterPhoneNAccessoriesBrandBubblePlaceholder">Marca y modelo</translation>
+  <translation id="filterPhoneNAccessoriesBrandDrawerPlaceholder">Selecciona marca y modelo</translation>
+  <translation id="filterPhoneNAccessoriesBrandSuggesterPlaceholder">Buscar una marca y modelo</translation>
+  <translation id="filterPhoneNAccessoriesTypeTitle">Tipo de producto</translation>
+  <translation id="filterPhoneNAccessoriesTypeBubblePlaceholder">Tipo de producto</translation>
+  <translation id="filterPhoneNAccessoriesTypeDrawerPlaceholder">Selecciona tipo de producto</translation>
 </translationbundle>
