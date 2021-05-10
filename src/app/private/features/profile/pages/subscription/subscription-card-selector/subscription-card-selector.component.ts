@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { SubscriptionResponse } from '@core/subscriptions/subscriptions.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeCardModalComponent } from '@shared/modals/change-card-modal/change-card-modal.component';
@@ -12,21 +12,20 @@ export const test = 'AAAA';
   templateUrl: './subscription-card-selector.component.html',
   styleUrls: ['./subscription-card-selector.component.scss'],
 })
-export class SubscriptionCardSelectorComponent implements OnInit {
+export class SubscriptionCardSelectorComponent implements OnInit, OnChanges {
   @Input() stripeCards: FinancialCard[];
   @Input() selectedCard: FinancialCard;
   @Output() changeSelectedCard: EventEmitter<FinancialCard> = new EventEmitter();
-  loading;
+  public showChangeLink: boolean;
 
   constructor(private modalService: NgbModal) {}
 
-  test = test;
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-    console.log('stripe', this.stripeCards);
+  ngOnChanges() {
+    this.showChangeLink =
+      this.stripeCards?.length > 1 || (this.stripeCards?.length > 0 && !this.stripeCards.find((card) => card.id === this.selectedCard.id));
   }
-
-  onSetChangeCard(event) {}
 
   public addNewCard(): void {
     let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {
@@ -35,25 +34,11 @@ export class SubscriptionCardSelectorComponent implements OnInit {
     modalRef.result
       .then(
         (financialCard: FinancialCard) => {
-          this.loading = true;
-          console.log('test', financialCard);
-          const existingCard = this.stripeCards.filter((stripeCard) => stripeCard.id === financialCard.id);
           this.changeSelectedCard.emit(financialCard);
-
-          /*           if (!existingCard.length) {
-            this.stripeService
-              .addNewCard(financialCard.id)
-              .pipe(finalize(() => (this.loading = false)))
-              .subscribe(
-                () => this.stripeCards.push(financialCard),
-                () => this.errorService.i18nError('addNewCardError')
-              );
-          } */
-          modalRef = null;
         },
-        () => (this.loading = false)
+        () => {}
       )
-      .catch(() => (this.loading = false));
+      .catch(() => {});
   }
 
   public addNewSubscriptionCard(): void {
@@ -64,10 +49,8 @@ export class SubscriptionCardSelectorComponent implements OnInit {
         (card) => {
           this.changeSelectedCard.emit(card);
         },
-        () => (this.loading = false)
+        () => {}
       )
-      .catch(() => {
-        this.loading = false;
-      });
+      .catch(() => {});
   }
 }
