@@ -1,6 +1,6 @@
-<tsl-filter-template [isBubble]="variant | isBubble" [label]="label" [hasApply]="true" [isDropdown]="true"
-    [title]="config.title" [icon]="config.icon" [label]="" (apply)="handleApply()" [hasValue]="hasValue$ | async"
-    (openStateChange)="openStateChange.emit($event)">
+<tsl-filter-template [isBubble]="variant | isBubble" [label]="bubbleLabel$ | async" [hasApply]="true"
+    [isDropdown]="true" [title]="config.title" [icon]="config.icon" (apply)="handleApply()"
+    [hasValue]="hasValue$ | async" (openStateChange)="openStateChange.emit($event)">
 
     <div class="LocationFilter py-2 ">
         <div class="LocationFilter__search">
@@ -17,7 +17,7 @@
                     width="36" height="36">
                 </tsl-svg-icon>
             </button>
-            <img [src]="locationMapURL$ | async " class="LocationFilter__image my-3" />
+            <img [src]="locationMapURL$ | async" class="LocationFilter__image my-3" />
         </div>
 
         <tsl-slider-form [formControl]="distanceControl" [stepsConfig]="config.stepsConfig" [min]="config.range[0]"
