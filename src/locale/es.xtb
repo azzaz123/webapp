@@ -1324,4 +1324,11 @@
   <translation id="filterPhoneNAccessoriesTypeTitle">Tipo de producto</translation>
   <translation id="filterPhoneNAccessoriesTypeBubblePlaceholder">Tipo de producto</translation>
   <translation id="filterPhoneNAccessoriesTypeDrawerPlaceholder">Selecciona tipo de producto</translation>
+  <translation id="web_filter_sort_title">Ordenar por:</translation>
+  <translation id="web_filter_sort_bubble_title">Ordenar por</translation>
+  <translation id="web_filter_sort_by_distance">Distancia</translation>
+  <translation id="web_filter_sort_by_price_low_high">De más barato a más caro</translation>
+  <translation id="web_filter_sort_by_price_high_low">De más caro a más barato</translation>
+  <translation id="web_filter_sort_by_newest">Novedades</translation>
+  <translation id="web_filter_sort_cancel">Cancelar</translation>
 </translationbundle>

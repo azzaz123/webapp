@@ -948,9 +948,13 @@
   <msg id="web_search_no_results_title"><source>src/app/public/features/search/components/search-error-layout/search-error-layout.component.ts:13</source>Sorry, we weren&apos;t able to find what you&apos;re looking for at the moment</msg>
   <msg id="web_search_no_results_subtitle"><source>src/app/public/features/search/components/search-error-layout/search-error-layout.component.ts:14</source>Try changing your search terms, or take a chance and discover something unexpected in the land of wallapop</msg>
   <msg id="web_search_no_results_button_text"><source>src/app/public/features/search/components/search-error-layout/search-error-layout.component.ts:18</source>New search</msg>
-  <msg id="8499959580096706757" desc="web_search_sort_filter_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:3</source>Ordenador por: </msg>
-  <msg id="7994828817141708719" desc="web_search_sort_filter_bubble_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:8</source>Ordenado por</msg>
-  <msg id="6402951927316857780" desc="web_search_sort_filter_bubble_cancel"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:15</source>Cancelar</msg>
+  <msg id="web_filter_sort_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:3</source>Sort by:</msg>
+  <msg id="web_filter_sort_bubble_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:8</source>Sort by</msg>
+  <msg id="web_filter_sort_cancel"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:15</source>Cancel</msg>
+  <msg id="web_filter_sort_by_distance"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:4</source>Distance</msg>
+  <msg id="web_filter_sort_by_price_low_high"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:9</source>Price low to high</msg>
+  <msg id="web_filter_sort_by_price_high_low"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:14</source>Price high to low</msg>
+  <msg id="web_filter_sort_by_newest"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:19</source>Newest first</msg>
   <msg id="4026193177292289663" desc="web_search_component_load_more_products"><source>src/app/public/features/search/pages/search.component.html:55</source>Ver más productos</msg>
   <msg id="FooterLinksWallapopTitle"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:5</source>wallapop</msg>
   <msg id="FooterLinksAboutLabel"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:8</source>About</msg>
