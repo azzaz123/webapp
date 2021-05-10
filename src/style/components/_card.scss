@@ -32,12 +32,13 @@
     font-size: $font-size-m;
     color: $blue-grey-1;
     font-weight: $font-weight-chunky;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
   &__subtitle {
     font-size: $font-size-m;
     color: $blue-grey-2;
     margin-bottom: 8px;
+    line-height: 1;
   }
 
   &__link {

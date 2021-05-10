@@ -8,6 +8,7 @@
             <b><span i18n="@@SubscriptionPurchaseSubscriptionTitle" class="SubscriptionPurchaseHeader__title">{{subscription.category_name.toUpperCase()}}
                     subscription
                 </span></b>
+                <span *ngIf="subscription.trial_available" class="ml-3 px-2 SubscriptionPurchaseHeader__trialBanner" i18n="@@SubscriptionPriceDiscountDaysTrialFree">{{subscription.trial_days}}-day trial for free</span>
         </div>
         <div class="mb-2 SubscriptionPurchaseHeader__subtitle">
             Turn your sales into a real business

@@ -23,6 +23,11 @@
     color: #607d8b;
   }
 
+  &__trialBanner {
+    background-color: #edfcf8;
+    border-radius: 2px;
+  }
+
   &__iconCheck {
     ::ng-deep svg path {
       fill: $blue-grey-2;
