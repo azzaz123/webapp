@@ -2,89 +2,204 @@ const fs = require('fs');
 const xmlParser = require('xml2json');
 const { execSync } = require('child_process');
 
-const englishCopiesFileLocation = 'src/locale/messages.xmb';
-const spanishCopiesFileLocation = 'src/locale/es.xtb';
-const mainCopiesFileLocation = englishCopiesFileLocation;
 const keyPrefix = 'web_';
-const translationsFilesLocations = [
-  englishCopiesFileLocation,
-  spanishCopiesFileLocation
-];
-const pathsToSkip = [
-  'node_modules'
-];
 
+enum LANGUAGE {
+  SPANISH = 'es',
+  ENGLISH = 'en'
+}
+
+interface CopyLocation {
+  language: LANGUAGE;
+  file: string;
+}
+
+type Translation = Record<LANGUAGE, string | Object>;
+
+interface Copy {
+  key: string;
+  source: string;
+  translation: Translation;
+}
+
+interface CopyNode {
+  id: string;
+  source?: string;
+  text: string | Object; // BEFOREMERGE: Type object
+}
+
+type TranslatedNodes = Record<Partial<LANGUAGE>, CopyNode[]>;
+
+interface MissingTranslation {
+  id: string;
+  missingLanguages: LANGUAGE[];
+}
+
+interface SubstitutionKey {
+  oldKey: string;
+  newKey: string;
+  source: string;
+}
 
 class I18nNormalizer {
+  private copyLocations: CopyLocation[] = [{
+    language: LANGUAGE.ENGLISH,
+    file: 'src/locale/messages.xmb'
+  }, {
+    language: LANGUAGE.SPANISH,
+    file: 'src/locale/es.xtb'
+  }];
+
+  private pathsToSkip = [
+    'node_modules'
+  ];
   private escapeLesserThan = '$LESSER_THAN';
   private escapeGreaterThan = '$GREATER_THAN';
-  private translations = [];
+  private copies: Copy[] = [];
+
+  private originalLanguage = LANGUAGE.ENGLISH;
 
   private cumulativeIndex = 0;
-  private recursiveIteration = 1;
+  private missingTranslations: MissingTranslation[];
 
-  public main() {
-    // Load in memory original translations
-    this.loadTranslationsDatabase();
+  public exec(runI18n: boolean = false): void {
+    if (runI18n) {
+      this.runI18n();
+    }
 
-    // Ensure all i18n copies have manual keys and update copies
-    this.addMissingKeys(false); // assuming `yarn i18n` does not generate new messages
+    this.copies = this.getCopies();
 
-    // Format all keys with snake_case, add prefix and simplify key name
-    this.normalizeKeys();
+    this.addMissingKeys();
+
+    this.missingTranslations = this.getMissingTranslations(this.copies);
+
+    console.warn(
+      'Missing translations: \n',
+      this.missingTranslations.map(missingTranslation => `${missingTranslation.id}: ${missingTranslation.missingLanguages.join(', ')}`)
+        .join('\n')
+    );
+
+    // // Format all keys with snake_case, add prefix and simplify key name
+    // this.normalizeKeys();
   }
 
-  private loadTranslationsDatabase() {
-    const originalNodeMessages = this.getNodeMessages(false, englishCopiesFileLocation);
-    const spanishNodeMessages = this.getNodeMessages(false, spanishCopiesFileLocation);
+  private getCopies(): Copy[] {
+    const translatedNodes = this.getTranslatedNodes();
+    const originalNodes = translatedNodes[this.originalLanguage];
 
-    originalNodeMessages.forEach(originalNodeMessage => {
-      spanishNodeMessages.forEach(spanishNodeMessage => {
-        const isSameId = originalNodeMessage.id === spanishNodeMessage.id;
+    return originalNodes.map(node => {
+      const languages = Object.values(LANGUAGE) as LANGUAGE[];
 
-        if (isSameId) {
-          const numericKey = this.isKeyNumeric(originalNodeMessage.id) ? originalNodeMessage.id : null;
-          const translationRelation = {
-            numericKey,
-            mainKey: originalNodeMessage.id,
-            es: spanishNodeMessage.text,
-            en: originalNodeMessage.text
+      return  {
+        key: node.id,
+        source: node.source,
+        translation: languages.reduce((acc, lang) => {
+          return {
+            ...acc,
+            [lang]: translatedNodes[lang].find(translatedNode => translatedNode.id === node.id)?.text
           };
-          this.translations.push(translationRelation);
-        }
+        }, {} as Translation)
+      };
+    });
+  }
+
+  private addMissingKeys(): void {
+    const copiesWithoutKey = this.copies.filter(copy => this.isNumericKey(copy.key));
+    const substitutionKeys: SubstitutionKey[] = [];
+
+    if (copiesWithoutKey.length > 0) {
+      copiesWithoutKey.forEach((copy) => {
+        const newKey = this.getNewKey(copy);
+        substitutionKeys.push({
+          oldKey: copy.key,
+          source: copy.source,
+          newKey
+        });
+
+        copy.key = newKey;
       });
+
+      substitutionKeys.forEach(({newKey, source}) => {
+        this.setNewKeyInHTML(source, newKey);
+      });
+
+      this.setNewKeysInFiles(substitutionKeys);
+
+      this.runI18n();
+    }
+  }
+
+  // FIXME: This should take more cases into account (same line i18n tag?)
+  private setNewKeyInHTML(source: string, newKey: string): void {
+    const splitPath = source.split(':');
+    const filePath = splitPath[0];
+    const keyPosition = splitPath[1];
+    // Note: only checking first line because breaklines where removed
+    const translationLinePositionInFile = parseInt(keyPosition.split(',')[0], 0);
+
+    const rawHTML = fs.readFileSync(filePath, 'UTF-8');
+    const allLines = rawHTML.split(/\r?\n/);
+    let targetLine = allLines[translationLinePositionInFile];
+    targetLine = targetLine.replace(/="@(.*?)(?=")"/g, '');
+
+    const isPlaceholder = targetLine.includes('i18n-placeholder');
+    if (isPlaceholder) {
+      targetLine = targetLine.replace('i18n-placeholder', `i18n-placeholder="@@${newKey}"`);
+    } else {
+      targetLine = targetLine.replace('i18n', `i18n="@@${newKey}"`);
+    }
+
+    allLines[translationLinePositionInFile] = targetLine;
+    const formattedRawHTML = allLines.join('\n');
+    fs.writeFileSync(filePath, formattedRawHTML);
+  }
+
+  private setNewKeysInFiles(substitutionKeys: SubstitutionKey[]): void {
+    this.copyLocations.forEach(({ file }) => {
+      let rawFile = fs.readFileSync(file, 'utf8');
+
+      substitutionKeys.forEach(({oldKey, newKey}) => {
+        const regexpFindOldKey = new RegExp(`"${oldKey}"`, 'g');
+
+        rawFile = rawFile.replace(regexpFindOldKey, `"${newKey}"`);
+      });
+
+      fs.writeFileSync(file, rawFile);
     });
   }
 
-  private cleanupRawXMB(rawStringFile) {
-    const translationTagSeparator = `msg`;
-    const regexpMatchTranslationSeparatorsAperture = new RegExp(`</source>`, 'g');
-    const regexpMatchTranslationSeparatorsClosure = new RegExp(`</${translationTagSeparator}>`, 'g');
-    const apertureReplacement = '</source><text>';
-    const closureReplacement = `</text></${translationTagSeparator}>`;
-    const regexpCleanupInterpolations = new RegExp('/<ph.*\/>/', 'g');
-    const interpolationsReplacement = '__INTERPOLATION__';
-
-    return rawStringFile
-      .replace(regexpMatchTranslationSeparatorsAperture, apertureReplacement)
-      .replace(regexpMatchTranslationSeparatorsClosure, closureReplacement)
-      .replace(regexpCleanupInterpolations, interpolationsReplacement);
+  private getTranslatedNodes(): TranslatedNodes {
+    return this.copyLocations.reduce((acc, location) => {
+      return {
+        ...acc,
+        [location.language]: this.getNodeMessages(location.file)
+      };
+    }, {} as TranslatedNodes);
   }
 
-  private cleanupRawXTB(rawStringFile) {
-    const allLines = rawStringFile.split('\n');
-    allLines.forEach((line, i) => {
-      line = line.replace(/<ph/g, `${this.escapeLesserThan}ph`);
-      line = line.replace(/<ex>/g, `${this.escapeLesserThan}ex${this.escapeGreaterThan}`);
-      line = line.replace(/<\/ex>/g, `${this.escapeLesserThan}/ex${this.escapeGreaterThan}`);
-      line = line.replace(/<\/ph>/g, `${this.escapeLesserThan}/ph${this.escapeGreaterThan}`);
-      allLines[i] = line;
-    });
+  private getMissingTranslations(copies: Copy[]): MissingTranslation[] {
+    return copies.reduce((acc, copy) => {
+      const languageKeys: LANGUAGE[] = Object.keys(copy.translation) as LANGUAGE[];
 
-    return allLines.join('\n');
+      const missingLanguages = languageKeys.filter(lang => copy.translation[lang] === undefined);
+
+      if (missingLanguages.length > 0) {
+        acc.push({
+          id: copy.key,
+          missingLanguages
+        });
+      }
+
+      return acc;
+    }, [] as MissingTranslation[]);
   }
 
-  private getTranslationNodesFromFile(copiesFileLocation) {
+  private getNodeMessages(copiesFileLocation): CopyNode[] {
+    const copyNodes = this.getTranslationNodesFromFile(copiesFileLocation);
+    return copyNodes.filter(node => !this.shouldSkipPath(node));
+  }
+
+  private getTranslationNodesFromFile(copiesFileLocation): CopyNode[] {
     const rawCopiesFile = fs.readFileSync(copiesFileLocation, 'utf8');
 
     const isXMB = copiesFileLocation.endsWith('.xmb');
@@ -107,195 +222,116 @@ class I18nNormalizer {
     return [];
   }
 
-  private isKeyNumeric(id) {
+  private shouldSkipPath(node: CopyNode): boolean {
+    if (node.source) {
+      this.pathsToSkip.forEach((path: string) => {
+        if (node.source.startsWith(path)) {
+          return true;
+        }
+      });
+    }
+
+    return false;
+  }
+
+  private cleanupRawXMB(rawStringFile): string {
+    const translationTagSeparator = `msg`;
+    const regexpMatchTranslationSeparatorsAperture = new RegExp(`</source>`, 'g');
+    const regexpMatchTranslationSeparatorsClosure = new RegExp(`</${translationTagSeparator}>`, 'g');
+    const apertureReplacement = '</source><text>';
+    const closureReplacement = `</text></${translationTagSeparator}>`;
+    const regexpCleanupInterpolations = new RegExp('/<ph.*\/>/', 'g');
+    const interpolationsReplacement = '__INTERPOLATION__';
+
+    return rawStringFile
+      .replace(regexpMatchTranslationSeparatorsAperture, apertureReplacement)
+      .replace(regexpMatchTranslationSeparatorsClosure, closureReplacement)
+      .replace(regexpCleanupInterpolations, interpolationsReplacement);
+  }
+
+  private cleanupRawXTB(rawStringFile): string {
+    const allLines = rawStringFile.split('\n');
+    allLines.forEach((line, i) => {
+      line = line.replace(/<ph/g, `${this.escapeLesserThan}ph`);
+      line = line.replace(/<ex>/g, `${this.escapeLesserThan}ex${this.escapeGreaterThan}`);
+      line = line.replace(/<\/ex>/g, `${this.escapeLesserThan}/ex${this.escapeGreaterThan}`);
+      line = line.replace(/<\/ph>/g, `${this.escapeLesserThan}/ph${this.escapeGreaterThan}`);
+      allLines[i] = line;
+    });
+
+    return allLines.join('\n');
+  }
+
+  private isNumericKey(id) {
     return !isNaN(id) && !isNaN(parseFloat(id));
   }
 
-  private getNodeMessages = (getAutogeneratedOnly = false, copiesFileLocation = mainCopiesFileLocation ) => {
-    const nodes = [];
-
-    const translationNodes = this.getTranslationNodesFromFile(copiesFileLocation);
-
-    translationNodes.forEach(translationNode => {
-      let isSkipped = false;
-      pathsToSkip.forEach(path => {
-        if (translationNode.source && translationNode.source.startsWith(path)) {
-          isSkipped = true;
-          return;
-        }
-      });
-
-      if (isSkipped) {
-        return;
-      }
-
-      if (getAutogeneratedOnly) {
-        const id = translationNode.id;
-        const isKeyIdGenerated = this.isKeyNumeric(id);
-        if (isKeyIdGenerated) {
-          nodes.push(translationNode);
-        }
-      } else {
-        nodes.push(translationNode);
-      }
-    });
-
-    return nodes;
-  }
-
   private generateKeyByPath(path) {
-    const pathWithoutFilelines = path.split(':')[0];
-    const pathWithoutExtension = pathWithoutFilelines.replace('.component.html', '');
+    const pathWithoutFileLines = path.split(':')[0];
+    const pathWithoutExtension = pathWithoutFileLines.replace('.component.html', '');
     const normalizedPath = pathWithoutExtension.replace(/-/g, '/');
-    const splittedBySlash = normalizedPath.split('/');
-    const keyName = splittedBySlash.slice(4, splittedBySlash.length + 1).join('_');
-    const normalizedKeyname = this.generateNormalizedKey(keyName);
+    const splitBySlash = normalizedPath.split('/');
+    const key = splitBySlash.slice(4, splitBySlash.length + 1).join('_');
+    const normalizedKey = this.generateNormalizedKey(key);
 
     this.cumulativeIndex++;
-    return `${normalizedKeyname}_${this.cumulativeIndex}`;
+    return `${normalizedKey}_${this.cumulativeIndex}`;
   }
 
-  private getNewKeyName(node) {
-    const isAutogenerated = this.isKeyNumeric(node.id);
+  private getNewKey(node: Copy): string {
+    const isAutogenerated = this.isNumericKey(node.key);
     if (isAutogenerated) {
       return this.generateKeyByPath(node.source);
     } else {
-      return this.generateNormalizedKey(node.id);
+      return this.generateNormalizedKey(node.key);
     }
   }
 
-  private setNewKeyNameInHTML(node, newKeyName) {
-    const splittedPath = node.source.split(':');
-    const filePath = splittedPath[0];
-    const keyPosition = splittedPath[1];
-    // Note: only checking first line because breaklines where removed
-    const translationLinePositionInFile = parseInt(keyPosition.split(',')[0], 0);
+  // private setKeysInOtherCopies(keysToBeUpdated, filePath) {
+  //   let rawFile = fs.readFileSync(filePath, 'utf8');
+  //   const newTranslations = [];
+  //
+  //   keysToBeUpdated.forEach(key => {
+  //     const isOldKeyInFile = rawFile.includes(key.old);
+  //     if (isOldKeyInFile) {
+  //       rawFile = rawFile.replace(key.old, key.new);
+  //       return;
+  //     }
+  //
+  //     const wasNumeric = this.isNumericKey(key.old);
+  //     if (wasNumeric) {
+  //       const translation = this.copies.find(t => t.numericKey && t.numericKey === key.old);
+  //
+  //       if (!translation) {
+  //         return;
+  //       }
+  //
+  //       const replaceGreaterThanRegExp = new RegExp(this.escapeGreaterThan, 'g');
+  //       const replaceLesserThanRegExp = new RegExp(this.escapeLesserThan, 'g');
+  //       const cleanTranslation = translation.es
+  //         .replace(replaceLesserThanRegExp, '<')
+  //         .replace(replaceGreaterThanRegExp, '>');
+  //
+  //       const newTranslation = `<translation id="${key.new}">${cleanTranslation}</translation>`;
+  //       newTranslations.push(newTranslation);
+  //     }
+  //   });
+  //
+  //   // Touring is crying in a corner right now
+  //   const hasPendingTranslations = newTranslations.length !== 0;
+  //   if (hasPendingTranslations) {
+  //     let allLines = rawFile.split('\n');
+  //     const lastTwoLines = allLines.splice(allLines.length - 2, 2);
+  //     allLines = allLines.concat(newTranslations);
+  //     allLines = allLines.concat(lastTwoLines);
+  //     rawFile = allLines.join('\n');
+  //   }
+  //
+  //   fs.writeFileSync(`${filePath}`, rawFile);
+  // }
 
-    const rawHTML = fs.readFileSync(filePath, 'UTF-8');
-    const allLines = rawHTML.split(/\r?\n/);
-    let targetLine = allLines[translationLinePositionInFile];
-    targetLine  = targetLine.replace(/="@(.*?)(?=")"/g, '');
-
-    const isPlaceholder = targetLine.includes('i18n-placeholder');
-    if (isPlaceholder) {
-      targetLine = targetLine.replace('i18n-placeholder', `i18n-placeholder="@@${newKeyName}"`);
-    } else {
-      targetLine = targetLine.replace('i18n', `i18n="@@${newKeyName}"`);
-    }
-
-    allLines[translationLinePositionInFile] = targetLine;
-    const formattedRawHTML = allLines.join('\n');
-    fs.writeFileSync(filePath, formattedRawHTML);
-  }
-
-  private setKeysInMainCopies(keysToBeUpdated) {
-    let rawFile = fs.readFileSync(mainCopiesFileLocation, 'utf8');
-
-    keysToBeUpdated.forEach(key => {
-      const regexpFindOldKey = new RegExp(`"${key.old}"`, 'g');
-      rawFile = rawFile.replace(regexpFindOldKey, `"${key.new}"`);
-    });
-
-    fs.writeFileSync(mainCopiesFileLocation, rawFile);
-  }
-
-  private setKeysInOtherCopies(keysToBeUpdated, filePath) {
-    let rawFile = fs.readFileSync(filePath, 'utf8');
-    const newTranslations = [];
-
-    keysToBeUpdated.forEach(key => {
-      const isOldKeyInFile = rawFile.includes(key.old);
-      if (isOldKeyInFile) {
-        rawFile = rawFile.replace(key.old, key.new);
-        return;
-      }
-
-      const wasNumeric = this.isKeyNumeric(key.old);
-      if (wasNumeric) {
-        const translation = this.translations.find(t => t.numericKey && t.numericKey === key.old);
-
-        if (!translation) {
-          return;
-        }
-
-        const replaceGreaterThanRegExp = new RegExp(this.escapeGreaterThan, 'g');
-        const replaceLesserThanRegExp = new RegExp(this.escapeLesserThan, 'g');
-        const cleanTranslation = translation.es
-          .replace(replaceLesserThanRegExp, '<')
-          .replace(replaceGreaterThanRegExp, '>');
-
-        const newTranslation = `<translation id="${key.new}">${cleanTranslation}</translation>`;
-        newTranslations.push(newTranslation);
-      }
-    });
-
-    // Touring is crying in a corner right now
-    const hasPendingTranslations = newTranslations.length !== 0;
-    if (hasPendingTranslations) {
-      let allLines = rawFile.split('\n');
-      const lastTwoLines = allLines.splice(allLines.length - 2, 2);
-      allLines = allLines.concat(newTranslations);
-      allLines = allLines.concat(lastTwoLines);
-      rawFile = allLines.join('\n');
-    }
-
-    fs.writeFileSync(`${filePath}`, rawFile);
-  }
-
-  private setKeysInCopies(keysToBeUpdated) {
-    translationsFilesLocations.forEach(translationFilePath => {
-      if (translationFilePath !== mainCopiesFileLocation) {
-        this.setKeysInOtherCopies(keysToBeUpdated, translationFilePath);
-      }
-    });
-  }
-
-  private syncAngularMessages() {
+  private runI18n() {
     execSync('yarn i18n');
-  }
-
-  private commitTranslationsDiff() {
-    execSync('git add .');
-    execSync(`git commit -m "Translations synced (${this.recursiveIteration})"`);
-  }
-
-  private addMissingKeys(needsAngularSync = true) {
-    const updatedKeys = [];
-
-    if (needsAngularSync) {
-      this.syncAngularMessages();
-    }
-
-    // Get XML nodes that are generated automatically and don't have manual key
-    const nodeMessagesWithoutKeyname = this.getNodeMessages(true);
-    nodeMessagesWithoutKeyname.forEach((node) => {
-      // Get new key name
-      const newKeyName = this.getNewKeyName(node);
-
-      // Set key in HTML file
-      this.setNewKeyNameInHTML(node, newKeyName);
-
-      // Store old keys to be updated
-      updatedKeys.push({ old: node.id, new: newKeyName });
-    });
-
-    // Replace old keys for new ones in copies
-    this.setKeysInCopies(updatedKeys);
-
-    // Save iteration in a git commit
-    this.commitTranslationsDiff();
-
-    // Regenerate Angular messages
-    this.syncAngularMessages();
-
-    const nodeMessagesWithoutKeyCheck = this.getNodeMessages(true);
-    if (nodeMessagesWithoutKeyCheck.length !== 0) {
-      console.log('Still missing keys, running again...');
-      this.recursiveIteration++;
-      this.addMissingKeys(false);
-    }
-
-    return updatedKeys;
   }
 
   private snakeCase(string) {
@@ -309,7 +345,7 @@ class I18nNormalizer {
       .toLowerCase();
   }
 
-  private generateNormalizedKey(key) {
+  private generateNormalizedKey(key: string): string {
     let newKey = this.snakeCase(key);
     const needsPrefix = !newKey.startsWith(keyPrefix);
     if (needsPrefix) {
@@ -323,28 +359,24 @@ class I18nNormalizer {
     return newKey.split('_').filter(onlyUniqueFilter).join('_');
   }
 
-  private normalizeKeys() {
-    const keysToNormalize: {old: string, new: string}[] = [];
-
-    const allNodes = this.getNodeMessages();
-
-    allNodes.forEach(node => {
-      const oldKey = node.id;
-      const normalizedKey = this.generateNormalizedKey(oldKey);
-
-      const needsModification = normalizedKey !== oldKey;
-      if (needsModification) {
-        keysToNormalize.push({ old: oldKey, new: normalizedKey });
-        this.setNewKeyNameInHTML(node, normalizedKey);
-      }
-    });
-
-    this.setNewKeyInMainCopies(keysToNormalize);
-  }
-
-  private setNewKeyInMainCopies = (keysToNormalize: {old: string, new: string}[]) => {
-
-  }
+  // private normalizeKeys() {
+  //   const keysToNormalize: { old: string, new: string }[] = [];
+  //
+  //   const allNodes = this.getNodeMessages();
+  //
+  //   allNodes.forEach(node => {
+  //     const oldKey = node.key;
+  //     const normalizedKey = this.generateNormalizedKey(oldKey);
+  //
+  //     const needsModification = normalizedKey !== oldKey;
+  //     if (needsModification) {
+  //       keysToNormalize.push({ old: oldKey, new: normalizedKey });
+  //       this.setNewKeyInHTML(node, normalizedKey);
+  //     }
+  //   });
+  //
+  //   this.setNewKeyInMainCopies(keysToNormalize);
+  // }
 }
 
-new I18nNormalizer().main();
+new I18nNormalizer().exec(false);
