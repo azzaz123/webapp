@@ -88,10 +88,10 @@ class I18nNormalizer {
         this.printMissingTranslations();
         break;
       case '3':
-        this.addMissingKeys();
-        this.normalizeKeys();
+        await this.addMissingKeys();
+        await this.normalizeKeys();
         break;
-      case 'e':
+      default:
         return;
     }
 
@@ -122,7 +122,7 @@ class I18nNormalizer {
     execSync('yarn i18n');
   }
 
-  private addMissingKeys(): void {
+  private async addMissingKeys(): Promise<void> {
     const copies = this.getCopies();
     const copiesWithoutKey = copies.filter(copy => this.isNumericKey(copy.key));
     if (copiesWithoutKey.length > 0) {
@@ -132,12 +132,15 @@ class I18nNormalizer {
         newKey: this.getNewKey(copy)
       }));
 
-      this.substituteKeys(substitutionKeys);
-
       console.log(
-        '\nAdded keys:\n',
+        '\nKeys to be added:\n',
         substitutionKeys.map(({ source, oldKey, newKey }) => `${source}: ${oldKey} -> ${newKey}`).join('\n')
       );
+
+      if (await this.askForConfirmation()) {
+        this.substituteKeys(substitutionKeys);
+      }
+
     } else {
       console.log('\nNo missing keys\n');
     }
@@ -167,7 +170,7 @@ class I18nNormalizer {
     );
   }
 
-  private normalizeKeys(): void {
+  private async normalizeKeys(): Promise<void> {
     const copies = this.getCopies();
     const processedCopies: Copy[] = copies.map(copy => ({
       ...copy,
@@ -181,15 +184,32 @@ class I18nNormalizer {
     })).filter(copy => copy.newKey !== copy.oldKey);
 
     if (substitutionKeys) {
-      this.substituteKeys(substitutionKeys);
       console.log(
-        `\nNormalized keys:\n`,
+        `\nKeys to normalize:\n`,
         substitutionKeys.map(({ source, oldKey, newKey }) => `${source}: ${oldKey} -> ${newKey}`).join('\n')
       );
+
+      if (await this.askForConfirmation()) {
+        this.substituteKeys(substitutionKeys);
+      }
+
     } else {
       console.log('No keys to normalize');
     }
+  }
 
+  private async askForConfirmation(): Promise<boolean> {
+    const readlineInterface = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    const answer = await new Promise(resolve => readlineInterface.question('Do you want to proceed? (Y/n): ', (ans) => {
+      readlineInterface.close();
+      resolve(ans);
+    }));
+
+    return answer === 'y' || answer === 'Y';
   }
 
   private substituteKeys(substitutionKeys: SubstitutionKey[]): void {
@@ -212,7 +232,7 @@ class I18nNormalizer {
     const rawHTML = fs.readFileSync(filePath, 'UTF-8');
     const allLines = rawHTML.split(/\r?\n/);
     let targetLine = allLines[translationLinePositionInFile];
-    targetLine = targetLine.replace(/="@(.*?)(?=")"/g, '');
+    targetLine = targetLine.replace(/="@@(.*?)(?=")"/g, '');
 
     const isPlaceholder = targetLine.includes('i18n-placeholder');
     if (isPlaceholder) {
@@ -317,11 +337,11 @@ class I18nNormalizer {
     return allLines.join('\n');
   }
 
-  private isNumericKey(id) {
+  private isNumericKey(id): boolean {
     return !isNaN(id) && !isNaN(parseFloat(id));
   }
 
-  private generateKeyByPath(path) {
+  private generateKeyByPath(path: string): string {
     const pathWithoutFileLines = path.split(':')[0];
     const pathWithoutExtension = pathWithoutFileLines.replace('.component.html', '');
     const normalizedPath = pathWithoutExtension.replace(/-/g, '/');
@@ -342,15 +362,11 @@ class I18nNormalizer {
     }
   }
 
-  private snakeCase(string) {
-    return string.charAt(0).toLowerCase() + string.slice(1)
-      .replace(/\W+/g, ' ')
-      .replace(/([a-z])([A-Z])([a-z])/g, '$1 $2$3')
-      .split(/\B(?=[A-Z]{2,})/)
-      .join(' ')
-      .split(' ')
-      .join('_')
-      .toLowerCase();
+  private snakeCase(string: string): string {
+    return string.replace(/\W+/g, ' ')
+      .split(/ |\B(?=[A-Z])/)
+      .map(word => word.toLowerCase())
+      .join('_');
   }
 
   private generateNormalizedKey(key: string): string {
