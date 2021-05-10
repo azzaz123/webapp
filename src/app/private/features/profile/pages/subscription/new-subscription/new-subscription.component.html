@@ -27,12 +27,12 @@
         <div class="mt-4">
             <label class="" i18n="@@ReceiveInvoices">Do you want to receive invoices?</label>
             <div class="d-flex">
-                <div class="mr-5">
+                <div class="mr-5 input-radio">
                     <input type="radio" class="mr-2" [value]="true" id="type-natural" required
                         [(ngModel)]="isInvoiceRequired">
                     <span i18n="@@web_yes">Yes</span>
                 </div>
-                <div>
+                <div class="input-radio">
                     <input type="radio" class="mr-2" [value]="false" id="type-legal" [(ngModel)]="isInvoiceRequired">
                     <span i18n="@@web_no">No</span>
                 </div>

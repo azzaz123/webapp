@@ -15,7 +15,7 @@
             <div class="form-group row align-items-center">
               <label for="type" class="col-sm-12 col-md-5" i18n="@@ProfileProBillingFormType">Type of registration</label>
               <div class="col-sm-12 col-md-7 RegistrationType">
-                <div class="RegistrationType_radio">
+                <div class="input-radio RegistrationType_radio">
                   <input type="radio"
                     formControlName="type"
                     value="natural"
@@ -24,7 +24,7 @@
                     [checked]="type === 'natural'">
                   <span class="RegistrationType_title" i18n="@@ProfileProBillingFormNatural">Natural person</span>
                 </div>
-                <div class="RegistrationType_radio">
+                <div class="input-radio RegistrationType_radio">
                   <input type="radio"
                     formControlName="type"
                     value="legal"

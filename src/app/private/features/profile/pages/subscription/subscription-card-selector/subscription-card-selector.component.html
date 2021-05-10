@@ -1,7 +1,9 @@
-<div class="SubscriptionCardSelector d-flex justify-content-between">
-    <tsl-credit-card-info [financialCard]="selectedCard" [disableDelete]="true" [disableEdit]="!stripeCards?.length" (onSetChangeCard)="addNewSubscriptionCard()">
-    </tsl-credit-card-info>
-    <div class="SubscriptionCardSelector__newCard">
-        <span (click)="addNewCard()" i18n="@@AddCard">Add card</span>
+<div class="SubscriptionCardSelector d-flex">
+    <ng-container *ngIf="stripeCards?.length || selectedCard">
+        <tsl-credit-card-info class="mr-3" [financialCard]="selectedCard" [disableDelete]="true" [disableEdit]="!stripeCards?.length" (onSetChangeCard)="addNewSubscriptionCard()">
+        </tsl-credit-card-info>
+    </ng-container>
+    <div class="SubscriptionCardSelector__newCard" (click)="addNewCard()">
+        <span i18n="@@AddCard">Add card</span>
     </div>
 </div>
