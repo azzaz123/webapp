@@ -19,6 +19,12 @@ export enum BILLING_TYPE {
   LEGAL = 'legal',
 }
 
+export enum COMPONENT_TYPE {
+  PROFILE_INFO = 'profile-info',
+  SUBSCRIPTION_INFO = 'subscription-info',
+  MODAL = 'modal',
+}
+
 @Component({
   selector: 'tsl-profile-pro-billing',
   templateUrl: './profile-pro-billing.component.html',
@@ -33,7 +39,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   formComponent: ProfileFormComponent;
   @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
   @Output() billingInfoFormSaved: EventEmitter<FormGroup> = new EventEmitter();
-  @Input() containerType: string;
+  @Input() containerType: COMPONENT_TYPE;
 
   constructor(
     private fb: FormBuilder,
@@ -249,11 +255,15 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   }
 
   get containerTypeIsModal(): boolean {
-    return this.containerType === 'modal';
+    return this.containerType === COMPONENT_TYPE.MODAL;
   }
 
-  get containerTypeIsModalOrProfileInfo(): boolean {
-    return this.containerType === 'modal' || this.containerType === 'profile-info';
+  get isSubmitShown(): boolean {
+    return !(this.containerType === COMPONENT_TYPE.MODAL || this.containerType === COMPONENT_TYPE.SUBSCRIPTION_INFO);
+  }
+
+  get containerTypeIsProfileInfo(): boolean {
+    return this.containerType === COMPONENT_TYPE.SUBSCRIPTION_INFO || this.containerType === COMPONENT_TYPE.PROFILE_INFO;
   }
 
   private cpValidator(control: AbstractControl): { [key: string]: boolean } {

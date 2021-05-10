@@ -6,4 +6,10 @@
   > .GenericCard {
     margin-bottom: $spacing-ml;
   }
+
+  tsl-profile-pro-billing {
+    ::ng-deep .box {
+      border: 0;
+    }
+  }
 }

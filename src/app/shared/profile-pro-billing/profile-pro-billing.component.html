@@ -2,7 +2,7 @@
   <form [formGroup]="billingForm" (submit)="onSubmit($event)">
     <div class="box profile-box">
       <div class="content" [hidden]="loading">
-        <div class="row mb-2 mb-md-4" *ngIf="!containerTypeIsModalOrProfileInfo">
+        <div class="row mb-2 mb-md-4" *ngIf="!containerType">
           <div class="col-12">
             <h3 i18n="@@InvoiceInformation">Invoice information</h3>
           </div>
@@ -129,7 +129,7 @@
                 <input type="text" class="form-control" id="country" formControlName="country"/>
               </div>
             </div>
-            <div class="row" *ngIf="!containerTypeIsModal">
+            <div class="row" *ngIf="isSubmitShown">
               <div class="col-7" [ngClass]="{'offset-md-5 offset-sm-2': isNewBillingInfoForm, 'offset-md-3 text-center': !isNewBillingInfoForm}">
                 <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big" i18n="@@Save">Save</tsl-button>
               </div>

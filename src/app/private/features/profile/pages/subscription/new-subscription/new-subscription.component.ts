@@ -11,6 +11,7 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { User } from '@core/user/user';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from '@private/features/profile/modal/payment-success/payment-success-modal.component';
+import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { FinancialCard } from '@shared/profile/credit-card-info/financial-card';
 
 @Component({
@@ -39,6 +40,8 @@ export class NewSubscriptionComponent implements OnInit {
 
   public isRetryInvoice = false;
   private _invoiceId: string;
+
+  public INVOICE_COMPONENT_TYPE = COMPONENT_TYPE;
 
   ngOnInit(): void {
     this.getAllCards();
