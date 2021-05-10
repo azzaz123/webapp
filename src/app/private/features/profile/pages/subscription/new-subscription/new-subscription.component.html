@@ -21,7 +21,7 @@
         <div class="GenericCard__subtitle" i18n="@@CardSelectorSubtitle">Encrypted and secure</div>
         <ng-container *ngIf="stripeCards">
             <tsl-subscription-card-selector [stripeCards]="stripeCards" [selectedCard]="selectedCard"
-                (changeSelectedCard)="onChangeSelectedCard($event)" (isInvoiceRequired)="onInvoiceRequired($event)">
+                (changeSelectedCard)="onChangeSelectedCard($event)">
             </tsl-subscription-card-selector>
         </ng-container>
         <div class="mt-4">
@@ -29,7 +29,7 @@
             <div class="d-flex">
                 <div class="mr-5 input-radio">
                     <input type="radio" class="mr-2" [value]="true" id="type-natural" required
-                        [(ngModel)]="isInvoiceRequired">
+                        (click)="onScrollToInvoice()" [(ngModel)]="isInvoiceRequired">
                     <span i18n="@@web_yes">Yes</span>
                 </div>
                 <div class="input-radio">
@@ -42,11 +42,13 @@
     <div *ngIf="isInvoiceRequired">
         <div class="GenericCard">
             <span class="GenericCard__title" i18n="@@InvoiceInformation">Invoice information</span>
-            <tsl-profile-pro-billing [containerType]="INVOICE_COMPONENT_TYPE.SUBSCRIPTION_INFO" (billingInfoFormSaved)="onBillingInfoFormSaved()">
+            <tsl-profile-pro-billing id="billing" [containerType]="INVOICE_COMPONENT_TYPE.SUBSCRIPTION_INFO"
+                (billingInfoFormSaved)="onBillingInfoFormSaved()">
             </tsl-profile-pro-billing>
         </div>
     </div>
 </div>
-<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="!selectedCard || isLoading" [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()">
+<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="!selectedCard || isLoading"
+    [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()">
 
 </tsl-subscription-purchase-footer>

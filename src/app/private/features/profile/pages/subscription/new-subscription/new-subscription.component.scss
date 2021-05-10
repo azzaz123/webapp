@@ -1,10 +1,12 @@
 @import '~style/common';
 
 .SubscriptionPurchase {
-  margin-bottom: 100px;
+  margin-bottom: $subscription-footer-height;
 
   > .GenericCard {
-    margin-bottom: $spacing-ml;
+    &:not(:last-child) {
+      margin-bottom: $spacing-ml;
+    }
   }
 
   tsl-profile-pro-billing {

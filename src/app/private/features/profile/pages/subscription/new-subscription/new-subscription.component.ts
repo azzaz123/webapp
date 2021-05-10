@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorsService } from '@core/errors/errors.service';
 import { PaymentMethodResponse } from '@core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
+import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { PaymentError, STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { StripeService } from '@core/stripe/stripe.service';
 import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
@@ -11,8 +12,9 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { User } from '@core/user/user';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from '@private/features/profile/modal/payment-success/payment-success-modal.component';
-import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
+import { COMPONENT_TYPE, ProfileProBillingComponent } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { FinancialCard } from '@shared/profile/credit-card-info/financial-card';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'tsl-new-subscription',
@@ -24,6 +26,8 @@ export class NewSubscriptionComponent implements OnInit {
   @Input() user: User;
   @Output() purchaseSuccessful: EventEmitter<void> = new EventEmitter();
   @Output() unselectSubcription: EventEmitter<void> = new EventEmitter();
+  @ViewChild(ProfileProBillingComponent, { static: true }) profileProBillingComponent: ElementRef;
+
   public stripeCards: FinancialCard[];
   public selectedCard: FinancialCard;
   public isInvoiceRequired = false;
@@ -34,7 +38,9 @@ export class NewSubscriptionComponent implements OnInit {
     private stripeService: StripeService,
     private errorService: ErrorsService,
     private subscriptionsService: SubscriptionsService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private deviceService: DeviceDetectorService,
+    private scrollIntoViewService: ScrollIntoViewService
   ) {}
   public isLoading: boolean;
 
@@ -72,8 +78,10 @@ export class NewSubscriptionComponent implements OnInit {
     );
   }
 
-  public onInvoiceRequired(event: boolean) {
-    this.isInvoiceRequired = event;
+  onScrollToInvoice(): void {
+    setTimeout(() => {
+      this.scrollIntoViewService.scrollToSelector('#billing');
+    });
   }
 
   onSelectedTierChanged(tier: Tier) {
