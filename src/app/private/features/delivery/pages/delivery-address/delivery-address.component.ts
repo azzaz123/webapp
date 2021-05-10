@@ -13,7 +13,7 @@ import { DeliveryAddressService } from '../../services/address/delivery-address/
 import { CountryOptionsAndDefault, DeliveryCountriesService } from '../../services/delivery-countries/delivery-countries.service';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
-import { DeliveryCountryISOCode, DeliveryLocationApi } from '../../interfaces/delivery-location/delivery-location-api.interface';
+import { DeliveryLocationApi } from '../../interfaces/delivery-location/delivery-location-api.interface';
 import { DeliveryLocationService } from '../../services/delivery-location/delivery-location.service';
 import { postalCodeValidator } from '@core/form-validators/postalCodeValidator.func';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -35,11 +35,8 @@ export class DeliveryAddressComponent implements OnInit {
   public cities: IOption[];
   public deliveryAddressForm: FormGroup;
   public loading = true;
-  public loadingRequest = true;
   public isNewForm = true;
   public isCountryEditable = false;
-  public postalCodeError: string;
-  private initialCountryISOCode: DeliveryCountryISOCode;
   private subscriptions: Subscription = new Subscription();
   private readonly formSubmittedEventKey = 'formSubmitted';
 
@@ -61,7 +58,8 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setPostalCodeRelatedProperties();
+    this.handlePostalCodeRelatedProperties();
+    this.clearFormWhenCountryChange();
   }
 
   ngOnDestroy() {
@@ -107,23 +105,32 @@ export class DeliveryAddressComponent implements OnInit {
     if (!this.isNewForm && !this.isCountryEditable) {
       this.modalService.open(ChangeCountryConfirmationModalComponent).result.then((result: boolean) => {
         if (result) {
-          this.countriesDropdown.open();
-          this.isCountryEditable = true;
+          // TODO: Delete		Date: 2021/05/10
+          setTimeout(() => {
+            this.countriesDropdown.open();
+            this.isCountryEditable = true;
+          }, 1);
         }
       });
     }
   }
 
-  public clearFrom(selectedOption: IOption): void {
-    if (selectedOption.value !== this.initialCountryISOCode && !this.isNewForm) {
-      this.deliveryAddressForm.clearValidators();
-      this.deliveryAddressForm.get('full_name').reset();
-      this.deliveryAddressForm.get('street').reset();
-      this.deliveryAddressForm.get('flat_and_floor').reset();
-      this.deliveryAddressForm.get('postal_code').reset();
-      this.deliveryAddressForm.get('city').reset();
-      this.deliveryAddressForm.get('phone_number').reset();
-    }
+  public clearFormWhenCountryChange(): void {
+    const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
+
+    const subscription = countryISOCode.valueChanges.subscribe(() => {
+      if (!this.isNewForm && countryISOCode.dirty) {
+        this.deliveryAddressForm.clearValidators();
+        this.deliveryAddressForm.get('full_name').reset();
+        this.deliveryAddressForm.get('street').reset();
+        this.deliveryAddressForm.get('flat_and_floor').reset();
+        this.deliveryAddressForm.get('postal_code').reset();
+        this.deliveryAddressForm.get('city').reset();
+        this.deliveryAddressForm.get('phone_number').reset();
+      }
+    });
+
+    this.subscriptions.add(subscription);
   }
 
   public isIncorrectFormcontrol(formControlAtr: AbstractControl): boolean {
@@ -132,7 +139,6 @@ export class DeliveryAddressComponent implements OnInit {
 
   private handleExistingForm(deliveryAddress: DeliveryAddressApi): void {
     this.isNewForm = false;
-    this.initialCountryISOCode = deliveryAddress.country_iso_code;
     this.deliveryAddressForm.patchValue(deliveryAddress);
     this.formComponent.initFormControl();
     this.initializeCountries(false);
@@ -170,7 +176,7 @@ export class DeliveryAddressComponent implements OnInit {
       );
   }
 
-  private setPostalCodeRelatedProperties(): void {
+  private handlePostalCodeRelatedProperties(): void {
     const postalCode = this.deliveryAddressForm.get('postal_code');
     const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
 
