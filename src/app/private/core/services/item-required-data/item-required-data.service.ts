@@ -97,7 +97,6 @@ export class ItemRequiredDataService {
     return this.getObjectTypes(categoryId, objectTypeId).pipe(
       map(
         (objectTypes: ObjectType[]) => {
-          objectTypes = [null];
           return !!objectTypes.length;
         },
         () => {
