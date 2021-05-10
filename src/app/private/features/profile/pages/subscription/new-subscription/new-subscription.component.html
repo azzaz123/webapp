@@ -44,6 +44,6 @@
         </tsl-profile-pro-billing>
     </div>
 </div>
-<tsl-subscription-purchase-footer [selectedTier]="selectedTier" (buttonPurchaseClick)="onPurchaseButtonClick()">
+<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="!selectedCard || isLoading" [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()">
 
 </tsl-subscription-purchase-footer>
