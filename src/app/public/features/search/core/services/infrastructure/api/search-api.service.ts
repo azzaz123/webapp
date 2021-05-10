@@ -21,7 +21,7 @@ export class SearchAPIService {
   private static readonly BASE_URL: string = `${environment.baseUrl}api/v3`;
   private nextPageUrl: string | null = null;
   private categoryId: string | null = null;
-  private _searchId: string | null = null;
+  private searchId: string | null = null;
 
   protected static buildNextPageUrl(url: string, nextPage: string): string {
     return nextPage && url.split('?')[0] + '?' + nextPage;
@@ -33,12 +33,12 @@ export class SearchAPIService {
 
   constructor(protected httpClient: HttpClient) {}
 
-  public get searchId(): string {
-    return this._searchId;
+  public get getSearchId(): string {
+    return this.searchId;
   }
 
-  public set searchId(searchId: string) {
-    this._searchId = searchId;
+  public set setSearchId(searchId: string) {
+    this.searchId = searchId;
   } 
 
   public loadMore(): Observable<SearchPagination> {
