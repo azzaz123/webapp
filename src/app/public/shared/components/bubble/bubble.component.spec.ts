@@ -5,7 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
 import { By } from '@angular/platform-browser';
-import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.enum';
 
 describe('BubbleComponent', () => {

@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, SecurityContext, SimpleChange, SimpleChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
-import { SvgService } from '../svg.service';
+import { SvgService } from '@core/svg-icon/svg.service';
 
 export enum SVG_ATTRIBUTES {
   WIDTH = 'width',

@@ -1,51 +1,96 @@
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 
-import { distinctUntilChanged, catchError, switchMap } from 'rxjs/operators';
-import { Component, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { SuggesterResponse } from '../../core/interfaces/suggester-response.interface';
+import { distinctUntilChanged, catchError, switchMap, tap, map, debounceTime, filter } from 'rxjs/operators';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { SearchBoxValue, SuggesterResponse } from '../../core/interfaces/suggester-response.interface';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
+import { ActivatedRoute, Params } from '@angular/router';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
   selector: 'tsl-suggester',
   templateUrl: './suggester.component.html',
   styleUrls: ['./suggester.component.scss'],
 })
-export class SuggesterComponent {
-  private MIN_LENGTH = 1;
-  public focus: boolean;
-  public model: any;
-  @Output() public newSearch = new EventEmitter<SuggesterResponse>();
-  @Output() public newSearchSubmit = new EventEmitter<SuggesterResponse>();
-  @Output() public newKeyword = new EventEmitter<string>();
-  @ViewChild('kwsEl', { static: true }) kwsEl: ElementRef;
+export class SuggesterComponent implements OnInit {
+  private static SEARCH_BOX_INITIAL_VALUE = '';
+  private readonly searchBoxValueSubject = new BehaviorSubject<SearchBoxValue>({ keywords: SuggesterComponent.SEARCH_BOX_INITIAL_VALUE });
+  private queryParamsSubscription: Subscription;
 
-  constructor(private suggesterService: SuggesterService) {}
+  @Output() public searchSubmit = new EventEmitter<SearchBoxValue>();
+
+  constructor(private suggesterService: SuggesterService, private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.queryParamsSubscription = this.onQueryParamsChange().subscribe();
+  }
+
+  ngOnDestroy() {
+    this.queryParamsSubscription.unsubscribe();
+  }
+
+  get searchBoxValue(): SearchBoxValue {
+    return this.searchBoxValueSubject.getValue();
+  }
+
+  get searchBoxValue$(): Observable<SearchBoxValue> {
+    return this.searchBoxValueSubject.asObservable();
+  }
+
+  set searchBoxValue(keyword: SearchBoxValue) {
+    this.searchBoxValueSubject.next(keyword);
+  }
 
   public suggest = (text$: Observable<string>) =>
     text$.pipe(
       distinctUntilChanged(),
-      switchMap((term) =>
-        term.length < this.MIN_LENGTH
-          ? []
-          : this.suggesterService.getSuggestions(term).pipe(
-              catchError(() => {
-                return of([]);
-              })
-            )
-      )
+      debounceTime(500),
+      switchMap((keyword) => this.getSuggestionsByKeyword(keyword))
     );
 
-  public formatter = (x: any) => x.suggestion;
+  public inputFormatter = (value: SearchBoxValue) => value.keywords;
 
-  public selectSuggestion(result: SuggesterResponse) {
-    this.newSearch.emit(result);
+  public searchBoxValueChange(value: string | SuggesterResponse) {
+    this.searchBoxValue = this.mapSearchBoxValue(value);
   }
 
-  public updateKeyword() {
-    this.newKeyword.emit(this.kwsEl.nativeElement.value);
+  public suggestionClick(suggestion: SuggesterResponse) {
+    this.searchBoxValue = this.mapSearchBoxValue(suggestion);
+    this.submitSearch();
   }
 
-  public searchSubmit() {
-    this.newSearchSubmit.emit(this.kwsEl.nativeElement.value);
+  public resetKeyword(): void {
+    this.searchBoxValue = this.mapSearchBoxValue(SuggesterComponent.SEARCH_BOX_INITIAL_VALUE);
+    this.submitSearch();
+  }
+
+  public submitSearch(): void {
+    this.searchSubmit.emit(this.searchBoxValue);
+  }
+
+  private onQueryParamsChange(): Observable<SearchBoxValue> {
+    return this.route.queryParams.pipe(
+      distinctUntilChanged(),
+      map((params: Params) => params[FILTER_QUERY_PARAM_KEY.keywords]),
+      filter((keyword: string) => !!keyword),
+      map((keyword: string) => this.mapSearchBoxValue(keyword)),
+      tap((searchBoxValue: SearchBoxValue) => (this.searchBoxValue = searchBoxValue))
+    );
+  }
+
+  private getSuggestionsByKeyword(keyword: string): Observable<SuggesterResponse[]> {
+    return this.suggesterService.getSuggestions(keyword).pipe(catchError(() => of([])));
+  }
+
+  private mapSearchBoxValue(value: string | SuggesterResponse): SearchBoxValue {
+    if (typeof value === 'object') {
+      const searchBoxValue = { [FILTER_QUERY_PARAM_KEY.keywords]: value.suggestion };
+
+      if (value.category_id) {
+        searchBoxValue[FILTER_QUERY_PARAM_KEY.categoryId] = `${value.category_id}`;
+      }
+      return searchBoxValue;
+    }
+    return { [FILTER_QUERY_PARAM_KEY.keywords]: value };
   }
 }

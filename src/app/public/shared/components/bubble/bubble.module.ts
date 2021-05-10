@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
 import { CommonModule } from '@angular/common';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 @NgModule({
   declarations: [BubbleComponent],

@@ -5,8 +5,10 @@
   [infiniteScrollDisabled]="infiniteScrollDisabled$ | async"
   (scrolled)="scrolled()">
 
-  <tsl-filters-wrapper class="Search__filters"></tsl-filters-wrapper>
-  <tsl-sort-filter class="Search__sort d-block"></tsl-sort-filter>
+  <div class="Search__filters w-100" [class.Search__filters--opened]="filterOpened">
+    <tsl-filters-wrapper (filterOpened)="handleFilterOpened($event)"></tsl-filters-wrapper>
+    <tsl-sort-filter></tsl-sort-filter>
+  </div>
 
   <tsl-search-error-layout *ngIf="searchWithoutResults$ | async"></tsl-search-error-layout>
 
@@ -51,7 +53,7 @@
 
       <ng-container *ngIf="infiniteScrollDisabled$ | async" >
         <div class="row justify-content-center my-4" *ngIf="hasMoreItems$ | async">
-          <tsl-button id="btn-load-more" (click)="loadMoreProducts()" i18n="@@web_search_component_load_more_products">Ver más productos</tsl-button>
+          <tsl-button id="btn-load-more" (click)="loadMoreProducts()" i18n="@@web_search_view_more_products">View more products</tsl-button>
         </div>
         <div *ngIf="device === DevicesType.DESKTOP && (isWall$ | async) === false" class="row justify-content-center my-4">
           <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
