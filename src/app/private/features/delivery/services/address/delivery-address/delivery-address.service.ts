@@ -24,7 +24,10 @@ export class DeliveryAddressService {
     );
   }
 
-  public update(newDeliveryAddress: DeliveryAddressApi): Observable<null> {
+  public updateOrCreate(newDeliveryAddress: DeliveryAddressApi, isNewAddress: boolean): Observable<null> {
+    if (isNewAddress) {
+      return this.deliveryAddressApiService.create(newDeliveryAddress);
+    }
     return this.deliveryAddressApiService.update(newDeliveryAddress);
   }
 }
