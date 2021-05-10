@@ -955,7 +955,7 @@
   <msg id="web_filter_sort_by_price_low_high"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:9</source>Price low to high</msg>
   <msg id="web_filter_sort_by_price_high_low"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:14</source>Price high to low</msg>
   <msg id="web_filter_sort_by_newest"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:19</source>Newest first</msg>
-  <msg id="4026193177292289663" desc="web_search_component_load_more_products"><source>src/app/public/features/search/pages/search.component.html:55</source>Ver más productos</msg>
+  <msg id="web_search_view_more_products"><source>src/app/public/features/search/pages/search.component.html:55</source>View more products</msg>
   <msg id="FooterLinksWallapopTitle"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:5</source>wallapop</msg>
   <msg id="FooterLinksAboutLabel"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:8</source>About</msg>
   <msg id="FooterLinksAboutHref"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:9</source>https://about.wallapop.com/en</msg>
