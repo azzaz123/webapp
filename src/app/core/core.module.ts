@@ -32,6 +32,12 @@ import { SlugsUtilService } from './services/slugs-util/slugs-util.service';
 import { MomentCalendarSpecService } from './i18n/moment/moment-calendar-spec.service';
 import { ReportService } from './trust-and-safety/report/report.service';
 import { SvgService } from './svg-icon/svg.service';
+import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import {
+  FilterParameterStoreService,
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 @NgModule({
   imports: [
@@ -54,6 +60,7 @@ import { SvgService } from './svg-icon/svg.service';
     GeolocationService,
     HereMapsService,
     AnalyticsService,
+    SearchTrackingEventsService,
     DeviceService,
     DidomiService,
     LoadExternalLibsService,
@@ -70,6 +77,14 @@ import { SvgService } from './svg-icon/svg.service';
     SlugsUtilService,
     MomentCalendarSpecService,
     ReportService,
+    {
+      provide: FILTER_PARAMETER_STORE_TOKEN,
+      useClass: FilterParameterStoreService,
+    },
+    {
+      provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+      useClass: FilterParameterStoreService,
+    },
   ],
 })
 export class CoreModule {
