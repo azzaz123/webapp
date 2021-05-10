@@ -1333,6 +1333,8 @@
   <translation id="web_filter_sort_cancel">Cancelar</translation>
   <translation id="web_search_view_more_products">Ver más productos</translation>
   <translation id="web_filters_bubble_title">Filtros</translation>
+  <translation id="web_default_location_madrid">España, Madrid</translation>
+  <translation id="web_default_location_london">Reino Unido, Londres</translation>
   <translation id="web_subscription_card_not_set_error">Tu tarjeta no ha podido ser guardada</translation>
   <translation id="web_stripe_cards_retrieval_error">No se han podido mostrar tus tarjetas</translation>
   <translation id="web_no_card_selected_error">Por favor selecciona una tarjeta de crédito</translation>
