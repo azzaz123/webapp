@@ -9,6 +9,7 @@ import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
 import { UnsubscribeModalComponent } from '../../modal/unsubscribe-modal/unsubscribe-modal.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-account',
@@ -54,7 +55,7 @@ export class AccountComponent implements CanComponentDeactivate {
         })
         .pipe(finalize(() => (this.loading = false)))
         .subscribe(() => {
-          this.errorsService.i18nSuccess('userEdited');
+          this.errorsService.i18nSuccess(TRANSLATION_KEY.USER_EDITED);
           this.formComponent.initFormControl();
         });
     } else {
@@ -63,7 +64,7 @@ export class AccountComponent implements CanComponentDeactivate {
           this.profileForm.controls[control].markAsDirty();
         }
       }
-      this.errorsService.i18nError('formErrors');
+      this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
     }
   }
 

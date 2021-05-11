@@ -3,7 +3,7 @@ import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
 import { HttpClientModule } from '@angular/common/http';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
 export default {

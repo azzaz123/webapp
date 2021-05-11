@@ -39,6 +39,7 @@ import { RealestateKeysService } from '../../core/services/realstate-keys/reales
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { UploadRealestateComponent } from './upload-realestate.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -265,7 +266,7 @@ describe('UploadRealestateComponent', () => {
 
       component.onSubmit();
 
-      expect(errorService.i18nError).toHaveBeenCalledWith('missingImageError');
+      expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
     });
 
     it('should avoid submit if storytelling has only spaces', () => {
@@ -315,7 +316,7 @@ describe('UploadRealestateComponent', () => {
         expect(uploadService.createItem).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).not.toHaveBeenCalled();
         expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-        expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.SERVER_ERROR, 'error');
       });
     });
 
@@ -348,7 +349,7 @@ describe('UploadRealestateComponent', () => {
         expect(uploadService.updateItem).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).not.toHaveBeenCalled();
         expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-        expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.SERVER_ERROR, 'error');
       });
     });
   });
@@ -460,7 +461,7 @@ describe('UploadRealestateComponent', () => {
       component.onError('error');
 
       expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-      expect(errorService.i18nError).toHaveBeenCalledWith('serverError', '');
+      expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.SERVER_ERROR, '');
     });
 
     it('should show toast with custom message', () => {
@@ -469,7 +470,7 @@ describe('UploadRealestateComponent', () => {
       component.onError({ message: 'error' });
 
       expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-      expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
+      expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.SERVER_ERROR, 'error');
     });
   });
 
@@ -626,7 +627,7 @@ describe('UploadRealestateComponent', () => {
       expect(uploadService.uploadSingleImage).toHaveBeenCalledTimes(1);
       expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(images[1], MOCK_REALESTATE.id, ITEM_TYPES.REAL_ESTATE);
       expect(errorService.i18nSuccess).toHaveBeenCalledTimes(1);
-      expect(errorService.i18nSuccess).toHaveBeenCalledWith('imageUploaded');
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.IMAGE_UPLOADED);
     });
     it('should show image from form if fails', () => {
       component.item = MOCK_REALESTATE;

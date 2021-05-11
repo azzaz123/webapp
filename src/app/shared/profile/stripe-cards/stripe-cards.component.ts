@@ -62,7 +62,7 @@ export class StripeCardsComponent implements OnInit {
               .pipe(finalize(() => (this.loading = false)))
               .subscribe(
                 () => this.stripeCards.push(financialCard),
-                () => this.errorService.i18nError('addNewCardError')
+                () => this.errorService.i18nError(TRANSLATION_KEY.ADD_NEW_CARD_ERROR)
               );
           }
           modalRef = null;
@@ -90,7 +90,7 @@ export class StripeCardsComponent implements OnInit {
       )
       .catch(() => {
         this.loading = false;
-        this.errorService.i18nError('SubscriptionCardNotSet');
+        this.errorService.i18nError(TRANSLATION_KEY.SUBSCRIPTION_CARD_NOT_SET_ERROR);
       });
   }
 
@@ -117,7 +117,7 @@ export class StripeCardsComponent implements OnInit {
         this.stripeCards = stripeCards.filter((card) => !card.invoices_default);
       },
       () => {
-        this.errorService.i18nError('getStripeCardsError');
+        this.errorService.i18nError(TRANSLATION_KEY.STRIPE_CARDS_RETRIEVAL_ERROR);
       }
     );
   }

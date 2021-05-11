@@ -68,6 +68,7 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { By } from '@angular/platform-browser';
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -683,7 +684,7 @@ describe('UploadProductComponent', () => {
 
       component.onSubmit();
 
-      expect(errorService.i18nError).toHaveBeenCalledWith('missingImageError');
+      expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
     });
 
     it('should not accept sale_price < 0', () => {
@@ -841,7 +842,7 @@ describe('UploadProductComponent', () => {
         expect(uploadService.createItem).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).not.toHaveBeenCalled();
         expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-        expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.SERVER_ERROR, 'error');
       });
     });
 
@@ -874,7 +875,7 @@ describe('UploadProductComponent', () => {
         expect(uploadService.updateItem).toHaveBeenCalledTimes(1);
         expect(component.onUploaded).not.toHaveBeenCalled();
         expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-        expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.SERVER_ERROR, 'error');
       });
     });
   });
@@ -1153,7 +1154,7 @@ describe('UploadProductComponent', () => {
       component.onError('error');
 
       expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-      expect(errorService.i18nError).toHaveBeenCalledWith('serverError', '');
+      expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.SERVER_ERROR, '');
     });
 
     it('should show toast with custom message', () => {
@@ -1162,7 +1163,7 @@ describe('UploadProductComponent', () => {
       component.onError({ message: 'error' });
 
       expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-      expect(errorService.i18nError).toHaveBeenCalledWith('serverError', 'error');
+      expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.SERVER_ERROR, 'error');
     });
   });
 
@@ -1498,7 +1499,7 @@ describe('UploadProductComponent', () => {
       component.searchSuggestedCategories();
 
       expect(component.uploadForm.get('category_id').value).toBe(CATEGORY_IDS.TV_AUDIO_CAMERAS.toString());
-      expect(errorService.i18nSuccess).toHaveBeenCalledWith('suggestedCategory');
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.SUGGESTED_CATEGORY);
     });
     it('should search categories after the user stop tipyng', fakeAsync(() => {
       spyOn(component, 'searchSuggestedCategories');
@@ -1574,7 +1575,7 @@ describe('UploadProductComponent', () => {
       expect(uploadService.uploadSingleImage).toHaveBeenCalledTimes(1);
       expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(images[1], MOCK_ITEM.id, ITEM_TYPES.CONSUMER_GOODS);
       expect(errorService.i18nSuccess).toHaveBeenCalledTimes(1);
-      expect(errorService.i18nSuccess).toHaveBeenCalledWith('imageUploaded');
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.IMAGE_UPLOADED);
     });
     it('should show image from form if fails', () => {
       component.item = MOCK_ITEM;

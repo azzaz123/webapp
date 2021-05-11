@@ -393,9 +393,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.uploadForm.get('location.address').markAsDirty();
     }
     if (!this.uploadForm.get('images').valid) {
-      this.errorsService.i18nError('missingImageError');
+      this.errorsService.i18nError(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
     } else {
-      this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
+      this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
       this.onValidationError.emit();
     }
   }
@@ -481,7 +481,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.uploadService.uploadSingleImage(file, this.item.id, ITEM_TYPES.CONSUMER_GOODS).subscribe(
         (value: UploadOutput) => {
           if (value.type === OUTPUT_TYPE.done) {
-            this.errorsService.i18nSuccess('imageUploaded');
+            this.errorsService.i18nSuccess(TRANSLATION_KEY.IMAGE_UPLOADED);
             file.id = value.file.response;
           }
         },
@@ -495,7 +495,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public onError(error: HttpErrorResponse | any): void {
     this.loading = false;
-    this.errorsService.i18nError('serverError', error.message ? error.message : '');
+    this.errorsService.i18nError(TRANSLATION_KEY.SERVER_ERROR, error.message ? error.message : '');
   }
 
   preview() {
@@ -802,7 +802,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     const formCategoryValue = this.uploadForm.get('category_id').value;
     if (this.isFormCategoryChangeNeeded(formCategoryValue, suggestedId)) {
       if (!!formCategoryValue.length) {
-        this.errorsService.i18nSuccess('suggestedCategory');
+        this.errorsService.i18nSuccess(TRANSLATION_KEY.SUGGESTED_CATEGORY);
       }
       this.uploadForm.patchValue({
         category_id: suggestedId,

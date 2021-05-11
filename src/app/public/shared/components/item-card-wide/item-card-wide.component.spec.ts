@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';

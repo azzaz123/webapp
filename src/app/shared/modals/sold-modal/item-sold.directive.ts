@@ -5,6 +5,7 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
 import { SoldModalComponent } from './sold-modal.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Directive({
   selector: '[tslItemSold]',
@@ -30,7 +31,7 @@ export class ItemSoldDirective {
           () => {}
         );
       } else {
-        this.errorsService.i18nError('cantEditError');
+        this.errorsService.i18nError(TRANSLATION_KEY.EDIT_ITEM_ERROR);
       }
     });
   }
