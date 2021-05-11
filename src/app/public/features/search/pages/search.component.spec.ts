@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -91,7 +92,7 @@ describe('SearchComponent', () => {
         ItemCardListComponentStub,
         InfiniteScrollStubDirective,
       ],
-      imports: [FiltersWrapperModule, HttpClientTestingModule, SortFilterModule, ButtonModule],
+      imports: [FiltersWrapperModule, HttpClientTestingModule, SortFilterModule, ButtonModule, RouterTestingModule],
       providers: [
         {
           provide: SearchService,
