@@ -60,8 +60,11 @@
                         <span *ngIf="postalCodeError.required" i18n="@@address_view_all_users_form_textfield_postalcode_missing_info_inline_error">
                           The ZIP code field can't be empty
                         </span>
-                        <span *ngIf="!postalCodeError.required">
+                        <span *ngIf="postalCodeError.incorrect">
                           {{postalCodeErrorMessage}}
+                        </span>
+                        <span *ngIf="!postalCodeError.required && postalCodeError.invalid" i18n="@@delivery_address_invalid_postal_code_error">
+                          This postal code isn't valid
                         </span>
                       </ng-container>
                     </div>
@@ -82,7 +85,7 @@
                 <div class="form-group row align-items-center">
                   <label for="phone_number" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_phone_label">Phone number</label>
                   <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="phone_number" formControlName="phone_number"/>
+                    <input type="text" class="form-control" id="phone_number" formControlName="phone_number" maxLength="20"/>
                     <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.phone_number)" class="alert">
                       <ng-container *ngIf="deliveryAddressForm.controls.phone_number.errors as phoneNumberError">
                         <span *ngIf="phoneNumberError.required" i18n="@@address_view_all_users_form_textfield_phone_missing_info_inline_error">
