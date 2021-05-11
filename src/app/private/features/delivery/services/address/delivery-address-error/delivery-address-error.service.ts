@@ -12,9 +12,9 @@ import { AddressError, ADDRESS_ERROR_TYPE } from '@private/features/delivery/int
 export class DeliveryAddressErrorService {
   constructor(private errorService: ErrorsService, private i18n: I18nService) {}
 
-  public generateError(errors: DeliveryAddressError[]): AddressError {
-    const error = errors[0];
-    if (!errors?.length || errors?.length > 1) {
+  public generateError(errors: DeliveryAddressError): AddressError {
+    const error = errors?.error[0];
+    if (!errors?.error?.length || errors?.error?.length > 1) {
       this.errorService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
     }
 
@@ -32,27 +32,34 @@ export class DeliveryAddressErrorService {
 
     switch (error) {
       case DELIVERY_ADDRESS_ERROR['invalid phone number']:
-        translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_INVALID_PHONE_NUMBER_ERROR;
+        translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_INVALID_PHONE_NUMBER_ERROR;
         formControlName = 'phone_number';
+        break;
       case DELIVERY_ADDRESS_ERROR['invalid postal code']:
-        translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_INVALID_POSTAL_CODE_ERROR;
+        translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_INVALID_POSTAL_CODE_ERROR;
         formControlName = 'postal_code';
+        break;
       case DELIVERY_ADDRESS_ERROR['postal code is not allowed']:
-        translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR;
+        translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_POSTAL_CODE_NOT_ALLOWED_ERROR;
         formControlName = 'postal_code';
+        break;
       case DELIVERY_ADDRESS_ERROR['delivery address too long']:
-        translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_TOO_LONG_ERROR;
+        translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_TOO_LONG_ERROR;
         formControlName = 'street';
+        break;
       case DELIVERY_ADDRESS_ERROR['flat and floor too long']:
-        translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_FLATANDFLOOR_TOO_LONG_ERROR;
+        translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_FLATANDFLOOR_TOO_LONG_ERROR;
         formControlName = 'flat_and_floor';
+        break;
       case DELIVERY_ADDRESS_ERROR['postal code not exists']:
         translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_EXISTS_ERROR;
         formControlName = 'postal_code';
+        break;
       case DELIVERY_ADDRESS_ERROR['invalid mobile phone number']:
         translationKey = TRANSLATION_KEY.DELIVERY_ADDRESS_PHONE_MISSMATCH_LOCATION_ERROR;
         formControlName = 'phone_number';
         type = ADDRESS_ERROR_TYPE.FORM;
+        break;
     }
 
     return {
