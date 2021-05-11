@@ -1,24 +1,26 @@
-<div class="GenericCard GenericCard--dark d-flex">
-    <div class="SubscriptionPurchaseHeader__icon mr-5">
+<div class="GenericCard GenericCard--dark d-flex align-items-center flex-wrap justify-content-center">
+    <div class="SubscriptionPurchaseHeader__icon mr-md-5 mr-sm-3">
         <tsl-svg-icon [src]="iconSrc" class="image">
         </tsl-svg-icon>
     </div>
-    <div class="w-100">
+    <div class="SubscriptionPurchaseHeader__text text-center text-md-left">
         <div class="mb-2">
-            <b><span i18n="@@SubscriptionPurchaseSubscriptionTitle" class="SubscriptionPurchaseHeader__title">{{subscription.category_name.toUpperCase()}}
+            <b><span i18n="@@SubscriptionPurchaseSubscriptionTitle" class="SubscriptionPurchaseHeader__title mr-md-3">{{subscription.category_name.toUpperCase()}}
                     subscription
                 </span></b>
-                <span *ngIf="subscription.trial_available" class="ml-3 px-2 SubscriptionPurchaseHeader__trialBanner" i18n="@@SubscriptionPriceDiscountDaysTrialFree">{{subscription.trial_days}}-day trial for free</span>
+                <span *ngIf="subscription.trial_available" class="px-2 SubscriptionPurchaseHeader__trialBanner" i18n="@@SubscriptionPriceDiscountDaysTrialFree">{{subscription.trial_days}}-day trial for free</span>
         </div>
         <div class="mb-2 SubscriptionPurchaseHeader__subtitle">
             Turn your sales into a real business
         </div>
-        <div class="d-flex justify-content-between SubscriptionPurchaseHeader__benefits">
-            <span class="d-flex align-items-center" *ngFor="let benefit of benefits">
-                <tsl-svg-icon class="mr-1 SubscriptionPurchaseHeader__iconCheck" src="assets/icons/check.svg">
-                </tsl-svg-icon>
-                {{benefit}}
-            </span>
+        <div class="SubscriptionPurchaseHeader__benefits text-left w-100 container">
+            <div class="d-flex flex-wrap justify-content-between align-items-start row">
+                <span class="d-flex col-xl-auto col-md-6 col-sm-12" *ngFor="let benefit of benefits">
+                    <tsl-svg-icon class="mr-1 mt-1 SubscriptionPurchaseHeader__iconCheck" src="assets/icons/check.svg">
+                    </tsl-svg-icon>
+                    {{benefit}}
+                </span>
+            </div>
         </div>
     </div>
 </div>

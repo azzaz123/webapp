@@ -18,6 +18,10 @@
     color: #607d8b;
   }
 
+  &__text {
+    flex: 1;
+  }
+
   &__benefits {
     font-size: 14px;
     color: #607d8b;
@@ -26,6 +30,7 @@
   &__trialBanner {
     background-color: #edfcf8;
     border-radius: 2px;
+    white-space: nowrap;
   }
 
   &__iconCheck {
