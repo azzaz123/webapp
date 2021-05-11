@@ -17,6 +17,7 @@ import { FeatureflagService } from '@core/user/featureflag.service';
 import { Router } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 
 @Component({
   selector: 'tsl-topbar',
@@ -103,7 +104,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   public onSearchSubmit(searchValue: SearchBoxValue): void {
     //TODO: This can be removed after tests
     const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
-    this.trackSearchEvent(searchValue);
+    this.redirectToSearchPage(searchValue);
     /*
     if (isExperimentalFeaturesEnabled) {
       this.redirectToSearchPage(searchValue);
@@ -114,7 +115,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   private redirectToSearchPage(searchParams: SearchBoxValue) {
     this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.SEARCH}`], {
-      queryParams: { ...searchParams },
+      // HERE WE CREATE THE SOURCE ENUM
+      queryParams: { ...searchParams, [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: 'search_box' },
     });
   }
 

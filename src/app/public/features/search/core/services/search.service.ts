@@ -103,6 +103,7 @@ export class SearchService {
       switchMap((filterParameters: FilterParameter[]) =>
         this.infrastructureService.search(filterParameters).pipe(map((r) => this.mapSearchResponse(r, filterParameters)))
       ),
+      // TODO: GET SOURCE AND SEND SEARCH EVENT, we will create another service for storing the filter source
       tap(({ items, hasMore, categoryId }: SearchPaginationWithCategory) => {
         this.isLoadingResults = false;
         this.currentCategoryId = categoryId;
