@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { PRIVACY_POLICY_URL, TERMS_AND_CONDITIONS_URL } from '@core/constants';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'tsl-subscription-purchase-footer',
@@ -21,9 +22,7 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
 
   constructor() {}
 
-  ngOnInit(): void {
-    console.log('test', this.selectedTier);
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.descriptionText = this.subscription.trial_available

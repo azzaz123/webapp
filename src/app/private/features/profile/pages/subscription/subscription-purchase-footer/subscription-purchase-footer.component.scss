@@ -33,4 +33,17 @@
   tsl-button {
     width: 147px;
   }
+
+  @include media-breakpoint-down(md) {
+    position: relative;
+    right: auto;
+    left: auto;
+    bottom: auto;
+    border-radius: $border-radius;
+    padding: $spacing-ml;
+    background-color: $white;
+    border: 1px solid #eceff1;
+    box-shadow: none;
+    height: auto;
+  }
 }
