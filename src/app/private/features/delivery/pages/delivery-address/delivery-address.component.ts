@@ -114,11 +114,10 @@ export class DeliveryAddressComponent implements OnInit {
     if (!this.isNewForm && !this.isCountryEditable) {
       this.modalService.open(ChangeCountryConfirmationModalComponent).result.then((result: boolean) => {
         if (result) {
-          // TODO: Delete		Date: 2021/05/10
+          this.isCountryEditable = true;
           setTimeout(() => {
             this.countriesDropdown.open();
-            this.isCountryEditable = true;
-          }, 1);
+          });
         }
       });
     }
