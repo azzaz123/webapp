@@ -9,9 +9,8 @@ import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.
 import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { postalCodeValidator } from '@core/form-validators/postalCodeValidator.func';
 import { DeliveryLocationApi } from '../../interfaces/delivery-location/delivery-location-api.interface';
-import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
+import { DeliveryAddressApi, DeliveryAddressError } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
-import { HttpErrorResponse } from '@angular/common/http';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { DELIVERY_PATHS } from './../../delivery-routing-constants';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -22,6 +21,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
+import { DeliveryAddressErrorService } from '../../services/address/delivery-address-error/delivery-address-error.service';
+import { AddressError, ADDRESS_ERROR_TYPE } from '../../interfaces/delivery-address/delivery-address-error.interface';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -44,8 +45,10 @@ export class DeliveryAddressComponent implements OnInit {
   public loading = true;
   public isNewForm = true;
   public isCountryEditable = false;
-  private subscriptions: Subscription = new Subscription();
+  public postalCodeErrorMessage: string;
+  public phoneNumberErrorMessage: string;
   public readonly PREVIOUS_PAGE = PREVIOUS_PAGE;
+  private subscriptions: Subscription = new Subscription();
   private readonly formSubmittedEventKey = 'formSubmitted';
 
   constructor(
@@ -58,7 +61,8 @@ export class DeliveryAddressComponent implements OnInit {
     private uuidService: UuidService,
     private modalService: NgbModal,
     private deliveryLocationService: DeliveryLocationService,
-    private router: Router
+    private router: Router,
+    private deliveryAddressErrorService: DeliveryAddressErrorService
   ) {
     this.buildForm();
     this.eventService.subscribe(this.formSubmittedEventKey, () => {
@@ -179,10 +183,21 @@ export class DeliveryAddressComponent implements OnInit {
           this.initForm(false);
           this.redirect();
         },
-        () => {
-          this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
+        (errors: DeliveryAddressError[]) => {
+          const generatedError = this.deliveryAddressErrorService.generateError(errors);
+          this.deliveryAddressForm.get(generatedError.formControlName).setErrors({ save_error: true });
+          this.handleFormMessagesErrors(generatedError);
         }
       );
+  }
+
+  private handleFormMessagesErrors(generatedError: AddressError): void {
+    if (generatedError.type === ADDRESS_ERROR_TYPE.FORM) {
+      switch (generatedError.formControlName) {
+        case 'phone_number':
+          this.phoneNumberErrorMessage = generatedError.translation;
+      }
+    }
   }
 
   private redirect(): void {
@@ -224,7 +239,7 @@ export class DeliveryAddressComponent implements OnInit {
         });
         this.handleLocationsResponse(locations);
       },
-      (error: HttpErrorResponse) => {
+      (errors: any[]) => {
         // TODO: prepare		Date: 2021/05/10
         // this.postalCodeError = error?.error[0]?.error_code;
       }
