@@ -11,7 +11,8 @@ import { ClickedItemCard } from '@public/shared/components/item-card-list/interf
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, skip, tap } from 'rxjs/operators';
+import { threadId } from 'worker_threads';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -48,6 +49,7 @@ export const WIDE_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
 export class SearchComponent implements OnInit, OnDestroy {
   private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscription: Subscription = new Subscription();
+  private searchId: string;
   public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
   public isLoadingPaginationResults$: Observable<boolean> = this.searchService.isLoadingPaginationResults$;
   public currentCategoryId$: Observable<string> = this.searchService.currentCategoryId$;
@@ -88,6 +90,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   ) {
     this.device = this.deviceService.getDeviceType();
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
+    this.subscription.add(
+      this.searchId$.pipe(skip(1)).subscribe((searchId: string) => {
+        this.searchId = searchId;
+      })
+    );
   }
 
   public ngOnInit(): void {
@@ -113,9 +120,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public trackClickItemCardEvent(ClickedItemCard: ClickedItemCard): void {
     const { itemCard, index } = ClickedItemCard;
-    this.searchId$.subscribe((searchId: string) => {
-      this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, searchId);
-    });
+    this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, this.searchId);
   }
 
   public handleFilterOpened(opened: boolean) {
