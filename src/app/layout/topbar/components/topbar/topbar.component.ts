@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { Router } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 
 @Component({
   selector: 'tsl-topbar',
@@ -42,6 +43,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private cookieService: CookieService,
     private modalService: NgbModal,
+    private searchTrackingEventsService: SearchTrackingEventsService,
     private featureFlagService: FeatureflagService,
     private router: Router,
     @Inject('SUBDOMAIN') private subdomain: string
@@ -101,12 +103,13 @@ export class TopbarComponent implements OnInit, OnDestroy {
   public onSearchSubmit(searchValue: SearchBoxValue): void {
     //TODO: This can be removed after tests
     const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
-
+    this.trackSearchEvent(searchValue);
+    /*
     if (isExperimentalFeaturesEnabled) {
       this.redirectToSearchPage(searchValue);
     } else {
       this.redirectToOldSearch(searchValue);
-    }
+    } */
   }
 
   private redirectToSearchPage(searchParams: SearchBoxValue) {
@@ -131,6 +134,10 @@ export class TopbarComponent implements OnInit, OnDestroy {
       windowClass: 'modal-standard',
       backdrop: 'static',
     });
+  }
+
+  private trackSearchEvent(searchValue): void {
+    this.searchTrackingEventsService.topBarTrackSearchEvent(searchValue);
   }
 
   ngOnDestroy(): void {

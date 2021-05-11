@@ -28,6 +28,7 @@ import { SearchResolver } from './core/services/search.resolver';
 import { SearchAdsService } from './core/ads/search-ads.service';
 import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
 import { QueryStringLocationService } from '@public/features/search/core/services/query-string-location.service';
+import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { QueryStringLocationService } from '@public/features/search/core/service
     SearchAPIService,
     SearchFavouritesService,
     SearchStoreService,
+    SearchTrackingEventsService,
     {
       provide: FILTER_PARAMETER_STORE_TOKEN,
       useClass: FilterParameterStoreService,
