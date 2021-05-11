@@ -11,14 +11,14 @@ import { SearchCustomerGoodsResponse } from '../customer-goods/search-costumer-g
 import { SearchItemCustomerGoodsResponseMapper } from '../customer-goods/search-customer-goods-response.mapper';
 import { SearchRealEstateResponse } from '../real_estate/search-item-real-state-response';
 import { searchItemRealEstateResponseMapper } from '../real_estate/search-real-estate-response.mapper';
-import { NEXT_HEADER_PAGE, SearchAPIService } from './search-api.service';
+import { NEXT_HEADER_PAGE, SearchAPIService, SEARCH_ID } from './search-api.service';
 import {
   FilterParametersWallFactory,
   SearchCarItemListResponseFactory,
   SearchCustomerGoodsItemListResponseFactory,
   SearchRealEstateItemlistResponseFactory,
   SearchResponseFactory,
-  X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER
+  X_NEXT_PAGE_HEADER
 } from './search-api.service.fixture';
 import { SearchResponse } from './search-response.interface';
 
@@ -64,14 +64,14 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: true});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: true, searchId:MOCK_SEARCH_ID});
           done();
         });
 
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
-          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id, search_id))
+          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id)).set(SEARCH_ID, MOCK_SEARCH_ID)
         });
       });
 
@@ -79,13 +79,15 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: false});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: false, searchId: MOCK_SEARCH_ID});
           done();
         });
 
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
-        request.flush(searchResponse);
+        request.flush(searchResponse, {
+          headers: new HttpHeaders().set(SEARCH_ID, MOCK_SEARCH_ID)
+        });
       });
     });
 
@@ -109,14 +111,14 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCarResponseMapper(searchResponse), hasMore: true});
+          expect(response).toEqual({items: SearchItemCarResponseMapper(searchResponse), hasMore: true, searchId:MOCK_SEARCH_ID});
           done();
         });
 
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
-          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
+          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id)).set(SEARCH_ID, MOCK_SEARCH_ID)
         });
       });
 
@@ -124,13 +126,15 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCarResponseMapper(searchResponse), hasMore: false});
+          expect(response).toEqual({items: SearchItemCarResponseMapper(searchResponse), hasMore: false, searchId:MOCK_SEARCH_ID});
           done();
         });
 
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
-        request.flush(searchResponse);
+        request.flush(searchResponse, {
+          headers: new HttpHeaders().set(SEARCH_ID, MOCK_SEARCH_ID)
+        });
       });
 
     });
@@ -156,14 +160,14 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: searchItemRealEstateResponseMapper(searchResponse), hasMore: true});
+          expect(response).toEqual({items: searchItemRealEstateResponseMapper(searchResponse), hasMore: true, searchId: MOCK_SEARCH_ID});
           done();
         });
 
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
-          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
+          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id)).set(SEARCH_ID, MOCK_SEARCH_ID)
         });
       });
 
@@ -171,13 +175,15 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: searchItemRealEstateResponseMapper(searchResponse), hasMore: false});
+          expect(response).toEqual({items: searchItemRealEstateResponseMapper(searchResponse), hasMore: false, searchId: MOCK_SEARCH_ID});
           done();
         });
 
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
-        request.flush(searchResponse);
+        request.flush(searchResponse, {
+          headers: new HttpHeaders().set(SEARCH_ID, MOCK_SEARCH_ID)
+        });
       });
     });
 
@@ -202,14 +208,14 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: true});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: true, searchId: MOCK_SEARCH_ID});
           done();
         });
 
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
-          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
+          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id)).set(SEARCH_ID, MOCK_SEARCH_ID)
         });
       });
 
@@ -217,13 +223,15 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: false});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: false, searchId: MOCK_SEARCH_ID});
           done();
         });
 
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
-        request.flush(searchResponse);
+        request.flush(searchResponse, {
+          headers: new HttpHeaders().set(SEARCH_ID, MOCK_SEARCH_ID)
+        });
       });
     });
   });
@@ -244,12 +252,12 @@ describe('SearchApiService', () => {
 
     it('should load next page', () => {
       const expectedUrlSearch = `${environment.baseUrl}api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
-      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id)}`;
+      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER(category_id)}`;
 
       service.search(filters).subscribe();
       const request = httpController.expectOne(expectedUrlSearch);
       request.flush(searchResponse, {
-        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
+        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
       });
 
       service.loadMore().subscribe();
@@ -269,13 +277,13 @@ describe('SearchApiService', () => {
 
     it('show load more items', () => {
       const expectedUrlSearch = `${environment.baseUrl}api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
-      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id)}`;
+      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER(category_id)}`;
       service.search(filters).subscribe();
 
       const request1 = httpController.expectOne(expectedUrlSearch);
       expect(request1.request.method).toBe('GET');
       request1.flush(searchResponse, {
-        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
+        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
       });
 
       const request2 = httpController.expectOne(expectedUrlLoadMore);
@@ -285,12 +293,13 @@ describe('SearchApiService', () => {
 
     it('show load more items until 40 items length', (done) => {
       const expectedUrlSearch = `${environment.baseUrl}api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
-      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id)}`;
+      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER(category_id)}`;
 
       service.search(filters).subscribe((response) => {
         expect(response).toEqual({
           items: [...SearchItemCustomerGoodsResponseMapper(searchResponse), ...SearchItemCustomerGoodsResponseMapper(searchResponse)],
-          hasMore: false
+          hasMore: false,
+          searchId: MOCK_SEARCH_ID
         });
         done();
       });
@@ -298,11 +307,11 @@ describe('SearchApiService', () => {
       const request1 = httpController.expectOne(expectedUrlSearch);
       expect(request1.request.method).toBe('GET');
       request1.flush(searchResponse, {
-        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
+        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id)).set(SEARCH_ID, MOCK_SEARCH_ID)
       });
       const request2 = httpController.expectOne(expectedUrlLoadMore);
       expect(request2.request.method).toBe('GET');
-      request2.flush(searchResponse);
+      request2.flush(searchResponse, {headers: new HttpHeaders().set(SEARCH_ID, MOCK_SEARCH_ID)} );
     });
   });
 
