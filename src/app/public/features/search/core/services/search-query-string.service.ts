@@ -2,23 +2,15 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, map, tap } from 'rxjs/operators';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Injectable()
 export class SearchQueryStringService {
   private currentParams: Params = {};
-  private queryStringSubject = new Subject<FilterParameter[]>();
-  public queryStringParams$ = this.queryStringSubject.asObservable();
+  public queryStringParams$ = this.buildQueryStringParamsObservable();
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-    route.queryParams
-      .pipe(
-        debounceTime(100),
-        tap((params) => this.handleParamsChange(params))
-      )
-      .subscribe();
-  }
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   public setQueryParams(filterParameters: FilterParameter[]): void {
     const newParameters = this.mapFilterToQueryParams(filterParameters);
@@ -28,11 +20,6 @@ export class SearchQueryStringService {
         queryParams: newParameters,
       });
     }
-  }
-
-  private handleParamsChange(params: Params): void {
-    this.currentParams = params;
-    this.queryStringSubject.next(this.mapQueryToFilterParams(params));
   }
 
   private mapQueryToFilterParams(params: Params): FilterParameter[] {
@@ -75,5 +62,13 @@ export class SearchQueryStringService {
     }
 
     return false;
+  }
+
+  private buildQueryStringParamsObservable() {
+    return this.route.queryParams.pipe(
+      debounceTime(100),
+      tap((params) => (this.currentParams = params)),
+      map((params) => this.mapQueryToFilterParams(params))
+    );
   }
 }
