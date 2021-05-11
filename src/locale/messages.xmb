@@ -361,12 +361,12 @@
   <msg id="web_catalog_components_bump_tutorial_102"><source>src/app/private/features/catalog/components/bump-tutorial/bump-tutorial.component.html:66</source>Ready!</msg>
   <msg id="web_catalog_components_item_103"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:36</source>Published</msg>
   <msg id="web_catalog_components_item_104"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:42</source>Modified</msg>
-  <msg id="web_catalog_components_item_105"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:47,49</source> Inactive </msg>
-  <msg id="web_catalog_components_item_106"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:55</source>Active</msg>
-  <msg id="web_catalog_components_item_107"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:64</source>Activate</msg>
-  <msg id="web_catalog_components_item_108"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:75</source>Feature</msg>
-  <msg id="web_catalog_components_item_109"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:104</source>Reactivate</msg>
-  <msg id="web_catalog_components_item_640"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:111</source>Pending</msg>
+  <msg id="web_catalog_components_item_105"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:47</source>Inactive</msg>
+  <msg id="web_catalog_components_item_106"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:54</source>Active</msg>
+  <msg id="web_catalog_components_item_107"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:63</source>Activate</msg>
+  <msg id="web_catalog_components_item_108"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:74</source>Feature</msg>
+  <msg id="web_catalog_components_item_109"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:103</source>Reactivate</msg>
+  <msg id="web_catalog_components_item_640"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:110</source>Pending</msg>
   <msg id="web_mark_as_sold_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:24</source>Mark as sold</msg>
   <msg id="web_mark_as_reserved_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:25</source>Mark as reserved</msg>
   <msg id="web_edit_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:26</source>Edit</msg>
@@ -555,7 +555,6 @@
   <msg id="address_view_all_users_form_textfield_door_label"><source>src/app/private/features/delivery/pages/delivery-address/delivery-address.component.html:48</source>Floor and door number</msg>
   <msg id="address_view_all_users_form_textfield_postalcode_label"><source>src/app/private/features/delivery/pages/delivery-address/delivery-address.component.html:54</source>Postal code</msg>
   <msg id="address_view_all_users_form_textfield_postalcode_missing_info_inline_error"><source>src/app/private/features/delivery/pages/delivery-address/delivery-address.component.html:60,62</source> The ZIP code field can&apos;t be empty </msg>
-  <msg id="delivery_address_invalid_postal_code_error"><source>src/app/private/features/delivery/pages/delivery-address/delivery-address.component.html:63,65</source> This postal code isn&apos;t valid </msg>
   <msg id="address_view_all_users_form_textfield_postalcode_missmatch_location_inline_error"><source>src/app/private/features/delivery/pages/delivery-address/delivery-address.component.html:66,68</source> The ZIP code must be from the country you are located </msg>
   <msg id="address_view_all_users_form_textfield_city_label"><source>src/app/private/features/delivery/pages/delivery-address/delivery-address.component.html:73</source>City</msg>
   <msg id="address_view_all_users_form_textfield_city_missing_info_inline_error"><source>src/app/private/features/delivery/pages/delivery-address/delivery-address.component.html:79,81</source> The city field can&apos;t be empty </msg>
@@ -1038,15 +1037,20 @@
   <msg id="UserReviewsLoadMore"><source>src/app/public/features/public-profile/pages/user-reviews/user-reviews.component.html:12</source>Load more reviews</msg>
   <msg id="NoReviewsItemsTitle"><source>src/app/public/features/public-profile/pages/user-reviews/user-reviews.component.ts:16</source>No reviews yet</msg>
   <msg id="NoReviewsItemsDescription"><source>src/app/public/features/public-profile/pages/user-reviews/user-reviews.component.ts:17</source>This person hasn&apos;t received any reviews. Will yours be the first?</msg>
+  <msg id="web_filters_bubble_title"><source>src/app/public/features/search/components/filters-wrapper/filters-wrapper.component.html:4</source>Filters</msg>
   <msg id="web_search_no_results_title"><source>src/app/public/features/search/components/search-error-layout/search-error-layout.component.ts:13</source>Sorry, we weren&apos;t able to find what you&apos;re looking for at the moment</msg>
   <msg id="web_search_no_results_subtitle"><source>src/app/public/features/search/components/search-error-layout/search-error-layout.component.ts:14</source>Try changing your search terms, or take a chance and discover something unexpected in the land of wallapop</msg>
   <msg id="web_search_no_results_button_text"><source>src/app/public/features/search/components/search-error-layout/search-error-layout.component.ts:18</source>New search</msg>
-  <msg id="8499959580096706757" desc="web_search_sort_filter_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:3</source>Ordenador por: </msg>
-  <msg id="7994828817141708719" desc="web_search_sort_filter_bubble_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:8</source>Ordenado por</msg>
-  <msg id="6402951927316857780" desc="web_search_sort_filter_bubble_cancel"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:15</source>Cancelar</msg>
+  <msg id="web_filter_sort_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:3</source>Sort by:</msg>
+  <msg id="web_filter_sort_bubble_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:8</source>Sort by</msg>
+  <msg id="web_filter_sort_cancel"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:15</source>Cancel</msg>
+  <msg id="web_filter_sort_by_distance"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:4</source>Distance</msg>
+  <msg id="web_filter_sort_by_price_low_high"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:9</source>Price low to high</msg>
+  <msg id="web_filter_sort_by_price_high_low"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:14</source>Price high to low</msg>
+  <msg id="web_filter_sort_by_newest"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:19</source>Newest first</msg>
   <msg id="web_default_location_madrid"><source>src/app/public/features/search/core/services/constants/default-locations.ts:7</source>Spain, Madrid</msg>
-  <msg id="web_default_location_london"><source>src/app/public/features/search/core/services/constants/default-locations.ts:12</source>UK, London</msg>
-  <msg id="4026193177292289663" desc="web_search_component_load_more_products"><source>src/app/public/features/search/pages/search.component.html:55</source>Ver más productos</msg>
+  <msg id="web_default_location_london"><source>src/app/public/features/search/core/services/constants/default-locations.ts:12</source>United Kingdom, London</msg>
+  <msg id="web_search_view_more_products"><source>src/app/public/features/search/pages/search.component.html:55</source>View more products</msg>
   <msg id="FooterLinksWallapopTitle"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:5</source>wallapop</msg>
   <msg id="FooterLinksAboutLabel"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:8</source>About</msg>
   <msg id="FooterLinksAboutHref"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:9</source>https://about.wallapop.com/en</msg>
@@ -1169,6 +1173,7 @@
   <msg id="filterConditionDrawerPlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:58</source>Any item condition</msg>
   <msg id="filterGenderTitle"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:9</source>Gender</msg>
   <msg id="filterGenderBubblePlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:10</source>Gender</msg>
+  <msg id="filterGenderDrawerPlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:11</source>Select gender</msg>
   <msg id="filterClothingTypeTitle"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:21</source>Type of clothing</msg>
   <msg id="filterClothingTypeBubblePlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:22</source>Type of clothing</msg>
   <msg id="filterClothingTypeDrawerPlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:23</source>Select type of clothing</msg>
