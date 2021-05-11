@@ -1,33 +1,40 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { CountryOptionsAndDefault, DeliveryCountriesService } from '../../services/delivery-countries/delivery-countries.service';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ErrorsService } from '@core/errors/errors.service';
-import { EventService } from '@core/event/event.service';
+import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
+import { DeliveryLocationService } from '../../services/delivery-location/delivery-location.service';
+import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
+import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { whitespaceValidator } from '@core/form-validators/formValidators.func';
+import { postalCodeValidator } from '@core/form-validators/postalCodeValidator.func';
+import { DeliveryLocationApi } from '../../interfaces/delivery-location/delivery-location-api.interface';
+import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
+import { DropdownComponent } from '@shared/dropdown/dropdown.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { DELIVERY_PATHS } from './../../delivery-routing-constants';
+import { ErrorsService } from '@core/errors/errors.service';
+import { Subscription } from 'rxjs';
+import { EventService } from '@core/event/event.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { IOption } from '@shared/dropdown/utils/option.interface';
-import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { finalize } from 'rxjs/operators';
-import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
-import { CountryOptionsAndDefault, DeliveryCountriesService } from '../../services/delivery-countries/delivery-countries.service';
-import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
-import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
-import { DeliveryLocationApi } from '../../interfaces/delivery-location/delivery-location-api.interface';
-import { DeliveryLocationService } from '../../services/delivery-location/delivery-location.service';
-import { postalCodeValidator } from '@core/form-validators/postalCodeValidator.func';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { DropdownComponent } from '@shared/dropdown/dropdown.component';
-import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
-import { Subscription } from 'rxjs';
+import { IOption } from '@shared/dropdown/utils/option.interface';
+import { Router } from '@angular/router';
 
+export enum PREVIOUS_PAGE {
+  PAYVIEW_ADD_ADDRESS,
+  ADDRESS_VIEW,
+  PAYVIEW_PAY,
+}
 @Component({
   selector: 'tsl-delivery-address',
   templateUrl: './delivery-address.component.html',
   styleUrls: ['./delivery-address.component.scss'],
 })
 export class DeliveryAddressComponent implements OnInit {
-  @Input() userComesFromPayView: boolean;
+  @Input() whereUserComes: PREVIOUS_PAGE;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
@@ -38,6 +45,7 @@ export class DeliveryAddressComponent implements OnInit {
   public isNewForm = true;
   public isCountryEditable = false;
   private subscriptions: Subscription = new Subscription();
+  public readonly PREVIOUS_PAGE = PREVIOUS_PAGE;
   private readonly formSubmittedEventKey = 'formSubmitted';
 
   constructor(
@@ -49,7 +57,8 @@ export class DeliveryAddressComponent implements OnInit {
     private errorsService: ErrorsService,
     private uuidService: UuidService,
     private modalService: NgbModal,
-    private deliveryLocationService: DeliveryLocationService
+    private deliveryLocationService: DeliveryLocationService,
+    private router: Router
   ) {
     this.buildForm();
     this.eventService.subscribe(this.formSubmittedEventKey, () => {
@@ -169,11 +178,26 @@ export class DeliveryAddressComponent implements OnInit {
           this.formComponent.initFormControl();
           this.isNewForm = false;
           this.initForm(false);
+          this.redirect();
         },
         () => {
           this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
         }
       );
+  }
+
+  private redirect(): void {
+    switch (this.whereUserComes) {
+      case PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS:
+        this.router.navigate([DELIVERY_PATHS.PAYVIEW]);
+        break;
+      case PREVIOUS_PAGE.PAYVIEW_PAY:
+        this.router.navigate([DELIVERY_PATHS.SHIPMENT_TRACKING]);
+        break;
+      case PREVIOUS_PAGE.ADDRESS_VIEW:
+        this.router.navigate([DELIVERY_PATHS.ADDRESSES_LIST]);
+        break;
+    }
   }
 
   private handlePostalCodeRelatedProperties(): void {
