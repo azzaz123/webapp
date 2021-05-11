@@ -33,14 +33,6 @@ export class SearchAPIService {
 
   constructor(protected httpClient: HttpClient) {}
 
-  public get getSearchId(): string {
-    return this.searchId;
-  }
-
-  public set setSearchId(searchId: string) {
-    this.searchId = searchId;
-  } 
-
   public loadMore(): Observable<SearchPagination> {
     return this.nextPageUrl ? this.makeSearchApi(this.nextPageUrl) : of(null);
   }
@@ -69,7 +61,8 @@ export class SearchAPIService {
       }),
       map((items: ItemCard[]) => ({
         items,
-        hasMore: !!this.nextPageUrl
+        hasMore: !!this.nextPageUrl,
+        searchId: this.searchId
       })),
       switchMap((search: SearchPagination) =>
         SearchAPIService.hasToLoadMoreItems(search) ? this.makeSearchApi(this.nextPageUrl, search.items) : of(search))

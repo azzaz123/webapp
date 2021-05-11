@@ -63,9 +63,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public listColumnsConfig$: Observable<ColumnsConfig> = this.buildListConfigObservable();
   public showPlaceholder$: Observable<boolean> = this.buildShowPlaceholderObservable();
   public searchWithoutResults$: Observable<boolean> = this.buildSearchWithoutResultsObservable();
-  public categoryId: string;
-  public searchId: string;
-
   public columnsConfig: ColumnsConfig = {
     xl: 4,
     lg: 4,
@@ -73,16 +70,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     sm: 2,
     xs: 2,
   };
-
   public adSlotGroupShoppingConfiguration: AdSlotGroupShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
   public adSlotShoppingContainer: string = AD_SHOPPING_CONTAINER_PUBLIC_SEARCH;
   public adShoppingGroupPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE);
   public adShoppingNativeListPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(
     AdShoppingChannel.SEARCH_LIST_SHOPPING
   );
-
   public isWall$: Observable<boolean> = this.searchService.isWall$;
-
   public slotsConfig: SlotsConfig;
 
   constructor(
@@ -94,13 +88,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   ) {
     this.device = this.deviceService.getDeviceType();
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
-    this.subscription.add(
-      this.searchId$.subscribe((searchId: string) => {
-        if (!!searchId) {
-          this.searchId = searchId;
-        }
-      })
-    );
   }
 
   public ngOnInit(): void {
@@ -126,7 +113,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public trackClickItemCardEvent(ClickedItemCard: ClickedItemCard): void {
     const { itemCard, index } = ClickedItemCard;
-    this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, this.searchId);
+    this.searchId$.subscribe((searchId: string) => {
+      this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, searchId);
+    });
   }
 
   public handleFilterOpened(opened: boolean) {
