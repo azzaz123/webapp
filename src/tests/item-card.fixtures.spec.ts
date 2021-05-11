@@ -2,6 +2,7 @@ import { Image } from '@core/user/user-response.interface';
 import { ItemCard, ItemCardsWithPagination, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
 import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
+import { MOCK_SEARCH_ID } from '@public/features/search/core/services/search-list-tracking-events.fixtures.spec';
 import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
 import {
   ITEM_BUMP_FLAGS,
@@ -143,9 +144,10 @@ export function SearchItemListFactory(count: number = 20): ItemCard[] {
   return new Array(count).fill('').map((_, index) => ({ ...MOCK_ITEM_CARD, id: '235325' + index }));
 }
 
-export function SearchPaginationFactory(hasMore: boolean = false): SearchPagination {
+export function SearchPaginationFactory(hasMore: boolean = false, searchId: string = MOCK_SEARCH_ID): SearchPagination {
   return {
     items: SearchItemListFactory(40),
     hasMore,
+    searchId,
   };
 }
