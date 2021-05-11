@@ -1,9 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { UserService } from '@core/user/user.service';
 import { CatalogItemTrackingEventService } from './catalog-item-tracking-event.service';
 import { ITEM_DATA3 } from '@fixtures/item.fixtures.spec';
 import {
