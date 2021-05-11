@@ -10,6 +10,5 @@ export class SearchResolver implements Resolve<void> {
   resolve(): void {
     this.searchService.init();
     this.searchAdsService.init();
-    this.searchService.listenToQueryParamsChangesSubject$.next(false);
   }
 }

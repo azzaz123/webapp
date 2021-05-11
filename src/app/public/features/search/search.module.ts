@@ -28,7 +28,6 @@ import { SearchResolver } from './core/services/search.resolver';
 import { SearchAdsService } from './core/ads/search-ads.service';
 import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
 import { QueryStringLocationService } from '@public/features/search/core/services/query-string-location.service';
-import { CanDeactivateSearchGuard } from './guards/can-deactivate-search.guard';
 
 @NgModule({
   imports: [
@@ -63,7 +62,6 @@ import { CanDeactivateSearchGuard } from './guards/can-deactivate-search.guard';
     SearchAdsService,
     SearchQueryStringService,
     QueryStringLocationService,
-    CanDeactivateSearchGuard,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
 })

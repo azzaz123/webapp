@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { BehaviorSubject, merge, Observable, Subject, Subscription } from 'rxjs';
-import { filter, map, repeatWhen, skip, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { map, skip, switchMap, take, tap } from 'rxjs/operators';
 import { SearchPagination, SearchPaginationWithCategory } from '../../interfaces/search-pagination.interface';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
 import { SearchStoreService } from './search-store.service';
@@ -22,10 +22,6 @@ export class SearchService {
   private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_LOADING_STATE);
   private readonly isLoadingPaginationResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_PAGINATION_LOADING_STATE);
   private readonly currentCategoryIdSubject = new BehaviorSubject<string>(undefined);
-
-  public readonly listenToQueryParamsChangesSubject$ = new Subject<boolean>();
-  private readonly on$ = this.listenToQueryParamsChangesSubject$.pipe(filter((v) => v));
-  private readonly off$ = this.listenToQueryParamsChangesSubject$.pipe(filter((v) => !v));
 
   private subscription: Subscription = new Subscription();
 
@@ -127,12 +123,7 @@ export class SearchService {
     );
     const genericObservable = this.queryStringService.queryStringParams$.pipe(skip(1));
 
-    return merge(locationObservable, genericObservable).pipe(
-      takeUntil(this.on$),
-      repeatWhen(() => this.off$),
-      tap((params) => console.log(params)),
-      tap((parameters) => this.parameterStoreService.setParameters(parameters))
-    );
+    return merge(locationObservable, genericObservable).pipe(tap((parameters) => this.parameterStoreService.setParameters(parameters)));
   }
 
   private onLoadMore(): Observable<SearchPagination> {
