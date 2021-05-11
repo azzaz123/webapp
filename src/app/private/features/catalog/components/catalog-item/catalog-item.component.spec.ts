@@ -1,6 +1,8 @@
 import { DecimalPipe } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -8,16 +10,11 @@ import { Item } from '@core/item/item';
 import { SelectedItemsAction } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { environment } from '@environments/environment';
-import {
-  ITEM_ID,
-  ITEM_WEB_SLUG,
-  MOCK_ITEM,
-  ORDER_EVENT,
-  PRODUCT_DURATION_MARKET_CODE,
-  PRODUCT_RESPONSE,
-} from '@fixtures/item.fixtures.spec';
+import { ITEM_ID, ITEM_WEB_SLUG, MOCK_ITEM, PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
+import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -29,10 +26,9 @@ describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
   let fixture: ComponentFixture<CatalogItemComponent>;
   let itemService: ItemService;
-  let modalService: NgbModal;
-  let errorsService: ErrorsService;
   let eventService: EventService;
-  let deviceService: DeviceDetectorService;
+  let itemRequiredDataService: ItemRequiredDataService;
+  let router: Router;
   const componentInstance = {
     price: null,
     item: null,
@@ -46,6 +42,13 @@ describe('CatalogItemComponent', () => {
           DecimalPipe,
           EventService,
           ToastService,
+          ItemRequiredDataService,
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
+          },
           { provide: DeviceDetectorService, useClass: DeviceDetectorService },
           {
             provide: ItemService,
@@ -92,6 +95,7 @@ describe('CatalogItemComponent', () => {
           I18nService,
           { provide: 'SUBDOMAIN', useValue: 'es' },
         ],
+        imports: [HttpClientTestingModule],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
@@ -103,10 +107,9 @@ describe('CatalogItemComponent', () => {
     component.item = MOCK_ITEM;
     fixture.detectChanges();
     itemService = TestBed.inject(ItemService);
-    modalService = TestBed.inject(NgbModal);
-    errorsService = TestBed.inject(ErrorsService);
     eventService = TestBed.inject(EventService);
-    deviceService = TestBed.inject(DeviceDetectorService);
+    itemRequiredDataService = TestBed.inject(ItemRequiredDataService);
+    router = TestBed.inject(Router);
   });
 
   it('should be created', () => {
@@ -199,23 +202,52 @@ describe('CatalogItemComponent', () => {
     beforeEach(fakeAsync(() => {
       item = MOCK_ITEM;
       spyOn(itemService, 'reactivateItem').and.callThrough();
+
       component.itemChange.subscribe(($event: ItemChangeEvent) => {
         event = $event;
       });
-      component.reactivate(item);
     }));
 
     afterEach(() => {
       event = undefined;
     });
 
-    it('should call reactivateItem', () => {
-      expect(itemService.reactivateItem).toHaveBeenCalledWith(ITEM_ID);
+    it('should check if all required data is informed', () => {
+      spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').and.callThrough();
+
+      component.reactivate(item);
+
+      expect(itemRequiredDataService.hasMissingRequiredDataByItemId).toHaveBeenCalledWith(component.item.id);
     });
 
-    it('should emit the updated item', () => {
-      expect(event.item).toEqual(item);
-      expect(event.action).toBe('reactivated');
+    describe('and item has all required data', () => {
+      beforeEach(() => {
+        jest.spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').mockReturnValue(of(false));
+
+        component.reactivate(item);
+      });
+
+      it('should call reactivateItem', () => {
+        expect(itemService.reactivateItem).toHaveBeenCalledWith(ITEM_ID);
+      });
+
+      it('should emit the updated item', () => {
+        expect(event.item).toEqual(item);
+        expect(event.action).toBe('reactivated');
+      });
+    });
+
+    describe('and item has missing data', () => {
+      beforeEach(() => {
+        jest.spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').mockReturnValue(of(true));
+        spyOn(router, 'navigate');
+
+        component.reactivate(item);
+      });
+
+      it('should navigate to reactivation view reactivateItem', () => {
+        expect(router.navigate).toHaveBeenCalledWith([`/catalog/edit/${component.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
+      });
     });
   });
 

@@ -48,6 +48,7 @@ import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { of, throwError } from 'rxjs';
 import { CarKeysService } from '../../core/services/car-keys/car-keys.service';
 import { CarSuggestionsService } from '../../core/services/car-suggestions/car-suggestions.service';
+import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { UploadCarComponent } from './upload-car.component';
@@ -64,6 +65,7 @@ describe('UploadCarComponent', () => {
   let analyticsService: AnalyticsService;
   let itemService: ItemService;
   let uploadService: UploadService;
+  let itemReactivationService: ItemReactivationService;
   let HTMLElement: DebugElement;
   const componentInstance: any = {
     getBodyType: jasmine.createSpy('getBodyType'),
@@ -78,6 +80,13 @@ describe('UploadCarComponent', () => {
           NgbPopoverConfig,
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UploadService, useClass: MockUploadService },
+
+          {
+            provide: ItemReactivationService,
+            useValue: {
+              reactivationValidation() {},
+            },
+          },
           {
             provide: UserService,
             useValue: {
@@ -168,6 +177,7 @@ describe('UploadCarComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     itemService = TestBed.inject(ItemService);
     uploadService = TestBed.inject(UploadService);
+    itemReactivationService = TestBed.inject(ItemReactivationService);
     HTMLElement = fixture.debugElement;
   });
 
@@ -1019,6 +1029,37 @@ describe('UploadCarComponent', () => {
       expect(errorService.i18nError).toHaveBeenCalledTimes(1);
       expect(component.uploadForm.get('images').value).not.toContain(UPLOAD_FILE_2);
       expect(component.uploadForm.get('images').value).toContain(UPLOAD_FILE_DONE);
+    });
+  });
+
+  describe('is reactivation mode', () => {
+    beforeEach(() => {
+      component.isReactivation = true;
+      component.item = MOCK_CAR;
+
+      fixture.detectChanges();
+    });
+
+    it('should check reactivation validation on form init', () => {
+      spyOn(itemReactivationService, 'reactivationValidation');
+
+      component.ngOnInit();
+
+      expect(itemReactivationService.reactivationValidation).toHaveBeenCalledWith(component.uploadForm);
+    });
+
+    describe('and loading has ended', () => {
+      beforeEach(() => {
+        component.loading = false;
+
+        fixture.detectChanges();
+      });
+
+      it('should show correct button text', () => {
+        const submitButtonTextElement: HTMLElement = fixture.debugElement.query(By.css('tsl-button span')).nativeElement;
+
+        expect(submitButtonTextElement.innerHTML).toEqual('Reactivate item');
+      });
     });
   });
 });

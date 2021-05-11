@@ -66,6 +66,8 @@ import { ITEM_TYPES } from '@core/item/item';
 import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
+import { By } from '@angular/platform-browser';
+import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -93,6 +95,7 @@ describe('UploadProductComponent', () => {
   let userService: UserService;
   let categoryService: CategoryService;
   let uploadService: UploadService;
+  let itemReactivationService: ItemReactivationService;
   const componentInstance: any = {};
 
   beforeEach(
@@ -107,6 +110,12 @@ describe('UploadProductComponent', () => {
           {
             provide: DeviceDetectorService,
             useClass: DeviceDetectorServiceMock,
+          },
+          {
+            provide: ItemReactivationService,
+            useValue: {
+              reactivationValidation() {},
+            },
           },
           {
             provide: UserService,
@@ -205,6 +214,7 @@ describe('UploadProductComponent', () => {
     userService = TestBed.inject(UserService);
     categoryService = TestBed.inject(CategoryService);
     uploadService = TestBed.inject(UploadService);
+    itemReactivationService = TestBed.inject(ItemReactivationService);
     fixture.detectChanges();
   });
 
@@ -1582,6 +1592,37 @@ describe('UploadProductComponent', () => {
       expect(errorService.i18nError).toHaveBeenCalledTimes(1);
       expect(component.uploadForm.get('images').value).not.toContain(UPLOAD_FILE_2);
       expect(component.uploadForm.get('images').value).toContain(UPLOAD_FILE_DONE);
+    });
+  });
+
+  describe('is reactivation mode', () => {
+    beforeEach(() => {
+      component.isReactivation = true;
+      component.item = MOCK_ITEM;
+
+      fixture.detectChanges();
+    });
+
+    it('should check reactivation validation on form init', () => {
+      spyOn(itemReactivationService, 'reactivationValidation');
+
+      component.ngOnInit();
+
+      expect(itemReactivationService.reactivationValidation).toHaveBeenCalledWith(component.uploadForm);
+    });
+
+    describe('and loading has ended', () => {
+      beforeEach(() => {
+        component.loading = false;
+
+        fixture.detectChanges();
+      });
+
+      it('should show correct button text', () => {
+        const submitButtonTextElement: HTMLElement = fixture.debugElement.query(By.css('tsl-button span')).nativeElement;
+
+        expect(submitButtonTextElement.innerHTML).toEqual('Reactivate item');
+      });
     });
   });
 });

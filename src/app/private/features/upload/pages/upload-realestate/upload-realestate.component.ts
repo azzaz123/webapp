@@ -27,6 +27,7 @@ import { isEqual, omit } from 'lodash-es';
 import { tap } from 'rxjs/operators';
 import { Key } from '../../core/models/key.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
+import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { RealestateKeysService } from '../../core/services/realstate-keys/realestate-keys.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
@@ -41,6 +42,7 @@ export class UploadRealestateComponent implements OnInit {
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Realestate;
+  @Input() isReactivation = false;
   public coordinates: ItemLocation;
 
   public uploadForm: FormGroup;
@@ -69,6 +71,7 @@ export class UploadRealestateComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private uploadService: UploadService,
+    private itemReactivationService: ItemReactivationService,
     config: NgbPopoverConfig
   ) {
     this.uploadForm = fb.group({
@@ -133,6 +136,10 @@ export class UploadRealestateComponent implements OnInit {
         approximated_location: this.item.location.approximated_location,
       };
       this.detectFormChanges();
+
+      if (this.isReactivation) {
+        this.itemReactivationService.reactivationValidation(this.uploadForm);
+      }
     }
   }
 

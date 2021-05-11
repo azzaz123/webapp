@@ -28,6 +28,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
 import { CarKeysService } from '../../core/services/car-keys/car-keys.service';
 import { CarSuggestionsService } from '../../core/services/car-suggestions/car-suggestions.service';
+import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 
@@ -41,6 +42,7 @@ export class UploadCarComponent implements OnInit {
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Car;
+  @Input() isReactivation = false;
 
   public uploadForm: FormGroup;
   public models: IOption[];
@@ -75,7 +77,8 @@ export class UploadCarComponent implements OnInit {
     private userService: UserService,
     private subscriptionService: SubscriptionsService,
     private popoverConfig: NgbPopoverConfig,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private itemReactivationService: ItemReactivationService
   ) {
     this.uploadForm = fb.group({
       id: '',
@@ -170,6 +173,10 @@ export class UploadCarComponent implements OnInit {
         this.brands = brands;
         this.versions = versions;
         this.carTypes = carTypes;
+
+        if (this.isReactivation) {
+          this.itemReactivationService.reactivationValidation(this.uploadForm);
+        }
       });
   }
 

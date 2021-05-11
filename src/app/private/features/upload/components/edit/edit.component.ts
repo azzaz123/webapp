@@ -7,6 +7,7 @@ import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '@shared/exit-confirmation-modal/exit-confirmation-modal.component';
 import { CanComponentDeactivate } from '@core/guards/can-component-deactivate.interface';
+import { UPLOAD_PATHS } from '../../upload-routing-constants';
 
 @Component({
   selector: 'tsl-edit',
@@ -19,6 +20,7 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
   private hasNotSavedChanges: boolean;
   public urgentPrice: string = null;
   public itemTypes: any = ITEM_TYPES;
+  public isReactivation = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +41,7 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
 
   ngOnInit() {
     this.item = this.route.snapshot.data['item'];
+    this.isReactivation = this.router.url.endsWith(UPLOAD_PATHS.REACTIVATE);
     this.getUrgentPrice();
   }
 

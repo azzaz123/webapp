@@ -6,8 +6,11 @@ import { Order, Product } from '@core/item/item-response.interface';
 import { OrderEvent } from '../selected-items/selected-product.interface';
 import { Item } from '@core/item/item';
 import { EventService } from '@core/event/event.service';
+import { Router } from '@angular/router';
+import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { I18nService } from '@core/i18n/i18n.service';
+import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -31,6 +34,8 @@ export class CatalogItemComponent implements OnInit {
     public itemService: ItemService,
     private toastService: ToastService,
     private eventService: EventService,
+    private itemRequiredDataService: ItemRequiredDataService,
+    private router: Router,
     private i18nService: I18nService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {}
@@ -70,17 +75,22 @@ export class CatalogItemComponent implements OnInit {
   }
 
   private reactivateItem(item: Item): void {
-    this.itemService.reactivateItem(item.id).subscribe(
-      () => {
-        this.itemChange.emit({
-          item,
-          action: ITEM_CHANGE_ACTION.REACTIVATED,
-        });
-      },
-      () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: 'error' })
-    );
+    this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
+      if (missingRequiredData) {
+        this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
+      } else {
+        this.itemService.reactivateItem(item.id).subscribe(
+          () => {
+            this.itemChange.emit({
+              item,
+              action: ITEM_CHANGE_ACTION.REACTIVATED,
+            });
+          },
+          () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: 'error' })
+        );
+      }
+    });
   }
-
   public select(item: Item) {
     item.selected = !item.selected;
     this.itemService.selectedAction = this.itemService.selectedAction === 'feature' ? 'feature' : '';

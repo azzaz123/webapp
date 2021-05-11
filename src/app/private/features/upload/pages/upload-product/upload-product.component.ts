@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   AfterContentInit,
+  AfterViewChecked,
   Component,
   ElementRef,
   EventEmitter,
@@ -38,12 +39,13 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
+import { fromEvent, Observable, Subject } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
 import { GeneralSuggestionsService } from '../../core/services/general-suggestions/general-suggestions.service';
+import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 
@@ -71,6 +73,7 @@ function isObjectTypeRequiredValidator(formControl: AbstractControl) {
 export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
   @Input() categoryId: string;
   @Input() item: Item;
+  @Input() isReactivation = false;
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() onCategorySelect = new EventEmitter<string>();
@@ -128,7 +131,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private deviceService: DeviceDetectorService,
     private i18n: I18nService,
     private uploadService: UploadService,
-    private subscriptionService: SubscriptionsService
+    private subscriptionService: SubscriptionsService,
+    private itemReactivationService: ItemReactivationService
   ) {
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
@@ -223,6 +227,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       images: this.uploadService.convertImagesToFiles(this.item.images),
     });
     this.oldDeliveryValue = this.getDeliveryInfo();
+
+    if (this.isReactivation) {
+      this.itemReactivationService.reactivationValidation(this.uploadForm);
+    }
   }
 
   private detectFormChanges() {
@@ -426,6 +434,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       values.extra_info.object_type.id = values.extra_info.object_type_2.id;
       delete values.extra_info.object_type_2;
     }
+
     return values;
   }
 

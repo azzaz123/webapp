@@ -63,6 +63,7 @@ describe('EditComponent', () => {
             provide: Router,
             useValue: {
               navigate() {},
+              url: '',
             },
           },
           {
