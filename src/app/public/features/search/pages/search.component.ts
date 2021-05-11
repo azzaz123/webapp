@@ -1,4 +1,6 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router, Scroll } from '@angular/router';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -10,7 +12,7 @@ import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { delay, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -85,10 +87,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     private deviceService: DeviceService,
     private searchService: SearchService,
     private publicFooterService: PublicFooterService,
-    private searchAdsService: SearchAdsService
+    private searchAdsService: SearchAdsService,
+    private viewportScroller: ViewportScroller,
+    private router: Router
   ) {
     this.device = this.deviceService.getDeviceType();
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
+    this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
   }
 
   public ngOnInit(): void {
@@ -141,6 +146,25 @@ export class SearchComponent implements OnInit, OnDestroy {
   private buildSearchWithoutResultsObservable(): Observable<boolean> {
     return combineLatest([this.items$, this.isLoadingResults$]).pipe(
       map(([items, isLoadingResults]) => items.length === 0 && !isLoadingResults)
+    );
+  }
+
+  private restoreScrollAfterNavigationBack(): Observable<Scroll> {
+    // TODO: This is a hack for restoring scroll position after navigation back.
+    // On the current date, there is an issue opened in Angular to fix this https://github.com/angular/angular/issues/24547
+
+    return this.router.events.pipe(
+      filter((e: any): e is Scroll => e instanceof Scroll),
+      delay(0),
+      tap((e: Scroll) => {
+        if (e.position) {
+          this.viewportScroller.scrollToPosition(e.position);
+        } else if (e.anchor) {
+          this.viewportScroller.scrollToAnchor(e.anchor);
+        } else {
+          this.viewportScroller.scrollToPosition([0, 0]);
+        }
+      })
     );
   }
 
