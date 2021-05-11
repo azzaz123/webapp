@@ -1,36 +1,38 @@
-<tsl-filter-template [isBubble]="variant | isBubble" [label]="bubbleLabel$ | async" [hasApply]="true"
-    [isDropdown]="true" [title]="config.title" [icon]="config.icon" (apply)="handleApply()"
-    [hasValue]="hasValue$ | async" (openStateChange)="openStateChange.emit($event)">
+<tsl-filter-template [isBubble]="variant | isBubble" [label]="label" [hasApply]="true" [isDropdown]="true"
+    [title]="config.title" [icon]="config.icon" [hasValue]="hasValue$ | async" (apply)="handleApply()"
+    (openStateChange)="openStateChange.emit($event)">
 
-    <div class="LocationFilter py-2 ">
-        <div class="LocationFilter__search">
-            <tsl-svg-icon class="LocationFilter__glass" src="/assets/icons/glass_icon.svg" width="28" height="28">
-            </tsl-svg-icon>
-            <input class="LocationFilter__input form-control" type="text" [ngModel]="labeledSearchLocation$ | async"
-                (ngModelChange)="selectLocationSuggestion($event)" [editable]="false" [ngbTypeahead]="search"
-                [resultTemplate]="locationTemplate" [inputFormatter]="inputFormatter" />
-        </div>
-
-        <div class="LocationFilter__map">
-            <button (click)="requestBrowserLocation()">
-                <tsl-svg-icon class="LocationFilter__glass" src="/assets/icons/filters/location/geolocation_icon.svg"
-                    width="36" height="36">
+    <form [formGroup]="locationFilterForm">
+        <div class="LocationFilter py-2">
+            <div class="LocationFilter__search">
+                <tsl-svg-icon class="LocationFilter__glass" src="/assets/icons/glass_icon.svg" width="28" height="28">
                 </tsl-svg-icon>
-            </button>
-            <img [src]="locationMapURL$ | async" class="LocationFilter__image my-3" />
+                <input class="LocationFilter__input form-control" type="text" formControlName="locationName"
+                    [editable]="false" [ngbTypeahead]="search" [resultTemplate]="locationTemplate" />
+            </div>
+
+            <div class="LocationFilter__map">
+                <button (click)="requestBrowserLocation()">
+                    <tsl-svg-icon class="LocationFilter__glass"
+                        src="/assets/icons/filters/location/geolocation_icon.svg" width="36" height="36">
+                    </tsl-svg-icon>
+                </button>
+                <img [src]="locationMapURL$ | async" class="LocationFilter__image my-3" />
+            </div>
+
+            <tsl-slider-form formControlName="distance" [stepsConfig]="config.stepsConfig" [min]="config.range[0]"
+                [max]="config.range[1]" [valueTooltip]="true" [limitless]="config.limitless" [limitTooltip]="false">
+            </tsl-slider-form>
+
+            <ng-template #locationTemplate let-location="result">
+                <div class="SearchBox__suggestion d-flex flex-column justify-content-center">
+                    <span class="SearchBox__suggestionTitle">
+                        {{ location }}
+                    </span>
+                </div>
+            </ng-template>
         </div>
 
-        <tsl-slider-form [formControl]="distanceControl" [stepsConfig]="config.stepsConfig" [min]="config.range[0]"
-            [max]="config.range[1]" [valueTooltip]="true" [limitless]="config.limitless" [limitTooltip]="false">
-        </tsl-slider-form>
-
-        <ng-template #locationTemplate let-location="result">
-            <div class="SearchBox__suggestion d-flex flex-column justify-content-center">
-                <span class="SearchBox__suggestionTitle">
-                    {{ location.description }}
-                </span>
-            </div>
-        </ng-template>
-    </div>
+    </form>
 
 </tsl-filter-template>
