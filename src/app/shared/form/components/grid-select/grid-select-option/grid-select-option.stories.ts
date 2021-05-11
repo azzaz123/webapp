@@ -2,7 +2,7 @@ import { moduleMetadata } from '@storybook/angular';
 import { Story } from '@storybook/angular/types-6-0';
 import { HttpClientModule } from '@angular/common/http';
 import { GridSelectOptionComponent } from './grid-select-option.component';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 export default {
   title: 'Webapp/Shared/Form/Components/GridSelectForm/GridSelectOption',

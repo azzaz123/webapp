@@ -10,6 +10,7 @@ import { StripeService } from '@core/stripe/stripe.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OrderEvent } from '../../components/selected-items/selected-product.interface';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-buy-product-modal',
@@ -122,7 +123,7 @@ export class BuyProductModalComponent implements OnInit {
       this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {
       this.loading = false;
-      this.errorService.i18nError('noCardSelectedError');
+      this.errorService.i18nError(TRANSLATION_KEY.NO_CARD_SELECTED_ERROR);
     }
   }
 

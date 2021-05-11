@@ -1,15 +1,16 @@
-import { of, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
-import { tap, map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../payments/payment.service';
+import { PAYMENT_RESPONSE_STATUS, PaymentService } from '../payments/payment.service';
 import { Router } from '@angular/router';
 import { EventService } from '../event/event.service';
-import { PaymentIntents, PaymentMethodResponse, PaymentMethodCardResponse } from '../payments/payment.interface';
+import { PaymentIntents, PaymentMethodCardResponse, PaymentMethodResponse } from '../payments/payment.interface';
 import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ErrorsService } from '../errors/errors.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 export const PAYMENTS_API_URL = 'api/v3/payments';
 
@@ -178,7 +179,7 @@ export class StripeService {
 
   private isBadToken(clientSecret: string): boolean {
     if (clientSecret === '') {
-      this.errorService.i18nError('defaultErrorMessage');
+      this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
       return true;
     }
 

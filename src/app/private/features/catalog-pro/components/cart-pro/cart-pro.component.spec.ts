@@ -16,6 +16,7 @@ import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { ScheduledStatus } from '@core/payments/payment.interface';
 import { MOCK_PROITEM } from '@fixtures/pro-item.fixtures.spec';
 import { OrderPro } from '@core/item/item-response.interface';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('CartProComponent', () => {
   let component: CartProComponent;
@@ -244,7 +245,7 @@ describe('CartProComponent', () => {
 
         component.applyBumps();
 
-        expect(errorService.i18nError).toHaveBeenCalledWith('bumpError');
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.BUMP_ERROR);
         expect(router.navigate).not.toHaveBeenCalled();
       });
 
@@ -259,7 +260,7 @@ describe('CartProComponent', () => {
 
         component.applyBumps();
 
-        expect(errorService.i18nError).toHaveBeenCalledWith('bumpError');
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.BUMP_ERROR);
         expect(router.navigate).not.toHaveBeenCalled();
       });
     });

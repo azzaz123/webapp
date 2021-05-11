@@ -7,6 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UserService } from '../../../../core/user/user.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('PasswordModalComponent', () => {
   let component: PasswordModalComponent;
@@ -90,7 +91,7 @@ describe('PasswordModalComponent', () => {
         component.onSubmit();
 
         expect(component.passwordForm.valid).toBeFalsy();
-        expect(errorsService.i18nError).toHaveBeenCalledWith('formErrors');
+        expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FORM_FIELD_ERROR);
       });
 
       it('should be invalid if passwords do not match', () => {
@@ -101,7 +102,7 @@ describe('PasswordModalComponent', () => {
         component.onSubmit();
 
         expect(component.passwordForm.valid).toBeFalsy();
-        expect(errorsService.i18nError).toHaveBeenCalledWith('passwordMatch');
+        expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.PASSWORD_DO_NOT_MATCH_ERROR);
       });
 
       it('should be invalid if new password is too short (< 8 chars)', () => {
@@ -112,7 +113,7 @@ describe('PasswordModalComponent', () => {
         component.onSubmit();
 
         expect(component.passwordForm.valid).toBeFalsy();
-        expect(errorsService.i18nError).toHaveBeenCalledWith('passwordMinLength');
+        expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.PASSWORD_MIN_LENGTH_ERROR);
       });
 
       it('should set dirty invalid fields', () => {

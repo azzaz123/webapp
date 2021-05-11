@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { CAR_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/cars-constants';
 import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
 
