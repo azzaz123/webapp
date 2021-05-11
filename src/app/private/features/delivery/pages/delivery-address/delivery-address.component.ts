@@ -1,28 +1,30 @@
 import { CountryOptionsAndDefault, DeliveryCountriesService } from '../../services/delivery-countries/delivery-countries.service';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
+import { DeliveryAddressApi, DeliveryAddressError } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AddressError, ADDRESS_ERROR_TYPE } from '../../interfaces/delivery-address/delivery-address-error.interface';
+import { DeliveryLocationsStoreService } from '../../services/location/delivery-location-store/delivery-location-store.service';
 import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
-import { DeliveryLocationService } from '../../services/delivery-location/delivery-location.service';
+import { DeliveryAddressErrorService } from '../../services/address/delivery-address-error/delivery-address-error.service';
+import { DeliveryLocationsService } from '../../services/location/delivery-locations/delivery-locations.service';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { postalCodeValidator } from '@core/form-validators/postalCodeValidator.func';
 import { DeliveryLocationApi } from '../../interfaces/delivery-location/delivery-location-api.interface';
-import { DeliveryAddressApi, DeliveryAddressError } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { DELIVERY_PATHS } from './../../delivery-routing-constants';
 import { ErrorsService } from '@core/errors/errors.service';
 import { Subscription } from 'rxjs';
 import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
-import { DeliveryAddressErrorService } from '../../services/address/delivery-address-error/delivery-address-error.service';
-import { AddressError, ADDRESS_ERROR_TYPE } from '../../interfaces/delivery-address/delivery-address-error.interface';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -60,9 +62,11 @@ export class DeliveryAddressComponent implements OnInit {
     private errorsService: ErrorsService,
     private uuidService: UuidService,
     private modalService: NgbModal,
-    private deliveryLocationService: DeliveryLocationService,
+    private deliveryLocationsService: DeliveryLocationsService,
+    private deliveryLocationsStoreService: DeliveryLocationsStoreService,
     private router: Router,
-    private deliveryAddressErrorService: DeliveryAddressErrorService
+    private deliveryAddressErrorService: DeliveryAddressErrorService,
+    private i18nService: I18nService
   ) {
     this.buildForm();
     this.eventService.subscribe(this.formSubmittedEventKey, () => {
@@ -73,6 +77,7 @@ export class DeliveryAddressComponent implements OnInit {
   ngOnInit() {
     this.handlePostalCodeRelatedProperties();
     this.clearFormWhenCountryChange();
+    this.updateRegionWhenCityChanges();
   }
 
   ngOnDestroy() {
@@ -149,9 +154,33 @@ export class DeliveryAddressComponent implements OnInit {
     return formControlAtr.invalid && (formControlAtr.dirty || formControlAtr.touched);
   }
 
+  public updateRegionWhenCityChanges(): void {
+    const city = this.deliveryAddressForm.get('city');
+    const currentDeliveryLocations = this.deliveryLocationsStoreService.deliveryLocations;
+
+    const subscription = city.valueChanges.subscribe(() => {
+      if (city.dirty && currentDeliveryLocations.length > 1) {
+        const selectedLocation = currentDeliveryLocations.find((location: DeliveryLocationApi) => location.city === city.value);
+        this.deliveryAddressForm.get('region').setValue(selectedLocation.region);
+      }
+    });
+
+    this.subscriptions.add(subscription);
+  }
+
   private handleExistingForm(deliveryAddress: DeliveryAddressApi): void {
     this.isNewForm = false;
-    this.deliveryAddressForm.patchValue(deliveryAddress);
+    this.deliveryAddressForm.patchValue({
+      id: deliveryAddress.id,
+      country_iso_code: deliveryAddress.country_iso_code,
+      region: deliveryAddress.region,
+      full_name: deliveryAddress.full_name,
+      street: deliveryAddress.street,
+      flat_and_floor: deliveryAddress.flat_and_floor,
+      postal_code: deliveryAddress.postal_code,
+      city: deliveryAddress.city,
+      phone_number: deliveryAddress.phone_number,
+    });
     this.formComponent.initFormControl();
     this.initializeCountries(false);
     this.patchFormValues();
@@ -183,9 +212,10 @@ export class DeliveryAddressComponent implements OnInit {
           this.initForm(false);
           this.redirect();
         },
-        (errors: DeliveryAddressError[]) => {
+        (errors: DeliveryAddressError) => {
           const generatedError = this.deliveryAddressErrorService.generateError(errors);
-          this.deliveryAddressForm.get(generatedError.formControlName).setErrors({ save_error: true });
+          this.deliveryAddressForm.get(generatedError.formControlName).setErrors(null);
+          this.deliveryAddressForm.get(generatedError.formControlName).setErrors({ incorrect: true });
           this.handleFormMessagesErrors(generatedError);
         }
       );
@@ -219,7 +249,7 @@ export class DeliveryAddressComponent implements OnInit {
     const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
 
     const subscription = postalCode.valueChanges.subscribe((newPostalCode: string) => {
-      if (postalCode.valid && postalCode.dirty) {
+      if (postalCode.valid && postalCode.value.length > 4 && postalCode.dirty) {
         this.deliveryAddressForm.get('city').reset();
         this.deliveryAddressForm.get('region').reset();
         if (newPostalCode) {
@@ -232,28 +262,35 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private getLocationsAndHandlePostalCode(postalCode: string, countryISOCode: string): void {
-    this.deliveryLocationService.getLocationsByPostalCodeAndCountry(postalCode, countryISOCode).subscribe(
+    this.deliveryLocationsService.getLocationsByPostalCodeAndCountry(postalCode, countryISOCode).subscribe(
       (locations: DeliveryLocationApi[]) => {
         this.cities = locations.map((location: DeliveryLocationApi) => {
           return { label: location.city, value: location.city };
         });
         this.handleLocationsResponse(locations);
       },
-      (errors: any[]) => {
-        // TODO: prepare		Date: 2021/05/10
-        // this.postalCodeError = error?.error[0]?.error_code;
+      () => {
+        this.cleanPostalCodeErrors();
+        this.deliveryAddressForm.get('postal_code').setErrors({ incorrect: true });
+        this.postalCodeErrorMessage = this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR);
       }
     );
   }
 
   private handleLocationsResponse(locations: DeliveryLocationApi[]): void {
     if (!locations.length) {
-      this.deliveryAddressForm.get('postal_code').setErrors({ postal_code: true });
+      this.cleanPostalCodeErrors();
+      this.deliveryAddressForm.get('postal_code').setErrors({ incorrect: true });
+      this.postalCodeErrorMessage = this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR);
     }
     if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {
       this.deliveryAddressForm.get('city').setValue(locations[0].city);
       this.deliveryAddressForm.get('region').setValue(locations[0].region);
     }
+  }
+
+  private cleanPostalCodeErrors(): void {
+    this.deliveryAddressForm.get('postal_code').setErrors(null);
   }
 
   private patchFormValues(): void {
