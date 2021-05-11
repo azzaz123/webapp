@@ -1275,11 +1275,13 @@
   <translation id="delivery_address_invalid_postal_code_error">El código postal no es válido</translation>
   <translation id="delivery_address_postal_code_not_allowed_error">Código postal no admitido</translation>
   <translation id="delivery_address_postal_code_not_exist_error">El código postal no existe</translation>
-  <translation id="delivery_address_save_invalid_mobile_phone_number_error">Error al guardar. Este número de teléfono no es válido</translation>
+  <translation id="delivery_address_save_invalid_phone_number_error">Error al guardar. Este número de teléfono es inválido.</translation>
   <translation id="delivery_address_save_invalid_postal_code_error">No se ha podido guardar el código postal porque no es válido</translation>
   <translation id="delivery_address_save_invalid_postal_code_not_allowed_error">No se ha podido guardar el código postal porque no está permitido</translation>
   <translation id="delivery_address_too_long_hint_error">Texto demasiado largo. Escríbelo más corto.</translation>
   <translation id="delivery_address_save_success">¡Dirección editada satisfactoriamente!</translation>
+  <translation id="address_view_all_users_snackbar_missing_info_error">Los datos que faltan son necesarios para guardar</translation>
+  <translation id="address_view_all_users_form_textfield_phone_missmatch_location_inline_error">El número de teléfono debe ser del país en el que estás</translation>
   <translation id="web_catalog_components_item_105">Inactivo</translation>
   <translation id="Date">Fecha</translation>
   <translation id="web_profile_modal_check_subscription_in_app_244">Entendido</translation>
@@ -1376,6 +1378,7 @@
   <translation id="web_form_field_error_title">¡Ojo!</translation>
   <translation id="web_form_field_error">Revisa los campos en rojo</translation>
   <translation id="web_bulk_delete_error">Algunos productos no se han eliminado debido a un error</translation>
+  <translation id="web_bulk_reserve_error">Algunos productos no se han reservado debido a un error</translation>
   <translation id="web_bulk_reserve_error">Algunos productos no se han reservado debido a un error</translation>
   <translation id="web_invoice_cannot_generate_error">Tu factura no se ha podido generar. Intenta de nuevo</translation>
   <translation id="web_invoice_cannot_download_error">Tu factura no se ha podido descargar. Intenta de nuevo</translation>

@@ -104,6 +104,14 @@ export enum TRANSLATION_KEY {
   DELETE_BILLING_INFO,
   DELIVERY_ADDRESS_SAVE_SUCCESS,
   DELIVERY_ADDRESS_SAVE_ERROR,
+  DELIVERY_ADDRESS_MISSING_INFO_ERROR,
+  DELIVERY_ADDRESS_INVALID_POSTAL_CODE_ERROR,
+  DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR,
+  DELIVERY_ADDRESS_POSTAL_CODE_NOT_EXISTS_ERROR,
+  DELIVERY_ADDRESS_INVALID_PHONE_NUMBER_ERROR,
+  DELIVERY_ADDRESS_TOO_LONG_ERROR,
+  DELIVERY_ADDRESS_FLATANDFLOOR_TOO_LONG_ERROR,
+  DELIVERY_ADDRESS_PHONE_MISSMATCH_LOCATION_ERROR,
   // TODO: Remaining keys with no explicit usage. Some of them might come from the backend so we need to keep it's string value
   //       We leave cleaning this keys after Italy release, as some of them come from some legacy parts (chat, calls..)
   //       and it is really difficult to follow the keys as this part needs a refactor
