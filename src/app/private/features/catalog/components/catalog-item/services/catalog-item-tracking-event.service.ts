@@ -11,7 +11,7 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 import { ITEM_TYPES } from '@core/item/item';
 import { ItemResponse } from '@core/item/item-response.interface';
 
-Injectable();
+@Injectable()
 export class CatalogItemTrackingEventService {
   constructor(private analyticsService: AnalyticsService) {}
 
