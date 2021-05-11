@@ -151,7 +151,12 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     );
 
   public requestBrowserLocation() {
-    this.locationService.getLocationFromBrowserAPI();
+    this.locationService.getLocationFromBrowserAPI().then(
+      () => {},
+      (error) => {
+        console.log(error.message);
+      }
+    );
   }
 
   private getBubbleLabel(locationName: string, distance: number): string {

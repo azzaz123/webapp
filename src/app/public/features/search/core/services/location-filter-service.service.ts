@@ -7,6 +7,7 @@ import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constan
 import { Observable, of } from 'rxjs';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { map } from 'rxjs/operators';
+import { GeolocationNotAvailableError } from './errors/geolocation-not-available.error';
 
 // TODO: This should be placed at the location filter level when implemented
 
@@ -49,20 +50,27 @@ export class LocationFilterServiceService {
   }
 
   public getLocationFromBrowserAPI() {
+    console.log(navigator.geolocation);
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
 
-          return { latitude, longitude };
-        },
-        (error) => {},
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-        }
-      );
+            resolve({ latitude, longitude });
+          },
+          (error) => {
+            reject(new GeolocationNotAvailableError(error));
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 5000,
+          }
+        );
+      });
+    } else {
+      throw new GeolocationNotAvailableError(`Your browser doesn't support geolocation`);
     }
   }
 
