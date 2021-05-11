@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'tsl-button',
@@ -11,6 +11,13 @@ export class ButtonComponent {
   @Input() type = 'button';
   @Input() disabled: boolean;
   @Input() loading: boolean;
+  @Output() clickButton: EventEmitter<void> = new EventEmitter();
 
   constructor() {}
+
+  public onClickButton(): void {
+    if (!this.disabled) {
+      this.clickButton.emit();
+    }
+  }
 }

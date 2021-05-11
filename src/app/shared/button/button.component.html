@@ -1,6 +1,7 @@
 <button preventDoubleClick class="btn {{className}}"
         [disabled]="disabled"
         [class.loading]="loading"
+        (click)="onClickButton()"
         [type]="type">
   <tsl-svg-icon src="/assets/icons/spinner.svg" *ngIf="loading" class="spinner {{classLoading}}"></tsl-svg-icon>
   <ng-content *ngIf="!loading"></ng-content>
