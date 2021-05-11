@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { debounceTime, tap } from 'rxjs/operators';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Injectable()
@@ -10,7 +11,14 @@ export class SearchQueryStringService {
   private queryStringSubject = new Subject<FilterParameter[]>();
   public queryStringParams$ = this.queryStringSubject.asObservable();
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router) {
+    route.queryParams
+      .pipe(
+        debounceTime(100),
+        tap((params) => this.handleParamsChange(params))
+      )
+      .subscribe();
+  }
 
   public setQueryParams(filterParameters: FilterParameter[]): void {
     const newParameters = this.mapFilterToQueryParams(filterParameters);
@@ -20,6 +28,11 @@ export class SearchQueryStringService {
         queryParams: newParameters,
       });
     }
+  }
+
+  private handleParamsChange(params: Params): void {
+    this.currentParams = params;
+    this.queryStringSubject.next(this.mapQueryToFilterParams(params));
   }
 
   private mapQueryToFilterParams(params: Params): FilterParameter[] {
