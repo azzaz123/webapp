@@ -7,7 +7,7 @@ import { PaymentMethodResponse } from '@core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { PaymentError, STRIPE_ERROR } from '@core/stripe/stripe.interface';
-import { StripeService } from '@core/stripe/stripe.service';
+import { StripeService, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from '@core/stripe/stripe.service';
 import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
@@ -55,6 +55,55 @@ export class NewSubscriptionComponent implements OnInit {
     this.getAllCards();
     this.selectedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.default_tier_id);
     this.benefits = this.subscriptionsService.getBenefits(this.subscription.category_id);
+    this.eventService.subscribe(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, (response: any) => {
+      this.managePaymentResponse(response);
+    });
+  }
+
+  private managePaymentResponse(paymentResponse: any) {
+    // TODO review this
+    switch (paymentResponse && paymentResponse.toUpperCase()) {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
+        this.paymentSucceeded();
+        break;
+      }
+      case PAYMENT_RESPONSE_STATUS.FAILED: {
+        this.requestNewPayment();
+        break;
+      }
+      default: {
+        console.log('entra por es flujo extraño');
+        this.isLoading = false;
+        this.showError([paymentResponse]);
+        break;
+      }
+    }
+  }
+
+  private managePaymentStatus(response: SubscriptionResponse) {
+    const paymentStatus = response.payment_status.toUpperCase();
+    switch (paymentStatus) {
+      case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
+        this.isRetryInvoice = true;
+        this._invoiceId = response.latest_invoice_id;
+        this.requestNewPayment();
+        console.log('error');
+        break;
+      }
+      case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
+        this.stripeService.actionPayment(response.payment_secret_key);
+        console.log('require action');
+        break;
+      }
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
+        this.paymentSucceeded();
+        break;
+      }
+      default: {
+        this.requestNewPayment();
+        break;
+      }
+    }
   }
 
   get isSavedCard(): boolean {
@@ -69,10 +118,7 @@ export class NewSubscriptionComponent implements OnInit {
     this.stripeService.getCards(false).subscribe(
       (stripeCards: FinancialCard[]) => {
         this.stripeCards = stripeCards;
-        console.log('TEST', stripeCards);
         this.selectedCard = this.stripeCards.find((card) => card.invoices_default) || this.stripeCards[0];
-
-        // this.subscriptionStripeCards = stripeCards.filter((card) => card.invoices_default);
       },
       () => {
         this.errorService.i18nError('getStripeCardsError');
@@ -141,26 +187,7 @@ export class NewSubscriptionComponent implements OnInit {
                 if (!response.payment_status) {
                   return this.paymentSucceeded();
                 }
-                switch (response.payment_status.toUpperCase()) {
-                  case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
-                    this.isRetryInvoice = true;
-                    this._invoiceId = response.latest_invoice_id;
-                    this.requestNewPayment();
-                    break;
-                  }
-                  case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
-                    this.stripeService.actionPayment(response.payment_secret_key);
-                    break;
-                  }
-                  case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-                    this.paymentSucceeded();
-                    break;
-                  }
-                  default: {
-                    this.requestNewPayment();
-                    break;
-                  }
-                }
+                this.managePaymentStatus(response);
               },
               (error) => {
                 this.requestNewPayment(error);
@@ -199,25 +226,7 @@ export class NewSubscriptionComponent implements OnInit {
         if (response.status === 202) {
           this.subscriptionsService.checkRetrySubscriptionStatus().subscribe(
             (response) => {
-              switch (response.status.toUpperCase()) {
-                case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
-                  this.isRetryInvoice = true;
-                  this.requestNewPayment();
-                  break;
-                }
-                case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
-                  this.stripeService.actionPayment(response.payment_secret_key);
-                  break;
-                }
-                case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-                  this.paymentSucceeded();
-                  break;
-                }
-                default: {
-                  this.requestNewPayment();
-                  break;
-                }
-              }
+              this.managePaymentStatus(response);
             },
             (error) => {
               this.requestNewPayment(error);
