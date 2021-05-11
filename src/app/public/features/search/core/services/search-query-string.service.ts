@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { debounceTime, map, tap } from 'rxjs/operators';
