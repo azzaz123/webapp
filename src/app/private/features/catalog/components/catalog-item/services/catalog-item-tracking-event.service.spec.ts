@@ -21,11 +21,7 @@ describe('CatalogItemTrackingEventService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        CatalogItemTrackingEventService,
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-        { provide: UserService, useClass: MockedUserService },
-      ],
+      providers: [CatalogItemTrackingEventService, { provide: AnalyticsService, useClass: MockAnalyticsService }],
     });
     service = TestBed.inject(CatalogItemTrackingEventService);
     analyticsService = TestBed.inject(AnalyticsService);
