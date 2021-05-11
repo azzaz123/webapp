@@ -132,6 +132,7 @@ export function SearchResponseFactory<T>(partial: Partial<SearchResponse<T>> = {
   };
 }
 
-export const X_NEXT_PAGE_HEADER = (category_id) =>
-  'density_type=30&latitude=41.38804&start=40&step=0&num_results=40&search_id=56a6f352-f3e8-459f-8959-bb88e6568d33&longitude=2.17001&filters_source=seo_landing&language=es_ES&category_ids=' +
+export const X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER = (category_id,search_id) =>
+  'density_type=30&latitude=41.38804&start=40&step=0&num_results=40&search_id=' + search_id + '&longitude=2.17001&filters_source=seo_landing&language=es_ES&category_ids=' +
   category_id;
+

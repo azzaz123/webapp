@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { environment } from '@environments/environment';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { MOCK_SEARCH_ID } from '../../search-list-tracking-events.fixtures.spec';
 import { SearchCarResponse } from '../cars/search-car-response';
 import { SearchItemCarResponseMapper } from '../cars/search-cars-response.mapper';
 import { SearchCustomerGoodsResponse } from '../customer-goods/search-costumer-goods-response.interface';
@@ -17,7 +18,7 @@ import {
   SearchCustomerGoodsItemListResponseFactory,
   SearchRealEstateItemlistResponseFactory,
   SearchResponseFactory,
-  X_NEXT_PAGE_HEADER
+  X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER
 } from './search-api.service.fixture';
 import { SearchResponse } from './search-response.interface';
 
@@ -43,6 +44,7 @@ describe('SearchApiService', () => {
 
     describe('generic category', () => {
       const category_id = '1';
+      const search_id = MOCK_SEARCH_ID;
       const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
       const searchResponse: SearchResponse<SearchCustomerGoodsResponse> = SearchResponseFactory<SearchCustomerGoodsResponse>({
         search_objects: SearchCustomerGoodsItemListResponseFactory()
@@ -69,7 +71,7 @@ describe('SearchApiService', () => {
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
-          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
+          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id, search_id))
         });
       });
 
@@ -114,7 +116,7 @@ describe('SearchApiService', () => {
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
-          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
+          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
         });
       });
 
@@ -161,7 +163,7 @@ describe('SearchApiService', () => {
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
-          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
+          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
         });
       });
 
@@ -207,7 +209,7 @@ describe('SearchApiService', () => {
         const request = httpController.expectOne(expectedUrl);
         expect(request.request.method).toBe('GET');
         request.flush(searchResponse, {
-          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
+          headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
         });
       });
 
@@ -242,12 +244,12 @@ describe('SearchApiService', () => {
 
     it('should load next page', () => {
       const expectedUrlSearch = `${environment.baseUrl}api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
-      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER(category_id)}`;
+      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id)}`;
 
       service.search(filters).subscribe();
       const request = httpController.expectOne(expectedUrlSearch);
       request.flush(searchResponse, {
-        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
+        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
       });
 
       service.loadMore().subscribe();
@@ -267,13 +269,13 @@ describe('SearchApiService', () => {
 
     it('show load more items', () => {
       const expectedUrlSearch = `${environment.baseUrl}api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
-      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER(category_id)}`;
+      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id)}`;
       service.search(filters).subscribe();
 
       const request1 = httpController.expectOne(expectedUrlSearch);
       expect(request1.request.method).toBe('GET');
       request1.flush(searchResponse, {
-        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
+        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
       });
 
       const request2 = httpController.expectOne(expectedUrlLoadMore);
@@ -283,7 +285,7 @@ describe('SearchApiService', () => {
 
     it('show load more items until 40 items length', (done) => {
       const expectedUrlSearch = `${environment.baseUrl}api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
-      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER(category_id)}`;
+      const expectedUrlLoadMore = `${environment.baseUrl}api/v3/general/wall?${X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id)}`;
 
       service.search(filters).subscribe((response) => {
         expect(response).toEqual({
@@ -296,7 +298,7 @@ describe('SearchApiService', () => {
       const request1 = httpController.expectOne(expectedUrlSearch);
       expect(request1.request.method).toBe('GET');
       request1.flush(searchResponse, {
-        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER(category_id))
+        headers: new HttpHeaders().set(NEXT_HEADER_PAGE, X_NEXT_PAGE_HEADER_AND_SEARCH_ID_HEADER(category_id))
       });
       const request2 = httpController.expectOne(expectedUrlLoadMore);
       expect(request2.request.method).toBe('GET');
