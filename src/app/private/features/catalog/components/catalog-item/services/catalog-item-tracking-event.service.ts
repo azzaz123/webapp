@@ -18,7 +18,7 @@ export class CatalogItemTrackingEventService {
   public trackReactivateItemEvent(item: ItemResponse, isPro: boolean): void {
     const event: AnalyticsEvent<ReactivateItem> = {
       name: ANALYTICS_EVENT_NAMES.ReactivateItem,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation, // TODO check with product
+      eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         itemId: item.id,
         categoryId: this.getCategoryId(item),
