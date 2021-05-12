@@ -1,13 +1,10 @@
-import { Component, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import {
-  FilterParameterStoreService,
-  FILTER_PARAMETER_STORE_TOKEN,
-} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { SELECT_FORM_OPTIONS_CONFIG } from './sort-filter.config';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
 
 @Component({
   selector: 'tsl-sort-filter',
@@ -29,7 +26,7 @@ export class SortFilterComponent implements OnInit {
     return SELECT_FORM_OPTIONS_CONFIG.find(({ value }: SelectFormOption<string>) => value === actualValue);
   }
 
-  constructor(@Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStoreService: FilterParameterStoreService) {}
+  constructor(private searchNavigatorService: SearchNavigatorService) {}
 
   public ngOnInit(): void {
     this.formControl = new FormControl(this.selectFormOptionsConfig[0].value);
@@ -45,7 +42,8 @@ export class SortFilterComponent implements OnInit {
     if (newValue === SELECT_FORM_OPTIONS_CONFIG[0].value) {
       newValue = null;
     }
-    // this.filterParameterStoreService.setParameters([{ key: SortFilterComponent.KEY_PARAMETER, value: newValue }]);
+
+    this.searchNavigatorService.navigate([{ key: SortFilterComponent.KEY_PARAMETER, value: newValue }], true);
 
     this.closeDropdown();
   }

@@ -34,6 +34,7 @@ import { ReportService } from './trust-and-safety/report/report.service';
 import { SvgService } from './svg-icon/svg.service';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
+import { QueryStringLocationService } from '@core/search/query-string-location.service';
 
 @NgModule({
   imports: [
@@ -74,6 +75,7 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
     ReportService,
     SearchNavigatorService,
     SearchQueryStringService,
+    QueryStringLocationService,
   ],
 })
 export class CoreModule {

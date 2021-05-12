@@ -11,6 +11,7 @@ import {
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FilterGroupConfiguration } from '@public/shared/services/filter-group-configuration/interfaces/filter-group-config.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
 
 @Component({
   selector: 'tsl-filters-wrapper',
@@ -55,7 +56,8 @@ export class FiltersWrapperComponent {
   constructor(
     @Inject(FILTER_PARAMETER_DRAFT_STORE_TOKEN) private drawerStore: FilterParameterStoreService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private bubbleStore: FilterParameterStoreService,
-    private filterGroupConfigurationService: FilterGroupConfigurationService
+    private filterGroupConfigurationService: FilterGroupConfigurationService,
+    private searchNavigatorService: SearchNavigatorService
   ) {
     this.subscriptions.add(this.bubbleStore.parameters$.subscribe(this.handleBubbleStoreChange.bind(this)));
 
@@ -76,12 +78,12 @@ export class FiltersWrapperComponent {
   }
 
   public applyDrawer(): void {
-    // this.bubbleStore.setParameters(this.drawerStore.getParameters());
+    this.searchNavigatorService.navigate(this.drawerStore.getParameters());
     this.drawerConfig.isOpen = false;
   }
 
-  public bubbleChange(values: FilterParameter[]): void {
-    // this.bubbleStore.upsertParameters(values);
+  public bubbleChange(parameters: FilterParameter[]): void {
+    this.searchNavigatorService.navigate(parameters, true);
   }
 
   public drawerChange(values: FilterParameter[]): void {

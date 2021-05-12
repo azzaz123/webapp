@@ -29,7 +29,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   public user: User;
   public homeUrl: string;
   public isProfessional: boolean;
-  public wallacoins: number = 0;
+  public wallacoins = 0;
   public currencyName: string;
   public isLogged: boolean;
 
@@ -102,7 +102,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   }
 
   public onSearchSubmit(searchValue: SearchBoxValue): void {
-    //TODO: This can be removed after tests
+    // TODO: This can be removed after tests
     const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
 
     if (isExperimentalFeaturesEnabled) {
@@ -127,7 +127,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.searchNavigator.navigate(filterParams);
+    this.searchNavigator.navigate(filterParams, true);
   }
 
   private redirectToOldSearch(searchParams: SearchBoxValue) {
