@@ -10,9 +10,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserService } from '@core/user/user.service';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SearchListTrackingEventsService {
   constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
 
