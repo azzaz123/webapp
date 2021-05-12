@@ -85,7 +85,7 @@
                 <div class="form-group row align-items-center">
                   <label for="phone_number" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_phone_label">Phone number</label>
                   <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="phone_number" formControlName="phone_number" maxLength="20"/>
+                    <input type="tel" class="form-control" id="phone_number" formControlName="phone_number" maxLength="20"/>
                     <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.phone_number)" class="alert">
                       <ng-container *ngIf="deliveryAddressForm.controls.phone_number.errors as phoneNumberError">
                         <span *ngIf="phoneNumberError.required" i18n="@@address_view_all_users_form_textfield_phone_missing_info_inline_error">
