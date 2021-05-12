@@ -76,12 +76,12 @@ export class FiltersWrapperComponent {
   }
 
   public applyDrawer(): void {
-    this.bubbleStore.setParameters(this.drawerStore.getParameters());
+    // this.bubbleStore.setParameters(this.drawerStore.getParameters());
     this.drawerConfig.isOpen = false;
   }
 
   public bubbleChange(values: FilterParameter[]): void {
-    this.bubbleStore.upsertParameters(values);
+    // this.bubbleStore.upsertParameters(values);
   }
 
   public drawerChange(values: FilterParameter[]): void {
@@ -114,7 +114,7 @@ export class FiltersWrapperComponent {
     }
 
     if (needsParameterCleanup) {
-      this.bubbleStore.setParameters(this.cleanParameters(parameters, newConfiguration.params));
+      // this.bubbleStore.setParameters(this.cleanParameters(parameters, newConfiguration.params));
     } else {
       this.bubbleValuesSubject.next(parameters);
       this.drawerStore.setParameters(parameters);

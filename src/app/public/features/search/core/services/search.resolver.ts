@@ -5,10 +5,7 @@ import { SearchAdsService } from '../ads/search-ads.service';
 
 @Injectable()
 export class SearchResolver implements Resolve<void> {
-  constructor(private searchService: SearchService, private searchAdsService: SearchAdsService) {}
+  constructor() {}
 
-  resolve(): void {
-    this.searchService.init();
-    this.searchAdsService.init();
-  }
+  resolve(): void {}
 }

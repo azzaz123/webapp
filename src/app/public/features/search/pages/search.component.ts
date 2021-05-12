@@ -1,6 +1,6 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, Scroll } from '@angular/router';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router, Scroll } from '@angular/router';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -23,6 +23,13 @@ import {
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
+import {
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
+import { isEqual } from 'lodash-es';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -89,17 +96,24 @@ export class SearchComponent implements OnInit, OnDestroy {
     private publicFooterService: PublicFooterService,
     private searchAdsService: SearchAdsService,
     private viewportScroller: ViewportScroller,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private queryStringService: SearchQueryStringService,
+    @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
-    this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
-    this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
   }
 
   public ngOnInit(): void {
     this.slotsConfig = this.deviceService.isMobile() ? SLOTS_CONFIG_MOBILE : SLOTS_CONFIG_DESKTOP;
 
+    this.searchService.init();
+    this.searchAdsService.init();
     this.searchAdsService.setSlots();
+
+    this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
+    this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
+    this.subscription.add(this.queryParamsChange().subscribe((params) => this.filterParameterStore.setParameters(params)));
   }
 
   public ngOnDestroy(): void {
@@ -120,6 +134,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public handleFilterOpened(opened: boolean) {
     this.filterOpened = opened;
+  }
+
+  private queryParamsChange(): Observable<FilterParameter[]> {
+    return this.route.queryParams.pipe(
+      distinctUntilChanged((prevParams, nextParams) => isEqual(prevParams, nextParams)),
+      map((params: Params) => this.queryStringService.mapQueryToFilterParams(params))
+    );
   }
 
   private buildListConfigObservable(): Observable<ColumnsConfig> {

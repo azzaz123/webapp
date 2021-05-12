@@ -45,7 +45,7 @@ export class SortFilterComponent implements OnInit {
     if (newValue === SELECT_FORM_OPTIONS_CONFIG[0].value) {
       newValue = null;
     }
-    this.filterParameterStoreService.setParameters([{ key: SortFilterComponent.KEY_PARAMETER, value: newValue }]);
+    // this.filterParameterStoreService.setParameters([{ key: SortFilterComponent.KEY_PARAMETER, value: newValue }]);
 
     this.closeDropdown();
   }
