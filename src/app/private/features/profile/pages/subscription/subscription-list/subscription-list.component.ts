@@ -13,6 +13,8 @@ export class SubscriptionListComponent {
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() openSubscriptionModal: EventEmitter<SubscriptionsResponse> = new EventEmitter();
 
+  public readonly HELP_LINK = $localize`:@@WallapopProAboutHref:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
+
   constructor(private subscriptionsService: SubscriptionsService) {}
 
   private showEdit(subscription: SubscriptionsResponse): boolean {
