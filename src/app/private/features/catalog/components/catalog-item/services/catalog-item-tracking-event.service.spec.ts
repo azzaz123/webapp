@@ -3,7 +3,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CatalogItemTrackingEventService } from './catalog-item-tracking-event.service';
-import { ITEM_DATA3 } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -11,18 +11,31 @@ import {
   ReactivateItem,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
+import { UserService } from '@core/user/user.service';
+import { Item } from '@core/item/item';
 
 describe('CatalogItemTrackingEventService', () => {
   let service: CatalogItemTrackingEventService;
   let analyticsService: AnalyticsService;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CatalogItemTrackingEventService, { provide: AnalyticsService, useClass: MockAnalyticsService }],
+      providers: [
+        CatalogItemTrackingEventService,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        {
+          provide: UserService,
+          useValue: {
+            isPro: null,
+          },
+        },
+      ],
     });
     service = TestBed.inject(CatalogItemTrackingEventService);
     analyticsService = TestBed.inject(AnalyticsService);
+    userService = TestBed.inject(UserService);
   });
 
   it('should be created', () => {
@@ -30,7 +43,7 @@ describe('CatalogItemTrackingEventService', () => {
   });
 
   describe('when item reactivation', () => {
-    const item = ITEM_DATA3;
+    const item: Item = MOCK_ITEM;
     let event: AnalyticsEvent<ReactivateItem>;
 
     beforeEach(() => {
@@ -42,13 +55,13 @@ describe('CatalogItemTrackingEventService', () => {
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           itemId: item.id,
-          categoryId: service['getCategoryId'](item),
-          subcategoryId: parseInt(item.content.extra_info?.object_type?.id, 10),
-          salePrice: item.content.sale_price,
-          title: item.content.title,
-          brand: item.content.extra_info?.brand,
-          model: item.content.extra_info?.model,
-          objectType: item.content.extra_info?.object_type.name,
+          categoryId: item.categoryId,
+          subcategoryId: parseInt(item.extraInfo?.object_type?.id, 10),
+          salePrice: item.salePrice,
+          title: item.title,
+          brand: item.extraInfo?.brand,
+          model: item.extraInfo?.model,
+          objectType: item.extraInfo?.object_type.name,
           isPro: null,
           screenId: SCREEN_IDS.MyCatalog,
         },
@@ -56,26 +69,28 @@ describe('CatalogItemTrackingEventService', () => {
     });
 
     describe('and user is not pro', () => {
-      const isPro = false;
       beforeEach(() => {
+        const isPro = false;
+        Object.defineProperty(userService, 'isPro', { value: isPro });
         event.attributes.isPro = isPro;
       });
 
       it('should send click item card event', () => {
-        service.trackReactivateItemEvent(item, isPro);
+        service.trackReactivateItemEvent(item);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
       });
     });
 
     describe('and user is pro', () => {
-      const isPro = true;
       beforeEach(() => {
+        const isPro = true;
+        Object.defineProperty(userService, 'isPro', { value: isPro });
         event.attributes.isPro = isPro;
       });
 
       it('should send click item card event', () => {
-        service.trackReactivateItemEvent(item, isPro);
+        service.trackReactivateItemEvent(item);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
       });
