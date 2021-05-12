@@ -17,6 +17,14 @@ export class SearchNavigatorService {
     private queryStringService: SearchQueryStringService,
     private locationService: QueryStringLocationService
   ) {}
+  private notAutomaticallyCleanableParams: FILTER_QUERY_PARAM_KEY[] = [
+    FILTER_QUERY_PARAM_KEY.keywords,
+    FILTER_QUERY_PARAM_KEY.latitude,
+    FILTER_QUERY_PARAM_KEY.longitude,
+    FILTER_QUERY_PARAM_KEY.distance,
+    FILTER_QUERY_PARAM_KEY.orderBy,
+  ];
+
   public navigate(filterParams: FilterParameter[], keepCurrentParams?: boolean): void {
     const currentParams = this.route.snapshot.queryParams;
     let newParams = this.queryStringService.mapFilterToQueryParams(filterParams);
@@ -25,25 +33,23 @@ export class SearchNavigatorService {
       newParams = { ...currentParams, ...newParams };
     }
 
-    const queryParams = this.cleanParams(currentParams, newParams);
+    const cleanParams = this.cleanParams(currentParams, newParams);
 
     this.router.navigate(['/search'], {
-      queryParams,
+      queryParams: this.prepareFinalParams(currentParams, newParams, cleanParams),
     });
   }
 
   private cleanParams(currentParams: Params, newParams: Params): Params {
-    let cleanedParams: Params = newParams;
-
     if (this.hasCategoryChanged(currentParams, newParams)) {
-      cleanedParams = this.cleanCategory(newParams);
+      return this.cleanCategory(newParams);
     }
 
     if (this.hasRealEstateChanged(currentParams, newParams)) {
-      cleanedParams = this.cleanRealEstate(currentParams, newParams);
+      return this.cleanRealEstate(currentParams, newParams);
     }
 
-    return this.injectLocation(this.cleanUndefined(cleanedParams));
+    return newParams;
   }
 
   private hasCategoryChanged(currentParams: Params, newParams: Params): boolean {
@@ -69,7 +75,6 @@ export class SearchNavigatorService {
   private cleanCategory(newParams: Params): Params {
     return {
       [FILTER_QUERY_PARAM_KEY.categoryId]: newParams[FILTER_QUERY_PARAM_KEY.categoryId],
-      [FILTER_QUERY_PARAM_KEY.keywords]: newParams[FILTER_QUERY_PARAM_KEY.keywords],
     };
   }
 
@@ -88,7 +93,7 @@ export class SearchNavigatorService {
     }
 
     if (currentParams[FILTER_QUERY_PARAM_KEY.operation] !== newParams[FILTER_QUERY_PARAM_KEY.operation]) {
-      if (currentParams[FILTER_QUERY_PARAM_KEY.type] === 'room') {
+      if (currentParams[FILTER_QUERY_PARAM_KEY.type] === REAL_ESTATE_SPECIFICATION_TYPE.ROOM) {
         newParams[FILTER_QUERY_PARAM_KEY.type] = undefined;
       }
       realEstateParams[FILTER_QUERY_PARAM_KEY.rooms] = undefined;
@@ -119,6 +124,20 @@ export class SearchNavigatorService {
     }
 
     return realEstateParams;
+  }
+
+  private prepareFinalParams(currentParams: Params, newParams: Params, cleanParams: Params): Params {
+    const notClearableParams = {};
+    const auxParams = { ...currentParams, ...newParams };
+
+    this.notAutomaticallyCleanableParams.forEach((key) => (notClearableParams[key] = auxParams[key]));
+
+    return this.injectLocation(
+      this.cleanUndefined({
+        ...cleanParams,
+        ...notClearableParams,
+      })
+    );
   }
 
   private cleanUndefined(params: Params): Params {

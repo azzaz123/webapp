@@ -13,25 +13,20 @@ import {
   FILTER_PARAMETER_STORE_TOKEN,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
-import { QueryStringLocationService } from '@public/features/search/core/services/query-string-location.service';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
-import { SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
-import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
+import { QueryStringLocationService } from '@core/search/query-string-location.service';
 
 describe('SearchService', () => {
   let service: SearchService;
   let searchStoreServiceMock;
   let filterParameterStoreServiceMock;
   let searchInfrastructureServiceMock;
-  let queryStringServiceMock;
   let queryStringLocationService: QueryStringLocationService;
 
   const filterParametersSubject: Subject<FilterParameter[]> = new Subject<FilterParameter[]>();
   const itemsSubject: Subject<ItemCard[]> = new Subject<ItemCard[]>();
   const hasMoreSubject: Subject<boolean> = new Subject<boolean>();
-  const queryParamsSubject: Subject<FilterParameter[]> = new Subject<FilterParameter[]>();
 
   beforeEach(() => {
     searchStoreServiceMock = {
@@ -54,11 +49,6 @@ describe('SearchService', () => {
       loadMore: () => of(SearchPaginationFactory()),
     };
 
-    queryStringServiceMock = {
-      queryStringParams$: queryParamsSubject.asObservable(),
-      setQueryParams: () => {},
-    };
-
     TestBed.configureTestingModule({
       providers: [
         SearchService,
@@ -77,10 +67,6 @@ describe('SearchService', () => {
         {
           provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
           useValue: filterParameterStoreServiceMock,
-        },
-        {
-          provide: SearchQueryStringService,
-          useValue: queryStringServiceMock,
         },
         QueryStringLocationService,
         {
@@ -245,57 +231,5 @@ describe('SearchService', () => {
 
       hasMoreSubject.next(searchPagination.hasMore);
     });
-  });
-
-  describe('when query params emits', () => {
-    beforeEach(() => {
-      service.init();
-    });
-
-    describe('for the first time', () => {
-      it('should set parameters', () => {
-        const defaultLocation = getDefaultLocation('es');
-        spyOn(filterParameterStoreServiceMock, 'setParameters');
-        spyOn(queryStringLocationService, 'getLocationParameters').and.returnValue(defaultLocation);
-
-        queryParamsSubject.next([]);
-
-        expect(filterParameterStoreServiceMock.setParameters).toHaveBeenCalledTimes(1);
-        expect(filterParameterStoreServiceMock.setParameters).toHaveBeenCalledWith([
-          {
-            key: FILTER_QUERY_PARAM_KEY.longitude,
-            value: defaultLocation[FILTER_QUERY_PARAM_KEY.longitude],
-          },
-          {
-            key: FILTER_QUERY_PARAM_KEY.latitude,
-            value: defaultLocation[FILTER_QUERY_PARAM_KEY.latitude],
-          },
-        ]);
-      });
-    });
-
-    describe('after the first time', () => {
-      beforeEach(() => {
-        queryParamsSubject.next([]);
-      });
-      it('should set parameters', () => {
-        const newParams = [
-          {
-            key: FILTER_QUERY_PARAM_KEY.condition,
-            value: 'value',
-          },
-        ];
-        spyOn(filterParameterStoreServiceMock, 'setParameters');
-
-        queryParamsSubject.next(newParams);
-
-        expect(filterParameterStoreServiceMock.setParameters).toHaveBeenCalledTimes(1);
-        expect(filterParameterStoreServiceMock.setParameters).toHaveBeenCalledWith(newParams);
-      });
-    });
-
-    function getDefaultLocation(market: string): SearchLocation {
-      return DEFAULT_LOCATIONS[market];
-    }
   });
 });
