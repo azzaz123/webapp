@@ -4,10 +4,10 @@ import { ChangeCountryConfirmationModalComponent } from '../../modals/change-cou
 import { DeliveryAddressApi, DeliveryAddressError } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AddressError, ADDRESS_ERROR_TYPE } from '../../interfaces/delivery-address/delivery-address-error.interface';
-import { DeliveryLocationsStoreService } from '../../services/location/delivery-location-store/delivery-location-store.service';
+import { DeliveryLocationsStoreService } from '../../services/locations/delivery-locations-store/delivery-locations-store.service';
 import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryAddressErrorService } from '../../services/address/delivery-address-error/delivery-address-error.service';
-import { DeliveryLocationsService } from '../../services/location/delivery-locations/delivery-locations.service';
+import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { whitespaceValidator } from '@core/form-validators/formValidators.func';

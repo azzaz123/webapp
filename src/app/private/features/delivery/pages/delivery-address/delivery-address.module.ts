@@ -10,12 +10,12 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { DeliveryAddressApiService } from '../../services/api/delivery-address-api/delivery-address-api.service';
 import { DeliveryCountriesApiService } from '../../services/api/delivery-countries-api/delivery-countries-api.service';
 import { ButtonModule } from '@shared/button/button.module';
-import { DeliveryLocationsService } from '../../services/location/delivery-locations/delivery-locations.service';
-import { DeliveryLocationApiService } from '../../services/api/delivery-location-api/delivery-location-api.service';
+import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
+import { DeliveryLocationsApiService } from '../../services/api/delivery-locations-api/delivery-locations-api.service';
 import { CommonModule } from '@angular/common';
 import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryAddressErrorService } from '../../services/address/delivery-address-error/delivery-address-error.service';
-import { DeliveryLocationsStoreService } from '../../services/location/delivery-location-store/delivery-location-store.service';
+import { DeliveryLocationsStoreService } from '../../services/locations/delivery-locations-store/delivery-locations-store.service';
 
 @NgModule({
   imports: [
@@ -36,7 +36,7 @@ import { DeliveryLocationsStoreService } from '../../services/location/delivery-
     DeliveryCountriesApiService,
     DeliveryLocationsService,
     DeliveryLocationsStoreService,
-    DeliveryLocationApiService,
+    DeliveryLocationsApiService,
     DeliveryAddressErrorService,
     ErrorsService,
   ],
