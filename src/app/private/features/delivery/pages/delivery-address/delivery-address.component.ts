@@ -17,12 +17,12 @@ import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { DELIVERY_PATHS } from './../../delivery-routing-constants';
 import { ErrorsService } from '@core/errors/errors.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { finalize } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
 
@@ -41,8 +41,8 @@ export class DeliveryAddressComponent implements OnInit {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
-  public countries: IOption[];
-  public cities: IOption[];
+  public countries: IOption[] = [];
+  public cities: IOption[] = [];
   public deliveryAddressForm: FormGroup;
   public loading = true;
   public isNewForm = true;
@@ -102,7 +102,6 @@ export class DeliveryAddressComponent implements OnInit {
       )
       .add(() => {
         this.deliveryAddressForm.updateValueAndValidity();
-        this.loading = false;
       });
   }
 
@@ -136,7 +135,7 @@ export class DeliveryAddressComponent implements OnInit {
     const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
 
     const subscription = countryISOCode.valueChanges.subscribe(() => {
-      if (!this.isNewForm && countryISOCode.dirty) {
+      if (countryISOCode.dirty) {
         this.deliveryAddressForm.clearValidators();
         this.deliveryAddressForm.get('full_name').reset();
         this.deliveryAddressForm.get('street').reset();
@@ -156,9 +155,9 @@ export class DeliveryAddressComponent implements OnInit {
 
   public updateRegionWhenCityChanges(): void {
     const city = this.deliveryAddressForm.get('city');
-    const currentDeliveryLocations = this.deliveryLocationsStoreService.deliveryLocations;
 
     const subscription = city.valueChanges.subscribe(() => {
+      const currentDeliveryLocations = this.deliveryLocationsStoreService.deliveryLocations;
       if (city.dirty && currentDeliveryLocations.length > 1) {
         const selectedLocation = currentDeliveryLocations.find((location: DeliveryLocationApi) => location.city === city.value);
         this.deliveryAddressForm.get('region').setValue(selectedLocation.region);
@@ -169,24 +168,23 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private handleExistingForm(deliveryAddress: DeliveryAddressApi): void {
+    this.initializeCitiesAsOptions(deliveryAddress.postal_code, deliveryAddress.country_iso_code)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe();
+
     this.isNewForm = false;
-    this.deliveryAddressForm.patchValue({
-      id: deliveryAddress.id,
-      country_iso_code: deliveryAddress.country_iso_code,
-      region: deliveryAddress.region,
-      full_name: deliveryAddress.full_name,
-      street: deliveryAddress.street,
-      flat_and_floor: deliveryAddress.flat_and_floor,
-      postal_code: deliveryAddress.postal_code,
-      city: deliveryAddress.city,
-      phone_number: deliveryAddress.phone_number,
-    });
+    this.patchCurrentForm(deliveryAddress);
     this.formComponent.initFormControl();
     this.initializeCountries(false);
     this.patchFormValues();
   }
 
   private handleNewForm(): void {
+    this.loading = false;
     this.initializeCountries();
     this.patchFormValues();
     this.formComponent.initFormControl();
@@ -249,12 +247,12 @@ export class DeliveryAddressComponent implements OnInit {
     const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
 
     const subscription = postalCode.valueChanges.subscribe((newPostalCode: string) => {
-      if (postalCode.value.length === 4) {
+      if (postalCode.dirty) {
         this.deliveryAddressForm.get('city').reset();
         this.deliveryAddressForm.get('region').reset();
-      }
-      if (postalCode.valid && postalCode.dirty && postalCode.value.length === 5 && newPostalCode) {
-        this.getLocationsAndHandlePostalCode(newPostalCode, countryISOCode.value);
+        if (postalCode.valid && postalCode.value.length === 5 && newPostalCode) {
+          this.getLocationsAndHandlePostalCode(newPostalCode, countryISOCode.value);
+        }
       }
     });
 
@@ -264,14 +262,11 @@ export class DeliveryAddressComponent implements OnInit {
   private getLocationsAndHandlePostalCode(postalCode: string, countryISOCode: string): void {
     this.deliveryLocationsService.getLocationsByPostalCodeAndCountry(postalCode, countryISOCode).subscribe(
       (locations: DeliveryLocationApi[]) => {
-        this.cities = locations.map((location: DeliveryLocationApi) => {
-          return { label: location.city, value: location.city };
-        });
+        this.initializeCitiesAsOptions(postalCode, countryISOCode).subscribe();
         this.handleLocationsResponse(locations);
       },
       () => {
-        this.cleanPostalCodeErrors();
-        this.deliveryAddressForm.get('postal_code').setErrors({ incorrect: true });
+        this.setIncorrectPostalCodeError();
         this.postalCodeErrorMessage = this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR);
       }
     );
@@ -279,8 +274,7 @@ export class DeliveryAddressComponent implements OnInit {
 
   private handleLocationsResponse(locations: DeliveryLocationApi[]): void {
     if (!locations.length) {
-      this.cleanPostalCodeErrors();
-      this.deliveryAddressForm.get('postal_code').setErrors({ incorrect: true });
+      this.setIncorrectPostalCodeError();
       this.postalCodeErrorMessage = this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR);
     }
     if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {
@@ -289,8 +283,9 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  private cleanPostalCodeErrors(): void {
+  private setIncorrectPostalCodeError(): void {
     this.deliveryAddressForm.get('postal_code').setErrors(null);
+    this.deliveryAddressForm.get('postal_code').setErrors({ incorrect: true });
   }
 
   private patchFormValues(): void {
@@ -310,6 +305,30 @@ export class DeliveryAddressComponent implements OnInit {
     });
   }
 
+  private initializeCitiesAsOptions(postalCode: string, countryISOCode: string): Observable<DeliveryLocationApi[]> {
+    return this.deliveryLocationsService.getLocationsByPostalCodeAndCountry(postalCode, countryISOCode).pipe(
+      tap((locations: DeliveryLocationApi[]) => {
+        this.cities = locations.map((location: DeliveryLocationApi) => {
+          return { label: location.city, value: location.city };
+        });
+      })
+    );
+  }
+
+  private patchCurrentForm(deliveryAddress: DeliveryAddressApi): void {
+    this.deliveryAddressForm.patchValue({
+      id: deliveryAddress.id,
+      country_iso_code: deliveryAddress.country_iso_code,
+      region: deliveryAddress.region,
+      full_name: deliveryAddress.full_name,
+      street: deliveryAddress.street,
+      flat_and_floor: deliveryAddress.flat_and_floor,
+      postal_code: deliveryAddress.postal_code,
+      city: deliveryAddress.city,
+      phone_number: deliveryAddress.phone_number,
+    });
+  }
+
   private buildForm(): void {
     this.deliveryAddressForm = this.fb.group({
       id: this.uuidService.getUUID(),
@@ -319,7 +338,7 @@ export class DeliveryAddressComponent implements OnInit {
       street: ['', [Validators.required, whitespaceValidator]],
       flat_and_floor: [''],
       postal_code: ['', [Validators.required, whitespaceValidator, postalCodeValidator]],
-      city: [{ value: '', disabled: true }, [Validators.required]],
+      city: ['', [Validators.required]],
       phone_number: ['', [Validators.required, whitespaceValidator]],
     });
   }
