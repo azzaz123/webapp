@@ -12,12 +12,13 @@ import { AddressError, ADDRESS_ERROR_TYPE } from '@private/features/delivery/int
 export class DeliveryAddressErrorService {
   constructor(private errorService: ErrorsService, private i18n: I18nService) {}
 
-  public generateError(errors: DeliveryAddressError[]): AddressError {
-    const error = errors[0];
+  public generateError(errors: DeliveryAddressError[]): AddressError | null {
     if (!errors?.length || errors?.length > 1) {
       this.errorService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
+      return;
     }
 
+    const error = errors[0];
     const addressError = this.getAddressError(error.error_code);
     if (addressError.type === ADDRESS_ERROR_TYPE.TOAST) {
       this.errorService.i18nError(addressError.translationKey);
