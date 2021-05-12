@@ -249,12 +249,12 @@ export class DeliveryAddressComponent implements OnInit {
     const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
 
     const subscription = postalCode.valueChanges.subscribe((newPostalCode: string) => {
-      if (postalCode.valid && postalCode.value.length > 4 && postalCode.dirty) {
+      if (postalCode.value.length === 4) {
         this.deliveryAddressForm.get('city').reset();
         this.deliveryAddressForm.get('region').reset();
-        if (newPostalCode) {
-          this.getLocationsAndHandlePostalCode(newPostalCode, countryISOCode.value);
-        }
+      }
+      if (postalCode.valid && postalCode.dirty && postalCode.value.length === 5 && newPostalCode) {
+        this.getLocationsAndHandlePostalCode(newPostalCode, countryISOCode.value);
       }
     });
 
@@ -301,10 +301,10 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  private initializeCountries(setDefaultOption = true): void {
+  private initializeCountries(isNewForm = true): void {
     this.deliveryCountriesService.get().subscribe((countryOptionsAndDefault: CountryOptionsAndDefault) => {
       this.countries = countryOptionsAndDefault.countryOptions;
-      if (setDefaultOption) {
+      if (isNewForm) {
         this.deliveryAddressForm.get('country').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
       }
     });
