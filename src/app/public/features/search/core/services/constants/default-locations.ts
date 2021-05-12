@@ -10,6 +10,6 @@ export const DEFAULT_LOCATIONS: Record<string, LabeledSearchLocation> = {
   en: {
     [FILTER_QUERY_PARAM_KEY.latitude]: '51.509865',
     [FILTER_QUERY_PARAM_KEY.longitude]: '-0.118092',
-    label: $localize`:@@web_default_location_london:UK, London`,
+    label: $localize`:@@web_default_location_london:United Kingdom, London`,
   },
 };

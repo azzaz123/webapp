@@ -348,7 +348,7 @@ describe('SearchComponent', () => {
 
         const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
 
-        expect(buttonLoadMore.textContent).toBe('Ver más productos');
+        expect(buttonLoadMore).toBeTruthy();
       });
 
       describe('with items but has not more items', () => {

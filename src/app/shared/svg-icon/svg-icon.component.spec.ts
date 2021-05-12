@@ -3,7 +3,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, DebugElement, ElementRef, Input, Sec
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By, DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { SvgService } from '../svg.service';
+import { SvgService } from '@core/svg-icon/svg.service';
 import { SvgIconComponent, SVG_ATTRIBUTES } from './svg-icon.component';
 
 @Component({

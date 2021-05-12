@@ -2,22 +2,22 @@ import { SelectFormOption } from '@shared/form/components/select/interfaces/sele
 
 export const SELECT_FORM_OPTIONS_CONFIG: SelectFormOption<string>[] = [
   {
-    label: 'Distancia',
+    label: $localize`:@@web_filter_sort_by_distance:Distance`,
     icon: '/assets/icons/filters/location.svg',
     value: 'default',
   },
   {
-    label: 'De más barato a más caro',
+    label: $localize`:@@web_filter_sort_by_price_low_high:Price low to high`,
     icon: '/assets/icons/filters/sort-by-asc.svg',
     value: 'price_low_to_high',
   },
   {
-    label: 'De más caro a más barato',
+    label: $localize`:@@web_filter_sort_by_price_high_low:Price high to low`,
     icon: '/assets/icons/filters/sort-by-desc.svg',
     value: 'price_high_to_low',
   },
   {
-    label: 'Novedades',
+    label: $localize`:@@web_filter_sort_by_newest:Newest first`,
     icon: '/assets/icons/filters/calendar.svg',
     value: 'newest',
   },

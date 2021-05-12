@@ -1,7 +1,7 @@
 import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
 import { Story } from '@storybook/angular/types-6-0';
 import { CoreModule } from '@core/core.module';
-import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { HttpModule } from '@core/http/http.module';
 import { moduleMetadata } from '@storybook/angular';
 import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.enum';

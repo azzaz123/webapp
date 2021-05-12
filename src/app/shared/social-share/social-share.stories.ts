@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { SocialShareComponent } from './social-share.component';
 

@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectParentOptionComponent } from './select-parent-option.component';
 import { Component, DebugElement, Input } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { By } from '@angular/platform-browser';
 import { SelectOptionComponent } from '@shared/form/components/select/select-option/select-option.component';
 

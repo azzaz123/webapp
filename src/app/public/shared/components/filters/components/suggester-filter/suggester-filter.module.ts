@@ -6,7 +6,7 @@ import { AbstractSelectFilterModule } from '@public/shared/components/filters/co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { FilterOptionServiceModule } from '@public/shared/services/filter-option/filter-option-service.module';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ToggleFilterModule } from '@public/shared/components/filters/components/toggle-filter/toggle-filter.module';
 
 @NgModule({

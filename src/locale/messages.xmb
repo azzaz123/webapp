@@ -226,14 +226,14 @@
   <msg id="web_components_tabbar_6"><source>src/app/layout/tabbar/components/tabbar.component.html:38</source>Messages</msg>
   <msg id="TabBarButtonMyZone"><source>src/app/layout/tabbar/components/tabbar.component.html:58</source>My Zone</msg>
   <msg id="TabBarButtonLogin"><source>src/app/layout/tabbar/components/tabbar.component.html:59</source>Log in</msg>
-  <msg id="web_components_suggester_7"><source>src/app/layout/topbar/components/suggester/suggester.component.html:1</source>Search in All categories</msg>
-  <msg id="web_components_topbar_8"><source>src/app/layout/topbar/components/topbar/topbar.component.html:13</source>credit</msg>
-  <msg id="web_components_topbar_538"><source>src/app/layout/topbar/components/topbar/topbar.component.html:20</source>Messages</msg>
-  <msg id="web_components_topbar_9"><source>src/app/layout/topbar/components/topbar/topbar.component.html:27</source>My Zone</msg>
-  <msg id="web_components_topbar_10"><source>src/app/layout/topbar/components/topbar/topbar.component.html:28</source>My Pro Zone</msg>
-  <msg id="TopBarButtonRegisteOrSignin"><source>src/app/layout/topbar/components/topbar/topbar.component.html:32</source>Register or sign in</msg>
-  <msg id="web_components_topbar_11"><source>src/app/layout/topbar/components/topbar/topbar.component.html:36</source>List a product</msg>
-  <msg id="web_components_topbar_12"><source>src/app/layout/topbar/components/topbar/topbar.component.html:37</source>List a car</msg>
+  <msg id="web_components_suggester_7"><source>src/app/layout/topbar/components/suggester/suggester.component.html:5</source>Search in All categories</msg>
+  <msg id="web_components_topbar_8"><source>src/app/layout/topbar/components/topbar/topbar.component.html:12</source>credit</msg>
+  <msg id="web_components_topbar_538"><source>src/app/layout/topbar/components/topbar/topbar.component.html:19</source>Messages</msg>
+  <msg id="web_components_topbar_9"><source>src/app/layout/topbar/components/topbar/topbar.component.html:26</source>My Zone</msg>
+  <msg id="web_components_topbar_10"><source>src/app/layout/topbar/components/topbar/topbar.component.html:27</source>My Pro Zone</msg>
+  <msg id="TopBarButtonRegisteOrSignin"><source>src/app/layout/topbar/components/topbar/topbar.component.html:31</source>Register or sign in</msg>
+  <msg id="web_components_topbar_11"><source>src/app/layout/topbar/components/topbar/topbar.component.html:35</source>List a product</msg>
+  <msg id="web_components_topbar_12"><source>src/app/layout/topbar/components/topbar/topbar.component.html:36</source>List a car</msg>
   <msg id="web_calls_pages_13"><source>src/app/private/features/calls/pages/calls.component.html:10</source>Calls</msg>
   <msg id="web_calls_pages_14"><source>src/app/private/features/calls/pages/calls.component.html:13</source>Here you can manage and see the information related with your calls</msg>
   <msg id="web_calls_pages_15"><source>src/app/private/features/calls/pages/calls.component.html:21</source>Pending</msg>
@@ -359,12 +359,12 @@
   <msg id="web_catalog_components_bump_tutorial_102"><source>src/app/private/features/catalog/components/bump-tutorial/bump-tutorial.component.html:66</source>Ready!</msg>
   <msg id="web_catalog_components_item_103"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:36</source>Published</msg>
   <msg id="web_catalog_components_item_104"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:42</source>Modified</msg>
-  <msg id="web_catalog_components_item_105"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:47,49</source> Inactive </msg>
-  <msg id="web_catalog_components_item_106"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:55</source>Active</msg>
-  <msg id="web_catalog_components_item_107"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:64</source>Activate</msg>
-  <msg id="web_catalog_components_item_108"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:75</source>Feature</msg>
-  <msg id="web_catalog_components_item_109"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:104</source>Reactivate</msg>
-  <msg id="web_catalog_components_item_640"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:111</source>Pending</msg>
+  <msg id="web_catalog_components_item_105"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:47</source>Inactive</msg>
+  <msg id="web_catalog_components_item_106"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:54</source>Active</msg>
+  <msg id="web_catalog_components_item_107"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:63</source>Activate</msg>
+  <msg id="web_catalog_components_item_108"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:74</source>Feature</msg>
+  <msg id="web_catalog_components_item_109"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:103</source>Reactivate</msg>
+  <msg id="web_catalog_components_item_640"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.html:110</source>Pending</msg>
   <msg id="web_mark_as_sold_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:24</source>Mark as sold</msg>
   <msg id="web_mark_as_reserved_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:25</source>Mark as reserved</msg>
   <msg id="web_edit_tooltip"><source>src/app/private/features/catalog/components/catalog-item/catalog-item.component.ts:26</source>Edit</msg>
@@ -1014,13 +1014,20 @@
   <msg id="UserReviewsLoadMore"><source>src/app/public/features/public-profile/pages/user-reviews/user-reviews.component.html:12</source>Load more reviews</msg>
   <msg id="NoReviewsItemsTitle"><source>src/app/public/features/public-profile/pages/user-reviews/user-reviews.component.ts:16</source>No reviews yet</msg>
   <msg id="NoReviewsItemsDescription"><source>src/app/public/features/public-profile/pages/user-reviews/user-reviews.component.ts:17</source>This person hasn&apos;t received any reviews. Will yours be the first?</msg>
+  <msg id="web_filters_bubble_title"><source>src/app/public/features/search/components/filters-wrapper/filters-wrapper.component.html:4</source>Filters</msg>
   <msg id="web_search_no_results_title"><source>src/app/public/features/search/components/search-error-layout/search-error-layout.component.ts:13</source>Sorry, we weren&apos;t able to find what you&apos;re looking for at the moment</msg>
   <msg id="web_search_no_results_subtitle"><source>src/app/public/features/search/components/search-error-layout/search-error-layout.component.ts:14</source>Try changing your search terms, or take a chance and discover something unexpected in the land of wallapop</msg>
   <msg id="web_search_no_results_button_text"><source>src/app/public/features/search/components/search-error-layout/search-error-layout.component.ts:18</source>New search</msg>
-  <msg id="8499959580096706757" desc="web_search_sort_filter_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:3</source>Ordenador por: </msg>
-  <msg id="7994828817141708719" desc="web_search_sort_filter_bubble_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:8</source>Ordenado por</msg>
-  <msg id="6402951927316857780" desc="web_search_sort_filter_bubble_cancel"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:15</source>Cancelar</msg>
-  <msg id="4026193177292289663" desc="web_search_component_load_more_products"><source>src/app/public/features/search/pages/search.component.html:53</source>Ver más productos</msg>
+  <msg id="web_filter_sort_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:3</source>Sort by:</msg>
+  <msg id="web_filter_sort_bubble_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:8</source>Sort by</msg>
+  <msg id="web_filter_sort_cancel"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:15</source>Cancel</msg>
+  <msg id="web_filter_sort_by_distance"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:4</source>Distance</msg>
+  <msg id="web_filter_sort_by_price_low_high"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:9</source>Price low to high</msg>
+  <msg id="web_filter_sort_by_price_high_low"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:14</source>Price high to low</msg>
+  <msg id="web_filter_sort_by_newest"><source>src/app/public/features/search/components/sort-filter/sort-filter.config.ts:19</source>Newest first</msg>
+  <msg id="web_default_location_madrid"><source>src/app/public/features/search/core/services/constants/default-locations.ts:7</source>Spain, Madrid</msg>
+  <msg id="web_default_location_london"><source>src/app/public/features/search/core/services/constants/default-locations.ts:12</source>United Kingdom, London</msg>
+  <msg id="web_search_view_more_products"><source>src/app/public/features/search/pages/search.component.html:55</source>View more products</msg>
   <msg id="FooterLinksWallapopTitle"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:5</source>wallapop</msg>
   <msg id="FooterLinksAboutLabel"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:8</source>About</msg>
   <msg id="FooterLinksAboutHref"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:9</source>https://about.wallapop.com/en</msg>
@@ -1143,6 +1150,7 @@
   <msg id="filterConditionDrawerPlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:58</source>Any item condition</msg>
   <msg id="filterGenderTitle"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:9</source>Gender</msg>
   <msg id="filterGenderBubblePlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:10</source>Gender</msg>
+  <msg id="filterGenderDrawerPlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:11</source>Select gender</msg>
   <msg id="filterClothingTypeTitle"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:21</source>Type of clothing</msg>
   <msg id="filterClothingTypeBubblePlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:22</source>Type of clothing</msg>
   <msg id="filterClothingTypeDrawerPlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:23</source>Select type of clothing</msg>
