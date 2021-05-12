@@ -144,7 +144,7 @@ export function SearchItemListFactory(count: number = 20): ItemCard[] {
   return new Array(count).fill('').map((_, index) => ({ ...MOCK_ITEM_CARD, id: '235325' + index }));
 }
 
-export function SearchPaginationFactory(hasMore: boolean = false, searchId: string = MOCK_SEARCH_ID): SearchPagination {
+export function SearchPaginationFactory(hasMore: boolean = false, searchId?: string): SearchPagination {
   return {
     items: SearchItemListFactory(40),
     hasMore,
