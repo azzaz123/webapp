@@ -6,6 +6,7 @@ import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopp
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { OnAttach, OnDetach } from '@public/core/directives/public-router-outlet/public-router-outlet.directive';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
@@ -45,7 +46,7 @@ export const WIDE_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   styleUrls: ['./search.component.scss'],
   // TODO: TechDebt: changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchComponent implements OnInit, OnDestroy {
+export class SearchComponent implements OnInit, OnAttach, OnDetach {
   private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscription: Subscription = new Subscription();
   public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
@@ -56,6 +57,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
   public device: DeviceType;
   public filterOpened: boolean;
+  public componentAttached = true;
   public DevicesType: typeof DeviceType = DeviceType;
 
   public infiniteScrollDisabled$: Observable<boolean> = this.buildInfiniteScrollDisabledObservable();
@@ -102,11 +104,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchAdsService.setSlots();
   }
 
-  public ngOnDestroy(): void {
-    this.searchService.close();
-    this.searchAdsService.close();
-    this.publicFooterService.setShow(true);
-    this.subscription.unsubscribe();
+  public onAttach(): void {
+    this.componentAttached = true;
+  }
+
+  public onDetach(): void {
+    this.componentAttached = false;
   }
 
   public loadMoreProducts(): void {
@@ -115,7 +118,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public scrolled(): void {
-    this.searchService.loadMore();
+    if (this.componentAttached) {
+      this.searchService.loadMore();
+    }
   }
 
   public handleFilterOpened(opened: boolean) {
