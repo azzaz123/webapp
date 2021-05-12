@@ -2,7 +2,7 @@
   <div class="FiltersWrapper__backdrop" *ngIf="openedBubble$ | async"></div>
 
   <div class="FiltersWrapper__bar d-flex pl-3 py-2" [class.FiltersWrapper__bar--opened]="openedBubble$ | async">
-    <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()">Filtros</tsl-bubble>
+    <tsl-bubble class="m-1" [counter]="activeFiltersCount" (click)="toggleDrawer()" i18n="@@web_filters_bubble_title">Filters</tsl-bubble>
     <tsl-filter-group
       [values]="bubbleValues$ | async"
       [config]="bubbleFilterConfigurations$ | async | extractFilterConfigs:FILTER_VARIANT.BUBBLE"
