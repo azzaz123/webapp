@@ -11,6 +11,7 @@ import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants'
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { I18nService } from '@core/i18n/i18n.service';
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
+import { CatalogItemTrackingEventService } from './services/catalog-item-tracking-event.service';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -35,6 +36,7 @@ export class CatalogItemComponent implements OnInit {
     private toastService: ToastService,
     private eventService: EventService,
     private itemRequiredDataService: ItemRequiredDataService,
+    private catalogItemTrackingEventService: CatalogItemTrackingEventService,
     private router: Router,
     private i18nService: I18nService,
     @Inject('SUBDOMAIN') private subdomain: string
@@ -76,6 +78,7 @@ export class CatalogItemComponent implements OnInit {
 
   private reactivateItem(item: Item): void {
     this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
+      this.catalogItemTrackingEventService.trackReactivateItemEvent(item);
       if (missingRequiredData) {
         this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
       } else {

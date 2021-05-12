@@ -1,16 +1,20 @@
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
 import { SelectedItemsAction } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
+import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { ITEM_ID, ITEM_WEB_SLUG, MOCK_ITEM, PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
+import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
@@ -21,6 +25,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject } from 'rxjs';
 import { ItemChangeEvent } from '../../core/item-change.interface';
 import { CatalogItemComponent } from './catalog-item.component';
+import { CatalogItemTrackingEventService } from './services/catalog-item-tracking-event.service';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -28,6 +33,7 @@ describe('CatalogItemComponent', () => {
   let itemService: ItemService;
   let eventService: EventService;
   let itemRequiredDataService: ItemRequiredDataService;
+  let catalogItemTrackingEventService: CatalogItemTrackingEventService;
   let router: Router;
   const componentInstance = {
     price: null,
@@ -43,6 +49,9 @@ describe('CatalogItemComponent', () => {
           EventService,
           ToastService,
           ItemRequiredDataService,
+          CatalogItemTrackingEventService,
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+          { provide: UserService, useClass: MockedUserService },
           {
             provide: Router,
             useValue: {
@@ -109,6 +118,7 @@ describe('CatalogItemComponent', () => {
     itemService = TestBed.inject(ItemService);
     eventService = TestBed.inject(EventService);
     itemRequiredDataService = TestBed.inject(ItemRequiredDataService);
+    catalogItemTrackingEventService = TestBed.inject(CatalogItemTrackingEventService);
     router = TestBed.inject(Router);
   });
 
@@ -218,6 +228,15 @@ describe('CatalogItemComponent', () => {
       component.reactivate(item);
 
       expect(itemRequiredDataService.hasMissingRequiredDataByItemId).toHaveBeenCalledWith(component.item.id);
+    });
+
+    it('should track reactivation event', () => {
+      jest.spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').mockReturnValue(of(false));
+      spyOn(catalogItemTrackingEventService, 'trackReactivateItemEvent').and.callThrough();
+
+      component.reactivate(item);
+
+      expect(catalogItemTrackingEventService.trackReactivateItemEvent).toHaveBeenCalledWith(component.item);
     });
 
     describe('and item has all required data', () => {
