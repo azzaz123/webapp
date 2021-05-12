@@ -82,7 +82,7 @@ describe('SearchInfrastructureService', () => {
       spyOn(searchApiServiceMock, 'search').and.returnValue(of(searchResponse));
 
       service.search(filters).subscribe((response) => {
-        expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites});
+        expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites, searchId: ''});
         done();
       });
 
@@ -129,7 +129,7 @@ describe('SearchInfrastructureService', () => {
       spyOn(searchApiServiceMock, 'loadMore').and.returnValue(of(searchResponse));
 
       service.loadMore().subscribe((response) => {
-        expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites});
+        expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites, searchId: ''});
         done();
       });
 
