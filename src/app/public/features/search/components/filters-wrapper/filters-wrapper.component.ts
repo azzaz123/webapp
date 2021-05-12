@@ -11,6 +11,7 @@ import {
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FilterGroupConfiguration } from '@public/shared/services/filter-group-configuration/interfaces/filter-group-config.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { FILTER_SOURCE } from '../../core/services/enums/filter-source.enum';
 
 @Component({
   selector: 'tsl-filters-wrapper',
@@ -81,11 +82,11 @@ export class FiltersWrapperComponent {
   }
 
   public bubbleChange(values: FilterParameter[]): void {
-    this.bubbleStore.upsertParameters(values);
+    this.bubbleStore.upsertParameters(values, FILTER_SOURCE.QUICK_FILTERS);
   }
 
   public drawerChange(values: FilterParameter[]): void {
-    this.drawerStore.upsertParameters(values);
+    this.drawerStore.upsertParameters(values, FILTER_SOURCE.DEFAULT_FILTERS);
   }
 
   public bubbleOpenStateChange(isOpen: boolean): void {

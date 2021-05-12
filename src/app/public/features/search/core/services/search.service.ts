@@ -14,6 +14,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
 import { SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { QueryStringLocationService } from '@public/features/search/core/services/query-string-location.service';
+import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 
 @Injectable()
 export class SearchService {
@@ -75,7 +76,8 @@ export class SearchService {
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private parameterStoreService: FilterParameterStoreService,
     private infrastructureService: SearchInfrastructureService,
     private queryStringService: SearchQueryStringService,
-    private locationService: QueryStringLocationService
+    private locationService: QueryStringLocationService,
+    private searchTrackingEventsService: SearchTrackingEventsService
   ) {}
 
   public init(): void {
@@ -97,18 +99,22 @@ export class SearchService {
   private onChangeParameters(): Observable<SearchPaginationWithCategory> {
     return this.parameterStoreService.parameters$.pipe(
       tap((parameters: FilterParameter[]) => {
-        this.queryStringService.setQueryParams(parameters);
+        const source = this.parameterStoreService.getFilterSource(); // Source from Bubble and Drawer
+        //TODO: set the source in the queryString to be accord with how topbar is?
+        this.queryStringService.setQueryParams(parameters, source);
         this.isLoadingResults = true;
       }),
       switchMap((filterParameters: FilterParameter[]) =>
         this.infrastructureService.search(filterParameters).pipe(map((r) => this.mapSearchResponse(r, filterParameters)))
       ),
-      // TODO: GET SOURCE AND SEND SEARCH EVENT, we will create another service for storing the filter source
+      // TODO: GET SOURCE AND SEND SEARCH EVENT
       tap(({ items, hasMore, categoryId }: SearchPaginationWithCategory) => {
         this.isLoadingResults = false;
         this.currentCategoryId = categoryId;
         this.searchStoreService.setItems(items);
         this.searchStoreService.setHasMore(hasMore);
+
+        //TODO: Two ways of getting source, from the query param or the topbar
       })
     );
   }
