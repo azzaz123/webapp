@@ -5,7 +5,7 @@ import { deliveryAddressRoutedComponents, DeliveryAddressRoutingModule } from '.
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
-import { DeliveryCountriesService } from '../../services/delivery-countries/delivery-countries.service';
+import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { DeliveryAddressApiService } from '../../services/api/delivery-address-api/delivery-address-api.service';
 import { DeliveryCountriesApiService } from '../../services/api/delivery-countries-api/delivery-countries-api.service';

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { IOption } from '@shared/dropdown/utils/option.interface';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { DeliveryCountriesApi, DeliveryCountryApi } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
-import { DeliveryCountriesApiService } from '../api/delivery-countries-api/delivery-countries-api.service';
+import { DeliveryCountriesApi, DeliveryCountryApi } from '../../../interfaces/delivery-countries/delivery-countries-api.interface';
+import { DeliveryCountriesApiService } from '../../api/delivery-countries-api/delivery-countries-api.service';
+import { DeliveryCountriesStoreService } from '../delivery-countries-store/delivery-countries-store.service';
 
 export interface CountryOptionsAndDefault {
   countryOptions: IOption[];
@@ -11,17 +12,21 @@ export interface CountryOptionsAndDefault {
 }
 @Injectable()
 export class DeliveryCountriesService {
-  private deliveryCountries: BehaviorSubject<DeliveryCountriesApi> = new BehaviorSubject<DeliveryCountriesApi>(null);
+  constructor(
+    private deliveryCountriesApiService: DeliveryCountriesApiService,
+    private deliveryCountriesStoreService: DeliveryCountriesStoreService
+  ) {}
 
-  constructor(private deliveryCountriesApiService: DeliveryCountriesApiService) {}
+  public getCountriesAsOptionsAndDefault(cache = true): Observable<CountryOptionsAndDefault> {
+    const storedCountries = this.deliveryCountriesStoreService.deliveryCountries;
 
-  public get(cache = true): Observable<CountryOptionsAndDefault> {
-    if (cache && this.deliveryCountries.value) {
-      return of(this.toCountryOptionsAndDefault(this.deliveryCountries.value));
+    if (cache && storedCountries) {
+      return of(this.toCountryOptionsAndDefault(storedCountries));
     }
+
     return this.deliveryCountriesApiService.get().pipe(
       tap((countries: DeliveryCountriesApi) => {
-        this.deliveryCountries.next(countries);
+        this.deliveryCountriesStoreService.deliveryCountries = countries;
       }),
       map((countries: DeliveryCountriesApi) => {
         return this.toCountryOptionsAndDefault(countries);

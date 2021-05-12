@@ -1,4 +1,4 @@
-import { CountryOptionsAndDefault, DeliveryCountriesService } from '../../services/delivery-countries/delivery-countries.service';
+import { CountryOptionsAndDefault, DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DeliveryAddressApi, DeliveryAddressError } from '../../interfaces/delivery-address/delivery-address-api.interface';
@@ -297,7 +297,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private initializeCountries(isNewForm = true): void {
-    this.deliveryCountriesService.get().subscribe((countryOptionsAndDefault: CountryOptionsAndDefault) => {
+    this.deliveryCountriesService.getCountriesAsOptionsAndDefault().subscribe((countryOptionsAndDefault: CountryOptionsAndDefault) => {
       this.countries = countryOptionsAndDefault.countryOptions;
       if (isNewForm) {
         this.deliveryAddressForm.get('country').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
