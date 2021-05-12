@@ -12,9 +12,9 @@ import { AddressError, ADDRESS_ERROR_TYPE } from '@private/features/delivery/int
 export class DeliveryAddressErrorService {
   constructor(private errorService: ErrorsService, private i18n: I18nService) {}
 
-  public generateError(errors: DeliveryAddressError): AddressError {
-    const error = errors?.error[0];
-    if (!errors?.error?.length || errors?.error?.length > 1) {
+  public generateError(errors: DeliveryAddressError[]): AddressError {
+    const error = errors[0];
+    if (!errors?.length || errors?.length > 1) {
       this.errorService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
     }
 

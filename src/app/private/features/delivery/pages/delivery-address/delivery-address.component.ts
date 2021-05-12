@@ -25,6 +25,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { finalize, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -210,8 +211,9 @@ export class DeliveryAddressComponent implements OnInit {
           this.initForm(false);
           this.redirect();
         },
-        (errors: DeliveryAddressError) => {
-          const generatedError = this.deliveryAddressErrorService.generateError(errors);
+        (errors: HttpErrorResponse) => {
+          const errorResponse: DeliveryAddressError[] = errors?.error;
+          const generatedError = this.deliveryAddressErrorService.generateError(errorResponse);
           this.deliveryAddressForm.get(generatedError.formControlName).setErrors(null);
           this.deliveryAddressForm.get(generatedError.formControlName).setErrors({ incorrect: true });
           this.handleFormMessagesErrors(generatedError);

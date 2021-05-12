@@ -1,5 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
-
 export interface DeliveryAddressApi {
   id: string;
   full_name: string;
@@ -24,9 +22,7 @@ export enum DELIVERY_ADDRESS_ERROR {
   'invalid mobile phone number' = 'invalid mobile phone number',
 }
 
-export interface DeliveryAddressError extends HttpErrorResponse {
-  error: {
-    error_code: DELIVERY_ADDRESS_ERROR | string;
-    message: string;
-  }[];
+export interface DeliveryAddressError {
+  error_code: DELIVERY_ADDRESS_ERROR | string;
+  message: string;
 }
