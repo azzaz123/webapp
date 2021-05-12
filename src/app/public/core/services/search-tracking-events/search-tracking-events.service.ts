@@ -8,14 +8,7 @@ import {
 export class SearchTrackingEventsService {
   constructor(@Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStoreService: FilterParameterStoreService) {}
 
-  /*  public trackSearchEvent(): void {
-    console.log('search');
-  
-    console.log('parameters', parameters);
-  } */
-
   public topBarTrackSearchEvent(searchValue) {
     let parameters = this.filterParameterStoreService.getParameters();
-    console.log('track searcg', searchValue, parameters);
   }
 }
