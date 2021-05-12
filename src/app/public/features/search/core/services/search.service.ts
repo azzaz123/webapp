@@ -101,7 +101,7 @@ export class SearchService {
       tap((parameters: FilterParameter[]) => {
         const source = this.parameterStoreService.getFilterSource(); // Source from Bubble and Drawer
         //TODO: set the source in the queryString to be accord with how topbar is?
-        this.queryStringService.setQueryParams(parameters, source);
+        this.queryStringService.setQueryParams(parameters);
         this.isLoadingResults = true;
       }),
       switchMap((filterParameters: FilterParameter[]) =>
