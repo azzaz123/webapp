@@ -17,6 +17,7 @@
               </div>
               <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
               <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n="@@web_catalog_pages_list_147">Edit</button>
+              <button *tslDeliveryDevelopment [routerLink]="['/delivery']" class="edit-profile-btn mr-1" i18n="@@web_catalog_delivery">Delivery</button>
               <button (click)="logout()" class="logout edit-profile-btn" i18n="@@web_catalog_pages_list_148">Logout</button>
             </div>
             <div class="d-none d-md-flex align-items-center">
