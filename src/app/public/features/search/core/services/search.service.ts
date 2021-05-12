@@ -154,7 +154,6 @@ export class SearchService {
 
   private mapSearchResponse(pagination: SearchPagination, filterParameters: FilterParameter[]): SearchPaginationWithCategory {
     const { items, hasMore, searchId } = pagination;
-    console.log('se', searchId);
     return {
       items,
       hasMore,
