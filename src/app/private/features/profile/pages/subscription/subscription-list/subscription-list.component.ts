@@ -43,7 +43,9 @@ export class SubscriptionListComponent {
 
   public getTextButton(subscription: SubscriptionsResponse): string {
     if (!subscription.subscribed_from) {
-      return this.hasOneFreeSubscription(subscription) ? $localize`:@@startFreeTrial:Start free trial` : $localize`:@@seePlans:See plans`;
+      return this.hasOneFreeSubscription(subscription)
+        ? $localize`:@@startFreeTrial:Start free trial`
+        : this.getNotFreeTrialText(subscription);
     }
     if (subscription.subscribed_until) {
       return $localize`:@@web_profile_pages_subscription_331:Stay subscribed`;
@@ -60,6 +62,10 @@ export class SubscriptionListComponent {
     if (this.showUnsubscribeFirst(subscription)) {
       return $localize`:@@web_profile_pages_subscription_328:Unsubscribe first from app for your free month`;
     }
+  }
+
+  private getNotFreeTrialText(subscription: SubscriptionsResponse): string {
+    return subscription.tiers.length > 1 ? $localize`:@@seePlans:See plans` : $localize`:@@start:Start`;
   }
 
   public onOpenSubscriptionModal(subscription: SubscriptionsResponse): void {

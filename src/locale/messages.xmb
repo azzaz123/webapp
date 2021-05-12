@@ -760,12 +760,13 @@
   <msg id="WallapopProAbout"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.html:11</source>Learn more about Wallapop PRO</msg>
   <msg id="WallapopProAboutHref"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:15</source>https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-</msg>
   <msg id="startFreeTrial"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:45</source>Start free trial</msg>
-  <msg id="seePlans"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:45</source>See plans</msg>
   <msg id="web_profile_pages_subscription_331"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:48</source>Stay subscribed</msg>
   <msg id="web_profile_pages_subscription_587"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:51</source>Modify</msg>
   <msg id="web_profile_pages_subscription_678"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:54</source>Cancel</msg>
   <msg id="web_profile_pages_subscription_327"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:57</source>Manage in app</msg>
   <msg id="web_profile_pages_subscription_328"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:60</source>Unsubscribe first from app for your free month</msg>
+  <msg id="seePlans"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:66</source>See plans</msg>
+  <msg id="start"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:66</source>Start</msg>
   <msg id="web_reviews_pages_332"><source>src/app/private/features/reviews/pages/reviews.component.html:11</source>Your Reviews</msg>
   <msg id="web_reviews_pages_333"><source>src/app/private/features/reviews/pages/reviews.component.html:14</source>This is what people think about you. </msg>
   <msg id="web_reviews_pages_334"><source>src/app/private/features/reviews/pages/reviews.component.html:18</source>Your average</msg>
