@@ -28,7 +28,7 @@ import {
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { isEqual } from 'lodash-es';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {

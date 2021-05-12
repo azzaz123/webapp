@@ -32,6 +32,8 @@ import { SlugsUtilService } from './services/slugs-util/slugs-util.service';
 import { MomentCalendarSpecService } from './i18n/moment/moment-calendar-spec.service';
 import { ReportService } from './trust-and-safety/report/report.service';
 import { SvgService } from './svg-icon/svg.service';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
 
 @NgModule({
   imports: [
@@ -70,6 +72,8 @@ import { SvgService } from './svg-icon/svg.service';
     SlugsUtilService,
     MomentCalendarSpecService,
     ReportService,
+    SearchNavigatorService,
+    SearchQueryStringService,
   ],
 })
 export class CoreModule {

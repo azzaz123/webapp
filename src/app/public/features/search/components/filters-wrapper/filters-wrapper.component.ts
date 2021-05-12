@@ -103,22 +103,14 @@ export class FiltersWrapperComponent {
   private handleBubbleStoreChange(parameters: FilterParameter[]): void {
     const currentConfiguration = this.bubbleFilterConfigurationsSubject.getValue();
     const newConfiguration = this.filterGroupConfigurationService.getConfiguration(parameters);
-    const drawerConfigurationId = this.drawerFilterConfigurationsSubject.getValue()?.id;
 
-    const isDrawerConfigurationUpdated = drawerConfigurationId === newConfiguration.id;
     const needsNewConfiguration = !currentConfiguration || currentConfiguration.id !== newConfiguration.id;
-    const needsParameterCleanup = !isDrawerConfigurationUpdated && currentConfiguration && needsNewConfiguration;
 
     if (needsNewConfiguration) {
       this.bubbleFilterConfigurationsSubject.next(newConfiguration);
     }
-
-    if (needsParameterCleanup) {
-      // this.bubbleStore.setParameters(this.cleanParameters(parameters, newConfiguration.params));
-    } else {
-      this.bubbleValuesSubject.next(parameters);
-      this.drawerStore.setParameters(parameters);
-    }
+    this.bubbleValuesSubject.next(parameters);
+    this.drawerStore.setParameters(parameters);
   }
 
   private handleDrawerStoreChange(parameters: FilterParameter[]): void {
