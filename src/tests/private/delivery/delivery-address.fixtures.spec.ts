@@ -11,3 +11,15 @@ export const MOCK_DELIVERY_ADDRESS: DeliveryAddressApi = {
   phone_number: '677594321',
   flat_and_floor: 'Quinto tercera',
 };
+
+export const MOCK_DELIVERY_ADDRESS_2: DeliveryAddressApi = {
+  id: '1212',
+  full_name: 'Lalli',
+  street: 'Wallapop',
+  postal_code: '08016',
+  city: 'Barcelona',
+  region: 'Barcelona',
+  country_iso_code: 'ES',
+  phone_number: '677594321',
+  flat_and_floor: 'Segundo segunda',
+};
