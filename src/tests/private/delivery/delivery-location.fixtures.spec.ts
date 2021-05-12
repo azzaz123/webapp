@@ -7,3 +7,11 @@ export const MOCK_DELIVERY_LOCATION: DeliveryLocationApi = {
   region: 'Barcelona',
   country_iso_code: 'ES',
 };
+
+export const MOCK_DELIVERY_LOCATION_IT: DeliveryLocationApi = {
+  id: '156',
+  postal_code: '00122',
+  city: 'Roma',
+  region: 'Lazio',
+  country_iso_code: 'IT',
+};

@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class DeliveryLocationsStoreService {
-  private readonly _deliveryLocations: BehaviorSubject<DeliveryLocationApi[]> = new BehaviorSubject<DeliveryLocationApi[]>(null);
+  private readonly _deliveryLocations: BehaviorSubject<DeliveryLocationApi[]> = new BehaviorSubject<DeliveryLocationApi[]>([]);
 
   constructor() {}
 
