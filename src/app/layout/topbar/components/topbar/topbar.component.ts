@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
+import { FILTER_SOURCE } from '@public/features/search/core/services/enums/filter-source.enum';
 
 @Component({
   selector: 'tsl-topbar',
@@ -105,18 +106,16 @@ export class TopbarComponent implements OnInit, OnDestroy {
     //TODO: This can be removed after tests
     const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
     this.redirectToSearchPage(searchValue);
-    /*
     if (isExperimentalFeaturesEnabled) {
       this.redirectToSearchPage(searchValue);
     } else {
       this.redirectToOldSearch(searchValue);
-    } */
+    }
   }
 
   private redirectToSearchPage(searchParams: SearchBoxValue) {
     this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.SEARCH}`], {
-      // HERE WE CREATE THE SOURCE ENUM
-      queryParams: { ...searchParams, [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: 'search_box' },
+      queryParams: { ...searchParams, [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: FILTER_SOURCE.SEARCH_BOX },
     });
   }
 
@@ -136,10 +135,6 @@ export class TopbarComponent implements OnInit, OnDestroy {
       windowClass: 'modal-standard',
       backdrop: 'static',
     });
-  }
-
-  private trackSearchEvent(searchValue): void {
-    this.searchTrackingEventsService.topBarTrackSearchEvent(searchValue);
   }
 
   ngOnDestroy(): void {
