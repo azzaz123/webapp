@@ -1371,6 +1371,13 @@
   <translation id="web_user_edited">Tus datos se han editado correctamente</translation>
   <translation id="web_image_uploaded">La imagen se ha cargado!</translation>
   <translation id="web_suggested_category">Todo indica que tu producto corresponde a otra categoría, por eso la hemos cambiado.</translation>
+  <translation id="web_sidebar_delivery">Envíos</translation>
+  <translation id="web_catalog_delivery">Envíos</translation>
+  <translation id="web_delivery_info_title">Tu información de envíos</translation>
+  <translation id="web_delivery_info_subtitle">Aquí encontrarás información acerca de tus envíos.</translation>
+  <translation id="web_delivery_shipment_tracking">Seguimiento</translation>
+  <translation id="web_delivery_bank_details">Datos</translation>
+  <translation id="web_delivery_shipping_address">Dirección</translation>
   <translation id="web_delete_billing_info">Tu información de facturación ha sido borrada</translation>
   <translation id="web_to_clean_default_error_message">Servicio no disponible temporalmente. Inténtelo de nuevo más tarde</translation>
   <translation id="web_to_clean_bulk_sold_error">Algunos productos no se han marcado como vendido debido a un error</translation>
