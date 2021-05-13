@@ -20,6 +20,7 @@ import { SearchTrackingEventsService } from '@public/core/services/search-tracki
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { FILTER_SOURCE } from '@public/features/search/core/services/enums/filter-source.enum';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 @Component({
   selector: 'tsl-topbar',
