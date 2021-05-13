@@ -1,1 +1,12 @@
-<router-outlet></router-outlet>
+
+<div class="page-content">
+  <div class="container">
+    <tsl-nav-links
+      [navLinks]="navLinks"
+      [selectedLinkId]="selectedNavLinkId"
+      (clickedLink)="onNavLinkClicked($event)"
+    >
+    </tsl-nav-links>
+    <router-outlet></router-outlet>
+  </div>
+</div>
