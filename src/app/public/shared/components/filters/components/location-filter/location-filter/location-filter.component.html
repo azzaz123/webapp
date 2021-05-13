@@ -20,8 +20,8 @@
                 <img [src]="locationMapURL$ | async" class="LocationFilter__image my-3" />
             </div>
 
-            <tsl-slider-form formControlName="distance" [stepsConfig]="config.stepsConfig" [min]="config.range[0]"
-                [max]="config.range[1]" [valueTooltip]="true" [limitless]="config.limitless" [limitTooltip]="false">
+            <tsl-slider-form formControlName="distance" [stepsArray]="config.stepsArray" [min]="config.range[0]"
+                [max]="config.range[1]" [valueTooltip]="true" [limitless]="config.limitless" [limitTooltip]="true" [units]="config.units">
             </tsl-slider-form>
 
             <ng-template #locationTemplate let-location="result">

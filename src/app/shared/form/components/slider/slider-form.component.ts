@@ -21,6 +21,7 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number] 
   @Input() min = 0;
   @Input() max = 0;
   @Input() stepsConfig: SliderFormStepConfig[];
+  @Input() stepsArray: CustomStepDefinition[];
   @Input() units: string;
   @Input() valueTooltip = true;
   @Input() limitTooltip = true;
@@ -86,7 +87,9 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number] 
   }
 
   private setStepsConfig(): void {
-    if (this.stepsConfig?.length) {
+    if (this.stepsArray) {
+      this.options.stepsArray = this.stepsArray;
+    } else if (this.stepsConfig?.length) {
       const stepsArray: CustomStepDefinition[] = [];
       try {
         this.stepsConfig.forEach((stepConfig: SliderFormStepConfig) => {
