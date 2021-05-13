@@ -74,6 +74,7 @@ import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 import { ProfileFormModule } from './profile/profile-form/profile-form.module';
+import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 
 @NgModule({
   imports: [
@@ -167,6 +168,7 @@ import { ProfileFormModule } from './profile/profile-form/profile-form.module';
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
     ProfileFormModule,
+    InfiniteScrollDirective,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -227,6 +229,7 @@ import { ProfileFormModule } from './profile/profile-form/profile-form.module';
     WallacoinsDisabledModalComponent,
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
+    InfiniteScrollDirective,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [

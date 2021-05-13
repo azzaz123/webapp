@@ -91,6 +91,7 @@ body {
 
 .page-content {
   padding-left: $sidebar-width;
+  padding-top: $topbar-height;
   background: $main-background-color;
   min-height: 100%;
   @include media-breakpoint-down(md) {

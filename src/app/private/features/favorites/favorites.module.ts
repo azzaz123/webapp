@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { favoritesRoutedComponents, FavoritesRoutingModule } from './favorites.routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { ItemCartFavoriteComponent } from './components/item-cart-favorite/item-cart-favorite.component';
@@ -11,15 +10,7 @@ import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitize
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FavoritesRoutingModule,
-    InfiniteScrollModule,
-    SharedModule,
-    ItemAvatarModule,
-    SanitizedBackgroundModule,
-    CustomCurrencyModule,
-  ],
+  imports: [CommonModule, FavoritesRoutingModule, SharedModule, ItemAvatarModule, SanitizedBackgroundModule, CustomCurrencyModule],
   declarations: [favoritesRoutedComponents, ItemCartFavoriteComponent, ProfileCardFavoriteComponent, ProfileImagesComponent],
 })
 export class FavoritesModule {}

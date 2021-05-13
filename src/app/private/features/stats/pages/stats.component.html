@@ -1,10 +1,10 @@
 <div class="page-content"
-      infiniteScroll
+      tslInfiniteScroll
       [infiniteScrollDistance]="5"
-      [infiniteScrollThrottle]="100"
       (scrolled)="loadMoreStats()"
+      [infiniteScrollDisabled]="!pagination || loading"
       [scrollTop]="scrollTop"
-      [infiniteScrollDisabled]="!pagination || loading">
+>
   <div class="container">
     <tsl-header>
       <div class="col-12">
