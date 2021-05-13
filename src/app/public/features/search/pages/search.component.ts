@@ -10,17 +10,18 @@ import { OnAttach, OnDetach } from '@public/core/directives/public-router-outlet
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { delay, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
-import { AD_PUBLIC_SEARCH, AdSlotSearch } from '../core/ads/search-ads.config';
+import { delay, distinctUntilChanged, filter, skip, map, tap } from 'rxjs/operators';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
   AD_SHOPPING_CONTAINER_PUBLIC_SEARCH,
   AD_SHOPPING_PUBLIC_SEARCH,
   AdShoppingPageOptionPublicSearchFactory,
 } from '../core/ads/shopping/search-ads-shopping.config';
+import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events.service';
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
@@ -33,6 +34,7 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
 import { isEqual } from 'lodash-es';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -58,9 +60,11 @@ export const WIDE_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
 export class SearchComponent implements OnInit, OnAttach, OnDetach {
   private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscription: Subscription = new Subscription();
+  private searchId: string;
   public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
   public isLoadingPaginationResults$: Observable<boolean> = this.searchService.isLoadingPaginationResults$;
   public currentCategoryId$: Observable<string> = this.searchService.currentCategoryId$;
+  public searchId$: Observable<string> = this.searchService.searchId$;
   public items$: Observable<ItemCard[]> = this.searchService.items$;
   public hasMoreItems$: Observable<boolean> = this.searchService.hasMore$;
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
@@ -68,13 +72,11 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public filterOpened: boolean;
   public componentAttached = true;
   public DevicesType: typeof DeviceType = DeviceType;
-
   public infiniteScrollDisabled$: Observable<boolean> = this.buildInfiniteScrollDisabledObservable();
   public listCardType$: Observable<CARD_TYPES> = this.buildCardTypeObservable();
   public listColumnsConfig$: Observable<ColumnsConfig> = this.buildListConfigObservable();
   public showPlaceholder$: Observable<boolean> = this.buildShowPlaceholderObservable();
   public searchWithoutResults$: Observable<boolean> = this.buildSearchWithoutResultsObservable();
-
   public columnsConfig: ColumnsConfig = {
     xl: 4,
     lg: 4,
@@ -82,16 +84,13 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     sm: 2,
     xs: 2,
   };
-
   public adSlotGroupShoppingConfiguration: AdSlotGroupShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
   public adSlotShoppingContainer: string = AD_SHOPPING_CONTAINER_PUBLIC_SEARCH;
   public adShoppingGroupPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE);
   public adShoppingNativeListPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(
     AdShoppingChannel.SEARCH_LIST_SHOPPING
   );
-
   public isWall$: Observable<boolean> = this.searchService.isWall$;
-
   public slotsConfig: SlotsConfig;
 
   constructor(
@@ -104,9 +103,17 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     private route: ActivatedRoute,
     private queryStringService: SearchQueryStringService,
     private searchNavigatorService: SearchNavigatorService,
+    private searchListTrackingEventsService: SearchListTrackingEventsService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
+    this.device = this.deviceService.getDeviceType();
+    this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
+    this.subscription.add(
+      this.searchId$.pipe(skip(1)).subscribe((searchId: string) => {
+        this.searchId = searchId;
+      })
+    );
   }
 
   public ngOnInit(): void {
@@ -146,6 +153,11 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     if (this.componentAttached) {
       this.searchService.loadMore();
     }
+  }
+
+  public trackClickItemCardEvent(ClickedItemCard: ClickedItemCard): void {
+    const { itemCard, index } = ClickedItemCard;
+    this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, this.searchId);
   }
 
   public handleFilterOpened(opened: boolean) {

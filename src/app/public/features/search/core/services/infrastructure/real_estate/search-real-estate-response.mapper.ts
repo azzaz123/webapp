@@ -11,6 +11,7 @@ export function searchItemRealEstateResponseMapper({search_objects}: SearchRespo
     description: content.storytelling,
     salePrice: content.price,
     currencyCode: content.currency,
+    distance: content.distance,
     ownerId: content.user.id,
     webSlug: content.web_slug,
     images: content.images.map(SearchItemImageMapper),

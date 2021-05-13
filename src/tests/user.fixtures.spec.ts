@@ -3,7 +3,6 @@ import { Coordinate } from '../app/core/geolocation/address-response.interface';
 import { Counters, Ratings, ShippingCounterResponse, UserStats } from '../app/core/user/user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
-
 import { Image, UserExtrainfo, UserLocation, UserResponse, UserStatsOld, UserValidations } from '../app/core/user/user-response.interface';
 import { Observable, of } from 'rxjs';
 import { Item } from '../app/core/item/item';
@@ -327,7 +326,8 @@ export class MockedUserService {
         data.scoring_stars,
         data.scoring_starts,
         data.response_rate,
-        data.online
+        data.online,
+        data.featured
       )
     );
   }
@@ -338,6 +338,10 @@ export class MockedUserService {
 
   get user(): User {
     return new User(USER_ID);
+  }
+
+  get isPro(): boolean {
+    return this.user.featured;
   }
 
   public me(): Observable<User> {

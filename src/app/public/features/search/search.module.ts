@@ -24,6 +24,9 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
 import { SearchAdsService } from './core/ads/search-ads.service';
+import { SearchListTrackingEventsService } from './core/services/search-list-tracking-events.service';
+import { QueryStringLocationService } from '@core/search/query-string-location.service';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
 
 @NgModule({
   imports: [
@@ -54,6 +57,9 @@ import { SearchAdsService } from './core/ads/search-ads.service';
       useClass: FilterParameterStoreService,
     },
     SearchAdsService,
+    SearchQueryStringService,
+    SearchListTrackingEventsService,
+    QueryStringLocationService,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
 })
