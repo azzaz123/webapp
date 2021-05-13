@@ -87,7 +87,7 @@ export const REAL_ESTATE_ICON_SPEC_TRANSLATION: ItemSpecification[] = [
   {
     icon: REAL_ESTATE_ICON.GOOD_CONDITION,
     type: REAL_ESTATE_SPECIFICATION_TYPE.GOOD_CONDITION,
-    label: { singular: $localize`:@@GoodCondition:Good condition` },
+    label: { singular: $localize`:@@web_good_condition:Good condition` },
   },
   {
     icon: REAL_ESTATE_ICON.TO_REFORM,

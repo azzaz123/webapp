@@ -26,7 +26,7 @@
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="category" i18n="@@web_upload_product_category">Category</label>
-          <tsl-dropdown [disabled]="isHeroCategory(uploadForm.value?.category_id)" i18n-placeholder="@@web_upload_product_categoryPlaceholder" placeholder="Category"
+          <tsl-dropdown [disabled]="isHeroCategory(uploadForm.value?.category_id)" i18n-placeholder="@@web_upload_product_category_placeholder" placeholder="Category"
             class="form-control categories-select" formControlName="category_id" id="category" [options]="categories"
             noFilter="10" (selected)="resetAllExtraFields()">
             <ng-template #optionTemplate let-option="option">
@@ -41,7 +41,7 @@
       <div class="col-6 col-md-4">
         <div class="form-group">
           <label for="price" i18n="@@web_upload_product_price">Price</label>
-          <input i18n-placeholder="@@web_upload_product_pricePlaceholder" placeholder="(don't go crazy)" type="number" class="form-control"
+          <input i18n-placeholder="@@web_upload_product_price_placeholder" placeholder="(don't go crazy)" type="number" class="form-control"
             formControlName="sale_price" id="price" min="0" max="999999999" />
         </div>
       </div>
@@ -70,7 +70,7 @@
               Subcategory
             </label>
             <tsl-dropdown class="form-control" [disabled]="!objectTypesOptions?.length" formControlName="id" id="objectType"
-              i18n-placeholder="@@web_upload_product_subcategoryPlaceholder" placeholder="Subcategory" [options]="objectTypesOptions" noFilter="10"
+              i18n-placeholder="@@web_upload_product_subcategory_placeholder" placeholder="Subcategory" [options]="objectTypesOptions" noFilter="10"
               (selected)="resetCommonExtraFields()">
             </tsl-dropdown>
           </div>
@@ -84,7 +84,7 @@
               Could you specify?
             </label>
             <tsl-dropdown class="form-control" formControlName="id" id="objectType2"
-              i18n-placeholder="@@web_upload_product_subcategory2Placeholder" placeholder="Could you specify?" [options]="objectTypesOptions2" noFilter="10">
+              i18n-placeholder="@@web_upload_product_subcategory2_placeholder" placeholder="Could you specify?" [options]="objectTypesOptions2" noFilter="10">
             </tsl-dropdown>
           </div>
         </div>
@@ -95,7 +95,7 @@
           <div class="form-group">
             <label for="conditions" i18n="@@web_upload_product_product_condition">Product condition</label>
             <tsl-dropdown class="form-control" [disabled]="!conditions?.length" formControlName="condition" id="conditions"
-              i18n-placeholder="@@web_upload_product_product_conditionPlaceholder" placeholder="Select a condition" [options]="conditions" class="conditions-select">
+              i18n-placeholder="@@web_upload_product_product_condition_placeholder" placeholder="Select a condition" [options]="conditions" class="conditions-select">
               <ng-template #optionTemplate let-option="option">
                 {{ option?.label }}
                 <span class="option-description">{{ option?.description }}</span>
@@ -111,7 +111,7 @@
         <div class="form-group last">
           <label for="tellUs" i18n="@@web_upload_product_description">Description</label>
           <span class="chars-counter">{{ uploadForm.value?.description?.length }}/{{MAX_DESCRIPTION_LENGTH}}</span>
-          <textarea i18n-placeholder="@@web_upload_product_descriptionPlaceholder" placeholder="Add relevant information such as condition, model, color..."
+          <textarea i18n-placeholder="@@web_upload_product_description_placeholder" placeholder="Add relevant information such as condition, model, color..."
             fz-elastic class="form-control" formControlName="description" id="tellUs" [maxlength]="MAX_DESCRIPTION_LENGTH"></textarea>
         </div>
       </div>
@@ -151,7 +151,7 @@
       <div class="col-md-3 mt-3" *ngIf="!!selectedRawCategory?.fields.gender && genders">
         <div class="form-group last">
           <label for="gender" i18n="@@web_upload_product_select_gender">Gender</label>
-          <tsl-dropdown class="form-control" formControlName="gender" id="gender" i18n-placeholder="@@web_upload_product_select_genderPlaceholder"
+          <tsl-dropdown class="form-control" formControlName="gender" id="gender" i18n-placeholder="@@web_upload_product_select_gender_placeholder"
             placeholder="Select a gender" [options]="genders"></tsl-dropdown>
         </div>
       </div>
@@ -159,7 +159,7 @@
         <div class="form-group last" formGroupName="size">
           <label for="size" i18n="@@web_upload_product_select_size">Size</label>
           <tsl-dropdown class="form-control"
-            formControlName="id" id="fashionSizes" i18n-placeholder="@@web_upload_product_select_sizePlaceholder" placeholder="Select a size" [options]="sizes"
+            formControlName="id" id="fashionSizes" i18n-placeholder="@@web_upload_product_select_size_placeholder" placeholder="Select a size" [options]="sizes"
             noFilter="10"></tsl-dropdown>
         </div>
       </div>
@@ -198,7 +198,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <p i18n="@@web_upload_product_shippingDescription">
+          <p i18n="@@web_upload_product_shipping_description">
             You can send (almost) anything through Wallapop. And it's free for you!
           </p>
         </div>
@@ -233,8 +233,8 @@
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
         <span *ngIf="!item && !loading" i18n="@@web_upload_product_submit_item">Post Ad</span>
         <span *ngIf="item && !loading" i18n="@@web_upload_product_submit_update">Update</span>
-        <span *ngIf="loading && !pendingFiles" i18n="@@UploadProductSubmitLoading">Uploading... {{ uploadCompletedPercentage }}%</span>
-        <span *ngIf="loading && pendingFiles" i18n="@@UploadImagesSubmitLoading">Uploading image... {{ pendingFiles.currentUploading}}/{{pendingFiles.totalFiles}}</span>
+        <span *ngIf="loading && !pendingFiles" i18n="@@web_upload_product_submit_loading">Uploading... {{ uploadCompletedPercentage }}%</span>
+        <span *ngIf="loading && pendingFiles" i18n="@@web_upload_images_submit_loading">Uploading image... {{ pendingFiles.currentUploading}}/{{pendingFiles.totalFiles}}</span>
       </tsl-button>
     </div>
     <div class="col-md-3 d-none d-md-block">

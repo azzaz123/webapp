@@ -481,7 +481,6 @@
   <msg id="web_item_is_not_available_warning"><source>src/app/private/features/chat/components/current-conversation/current-conversation.component.html:51</source>This product has expired or has been removed</msg>
   <msg id="web_item_is_unpublished_warning"><source>src/app/private/features/chat/components/current-conversation/current-conversation.component.html:58</source>The product violates Wallapop coexistence regulations</msg>
   <msg id="web_security_warning"><source>src/app/private/features/chat/components/current-conversation/current-conversation.component.html:79</source>For security reasons, never share private data</msg>
-  <msg id="loadMoreButton"><source>src/app/private/features/chat/components/current-conversation/current-conversation.component.html:86</source>Load more</msg>
   <msg id="web_chat_components_user_detail_170"><source>src/app/private/features/chat/components/user-detail/user-detail.component.html:5</source><ph name="INTERPOLATION"/>km from you</msg>
   <msg id="web_chat_components_user_detail_567"><source>src/app/private/features/chat/components/user-detail/user-detail.component.html:6</source>No location</msg>
   <msg id="web_chat_components_user_response_rate_171"><source>src/app/private/features/chat/components/user-response-rate/user-response-rate.component.html:1</source>Unknown</msg>
@@ -494,11 +493,8 @@
   <msg id="web_chat_components_user_response_rate_571"><source>src/app/private/features/chat/components/user-response-rate/user-response-rate.component.html:9</source>Typically responds within a day</msg>
   <msg id="web_chat_components_user_response_rate_175"><source>src/app/private/features/chat/components/user-response-rate/user-response-rate.component.html:10</source>Responds in more than 24 hours</msg>
   <msg id="web_chat_components_user_response_rate_572"><source>src/app/private/features/chat/components/user-response-rate/user-response-rate.component.html:11</source>Responds in more than 24 hours</msg>
-  <msg id="deleteConversation"><source>src/app/private/features/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:1</source>Delete conversation</msg>
   <msg id="web_delete_conversation_warning"><source>src/app/private/features/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:2</source>This will delete the conversation.</msg>
-  <msg id="archiveConversation"><source>src/app/private/features/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:3</source>Archive conversation</msg>
   <msg id="web_archive_conversation_warning"><source>src/app/private/features/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:4</source>This will archive the conversation.</msg>
-  <msg id="cancelButton"><source>src/app/private/features/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:7</source>Cancel</msg>
   <msg id="web_archive_button"><source>src/app/private/features/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:9,11</source>Archive </msg>
   <msg id="web_delete_button"><source>src/app/private/features/chat/modals/archive-inbox-conversation/archive-inbox-conversation.component.html:12,14</source>Delete </msg>
   <msg id="web_chat_modals_block_user_176"><source>src/app/private/features/chat/modals/block-user/block-user.component.html:1</source>Block user</msg>
@@ -563,19 +559,19 @@
   <msg id="web_help_pages_214"><source>src/app/private/features/help/pages/help.component.html:64</source>Mon to Thurs from 10:00 to 18:00</msg>
   <msg id="web_help_pages_215"><source>src/app/private/features/help/pages/help.component.html:65</source>Fri from 09:00 to 15:00</msg>
   <msg id="web_invoice_history"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:2</source>Invoice history</msg>
-  <msg id="web_invoice_historyDescription"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:5,7</source> For now, you can only view or download invoices or credit memos from your subscriptions. </msg>
-  <msg id="web_invoice_historyAll"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:9</source>All</msg>
-  <msg id="web_invoice_historyInvoices"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:10</source>Invoices</msg>
-  <msg id="web_invoice_historyCredit"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:11</source>Credit memos</msg>
+  <msg id="web_invoice_history_description"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:5,7</source> For now, you can only view or download invoices or credit memos from your subscriptions. </msg>
+  <msg id="web_invoice_history_all"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:9</source>All</msg>
+  <msg id="web_invoice_history_invoices"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:10</source>Invoices</msg>
+  <msg id="web_invoice_history_credit"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:11</source>Credit memos</msg>
   <msg id="web_loading_data"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:16</source>We are loading your invoice history...</msg>
   <msg id="web_not_loaded_invoices"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:17</source>Sorry, we cannot load your invoices at this time. Please try again later.</msg>
   <msg id="web_empty_history"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:18</source>Your history is empty.</msg>
   <msg id="web_not_old_invoices"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:19</source>You don&apos;t have any old invoices. Fill in the invoicing data for future purchases.</msg>
+  <msg id="loadMoreButton"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:32</source>Load more</msg>
   <msg id="web_transaction_date"><source>src/app/private/features/profile/components/invoice-item/invoice-item.component.html:10</source>Transaction date</msg>
   <msg id="web_date"><source>src/app/private/features/profile/components/invoice-item/invoice-item.component.html:11</source>Date</msg>
   <msg id="web_request_invoice"><source>src/app/private/features/profile/components/invoice-item/invoice-item.component.html:18</source>Request invoice</msg>
   <msg id="web_download_invoice"><source>src/app/private/features/profile/components/invoice-item/invoice-item.component.html:19</source>Download invoice</msg>
-  <msg id="wallapopPro"><source>src/app/private/features/profile/components/subscription-benefits/subscription-benefits.component.html:4</source>Wallapop PRO</msg>
   <msg id="web_subscription_benefits_subtitle"><source>src/app/private/features/profile/components/subscription-benefits/subscription-benefits.component.html:5</source>Want to boost your online business? Become a PRO!</msg>
   <msg id="web_subscription_benefits_footer_title"><source>src/app/private/features/profile/components/subscription-benefits/subscription-benefits.component.html:18</source>Do you have any questions?</msg>
   <msg id="web_subscription_benefits_footer_subtitle"><source>src/app/private/features/profile/components/subscription-benefits/subscription-benefits.component.html:19</source>Find answers <ph name="START_LINK"/>here<ph name="CLOSE_LINK"/>.</msg>
@@ -590,7 +586,7 @@
   <msg id="web_unlimited"><source>src/app/private/features/profile/modal/add-new-subscription/add-new-subscription-modal.component.html:28</source>Unlimited</msg>
   <msg id="web_contact_us_directly"><source>src/app/private/features/profile/modal/add-new-subscription/add-new-subscription-modal.component.html:32,36</source> Do you have more than <ph name="INTERPOLATION"/> <ph name="INTERPOLATION_1"/>? <ph name="START_LINK"/>Contact us directly<ph name="CLOSE_LINK"/></msg>
   <msg id="web_category_plan"><source>src/app/private/features/profile/modal/add-new-subscription/add-new-subscription-modal.component.html:42,44</source><ph name="INTERPOLATION"/> <ph name="INTERPOLATION_1"/> Plan</msg>
-  <msg id="web_unlimitedPlan"><source>src/app/private/features/profile/modal/add-new-subscription/add-new-subscription-modal.component.html:44</source>Unlimited <ph name="INTERPOLATION"/> Plan</msg>
+  <msg id="web_unlimited_plan"><source>src/app/private/features/profile/modal/add-new-subscription/add-new-subscription-modal.component.html:44</source>Unlimited <ph name="INTERPOLATION"/> Plan</msg>
   <msg id="web_one_month_free"><source>src/app/private/features/profile/modal/add-new-subscription/add-new-subscription-modal.component.html:49</source>One month free</msg>
   <msg id="web_multiple_months_free"><source>src/app/private/features/profile/modal/add-new-subscription/add-new-subscription-modal.component.html:50</source><ph name="INTERPOLATION"/> months free</msg>
   <msg id="web_add_new_subscription_days_free"><source>src/app/private/features/profile/modal/add-new-subscription/add-new-subscription-modal.component.html:53</source><ph name="INTERPOLATION"/> days free</msg>
@@ -629,8 +625,6 @@
   <msg id="web_profile_modal_become_pro_234"><source>src/app/private/features/profile/modal/become-pro-modal/become-pro-modal.component.html:12</source>You will have a description of your store or service and its location</msg>
   <msg id="web_profile_modal_become_pro_235"><source>src/app/private/features/profile/modal/become-pro-modal/become-pro-modal.component.html:13</source>Your profile will have a different design and will stand out!</msg>
   <msg id="web_profile_modal_become_pro_236"><source>src/app/private/features/profile/modal/become-pro-modal/become-pro-modal.component.html:14</source>Your items won&apos;t expire</msg>
-  <msg id="FreeTrial"><source>src/app/private/features/profile/modal/become-pro-modal/become-pro-modal.component.ts:14</source>Free trial</msg>
-  <msg id="KnowMore"><source>src/app/private/features/profile/modal/become-pro-modal/become-pro-modal.component.ts:14</source>Know more</msg>
   <msg id="web_profile_modal_cancel_subscription_237"><source>src/app/private/features/profile/modal/cancel-subscription/cancel-subscription-modal.component.html:6</source>Would you want to cancel the PRO subscription <ph name="INTERPOLATION"/>?</msg>
   <msg id="web_profile_modal_cancel_subscription_238"><source>src/app/private/features/profile/modal/cancel-subscription/cancel-subscription-modal.component.html:7</source>It’s sad that you are leaving us. You can return whenever you want, we’ll be waiting for you!</msg>
   <msg id="web_profile_modal_cancel_subscription_239"><source>src/app/private/features/profile/modal/cancel-subscription/cancel-subscription-modal.component.html:8</source>Yes, I want to cancel my subscription.</msg>
@@ -746,6 +740,7 @@
   <msg id="web_profile_pages_319"><source>src/app/private/features/profile/pages/profile.component.html:34</source>Account</msg>
   <msg id="web_profile_pages_320"><source>src/app/private/features/profile/pages/profile.component.html:35,37</source>Billing information</msg>
   <msg id="web_profile_pages_321"><source>src/app/private/features/profile/pages/profile.component.html:38</source>Billing</msg>
+  <msg id="wallapopPro"><source>src/app/private/features/profile/pages/profile.component.html:42</source>Wallapop PRO</msg>
   <msg id="web_profile_pages_322"><source>src/app/private/features/profile/pages/profile.component.html:50</source>reviews</msg>
   <msg id="web_subscription_price_discount_days_trial_free"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:5</source><ph name="INTERPOLATION"/>-day trial for free</msg>
   <msg id="web_profile_pages_subscription_326"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:22,25</source> <ph name="INTERPOLATION"/><ph name="INTERPOLATION_1"/>/month </msg>
@@ -763,13 +758,13 @@
   <msg id="web_profile_pages_subscription_586"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:43</source>List without limits</msg>
   <msg id="web_wallapop_pro_subscription_title"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.html:3</source>Boost your online business with Wallapop PRO</msg>
   <msg id="web_wallapop_pro_subscription_sub_title"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.html:4</source>Choose a subscription to take your sales to the next level</msg>
-  <msg id="web_start_free_trial"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:43</source>Start free trial</msg>
-  <msg id="web_see_plans"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:43</source>See plans</msg>
-  <msg id="web_profile_pages_subscription_331"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:46</source>Stay subscribed</msg>
-  <msg id="web_profile_pages_subscription_587"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:49</source>Modify</msg>
-  <msg id="web_profile_pages_subscription_678"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:52</source>Cancel</msg>
-  <msg id="web_profile_pages_subscription_327"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:55</source>Manage in app</msg>
-  <msg id="web_profile_pages_subscription_328"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:58</source>Unsubscribe first from app for your free month</msg>
+  <msg id="web_start_free_trial"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:44</source>Start free trial</msg>
+  <msg id="web_see_plans"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:45</source>See plans</msg>
+  <msg id="web_profile_pages_subscription_331"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:48</source>Stay subscribed</msg>
+  <msg id="web_profile_pages_subscription_587"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:51</source>Modify</msg>
+  <msg id="web_profile_pages_subscription_678"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:54</source>Cancel</msg>
+  <msg id="web_profile_pages_subscription_327"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:57</source>Manage in app</msg>
+  <msg id="web_profile_pages_subscription_328"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:60</source>Unsubscribe first from app for your free month</msg>
   <msg id="web_reviews_pages_332"><source>src/app/private/features/reviews/pages/reviews.component.html:11</source>Your Reviews</msg>
   <msg id="web_reviews_pages_333"><source>src/app/private/features/reviews/pages/reviews.component.html:14</source>This is what people think about you. </msg>
   <msg id="web_reviews_pages_334"><source>src/app/private/features/reviews/pages/reviews.component.html:18</source>Your average</msg>
@@ -893,35 +888,33 @@
   <msg id="web_upload_pages_product_423"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:14</source>In some words...</msg>
   <msg id="web_upload_product_coachmark_title"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:20,22</source> Don&apos;t make errors so that people will find you easily. </msg>
   <msg id="web_upload_product_category"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:27</source>Category</msg>
-  <msg id="web_upload_product_categoryPlaceholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:28</source>Category</msg>
+  <msg id="web_upload_product_category_placeholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:28</source>Category</msg>
   <msg id="web_upload_product_price"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:42</source>Price</msg>
-  <msg id="web_upload_product_pricePlaceholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:43</source>(don&apos;t go crazy)</msg>
+  <msg id="web_upload_product_price_placeholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:43</source>(don&apos;t go crazy)</msg>
   <msg id="web_upload_product_currency"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:49</source>Currency</msg>
   <msg id="web_upload_product_coachmark_price"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:56,58</source> Add a fair price and the category that best suits your item. </msg>
   <msg id="web_upload_product_subcategory"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:69,71</source> Subcategory </msg>
-  <msg id="web_upload_product_subcategoryPlaceholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:72</source>Subcategory</msg>
+  <msg id="web_upload_product_subcategory_placeholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:72</source>Subcategory</msg>
   <msg id="web_upload_product_subcategory2"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:83,85</source> Could you specify? </msg>
-  <msg id="web_upload_product_subcategory2Placeholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:86</source>Could you specify?</msg>
+  <msg id="web_upload_product_subcategory2_placeholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:86</source>Could you specify?</msg>
   <msg id="web_upload_product_product_condition"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:95</source>Product condition</msg>
-  <msg id="web_upload_product_product_conditionPlaceholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:97</source>Select a condition</msg>
+  <msg id="web_upload_product_product_condition_placeholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:97</source>Select a condition</msg>
   <msg id="web_upload_product_description"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:111</source>Description</msg>
-  <msg id="web_upload_product_descriptionPlaceholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:113</source>Add relevant information such as condition, model, color...</msg>
+  <msg id="web_upload_product_description_placeholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:113</source>Add relevant information such as condition, model, color...</msg>
   <msg id="web_upload_product_coachmark_description"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:118</source>Every detail helps: so tell us more!</msg>
   <msg id="web_upload_product_brand"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:126</source>Brand</msg>
   <msg id="web_upload_product_model"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:144</source>Model</msg>
   <msg id="web_upload_product_select_gender"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:152</source>Gender</msg>
-  <msg id="web_upload_product_select_genderPlaceholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:154</source>Select a gender</msg>
+  <msg id="web_upload_product_select_gender_placeholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:154</source>Select a gender</msg>
   <msg id="web_upload_product_select_size"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:159</source>Size</msg>
-  <msg id="web_upload_product_select_sizePlaceholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:161</source>Select a size</msg>
+  <msg id="web_upload_product_select_size_placeholder"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:161</source>Select a size</msg>
   <msg id="web_upload_product_photos"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:173,175</source> Photos </msg>
   <msg id="web_upload_product_coachmark_pictures"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:182,185</source> You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images. </msg>
   <msg id="web_upload_product_shipping"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:195</source>Shipping</msg>
-  <msg id="web_upload_product_shippingDescription"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:201,203</source> You can send (almost) anything through Wallapop. And it&apos;s free for you! </msg>
+  <msg id="web_upload_product_shipping_description"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:201,203</source> You can send (almost) anything through Wallapop. And it&apos;s free for you! </msg>
   <msg id="web_upload_product_coachmark_shipping"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:222,225</source> Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm. </msg>
   <msg id="web_upload_product_submit_item"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:233</source>Post Ad</msg>
   <msg id="web_upload_product_submit_update"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:234</source>Update</msg>
-  <msg id="UploadProductSubmitLoading"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:235</source>Uploading... <ph name="INTERPOLATION"/>%</msg>
-  <msg id="UploadImagesSubmitLoading"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:236</source>Uploading image... <ph name="INTERPOLATION"/>/<ph name="INTERPOLATION_1"/></msg>
   <msg id="web_upload_product_preview"><source>src/app/private/features/upload/pages/upload-product/upload-product.component.html:242,244</source> How does it look? </msg>
   <msg id="web_upload_pages_realestate_424"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:5</source>Information about your property</msg>
   <msg id="web_upload_pages_realestate_425"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:13</source>Rent or sale?</msg>
@@ -953,6 +946,8 @@
   <msg id="web_upload_pages_realestate_445"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:219,222</source> You can drag and drop your photos here. Also drag and drop to change the order. Max 4MB. </msg>
   <msg id="web_upload_pages_realestate_660"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:227</source>Post Ad</msg>
   <msg id="web_upload_pages_realestate_661"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:228</source>Update</msg>
+  <msg id="UploadProductSubmitLoading"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:229</source>Uploading... <ph name="INTERPOLATION"/>%</msg>
+  <msg id="UploadImagesSubmitLoading"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:230</source>Uploading image... <ph name="INTERPOLATION"/>/<ph name="INTERPOLATION_1"/></msg>
   <msg id="web_upload_pages_realestate_446"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:235,237</source> How does it look? </msg>
   <msg id="web_mobile_blocker_title"><source>src/app/private/layout/components/mobile-blocker/mobile-blocker.component.html:6,8</source> Nice screen, but the resolution is low. </msg>
   <msg id="web_mobile_blocker_subtitle"><source>src/app/private/layout/components/mobile-blocker/mobile-blocker.component.html:9,11</source> To see this content, open the Wallapop app or continue browsing from your computer. </msg>
@@ -992,7 +987,6 @@
   <msg id="web_condition__fair"><source>src/app/public/features/item-detail/core/services/map-extra-info/map-extra-info.service.ts:86</source>Fair condition</msg>
   <msg id="web_condition__has_given_it_all"><source>src/app/public/features/item-detail/core/services/map-extra-info/map-extra-info.service.ts:88</source>May have to be repaired</msg>
   <msg id="web_undefined"><source>src/app/public/features/item-detail/core/services/map-extra-info/map-extra-info.service.ts:90</source>Undefined</msg>
-  <msg id="Undefined"><source>src/app/public/features/item-detail/core/services/map-item-detail-store/map-item-detail-store.service.ts:129</source>Undefined</msg>
   <msg id="web_item_detail_share_title"><source>src/app/public/features/item-detail/core/services/map-item-detail-store/map-item-detail-store.service.ts:148</source>Share this product with your friends</msg>
   <msg id="web_item_detail_share_twitter_text"><source>src/app/public/features/item-detail/core/services/map-item-detail-store/map-item-detail-store.service.ts:154</source>Look what I found @wallapop:</msg>
   <msg id="web_item_detail_share_email_text"><source>src/app/public/features/item-detail/core/services/map-item-detail-store/map-item-detail-store.service.ts:159</source>This may interest you - </msg>
@@ -1048,7 +1042,6 @@
   <msg id="web_footer_links_team_href"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:21</source>https://about.wallapop.com/en/team</msg>
   <msg id="web_footer_links_support_title"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:26</source>Support</msg>
   <msg id="web_footer_links_faq_label"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:29</source>FAQ</msg>
-  <msg id="FooterLinksFaqHref"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:30</source>https://ayuda.wallapop.com/hc/en-us</msg>
   <msg id="web_footer_links_publish_rules_label"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:33</source>Publishing rules</msg>
   <msg id="web_footer_links_publish_rules_href"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:34</source>https://ayuda.wallapop.com/hc/en-us/articles/360004667717-What-content-is-not-allowed-on-wallapop-</msg>
   <msg id="web_footer_links_security_tips_label"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:37</source>Security tips</msg>
@@ -1099,11 +1092,11 @@
   <msg id="web_land"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:74</source>Land</msg>
   <msg id="web_box_room"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:79</source>Box Room</msg>
   <msg id="web_new_build"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:84</source>New build</msg>
-  <msg id="GoodCondition"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:89</source>Good condition</msg>
   <msg id="web_for_refurbishment"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:94</source>For refurbishment</msg>
   <msg id="web_rent"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:99</source>Rent</msg>
   <msg id="web_buy"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:104</source>Buy</msg>
-  <msg id="Apply"><source>src/app/public/shared/components/drawer/drawer.component.html:14</source>Apply</msg>
+  <msg id="cancelButton"><source>src/app/public/shared/components/drawer/drawer.component.html:12</source>Cancel</msg>
+  <msg id="Apply"><source>src/app/public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component.html:33</source>Apply</msg>
   <msg id="web_filters_category_all_categories"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:4</source>All categories</msg>
   <msg id="web_filters_category_cars"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:14</source>Cars</msg>
   <msg id="web_filters_category_motorbike"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:24</source>Motorbike</msg>
@@ -1129,8 +1122,6 @@
   <msg id="web_from"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.html:27</source>From</msg>
   <msg id="web_to"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.html:31</source>To</msg>
   <msg id="web_limitless"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.ts:17</source>No limit</msg>
-  <msg id="From"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.ts:118</source>From</msg>
-  <msg id="To"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.ts:120</source>To</msg>
   <msg id="web_filter_price_title"><source>src/app/public/shared/components/filters/core/constants/filters/car/car-filters.ts:9</source>How much?</msg>
   <msg id="web_filter_price_bubble_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/car/car-filters.ts:11</source>Price</msg>
   <msg id="web_filter_cars_brand_model_title"><source>src/app/public/shared/components/filters/core/constants/filters/car/car-filters.ts:28</source>Brand and Model</msg>
@@ -1159,11 +1150,11 @@
   <msg id="web_filter_categories_title"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:9</source>Category</msg>
   <msg id="web_filter_categories_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:10</source>All categories</msg>
   <msg id="web_filter_time_of_listing"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:20</source>Time of listing</msg>
-  <msg id="filterPriceTitle"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:31</source>How much?</msg>
-  <msg id="filterPriceBubblePlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:32</source>Price</msg>
   <msg id="web_filter_condition_title"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:56</source>Item condition</msg>
   <msg id="web_filter_condition_bubble_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:57</source>Item condition</msg>
   <msg id="web_filter_condition_drawer_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:58</source>Any item condition</msg>
+  <msg id="filterPriceTitle"><source>src/app/public/shared/components/filters/core/constants/filters/consumer-goods/consumer-goods-filters.ts:9</source>How much?</msg>
+  <msg id="filterPriceBubblePlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/consumer-goods/consumer-goods-filters.ts:11</source>Price</msg>
   <msg id="web_filter_gender_title"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:9</source>Gender</msg>
   <msg id="web_filter_gender_bubble_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:10</source>Gender</msg>
   <msg id="web_filter_gender_drawer_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:11</source>Select gender</msg>
@@ -1201,7 +1192,6 @@
   <msg id="web_expired"><source>src/app/public/shared/components/item-flag/item-flag-constants.ts:72</source>Expired</msg>
   <msg id="web_inactive"><source>src/app/public/shared/components/item-flag/item-flag-constants.ts:79</source>Inactive</msg>
   <msg id="web_featured"><source>src/app/public/shared/components/item-flag/item-flag-constants.ts:89</source>Featured</msg>
-  <msg id="Featured"><source>src/app/public/shared/components/item-images-carousel/item-images-carousel.component.html:3</source>Featured</msg>
   <msg id="web_filter_option_posted_ago_hours"><source>src/app/public/shared/services/filter-option/data/hardcoded-options.ts:18</source>Hours</msg>
   <msg id="web_filter_option_posted_ago_days"><source>src/app/public/shared/services/filter-option/data/hardcoded-options.ts:23</source>Days</msg>
   <msg id="web_filter_option_gender_male"><source>src/app/public/shared/services/filter-option/data/hardcoded-options.ts:79</source>Male</msg>
@@ -1262,8 +1252,6 @@
   <msg id="web_modals_already_featured_modal_478"><source>src/app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.html:11</source>Items that are already planned can&apos;t be featured again.</msg>
   <msg id="web_modals_already_featured_modal_479"><source>src/app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.html:12</source>Ok, got it</msg>
   <msg id="web_suggest_pro_modal_button_cancel"><source>src/app/shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component.html:15,17</source> Not now thanks </msg>
-  <msg id="startFreeTrial"><source>src/app/shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component.ts:15</source>Start free trial</msg>
-  <msg id="seePlans"><source>src/app/shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component.ts:15</source>See plans</msg>
   <msg id="web_suggest_pro_modal_description_trial"><source>src/app/shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component.ts:20</source>Try Wallapop PRO for free and explore all their benefits.</msg>
   <msg id="web_suggest_pro_modal_description_plans"><source>src/app/shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component.ts:21</source>Choose a plan and take advantage of Wallapop PRO benefits.</msg>
   <msg id="web_too_many_items_modal_cardealer_title"><source>src/app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.html:10</source><ph name="START_BOLD_TEXT"/>You are trying to activate more <ph name="INTERPOLATION"/> than what your plan supports<ph name="CLOSE_BOLD_TEXT"/></msg>
@@ -1301,7 +1289,6 @@
   <msg id="web_confirmation_modal_exit_627"><source>src/app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:5</source>No</msg>
   <msg id="web_confirmation_modal_exit_496"><source>src/app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:6</source>Yes, leave</msg>
   <msg id="web_confirmation_modal_exit_628"><source>src/app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:7</source>Yes, leave</msg>
-  <msg id="Limitless"><source>src/app/shared/form/components/slider/slider-form.component.ts:71</source>No limit</msg>
   <msg id="web_geolocation_497"><source>src/app/shared/geolocation/geolocation.component.html:8</source>Where?</msg>
   <msg id="web_location_box_498"><source>src/app/shared/geolocation/location-box/location-box.component.html:3</source>Your products are in:</msg>
   <msg id="web_wallapop_profile_spot_description"><source>src/app/shared/geolocation/location-box/location-box.component.html:12</source>This is the spot where your Wallapop profile is located. We will show all your products here.</msg>
@@ -1325,10 +1312,8 @@
   <msg id="web_cancel"><source>src/app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:11</source>Cancel</msg>
   <msg id="web_order_your_catalog_by"><source>src/app/shared/modals/full-screen-menu/full-screen-modal.component.html:2</source>Order your catalog by</msg>
   <msg id="web_add_new_credit_card"><source>src/app/shared/modals/new-card-modal/new-card-modal.component.html:5</source>Add a new credit card</msg>
-  <msg id="ChangeSubscriptionCardSubtitle"><source>src/app/shared/modals/new-card-modal/new-card-modal.component.html:6</source>This will be the payment method linked to your subscription</msg>
   <msg id="web_missing_payment_method_title"><source>src/app/shared/modals/no-card-modal/no-card-modal.component.html:4</source>Delete payment method</msg>
   <msg id="web_missing_payment_method_subtitle"><source>src/app/shared/modals/no-card-modal/no-card-modal.component.html:5</source>Without a card linked to your subscriptions, you won&apos;t be able to renew them and you will lose the benefits of being PRO. Is that what you want?</msg>
-  <msg id="Cancel"><source>src/app/shared/modals/no-card-modal/no-card-modal.component.html:8</source>Cancel</msg>
   <msg id="web_confirm_delete_card"><source>src/app/shared/modals/no-card-modal/no-card-modal.component.html:11,13</source>Yes, delete card </msg>
   <msg id="web_review_modal_502"><source>src/app/shared/modals/review-modal/review-modal.component.html:7</source>Rate your experience with <ph name="START_TAG_STRONG"/><ph name="INTERPOLATION"/><ph name="CLOSE_TAG_STRONG"/></msg>
   <msg id="web_review_modal_503"><source>src/app/shared/modals/review-modal/review-modal.component.html:8</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
@@ -1345,6 +1330,7 @@
   <msg id="web_wallacoins_disabled_modal_title"><source>src/app/shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component.html:5</source>Goodbye, credit! 👋🏼</msg>
   <msg id="web_wallacoins_disabled_modal_text"><source>src/app/shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component.html:6,8</source>We have deactivated the &quot;credit&quot; feature, also known as &quot;wallacoins&quot;. From now on it&apos;s no longer possible to buy saving packs.<ph name="LINE_BREAK"/><ph name="LINE_BREAK"/> If you have credit in your account, you can continue featuring items until the credit is spent. Credit is valid for one year from the day it was charged to your account.</msg>
   <msg id="web_wallacoins_disabled_modal_button"><source>src/app/shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component.html:8</source>Got it</msg>
+  <msg id="Cancel"><source>src/app/shared/nav-links/nav-links.component.html:7</source>Cancel</msg>
   <msg id="web_order_by"><source>src/app/shared/nav-links/nav-links.component.html:40</source>Order by</msg>
   <msg id="web_stripe_card_selection_512"><source>src/app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:1</source>Select saved card</msg>
   <msg id="web_use_saved_card"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:16</source>Use saved card</msg>
@@ -1360,7 +1346,6 @@
   <msg id="web_pro_billing_delete_info_confirmation_modal_517"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:1</source>Are you sure you want to delete billing information?</msg>
   <msg id="web_pro_billing_delete_info_confirmation_modal_694"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:4</source>Cancel</msg>
   <msg id="web_pro_billing_delete_info_confirmation_modal_630"><source>src/app/shared/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source>Yes, I am sure</msg>
-  <msg id="InvoiceInformation"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:6</source>Invoice information</msg>
   <msg id="web_profile_pro_billing_subtitle"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:9</source>For services other than subscriptions (e.g. visibility packs) you won&apos;t receive invoices.</msg>
   <msg id="web_profile_pro_billing_form_type"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:15</source>Type of registration</msg>
   <msg id="web_profile_pro_billing_form_natural"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:24</source>Natural person</msg>
@@ -1372,20 +1357,19 @@
   <msg id="web_surname_required"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:56,58</source> Surname is required. </msg>
   <msg id="web_surname_max_length"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:59,61</source> Surname must be at most 32 characters long. </msg>
   <msg id="web_company_name"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:65</source>Company Name</msg>
-  <msg id="web_company_nameRequired"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:70,72</source> Company name is required. </msg>
-  <msg id="web_company_nameMaxLength"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:73,75</source> Company name must be at most 32 characters long. </msg>
+  <msg id="web_company_name_required"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:70,72</source> Company name is required. </msg>
+  <msg id="web_company_name_max_length"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:73,75</source> Company name must be at most 32 characters long. </msg>
   <msg id="web_c_i_f_number"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:79</source>CIF of the company</msg>
   <msg id="web_n_i_f_number"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:80</source>NIF of the person</msg>
   <msg id="web_cif_required"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:85,87</source> CIF/NIF is required. </msg>
   <msg id="web_cif_format"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:88,90</source> CIF/NIF must be valid. </msg>
   <msg id="web_email"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:94</source>E-mail</msg>
-  <msg id="web_emailRequired"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:99,101</source> E-mail is required. </msg>
-  <msg id="web_emailFormat"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:102,104</source> E-mail must be valid. </msg>
+  <msg id="web_email_required"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:99,101</source> E-mail is required. </msg>
+  <msg id="web_email_format"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:102,104</source> E-mail must be valid. </msg>
   <msg id="web_billing_address"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:108</source>Billing address</msg>
   <msg id="web_city"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:114</source>City</msg>
   <msg id="web_postal_code"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:120</source>Postal code</msg>
   <msg id="web_country"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:126</source>Country</msg>
-  <msg id="Save"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:133</source>Save</msg>
   <msg id="web_cover_upload_518"><source>src/app/shared/profile/cover-upload/cover-upload.component.html:2</source>Cover image</msg>
   <msg id="web_cover_upload_519"><source>src/app/shared/profile/cover-upload/cover-upload.component.html:19</source>Update picture</msg>
   <msg id="web_cover_upload_520"><source>src/app/shared/profile/cover-upload/cover-upload.component.html:20</source>Upload picture</msg>
@@ -1417,7 +1401,6 @@
   <msg id="web_subscription_card"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:9</source>Card linked to subscriptions</msg>
   <msg id="web_add_new_subscription_card"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:16</source>Link a card to your subscriptions</msg>
   <msg id="web_current_cards"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:20</source>Saved cards</msg>
-  <msg id="AddCard"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:28</source>Add card</msg>
   <msg id="web_spinner_536"><source>src/app/shared/spinner/spinner.component.html:3</source>Loading...</msg>
   <msg id="web_spinner_537"><source>src/app/shared/spinner/spinner.component.html:4</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
 </messagebundle>

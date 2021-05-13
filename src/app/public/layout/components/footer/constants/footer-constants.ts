@@ -28,7 +28,7 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
     links: [
       {
         label: $localize`:@@web_footer_links_faq_label:FAQ`,
-        href: $localize`:@@FooterLinksFaqHref:https://ayuda.wallapop.com/hc/en-us`,
+        href: $localize`:@@web_footer_links_faq_href:https://ayuda.wallapop.com/hc/en-us`,
       },
       {
         label: $localize`:@@web_footer_links_publish_rules_label:Publishing rules`,

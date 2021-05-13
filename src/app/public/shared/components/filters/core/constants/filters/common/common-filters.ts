@@ -29,8 +29,8 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONFIGURATION_ID.PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    title: $localize`:@@web_filter_price_title:How much?`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,

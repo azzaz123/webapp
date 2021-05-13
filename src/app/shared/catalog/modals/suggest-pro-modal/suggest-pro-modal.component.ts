@@ -13,7 +13,7 @@ export class SuggestProModalComponent {
   constructor(public activeModal: NgbActiveModal) {}
 
   get buttonText(): string {
-    return this.isFreeTrial ? $localize`:@@startFreeTrial:Start free trial` : $localize`:@@seePlans:See plans`;
+    return this.isFreeTrial ? $localize`:@@web_start_free_trial:Start free trial` : $localize`:@@web_see_plans:See plans`;
   }
 
   get descriptionText(): string {

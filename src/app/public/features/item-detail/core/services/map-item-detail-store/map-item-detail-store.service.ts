@@ -127,7 +127,9 @@ export class MapItemDetailStoreService {
   private getLocationSpecifications(): string {
     const itemLocation = this.getItemLocation();
 
-    return !!itemLocation?.zip && !!itemLocation?.city ? `${itemLocation.zip}, ${itemLocation.city}` : $localize`:@@Undefined:Undefined`;
+    return !!itemLocation?.zip && !!itemLocation?.city
+      ? `${itemLocation.zip}, ${itemLocation.city}`
+      : $localize`:@@web_undefined:Undefined`;
   }
 
   private getCoordinate(): Coordinate {
