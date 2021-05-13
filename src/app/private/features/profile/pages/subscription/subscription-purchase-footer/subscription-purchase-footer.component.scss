@@ -31,7 +31,12 @@
   }
 
   tsl-button {
-    width: 147px;
+    width: 160px;
+    @include media-breakpoint-down(xs) {
+      width: 100%;
+      display: block;
+      margin: 8px 0 12px 0;
+    }
   }
 
   @include media-breakpoint-down(md) {

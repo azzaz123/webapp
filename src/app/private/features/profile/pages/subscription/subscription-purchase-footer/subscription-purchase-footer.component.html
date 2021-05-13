@@ -1,29 +1,33 @@
 <div class="SubscriptionPurchaseFooter">
-    <div class="container h-100 d-flex align-items-center justify-content-between">
-        <div>
+    <div class="container h-100 d-flex flex-column">
+        <div class="d-flex align-items-center justify-content-between flex-wrap">
             <div>
-                <b>
-                    <span i18n="@@total">
-                        Total
-                    </span>
-                </b>
+                <div>
+                    <b>
+                        <span i18n="@@total">
+                            Total
+                        </span>
+                    </b>
+                </div>
+                <div class="SubscriptionPurchaseFooter__amount">
+                    <b>
+                        {{subscription.trial_available ? "0,00" : selectedTier.price}}{{selectedTier.currency}}
+                    </b>
+                </div>
+                <div class="SubscriptionPurchaseFooter__description">
+                    {{descriptionText}}
+                </div>
             </div>
-            <div class="SubscriptionPurchaseFooter__amount">
-                <b>
-                    {{subscription.trial_available ? "0,00" : selectedTier.price}}{{selectedTier.currency}}
-                </b>
-            </div>
-            <div class="SubscriptionPurchaseFooter__description"> 
-                {{descriptionText}}
-            </div>
-            <div>
-                <span class="SubscriptionPurchaseFooter__legal" i18n="@@web_stripe_card_element_513">By subscribing, you accept the <a href="{{termsAndConditionsURL}}" target="_blank">Terms of use</a>
-            and <a href="{{policyPrivacyURL}}" target="_blank">Privacy policy</a> of Wallapop S.L. and Stripe Ltd
-                </span>
-            </div>
+            <tsl-button className="btn btn-primary btn-primary--bold btn--big btn--width" [loading]="isLoading"
+                [disabled]="buttonDisable" (clickButton)="onClickButton()">
+                {{buttonText}}
+            </tsl-button>
         </div>
-        <tsl-button className="btn btn-primary btn-primary--bold btn--big btn--width" [loading]="isLoading" [disabled]="buttonDisable" (clickButton)="onClickButton()">
-            {{buttonText}}
-        </tsl-button>
+        <div>
+            <span class="SubscriptionPurchaseFooter__legal" i18n="@@web_stripe_card_element_513">By subscribing, you
+                accept the <a href="{{termsAndConditionsURL}}" target="_blank">Terms of use</a>
+                and <a href="{{policyPrivacyURL}}" target="_blank">Privacy policy</a> of Wallapop S.L. and Stripe Ltd
+            </span>
+        </div>
     </div>
 </div>
