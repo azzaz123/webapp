@@ -105,20 +105,6 @@ export class SearchService {
     );
   }
 
-  // private onChangeQueryStringParameters(): Observable<FilterParameter[]> {
-  //   const locationObservable = this.queryStringService.queryStringParams$.pipe(
-  //     take(1),
-  //     map((parameters: FilterParameter[]) => {
-  //       const location: SearchLocation = this.locationService.getLocationParameters(this.getLocationFromParameters(parameters));
-  //
-  //       return this.injectLocationToParameters(location, parameters);
-  //     })
-  //   );
-  //   const genericObservable = this.queryStringService.queryStringParams$.pipe(skip(1));
-  //
-  //   return merge(locationObservable, genericObservable).pipe(tap((parameters) => this.parameterStoreService.setParameters(parameters)));
-  // }
-
   private onLoadMore(): Observable<SearchPagination> {
     return this.loadMore$.pipe(
       tap(() => (this.isLoadingPaginationResults = true)),
@@ -144,32 +130,4 @@ export class SearchService {
   private getCategoryIdFromParams(filterParameters: FilterParameter[]) {
     return filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
   }
-
-  // private getLocationFromParameters(parameters: FilterParameter[]): SearchLocation {
-  //   const locationParams = parameters.filter(({ key }) => this.isLocationKey(key));
-  //
-  //   if (locationParams.length === 2) {
-  //     return locationParams.reduce((accumulated, param) => {
-  //       return {
-  //         ...accumulated,
-  //         [param.key]: param.value,
-  //       };
-  //     }, {} as SearchLocation);
-  //   }
-  // }
-
-  // private injectLocationToParameters(location: SearchLocation, parameters: FilterParameter[]): FilterParameter[] {
-  //   const cleanedParameters = parameters.filter(({ key }) => !this.isLocationKey(key));
-  //   return [
-  //     ...cleanedParameters,
-  //     ...[
-  //       { key: FILTER_QUERY_PARAM_KEY.longitude, value: location[FILTER_QUERY_PARAM_KEY.longitude] },
-  //       { key: FILTER_QUERY_PARAM_KEY.latitude, value: location[FILTER_QUERY_PARAM_KEY.latitude] },
-  //     ],
-  //   ];
-  // }
-
-  // private isLocationKey(key: FILTER_QUERY_PARAM_KEY): boolean {
-  //   return key === FILTER_QUERY_PARAM_KEY.longitude || key === FILTER_QUERY_PARAM_KEY.latitude;
-  // }
 }
