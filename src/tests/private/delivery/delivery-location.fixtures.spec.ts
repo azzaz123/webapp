@@ -1,4 +1,5 @@
 import { DeliveryLocationApi } from '@private/features/delivery/interfaces/delivery-location/delivery-location-api.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 
 export const MOCK_DELIVERY_LOCATION: DeliveryLocationApi = {
   id: '123',
@@ -6,6 +7,11 @@ export const MOCK_DELIVERY_LOCATION: DeliveryLocationApi = {
   city: 'Barcelona',
   region: 'Barcelona',
   country_iso_code: 'ES',
+};
+
+export const MOCK_DELIVERY_LOCATION_AS_OPTION: IOption = {
+  label: MOCK_DELIVERY_LOCATION.city,
+  value: MOCK_DELIVERY_LOCATION.city,
 };
 
 export const MOCK_DELIVERY_LOCATION_IT: DeliveryLocationApi = {

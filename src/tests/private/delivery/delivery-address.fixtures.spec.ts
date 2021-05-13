@@ -12,6 +12,18 @@ export const MOCK_DELIVERY_ADDRESS: DeliveryAddressApi = {
   flat_and_floor: 'Quinto tercera',
 };
 
+export const MOCK_DELIVERY_ADDRESS_EMPTY: DeliveryAddressApi = {
+  city: '',
+  country_iso_code: 'ES',
+  flat_and_floor: '',
+  full_name: '',
+  id: 'FAKE_UUID',
+  phone_number: '',
+  postal_code: '',
+  region: '',
+  street: '',
+};
+
 export const MOCK_DELIVERY_ADDRESS_2: DeliveryAddressApi = {
   id: '1212',
   full_name: 'Lalli',

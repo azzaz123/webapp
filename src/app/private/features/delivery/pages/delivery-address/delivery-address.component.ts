@@ -177,20 +177,21 @@ export class DeliveryAddressComponent implements OnInit {
       )
       .subscribe();
 
-    this.isNewForm = false;
     this.patchCurrentForm(deliveryAddress);
-    this.formComponent.initFormControl();
-    this.initializeCountries(false);
-    this.patchFormValues();
+    this.prepareFormAndInitializeCountries(false);
   }
 
   private handleNewForm(): void {
     this.loading = false;
-    this.initializeCountries();
-    this.patchFormValues();
-    this.formComponent.initFormControl();
-    this.isNewForm = true;
     this.buildForm();
+    this.prepareFormAndInitializeCountries(true);
+  }
+
+  private prepareFormAndInitializeCountries(isNewForm: boolean): void {
+    this.isNewForm = isNewForm;
+    this.formComponent.initFormControl();
+    this.initializeCountries(isNewForm);
+    this.patchFormValues();
   }
 
   private submitValidForm(): void {
@@ -206,8 +207,6 @@ export class DeliveryAddressComponent implements OnInit {
         () => {
           this.deliveryAddressStoreService.deliveryAddress = this.deliveryAddressForm.value;
           this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS);
-          this.formComponent.initFormControl();
-          this.isNewForm = false;
           this.initForm(false);
           this.redirect();
         },
@@ -304,7 +303,7 @@ export class DeliveryAddressComponent implements OnInit {
     this.deliveryCountriesService.getCountriesAsOptionsAndDefault().subscribe((countryOptionsAndDefault: CountryOptionsAndDefault) => {
       this.countries = countryOptionsAndDefault.countryOptions;
       if (isNewForm) {
-        this.deliveryAddressForm.get('country').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
+        this.deliveryAddressForm.get('country_iso_code').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
       }
     });
   }
