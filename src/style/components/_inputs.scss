@@ -132,5 +132,12 @@ input::-webkit-calendar-picker-indicator {
         border-radius: 50%;
       }
     }
+    &:disabled {
+      cursor: default;
+      border: 1px solid $blue-grey-4;
+      &:after {
+        background-color: $blue-grey-4;
+      }
+    }
   }
 }
