@@ -1,7 +1,5 @@
 <div class="Search"
-  infinite-scroll
-  [infiniteScrollDistance]="0"
-  [infiniteScrollThrottle]="150"
+  tslInfiniteScroll
   [infiniteScrollDisabled]="(infiniteScrollDisabled$ | async) || (isLoadingPaginationResults$ | async)"
   (scrolled)="scrolled()">
 
