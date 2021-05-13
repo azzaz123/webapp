@@ -15,6 +15,12 @@ import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
+import { QueryStringLocationService } from '@core/search/query-string-location.service';
+import { CookieService } from 'ngx-cookie';
+import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
 
 @Component({
   selector: 'tsl-test-component',
@@ -26,6 +32,7 @@ describe('FiltersWrapperComponent', () => {
   let component: FiltersWrapperComponent;
   let drawerStore: FilterParameterStoreService;
   let bubbleStore: FilterParameterStoreService;
+  let navigator: SearchNavigatorService;
   let fixture: ComponentFixture<TestComponent>;
   let debugElement: DebugElement;
 
@@ -35,7 +42,16 @@ describe('FiltersWrapperComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TestComponent, FiltersWrapperComponent, FilterGroupComponentStub, ExtractFilterConfigsPipe],
-      imports: [BubbleModule, DrawerModule],
+      imports: [
+        BubbleModule,
+        DrawerModule,
+        RouterTestingModule.withRoutes([
+          {
+            path: 'search',
+            redirectTo: '',
+          },
+        ]),
+      ],
       providers: [
         FilterGroupConfigurationService,
         {
@@ -46,12 +62,17 @@ describe('FiltersWrapperComponent', () => {
           provide: FILTER_PARAMETER_STORE_TOKEN,
           useClass: FilterParameterStoreService,
         },
+        SearchQueryStringService,
+        QueryStringLocationService,
+        { provide: 'SUBDOMAIN', useValue: 'es' },
+        { provide: CookieService, useValue: MockCookieService },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestComponent);
     bubbleStore = TestBed.inject<FilterParameterStoreService>(FILTER_PARAMETER_STORE_TOKEN);
     drawerStore = TestBed.inject<FilterParameterStoreService>(FILTER_PARAMETER_DRAFT_STORE_TOKEN);
+    navigator = TestBed.inject(SearchNavigatorService);
     debugElement = fixture.debugElement;
     component = debugElement.query(By.directive(FiltersWrapperComponent)).componentInstance;
     fixture.detectChanges();
@@ -134,11 +155,11 @@ describe('FiltersWrapperComponent', () => {
     });
 
     it('should set the parameters to the main store', () => {
-      spyOn(bubbleStore, 'setParameters');
+      spyOn(navigator, 'navigate');
       const drawer: DrawerComponent = debugElement.query(drawerPredicate).componentInstance;
       drawer.apply.emit();
 
-      expect(bubbleStore.setParameters).toHaveBeenCalledTimes(1);
+      expect(navigator.navigate).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -161,12 +182,12 @@ describe('FiltersWrapperComponent', () => {
   describe('when bubble value changes', () => {
     const newValues: FilterParameter[] = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: '200' }];
     it('should upsert bubble store values', () => {
-      spyOn(bubbleStore, 'upsertParameters');
+      spyOn(navigator, 'navigate');
 
       component.bubbleChange(newValues);
 
-      expect(bubbleStore.upsertParameters).toHaveBeenCalledTimes(1);
-      expect(bubbleStore.upsertParameters).toHaveBeenCalledWith(newValues);
+      expect(navigator.navigate).toHaveBeenCalledTimes(1);
+      expect(navigator.navigate).toHaveBeenCalledWith(newValues, true);
     });
   });
 
@@ -315,47 +336,6 @@ describe('FiltersWrapperComponent', () => {
           drawerStore.setParameters(newValuesWithLocation);
 
           expect(drawerStore.getParameters()).toEqual(cleanValuesWithLocation);
-        });
-      });
-    });
-
-    describe('... in the bubbles', () => {
-      describe('and drawer has not yet receive change (change originated by bubble)', () => {
-        it('should set clean parameters', () => {
-          bubbleStore.setParameters(newValues);
-
-          expect(bubbleStore.getParameters()).toEqual(cleanValues);
-        });
-
-        describe('and cleanup exception present', () => {
-          const locationValues = [
-            { key: FILTER_QUERY_PARAM_KEY.longitude, value: '0' },
-            { key: FILTER_QUERY_PARAM_KEY.latitude, value: '0' },
-          ];
-          const oldValuesWithLocation = [...oldValues, ...locationValues];
-          const newValuesWithLocation = [...newValues, ...locationValues];
-          const cleanValuesWithLocation = [...cleanValues, ...locationValues];
-
-          beforeEach(() => {
-            bubbleStore.setParameters(oldValuesWithLocation);
-          });
-          it('should not clean exceptions', () => {
-            bubbleStore.setParameters(newValuesWithLocation);
-
-            expect(bubbleStore.getParameters()).toEqual(cleanValuesWithLocation);
-          });
-        });
-      });
-
-      describe('and drawer has already receive change (change originated by drawer)', () => {
-        beforeEach(() => {
-          drawerStore.setParameters(newValues);
-          drawerStore.upsertParameters([{ key: FILTER_QUERY_PARAM_KEY.postedAgo, value: 'lastWeek' }]);
-        });
-        it('should set end up with parameters', () => {
-          bubbleStore.setParameters(newValues);
-
-          expect(bubbleStore.getParameters()).toEqual(drawerStore.getParameters());
         });
       });
     });

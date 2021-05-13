@@ -9,7 +9,7 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     type: FILTER_TYPES.SELECT,
     title: $localize`:@@filterGenderTitle:Gender`,
     bubblePlaceholder: $localize`:@@filterGenderBubblePlaceholder:Gender`,
-    drawerPlaceholder: $localize`:@@filterGenderBubblePlaceholder:Select gender`,
+    drawerPlaceholder: $localize`:@@filterGenderDrawerPlaceholder:Select gender`,
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.gender,
     },

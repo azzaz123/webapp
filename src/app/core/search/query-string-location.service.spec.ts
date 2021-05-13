@@ -99,8 +99,12 @@ describe('QueryStringLocationService', () => {
             spyOn(localStorage, 'getItem').and.returnValues(undefined, undefined);
 
             const location = service.getLocationParameters();
+            const expectedLocation = {
+              longitude: DEFAULT_LOCATIONS.es[FILTER_QUERY_PARAM_KEY.longitude],
+              latitude: DEFAULT_LOCATIONS.es[FILTER_QUERY_PARAM_KEY.latitude],
+            };
 
-            expect(location).toEqual(DEFAULT_LOCATIONS.es);
+            expect(location).toEqual(expectedLocation);
             expect(cookieService.get).toHaveBeenCalledTimes(2);
             expect(localStorage.getItem).toHaveBeenCalledTimes(2);
           });

@@ -8,8 +8,6 @@ import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
-import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
-import { SUGGESTER_DATA_WEB } from '@fixtures/suggester.fixtures.spec';
 import { USER_DATA } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
@@ -24,10 +22,12 @@ import { By } from '@angular/platform-browser';
 import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { Router } from '@angular/router';
-import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
+import { QueryStringLocationService } from '@core/search/query-string-location.service';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -65,6 +65,7 @@ describe('TopbarComponent', () => {
   let modalService: NgbModal;
   let featureFlagService: FeatureFlagServiceMock;
   let router: Router;
+  let navigator: SearchNavigatorService;
 
   beforeEach(
     waitForAsync(() => {
@@ -133,6 +134,8 @@ describe('TopbarComponent', () => {
             useValue: windowMock,
           },
           EventService,
+          SearchQueryStringService,
+          QueryStringLocationService,
         ],
         declarations: [TopbarComponent, CustomCurrencyPipe],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
@@ -152,6 +155,7 @@ describe('TopbarComponent', () => {
     cookieService = TestBed.inject(CookieService);
     modalService = TestBed.inject(NgbModal);
     featureFlagService = TestBed.inject(FeatureflagService);
+    navigator = TestBed.inject(SearchNavigatorService);
     router = TestBed.inject(Router);
   });
 
@@ -301,13 +305,17 @@ describe('TopbarComponent', () => {
         it('should navigate to the new search page', () => {
           const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
-          spyOn(router, 'navigate');
+          spyOn(navigator, 'navigate');
 
           searchBox.triggerEventHandler('searchSubmit', MOCK_SEARCH_BOX_VALUE);
 
-          expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.SEARCH}`], {
-            queryParams: { ...MOCK_SEARCH_BOX_VALUE },
-          });
+          expect(navigator.navigate).toHaveBeenCalledWith(
+            [
+              { key: 'keywords', value: 'iphone' },
+              { key: 'category_ids', value: '16000' },
+            ],
+            true
+          );
         });
       });
 
