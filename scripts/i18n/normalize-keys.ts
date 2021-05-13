@@ -213,8 +213,8 @@ class I18nNormalizer {
   }
 
   private substituteKeys(substitutionKeys: SubstitutionKey[]): void {
-    substitutionKeys.forEach(({newKey, source}) => {
-      this.setNewKeyInHTML(source, newKey);
+    substitutionKeys.forEach((substitutionKey) => {
+      this.setNewKeyInHTML(substitutionKey);
     });
 
     this.setNewKeysInFiles(substitutionKeys);
@@ -222,28 +222,21 @@ class I18nNormalizer {
     this.runI18n();
   }
 
-  private setNewKeyInHTML(source: string, newKey: string): void {
+  private setNewKeyInHTML(substitutionKey: SubstitutionKey): void {
+    const {source, oldKey, newKey} = substitutionKey;
     const splitPath = source.split(':');
     const filePath = splitPath[0];
-    const keyPosition = splitPath[1];
-    // Note: only checking first line because breaklines where removed
-    const translationLinePositionInFile = parseInt(keyPosition.split(',')[0], 0);
 
-    const rawHTML = fs.readFileSync(filePath, 'UTF-8');
-    const allLines = rawHTML.split(/\r?\n/);
-    let targetLine = allLines[translationLinePositionInFile];
-    targetLine = targetLine.replace(/="@@(.*?)(?=")"/g, '');
+    let rawHTML = fs.readFileSync(filePath, 'UTF-8');
 
-    const isPlaceholder = targetLine.includes('i18n-placeholder');
-    if (isPlaceholder) {
-      targetLine = targetLine.replace('i18n-placeholder', `i18n-placeholder="@@${newKey}"`);
-    } else {
-      targetLine = targetLine.replace('i18n', `i18n="@@${newKey}"`);
+    if (rawHTML.match(`i18n-placeholder=\"@@${oldKey}\"`)) {
+      rawHTML = rawHTML.replace(`i18n-placeholder=\"@@${oldKey}\"`, `i18n-placeholder=\"@@${newKey}\"`);
     }
 
-    allLines[translationLinePositionInFile] = targetLine;
-    const formattedRawHTML = allLines.join('\n');
-    fs.writeFileSync(filePath, formattedRawHTML);
+    if (rawHTML.match(`i18n=\"@@${oldKey}\"`)) {
+      rawHTML = rawHTML.replace(`i18n=\"@@${oldKey}\"`, `i18n=\"@@${newKey}\"`);
+    }
+    fs.writeFileSync(filePath, rawHTML);
   }
 
   private setNewKeysInFiles(substitutionKeys: SubstitutionKey[]): void {
