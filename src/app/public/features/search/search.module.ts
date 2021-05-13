@@ -24,10 +24,7 @@ import {
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
-import { SearchResolver } from './core/services/search.resolver';
 import { SearchAdsService } from './core/ads/search-ads.service';
-import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
-import { QueryStringLocationService } from '@public/features/search/core/services/query-string-location.service';
 
 @NgModule({
   imports: [
@@ -58,10 +55,7 @@ import { QueryStringLocationService } from '@public/features/search/core/service
       provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
       useClass: FilterParameterStoreService,
     },
-    SearchResolver,
     SearchAdsService,
-    SearchQueryStringService,
-    QueryStringLocationService,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
 })
