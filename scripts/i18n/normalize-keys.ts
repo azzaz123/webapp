@@ -166,11 +166,15 @@ class I18nNormalizer {
       return acc;
     }, [] as MissingTranslation[]);
 
-    console.log(
-      '\nMissing translations:\n',
-      missingTranslations.map(missingTranslation => `${missingTranslation.id}: ${missingTranslation.missingLanguages.join(', ')}`)
-        .join('\n')
-    );
+    if (missingTranslations.length > 0) {
+      console.log(
+        '\nMissing translations:\n',
+        missingTranslations.map(missingTranslation => `${missingTranslation.id}: ${missingTranslation.missingLanguages.join(', ')}`)
+          .join('\n')
+      );
+    } else {
+      console.log('\nNo missing translations\n');
+    }
   }
 
   private async normalizeKeys(): Promise<void> {
