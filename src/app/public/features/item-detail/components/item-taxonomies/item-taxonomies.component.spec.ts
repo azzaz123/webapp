@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
-import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { ItemTaxonomiesComponent } from './item-taxonomies.component';
 
 describe('ItemTaxonomiesComponent', () => {

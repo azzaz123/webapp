@@ -7,7 +7,7 @@ import { LocationModalComponent } from './location-select/location-modal/locatio
 import { NgbPopoverModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapsComponent } from './here-maps/here-maps.component';
 import { LocationBoxComponent } from './location-box/location-box.component';
-import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, FormsModule, NgbTypeaheadModule, NgbPopoverModule, SvgIconModule],

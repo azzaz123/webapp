@@ -7,7 +7,6 @@ import { ItemCardListModule } from '@public/shared/components/item-card-list/ite
 import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopping.module';
 import { ErrorBoxModule } from '@shared/error-box/error-box.module';
 import { SharedModule } from '@shared/shared.module';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FiltersWrapperModule } from './components/filters-wrapper/filters-wrapper.module';
 import { SearchErrorLayoutComponent } from './components/search-error-layout/search-error-layout.component';
 import { SearchLayoutComponent } from './components/search-layout/search-layout.component';
@@ -24,10 +23,7 @@ import {
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
-import { SearchResolver } from './core/services/search.resolver';
 import { SearchAdsService } from './core/ads/search-ads.service';
-import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
-import { QueryStringLocationService } from '@public/features/search/core/services/query-string-location.service';
 
 @NgModule({
   imports: [
@@ -40,7 +36,6 @@ import { QueryStringLocationService } from '@public/features/search/core/service
     AdSlotShoppingModule,
     ItemFavouritesModule,
     ErrorBoxModule,
-    InfiniteScrollModule,
     SortFilterModule,
   ],
   providers: [
@@ -58,10 +53,7 @@ import { QueryStringLocationService } from '@public/features/search/core/service
       provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
       useClass: FilterParameterStoreService,
     },
-    SearchResolver,
     SearchAdsService,
-    SearchQueryStringService,
-    QueryStringLocationService,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
 })

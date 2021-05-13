@@ -6,6 +6,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { UuidService } from '@core/uuid/uuid.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-credit-card-modal',
@@ -45,7 +46,7 @@ export class CreditCardModalComponent implements OnInit {
       this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
     } else {
       this.loading = false;
-      this.errorService.i18nError('noCardSelectedError');
+      this.errorService.i18nError(TRANSLATION_KEY.NO_CARD_SELECTED_ERROR);
     }
   }
 

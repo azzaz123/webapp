@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
-import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { AdSlotModule } from './ads/ad-slot/ad-slot.module';
 import { ArchivableComponent } from './archivable/archivable.component';
@@ -74,6 +74,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
+import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 
 @NgModule({
   imports: [
@@ -166,6 +167,7 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     DateCountDownModule,
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
+    InfiniteScrollDirective,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -227,6 +229,7 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     WallacoinsDisabledModalComponent,
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
+    InfiniteScrollDirective,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [

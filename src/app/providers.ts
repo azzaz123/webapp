@@ -2,6 +2,8 @@ import { Provider, APP_INITIALIZER } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
 import { UserService } from './core/user/user.service';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from './core/custom-route-reuse-strategy/custom-route-reuse-strategy';
 
 export const PROVIDERS: Provider[] = [
   {
@@ -14,6 +16,10 @@ export const PROVIDERS: Provider[] = [
     useFactory: userPermissionsFactory,
     deps: [UserService, NgxPermissionsService],
     multi: true,
+  },
+  {
+    provide: RouteReuseStrategy,
+    useClass: CustomRouteReuseStrategy,
   },
 ];
 

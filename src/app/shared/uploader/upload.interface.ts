@@ -1,5 +1,6 @@
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { DeliveryInfo } from '@core/item/item-response.interface';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 export enum UPLOAD_STATUS {
   Queue,
@@ -48,7 +49,7 @@ export interface UploadFile {
 export interface UploadOutput {
   type: OUTPUT_TYPE;
   file?: UploadFile;
-  reason?: string;
+  reason?: TRANSLATION_KEY;
   pendingFiles?: PendingFiles;
   imageType?: IMAGE_TYPE;
   percentage?: number;

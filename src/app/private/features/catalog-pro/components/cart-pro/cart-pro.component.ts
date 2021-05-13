@@ -12,6 +12,7 @@ import { CartChange, CartProItem } from '@shared/catalog/cart/cart-item.interfac
 import { OrderPro } from '@core/item/item-response.interface';
 import { some } from 'lodash-es';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 export interface Balance {
   citybump: number;
@@ -103,7 +104,7 @@ export class CartProComponent implements OnInit {
     this.itemService.bumpProItems(order).subscribe(
       (failedProducts: string[]) => {
         if (failedProducts && failedProducts.length) {
-          this.errorService.i18nError('bumpError');
+          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
         } else {
           this.itemService.deselectItems();
           let code = 201;
@@ -117,7 +118,7 @@ export class CartProComponent implements OnInit {
         if (e.error) {
           this.errorService.show(e);
         } else {
-          this.errorService.i18nError('bumpError');
+          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
         }
       }
     );

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { UserReviewService } from '@private/features/reviews/core/user-review.service';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 import { SharedModule } from '@shared/shared.module';

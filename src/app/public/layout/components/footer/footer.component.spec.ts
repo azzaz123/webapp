@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { I18nService } from '@core/i18n/i18n.service';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 import { FooterComponent } from './footer.component';
 import { FOOTER_LINKS } from './constants/footer-constants';

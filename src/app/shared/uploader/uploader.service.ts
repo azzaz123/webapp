@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { IMAGE_TYPE, NgUploaderOptions, OUTPUT_TYPE, UploadFile, UploadInput, UploadOutput, UPLOAD_STATUS } from './upload.interface';
 import { DomSanitizer } from '@angular/platform-browser';
 import { cloneDeep } from 'lodash-es';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Injectable()
 export class UploaderService {
@@ -65,7 +66,7 @@ export class UploaderService {
     this.serviceEvents.next({
       type: OUTPUT_TYPE.rejected,
       file: file,
-      reason: 'ExtensionNotAllowed',
+      reason: TRANSLATION_KEY.UPLOAD_EXTENSION_NOT_ALLOWED_ERROR,
       imageType,
     });
 
@@ -79,7 +80,7 @@ export class UploaderService {
     this.serviceEvents.next({
       type: OUTPUT_TYPE.rejected,
       file: file,
-      reason: 'MaxUploadsExceeded',
+      reason: TRANSLATION_KEY.UPLOAD_MAX_UPLOADS_ERROR,
       imageType,
     });
     return false;
@@ -92,7 +93,7 @@ export class UploaderService {
     this.serviceEvents.next({
       type: OUTPUT_TYPE.rejected,
       file: file,
-      reason: 'MaxSizeExceeded',
+      reason: TRANSLATION_KEY.UPLOAD_MAX_SIZE_ERROR,
       imageType,
     });
     return false;

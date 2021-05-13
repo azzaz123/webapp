@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Pack } from '../../../../../core/payments/pack';
 import { PaymentService, PAYMENT_RESPONSE_STATUS, PAYMENT_METHOD } from '../../../../../core/payments/payment.service';
 import { ErrorsService } from '../../../../../core/errors/errors.service';
@@ -8,6 +8,7 @@ import { StripeService } from '../../../../../core/stripe/stripe.service';
 import { EventService } from '../../../../../core/event/event.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UuidService } from '../../../../../core/uuid/uuid.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-buy-wallacoins-modal',
@@ -71,7 +72,7 @@ export class BuyWallacoinsModalComponent implements OnInit {
         if (e.error) {
           this.errorService.show(e);
         } else {
-          this.errorService.i18nError('packError');
+          this.errorService.i18nError(TRANSLATION_KEY.PACK_ERROR);
         }
       }
     );

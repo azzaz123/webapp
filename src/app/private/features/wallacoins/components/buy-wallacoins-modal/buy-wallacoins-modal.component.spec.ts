@@ -13,6 +13,7 @@ import { StripeService } from '../../../../../core/stripe/stripe.service';
 import { EventService } from '../../../../../core/event/event.service';
 import { STRIPE_CARD_OPTION } from '../../../../../../tests/stripe.fixtures.spec';
 import { UuidService } from '../../../../../core/uuid/uuid.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('BuyWallacoinsModalComponent', () => {
   let component: BuyWallacoinsModalComponent;
@@ -144,7 +145,7 @@ describe('BuyWallacoinsModalComponent', () => {
 
           component.checkout();
 
-          expect(errorService.i18nError).toHaveBeenCalledWith('packError');
+          expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.PACK_ERROR);
         });
       });
     });
