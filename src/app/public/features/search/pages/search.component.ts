@@ -154,6 +154,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   private queryParamsChange(): Observable<FilterParameter[]> {
     return this.route.queryParams.pipe(
+      filter(() => this.componentAttached),
       distinctUntilChanged((prevParams, nextParams) => isEqual(prevParams, nextParams)),
       map((params: Params) => this.queryStringService.mapQueryToFilterParams(params))
     );
