@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryAddressErrorService } from '../../services/address/delivery-address-error/delivery-address-error.service';
 import { DeliveryLocationsStoreService } from '../../services/locations/delivery-locations-store/delivery-locations-store.service';
+import { DeliveryCountriesStoreService } from '../../services/countries/delivery-countries-store/delivery-countries-store.service';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { DeliveryLocationsStoreService } from '../../services/locations/delivery
     DeliveryAddressApiService,
     DeliveryAddressStoreService,
     DeliveryCountriesService,
+    DeliveryCountriesStoreService,
     DeliveryCountriesApiService,
     DeliveryLocationsService,
     DeliveryLocationsStoreService,

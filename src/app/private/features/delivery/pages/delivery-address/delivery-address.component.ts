@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DeliveryAddressApi, DeliveryAddressError } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { AddressError, ADDRESS_ERROR_TYPE } from '../../interfaces/delivery-address/delivery-address-error.interface';
+import { MappedAddressError, ADDRESS_ERROR_TYPE } from '../../interfaces/delivery-address/delivery-address-error.interface';
 import { DeliveryLocationsStoreService } from '../../services/locations/delivery-locations-store/delivery-locations-store.service';
 import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryAddressErrorService } from '../../services/address/delivery-address-error/delivery-address-error.service';
@@ -213,15 +213,17 @@ export class DeliveryAddressComponent implements OnInit {
         },
         (errors: HttpErrorResponse) => {
           const errorResponse: DeliveryAddressError[] = errors?.error;
-          const generatedError = this.deliveryAddressErrorService.generateError(errorResponse);
-          this.deliveryAddressForm.get(generatedError.formControlName).setErrors(null);
-          this.deliveryAddressForm.get(generatedError.formControlName).setErrors({ incorrect: true });
-          this.handleFormMessagesErrors(generatedError);
+          const generatedErrors = this.deliveryAddressErrorService.generateErrors(errorResponse);
+          generatedErrors.forEach((generatedError: MappedAddressError) => {
+            this.deliveryAddressForm.get(generatedError.formControlName).setErrors(null);
+            this.deliveryAddressForm.get(generatedError.formControlName).setErrors({ incorrect: true });
+            this.handleFormMessagesErrors(generatedError);
+          });
         }
       );
   }
 
-  private handleFormMessagesErrors(generatedError: AddressError): void {
+  private handleFormMessagesErrors(generatedError: MappedAddressError): void {
     if (generatedError.type === ADDRESS_ERROR_TYPE.FORM) {
       switch (generatedError.formControlName) {
         case 'phone_number':

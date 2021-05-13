@@ -6,27 +6,32 @@ import {
 import { ErrorsService } from '@core/errors/errors.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { AddressError, ADDRESS_ERROR_TYPE } from '@private/features/delivery/interfaces/delivery-address/delivery-address-error.interface';
+import {
+  MappedAddressError,
+  ADDRESS_ERROR_TYPE,
+} from '@private/features/delivery/interfaces/delivery-address/delivery-address-error.interface';
 
 @Injectable()
 export class DeliveryAddressErrorService {
   constructor(private errorService: ErrorsService, private i18n: I18nService) {}
 
-  public generateError(errors: DeliveryAddressError[]): AddressError | null {
-    if (!errors?.length || errors?.length > 1) {
+  public generateErrors(errors: DeliveryAddressError[]): MappedAddressError[] {
+    const errorsSize = errors?.length;
+
+    if (!errorsSize || errorsSize > 1) {
       this.errorService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
-      return;
+
+      return errors?.length ? errors.map((error: DeliveryAddressError) => this.getAddressError(error.error_code)) : [];
     }
 
-    const error = errors[0];
-    const addressError = this.getAddressError(error.error_code);
+    const addressError = this.getAddressError(errors[0].error_code);
     if (addressError.type === ADDRESS_ERROR_TYPE.TOAST) {
       this.errorService.i18nError(addressError.translationKey);
     }
-    return this.getAddressError(error.error_code);
+    return [addressError];
   }
 
-  private getAddressError(error: DELIVERY_ADDRESS_ERROR | string): AddressError {
+  private getAddressError(error: DELIVERY_ADDRESS_ERROR | string): MappedAddressError {
     let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR;
     let type: ADDRESS_ERROR_TYPE = ADDRESS_ERROR_TYPE.TOAST;
     let formControlName: string;

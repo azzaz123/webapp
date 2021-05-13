@@ -5,7 +5,7 @@ export enum ADDRESS_ERROR_TYPE {
   FORM,
 }
 
-export interface AddressError {
+export interface MappedAddressError {
   translationKey: TRANSLATION_KEY;
   type: ADDRESS_ERROR_TYPE;
   formControlName: string;
