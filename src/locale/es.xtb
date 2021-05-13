@@ -656,6 +656,7 @@
   <translation id="web_add_new_credit_card">Añadir una tarjeta de crédito</translation>
   <translation id="web_confirm_payment_method">Confirma tu método de pago</translation>
   <translation id="web_charge_this_card">Quieres que se cobre en la tarjeta</translation>
+  <translation id="web_confirm_payment_method_yes">Sí</translation>
   <translation id="web_subscription_card">Tarjeta vinculada a suscripciones</translation>
   <translation id="web_add_new_subscription_card">Añadir nueva tarjeta de suscripción</translation>
   <translation id="web_current_cards">Tarjetas guardadas</translation>
@@ -1399,5 +1400,4 @@
   <translation id="web_to_clean_model_example">P. ej: iPhone</translation>
   <translation id="web_to_clean_reviews">Opiniones</translation>
   <translation id="web_to_clean_error_saving_data">Error al guardar los datos. Intenta de nuevo</translation>
-  <translation id="web_confirm_payment_method_yes">Sí</translation>
 </translationbundle>
