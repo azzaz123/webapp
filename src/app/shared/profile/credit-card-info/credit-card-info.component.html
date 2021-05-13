@@ -1,5 +1,5 @@
-<div class="CreditCard__info" *ngIf="!loading">
-  <div class="credit-card-field">
+<div class="CreditCard__info" *ngIf="!loading" >
+  <div class="credit-card-field" [class.credit-card-field--error]="error">
     <div class="CreditCard__info--info">
       <tsl-svg-icon src="/assets/icons/card-{{financialCard?.stripeCard?.brand}}.svg"
       *ngIf="financialCard?.stripeCard?.brand === 'visa' || financialCard?.stripeCard?.brand === 'mastercard'"

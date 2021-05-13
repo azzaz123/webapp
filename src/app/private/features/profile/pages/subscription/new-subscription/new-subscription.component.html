@@ -20,7 +20,7 @@
         <div class="GenericCard__title" i18n="@@CardSelectorTitle">Payment method</div>
         <div class="GenericCard__subtitle" i18n="@@CardSelectorSubtitle">Encrypted and secure</div>
         <ng-container *ngIf="stripeCards">
-            <tsl-subscription-card-selector [stripeCards]="stripeCards" [selectedCard]="selectedCard"
+            <tsl-subscription-card-selector [stripeCards]="stripeCards" [selectedCard]="selectedCard" [error]="!!paymentError"
                 (changeSelectedCard)="onChangeSelectedCard($event)">
             </tsl-subscription-card-selector>
         </ng-container>

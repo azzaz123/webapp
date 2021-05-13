@@ -1,8 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
+import { translations } from '@core/i18n/translations/constants/translations';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { PaymentMethodResponse } from '@core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
@@ -48,8 +50,12 @@ export class NewSubscriptionComponent implements OnInit {
 
   public isRetryInvoice = false;
   private _invoiceId: string;
-
   public INVOICE_COMPONENT_TYPE = COMPONENT_TYPE;
+  private readonly errorTextConfig = {
+    [STRIPE_ERROR.card_declined]: translations[TRANSLATION_KEY.CARD_NUMBER_INVALID],
+    [STRIPE_ERROR.expired_card]: translations[TRANSLATION_KEY.CARD_DATE_INVALID],
+    [STRIPE_ERROR.incorrect_cvc]: translations[TRANSLATION_KEY.CARD_CVC_INVALID],
+  };
 
   ngOnInit(): void {
     this.getAllCards();
@@ -205,7 +211,7 @@ export class NewSubscriptionComponent implements OnInit {
   private showError(errors: PaymentError[]): void {
     if (errors?.length && errors[0].error_code in STRIPE_ERROR) {
       this.paymentError = errors[0].error_code as STRIPE_ERROR;
-      this.errorService.i18nError('paymentFailed', '', 'paymentFailedToastTitle');
+      this.errorService.i18nError('paymentFailed', this.errorTextConfig[this.paymentError], 'paymentFailedToastTitle');
       return;
     }
     this.paymentError = STRIPE_ERROR.unknown;
@@ -259,5 +265,11 @@ export class NewSubscriptionComponent implements OnInit {
     const errorResponse: PaymentError[] = error?.error;
     this.showError(errorResponse);
     this.isLoading = false;
+  }
+
+  @HostListener('click') onClick() {
+    if (this.paymentError) {
+      this.paymentError = null;
+    }
   }
 }

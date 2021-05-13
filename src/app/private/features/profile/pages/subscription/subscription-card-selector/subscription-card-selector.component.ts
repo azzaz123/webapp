@@ -5,8 +5,6 @@ import { ChangeCardModalComponent } from '@shared/modals/change-card-modal/chang
 import { NewCardModalComponent } from '@shared/modals/new-card-modal/new-card-modal.component';
 import { FinancialCard } from '@shared/profile/credit-card-info/financial-card';
 
-export const test = 'AAAA';
-
 @Component({
   selector: 'tsl-subscription-card-selector',
   templateUrl: './subscription-card-selector.component.html',
@@ -15,6 +13,7 @@ export const test = 'AAAA';
 export class SubscriptionCardSelectorComponent implements OnInit, OnChanges {
   @Input() stripeCards: FinancialCard[];
   @Input() selectedCard: FinancialCard;
+  @Input() error: boolean;
   @Output() changeSelectedCard: EventEmitter<FinancialCard> = new EventEmitter();
   public showChangeLink: boolean;
 

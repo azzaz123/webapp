@@ -14,6 +14,9 @@ $card-height: 88px;
   width: $card-width;
   display: flex;
   justify-content: center;
+  &--error {
+    border: solid 1px $warn;
+  }
   .card-icon {
     flex: 0 0 34px;
     margin-right: $spacing-m;
