@@ -74,6 +74,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
+import { NavLinksModule } from './nav-links/nav-links.module';
 
 @NgModule({
   imports: [
@@ -99,6 +100,7 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     UserCoverModule,
     ButtonModule,
     DateCountDownModule,
+    NavLinksModule,
   ],
   exports: [
     SpinnerModule,
@@ -148,7 +150,6 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
-    NavLinksComponent,
     LinkTransformPipe,
     WebSlugConverterPipe,
     UserProfileRoutePipe,
@@ -166,6 +167,7 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     DateCountDownModule,
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
+    NavLinksModule,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -212,7 +214,6 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
-    NavLinksComponent,
     LinkTransformPipe,
     WebSlugConverterPipe,
     UserProfileRoutePipe,
