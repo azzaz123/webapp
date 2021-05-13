@@ -859,7 +859,6 @@
   <translation id="web_profile_info_schedule">Horario de apertura</translation>
   <translation id="web_profile_info_location">Ubicación</translation>
   <translation id="web_unknown">Desconocido</translation>
-  <translation id="UserReviewsNoResults">Usuario sin opiniones</translation>
   <translation id="web_user_reviews_load_more">Ver más opiniones</translation>
   <translation id="web_user_published_load_more">Ver más productos</translation>
   <translation id="web_bump_suggestion_modal_title">¡Genial! Tu producto ya está en Wallapop</translation>
@@ -898,9 +897,6 @@
   <translation id="web_good_condition">Buen estado</translation>
   <translation id="web_for_refurbishment">A reformar</translation>
   <translation id="web_new">Nuevo</translation>
-  <translation id="Crappy">Destrozado</translation>
-  <translation id="CarMint">Km. 0</translation>
-  <translation id="CarUsed">Ocasión</translation>
   <translation id="web_coupe">Coupé</translation>
   <translation id="web_family">Familiar</translation>
   <translation id="web_mini_van">Monovolumen</translation>
