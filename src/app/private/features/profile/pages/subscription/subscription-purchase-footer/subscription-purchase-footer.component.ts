@@ -33,7 +33,7 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
 
   private setDescriptionText(): void {
     this.descriptionText = this.subscription.trial_available
-      ? $localize`:@@free_days_then_monthly:${this.subscription.trial_days} days free, then ${this.selectedTier.price}${this.selectedTier.currency}/month`
+      ? $localize`:@@price_after_free_days:${this.selectedTier.price}${this.selectedTier.currency}/month at the end of free trial`
       : $localize`:@@monthly_renewal_plan:The plan will be renewed monthly`;
   }
 

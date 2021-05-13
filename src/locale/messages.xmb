@@ -705,10 +705,10 @@
   <msg id="web_profile_pages_subscription_328"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:58</source>Unsubscribe first from app for your free month</msg>
   <msg id="total"><source>src/app/private/features/profile/pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component.html:6,8</source> Total </msg>
   <msg id="web_stripe_card_element_513"><source>src/app/private/features/profile/pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component.html:19,22</source>By subscribing, you accept the <ph name="START_LINK"/>Terms of use<ph name="CLOSE_LINK"/> and <ph name="START_LINK_1"/>Privacy policy<ph name="CLOSE_LINK"/> of Wallapop S.L. and Stripe Ltd </msg>
-  <msg id="free_days_then_monthly"><source>src/app/private/features/profile/pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component.ts:35</source><ph name="PH"/> days free, then <ph name="PH_1"/><ph name="PH_2"/>/month</msg>
+  <msg id="price_after_free_days"><source>src/app/private/features/profile/pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component.ts:35</source><ph name="PH"/><ph name="PH_1"/>/month at the end of free trial</msg>
   <msg id="monthly_renewal_plan"><source>src/app/private/features/profile/pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component.ts:36</source>The plan will be renewed monthly</msg>
   <msg id="pay"><source>src/app/private/features/profile/pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component.ts:40</source>Pay</msg>
-  <msg id="AfterFreeTrial"><source>src/app/private/features/profile/pages/subscription/subscription-tier-selector/subscription-tier-selector.component.html:14</source>after free trial</msg>
+  <msg id="after_free_trial"><source>src/app/private/features/profile/pages/subscription/subscription-tier-selector/subscription-tier-selector.component.html:13</source>after free trial</msg>
   <msg id="web_reviews_pages_332"><source>src/app/private/features/reviews/pages/reviews.component.html:11</source>Your Reviews</msg>
   <msg id="web_reviews_pages_333"><source>src/app/private/features/reviews/pages/reviews.component.html:14</source>This is what people think about you. </msg>
   <msg id="web_reviews_pages_334"><source>src/app/private/features/reviews/pages/reviews.component.html:18</source>Your average</msg>

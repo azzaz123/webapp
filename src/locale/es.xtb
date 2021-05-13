@@ -1260,4 +1260,5 @@
   <translation id="total">Total</translation>
   <translation id="subscription_purchase_subscription_subtitle">Convierte tus ventas en un auténtico negocio</translation>
   <translation id="free_days_then_monthly"><ph name="PH"/> days free, then <ph name="PH_1"/><ph name="PH_2"/>/month</translation>
+  <translation id="price_after_free_days"><ph name="PH"/><ph name="PH_1"/>/mes al terminar la prueba gratuita</translation>
 </translationbundle>
