@@ -33,6 +33,10 @@ import { SearchAdsService } from '../core/ads/search-ads.service';
 import { SearchService } from '../core/services/search.service';
 import { REGULAR_CARDS_COLUMNS_CONFIG, SearchComponent, WIDE_CARDS_COLUMNS_CONFIG } from './search.component';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
+import { QueryStringLocationService } from '@core/search/query-string-location.service';
+import { CookieService } from 'ngx-cookie';
+import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -72,6 +76,7 @@ describe('SearchComponent', () => {
       isLoadingResults$: isLoadingResultsSubject.asObservable(),
       isLoadingPaginationResults$: isLoadingPaginationResultsSubject.asObservable(),
       currentCategoryId$: currentCategoryIdSubject.asObservable(),
+      init: () => {},
       loadMore: () => {},
       close: () => {},
     };
@@ -79,6 +84,7 @@ describe('SearchComponent', () => {
       setShow: (show: boolean) => {},
     };
     searchAdsServiceMock = {
+      init: () => {},
       setSlots: () => {},
       close: () => {},
     };
@@ -124,6 +130,10 @@ describe('SearchComponent', () => {
           provide: PublicFooterService,
           useValue: publicFooterServiceMock,
         },
+        SearchQueryStringService,
+        QueryStringLocationService,
+        { provide: 'SUBDOMAIN', useValue: 'es' },
+        { provide: CookieService, useValue: MockCookieService },
       ],
     }).compileComponents();
   });

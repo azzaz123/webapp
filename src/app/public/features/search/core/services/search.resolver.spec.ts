@@ -33,7 +33,8 @@ describe('SearchResolver', () => {
     resolver = TestBed.inject(SearchResolver);
   });
 
-  describe('resolve', () => {
+  // TODO: Should be removed when we remove the resolver
+  xdescribe('resolve', () => {
     it('should call init of search service', () => {
       spyOn(searchServiceMock, 'init').and.callThrough();
 

@@ -1,6 +1,6 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, Scroll } from '@angular/router';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router, Scroll } from '@angular/router';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -14,16 +14,25 @@ import { ColumnsConfig } from '@public/shared/components/item-card-list/interfac
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { delay, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
-import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
+import { AD_PUBLIC_SEARCH, AdSlotSearch } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
-  AdShoppingPageOptionPublicSearchFactory,
   AD_SHOPPING_CONTAINER_PUBLIC_SEARCH,
   AD_SHOPPING_PUBLIC_SEARCH,
+  AdShoppingPageOptionPublicSearchFactory,
 } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
+import {
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
+import { isEqual } from 'lodash-es';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -91,17 +100,33 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     private publicFooterService: PublicFooterService,
     private searchAdsService: SearchAdsService,
     private viewportScroller: ViewportScroller,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private queryStringService: SearchQueryStringService,
+    private searchNavigatorService: SearchNavigatorService,
+    @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
-    this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
-    this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
   }
 
   public ngOnInit(): void {
     this.slotsConfig = this.deviceService.isMobile() ? SLOTS_CONFIG_MOBILE : SLOTS_CONFIG_DESKTOP;
 
+    this.searchService.init();
+    this.searchAdsService.init();
     this.searchAdsService.setSlots();
+
+    this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
+    this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
+    this.subscription.add(
+      this.queryParamsChange().subscribe((params) => {
+        if (!this.paramsHaveLocation(params)) {
+          this.searchNavigatorService.navigate(params);
+        } else {
+          this.filterParameterStore.setParameters(params);
+        }
+      })
+    );
   }
 
   public onAttach(): void {
@@ -125,6 +150,14 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   public handleFilterOpened(opened: boolean) {
     this.filterOpened = opened;
+  }
+
+  private queryParamsChange(): Observable<FilterParameter[]> {
+    return this.route.queryParams.pipe(
+      filter(() => this.componentAttached),
+      distinctUntilChanged((prevParams, nextParams) => isEqual(prevParams, nextParams)),
+      map((params: Params) => this.queryStringService.mapQueryToFilterParams(params))
+    );
   }
 
   private buildListConfigObservable(): Observable<ColumnsConfig> {
@@ -185,5 +218,11 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
       return CARD_TYPES.WIDE;
     }
     return CARD_TYPES.REGULAR;
+  }
+
+  private paramsHaveLocation(params: FilterParameter[]): boolean {
+    return (
+      params.filter((param) => param.key === FILTER_QUERY_PARAM_KEY.latitude || param.key === FILTER_QUERY_PARAM_KEY.longitude).length === 2
+    );
   }
 }
