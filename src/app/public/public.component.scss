@@ -2,6 +2,7 @@
 
 :host {
   display: block;
+  padding-top: $topbar-height;
   background-color: $main-background-color;
 
   @include media-breakpoint-down(md) {
