@@ -85,9 +85,9 @@ const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.DEFAULT_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -108,9 +108,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BUY_BOX_ROOM_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -123,9 +123,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BUY_DEFAULT_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -143,9 +143,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BUY_FLAT_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -161,9 +161,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BUY_GARAGE_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -176,9 +176,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BUY_HOUSE_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -194,9 +194,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BUY_LAND_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -212,9 +212,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BUY_OFFICE_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -230,9 +230,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_BUY_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BUY_OFFICE_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -251,9 +251,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.RENT_BOX_ROOM_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -266,9 +266,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.RENT_DEFAULT_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -286,9 +286,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.RENT_FLAT_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -301,9 +301,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.RENT_GARAGE_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -316,9 +316,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.RENT_HOUSE_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -331,9 +331,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.RENT_LAND_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -346,9 +346,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.RENT_OFFICE_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -361,9 +361,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_RENT_PRICE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.RENT_ROOM_PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,

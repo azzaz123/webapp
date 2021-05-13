@@ -567,7 +567,6 @@
   <msg id="web_not_loaded_invoices"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:17</source>Sorry, we cannot load your invoices at this time. Please try again later.</msg>
   <msg id="web_empty_history"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:18</source>Your history is empty.</msg>
   <msg id="web_not_old_invoices"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:19</source>You don&apos;t have any old invoices. Fill in the invoicing data for future purchases.</msg>
-  <msg id="loadMoreButton"><source>src/app/private/features/profile/components/invoice-history/invoice-history.component.html:32</source>Load more</msg>
   <msg id="web_transaction_date"><source>src/app/private/features/profile/components/invoice-item/invoice-item.component.html:10</source>Transaction date</msg>
   <msg id="web_date"><source>src/app/private/features/profile/components/invoice-item/invoice-item.component.html:11</source>Date</msg>
   <msg id="web_request_invoice"><source>src/app/private/features/profile/components/invoice-item/invoice-item.component.html:18</source>Request invoice</msg>
@@ -740,7 +739,6 @@
   <msg id="web_profile_pages_319"><source>src/app/private/features/profile/pages/profile.component.html:34</source>Account</msg>
   <msg id="web_profile_pages_320"><source>src/app/private/features/profile/pages/profile.component.html:35,37</source>Billing information</msg>
   <msg id="web_profile_pages_321"><source>src/app/private/features/profile/pages/profile.component.html:38</source>Billing</msg>
-  <msg id="wallapopPro"><source>src/app/private/features/profile/pages/profile.component.html:42</source>Wallapop PRO</msg>
   <msg id="web_profile_pages_322"><source>src/app/private/features/profile/pages/profile.component.html:50</source>reviews</msg>
   <msg id="web_subscription_price_discount_days_trial_free"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:5</source><ph name="INTERPOLATION"/>-day trial for free</msg>
   <msg id="web_profile_pages_subscription_326"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:22,25</source> <ph name="INTERPOLATION"/><ph name="INTERPOLATION_1"/>/month </msg>
@@ -946,8 +944,6 @@
   <msg id="web_upload_pages_realestate_445"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:219,222</source> You can drag and drop your photos here. Also drag and drop to change the order. Max 4MB. </msg>
   <msg id="web_upload_pages_realestate_660"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:227</source>Post Ad</msg>
   <msg id="web_upload_pages_realestate_661"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:228</source>Update</msg>
-  <msg id="UploadProductSubmitLoading"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:229</source>Uploading... <ph name="INTERPOLATION"/>%</msg>
-  <msg id="UploadImagesSubmitLoading"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:230</source>Uploading image... <ph name="INTERPOLATION"/>/<ph name="INTERPOLATION_1"/></msg>
   <msg id="web_upload_pages_realestate_446"><source>src/app/private/features/upload/pages/upload-realestate/upload-realestate.component.html:235,237</source> How does it look? </msg>
   <msg id="web_mobile_blocker_title"><source>src/app/private/layout/components/mobile-blocker/mobile-blocker.component.html:6,8</source> Nice screen, but the resolution is low. </msg>
   <msg id="web_mobile_blocker_subtitle"><source>src/app/private/layout/components/mobile-blocker/mobile-blocker.component.html:9,11</source> To see this content, open the Wallapop app or continue browsing from your computer. </msg>
@@ -987,9 +983,9 @@
   <msg id="web_condition__fair"><source>src/app/public/features/item-detail/core/services/map-extra-info/map-extra-info.service.ts:86</source>Fair condition</msg>
   <msg id="web_condition__has_given_it_all"><source>src/app/public/features/item-detail/core/services/map-extra-info/map-extra-info.service.ts:88</source>May have to be repaired</msg>
   <msg id="web_undefined"><source>src/app/public/features/item-detail/core/services/map-extra-info/map-extra-info.service.ts:90</source>Undefined</msg>
-  <msg id="web_item_detail_share_title"><source>src/app/public/features/item-detail/core/services/map-item-detail-store/map-item-detail-store.service.ts:148</source>Share this product with your friends</msg>
-  <msg id="web_item_detail_share_twitter_text"><source>src/app/public/features/item-detail/core/services/map-item-detail-store/map-item-detail-store.service.ts:154</source>Look what I found @wallapop:</msg>
-  <msg id="web_item_detail_share_email_text"><source>src/app/public/features/item-detail/core/services/map-item-detail-store/map-item-detail-store.service.ts:159</source>This may interest you - </msg>
+  <msg id="web_item_detail_share_title"><source>src/app/public/features/item-detail/core/services/map-item-detail-store/map-item-detail-store.service.ts:150</source>Share this product with your friends</msg>
+  <msg id="web_item_detail_share_twitter_text"><source>src/app/public/features/item-detail/core/services/map-item-detail-store/map-item-detail-store.service.ts:156</source>Look what I found @wallapop:</msg>
+  <msg id="web_item_detail_share_email_text"><source>src/app/public/features/item-detail/core/services/map-item-detail-store/map-item-detail-store.service.ts:161</source>This may interest you - </msg>
   <msg id="web_favourite_user_label"><source>src/app/public/features/public-profile/components/favourite-user/favourite-user.component.html:2</source>Favourite user</msg>
   <msg id="web_profile_tabs_published_label"><source>src/app/public/features/public-profile/components/profile-tabs/constants/profile-tab-constants.ts:13</source>Published</msg>
   <msg id="web_profile_tabs_reviews_label"><source>src/app/public/features/public-profile/components/profile-tabs/constants/profile-tab-constants.ts:18</source>Reviews</msg>
@@ -1095,8 +1091,6 @@
   <msg id="web_for_refurbishment"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:94</source>For refurbishment</msg>
   <msg id="web_rent"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:99</source>Rent</msg>
   <msg id="web_buy"><source>src/app/public/shared/components/counter-specification/constants/counter-realestate-constants.ts:104</source>Buy</msg>
-  <msg id="cancelButton"><source>src/app/public/shared/components/drawer/drawer.component.html:12</source>Cancel</msg>
-  <msg id="Apply"><source>src/app/public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component.html:33</source>Apply</msg>
   <msg id="web_filters_category_all_categories"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:4</source>All categories</msg>
   <msg id="web_filters_category_cars"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:14</source>Cars</msg>
   <msg id="web_filters_category_motorbike"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:24</source>Motorbike</msg>
@@ -1153,8 +1147,6 @@
   <msg id="web_filter_condition_title"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:56</source>Item condition</msg>
   <msg id="web_filter_condition_bubble_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:57</source>Item condition</msg>
   <msg id="web_filter_condition_drawer_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:58</source>Any item condition</msg>
-  <msg id="filterPriceTitle"><source>src/app/public/shared/components/filters/core/constants/filters/consumer-goods/consumer-goods-filters.ts:9</source>How much?</msg>
-  <msg id="filterPriceBubblePlaceholder"><source>src/app/public/shared/components/filters/core/constants/filters/consumer-goods/consumer-goods-filters.ts:11</source>Price</msg>
   <msg id="web_filter_gender_title"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:9</source>Gender</msg>
   <msg id="web_filter_gender_bubble_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:10</source>Gender</msg>
   <msg id="web_filter_gender_drawer_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:11</source>Select gender</msg>
@@ -1330,7 +1322,6 @@
   <msg id="web_wallacoins_disabled_modal_title"><source>src/app/shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component.html:5</source>Goodbye, credit! 👋🏼</msg>
   <msg id="web_wallacoins_disabled_modal_text"><source>src/app/shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component.html:6,8</source>We have deactivated the &quot;credit&quot; feature, also known as &quot;wallacoins&quot;. From now on it&apos;s no longer possible to buy saving packs.<ph name="LINE_BREAK"/><ph name="LINE_BREAK"/> If you have credit in your account, you can continue featuring items until the credit is spent. Credit is valid for one year from the day it was charged to your account.</msg>
   <msg id="web_wallacoins_disabled_modal_button"><source>src/app/shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component.html:8</source>Got it</msg>
-  <msg id="Cancel"><source>src/app/shared/nav-links/nav-links.component.html:7</source>Cancel</msg>
   <msg id="web_order_by"><source>src/app/shared/nav-links/nav-links.component.html:40</source>Order by</msg>
   <msg id="web_stripe_card_selection_512"><source>src/app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:1</source>Select saved card</msg>
   <msg id="web_use_saved_card"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:16</source>Use saved card</msg>
