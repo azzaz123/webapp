@@ -32,6 +32,9 @@ import { SlugsUtilService } from './services/slugs-util/slugs-util.service';
 import { MomentCalendarSpecService } from './i18n/moment/moment-calendar-spec.service';
 import { ReportService } from './trust-and-safety/report/report.service';
 import { SvgService } from './svg-icon/svg.service';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
+import { QueryStringLocationService } from '@core/search/query-string-location.service';
 
 @NgModule({
   imports: [
@@ -78,6 +81,9 @@ import { SvgService } from './svg-icon/svg.service';
       provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
       useClass: FilterParameterStoreService,
     }, */
+    SearchNavigatorService,
+    SearchQueryStringService,
+    QueryStringLocationService,
   ],
 })
 export class CoreModule {

@@ -11,6 +11,7 @@ export interface ItemCard {
   ownerId: string;
   webSlug: string;
   images: Image[];
+  distance?: number;
   flags?: ItemFlags;
   bumpFlags?: ItemVisibilityFlags;
   categoryId?: number;

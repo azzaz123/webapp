@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { BehaviorSubject, merge, Observable, Subject, Subscription } from 'rxjs';
-import { map, skip, switchMap, take, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { SearchPagination, SearchPaginationWithCategory } from '../../interfaces/search-pagination.interface';
 import { SearchInfrastructureService } from './infrastructure/search-infrastructure.service';
 import { SearchStoreService } from './search-store.service';
@@ -11,10 +11,9 @@ import {
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import { SearchQueryStringService } from '@public/features/search/core/services/search-query-string.service';
-import { SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
-import { QueryStringLocationService } from '@public/features/search/core/services/query-string-location.service';
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import { QueryStringLocationService } from '@core/search/query-string-location.service';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
 
 @Injectable()
 export class SearchService {
@@ -23,6 +22,7 @@ export class SearchService {
   private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_LOADING_STATE);
   private readonly isLoadingPaginationResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_PAGINATION_LOADING_STATE);
   private readonly currentCategoryIdSubject = new BehaviorSubject<string>(undefined);
+  private readonly searchIdSubject = new BehaviorSubject<string>(undefined);
 
   private subscription: Subscription = new Subscription();
 
@@ -71,18 +71,25 @@ export class SearchService {
     this.currentCategoryIdSubject.next(categoryId);
   }
 
+  get searchId$(): Observable<string> {
+    return this.searchIdSubject.asObservable();
+  }
+
+  private set searchId(searchId: string) {
+    this.searchIdSubject.next(searchId);
+  }
+
   constructor(
     private searchStoreService: SearchStoreService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private parameterStoreService: FilterParameterStoreService,
-    private infrastructureService: SearchInfrastructureService,
-    private queryStringService: SearchQueryStringService,
-    private locationService: QueryStringLocationService,
-    private searchTrackingEventsService: SearchTrackingEventsService
+    // private queryStringService: SearchQueryStringService,
+    // private locationService: QueryStringLocationService,
+    // private searchTrackingEventsService: SearchTrackingEventsService,
+    private infrastructureService: SearchInfrastructureService
   ) {}
 
   public init(): void {
     this.subscription.add(this.onChangeParameters().subscribe());
-    this.subscription.add(this.onChangeQueryStringParameters().subscribe());
     this.subscription.add(this.onLoadMore().subscribe());
   }
 
@@ -101,36 +108,27 @@ export class SearchService {
       tap((parameters: FilterParameter[]) => {
         const source = this.parameterStoreService.getFilterSource(); // Source from Bubble and Drawer
         //TODO: set the source in the queryString to be accord with how topbar is?
-        this.queryStringService.setQueryParams(parameters);
+        // this.queryStringService.setQueryParams(parameters);
         this.isLoadingResults = true;
       }),
       switchMap((filterParameters: FilterParameter[]) =>
-        this.infrastructureService.search(filterParameters).pipe(map((r) => this.mapSearchResponse(r, filterParameters)))
+        this.infrastructureService.search(filterParameters).pipe(
+          map((r) => {
+            return this.mapSearchResponse(r, filterParameters);
+          })
+        )
       ),
       // TODO: GET SOURCE AND SEND SEARCH EVENT
-      tap(({ items, hasMore, categoryId }: SearchPaginationWithCategory) => {
+      tap(({ items, hasMore, categoryId, searchId }: SearchPaginationWithCategory) => {
         this.isLoadingResults = false;
         this.currentCategoryId = categoryId;
+        this.searchId = searchId;
         this.searchStoreService.setItems(items);
         this.searchStoreService.setHasMore(hasMore);
 
         //TODO: Two ways of getting source, from the query param or the topbar
       })
     );
-  }
-
-  private onChangeQueryStringParameters(): Observable<FilterParameter[]> {
-    const locationObservable = this.queryStringService.queryStringParams$.pipe(
-      take(1),
-      map((parameters: FilterParameter[]) => {
-        const location: SearchLocation = this.locationService.getLocationParameters(this.getLocationFromParameters(parameters));
-
-        return this.injectLocationToParameters(location, parameters);
-      })
-    );
-    const genericObservable = this.queryStringService.queryStringParams$.pipe(skip(1));
-
-    return merge(locationObservable, genericObservable).pipe(tap((parameters) => this.parameterStoreService.setParameters(parameters)));
   }
 
   private onLoadMore(): Observable<SearchPagination> {
@@ -146,44 +144,16 @@ export class SearchService {
   }
 
   private mapSearchResponse(pagination: SearchPagination, filterParameters: FilterParameter[]): SearchPaginationWithCategory {
-    const { items, hasMore } = pagination;
-
+    const { items, hasMore, searchId } = pagination;
     return {
       items,
       hasMore,
+      searchId,
       categoryId: this.getCategoryIdFromParams(filterParameters),
     };
   }
 
   private getCategoryIdFromParams(filterParameters: FilterParameter[]) {
     return filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
-  }
-
-  private getLocationFromParameters(parameters: FilterParameter[]): SearchLocation {
-    const locationParams = parameters.filter(({ key }) => this.isLocationKey(key));
-
-    if (locationParams.length === 2) {
-      return locationParams.reduce((accumulated, param) => {
-        return {
-          ...accumulated,
-          [param.key]: param.value,
-        };
-      }, {} as SearchLocation);
-    }
-  }
-
-  private injectLocationToParameters(location: SearchLocation, parameters: FilterParameter[]): FilterParameter[] {
-    const cleanedParameters = parameters.filter(({ key }) => !this.isLocationKey(key));
-    return [
-      ...cleanedParameters,
-      ...[
-        { key: FILTER_QUERY_PARAM_KEY.longitude, value: location[FILTER_QUERY_PARAM_KEY.longitude] },
-        { key: FILTER_QUERY_PARAM_KEY.latitude, value: location[FILTER_QUERY_PARAM_KEY.latitude] },
-      ],
-    ];
-  }
-
-  private isLocationKey(key: FILTER_QUERY_PARAM_KEY): boolean {
-    return key === FILTER_QUERY_PARAM_KEY.longitude || key === FILTER_QUERY_PARAM_KEY.latitude;
   }
 }

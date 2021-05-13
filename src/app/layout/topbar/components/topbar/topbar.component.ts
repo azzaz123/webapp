@@ -19,6 +19,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { FILTER_SOURCE } from '@public/features/search/core/services/enums/filter-source.enum';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
 
 @Component({
   selector: 'tsl-topbar',
@@ -30,7 +31,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   public user: User;
   public homeUrl: string;
   public isProfessional: boolean;
-  public wallacoins: number = 0;
+  public wallacoins = 0;
   public currencyName: string;
   public isLogged: boolean;
 
@@ -48,6 +49,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private searchTrackingEventsService: SearchTrackingEventsService,
     private featureFlagService: FeatureflagService,
     private router: Router,
+    private searchNavigator: SearchNavigatorService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
@@ -103,7 +105,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   }
 
   public onSearchSubmit(searchValue: SearchBoxValue): void {
-    //TODO: This can be removed after tests
+    // TODO: This can be removed after tests
     const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
     this.redirectToSearchPage(searchValue);
     if (isExperimentalFeaturesEnabled) {
@@ -114,9 +116,25 @@ export class TopbarComponent implements OnInit, OnDestroy {
   }
 
   private redirectToSearchPage(searchParams: SearchBoxValue) {
-    this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.SEARCH}`], {
-      queryParams: { ...searchParams, [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: FILTER_SOURCE.SEARCH_BOX },
-    });
+    const filterParams: FilterParameter[] = [
+      {
+        key: FILTER_QUERY_PARAM_KEY.keywords,
+        value: searchParams[FILTER_QUERY_PARAM_KEY.keywords],
+      },
+    ];
+
+    if (searchParams[FILTER_QUERY_PARAM_KEY.categoryId]) {
+      filterParams.push({
+        key: FILTER_QUERY_PARAM_KEY.categoryId,
+        value: searchParams[FILTER_QUERY_PARAM_KEY.categoryId],
+      });
+    }
+
+    this.searchNavigator.navigate(filterParams, true);
+
+    // this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.SEARCH}`], {
+    //   queryParams: { ...searchParams, [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: FILTER_SOURCE.SEARCH_BOX },
+    // });
   }
 
   private redirectToOldSearch(searchParams: SearchBoxValue) {
