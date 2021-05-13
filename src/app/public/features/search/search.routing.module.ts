@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdsResolver } from '@core/ads/resolvers/ads.resolver';
 import { ReusedRoute } from '@core/custom-route-reuse-strategy/interfaces/reused-route.interface';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
-import { SearchResolver } from './core/services/search.resolver';
 import { SearchComponent } from './pages/search.component';
 
 const SEARCH_ROUTE: ReusedRoute = {
@@ -11,7 +10,6 @@ const SEARCH_ROUTE: ReusedRoute = {
   component: SearchComponent,
   resolve: {
     ads: AdsResolver,
-    search: SearchResolver,
   },
   data: {
     shouldReuseRoute: true,

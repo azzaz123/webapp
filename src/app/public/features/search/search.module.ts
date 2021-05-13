@@ -24,7 +24,6 @@ import {
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
-import { SearchResolver } from './core/services/search.resolver';
 import { SearchAdsService } from './core/ads/search-ads.service';
 
 @NgModule({
@@ -56,7 +55,6 @@ import { SearchAdsService } from './core/ads/search-ads.service';
       provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
       useClass: FilterParameterStoreService,
     },
-    SearchResolver,
     SearchAdsService,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
