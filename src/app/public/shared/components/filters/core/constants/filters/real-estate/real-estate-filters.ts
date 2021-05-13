@@ -7,8 +7,8 @@ const REAL_ESTATE_FILTER_CONFIGURATION_COMMON: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.ROOMS,
     type: FILTER_TYPES.GRID,
-    title: $localize`:@@filterRoomsTitle:Number of rooms`,
-    bubblePlaceholder: $localize`:@@filterRoomsBubblePlaceholder:Number of rooms`,
+    title: $localize`:@@web_filter_rooms_title:Number of rooms`,
+    bubblePlaceholder: $localize`:@@web_filter_rooms_bubble_placeholder:Number of rooms`,
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.rooms,
     },
@@ -18,8 +18,8 @@ const REAL_ESTATE_FILTER_CONFIGURATION_COMMON: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BATHROOMS,
     type: FILTER_TYPES.GRID,
-    title: $localize`:@@filterBathroomsTitle:Number of bathrooms`,
-    bubblePlaceholder: $localize`:@@filterBathroomsBubblePlaceholder:Number of bathrooms`,
+    title: $localize`:@@web_filter_bathrooms_title:Number of bathrooms`,
+    bubblePlaceholder: $localize`:@@web_filter_bathrooms_bubble_placeholder:Number of bathrooms`,
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.bathrooms,
     },
@@ -29,8 +29,8 @@ const REAL_ESTATE_FILTER_CONFIGURATION_COMMON: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.CONDITION,
     type: FILTER_TYPES.GRID,
-    title: $localize`:@@filterRealEstateConditionTitle:Status`,
-    bubblePlaceholder: $localize`:@@filterRealEstateConditionBubblePlaceholder:Status`,
+    title: $localize`:@@web_filter_real_estate_condition_title:Status`,
+    bubblePlaceholder: $localize`:@@web_filter_real_estate_condition_bubble_placeholder:Status`,
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.condition,
     },
@@ -40,8 +40,8 @@ const REAL_ESTATE_FILTER_CONFIGURATION_COMMON: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.EXTRAS,
     type: FILTER_TYPES.GRID,
-    title: $localize`:@@filterRealEstateFeaturesTitle:Features`,
-    bubblePlaceholder: $localize`:@@filterRealEstateFeaturesBubblePlaceholder:Features`,
+    title: $localize`:@@web_filter_real_estate_features_title:Features`,
+    bubblePlaceholder: $localize`:@@web_filter_real_estate_features_bubble_placeholder:Features`,
     mapKey: {
       garage: FILTER_QUERY_PARAM_KEY.garage,
       terrace: FILTER_QUERY_PARAM_KEY.terrace,
@@ -59,8 +59,8 @@ const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.TYPE,
     type: FILTER_TYPES.GRID,
-    title: $localize`:@@filterPropertyTypeTitle:What are you looking for?`,
-    bubblePlaceholder: $localize`:@@filterPropertyTypeBubblePlaceholder:Type of property`,
+    title: $localize`:@@web_filter_property_type_title:What are you looking for?`,
+    bubblePlaceholder: $localize`:@@web_filter_property_type_bubble_placeholder:Type of property`,
     icon: '/assets/icons/filters/real_estate_type.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.type,
@@ -72,8 +72,8 @@ const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.OPERATION,
     type: FILTER_TYPES.GRID,
-    title: $localize`:@@filterOperationTitle:Rent or buy?`,
-    bubblePlaceholder: $localize`:@@filterOperationBubblePlaceholder:Rent or buy?`,
+    title: $localize`:@@web_filter_operation_title:Rent or buy?`,
+    bubblePlaceholder: $localize`:@@web_filter_operation_bubble_placeholder:Rent or buy?`,
     icon: '/assets/icons/filters/real_estate_operation.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.operation,
@@ -379,9 +379,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.FLAT_SURFACE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterSurfaceTitle:Surface`,
+    title: $localize`:@@web_filter_surface_title:Surface`,
     icon: '/assets/icons/filters/surface.svg',
-    bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
+    bubblePlaceholder: $localize`:@@web_filter_surface_bubble_placeholder:Surface`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minSurface,
       maxKey: FILTER_QUERY_PARAM_KEY.maxSurface,
@@ -394,9 +394,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.LAND_SURFACE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterSurfaceTitle:Surface`,
+    title: $localize`:@@web_filter_surface_title:Surface`,
     icon: '/assets/icons/filters/surface.svg',
-    bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
+    bubblePlaceholder: $localize`:@@web_filter_surface_bubble_placeholder:Surface`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minSurface,
       maxKey: FILTER_QUERY_PARAM_KEY.maxSurface,
@@ -409,9 +409,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.HOUSE_SURFACE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterSurfaceTitle:Surface`,
+    title: $localize`:@@web_filter_surface_title:Surface`,
     icon: '/assets/icons/filters/surface.svg',
-    bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
+    bubblePlaceholder: $localize`:@@web_filter_surface_bubble_placeholder:Surface`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minSurface,
       maxKey: FILTER_QUERY_PARAM_KEY.maxSurface,
@@ -427,9 +427,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.OFFICE_SURFACE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterSurfaceTitle:Surface`,
+    title: $localize`:@@web_filter_surface_title:Surface`,
     icon: '/assets/icons/filters/surface.svg',
-    bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
+    bubblePlaceholder: $localize`:@@web_filter_surface_bubble_placeholder:Surface`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minSurface,
       maxKey: FILTER_QUERY_PARAM_KEY.maxSurface,
@@ -442,9 +442,9 @@ const REAL_ESTATE__FILTER_CONFIGURATION_SURFACE: AvailableFilterConfig[] = [
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BOX_ROOM_SURFACE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterSurfaceTitle:Surface`,
+    title: $localize`:@@web_filter_surface_title:Surface`,
     icon: '/assets/icons/filters/surface.svg',
-    bubblePlaceholder: $localize`:@@filterSurfaceBubblePlaceholder:Surface`,
+    bubblePlaceholder: $localize`:@@web_filter_surface_bubble_placeholder:Surface`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minSurface,
       maxKey: FILTER_QUERY_PARAM_KEY.maxSurface,

@@ -14,8 +14,8 @@ import { EmptyStateProperties } from '@public/shared/components/empty-state/empt
 })
 export class UserReviewsComponent implements OnInit {
   public readonly emptyStateProperties: EmptyStateProperties = {
-    title: $localize`:@@NoReviewsItemsTitle:No reviews yet`,
-    description: $localize`:@@NoReviewsItemsDescription:This person hasn't received any reviews. Will yours be the first?`,
+    title: $localize`:@@web_no_reviews_items_title:No reviews yet`,
+    description: $localize`:@@web_no_reviews_items_description:This person hasn't received any reviews. Will yours be the first?`,
     illustrationSrc: '/assets/images/commons/balloon.svg',
   };
   public reviews: Review[] = [];

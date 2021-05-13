@@ -30,33 +30,33 @@
           <div class="notification-container" #userWarringNotification>
             <div *ngIf="currentConversation.user.blocked" class="date-marker date-marker-error">
               <span class="emoticon emoticon-woman-gesturing-no"></span>
-              <span i18n="@@blockedPersonError">You have blocked this person. To continue chatting, unblock them</span>
+              <span i18n="@@web_blocked_person_error">You have blocked this person. To continue chatting, unblock them</span>
             </div>
 
             <div *ngIf="!currentConversation.user.available && !currentConversation.isFromMaliciousUser"
               id="userIsNotAvailableWarning" class="date-marker date-marker-warning date-marker-warning-blue">
               <span class="emoticon emoticon-dashing-away"></span>
-              <span i18n="@@userIsNotAvailableWarning">This person is no longer a Wallapop member</span>
+              <span i18n="@@web_user_is_not_available_warning">This person is no longer a Wallapop member</span>
             </div>
 
             <div *ngIf="currentConversation.isFromMaliciousUser" id="userIsBlocked"
               class="date-marker date-marker-error">
               <span class="emoticon emoticon-monocle-face"></span>
-              <span i18n="@@userIsBlocked">This person has been excluded from Wallapop for suspicious activity.</span>
+              <span i18n="@@web_user_is_blocked">This person has been excluded from Wallapop for suspicious activity.</span>
             </div>
 
             <div *ngIf="!currentConversation.user.blocked
             && currentConversation.user.available
             && currentConversation.item.unpublished" class="date-marker date-marker-warning date-marker-warning-blue">
               <span class="emoticon emoticon-ghost"></span>
-              <span i18n="@@itemIsNotAvailableWarning">This product has expired or has been removed</span>
+              <span i18n="@@web_item_is_not_available_warning">This product has expired or has been removed</span>
             </div>
 
             <div *ngIf="!currentConversation.user.blocked
             && currentConversation.user.available
             && currentConversation.item.notAvailable" class="date-marker date-marker-warning date-marker-warning-red">
               <span class="emoticon emoticon-police-car"></span>
-              <span i18n="@@itemIsUnpublishedWarning">The product violates Wallapop coexistence regulations</span>
+              <span i18n="@@web_item_is_unpublished_warning">The product violates Wallapop coexistence regulations</span>
             </div>
           </div>
 
@@ -77,7 +77,7 @@
           <div class="notification-container">
             <div class="date-marker date-marker-warning date-marker-warning-blue notification-secure-privacy ">
               <span class="emoticon emoticon-padlock"></span>
-              <span i18n="@@securityWarning">For security reasons, never share private data</span>
+              <span i18n="@@web_security_warning">For security reasons, never share private data</span>
             </div>
           </div>
 

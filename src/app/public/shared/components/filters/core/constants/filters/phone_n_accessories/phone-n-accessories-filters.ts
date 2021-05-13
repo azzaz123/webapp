@@ -7,10 +7,10 @@ export const PHONE_N_ACCESSORIES_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONFIGURATION_ID.BRAND_MODEL,
     type: FILTER_TYPES.SUGGESTER,
-    title: $localize`:@@filterPhoneNAccessoriesBrandTitle:Brand and model`,
-    bubblePlaceholder: $localize`:@@filterPhoneNAccessoriesBrandBubblePlaceholder:Brand and model`,
-    drawerPlaceholder: $localize`:@@filterPhoneNAccessoriesBrandDrawerPlaceholder:Select brand and model`,
-    suggesterPlaceholder: $localize`:@@filterPhoneNAccessoriesBrandSuggesterPlaceholder:Search brand and model`,
+    title: $localize`:@@web_filter_phone_n_accessories_brand_title:Brand and model`,
+    bubblePlaceholder: $localize`:@@web_filter_phone_n_accessories_brand_bubble_placeholder:Brand and model`,
+    drawerPlaceholder: $localize`:@@web_filter_phone_n_accessories_brand_drawer_placeholder:Select brand and model`,
+    suggesterPlaceholder: $localize`:@@web_filter_phone_n_accessories_brand_suggester_placeholder:Search brand and model`,
     icon: '/assets/icons/filters/phones_brand.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.brandModel,
@@ -22,9 +22,9 @@ export const PHONE_N_ACCESSORIES_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
     type: FILTER_TYPES.SELECT,
-    title: $localize`:@@filterPhoneNAccessoriesTypeTitle:Type of product`,
-    bubblePlaceholder: $localize`:@@filterPhoneNAccessoriesTypeBubblePlaceholder:Type of product`,
-    drawerPlaceholder: $localize`:@@filterPhoneNAccessoriesTypeDrawerPlaceholder:Select type of product`,
+    title: $localize`:@@web_filter_phone_n_accessories_type_title:Type of product`,
+    bubblePlaceholder: $localize`:@@web_filter_phone_n_accessories_type_bubble_placeholder:Type of product`,
+    drawerPlaceholder: $localize`:@@web_filter_phone_n_accessories_type_drawer_placeholder:Select type of product`,
     icon: '/assets/icons/filters/phones_type.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.objectType,

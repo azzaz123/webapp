@@ -5,10 +5,10 @@
             <div class="mr-1 ProfileUser__counter--bold" id="sellsCounter">{{userStats.counters.sells}}</div>
             <ng-container [ngPlural]="userStats.counters.sells">
                 <ng-template ngPluralCase="=1">
-                    <ng-container i18n="@@Sale">Sale</ng-container>
+                    <ng-container i18n="@@web_sale">Sale</ng-container>
                 </ng-template>
                 <ng-template ngPluralCase="other">
-                    <ng-container i18n="@@Sales">Sales
+                    <ng-container i18n="@@web_sales">Sales
                     </ng-container>
                 </ng-template>
             </ng-container>
@@ -17,10 +17,10 @@
             <div class="mr-1 ProfileUser__counter--bold" id="buysCounter">{{userStats.counters.buys}}</div>
             <ng-container [ngPlural]="userStats.counters.buys">
                 <ng-template ngPluralCase="=1">
-                    <ng-container i18n="@@Purchase">Purchase</ng-container>
+                    <ng-container i18n="@@web_purchase">Purchase</ng-container>
                 </ng-template>
                 <ng-template ngPluralCase="other">
-                    <ng-container i18n="@@Purchases">Purchases
+                    <ng-container i18n="@@web_purchases">Purchases
                     </ng-container>
                 </ng-template>
             </ng-container>
@@ -31,10 +31,10 @@
         <div class="mr-1 ProfileUser__counter--bold" id="shippingCounter">{{userStats.counters.shipping_counter}}</div>
         <ng-container [ngPlural]="userStats.counters.shipping_counter">
             <ng-template ngPluralCase="=1">
-                <ng-container i18n="@@Shipment">Shipment</ng-container>
+                <ng-container i18n="@@web_shipment">Shipment</ng-container>
             </ng-template>
             <ng-template ngPluralCase="other">
-                <ng-container i18n="@@Shipments">Shipments
+                <ng-container i18n="@@web_shipments">Shipments
                 </ng-container>
             </ng-template>
         </ng-container>
@@ -43,15 +43,15 @@
         <tsl-svg-icon width="18" height="18" class="mr-2" src="/assets/icons/public-profile/location.svg"></tsl-svg-icon>
         {{userInfo.location.zip}},
         {{userInfo.location.city}}
-        <a (click)="showLocation()" i18n="@@ShowLocation" class="ml-2">View location</a>
+        <a (click)="showLocation()" i18n="@@web_show_location" class="ml-2">View location</a>
     </div>
     <div *ngIf="userInfo.featured && (userInfo.extraInfo && userInfo.extraInfo.link)" class="d-flex align-items-center mb-2">
         <tsl-svg-icon width="18" height="18" class="mr-2" src="/assets/icons/public-profile/computer.svg"></tsl-svg-icon>
-        <a href="{{ userInfo.extraInfo.link | urlProtocol}}" target="_blank" i18n="@@RedirectWeb">Go to the website</a>
+        <a href="{{ userInfo.extraInfo.link | urlProtocol}}" target="_blank" i18n="@@web_redirect_web">Go to the website</a>
     </div>
     <div *ngIf="userInfo.featured && userInfo.extraInfo?.phone_number" class="d-flex align-items-center">
         <tsl-svg-icon width="18" height="18" class="mr-2" src="/assets/icons/public-profile/telephone.svg"></tsl-svg-icon>
-        <a *ngIf="!showPhone" (click)="togglePhone()" i18n="@@ShowPhone">Show phone number</a>
+        <a *ngIf="!showPhone" (click)="togglePhone()" i18n="@@web_show_phone">Show phone number</a>
         <a class="ProfileUser__phone" *ngIf="showPhone" href="tel:{{userInfo.extraInfo.phone_number}}" >{{userInfo.extraInfo.phone_number}}</a>
     </div>
 </div>

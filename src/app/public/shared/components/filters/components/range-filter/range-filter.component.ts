@@ -15,7 +15,7 @@ import { RangeFilterParams } from './interfaces/range-filter-params.interface';
 })
 export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> implements OnInit {
   @Input() config: RangeFilterConfig;
-  limitlessPlaceholder = $localize`:@@Limitless:No limit`;
+  limitlessPlaceholder = $localize`:@@web_limitless:No limit`;
   formGroup = new FormGroup({
     range: new FormControl(),
     min: new FormControl(),

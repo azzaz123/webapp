@@ -146,18 +146,18 @@ export class MapItemDetailStoreService {
 
   private getSocialShare(): SocialShare {
     return {
-      title: $localize`:@@ItemDetailShareTitle:Share this product with your friends`,
+      title: $localize`:@@web_item_detail_share_title:Share this product with your friends`,
       facebook: {
         url: this.itemDetailResponse?.item.webLink,
       },
       twitter: {
         url: this.itemDetailResponse?.item.webLink,
-        text: $localize`:@@ItemDetailShareTwitterText:Look what I found @wallapop:`,
+        text: $localize`:@@web_item_detail_share_twitter_text:Look what I found @wallapop:`,
       },
       email: {
         url: this.itemDetailResponse?.item.webLink,
         subject: this.itemDetailResponse?.item.title,
-        message: $localize`:@@ItemDetailShareEmailText:This may interest you - ` + this.itemDetailResponse?.item.description,
+        message: $localize`:@@web_item_detail_share_email_text:This may interest you - ` + this.itemDetailResponse?.item.description,
       },
     };
   }

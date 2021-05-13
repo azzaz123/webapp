@@ -18,7 +18,7 @@ export class SuggestProModalComponent {
 
   get descriptionText(): string {
     return this.isFreeTrial
-      ? $localize`:@@SuggestProModalDescriptionTrial:Try Wallapop PRO for free and explore all their benefits.`
-      : $localize`:@@SuggestProModalDescriptionPlans:Choose a plan and take advantage of Wallapop PRO benefits.`;
+      ? $localize`:@@web_suggest_pro_modal_description_trial:Try Wallapop PRO for free and explore all their benefits.`
+      : $localize`:@@web_suggest_pro_modal_description_plans:Choose a plan and take advantage of Wallapop PRO benefits.`;
   }
 }
