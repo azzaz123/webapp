@@ -230,11 +230,11 @@ class I18nNormalizer {
     let rawHTML = fs.readFileSync(filePath, 'UTF-8');
 
     if (rawHTML.match(`i18n-placeholder=\"@@${oldKey}\"`)) {
-      rawHTML = rawHTML.replaceAll(`i18n-placeholder=\"@@${oldKey}\"`, `i18n-placeholder=\"@@${newKey}\"`);
+      rawHTML = rawHTML.replace(new RegExp(`i18n-placeholder=\"@@${oldKey}\"`, 'g'), `i18n-placeholder=\"@@${newKey}\"`);
     }
 
     if (rawHTML.match(`i18n=\"@@${oldKey}\"`)) {
-      rawHTML = rawHTML.replaceAll(`i18n=\"@@${oldKey}\"`, `i18n=\"@@${newKey}\"`);
+      rawHTML = rawHTML.replace(new RegExp(`i18n=\"@@${oldKey}\"`, 'g'), `i18n=\"@@${newKey}\"`);
     }
     fs.writeFileSync(filePath, rawHTML);
   }
