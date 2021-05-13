@@ -8,6 +8,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '@shared/exit-confirmation-modal/exit-confirmation-modal.component';
 import { CanComponentDeactivate } from '@core/guards/can-component-deactivate.interface';
 import { UPLOAD_PATHS } from '../../upload-routing-constants';
+import { EditTrackingEventService } from './service/edit-tracking-event.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-edit',
@@ -27,7 +29,8 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
     private router: Router,
     private modalService: NgbModal,
     private itemService: ItemService,
-    private userService: UserService
+    private userService: UserService,
+    private editTrackingEventService: EditTrackingEventService
   ) {
     this.userService.isProfessional().subscribe((isPro: boolean) => {
       const id = route.snapshot.params['id'];
@@ -43,6 +46,10 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
     this.item = this.route.snapshot.data['item'];
     this.isReactivation = this.router.url.endsWith(UPLOAD_PATHS.REACTIVATE);
     this.getUrgentPrice();
+
+    this.editTrackingEventService.viewTrackingReady$.pipe(take(1)).subscribe(() => {
+      this.editTrackingEventService.trackViewEditItemEvent(this.item.categoryId, this.isReactivation);
+    });
   }
 
   public onValidationError() {
