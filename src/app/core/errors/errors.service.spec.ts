@@ -81,12 +81,11 @@ describe('Service: Errors', () => {
     });
   });
 
-  // FIXME - Refactor i18nError method
-  xdescribe('i18nError', () => {
+  describe('i18nError', () => {
     it('should call toastService.show method for type error with i18n message', () => {
       spyOn(i18n, 'translate').and.returnValues('message', 'title');
 
-      service.i18nError('key');
+      service.i18nError('key' as TRANSLATION_KEY);
 
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'message',
@@ -94,25 +93,25 @@ describe('Service: Errors', () => {
         type: 'error',
       });
     });
-    it('should call toastService.show method for type error with i18n message, concatenting text', () => {
-      spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
 
-      service.i18nError('key', 'text');
+    it('should call toastService.show method for type error with i18n message, concatenating text', () => {
+      spyOn(i18n, 'translate').and.returnValues('message', 'title');
+
+      service.i18nError('key' as TRANSLATION_KEY, 'text');
 
       expect(toastService.show).toHaveBeenCalledWith({
-        text: 'messagetext',
+        text: 'message text',
         title: 'title',
         type: 'error',
       });
     });
   });
 
-  // FIXME - Refactor i18nError method
-  xdescribe('i18nSuccess', () => {
+  describe('i18nSuccess', () => {
     it('should call toastService.show method for type success with i18n message', () => {
-      spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
+      spyOn(i18n, 'translate').and.returnValues('message', 'title');
 
-      service.i18nSuccess('key');
+      service.i18nSuccess('key' as TRANSLATION_KEY);
 
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'message',
@@ -120,13 +119,13 @@ describe('Service: Errors', () => {
         type: 'success',
       });
     });
-    it('should call toastService.show method for type success with i18n message, concatenting text', () => {
-      spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
+    it('should call toastService.show method for type success with i18n message, concatenating text', () => {
+      spyOn(i18n, 'translate').and.returnValues('message', 'title');
 
-      service.i18nSuccess('key', 'text');
+      service.i18nSuccess('key' as TRANSLATION_KEY, 'text');
 
       expect(toastService.show).toHaveBeenCalledWith({
-        text: 'messagetext',
+        text: 'message text',
         title: 'title',
         type: 'success',
       });

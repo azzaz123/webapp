@@ -267,11 +267,11 @@ export class AddNewSubscriptionModalComponent implements OnInit, OnDestroy, Afte
   private showError(errors: PaymentError[]): void {
     if (errors?.length && errors[0].error_code in STRIPE_ERROR) {
       this.paymentError = errors[0].error_code as STRIPE_ERROR;
-      this.errorService.i18nError('paymentFailed', '', 'paymentFailedToastTitle');
+      this.errorService.i18nError(TRANSLATION_KEY.PAYMENT_FAILED_ERROR, '', TRANSLATION_KEY.PAYMENT_FAILED_ERROR_TITLE);
       return;
     }
     this.paymentError = STRIPE_ERROR.unknown;
-    this.errorService.i18nError('paymentFailedUnknown', '', 'paymentFailedToastTitle');
+    this.errorService.i18nError(TRANSLATION_KEY.PAYMENT_FAILED_UNKNOWN_ERROR, '', TRANSLATION_KEY.PAYMENT_FAILED_ERROR_TITLE);
   }
 
   private paymentSucceeded() {

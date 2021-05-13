@@ -127,7 +127,7 @@ export class NewSubscriptionComponent implements OnInit {
         this.selectedCard = this.stripeCards.find((card) => card.invoices_default) || this.stripeCards[0];
       },
       () => {
-        this.errorService.i18nError('getStripeCardsError');
+        this.errorService.i18nError(TRANSLATION_KEY.STRIPE_CARDS_RETRIEVAL_ERROR);
       }
     );
   }
@@ -211,11 +211,15 @@ export class NewSubscriptionComponent implements OnInit {
   private showError(errors: PaymentError[]): void {
     if (errors?.length && errors[0].error_code in STRIPE_ERROR) {
       this.paymentError = errors[0].error_code as STRIPE_ERROR;
-      this.errorService.i18nError('paymentFailed', this.errorTextConfig[this.paymentError], 'paymentFailedToastTitle');
+      this.errorService.i18nError(
+        TRANSLATION_KEY.PAYMENT_FAILED_ERROR,
+        this.errorTextConfig[this.paymentError],
+        TRANSLATION_KEY.PAYMENT_FAILED_ERROR_TITLE
+      );
       return;
     }
     this.paymentError = STRIPE_ERROR.unknown;
-    this.errorService.i18nError('paymentFailedUnknown', '', 'paymentFailedToastTitle');
+    this.errorService.i18nError(TRANSLATION_KEY.PAYMENT_FAILED_UNKNOWN_ERROR, '', TRANSLATION_KEY.PAYMENT_FAILED_ERROR_TITLE);
   }
 
   private paymentSucceeded() {

@@ -16,6 +16,7 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Router } from '@angular/router';
 import { EventService } from '../../../core/event/event.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('CatalogItemActionsComponent', () => {
   let component: CatalogItemActionsComponent;
@@ -140,7 +141,7 @@ describe('CatalogItemActionsComponent', () => {
       }));
 
       it('should open error toastService', () => {
-        expect(errorsService.i18nError).toHaveBeenCalledWith('bulkDeleteError');
+        expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.BULK_DELETE_ERROR);
       });
     });
   });

@@ -8,7 +8,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CartService } from './cart.service';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
-import { CART_ITEM_CITYBUMP, CART_ORDER, CART_ORDER_TRACK, ITEM_ID, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
+import { CART_ITEM_CITYBUMP, CART_ORDER, ITEM_ID, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../../core/event/event.service';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -288,7 +289,7 @@ describe('CartComponent', () => {
         component.checkout();
         tick(2000);
 
-        expect(errorService.i18nError).toHaveBeenCalledWith('bumpError');
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.BUMP_ERROR);
       }));
     });
   });

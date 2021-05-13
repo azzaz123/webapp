@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { finalize } from 'rxjs/operators';
 import { ItemDetailTrackEventsService } from '../../core/services/item-detail-track-events/item-detail-track-events.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-item-detail-header',
@@ -86,7 +87,7 @@ export class ItemDetailHeaderComponent implements OnInit {
           this.router.navigate(['catalog/list']);
         },
         () => {
-          this.errorsService.i18nError('deleteItemError');
+          this.errorsService.i18nError(TRANSLATION_KEY.DELETE_ITEM_ERROR);
         }
       );
     });

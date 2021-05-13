@@ -1,8 +1,12 @@
 import { ChangeDetectionStrategy, Component, ContentChild, EventEmitter, Inject, Input, Output, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { FeatureflagService } from '@core/user/featureflag.service';
 import { environment } from '@environments/environment';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { APP_PATHS } from 'app/app-routing-constants';
 import { CARD_TYPES } from './enums/card-types.enum';
 import { ClickedItemCard } from './interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from './interfaces/cols-config.interface';
@@ -40,6 +44,8 @@ export class ItemCardListComponent {
   constructor(
     private itemCardService: ItemCardService,
     private checkSessionService: CheckSessionService,
+    private featureFlagService: FeatureflagService,
+    private router: Router,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {}
 
@@ -55,9 +61,13 @@ export class ItemCardListComponent {
   public openItemDetailPage({ itemCard, index }: ClickedItemCard): void {
     this.clickedItemAndIndex.emit({ itemCard, index });
     const link = environment.siteUrl.replace('es', this.subdomain) + 'item/' + itemCard.webSlug;
-    window.open(link);
+    const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
 
-    // TODO: UNCOMMENT WHEN WE OPEN ITEM DETAIL IN PRODUCTION		Date: 2021/04/01
-    // this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${item.id}`]);
+    //TODO: This can be removed after tests
+    if (isExperimentalFeaturesEnabled) {
+      this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${itemCard.id}`]);
+    } else {
+      window.open(link);
+    }
   }
 }
