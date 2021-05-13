@@ -19,6 +19,7 @@ import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
+import { MOCK_SEARCH_ID } from './search-list-tracking-events.fixtures.spec';
 
 describe('SearchService', () => {
   let service: SearchService;
@@ -50,6 +51,7 @@ describe('SearchService', () => {
     };
 
     searchInfrastructureServiceMock = {
+      getSearchId: () => MOCK_SEARCH_ID,
       search: (params: FilterParameter) => of(SearchPaginationFactory()),
       loadMore: () => of(SearchPaginationFactory()),
     };
@@ -114,11 +116,14 @@ describe('SearchService', () => {
     });
 
     describe('and change the parameters', () => {
-      it('should get items by search infrastructure', () => {
+      it('should get items by search infrastructure and set searchId', () => {
         spyOn(searchInfrastructureServiceMock, 'search').and.callThrough();
 
         filterParametersSubject.next(filterParametersMock);
 
+        service.searchId$.subscribe((searchId: string) => {
+          expect(searchId).toEqual(MOCK_SEARCH_ID);
+        });
         expect(searchInfrastructureServiceMock.search).toHaveBeenCalledTimes(1);
         expect(searchInfrastructureServiceMock.search).toHaveBeenCalledWith(filterParametersMock);
       });
