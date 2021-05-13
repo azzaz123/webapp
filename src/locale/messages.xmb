@@ -134,6 +134,9 @@
   <msg id="web_subscription_benefit_description_visibility"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:18</source>Appear at the top of search results and attract more customers.</msg>
   <msg id="web_subscription_benefit_title_time"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:22</source>Save management time</msg>
   <msg id="web_subscription_benefit_description_time"><source>src/app/core/subscriptions/subscription-benefits/constants/subscription-benefits.ts:23</source>Your products will always be active and ready for sale.</msg>
+  <msg id="web_subscription_benefit_title_share"><source>src/app/core/subscriptions/subscriptions.service.ts:38</source>Share your phone and website</msg>
+  <msg id="web_subscription_benefit_title_limit"><source>src/app/core/subscriptions/subscriptions.service.ts:329</source>Set your listing limit</msg>
+  <msg id="web_subscription_benefit_title_branding"><source>src/app/core/subscriptions/subscriptions.service.ts:330</source>Boost your branding</msg>
   <msg id="web_item_report_reason_people_animals"><source>src/app/core/trust-and-safety/report/constants/item-report-reasons.ts:8</source>People or animals</msg>
   <msg id="web_item_report_reason_joke"><source>src/app/core/trust-and-safety/report/constants/item-report-reasons.ts:13</source>Joke</msg>
   <msg id="web_item_report_reason_fake_product"><source>src/app/core/trust-and-safety/report/constants/item-report-reasons.ts:18</source>Fake product</msg>
@@ -157,14 +160,14 @@
   <msg id="web_components_tabbar_6"><source>src/app/layout/tabbar/components/tabbar.component.html:38</source>Messages</msg>
   <msg id="TabBarButtonMyZone"><source>src/app/layout/tabbar/components/tabbar.component.html:58</source>My Zone</msg>
   <msg id="TabBarButtonLogin"><source>src/app/layout/tabbar/components/tabbar.component.html:59</source>Log in</msg>
-  <msg id="web_components_suggester_7"><source>src/app/layout/topbar/components/suggester/suggester.component.html:1</source>Search in All categories</msg>
-  <msg id="web_components_topbar_8"><source>src/app/layout/topbar/components/topbar/topbar.component.html:13</source>credit</msg>
-  <msg id="web_components_topbar_538"><source>src/app/layout/topbar/components/topbar/topbar.component.html:20</source>Messages</msg>
-  <msg id="web_components_topbar_9"><source>src/app/layout/topbar/components/topbar/topbar.component.html:27</source>My Zone</msg>
-  <msg id="web_components_topbar_10"><source>src/app/layout/topbar/components/topbar/topbar.component.html:28</source>My Pro Zone</msg>
-  <msg id="TopBarButtonRegisteOrSignin"><source>src/app/layout/topbar/components/topbar/topbar.component.html:32</source>Register or sign in</msg>
-  <msg id="web_components_topbar_11"><source>src/app/layout/topbar/components/topbar/topbar.component.html:36</source>List a product</msg>
-  <msg id="web_components_topbar_12"><source>src/app/layout/topbar/components/topbar/topbar.component.html:37</source>List a car</msg>
+  <msg id="web_components_suggester_7"><source>src/app/layout/topbar/components/suggester/suggester.component.html:5</source>Search in All categories</msg>
+  <msg id="web_components_topbar_8"><source>src/app/layout/topbar/components/topbar/topbar.component.html:12</source>credit</msg>
+  <msg id="web_components_topbar_538"><source>src/app/layout/topbar/components/topbar/topbar.component.html:19</source>Messages</msg>
+  <msg id="web_components_topbar_9"><source>src/app/layout/topbar/components/topbar/topbar.component.html:26</source>My Zone</msg>
+  <msg id="web_components_topbar_10"><source>src/app/layout/topbar/components/topbar/topbar.component.html:27</source>My Pro Zone</msg>
+  <msg id="TopBarButtonRegisteOrSignin"><source>src/app/layout/topbar/components/topbar/topbar.component.html:31</source>Register or sign in</msg>
+  <msg id="web_components_topbar_11"><source>src/app/layout/topbar/components/topbar/topbar.component.html:35</source>List a product</msg>
+  <msg id="web_components_topbar_12"><source>src/app/layout/topbar/components/topbar/topbar.component.html:36</source>List a car</msg>
   <msg id="web_calls_pages_13"><source>src/app/private/features/calls/pages/calls.component.html:10</source>Calls</msg>
   <msg id="web_calls_pages_14"><source>src/app/private/features/calls/pages/calls.component.html:13</source>Here you can manage and see the information related with your calls</msg>
   <msg id="web_calls_pages_15"><source>src/app/private/features/calls/pages/calls.component.html:21</source>Pending</msg>
@@ -672,22 +675,27 @@
   <msg id="web_profile_pages_320"><source>src/app/private/features/profile/pages/profile.component.html:35,37</source>Billing information</msg>
   <msg id="web_profile_pages_321"><source>src/app/private/features/profile/pages/profile.component.html:38</source>Billing</msg>
   <msg id="web_profile_pages_322"><source>src/app/private/features/profile/pages/profile.component.html:50</source>reviews</msg>
-  <msg id="SubscriptionPriceDiscountDaysTrialFree"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:5</source><ph name="INTERPOLATION"/>-day trial for free</msg>
+  <msg id="subscription_purchase_subscription_title"><source>src/app/private/features/profile/pages/subscription/new-subscription/new-subscription-view/new-subscription-view.component.html:7,10</source><ph name="INTERPOLATION"/> subscription </msg>
+  <msg id="SubscriptionPriceDiscountDaysTrialFree"><source>src/app/private/features/profile/pages/subscription/new-subscription/new-subscription-view/new-subscription-view.component.html:10</source><ph name="INTERPOLATION"/>-day trial for free</msg>
+  <msg id="subscription_purchase_subscription_subtitle"><source>src/app/private/features/profile/pages/subscription/new-subscription/new-subscription-view/new-subscription-view.component.html:13,15</source> Turn your sales into a real business </msg>
+  <msg id="WallapopProSubscriptionTitle"><source>src/app/private/features/profile/pages/subscription/new-subscription/new-subscription.component.html:3,5</source>Boost your online business with Wallapop PRO</msg>
+  <msg id="change_subscription"><source>src/app/private/features/profile/pages/subscription/new-subscription/new-subscription.component.html:6,8</source>Change subscription</msg>
+  <msg id="WallapopProSubscriptionSubTitle"><source>src/app/private/features/profile/pages/subscription/new-subscription/new-subscription.component.html:9,11</source>Choose a subscription to take your sales to the next level</msg>
+  <msg id="tier_selector_title"><source>src/app/private/features/profile/pages/subscription/new-subscription/new-subscription.component.html:14</source>How many items you want to list?</msg>
+  <msg id="tier_selector_subtitle"><source>src/app/private/features/profile/pages/subscription/new-subscription/new-subscription.component.html:15</source>Choose the plan that fits your goals</msg>
+  <msg id="web_stripe_cards_535"><source>src/app/private/features/profile/pages/subscription/new-subscription/new-subscription.component.html:20</source>Payment method</msg>
+  <msg id="card_selector_subtitle"><source>src/app/private/features/profile/pages/subscription/new-subscription/new-subscription.component.html:21</source>Encrypted and secure</msg>
+  <msg id="AddCard"><source>src/app/private/features/profile/pages/subscription/subscription-card-selector/subscription-card-selector.component.html:6</source>Add card</msg>
   <msg id="web_profile_pages_subscription_326"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:22,25</source> <ph name="INTERPOLATION"/><ph name="INTERPOLATION_1"/>/month </msg>
-  <msg id="your_current_plan"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:47</source>Your current plan</msg>
-  <msg id="web_profile_pages_subscription_330"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:57,61</source> Subscription ends on <ph name="START_BOLD_TEXT"/> <ph name="INTERPOLATION"/> <ph name="CLOSE_BOLD_TEXT"/></msg>
-  <msg id="web_profile_pages_subscription_329"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:64,66</source> Subscribed from <ph name="START_BOLD_TEXT"/><ph name="INTERPOLATION"/><ph name="CLOSE_BOLD_TEXT"/></msg>
-  <msg id="web_profile_pages_subscription_cars_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:18</source>List all your cars</msg>
-  <msg id="web_profile_pages_subscription_motorbike_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:19</source>List all your motorbikes</msg>
-  <msg id="web_profile_pages_subscription_motor_acc_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:20</source>List all your Motor and Accessories items</msg>
-  <msg id="web_profile_pages_subscription_other_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:21</source>Your best plan to sell all kinds of items</msg>
-  <msg id="web_subscription_benefit_title_share"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:27</source>Share your phone and website</msg>
-  <msg id="web_subscription_benefit_title_limit"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:36</source>Set your listing limit</msg>
-  <msg id="web_subscription_benefit_title_branding"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:37</source>Boost your branding</msg>
-  <msg id="web_profile_pages_subscription_325"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:42</source>List up to <ph name="PH"/> items</msg>
-  <msg id="web_profile_pages_subscription_586"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:43</source>List without limits</msg>
-  <msg id="WallapopProSubscriptionTitle"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.html:3</source>Boost your online business with Wallapop PRO</msg>
-  <msg id="WallapopProSubscriptionSubTitle"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.html:4</source>Choose a subscription to take your sales to the next level</msg>
+  <msg id="your_current_plan"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:42</source>Your current plan</msg>
+  <msg id="web_profile_pages_subscription_330"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:52,56</source> Subscription ends on <ph name="START_BOLD_TEXT"/> <ph name="INTERPOLATION"/> <ph name="CLOSE_BOLD_TEXT"/></msg>
+  <msg id="web_profile_pages_subscription_329"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.html:59,61</source> Subscribed from <ph name="START_BOLD_TEXT"/><ph name="INTERPOLATION"/><ph name="CLOSE_BOLD_TEXT"/></msg>
+  <msg id="web_profile_pages_subscription_cars_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:19</source>List all your cars</msg>
+  <msg id="web_profile_pages_subscription_motorbike_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:20</source>List all your motorbikes</msg>
+  <msg id="web_profile_pages_subscription_motor_acc_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:21</source>List all your Motor and Accessories items</msg>
+  <msg id="web_profile_pages_subscription_other_desc"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:22</source>Your best plan to sell all kinds of items</msg>
+  <msg id="web_profile_pages_subscription_325"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:31</source>List up to <ph name="PH"/> items</msg>
+  <msg id="web_profile_pages_subscription_586"><source>src/app/private/features/profile/pages/subscription/subscription-card/subscription-card.component.ts:32</source>List without limits</msg>
   <msg id="startFreeTrial"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:43</source>Start free trial</msg>
   <msg id="seePlans"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:43</source>See plans</msg>
   <msg id="web_profile_pages_subscription_331"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:46</source>Stay subscribed</msg>
@@ -695,6 +703,12 @@
   <msg id="web_profile_pages_subscription_678"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:52</source>Cancel</msg>
   <msg id="web_profile_pages_subscription_327"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:55</source>Manage in app</msg>
   <msg id="web_profile_pages_subscription_328"><source>src/app/private/features/profile/pages/subscription/subscription-list/subscription-list.component.ts:58</source>Unsubscribe first from app for your free month</msg>
+  <msg id="total"><source>src/app/private/features/profile/pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component.html:6,8</source> Total </msg>
+  <msg id="web_stripe_card_element_513"><source>src/app/private/features/profile/pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component.html:19,22</source>By subscribing, you accept the <ph name="START_LINK"/>Terms of use<ph name="CLOSE_LINK"/> and <ph name="START_LINK_1"/>Privacy policy<ph name="CLOSE_LINK"/> of Wallapop S.L. and Stripe Ltd </msg>
+  <msg id="free_days_then_monthly"><source>src/app/private/features/profile/pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component.ts:35</source><ph name="PH"/> days free, then <ph name="PH_1"/><ph name="PH_2"/>/month</msg>
+  <msg id="monthly_renewal_plan"><source>src/app/private/features/profile/pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component.ts:36</source>The plan will be renewed monthly</msg>
+  <msg id="pay"><source>src/app/private/features/profile/pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component.ts:40</source>Pay</msg>
+  <msg id="AfterFreeTrial"><source>src/app/private/features/profile/pages/subscription/subscription-tier-selector/subscription-tier-selector.component.html:14</source>after free trial</msg>
   <msg id="web_reviews_pages_332"><source>src/app/private/features/reviews/pages/reviews.component.html:11</source>Your Reviews</msg>
   <msg id="web_reviews_pages_333"><source>src/app/private/features/reviews/pages/reviews.component.html:14</source>This is what people think about you. </msg>
   <msg id="web_reviews_pages_334"><source>src/app/private/features/reviews/pages/reviews.component.html:18</source>Your average</msg>
@@ -951,7 +965,7 @@
   <msg id="8499959580096706757" desc="web_search_sort_filter_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:3</source>Ordenador por: </msg>
   <msg id="7994828817141708719" desc="web_search_sort_filter_bubble_title"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:8</source>Ordenado por</msg>
   <msg id="6402951927316857780" desc="web_search_sort_filter_bubble_cancel"><source>src/app/public/features/search/components/sort-filter/sort-filter.component.html:15</source>Cancelar</msg>
-  <msg id="4026193177292289663" desc="web_search_component_load_more_products"><source>src/app/public/features/search/pages/search.component.html:44</source>Ver más productos</msg>
+  <msg id="4026193177292289663" desc="web_search_component_load_more_products"><source>src/app/public/features/search/pages/search.component.html:55</source>Ver más productos</msg>
   <msg id="FooterLinksWallapopTitle"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:5</source>wallapop</msg>
   <msg id="FooterLinksAboutLabel"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:8</source>About</msg>
   <msg id="FooterLinksAboutHref"><source>src/app/public/layout/components/footer/constants/footer-constants.ts:9</source>https://about.wallapop.com/en</msg>
@@ -1220,7 +1234,6 @@
   <msg id="ChangeSelectSubscriptionCardTitle"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:5</source>Select a credit card</msg>
   <msg id="ChangeAddSubscriptionCardTitle"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:6</source>Add a credit card</msg>
   <msg id="ChangeSubscriptionCardSubtitle"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:7</source>This will be the payment method linked to your subscription</msg>
-  <msg id="AddCard"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:13</source>Add card</msg>
   <msg id="UseASavedCard"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:14</source>Use a saved card</msg>
   <msg id="SelectSavedCard"><source>src/app/shared/modals/change-card-modal/change-card-modal.component.html:25</source>Select saved card</msg>
   <msg id="ConfirmPaymentMethod"><source>src/app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:4</source>Confirm payment method</msg>
@@ -1250,11 +1263,10 @@
   <msg id="OrderBy"><source>src/app/shared/nav-links/nav-links.component.html:40</source>Order by</msg>
   <msg id="web_stripe_card_selection_512"><source>src/app/shared/payments/stripe-card-selection/stripe-card-selection.component.html:1</source>Select saved card</msg>
   <msg id="UseSavedCard"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:16</source>Use saved card</msg>
-  <msg id="web_stripe_card_element_513"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:19,22</source> By subscribing, you are accepting the <ph name="START_LINK"/>terms &amp; conditions<ph name="CLOSE_LINK"/> and the <ph name="START_LINK_1"/>privacy policy<ph name="CLOSE_LINK"/> of Wallapop S.L. and Stripe Ltd </msg>
-  <msg id="web_stripe_card_element_514"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:31</source>Continue to Checkout</msg>
-  <msg id="web_stripe_card_element_672"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:42</source>Save</msg>
-  <msg id="web_stripe_card_element_515"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:54</source>Subscribe now</msg>
-  <msg id="Save"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:65</source>Save</msg>
+  <msg id="web_stripe_card_element_514"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:30</source>Continue to Checkout</msg>
+  <msg id="web_stripe_card_element_672"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:41</source>Save</msg>
+  <msg id="web_stripe_card_element_515"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:53</source>Subscribe now</msg>
+  <msg id="Save"><source>src/app/shared/payments/stripe/stripe-card-element.component.html:64</source>Save</msg>
   <msg id="web_all_button_process_629"><source>src/app/shared/process-all-button/process-all-button.component.html:6</source>Process all</msg>
   <msg id="web_all_button_process_516"><source>src/app/shared/process-all-button/process-all-button.component.html:7</source>This will process all the elements in this page.</msg>
   <msg id="web_all_button_process_693"><source>src/app/shared/process-all-button/process-all-button.component.html:10</source>Cancel</msg>
@@ -1313,7 +1325,6 @@
   <msg id="web_picture_upload_635"><source>src/app/shared/profile/picture-upload/picture-upload.component.html:19</source>Update picture</msg>
   <msg id="web_picture_upload_636"><source>src/app/shared/profile/picture-upload/picture-upload.component.html:20</source>Upload picture</msg>
   <msg id="web_picture_upload_637"><source>src/app/shared/profile/picture-upload/picture-upload.component.html:23</source>JPG format and a minimum size of 400 x 400px are accepted.</msg>
-  <msg id="web_stripe_cards_535"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:4</source>Payment method</msg>
   <msg id="SubscriptionCard"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:9</source>Card linked to subscriptions</msg>
   <msg id="AddNewSubscriptionCard"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:16</source>Link a card to your subscriptions</msg>
   <msg id="CurrentCards"><source>src/app/shared/profile/stripe-cards/stripe-cards.component.html:20</source>Saved cards</msg>

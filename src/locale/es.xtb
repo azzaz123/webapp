@@ -1249,4 +1249,15 @@
   <translation id="WallapopProSubscriptionSubTitle">Elige una suscripción para llevar tus ventas al siguiente nivel</translation>
   <translation id="your_current_plan">Tu plan actual</translation>
   <translation id="web_toast_cardealer_error_contact">¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.</translation>
+  <translation id="change_subscription">Cambiar suscripción</translation>
+  <translation id="subscription_purchase_subscription_title">Suscripción  <ph name="INTERPOLATION"/></translation>
+  <translation id="tier_selector_title">¿Cuántos artículos quieres publicar?</translation>
+  <translation id="tier_selector_subtitle">Elige el plan que encaje con tus objetivos</translation>
+  <translation id="card_selector_subtitle">Encriptado y seguro</translation>
+  <translation id="monthly_renewal_plan">El plan se renovará mensualmente</translation>
+  <translation id="pay">Pagar</translation>
+  <translation id="after_free_trial">tras la prueba gratis</translation>
+  <translation id="total">Total</translation>
+  <translation id="subscription_purchase_subscription_subtitle">Convierte tus ventas en un auténtico negocio</translation>
+  <translation id="free_days_then_monthly"><ph name="PH"/> days free, then <ph name="PH_1"/><ph name="PH_2"/>/month</translation>
 </translationbundle>

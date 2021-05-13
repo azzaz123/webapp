@@ -5,17 +5,17 @@
     </div>
     <div class="SubscriptionPurchaseHeader__text text-center text-md-left">
         <div class="mb-2">
-            <b><span i18n="@@SubscriptionPurchaseSubscriptionTitle" class="SubscriptionPurchaseHeader__title mr-md-3">{{subscription.category_name.toUpperCase()}}
+            <b><span i18n="@@subscription_purchase_subscription_title" class="SubscriptionPurchaseHeader__title mr-md-3">{{subscription.category_name.toUpperCase()}}
                     subscription
                 </span></b>
                 <span *ngIf="subscription.trial_available" class="px-2 SubscriptionPurchaseHeader__trialBanner" i18n="@@SubscriptionPriceDiscountDaysTrialFree">{{subscription.trial_days}}-day trial for free</span>
         </div>
-        <div class="mb-2 SubscriptionPurchaseHeader__subtitle">
+        <div class="mb-2 SubscriptionPurchaseHeader__subtitle" i18n="@@subscription_purchase_subscription_subtitle">
             Turn your sales into a real business
         </div>
         <div class="SubscriptionPurchaseHeader__benefits text-left w-100 container">
             <div class="d-flex flex-wrap justify-content-between align-items-start row">
-                <span class="d-flex col-xl-auto col-md-6 col-sm-12" *ngFor="let benefit of benefits">
+                <span class="d-flex col-lg-auto col-md-6 col-sm-12" *ngFor="let benefit of benefits">
                     <tsl-svg-icon class="mr-1 mt-1 SubscriptionPurchaseHeader__iconCheck" src="assets/icons/check.svg">
                     </tsl-svg-icon>
                     {{benefit}}
