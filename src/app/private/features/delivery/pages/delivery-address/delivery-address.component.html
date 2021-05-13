@@ -19,7 +19,7 @@
                 <div class="form-group row align-items-center">
                   <label for="country_iso_code" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_country_label">Country</label>
                   <div class="col-sm-12 col-md-5">
-                    <tsl-dropdown i18n-placeholder="@@address_view_all_users_form_textfield_country_label" class="form-control" formControlName="country_iso_code" id="country_iso_code" #country_iso_code [isLoading]="!isCountryEditable" [options]="countries" (click)="handleShowWarningCountry()">
+                    <tsl-dropdown i18n-placeholder="@@address_view_all_users_form_textfield_country_label" class="form-control" formControlName="country_iso_code" id="country_iso_code" #country_iso_code [isLoading]="!isCountryEditable" [options]="countries" [disabled]="countries?.length <= 1" (click)="handleShowWarningCountry()">
                     </tsl-dropdown>
                   </div>
                 </div>

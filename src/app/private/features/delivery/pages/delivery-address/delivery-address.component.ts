@@ -29,7 +29,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
-  ADDRESS_VIEW,
+  ADDRESSES_LIST,
   PAYVIEW_PAY,
 }
 @Component({
@@ -76,9 +76,9 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.handlePostalCodeRelatedProperties();
     this.clearFormWhenCountryChange();
-    this.updateRegionWhenCityChanges();
+    this.requestLocationsWhenPostalCodeChange();
+    this.updateRegionWhenCityChange();
   }
 
   ngOnDestroy() {
@@ -132,7 +132,11 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  public clearFormWhenCountryChange(): void {
+  public isIncorrectFormcontrol(formControlAtr: AbstractControl): boolean {
+    return formControlAtr.invalid && (formControlAtr.dirty || formControlAtr.touched);
+  }
+
+  private clearFormWhenCountryChange(): void {
     const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
 
     const subscription = countryISOCode.valueChanges.subscribe(() => {
@@ -144,17 +148,31 @@ export class DeliveryAddressComponent implements OnInit {
         this.deliveryAddressForm.get('postal_code').reset();
         this.deliveryAddressForm.get('city').reset();
         this.deliveryAddressForm.get('phone_number').reset();
+        this.deliveryAddressForm.get('region').reset();
       }
     });
 
     this.subscriptions.add(subscription);
   }
 
-  public isIncorrectFormcontrol(formControlAtr: AbstractControl): boolean {
-    return formControlAtr.invalid && (formControlAtr.dirty || formControlAtr.touched);
+  private requestLocationsWhenPostalCodeChange(): void {
+    const postalCode = this.deliveryAddressForm.get('postal_code');
+    const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
+
+    const subscription = postalCode.valueChanges.subscribe((newPostalCode: string) => {
+      if (postalCode.dirty) {
+        this.deliveryAddressForm.get('city').reset();
+        this.deliveryAddressForm.get('region').reset();
+        if (postalCode.valid && newPostalCode.length === 5 && newPostalCode) {
+          this.getLocationsAndHandlePostalCode(newPostalCode, countryISOCode.value);
+        }
+      }
+    });
+
+    this.subscriptions.add(subscription);
   }
 
-  public updateRegionWhenCityChanges(): void {
+  private updateRegionWhenCityChange(): void {
     const city = this.deliveryAddressForm.get('city');
 
     const subscription = city.valueChanges.subscribe(() => {
@@ -196,6 +214,7 @@ export class DeliveryAddressComponent implements OnInit {
 
   private submitValidForm(): void {
     this.loading = true;
+
     this.deliveryAddressService
       .updateOrCreate(this.deliveryAddressForm.getRawValue(), this.isNewForm)
       .pipe(
@@ -239,46 +258,29 @@ export class DeliveryAddressComponent implements OnInit {
       case PREVIOUS_PAGE.PAYVIEW_PAY:
         this.router.navigate([DELIVERY_PATHS.SHIPMENT_TRACKING]);
         break;
-      case PREVIOUS_PAGE.ADDRESS_VIEW:
+      case PREVIOUS_PAGE.ADDRESSES_LIST:
         this.router.navigate([DELIVERY_PATHS.ADDRESSES_LIST]);
         break;
     }
   }
 
-  private handlePostalCodeRelatedProperties(): void {
-    const postalCode = this.deliveryAddressForm.get('postal_code');
-    const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
-
-    const subscription = postalCode.valueChanges.subscribe((newPostalCode: string) => {
-      if (postalCode.dirty) {
-        this.deliveryAddressForm.get('city').reset();
-        this.deliveryAddressForm.get('region').reset();
-        if (postalCode.valid && postalCode.value.length === 5 && newPostalCode) {
-          this.getLocationsAndHandlePostalCode(newPostalCode, countryISOCode.value);
-        }
-      }
-    });
-
-    this.subscriptions.add(subscription);
-  }
-
   private getLocationsAndHandlePostalCode(postalCode: string, countryISOCode: string): void {
     this.deliveryLocationsService.getLocationsByPostalCodeAndCountry(postalCode, countryISOCode).subscribe(
       (locations: DeliveryLocationApi[]) => {
-        this.initializeCitiesAsOptions(postalCode, countryISOCode).subscribe();
+        this.mapCitiesAsOptions(locations);
         this.handleLocationsResponse(locations);
       },
-      () => {
-        this.setIncorrectPostalCodeError();
-        this.postalCodeErrorMessage = this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR);
+      (errors: HttpErrorResponse) => {
+        if (errors.error[0] === 'postal code is not allowed') {
+          this.setIncorrectPostalCodeError(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR);
+        }
       }
     );
   }
 
   private handleLocationsResponse(locations: DeliveryLocationApi[]): void {
     if (!locations.length) {
-      this.setIncorrectPostalCodeError();
-      this.postalCodeErrorMessage = this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR);
+      this.setIncorrectPostalCodeError(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR);
     }
     if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {
       this.deliveryAddressForm.get('city').setValue(locations[0].city);
@@ -286,9 +288,10 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  private setIncorrectPostalCodeError(): void {
+  private setIncorrectPostalCodeError(translationKey: TRANSLATION_KEY): void {
     this.deliveryAddressForm.get('postal_code').setErrors(null);
     this.deliveryAddressForm.get('postal_code').setErrors({ incorrect: true });
+    this.postalCodeErrorMessage = this.i18nService.translate(translationKey);
   }
 
   private patchFormValues(): void {
@@ -311,11 +314,15 @@ export class DeliveryAddressComponent implements OnInit {
   private initializeCitiesAsOptions(postalCode: string, countryISOCode: string): Observable<DeliveryLocationApi[]> {
     return this.deliveryLocationsService.getLocationsByPostalCodeAndCountry(postalCode, countryISOCode).pipe(
       tap((locations: DeliveryLocationApi[]) => {
-        this.cities = locations.map((location: DeliveryLocationApi) => {
-          return { label: location.city, value: location.city };
-        });
+        this.mapCitiesAsOptions(locations);
       })
     );
+  }
+
+  private mapCitiesAsOptions(locations: DeliveryLocationApi[]): void {
+    this.cities = locations.map((location: DeliveryLocationApi) => {
+      return { label: location.city, value: location.city };
+    });
   }
 
   private patchCurrentForm(deliveryAddress: DeliveryAddressApi): void {

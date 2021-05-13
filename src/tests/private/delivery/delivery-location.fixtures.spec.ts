@@ -14,6 +14,14 @@ export const MOCK_DELIVERY_LOCATION_AS_OPTION: IOption = {
   value: MOCK_DELIVERY_LOCATION.city,
 };
 
+export const MOCK_DELIVERY_LOCATION_ES: DeliveryLocationApi = {
+  id: '156',
+  postal_code: '00122',
+  city: 'Málaga',
+  region: 'Málaga',
+  country_iso_code: 'ES',
+};
+
 export const MOCK_DELIVERY_LOCATION_IT: DeliveryLocationApi = {
   id: '156',
   postal_code: '00122',
