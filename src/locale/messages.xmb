@@ -1303,7 +1303,7 @@
   <msg id="ConfirmPaymentMethod"><source>src/app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:4</source>Confirm payment method</msg>
   <msg id="ChargeThisCard"><source>src/app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:5</source>The card linked to your subscriptions will be</msg>
   <msg id="Cancel"><source>src/app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:11</source>Cancel</msg>
-  <msg id="Yes"><source>src/app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:12,14</source>Confirm payment method </msg>
+  <msg id="Yes"><source>src/app/shared/modals/confirm-card-modal/confirm-card-modal.component.html:12</source>Yes</msg>
   <msg id="OrderYourCatalogBy"><source>src/app/shared/modals/full-screen-menu/full-screen-modal.component.html:2</source>Order your catalog by</msg>
   <msg id="AddNewCreditCard"><source>src/app/shared/modals/new-card-modal/new-card-modal.component.html:5</source>Add a new credit card</msg>
   <msg id="MissingPaymentMethodTitle"><source>src/app/shared/modals/no-card-modal/no-card-modal.component.html:4</source>Delete payment method</msg>
