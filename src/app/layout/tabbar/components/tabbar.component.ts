@@ -55,19 +55,29 @@ export class TabbarComponent implements OnInit {
     );
   }
 
-  private isTextInputOrTextarea(elementType: string) {
-    return elementType === 'INPUT' || elementType === 'TEXTAREA';
+  private isTextInputOrTextarea(element: any): boolean {
+    const elementTarget = element.target;
+    if (elementTarget.nodeName === 'TEXTAREA') {
+      return true;
+    }
+
+    const inputType = elementTarget.attributes?.type?.nodeValue;
+    if (!inputType) {
+      return false;
+    }
+
+    return inputType === 'text' || inputType === 'date' || inputType === 'password' || inputType === 'number';
   }
 
-  @HostListener('window:focusin', ['$event.target.nodeName'])
-  onFocusIn(elementType: string) {
+  @HostListener('window:focusin', ['$event'])
+  onFocusIn(elementType: any) {
     if (this.isTextInputOrTextarea(elementType)) {
       this.hidden = true;
     }
   }
 
-  @HostListener('window:focusout', ['$event.target.nodeName'])
-  onFocusOut(elementType: string) {
+  @HostListener('window:focusout', ['$event'])
+  onFocusOut(elementType: any) {
     if (this.isTextInputOrTextarea(elementType)) {
       this.hidden = false;
     }
