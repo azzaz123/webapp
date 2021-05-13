@@ -369,11 +369,7 @@ class I18nNormalizer {
       newKey = `${keyPrefix}${newKey}`;
     }
 
-    const onlyUniqueFilter = (value, index, self) => {
-      return self.indexOf(value) === index;
-    };
-
-    return newKey.split('_').filter(onlyUniqueFilter).join('_');
+    return newKey;
   }
 }
 
