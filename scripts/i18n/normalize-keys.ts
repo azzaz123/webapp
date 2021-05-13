@@ -139,6 +139,9 @@ class I18nNormalizer {
 
       if (await this.askForConfirmation()) {
         this.substituteKeys(substitutionKeys);
+
+        console.log('\nChecking for more keys...\n');
+        await this.addMissingKeys();
       }
 
     } else {
@@ -191,6 +194,8 @@ class I18nNormalizer {
 
       if (await this.askForConfirmation()) {
         this.substituteKeys(substitutionKeys);
+        console.log('\nChecking for more keys...\n');
+        await this.normalizeKeys();
       }
 
     } else {
