@@ -3,7 +3,7 @@
         <div>
             <div>
                 <b>
-                    <span>
+                    <span i18n="@@total">
                         Total
                     </span>
                 </b>
@@ -23,7 +23,7 @@
             </div>
         </div>
         <tsl-button className="btn btn-primary btn-primary--bold btn--big btn--width" [loading]="isLoading" [disabled]="buttonDisable" (clickButton)="onClickButton()">
-            Pagar
+            {{buttonText}}
         </tsl-button>
     </div>
 </div>
