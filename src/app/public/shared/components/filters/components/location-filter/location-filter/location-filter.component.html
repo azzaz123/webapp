@@ -1,5 +1,5 @@
 <tsl-filter-template [isBubble]="variant | isBubble" [label]="label" [hasApply]="true" [isDropdown]="true"
-    [title]="config.title" [icon]="config.icon" [hasValue]="hasValue$ | async" (apply)="handleApply()"
+    [title]="config.title" [icon]="config.icon" [hasValue]="bubbleActive" (apply)="handleApply()"
     (openStateChange)="openStateChange.emit($event)">
 
     <form [formGroup]="locationFilterForm">
