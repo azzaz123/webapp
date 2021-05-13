@@ -183,7 +183,7 @@ class I18nNormalizer {
       source: copy.source
     })).filter(copy => copy.newKey !== copy.oldKey);
 
-    if (substitutionKeys) {
+    if (substitutionKeys.length > 0) {
       console.log(
         `\nKeys to normalize:\n`,
         substitutionKeys.map(({ source, oldKey, newKey }) => `${source}: ${oldKey} -> ${newKey}`).join('\n')
@@ -214,7 +214,7 @@ class I18nNormalizer {
 
   private substituteKeys(substitutionKeys: SubstitutionKey[]): void {
     substitutionKeys.forEach((substitutionKey) => {
-      this.setNewKeyInHTML(substitutionKey);
+      this.setNewKeyInSourceFiles(substitutionKey);
     });
 
     this.setNewKeysInFiles(substitutionKeys);
@@ -222,21 +222,21 @@ class I18nNormalizer {
     this.runI18n();
   }
 
-  private setNewKeyInHTML(substitutionKey: SubstitutionKey): void {
+  private setNewKeyInSourceFiles(substitutionKey: SubstitutionKey): void {
     const {source, oldKey, newKey} = substitutionKey;
     const splitPath = source.split(':');
     const filePath = splitPath[0];
 
-    let rawHTML = fs.readFileSync(filePath, 'UTF-8');
+    let rawFile = fs.readFileSync(filePath, 'UTF-8');
 
-    if (rawHTML.match(`i18n-placeholder=\"@@${oldKey}\"`)) {
-      rawHTML = rawHTML.replace(new RegExp(`i18n-placeholder=\"@@${oldKey}\"`, 'g'), `i18n-placeholder=\"@@${newKey}\"`);
+    if (rawFile.match(`i18n-placeholder=\"@@${oldKey}\"`)) {
+      rawFile = rawFile.replace(new RegExp(`i18n-placeholder=\"@@${oldKey}\"`, 'g'), `i18n-placeholder=\"@@${newKey}\"`);
     }
 
-    if (rawHTML.match(`i18n=\"@@${oldKey}\"`)) {
-      rawHTML = rawHTML.replace(new RegExp(`i18n=\"@@${oldKey}\"`, 'g'), `i18n=\"@@${newKey}\"`);
+    if (rawFile.match(`i18n=\"@@${oldKey}\"`)) {
+      rawFile = rawFile.replace(new RegExp(`i18n=\"@@${oldKey}\"`, 'g'), `i18n=\"@@${newKey}\"`);
     }
-    fs.writeFileSync(filePath, rawHTML);
+    fs.writeFileSync(filePath, rawFile);
   }
 
   private setNewKeysInFiles(substitutionKeys: SubstitutionKey[]): void {
