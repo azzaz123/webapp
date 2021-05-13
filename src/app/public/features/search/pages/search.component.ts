@@ -12,7 +12,6 @@ import { ColumnsConfig } from '@public/shared/components/item-card-list/interfac
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, skip, tap } from 'rxjs/operators';
-import { threadId } from 'worker_threads';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
