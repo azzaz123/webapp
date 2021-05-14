@@ -75,6 +75,7 @@ import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
+import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
 
 @NgModule({
   imports: [
@@ -168,6 +169,7 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
     InfiniteScrollDirective,
+    VisibleDirectiveModule,
   ],
   declarations: [
     ConfirmationModalComponent,
