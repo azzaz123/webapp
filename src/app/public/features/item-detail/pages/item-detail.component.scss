@@ -17,6 +17,10 @@ $item-detail-carousel-height: 477px;
     }
   }
 
+  &__sky {
+    flex-basis: 300px;
+  }
+
   &__content {
     background-color: $white;
     border-radius: $border-radius;
