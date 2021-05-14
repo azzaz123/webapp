@@ -97,11 +97,33 @@ class I18nNormalizer {
         this.clearSourcedCopies();
         this.runI18n();
         break;
+      case '4':
+        this.moveXtbToJson();
+        break;
       default:
         return;
     }
 
     return this.menu();
+  }
+
+  private moveXtbToJson(): void {
+    const esRaw = fs.readFileSync('src/locale/es.xtb', 'utf8');
+
+    const cleanedFileString = this.cleanupRawXTB(esRaw);
+    const rawCopiesJSON = xmlParser.toJson(cleanedFileString);
+    const copiesObject = JSON.parse(rawCopiesJSON);
+
+
+    const messages: {id: string, $t: string}[] = copiesObject.translationbundle.translation;
+    const translationJson = messages.reduce((acc, translation) => {
+      return {
+        ...acc,
+        [translation.id]: translation.$t
+      };
+    }, {});
+
+    fs.writeFileSync('src/locale/es.json', JSON.stringify(translationJson, undefined, 2));
   }
 
 
