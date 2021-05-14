@@ -231,7 +231,7 @@
   <msg id="web_components_topbar_538"><source>src/app/layout/topbar/components/topbar/topbar.component.html:19</source>Messages</msg>
   <msg id="web_components_topbar_9"><source>src/app/layout/topbar/components/topbar/topbar.component.html:26</source>My Zone</msg>
   <msg id="web_components_topbar_10"><source>src/app/layout/topbar/components/topbar/topbar.component.html:27</source>My Pro Zone</msg>
-  <msg id="web_top_bar_button_registe_or_signin"><source>src/app/layout/topbar/components/topbar/topbar.component.html:31</source>Register or sign in</msg>
+  <msg id="web_top_bar_button_register_or_signin"><source>src/app/layout/topbar/components/topbar/topbar.component.html:31</source>Register or sign in</msg>
   <msg id="web_components_topbar_11"><source>src/app/layout/topbar/components/topbar/topbar.component.html:35</source>List a product</msg>
   <msg id="web_components_topbar_12"><source>src/app/layout/topbar/components/topbar/topbar.component.html:36</source>List a car</msg>
   <msg id="web_calls_pages_13"><source>src/app/private/features/calls/pages/calls.component.html:10</source>Calls</msg>
