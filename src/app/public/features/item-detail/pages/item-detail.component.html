@@ -7,14 +7,12 @@
                 <tsl-sky [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
             </div>
 
-            <tsl-item-detail-placeholder *ngIf="!(itemDetail$ | async)"></tsl-item-detail-placeholder>
+            <ng-container>
+                <div class="ItemDetail__container__middleSection d-flex flex-column w-100">
 
-            <ng-container *ngIf="itemDetail$ | async as itemDetail">
-                <div *ngIf="itemDetail.user
-                            && itemDetail.item
-                            && itemDetail.userStats | async"
-                    class="ItemDetail__container__middleSection d-flex flex-column w-100">
-                    <div class="ItemDetail__content px-4 pb-5 ">
+                    <tsl-item-detail-placeholder *ngIf="!(itemDetail$ | async)"></tsl-item-detail-placeholder>
+
+                    <div class="ItemDetail__content px-4 pb-5" *ngIf="itemDetail$ | async as itemDetail">
                         <tsl-item-detail-header [user]="itemDetail.user" [item]="itemDetail.item"
                             [userStats]="itemDetail.userStats | async"
                             [isOwner]="(itemDetail.user.id | isCurrentUser | async)"
