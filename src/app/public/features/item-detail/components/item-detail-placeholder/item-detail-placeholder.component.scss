@@ -1,0 +1,41 @@
+@import '~style/common';
+$item-detail-card-width: 681px;
+$item-detail-carousel-height: 477px;
+
+:host {
+  width: 100%;
+}
+
+.ItemDetailPlaceholder {
+  max-width: $item-detail-card-width;
+  background-color: $white;
+  border-radius: $border-radius;
+  border: solid 1px $blue-grey-5;
+
+  &__avatar {
+    width: 40px;
+    @include AvatarPlaceholder;
+  }
+
+  &__carousel {
+    @include ImagePlaceholder;
+    border-radius: $border-radius;
+    height: $item-detail-carousel-height;
+  }
+
+  &__title,
+  &__price {
+    height: 30px;
+    @include TextPlaceholder;
+  }
+
+  &__text {
+    @include TextPlaceholder;
+  }
+
+  &__map {
+    height: 130px;
+    border-radius: $border-radius;
+    @include ImagePlaceholder;
+  }
+}
