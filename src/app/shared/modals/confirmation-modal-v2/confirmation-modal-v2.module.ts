@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonModule } from '@shared/button/button.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ConfirmationModalV2Component } from './confirmation-modal-v2.component';
 
 @NgModule({

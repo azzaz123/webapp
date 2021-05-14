@@ -10,6 +10,7 @@ import { DndModule } from 'ng2-dnd';
 import { CategorySelectorComponent } from './components/category-selector/category-selector.component';
 import { DropAreaComponent } from './components/drop-area/drop-area.component';
 import { EditComponent } from './components/edit/edit.component';
+import { EditTrackingEventService } from './core/services/edit-tracking-event/edit-tracking-event.service';
 import { ItemResolverService } from './core/resolvers/item-resolver.service';
 import { CarKeysService } from './core/services/car-keys/car-keys.service';
 import { CarSuggestionsService } from './core/services/car-suggestions/car-suggestions.service';
@@ -60,6 +61,7 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.mo
     ItemResolverService,
     GeneralSuggestionsService,
     ItemReactivationService,
+    EditTrackingEventService,
   ],
   entryComponents: [RemoveConfirmModalComponent, PreviewModalComponent],
 })

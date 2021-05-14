@@ -2,10 +2,9 @@ import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ConfirmationModalV2Component } from './confirmation-modal-v2.component';
 import { HttpClientModule } from '@angular/common/http';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { ComponentFixture, waitForAsync, TestBed } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { By } from '@angular/platform-browser';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 describe('ConfirmationModalV2Component', () => {
   let component: ConfirmationModalV2Component;

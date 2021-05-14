@@ -1,12 +1,15 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { ITEM_ID, MOCK_ITEM, PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '@shared/exit-confirmation-modal/exit-confirmation-modal.component';
 import { of } from 'rxjs';
+import { EditTrackingEventService } from '../../core/services/edit-tracking-event/edit-tracking-event.service';
 import { EditComponent } from './edit.component';
 
 describe('EditComponent', () => {
@@ -14,6 +17,8 @@ describe('EditComponent', () => {
   let fixture: ComponentFixture<EditComponent>;
   let modalService: NgbModal;
   let itemService: ItemService;
+  let analyticsService: AnalyticsService;
+  let editTrackingEventService: EditTrackingEventService;
   const componentInstance: any = {};
 
   beforeEach(
@@ -74,6 +79,8 @@ describe('EditComponent', () => {
               },
             },
           },
+          EditTrackingEventService,
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
       }).compileComponents();
     })
@@ -85,6 +92,8 @@ describe('EditComponent', () => {
     component.item = MOCK_ITEM;
     modalService = TestBed.inject(NgbModal);
     itemService = TestBed.inject(ItemService);
+    analyticsService = TestBed.inject(AnalyticsService);
+    editTrackingEventService = TestBed.inject(EditTrackingEventService);
   });
 
   describe('ngOnInit', () => {
@@ -98,6 +107,15 @@ describe('EditComponent', () => {
       component.ngOnInit();
 
       expect(component.getUrgentPrice).toHaveBeenCalled();
+    });
+
+    it('should track view event when alytics service is ready', () => {
+      spyOn(editTrackingEventService, 'trackViewEditItemEvent');
+
+      component.ngOnInit();
+      analyticsService.initialize();
+
+      expect(editTrackingEventService.trackViewEditItemEvent).toHaveBeenCalledWith(component.item.categoryId, component.isReactivation);
     });
   });
 
