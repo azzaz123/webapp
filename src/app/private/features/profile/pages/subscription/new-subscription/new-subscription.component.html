@@ -21,7 +21,7 @@
         <div class="GenericCard__title" i18n="@@web_stripe_cards_535">Payment method</div>
         <div class="GenericCard__subtitle" i18n="@@card_selector_subtitle">Encrypted and secure</div>
         <ng-container *ngIf="stripeCards">
-            <tsl-subscription-card-selector [stripeCards]="stripeCards" [selectedCard]="selectedCard"
+            <tsl-subscription-card-selector [stripeCards]="stripeCards" [selectedCard]="selectedCard" (clickNewCard)="trackClickSubscriptionAddCard()"
                 [error]="!!paymentError" (changeSelectedCard)="onChangeSelectedCard($event)">
             </tsl-subscription-card-selector>
         </ng-container>
@@ -51,7 +51,7 @@
         </div>
     </div>
 </div>
-<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="!selectedCard || isLoading"
+<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="isDisableButton()"
     [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()">
 
 </tsl-subscription-purchase-footer>

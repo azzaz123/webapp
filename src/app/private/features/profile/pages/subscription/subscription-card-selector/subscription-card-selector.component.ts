@@ -15,6 +15,7 @@ export class SubscriptionCardSelectorComponent implements OnInit, OnChanges {
   @Input() selectedCard: FinancialCard;
   @Input() error: boolean;
   @Output() changeSelectedCard: EventEmitter<FinancialCard> = new EventEmitter();
+  @Output() clickNewCard: EventEmitter<void> = new EventEmitter();
   public showChangeLink: boolean;
 
   constructor(private modalService: NgbModal) {}
@@ -27,6 +28,7 @@ export class SubscriptionCardSelectorComponent implements OnInit, OnChanges {
   }
 
   public addNewCard(): void {
+    this.clickNewCard.emit();
     let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {
       windowClass: 'review',
     });

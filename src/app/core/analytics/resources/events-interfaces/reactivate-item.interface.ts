@@ -54,7 +54,11 @@ export interface ReactivateItem {
    */
   hashtags?: string;
   /**
-   * shippingAllowed
+   * If the item has the shipping toggle on
    */
   shippingAllowed?: boolean;
+  /**
+   * If the item has the weight informed
+   */
+  shippingWeight?: number;
 }

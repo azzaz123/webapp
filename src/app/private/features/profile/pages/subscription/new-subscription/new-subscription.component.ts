@@ -1,6 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import {
+  AnalyticsEvent,
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickSubscriptionAddCard,
+  SCREEN_IDS,
+  SubscriptionPayConfirmation,
+  SubscriptionPaymentButtonAvailable,
+  ViewSubscriptionTier,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { translations } from '@core/i18n/translations/constants/translations';
@@ -44,9 +56,12 @@ export class NewSubscriptionComponent implements OnInit {
     private modalService: NgbModal,
     private deviceService: DeviceDetectorService,
     private scrollIntoViewService: ScrollIntoViewService,
-    private eventService: EventService
+    private eventService: EventService,
+    private analyticsService: AnalyticsService
   ) {}
   public isLoading: boolean;
+
+  private buttonEnabledTracked: boolean;
 
   public isRetryInvoice = false;
   private _invoiceId: string;
@@ -64,6 +79,7 @@ export class NewSubscriptionComponent implements OnInit {
     this.eventService.subscribe(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, (response: any) => {
       this.managePaymentResponse(response);
     });
+    this.trackViewSubscriptionTier();
   }
 
   private managePaymentResponse(paymentResponse: any) {
@@ -156,6 +172,7 @@ export class NewSubscriptionComponent implements OnInit {
 
   private purchaseSubscription() {
     this.isLoading = true;
+    this.trackSubscriptionPayConfirmation();
     if (this.isSavedCard) {
       this.addSubscriptionFromSavedCard();
     } else {
@@ -275,5 +292,76 @@ export class NewSubscriptionComponent implements OnInit {
     if (this.paymentError) {
       this.paymentError = null;
     }
+  }
+
+  private trackViewSubscriptionTier(): void {
+    const event: AnalyticsPageView<ViewSubscriptionTier> = {
+      name: ANALYTICS_EVENT_NAMES.ViewSubscriptionTier,
+      attributes: {
+        screenId: SCREEN_IDS.SubscriptionTier,
+        freeTrial: this.subscriptionsService.hasTrial(this.subscription),
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+      },
+    };
+    this.analyticsService.trackPageView(event);
+  }
+
+  public trackClickSubscriptionAddCard(): void {
+    const event: AnalyticsEvent<ClickSubscriptionAddCard> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionAddCard,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.SubscriptionTier,
+        freeTrial: this.subscriptionsService.hasTrial(this.subscription),
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+      },
+    };
+    this.analyticsService.trackPageView(event);
+  }
+
+  private trackSubscriptionPaymentButtonAvailable(): void {
+    const event: AnalyticsEvent<SubscriptionPaymentButtonAvailable> = {
+      name: ANALYTICS_EVENT_NAMES.SubscriptionPaymentButtonAvailable,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.ProfileSubscription,
+        freeTrial: this.subscriptionsService.hasTrial(this.subscription),
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        tier: this.selectedTier.id,
+        invoiceNeeded: this.isInvoiceRequired,
+      },
+    };
+    this.analyticsService.trackPageView(event);
+  }
+
+  public isDisableButton() {
+    const isDisable = !this.selectedCard || this.isLoading;
+
+    if (!isDisable && !this.buttonEnabledTracked) {
+      this.buttonEnabledTracked = true;
+      this.trackSubscriptionPaymentButtonAvailable();
+    }
+
+    return isDisable;
+  }
+
+  public trackSubscriptionPayConfirmation(): void {
+    const discountPercent = this.subscriptionsService.getTierDiscountPercentatge(this.selectedTier);
+    const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
+      name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
+      eventType: ANALYTIC_EVENT_TYPES.Transaction,
+      attributes: {
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        tier: this.selectedTier.id,
+        screenId: SCREEN_IDS.ProfileSubscription,
+        isNewCard: !this.isSavedCard,
+        isNewSubscriber: !this.user.featured,
+        discountPercent,
+        invoiceNeeded: this.isInvoiceRequired,
+        freeTrial: this.subscriptionsService.hasTrial(this.subscription),
+      },
+    };
+
+    this.analyticsService.trackEvent(event);
   }
 }

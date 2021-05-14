@@ -10,7 +10,7 @@
  */
 export interface ClickNotificationCard {
   /**
-   * The unique identifier for an item
+   * The unique identifier for an item. Only applies to some notification types.
    */
   itemId?: string;
   /**
@@ -18,7 +18,7 @@ export interface ClickNotificationCard {
    */
   screenId: 218;
   /**
-   * Identifier of the user that the item belongs to
+   * Identifier of the user that the item belongs to. Only applies to some notification types.
    */
   sellerUserId?: string;
   /**
@@ -26,7 +26,11 @@ export interface ClickNotificationCard {
    */
   notificationType: string;
   /**
-   * The unique identifier of the saved search
+   * If the notification clicked is pinned at the top of the list
    */
-  savedSearchId?: string;
+  isPinned: boolean;
+  /**
+   * If the notification clicked is unread
+   */
+  isUnread: boolean;
 }
