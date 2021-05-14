@@ -13,14 +13,16 @@ import { AbstractFilter } from '../../abstract-filter/abstract-filter';
 import { LocationFilterConfig } from '../interfaces/location-filter-config.interface';
 import { LocationFilterParams } from '../interfaces/location-filter-params.interface';
 
+export const SEARCH_BOX_DEBOUNCE_TIME = 500;
+
 export const HERE_MAPS_ENDPOINT = 'https://image.maps.api.here.com/mia/1.6/mapview?';
 export const HERE_MAPS_APP_ID = 'RgPrXX1bXt123UgUFc7B';
 export const HERE_MAPS_APP_CODE = 'HtfX0DsqZ2Y0x-44GfujFA';
 export const HERE_MAPS_CONFIG = `app_id=${HERE_MAPS_APP_ID}&app_code=${HERE_MAPS_APP_CODE}`;
 
-const DISTANCE_FACTOR = 1000;
+export const DISTANCE_FACTOR = 1000;
 const MIN_FILTER_DISTANCE = 1;
-const MAX_FILTER_DISTANCE = 500;
+export const MAX_FILTER_DISTANCE = 500;
 
 @Component({
   selector: 'tsl-location-filter',
@@ -100,7 +102,8 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   public onValueChange(_: FilterParameter[], currentValue: FilterParameter[]): void {
     const latitude = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.latitude).value;
     const longitude = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.longitude).value;
-    const distance = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.distance)?.value || MAX_FILTER_DISTANCE;
+    const distance =
+      currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.distance)?.value || MAX_FILTER_DISTANCE * DISTANCE_FACTOR;
 
     this.currentLocation = { latitude, longitude };
     this.currentDistance = +distance / DISTANCE_FACTOR;
@@ -155,7 +158,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   public search = (text$: Observable<string>) =>
     text$.pipe(
-      debounceTime(500),
+      debounceTime(SEARCH_BOX_DEBOUNCE_TIME),
       distinctUntilChanged(),
       switchMap((location) => this.getLocationSuggestions(location))
     );
