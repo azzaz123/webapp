@@ -77,8 +77,8 @@
               </div>
             </div>
             <div class="form-group row align-items-center">
-              <label *ngIf="type === 'legal'" for="cif" class="col-sm-12 col-md-5" i18n="@@web_c_i_f_number">CIF of the company</label>
-              <label *ngIf="type === 'natural'" for="cif" class="col-sm-12 col-md-5" i18n="@@web_n_i_f_number">NIF of the person</label>
+              <label *ngIf="type === 'legal'" for="cif" class="col-sm-12 col-md-5" i18n="@@web_cif_number">CIF of the company</label>
+              <label *ngIf="type === 'natural'" for="cif" class="col-sm-12 col-md-5" i18n="@@web_nif_number">NIF of the person</label>
               <div [ngClass]="{'col-sm-12 col-md-7': containerTypeIsModal, 'col-sm-12 col-md-5': !containerTypeIsModal}">
                 <input type="text" class="form-control" id="cif" formControlName="cif"/>
                 <div *ngIf="isIncorrectFormcontrol(billingForm.controls.cif)" class="alert">

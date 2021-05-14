@@ -683,8 +683,8 @@
   <translation id="web_city">Ciudad</translation>
   <translation id="web_postal_code">Código postal</translation>
   <translation id="web_country">País</translation>
-  <translation id="web_c_i_f_number">CIF de la empresa</translation>
-  <translation id="web_n_i_f_number">NIF de la persona</translation>
+  <translation id="web_cif_number">CIF de la empresa</translation>
+  <translation id="web_nif_number">NIF de la persona</translation>
   <translation id="web_save">Guardar</translation>
   <translation id="web_profile_pages_320">Información de facturación</translation>
   <translation id="web_profile_pages_321">Facturación</translation>

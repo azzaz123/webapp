@@ -1351,8 +1351,8 @@
   <msg id="web_company_name"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:65</source>Company Name</msg>
   <msg id="web_company_name_required"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:70,72</source> Company name is required. </msg>
   <msg id="web_company_name_max_length"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:73,75</source> Company name must be at most 32 characters long. </msg>
-  <msg id="web_c_i_f_number"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:79</source>CIF of the company</msg>
-  <msg id="web_n_i_f_number"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:80</source>NIF of the person</msg>
+  <msg id="web_cif_number"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:79</source>CIF of the company</msg>
+  <msg id="web_nif_number"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:80</source>NIF of the person</msg>
   <msg id="web_cif_required"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:85,87</source> CIF/NIF is required. </msg>
   <msg id="web_cif_format"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:88,90</source> CIF/NIF must be valid. </msg>
   <msg id="web_email"><source>src/app/shared/profile-pro-billing/profile-pro-billing.component.html:94</source>E-mail</msg>
