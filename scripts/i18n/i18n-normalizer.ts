@@ -53,10 +53,10 @@ class I18nNormalizer {
 
   private copyLocations: CopyLocation[] = [{
     language: LANGUAGE.ENGLISH,
-    file: 'src/locale/messages.xmb'
+    file: 'src/locale/messages.json'
   }, {
     language: LANGUAGE.SPANISH,
-    file: 'src/locale/es.xtb'
+    file: 'src/locale/es.json'
   }];
 
   private pathsToSkip = [
@@ -85,17 +85,32 @@ class I18nNormalizer {
         this.runI18n();
         break;
       case '2':
+        this.generateSourcedCopies();
         this.printMissingTranslations();
+        this.clearSourcedCopies();
+        this.runI18n();
         break;
       case '3':
+        this.generateSourcedCopies();
         await this.addMissingKeys();
         await this.normalizeKeys();
+        this.clearSourcedCopies();
+        this.runI18n();
         break;
       default:
         return;
     }
 
     return this.menu();
+  }
+
+
+  private generateSourcedCopies(): void {
+    execSync('ng extract-i18n --format=xmb --output-path=src/locale');
+  }
+
+  private clearSourcedCopies(): void {
+    execSync('rm src/locale/messages.xmb');
   }
 
   private getCopies(): Copy[] {
@@ -226,9 +241,9 @@ class I18nNormalizer {
       this.setNewKeyInSourceFiles(substitutionKey);
     });
 
-    this.setNewKeysInFiles(substitutionKeys);
+    this.setNewKeysInTranslationFiles(substitutionKeys);
 
-    this.runI18n();
+    this.generateSourcedCopies();
   }
 
   private setNewKeyInSourceFiles(substitutionKey: SubstitutionKey): void {
@@ -243,7 +258,7 @@ class I18nNormalizer {
     fs.writeFileSync(filePath, rawFile);
   }
 
-  private setNewKeysInFiles(substitutionKeys: SubstitutionKey[]): void {
+  private setNewKeysInTranslationFiles(substitutionKeys: SubstitutionKey[]): void {
     this.copyLocations.forEach(({ file }) => {
       let rawFile = fs.readFileSync(file, 'utf8');
 
