@@ -141,6 +141,7 @@ export class DeliveryAddressComponent implements OnInit {
 
     const subscription = countryISOCode.valueChanges.subscribe(() => {
       if (countryISOCode.dirty) {
+        this.resetCitiesAndLocations();
         this.deliveryAddressForm.clearValidators();
         this.deliveryAddressForm.get('full_name').reset();
         this.deliveryAddressForm.get('street').reset();
@@ -161,6 +162,7 @@ export class DeliveryAddressComponent implements OnInit {
 
     const subscription = postalCode.valueChanges.subscribe((newPostalCode: string) => {
       if (postalCode.dirty) {
+        this.resetCitiesAndLocations();
         this.deliveryAddressForm.get('city').reset();
         this.deliveryAddressForm.get('region').reset();
         if (postalCode.valid && newPostalCode.length === 5 && newPostalCode) {
@@ -337,6 +339,11 @@ export class DeliveryAddressComponent implements OnInit {
       city: deliveryAddress.city,
       phone_number: deliveryAddress.phone_number,
     });
+  }
+
+  private resetCitiesAndLocations(): void {
+    this.cities = [];
+    this.deliveryLocationsStoreService.deliveryLocations = [];
   }
 
   private buildForm(): void {

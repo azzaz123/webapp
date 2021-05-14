@@ -440,13 +440,12 @@ describe('DeliveryAddressComponent', () => {
   describe('when the country changes...', () => {
     beforeEach(() => {
       component.deliveryAddressForm.patchValue(MOCK_DELIVERY_ADDRESS);
-    });
-
-    it('should clear the form', () => {
       const countryFormControl = component.deliveryAddressForm.get('country_iso_code');
       countryFormControl.markAsDirty();
       countryFormControl.setValue('IT');
+    });
 
+    it('should clear the form', () => {
       expect(component.deliveryAddressForm.getRawValue()).toStrictEqual({
         id: MOCK_DELIVERY_ADDRESS.id,
         city: null,
@@ -459,12 +458,28 @@ describe('DeliveryAddressComponent', () => {
         street: null,
       });
     });
+
+    it('should reset the locations store', () => {
+      expect(deliveryLocationsStoreService.deliveryLocations).toStrictEqual([]);
+    });
+
+    it('should reset the cities', () => {
+      expect(component.cities).toStrictEqual([]);
+    });
   });
 
   describe('when the postal code changes...', () => {
     beforeEach(() => {
       component.deliveryAddressForm.patchValue(MOCK_DELIVERY_ADDRESS);
       component.deliveryAddressForm.get('postal_code').markAsDirty();
+    });
+
+    it('should reset the locations store', () => {
+      expect(deliveryLocationsStoreService.deliveryLocations).toStrictEqual([]);
+    });
+
+    it('should reset the cities', () => {
+      expect(component.cities).toStrictEqual([]);
     });
 
     describe('and the postal code is valid and have five digits...', () => {
