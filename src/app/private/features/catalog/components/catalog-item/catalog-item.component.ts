@@ -11,7 +11,7 @@ import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants'
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { I18nService } from '@core/i18n/i18n.service';
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
-import { CatalogItemTrackingEventService } from './services/catalog-item-tracking-event.service';
+import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 
 @Component({
   selector: 'tsl-catalog-item',

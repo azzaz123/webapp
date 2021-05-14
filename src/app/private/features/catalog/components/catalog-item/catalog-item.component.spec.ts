@@ -24,8 +24,8 @@ import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject } from 'rxjs';
 import { ItemChangeEvent } from '../../core/item-change.interface';
+import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 import { CatalogItemComponent } from './catalog-item.component';
-import { CatalogItemTrackingEventService } from './services/catalog-item-tracking-event.service';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;

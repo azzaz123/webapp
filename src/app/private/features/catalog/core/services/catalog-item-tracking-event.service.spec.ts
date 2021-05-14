@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { CatalogItemTrackingEventService } from './catalog-item-tracking-event.service';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import {
   AnalyticsEvent,
@@ -13,6 +12,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { UserService } from '@core/user/user.service';
 import { Item } from '@core/item/item';
+import { CatalogItemTrackingEventService } from './catalog-item-tracking-event.service';
 
 describe('CatalogItemTrackingEventService', () => {
   let service: CatalogItemTrackingEventService;

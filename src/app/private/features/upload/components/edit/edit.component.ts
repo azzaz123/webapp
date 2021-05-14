@@ -8,8 +8,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '@shared/exit-confirmation-modal/exit-confirmation-modal.component';
 import { CanComponentDeactivate } from '@core/guards/can-component-deactivate.interface';
 import { UPLOAD_PATHS } from '../../upload-routing-constants';
-import { EditTrackingEventService } from './service/edit-tracking-event.service';
 import { take } from 'rxjs/operators';
+import { EditTrackingEventService } from '../../core/services/edit-tracking-event/edit-tracking-event.service';
 
 @Component({
   selector: 'tsl-edit',

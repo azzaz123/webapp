@@ -9,8 +9,8 @@ import { ITEM_ID, MOCK_ITEM, PRODUCT_RESPONSE } from '@fixtures/item.fixtures.sp
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '@shared/exit-confirmation-modal/exit-confirmation-modal.component';
 import { of } from 'rxjs';
+import { EditTrackingEventService } from '../../core/services/edit-tracking-event/edit-tracking-event.service';
 import { EditComponent } from './edit.component';
-import { EditTrackingEventService } from './service/edit-tracking-event.service';
 
 describe('EditComponent', () => {
   let component: EditComponent;
