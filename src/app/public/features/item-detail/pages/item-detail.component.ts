@@ -76,6 +76,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.itemDetailStoreService.clear();
     this.subscriptions.unsubscribe();
   }
 
