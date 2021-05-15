@@ -186,23 +186,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  private trackViewOthersCGDetailEvent(itemDetail: ItemDetail): void {
-    const item = itemDetail.item;
-    const user = itemDetail.user;
-    const event: AnalyticsPageView<ViewOthersItemCGDetail> = {
-      name: ANALYTICS_EVENT_NAMES.ViewOthersItemCGDetail,
-      attributes: {
-        itemId: item.id,
-        categoryId: item.categoryId,
-        salePrice: item.salePrice,
-        title: item.title,
-        isPro: user.featured,
-        screenId: SCREEN_IDS.ItemDetail,
-      },
-    };
-    this.analyticsService.trackPageView(event);
-  }
-
   get itemDetail$(): Observable<ItemDetail> {
     return this.itemDetailStoreService.itemDetail$;
   }
