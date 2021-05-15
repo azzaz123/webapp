@@ -2,11 +2,6 @@
 $item-detail-card-width: 681px;
 $item-detail-carousel-height: 477px;
 
-:host {
-  background-color: $blue-grey-5;
-  display: block;
-}
-
 .ItemDetail {
   &__container {
     @include media-breakpoint-up(xl) {
