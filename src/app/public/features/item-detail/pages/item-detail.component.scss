@@ -7,16 +7,18 @@ $item-detail-carousel-height: 477px;
     @include media-breakpoint-up(xl) {
       max-width: 1440px;
     }
-    &__middleSection {
-      max-width: $item-detail-card-width;
-    }
   }
 
   &__sky {
     flex-basis: 300px;
+    top: calc(#{$topbar-height} + #{$spacer * 0.5});
   }
 
   &__content {
+    max-width: $item-detail-card-width;
+  }
+
+  &__card {
     background-color: $white;
     border-radius: $border-radius;
     border: solid 1px $blue-grey-5;
@@ -104,12 +106,4 @@ $item-detail-carousel-height: 477px;
   padding: 10px 0px;
   border-top: 1px solid $blue-grey-5;
   border-bottom: 1px solid $blue-grey-5;
-}
-
-tsl-side-sky {
-  top: calc(#{$topbar-height} + #{$spacer * 0.5});
-}
-
-tsl-sky {
-  top: calc(#{$topbar-height} + #{$spacer * 0.5});
 }
