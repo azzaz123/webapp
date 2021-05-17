@@ -91,10 +91,7 @@ class I18nNormalizer {
         this.runI18n();
         break;
       case '4':
-        await this.cleanTranslationFiles();
-        break;
-      case '5':
-        this.moveXtbToJson();
+        this.cleanTranslationFiles();
         break;
       default:
         return;
@@ -119,27 +116,6 @@ class I18nNormalizer {
       fs.writeFileSync(location.file, JSON.stringify({ locale: location.language, translations}, undefined, 2));
     });
   }
-
-  // BEFOREMERGE: Remove method
-  private moveXtbToJson(): void {
-    const esRaw = fs.readFileSync('src/locale/es.xtb', 'utf8');
-
-    const cleanedFileString = this.cleanupRawXTB(esRaw);
-    const rawCopiesJSON = xmlParser.toJson(cleanedFileString);
-    const copiesObject = JSON.parse(rawCopiesJSON);
-
-
-    const messages: {id: string, $t: string}[] = copiesObject.translationbundle.translation;
-    const translationJson = messages.reduce((acc, translation) => {
-      return {
-        ...acc,
-        [translation.id]: translation.$t
-      };
-    }, {});
-
-    fs.writeFileSync('src/locale/es.json', JSON.stringify({ locale: 'es', translations: translationJson }, undefined, 2));
-  }
-
 
   private generateSourcedCopies(): void {
     execSync('ng extract-i18n --format=xmb --output-path=src/locale');
@@ -386,23 +362,6 @@ class I18nNormalizer {
       .replace(regexpMatchTranslationSeparatorsAperture, apertureReplacement)
       .replace(regexpMatchTranslationSeparatorsClosure, closureReplacement)
       .replace(regexpCleanupInterpolations, interpolationsReplacement);
-  }
-
-  private cleanupRawXTB(rawStringFile: string): string {
-    const expressionRegex = /<ex>(.*?)<\/ex>/gm;
-    const extraExpressionRegex = /{{(.+?)}}/gm;
-    const interpolationRegex = /<ph name="([\w_]+)">?(.*?(?=(<\/ph>)|(\/>)))(\/>|<\/ph>)/gm;
-    const tagsRegex = /&lt;\/?(span|b|a|strong)&gt;/gm;
-    const cleanedExpressions = rawStringFile.replace(expressionRegex, '').replace(extraExpressionRegex, '');
-
-    const cleanedInterpolations = cleanedExpressions.replace(interpolationRegex, '{$$$1}$2');
-    let cleanedTags = cleanedInterpolations.replace(tagsRegex, '');
-
-    if (cleanedTags.match(interpolationRegex)) {
-      cleanedTags = this.cleanupRawXTB(cleanedTags);
-    }
-
-    return cleanedTags;
   }
 
   private isNumericKey(id): boolean {
