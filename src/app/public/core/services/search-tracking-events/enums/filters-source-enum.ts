@@ -1,4 +1,4 @@
-export enum FILTER_SOURCE {
+export enum FILTERS_SOURCE {
   SEARCH_BOX = 'search_box',
   RECENT_SEARCHES = 'recent_searches',
   DEFAULT_FILTERS = 'default_filters',
