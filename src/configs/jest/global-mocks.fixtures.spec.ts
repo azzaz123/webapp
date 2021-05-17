@@ -187,3 +187,17 @@ export const MOCK_HERE_MAPS: any = {
   service: { Platform: (e) => e },
   ui: null,
 };
+
+export class MockIntersectionObserver implements Partial<IntersectionObserver> {
+  public static callback;
+
+  constructor(_callback: Function) {
+    MockIntersectionObserver.callback = _callback;
+  }
+
+  observe(_target: Element): void {
+    MockIntersectionObserver.callback([_target]);
+  }
+
+  unobserve(_target: Element): void {}
+}

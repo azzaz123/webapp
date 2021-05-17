@@ -285,8 +285,6 @@ describe('ItemCardListComponent', () => {
         fixture.detectChanges();
         const regularItemCardPlaceholders = fixture.debugElement.queryAll(By.css('tsl-item-card-wide-placeholder'));
 
-        console.log(fixture.debugElement.nativeElement.innerHTML);
-
         expect(regularItemCardPlaceholders.length).toBe(component.placeholderCards);
       });
     });
