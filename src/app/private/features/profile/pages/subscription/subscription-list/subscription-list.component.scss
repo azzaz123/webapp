@@ -1,5 +1,12 @@
 @import '~style/common';
 
+.SubscriptionList {
+  &__link {
+    margin-top: $spacing-ms;
+    color: $walla-main;
+  }
+}
+
 .box-content {
   color: $blue-grey-3;
   padding: $spacing-ml (4 * $spacing-ml);
