@@ -6,30 +6,57 @@ import { By } from '@angular/platform-browser';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { CoordinateMother, LatitudeMother, LongitudeMother } from '@fixtures/core';
 import { MockGeolocationService, MOCK_LOCATION_SUGGESTIONS } from '@fixtures/core/geolocation/geolocation-service.fixtures.spec';
+import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
+import { Toast } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { GeolocationNotAvailableError } from '@public/features/search/core/services/errors/geolocation-not-available.error';
+import { SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { LocationFilterServiceService } from '@public/features/search/core/services/location-filter-service.service';
 import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
 import { SliderFormModule } from '@shared/form/components/slider/slider-form.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { of } from 'rxjs';
 import { MockLocationFilterService } from '../../../../../../../../tests/core/geolocation/location-filter-service.fixtures.spec';
+import { COMMON_FILTERS } from '../../../core/constants/filters/common/common-filters';
 import { COMMON_CONFIGURATION_ID } from '../../../core/enums/configuration-ids/common-configuration-ids.enum';
-import { FILTER_TYPES } from '../../../core/enums/filter-types/filter-types.enum';
+import { AvailableFilterConfig } from '../../../core/types/available-filter-config.type';
 import { FILTER_QUERY_PARAM_KEY } from '../../../enums/filter-query-param-key.enum';
 import { FilterParameter } from '../../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../../abstract-filter/abstract-filter.module';
-import { LocationFilterConfig } from '../interfaces/location-filter-config.interface';
-import { LocationFilterComponent, SEARCH_BOX_DEBOUNCE_TIME } from './location-filter.component';
+import {
+  DISTANCE_FACTOR,
+  HERE_MAPS_COORDINATES,
+  HERE_MAPS_ENDPOINT,
+  HERE_MAPS_PARAMS,
+  LocationFilterComponent,
+  MAX_FILTER_DISTANCE,
+  SEARCH_BOX_DEBOUNCE_TIME,
+} from './location-filter.component';
 
 const LATITUDE_MOCK = LatitudeMother.random();
 const LONGITUDE_MOCK = LongitudeMother.random();
+const DISTANCE_MOCK = 10000;
+
+const MOCK_CITY_NAME = 'Rubí';
+const MOCK_CITY_NAME_2 = 'El Clot';
 
 const MOCK_LOCATION_FILTER_PARAMS: FilterParameter[] = [
   { key: FILTER_QUERY_PARAM_KEY.latitude, value: `${LATITUDE_MOCK}` },
   { key: FILTER_QUERY_PARAM_KEY.longitude, value: `${LONGITUDE_MOCK}` },
-  { key: FILTER_QUERY_PARAM_KEY.longitude, value: '500' },
+  { key: FILTER_QUERY_PARAM_KEY.distance, value: `${DISTANCE_MOCK}` },
 ];
+
+const MOCK_LOCATION_FILTER_PARAMS_WITHOUT_DISTANCE: FilterParameter[] = [
+  { key: FILTER_QUERY_PARAM_KEY.latitude, value: `${LATITUDE_MOCK}` },
+  { key: FILTER_QUERY_PARAM_KEY.longitude, value: `${LONGITUDE_MOCK}` },
+];
+
+const MOCK_SEARCH_LOCATION: SearchLocation = {
+  [FILTER_QUERY_PARAM_KEY.latitude]: `${LATITUDE_MOCK}`,
+  [FILTER_QUERY_PARAM_KEY.longitude]: `${LONGITUDE_MOCK}`,
+};
 
 @Component({
   selector: 'tsl-location-filter-test-component',
@@ -37,7 +64,7 @@ const MOCK_LOCATION_FILTER_PARAMS: FilterParameter[] = [
 })
 class LocationFilterTestComponent {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
-  @Input() config: LocationFilterConfig;
+  @Input() config: AvailableFilterConfig;
   @Input() value: FilterParameter[] = [];
 }
 
@@ -48,24 +75,14 @@ describe('LocationFilterComponent', () => {
   let debugElement: DebugElement;
   let geolocationService: GeolocationService;
   let locationFilterService: LocationFilterServiceService;
+  let toastService: ToastService;
 
-  const config: LocationFilterConfig = {
-    id: COMMON_CONFIGURATION_ID.LOCATION,
-    type: FILTER_TYPES.LOCATION,
-    title: 'Location',
-    bubblePlaceholder: 'Location',
-    drawerPlaceholder: 'Location',
-    icon: '/assets/icons/filters/location.svg',
-    mapKey: {
-      latitude: FILTER_QUERY_PARAM_KEY.latitude,
-      longitude: FILTER_QUERY_PARAM_KEY.longitude,
-      distance: FILTER_QUERY_PARAM_KEY.distance,
-    },
-    units: 'km',
-    range: [1, 500],
-    stepsArray: [{ value: 1 }, { value: 5 }, { value: 10 }, { value: 30 }, { value: 50 }, { value: 100 }, { value: 200 }, { value: 500 }],
-    limitless: true,
-    hasContentPlaceholder: true,
+  const config = COMMON_FILTERS.find((config) => config.id === COMMON_CONFIGURATION_ID.LOCATION);
+  const openFilterContent = () => {
+    const bubble = fixture.debugElement.query(By.directive(BubbleComponent));
+
+    bubble.nativeNode.click();
+    fixture.detectChanges();
   };
 
   beforeEach(async () => {
@@ -81,6 +98,10 @@ describe('LocationFilterComponent', () => {
       ],
       declarations: [LocationFilterComponent, LocationFilterTestComponent],
       providers: [
+        {
+          provide: ToastService,
+          useClass: MockToastService,
+        },
         {
           provide: LocationFilterServiceService,
           useClass: MockLocationFilterService,
@@ -100,12 +121,9 @@ describe('LocationFilterComponent', () => {
     component = debugElement.query(By.directive(LocationFilterComponent)).componentInstance;
     geolocationService = TestBed.inject(GeolocationService);
     locationFilterService = TestBed.inject(LocationFilterServiceService);
+    toastService = TestBed.inject(ToastService);
     testComponent.config = config;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   describe('when the component is initialized', () => {
@@ -113,75 +131,156 @@ describe('LocationFilterComponent', () => {
       component.onValueChange([], MOCK_LOCATION_FILTER_PARAMS);
     });
 
-    it('should set the initial location value', () => {
-      expect(component.currentLocation).toEqual({
+    it('should set the initial location coordinates', () => {
+      component.onValueChange([], MOCK_LOCATION_FILTER_PARAMS);
+
+      expect(component.componentLocation).toEqual({
         [FILTER_QUERY_PARAM_KEY.longitude]: `${LONGITUDE_MOCK}`,
         [FILTER_QUERY_PARAM_KEY.latitude]: `${LATITUDE_MOCK}`,
+      });
+    });
+
+    describe('if a distance is already provided in query params', () => {
+      it('should set the distance value in km', () => {
+        component.onValueChange([], MOCK_LOCATION_FILTER_PARAMS);
+
+        expect(component.componentDistance).toEqual(DISTANCE_MOCK / DISTANCE_FACTOR);
+      });
+    });
+
+    describe('if any distance is provided in query params', () => {
+      it('should set the maximum distance value', () => {
+        component.onValueChange([], MOCK_LOCATION_FILTER_PARAMS_WITHOUT_DISTANCE);
+
+        expect(component.componentDistance).toEqual(MAX_FILTER_DISTANCE);
       });
     });
   });
 
   describe('when the user types a location in the search box', () => {
-    beforeEach(() => {
-      const bubble = fixture.debugElement.query(By.directive(BubbleComponent));
+    beforeEach(() => openFilterContent());
 
-      bubble.nativeNode.click();
-      fixture.detectChanges();
-    });
-
-    it('should get location suggestions', fakeAsync(() => {
+    it('should search for location suggestions', fakeAsync(() => {
       const searchBoxInput = fixture.debugElement.query(By.css('.LocationFilter__input'));
       spyOn(geolocationService, 'search').and.returnValue(of(MOCK_LOCATION_SUGGESTIONS));
 
-      searchBoxInput.nativeElement.value = 'Rubí';
+      searchBoxInput.nativeElement.value = MOCK_CITY_NAME;
       searchBoxInput.nativeElement.dispatchEvent(new Event('input'));
       tick(SEARCH_BOX_DEBOUNCE_TIME);
 
-      expect(geolocationService.search).toHaveBeenCalledWith('Rubí');
+      expect(geolocationService.search).toHaveBeenCalledWith(MOCK_CITY_NAME);
       flush();
     }));
   });
 
-  // describe('when the user selects a location suggestion', () => {
-  //   beforeEach(() => {
-  //     const bubble = fixture.debugElement.query(By.directive(BubbleComponent));
+  describe('when the user selects a location from the search box suggester', () => {
+    const MOCK_COORDINATE = CoordinateMother.random();
 
-  //     bubble.nativeNode.click();
-  //     fixture.detectChanges();
-  //   });
+    beforeEach(fakeAsync(() => {
+      openFilterContent();
+      const searchBoxInput = fixture.debugElement.query(By.css('.LocationFilter__input'));
+      spyOn(geolocationService, 'search').and.returnValue(of(MOCK_LOCATION_SUGGESTIONS));
+      spyOn(geolocationService, 'geocode').and.returnValue(of(MOCK_COORDINATE));
+      spyOn(locationFilterService, 'getLocationLabel').and.callThrough();
 
-  //   it('should set the location', fakeAsync(() => {
-  //     const MOCK_COORDINATE = CoordinateMother.random();
-  //     const searchBoxInput = fixture.debugElement.query(By.css('.LocationFilter__input'));
-  //     spyOn(geolocationService, 'search').and.returnValue(of(MOCK_LOCATION_SUGGESTIONS));
-  //     spyOn(geolocationService, 'geocode').and.returnValue(of(MOCK_COORDINATE));
-  //     spyOn(locationFilterService, 'getLocationLabel').and.callThrough();
+      searchBoxInput.nativeElement.value = 'Sant Cugat';
+      searchBoxInput.nativeElement.dispatchEvent(new Event('input'));
+      tick(SEARCH_BOX_DEBOUNCE_TIME);
+      fixture.detectChanges();
 
-  //     searchBoxInput.nativeElement.value = 'Rubí';
-  //     searchBoxInput.nativeElement.dispatchEvent(new Event('input'));
-  //     tick(SEARCH_BOX_DEBOUNCE_TIME);
-  //     fixture.detectChanges();
+      const suggestion = fixture.debugElement.query(By.css('.SearchBox__suggestion'));
+      suggestion.nativeNode.click();
 
-  //     const suggestion = fixture.debugElement.query(By.css('.SearchBox__suggestion'));
-  //     suggestion.nativeNode.click();
+      flush();
+    }));
 
-  //     expect(component.currentLocation).toEqual(
-  //       {
-  //         [FILTER_QUERY_PARAM_KEY.latitude]: `${MOCK_COORDINATE.latitude}`,
-  //         [FILTER_QUERY_PARAM_KEY.longitude]: `${MOCK_COORDINATE.longitude}`,
-  //       }
-  //     );
-  //     flush();
-  //   }));
-  // });
+    it('should set the latitude and longitude for the selected location', () => {
+      expect(component.componentLocation).toEqual({
+        [FILTER_QUERY_PARAM_KEY.latitude]: `${MOCK_COORDINATE.latitude}`,
+        [FILTER_QUERY_PARAM_KEY.longitude]: `${MOCK_COORDINATE.longitude}`,
+      });
+    });
+
+    it('should set the location name', () => {
+      expect(component.locationName).toEqual(MOCK_LOCATION_SUGGESTIONS[0].description);
+    });
+
+    it('should update the map image with the selected location', () => {
+      const { latitude, longitude } = MOCK_COORDINATE;
+
+      expect(component.mapURL).toEqual(
+        `${HERE_MAPS_ENDPOINT}${HERE_MAPS_PARAMS(6, MAX_FILTER_DISTANCE)}${HERE_MAPS_COORDINATES(latitude, longitude)}`
+      );
+    });
+  });
 
   describe('when the user changes the distance', () => {
-    it('should set a new distance', (done) => {
-      component.currentDistance = 50;
+    it('should update the map image with the selected distance', () => {
+      const { latitude, longitude } = MOCK_SEARCH_LOCATION;
 
-      component.locationMapURL$.subscribe((url) => {
-        expect(component.locationMapURL).toEqual('');
-        done();
+      component.componentLocation = MOCK_SEARCH_LOCATION;
+      component.componentDistance = 10;
+
+      expect(component.mapURL).toEqual(`${HERE_MAPS_ENDPOINT}${HERE_MAPS_PARAMS(10, 10)}${HERE_MAPS_COORDINATES(latitude, longitude)}`);
+    });
+  });
+
+  describe('when clicking on the apply button', () => {
+    it('should apply the selected location', () => {
+      spyOn(component.valueChange, 'emit');
+
+      component.componentLocation = MOCK_SEARCH_LOCATION;
+      component.handleApply();
+
+      expect(component.valueChange.emit).toHaveBeenCalledWith([
+        { key: FILTER_QUERY_PARAM_KEY.latitude, value: `${MOCK_SEARCH_LOCATION.latitude}` },
+        { key: FILTER_QUERY_PARAM_KEY.longitude, value: `${MOCK_SEARCH_LOCATION.longitude}` },
+        { key: FILTER_QUERY_PARAM_KEY.distance, value: null },
+      ]);
+    });
+
+    it('should save the location for future searches', () => {
+      spyOn(locationFilterService, 'setUserLocation').and.callThrough();
+
+      component.componentLocation = MOCK_SEARCH_LOCATION;
+      component.locationName = MOCK_CITY_NAME;
+      component.handleApply();
+
+      expect(locationFilterService.setUserLocation).toHaveBeenCalledWith({
+        ...MOCK_SEARCH_LOCATION,
+        label: MOCK_CITY_NAME,
+      });
+    });
+  });
+
+  describe('when the user clicks on the button for retrieving browser location', () => {
+    beforeEach(() => openFilterContent());
+
+    describe('and the location from the browser can be retrieved', () => {
+      it('should set the retrieved location', () => {
+        spyOn(locationFilterService, 'getLocationFromBrowserAPI').and.returnValue(Promise.resolve(MOCK_SEARCH_LOCATION));
+        const geolocationRequestBtn = fixture.debugElement.query(By.css('.LocationFilter__geolocation'));
+
+        geolocationRequestBtn.nativeNode.click();
+
+        expect(locationFilterService.getLocationFromBrowserAPI).toHaveBeenCalled();
+        expect(component.componentLocation).toEqual(MOCK_SEARCH_LOCATION);
+      });
+    });
+
+    describe('and the location from the browser can`t be retreived', () => {
+      it('should show a toast indicating the error', () => {
+        const errorMessage = `Can't retrieve geolocation`;
+        const toast: Toast = { text: errorMessage, type: 'error' };
+        const geolocationRequestBtn = fixture.debugElement.query(By.css('.LocationFilter__geolocation'));
+        spyOn(locationFilterService, 'getLocationFromBrowserAPI').and.returnValue(
+          Promise.reject(new GeolocationNotAvailableError(errorMessage))
+        );
+        spyOn(toastService, 'show').and.callThrough();
+
+        geolocationRequestBtn.nativeNode.click();
+
+        expect(toastService.show).toHaveBeenCalledWith(toast);
       });
     });
   });

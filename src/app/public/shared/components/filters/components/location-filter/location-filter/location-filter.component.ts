@@ -3,9 +3,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { ItemPlace } from '@core/geolocation/geolocation-response.interface';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
+import { Toast } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { LabeledSearchLocation, SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { LocationFilterServiceService } from '@public/features/search/core/services/location-filter-service.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { FILTER_QUERY_PARAM_KEY } from '../../../enums/filter-query-param-key.enum';
 import { FilterParameter } from '../../../interfaces/filter-parameter.interface';
@@ -19,6 +21,9 @@ export const HERE_MAPS_ENDPOINT = 'https://image.maps.api.here.com/mia/1.6/mapvi
 export const HERE_MAPS_APP_ID = 'RgPrXX1bXt123UgUFc7B';
 export const HERE_MAPS_APP_CODE = 'HtfX0DsqZ2Y0x-44GfujFA';
 export const HERE_MAPS_CONFIG = `app_id=${HERE_MAPS_APP_ID}&app_code=${HERE_MAPS_APP_CODE}`;
+
+export const HERE_MAPS_PARAMS = (zoom, distance) => `&z=${zoom}&${HERE_MAPS_CONFIG}&w=700&h=270&u=${distance}k`;
+export const HERE_MAPS_COORDINATES = (latitude, longitude) => `&c=${latitude},${longitude}`;
 
 export const DISTANCE_FACTOR = 1000;
 export const MAX_FILTER_DISTANCE = 500;
@@ -48,21 +53,29 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     mapURL: new FormControl(),
     distance: new FormControl(MAX_FILTER_DISTANCE),
   });
+
+  private subscriptions = new Subscription();
   public bubbleActive = false;
 
-  constructor(private geolocationService: GeolocationService, private locationService: LocationFilterServiceService) {
+  constructor(
+    private geolocationService: GeolocationService,
+    private locationService: LocationFilterServiceService,
+    private toastService: ToastService
+  ) {
     super();
   }
 
   ngOnInit(): void {
-    this.onLocationChange().subscribe();
-    this.onDistanceChange().subscribe();
-    this.onSelectLocationSuggestion().subscribe();
+    this.subscriptions.add(this.onLocationChange().subscribe());
+    this.subscriptions.add(this.onDistanceChange().subscribe());
+    this.subscriptions.add(this.onSelectLocationSuggestion().subscribe());
 
     super.ngOnInit();
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   set currentLocation(location: SearchLocation) {
     this.currentLocationForm.patchValue({ location });
@@ -74,14 +87,14 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     return location;
   }
 
+  set currentDistance(distance) {
+    this.currentLocationForm.patchValue({ distance });
+  }
+
   get currentDistance(): number {
     const { distance } = this.currentLocationForm.value;
 
     return distance;
-  }
-
-  set currentDistance(distance) {
-    this.currentLocationForm.patchValue({ distance });
   }
 
   set componentLocation(location: SearchLocation) {
@@ -138,7 +151,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   public onLocationChange() {
     return this.currentLocationForm.get('location').valueChanges.pipe(
-      filter((location) => !!location),
+      filter((location: SearchLocation) => !!location),
       distinctUntilChanged(),
       switchMap((location: SearchLocation) => this.getLocationLabelFromLatitudeAndLongitude(location)),
       tap((locationName: string) => (this.locationName = locationName)),
@@ -158,7 +171,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   public onDistanceChange() {
     return this.componentLocationForm.get('distance').valueChanges.pipe(
       distinctUntilChanged(),
-      tap((distance: number) => (this.mapURL = this.getLocationMapURL(this.currentLocation, distance)))
+      tap((distance: number) => (this.mapURL = this.getLocationMapURL(this.componentLocation, distance)))
     );
   }
 
@@ -174,6 +187,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   public handleApply(): void {
     const { latitude, longitude } = this.componentLocation;
+    const label = this.locationName;
     const distance = this.componentDistance;
     const parameters: FilterParameter[] = [
       { key: this.config.mapKey.latitude, value: latitude },
@@ -192,6 +206,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
       });
     }
 
+    this.locationService.setUserLocation({ latitude, longitude, label });
     this.valueChange.emit(parameters);
   }
 
@@ -204,9 +219,15 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   public requestBrowserLocation() {
     this.locationService.getLocationFromBrowserAPI().then(
-      () => {},
+      (searchLocation: SearchLocation) => {
+        this.componentLocation = searchLocation;
+      },
       (error) => {
-        console.log(error.message);
+        const toast: Toast = {
+          text: error.message,
+          type: 'error',
+        };
+        this.toastService.show(toast);
       }
     );
   }
@@ -259,9 +280,6 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
       zoom = 6;
     }
 
-    const hereMapsParams = `&z=${zoom}&${HERE_MAPS_CONFIG}&w=700&h=270&u=${distance}k`;
-    const hereMapsCoordinates = `&c=${latitude},${longitude}`;
-
-    return HERE_MAPS_ENDPOINT + hereMapsParams + hereMapsCoordinates;
+    return `${HERE_MAPS_ENDPOINT}${HERE_MAPS_PARAMS(zoom, distance)}${HERE_MAPS_COORDINATES(latitude, longitude)}`;
   }
 }
