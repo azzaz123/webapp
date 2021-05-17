@@ -2,7 +2,7 @@
     [title]="config.title" [icon]="config.icon" [hasValue]="bubbleActive" (apply)="handleApply()"
     (openStateChange)="openStateChange.emit($event)">
 
-    <form [formGroup]="locationFilterForm">
+    <form [formGroup]="componentLocationForm">
         <div class="LocationFilter py-2">
             <div class="LocationFilter__search">
                 <tsl-svg-icon class="LocationFilter__glass" src="/assets/icons/glass_icon.svg" width="28" height="28">
@@ -17,7 +17,7 @@
                         src="/assets/icons/filters/location/geolocation_icon.svg" width="36" height="36">
                     </tsl-svg-icon>
                 </button>
-                <img [src]="locationMapURL$ | async" class="LocationFilter__image my-3" />
+                <img [src]="mapURL" class="LocationFilter__image my-3" />
             </div>
 
             <tsl-slider-form formControlName="distance" [stepsArray]="config.stepsArray" [min]="config.range[0]"
