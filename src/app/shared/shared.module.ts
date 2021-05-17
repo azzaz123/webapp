@@ -102,6 +102,7 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     ButtonModule,
     DateCountDownModule,
     NavLinksModule,
+    HeaderModule,
   ],
   exports: [
     SpinnerModule,
