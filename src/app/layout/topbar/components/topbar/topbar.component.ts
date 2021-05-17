@@ -18,9 +18,9 @@ import { Router } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
-import { FILTER_SOURCE } from '@public/features/search/core/services/enums/filter-source.enum';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
 @Component({
   selector: 'tsl-topbar',
@@ -47,9 +47,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private cookieService: CookieService,
     private modalService: NgbModal,
-    private searchTrackingEventsService: SearchTrackingEventsService,
     private featureFlagService: FeatureflagService,
-    private router: Router,
     private searchNavigator: SearchNavigatorService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {
@@ -108,7 +106,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   public onSearchSubmit(searchValue: SearchBoxValue): void {
     // TODO: This can be removed after tests
     const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
-    this.redirectToSearchPage(searchValue);
+
     if (isExperimentalFeaturesEnabled) {
       this.redirectToSearchPage(searchValue);
     } else {
@@ -131,11 +129,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.searchNavigator.navigate(filterParams, true);
-
-    // this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.SEARCH}`], {
-    //   queryParams: { ...searchParams, [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: FILTER_SOURCE.SEARCH_BOX },
-    // });
+    this.searchNavigator.navigate(filterParams, FILTERS_SOURCE.SEARCH_BOX, true);
   }
 
   private redirectToOldSearch(searchParams: SearchBoxValue) {
@@ -145,6 +139,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
       oldSearchURL.searchParams.set(FILTER_QUERY_PARAM_KEY.categoryId, searchParams[FILTER_QUERY_PARAM_KEY.categoryId]);
     }
     oldSearchURL.searchParams.set(FILTER_QUERY_PARAM_KEY.keywords, searchParams[FILTER_QUERY_PARAM_KEY.keywords]);
+    oldSearchURL.searchParams.set(FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE, FILTERS_SOURCE.SEARCH_BOX);
 
     window.location.href = `${oldSearchURL}`;
   }

@@ -11,8 +11,8 @@ import {
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FilterGroupConfiguration } from '@public/shared/services/filter-group-configuration/interfaces/filter-group-config.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import { FILTER_SOURCE } from '../../core/services/enums/filter-source.enum';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
 @Component({
   selector: 'tsl-filters-wrapper',
@@ -79,16 +79,16 @@ export class FiltersWrapperComponent {
   }
 
   public applyDrawer(): void {
-    this.searchNavigatorService.navigate(this.drawerStore.getParameters());
+    this.searchNavigatorService.navigate(this.drawerStore.getParameters(), FILTERS_SOURCE.DEFAULT_FILTERS);
     this.drawerConfig.isOpen = false;
   }
 
   public bubbleChange(parameters: FilterParameter[]): void {
-    this.searchNavigatorService.navigate(parameters, true);
+    this.searchNavigatorService.navigate(parameters, FILTERS_SOURCE.QUICK_FILTERS, true);
   }
 
   public drawerChange(values: FilterParameter[]): void {
-    this.drawerStore.upsertParameters(values, FILTER_SOURCE.DEFAULT_FILTERS);
+    this.drawerStore.upsertParameters(values, FILTERS_SOURCE.DEFAULT_FILTERS);
   }
 
   public bubbleOpenStateChange(isOpen: boolean): void {
