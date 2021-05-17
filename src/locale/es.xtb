@@ -1400,7 +1400,7 @@
   <translation id="web_to_clean_model_example">P. ej: iPhone</translation>
   <translation id="web_to_clean_reviews">Opiniones</translation>
   <translation id="web_to_clean_error_saving_data">Error al guardar los datos. Intenta de nuevo</translation>
-  <translation id="WallapopProAbout">Más información sobre Wallapop PRO</translation>
-  <translation id="WallapopProAboutHref">https://ayuda.wallapop.com/hc/es-es/sections/360001165358--Qu%C3%A9-es-Wallapop-PRO</translation>
-  <translation id="start">Probar</translation>
+  <translation id="web_wallapop_pro_about">Más información sobre Wallapop PRO</translation>
+  <translation id="web_wallapop_pro_about_href">https://ayuda.wallapop.com/hc/es-es/sections/360001165358--Qu%C3%A9-es-Wallapop-PRO</translation>
+  <translation id="web_start">Probar</translation>
 </translationbundle>
