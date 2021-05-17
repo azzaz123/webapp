@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { statsRoutedComponents, StatsRoutingModule } from './stats.routing.module';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ItemStatsGraphComponent } from './components/item-stats-graph/item-stats-graph.component';
 
@@ -15,16 +14,7 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    StatsRoutingModule,
-    SharedModule,
-    InfiniteScrollModule,
-    NgxEchartsModule,
-    ItemAvatarModule,
-    CustomCurrencyModule,
-    NgbTooltipModule,
-  ],
+  imports: [CommonModule, StatsRoutingModule, SharedModule, NgxEchartsModule, ItemAvatarModule, CustomCurrencyModule, NgbTooltipModule],
   providers: [ItemStatsService],
   declarations: [statsRoutedComponents, ItemsStatsComponent, ItemStatsRowComponent, ItemStatsGraphComponent],
 })

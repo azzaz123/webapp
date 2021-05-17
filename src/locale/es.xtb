@@ -683,8 +683,8 @@
   <translation id="web_city">Ciudad</translation>
   <translation id="web_postal_code">Código postal</translation>
   <translation id="web_country">País</translation>
-  <translation id="web_c_i_f_number">CIF de la empresa</translation>
-  <translation id="web_n_i_f_number">NIF de la persona</translation>
+  <translation id="web_cif_number">CIF de la empresa</translation>
+  <translation id="web_nif_number">NIF de la persona</translation>
   <translation id="web_save">Guardar</translation>
   <translation id="web_profile_pages_320">Información de facturación</translation>
   <translation id="web_profile_pages_321">Facturación</translation>
@@ -796,7 +796,7 @@
       <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       Podrás ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos, así como la revocación, en cualquier momento, del consentimiento prestado, ante Wallapop, CIF nº B-66.04.9057, en la Calle Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Podrás también ejercer tus derechos mediante comunicación dirigida a: privacidad@wallapop.com. Finalmente, te recordamos que puedes dirigir una reclamación ante la Agencia Española de Protección de Datos, si consideras que Wallapop ha vulnerado tus derechos en materia de protección de datos.”
   </translation>
-  <translation id="web_top_bar_button_registe_or_signin">Regístrate o inicia sesión</translation>
+  <translation id="web_top_bar_button_register_or_signin">Regístrate o inicia sesión</translation>
   <translation id="web_tab_bar_button_login">Acceso</translation>
   <translation id="web_tab_bar_button_my_zone">Mi zona</translation>
   <translation id="web_footer_links_wallapop_title">Wallapop</translation>
@@ -941,12 +941,12 @@
   <translation id="web_filter_option_posted_ago_days">Días</translation>
   <translation id="web_filter_option_gender_male">Hombre</translation>
   <translation id="web_filter_option_gender_female">Mujer</translation>
-  <translation id="web_condition__un_opened">Sin abrir</translation>
-  <translation id="web_condition__unworn">Sin estrenar</translation>
-  <translation id="web_condition__in_box">En su caja</translation>
-  <translation id="web_condition__as_good_as_new">Como nuevo</translation>
-  <translation id="web_condition__fair">En condiciones aceptables</translation>
-  <translation id="web_condition__has_given_it_all">Puede que toque repararlo</translation>
+  <translation id="web_condition_un_opened">Sin abrir</translation>
+  <translation id="web_condition_unworn">Sin estrenar</translation>
+  <translation id="web_condition_in_box">En su caja</translation>
+  <translation id="web_condition_as_good_as_new">Como nuevo</translation>
+  <translation id="web_condition_fair">En condiciones aceptables</translation>
+  <translation id="web_condition_has_given_it_all">Puede que toque repararlo</translation>
   <translation id="web_own_review_sold">Vendiste</translation>
   <translation id="web_own_review_bought">Compraste</translation>
   <translation id="web_review_sold">Vendió</translation>
@@ -1400,4 +1400,7 @@
   <translation id="web_to_clean_model_example">P. ej: iPhone</translation>
   <translation id="web_to_clean_reviews">Opiniones</translation>
   <translation id="web_to_clean_error_saving_data">Error al guardar los datos. Intenta de nuevo</translation>
+  <translation id="web_wallapop_pro_about">Más información sobre Wallapop PRO</translation>
+  <translation id="web_wallapop_pro_about_href">https://ayuda.wallapop.com/hc/es-es/sections/360001165358--Qu%C3%A9-es-Wallapop-PRO</translation>
+  <translation id="web_start">Probar</translation>
 </translationbundle>
