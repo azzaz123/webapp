@@ -14,8 +14,18 @@ $card-height: 88px;
     border-radius: 6px;
     align-items: center;
     font-size: $font-size-s;
-    width: $card-width;
+    min-width: $card-width;
     display: flex;
     justify-content: center;
+  }
+
+  @include media-breakpoint-down(sm) {
+    &__newCard {
+      width: 100%;
+    }
+
+    tsl-credit-card-info {
+      width: 100%;
+    }
   }
 }
