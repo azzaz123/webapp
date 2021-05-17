@@ -36,6 +36,7 @@ export const MAX_FILTER_DISTANCE = 500;
 export class LocationFilterComponent extends AbstractFilter<LocationFilterParams> implements OnInit, OnDestroy {
   @Input() config: LocationFilterConfig;
 
+  private subscriptions = new Subscription();
   private currentLocationForm = new FormGroup({
     location: new FormGroup({
       latitude: new FormControl(),
@@ -54,7 +55,6 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     distance: new FormControl(MAX_FILTER_DISTANCE),
   });
 
-  private subscriptions = new Subscription();
   public bubbleActive = false;
 
   constructor(
