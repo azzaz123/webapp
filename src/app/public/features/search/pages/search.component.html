@@ -1,8 +1,6 @@
 <div class="Search"
-  infinite-scroll
-  [infiniteScrollDistance]="0"
-  [infiniteScrollThrottle]="150"
-  [infiniteScrollDisabled]="infiniteScrollDisabled$ | async"
+  tslInfiniteScroll
+  [infiniteScrollDisabled]="(infiniteScrollDisabled$ | async) || (isLoadingPaginationResults$ | async)"
   (scrolled)="scrolled()">
 
   <div class="Search__filters w-100" [class.Search__filters--opened]="filterOpened">
