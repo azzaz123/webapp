@@ -1,6 +1,5 @@
 @import '~style/common';
-$item-detail-card-width: 681px;
-$item-detail-carousel-height: 477px;
+@import '../styles/item-detail-variables';
 
 .ItemDetail {
   &__container {
