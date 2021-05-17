@@ -19,17 +19,14 @@ type Translation = Record<LANGUAGE, string | Object>;
 
 interface Copy {
   key: string;
-  source: string;
   translation: Translation;
 }
 
-interface CopyNode {
-  id: string;
-  source?: string;
-  text: string | Object; // BEFOREMERGE: Type object
+interface SourcedCopy extends Copy {
+  source: string;
 }
 
-type TranslatedNodes = Record<Partial<LANGUAGE>, CopyNode[]>;
+type LanguageCopies = Record<Partial<LANGUAGE>, Record<string, string>>;
 
 interface MissingTranslation {
   id: string;
@@ -59,6 +56,8 @@ class I18nNormalizer {
     file: 'src/locale/es.json'
   }];
 
+  private sourcedMessagesFile = 'src/locale/messages.xmb';
+
   private pathsToSkip = [
     'node_modules'
   ];
@@ -83,16 +82,11 @@ class I18nNormalizer {
         this.runI18n();
         break;
       case '2':
-        this.generateSourcedCopies();
         this.printMissingTranslations();
-        this.clearSourcedCopies();
-        this.runI18n();
         break;
       case '3':
-        this.generateSourcedCopies();
         await this.addMissingKeys();
         await this.normalizeKeys();
-        this.clearSourcedCopies();
         this.runI18n();
         break;
       case '4':
@@ -131,27 +125,49 @@ class I18nNormalizer {
   }
 
   private clearSourcedCopies(): void {
-    execSync('rm src/locale/messages.xmb');
+    execSync(`rm ${this.sourcedMessagesFile}`);
   }
 
-  private getCopies(): Copy[] {
-    const translatedNodes = this.getTranslatedNodes();
-    const originalNodes = translatedNodes[this.originalLanguage];
+  private getSourcedCopies(): SourcedCopy[] {
+    const languageCopies = this.getLanguageCopies();
+    const sources = this.getCopySources();
 
-    return originalNodes.map(node => {
+    const originalCopies = languageCopies[this.originalLanguage];
+    const originalKeys = Object.keys(originalCopies);
+
+    return originalKeys.map(key => {
       const languages = Object.values(LANGUAGE) as LANGUAGE[];
 
       return  {
-        key: node.id,
-        source: node.source,
+        key,
+        source: sources[key],
         translation: languages.reduce((acc, lang) => {
           return {
             ...acc,
-            [lang]: translatedNodes[lang].find(translatedNode => translatedNode.id === node.id)?.text
+            [lang]: languageCopies[lang][key]
           };
         }, {} as Translation)
       };
     });
+  }
+
+  private getCopySources(): Record<string, string> {
+    this.generateSourcedCopies();
+    const rawCopiesFile = fs.readFileSync(this.sourcedMessagesFile, 'utf8');
+
+    const cleanedFileString = this.cleanupRawXMB(rawCopiesFile);
+    const rawCopiesJSON = xmlParser.toJson(cleanedFileString);
+    const messages = JSON.parse(rawCopiesJSON).messagebundle.msg;
+    const translations = messages.reduce((acc, obj) => {
+      return {
+        ...acc,
+        [obj.id]: obj.source
+      };
+    }, {});
+
+    this.clearSourcedCopies();
+
+    return translations;
   }
 
   private runI18n() {
@@ -159,7 +175,7 @@ class I18nNormalizer {
   }
 
   private async addMissingKeys(): Promise<void> {
-    const copies = this.getCopies();
+    const copies = this.getSourcedCopies();
     const copiesWithoutKey = copies.filter(copy => this.isNumericKey(copy.key));
     if (copiesWithoutKey.length > 0) {
       const substitutionKeys = copiesWithoutKey.map((copy) => ({
@@ -186,7 +202,7 @@ class I18nNormalizer {
   }
 
   private printMissingTranslations(): void {
-    const copies = this.getCopies();
+    const copies = this.getSourcedCopies();
     const missingTranslations = copies.reduce((acc, copy) => {
       const languageKeys: LANGUAGE[] = Object.keys(copy.translation) as LANGUAGE[];
 
@@ -214,8 +230,8 @@ class I18nNormalizer {
   }
 
   private async normalizeKeys(): Promise<void> {
-    const copies = this.getCopies();
-    const processedCopies: Copy[] = copies.map(copy => ({
+    const copies = this.getSourcedCopies().filter((copy) => !this.shouldSkipSource(copy));
+    const processedCopies: SourcedCopy[] = copies.map(copy => ({
       ...copy,
       key: this.generateNormalizedKey(copy.key)
     }));
@@ -293,44 +309,23 @@ class I18nNormalizer {
     });
   }
 
-  private getTranslatedNodes(): TranslatedNodes {
+  private getLanguageCopies(): LanguageCopies {
     return this.copyLocations.reduce((acc, location) => {
       return {
         ...acc,
-        [location.language]: this.getNodeMessages(location.file)
+        [location.language]: this.getJsonCopies(location.file)
       };
-    }, {} as TranslatedNodes);
+    }, {} as LanguageCopies);
   }
 
-  private getNodeMessages(copiesFileLocation): CopyNode[] {
-    const copyNodes = this.getTranslationNodesFromFile(copiesFileLocation);
-    return copyNodes.filter(node => !this.shouldSkipPath(node));
-  }
-
-  private getTranslationNodesFromFile(copiesFileLocation): CopyNode[] {
+  private getJsonCopies(copiesFileLocation): Record<string, string> {
     const rawCopiesFile = fs.readFileSync(copiesFileLocation, 'utf8');
 
-    const isXMB = copiesFileLocation.endsWith('.xmb');
-    const isXTB = copiesFileLocation.endsWith('.xtb');
-
-    if (isXMB) {
-      const cleanedFileString = this.cleanupRawXMB(rawCopiesFile);
-      const rawCopiesJSON = xmlParser.toJson(cleanedFileString);
-      const copiesObject = JSON.parse(rawCopiesJSON);
-      return copiesObject.messagebundle.msg;
-    }
-
-    if (isXTB) {
-      const cleanedFileString = this.cleanupRawXTB(rawCopiesFile);
-      const rawCopiesJSON = xmlParser.toJson(cleanedFileString, { alternateTextNode: 'text' } );
-      const copiesObject = JSON.parse(rawCopiesJSON);
-      return copiesObject.translationbundle.translation;
-    }
-
-    return [];
+    const copiesObject = JSON.parse(rawCopiesFile);
+    return copiesObject.translations;
   }
 
-  private shouldSkipPath(node: CopyNode): boolean {
+  private shouldSkipSource(node: SourcedCopy): boolean {
     if (node.source) {
       for (const path of this.pathsToSkip) {
         if (node.source.startsWith(path)) {
@@ -387,7 +382,7 @@ class I18nNormalizer {
     return `${normalizedKey}_${this.cumulativeIndex}`;
   }
 
-  private getNewKey(node: Copy): string {
+  private getNewKey(node: SourcedCopy): string {
     const isAutogenerated = this.isNumericKey(node.key);
     if (isAutogenerated) {
       return this.generateKeyByPath(node.source);
