@@ -223,7 +223,22 @@ class I18nNormalizer {
   }
 
   private printMissingTranslations(): void {
-    const copies = this.getSourcedCopies();
+    const languageCopies = this.getLanguageCopies();
+    const originalCopies = languageCopies[this.originalLanguage];
+    const languages = Object.values(LANGUAGE);
+
+    const keys = Object.keys(originalCopies);
+
+    const copies = keys.map(key => ({
+      key,
+      translation: languages.reduce((acc, lang) => {
+        return {
+          ...acc,
+          [lang]: languageCopies[lang][key]
+        };
+      }, {})
+    }));
+
     const missingTranslations = copies.reduce((acc, copy) => {
       const languageKeys: LANGUAGE[] = Object.keys(copy.translation) as LANGUAGE[];
 
