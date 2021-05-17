@@ -11,7 +11,7 @@
         },
         "locales": {
           "es": {
-            "translation": "src/locale/es.xtb",
+            "translation": "src/locale/es.json",
             "baseHref": ""
           }
         }

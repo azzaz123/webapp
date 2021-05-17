@@ -62,8 +62,6 @@ class I18nNormalizer {
   private pathsToSkip = [
     'node_modules'
   ];
-  private escapeLesserThan = '$LESSER_THAN';
-  private escapeGreaterThan = '$GREATER_THAN';
 
   private originalLanguage = LANGUAGE.ENGLISH;
 
@@ -107,6 +105,7 @@ class I18nNormalizer {
     return this.menu();
   }
 
+  // BEFOREMERGE: Remove method
   private moveXtbToJson(): void {
     const esRaw = fs.readFileSync('src/locale/es.xtb', 'utf8');
 
@@ -123,7 +122,7 @@ class I18nNormalizer {
       };
     }, {});
 
-    fs.writeFileSync('src/locale/es.json', JSON.stringify(translationJson, undefined, 2));
+    fs.writeFileSync('src/locale/es.json', JSON.stringify({ locale: 'es', translations: translationJson }, undefined, 2));
   }
 
 
@@ -358,17 +357,18 @@ class I18nNormalizer {
       .replace(regexpCleanupInterpolations, interpolationsReplacement);
   }
 
-  private cleanupRawXTB(rawStringFile): string {
-    const allLines = rawStringFile.split('\n');
-    allLines.forEach((line, i) => {
-      line = line.replace(/<ph/g, `${this.escapeLesserThan}ph`);
-      line = line.replace(/<ex>/g, `${this.escapeLesserThan}ex${this.escapeGreaterThan}`);
-      line = line.replace(/<\/ex>/g, `${this.escapeLesserThan}/ex${this.escapeGreaterThan}`);
-      line = line.replace(/<\/ph>/g, `${this.escapeLesserThan}/ph${this.escapeGreaterThan}`);
-      allLines[i] = line;
-    });
+  private cleanupRawXTB(rawStringFile: string): string {
+    const expressionRegex = /<ex>(.*?)<\/ex>/gm;
+    const interpolationRegex = /<ph name="([\w_]+)">?(.*?(?=(<\/ph>)|(\/>)))(\/>|<\/ph>)/gm;
+    const cleanedExpressions = rawStringFile.replace(expressionRegex, '');
 
-    return allLines.join('\n');
+    let cleanedInterpolations = cleanedExpressions.replace(interpolationRegex, '{$$$1}$2');
+
+    if (cleanedInterpolations.match(interpolationRegex)) {
+      cleanedInterpolations = this.cleanupRawXTB(cleanedInterpolations);
+    }
+
+    return cleanedInterpolations;
   }
 
   private isNumericKey(id): boolean {
