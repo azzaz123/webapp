@@ -68,9 +68,6 @@ export class SubscriptionListComponent {
     return subscription.tiers.length > 1 ? $localize`:@@seePlans:See plans` : $localize`:@@start:Start`;
   }
 
-  public onOpenSubscriptionModal(subscription: SubscriptionsResponse): void {
-    this.openSubscriptionModal.emit(subscription);
-}
   public onClickButton(subscription: SubscriptionsResponse): void {
     this.clickButton.emit(subscription);
   }
