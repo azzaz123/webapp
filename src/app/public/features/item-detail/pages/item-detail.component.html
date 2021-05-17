@@ -88,9 +88,11 @@
                             <tsl-svg-icon src="/assets/icons/location.svg" class="mr-2"></tsl-svg-icon>
                             {{itemDetail.locationSpecifications}}
                         </div>
-                        <tsl-here-maps *ngIf="itemDetail.haveCoordinates && itemDetail.coordinate" zoom="15" size="small" [coordinates]="itemDetail.coordinate"
-                            [isApproximateLocation]="itemDetail.isApproximatedLocation" class="w-100 mb-3">
-                        </tsl-here-maps>
+                        <div tslVisible (visible)="onMapContainerVisible()">
+                            <tsl-here-maps *ngIf="renderMap" zoom="15" size="small" [coordinates]="itemDetail.coordinate"
+                                [isApproximateLocation]="itemDetail.isApproximatedLocation" class="w-100 mb-3">
+                            </tsl-here-maps>
+                        </div>
                         <div class="ItemDetail__fakeMap" *ngIf="!itemDetail.haveCoordinates"></div>
                         <tsl-social-share *ngIf="itemDetail.socialShare"
                             [title]="itemDetail.socialShare.title"

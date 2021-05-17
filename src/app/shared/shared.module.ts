@@ -76,6 +76,7 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
 import { NavLinksModule } from './nav-links/nav-links.module';
 import { HeaderModule } from './header/header.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
+import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
 
 @NgModule({
   imports: [
@@ -171,6 +172,7 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     DeliveryDevelopmentDirective,
     NavLinksModule,
     InfiniteScrollDirective,
+    VisibleDirectiveModule,
   ],
   declarations: [
     ConfirmationModalComponent,
