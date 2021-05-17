@@ -44,6 +44,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
   public adsAffiliationSlotConfiguration: AdSlotConfiguration[];
   public adsAffiliationsLoaded$: Observable<boolean>;
+  public renderMap = false;
   private subscriptions: Subscription = new Subscription();
   private itemDetail: ItemDetail;
 
@@ -121,6 +122,11 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         engine
       );
     }
+  }
+
+  public onMapContainerVisible(): void {
+    const { coordinate, haveCoordinates } = this.itemDetail;
+    this.renderMap = haveCoordinates && !!coordinate;
   }
 
   private initPage(itemId: string): void {

@@ -25,7 +25,7 @@
             </ng-template>
             <span class="EditSubscription__listing-limit-price" i18n="@@web_profile_modal_edit_subscription_258">              {{selectedTier.price}}{{selectedTier.currency}}/month
             </span>
-            <span *ngIf="subscription.trial_days" i18n="@@subscriptionEditModalUntilDate">
+            <span *ngIf="subscription.trial_days" i18n="@@web_subscription_edit_modal_until_date">
                 Starting on {{subscription.trial_days | dateUntilDay}}
             </span>
         </div>
@@ -37,7 +37,7 @@
       <tsl-button [loading]="loading" (click)="editSubscription()" i18n="@@web_profile_modal_edit_subscription_260">Confirm change</tsl-button>
     </ng-template>
     <div class="EditSubscription__cancel-link" (click)="cancelSubscription()">
-      <span *ngIf="!subscription.trial_days" i18n="@@EditSubscriptionModalCancelSubscription">I want to cancel my subscription</span>
-      <span *ngIf="subscription.trial_days" i18n="@@EditSubscriptionModalCancelFreeTrial">Cancel free trial</span>
+      <span *ngIf="!subscription.trial_days" i18n="@@web_edit_subscription_modal_cancel_subscription">I want to cancel my subscription</span>
+      <span *ngIf="subscription.trial_days" i18n="@@web_edit_subscription_modal_cancel_free_trial">Cancel free trial</span>
     </div>
 </div>

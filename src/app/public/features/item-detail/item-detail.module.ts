@@ -32,6 +32,7 @@ import { ItemDetailTrackEventsService } from './core/services/item-detail-track-
 import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
 import { RecommenderItemCardFavouriteCheckedService } from './core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
 import { ItemDetailPlaceholderComponent } from './components/item-detail-placeholder/item-detail-placeholder.component';
+import { VisibleDirectiveModule } from '@shared/directives/visible/visible.directive.module';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents, ItemDetailPlaceholderComponent],
@@ -54,6 +55,7 @@ import { ItemDetailPlaceholderComponent } from './components/item-detail-placeho
     ItemTaxonomiesModule,
     ItemExtraInfoModule,
     ItemFavouritesModule,
+    VisibleDirectiveModule,
   ],
   providers: [
     ItemDetailService,
