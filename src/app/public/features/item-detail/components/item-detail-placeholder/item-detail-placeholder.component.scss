@@ -34,7 +34,7 @@
 
   &__map {
     @include ImagePlaceholder;
-    height: 130px;
+    height: $item-detail-map-height;
     border-radius: $border-radius;
   }
 }

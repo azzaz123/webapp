@@ -9,7 +9,7 @@
   }
 
   &__sky {
-    flex-basis: 300px;
+    flex-basis: $item-detail-sky-width;
     top: calc(#{$topbar-height} + #{$spacer * 0.5});
   }
 
@@ -85,7 +85,7 @@
   }
 
   &__fakeMap {
-    height: 130px;
+    height: $item-detail-map-height;
     border-radius: $border-radius;
     border: solid 1px $blue-grey-5;
     background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
