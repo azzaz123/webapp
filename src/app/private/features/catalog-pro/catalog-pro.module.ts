@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { catalogProRoutedComponents, CatalogProRoutingModule } from './catalog-pro.routing.module';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SharedModule } from '@shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -22,7 +21,6 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
     CommonModule,
     SharedModule,
     CatalogProRoutingModule,
-    InfiniteScrollModule,
     FormsModule,
     ReactiveFormsModule,
     NgbDatepickerModule,

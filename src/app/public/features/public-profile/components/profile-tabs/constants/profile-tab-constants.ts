@@ -11,12 +11,12 @@ export interface ProfileTab {
 export const PROFILE_TABS: ProfileTab[] = [
   {
     id: 'publish',
-    label: $localize`:@@ProfileTabsPublishedLabel:Published`,
+    label: $localize`:@@web_profile_tabs_published_label:Published`,
     href: PUBLIC_PROFILE_PATHS.PUBLISHED,
   },
   {
     id: 'reviews',
-    label: $localize`:@@ProfileTabsReviewsLabel:Reviews`,
+    label: $localize`:@@web_profile_tabs_reviews_label:Reviews`,
     href: PUBLIC_PROFILE_PATHS.REVIEWS,
   },
 ];

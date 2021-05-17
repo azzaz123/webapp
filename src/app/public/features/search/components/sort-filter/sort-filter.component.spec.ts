@@ -3,11 +3,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbDropdown, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { FILTER_PARAMETER_STORE_TOKEN } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import {
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { SortFilterComponent } from './sort-filter.component';
 import { SELECT_FORM_OPTIONS_CONFIG } from './sort-filter.config';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
+import { QueryStringLocationService } from '@core/search/query-string-location.service';
+import { CookieService } from 'ngx-cookie';
+import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
 
 @Component({
   selector: 'tsl-select-form',
@@ -26,20 +34,31 @@ class SelectFormStubComponent {
 describe('SortFilterComponent', () => {
   let fixture: ComponentFixture<SortFilterComponent>;
   let component: SortFilterComponent;
-  let filterParameterStoreServiceMock;
+  let navigator: SearchNavigatorService;
 
   beforeEach(async () => {
-    filterParameterStoreServiceMock = {
-      setParameters: (filterParameters: FilterParameter[]) => {},
-    };
-
     await TestBed.configureTestingModule({
-      imports: [NgbDropdownModule],
+      imports: [
+        NgbDropdownModule,
+        RouterTestingModule.withRoutes([
+          {
+            path: 'search',
+            redirectTo: '',
+          },
+        ]),
+      ],
       declarations: [SortFilterComponent, SelectFormStubComponent],
       providers: [
         {
           provide: FILTER_PARAMETER_STORE_TOKEN,
-          useValue: filterParameterStoreServiceMock,
+          useClass: FilterParameterStoreService,
+        },
+        SearchQueryStringService,
+        QueryStringLocationService,
+        { provide: 'SUBDOMAIN', useValue: 'es' },
+        {
+          provide: CookieService,
+          useValue: MockCookieService,
         },
       ],
     }).compileComponents();
@@ -47,6 +66,7 @@ describe('SortFilterComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SortFilterComponent);
+    navigator = TestBed.inject(SearchNavigatorService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -90,25 +110,25 @@ describe('SortFilterComponent', () => {
     });
 
     it('should emit the new value to filter parameter store', () => {
-      spyOn(filterParameterStoreServiceMock, 'setParameters');
+      spyOn(navigator, 'navigate');
       const lastOption: SelectFormOption<string> = SELECT_FORM_OPTIONS_CONFIG[SELECT_FORM_OPTIONS_CONFIG.length - 1];
       selectFilterStub.mockClickOption(lastOption);
 
       fixture.detectChanges();
 
-      expect(filterParameterStoreServiceMock.setParameters).toHaveBeenCalledTimes(1);
-      expect(filterParameterStoreServiceMock.setParameters).toHaveBeenCalledWith([{ key: 'order_by', value: lastOption.value }]);
+      expect(navigator.navigate).toHaveBeenCalledTimes(1);
+      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: lastOption.value }], true);
     });
 
     it('should send default value (null) if it is the first option', () => {
-      spyOn(filterParameterStoreServiceMock, 'setParameters');
+      spyOn(navigator, 'navigate');
       const lastOption: SelectFormOption<string> = SELECT_FORM_OPTIONS_CONFIG[0];
       selectFilterStub.mockClickOption(lastOption);
 
       fixture.detectChanges();
 
-      expect(filterParameterStoreServiceMock.setParameters).toHaveBeenCalledTimes(1);
-      expect(filterParameterStoreServiceMock.setParameters).toHaveBeenCalledWith([{ key: 'order_by', value: null }]);
+      expect(navigator.navigate).toHaveBeenCalledTimes(1);
+      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: null }], true);
     });
   });
 });

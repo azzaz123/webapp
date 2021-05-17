@@ -75,6 +75,7 @@ import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/sug
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 import { NavLinksModule } from './nav-links/nav-links.module';
 import { HeaderModule } from './header/header.module';
+import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 
 @NgModule({
   imports: [
@@ -168,6 +169,7 @@ import { HeaderModule } from './header/header.module';
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
     NavLinksModule,
+    InfiniteScrollDirective,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -227,6 +229,7 @@ import { HeaderModule } from './header/header.module';
     WallacoinsDisabledModalComponent,
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
+    InfiniteScrollDirective,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [
