@@ -38,8 +38,8 @@ export class ReviewItemComponent implements OnInit {
 
   private initializeCopys(): void {
     this.reviewItemCopys = {
-      soldCopy: this.isOwner ? $localize`:@@OwnReviewSold:Sold` : $localize`:@@ReviewSold:Sold`,
-      boughtCopy: this.isOwner ? $localize`:@@OwnReviewBought:Bought` : $localize`:@@ReviewBought:Bought`,
+      soldCopy: this.isOwner ? $localize`:@@web_own_review_sold:Sold` : $localize`:@@web_review_sold:Sold`,
+      boughtCopy: this.isOwner ? $localize`:@@web_own_review_bought:Bought` : $localize`:@@web_review_bought:Bought`,
     };
   }
 }

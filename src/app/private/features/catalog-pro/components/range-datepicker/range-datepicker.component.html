@@ -10,19 +10,19 @@
       </span>
     </ng-template>
     <div class="selected-text" [ngClass]="bumpType">
-      <span i18n="@@RangeDatepickerHaveSelected">You have selected </span>
+      <span i18n="@@web_range_datepicker_have_selected">You have selected </span>
       <div class="bold">
         <span>{{newDates.numberOfDays}} </span>
-        <span *ngIf="bumpType === 'citybump' && newDates.numberOfDays === 1" i18n="@@RangeDatepickerCitybump">city bump</span>
-        <span *ngIf="bumpType === 'countrybump' && newDates.numberOfDays === 1" i18n="@@RangeDatepickerCountrybump">country bump</span>
-        <span *ngIf="bumpType === 'citybump' && newDates.numberOfDays > 1" i18n="@@RangeDatepickerCitybumps">city bumps</span>
-        <span *ngIf="bumpType === 'countrybump' && newDates.numberOfDays > 1" i18n="@@RangeDatepickerCountrybumps">country bumps</span>
-        <span *ngIf="bumpType === 'planning'" i18n="@@RangeDatepickerMultiBumps">Multiselect bumps</span>
+        <span *ngIf="bumpType === 'citybump' && newDates.numberOfDays === 1" i18n="@@web_range_datepicker_citybump">city bump</span>
+        <span *ngIf="bumpType === 'countrybump' && newDates.numberOfDays === 1" i18n="@@web_range_datepicker_countrybump">country bump</span>
+        <span *ngIf="bumpType === 'citybump' && newDates.numberOfDays > 1" i18n="@@web_range_datepicker_citybumps">city bumps</span>
+        <span *ngIf="bumpType === 'countrybump' && newDates.numberOfDays > 1" i18n="@@web_range_datepicker_countrybumps">country bumps</span>
+        <span *ngIf="bumpType === 'planning'" i18n="@@web_range_datepicker_multi_bumps">Multiselect bumps</span>
       </div>
     </div>
     <div class="datepicker-btn-wrapper">
-      <button class="datepicker-btn cancel" (click)="onCancel()" i18n="@@cancelButton">Cancel</button>
-      <button class="datepicker-btn apply" [ngClass]="bumpType" (click)="onApply()" [disabled]="!startDate || !endDate" i18n="@@Apply">Apply</button>
+      <button class="datepicker-btn cancel" (click)="onCancel()" i18n="@@web_cancel_button">Cancel</button>
+      <button class="datepicker-btn apply" [ngClass]="bumpType" (click)="onApply()" [disabled]="!startDate || !endDate" i18n="@@web_apply">Apply</button>
     </div>
   </div>
 </div>

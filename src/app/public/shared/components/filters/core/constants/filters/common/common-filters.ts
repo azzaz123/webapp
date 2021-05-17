@@ -7,8 +7,8 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 export const COMMON_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONFIGURATION_ID.CATEGORIES,
-    title: $localize`:@@filterCategoriesTitle:Category`,
-    bubblePlaceholder: $localize`:@@filterCategoriesPlaceholder:All categories`,
+    title: $localize`:@@web_filter_categories_title:Category`,
+    bubblePlaceholder: $localize`:@@web_filter_categories_placeholder:All categories`,
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.categoryId,
     },
@@ -18,8 +18,8 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONFIGURATION_ID.POSTED_AGO,
     type: FILTER_TYPES.GRID,
-    title: $localize`:@@filterTimeOfListing:Time of listing`,
-    bubblePlaceholder: $localize`:@@filterTimeOfListing:Time of listing`,
+    title: $localize`:@@web_filter_time_of_listing:Time of listing`,
+    bubblePlaceholder: $localize`:@@web_filter_time_of_listing:Time of listing`,
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.postedAgo,
     },
@@ -29,8 +29,8 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONFIGURATION_ID.PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    title: $localize`:@@web_filter_price_title:How much?`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -54,9 +54,9 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONFIGURATION_ID.CONDITION,
     type: FILTER_TYPES.SELECT,
-    title: $localize`:@@filterConditionTitle:Item condition`,
-    bubblePlaceholder: $localize`:@@filterConditionBubblePlaceholder:Item condition`,
-    drawerPlaceholder: $localize`:@@filterConditionDrawerPlaceholder:Any item condition`,
+    title: $localize`:@@web_filter_condition_title:Item condition`,
+    bubblePlaceholder: $localize`:@@web_filter_condition_bubble_placeholder:Item condition`,
+    drawerPlaceholder: $localize`:@@web_filter_condition_drawer_placeholder:Any item condition`,
     icon: '/assets/icons/filters/condition.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.condition,

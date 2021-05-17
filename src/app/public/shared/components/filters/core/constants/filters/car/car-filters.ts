@@ -7,9 +7,9 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -26,10 +26,10 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.BRAND_N_MODEL,
     type: FILTER_TYPES.SUGGESTER,
-    title: $localize`:@@filterCarsBrandModelTitle:Brand and Model`,
-    bubblePlaceholder: $localize`:@@filterCarsBrandModelBubblePlaceholder:Brand and Model`,
-    suggesterPlaceholder: $localize`:@@filterCarsBrandModelSuggesterPlaceholder:Looking for a certain brand?`,
-    drawerPlaceholder: $localize`:@@filterCarsBrandModelDrawerPlaceholder:Select brand and model`,
+    title: $localize`:@@web_filter_cars_brand_model_title:Brand and Model`,
+    bubblePlaceholder: $localize`:@@web_filter_cars_brand_model_bubble_placeholder:Brand and Model`,
+    suggesterPlaceholder: $localize`:@@web_filter_cars_brand_model_suggester_placeholder:Looking for a certain brand?`,
+    drawerPlaceholder: $localize`:@@web_filter_cars_brand_model_drawer_placeholder:Select brand and model`,
     icon: '/assets/icons/filters/brand_model.svg',
     mapKey: {
       brand: FILTER_QUERY_PARAM_KEY.brand,
@@ -43,9 +43,9 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.YEAR,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterYearTitle:Registration date`,
+    title: $localize`:@@web_filter_year_title:Registration date`,
     icon: '/assets/icons/filters/calendar.svg',
-    bubblePlaceholder: $localize`:@@filterYearBubblePlaceholder:Year`,
+    bubblePlaceholder: $localize`:@@web_filter_year_bubble_placeholder:Year`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minYear,
       maxKey: FILTER_QUERY_PARAM_KEY.maxYear,
@@ -55,9 +55,9 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.KM,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterMileageTitle:Mileage`,
+    title: $localize`:@@web_filter_mileage_title:Mileage`,
     icon: '/assets/icons/filters/km.svg',
-    bubblePlaceholder: $localize`:@@filterMileageBubblePlaceholder:Km`,
+    bubblePlaceholder: $localize`:@@web_filter_mileage_bubble_placeholder:Km`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minKm,
       maxKey: FILTER_QUERY_PARAM_KEY.maxKm,
@@ -77,7 +77,7 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     type: FILTER_TYPES.TOGGLE,
     icon: '/assets/icons/filters/professional.svg',
     title: '',
-    bubblePlaceholder: $localize`:@@filterProfessionalBubblePlaceholder:Only professionals`,
+    bubblePlaceholder: $localize`:@@web_filter_professional_bubble_placeholder:Only professionals`,
     mapKey: {
       key: FILTER_QUERY_PARAM_KEY.professional,
     },
@@ -85,9 +85,9 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.WARRANTY,
     type: FILTER_TYPES.TOGGLE,
-    title: $localize`:@@filterWarrantyTitle:Cars with warranty`,
+    title: $localize`:@@web_filter_warranty_title:Cars with warranty`,
     icon: '/assets/icons/filters/warranty.svg',
-    bubblePlaceholder: $localize`:@@filterWarrantyBubblePlaceholder:Warranty`,
+    bubblePlaceholder: $localize`:@@web_filter_warranty_bubble_placeholder:Warranty`,
     mapKey: {
       key: FILTER_QUERY_PARAM_KEY.warranty,
     },
@@ -95,8 +95,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.SEATS,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterNumOfSeatsTitle:Number of seats`,
-    bubblePlaceholder: $localize`:@@filterNumOfSeatsBubblePlaceholder:Number of seats`,
+    title: $localize`:@@web_filter_num_of_seats_title:Number of seats`,
+    bubblePlaceholder: $localize`:@@web_filter_num_of_seats_bubble_placeholder:Number of seats`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minSeats,
       maxKey: FILTER_QUERY_PARAM_KEY.maxSeats,
@@ -107,8 +107,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.DOORS,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterNumOfDoorsTitle:Number of doors`,
-    bubblePlaceholder: $localize`:@@filterNumOfDoorsBubblePlaceholder:Number of doors`,
+    title: $localize`:@@web_filter_num_of_doors_title:Number of doors`,
+    bubblePlaceholder: $localize`:@@web_filter_num_of_doors_bubble_placeholder:Number of doors`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minDoors,
       maxKey: FILTER_QUERY_PARAM_KEY.maxDoors,
@@ -119,8 +119,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.HORSE_POWER,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterHorsePowerTitle:Horse power`,
-    bubblePlaceholder: $localize`:@@filterHorsePowerBubblePlaceholder:Horse power`,
+    title: $localize`:@@web_filter_horse_power_title:Horse power`,
+    bubblePlaceholder: $localize`:@@web_filter_horse_power_bubble_placeholder:Horse power`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minHorsePower,
       maxKey: FILTER_QUERY_PARAM_KEY.maxHorsePower,
@@ -136,8 +136,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.BODY,
     type: FILTER_TYPES.GRID,
-    title: $localize`:@@filterBodyTypeTitle:Type of car`,
-    bubblePlaceholder: $localize`:@@filterBodyTypePlaceholder:Type of car`,
+    title: $localize`:@@web_filter_body_type_title:Type of car`,
+    bubblePlaceholder: $localize`:@@web_filter_body_type_placeholder:Type of car`,
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.bodyType,
     },
@@ -147,8 +147,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.ENGINE,
     type: FILTER_TYPES.GRID,
-    title: $localize`:@@filterEngineTypeTitle:Engine type`,
-    bubblePlaceholder: $localize`:@@filterEngineTypePlaceholder:Engine type`,
+    title: $localize`:@@web_filter_engine_type_title:Engine type`,
+    bubblePlaceholder: $localize`:@@web_filter_engine_type_placeholder:Engine type`,
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.engine,
     },
@@ -158,8 +158,8 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
   {
     id: CAR_CONFIGURATION_ID.GEARBOX,
     type: FILTER_TYPES.GRID,
-    title: $localize`:@@filterGearboxTypeTitle:Gear box`,
-    bubblePlaceholder: $localize`:@@filterGearboxTypePlaceholder:Gear box`,
+    title: $localize`:@@web_filter_gearbox_type_title:Gear box`,
+    bubblePlaceholder: $localize`:@@web_filter_gearbox_type_placeholder:Gear box`,
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.gearbox,
     },

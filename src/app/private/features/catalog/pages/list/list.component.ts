@@ -446,7 +446,7 @@ export class ListComponent implements OnInit, OnDestroy {
       windowClass: 'modal-standard',
     });
 
-    modalRef.componentInstance.title = $localize`:@@SuggestProModalTitle:If you were PRO your items wouldn’t become inactive. Sounds good, right?`;
+    modalRef.componentInstance.title = $localize`:@@web_suggest_pro_modal_title:If you were PRO your items wouldn’t become inactive. Sounds good, right?`;
     modalRef.componentInstance.isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(
       this.subscriptions,
       reactivatedItem.categoryId

@@ -1,5 +1,5 @@
 <div class="RecommendedItems container py-4" #recommendedItemsSlider>
-    <span i18n="@@recommendedItemsTitle" class="RecommendedItems__title">Other users have also seen</span>
+    <span i18n="@@web_recommended_items_title" class="RecommendedItems__title">Other users have also seen</span>
     <div class="mt-1" *ngIf="items">
         <tsl-public-item-card-list [items]="items" [showDescription]="showDescription" [columnsConfig]="columnsConfig" (clickedItemAndIndex)="clickedItemAndIndex($event)"
         (toggleFavouriteEvent)="trackFavouriteOrUnfavouriteEvent($event)">

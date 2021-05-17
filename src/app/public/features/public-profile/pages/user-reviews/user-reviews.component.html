@@ -10,5 +10,5 @@
         </tsl-empty-state>
     </div>
     <tsl-review-item class="d-block mb-3" *ngFor="let review of reviews" [review]="review"></tsl-review-item>
-    <button *ngIf="nextPaginationItem" (click)="loadMore()" class="UserReviews__btn d-block btn btn-primary mx-auto mt-4" i18n="@@UserReviewsLoadMore">Load more reviews</button>
+    <button *ngIf="nextPaginationItem" (click)="loadMore()" class="UserReviews__btn d-block btn btn-primary mx-auto mt-4" i18n="@@web_user_reviews_load_more">Load more reviews</button>
 </div>

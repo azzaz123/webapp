@@ -13,12 +13,12 @@ export class SuggestProModalComponent {
   constructor(public activeModal: NgbActiveModal) {}
 
   get buttonText(): string {
-    return this.isFreeTrial ? $localize`:@@startFreeTrial:Start free trial` : $localize`:@@seePlans:See plans`;
+    return this.isFreeTrial ? $localize`:@@web_start_free_trial:Start free trial` : $localize`:@@web_see_plans:See plans`;
   }
 
   get descriptionText(): string {
     return this.isFreeTrial
-      ? $localize`:@@SuggestProModalDescriptionTrial:Try Wallapop PRO for free and explore all their benefits.`
-      : $localize`:@@SuggestProModalDescriptionPlans:Choose a plan and take advantage of Wallapop PRO benefits.`;
+      ? $localize`:@@web_suggest_pro_modal_description_trial:Try Wallapop PRO for free and explore all their benefits.`
+      : $localize`:@@web_suggest_pro_modal_description_plans:Choose a plan and take advantage of Wallapop PRO benefits.`;
   }
 }

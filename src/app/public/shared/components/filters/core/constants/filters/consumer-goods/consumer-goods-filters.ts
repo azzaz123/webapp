@@ -7,9 +7,9 @@ export const CONSUMER_GOODS_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONSUMER_GOODS_CONFIGURATION_ID.PRICE,
     type: FILTER_TYPES.RANGE,
-    title: $localize`:@@filterPriceTitle:How much?`,
+    title: $localize`:@@web_filter_price_title:How much?`,
     icon: '/assets/icons/filters/price.svg',
-    bubblePlaceholder: $localize`:@@filterPriceBubblePlaceholder:Price`,
+    bubblePlaceholder: $localize`:@@web_filter_price_bubble_placeholder:Price`,
     mapKey: {
       minKey: FILTER_QUERY_PARAM_KEY.minPrice,
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
