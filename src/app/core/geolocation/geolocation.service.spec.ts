@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { GeolocationService, MAPS_PLACES_API, MAPS_PROVIDER, MAPS_PLACE_API, MAPS_REVERSE_GEOCODE } from './geolocation.service';
 import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
-import { GeolocationResponse } from './geolocation-response.interface';
+import { GeolocationResponse, ItemPlace } from './geolocation-response.interface';
 import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { Coordinate } from './address-response.interface';
@@ -31,7 +31,7 @@ describe('GeolocationService', () => {
     it('should return place info', () => {
       const expectedUrlParams = `query=${MOCK_CITY}&provider=${MAPS_PROVIDER}`;
       const expectedUrl = `${environment.siteUrl}${MAPS_PLACES_API}?${expectedUrlParams}`;
-      let response: GeolocationResponse[];
+      let response: ItemPlace[];
 
       service.search(MOCK_CITY).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
