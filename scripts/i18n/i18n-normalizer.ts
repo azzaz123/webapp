@@ -44,7 +44,8 @@ class I18nNormalizer {
     'What should I do?\n' +
     '1. Run i18n\n' +
     '2. Print missing translations\n' +
-    '3. Clean up keys\n' +
+    '3. Normalize keys\n' +
+    '4. Clean translations files\n' +
     'e. Exit\n' +
     'Ans: ';
 
@@ -90,6 +91,9 @@ class I18nNormalizer {
         this.runI18n();
         break;
       case '4':
+        await this.cleanTranslationFiles();
+        break;
+      case '5':
         this.moveXtbToJson();
         break;
       default:
@@ -97,6 +101,23 @@ class I18nNormalizer {
     }
 
     return this.menu();
+  }
+
+  private cleanTranslationFiles(): void {
+    const languageCopies = this.getLanguageCopies();
+    const originalCopies = languageCopies[this.originalLanguage];
+
+    this.copyLocations.filter((location) => location.language !== this.originalLanguage).forEach(location => {
+      const copies = languageCopies[location.language];
+      const translations = {};
+
+      const keys = Object.keys(originalCopies);
+      keys.forEach(key => {
+        translations[key] = copies[key];
+      });
+
+      fs.writeFileSync(location.file, JSON.stringify({ locale: location.language, translations}, undefined, 2));
+    });
   }
 
   // BEFOREMERGE: Remove method
@@ -354,16 +375,19 @@ class I18nNormalizer {
 
   private cleanupRawXTB(rawStringFile: string): string {
     const expressionRegex = /<ex>(.*?)<\/ex>/gm;
+    const extraExpressionRegex = /{{(.+?)}}/gm;
     const interpolationRegex = /<ph name="([\w_]+)">?(.*?(?=(<\/ph>)|(\/>)))(\/>|<\/ph>)/gm;
-    const cleanedExpressions = rawStringFile.replace(expressionRegex, '');
+    const tagsRegex = /&lt;\/?(span|b|a|strong)&gt;/gm;
+    const cleanedExpressions = rawStringFile.replace(expressionRegex, '').replace(extraExpressionRegex, '');
 
-    let cleanedInterpolations = cleanedExpressions.replace(interpolationRegex, '{$$$1}$2');
+    const cleanedInterpolations = cleanedExpressions.replace(interpolationRegex, '{$$$1}$2');
+    let cleanedTags = cleanedInterpolations.replace(tagsRegex, '');
 
-    if (cleanedInterpolations.match(interpolationRegex)) {
-      cleanedInterpolations = this.cleanupRawXTB(cleanedInterpolations);
+    if (cleanedTags.match(interpolationRegex)) {
+      cleanedTags = this.cleanupRawXTB(cleanedTags);
     }
 
-    return cleanedInterpolations;
+    return cleanedTags;
   }
 
   private isNumericKey(id): boolean {
