@@ -85,7 +85,7 @@ describe('ItemDetailComponent', () => {
   const itemPriceClass = '.ItemDetail__price';
   const fallbackMapClass = '.ItemDetail__fakeMap';
   const locationClass = '.ItemDetail__location';
-  const itemContentClass = '.ItemDetail__content';
+  const itemCardClass = '.ItemDetail__card';
   const carExtraInfoClass = '.ItemExtraInfo--car';
   const itemId = '123';
 
@@ -461,7 +461,7 @@ describe('ItemDetailComponent', () => {
         itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_WITHOUT_ITEM);
 
         fixture.detectChanges();
-        const containerPage = fixture.debugElement.query(By.css(itemContentClass));
+        const containerPage = fixture.debugElement.query(By.css(itemCardClass));
 
         expect(containerPage).toBeFalsy();
       });

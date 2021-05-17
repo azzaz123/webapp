@@ -57,7 +57,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private typeCheckService: TypeCheckService,
     private userService: UserService,
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
-    private analyticsService: AnalyticsService,
     private recommenderItemCardFavouriteCheckedService: RecommenderItemCardFavouriteCheckedService
   ) {}
 
@@ -187,7 +186,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   get itemDetail$(): Observable<ItemDetail> {
-    return this.itemDetailStoreService.itemDetail$;
+    return this.itemDetailStoreService.itemDetail$.pipe(filter((itemDetail: ItemDetail) => !!itemDetail.item));
   }
 
   get statusFlag$(): Observable<STATUS_ITEM_FLAG_TYPES> {
