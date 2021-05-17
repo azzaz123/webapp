@@ -97,14 +97,17 @@ export class SubscriptionsComponent implements OnInit {
     this.newSubscription = subscription;
   }
 
-  public openSubscriptionModal(subscription: SubscriptionsResponse): void {
+  public manageSubscription(subscription: SubscriptionsResponse): void {
     const modal = this.getModalTypeDependingOnSubscription(subscription);
-
     if (!modal) {
       this.setNewSubscription(subscription);
-      return;
+      this.trackClickSubscriptionManagementPlus(subscription);
+    } else {
+      this.openSubscriptionModal(subscription, modal);
     }
+  }
 
+  private openSubscriptionModal(subscription: SubscriptionsResponse, modal: SubscriptionModal): void {
     let modalRef: NgbModalRef = this.modalService.open(modal, {
       windowClass: 'review',
     });
@@ -203,22 +206,21 @@ export class SubscriptionsComponent implements OnInit {
     this.analyticsService.trackPageView(pageView);
   }
 
+  private trackClickSubscriptionManagementPlus(subscription: SubscriptionsResponse) {
+    const event: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
+      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.SubscriptionManagement,
+        subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(this.subscriptions),
+        freeTrial: this.subscriptionsService.hasTrial(subscription),
+      },
+    };
+    return this.analyticsService.trackEvent(event);
+  }
+
   private trackOpenModalEvent(subscription: SubscriptionsResponse, modalType: SubscriptionModal) {
-    if (modalType === AddNewSubscriptionModalComponent) {
-      const event: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
-        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
-        eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagement,
-          subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
-          isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(this.subscriptions),
-          freeTrial: this.subscriptionsService.hasTrial(subscription),
-        },
-      };
-
-      return this.analyticsService.trackEvent(event);
-    }
-
     if (modalType === EditSubscriptionModalComponent) {
       const event: AnalyticsEvent<ClickProfileEditCurrentSubscription> = {
         name: ANALYTICS_EVENT_NAMES.ClickProfileEditCurrentSubscription,

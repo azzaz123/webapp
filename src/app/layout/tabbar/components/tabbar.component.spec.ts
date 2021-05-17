@@ -115,15 +115,33 @@ describe('TabbarComponent', () => {
 
   describe('when using a text input: on focus in', () => {
     it('should hide the tab bar', () => {
-      component.onFocusIn('INPUT');
+      const element = {
+        target: {
+          attributes: {
+            type: {
+              nodeValue: 'text',
+            },
+          },
+        },
+      };
+      component.onFocusIn(element);
 
       expect(component.hidden).toBe(true);
     });
   });
 
   describe('when using a text input: on focus out', () => {
-    it('should show the tab bar', () => {
-      component.onFocusOut('INPUT');
+    it('should hide the tab bar', () => {
+      const element = {
+        target: {
+          attributes: {
+            type: {
+              nodeValue: 'text',
+            },
+          },
+        },
+      };
+      component.onFocusOut(element);
 
       expect(component.hidden).toBe(false);
     });
@@ -131,7 +149,12 @@ describe('TabbarComponent', () => {
 
   describe('when using a textarea: on focus in', () => {
     it('should hide the tab bar', () => {
-      component.onFocusIn('TEXTAREA');
+      const element = {
+        target: {
+          nodeName: 'TEXTAREA',
+        },
+      };
+      component.onFocusIn(element);
 
       expect(component.hidden).toBe(true);
     });
@@ -139,7 +162,12 @@ describe('TabbarComponent', () => {
 
   describe('when using a textarea: on focus out', () => {
     it('should show the tab bar', () => {
-      component.onFocusOut('TEXTAREA');
+      const element = {
+        target: {
+          nodeName: 'TEXTAREA',
+        },
+      };
+      component.onFocusOut(element);
 
       expect(component.hidden).toBe(false);
     });

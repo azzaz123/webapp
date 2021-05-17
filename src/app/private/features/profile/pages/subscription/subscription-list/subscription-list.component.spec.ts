@@ -60,14 +60,14 @@ describe('SubscriptionListComponent', () => {
   });
   describe('card events', () => {
     beforeEach(() => {
-      spyOn(component.openSubscriptionModal, 'emit');
+      spyOn(component.clickButton, 'emit');
     });
     it('should emit to parent', () => {
       const subscription = MAPPED_SUBSCRIPTIONS_ADDED[0];
-      component.onOpenSubscriptionModal(subscription);
+      component.onClickButton(subscription);
 
-      expect(component.openSubscriptionModal.emit).toHaveBeenCalledTimes(1);
-      expect(component.openSubscriptionModal.emit).toHaveBeenCalledWith(subscription);
+      expect(component.clickButton.emit).toHaveBeenCalledTimes(1);
+      expect(component.clickButton.emit).toHaveBeenCalledWith(subscription);
     });
   });
 });

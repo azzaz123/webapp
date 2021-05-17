@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
 
 import { SubscriptionTierSelectorComponent } from './subscription-tier-selector.component';
 
@@ -15,10 +16,12 @@ describe('SubscriptionTierSelectorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionTierSelectorComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    component.subscription = MAPPED_SUBSCRIPTIONS[0];
+    component.selectedTier = MAPPED_SUBSCRIPTIONS[0].tiers[0];
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 });

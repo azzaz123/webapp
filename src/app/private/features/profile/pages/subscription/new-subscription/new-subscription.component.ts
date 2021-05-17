@@ -54,7 +54,6 @@ export class NewSubscriptionComponent implements OnInit {
     private errorService: ErrorsService,
     private subscriptionsService: SubscriptionsService,
     private modalService: NgbModal,
-    private deviceService: DeviceDetectorService,
     private scrollIntoViewService: ScrollIntoViewService,
     private eventService: EventService,
     private analyticsService: AnalyticsService

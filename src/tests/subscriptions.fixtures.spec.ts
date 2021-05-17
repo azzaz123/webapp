@@ -114,6 +114,10 @@ export class MockSubscriptionService {
   public hasFreeTrialByCategoryId(): boolean {
     return true;
   }
+
+  public getBenefits(id: string): string[] {
+    return [];
+  }
 }
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [

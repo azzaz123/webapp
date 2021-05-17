@@ -11,7 +11,7 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 export class SubscriptionListComponent {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
-  @Output() openSubscriptionModal: EventEmitter<SubscriptionsResponse> = new EventEmitter();
+  @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
 
   constructor(private subscriptionsService: SubscriptionsService) {}
 
@@ -60,8 +60,8 @@ export class SubscriptionListComponent {
     }
   }
 
-  public onOpenSubscriptionModal(subscription: SubscriptionsResponse): void {
-    this.openSubscriptionModal.emit(subscription);
+  public onClickButton(subscription: SubscriptionsResponse): void {
+    this.clickButton.emit(subscription);
   }
 
   public getBenefits(subscription: SubscriptionsResponse): string[] {
