@@ -56,6 +56,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public isIncorrectAddress = false;
   public hasTrialAvailable: boolean;
   public ANALYTICS_FIELDS = ANALYTICS_FIELDS;
+  public renderMap = false;
 
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
@@ -247,6 +248,10 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       }
       this.manageModal();
     }
+  }
+
+  public onMapContainerVisible(): void {
+    this.renderMap = true;
   }
 
   private manageModal(): void {

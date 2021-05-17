@@ -3,80 +3,80 @@ import { FooterLinkSection, FooterIcon } from '../interfaces/footer.interface';
 
 export const FOOTER_LINKS: FooterLinkSection[] = [
   {
-    title: $localize`:@@FooterLinksWallapopTitle:wallapop`,
+    title: $localize`:@@web_footer_links_wallapop_title:wallapop`,
     links: [
       {
-        label: $localize`:@@FooterLinksAboutLabel:About`,
-        href: $localize`:@@FooterLinksAboutHref:https://about.wallapop.com/en`,
+        label: $localize`:@@web_footer_links_about_label:About`,
+        href: $localize`:@@web_footer_links_about_href:https://about.wallapop.com/en`,
       },
       {
-        label: $localize`:@@FooterLinksPressLabel:Press`,
-        href: $localize`:@@FooterLinksPressHref:https://about.wallapop.com/prensa`,
+        label: $localize`:@@web_footer_links_press_label:Press`,
+        href: $localize`:@@web_footer_links_press_href:https://about.wallapop.com/prensa`,
       },
       {
-        label: $localize`:@@FooterLinksJobsLabel:Jobs`,
-        href: $localize`:@@FooterLinksJobsHref:https://apply.workable.com/wallapop`,
+        label: $localize`:@@web_footer_links_jobs_label:Jobs`,
+        href: $localize`:@@web_footer_links_jobs_href:https://apply.workable.com/wallapop`,
       },
       {
-        label: $localize`:@@FooterLinksTeamLabel:Team`,
-        href: $localize`:@@FooterLinksTeamHref:https://about.wallapop.com/en/team`,
+        label: $localize`:@@web_footer_links_team_label:Team`,
+        href: $localize`:@@web_footer_links_team_href:https://about.wallapop.com/en/team`,
       },
     ],
   },
   {
-    title: $localize`:@@FooterLinksSupportTitle:Support`,
+    title: $localize`:@@web_footer_links_support_title:Support`,
     links: [
       {
-        label: $localize`:@@FooterLinksFaqLabel:FAQ`,
-        href: $localize`:@@FooterLinksFaqHref:https://ayuda.wallapop.com/hc/en-us`,
+        label: $localize`:@@web_footer_links_faq_label:FAQ`,
+        href: $localize`:@@web_footer_links_faq_href:https://ayuda.wallapop.com/hc/en-us`,
       },
       {
-        label: $localize`:@@FooterLinksPublishRulesLabel:Publishing rules`,
-        href: $localize`:@@FooterLinksPublishRulesHref:https://ayuda.wallapop.com/hc/en-us/articles/360004667717-What-content-is-not-allowed-on-wallapop-`,
+        label: $localize`:@@web_footer_links_publish_rules_label:Publishing rules`,
+        href: $localize`:@@web_footer_links_publish_rules_href:https://ayuda.wallapop.com/hc/en-us/articles/360004667717-What-content-is-not-allowed-on-wallapop-`,
       },
       {
-        label: $localize`:@@FooterLinksSecurityTipsLabel:Security tips`,
-        href: $localize`:@@FooterLinksSecurityTipsHref:https://ayuda.wallapop.com/hc/en-us/sections/360001177157-Security-tips`,
+        label: $localize`:@@web_footer_links_security_tips_label:Security tips`,
+        href: $localize`:@@web_footer_links_security_tips_href:https://ayuda.wallapop.com/hc/en-us/sections/360001177157-Security-tips`,
       },
     ],
   },
   {
-    title: $localize`:@@FooterLinksLegalTitle:Legal`,
+    title: $localize`:@@web_footer_links_legal_title:Legal`,
     links: [
       {
-        label: $localize`:@@FooterLinksTermsLabel:Terms`,
-        href: $localize`:@@FooterLinksTermsHref:https://about.wallapop.com/en/legal-terms-and-conditions`,
+        label: $localize`:@@web_footer_links_terms_label:Terms`,
+        href: $localize`:@@web_footer_links_terms_href:https://about.wallapop.com/en/legal-terms-and-conditions`,
       },
       {
-        label: $localize`:@@FooterLinksPrivacyLabel:Privacy`,
-        href: $localize`:@@FooterLinksPrivacyHref:https://about.wallapop.com/en/privacy-policy`,
+        label: $localize`:@@web_footer_links_privacy_label:Privacy`,
+        href: $localize`:@@web_footer_links_privacy_href:https://about.wallapop.com/en/privacy-policy`,
       },
       {
-        label: $localize`:@@FooterLinksCookiessLabel:Cookies`,
-        href: $localize`:@@FooterLinksCookiesHref:https://about.wallapop.com/en/cookies`,
+        label: $localize`:@@web_footer_links_cookiess_label:Cookies`,
+        href: $localize`:@@web_footer_links_cookies_href:https://about.wallapop.com/en/cookies`,
       },
     ],
   },
   {
-    title: $localize`:@@FooterLinksMotorTitle:Motor`,
+    title: $localize`:@@web_footer_links_motor_title:Motor`,
     excludedLanguages: ['en'],
     links: [
       {
-        label: $localize`:@@FooterLinksParticularLabel:Particular`,
-        href: $localize`:@@FooterLinksParticularHref:https://about.wallapop.com/cars-buyer/`,
+        label: $localize`:@@web_footer_links_particular_label:Particular`,
+        href: $localize`:@@web_footer_links_particular_href:https://about.wallapop.com/cars-buyer/`,
       },
       {
-        label: $localize`:@@FooterLinksProfessionalLabel:Professional`,
-        href: $localize`:@@FooterLinksProfessionalHref:https://about.wallapop.com/motor/`,
+        label: $localize`:@@web_footer_links_professional_label:Professional`,
+        href: $localize`:@@web_footer_links_professional_href:https://about.wallapop.com/motor/`,
       },
     ],
   },
   {
-    title: $localize`:@@FooterLinksWallapopProTitle:Wallapop Pro`,
+    title: $localize`:@@web_footer_links_wallapop_pro_title:Wallapop Pro`,
     links: [
       {
-        label: $localize`:@@FooterLinksLandingProLabel:Boost your business`,
-        href: $localize`:@@FooterLinksLandingProHref:https://novedades.wallapop.com/wallapop-pro/`,
+        label: $localize`:@@web_footer_links_landing_pro_label:Boost your business`,
+        href: $localize`:@@web_footer_links_landing_pro_href:https://novedades.wallapop.com/wallapop-pro/`,
         trackEvent: ANALYTICS_EVENT_NAMES.ClickProInfo,
       },
     ],
@@ -104,17 +104,17 @@ export const FOOTER_APPS: FooterIcon[] = [
 
 export const FOOTER_SOCIAL: FooterIcon[] = [
   {
-    label: $localize`:@@FooterSocialFacebookLabel:wallapop, the app to buy and sell nearby, it's also on Facebook`,
+    label: $localize`:@@web_footer_social_facebook_label:wallapop, the app to buy and sell nearby, it's also on Facebook`,
     href: 'https://facebook.com/wallapop.es',
     iconSrc: '/assets/icons/footer/facebook.svg',
   },
   {
-    label: $localize`:@@FooterSocialTwitterLabel:wallapop, the app to buy and sell nearby, it's also on Twitter`,
+    label: $localize`:@@web_footer_social_twitter_label:wallapop, the app to buy and sell nearby, it's also on Twitter`,
     href: 'https://twitter.com/wallapop',
     iconSrc: '/assets/icons/footer/twitter.svg',
   },
   {
-    label: $localize`:@@FooterSocialInstagramLabel:wallapop, the app to buy and sell nearby, it's also on Instagram`,
+    label: $localize`:@@web_footer_social_instagram_label:wallapop, the app to buy and sell nearby, it's also on Instagram`,
     href: 'https://www.instagram.com/wallapop/',
     iconSrc: '/assets/icons/footer/instagram.svg',
   },

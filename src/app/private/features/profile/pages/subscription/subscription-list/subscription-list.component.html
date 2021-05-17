@@ -1,10 +1,8 @@
 <div class="box">
     <ng-container *ngIf="!isLoading; else loading">
         <div class="box-content text-center">
-            <h4 class="section-title mb-2" i18n="@@WallapopProSubscriptionTitle">Boost your online business with
-                Wallapop PRO</h4>
-            <p class="section-subtitle" i18n="@@WallapopProSubscriptionSubTitle">Choose a subscription to take your
-                sales to the next level</p>
+            <h4 class="section-title mb-2" i18n="@@web_wallapop_pro_subscription_title">Boost your online business with Wallapop PRO</h4>
+            <p class="section-subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a subscription to take your sales to the next level</p>
             <div class="Subscriptions d-flex justify-content-between row">
                 <tsl-subscription-card class="col-lg-3 col-md-6 col-sm-12 p-0 px-md-1 mb-lg-0 mb-2"
                     (buttonClick)="onClickButton(subscription)"
@@ -15,7 +13,7 @@
                 </tsl-subscription-card>
             </div>
             <div class="SubscriptionList__link">
-                <a [href]="HELP_LINK" target="_blank" i18n="@@WallapopProAbout">Learn more about Wallapop PRO</a>
+                <a [href]="HELP_LINK" target="_blank" i18n="@@web_wallapop_pro_about">Learn more about Wallapop PRO</a>
             </div>
         </div>
     </ng-container>

@@ -14,7 +14,7 @@
                     {{ error }}
                 </div>
             </div>
-            <div *ngIf="showSavedCardOption()" class="card-feedback__action"(click)="clickUseSavedCard()" i18n="@@UseSavedCard">Use saved card</div>
+            <div *ngIf="showSavedCardOption()" class="card-feedback__action"(click)="clickUseSavedCard()" i18n="@@web_use_saved_card">Use saved card</div>
         </div>
 
         <div [hidden]="type !== 'subscription'" class="StripeCardElement__legal-info" i18n="@@web_stripe_card_element_513">By subscribing, you accept the <a href="{{termsAndConditionsURL}}" target="_blank">Terms of use</a>
@@ -62,7 +62,7 @@
                     (click)="setDefaultCard()"
         >
             <div class="secure-payment">
-                <span i18n="@@Save">Save</span>
+                <span i18n="@@web_save">Save</span>
             </div>
         </tsl-button>
     </form>
