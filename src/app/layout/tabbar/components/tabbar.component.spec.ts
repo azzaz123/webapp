@@ -8,7 +8,7 @@ import { MockUnreadChatMessagesService } from '@fixtures/message.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
-import { TabbarComponent } from './tabbar.component';
+import { ELEMENT_TYPE, INPUT_TYPE, TabbarComponent } from './tabbar.component';
 import { TabbarService } from '../core/services/tabbar.service';
 
 describe('TabbarComponent', () => {
@@ -117,13 +117,15 @@ describe('TabbarComponent', () => {
     it('should hide the tab bar', () => {
       const element = {
         target: {
+          nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
             type: {
-              nodeValue: 'text',
+              nodeValue: INPUT_TYPE.TEXT,
             },
           },
         },
       };
+
       component.onFocusIn(element);
 
       expect(component.hidden).toBe(true);
@@ -131,16 +133,170 @@ describe('TabbarComponent', () => {
   });
 
   describe('when using a text input: on focus out', () => {
-    it('should hide the tab bar', () => {
+    it('should show the tab bar', () => {
       const element = {
         target: {
+          nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
             type: {
-              nodeValue: 'text',
+              nodeValue: INPUT_TYPE.TEXT,
             },
           },
         },
       };
+
+      component.onFocusOut(element);
+
+      expect(component.hidden).toBe(false);
+    });
+  });
+
+  describe('when using a password input: on focus in', () => {
+    it('should hide the tab bar', () => {
+      const element = {
+        target: {
+          nodeName: ELEMENT_TYPE.INPUT,
+          attributes: {
+            type: {
+              nodeValue: INPUT_TYPE.PASSWORD,
+            },
+          },
+        },
+      };
+
+      component.onFocusIn(element);
+
+      expect(component.hidden).toBe(true);
+    });
+  });
+
+  describe('when using a password input: on focus out', () => {
+    it('should show the tab bar', () => {
+      const element = {
+        target: {
+          nodeName: ELEMENT_TYPE.INPUT,
+          attributes: {
+            type: {
+              nodeValue: INPUT_TYPE.PASSWORD,
+            },
+          },
+        },
+      };
+
+      component.onFocusOut(element);
+
+      expect(component.hidden).toBe(false);
+    });
+  });
+
+  describe('when using a number input: on focus in', () => {
+    it('should hide the tab bar', () => {
+      const element = {
+        target: {
+          nodeName: ELEMENT_TYPE.INPUT,
+          attributes: {
+            type: {
+              nodeValue: INPUT_TYPE.NUMBER,
+            },
+          },
+        },
+      };
+
+      component.onFocusIn(element);
+
+      expect(component.hidden).toBe(true);
+    });
+  });
+
+  describe('when using a number input: on focus out', () => {
+    it('should show the tab bar', () => {
+      const element = {
+        target: {
+          nodeName: ELEMENT_TYPE.INPUT,
+          attributes: {
+            type: {
+              nodeValue: INPUT_TYPE.NUMBER,
+            },
+          },
+        },
+      };
+
+      component.onFocusOut(element);
+
+      expect(component.hidden).toBe(false);
+    });
+  });
+
+  describe('when using a date input: on focus in', () => {
+    it('should hide the tab bar', () => {
+      const element = {
+        target: {
+          nodeName: ELEMENT_TYPE.INPUT,
+          attributes: {
+            type: {
+              nodeValue: INPUT_TYPE.DATE,
+            },
+          },
+        },
+      };
+
+      component.onFocusIn(element);
+
+      expect(component.hidden).toBe(true);
+    });
+  });
+
+  describe('when using a date input: on focus out', () => {
+    it('should show the tab bar', () => {
+      const element = {
+        target: {
+          nodeName: ELEMENT_TYPE.INPUT,
+          attributes: {
+            type: {
+              nodeValue: INPUT_TYPE.DATE,
+            },
+          },
+        },
+      };
+
+      component.onFocusOut(element);
+
+      expect(component.hidden).toBe(false);
+    });
+  });
+
+  describe('when using a radio input: on focus in', () => {
+    it('should show the tab bar', () => {
+      const element = {
+        target: {
+          nodeName: ELEMENT_TYPE.INPUT,
+          attributes: {
+            type: {
+              nodeValue: INPUT_TYPE.radio,
+            },
+          },
+        },
+      };
+
+      component.onFocusIn(element);
+
+      expect(component.hidden).toBe(false);
+    });
+  });
+
+  describe('when using a radio input: on focus out', () => {
+    it('should show the tab bar', () => {
+      const element = {
+        target: {
+          nodeName: ELEMENT_TYPE.INPUT,
+          attributes: {
+            type: {
+              nodeValue: INPUT_TYPE.radio,
+            },
+          },
+        },
+      };
+
       component.onFocusOut(element);
 
       expect(component.hidden).toBe(false);
@@ -151,7 +307,7 @@ describe('TabbarComponent', () => {
     it('should hide the tab bar', () => {
       const element = {
         target: {
-          nodeName: 'TEXTAREA',
+          nodeName: ELEMENT_TYPE.TEXT_AREA,
         },
       };
       component.onFocusIn(element);
@@ -164,7 +320,7 @@ describe('TabbarComponent', () => {
     it('should show the tab bar', () => {
       const element = {
         target: {
-          nodeName: 'TEXTAREA',
+          nodeName: ELEMENT_TYPE.TEXT_AREA,
         },
       };
       component.onFocusOut(element);

@@ -9,6 +9,21 @@ import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { Subscription } from 'rxjs';
 import { TabbarService } from '../core/services/tabbar.service';
 
+export const INPUT_TYPE = {
+  TEXT: 'text',
+  DATE: 'date',
+  PASSWORD: 'password',
+  NUMBER: 'number',
+  radio: 'radio',
+};
+
+export const KEYBOARD_INPUT_TYPES = [INPUT_TYPE.TEXT, INPUT_TYPE.DATE, INPUT_TYPE.PASSWORD, INPUT_TYPE.NUMBER];
+
+export const ELEMENT_TYPE = {
+  TEXT_AREA: 'TEXTAREA',
+  INPUT: 'INPUT',
+};
+
 @Component({
   selector: 'tsl-tabbar',
   templateUrl: './tabbar.component.html',
@@ -57,16 +72,16 @@ export class TabbarComponent implements OnInit {
 
   private isTextInputOrTextarea(element: any): boolean {
     const elementTarget = element.target;
-    if (elementTarget.nodeName === 'TEXTAREA') {
+    if (elementTarget.nodeName === ELEMENT_TYPE.TEXT_AREA) {
       return true;
     }
 
-    const inputType = elementTarget.attributes?.type?.nodeValue;
-    if (!inputType) {
+    if (elementTarget.nodeName !== ELEMENT_TYPE.INPUT) {
       return false;
     }
 
-    return inputType === 'text' || inputType === 'date' || inputType === 'password' || inputType === 'number';
+    const inputType = elementTarget.attributes?.type?.nodeValue;
+    return KEYBOARD_INPUT_TYPES.includes(inputType);
   }
 
   @HostListener('window:focusin', ['$event'])
