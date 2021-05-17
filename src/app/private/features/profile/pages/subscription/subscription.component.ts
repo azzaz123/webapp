@@ -15,7 +15,6 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, SUBSCRIPTION_SOURCE } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { AddNewSubscriptionModalComponent } from '@private/features/profile/modal/add-new-subscription/add-new-subscription-modal.component';
 import { CancelSubscriptionModalComponent } from '@private/features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
 import { CheckSubscriptionInAppModalComponent } from '@private/features/profile/modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { ContinueSubscriptionModalComponent } from '@private/features/profile/modal/continue-subscription/continue-subscription-modal.component';
@@ -34,8 +33,7 @@ export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
   | typeof CancelSubscriptionModalComponent
   | typeof ContinueSubscriptionModalComponent
-  | typeof EditSubscriptionModalComponent
-  | typeof AddNewSubscriptionModalComponent;
+  | typeof EditSubscriptionModalComponent;
 
 @Component({
   selector: 'tsl-subscription',

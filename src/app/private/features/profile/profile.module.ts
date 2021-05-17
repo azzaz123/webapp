@@ -10,7 +10,6 @@ import { InvoiceItemComponent } from './components/invoice-item/invoice-item.com
 import { SubscriptionBenefitComponent } from './components/subscription-benefits/subscription-benefit/subscription-benefit.component';
 import { SubscriptionBenefitsComponent } from './components/subscription-benefits/subscription-benefits.component';
 import { SubscriptionPriceDiscountComponent } from './components/subscription-price-discount/subscription-price-discount.component';
-import { AddNewSubscriptionModalComponent } from './modal/add-new-subscription/add-new-subscription-modal.component';
 import { BecomeProModalComponent } from './modal/become-pro-modal/become-pro-modal.component';
 import { CancelSubscriptionModalComponent } from './modal/cancel-subscription/cancel-subscription-modal.component';
 import { CheckSubscriptionInAppModalComponent } from './modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
@@ -53,7 +52,6 @@ import { SubscriptionPurchaseFooterComponent } from './pages/subscription/subscr
     SubscriptionIconPipe,
     VisibilityProductsModalComponent,
     PaymentSuccessModalComponent,
-    AddNewSubscriptionModalComponent,
     EditSubscriptionModalComponent,
     CancelSubscriptionModalComponent,
     ContinueSubscriptionModalComponent,
@@ -78,7 +76,6 @@ import { SubscriptionPurchaseFooterComponent } from './pages/subscription/subscr
     DeleteInfoConfirmationModalComponent,
     VisibilityProductsModalComponent,
     PaymentSuccessModalComponent,
-    AddNewSubscriptionModalComponent,
     EditSubscriptionModalComponent,
     CancelSubscriptionModalComponent,
     ContinueSubscriptionModalComponent,
