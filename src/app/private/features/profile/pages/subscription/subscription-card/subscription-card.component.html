@@ -3,7 +3,7 @@
   }">
     <div class="SubscriptionCard__trialBanner text-center px-2 mb-3"
         [class.SubscriptionCard__trialBanner--hidden]="!hasTrialAvailable || isSubscribed">
-        <span i18n="@@SubscriptionPriceDiscountDaysTrialFree">{{subscription.trial_days}}-day trial for free</span>
+        <span i18n="@@web_subscription_price_discount_days_trial_free">{{subscription.trial_days}}-day trial for free</span>
     </div>
     <div class="d-flex flex-column align-items-center w-100">
         <div class="SubscriptionCard__icon">
@@ -45,7 +45,7 @@
         <ng-template #subscriptionBody>
             <div class="d-flex flex-column mb-2 text-left w-100">
                 <div class="mb-2">
-                    <b><span i18n="@@your_current_plan">Your current plan</span></b>
+                    <b><span i18n="@@web_your_current_plan">Your current plan</span></b>
                 </div>
                 <div class="d-flex">
                     <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">

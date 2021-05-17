@@ -30,9 +30,9 @@
       </ng-container>
     </div>
     <ng-container main>
-        <tsl-public-item-card-list 
+        <tsl-public-item-card-list
           [items]="items$ | async"
-          [isLoading]="isLoadingResults$ | async" 
+          [isLoading]="isLoadingResults$ | async"
           [showPlaceholder]="showPlaceholder$ | async"
           [columnsConfig]="listColumnsConfig$ | async"
           [cardType]="listCardType$ | async"
@@ -44,7 +44,7 @@
           </ng-template>
         </ng-container>
       </tsl-public-item-card-list>
-      
+
       <div class="Search__spinner d-flex align-items-center justify-content-center py-5" *ngIf="(isLoadingPaginationResults$ | async)">
         <img width="50" height="50" src="/assets/images/spinner.gif" />
       </div>

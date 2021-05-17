@@ -10,12 +10,12 @@ import { APP_PATHS } from 'app/app-routing-constants';
   styleUrls: ['./error.component.scss'],
 })
 export class ErrorComponent {
-  public title = $localize`:@@NotFoundTitle:Whoops, the page you're looking for can't be found`;
-  public subtitle = $localize`:@@NotFoundMessage:Our office unicorn might have impaled it. But, there's lots to be discovered in the land of Wallapop.`;
+  public title = $localize`:@@web_not_found_title:Whoops, the page you're looking for can't be found`;
+  public subtitle = $localize`:@@web_not_found_message:Our office unicorn might have impaled it. But, there's lots to be discovered in the land of Wallapop.`;
   public image = '/assets/images/not-found.png';
   public errorBoxButton: ErrorBoxExit = {
     type: ERROR_BOX_EXIT_TYPE.BUTTON,
-    label: $localize`:@@NotFoundButtonText:See listings`,
+    label: $localize`:@@web_not_found_button_text:See listings`,
   };
 
   constructor(private router: Router) {}

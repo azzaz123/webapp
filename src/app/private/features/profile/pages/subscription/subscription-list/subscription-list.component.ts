@@ -13,7 +13,7 @@ export class SubscriptionListComponent {
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() openSubscriptionModal: EventEmitter<SubscriptionsResponse> = new EventEmitter();
 
-  public readonly HELP_LINK = $localize`:@@WallapopProAboutHref:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
+  public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
 
   constructor(private subscriptionsService: SubscriptionsService) {}
 
@@ -44,7 +44,7 @@ export class SubscriptionListComponent {
   public getTextButton(subscription: SubscriptionsResponse): string {
     if (!subscription.subscribed_from) {
       return this.hasOneFreeSubscription(subscription)
-        ? $localize`:@@startFreeTrial:Start free trial`
+        ? $localize`:@@web_start_free_trial:Start free trial`
         : this.getNotFreeTrialText(subscription);
     }
     if (subscription.subscribed_until) {
@@ -65,7 +65,7 @@ export class SubscriptionListComponent {
   }
 
   private getNotFreeTrialText(subscription: SubscriptionsResponse): string {
-    return subscription.tiers.length > 1 ? $localize`:@@seePlans:See plans` : $localize`:@@start:Start`;
+    return subscription.tiers.length > 1 ? $localize`:@@web_see_plans:See plans` : $localize`:@@web_start:Start`;
   }
 
   public onOpenSubscriptionModal(subscription: SubscriptionsResponse): void {
