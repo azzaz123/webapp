@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from
 import { ActivatedRoute } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
-import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOthersItemCGDetail } from '@core/analytics/analytics-constants';
-import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -192,7 +190,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   get itemDetail$(): Observable<ItemDetail> {
-    return this.itemDetailStoreService.itemDetail$.pipe(filter((itemDetail: ItemDetail) => !!itemDetail.item));
+    return this.itemDetailStoreService.itemDetail$.pipe(filter((itemDetail: ItemDetail) => !!itemDetail?.item));
   }
 
   get statusFlag$(): Observable<STATUS_ITEM_FLAG_TYPES> {
