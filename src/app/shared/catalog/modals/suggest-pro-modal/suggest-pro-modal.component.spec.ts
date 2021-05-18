@@ -42,7 +42,7 @@ describe('SuggestProModalComponent', () => {
 
         fixture.detectChanges();
 
-        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@SuggestProModalDescriptionTrial:')]);
+        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@web_suggest_pro_modal_description_trial:')]);
       });
     });
     describe('when has not trial available', () => {
@@ -51,7 +51,7 @@ describe('SuggestProModalComponent', () => {
 
         fixture.detectChanges();
 
-        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@SuggestProModalDescriptionPlans:')]);
+        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@web_suggest_pro_modal_description_plans:')]);
       });
     });
   });
@@ -63,7 +63,7 @@ describe('SuggestProModalComponent', () => {
 
         fixture.detectChanges();
 
-        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@startFreeTrial:')]);
+        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@web_start_free_trial:')]);
       });
     });
     describe('when has not trial available', () => {
@@ -72,7 +72,7 @@ describe('SuggestProModalComponent', () => {
 
         fixture.detectChanges();
 
-        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@seePlans:')]);
+        expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@web_see_plans:')]);
       });
     });
     describe('when click', () => {

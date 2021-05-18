@@ -31,13 +31,13 @@ describe('BecomeProModalComponent', () => {
       component.hasTrialAvailable = true;
       fixture.detectChanges();
 
-      expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@FreeTrial:')]);
+      expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@web_free_trial:')]);
     });
 
     it('should show default text', () => {
       fixture.detectChanges();
 
-      expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@KnowMore:')]);
+      expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@web_know_more:')]);
     });
   });
 });

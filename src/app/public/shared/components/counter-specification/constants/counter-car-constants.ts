@@ -6,21 +6,21 @@ export const CAR_ICON_SPEC_TRANSLATION: ItemSpecification[] = [
   {
     icon: CAR_ICON.COUPE,
     label: {
-      singular: $localize`:@@Coupe:Coupe`,
+      singular: $localize`:@@web_coupe:Coupe`,
     },
     type: CAR_SPECIFICATION_TYPE.COUPE,
   },
   {
     icon: CAR_ICON.FAMILY,
     label: {
-      singular: $localize`:@@Family:Family`,
+      singular: $localize`:@@web_family:Family`,
     },
     type: CAR_SPECIFICATION_TYPE.FAMILY,
   },
   {
     icon: CAR_ICON.MINI_VAN,
     label: {
-      singular: $localize`:@@MiniVan:Mini van`,
+      singular: $localize`:@@web_mini_van:Mini van`,
     },
     type: CAR_SPECIFICATION_TYPE.MINI_VAN,
   },
@@ -34,63 +34,63 @@ export const CAR_ICON_SPEC_TRANSLATION: ItemSpecification[] = [
   {
     icon: CAR_ICON.SMALL,
     label: {
-      singular: $localize`:@@Small:Small`,
+      singular: $localize`:@@web_small:Small`,
     },
     type: CAR_SPECIFICATION_TYPE.SMALL,
   },
   {
     icon: CAR_ICON.VAN,
     label: {
-      singular: $localize`:@@Van:Van`,
+      singular: $localize`:@@web_van:Van`,
     },
     type: CAR_SPECIFICATION_TYPE.VAN,
   },
   {
     icon: CAR_ICON.SEDAN,
     label: {
-      singular: $localize`:@@Sedan:Sedan`,
+      singular: $localize`:@@web_sedan:Sedan`,
     },
     type: CAR_SPECIFICATION_TYPE.SEDAN,
   },
   {
     icon: CAR_ICON.OTHERS,
     label: {
-      singular: $localize`:@@Others:Others`,
+      singular: $localize`:@@web_others:Others`,
     },
     type: CAR_SPECIFICATION_TYPE.OTHERS,
   },
   {
     icon: CAR_ICON.ELECTRIC,
     label: {
-      singular: $localize`:@@Electric:Electric`,
+      singular: $localize`:@@web_electric:Electric`,
     },
     type: CAR_SPECIFICATION_TYPE.ELECTRIC,
   },
   {
     icon: CAR_ICON.GASOIL,
     label: {
-      singular: $localize`:@@Gasoil:Gasoil`,
+      singular: $localize`:@@web_gasoil:Gasoil`,
     },
     type: CAR_SPECIFICATION_TYPE.GASOIL,
   },
   {
     icon: CAR_ICON.GASOLINE,
     label: {
-      singular: $localize`:@@Gasoline:Gasoline`,
+      singular: $localize`:@@web_gasoline:Gasoline`,
     },
     type: CAR_SPECIFICATION_TYPE.GASOLINE,
   },
   {
     icon: CAR_ICON.AUTOMATIC,
     label: {
-      singular: $localize`:@@Automatic:Automatic`,
+      singular: $localize`:@@web_automatic:Automatic`,
     },
     type: CAR_SPECIFICATION_TYPE.AUTOMATIC,
   },
   {
     icon: CAR_ICON.MANUAL,
     label: {
-      singular: $localize`:@@Manual:Manual`,
+      singular: $localize`:@@web_manual:Manual`,
     },
     type: CAR_SPECIFICATION_TYPE.MANUAL,
   },

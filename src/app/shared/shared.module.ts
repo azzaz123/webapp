@@ -24,7 +24,6 @@ import { CountdownComponent } from './countdown/countdown.component';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { GeolocationModule } from './geolocation/geolocation.module';
-import { HeaderComponent } from './header/header.component';
 import { ItemAvatarModule } from './item-avatar/item-avatar.module';
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
 import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
@@ -74,7 +73,10 @@ import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
+import { NavLinksModule } from './nav-links/nav-links.module';
+import { HeaderModule } from './header/header.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
+import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
 
 @NgModule({
   imports: [
@@ -100,6 +102,8 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     UserCoverModule,
     ButtonModule,
     DateCountDownModule,
+    NavLinksModule,
+    HeaderModule,
   ],
   exports: [
     SpinnerModule,
@@ -111,7 +115,7 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     UploaderModule,
     AdSlotModule,
     RestrictInputDirective,
-    HeaderComponent,
+    HeaderModule,
     SoldModalComponent,
     ItemSoldDirective,
     StarsRateComponent,
@@ -149,7 +153,6 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
-    NavLinksComponent,
     LinkTransformPipe,
     WebSlugConverterPipe,
     UserProfileRoutePipe,
@@ -167,12 +170,13 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     DateCountDownModule,
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
+    NavLinksModule,
     InfiniteScrollDirective,
+    VisibleDirectiveModule,
   ],
   declarations: [
     ConfirmationModalComponent,
     RestrictInputDirective,
-    HeaderComponent,
     SoldModalComponent,
     ItemSoldDirective,
     StarsRateComponent,
@@ -214,7 +218,6 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
-    NavLinksComponent,
     LinkTransformPipe,
     WebSlugConverterPipe,
     UserProfileRoutePipe,

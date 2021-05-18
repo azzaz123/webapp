@@ -69,7 +69,7 @@ export class SliderFormComponent extends AbstractFormComponent<[number, number] 
       disabled: this.isDisabled,
       translate: (value: number): string => {
         if (value === this.max && this.limitless) {
-          return $localize`:@@Limitless:No limit`;
+          return $localize`:@@web_limitless:No limit`;
         }
         return value + (this.units ? this.units : '');
       },

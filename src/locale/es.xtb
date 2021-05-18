@@ -15,13 +15,13 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <translationbundle lang="es">
-  <translation id="loadMoreButton">Cargar más</translation>
-  <translation id="deleteConversation">Borrar conversación</translation>
-  <translation id="deleteConversationWarning">Se procederá a borrar la conversación.</translation>
-  <translation id="archiveConversationWarning">Se procederá a archivar la conversación.</translation>
+  <translation id="web_load_more_button">Cargar más</translation>
+  <translation id="web_delete_conversation">Borrar conversación</translation>
+  <translation id="web_delete_conversation_warning">Se procederá a borrar la conversación.</translation>
+  <translation id="web_archive_conversation_warning">Se procederá a archivar la conversación.</translation>
   <translation id="web_chat_modals_block_user_178">Cancelar</translation>
-  <translation id="cancelButton">Cancelar</translation>
-  <translation id="deleteButton">Borrar</translation>
+  <translation id="web_cancel_button">Cancelar</translation>
+  <translation id="web_delete_button">Borrar</translation>
   <translation id="web_catalog_components_selected_items_113">Borrar</translation>
   <translation id="web_chat_modals_block_user_176">Bloquear usuario</translation>
   <translation id="web_chat_modals_block_user_177">No podrás enviar o recibir mensajes de este usuario. ¿Deseas continuar?</translation>
@@ -30,7 +30,7 @@
   <translation id="web_chat_modals_unblock_user_192">Podrás volver a enviar y recibir mensajes de este usuario. ¿Deseas continuar?</translation>
   <translation id="web_chat_modals_unblock_user_193">Desbloquear</translation>
   <translation id="web_chat_components_current_conversation_168">No hay mensajes</translation>
-  <translation id="newMessages">Nuevos mensajes</translation>
+  <translation id="web_new_messages">Nuevos mensajes</translation>
   <translation id="web_chat_components_user_detail_170" desc="The distance between the user and the item">A <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>km de ti</translation>
   <translation id="web_chat_children_inbox_components_user_component_detail_158">Sin localización</translation>
   <translation id="web_chat_components_user_response_rate_172">Responde en menos de 1 hora</translation>
@@ -231,10 +231,10 @@
   <translation id="web_components_topbar_11">Subir producto</translation>
   <translation id="web_catalog_components_bump_tutorial_91">Destacando tus productos los harás más visibles para el resto de la comunidad, gracias a sus funciones especiales. ¿Qué te aportará eso? Básicamente que te contacten más personas y lo vendas más rápido. Mira a continuación cuál encaja mejor con tu tipo de productos:</translation>
   <translation id="web_catalog_components_bump_tutorial_92">Destácalo en tu barrio</translation>
-  <translation id="BumpTutorialAreaDescription">Sé más visible entre los que te rodean. Sube tu producto a las primeras posiciones del muro y promociónalo en tu zona.</translation>
+  <translation id="web_bump_tutorial_area_description">Sé más visible entre los que te rodean. Sube tu producto a las primeras posiciones del muro y promociónalo en tu zona.</translation>
   <translation id="web_catalog_components_bump_tutorial_93">desde</translation>
   <translation id="web_catalog_components_bump_tutorial_94">Destácalo en tu ciudad</translation>
-  <translation id="BumpTutorialCityDescription">Sé más visible en toda tu ciudad. Sube tu producto a las primeras posiciones del muro y promociónalo en tu ciudad.</translation>
+  <translation id="web_bump_tutorial_city_description">Sé más visible en toda tu ciudad. Sube tu producto a las primeras posiciones del muro y promociónalo en tu ciudad.</translation>
   <translation id="web_catalog_components_bump_tutorial_95">Destácalo en todo el país</translation>
   <translation id="web_catalog_components_bump_tutorial_96">El más potente de todos nuestros destacados. Tu producto se verá en todo el país sin importar la distancia y aparecerá diferenciado del muro, dándote visibilidad más allá de tu zona. </translation>
   <translation id="web_catalog_components_bump_tutorial_97">Descubre más ventajas</translation>
@@ -248,7 +248,7 @@
   <translation id="web_catalog_pages_list_150">productos</translation>
   <translation id="web_catalog_pages_list_151">producto</translation>
   <translation id="web_reviews_pages_335">opinión</translation>
-  <translation id="yourMessages">Tus Mensajes</translation>
+  <translation id="web_your_messages">Tus Mensajes</translation>
   <translation id="web_calls_pages_16">Procesado</translation>
   <translation id="web_chat_children_inbox_components_item_for_sell_155">En venta</translation>
   <translation id="web_calls_pages_17">Procesar todo</translation>
@@ -473,9 +473,9 @@
   <translation id="web_profile_pages_319">Cuenta</translation>
   <translation id="web_stripe_cards_535">Método de pago</translation>
   <translation id="web_components_suggester_7">Buscar en Todas las categorías</translation>
-  <translation id="archiveButton">Archivar</translation>
-  <translation id="inboxBox">Bandeja de Entrada</translation>
-  <translation id="inboxArchivedBox">Mensajes Archivados</translation>
+  <translation id="web_archive_button">Archivar</translation>
+  <translation id="web_inbox_box">Bandeja de Entrada</translation>
+  <translation id="web_inbox_archived_box">Mensajes Archivados</translation>
   <translation id="web_chat_components_archived_inbox_conversation_164">Archivado</translation>
   <translation id="web_upload_pages_product_423">En pocas palabras...</translation>
   <translation id="web_catalog_pro_components_cart_extras_31">Utilizar una tarjeta guardada</translation>
@@ -484,17 +484,17 @@
   <translation id="web_upload_pages_realestate_441">Este es el lugar donde se encuentra tu espacio. Esta ubicación podría ser diferente de la ubicación de tu perfil.</translation>
   <translation id="web_upload_pages_realestate_445">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 4MB.</translation>
   <translation id="web_upload_pages_realestate_446">¿Que aspecto tiene?</translation>
-  <translation id="updateArchivedMessagesWarning">Hemos encontrado un problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
-  <translation id="updateInboxWarning">Hemos encontrado un problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
+  <translation id="web_update_archived_messages_warning">Hemos encontrado un problema al actualizar tus mensajes archivados. Inténtalo de nuevo en breve.</translation>
+  <translation id="web_update_inbox_warning">Hemos encontrado un problema al actualizar tu bandeja de entrada. Inténtalo de nuevo en breve.</translation>
   <translation id="web_upload_pages_car_390">Precio financiado (opcional)</translation>
   <translation id="web_upload_pages_car_391">Precio final financiado</translation>
   <translation id="web_upload_pages_car_388">Precio al contado</translation>
-  <translation id="blockedPersonError">Has bloqueado a esta persona. Para seguir charlando, desbloquéala</translation>
-  <translation id="userIsNotAvailableWarning">Esta persona ya no es miembro de Wallapop</translation>
-  <translation id="userIsBlocked">Esta persona ha sido excluida de Wallapop por actividad sospechosa.</translation>
-  <translation id="itemIsNotAvailableWarning">El producto ha caducado o ha sido eliminado</translation>
-  <translation id="itemIsUnpublishedWarning">El producto incumple las normas de convivencia de Wallapop</translation>
-  <translation id="securityWarning">Por razones de seguridad, nunca compartas datos privados</translation>
+  <translation id="web_blocked_person_error">Has bloqueado a esta persona. Para seguir charlando, desbloquéala</translation>
+  <translation id="web_user_is_not_available_warning">Esta persona ya no es miembro de Wallapop</translation>
+  <translation id="web_user_is_blocked">Esta persona ha sido excluida de Wallapop por actividad sospechosa.</translation>
+  <translation id="web_item_is_not_available_warning">El producto ha caducado o ha sido eliminado</translation>
+  <translation id="web_item_is_unpublished_warning">El producto incumple las normas de convivencia de Wallapop</translation>
+  <translation id="web_security_warning">Por razones de seguridad, nunca compartas datos privados</translation>
   <translation id="web_chat_components_current_conversation_167">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
   <translation id="web_chat_components_current_conversation_169">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
   <translation id="web_chat_children_inbox_components_item_component_detail_154">Vendido</translation>
@@ -518,12 +518,12 @@
   <translation id="web_profile_modal_cancel_subscription_240">No, quiero mantener mi suscripción</translation>
   <translation id="web_profile_pages_pro_subscription_303">Suscrito desde</translation>
   <translation id="web_profile_modal_edit_subscription_252">Cambia el límite de la suscripción</translation>
-  <translation id="archiveConversation">Archivar conversación</translation>
-  <translation id="unarchiveConversation">Desarchivar conversación</translation>
-  <translation id="reportListing">Denunciar producto</translation>
-  <translation id="reportUser">Reportar usuario</translation>
-  <translation id="blockUser">Bloquear usuario</translation>
-  <translation id="unblockUser">Desbloquear usuario</translation>
+  <translation id="web_archive_conversation">Archivar conversación</translation>
+  <translation id="web_unarchive_conversation">Desarchivar conversación</translation>
+  <translation id="web_report_listing">Denunciar producto</translation>
+  <translation id="web_report_user">Reportar usuario</translation>
+  <translation id="web_block_user">Bloquear usuario</translation>
+  <translation id="web_unblock_user">Desbloquear usuario</translation>
   <translation id="web_profile_modal_continue_subscription_246">Sí, quiero mantener mi suscripción</translation>
   <translation id="web_profile_modal_continue_subscription_247">No, quiero cancelarla</translation>
   <translation id="web_catalog_pro_components_cart_extras_32">Comprar</translation>
@@ -542,12 +542,12 @@
   <translation id="web_catalog_item_actions_464">Seleccionar todos</translation>
   <translation id="web_profile_pages_subscription_324">Sin límite</translation>
   <translation id="web_profile_modal_add_new_subscription_219">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph> ilimitados</translation>
-  <translation id="thirdVoiceReviewFirstMessage">Has encontrado lo que buscabas. ¡Genial!</translation>
-  <translation id="thirdVoiceReviewSecondMessage">¿Cómo ha ido? Valora tu experiencia con este usuario, será útil para nuestra comunidad.</translation>
-  <translation id="thirdVoiceRateMessage">¿Cómo ha ido? Valora tu experiencia, tu opinión es muy importante para nuestra comunidad.</translation>
-  <translation id="thirdVoiceDoReview">Valorar</translation>
-  <translation id="thirdVoiceThanksForRating">¡Gracias! Otras personas apreciarán tu valoración.</translation>
-  <translation id="thirdVoiceDropPrice">El producto ha bajado de precio. ¿Quieres cerrar un trato?</translation>
+  <translation id="web_third_voice_review_first_message">Has encontrado lo que buscabas. ¡Genial!</translation>
+  <translation id="web_third_voice_review_second_message">¿Cómo ha ido? Valora tu experiencia con este usuario, será útil para nuestra comunidad.</translation>
+  <translation id="web_third_voice_rate_message">¿Cómo ha ido? Valora tu experiencia, tu opinión es muy importante para nuestra comunidad.</translation>
+  <translation id="web_third_voice_do_review">Valorar</translation>
+  <translation id="web_third_voice_thanks_for_rating">¡Gracias! Otras personas apreciarán tu valoración.</translation>
+  <translation id="web_third_voice_drop_price">El producto ha bajado de precio. ¿Quieres cerrar un trato?</translation>
   <translation id="web_profile_pages_subscription_327">Gestionar desde la app</translation>
   <translation id="web_profile_modal_check_subscription_in_app_241"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Parece que quieres cambiar algo en tu suscripción<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
   <translation id="web_profile_modal_check_subscription_in_app_242">Si quieres dar de baja tu suscripción actual, accede a la app store y cancélala.</translation>
@@ -610,379 +610,375 @@
   <translation id="web_chat_children_item_162">Calcula el seguro gratis</translation>
   <translation id="web_chat_children_item_163">Financia esta compra</translation>
   <translation id="web_chat_children_item_components_reserved_159">Reservado</translation>
-  <translation id="SoldOutside">Lo he vendido fuera de Wallapop</translation>
-  <translation id="WallapopProfileSpotDescription">Este es el punto donde está ubicado tu perfil de Wallapop y en él aparecerán todos tus productos.</translation>
-  <translation id="WallapopItem">Un producto de Wallapop</translation>
-  <translation id="WallapopUser">un usuario de Wallapop</translation>
-  <translation id="WallapopProductsLikeMost">Estos son los productos de Wallapop que más te gustan</translation>
-  <translation id="WallapopProfilesLikeMost">Estos son los perfiles de Wallapop que más te gustan.</translation>
-  <translation id="CarPlanDescription">Cada plan te permite tener publicados hasta un número máximo de coches en la app y web de Wallapop.</translation>
-  <translation id="ChangeSubscriptionInstruction">Para cambiar la suscripción, accede a la app store y cancela la suscripción actual. Luego, contrata la nueva suscripción desde tu perfil de Wallapop.</translation>
-  <translation id="ContinueSubscriptionTitle">¿Quieres seguir suscrito a Wallapop PRO <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
-  <translation id="WallapopProDiscountInfo">El COVID-19 nos está afectando a todos. Para paliar esta situación, queremos informarte de que, como usuario de Wallapop PRO, te ofrecemos un mes de suscripción gratis. ¿Qué tienes que hacer?</translation>
-  <translation id="WallapopProSubscriptionSubTitle">Gestiona tus suscripciones a Wallapop PRO para vender más.</translation>
-  <translation id="cardealerUpgradePlanContact">Para actualizar tu plan, llámanos al <ph name="INTERPOLATION"/> o envíanos un email a <ph name="START_LINK"/><ph name="INTERPOLATION_1"/><ph name="CLOSE_LINK"/></translation>
-  <translation id="cardealerSubscribeCityPlan">Para subscribirte a un plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
-  <translation id="cardealerChangeCityPlan">Para cambiar tu plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
-  <translation id="cardealerSubscribeCountryPlan">Para subscribirte a un plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
-  <translation id="cardealerChangeCountryPlan">Para cambiar tu plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
-  <translation id="SubscriptionsSlotItemPublishMore">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph> más</translation>
-  <translation id="ListComponentHeaderSubtitle">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
-  <translation id="TooManyItemsModalButtonGoToSubscriptions">Ver planes</translation>
-  <translation id="TooManyItemsModalButtonGoToTrial">Comenzar prueba gratuita</translation>
-  <translation id="TooManyItemsModalCardealerTitle"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Estás intentando activar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph> de los que te permite tu plan.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
-  <translation id="TooManyItemsModalTitle"><ph name="START_BOLD_TEXT"/>Has alcanzado el límite de publicación<ph name="CLOSE_BOLD_TEXT"/></translation>
-  <translation id="TooManyItemsModalCarDealerDesc">Por favor, deselecciona algunos productos o</translation>
-  <translation id="ContactUs">contacta con nosotros</translation>
-  <translation id="TooManyItemsModalDescriptionInApp">Debes actualizar tu suscripción <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>mediante la app de Wallapop<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
-  <translation id="TooManyItemsModalDescription">¿Quieres publicar más<ph name="START_TAG_NG_CONTAINER"/> <ph name="INTERPOLATION"/><ph name="CLOSE_TAG_NG_CONTAINER"/>? Puede que te interese suscribirte a Wallapop PRO. Profesionalizarás tus ventas online. ¡Venderás más! <ph name="LINE_BREAK"/><ph name="LINE_BREAK"/>Si decides que Wallapop PRO no es para ti, este artículo quedará inactivo y nadie podrá comprarlo.</translation>
-  <translation id="Understood">De acuerdo</translation>
-  <translation id="TooManyItemsModalButtonCancel">Dejarlo inactivo</translation>
-  <translation id="TooManyItemsModalTryTrial">Para publicar más <ph name="INTERPOLATION"/>, <ph name="START_BOLD_TEXT"/>prueba gratis Wallapop PRO durante <ph name="INTERPOLATION_1"/> días.<ph name="CLOSE_BOLD_TEXT"/> Profesionalizarás tus ventas online. ¡Venderás más! <ph name="LINE_BREAK"/><ph name="LINE_BREAK"/>Si decides que Wallapop PRO no es para ti, este artículo quedará inactivo y nadie podrá comprarlo.</translation>>
-  <translation id="subscriptionNewModalUntilDate"><ph name="INTERPOLATION"><ex>{{0 | customCurrency}}</ex>{{0 | customCurrency}}</ph> hasta <ph name="INTERPOLATION_1"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
-  <translation id="subscriptionEditModalUntilDate"> Empieza en <ph name="INTERPOLATION"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
-  <translation id="SubscriptionPriceDiscountFromPrice">Desde: <ph name="INTERPOLATION"/><ph name="INTERPOLATION_1"/>/mes </translation>
-  <translation id="SubscriptionPriceDiscountMonthFree">Un mes gratis</translation>
-  <translation id="SubscriptionPriceDiscountMonthsFree"><ph name="INTERPOLATION"><ex>{{subscription?.tiers[0]?.discount_available.months}}</ex>{{subscription?.tiers[0]?.discount_available.months}}</ph> meses gratis</translation>
-  <translation id="SubscriptionPriceDiscountDaysTrialFree">Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días</translation>
-  <translation id="AddNewModalSubscribeNow">¡Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
-  <translation id="EditSubscriptionModalCancelSubscription">Quiero cancelar mi suscripción</translation>
-  <translation id="EditSubscriptionModalCancelFreeTrial">Cancelar prueba gratuita</translation>
-  <translation id="MissingPaymentMethodTitle">No hay un método de pago disponible</translation>
-  <translation id="MissingPaymentMethodSubtitle">No hay un método de pago disponible para que podamos renovar tu suscripción cuando caduque.</translation>
-  <translation id="Cancel">Cancelar</translation>
-  <translation id="DeleteCard">Eliminar</translation>
-  <translation id="ChangeCard">Cambiar tarjeta</translation>
-  <translation id="AddNewCreditCard">Añadir una tarjeta de crédito</translation>
-  <translation id="ConfirmPaymentMethod">Confirma tu método de pago</translation>
-  <translation id="ChargeThisCard">Quieres que se cobre en la tarjeta</translation>
-  <translation id="Yes">Sí</translation>
-  <translation id="SubscriptionCard">Tarjeta vinculada a suscripciones</translation>
-  <translation id="AddNewSubscriptionCard">Añadir nueva tarjeta de suscripción</translation>
-  <translation id="CurrentCards">Tarjetas guardadas</translation>
-  <translation id="RangeDatepickerHaveSelected">Has seleccionado </translation>
-  <translation id="RangeDatepickerCitybump">destacado de ciudad</translation>
-  <translation id="RangeDatepickerCountrybump">destacado de país</translation>
-  <translation id="RangeDatepickerCitybumps">destacados de ciudad</translation>
-  <translation id="RangeDatepickerCountrybumps">destacados de país</translation>
-  <translation id="RangeDatepickerMultiBumps">Destacados múltiples</translation>
-  <translation id="Apply">Aplicar</translation>
-  <translation id="CheckoutProPlanning">Planificación</translation>
-  <translation id="ApplyAll">Aplicar a todos</translation>
-  <translation id="PlanAll">Planificar todos</translation>
-  <translation id="ProfileProBillingFormType">Estoy registrado/a como</translation>
-  <translation id="ProfileProBillingFormNatural">Persona física</translation>
-  <translation id="ProfileProBillingFormLegal">Persona jurídica</translation>
-  <translation id="ProfileProBillingSubtitle">Por servicios que no sean suscripciones (por ejemplo, packs de visibilidad) no recibirás facturas.</translation>
-  <translation id="AddNewSubscriptionModalStep3Subtitle">Por servicios que no sean suscripciones (por ejemplo, packs de visibilidad) no recibirás facturas.</translation>
-  <translation id="FirstName">Nombre</translation>
-  <translation id="LastName">Apellidos</translation>
-  <translation id="CompanyName">Nombre de la empresa</translation>
-  <translation id="Email">E-mail de facturación</translation>
-  <translation id="BillingAddress">Dirección de facturación</translation>
-  <translation id="City">Ciudad</translation>
-  <translation id="PostalCode">Código postal</translation>
-  <translation id="Country">País</translation>
-  <translation id="CIFNumber">CIF de la empresa</translation>
-  <translation id="NIFNumber">NIF de la persona</translation>
-  <translation id="Save">Guardar</translation>
+  <translation id="web_sold_outside">Lo he vendido fuera de Wallapop</translation>
+  <translation id="web_wallapop_profile_spot_description">Este es el punto donde está ubicado tu perfil de Wallapop y en él aparecerán todos tus productos.</translation>
+  <translation id="web_wallapop_item">Un producto de Wallapop</translation>
+  <translation id="web_wallapop_user">un usuario de Wallapop</translation>
+  <translation id="web_wallapop_products_like_most">Estos son los productos de Wallapop que más te gustan</translation>
+  <translation id="web_wallapop_profiles_like_most">Estos son los perfiles de Wallapop que más te gustan.</translation>
+  <translation id="web_car_plan_description">Cada plan te permite tener publicados hasta un número máximo de coches en la app y web de Wallapop.</translation>
+  <translation id="web_change_subscription_instruction">Para cambiar la suscripción, accede a la app store y cancela la suscripción actual. Luego, contrata la nueva suscripción desde tu perfil de Wallapop.</translation>
+  <translation id="web_continue_subscription_title">¿Quieres seguir suscrito a Wallapop PRO <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex></ph>?</translation>
+  <translation id="web_wallapop_pro_discount_info">El COVID-19 nos está afectando a todos. Para paliar esta situación, queremos informarte de que, como usuario de Wallapop PRO, te ofrecemos un mes de suscripción gratis. ¿Qué tienes que hacer?</translation>
+  <translation id="web_wallapop_pro_subscription_sub_title">Gestiona tus suscripciones a Wallapop PRO para vender más.</translation>
+  <translation id="web_cardealer_upgrade_plan_contact">Para actualizar tu plan, llámanos al <ph name="INTERPOLATION"/> o envíanos un email a <ph name="START_LINK"/><ph name="INTERPOLATION_1"/><ph name="CLOSE_LINK"/></translation>
+  <translation id="web_cardealer_subscribe_city_plan">Para subscribirte a un plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="web_cardealer_change_city_plan">Para cambiar tu plan de ciudad, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="web_cardealer_subscribe_country_plan">Para subscribirte a un plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="web_cardealer_change_country_plan">Para cambiar tu plan de país, llámanos al <ph name="INTERPOLATION"><ex>{{sellbytelPhone}}</ex>{{sellbytelPhone}}</ph> o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph><ph name="INTERPOLATION_1"><ex>{{email}}</ex>{{email}}</ph><ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="web_subscriptions_slot_item_publish_more">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{subscriptionSlot.available}}</ex>{{subscriptionSlot.available}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> <ph name="INTERPOLATION_1"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph> más</translation>
+  <translation id="web_list_component_header_subtitle">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
+  <translation id="web_too_many_items_modal_button_go_to_subscriptions">Ver planes</translation>
+  <translation id="web_too_many_items_modal_button_go_to_trial">Comenzar prueba gratuita</translation>
+  <translation id="web_too_many_items_modal_cardealer_title"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Estás intentando activar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph> de los que te permite tu plan.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
+  <translation id="web_too_many_items_modal_title"><ph name="START_BOLD_TEXT"/>Has alcanzado el límite de publicación<ph name="CLOSE_BOLD_TEXT"/></translation>
+  <translation id="web_too_many_items_modal_car_dealer_desc">Por favor, deselecciona algunos productos o</translation>
+  <translation id="web_contact_us">contacta con nosotros</translation>
+  <translation id="web_too_many_items_modal_description_in_app">Debes actualizar tu suscripción <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>mediante la app de Wallapop<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph> si quieres publicar más <ph name="INTERPOLATION"><ex>{{categorySubscription?.category_name}}</ex>{{categorySubscription?.category_name}}</ph></translation>
+  <translation id="web_too_many_items_modal_description">¿Quieres publicar más<ph name="START_TAG_NG_CONTAINER"/> <ph name="INTERPOLATION"/><ph name="CLOSE_TAG_NG_CONTAINER"/>? Puede que te interese suscribirte a Wallapop PRO. Profesionalizarás tus ventas online. ¡Venderás más! <ph name="LINE_BREAK"/><ph name="LINE_BREAK"/>Si decides que Wallapop PRO no es para ti, este artículo quedará inactivo y nadie podrá comprarlo.</translation>
+  <translation id="web_understood">De acuerdo</translation>
+  <translation id="web_too_many_items_modal_button_cancel">Dejarlo inactivo</translation>
+  <translation id="web_too_many_items_modal_try_trial">Para publicar más <ph name="INTERPOLATION"/>, <ph name="START_BOLD_TEXT"/>prueba gratis Wallapop PRO durante <ph name="INTERPOLATION_1"/> días.<ph name="CLOSE_BOLD_TEXT"/> Profesionalizarás tus ventas online. ¡Venderás más! <ph name="LINE_BREAK"/><ph name="LINE_BREAK"/>Si decides que Wallapop PRO no es para ti, este artículo quedará inactivo y nadie podrá comprarlo.</translation>>
+  <translation id="web_subscription_new_modal_until_date"><ph name="INTERPOLATION"><ex>{{0 | customCurrency}}</ex>{{0 | customCurrency}}</ph> hasta <ph name="INTERPOLATION_1"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
+  <translation id="web_subscription_edit_modal_until_date"> Empieza en <ph name="INTERPOLATION"><ex>{{subscription.trial_days | dateUntilDay}}</ex>{{subscription.trial_days | dateUntilDay}}</ph></translation>
+  <translation id="web_subscription_price_discount_from_price">Desde: <ph name="INTERPOLATION"/><ph name="INTERPOLATION_1"/>/mes </translation>
+  <translation id="web_subscription_price_discount_month_free">Un mes gratis</translation>
+  <translation id="web_subscription_price_discount_months_free"><ph name="INTERPOLATION"><ex>{{subscription?.tiers[0]?.discount_available.months}}</ex>{{subscription?.tiers[0]?.discount_available.months}}</ph> meses gratis</translation>
+  <translation id="web_subscription_price_discount_days_trial_free">Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días</translation>
+  <translation id="web_add_new_modal_subscribe_now">¡Prueba gratis <ph name="INTERPOLATION"><ex>{{subscription?.trial_days}}</ex>{{subscription?.trial_days}}</ph> días!</translation>
+  <translation id="web_edit_subscription_modal_cancel_subscription">Quiero cancelar mi suscripción</translation>
+  <translation id="web_edit_subscription_modal_cancel_free_trial">Cancelar prueba gratuita</translation>
+  <translation id="web_missing_payment_method_title">No hay un método de pago disponible</translation>
+  <translation id="web_missing_payment_method_subtitle">No hay un método de pago disponible para que podamos renovar tu suscripción cuando caduque.</translation>
+  <translation id="web_cancel">Cancelar</translation>
+  <translation id="web_delete_card">Eliminar</translation>
+  <translation id="web_change_card">Cambiar tarjeta</translation>
+  <translation id="web_add_new_credit_card">Añadir una tarjeta de crédito</translation>
+  <translation id="web_confirm_payment_method">Confirma tu método de pago</translation>
+  <translation id="web_charge_this_card">Quieres que se cobre en la tarjeta</translation>
+  <translation id="web_confirm_payment_method_yes">Sí</translation>
+  <translation id="web_subscription_card">Tarjeta vinculada a suscripciones</translation>
+  <translation id="web_add_new_subscription_card">Añadir nueva tarjeta de suscripción</translation>
+  <translation id="web_current_cards">Tarjetas guardadas</translation>
+  <translation id="web_range_datepicker_have_selected">Has seleccionado </translation>
+  <translation id="web_range_datepicker_citybump">destacado de ciudad</translation>
+  <translation id="web_range_datepicker_countrybump">destacado de país</translation>
+  <translation id="web_range_datepicker_citybumps">destacados de ciudad</translation>
+  <translation id="web_range_datepicker_countrybumps">destacados de país</translation>
+  <translation id="web_range_datepicker_multi_bumps">Destacados múltiples</translation>
+  <translation id="web_apply">Aplicar</translation>
+  <translation id="web_checkout_pro_planning">Planificación</translation>
+  <translation id="web_apply_all">Aplicar a todos</translation>
+  <translation id="web_plan_all">Planificar todos</translation>
+  <translation id="web_profile_pro_billing_form_type">Estoy registrado/a como</translation>
+  <translation id="web_profile_pro_billing_form_natural">Persona física</translation>
+  <translation id="web_profile_pro_billing_form_legal">Persona jurídica</translation>
+  <translation id="web_profile_pro_billing_subtitle">Por servicios que no sean suscripciones (por ejemplo, packs de visibilidad) no recibirás facturas.</translation>
+  <translation id="web_add_new_subscription_modal_step3_subtitle">Por servicios que no sean suscripciones (por ejemplo, packs de visibilidad) no recibirás facturas.</translation>
+  <translation id="web_first_name">Nombre</translation>
+  <translation id="web_last_name">Apellidos</translation>
+  <translation id="web_company_name">Nombre de la empresa</translation>
+  <translation id="web_email">E-mail de facturación</translation>
+  <translation id="web_billing_address">Dirección de facturación</translation>
+  <translation id="web_city">Ciudad</translation>
+  <translation id="web_postal_code">Código postal</translation>
+  <translation id="web_country">País</translation>
+  <translation id="web_cif_number">CIF de la empresa</translation>
+  <translation id="web_nif_number">NIF de la persona</translation>
+  <translation id="web_save">Guardar</translation>
   <translation id="web_profile_pages_320">Información de facturación</translation>
   <translation id="web_profile_pages_321">Facturación</translation>
-  <translation id="ChangeAddSubscriptionCardTitle">Añade una tarjeta de crédito</translation>
-  <translation id="SelectSavedCard">Seleccionar tarjeta guardada</translation>
-  <translation id="ChangeSelectSubscriptionCardTitle">Selecciona una tarjeta de crédito</translation>
-  <translation id="ChangeSubscriptionCardSubtitle">Será el método de pago vinculado a tu suscripción</translation>
+  <translation id="web_change_add_subscription_card_title">Añade una tarjeta de crédito</translation>
+  <translation id="web_select_saved_card">Seleccionar tarjeta guardada</translation>
+  <translation id="web_change_select_subscription_card_title">Selecciona una tarjeta de crédito</translation>
+  <translation id="web_change_subscription_card_subtitle">Será el método de pago vinculado a tu suscripción</translation>
   <translation id="web_stripe_card_selection_512">Seleccionar tarjeta guardada</translation>
-  <translation id="AddCard">Añadir tarjeta</translation>
-  <translation id="UseSavedCard">Utiliza tarjeta guardada</translation>
-  <translation id="ConfirmDeleteCard">Sí, eliminar tarjeta</translation>
-  <translation id="MobileBlockerTitle">Bonita pantalla, pero baja resolución.</translation>
-  <translation id="MobileBlockerSubtitle">Para visualizar este contenido, abre la app de Wallapop o continúa desde un ordenador.</translation>
-  <translation id="SubscribeToPro">Suscríbete a Wallapop PRO</translation>
-  <translation id="ChooseSubscription">Escoje una suscripción y lleva tus ventas al siguiente nivel.</translation>
-  <translation id="HowManyProductsToUpload">¿Cuantos <ph name="INTERPOLATION"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph> vas a subir a tu perfil?</translation>
-  <translation id="Unlimited">Ilimitado</translation>
-  <translation id="ContactUsDirectly">¿Tienes más de <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph>? <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
-  <translation id="CategoryPlan"><ph name="INTERPOLATION"><ex>Plan {{selectedTier.limit}}</ex>{{selectedTier.limit}}</ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex>{{subscription.category_name}}</ph></translation>
-  <translation id="UnlimitedPlan">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex>{{subscription.category_name}}</ph> ilimitado</translation>
-  <translation id="OneMonthFree">Un mes gratis</translation>
-  <translation id="MultipleMonthsFree"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex>{{selectedTier.discount_available.months}}</ph> meses gratis</translation>
-  <translation id="AddNewSubscriptionDaysFree"><ph name="INTERPOLATION"><ex>{{subscription.trial_days}}</ex>{{subscription.trial_days}}</ph> días gratis</translation>
-  <translation id="ThenPriceMonth">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex>{{selectedTier.price}}</ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex>{{selectedTier.currency}}</ph>/mes</translation>
-  <translation id="PriceMonth"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex>{{selectedTier.price}}</ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex>{{selectedTier.currency}}</ph>/mes</translation>
-  <translation id="ContinueToInvoice">Continuar a facturación</translation>
-  <translation id="ReceiveInvoices">¿Quieres recibir facturas?</translation>
-  <translation id="Invoice">Facturación</translation>
+  <translation id="web_add_card">Añadir tarjeta</translation>
+  <translation id="web_use_saved_card">Utiliza tarjeta guardada</translation>
+  <translation id="web_confirm_delete_card">Sí, eliminar tarjeta</translation>
+  <translation id="web_mobile_blocker_title">Bonita pantalla, pero baja resolución.</translation>
+  <translation id="web_mobile_blocker_subtitle">Para visualizar este contenido, abre la app de Wallapop o continúa desde un ordenador.</translation>
+  <translation id="web_subscribe_to_pro">Suscríbete a Wallapop PRO</translation>
+  <translation id="web_choose_subscription">Escoje una suscripción y lleva tus ventas al siguiente nivel.</translation>
+  <translation id="web_how_many_products_to_upload">¿Cuantos <ph name="INTERPOLATION"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph> vas a subir a tu perfil?</translation>
+  <translation id="web_unlimited">Ilimitado</translation>
+  <translation id="web_contact_us_directly">¿Tienes más de <ph name="INTERPOLATION"><ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ex>{{subscription.tiers[subscription.tiers.length - 1].limit}}</ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name.toLowerCase()}}</ex>{{subscription.category_name.toLowerCase()}}</ph>? <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>Contáctanos directamente<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="web_category_plan"><ph name="INTERPOLATION"><ex>Plan {{selectedTier.limit}}</ex>{{selectedTier.limit}}</ph> <ph name="INTERPOLATION_1"><ex>{{subscription.category_name}}</ex>{{subscription.category_name}}</ph></translation>
+  <translation id="web_unlimited_plan">Plan <ph name="INTERPOLATION"><ex>{{subscription.category_name}}</ex>{{subscription.category_name}}</ph> ilimitado</translation>
+  <translation id="web_one_month_free">Un mes gratis</translation>
+  <translation id="web_multiple_months_free"><ph name="INTERPOLATION"><ex>{{selectedTier.discount_available.months}}</ex>{{selectedTier.discount_available.months}}</ph> meses gratis</translation>
+  <translation id="web_add_new_subscription_days_free"><ph name="INTERPOLATION"><ex>{{subscription.trial_days}}</ex>{{subscription.trial_days}}</ph> días gratis</translation>
+  <translation id="web_then_price_month">Después <ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex>{{selectedTier.price}}</ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex>{{selectedTier.currency}}</ph>/mes</translation>
+  <translation id="web_price_month"><ph name="INTERPOLATION"><ex>{{selectedTier.price}}</ex>{{selectedTier.price}}</ph><ph name="INTERPOLATION_1"><ex>{{selectedTier.currency}}</ex>{{selectedTier.currency}}</ph>/mes</translation>
+  <translation id="web_continue_to_invoice">Continuar a facturación</translation>
+  <translation id="web_receive_invoices">¿Quieres recibir facturas?</translation>
+  <translation id="web_invoice">Facturación</translation>
   <translation id="web_profile_modal_add_new_subscription_216">¿Necesitas una factura?</translation>
-  <translation id="ContinueToPayment">Continuar a pago</translation>
-  <translation id="BackToInvoice">Volver a facturación</translation>
-  <translation id="Perfect">¡Perfecto!</translation>
-  <translation id="SubscriptionCreated">Te has suscrito correctamente. ¡Todo está preparado para incrementar tus ventas!</translation>
-  <translation id="InvoiceEmail">Pronto recibirás un e-mail con tu factura.</translation>
-  <translation id="GoToMyProfile">Ir a mi perfil</translation>
-  <translation id="EditInvoice">Editar mis datos de facturación</translation>
-  <translation id="step1of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>1<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
-  <translation id="step2of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
-  <translation id="step3of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
-  <translation id="step4of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
-  <translation id="InvoiceInformation">Información de facturación</translation>
-  <translation id="NameRequired">El nombre es obligatorio.</translation>
-  <translation id="NameMaxLength">El nombre no puede tener más de 32 catacteres.</translation>
-  <translation id="SurnameRequired">El apellido es requerido.</translation>
-  <translation id="SurnameMaxLength">El apellido no puede tener más de 32 catacteres.</translation>
-  <translation id="CompanyNameRequired">El nombre de empresa es requerido.</translation>
-  <translation id="CompanyNameMaxLength">El nombre de empresa no puede tener más de 32 catacteres.</translation>
-  <translation id="CifRequired">El CIF/NIF es requerido.</translation>
-  <translation id="CifFormat">El CIF/NIF debe ser válido.</translation>
-  <translation id="EmailRequired">E-mail is required.</translation>
-  <translation id="EmailFormat">E-mail must be valid.</translation>
-  <translation id="OrderYourCatalogBy">Ordena tu catálogo por</translation>
-  <translation id="OrderBy">Ordenar por</translation>
-  <translation id="ManageCatalogSubscription">Gestionar <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
-  <translation id="InvoiceHistory">Tus facturas</translation>
-  <translation id="InvoiceHistoryDescription">De momento, solo puedes ver o descargar facturas o abonos de tus suscripciones.</translation>
-  <translation id="InvoiceHistoryAll">Todo</translation>
-  <translation id="InvoiceHistoryInvoices">Facturas</translation>
-  <translation id="InvoiceHistoryCredit">Abonos</translation>
-  <translation id="DownloadInvoice">Descargar factura</translation>
-  <translation id="RequestInvoice">Solicitar factura</translation>
-  <translation id="TransactionDate">Fecha de transacción</translation>
-  <translation id="UploadProductPrice">Precio</translation>
-  <translation id="UploadProductHeadline">¿Qué estás vendiendo?</translation>
-  <translation id="UploadProductSelectGenderPlaceholder">Selecciona un género</translation>
-  <translation id="UploadProductSubcategory">Subcategoría</translation>
-  <translation id="UploadProductSubcategory2">¿Podrías especificar?</translation>
-  <translation id="UploadProductTitle">Información de tu producto</translation>
-  <translation id="UploadProductModel">Modelo</translation>
-  <translation id="UploadProductCurrency">Moneda</translation>
-  <translation id="UploadProductDescription">Descripción</translation>
-  <translation id="UploadProductPricePlaceholder">(No te pases)</translation>
-  <translation id="UploadProductCategory">Categoría</translation>
-  <translation id="UploadProductCategoryPlaceholder">Categoría</translation>
-  <translation id="UploadProductDescriptionPlaceholder">Añade información relevante como estado, modelo, color...</translation>
-  <translation id="UploadProductCoachmarkDescription">Cada detalle cuenta, ¡así que cuéntanos más!</translation>
-  <translation id="UploadProductShipping">Wallapop Envíos</translation>
-  <translation id="UploadProductSubmitUpdate">Actualizar</translation>
-  <translation id="UploadProductSubmitItem">Subir producto</translation>
-  <translation id="UploadProductSelectGender">Sexo</translation>
-  <translation id="UploadProductSubcategoryPlaceholder">Subcategoría</translation>
-  <translation id="UploadProductSubcategory2Placeholder">¿Podrías especificar?</translation>
-  <translation id="UploadProductBrand">Marca</translation>
-  <translation id="UploadProductSelectSize">Talla</translation>
-  <translation id="UploadProductSelectSizePlaceholder">Selecciona una talla</translation>
-  <translation id="UploadProductPhotos">Fotos</translation>
-  <translation id="UploadProductPreview">¿Que aspecto tiene?</translation>
-  <translation id="UploadProductCoachmarkTitle">No hagas errores, ya que así la gente te encontrará más facilmente.</translation>
-  <translation id="UploadProductCoachmarkPrice">Añade un precio justo y la categoria que encaja mejor con tu item</translation>
-  <translation id="UploadProductCoachmarkPictures">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
-  <translation id="UploadProductShippingDescription">Puedes enviar (casi) todo por Wallapop. ¡Y es gratis!</translation>
-  <translation id="UploadProductCoachmarkShipping">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
-  <translation id="UploadProductSubmitLoading">Subiendo...<ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex></ph>%</translation>
-  <translation id="UploadImagesSubmitLoading">Subiendo imagen...<ph name="INTERPOLATION"><ex>{{ pendingFiles.currentUploading }}</ex></ph>/<ph name="INTERPOLATION_1"><ex>{{ pendingFiles.totalFiles }}</ex></ph></translation>
-  <translation id="UploadProductProductCondition">Estado del producto</translation>
-  <translation id="UploadProductProductConditionPlaceholder">Escoge un estado</translation>
-  <translation id="ForgetThisChat"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Mejor no sigas por aquí<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
-  <translation id="MaliciousConversationDescription">Esta persona incumplió las normas de convivencia. Te sugerimos que no hagas caso de sus indicaciones ni te comuniques con ella por vías ajenas a Wallapop, puede tratarse de un intento de estafa.</translation>
-  <translation id="ExitConversation">Salir de la conversación</translation>
-  <translation id="PersonalDataInformationModalTitle"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Quieren ayudarte ;-)<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
-  <translation id="PersonalDataInformationModalDesc">Un/a agente inmobiliario quiere atenderte en persona. Si te interesa, pulsa "Continuar" para compartir tu e-mail y tu número de teléfono.</translation>
-  <translation id="PersonalDataInformationModalButton">Continuar</translation>
-  <translation id="PersonalDataInformationModalFooterBold"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Lo que debes saber:
+  <translation id="web_continue_to_payment">Continuar a pago</translation>
+  <translation id="web_back_to_invoice">Volver a facturación</translation>
+  <translation id="web_perfect">¡Perfecto!</translation>
+  <translation id="web_subscription_created">Te has suscrito correctamente. ¡Todo está preparado para incrementar tus ventas!</translation>
+  <translation id="web_invoice_email">Pronto recibirás un e-mail con tu factura.</translation>
+  <translation id="web_go_to_my_profile">Ir a mi perfil</translation>
+  <translation id="web_edit_invoice">Editar mis datos de facturación</translation>
+  <translation id="web_step1of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>1<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="web_step2of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>2<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="web_step3of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>3<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="web_step4of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="web_invoice_information">Información de facturación</translation>
+  <translation id="web_name_required">El nombre es obligatorio.</translation>
+  <translation id="web_name_max_length">El nombre no puede tener más de 32 catacteres.</translation>
+  <translation id="web_surname_required">El apellido es requerido.</translation>
+  <translation id="web_surname_max_length">El apellido no puede tener más de 32 catacteres.</translation>
+  <translation id="web_company_name_required">El nombre de empresa es requerido.</translation>
+  <translation id="web_company_name_max_length">El nombre de empresa no puede tener más de 32 catacteres.</translation>
+  <translation id="web_cif_required">El CIF/NIF es requerido.</translation>
+  <translation id="web_cif_format">El CIF/NIF debe ser válido.</translation>
+  <translation id="web_email_required">E-mail is required.</translation>
+  <translation id="web_email_format">E-mail must be valid.</translation>
+  <translation id="web_order_your_catalog_by">Ordena tu catálogo por</translation>
+  <translation id="web_order_by">Ordenar por</translation>
+  <translation id="web_manage_catalog_subscription">Gestionar <ph name="INTERPOLATION"><ex>{{subscriptionSlot.category.name}}</ex>{{subscriptionSlot.category.name}}</ph></translation>
+  <translation id="web_invoice_history">Tus facturas</translation>
+  <translation id="web_invoice_history_description">De momento, solo puedes ver o descargar facturas o abonos de tus suscripciones.</translation>
+  <translation id="web_invoice_history_all">Todo</translation>
+  <translation id="web_invoice_history_invoices">Facturas</translation>
+  <translation id="web_invoice_history_credit">Abonos</translation>
+  <translation id="web_download_invoice">Descargar factura</translation>
+  <translation id="web_request_invoice">Solicitar factura</translation>
+  <translation id="web_transaction_date">Fecha de transacción</translation>
+  <translation id="web_upload_product_price">Precio</translation>
+  <translation id="web_upload_product_headline">¿Qué estás vendiendo?</translation>
+  <translation id="web_upload_product_select_gender_placeholder">Selecciona un género</translation>
+  <translation id="web_upload_product_subcategory">Subcategoría</translation>
+  <translation id="web_upload_product_subcategory2">¿Podrías especificar?</translation>
+  <translation id="web_upload_product_title">Información de tu producto</translation>
+  <translation id="web_upload_product_model">Modelo</translation>
+  <translation id="web_upload_product_currency">Moneda</translation>
+  <translation id="web_upload_product_description">Descripción</translation>
+  <translation id="web_upload_product_price_placeholder">(No te pases)</translation>
+  <translation id="web_upload_product_category">Categoría</translation>
+  <translation id="web_upload_product_category_placeholder">Categoría</translation>
+  <translation id="web_upload_product_description_placeholder">Añade información relevante como estado, modelo, color...</translation>
+  <translation id="web_upload_product_coachmark_description">Cada detalle cuenta, ¡así que cuéntanos más!</translation>
+  <translation id="web_upload_product_shipping">Wallapop Envíos</translation>
+  <translation id="web_upload_product_submit_update">Actualizar</translation>
+  <translation id="web_upload_product_submit_item">Subir producto</translation>
+  <translation id="web_upload_product_select_gender">Sexo</translation>
+  <translation id="web_upload_product_subcategory_placeholder">Subcategoría</translation>
+  <translation id="web_upload_product_subcategory2_placeholder">¿Podrías especificar?</translation>
+  <translation id="web_upload_product_brand">Marca</translation>
+  <translation id="web_upload_product_select_size">Talla</translation>
+  <translation id="web_upload_product_select_size_placeholder">Selecciona una talla</translation>
+  <translation id="web_upload_product_photos">Fotos</translation>
+  <translation id="web_upload_product_preview">¿Que aspecto tiene?</translation>
+  <translation id="web_upload_product_coachmark_title">No hagas errores, ya que así la gente te encontrará más facilmente.</translation>
+  <translation id="web_upload_product_coachmark_price">Añade un precio justo y la categoria que encaja mejor con tu item</translation>
+  <translation id="web_upload_product_coachmark_pictures">Puedes arrastrar y soltar fotos aquí. También puedes arrastrar y soltar para cambiar el orden. Máximo 10MB. Sólo aceptamos imágenes .jpg</translation>
+  <translation id="web_upload_product_shipping_description">Puedes enviar (casi) todo por Wallapop. ¡Y es gratis!</translation>
+  <translation id="web_upload_product_coachmark_shipping">Cuéntanos cuánto pesa tu producto. Recuerda que la suma de la longitud, la altura y el ancho no puede superar los 270cm.</translation>
+  <translation id="web_upload_product_submit_loading">Subiendo...<ph name="INTERPOLATION"><ex>{{ uploadCompletedPercentage }}</ex></ph>%</translation>
+  <translation id="web_upload_images_submit_loading">Subiendo imagen...<ph name="INTERPOLATION"><ex>{{ pendingFiles.currentUploading }}</ex></ph>/<ph name="INTERPOLATION_1"><ex>{{ pendingFiles.totalFiles }}</ex></ph></translation>
+  <translation id="web_upload_product_product_condition">Estado del producto</translation>
+  <translation id="web_upload_product_product_condition_placeholder">Escoge un estado</translation>
+  <translation id="web_forget_this_chat"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Mejor no sigas por aquí<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
+  <translation id="web_malicious_conversation_description">Esta persona incumplió las normas de convivencia. Te sugerimos que no hagas caso de sus indicaciones ni te comuniques con ella por vías ajenas a Wallapop, puede tratarse de un intento de estafa.</translation>
+  <translation id="web_exit_conversation">Salir de la conversación</translation>
+  <translation id="web_personal_data_information_modal_title"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Quieren ayudarte ;-)<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
+  <translation id="web_personal_data_information_modal_desc">Un/a agente inmobiliario quiere atenderte en persona. Si te interesa, pulsa "Continuar" para compartir tu e-mail y tu número de teléfono.</translation>
+  <translation id="web_personal_data_information_modal_button">Continuar</translation>
+  <translation id="web_personal_data_information_modal_footer_bold"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph>Lo que debes saber:
       <ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph></translation>
-  <translation id="PersonalDataInformationModalFooter">El hecho de facilitar tus datos a través de este proceso implica que aceptas el tratamiento de dichos datos en los términos que a continuación se detallan.</translation>
-  <translation id="PersonalDataInformationModalLegal"> Wallapop, S.L, (en adelante, Wallapop), en condición de responsable del tratamiento, tratará los datos proporcionados con el fin de comunicarlo a un usuario profesional ajeno a la plataforma Wallapop (una inmobiliaria), quien posteriormente, contactará contigo a efectos de informarte sobre sus productos/servicios que te has interesado..
+  <translation id="web_personal_data_information_modal_footer">El hecho de facilitar tus datos a través de este proceso implica que aceptas el tratamiento de dichos datos en los términos que a continuación se detallan.</translation>
+  <translation id="web_personal_data_information_modal_legal"> Wallapop, S.L, (en adelante, Wallapop), en condición de responsable del tratamiento, tratará los datos proporcionados con el fin de comunicarlo a un usuario profesional ajeno a la plataforma Wallapop (una inmobiliaria), quien posteriormente, contactará contigo a efectos de informarte sobre sus productos/servicios que te has interesado..
       <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
        La base legal para el tratamiento de los mencionados datos es el consentimiento que has prestado vinculado al hecho de haber proporcionado, libremente, los mismos a través de este proceso. Los datos personales se conservarán mientras no solicites su supresión. Una vez solicitada la supresión, los datos se conservarán bloqueados impidiendo su tratamiento, excepto para la puesta a disposición de los datos a los jueces y tribunales, el Ministerio Fiscal o las Administraciones Públicas competentes, para la exigencia de posibles responsabilidades derivadas del tratamiento y solo por el plazo de prescripción de las mismas (5 años). Una vez transcurrido el indicado periodo de tiempo, el dato se eliminará.
       <ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex>&lt;br&gt;</ph>
       Podrás ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos, así como la revocación, en cualquier momento, del consentimiento prestado, ante Wallapop, CIF nº B-66.04.9057, en la Calle Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Podrás también ejercer tus derechos mediante comunicación dirigida a: privacidad@wallapop.com. Finalmente, te recordamos que puedes dirigir una reclamación ante la Agencia Española de Protección de Datos, si consideras que Wallapop ha vulnerado tus derechos en materia de protección de datos.”
   </translation>
-  <translation id="TopBarButtonRegisteOrSignin">Regístrate o inicia sesión</translation>
-  <translation id="TabBarButtonLogin">Acceso</translation>
-  <translation id="TabBarButtonMyZone">Mi zona</translation>
-  <translation id="FooterLinksWallapopTitle">Wallapop</translation>
-  <translation id="FooterLinksAboutLabel">¿Quiénes somos?</translation>
-  <translation id="FooterLinksAboutHref">https://about.wallapop.com/</translation>
-  <translation id="FooterLinksPressLabel">Prensa</translation>
-  <translation id="FooterLinksPressHref">https://about.wallapop.com/prensa</translation>
-  <translation id="FooterLinksJobsLabel">Empleo</translation>
-  <translation id="FooterLinksJobsHref">https://apply.workable.com/wallapop/</translation>
-  <translation id="FooterLinksTeamLabel">Equipo</translation>
-  <translation id="FooterLinksTeamHref">https://about.wallapop.com/equipo/</translation>
-  <translation id="FooterLinksSupportTitle">Soporte</translation>
-  <translation id="FooterLinksFaqLabel">Preguntas Frecuentes</translation>
-  <translation id="FooterLinksFaqHref">https://ayuda.wallapop.com/hc/es-es</translation>
-  <translation id="FooterLinksPublishRulesLabel">Reglas de publicación</translation>
-  <translation id="FooterLinksPublishRulesHref">https://ayuda.wallapop.com/hc/es-es/articles/360004667717--Qué-contenido-no-está-permitido-en-wallapop-</translation>
-  <translation id="FooterLinksSecurityTipsLabel">Consejos de seguridad</translation>
-  <translation id="FooterLinksSecurityTipsHref">https://ayuda.wallapop.com/hc/es-es/sections/360001177157-Consejos-de-seguridad</translation>
-  <translation id="FooterLinksLegalTitle">Legal</translation>
-  <translation id="FooterLinksTermsLabel">Condiciones de uso</translation>
-  <translation id="FooterLinksTermsHref">https://about.wallapop.com/condiciones-de-uso/</translation>
-  <translation id="FooterLinksPrivacyLabel">Política de Privacidad</translation>
-  <translation id="FooterLinksPrivacyHref">https://about.wallapop.com/politica-privacidad/</translation>
-  <translation id="FooterLinksCookiessLabel">Cookies</translation>
-  <translation id="FooterLinksCookiesHref">https://about.wallapop.com/cookies/</translation>
-  <translation id="FooterLinksMotorTitle">Motor</translation>
-  <translation id="FooterLinksParticularLabel">Particular</translation>
-  <translation id="FooterLinksParticularHref">https://about.wallapop.com/cars-buyer/</translation>
-  <translation id="FooterLinksProfessionalLabel">Profesional</translation>
-  <translation id="FooterLinksProfessionalHref">https://about.wallapop.com/motor/</translation>
-  <translation id="FooterLinksWallapopProTitle">Wallapop PRO</translation>
-  <translation id="FooterLinksLandingProLabel">Impulsa tu negocio</translation>
-  <translation id="FooterLinksLandingProHref">https://novedades.wallapop.com/wallapop-pro/</translation>
-  <translation id="FooterCopyright">Copyright © <ph name="INTERPOLATION"/> Wallapop © de sus respectivos propietarios</translation>
-  <translation id="FooterSocialFacebookLabel">Wallapop, la web y app para comprar y vender, también está en Facebook</translation>
-  <translation id="FooterSocialTwitterLabel">Wallapop, la web y app para comprar y vender, también está en Twitter</translation>
-  <translation id="FooterSocialInstagramLabel">Wallapop, la web y app para comprar y vender, también está en Instagram</translation>
-  <translation id="EmptyHistory">Tu historial está vacío</translation>
-  <translation id="LoadingData">Estamos cargando tu histórico de facturas...</translation>
-  <translation id="NotLoadedInvoices">Lo sentimos, en estos momentos no podemos cargar tus facturas. Intenta de nuevo más tarde.</translation>
-  <translation id="NotOldInvoices">No tienes facturas antiguas. Rellena los datos de facturación para futuras compras.</translation>
-  <translation id="Sale">Venta</translation>
-  <translation id="Sales">Ventas</translation>
-  <translation id="Purchase">Compra</translation>
-  <translation id="Purchases">Compras</translation>
-  <translation id="Shipment">Envío</translation>
-  <translation id="Shipments">Envíos</translation>
-  <translation id="ShowPhone">Ver número de teléfono</translation>
-  <translation id="ShowLocation">Ver ubicación</translation>
-  <translation id="RedirectWeb">Ir a la web</translation>
-  <translation id="About">Acerca de</translation>
-  <translation id="FavouriteUserLabel">Usuario favorito</translation>
-  <translation id="ProfileTabsPublishedLabel">En venta</translation>
-  <translation id="ProfileTabsReviewsLabel">Opiniones</translation>
-  <translation id="ProfileTabsInfoLabel">Info</translation>
-  <translation id="ProfileInfoVerified">Información verificada</translation>
-  <translation id="ProfileInfoNumber">Número de teléfono</translation>
-  <translation id="ProfileInfoRatio">Ratio de respuesta</translation>
-  <translation id="ProfileInfoMemberSince">Miembro desde</translation>
-  <translation id="ProfileInfoSchedule">Horario de apertura</translation>
-  <translation id="ProfileInfoLocation">Ubicación</translation>
-  <translation id="Unknown">Desconocido</translation>
-  <translation id="UserReviewsNoResults">Usuario sin opiniones</translation>
-  <translation id="UserReviewsLoadMore">Ver más opiniones</translation>
-  <translation id="UserPublishedLoadMore">Ver más productos</translation>
-  <translation id="BumpSuggestionModalTitle">¡Genial! Tu producto ya está en Wallapop</translation>
-  <translation id="BumpSuggestionModalSubtitle">¿Quieres venderlo cuanto antes?</translation>
-  <translation id="BumpSuggestionModalDescription">Destaca tu producto para que lo vean más personas. ¡Muuuchas más!</translation>
-  <translation id="BumpSuggestionModalShare">Compártelo con tus amigos:</translation>
-  <translation id="BumpSuggestionModalButton">Destaca desde <ph name="INTERPOLATION"/> </translation>
-  <translation id="BumpSuggestionModalNoPriceButton">Destaca</translation>
-  <translation id="WallacoinsDisabledModalTitle">¡Adiós, saldo! 👋🏼</translation>
-  <translation id="WallacoinsDisabledModalText">Hemos desactivado la funcionalidad &quot;saldo&quot;, también conocida como &quot;wallacoins&quot;. Ya no es posible comprar packs de Destacados.<ph name="LINE_BREAK"/><ph name="LINE_BREAK"/> Si queda saldo en tu cuenta, puedes seguir destacando productos hasta que se agote. El saldo tiene un año de vigencia a partir del día en el que lo cargaste a tu cuenta.</translation>
-  <translation id="WallacoinsDisabledModalButton">Entendido</translation>
-  <translation id="Featured">Destacado</translation>
-  <translation id="Sold">Vendido</translation>
-  <translation id="Reserved">Reservado</translation>
-  <translation id="Expired">Expirado</translation>
-  <translation id="Inactive">Inactivo</translation>
-  <translation id="Undefined">Sin especificar</translation>
-  <translation id="ItemDetailShareTitle">Comparte este producto con tus amigos</translation>
-  <translation id="ItemDetailShareTwitterText">Mira que acabo de encontrar en @wallapop: </translation>
-  <translation id="ItemDetailShareEmailText">Esto te podría interesar - </translation>
-  <translation id="Bathroom">Baño</translation>
-  <translation id="Bathrooms">Baños</translation>
-  <translation id="Room">Habitación</translation>
-  <translation id="Rooms">Habitaciones</translation>
-  <translation id="Garage">Garaje</translation>
-  <translation id="Elevator">Ascensor</translation>
-  <translation id="Garden">Jardín</translation>
-  <translation id="Pool">Piscina</translation>
-  <translation id="Terrace">Terraza</translation>
-  <translation id="House">Casa</translation>
-  <translation id="Office">Local / Oficina</translation>
-  <translation id="Flat">Piso</translation>
-  <translation id="Land">Terreno</translation>
-  <translation id="BoxRoom">Trastero</translation>
-  <translation id="NewBuild">Obra nueva</translation>
-  <translation id="GoodCondition">Buen estado</translation>
-  <translation id="ForRefurbishment">A reformar</translation>
-  <translation id="New">Nuevo</translation>
-  <translation id="Crappy">Destrozado</translation>
-  <translation id="CarMint">Km. 0</translation>
-  <translation id="CarUsed">Ocasión</translation>
-  <translation id="Coupe">Coupé</translation>
-  <translation id="Family">Familiar</translation>
-  <translation id="MiniVan">Monovolumen</translation>
-  <translation id="Small">Pequeño</translation>
-  <translation id="Van">Furgoneta</translation>
-  <translation id="Sedan">Sedan</translation>
-  <translation id="Others">Otros</translation>
-  <translation id="Electric">Eléctrico</translation>
-  <translation id="Gasoil">Diésel</translation>
-  <translation id="Gasoline">Gasolina</translation>
-  <translation id="Automatic">Automático</translation>
-  <translation id="Manual">Manual</translation>
-  <translation id="wallapopPro">Wallapop PRO</translation>
-  <translation id="recommendedItemsTitle">Otros usuarios también han visto</translation>
-  <translation id="seePlans">Ver planes</translation>
-  <translation id="startFreeTrial">Probar gratis</translation>
-  <translation id="UseASavedCard">Utilizar una tarjeta guardada</translation>
-  <translation id="Limitless">Sin límite</translation>
-  <translation id="UseSavedCard">Utilizar una tarjeta guardada</translation>
-  <translation id="FreeTrial">Prueba gratuita</translation>
-  <translation id="KnowMore">Saber más</translation>
-  <translation id="TryProSlotDescription">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
-  <translation id="Feature">Destácalo</translation>
-  <translation id="checkAsReservedItem">Marcar como reservado</translation>
-  <translation id="checkAsSoldItem">Marcar como vendido</translation>
-  <translation id="deleteItem">Eliminar producto</translation>
-  <translation id="Buy">Venta</translation>
-  <translation id="Rent">Alquiler</translation>
-  <translation id="EditedMinutesAgo">Editado hace <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> minutos</translation>
-  <translation id="EditedHoursAgo">Editado hace <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> horas</translation>
-  <translation id="EditedOneDayAgo">Editado hace 1 día</translation>
-  <translation id="EditedTwoDaysAgo">Editado hace 2 días</translation>
-  <translation id="EditedThreeDaysAgo">Editado hace 3 días</translation>
-  <translation id="EditedOneWeekAgo">Editado esta semana</translation>
-  <translation id="EditedMoreTwoWeeks">Editado hace menos de 2 semanas</translation>
-  <translation id="EditedLessMonth">Editado hace menos de 1 mes</translation>
-  <translation id="EditedMoreMonth">Editado hace más de un mes</translation>
-  <translation id="SubscriptionBenefitsSubtitle">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
-  <translation id="SubscriptionBenefitsFooterTitle">¿Tienes alguna pregunta?</translation>
-  <translation id="SubscriptionBenefitsFooterSubtitle">Encuentra respuestas <ph name="START_LINK"/>aquí<ph name="CLOSE_LINK"/>.</translation>
-  <translation id="FilterOptionPostedAgo_hours">Horas</translation>
-  <translation id="FilterOptionPostedAgo_days">Días</translation>
-  <translation id="FilterOptionGender_male">Hombre</translation>
-  <translation id="FilterOptionGender_female">Mujer</translation>
-  <translation id="Condition_UnOpened">Sin abrir</translation>
-  <translation id="Condition_Unworn">Sin estrenar</translation>
-  <translation id="Condition_InBox">En su caja</translation>
-  <translation id="Condition_AsGoodAsNew">Como nuevo</translation>
-  <translation id="Condition_Fair">En condiciones aceptables</translation>
-  <translation id="Condition_HasGivenItAll">Puede que toque repararlo</translation>
-  <translation id="OwnReviewSold">Vendiste</translation>
-  <translation id="OwnReviewBought">Compraste</translation>
-  <translation id="ReviewSold">Vendió</translation>
-  <translation id="ReviewBought">Compró</translation>
-  <translation id="filterPriceTitle">¿Cuánto quieres pagar?</translation>
-  <translation id="filterPriceBubblePlaceholder">Precio</translation>
-  <translation id="filterYearTitle">Fecha de matriculación</translation>
-  <translation id="filterYearBubblePlaceholder">Año</translation>
-  <translation id="filterMileageTitle">Kilometraje</translation>
-  <translation id="filterMileageBubblePlaceholder">Km</translation>
-  <translation id="filterProfessionalBubblePlaceholder">Sólo profesionales</translation>
-  <translation id="filterWarrantyTitle">Coches con garantía</translation>
-  <translation id="filterWarrantyBubblePlaceholder">Garantía</translation>
-  <translation id="filterNumOfSeatsTitle">Número de asientos</translation>
-  <translation id="filterNumOfSeatsBubblePlaceholder">Número de asientos</translation>
-  <translation id="filterNumOfDoorsTitle">Número de puertas</translation>
-  <translation id="filterNumOfDoorsBubblePlaceholder">Número de puertas</translation>
-  <translation id="filterHorsePowerTitle">Potencia</translation>
-  <translation id="filterHorsePowerBubblePlaceholder">Potencia</translation>
-  <translation id="filterSurfaceTitle">Superficie</translation>
-  <translation id="filterSurfaceBubblePlaceholder">Superficie</translation>
-  <translation id="NotFoundTitle">Nada por aquí</translation>
-  <translation id="NotFoundMessage">Uish... Esta página no existe en Wallapop, lo que sí que existen son miles de oportunidades esperándote.</translation>
-  <translation id="NotFoundButtonText">Ver productos</translation>
-  <translation id="SuggestProModalDescriptionTrial">Prueba gratis Wallapop PRO y descubre todas sus ventajas.</translation>
-  <translation id="SuggestProModalDescriptionPlans">Elige un plan y aprovecha los beneficios de Wallapop PRO.</translation>
-  <translation id="SuggestProModalButtonCancel">Ahora no, gracias</translation>
-  <translation id="SuggestProModalTitle">Si fueses PRO tus productos nunca quedarían inactivos. ¿Lo sabías?</translation>
-  <translation id="NoPublishedItemsTitle">Nada en venta todavía</translation>
-  <translation id="NoPublishedItemsDescription">Al parecer, alguien usa todo lo que tiene. ¡Dale tiempo para subir algo a wallapop!</translation>
-  <translation id="NoReviewsItemsTitle">Nadie ha opinado todavía</translation>
-  <translation id="NoReviewsItemsDescription">Esta persona no ha recibido valoraciones. ¿Será la tuya la primera?</translation>
+  <translation id="web_top_bar_button_register_or_signin">Regístrate o inicia sesión</translation>
+  <translation id="web_tab_bar_button_login">Acceso</translation>
+  <translation id="web_tab_bar_button_my_zone">Mi zona</translation>
+  <translation id="web_footer_links_wallapop_title">Wallapop</translation>
+  <translation id="web_footer_links_about_label">¿Quiénes somos?</translation>
+  <translation id="web_footer_links_about_href">https://about.wallapop.com/</translation>
+  <translation id="web_footer_links_press_label">Prensa</translation>
+  <translation id="web_footer_links_press_href">https://about.wallapop.com/prensa</translation>
+  <translation id="web_footer_links_jobs_label">Empleo</translation>
+  <translation id="web_footer_links_jobs_href">https://apply.workable.com/wallapop/</translation>
+  <translation id="web_footer_links_team_label">Equipo</translation>
+  <translation id="web_footer_links_team_href">https://about.wallapop.com/equipo/</translation>
+  <translation id="web_footer_links_support_title">Soporte</translation>
+  <translation id="web_footer_links_faq_label">Preguntas Frecuentes</translation>
+  <translation id="web_footer_links_faq_href">https://ayuda.wallapop.com/hc/es-es</translation>
+  <translation id="web_footer_links_publish_rules_label">Reglas de publicación</translation>
+  <translation id="web_footer_links_publish_rules_href">https://ayuda.wallapop.com/hc/es-es/articles/360004667717--Qué-contenido-no-está-permitido-en-wallapop-</translation>
+  <translation id="web_footer_links_security_tips_label">Consejos de seguridad</translation>
+  <translation id="web_footer_links_security_tips_href">https://ayuda.wallapop.com/hc/es-es/sections/360001177157-Consejos-de-seguridad</translation>
+  <translation id="web_footer_links_legal_title">Legal</translation>
+  <translation id="web_footer_links_terms_label">Condiciones de uso</translation>
+  <translation id="web_footer_links_terms_href">https://about.wallapop.com/condiciones-de-uso/</translation>
+  <translation id="web_footer_links_privacy_label">Política de Privacidad</translation>
+  <translation id="web_footer_links_privacy_href">https://about.wallapop.com/politica-privacidad/</translation>
+  <translation id="web_footer_links_cookiess_label">Cookies</translation>
+  <translation id="web_footer_links_cookies_href">https://about.wallapop.com/cookies/</translation>
+  <translation id="web_footer_links_motor_title">Motor</translation>
+  <translation id="web_footer_links_particular_label">Particular</translation>
+  <translation id="web_footer_links_particular_href">https://about.wallapop.com/cars-buyer/</translation>
+  <translation id="web_footer_links_professional_label">Profesional</translation>
+  <translation id="web_footer_links_professional_href">https://about.wallapop.com/motor/</translation>
+  <translation id="web_footer_links_wallapop_pro_title">Wallapop PRO</translation>
+  <translation id="web_footer_links_landing_pro_label">Impulsa tu negocio</translation>
+  <translation id="web_footer_links_landing_pro_href">https://novedades.wallapop.com/wallapop-pro/</translation>
+  <translation id="web_footer_copyright">Copyright © <ph name="INTERPOLATION"/> Wallapop © de sus respectivos propietarios</translation>
+  <translation id="web_footer_social_facebook_label">Wallapop, la web y app para comprar y vender, también está en Facebook</translation>
+  <translation id="web_footer_social_twitter_label">Wallapop, la web y app para comprar y vender, también está en Twitter</translation>
+  <translation id="web_footer_social_instagram_label">Wallapop, la web y app para comprar y vender, también está en Instagram</translation>
+  <translation id="web_empty_history">Tu historial está vacío</translation>
+  <translation id="web_loading_data">Estamos cargando tu histórico de facturas...</translation>
+  <translation id="web_not_loaded_invoices">Lo sentimos, en estos momentos no podemos cargar tus facturas. Intenta de nuevo más tarde.</translation>
+  <translation id="web_not_old_invoices">No tienes facturas antiguas. Rellena los datos de facturación para futuras compras.</translation>
+  <translation id="web_sale">Venta</translation>
+  <translation id="web_sales">Ventas</translation>
+  <translation id="web_purchase">Compra</translation>
+  <translation id="web_purchases">Compras</translation>
+  <translation id="web_shipment">Envío</translation>
+  <translation id="web_shipments">Envíos</translation>
+  <translation id="web_show_phone">Ver número de teléfono</translation>
+  <translation id="web_show_location">Ver ubicación</translation>
+  <translation id="web_redirect_web">Ir a la web</translation>
+  <translation id="web_about">Acerca de</translation>
+  <translation id="web_favourite_user_label">Usuario favorito</translation>
+  <translation id="web_profile_tabs_published_label">En venta</translation>
+  <translation id="web_profile_tabs_reviews_label">Opiniones</translation>
+  <translation id="web_profile_tabs_info_label">Info</translation>
+  <translation id="web_profile_info_verified">Información verificada</translation>
+  <translation id="web_profile_info_number">Número de teléfono</translation>
+  <translation id="web_profile_info_ratio">Ratio de respuesta</translation>
+  <translation id="web_profile_info_member_since">Miembro desde</translation>
+  <translation id="web_profile_info_schedule">Horario de apertura</translation>
+  <translation id="web_profile_info_location">Ubicación</translation>
+  <translation id="web_unknown">Desconocido</translation>
+  <translation id="web_user_reviews_load_more">Ver más opiniones</translation>
+  <translation id="web_user_published_load_more">Ver más productos</translation>
+  <translation id="web_bump_suggestion_modal_title">¡Genial! Tu producto ya está en Wallapop</translation>
+  <translation id="web_bump_suggestion_modal_subtitle">¿Quieres venderlo cuanto antes?</translation>
+  <translation id="web_bump_suggestion_modal_description">Destaca tu producto para que lo vean más personas. ¡Muuuchas más!</translation>
+  <translation id="web_bump_suggestion_modal_share">Compártelo con tus amigos:</translation>
+  <translation id="web_bump_suggestion_modal_button">Destaca desde <ph name="INTERPOLATION"/> </translation>
+  <translation id="web_bump_suggestion_modal_no_price_button">Destaca</translation>
+  <translation id="web_wallacoins_disabled_modal_title">¡Adiós, saldo! 👋🏼</translation>
+  <translation id="web_wallacoins_disabled_modal_text">Hemos desactivado la funcionalidad &quot;saldo&quot;, también conocida como &quot;wallacoins&quot;. Ya no es posible comprar packs de Destacados.<ph name="LINE_BREAK"/><ph name="LINE_BREAK"/> Si queda saldo en tu cuenta, puedes seguir destacando productos hasta que se agote. El saldo tiene un año de vigencia a partir del día en el que lo cargaste a tu cuenta.</translation>
+  <translation id="web_wallacoins_disabled_modal_button">Entendido</translation>
+  <translation id="web_featured">Destacado</translation>
+  <translation id="web_sold">Vendido</translation>
+  <translation id="web_reserved">Reservado</translation>
+  <translation id="web_expired">Expirado</translation>
+  <translation id="web_inactive">Inactivo</translation>
+  <translation id="web_undefined">Sin especificar</translation>
+  <translation id="web_item_detail_share_title">Comparte este producto con tus amigos</translation>
+  <translation id="web_item_detail_share_twitter_text">Mira que acabo de encontrar en @wallapop: </translation>
+  <translation id="web_item_detail_share_email_text">Esto te podría interesar - </translation>
+  <translation id="web_bathroom">Baño</translation>
+  <translation id="web_bathrooms">Baños</translation>
+  <translation id="web_room">Habitación</translation>
+  <translation id="web_rooms">Habitaciones</translation>
+  <translation id="web_garage">Garaje</translation>
+  <translation id="web_elevator">Ascensor</translation>
+  <translation id="web_garden">Jardín</translation>
+  <translation id="web_pool">Piscina</translation>
+  <translation id="web_terrace">Terraza</translation>
+  <translation id="web_house">Casa</translation>
+  <translation id="web_office">Local / Oficina</translation>
+  <translation id="web_flat">Piso</translation>
+  <translation id="web_land">Terreno</translation>
+  <translation id="web_box_room">Trastero</translation>
+  <translation id="web_new_build">Obra nueva</translation>
+  <translation id="web_good_condition">Buen estado</translation>
+  <translation id="web_for_refurbishment">A reformar</translation>
+  <translation id="web_new">Nuevo</translation>
+  <translation id="web_coupe">Coupé</translation>
+  <translation id="web_family">Familiar</translation>
+  <translation id="web_mini_van">Monovolumen</translation>
+  <translation id="web_small">Pequeño</translation>
+  <translation id="web_van">Furgoneta</translation>
+  <translation id="web_sedan">Sedan</translation>
+  <translation id="web_others">Otros</translation>
+  <translation id="web_electric">Eléctrico</translation>
+  <translation id="web_gasoil">Diésel</translation>
+  <translation id="web_gasoline">Gasolina</translation>
+  <translation id="web_automatic">Automático</translation>
+  <translation id="web_manual">Manual</translation>
+  <translation id="web_wallapop_pro">Wallapop PRO</translation>
+  <translation id="web_recommended_items_title">Otros usuarios también han visto</translation>
+  <translation id="web_see_plans">Ver planes</translation>
+  <translation id="web_start_free_trial">Probar gratis</translation>
+  <translation id="web_use_a_saved_card">Utilizar una tarjeta guardada</translation>
+  <translation id="web_limitless">Sin límite</translation>
+  <translation id="web_use_saved_card">Utilizar una tarjeta guardada</translation>
+  <translation id="web_free_trial">Prueba gratuita</translation>
+  <translation id="web_know_more">Saber más</translation>
+  <translation id="web_try_pro_slot_description">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
+  <translation id="web_feature">Destácalo</translation>
+  <translation id="web_check_as_reserved_item">Marcar como reservado</translation>
+  <translation id="web_check_as_sold_item">Marcar como vendido</translation>
+  <translation id="web_delete_item">Eliminar producto</translation>
+  <translation id="web_buy">Venta</translation>
+  <translation id="web_rent">Alquiler</translation>
+  <translation id="web_edited_minutes_ago">Editado hace <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> minutos</translation>
+  <translation id="web_edited_hours_ago">Editado hace <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> horas</translation>
+  <translation id="web_edited_one_day_ago">Editado hace 1 día</translation>
+  <translation id="web_edited_two_days_ago">Editado hace 2 días</translation>
+  <translation id="web_edited_three_days_ago">Editado hace 3 días</translation>
+  <translation id="web_edited_one_week_ago">Editado esta semana</translation>
+  <translation id="web_edited_more_two_weeks">Editado hace menos de 2 semanas</translation>
+  <translation id="web_edited_less_month">Editado hace menos de 1 mes</translation>
+  <translation id="web_edited_more_month">Editado hace más de un mes</translation>
+  <translation id="web_subscription_benefits_subtitle">¿Quieres impulsar tu negocio online? ¡Conviértete en PRO!</translation>
+  <translation id="web_subscription_benefits_footer_title">¿Tienes alguna pregunta?</translation>
+  <translation id="web_subscription_benefits_footer_subtitle">Encuentra respuestas <ph name="START_LINK"/>aquí<ph name="CLOSE_LINK"/>.</translation>
+  <translation id="web_filter_option_posted_ago_hours">Horas</translation>
+  <translation id="web_filter_option_posted_ago_days">Días</translation>
+  <translation id="web_filter_option_gender_male">Hombre</translation>
+  <translation id="web_filter_option_gender_female">Mujer</translation>
+  <translation id="web_condition_un_opened">Sin abrir</translation>
+  <translation id="web_condition_unworn">Sin estrenar</translation>
+  <translation id="web_condition_in_box">En su caja</translation>
+  <translation id="web_condition_as_good_as_new">Como nuevo</translation>
+  <translation id="web_condition_fair">En condiciones aceptables</translation>
+  <translation id="web_condition_has_given_it_all">Puede que toque repararlo</translation>
+  <translation id="web_own_review_sold">Vendiste</translation>
+  <translation id="web_own_review_bought">Compraste</translation>
+  <translation id="web_review_sold">Vendió</translation>
+  <translation id="web_review_bought">Compró</translation>
+  <translation id="web_filter_price_title">¿Cuánto quieres pagar?</translation>
+  <translation id="web_filter_price_bubble_placeholder">Precio</translation>
+  <translation id="web_filter_year_title">Fecha de matriculación</translation>
+  <translation id="web_filter_year_bubble_placeholder">Año</translation>
+  <translation id="web_filter_mileage_title">Kilometraje</translation>
+  <translation id="web_filter_mileage_bubble_placeholder">Km</translation>
+  <translation id="web_filter_professional_bubble_placeholder">Sólo profesionales</translation>
+  <translation id="web_filter_warranty_title">Coches con garantía</translation>
+  <translation id="web_filter_warranty_bubble_placeholder">Garantía</translation>
+  <translation id="web_filter_num_of_seats_title">Número de asientos</translation>
+  <translation id="web_filter_num_of_seats_bubble_placeholder">Número de asientos</translation>
+  <translation id="web_filter_num_of_doors_title">Número de puertas</translation>
+  <translation id="web_filter_num_of_doors_bubble_placeholder">Número de puertas</translation>
+  <translation id="web_filter_horse_power_title">Potencia</translation>
+  <translation id="web_filter_horse_power_bubble_placeholder">Potencia</translation>
+  <translation id="web_filter_surface_title">Superficie</translation>
+  <translation id="web_filter_surface_bubble_placeholder">Superficie</translation>
+  <translation id="web_not_found_title">Nada por aquí</translation>
+  <translation id="web_not_found_message">Uish... Esta página no existe en Wallapop, lo que sí que existen son miles de oportunidades esperándote.</translation>
+  <translation id="web_not_found_button_text">Ver productos</translation>
+  <translation id="web_suggest_pro_modal_description_trial">Prueba gratis Wallapop PRO y descubre todas sus ventajas.</translation>
+  <translation id="web_suggest_pro_modal_description_plans">Elige un plan y aprovecha los beneficios de Wallapop PRO.</translation>
+  <translation id="web_suggest_pro_modal_button_cancel">Ahora no, gracias</translation>
+  <translation id="web_suggest_pro_modal_title">Si fueses PRO tus productos nunca quedarían inactivos. ¿Lo sabías?</translation>
+  <translation id="web_no_published_items_title">Nada en venta todavía</translation>
+  <translation id="web_no_published_items_description">Al parecer, alguien usa todo lo que tiene. ¡Dale tiempo para subir algo a wallapop!</translation>
+  <translation id="web_no_reviews_items_title">Nadie ha opinado todavía</translation>
+  <translation id="web_no_reviews_items_description">Esta persona no ha recibido valoraciones. ¿Será la tuya la primera?</translation>
   <translation id="web_components_topbar_538">Mensajes</translation>
   <translation id="web_calls_pages_539">Procesado</translation>
   <translation id="web_calls_pages_540">Pendiente</translation>
@@ -1245,85 +1241,85 @@
   <translation id="web_subscription_benefit_title_share">Comparte tu web y teléfono</translation>
   <translation id="web_subscription_benefit_title_branding">Potencia tu marca</translation>
   <translation id="web_subscription_benefit_title_limit">Define tu límite de publicación</translation>
-  <translation id="WallapopProSubscriptionTitle">Impulsa tu negocio online con Wallapop PRO</translation>
-  <translation id="WallapopProSubscriptionSubTitle">Elige una suscripción para llevar tus ventas al siguiente nivel</translation>
-  <translation id="your_current_plan">Tu plan actual</translation>
+  <translation id="web_wallapop_pro_subscription_title">Impulsa tu negocio online con Wallapop PRO</translation>
+  <translation id="web_wallapop_pro_subscription_sub_title">Elige una suscripción para llevar tus ventas al siguiente nivel</translation>
+  <translation id="web_your_current_plan">Tu plan actual</translation>
   <translation id="web_toast_cardealer_error_contact">¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.</translation>
   <translation id="web_catalog_components_item_105">Inactivo</translation>
-  <translation id="Date">Fecha</translation>
+  <translation id="web_date">Fecha</translation>
   <translation id="web_profile_modal_check_subscription_in_app_244">Entendido</translation>
   <translation id="web_profile_modal_discount_available_unsubscribe_in_app_579">Entendido</translation>
   <translation id="web_profile_modal_unsubscribe_in_app_first_653">Entendido</translation>
-  <translation id="From">Desde</translation>
-  <translation id="To">Hasta</translation>
-  <translation id="filtersCategoryAllCategories">Todas las categorías</translation>
-  <translation id="filtersCategoryCars">Coches</translation>
-  <translation id="filtersCategoryMotorbike">Motos</translation>
-  <translation id="filtersCategoryMotorsNAccessories">Motor y Accesorios</translation>
-  <translation id="filtersCategoryFashion">Moda y Accesorios</translation>
-  <translation id="filtersCategoryRealEstate">Inmobiliaria</translation>
-  <translation id="filtersCategoryTVAudioNCameras">TV, Audio y Foto</translation>
-  <translation id="filtersCategoryCellPhonesNAccessories">Móviles y Telefonía</translation>
-  <translation id="filtersCategoryComputersNElectronics">Informática y Electrónica</translation>
-  <translation id="filtersCategorySportsNLeisure">Deporte y Ocio</translation>
-  <translation id="filtersCategoryBikes">Bicicletas</translation>
-  <translation id="filtersCategoryGamesNConsoles">Consolas y Videojuegos</translation>
-  <translation id="filtersCategoryHomeNGarden">Hogar y Jardín</translation>
-  <translation id="filtersCategoryAppliances">Electrodomésticos</translation>
-  <translation id="filtersCategoryMoviesBooksNMusic">Cine, Libros y Música</translation>
-  <translation id="filtersCategoryBabyNChild">Niños y Bebés</translation>
-  <translation id="filtersCategoryCollectiblesNArt">Coleccionismo</translation>
-  <translation id="filtersCategoryBuildingMaterials">Materiales de construcción</translation>
-  <translation id="filtersCategoryIndustrialNAgriculture">Industria y Agricultura</translation>
-  <translation id="filtersCategoryJobs">Empleo</translation>
-  <translation id="filtersCategoryServices">Servicios</translation>
-  <translation id="filtersCategoryOther">Otros</translation>
-  <translation id="filterCarsBrandModelTitle">Marca y modelo</translation>
-  <translation id="filterCarsBrandModelBubblePlaceholder">Marca y modelo</translation>
-  <translation id="filterCarsBrandModelSuggesterPlaceholder">¿Buscas alguna marca?</translation>
-  <translation id="filterCarsBrandModelDrawerPlaceholder">Selecciona marca y modelo</translation>
-  <translation id="filterBodyTypeTitle">Tipo de coche</translation>
-  <translation id="filterBodyTypePlaceholder">Tipo de coche</translation>
-  <translation id="filterEngineTypeTitle">Tipo de combustible</translation>
-  <translation id="filterEngineTypePlaceholder">Tipo de combustible</translation>
-  <translation id="filterGearboxTypeTitle">Cambio de marchas</translation>
-  <translation id="filterGearboxTypePlaceholder">Cambio de marchas</translation>
-  <translation id="filterRoomsTitle">Número de habitaciones</translation>
-  <translation id="filterRoomsBubblePlaceholder">Número de habitaciones</translation>
-  <translation id="filterBathroomsTitle">Número de baños</translation>
-  <translation id="filterBathroomsBubblePlaceholder">Número de baños</translation>
-  <translation id="filterRealEstateConditionTitle">Estado</translation>
-  <translation id="filterRealEstateConditionBubblePlaceholder">Estado</translation>
-  <translation id="filterRealEstateFeaturesTitle">Características</translation>
-  <translation id="filterRealEstateFeaturesBubblePlaceholder">Características</translation>
-  <translation id="filterPropertyTypeTitle">¿Qué buscas?</translation>
-  <translation id="filterPropertyTypeBubblePlaceholder">Tipo de inmuebe</translation>
-  <translation id="filterOperationTitle">¿En qué estás interesado?</translation>
-  <translation id="filterOperationBubblePlaceholder">¿Alquiler o compra?</translation>
-  <translation id="filterCategoriesTitle">Categoría</translation>
-  <translation id="filterCategoriesPlaceholder">Todas las categorías</translation>
-  <translation id="filterTimeOfListing">Publicado hace</translation>
-  <translation id="filterConditionTitle">Estado del producto</translation>
-  <translation id="filterConditionBubblePlaceholder">Estado del producto</translation>
-  <translation id="filterConditionDrawerPlaceholder">Cualquier estado</translation>
-  <translation id="filterGenderTitle">Género</translation>
-  <translation id="filterGenderBubblePlaceholder">Género</translation>
-  <translation id="filterGenderDrawerPlaceholder">Selecciona género</translation>
-  <translation id="filterClothingTypeTitle">Tipo de prenda</translation>
-  <translation id="filterClothingTypeBubblePlaceholder">Tipo de prenda</translation>
-  <translation id="filterClothingTypeDrawerPlaceholder">Selecciona tipo de prenda</translation>
-  <translation id="filterClothingTypeSuggesterPlaceholder">Buscar</translation>
-  <translation id="filterFashionBrandTitle">Marca</translation>
-  <translation id="filterFashionBrandBubblePlaceholder">Marca</translation>
-  <translation id="filterFashionBrandDrawerPlaceholder">Selecciona marca</translation>
-  <translation id="filterFashionBrandSuggesterPlaceholder">Buscar una marca</translation>
-  <translation id="filterPhoneNAccessoriesBrandTitle">Marca y modelo</translation>
-  <translation id="filterPhoneNAccessoriesBrandBubblePlaceholder">Marca y modelo</translation>
-  <translation id="filterPhoneNAccessoriesBrandDrawerPlaceholder">Selecciona marca y modelo</translation>
-  <translation id="filterPhoneNAccessoriesBrandSuggesterPlaceholder">Buscar una marca y modelo</translation>
-  <translation id="filterPhoneNAccessoriesTypeTitle">Tipo de producto</translation>
-  <translation id="filterPhoneNAccessoriesTypeBubblePlaceholder">Tipo de producto</translation>
-  <translation id="filterPhoneNAccessoriesTypeDrawerPlaceholder">Selecciona tipo de producto</translation>
+  <translation id="web_from">Desde</translation>
+  <translation id="web_to">Hasta</translation>
+  <translation id="web_filters_category_all_categories">Todas las categorías</translation>
+  <translation id="web_filters_category_cars">Coches</translation>
+  <translation id="web_filters_category_motorbike">Motos</translation>
+  <translation id="web_filters_category_motors_n_accessories">Motor y Accesorios</translation>
+  <translation id="web_filters_category_fashion">Moda y Accesorios</translation>
+  <translation id="web_filters_category_real_estate">Inmobiliaria</translation>
+  <translation id="web_filters_category_t_v_audio_n_cameras">TV, Audio y Foto</translation>
+  <translation id="web_filters_category_cell_phones_n_accessories">Móviles y Telefonía</translation>
+  <translation id="web_filters_category_computers_n_electronics">Informática y Electrónica</translation>
+  <translation id="web_filters_category_sports_n_leisure">Deporte y Ocio</translation>
+  <translation id="web_filters_category_bikes">Bicicletas</translation>
+  <translation id="web_filters_category_games_n_consoles">Consolas y Videojuegos</translation>
+  <translation id="web_filters_category_home_n_garden">Hogar y Jardín</translation>
+  <translation id="web_filters_category_appliances">Electrodomésticos</translation>
+  <translation id="web_filters_category_movies_books_n_music">Cine, Libros y Música</translation>
+  <translation id="web_filters_category_baby_n_child">Niños y Bebés</translation>
+  <translation id="web_filters_category_collectibles_n_art">Coleccionismo</translation>
+  <translation id="web_filters_category_building_materials">Materiales de construcción</translation>
+  <translation id="web_filters_category_industrial_n_agriculture">Industria y Agricultura</translation>
+  <translation id="web_filters_category_jobs">Empleo</translation>
+  <translation id="web_filters_category_services">Servicios</translation>
+  <translation id="web_filters_category_other">Otros</translation>
+  <translation id="web_filter_cars_brand_model_title">Marca y modelo</translation>
+  <translation id="web_filter_cars_brand_model_bubble_placeholder">Marca y modelo</translation>
+  <translation id="web_filter_cars_brand_model_suggester_placeholder">¿Buscas alguna marca?</translation>
+  <translation id="web_filter_cars_brand_model_drawer_placeholder">Selecciona marca y modelo</translation>
+  <translation id="web_filter_body_type_title">Tipo de coche</translation>
+  <translation id="web_filter_body_type_placeholder">Tipo de coche</translation>
+  <translation id="web_filter_engine_type_title">Tipo de combustible</translation>
+  <translation id="web_filter_engine_type_placeholder">Tipo de combustible</translation>
+  <translation id="web_filter_gearbox_type_title">Cambio de marchas</translation>
+  <translation id="web_filter_gearbox_type_placeholder">Cambio de marchas</translation>
+  <translation id="web_filter_rooms_title">Número de habitaciones</translation>
+  <translation id="web_filter_rooms_bubble_placeholder">Número de habitaciones</translation>
+  <translation id="web_filter_bathrooms_title">Número de baños</translation>
+  <translation id="web_filter_bathrooms_bubble_placeholder">Número de baños</translation>
+  <translation id="web_filter_real_estate_condition_title">Estado</translation>
+  <translation id="web_filter_real_estate_condition_bubble_placeholder">Estado</translation>
+  <translation id="web_filter_real_estate_features_title">Características</translation>
+  <translation id="web_filter_real_estate_features_bubble_placeholder">Características</translation>
+  <translation id="web_filter_property_type_title">¿Qué buscas?</translation>
+  <translation id="web_filter_property_type_bubble_placeholder">Tipo de inmuebe</translation>
+  <translation id="web_filter_operation_title">¿En qué estás interesado?</translation>
+  <translation id="web_filter_operation_bubble_placeholder">¿Alquiler o compra?</translation>
+  <translation id="web_filter_categories_title">Categoría</translation>
+  <translation id="web_filter_categories_placeholder">Todas las categorías</translation>
+  <translation id="web_filter_time_of_listing">Publicado hace</translation>
+  <translation id="web_filter_condition_title">Estado del producto</translation>
+  <translation id="web_filter_condition_bubble_placeholder">Estado del producto</translation>
+  <translation id="web_filter_condition_drawer_placeholder">Cualquier estado</translation>
+  <translation id="web_filter_gender_title">Género</translation>
+  <translation id="web_filter_gender_bubble_placeholder">Género</translation>
+  <translation id="web_filter_gender_drawer_placeholder">Selecciona género</translation>
+  <translation id="web_filter_clothing_type_title">Tipo de prenda</translation>
+  <translation id="web_filter_clothing_type_bubble_placeholder">Tipo de prenda</translation>
+  <translation id="web_filter_clothing_type_drawer_placeholder">Selecciona tipo de prenda</translation>
+  <translation id="web_filter_clothing_type_suggester_placeholder">Buscar</translation>
+  <translation id="web_filter_fashion_brand_title">Marca</translation>
+  <translation id="web_filter_fashion_brand_bubble_placeholder">Marca</translation>
+  <translation id="web_filter_fashion_brand_drawer_placeholder">Selecciona marca</translation>
+  <translation id="web_filter_fashion_brand_suggester_placeholder">Buscar una marca</translation>
+  <translation id="web_filter_phone_n_accessories_brand_title">Marca y modelo</translation>
+  <translation id="web_filter_phone_n_accessories_brand_bubble_placeholder">Marca y modelo</translation>
+  <translation id="web_filter_phone_n_accessories_brand_drawer_placeholder">Selecciona marca y modelo</translation>
+  <translation id="web_filter_phone_n_accessories_brand_suggester_placeholder">Buscar una marca y modelo</translation>
+  <translation id="web_filter_phone_n_accessories_type_title">Tipo de producto</translation>
+  <translation id="web_filter_phone_n_accessories_type_bubble_placeholder">Tipo de producto</translation>
+  <translation id="web_filter_phone_n_accessories_type_drawer_placeholder">Selecciona tipo de producto</translation>
   <translation id="web_filter_sort_title">Ordenar por:</translation>
   <translation id="web_filter_sort_bubble_title">Ordenar por</translation>
   <translation id="web_filter_sort_by_distance">Distancia</translation>
@@ -1371,6 +1367,13 @@
   <translation id="web_user_edited">Tus datos se han editado correctamente</translation>
   <translation id="web_image_uploaded">La imagen se ha cargado!</translation>
   <translation id="web_suggested_category">Todo indica que tu producto corresponde a otra categoría, por eso la hemos cambiado.</translation>
+  <translation id="web_sidebar_delivery">Envíos</translation>
+  <translation id="web_catalog_delivery">Envíos</translation>
+  <translation id="web_delivery_info_title">Tu información de envíos</translation>
+  <translation id="web_delivery_info_subtitle">Aquí encontrarás información acerca de tus envíos.</translation>
+  <translation id="web_delivery_shipment_tracking">Seguimiento</translation>
+  <translation id="web_delivery_bank_details">Datos</translation>
+  <translation id="web_delivery_shipping_address">Dirección</translation>
   <translation id="web_delete_billing_info">Tu información de facturación ha sido borrada</translation>
   <translation id="web_to_clean_default_error_message">Servicio no disponible temporalmente. Inténtelo de nuevo más tarde</translation>
   <translation id="web_to_clean_bulk_sold_error">Algunos productos no se han marcado como vendido debido a un error</translation>
@@ -1404,4 +1407,7 @@
   <translation id="web_to_clean_model_example">P. ej: iPhone</translation>
   <translation id="web_to_clean_reviews">Opiniones</translation>
   <translation id="web_to_clean_error_saving_data">Error al guardar los datos. Intenta de nuevo</translation>
+  <translation id="web_wallapop_pro_about">Más información sobre Wallapop PRO</translation>
+  <translation id="web_wallapop_pro_about_href">https://ayuda.wallapop.com/hc/es-es/sections/360001165358--Qu%C3%A9-es-Wallapop-PRO</translation>
+  <translation id="web_start">Probar</translation>
 </translationbundle>

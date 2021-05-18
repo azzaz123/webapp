@@ -64,3 +64,12 @@
   </div>
   <h2 i18n="@@web_components_sidebar_614">Stats</h2>
 </a>
+
+<span *tslDeliveryDevelopment>
+  <a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-delivery" class="sidebar-section" [routerLink]="['/delivery']" routerLinkActive="active">
+    <div class="sidebar-section-circle">
+      <tsl-svg-icon src="/assets/icons/navigation_delivery.svg"></tsl-svg-icon>
+    </div>
+    <h2 i18n="@@web_sidebar_delivery">Delivery</h2>
+  </a>
+</span>

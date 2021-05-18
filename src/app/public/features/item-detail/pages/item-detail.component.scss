@@ -1,23 +1,23 @@
 @import '~style/common';
-$item-detail-card-width: 681px;
-$item-detail-carousel-height: 477px;
-
-:host {
-  background-color: $blue-grey-5;
-  display: block;
-}
+@import '../styles/item-detail-variables';
 
 .ItemDetail {
   &__container {
     @include media-breakpoint-up(xl) {
       max-width: 1440px;
     }
-    &__middleSection {
-      max-width: $item-detail-card-width;
-    }
+  }
+
+  &__sky {
+    flex-basis: $item-detail-sky-width;
+    top: calc(#{$topbar-height} + #{$spacer * 0.5});
   }
 
   &__content {
+    max-width: $item-detail-card-width;
+  }
+
+  &__card {
     background-color: $white;
     border-radius: $border-radius;
     border: solid 1px $blue-grey-5;
@@ -85,7 +85,7 @@ $item-detail-carousel-height: 477px;
   }
 
   &__fakeMap {
-    height: 130px;
+    height: $item-detail-map-height;
     border-radius: $border-radius;
     border: solid 1px $blue-grey-5;
     background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
@@ -105,12 +105,4 @@ $item-detail-carousel-height: 477px;
   padding: 10px 0px;
   border-top: 1px solid $blue-grey-5;
   border-bottom: 1px solid $blue-grey-5;
-}
-
-tsl-side-sky {
-  top: calc(#{$topbar-height} + #{$spacer * 0.5});
-}
-
-tsl-sky {
-  top: calc(#{$topbar-height} + #{$spacer * 0.5});
 }
