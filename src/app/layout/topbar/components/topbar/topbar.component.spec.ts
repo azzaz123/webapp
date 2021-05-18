@@ -28,6 +28,9 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -66,6 +69,7 @@ describe('TopbarComponent', () => {
   let featureFlagService: FeatureFlagServiceMock;
   let router: Router;
   let navigator: SearchNavigatorService;
+  let topbarTrackingEventsService: TopbarTrackingEventsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -136,6 +140,11 @@ describe('TopbarComponent', () => {
           EventService,
           SearchQueryStringService,
           QueryStringLocationService,
+          TopbarTrackingEventsService,
+          {
+            provide: AnalyticsService,
+            useValue: MockAnalyticsService,
+          },
         ],
         declarations: [TopbarComponent, CustomCurrencyPipe],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
@@ -157,6 +166,7 @@ describe('TopbarComponent', () => {
     featureFlagService = TestBed.inject(FeatureflagService);
     navigator = TestBed.inject(SearchNavigatorService);
     router = TestBed.inject(Router);
+    topbarTrackingEventsService = TestBed.inject(TopbarTrackingEventsService);
   });
 
   it('should be created', () => {
@@ -300,6 +310,23 @@ describe('TopbarComponent', () => {
         [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone',
         [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
       };
+
+      describe('and the user does not select any suggestion', () => {
+        const MOCK_SEARCH_BOX_ONLY_TEXT_VALUE: SearchBoxValue = {
+          [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone',
+        };
+
+        it('should send click keyboard search button event', () => {
+          const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
+          spyOn(topbarTrackingEventsService, 'trackClickKeyboardSearchButtonEvent');
+
+          searchBox.triggerEventHandler('searchSubmit', MOCK_SEARCH_BOX_ONLY_TEXT_VALUE);
+
+          expect(topbarTrackingEventsService.trackClickKeyboardSearchButtonEvent).toHaveBeenCalledWith(
+            MOCK_SEARCH_BOX_ONLY_TEXT_VALUE.keywords
+          );
+        });
+      });
 
       describe('and the experimental features flag is enabled', () => {
         it('should navigate to the new search page', () => {

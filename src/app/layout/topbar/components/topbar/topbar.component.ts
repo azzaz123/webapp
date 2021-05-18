@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
 
 @Component({
   selector: 'tsl-topbar',
@@ -47,6 +48,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private featureFlagService: FeatureflagService,
     private router: Router,
     private searchNavigator: SearchNavigatorService,
+    private topbarTrackingEventsService: TopbarTrackingEventsService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
@@ -104,6 +106,10 @@ export class TopbarComponent implements OnInit, OnDestroy {
   public onSearchSubmit(searchValue: SearchBoxValue): void {
     // TODO: This can be removed after tests
     const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
+
+    if (!searchValue.category_ids) {
+      this.topbarTrackingEventsService.trackClickKeyboardSearchButtonEvent(searchValue.keywords);
+    }
 
     if (isExperimentalFeaturesEnabled) {
       this.redirectToSearchPage(searchValue);
