@@ -8,6 +8,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { GeolocationNotAvailableError } from '@public/features/search/core/services/errors/geolocation-not-available.error';
 import { LabeledSearchLocation, SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { LocationFilterServiceService } from '@public/features/search/core/services/location-filter-service.service';
+import { GEO_APP_CODE, GEO_APP_ID } from '@shared/geolocation/here-maps/here-maps.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { FILTER_QUERY_PARAM_KEY } from '../../../enums/filter-query-param-key.enum';
@@ -19,9 +20,7 @@ import { LocationFilterParams } from '../interfaces/location-filter-params.inter
 export const SEARCH_BOX_DEBOUNCE_TIME = 500;
 
 export const HERE_MAPS_ENDPOINT = 'https://image.maps.api.here.com/mia/1.6/mapview?';
-export const HERE_MAPS_APP_ID = 'RgPrXX1bXt123UgUFc7B';
-export const HERE_MAPS_APP_CODE = 'HtfX0DsqZ2Y0x-44GfujFA';
-export const HERE_MAPS_CONFIG = `app_id=${HERE_MAPS_APP_ID}&app_code=${HERE_MAPS_APP_CODE}`;
+export const HERE_MAPS_CONFIG = `app_id=${GEO_APP_ID}&app_code=${GEO_APP_CODE}`;
 
 export const HERE_MAPS_PARAMS = (zoom, distance) => `&z=${zoom}&${HERE_MAPS_CONFIG}&w=700&h=270&u=${distance}k`;
 export const HERE_MAPS_COORDINATES = (latitude, longitude) => `&c=${latitude},${longitude}`;
