@@ -115,8 +115,6 @@ export class SearchService {
         this.searchId = searchId;
         this.searchStoreService.setItems(items);
         this.searchStoreService.setHasMore(hasMore);
-
-        console.log('onChangeParameters');
       })
     );
   }
