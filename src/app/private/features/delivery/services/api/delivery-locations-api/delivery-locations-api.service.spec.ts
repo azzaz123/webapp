@@ -6,6 +6,7 @@ import { DeliveryLocationsApiService, DELIVERY_LOCATIONS_API_URL } from './deliv
 
 describe('DeliveryLocationsApiService', () => {
   const postalCode = '08027';
+  const countryISOCode = 'ES';
   let service: DeliveryLocationsApiService;
   let httpMock: HttpTestingController;
 
@@ -22,19 +23,19 @@ describe('DeliveryLocationsApiService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when getting delivery location...', () => {
-    it('should send a petition to get the delivery location', () => {
-      const expectedURL = DELIVERY_LOCATIONS_API_URL(postalCode);
+  describe('when getting delivery location by postal code and country...', () => {
+    it('should send a petition to get the delivery locations', () => {
+      const expectedUrl = `${DELIVERY_LOCATIONS_API_URL}?postal_code=${postalCode}&country_iso_code=${countryISOCode}`;
       let response: DeliveryLocationApi[];
 
-      service.get(postalCode).subscribe((data: DeliveryLocationApi[]) => {
+      service.getByPostalCodeAndCountry(postalCode, countryISOCode).subscribe((data: DeliveryLocationApi[]) => {
         response = data;
       });
-      const req: TestRequest = httpMock.expectOne(expectedURL);
-      req.flush([MOCK_DELIVERY_LOCATION]);
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush([MOCK_DELIVERY_LOCATION, MOCK_DELIVERY_LOCATION]);
 
-      expect(response).toEqual([MOCK_DELIVERY_LOCATION]);
-      expect(req.request.url).toEqual(expectedURL);
+      expect(response).toEqual([MOCK_DELIVERY_LOCATION, MOCK_DELIVERY_LOCATION]);
+      expect(req.request.urlWithParams).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');
     });
   });
