@@ -32,7 +32,7 @@ describe('TopbarTrackingEventsService', () => {
     const searchText = 'searchText';
 
     const event: AnalyticsEvent<ClickKeyboardSearchButton> = {
-      name: ANALYTICS_EVENT_NAMES.ClickItemCard,
+      name: ANALYTICS_EVENT_NAMES.ClickKeyboardSearchButton,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.Search,
