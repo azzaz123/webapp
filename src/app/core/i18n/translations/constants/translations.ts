@@ -114,6 +114,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DELIVERY_ADDRESS_PHONE_MISSMATCH_LOCATION_ERROR]: $localize`:@@address_view_all_users_form_textfield_phone_missmatch_location_inline_error:The contact number must be from the country you are located.`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR]: $localize`:@@address_view_all_users_form_textfield_postalcode_missmatch_location_inline_error:The ZIP code must be from the country you are located`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR]: $localize`:@@delivery_address_postal_code_not_allowed_error:Postal code not accepted`,
+  [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR]: $localize`:@@delivery_address_invalid_postal_code_error:This postal code isn't valid`,
   [TRANSLATION_KEY.IMAGE_UPLOADED]: $localize`:@@web_image_uploaded:Image uploaded!`,
   [TRANSLATION_KEY.SUGGESTED_CATEGORY]: $localize`:@@web_suggested_category:It seems that your product belongs to another category, so we’ve changed it.`,
   [TRANSLATION_KEY.DELETE_BILLING_INFO]: $localize`:@@web_delete_billing_info:Your billing info has been deleted`,

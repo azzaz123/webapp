@@ -2,8 +2,8 @@
 
 .DeliveryAddress {
   &__form {
-    input {
-      &.ng-dirty.ng-invalid {
+    &__input {
+      &--invalid {
         border: 1px solid $negative-main !important;
       }
     }
