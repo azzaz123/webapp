@@ -73,14 +73,6 @@ import { QueryStringLocationService } from '@core/search/query-string-location.s
     SlugsUtilService,
     MomentCalendarSpecService,
     ReportService,
-    /*   {
-      provide: FILTER_PARAMETER_STORE_TOKEN,
-      useClass: FilterParameterStoreService,
-    },
-    {
-      provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
-      useClass: FilterParameterStoreService,
-    }, */
     SearchNavigatorService,
     SearchQueryStringService,
     QueryStringLocationService,
