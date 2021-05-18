@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { GeolocationService, MAPS_PLACES_API, MAPS_PROVIDER, MAPS_PLACE_API, MAPS_REVERSE_GEOCODE } from './geolocation.service';
-import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
 import { ItemPlace } from './geolocation-response.interface';
 import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { Coordinate } from './address-response.interface';
 import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures.spec';
+import { MOCK_LOCATION_SUGGESTIONS } from '@fixtures/core/geolocation/geolocation-service.fixtures.spec';
 
 let service: GeolocationService;
 let httpMock: HttpTestingController;
@@ -35,10 +35,10 @@ describe('GeolocationService', () => {
 
       service.search(MOCK_CITY).subscribe((r) => (response = r));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(GEOLOCATION_DATA_WEB);
+      req.flush(MOCK_LOCATION_SUGGESTIONS);
 
       expect(req.request.urlWithParams).toEqual(expectedUrl);
-      expect(response).toEqual(GEOLOCATION_DATA_WEB);
+      expect(response).toEqual(MOCK_LOCATION_SUGGESTIONS);
       expect(req.request.method).toBe('GET');
     });
   });
