@@ -3,23 +3,17 @@
         <div class="d-flex align-items-center justify-content-between flex-wrap">
             <div>
                 <div>
-                    <b>
-                        <span i18n="@@web_total">
-                            Total
-                        </span>
-                    </b>
+                    <b><span i18n="@@web_total">Total</span></b>
                 </div>
                 <div class="SubscriptionPurchaseFooter__amount">
-                    <b>
-                        {{subscription.trial_available ? "0,00" : selectedTier.price}}{{selectedTier.currency}}
-                    </b>
+                    <b>{{subscription.trial_available ? "0,00" : selectedTier.price}}{{selectedTier.currency}}</b>
                 </div>
                 <div class="SubscriptionPurchaseFooter__description">
                     {{descriptionText}}
                 </div>
             </div>
             <tsl-button className="btn btn-primary btn-primary--bold btn--big btn--width" [loading]="isLoading"
-                [disabled]="buttonDisable" (clickButton)="onClickButton()">
+                [disabled]="buttonDisable" (click)="onClickButton()">
                 {{buttonText}}
             </tsl-button>
         </div>

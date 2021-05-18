@@ -25,7 +25,7 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
     this.setButtonText();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes?: SimpleChanges): void {
     if (changes.selectedTier && changes.selectedTier.currentValue) {
       this.setDescriptionText();
     }
@@ -42,6 +42,8 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
   }
 
   public onClickButton(): void {
-    this.buttonPurchaseClick.emit();
+    if (!this.buttonDisable && !this.isLoading) {
+      this.buttonPurchaseClick.emit();
+    }
   }
 }
