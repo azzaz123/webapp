@@ -32,7 +32,7 @@ import {
   HERE_MAPS_PARAMS,
   LocationFilterComponent,
   MAX_FILTER_DISTANCE,
-  SEARCH_BOX_DEBOUNCE_TIME,
+  LOCATION_SEARCH_BOX_DEBOUNCE,
 } from './location-filter.component';
 
 const LATITUDE_MOCK = LatitudeMother.random();
@@ -165,7 +165,7 @@ describe('LocationFilterComponent', () => {
 
       searchBoxInput.nativeElement.value = MOCK_CITY_NAME;
       searchBoxInput.nativeElement.dispatchEvent(new Event('input'));
-      tick(SEARCH_BOX_DEBOUNCE_TIME);
+      tick(LOCATION_SEARCH_BOX_DEBOUNCE);
 
       expect(geolocationService.search).toHaveBeenCalledWith(MOCK_CITY_NAME);
       flush();
@@ -184,7 +184,7 @@ describe('LocationFilterComponent', () => {
 
       searchBoxInput.nativeElement.value = 'Sant Cugat';
       searchBoxInput.nativeElement.dispatchEvent(new Event('input'));
-      tick(SEARCH_BOX_DEBOUNCE_TIME);
+      tick(LOCATION_SEARCH_BOX_DEBOUNCE);
       fixture.detectChanges();
 
       const suggestion = fixture.debugElement.query(By.css('.SearchBox__suggestion'));

@@ -98,15 +98,6 @@ $location-map-height: 270px;
       min-height: 57px;
     }
 
-    .SearchBox__suggestionTitle {
-      font-size: $font-size-m;
-    }
-
-    .SearchBox__suggestionCategory {
-      font-size: $font-size-s;
-      color: $walla-main;
-    }
-
     &.active {
       background-color: $blue-grey-5;
     }

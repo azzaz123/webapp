@@ -17,7 +17,7 @@ import { LocationFilterConfig } from '../interfaces/location-filter-config.inter
 import { LocationFilterParams } from '../interfaces/location-filter-params.interface';
 import { LocationFilterService } from '../services/location-filter.service';
 
-export const SEARCH_BOX_DEBOUNCE_TIME = 500;
+export const LOCATION_SEARCH_BOX_DEBOUNCE = 500;
 
 export const HERE_MAPS_ENDPOINT = 'https://image.maps.api.here.com/mia/1.6/mapview?';
 export const HERE_MAPS_CONFIG = `app_id=${GEO_APP_ID}&app_code=${GEO_APP_CODE}`;
@@ -203,7 +203,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   public search = (text$: Observable<string>) =>
     text$.pipe(
-      debounceTime(SEARCH_BOX_DEBOUNCE_TIME),
+      debounceTime(LOCATION_SEARCH_BOX_DEBOUNCE),
       distinctUntilChanged(),
       switchMap((location) => this.getLocationSuggestions(location))
     );
