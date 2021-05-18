@@ -1,11 +1,11 @@
 <tsl-third-voice-message *ngIf="!shortMessage && !item.isMine" [message]="message">
-  <span i18n="@@thirdVoiceReviewFirstMessage">You have found what you were looking for. Great!!&nbsp;</span>
+  <span i18n="@@web_third_voice_review_first_message">You have found what you were looking for. Great!!&nbsp;</span>
 </tsl-third-voice-message>
 
 <tsl-third-voice-message *ngIf="!shortMessage" [message]="message">
-  <span i18n="@@thirdVoiceReviewSecondMessage">How did it go? Review your experience with this user will help our community</span>
+  <span i18n="@@web_third_voice_review_second_message">How did it go? Review your experience with this user will help our community</span>
   <tsl-third-voice-button *ngIf="isReview()" [message]="message" [user]="user" [item]="item"
                           class="text-center"></tsl-third-voice-button>
 </tsl-third-voice-message>
 
-<span *ngIf="shortMessage" i18n="@@thirdVoiceRateMessage">How did it go? Take a moment to rate the experience, your opinion will help other people</span>
+<span *ngIf="shortMessage" i18n="@@web_third_voice_rate_message">How did it go? Take a moment to rate the experience, your opinion will help other people</span>

@@ -39,6 +39,7 @@ Object.defineProperty(window, 'appboy', { value: GLOBAL_MOCKS.MOCK_APPBOY });
 Object.defineProperty(window, 'apstag', { value: GLOBAL_MOCKS.MOCK_APSTAG });
 Object.defineProperty(window, 'Criteo', { value: GLOBAL_MOCKS.MOCK_CRITEO });
 Object.defineProperty(window, 'Didomi', { value: GLOBAL_MOCKS.MOCK_DIDOMI });
+Object.defineProperty(window, 'IntersectionObserver', { value: GLOBAL_MOCKS.MockIntersectionObserver, writable: true });
 Object.defineProperty(window, 'fbq', {
   value: GLOBAL_MOCKS.MOCK_FBQ,
   writable: true,
