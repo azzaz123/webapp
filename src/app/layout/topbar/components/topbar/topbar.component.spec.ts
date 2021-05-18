@@ -29,6 +29,7 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -325,7 +326,7 @@ describe('TopbarComponent', () => {
         it('should redirect to the old search page', () => {
           const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
           const { category_ids, keywords } = MOCK_SEARCH_BOX_VALUE;
-          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.categoryId}=${category_ids}&${FILTER_QUERY_PARAM_KEY.keywords}=${keywords}`;
+          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.categoryId}=${category_ids}&${FILTER_QUERY_PARAM_KEY.keywords}=${keywords}&${FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE}=${FILTERS_SOURCE.SEARCH_BOX}`;
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
           spyOn(router, 'navigate');
 
