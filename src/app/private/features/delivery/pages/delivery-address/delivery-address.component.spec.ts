@@ -14,7 +14,6 @@ import { DeliveryAddressErrorService } from '../../services/address/delivery-add
 import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
-import { DeliveryLocationsStoreService } from '../../services/locations/delivery-locations-store/delivery-locations-store.service';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { FormBuilder } from '@angular/forms';
 import { DeliveryAddressComponent, PREVIOUS_PAGE } from './delivery-address.component';
@@ -45,13 +44,12 @@ import { ChangeCountryConfirmationModalComponent } from '../../modals/change-cou
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 
 describe('DeliveryAddressComponent', () => {
-  const payViewMessageSelector = '.payViewInfoMessage';
+  const payViewMessageSelector = '.DeliveryAddress__form__payViewInfoMessage';
   const countriesDropdownSelector = '#country_iso_code';
   let component: DeliveryAddressComponent;
   let fixture: ComponentFixture<DeliveryAddressComponent>;
   let deliveryAddressService: DeliveryAddressService;
   let deliveryAddressStoreService: DeliveryAddressStoreService;
-  let deliveryLocationsStoreService: DeliveryLocationsStoreService;
   let deliveryAddressErrorService: DeliveryAddressErrorService;
   let deliveryLocationsService: DeliveryLocationsService;
   let deliveryCountriesService: DeliveryCountriesService;
@@ -71,7 +69,6 @@ describe('DeliveryAddressComponent', () => {
         DeliveryCountriesService,
         DeliveryAddressStoreService,
         DeliveryCountriesStoreService,
-        DeliveryLocationsStoreService,
         DeliveryAddressApiService,
         DeliveryCountriesApiService,
         DeliveryLocationsApiService,
@@ -124,7 +121,6 @@ describe('DeliveryAddressComponent', () => {
     deliveryLocationsService = TestBed.inject(DeliveryLocationsService);
     deliveryCountriesService = TestBed.inject(DeliveryCountriesService);
     deliveryAddressStoreService = TestBed.inject(DeliveryAddressStoreService);
-    deliveryLocationsStoreService = TestBed.inject(DeliveryLocationsStoreService);
     deliveryAddressErrorService = TestBed.inject(DeliveryAddressErrorService);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -459,8 +455,8 @@ describe('DeliveryAddressComponent', () => {
       });
     });
 
-    it('should reset the locations store', () => {
-      expect(deliveryLocationsStoreService.deliveryLocations).toStrictEqual([]);
+    it('should reset the locations', () => {
+      expect(component.locations).toStrictEqual([]);
     });
 
     it('should reset the cities', () => {
@@ -474,8 +470,8 @@ describe('DeliveryAddressComponent', () => {
       component.deliveryAddressForm.get('postal_code').markAsDirty();
     });
 
-    it('should reset the locations store', () => {
-      expect(deliveryLocationsStoreService.deliveryLocations).toStrictEqual([]);
+    it('should reset the locations', () => {
+      expect(component.locations).toStrictEqual([]);
     });
 
     it('should reset the cities', () => {
@@ -587,13 +583,10 @@ describe('DeliveryAddressComponent', () => {
       component.deliveryAddressForm.patchValue(MOCK_DELIVERY_ADDRESS);
     });
 
-    describe('and we have the searched locations on the store...', () => {
-      beforeEach(() => {
-        jest
-          .spyOn(deliveryLocationsStoreService, 'deliveryLocations', 'get')
-          .mockReturnValue([MOCK_DELIVERY_LOCATION, MOCK_DELIVERY_LOCATION_ES]);
-      });
+    describe('and we have the searched locations...', () => {
       it('should update the region', () => {
+        component.locations = [MOCK_DELIVERY_LOCATION, MOCK_DELIVERY_LOCATION_ES];
+
         const cityFormControl = component.deliveryAddressForm.get('city');
         cityFormControl.markAsDirty();
         cityFormControl.setValue('Málaga');

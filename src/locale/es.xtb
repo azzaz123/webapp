@@ -1448,7 +1448,6 @@
   <translation id="web_form_field_error">Revisa los campos en rojo</translation>
   <translation id="web_bulk_delete_error">Algunos productos no se han eliminado debido a un error</translation>
   <translation id="web_bulk_reserve_error">Algunos productos no se han reservado debido a un error</translation>
-  <translation id="web_bulk_reserve_error">Algunos productos no se han reservado debido a un error</translation>
   <translation id="web_invoice_cannot_generate_error">Tu factura no se ha podido generar. Intenta de nuevo</translation>
   <translation id="web_invoice_cannot_download_error">Tu factura no se ha podido descargar. Intenta de nuevo</translation>
   <translation id="web_payment_failed_error_title">Algo ha fallado</translation>
