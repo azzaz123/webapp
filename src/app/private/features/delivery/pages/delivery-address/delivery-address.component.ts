@@ -1,16 +1,15 @@
+import { DeliveryAddressFormErrorMessages } from '@private/features/delivery/interfaces/delivery-address/delivery-address-error.interface';
 import { CountryOptionsAndDefault, DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
-import { DeliveryAddressApi, DeliveryAddressError } from '../../interfaces/delivery-address/delivery-address-api.interface';
+import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MappedAddressError, ADDRESS_ERROR_TYPE } from '../../interfaces/delivery-address/delivery-address-error.interface';
-import { DeliveryLocationsStoreService } from '../../services/locations/delivery-locations-store/delivery-locations-store.service';
 import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryAddressErrorService } from '../../services/address/delivery-address-error/delivery-address-error.service';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
-import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { DeliveryLocationApi } from '../../interfaces/delivery-location/delivery-location-api.interface';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -21,10 +20,11 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, map, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DeliveryAddressError } from '../../errors/delivery-address/delivery-address-error';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -47,9 +47,14 @@ export class DeliveryAddressComponent implements OnInit {
   public loading = true;
   public isNewForm = true;
   public isCountryEditable = false;
-  public postalCodeErrorMessage: string;
-  public phoneNumberErrorMessage: string;
+  public locations: DeliveryLocationApi[] = [];
   public readonly PREVIOUS_PAGE = PREVIOUS_PAGE;
+  public formErrorMessages: DeliveryAddressFormErrorMessages = {
+    phone_number: '',
+    postal_code: '',
+    street: '',
+    flat_and_floor: '',
+  };
   private subscriptions: Subscription = new Subscription();
   private readonly formSubmittedEventKey = 'formSubmitted';
 
@@ -63,18 +68,16 @@ export class DeliveryAddressComponent implements OnInit {
     private uuidService: UuidService,
     private modalService: NgbModal,
     private deliveryLocationsService: DeliveryLocationsService,
-    private deliveryLocationsStoreService: DeliveryLocationsStoreService,
     private router: Router,
     private deliveryAddressErrorService: DeliveryAddressErrorService,
     private i18nService: I18nService
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.buildForm();
     this.eventService.subscribe(this.formSubmittedEventKey, () => {
       this.onSubmit();
     });
-  }
-
-  ngOnInit() {
     this.clearFormWhenCountryChange();
     this.requestLocationsWhenPostalCodeChange();
     this.updateRegionWhenCityChange();
@@ -109,6 +112,7 @@ export class DeliveryAddressComponent implements OnInit {
     if (this.deliveryAddressForm.valid) {
       this.submitValidForm();
     } else {
+      this.deliveryAddressForm.markAsPending();
       this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
       for (const control in this.deliveryAddressForm.controls) {
         if (this.deliveryAddressForm.controls.hasOwnProperty(control) && !this.deliveryAddressForm.controls[control].valid) {
@@ -177,9 +181,8 @@ export class DeliveryAddressComponent implements OnInit {
     const city = this.deliveryAddressForm.get('city');
 
     const subscription = city.valueChanges.subscribe(() => {
-      const currentDeliveryLocations = this.deliveryLocationsStoreService.deliveryLocations;
-      if (city.dirty && currentDeliveryLocations.length > 1) {
-        const selectedLocation = currentDeliveryLocations.find((location: DeliveryLocationApi) => location.city === city.value);
+      if (city.dirty && this.locations.length > 1) {
+        const selectedLocation = this.locations.find((location: DeliveryLocationApi) => location.city === city.value);
         this.deliveryAddressForm.get('region').setValue(selectedLocation.region);
       }
     });
@@ -246,7 +249,7 @@ export class DeliveryAddressComponent implements OnInit {
     if (generatedError.type === ADDRESS_ERROR_TYPE.FORM) {
       switch (generatedError.formControlName) {
         case 'phone_number':
-          this.phoneNumberErrorMessage = generatedError.translation;
+          this.formErrorMessages.phone_number = generatedError.translation;
       }
     }
   }
@@ -266,22 +269,33 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private getLocationsAndHandlePostalCode(postalCode: string, countryISOCode: string): void {
-    this.deliveryLocationsService.getLocationsByPostalCodeAndCountry(postalCode, countryISOCode).subscribe(
-      (locations: DeliveryLocationApi[]) => {
-        this.mapCitiesAsOptions(locations);
-        this.handleLocationsResponse(locations);
-      },
-      (errors: HttpErrorResponse) => {
-        if (errors.error[0] === 'postal code is not allowed') {
-          this.setIncorrectPostalCodeError(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR);
+    this.deliveryLocationsService
+      .getLocationsByPostalCodeAndCountry(postalCode, countryISOCode)
+      .pipe(
+        tap((locations: DeliveryLocationApi[]) => {
+          this.locations = locations;
+        }),
+        map((locations: DeliveryLocationApi[]) => this.mapCitiesAsOptions(locations))
+      )
+      .subscribe(
+        (cities: IOption[]) => {
+          this.cities = cities;
+          this.handleLocationsResponse(this.locations);
+        },
+        (errors: HttpErrorResponse) => {
+          if (errors.error[0].error_code === 'postal code is not allowed') {
+            this.setIncorrectControlAndShowError('postal_code', TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR);
+          }
+          if (errors.error[0].message.includes('invalid')) {
+            this.setIncorrectControlAndShowError('postal_code', TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR);
+          }
         }
-      }
-    );
+      );
   }
 
   private handleLocationsResponse(locations: DeliveryLocationApi[]): void {
     if (!locations.length) {
-      this.setIncorrectPostalCodeError(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR);
+      this.setIncorrectControlAndShowError('postal_code', TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR);
     }
     if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {
       this.deliveryAddressForm.get('city').setValue(locations[0].city);
@@ -289,10 +303,10 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  private setIncorrectPostalCodeError(translationKey: TRANSLATION_KEY): void {
-    this.deliveryAddressForm.get('postal_code').setErrors(null);
-    this.deliveryAddressForm.get('postal_code').setErrors({ incorrect: true });
-    this.postalCodeErrorMessage = this.i18nService.translate(translationKey);
+  private setIncorrectControlAndShowError(formControl: string, translationKey: TRANSLATION_KEY): void {
+    this.deliveryAddressForm.get(formControl).setErrors(null);
+    this.deliveryAddressForm.get(formControl).setErrors({ incorrect: true });
+    this.formErrorMessages[formControl] = this.i18nService.translate(translationKey);
   }
 
   private patchFormValues(): void {
@@ -315,13 +329,13 @@ export class DeliveryAddressComponent implements OnInit {
   private initializeCitiesAsOptions(postalCode: string, countryISOCode: string): Observable<DeliveryLocationApi[]> {
     return this.deliveryLocationsService.getLocationsByPostalCodeAndCountry(postalCode, countryISOCode).pipe(
       tap((locations: DeliveryLocationApi[]) => {
-        this.mapCitiesAsOptions(locations);
+        this.cities = this.mapCitiesAsOptions(locations);
       })
     );
   }
 
-  private mapCitiesAsOptions(locations: DeliveryLocationApi[]): void {
-    this.cities = locations.map((location: DeliveryLocationApi) => {
+  private mapCitiesAsOptions(locations: DeliveryLocationApi[]): IOption[] {
+    return locations.map((location: DeliveryLocationApi) => {
       return { label: location.city, value: location.city };
     });
   }
@@ -342,7 +356,7 @@ export class DeliveryAddressComponent implements OnInit {
 
   private resetCitiesAndLocations(): void {
     this.cities = [];
-    this.deliveryLocationsStoreService.deliveryLocations = [];
+    this.locations = [];
   }
 
   private buildForm(): void {
@@ -350,12 +364,12 @@ export class DeliveryAddressComponent implements OnInit {
       id: this.uuidService.getUUID(),
       country_iso_code: ['', [Validators.required]],
       region: ['', [Validators.required]],
-      full_name: ['', [Validators.required, whitespaceValidator]],
-      street: ['', [Validators.required, whitespaceValidator]],
+      full_name: ['', [Validators.required]],
+      street: ['', [Validators.required]],
       flat_and_floor: [''],
-      postal_code: ['', [Validators.required, whitespaceValidator]],
+      postal_code: ['', [Validators.required]],
       city: ['', [Validators.required]],
-      phone_number: ['', [Validators.required, whitespaceValidator]],
+      phone_number: ['', [Validators.required]],
     });
   }
 }
