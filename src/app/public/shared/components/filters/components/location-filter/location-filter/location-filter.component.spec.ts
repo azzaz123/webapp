@@ -40,7 +40,6 @@ const LONGITUDE_MOCK = LongitudeMother.random();
 const DISTANCE_MOCK = 10000;
 
 const MOCK_CITY_NAME = 'Rubí';
-const MOCK_CITY_NAME_2 = 'El Clot';
 
 const MOCK_LOCATION_FILTER_PARAMS: FilterParameter[] = [
   { key: FILTER_QUERY_PARAM_KEY.latitude, value: `${LATITUDE_MOCK}` },
@@ -249,6 +248,60 @@ describe('LocationFilterComponent', () => {
       expect(locationFilterService.setUserLocation).toHaveBeenCalledWith({
         ...MOCK_SEARCH_LOCATION,
         label: MOCK_CITY_NAME,
+      });
+    });
+
+    it('should update the bubble label with the new location', (done) => {
+      component.componentLocation = MOCK_SEARCH_LOCATION;
+      component.locationName = MOCK_CITY_NAME;
+      component.handleApply();
+
+      component.onApplyLocation().subscribe(() => {
+        expect(component.label).toEqual(MOCK_CITY_NAME);
+      });
+      done();
+    });
+
+    it('should not mark the bubble as active', (done) => {
+      component.componentLocation = MOCK_SEARCH_LOCATION;
+      component.locationName = MOCK_CITY_NAME;
+      component.handleApply();
+
+      component.onApplyLocation().subscribe(() => {
+        expect(component.bubbleActive).toBe(false);
+      });
+      done();
+    });
+
+    describe('if the distance filter is already applied', () => {
+      const MOCK_DISTANCE = 5;
+
+      it('should apply the distance filter sending the distance in meters', () => {
+        spyOn(component.valueChange, 'emit');
+        component.componentLocation = MOCK_SEARCH_LOCATION;
+        component.locationName = MOCK_CITY_NAME;
+        component.componentDistance = MOCK_DISTANCE;
+
+        component.handleApply();
+
+        expect(component.valueChange.emit).toHaveBeenCalledWith([
+          { key: FILTER_QUERY_PARAM_KEY.latitude, value: `${MOCK_SEARCH_LOCATION.latitude}` },
+          { key: FILTER_QUERY_PARAM_KEY.longitude, value: `${MOCK_SEARCH_LOCATION.longitude}` },
+          { key: FILTER_QUERY_PARAM_KEY.distance, value: `${MOCK_DISTANCE * DISTANCE_FACTOR}` },
+        ]);
+      });
+
+      it('should mark the bubble as active', (done) => {
+        component.componentLocation = MOCK_SEARCH_LOCATION;
+        component.locationName = MOCK_CITY_NAME;
+        component.componentDistance = MOCK_DISTANCE;
+
+        component.handleApply();
+
+        component.onApplyLocation().subscribe(() => {
+          expect(component.bubbleActive).toBe(true);
+        });
+        done();
       });
     });
   });

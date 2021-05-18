@@ -190,18 +190,12 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     const { latitude, longitude } = this.componentLocation;
     const label = this.locationName;
     const distance = this.componentDistance;
+    const distanceValue = distance && +distance !== MAX_FILTER_DISTANCE ? `${distance * DISTANCE_FACTOR}` : null;
     const parameters: FilterParameter[] = [
       { key: this.config.mapKey.latitude, value: latitude },
       { key: this.config.mapKey.longitude, value: longitude },
-      { key: this.config.mapKey.distance, value: null },
+      { key: this.config.mapKey.distance, value: distanceValue },
     ];
-
-    if (distance && +distance !== MAX_FILTER_DISTANCE) {
-      parameters.push({
-        key: this.config.mapKey.distance,
-        value: `${distance * DISTANCE_FACTOR}`,
-      });
-    }
 
     this.locationService.setUserLocation({ latitude, longitude, label });
     this.valueChange.emit(parameters);
