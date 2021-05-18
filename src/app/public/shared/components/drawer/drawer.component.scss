@@ -15,13 +15,6 @@ $actions-height: 60px;
     &--unset-overflow {
       overflow-y: unset;
     }
-
-    @include media-breakpoint-down(md) {
-      top: 0 !important;
-      right: 0;
-      left: 0;
-      max-width: unset;
-    }
   }
 
   &__actions {
