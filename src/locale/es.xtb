@@ -1242,7 +1242,7 @@
   <translation id="web_subscription_benefit_title_branding">Potencia tu marca</translation>
   <translation id="web_subscription_benefit_title_limit">Define tu límite de publicación</translation>
   <translation id="web_wallapop_pro_subscription_title">Impulsa tu negocio online con Wallapop PRO</translation>
-  <translation id="web_wallapop_pro_subscription_sub_title">Elige una suscripción para llevar tus ventas al siguiente nivel</translation>
+  <translation id="web_wallapop_pro_subscription_subtitle">Elige una suscripción para llevar tus ventas al siguiente nivel</translation>
   <translation id="web_your_current_plan">Tu plan actual</translation>
   <translation id="web_toast_cardealer_error_contact">¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.</translation>
   <translation id="web_catalog_components_item_105">Inactivo</translation>
@@ -1410,19 +1410,15 @@
   <translation id="web_wallapop_pro_about">Más información sobre Wallapop PRO</translation>
   <translation id="web_wallapop_pro_about_href">https://ayuda.wallapop.com/hc/es-es/sections/360001165358--Qu%C3%A9-es-Wallapop-PRO</translation>
   <translation id="web_start">Probar</translation>
-  <translation id="WallapopProAbout">Más información sobre Wallapop PRO</translation>
-  <translation id="WallapopProAboutHref">https://ayuda.wallapop.com/hc/es-es/sections/360001165358--Qu%C3%A9-es-Wallapop-PRO</translation>
-  <translation id="start">Probar</translation>
-  <translation id="change_subscription">Cambiar suscripción</translation>
-  <translation id="subscription_purchase_subscription_title">Suscripción  <ph name="INTERPOLATION"/></translation>
-  <translation id="tier_selector_title">¿Cuántos artículos quieres publicar?</translation>
-  <translation id="tier_selector_subtitle">Elige el plan que encaje con tus objetivos</translation>
-  <translation id="card_selector_subtitle">Encriptado y seguro</translation>
-  <translation id="monthly_renewal_plan">El plan se renovará mensualmente</translation>
-  <translation id="pay">Pagar</translation>
-  <translation id="after_free_trial">tras la prueba gratis</translation>
-  <translation id="total">Total</translation>
-  <translation id="subscription_purchase_subscription_subtitle">Convierte tus ventas en un auténtico negocio</translation>
-  <translation id="free_days_then_monthly"><ph name="PH"/> days free, then <ph name="PH_1"/><ph name="PH_2"/>/month</translation>
-  <translation id="price_after_free_days"><ph name="PH"/><ph name="PH_1"/>/mes al terminar la prueba gratuita</translation>
+  <translation id="web_change_subscription">Cambiar suscripción</translation>
+  <translation id="web_subscription_purchase_subscription_title">Suscripción  <ph name="INTERPOLATION"/></translation>
+  <translation id="web_tier_selector_title">¿Cuántos artículos quieres publicar?</translation>
+  <translation id="web_tier_selector_subtitle">Elige el plan que encaje con tus objetivos</translation>
+  <translation id="web_card_selector_subtitle">Encriptado y seguro</translation>
+  <translation id="web_monthly_renewal_plan">El plan se renovará mensualmente</translation>
+  <translation id="web_pay">Pagar</translation>
+  <translation id="web_after_free_trial">tras la prueba gratis</translation>
+  <translation id="web_total">Total</translation>
+  <translation id="web_subscription_purchase_subscription_subtitle">Convierte tus ventas en un auténtico negocio</translation>
+  <translation id="web_price_after_free_days"><ph name="PH"/><ph name="PH_1"/>/mes al terminar la prueba gratuita</translation>
 </translationbundle>

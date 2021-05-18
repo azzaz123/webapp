@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SubscriptionResponse, SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-subscription-tier-selector',
@@ -7,20 +7,18 @@ import { SubscriptionResponse, SubscriptionsResponse, Tier } from '@core/subscri
   styleUrls: ['./subscription-tier-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SubscriptionTierSelectorComponent implements OnInit {
+export class SubscriptionTierSelectorComponent {
   @Input() subscription: SubscriptionsResponse;
   @Input() selectedTier: Tier;
   @Output() changeSelectedTier: EventEmitter<Tier> = new EventEmitter();
 
   constructor() {}
 
-  ngOnInit(): void {}
-
-  onTierSelectedChanged(event: Tier) {
+  public onTierSelectedChanged(event: Tier): void {
     this.changeSelectedTier.emit(event);
   }
 
-  getLimitText(tier: Tier): string {
+  public getLimitText(tier: Tier): string {
     return tier.limit
       ? $localize`:@@web_profile_pages_subscription_325:List up to ${tier.limit} items`
       : $localize`:@@web_profile_pages_subscription_586:List without limits`;

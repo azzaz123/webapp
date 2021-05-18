@@ -33,12 +33,12 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
 
   private setDescriptionText(): void {
     this.descriptionText = this.subscription.trial_available
-      ? $localize`:@@price_after_free_days:${this.selectedTier.price}${this.selectedTier.currency}/month at the end of free trial`
-      : $localize`:@@monthly_renewal_plan:The plan will be renewed monthly`;
+      ? $localize`:@@web_price_after_free_days:${this.selectedTier.price}${this.selectedTier.currency}/month at the end of free trial`
+      : $localize`:@@web_monthly_renewal_plan:The plan will be renewed monthly`;
   }
 
   private setButtonText(): void {
-    this.buttonText = this.subscription.trial_available ? $localize`:@@startFreeTrial:Start free trial` : $localize`:@@pay:Pay`;
+    this.buttonText = this.subscription.trial_available ? $localize`:@@web_start_free_trial:Start free trial` : $localize`:@@web_pay:Pay`;
   }
 
   public onClickButton(): void {

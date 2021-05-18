@@ -345,7 +345,6 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_Fsf2JK1vCkSx6g',
-        limit: -1,
         price: 129.99,
         currency: '€',
       },
@@ -382,7 +381,6 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_Fsew7d8gFnVD9V',
-        limit: -1,
         price: 199.99,
         currency: '€',
       },
@@ -419,7 +417,7 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_FWuHrLv9WislLd',
-        limit: -1,
+
         price: 69.99,
         currency: '€',
       },
@@ -457,7 +455,7 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_FWuHrLv9WislLd',
-        limit: -1,
+
         price: 69.99,
         currency: '€',
       },
@@ -497,7 +495,6 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY: SubscriptionsResponse[] = 
       },
       {
         id: 'plan_Fsf2JK1vCkSx6g',
-        limit: -1,
         price: 129.99,
         currency: '€',
       },
@@ -534,7 +531,6 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY: SubscriptionsResponse[] = 
       },
       {
         id: 'plan_Fsew7d8gFnVD9V',
-        limit: -1,
         price: 199.99,
         currency: '€',
       },
@@ -571,7 +567,6 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY: SubscriptionsResponse[] = 
       },
       {
         id: 'plan_FWuHrLv9WislLd',
-        limit: -1,
         price: 69.99,
         currency: '€',
       },
@@ -611,7 +606,6 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE: SubscriptionsResponse[] = 
       },
       {
         id: 'plan_Fsf2JK1vCkSx6g',
-        limit: -1,
         price: 129.99,
         currency: '€',
       },
@@ -648,7 +642,6 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE: SubscriptionsResponse[] = 
       },
       {
         id: 'plan_Fsew7d8gFnVD9V',
-        limit: -1,
         price: 199.99,
         currency: '€',
       },
@@ -685,7 +678,6 @@ export const MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE: SubscriptionsResponse[] = 
       },
       {
         id: 'plan_FWuHrLv9WislLd',
-        limit: -1,
         price: 69.99,
         currency: '€',
       },
@@ -725,7 +717,6 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_Fsf2JK1vCkSx6g',
-        limit: -1,
         price: 129.99,
         currency: '€',
       },
@@ -762,7 +753,6 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_Fsew7d8gFnVD9V',
-        limit: -1,
         price: 199.99,
         currency: '€',
       },
@@ -799,7 +789,6 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_FWuHrLv9WislLd',
-        limit: -1,
         price: 69.99,
         currency: '€',
       },
@@ -837,7 +826,6 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_FWuHrLv9WislLd',
-        limit: -1,
         price: 69.99,
         currency: '€',
       },
@@ -877,7 +865,6 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_Fsf2JK1vCkSx6g',
-        limit: -1,
         price: 129.99,
         currency: '€',
       },
@@ -917,7 +904,6 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_Fsew7d8gFnVD9V',
-        limit: -1,
         price: 199.99,
         currency: '€',
       },
@@ -957,7 +943,7 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_FWuHrLv9WislLd',
-        limit: -1,
+
         price: 69.99,
         currency: '€',
       },
@@ -1005,7 +991,6 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_Fsf2JK1vCkSx6g',
-        limit: -1,
         price: 129.99,
         currency: '€',
       },
@@ -1045,7 +1030,6 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_Fsew7d8gFnVD9V',
-        limit: -1,
         price: 199.99,
         currency: '€',
       },
@@ -1085,7 +1069,6 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_FWuHrLv9WislLd',
-        limit: -1,
         price: 69.99,
         currency: '€',
       },
@@ -1133,7 +1116,6 @@ export const MAPPED_SUBSCRIPTIONS_WITH_INAPP: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_Fsf2JK1vCkSx6g',
-        limit: -1,
         price: 129.99,
         currency: '€',
       },
@@ -1173,7 +1155,6 @@ export const MAPPED_SUBSCRIPTIONS_WITH_INAPP: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_Fsew7d8gFnVD9V',
-        limit: -1,
         price: 199.99,
         currency: '€',
       },
@@ -1249,7 +1230,6 @@ export const FREE_TRIAL_AVAILABLE_SUBSCRIPTION: SubscriptionsResponse = {
     },
     {
       id: 'plan_FWuHrLv9WislLd',
-      limit: -1,
       price: 69.99,
       currency: '€',
     },
