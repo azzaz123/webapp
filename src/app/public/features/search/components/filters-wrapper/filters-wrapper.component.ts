@@ -88,7 +88,7 @@ export class FiltersWrapperComponent {
   }
 
   public drawerChange(values: FilterParameter[]): void {
-    this.drawerStore.upsertParameters(values, FILTERS_SOURCE.DEFAULT_FILTERS);
+    this.drawerStore.upsertParameters(values);
   }
 
   public bubbleOpenStateChange(isOpen: boolean): void {

@@ -1,5 +1,4 @@
 import { InjectionToken } from '@angular/core';
-import { FILTER_SOURCE } from '@public/features/search/core/services/enums/filter-source.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { Subject } from 'rxjs';
 
@@ -8,7 +7,6 @@ export const FILTER_PARAMETER_DRAFT_STORE_TOKEN = new InjectionToken<string>('fi
 
 export class FilterParameterStoreService {
   private static INITIAL_PARAMETERS: FilterParameter[] = [];
-  private static filterSource: FILTER_SOURCE;
 
   private parameters: FilterParameter[] = [];
   private parametersSubject = new Subject<FilterParameter[]>();
@@ -16,10 +14,6 @@ export class FilterParameterStoreService {
 
   public getParameters(): FilterParameter[] {
     return this.parameters;
-  }
-
-  public getFilterSource(): FILTER_SOURCE {
-    return FilterParameterStoreService.filterSource;
   }
 
   public getParametersByKeys(keys: string[]): FilterParameter[] {
@@ -31,10 +25,9 @@ export class FilterParameterStoreService {
     this.parametersSubject.next(parameters.filter((parameter) => parameter.value));
   }
 
-  public upsertParameters(parameters: FilterParameter[], filterSource: FILTER_SOURCE): void {
+  public upsertParameters(parameters: FilterParameter[]): void {
     const mergedParameters = this.mergeParameters(parameters, this.getParameters());
     this.setParameters(mergedParameters);
-    this.setFilterResource(filterSource);
   }
 
   public removeParameters(parameters: FilterParameter[]): void {
@@ -47,10 +40,6 @@ export class FilterParameterStoreService {
 
   public clear(): void {
     this.parametersSubject.next(FilterParameterStoreService.INITIAL_PARAMETERS);
-  }
-
-  private setFilterResource(filterSource: FILTER_SOURCE) {
-    FilterParameterStoreService.filterSource = filterSource;
   }
 
   private mergeParameters(newParameters: FilterParameter[], oldParameters: FilterParameter[]): FilterParameter[] {
