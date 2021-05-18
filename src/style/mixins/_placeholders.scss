@@ -5,12 +5,19 @@
 
 @mixin TextPlaceholder {
   @include PlaceholderContent;
-  height: 12px;
+  min-height: 12px;
   border-radius: 3px;
   width: 100%;
   &--half {
     width: 50%;
   }
+}
+
+@mixin AvatarPlaceholder {
+  @include PlaceholderContent;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 100%;
 }
 
 @mixin ImagePlaceholder {

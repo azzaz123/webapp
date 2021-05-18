@@ -5,6 +5,10 @@
   height: 38px;
   margin: $spacing-l 0;
 
+  &--marginless {
+    margin: 0;
+  }
+
   div {
     margin-right: $spacing-xl;
     @media (max-width: 768px) {
