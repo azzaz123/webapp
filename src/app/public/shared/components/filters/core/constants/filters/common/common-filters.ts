@@ -78,7 +78,14 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
     },
     units: 'km',
     range: [1, 500],
-    stepsArray: [{ value: 1 }, { value: 5 }, { value: 10 }, { value: 30 }, { value: 50 }, { value: 100 }, { value: 200 }, { value: 500 }],
+    stepsConfig: [
+      { range: [1, 4], step: 4 },
+      { range: [5, 9], step: 5 },
+      { range: [10, 49], step: 20 },
+      { range: [50, 99], step: 50 },
+      { range: [100, 199], step: 100 },
+      { range: [200, 500], step: 300 },
+    ],
     mapZoomValue: [
       { distance: 1, zoom: 13 },
       { distance: 5, zoom: 11 },
