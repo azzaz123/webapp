@@ -11,7 +11,6 @@ import { DeliveryLocationsService } from '../../services/locations/delivery-loca
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { whitespaceValidator } from '@core/form-validators/formValidators.func';
-import { postalCodeValidator } from '@core/form-validators/postalCodeValidator.func';
 import { DeliveryLocationApi } from '../../interfaces/delivery-location/delivery-location-api.interface';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -354,7 +353,7 @@ export class DeliveryAddressComponent implements OnInit {
       full_name: ['', [Validators.required, whitespaceValidator]],
       street: ['', [Validators.required, whitespaceValidator]],
       flat_and_floor: [''],
-      postal_code: ['', [Validators.required, whitespaceValidator, postalCodeValidator]],
+      postal_code: ['', [Validators.required, whitespaceValidator]],
       city: ['', [Validators.required]],
       phone_number: ['', [Validators.required, whitespaceValidator]],
     });
