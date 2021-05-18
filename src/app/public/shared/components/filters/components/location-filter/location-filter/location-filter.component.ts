@@ -28,6 +28,7 @@ export const HERE_MAPS_COORDINATES = (latitude, longitude) => `&c=${latitude},${
 
 export const DISTANCE_FACTOR = 1000;
 export const MAX_FILTER_DISTANCE = 500;
+export const DEFAULT_ZOOM_VALUE = 13;
 
 @Component({
   selector: 'tsl-location-filter',
@@ -193,17 +194,13 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     const parameters: FilterParameter[] = [
       { key: this.config.mapKey.latitude, value: latitude },
       { key: this.config.mapKey.longitude, value: longitude },
+      { key: this.config.mapKey.distance, value: null },
     ];
 
     if (distance && +distance !== MAX_FILTER_DISTANCE) {
       parameters.push({
         key: this.config.mapKey.distance,
         value: `${distance * DISTANCE_FACTOR}`,
-      });
-    } else {
-      parameters.push({
-        key: this.config.mapKey.distance,
-        value: null,
       });
     }
 
@@ -241,17 +238,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   private updateLocationMap(location: SearchLocation, distance: number): void {
     const { latitude, longitude } = location;
-    let zoom = 13;
-
-    if (distance > 1 && distance <= 5) {
-      zoom = 11;
-    } else if (distance > 5 && distance <= 10) {
-      zoom = 10;
-    } else if (distance > 10 && distance <= 50) {
-      zoom = 8;
-    } else if (distance > 50 && distance <= 500) {
-      zoom = 6;
-    }
+    const zoom = this.config.mapZoomValue.find((v) => v.distance === distance).zoom || DEFAULT_ZOOM_VALUE;
 
     this.mapURL = `${HERE_MAPS_ENDPOINT}${HERE_MAPS_PARAMS(zoom, distance)}${HERE_MAPS_COORDINATES(latitude, longitude)}`;
   }
