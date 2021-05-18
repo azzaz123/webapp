@@ -24,7 +24,7 @@ import { FilterParameter } from '../../../interfaces/filter-parameter.interface'
 import { FILTER_VARIANT } from '../../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../../abstract-filter/abstract-filter.module';
 import { GeolocationNotAvailableError } from '../errors/geolocation-not-available.error';
-import { LocationFilterService } from '../services/location-filter-service.service';
+import { LocationFilterService } from '../services/location-filter.service';
 import {
   DISTANCE_FACTOR,
   HERE_MAPS_COORDINATES,
