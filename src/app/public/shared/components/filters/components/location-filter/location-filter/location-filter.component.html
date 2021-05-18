@@ -16,13 +16,13 @@
             <div class="LocationFilter__map">
                 <button class="LocationFilter__geolocation p-0 d-flex align-items-center justify-content-center"
                     (click)="requestBrowserLocation()" [disabled]="loadingGeolocation">
-                    <tsl-svg-icon
-                        src="/assets/icons/filters/location/geolocation_icon.svg" width="36" height="36">
+                    <tsl-svg-icon src="/assets/icons/filters/location/geolocation_icon.svg" width="36" height="36">
                     </tsl-svg-icon>
                 </button>
                 <img [src]="mapURL" class="LocationFilter__image w-100 my-3" />
                 <div *ngIf="loadingGeolocation"
                     class="LocationFilter__loading w-100 h-100 d-flex align-items-center justify-content-center">
+                    <img width="50" height="50" src="/assets/images/spinner.gif" />
                 </div>
             </div>
 
