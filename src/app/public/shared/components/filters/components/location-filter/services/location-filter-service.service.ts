@@ -17,7 +17,7 @@ const GEOLOCATION_OPTIONS: PositionOptions = {
 };
 
 @Injectable()
-export class LocationFilterServiceService {
+export class LocationFilterService {
   constructor(private cookieService: CookieService, private geolocationService: GeolocationService) {}
 
   public setUserLocation(location: LabeledSearchLocation): void {

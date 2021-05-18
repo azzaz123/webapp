@@ -24,7 +24,7 @@ import { FilterParameter } from '../../../interfaces/filter-parameter.interface'
 import { FILTER_VARIANT } from '../../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../../abstract-filter/abstract-filter.module';
 import { GeolocationNotAvailableError } from '../errors/geolocation-not-available.error';
-import { LocationFilterServiceService } from '../services/location-filter-service.service';
+import { LocationFilterService } from '../services/location-filter-service.service';
 import {
   DISTANCE_FACTOR,
   HERE_MAPS_COORDINATES,
@@ -73,7 +73,7 @@ describe('LocationFilterComponent', () => {
   let fixture: ComponentFixture<LocationFilterTestComponent>;
   let debugElement: DebugElement;
   let geolocationService: GeolocationService;
-  let locationFilterService: LocationFilterServiceService;
+  let locationFilterService: LocationFilterService;
   let toastService: ToastService;
 
   const config = COMMON_FILTERS.find((config) => config.id === COMMON_CONFIGURATION_ID.LOCATION);
@@ -102,7 +102,7 @@ describe('LocationFilterComponent', () => {
           useClass: MockToastService,
         },
         {
-          provide: LocationFilterServiceService,
+          provide: LocationFilterService,
           useClass: MockLocationFilterService,
         },
         {
@@ -119,7 +119,7 @@ describe('LocationFilterComponent', () => {
     debugElement = fixture.debugElement;
     component = debugElement.query(By.directive(LocationFilterComponent)).componentInstance;
     geolocationService = TestBed.inject(GeolocationService);
-    locationFilterService = TestBed.inject(LocationFilterServiceService);
+    locationFilterService = TestBed.inject(LocationFilterService);
     toastService = TestBed.inject(ToastService);
     testComponent.config = config;
     fixture.detectChanges();

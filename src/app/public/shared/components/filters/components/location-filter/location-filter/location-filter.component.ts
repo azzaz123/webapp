@@ -15,7 +15,7 @@ import { AbstractFilter } from '../../abstract-filter/abstract-filter';
 import { GeolocationNotAvailableError } from '../errors/geolocation-not-available.error';
 import { LocationFilterConfig } from '../interfaces/location-filter-config.interface';
 import { LocationFilterParams } from '../interfaces/location-filter-params.interface';
-import { LocationFilterServiceService } from '../services/location-filter-service.service';
+import { LocationFilterService } from '../services/location-filter-service.service';
 
 export const SEARCH_BOX_DEBOUNCE_TIME = 500;
 
@@ -61,7 +61,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   constructor(
     private geolocationService: GeolocationService,
-    private locationService: LocationFilterServiceService,
+    private locationService: LocationFilterService,
     private toastService: ToastService
   ) {
     super();

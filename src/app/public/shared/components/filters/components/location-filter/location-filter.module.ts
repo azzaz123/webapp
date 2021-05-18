@@ -6,11 +6,11 @@ import { SliderFormModule } from '@shared/form/components/slider/slider-form.mod
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { LocationFilterServiceService } from './services/location-filter-service.service';
+import { LocationFilterService } from './services/location-filter-service.service';
 
 @NgModule({
   declarations: [LocationFilterComponent],
   imports: [AbstractFilterModule, CommonModule, SliderFormModule, NgbTypeaheadModule, FormsModule, ReactiveFormsModule, SvgIconModule],
-  providers: [LocationFilterServiceService],
+  providers: [LocationFilterService],
 })
 export class LocationFilterModule {}
