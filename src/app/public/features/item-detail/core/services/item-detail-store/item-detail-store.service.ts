@@ -48,6 +48,10 @@ export class ItemDetailStoreService {
     );
   }
 
+  public clear(): void {
+    this.itemDetail = null;
+  }
+
   public toggleReservedItem(): Observable<ReserveItemBodyResponse> {
     if (this.itemDetail.item.reserved) {
       return this.unmarkAsReserved();
