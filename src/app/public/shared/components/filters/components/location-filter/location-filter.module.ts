@@ -5,8 +5,8 @@ import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module'
 import { SliderFormModule } from '@shared/form/components/slider/slider-form.module';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LocationFilterServiceService } from '@public/features/search/core/services/location-filter-service.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { LocationFilterServiceService } from './services/location-filter-service.service';
 
 @NgModule({
   declarations: [LocationFilterComponent],

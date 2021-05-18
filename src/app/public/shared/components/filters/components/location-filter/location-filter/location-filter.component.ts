@@ -5,17 +5,17 @@ import { ItemPlace } from '@core/geolocation/geolocation-response.interface';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { Toast } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { GeolocationNotAvailableError } from '@public/features/search/core/services/errors/geolocation-not-available.error';
 import { LabeledSearchLocation, SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
-import { LocationFilterServiceService } from '@public/features/search/core/services/location-filter-service.service';
 import { GEO_APP_CODE, GEO_APP_ID } from '@shared/geolocation/here-maps/here-maps.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { FILTER_QUERY_PARAM_KEY } from '../../../enums/filter-query-param-key.enum';
 import { FilterParameter } from '../../../interfaces/filter-parameter.interface';
 import { AbstractFilter } from '../../abstract-filter/abstract-filter';
+import { GeolocationNotAvailableError } from '../errors/geolocation-not-available.error';
 import { LocationFilterConfig } from '../interfaces/location-filter-config.interface';
 import { LocationFilterParams } from '../interfaces/location-filter-params.interface';
+import { LocationFilterServiceService } from '../services/location-filter-service.service';
 
 export const SEARCH_BOX_DEBOUNCE_TIME = 500;
 

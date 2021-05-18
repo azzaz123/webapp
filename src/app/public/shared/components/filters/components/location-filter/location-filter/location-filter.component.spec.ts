@@ -10,9 +10,7 @@ import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
 import { Toast } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
-import { GeolocationNotAvailableError } from '@public/features/search/core/services/errors/geolocation-not-available.error';
 import { SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
-import { LocationFilterServiceService } from '@public/features/search/core/services/location-filter-service.service';
 import { BubbleComponent } from '@public/shared/components/bubble/bubble.component';
 import { SliderFormModule } from '@shared/form/components/slider/slider-form.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
@@ -25,6 +23,8 @@ import { FILTER_QUERY_PARAM_KEY } from '../../../enums/filter-query-param-key.en
 import { FilterParameter } from '../../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../../abstract-filter/abstract-filter.module';
+import { GeolocationNotAvailableError } from '../errors/geolocation-not-available.error';
+import { LocationFilterServiceService } from '../services/location-filter-service.service';
 import {
   DISTANCE_FACTOR,
   HERE_MAPS_COORDINATES,

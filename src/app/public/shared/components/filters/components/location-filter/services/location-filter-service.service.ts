@@ -7,7 +7,7 @@ import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constan
 import { Observable, of } from 'rxjs';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { map } from 'rxjs/operators';
-import { GeolocationNotAvailableError } from './errors/geolocation-not-available.error';
+import { GeolocationNotAvailableError } from '../errors/geolocation-not-available.error';
 
 // TODO: This should be placed at the location filter level when implemented
 
