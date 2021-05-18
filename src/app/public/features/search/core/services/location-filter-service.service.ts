@@ -11,6 +11,11 @@ import { GeolocationNotAvailableError } from './errors/geolocation-not-available
 
 // TODO: This should be placed at the location filter level when implemented
 
+const GEOLOCATION_OPTIONS: PositionOptions = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+};
+
 @Injectable()
 export class LocationFilterServiceService {
   constructor(private cookieService: CookieService, private geolocationService: GeolocationService) {}
@@ -53,23 +58,21 @@ export class LocationFilterServiceService {
     if (navigator.geolocation) {
       return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
-          (position) => {
+          (position: Position) => {
             const latitude = `${position.coords.latitude}`;
             const longitude = `${position.coords.longitude}`;
+            const location: SearchLocation = { latitude, longitude };
 
-            resolve({ latitude, longitude });
+            resolve(location);
           },
-          (error) => {
-            reject(new GeolocationNotAvailableError(error));
+          (error: PositionError) => {
+            reject(error);
           },
-          {
-            enableHighAccuracy: true,
-            timeout: 5000,
-          }
+          GEOLOCATION_OPTIONS
         );
       });
     } else {
-      throw new GeolocationNotAvailableError(`Your browser doesn't support geolocation`);
+      return Promise.reject(new GeolocationNotAvailableError(`Your browser doesn't support geolocation`));
     }
   }
 

@@ -5,6 +5,7 @@ import { ItemPlace } from '@core/geolocation/geolocation-response.interface';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { Toast } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { GeolocationNotAvailableError } from '@public/features/search/core/services/errors/geolocation-not-available.error';
 import { LabeledSearchLocation, SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { LocationFilterServiceService } from '@public/features/search/core/services/location-filter-service.service';
 import { Observable, of, Subscription } from 'rxjs';
@@ -56,6 +57,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   });
 
   public bubbleActive = false;
+  public loadingGeolocation = false;
 
   constructor(
     private geolocationService: GeolocationService,
@@ -217,19 +219,24 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
       switchMap((location) => this.getLocationSuggestions(location))
     );
 
-  public requestBrowserLocation() {
-    this.locationService.getLocationFromBrowserAPI().then(
-      (searchLocation: SearchLocation) => {
-        this.componentLocation = searchLocation;
-      },
-      (error) => {
-        const toast: Toast = {
-          text: error.message,
-          type: 'error',
-        };
-        this.toastService.show(toast);
-      }
-    );
+  public requestBrowserLocation(): void {
+    this.loadingGeolocation = true;
+
+    this.locationService
+      .getLocationFromBrowserAPI()
+      .then(
+        (searchLocation: SearchLocation) => {
+          this.componentLocation = searchLocation;
+        },
+        (error: PositionError) => {
+          const toast: Toast = {
+            text: error.message,
+            type: 'error',
+          };
+          this.toastService.show(toast);
+        }
+      )
+      .finally(() => (this.loadingGeolocation = false));
   }
 
   private getBubbleLabel(locationName: string, distance: number): string {

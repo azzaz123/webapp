@@ -7,19 +7,23 @@
             <div class="LocationFilter__search">
                 <tsl-svg-icon class="LocationFilter__glass" src="/assets/icons/glass_icon.svg" width="28" height="28">
                 </tsl-svg-icon>
-                <input class="LocationFilter__input py-0 px-5 w-100 form-control" type="text"
+                <input [attr.disabled]="loadingGeolocation || null"
+                    class="LocationFilter__input py-0 px-5 w-100 form-control" type="text"
                     formControlName="locationName" [editable]="false" [ngbTypeahead]="search"
                     [resultTemplate]="locationTemplate" />
             </div>
 
             <div class="LocationFilter__map">
                 <button class="LocationFilter__geolocation p-0 d-flex align-items-center justify-content-center"
-                    (click)="requestBrowserLocation()">
-                    <tsl-svg-icon class="LocationFilter__glass"
+                    (click)="requestBrowserLocation()" [disabled]="loadingGeolocation">
+                    <tsl-svg-icon
                         src="/assets/icons/filters/location/geolocation_icon.svg" width="36" height="36">
                     </tsl-svg-icon>
                 </button>
                 <img [src]="mapURL" class="LocationFilter__image w-100 my-3" />
+                <div *ngIf="loadingGeolocation"
+                    class="LocationFilter__loading w-100 h-100 d-flex align-items-center justify-content-center">
+                </div>
             </div>
 
             <tsl-slider-form formControlName="distance" [stepsArray]="config.stepsArray" [min]="config.range[0]"
