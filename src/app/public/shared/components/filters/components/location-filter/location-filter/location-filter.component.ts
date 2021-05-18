@@ -68,9 +68,24 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(this.onLocationChange().subscribe());
-    this.subscriptions.add(this.onDistanceChange().subscribe());
-    this.subscriptions.add(this.onSelectLocationSuggestion().subscribe());
+    this.subscriptions.add(
+      this.onApplyLocation().subscribe((locationName: string) => {
+        this.locationName = locationName;
+        this.updateBubble(this.locationName, this.currentDistance);
+        this.updateLocationMap(this.currentLocation, this.currentDistance);
+      })
+    );
+    this.subscriptions.add(
+      this.onDistanceChange().subscribe((distance: number) => {
+        this.updateLocationMap(this.componentLocation, distance);
+      })
+    );
+    this.subscriptions.add(
+      this.onSelectLocationSuggestion().subscribe((location: SearchLocation) => {
+        this.componentLocation = location;
+        this.updateLocationMap(this.componentLocation, this.componentDistance);
+      })
+    );
 
     super.ngOnInit();
   }
@@ -145,45 +160,29 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     const distance =
       currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.distance)?.value || MAX_FILTER_DISTANCE * DISTANCE_FACTOR;
 
-    this.currentLocation = { latitude, longitude };
     this.currentDistance = +distance / DISTANCE_FACTOR;
-    this.componentLocation = { latitude, longitude };
     this.componentDistance = +distance / DISTANCE_FACTOR;
+    this.currentLocation = { latitude, longitude };
+    this.componentLocation = { latitude, longitude };
   }
 
-  public onLocationChange() {
+  public onApplyLocation(): Observable<string> {
     return this.currentLocationForm.get('location').valueChanges.pipe(
       filter((location: SearchLocation) => !!location),
       distinctUntilChanged(),
-      switchMap((location: SearchLocation) => this.getLocationLabelFromLatitudeAndLongitude(location)),
-      tap((locationName: string) => (this.locationName = locationName)),
-      tap((locationName: string) => (this.label = this.getBubbleLabel(locationName, this.currentDistance))),
-      tap(() => {
-        const distance = this.currentDistance;
-
-        if (distance && distance === MAX_FILTER_DISTANCE) {
-          this.bubbleActive = false;
-        } else {
-          this.bubbleActive = true;
-        }
-      })
+      switchMap((location: SearchLocation) => this.getLocationLabelFromLatitudeAndLongitude(location))
     );
   }
 
-  public onDistanceChange() {
-    return this.componentLocationForm.get('distance').valueChanges.pipe(
-      distinctUntilChanged(),
-      tap((distance: number) => (this.mapURL = this.getLocationMapURL(this.componentLocation, distance)))
-    );
+  public onDistanceChange(): Observable<number> {
+    return this.componentLocationForm.get('distance').valueChanges.pipe(distinctUntilChanged());
   }
 
-  public onSelectLocationSuggestion() {
+  public onSelectLocationSuggestion(): Observable<LabeledSearchLocation> {
     return this.componentLocationForm.get('locationName').valueChanges.pipe(
-      distinctUntilChanged(),
       filter((locationName) => !!locationName),
-      switchMap((locationName: string) => this.getLatitudeAndLongitudeFromLocationName(locationName)),
-      tap((location: SearchLocation) => (this.componentLocation = location)),
-      tap((location: SearchLocation) => (this.mapURL = this.getLocationMapURL(location, this.currentDistance)))
+      distinctUntilChanged(),
+      switchMap((locationName: string) => this.getLatitudeAndLongitudeFromLocationName(locationName))
     );
   }
 
@@ -227,8 +226,9 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
       .then(
         (searchLocation: SearchLocation) => {
           this.componentLocation = searchLocation;
+          this.updateLocationMap(this.componentLocation, this.componentDistance);
         },
-        (error: PositionError) => {
+        (error: PositionError | GeolocationNotAvailableError) => {
           const toast: Toast = {
             text: error.message,
             type: 'error',
@@ -239,13 +239,34 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
       .finally(() => (this.loadingGeolocation = false));
   }
 
-  private getBubbleLabel(locationName: string, distance: number): string {
-    let label = locationName;
+  private updateLocationMap(location: SearchLocation, distance: number): void {
+    const { latitude, longitude } = location;
+    let zoom = 13;
 
-    if (distance && distance !== MAX_FILTER_DISTANCE) {
-      label = `${distance}km · ${label}`;
+    if (distance > 1 && distance <= 5) {
+      zoom = 11;
+    } else if (distance > 5 && distance <= 10) {
+      zoom = 10;
+    } else if (distance > 10 && distance <= 50) {
+      zoom = 8;
+    } else if (distance > 50 && distance <= 500) {
+      zoom = 6;
     }
-    return label;
+
+    this.mapURL = `${HERE_MAPS_ENDPOINT}${HERE_MAPS_PARAMS(zoom, distance)}${HERE_MAPS_COORDINATES(latitude, longitude)}`;
+  }
+
+  private updateBubble(locationName: string, distance: number): void {
+    let label = locationName;
+    const distanceFilterApplied = distance && distance !== MAX_FILTER_DISTANCE;
+
+    if (distanceFilterApplied) {
+      label = `${distance}km · ${label}`;
+      this.bubbleActive = true;
+    } else {
+      this.bubbleActive = false;
+    }
+    this.label = label;
   }
 
   private getLatitudeAndLongitudeFromLocationName(locationName: string): Observable<LabeledSearchLocation> {
@@ -271,22 +292,5 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
       longitude: `${coordinate.longitude}`,
       label: `${coordinate.name}`,
     };
-  }
-
-  private getLocationMapURL(location: SearchLocation, distance: number): string {
-    const { latitude, longitude } = location;
-    let zoom = 13;
-
-    if (distance > 1 && distance <= 5) {
-      zoom = 11;
-    } else if (distance > 5 && distance <= 10) {
-      zoom = 10;
-    } else if (distance > 10 && distance <= 50) {
-      zoom = 8;
-    } else if (distance > 50 && distance <= 500) {
-      zoom = 6;
-    }
-
-    return `${HERE_MAPS_ENDPOINT}${HERE_MAPS_PARAMS(zoom, distance)}${HERE_MAPS_COORDINATES(latitude, longitude)}`;
   }
 }
