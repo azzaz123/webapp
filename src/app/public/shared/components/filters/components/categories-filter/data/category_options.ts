@@ -2,7 +2,7 @@ import { CategoriesFilterOption } from '@public/shared/components/filters/compon
 
 export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
   {
-    label: $localize`:@@filtersCategoryAllCategories:All categories`,
+    label: $localize`:@@web_filters_category_all_categories:All categories`,
     value: '',
     icon: {
       standard: '/assets/icons/filters/categories/all.svg',
@@ -12,7 +12,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryCars:Cars`,
+    label: $localize`:@@web_filters_category_cars:Cars`,
     value: '100',
     icon: {
       standard: '/assets/icons/filters/categories/car.svg',
@@ -22,7 +22,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryMotorbike:Motorbike`,
+    label: $localize`:@@web_filters_category_motorbike:Motorbike`,
     value: '14000',
     icon: {
       standard: '/assets/icons/filters/categories/motorbike.svg',
@@ -32,7 +32,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryMotorsNAccessories:Motors & Accessories`,
+    label: $localize`:@@web_filters_category_motors_n_accessories:Motors & Accessories`,
     value: '12800',
     icon: {
       standard: '/assets/icons/filters/categories/helmet.svg',
@@ -42,7 +42,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryFashion:Fashion & Accessories`,
+    label: $localize`:@@web_filters_category_fashion:Fashion & Accessories`,
     value: '12465',
     icon: {
       standard: '/assets/icons/filters/categories/t-shirt.svg',
@@ -52,7 +52,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryRealEstate:Real Estate`,
+    label: $localize`:@@web_filters_category_real_estate:Real Estate`,
     value: '200',
     icon: {
       standard: '/assets/icons/filters/categories/house.svg',
@@ -62,7 +62,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryTVAudioNCameras:TV, Audio & Cameras`,
+    label: $localize`:@@web_filters_category_t_v_audio_n_cameras:TV, Audio & Cameras`,
     value: '12545',
     icon: {
       standard: '/assets/icons/filters/categories/tv.svg',
@@ -72,7 +72,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryCellPhonesNAccessories:Cell Phones & Accessories`,
+    label: $localize`:@@web_filters_category_cell_phones_n_accessories:Cell Phones & Accessories`,
     value: '16000',
     icon: {
       standard: '/assets/icons/filters/categories/phone.svg',
@@ -82,7 +82,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryComputersNElectronics:Computers & Electronics`,
+    label: $localize`:@@web_filters_category_computers_n_electronics:Computers & Electronics`,
     value: '15000',
     icon: {
       standard: '/assets/icons/filters/categories/pc.svg',
@@ -92,7 +92,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategorySportsNLeisure:Sports & Leisure`,
+    label: $localize`:@@web_filters_category_sports_n_leisure:Sports & Leisure`,
     value: '12579',
     icon: {
       standard: '/assets/icons/filters/categories/ball.svg',
@@ -102,7 +102,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryBikes:Bikes`,
+    label: $localize`:@@web_filters_category_bikes:Bikes`,
     value: '17000',
     icon: {
       standard: '/assets/icons/filters/categories/bike.svg',
@@ -112,7 +112,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryGamesNConsoles:Games & Consoles`,
+    label: $localize`:@@web_filters_category_games_n_consoles:Games & Consoles`,
     value: '12900',
     icon: {
       standard: '/assets/icons/filters/categories/gamepad.svg',
@@ -122,7 +122,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryHomeNGarden:Home & Garden`,
+    label: $localize`:@@web_filters_category_home_n_garden:Home & Garden`,
     value: '12467',
     icon: {
       standard: '/assets/icons/filters/categories/furniture.svg',
@@ -132,7 +132,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryAppliances:Appliances`,
+    label: $localize`:@@web_filters_category_appliances:Appliances`,
     value: '13100',
     icon: {
       standard: '/assets/icons/filters/categories/laundry.svg',
@@ -142,7 +142,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryMoviesBooksNMusic:Movies, Books & Music`,
+    label: $localize`:@@web_filters_category_movies_books_n_music:Movies, Books & Music`,
     value: '12463',
     icon: {
       standard: '/assets/icons/filters/categories/bookshelf.svg',
@@ -152,7 +152,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryBabyNChild:Baby & Child`,
+    label: $localize`:@@web_filters_category_baby_n_child:Baby & Child`,
     value: '12461',
     icon: {
       standard: '/assets/icons/filters/categories/baby_car.svg',
@@ -162,7 +162,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryCollectiblesNArt:Collectibles & Art`,
+    label: $localize`:@@web_filters_category_collectibles_n_art:Collectibles & Art`,
     value: '18000',
     icon: {
       standard: '/assets/icons/filters/categories/collecting.svg',
@@ -172,7 +172,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryBuildingMaterials:Building Materials`,
+    label: $localize`:@@web_filters_category_building_materials:Building Materials`,
     value: '19000',
     icon: {
       standard: '/assets/icons/filters/categories/building.svg',
@@ -182,7 +182,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryIndustrialNAgriculture:Industrial & Agriculture`,
+    label: $localize`:@@web_filters_category_industrial_n_agriculture:Industrial & Agriculture`,
     value: '20000',
     icon: {
       standard: '/assets/icons/filters/categories/farming.svg',
@@ -192,7 +192,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryJobs:Jobs`,
+    label: $localize`:@@web_filters_category_jobs:Jobs`,
     value: '21000',
     icon: {
       standard: '/assets/icons/filters/categories/jobs.svg',
@@ -202,7 +202,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryServices:Services`,
+    label: $localize`:@@web_filters_category_services:Services`,
     value: '13200',
     icon: {
       standard: '/assets/icons/filters/categories/toolbox.svg',
@@ -212,7 +212,7 @@ export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
     },
   },
   {
-    label: $localize`:@@filtersCategoryOther:Other`,
+    label: $localize`:@@web_filters_category_other:Other`,
     value: '12485',
     icon: {
       standard: '/assets/icons/filters/categories/ghost.svg',

@@ -56,28 +56,28 @@ export interface FlagProperties {
 export const STATUS_FLAGS: FlagProperties[] = [
   {
     id: 'sold',
-    label: $localize`:@@Sold:Sold`,
+    label: $localize`:@@web_sold:Sold`,
     itemType: STATUS_ITEM_FLAG_TYPES.SOLD,
     icon: ITEM_FLAG_ICONS.SOLD,
     fill: COLORS.NEGATIVE_MAIN,
   },
   {
     id: 'reserved',
-    label: $localize`:@@Reserved:Reserved`,
+    label: $localize`:@@web_reserved:Reserved`,
     itemType: STATUS_ITEM_FLAG_TYPES.RESERVED,
     icon: ITEM_FLAG_ICONS.RESERVED,
     fill: COLORS.SKYBLUE_DARK,
   },
   {
     id: 'expired',
-    label: $localize`:@@Expired:Expired`,
+    label: $localize`:@@web_expired:Expired`,
     itemType: STATUS_ITEM_FLAG_TYPES.EXPIRED,
     icon: ITEM_FLAG_ICONS.EXPIRED,
     fill: COLORS.SOFTBLUE_MAIN,
   },
   {
     id: 'onhold',
-    label: $localize`:@@Inactive:Inactive`,
+    label: $localize`:@@web_inactive:Inactive`,
     itemType: STATUS_ITEM_FLAG_TYPES.INACTIVE,
     icon: ITEM_FLAG_ICONS.INACTIVE,
     fill: COLORS.MAGENTA_MAIN,
@@ -87,13 +87,13 @@ export const STATUS_FLAGS: FlagProperties[] = [
 export const BUMP_FLAGS: FlagProperties[] = [
   {
     id: 'bumped',
-    label: $localize`:@@Featured:Featured`,
+    label: $localize`:@@web_featured:Featured`,
     itemType: BUMPED_ITEM_FLAG_TYPES.BUMPED,
     icon: ITEM_FLAG_ICONS.BUMPED,
   },
   {
     id: 'country_bumped',
-    label: $localize`:@@Featured:Featured`,
+    label: $localize`:@@web_featured:Featured`,
     itemType: BUMPED_ITEM_FLAG_TYPES.COUNTRY_BUMP,
     icon: ITEM_FLAG_ICONS.COUNTRY_BUMP,
   },

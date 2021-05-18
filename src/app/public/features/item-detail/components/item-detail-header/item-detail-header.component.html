@@ -1,4 +1,4 @@
-<div *ngIf="user && userStats && item && !loading" ngbDropdown placement="bottom-right"
+<div ngbDropdown placement="bottom-right"
     class="ItemDetailHeader ItemDetailHeader__dropdown py-3 d-flex justify-content-between align-items-center">
     <tsl-user-basic-info [userStats]="userStats" [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL"
         class="ItemDetailHeader__userInfo">
@@ -11,7 +11,7 @@
             <tsl-button *ngIf="!item.bumpExpiringDate" class="ItemDetailHeader__featureButton" className="btn-feature"
                 [routerLink]="['/catalog/checkout', {itemId: item.id}]" id="featureItemButton">
                 <tsl-svg-icon src="/assets/icons/feature.svg" class="mr-3"></tsl-svg-icon>
-                <span i18n="@@Feature">Feature</span>
+                <span i18n="@@web_feature">Feature</span>
             </tsl-button>
             <!-- Countdown -->
             <button *ngIf="item.bumpExpiringDate" class="ItemDetailHeader__countdownButton">
@@ -22,18 +22,18 @@
             <ng-container *ngIf="showOptions">
                 <!-- Sold -->
                 <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--sold mr-2 p-0"
-                    (click)="sellItem()" ngbTooltip="{{tooltipMessages.markAsSold}}"  placement="top">
+                    (click)="sellItem()" ngbTooltip="{{tooltipMessages.markAsSold}}" placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
                 </button>
                 <!-- Reserve -->
                 <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--reserve mr-2 p-0"
-                    [ngClass]="{active: item.reserved}" (click)="toggleReserveItem()" ngbTooltip="{{tooltipMessages.markAsReserved}}"
-                     placement="top">
+                    [ngClass]="{active: item.reserved}" (click)="toggleReserveItem()"
+                    ngbTooltip="{{tooltipMessages.markAsReserved}}" placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
                 </button>
                 <!-- Edit -->
                 <button class="ItemDetailHeader__squareButton ItemDetailHeader__squareButton--edit mr-2 p-0"
-                    [routerLink]="['/catalog/edit/' + item.id]" ngbTooltip="{{tooltipMessages.edit}}"  placement="top">
+                    [routerLink]="['/catalog/edit/' + item.id]" ngbTooltip="{{tooltipMessages.edit}}" placement="top">
                     <tsl-svg-icon src="/assets/icons/btn-edit.svg"></tsl-svg-icon>
                 </button>
                 <!-- Edit dropdown -->
@@ -44,17 +44,17 @@
                     </button>
                     <div ngbDropdownMenu>
                         <button class="dropdown-item d-flex align-items-center" (click)="toggleReserveItem()"
-                            i18n="@@checkAsReservedItem">
+                            i18n="@@web_check_as_reserved_item">
                             <tsl-svg-icon class="mr-1" src="/assets/icons/btn-reserved.svg"></tsl-svg-icon>
                             Mark as reserved
                         </button>
                         <button class="dropdown-item d-flex align-items-center" (click)="sellItem()"
-                            i18n="@@checkAsSoldItem">
+                            i18n="@@web_check_as_sold_item">
                             <tsl-svg-icon class="mr-1" src="/assets/icons/btn-sold.svg"></tsl-svg-icon>
                             Mark as sold
                         </button>
                         <button class="dropdown-item d-flex align-items-center warn" (click)="deleteItem()"
-                            i18n="@@deleteItem">
+                            i18n="@@web_delete_item">
                             <tsl-svg-icon class="mr-1" src="/assets/icons/delete.svg" width="17" height="20">
                             </tsl-svg-icon>
                             Delete product
