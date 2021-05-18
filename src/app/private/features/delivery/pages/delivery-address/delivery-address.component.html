@@ -1,7 +1,7 @@
-<div class="page-content">
+<div class="DeliveryAddress page-content">
   <div class="container">
     <tsl-profile-form [profileForm]="deliveryAddressForm" (onInit)="initForm()">
-      <form [formGroup]="deliveryAddressForm" (submit)="onSubmit()">
+      <form class="DeliveryAddress__form" [formGroup]="deliveryAddressForm" (submit)="onSubmit()">
         <div class="box profile-box" [hidden]="loading">
           <div class="col-12 col-md-11 offset-md-1">
             <div class="row" >
@@ -11,7 +11,7 @@
             </div>
             <div class="row mb-3" *ngIf="whereUserComes === PREVIOUS_PAGE.PAYVIEW_PAY">
               <div class="col-12">
-                <span i18n="@@address_view_all_users_form_plain_text_sender_need_explanation_text" class="payViewInfoMessage">We need your address to be the sender in case of return</span>
+                <span i18n="@@address_view_all_users_form_plain_text_sender_need_explanation_text" class="DeliveryAddress__form__payViewInfoMessage">We need your address to be the sender in case of return</span>
               </div>
             </div>
             <div class="row">
@@ -27,7 +27,7 @@
                   <label for="full_name" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_name_label">Name and surname</label>
                   <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="full_name" formControlName="full_name"/>
-                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.full_name)" class="alert">
+                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.full_name)" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
                       <span *ngIf="deliveryAddressForm.controls.full_name.errors.required" i18n="@@address_view_all_users_form_textfield_name_missing_info_inline_error">
                         The name field can't be empty
                       </span>
@@ -38,7 +38,7 @@
                   <label for="street" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_street_label">Street and number</label>
                   <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="street" formControlName="street" maxlength="55"/>
-                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.street)" class="alert">
+                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.street)" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
                       <span *ngIf="deliveryAddressForm.controls.street.errors.required" i18n="@@address_view_all_users_form_textfield_street_missing_info_inline_error">
                         The address field can't be empty
                       </span>
@@ -55,7 +55,7 @@
                   <label for="postal_code" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_postalcode_label">Postal code</label>
                   <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="postal_code" formControlName="postal_code" maxlength="5"/>
-                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.postal_code)" class="alert">
+                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.postal_code)" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
                       <ng-container *ngIf="deliveryAddressForm.controls.postal_code.errors as postalCodeError">
                         <span *ngIf="postalCodeError.required" i18n="@@address_view_all_users_form_textfield_postalcode_missing_info_inline_error">
                           The ZIP code field can't be empty
@@ -75,7 +75,7 @@
                   <div class="col-sm-12 col-md-5">
                     <tsl-dropdown i18n-placeholder="@@address_view_all_users_form_textfield_city_label" class="form-control" formControlName="city" id="city" [options]="cities" [disabled]="cities?.length <= 1">
                     </tsl-dropdown>
-                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.city)" class="alert">
+                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.city)" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
                       <span *ngIf="deliveryAddressForm.controls.city.errors.required" i18n="@@address_view_all_users_form_textfield_city_missing_info_inline_error">
                         The city field can't be empty
                       </span>
@@ -86,7 +86,7 @@
                   <label for="phone_number" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_phone_label">Phone number</label>
                   <div class="col-sm-12 col-md-5">
                     <input type="tel" class="form-control" id="phone_number" formControlName="phone_number" maxLength="20"/>
-                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.phone_number)" class="alert">
+                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.phone_number)" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
                       <ng-container *ngIf="deliveryAddressForm.controls.phone_number.errors as phoneNumberError">
                         <span *ngIf="phoneNumberError.required" i18n="@@address_view_all_users_form_textfield_phone_missing_info_inline_error">
                           The contact number field can't be empty
@@ -100,7 +100,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 text-center d-flex flex-column">
-                    <span i18n="@@address_view_all_users_form_plain_text_phone_number_need_explanation_text" class="phoneInfoMessage mb-4">Add a phone number to receive free SMS in case we need to inform you about the status of your shipment.</span>
+                    <span i18n="@@address_view_all_users_form_plain_text_phone_number_need_explanation_text" class="DeliveryAddress__form__phoneInfoMessage mb-4">Add a phone number to receive free SMS in case we need to inform you about the status of your shipment.</span>
                     <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big"
                       [disabled]="!formComponent.hasNotSavedChanges" i18n="@@address_view_all_users_bottom_bar_save_button">Save</tsl-button>
                   </div>
