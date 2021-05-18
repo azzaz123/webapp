@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit {
   private hasOneTrialSubscription: boolean;
 
   constructor(
-    private userService: UserService,
+    public userService: UserService,
     private analyticsService: AnalyticsService,
     private subscriptionService: SubscriptionsService,
     private i18n: I18nService
