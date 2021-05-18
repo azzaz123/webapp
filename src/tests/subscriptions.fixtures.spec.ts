@@ -1218,3 +1218,49 @@ export const SUBSCRIPTION_REQUIRES_PAYMENT: SubscriptionResponse = {
   status: 'active',
   subscription_plan_id: 'plan_FSWGMZq6tDdiKc',
 };
+
+export const FREE_TRIAL_AVAILABLE_SUBSCRIPTION: SubscriptionsResponse = {
+  id: 'abcd-1234-5678-efgh',
+  category_id: 14000,
+  current_limit: 3,
+  subscribed_from: null,
+  selected_tier_id: 'plan_FWuGNucr7WgWUc',
+  default_tier_id: 'plan_FWuFVeTHEDyECa',
+  trial_available: true,
+  trial_days: 30,
+  tiers: [
+    {
+      id: 'plan_FWuFVeTHEDyECa',
+      limit: 9,
+      price: 9.99,
+      currency: '€',
+    },
+    {
+      id: 'plan_FWuGNucr7WgWUc',
+      limit: 30,
+      price: 19.99,
+      currency: '€',
+    },
+    {
+      id: 'plan_FWuGwiERYLvlC6',
+      limit: 50,
+      price: 39.99,
+      currency: '€',
+    },
+    {
+      id: 'plan_FWuHrLv9WislLd',
+      limit: -1,
+      price: 69.99,
+      currency: '€',
+    },
+  ],
+  category_name: 'Motorbikes',
+  category_icon: 'category_Motorbike',
+  selected_tier: {
+    id: 'plan_FWuGNucr7WgWUc',
+    limit: 30,
+    price: 19.99,
+    currency: '€',
+  },
+  market: SUBSCRIPTION_MARKETS.STRIPE,
+};
