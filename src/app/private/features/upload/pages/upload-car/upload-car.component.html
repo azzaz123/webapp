@@ -414,10 +414,9 @@
           <span *ngIf="!isReactivation" i18n="@@web_upload_pages_car_605">Update</span>
           <span *ngIf="isReactivation" i18n="@@web_upload_seller_reactivation_button">Reactivate item</span>
         </ng-container>
-        <span *ngIf="loading && !pendingFiles" i18n="@@UploadProductSubmitLoading">Uploading... {{ uploadCompletedPercentage }}%</span>
-        <span *ngIf="loading && pendingFiles" i18n="@@UploadImagesSubmitLoading"
-          >Uploading image... {{ pendingFiles.currentUploading }}/{{ pendingFiles.totalFiles }}</span
-        >
+        <span *ngIf="loading && !pendingFiles" i18n="@@web_upload_product_submit_loading">Uploading... {{ uploadCompletedPercentage }}%</span>
+        <span *ngIf="loading && pendingFiles" i18n="@@web_upload_images_submit_loading"
+          >Uploading image... {{ pendingFiles.currentUploading }}/{{ pendingFiles.totalFiles }}</span >
       </tsl-button>
     </div>
     <div class="col-md-3 d-none d-md-block">

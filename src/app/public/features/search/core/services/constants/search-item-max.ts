@@ -1,1 +1,1 @@
-export const SEARCH_ITEMS_MINIMAL_LENGTH = 40;
+export const SEARCH_ITEMS_MINIMAL_LENGTH = 20;

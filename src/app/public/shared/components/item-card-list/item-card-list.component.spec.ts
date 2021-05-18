@@ -5,8 +5,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccessTokenService } from '@core/http/access-token.service';
+import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
@@ -15,7 +17,9 @@ import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
+import { APP_PATHS } from 'app/app-routing-constants';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CARD_TYPES } from './enums/card-types.enum';
 import { SlotsConfig } from './interfaces/slots-config.interface';
@@ -55,6 +59,7 @@ describe('ItemCardListComponent', () => {
   let router: Router;
   let checkSessionService: CheckSessionService;
   let itemCardService: ItemCardService;
+  let featureFlagService: FeatureFlagServiceMock;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -84,6 +89,10 @@ describe('ItemCardListComponent', () => {
           },
         },
         {
+          provide: FeatureflagService,
+          useClass: FeatureFlagServiceMock,
+        },
+        {
           provide: Router,
           useValue: {
             navigate() {},
@@ -105,6 +114,7 @@ describe('ItemCardListComponent', () => {
     checkSessionService = TestBed.inject(CheckSessionService);
     itemCardService = TestBed.inject(ItemCardService);
     router = TestBed.inject(Router);
+    featureFlagService = TestBed.inject(FeatureflagService);
     fixture.detectChanges();
   });
 
@@ -155,20 +165,34 @@ describe('ItemCardListComponent', () => {
     });
   });
   describe('when we click on a item card...', () => {
-    it('should redirect to the item view ', () => {
-      // spyOn(router, 'navigate');
-      spyOn(window, 'open');
-      spyOn(component.clickedItemAndIndex, 'emit');
-      const expectedURL = `${environment.siteUrl.replace('es', 'www')}item/${MOCK_ITEM_CARD.webSlug}`;
-      const itemCard: HTMLElement = de.queryAll(By.css(cardSelector))[MOCK_ITEM_INDEX].nativeElement;
+    describe('and the experimental features flag is enabled', () => {
+      it('should redirect to the item view ', () => {
+        spyOn(router, 'navigate');
+        spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
+        spyOn(component.clickedItemAndIndex, 'emit');
+        const itemCard: HTMLElement = de.queryAll(By.css(cardSelector))[MOCK_ITEM_INDEX].nativeElement;
 
-      itemCard.click();
-      fixture.detectChanges();
+        itemCard.click();
+        fixture.detectChanges();
 
-      expect(window.open).toHaveBeenCalledWith(expectedURL);
-      expect(component.clickedItemAndIndex.emit).toHaveBeenCalledWith({ itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
-      // TODO: UNCOMMENT WHEN WE OPEN ITEM DETAIL IN PRODUCTION		Date: 2021/04/01
-      // expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`]);
+        expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`]);
+      });
+    });
+
+    describe('and the experimental features flag is not enabled', () => {
+      it('should redirect to the item view ', () => {
+        spyOn(window, 'open');
+        spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
+        spyOn(component.clickedItemAndIndex, 'emit');
+        const expectedURL = `${environment.siteUrl.replace('es', 'www')}item/${MOCK_ITEM_CARD.webSlug}`;
+        const itemCard: HTMLElement = de.queryAll(By.css(cardSelector))[MOCK_ITEM_INDEX].nativeElement;
+
+        itemCard.click();
+        fixture.detectChanges();
+
+        expect(window.open).toHaveBeenCalledWith(expectedURL);
+        expect(component.clickedItemAndIndex.emit).toHaveBeenCalledWith({ itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+      });
     });
   });
 
@@ -260,8 +284,6 @@ describe('ItemCardListComponent', () => {
 
         fixture.detectChanges();
         const regularItemCardPlaceholders = fixture.debugElement.queryAll(By.css('tsl-item-card-wide-placeholder'));
-
-        console.log(fixture.debugElement.nativeElement.innerHTML);
 
         expect(regularItemCardPlaceholders.length).toBe(component.placeholderCards);
       });

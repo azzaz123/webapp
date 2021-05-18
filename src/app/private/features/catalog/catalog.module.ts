@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { catalogRoutedComponents, CatalogRoutingModule } from './catalog.routing.module';
 import { SharedModule } from '@shared/shared.module';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewsModule } from '@private/features/reviews/reviews.module';
@@ -26,7 +25,6 @@ import { CatalogItemTrackingEventService } from './core/services/catalog-item-tr
     SharedModule,
     FormsModule,
     CatalogRoutingModule,
-    InfiniteScrollModule,
     ReactiveFormsModule,
     NgbButtonsModule,
     NgbTooltipModule,

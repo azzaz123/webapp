@@ -16,6 +16,8 @@ import { Subscription } from 'rxjs';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { Router } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 
 @Component({
   selector: 'tsl-topbar',
@@ -27,7 +29,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   public user: User;
   public homeUrl: string;
   public isProfessional: boolean;
-  public wallacoins: number = 0;
+  public wallacoins = 0;
   public currencyName: string;
   public isLogged: boolean;
 
@@ -44,6 +46,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private featureFlagService: FeatureflagService,
     private router: Router,
+    private searchNavigator: SearchNavigatorService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
@@ -99,7 +102,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   }
 
   public onSearchSubmit(searchValue: SearchBoxValue): void {
-    //TODO: This can be removed after tests
+    // TODO: This can be removed after tests
     const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
 
     if (isExperimentalFeaturesEnabled) {
@@ -110,9 +113,21 @@ export class TopbarComponent implements OnInit, OnDestroy {
   }
 
   private redirectToSearchPage(searchParams: SearchBoxValue) {
-    this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.SEARCH}`], {
-      queryParams: { ...searchParams },
-    });
+    const filterParams: FilterParameter[] = [
+      {
+        key: FILTER_QUERY_PARAM_KEY.keywords,
+        value: searchParams[FILTER_QUERY_PARAM_KEY.keywords],
+      },
+    ];
+
+    if (searchParams[FILTER_QUERY_PARAM_KEY.categoryId]) {
+      filterParams.push({
+        key: FILTER_QUERY_PARAM_KEY.categoryId,
+        value: searchParams[FILTER_QUERY_PARAM_KEY.categoryId],
+      });
+    }
+
+    this.searchNavigator.navigate(filterParams, true);
   }
 
   private redirectToOldSearch(searchParams: SearchBoxValue) {
