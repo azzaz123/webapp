@@ -257,11 +257,11 @@ describe('LocationFilterComponent', () => {
     beforeEach(() => openFilterContent());
 
     describe('and the location from the browser can be retrieved', () => {
-      it('should set the retrieved location', () => {
+      it('should set the retrieved location', async () => {
         spyOn(locationFilterService, 'getLocationFromBrowserAPI').and.returnValue(Promise.resolve(MOCK_SEARCH_LOCATION));
         const geolocationRequestBtn = fixture.debugElement.query(By.css('.LocationFilter__geolocation'));
 
-        geolocationRequestBtn.nativeNode.click();
+        await geolocationRequestBtn.nativeNode.click();
 
         expect(locationFilterService.getLocationFromBrowserAPI).toHaveBeenCalled();
         expect(component.componentLocation).toEqual(MOCK_SEARCH_LOCATION);
@@ -269,7 +269,7 @@ describe('LocationFilterComponent', () => {
     });
 
     describe('and the location from the browser can`t be retreived', () => {
-      it('should show a toast indicating the error', () => {
+      it('should show a toast indicating the error', async () => {
         const errorMessage = `Can't retrieve geolocation`;
         const toast: Toast = { text: errorMessage, type: 'error' };
         const geolocationRequestBtn = fixture.debugElement.query(By.css('.LocationFilter__geolocation'));
@@ -278,7 +278,7 @@ describe('LocationFilterComponent', () => {
         );
         spyOn(toastService, 'show').and.callThrough();
 
-        geolocationRequestBtn.nativeNode.click();
+        await geolocationRequestBtn.nativeNode.click();
 
         expect(toastService.show).toHaveBeenCalledWith(toast);
       });
