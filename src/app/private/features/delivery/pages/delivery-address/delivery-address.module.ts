@@ -15,7 +15,6 @@ import { DeliveryLocationsApiService } from '../../services/api/delivery-locatio
 import { CommonModule } from '@angular/common';
 import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryAddressErrorService } from '../../services/address/delivery-address-error/delivery-address-error.service';
-import { DeliveryLocationsStoreService } from '../../services/locations/delivery-locations-store/delivery-locations-store.service';
 import { DeliveryCountriesStoreService } from '../../services/countries/delivery-countries-store/delivery-countries-store.service';
 
 @NgModule({
@@ -37,7 +36,6 @@ import { DeliveryCountriesStoreService } from '../../services/countries/delivery
     DeliveryCountriesStoreService,
     DeliveryCountriesApiService,
     DeliveryLocationsService,
-    DeliveryLocationsStoreService,
     DeliveryLocationsApiService,
     DeliveryAddressErrorService,
     ErrorsService,
