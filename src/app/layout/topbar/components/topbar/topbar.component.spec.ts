@@ -28,6 +28,7 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -314,6 +315,7 @@ describe('TopbarComponent', () => {
               { key: 'keywords', value: 'iphone' },
               { key: 'category_ids', value: '16000' },
             ],
+            FILTERS_SOURCE.SEARCH_BOX,
             true
           );
         });
