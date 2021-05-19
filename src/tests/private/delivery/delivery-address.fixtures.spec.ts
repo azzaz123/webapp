@@ -16,7 +16,7 @@ export const MOCK_INVALID_DELIVERY_ADDRESS: DeliveryAddressApi = {
   id: '23234',
   full_name: 'Lalli',
   street: '',
-  postal_code: 'wesdxsff',
+  postal_code: '',
   city: 'Barcelona',
   region: 'Barcelona',
   country_iso_code: 'ES',
