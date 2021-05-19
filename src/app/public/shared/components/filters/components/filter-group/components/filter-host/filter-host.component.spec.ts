@@ -20,6 +20,8 @@ import {
   FILTER_PARAMETER_STORE_TOKEN,
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { BehaviorSubject } from 'rxjs';
+import spyOn = jest.spyOn;
 
 @Component({
   selector: 'tsl-test-component',
@@ -36,6 +38,7 @@ describe('FilterHostComponent', () => {
   let testComponent: TestComponent;
   let componentFactoryResolver: ComponentFactoryResolver;
   let fixture: ComponentFixture<TestComponent>;
+  let visibilitySubject: BehaviorSubject<boolean>;
 
   const filterConfig: FilterConfig<unknown> = {
     type: FILTER_TYPES.TOGGLE,
@@ -52,7 +55,15 @@ describe('FilterHostComponent', () => {
       declarations: [TestComponent, FilterHostComponent, FilterHostDirective],
       imports: [FiltersModule, HttpClientTestingModule],
       providers: [
-        HostVisibilityService,
+        {
+          provide: HostVisibilityService,
+          useValue: {
+            attach: () => {
+              return visibilitySubject.asObservable();
+            },
+            detach: () => {},
+          },
+        },
         {
           provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
           useClass: FilterParameterStoreService,
@@ -66,6 +77,7 @@ describe('FilterHostComponent', () => {
   });
 
   beforeEach(() => {
+    visibilitySubject = new BehaviorSubject(true);
     fixture = TestBed.createComponent(TestComponent);
     componentFactoryResolver = TestBed.inject(ComponentFactoryResolver);
     testComponent = fixture.componentInstance;
@@ -152,6 +164,58 @@ describe('FilterHostComponent', () => {
 
       expect(component.openStateChange.emit).toHaveBeenCalledTimes(1);
       expect(component.openStateChange.emit).toHaveBeenCalledWith(true);
+    });
+  });
+
+  describe('on visibility change', () => {
+    beforeEach(() => {
+      testComponent.hostConfig = {
+        variant: FILTER_VARIANT.BUBBLE,
+        filterConfig,
+        factory: componentFactoryResolver.resolveComponentFactory(ToggleFilterComponent),
+      };
+      testComponent.values = [];
+      fixture.detectChanges();
+    });
+
+    describe('when visible to invisible', () => {
+      it('should detach hosted filter', () => {
+        let toggle = debugElement.query(By.directive(ToggleFilterComponent));
+        expect(toggle).toBeTruthy();
+
+        visibilitySubject.next(false);
+        fixture.detectChanges();
+
+        toggle = debugElement.query(By.directive(ToggleFilterComponent));
+        expect(toggle).toBeFalsy();
+      });
+
+      it('should clean hosted filter value', () => {
+        spyOn(component.valueChange, 'emit');
+        visibilitySubject.next(false);
+        fixture.detectChanges();
+
+        expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
+        expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: 'key', value: undefined }]);
+      });
+    });
+
+    describe('when invisible to visible', () => {
+      beforeEach(() => {
+        visibilitySubject.next(false);
+        fixture.detectChanges();
+      });
+
+      it('should re-attach hosted filter', () => {
+        let toggle = debugElement.query(By.directive(ToggleFilterComponent));
+        expect(toggle).toBeFalsy();
+
+        visibilitySubject.next(true);
+        fixture.detectChanges();
+
+        toggle = debugElement.query(By.directive(ToggleFilterComponent));
+        expect(toggle).toBeTruthy();
+      });
     });
   });
 });
