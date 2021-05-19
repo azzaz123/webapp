@@ -21,9 +21,6 @@ $profile-image-size: 80px;
   }
 }
 
-.ProBadge {
-  margin-left: $profile-image-size;
-  tsl-svg-icon {
-    @include square(14px);
-  }
+tsl-pro-badge {
+  margin-left: $profile-image-size + $spacing-s;
 }
