@@ -99,7 +99,7 @@ export class SearchService {
 
   private onChangeParameters(): Observable<SearchPaginationWithCategory> {
     return this.parameterStoreService.parameters$.pipe(
-      tap((parameters: FilterParameter[]) => {
+      tap(() => {
         this.isLoadingResults = true;
       }),
       switchMap((filterParameters: FilterParameter[]) =>
