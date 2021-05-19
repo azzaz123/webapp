@@ -5,15 +5,9 @@
   "projects": {
     "webapp": {
       "i18n": {
-        "sourceLocale": {
-          "code": "en",
-          "baseHref": ""
-        },
+        "sourceLocale": "en",
         "locales": {
-          "es": {
-            "translation": "src/locale/es.json",
-            "baseHref": ""
-          }
+          "es": "src/locale/messages.es.json"
         }
       },
       "root": "",

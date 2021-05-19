@@ -51,10 +51,10 @@ class I18nNormalizer {
 
   private copyLocations: CopyLocation[] = [{
     language: LANGUAGE.ENGLISH,
-    file: 'src/locale/messages.json'
+    file: 'src/locale/messages.en.json'
   }, {
     language: LANGUAGE.SPANISH,
-    file: 'src/locale/es.json'
+    file: 'src/locale/messages.es.json'
   }];
 
   private sourcedMessagesFile = 'src/locale/messages.xmb';
