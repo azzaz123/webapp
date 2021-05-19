@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
-import { SvgIconModule } from 'app/core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { AdSlotModule } from './ads/ad-slot/ad-slot.module';
 import { ArchivableComponent } from './archivable/archivable.component';
@@ -24,7 +24,6 @@ import { CountdownComponent } from './countdown/countdown.component';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { GeolocationModule } from './geolocation/geolocation.module';
-import { HeaderComponent } from './header/header.component';
 import { ItemAvatarModule } from './item-avatar/item-avatar.module';
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
 import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
@@ -74,6 +73,10 @@ import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
+import { NavLinksModule } from './nav-links/nav-links.module';
+import { HeaderModule } from './header/header.module';
+import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
+import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
 
 @NgModule({
   imports: [
@@ -99,6 +102,8 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     UserCoverModule,
     ButtonModule,
     DateCountDownModule,
+    NavLinksModule,
+    HeaderModule,
   ],
   exports: [
     SpinnerModule,
@@ -110,7 +115,7 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     UploaderModule,
     AdSlotModule,
     RestrictInputDirective,
-    HeaderComponent,
+    HeaderModule,
     SoldModalComponent,
     ItemSoldDirective,
     StarsRateComponent,
@@ -148,7 +153,6 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
-    NavLinksComponent,
     LinkTransformPipe,
     WebSlugConverterPipe,
     UserProfileRoutePipe,
@@ -166,11 +170,13 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     DateCountDownModule,
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
+    NavLinksModule,
+    InfiniteScrollDirective,
+    VisibleDirectiveModule,
   ],
   declarations: [
     ConfirmationModalComponent,
     RestrictInputDirective,
-    HeaderComponent,
     SoldModalComponent,
     ItemSoldDirective,
     StarsRateComponent,
@@ -212,7 +218,6 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
-    NavLinksComponent,
     LinkTransformPipe,
     WebSlugConverterPipe,
     UserProfileRoutePipe,
@@ -227,6 +232,7 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     WallacoinsDisabledModalComponent,
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
+    InfiniteScrollDirective,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [

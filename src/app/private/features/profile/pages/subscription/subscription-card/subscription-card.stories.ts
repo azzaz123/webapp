@@ -1,5 +1,5 @@
 import { APP_BASE_HREF, CommonModule } from '@angular/common';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { SubscriptionCardComponent } from './subscription-card.component';
 import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';

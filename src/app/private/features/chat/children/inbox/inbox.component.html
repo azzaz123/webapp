@@ -1,6 +1,6 @@
 <div *ngxPermissionsOnly="['isProfessional']" class="header">
   <h2>
-    <span i18n="@@yourMessages">Your Messages</span>
+    <span i18n="@@web_your_messages">Your Messages</span>
     <tsl-pro-badge></tsl-pro-badge>
   </h2>
 </div>
@@ -9,19 +9,19 @@
   <div ngbDropdown placement="bottom-left" class="inbox-header-menu"
        *ngIf="shouldDisplayHeader()">
     <div ngbDropdownToggle class="dropdown-header">
-      <div *ngIf="isInbox" class="header-title" i18n="@@inboxBox">Inbox</div>
-      <div *ngIf="isArchived" class="header-title" i18n="@@inboxArchivedBox">Archived Messages</div>
+      <div *ngIf="isInbox" class="header-title" i18n="@@web_inbox_box">Inbox</div>
+      <div *ngIf="isArchived" class="header-title" i18n="@@web_inbox_archived_box">Archived Messages</div>
       <tsl-svg-icon class="header-icon" src="/assets/icons/arrow-waterfall.svg"></tsl-svg-icon>
     </div>
     <ul ngbDropdownMenu class="dropdown-menu">
       <li class="dropdown-item" [ngClass]="{'active': isInbox}" (click)="showInbox()">
         <a>
-          <span i18n="@@inboxBox">Inbox</span>
+          <span i18n="@@web_inbox_box">Inbox</span>
         </a>
       </li>
       <li class="dropdown-item" [ngClass]="{'active': isArchived}" (click)="showArchive()">
         <a>
-          <span i18n="@@inboxArchivedBox">Archived Messages</span>
+          <span i18n="@@web_inbox_archived_box">Archived Messages</span>
         </a>
       </li>
     </ul>
@@ -31,7 +31,7 @@
 <div *ngxPermissionsExcept="['isProfessional']">
   <div class="inbox-header-menu" *ngIf="shouldDisplayHeader()">
     <div class="dropdown-header">
-      <div *ngIf="isInbox" class="header-title" i18n="@@inboxBox">Inbox</div>
+      <div *ngIf="isInbox" class="header-title" i18n="@@web_inbox_box">Inbox</div>
       <tsl-pro-badge></tsl-pro-badge>
     </div>
   </div>
@@ -46,10 +46,10 @@
   <button class="btn btn-primary new-messages-toast" *ngIf="showNewMessagesToast" (click)="scrollToTop()"
           [@appearInOut]>
     <tsl-svg-icon src="/assets/icons/up-arrow-white.svg"></tsl-svg-icon>
-    <span i18n="@@newMessages">New messages</span>
+    <span i18n="@@web_new_messages">New messages</span>
   </button>
   <div id="conversations" [hidden]="loading">
-    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n="@@updateInboxWarning">We found some problems updating your inbox. Try again later.
+    <div *ngIf="errorRetrievingInbox" class="inboxError" i18n="@@web_update_inbox_warning">We found some problems updating your inbox. Try again later.
     </div>
     <div *ngIf="hasConversations()" id="inbox-data">
       <tsl-inbox-conversation *ngFor="let conversation of conversations"
@@ -68,14 +68,14 @@
   <div class="load-more-container" *ngIf="showLoadMore()">
     <a class="load-more">
       <tsl-svg-icon src="/assets/icons/spinner.svg" [hidden]="!loadingMore" class="spinner"></tsl-svg-icon>
-      <span [hidden]="loadingMore" (click)="loadMore()" i18n="@@loadMoreButton">Load more</span>
+      <span [hidden]="loadingMore" (click)="loadMore()" i18n="@@web_load_more_button">Load more</span>
     </a>
   </div>
 </div>
 
 <div *ngIf="isArchived" class="scroll-panel" [ngClass]="{professional: isProfessional}">
   <div id="conversations" [hidden]="loading">
-    <div *ngIf="errorRetrievingArchived" class="inboxError" i18n="@@updateArchivedMessagesWarning">We found some problems updating your archived messages. Try again later.
+    <div *ngIf="errorRetrievingArchived" class="inboxError" i18n="@@web_update_archived_messages_warning">We found some problems updating your archived messages. Try again later.
     </div>
     <div *ngIf="hasArchivedConversations()" id="inbox-data">
       <tsl-archived-inbox-conversation *ngFor="let conversation of archivedConversations"
@@ -94,7 +94,7 @@
   <div class="load-more-container" *ngIf="showLoadMoreArchived()">
     <a class="load-more">
       <tsl-svg-icon src="/assets/icons/spinner.svg" [hidden]="!loadingMore" class="spinner"></tsl-svg-icon>
-      <span [hidden]="loadingMore" (click)="loadMoreArchived()" i18n="@@loadMoreButton">Load more</span>
+      <span [hidden]="loadingMore" (click)="loadMoreArchived()" i18n="@@web_load_more_button">Load more</span>
     </a>
   </div>
 </div>

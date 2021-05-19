@@ -26,6 +26,7 @@ import { of, throwError } from 'rxjs';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 import { ANALYTICS_FIELDS, BAD_USERNAME_ERROR_CODE, competitorLinks, ProfileInfoComponent } from './profile-info.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { VisibleDirectiveModule } from '@shared/directives/visible/visible.directive.module';
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -37,10 +38,12 @@ describe('ProfileInfoComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let analyticsService: AnalyticsService;
 
+  const locationBoxSelector = 'tsl-location-box';
+
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule],
+        imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule, VisibleDirectiveModule],
         providers: [
           {
             provide: UserService,
@@ -483,6 +486,32 @@ describe('ProfileInfoComponent', () => {
         expect(modalService.open).not.toHaveBeenCalledWith(BecomeProModalComponent, {
           windowClass: 'become-pro',
         });
+      });
+    });
+
+    describe('when the map is not visible in browser', () => {
+      beforeEach(() => {
+        IntersectionObserver['callback']([{ isIntersecting: false }], { unobserve: () => {} });
+        fixture.detectChanges();
+      });
+
+      it('should not load map', () => {
+        const mapElement = fixture.debugElement.query(By.css(locationBoxSelector));
+
+        expect(mapElement).toBeFalsy();
+      });
+    });
+
+    describe('when the map is visible in browser', () => {
+      beforeEach(() => {
+        IntersectionObserver['callback']([{ isIntersecting: true }], { unobserve: () => {} });
+        fixture.detectChanges();
+      });
+
+      it('should load map', () => {
+        const mapElement = fixture.debugElement.query(By.css(locationBoxSelector));
+
+        expect(mapElement).toBeTruthy();
       });
     });
   });

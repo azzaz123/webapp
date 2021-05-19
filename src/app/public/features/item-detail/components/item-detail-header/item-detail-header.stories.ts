@@ -12,7 +12,7 @@ import { ReviewService } from '@core/review/review.service';
 import { UserBasicInfoModule } from '@public/shared/components/user-basic-info/user-basic-info.module';
 import { ButtonModule } from '@shared/button/button.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { DateCountDownModule } from '@shared/date-countdown/date-countdown.module';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';

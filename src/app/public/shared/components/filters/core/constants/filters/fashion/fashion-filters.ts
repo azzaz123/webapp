@@ -7,9 +7,9 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
   {
     id: FASHION_CONFIGURATION_ID.GENDER,
     type: FILTER_TYPES.SELECT,
-    title: $localize`:@@filterGenderTitle:Gender`,
-    bubblePlaceholder: $localize`:@@filterGenderBubblePlaceholder:Gender`,
-    drawerPlaceholder: $localize`:@@filterGenderBubblePlaceholder:Select gender`,
+    title: $localize`:@@web_filter_gender_title:Gender`,
+    bubblePlaceholder: $localize`:@@web_filter_gender_bubble_placeholder:Gender`,
+    drawerPlaceholder: $localize`:@@web_filter_gender_drawer_placeholder:Select gender`,
     icon: '/assets/icons/filters/gender.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.gender,
@@ -20,10 +20,10 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
   {
     id: FASHION_CONFIGURATION_ID.CLOTHING_TYPE,
     type: FILTER_TYPES.SUGGESTER,
-    title: $localize`:@@filterClothingTypeTitle:Type of clothing`,
-    bubblePlaceholder: $localize`:@@filterClothingTypeBubblePlaceholder:Type of clothing`,
-    drawerPlaceholder: $localize`:@@filterClothingTypeDrawerPlaceholder:Select type of clothing`,
-    suggesterPlaceholder: $localize`:@@filterClothingTypeSuggesterPlaceholder:Search`,
+    title: $localize`:@@web_filter_clothing_type_title:Type of clothing`,
+    bubblePlaceholder: $localize`:@@web_filter_clothing_type_bubble_placeholder:Type of clothing`,
+    drawerPlaceholder: $localize`:@@web_filter_clothing_type_drawer_placeholder:Select type of clothing`,
+    suggesterPlaceholder: $localize`:@@web_filter_clothing_type_suggester_placeholder:Search`,
     icon: '/assets/icons/filters/fashion_type.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
@@ -35,10 +35,10 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
   {
     id: FASHION_CONFIGURATION_ID.BRAND,
     type: FILTER_TYPES.SUGGESTER,
-    title: $localize`:@@filterFashionBrandTitle:Brand`,
-    bubblePlaceholder: $localize`:@@filterFashionBrandBubblePlaceholder:Brand`,
-    drawerPlaceholder: $localize`:@@filterFashionBrandDrawerPlaceholder:Select brand`,
-    suggesterPlaceholder: $localize`:@@filterFashionBrandSuggesterPlaceholder:Search brand`,
+    title: $localize`:@@web_filter_fashion_brand_title:Brand`,
+    bubblePlaceholder: $localize`:@@web_filter_fashion_brand_bubble_placeholder:Brand`,
+    drawerPlaceholder: $localize`:@@web_filter_fashion_brand_drawer_placeholder:Select brand`,
+    suggesterPlaceholder: $localize`:@@web_filter_fashion_brand_suggester_placeholder:Search brand`,
     icon: '/assets/icons/filters/fashion_brand.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.brand,

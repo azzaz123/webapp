@@ -16,17 +16,17 @@ export const HARDCODED_OPTIONS: HardcodedOptions = {
   [COMMON_CONFIGURATION_ID.POSTED_AGO]: [
     {
       value: POSTED_AGO.TODAY,
-      label: $localize`:@@FilterOptionPostedAgo_hours:Hours`,
+      label: $localize`:@@web_filter_option_posted_ago_hours:Hours`,
       icon: '/assets/icons/filters/options/24.svg',
     },
     {
       value: POSTED_AGO.LAST_WEEK,
-      label: $localize`:@@FilterOptionPostedAgo_days:Days`,
+      label: $localize`:@@web_filter_option_posted_ago_days:Days`,
       icon: '/assets/icons/filters/options/7.svg',
     },
     {
       value: POSTED_AGO.LAST_MONTH,
-      label: $localize`:@@FilterOptionPostedAgo_days:Days`,
+      label: $localize`:@@web_filter_option_posted_ago_days:Days`,
       icon: '/assets/icons/filters/options/30.svg',
     },
   ],
@@ -77,11 +77,11 @@ export const HARDCODED_OPTIONS: HardcodedOptions = {
   [FASHION_CONFIGURATION_ID.GENDER]: [
     {
       value: 'male',
-      label: $localize`:@@FilterOptionGender_male:Male`,
+      label: $localize`:@@web_filter_option_gender_male:Male`,
     },
     {
       value: 'female',
-      label: $localize`:@@FilterOptionGender_female:Female`,
+      label: $localize`:@@web_filter_option_gender_female:Female`,
     },
   ],
 };

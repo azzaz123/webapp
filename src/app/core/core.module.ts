@@ -31,6 +31,10 @@ import { ReleaseVersionService } from './release-version/release-version.service
 import { SlugsUtilService } from './services/slugs-util/slugs-util.service';
 import { MomentCalendarSpecService } from './i18n/moment/moment-calendar-spec.service';
 import { ReportService } from './trust-and-safety/report/report.service';
+import { SvgService } from './svg-icon/svg.service';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
+import { QueryStringLocationService } from '@core/search/query-string-location.service';
 
 @NgModule({
   imports: [
@@ -56,6 +60,7 @@ import { ReportService } from './trust-and-safety/report/report.service';
     DeviceService,
     DidomiService,
     LoadExternalLibsService,
+    SvgService,
     FeatureflagService,
     SessionService,
     UuidService,
@@ -68,6 +73,9 @@ import { ReportService } from './trust-and-safety/report/report.service';
     SlugsUtilService,
     MomentCalendarSpecService,
     ReportService,
+    SearchNavigatorService,
+    SearchQueryStringService,
+    QueryStringLocationService,
   ],
 })
 export class CoreModule {

@@ -28,14 +28,10 @@
 
     <div [class.FilterTemplate]="!hasApply"
       class="FilterTemplate__actions px-4 d-flex align-items-center justify-content-end">
-      <tsl-button className="basic basic-dark btn-filter" class="mx-1" i18n="@@cancelButton"
-        (click)="handleCancel($event)">
-        Cancel
-      </tsl-button>
-      <tsl-button *ngIf="hasApply" i18n="@@Apply" className="btn-primary btn-filter" class="mx-1"
-        (click)="handleAccept($event)">
-        Apply
-      </tsl-button>
+      <tsl-button className="basic basic-dark btn-filter" class="mx-1" i18n="@@web_cancel_button"
+        (click)="handleCancel($event)">Cancel</tsl-button>
+      <tsl-button *ngIf="hasApply" i18n="@@web_apply" className="btn-primary btn-filter" class="mx-1"
+        (click)="handleAccept($event)">Apply</tsl-button>
     </div>
   </div>
 </div>

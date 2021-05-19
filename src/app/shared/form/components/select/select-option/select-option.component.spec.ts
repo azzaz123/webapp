@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SelectOptionComponent } from './select-option.component';
-import { SvgIconComponent } from '@core/svg-icon/svg-icon/svg-icon.component';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { Component, DebugElement, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

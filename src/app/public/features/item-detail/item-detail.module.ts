@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
@@ -31,9 +31,11 @@ import { MapItemDetailFlagsStoreService } from './core/services/map-item-detail-
 import { ItemDetailTrackEventsService } from './core/services/item-detail-track-events/item-detail-track-events.service';
 import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
 import { RecommenderItemCardFavouriteCheckedService } from './core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
+import { ItemDetailPlaceholderComponent } from './components/item-detail-placeholder/item-detail-placeholder.component';
+import { VisibleDirectiveModule } from '@shared/directives/visible/visible.directive.module';
 
 @NgModule({
-  declarations: [itemDetailRoutedComponents],
+  declarations: [itemDetailRoutedComponents, ItemDetailPlaceholderComponent],
   imports: [
     CommonModule,
     ItemDetailRoutingModule,
@@ -53,6 +55,7 @@ import { RecommenderItemCardFavouriteCheckedService } from './core/services/reco
     ItemTaxonomiesModule,
     ItemExtraInfoModule,
     ItemFavouritesModule,
+    VisibleDirectiveModule,
   ],
   providers: [
     ItemDetailService,

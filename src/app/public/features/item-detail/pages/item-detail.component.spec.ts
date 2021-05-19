@@ -73,6 +73,7 @@ import { MapRecommendedItemCardService } from '../core/services/map-recommended-
 import { RecommenderItemCardFavouriteCheckedService } from '../core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { ItemDetailComponent } from './item-detail.component';
+import { VisibleDirectiveModule } from '@shared/directives/visible/visible.directive.module';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -85,7 +86,7 @@ describe('ItemDetailComponent', () => {
   const itemPriceClass = '.ItemDetail__price';
   const fallbackMapClass = '.ItemDetail__fakeMap';
   const locationClass = '.ItemDetail__location';
-  const itemContentClass = '.ItemDetail__content';
+  const itemCardClass = '.ItemDetail__card';
   const carExtraInfoClass = '.ItemExtraInfo--car';
   const itemId = '123';
 
@@ -114,8 +115,8 @@ describe('ItemDetailComponent', () => {
   let testAdsService;
   let analyticsService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [
         ItemDetailComponent,
         CustomCurrencyPipe,
@@ -125,7 +126,14 @@ describe('ItemDetailComponent', () => {
         ItemTaxonomiesComponent,
         ItemFullScreenCarouselComponent,
       ],
-      imports: [HttpClientTestingModule, ItemSpecificationsModule, EllapsedTimeModule, ItemDetailHeaderModule, ItemFavouritesModule],
+      imports: [
+        HttpClientTestingModule,
+        ItemSpecificationsModule,
+        EllapsedTimeModule,
+        ItemDetailHeaderModule,
+        ItemFavouritesModule,
+        VisibleDirectiveModule,
+      ],
       providers: [
         CheckSessionService,
         ItemCardService,
@@ -461,7 +469,7 @@ describe('ItemDetailComponent', () => {
         itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_WITHOUT_ITEM);
 
         fixture.detectChanges();
-        const containerPage = fixture.debugElement.query(By.css(itemContentClass));
+        const containerPage = fixture.debugElement.query(By.css(itemCardClass));
 
         expect(containerPage).toBeFalsy();
       });
@@ -713,13 +721,37 @@ describe('ItemDetailComponent', () => {
     });
 
     describe('when the location is defined', () => {
-      it('should show the specified location', () => {
-        const map = fixture.debugElement.query(By.css(mapTag));
-        const fallbackMap = fixture.debugElement.query(By.css(fallbackMapClass));
+      describe('and when the map is visible in the browser', () => {
+        beforeEach(() => {
+          IntersectionObserver['callback']([{ isIntersecting: true }], { unobserve: () => {} });
+          fixture.detectChanges();
+        });
 
-        expect(el.querySelector(locationClass).innerHTML).toContain(MOCK_CAR_ITEM_DETAIL.locationSpecifications);
-        expect(map).toBeTruthy();
-        expect(fallbackMap).toBeFalsy();
+        it('should show the specified location', () => {
+          const map = fixture.debugElement.query(By.css(mapTag));
+          const fallbackMap = fixture.debugElement.query(By.css(fallbackMapClass));
+
+          expect(el.querySelector(locationClass).innerHTML).toContain(MOCK_CAR_ITEM_DETAIL.locationSpecifications);
+          expect(map).toBeTruthy();
+          expect(fallbackMap).toBeFalsy();
+        });
+      });
+
+      describe('and when the map is NOT visible in the browser', () => {
+        beforeEach(() => {
+          IntersectionObserver['callback']([{ isIntersecting: false }], { unobserve: () => {} });
+          fixture.detectChanges();
+        });
+
+        it('should NOT show the specified location', () => {
+          fixture.detectChanges();
+          const map = fixture.debugElement.query(By.css(mapTag));
+          const fallbackMap = fixture.debugElement.query(By.css(fallbackMapClass));
+
+          expect(el.querySelector(locationClass).innerHTML).toContain(MOCK_CAR_ITEM_DETAIL.locationSpecifications);
+          expect(map).toBeFalsy();
+          expect(fallbackMap).toBeFalsy();
+        });
       });
     });
 
@@ -734,12 +766,19 @@ describe('ItemDetailComponent', () => {
         expect(el.querySelector(locationClass).innerHTML).toContain($localize`:@@Undefined:Undefined`);
       });
 
-      it('should show the fallback map', () => {
-        const map = fixture.debugElement.query(By.css(mapTag));
-        const fallbackMap = fixture.debugElement.query(By.css(fallbackMapClass));
+      describe('and when the map is visible in the browser', () => {
+        beforeEach(() => {
+          IntersectionObserver['callback']([{ isIntersecting: true }], { unobserve: () => {} });
+          fixture.detectChanges();
+        });
 
-        expect(map).toBeFalsy();
-        expect(fallbackMap).toBeTruthy();
+        it('should show the fallback map', () => {
+          const map = fixture.debugElement.query(By.css(mapTag));
+          const fallbackMap = fixture.debugElement.query(By.css(fallbackMapClass));
+
+          expect(map).toBeFalsy();
+          expect(fallbackMap).toBeTruthy();
+        });
       });
     });
   });

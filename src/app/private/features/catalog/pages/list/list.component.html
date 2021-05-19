@@ -1,7 +1,6 @@
 <div class="page-content"
-     infiniteScroll
+     tslInfiniteScroll
      [infiniteScrollDistance]="1"
-     [infiniteScrollThrottle]="100"
      [infiniteScrollDisabled]="!items.length || end || loading"
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
@@ -17,6 +16,7 @@
               </div>
               <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
               <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n="@@web_catalog_pages_list_147">Edit</button>
+              <button *tslDeliveryDevelopment [routerLink]="['/delivery']" class="edit-profile-btn mr-1" i18n="@@web_catalog_delivery">Delivery</button>
               <button (click)="logout()" class="logout edit-profile-btn" i18n="@@web_catalog_pages_list_148">Logout</button>
             </div>
             <div class="d-none d-md-flex align-items-center">
@@ -26,7 +26,7 @@
           </h1>
         </div>
         <div class="header-row d-none d-md-block">
-          <h4 class="header-subtitle" i18n="@@ListComponentHeaderSubtitle">
+          <h4 class="header-subtitle" i18n="@@web_list_component_header_subtitle">
             Here you can list items, manage the ones you already have and activate featured to sell them faster
           </h4>
         </div>

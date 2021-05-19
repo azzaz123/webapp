@@ -262,7 +262,7 @@ describe('SearchApiService', () => {
     const category_id = '1';
     const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
     const searchResponse: SearchResponse<SearchCustomerGoodsResponse> = SearchResponseFactory<SearchCustomerGoodsResponse>({
-      search_objects: SearchCustomerGoodsItemListResponseFactory(20)
+      search_objects: SearchCustomerGoodsItemListResponseFactory(19)
     });
 
     it('show load more items', () => {

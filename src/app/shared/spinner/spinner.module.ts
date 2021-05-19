@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { SpinnerComponent } from './spinner.component';
 
 @NgModule({
