@@ -17,7 +17,6 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { translations } from '@core/i18n/translations/constants/translations';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { PaymentMethodResponse } from '@core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { PaymentError, STRIPE_ERROR } from '@core/stripe/stripe.interface';
@@ -29,7 +28,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from '@private/features/profile/modal/payment-success/payment-success-modal.component';
 import { COMPONENT_TYPE, ProfileProBillingComponent } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { FinancialCard } from '@shared/profile/credit-card-info/financial-card';
-import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'tsl-new-subscription',
@@ -49,6 +47,17 @@ export class NewSubscriptionComponent implements OnInit {
   public selectedTier: Tier;
   public paymentError: STRIPE_ERROR;
   public benefits: string[];
+  public isLoading: boolean;
+  private buttonEnabledTracked: boolean;
+  public isRetryPayment = false;
+  private _invoiceId: string;
+  public INVOICE_COMPONENT_TYPE = COMPONENT_TYPE;
+  private readonly errorTextConfig = {
+    [STRIPE_ERROR.card_declined]: translations[TRANSLATION_KEY.CARD_NUMBER_INVALID],
+    [STRIPE_ERROR.expired_card]: translations[TRANSLATION_KEY.CARD_DATE_INVALID],
+    [STRIPE_ERROR.incorrect_cvc]: translations[TRANSLATION_KEY.CARD_CVC_INVALID],
+  };
+
   constructor(
     private stripeService: StripeService,
     private errorService: ErrorsService,
@@ -58,62 +67,51 @@ export class NewSubscriptionComponent implements OnInit {
     private eventService: EventService,
     private analyticsService: AnalyticsService
   ) {}
-  public isLoading: boolean;
-
-  private buttonEnabledTracked: boolean;
-
-  public isRetryInvoice = false;
-  private _invoiceId: string;
-  public INVOICE_COMPONENT_TYPE = COMPONENT_TYPE;
-  private readonly errorTextConfig = {
-    [STRIPE_ERROR.card_declined]: translations[TRANSLATION_KEY.CARD_NUMBER_INVALID],
-    [STRIPE_ERROR.expired_card]: translations[TRANSLATION_KEY.CARD_DATE_INVALID],
-    [STRIPE_ERROR.incorrect_cvc]: translations[TRANSLATION_KEY.CARD_CVC_INVALID],
-  };
 
   ngOnInit(): void {
     this.getAllCards();
     this.selectedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.default_tier_id);
     this.benefits = this.subscriptionsService.getBenefits(this.subscription.category_id);
-    this.eventService.subscribe(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, (response: any) => {
+    this.eventService.subscribe(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, (response: string | PaymentError) => {
       this.managePaymentResponse(response);
     });
     this.trackViewSubscriptionTier();
   }
 
-  private managePaymentResponse(paymentResponse: any) {
-    // TODO review this
-    switch (paymentResponse && paymentResponse.toUpperCase()) {
-      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-        this.paymentSucceeded();
-        break;
+  private managePaymentResponse(paymentResponse: string | PaymentError): void {
+    if (typeof paymentResponse === 'string') {
+      switch (paymentResponse && paymentResponse.toUpperCase()) {
+        case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
+          this.paymentSucceeded();
+          break;
+        }
+        case PAYMENT_RESPONSE_STATUS.FAILED: {
+          this.requestNewPayment();
+          break;
+        }
+        default: {
+          this.isLoading = false;
+          this.showError([]);
+          break;
+        }
       }
-      case PAYMENT_RESPONSE_STATUS.FAILED: {
-        this.requestNewPayment();
-        break;
-      }
-      default: {
-        console.log('entra por es flujo extraño');
-        this.isLoading = false;
-        this.showError([paymentResponse]);
-        break;
-      }
+    } else {
+      this.isLoading = false;
+      this.showError([paymentResponse]);
     }
   }
 
-  private managePaymentStatus(response: SubscriptionResponse) {
+  private managePaymentStatus(response: SubscriptionResponse): void {
     const paymentStatus = response.payment_status.toUpperCase();
     switch (paymentStatus) {
       case PAYMENT_RESPONSE_STATUS.REQUIRES_PAYMENT_METHOD: {
-        this.isRetryInvoice = true;
+        this.isRetryPayment = true;
         this._invoiceId = response.latest_invoice_id;
         this.requestNewPayment();
-        console.log('error');
         break;
       }
       case PAYMENT_RESPONSE_STATUS.REQUIRES_ACTION: {
         this.stripeService.actionPayment(response.payment_secret_key);
-        console.log('require action');
         break;
       }
       case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
@@ -147,21 +145,21 @@ export class NewSubscriptionComponent implements OnInit {
     );
   }
 
-  onScrollToInvoice(): void {
+  public onScrollToInvoice(): void {
     setTimeout(() => {
       this.scrollIntoViewService.scrollToSelector('#billing');
     });
   }
 
-  onSelectedTierChanged(tier: Tier) {
+  public onSelectedTierChanged(tier: Tier): void {
     this.selectedTier = tier;
   }
 
-  onBillingInfoFormSaved() {
+  public onBillingInfoFormSaved(): void {
     this.purchaseSubscription();
   }
 
-  onPurchaseButtonClick() {
+  public onPurchaseButtonClick(): void {
     if (this.isInvoiceRequired) {
       this.eventService.emit('formSubmited');
     } else {
@@ -187,7 +185,7 @@ export class NewSubscriptionComponent implements OnInit {
     const cardId = this.selectedCard.id;
     this.stripeService.addNewCard(cardId).subscribe(
       () => {
-        if (this.isRetryInvoice) {
+        if (this.isRetryPayment) {
           this.retrySubscription(cardId);
         } else {
           this.addSubscriptionFromSavedCard();
@@ -197,8 +195,8 @@ export class NewSubscriptionComponent implements OnInit {
     );
   }
 
-  private addSubscriptionFromSavedCard() {
-    if (this.isRetryInvoice) {
+  private addSubscriptionFromSavedCard(): void {
+    if (this.isRetryPayment) {
       this.retrySubscription();
     } else {
       this.subscriptionsService.newSubscription(this.selectedTier.id, this.selectedCard.id, this.isInvoiceRequired).subscribe(
@@ -238,15 +236,14 @@ export class NewSubscriptionComponent implements OnInit {
     this.errorService.i18nError(TRANSLATION_KEY.PAYMENT_FAILED_UNKNOWN_ERROR, '', TRANSLATION_KEY.PAYMENT_FAILED_ERROR_TITLE);
   }
 
-  private paymentSucceeded() {
+  private paymentSucceeded(): void {
     this.isLoading = false;
-    this.isRetryInvoice = false;
+    this.isRetryPayment = false;
     this.openPaymentSuccessModal();
   }
 
-  private retrySubscription(paymentMethodId = this.selectedCard.id) {
+  private retrySubscription(paymentMethodId = this.selectedCard.id): void {
     this.isLoading = true;
-
     this.subscriptionsService.retrySubscription(this._invoiceId, paymentMethodId).subscribe(
       (response) => {
         if (response.status === 202) {
@@ -266,7 +263,7 @@ export class NewSubscriptionComponent implements OnInit {
     );
   }
 
-  private openPaymentSuccessModal() {
+  private openPaymentSuccessModal(): void {
     let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
     const modalComponent: PaymentSuccessModalComponent = modalRef.componentInstance;
     modalComponent.tier = this.selectedTier.id;
@@ -333,14 +330,12 @@ export class NewSubscriptionComponent implements OnInit {
     this.analyticsService.trackPageView(event);
   }
 
-  public isDisableButton() {
+  public isDisableButton(): boolean {
     const isDisable = !this.selectedCard || this.isLoading;
-
     if (!isDisable && !this.buttonEnabledTracked) {
       this.buttonEnabledTracked = true;
       this.trackSubscriptionPaymentButtonAvailable();
     }
-
     return isDisable;
   }
 
@@ -360,7 +355,6 @@ export class NewSubscriptionComponent implements OnInit {
         freeTrial: this.subscriptionsService.hasTrial(this.subscription),
       },
     };
-
     this.analyticsService.trackEvent(event);
   }
 }

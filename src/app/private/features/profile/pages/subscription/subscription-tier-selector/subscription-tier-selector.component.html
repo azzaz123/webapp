@@ -11,9 +11,7 @@
                             {{tier.price}}{{tier.currency}}/month
                         </span>
                     </b>
-                    <ng-container *ngIf="subscription.trial_available">
-                        &nbsp;<span 
-                        i18n="@@web_after_free_trial">after free trial</span>
+                    <ng-container *ngIf="subscription.trial_available">&nbsp;<span i18n="@@web_after_free_trial">after free trial</span>
                     </ng-container>
                 </div>
             </div>

@@ -50,5 +50,10 @@
     border: 1px solid #eceff1;
     box-shadow: none;
     height: auto;
+
+    &__container {
+      margin: 0;
+      padding: 0;
+    }
   }
 }

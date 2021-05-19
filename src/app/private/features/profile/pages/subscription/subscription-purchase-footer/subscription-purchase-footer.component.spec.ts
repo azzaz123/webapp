@@ -89,16 +89,14 @@ describe('SubscriptionPurchaseFooterComponent', () => {
       beforeEach(() => {
         component.subscription = FREE_TRIAL_AVAILABLE_SUBSCRIPTION;
         component.selectedTier = FREE_TRIAL_AVAILABLE_SUBSCRIPTION.tiers[0];
-
-        component.ngOnChanges({ selectedTier: new SimpleChange(null, FREE_TRIAL_AVAILABLE_SUBSCRIPTION.tiers[0], null) });
         fixture.detectChanges();
       });
       it('should show trial text', () => {
         const description: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__description')).nativeElement;
 
-        expect(description.textContent).toContain(
-          $localize`:@@web_price_after_free_days:${component.selectedTier.price}${component.selectedTier.currency}/month at the end of free trial`
-        );
+        expect(description.textContent).toContain(component.selectedTier.price);
+        expect(description.textContent).toContain(component.selectedTier.currency);
+        expect(description.textContent).toContain($localize`:@@web_price_after_free_days:at the end of free trial`);
       });
 
       it('should show empty price', () => {
@@ -110,10 +108,9 @@ describe('SubscriptionPurchaseFooterComponent', () => {
     });
     describe('Has not trial available', () => {
       beforeEach(() => {
-        component.ngOnChanges({ selectedTier: new SimpleChange(null, MAPPED_SUBSCRIPTIONS[0].tiers[0], null) });
         fixture.detectChanges();
       });
-      it('should show trial text', () => {
+      it('should not show trial text', () => {
         const description: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__description')).nativeElement;
 
         expect(description.textContent).toContain($localize`:@@web_monthly_renewal_plan:The plan will be renewed monthly`);

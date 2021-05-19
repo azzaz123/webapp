@@ -1420,5 +1420,5 @@
   <translation id="web_after_free_trial">tras la prueba gratis</translation>
   <translation id="web_total">Total</translation>
   <translation id="web_subscription_purchase_subscription_subtitle">Convierte tus ventas en un auténtico negocio</translation>
-  <translation id="web_price_after_free_days"><ph name="PH"/><ph name="PH_1"/>/mes al terminar la prueba gratuita</translation>
+  <translation id="web_price_after_free_days">al terminar la prueba gratuita</translation>
 </translationbundle>

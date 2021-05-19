@@ -7,7 +7,7 @@ import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.i
   templateUrl: './subscription-purchase-footer.component.html',
   styleUrls: ['./subscription-purchase-footer.component.scss'],
 })
-export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
+export class SubscriptionPurchaseFooterComponent implements OnInit {
   @Input() selectedTier: Tier;
   @Input() buttonDisable: boolean;
   @Input() subscription: SubscriptionsResponse;
@@ -23,18 +23,6 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.setButtonText();
-  }
-
-  ngOnChanges(changes?: SimpleChanges): void {
-    if (changes.selectedTier && changes.selectedTier.currentValue) {
-      this.setDescriptionText();
-    }
-  }
-
-  private setDescriptionText(): void {
-    this.descriptionText = this.subscription.trial_available
-      ? $localize`:@@web_price_after_free_days:${this.selectedTier.price}${this.selectedTier.currency}/month at the end of free trial`
-      : $localize`:@@web_monthly_renewal_plan:The plan will be renewed monthly`;
   }
 
   private setButtonText(): void {
