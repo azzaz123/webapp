@@ -379,7 +379,7 @@ describe('TopbarComponent', () => {
       };
 
       it('should send cancel search event', () => {
-        const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
+        const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
         spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
 
         searchBox.triggerEventHandler('searchCancel', MOCK_SEARCH_BOX_VALUE);
@@ -389,7 +389,7 @@ describe('TopbarComponent', () => {
 
       describe('and the experimental features flag is enabled', () => {
         it('should navigate to the new search page', () => {
-          const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
           spyOn(navigator, 'navigate');
 
@@ -401,7 +401,7 @@ describe('TopbarComponent', () => {
 
       describe('and the experimental features flag is not enabled', () => {
         it('should redirect to the old search page', () => {
-          const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
           const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.keywords}=`;
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
           spyOn(router, 'navigate');
