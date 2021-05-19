@@ -14,12 +14,11 @@ import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
 import { Subscription } from 'rxjs';
 import { FeatureflagService } from '@core/user/featureflag.service';
-import { Router } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
 @Component({
@@ -49,6 +48,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private featureFlagService: FeatureflagService,
     private searchNavigator: SearchNavigatorService,
+    private topbarTrackingEventsService: TopbarTrackingEventsService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
@@ -106,6 +106,10 @@ export class TopbarComponent implements OnInit, OnDestroy {
   public onSearchSubmit(searchValue: SearchBoxValue): void {
     // TODO: This can be removed after tests
     const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
+
+    if (!searchValue.category_ids) {
+      this.topbarTrackingEventsService.trackClickKeyboardSearchButtonEvent(searchValue.keywords);
+    }
 
     if (isExperimentalFeaturesEnabled) {
       this.redirectToSearchPage(searchValue);
