@@ -142,5 +142,15 @@ describe('SuggesterComponent', () => {
 
       expect(component.searchBoxValue).toEqual({ [FILTER_QUERY_PARAM_KEY.keywords]: '' });
     });
+
+    it('should emit cancel with previous search value', () => {
+      const resetElement = fixture.debugElement.query(By.css('.SearchBox__reset'));
+      const previousSearchBoxValue = component.searchBoxValue;
+      spyOn(component.cancel, 'emit');
+
+      resetElement.triggerEventHandler('click', {});
+
+      expect(component.cancel.emit).toHaveBeenCalledWith(previousSearchBoxValue);
+    });
   });
 });

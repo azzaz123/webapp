@@ -18,6 +18,7 @@ export class SuggesterComponent implements OnInit, OnDestroy {
   private queryParamsSubscription: Subscription;
 
   @Output() public searchSubmit = new EventEmitter<SearchBoxValue>();
+  @Output() public cancel = new EventEmitter<SearchBoxValue>();
 
   constructor(private suggesterService: SuggesterService, private route: ActivatedRoute) {}
 
@@ -60,6 +61,7 @@ export class SuggesterComponent implements OnInit, OnDestroy {
   }
 
   public resetKeyword(): void {
+    this.cancel.emit(this.searchBoxValue);
     this.searchBoxValue = this.mapSearchBoxValue(SuggesterComponent.SEARCH_BOX_INITIAL_VALUE);
     this.submitSearch();
   }
