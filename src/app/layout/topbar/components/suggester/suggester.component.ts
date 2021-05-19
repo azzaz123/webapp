@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 
 import { distinctUntilChanged, catchError, switchMap, tap, map, debounceTime, filter } from 'rxjs/operators';
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { SearchBoxValue, SuggesterResponse } from '../../core/interfaces/suggester-response.interface';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -12,7 +12,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
   templateUrl: './suggester.component.html',
   styleUrls: ['./suggester.component.scss'],
 })
-export class SuggesterComponent implements OnInit {
+export class SuggesterComponent implements OnInit, OnDestroy {
   private static SEARCH_BOX_INITIAL_VALUE = '';
   private readonly searchBoxValueSubject = new BehaviorSubject<SearchBoxValue>({ keywords: SuggesterComponent.SEARCH_BOX_INITIAL_VALUE });
   private queryParamsSubscription: Subscription;
