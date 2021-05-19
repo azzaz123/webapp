@@ -161,8 +161,8 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
     mapperConfiguration: {
       method: 'formatObjectType',
     },
-    excludedFieldsConfig: {
-      key: FILTER_QUERY_PARAM_KEY.objectType,
+    visibilityModifierConfig: {
+      ownKey: FILTER_QUERY_PARAM_KEY.objectType,
     },
   },
   [FASHION_CONFIGURATION_ID.BRAND]: {

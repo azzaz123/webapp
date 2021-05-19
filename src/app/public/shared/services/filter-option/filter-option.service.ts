@@ -7,7 +7,7 @@ import { FilterOption } from '../../components/filters/core/interfaces/filter-op
 import { OPTIONS_ORIGIN_CONFIGURATION, OriginConfigurationValue } from './configurations/options-origin-configuration';
 import { ConfigurationId } from '../../components/filters/core/types/configuration-id.type';
 import { HARDCODED_OPTIONS } from './data/hardcoded-options';
-import { ExcludedFieldsConfig, KeyMapper, OptionsApiOrigin, RequiredSiblingParam } from './interfaces/option-api-origin.interface';
+import { VisibilityModifierConfig, KeyMapper, OptionsApiOrigin, RequiredSiblingParam } from './interfaces/option-api-origin.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
@@ -62,7 +62,7 @@ export class FilterOptionService {
     params?: QueryParams,
     paginationOptions?: PaginationOptions
   ): Observable<FilterOption[]> {
-    const { apiConfiguration, mapperConfiguration, excludedFieldsConfig } = configuration;
+    const { apiConfiguration, mapperConfiguration, visibilityModifierConfig } = configuration;
 
     const apiSiblingParams = this.getSiblingParams(apiConfiguration.requiredSiblingParams);
 
@@ -73,8 +73,8 @@ export class FilterOptionService {
 
     return this.filterOptionsApiService.getApiOptions(apiConfiguration.method, unifiedApiParams, paginationOptions).pipe(
       map((options: unknown[]) => {
-        if (excludedFieldsConfig) {
-          this.handleExcludedFields(excludedFieldsConfig, options);
+        if (visibilityModifierConfig) {
+          this.handleVisibilityModifier(visibilityModifierConfig, options);
         }
 
         if (mapperConfiguration) {
@@ -136,7 +136,10 @@ export class FilterOptionService {
     return typeof mapper !== 'string';
   }
 
-  private handleExcludedFields(excludedFieldsConfig: ExcludedFieldsConfig, options: { id?: string; excluded_fields?: string[] }[]): void {
+  private handleVisibilityModifier(
+    visibilityModifierConfig: VisibilityModifierConfig,
+    options: { id?: string; excluded_fields?: string[] }[]
+  ): void {
     const visibilityConditions: QueryParamVisibilityCondition[] = options
       .filter((option) => option.excluded_fields?.length && option.id)
       .reduce((acc, option) => {
@@ -150,7 +153,7 @@ export class FilterOptionService {
               queryParam: field as FILTER_QUERY_PARAM_KEY,
               excludingParameters: [
                 {
-                  queryParam: excludedFieldsConfig.key,
+                  queryParam: visibilityModifierConfig.ownKey,
                   values: [option.id],
                 },
               ],
@@ -158,14 +161,14 @@ export class FilterOptionService {
             });
           } else {
             const accumulatedExcludingParameter = accumulatedCondition.excludingParameters.find(
-              (excludingParameter) => excludingParameter.queryParam === excludedFieldsConfig.key
+              (excludingParameter) => excludingParameter.queryParam === visibilityModifierConfig.ownKey
             );
 
             if (accumulatedExcludingParameter) {
               accumulatedExcludingParameter.values.push(option.id);
             } else {
               accumulatedCondition.excludingParameters.push({
-                queryParam: excludedFieldsConfig.key,
+                queryParam: visibilityModifierConfig.ownKey,
                 values: [option.id],
               });
             }
