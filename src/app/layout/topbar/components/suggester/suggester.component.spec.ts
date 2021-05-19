@@ -146,11 +146,11 @@ describe('SuggesterComponent', () => {
     it('should emit cancel with previous search value', () => {
       const resetElement = fixture.debugElement.query(By.css('.SearchBox__reset'));
       const previousSearchBoxValue = component.searchBoxValue;
-      spyOn(component.cancel, 'emit');
+      spyOn(component.searchCancel, 'emit');
 
       resetElement.triggerEventHandler('click', {});
 
-      expect(component.cancel.emit).toHaveBeenCalledWith(previousSearchBoxValue);
+      expect(component.searchCancel.emit).toHaveBeenCalledWith(previousSearchBoxValue);
     });
   });
 });
