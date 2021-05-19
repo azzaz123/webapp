@@ -103,6 +103,10 @@ export class TopbarComponent implements OnInit, OnDestroy {
     this.cookieService.put('creditQuantity', this.wallacoins.toString(), cookieOptions);
   }
 
+  public searchCancel(searchValue: SearchBoxValue): void {
+    this.topbarTrackingEventsService.trackCancelSearchEvent(searchValue.keywords);
+  }
+
   public onSearchSubmit(searchValue: SearchBoxValue): void {
     // TODO: This can be removed after tests
     const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();

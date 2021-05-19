@@ -361,6 +361,22 @@ describe('TopbarComponent', () => {
         });
       });
     });
+
+    describe('when a search has been canceled from the search box', () => {
+      const MOCK_SEARCH_BOX_VALUE: SearchBoxValue = {
+        [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone',
+        [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
+      };
+
+      it('should send cancel search event', () => {
+        const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
+        spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
+
+        searchBox.triggerEventHandler('searchCancel', MOCK_SEARCH_BOX_VALUE);
+
+        expect(topbarTrackingEventsService.trackCancelSearchEvent).toHaveBeenCalledWith(MOCK_SEARCH_BOX_VALUE.keywords);
+      });
+    });
   });
 
   describe('Credit', () => {
