@@ -63,7 +63,6 @@ export class SuggesterComponent implements OnInit, OnDestroy {
   public resetKeyword(): void {
     this.searchCancel.emit(this.searchBoxValue);
     this.searchBoxValue = this.mapSearchBoxValue(SuggesterComponent.SEARCH_BOX_INITIAL_VALUE);
-    this.submitSearch();
   }
 
   public submitSearch(): void {
