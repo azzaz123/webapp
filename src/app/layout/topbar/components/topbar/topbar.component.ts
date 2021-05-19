@@ -105,21 +105,30 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   public searchCancel(searchValue: SearchBoxValue): void {
     this.topbarTrackingEventsService.trackCancelSearchEvent(searchValue.keywords);
+    this.submitResetSearch();
   }
 
   public onSearchSubmit(searchValue: SearchBoxValue): void {
-    // TODO: This can be removed after tests
-    const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
-
     if (!searchValue.category_ids) {
       this.topbarTrackingEventsService.trackClickKeyboardSearchButtonEvent(searchValue.keywords);
     }
+
+    this.redirectToSearch(searchValue);
+  }
+
+  private redirectToSearch(searchValue: SearchBoxValue): void {
+    // TODO: This can be removed after tests
+    const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
 
     if (isExperimentalFeaturesEnabled) {
       this.redirectToSearchPage(searchValue);
     } else {
       this.redirectToOldSearch(searchValue);
     }
+  }
+
+  private submitResetSearch(): void {
+    this.redirectToSearch({ keywords: '' });
   }
 
   private redirectToSearchPage(searchParams: SearchBoxValue) {

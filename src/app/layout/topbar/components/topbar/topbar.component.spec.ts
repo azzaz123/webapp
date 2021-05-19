@@ -368,6 +368,10 @@ describe('TopbarComponent', () => {
         [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
       };
 
+      const MOCK_RESET_SEARCH_BOX_VALUE: SearchBoxValue = {
+        [FILTER_QUERY_PARAM_KEY.keywords]: '',
+      };
+
       it('should send cancel search event', () => {
         const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
         spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
@@ -375,6 +379,32 @@ describe('TopbarComponent', () => {
         searchBox.triggerEventHandler('searchCancel', MOCK_SEARCH_BOX_VALUE);
 
         expect(topbarTrackingEventsService.trackCancelSearchEvent).toHaveBeenCalledWith(MOCK_SEARCH_BOX_VALUE.keywords);
+      });
+
+      describe('and the experimental features flag is enabled', () => {
+        it('should navigate to the new search page', () => {
+          const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
+          spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
+          spyOn(navigator, 'navigate');
+
+          searchBox.triggerEventHandler('searchSubmit', MOCK_RESET_SEARCH_BOX_VALUE);
+
+          expect(navigator.navigate).toHaveBeenCalledWith([], true);
+        });
+      });
+
+      describe('and the experimental features flag is not enabled', () => {
+        it('should redirect to the old search page', () => {
+          const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
+          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.keywords}=`;
+          spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
+          spyOn(router, 'navigate');
+
+          searchBox.triggerEventHandler('searchSubmit', MOCK_RESET_SEARCH_BOX_VALUE);
+
+          expect(router.navigate).not.toHaveBeenCalled();
+          expect(window.location.href).toEqual(expectedUrl);
+        });
       });
     });
   });
