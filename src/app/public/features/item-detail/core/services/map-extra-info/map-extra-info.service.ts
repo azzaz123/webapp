@@ -16,7 +16,7 @@ export class MapExtraInfoService {
   private carSpecifications = ['_version', '_year', '_km'];
 
   public mapExtraInfo(item: Item | Car): string[] {
-    if (this.hasExtraInfo(item)) {
+    if (this.isItemCategoryWithExtraInfo(item)) {
       const objectToCheck = this.typeCheckService.isCar(item) ? item : item.extraInfo;
       const specifications = [];
 
@@ -28,9 +28,10 @@ export class MapExtraInfoService {
 
       return this.getCapitalizedLabels(specifications);
     }
+    return [];
   }
 
-  private hasExtraInfo(item: Item | Car): boolean {
+  private isItemCategoryWithExtraInfo(item: Item | Car): boolean {
     return this.typeCheckService.isCar(item) || this.typeCheckService.isCellPhoneAccessories(item) || this.typeCheckService.isFashion(item);
   }
 
@@ -61,7 +62,9 @@ export class MapExtraInfoService {
   }
 
   private specificationExistsAndDefined(objectToSearch: ItemExtraInfo | Car, key: string): boolean {
-    return Object.keys(objectToSearch).find((itemKey) => itemKey === key) && this.isSpecificationDefined(objectToSearch[key]);
+    return (
+      !!objectToSearch && Object.keys(objectToSearch).find((itemKey) => itemKey === key) && this.isSpecificationDefined(objectToSearch[key])
+    );
   }
 
   private isSpecificationDefined(specification: string | Size): boolean {
