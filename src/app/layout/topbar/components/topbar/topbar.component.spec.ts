@@ -374,42 +374,44 @@ describe('TopbarComponent', () => {
         [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
       };
 
-      const MOCK_RESET_SEARCH_BOX_VALUE: SearchBoxValue = {
-        [FILTER_QUERY_PARAM_KEY.keywords]: '',
-      };
-
-      it('should send cancel search event', () => {
-        const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
-        spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
-
-        searchBox.triggerEventHandler('searchCancel', MOCK_SEARCH_BOX_VALUE);
-
-        expect(topbarTrackingEventsService.trackCancelSearchEvent).toHaveBeenCalledWith(MOCK_SEARCH_BOX_VALUE.keywords);
-      });
-
       describe('and the experimental features flag is enabled', () => {
-        it('should navigate to the new search page', () => {
+        beforeEach(() => {
           const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
           spyOn(navigator, 'navigate');
+          spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
 
-          searchBox.triggerEventHandler('searchSubmit', MOCK_RESET_SEARCH_BOX_VALUE);
+          searchBox.triggerEventHandler('searchCancel', MOCK_SEARCH_BOX_VALUE);
+        });
 
-          expect(navigator.navigate).toHaveBeenCalledWith([], true);
+        it('should navigate to the new search page', () => {
+          expect(navigator.navigate).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: '' }], true);
+        });
+
+        it('should send cancel search event', () => {
+          expect(topbarTrackingEventsService.trackCancelSearchEvent).toHaveBeenCalledWith(MOCK_SEARCH_BOX_VALUE.keywords);
         });
       });
 
       describe('and the experimental features flag is not enabled', () => {
-        it('should redirect to the old search page', () => {
+        beforeEach(() => {
           const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
-          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.keywords}=`;
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
           spyOn(router, 'navigate');
+          spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
 
-          searchBox.triggerEventHandler('searchSubmit', MOCK_RESET_SEARCH_BOX_VALUE);
+          searchBox.triggerEventHandler('searchCancel', MOCK_SEARCH_BOX_VALUE);
+        });
+
+        it('should redirect to the old search page', () => {
+          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.keywords}=`;
 
           expect(router.navigate).not.toHaveBeenCalled();
           expect(window.location.href).toEqual(expectedUrl);
+        });
+
+        it('should send cancel search event', () => {
+          expect(topbarTrackingEventsService.trackCancelSearchEvent).toHaveBeenCalledWith(MOCK_SEARCH_BOX_VALUE.keywords);
         });
       });
     });
