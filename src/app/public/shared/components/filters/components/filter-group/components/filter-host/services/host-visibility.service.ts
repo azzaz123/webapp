@@ -162,7 +162,6 @@ export class HostVisibilityService {
   }
 
   private handleDrawerParametersChange(): void {
-    console.log('HostVisibilityService.handleDrawerParametersChange - parameters changed', this.drawerStore.getParameters());
     this.drawerListeners.forEach((listener) => this.updateListener(listener, FILTER_VARIANT.CONTENT));
   }
 

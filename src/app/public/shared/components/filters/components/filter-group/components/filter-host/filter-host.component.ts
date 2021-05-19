@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { FilterHostDirective } from '../../directives/filter-host.directive';
 import { FilterHostConfig } from './interfaces/filter-host-config.interface';
 import { FilterParameter } from '../../../../interfaces/filter-parameter.interface';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { AbstractFilter } from '@public/shared/components/filters/components/abstract-filter/abstract-filter';
 import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 
 @Component({
   selector: 'tsl-filter-host',
@@ -22,6 +23,9 @@ export class FilterHostComponent implements OnInit, OnChanges, OnDestroy {
   private filterSubscription: Subscription;
   private filter: AbstractFilter<unknown>;
 
+  private drawerSeparatorVisibilitySubject = new BehaviorSubject<boolean>(false);
+  public drawerSeparatorVisibility$ = this.drawerSeparatorVisibilitySubject.asObservable();
+
   public constructor(private visibilityService: HostVisibilityService) {}
 
   public ngOnInit(): void {
@@ -29,7 +33,7 @@ export class FilterHostComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private injectFilter(): void {
-    const ref = this.host.viewContainerRef.createComponent(this.hostConfig.factory);
+    const ref = this.host.viewContainerRef.createComponent(this.hostConfig.factory, 0);
     this.filter = ref.instance;
     this.filter.value = this.values;
     this.filter.variant = this.hostConfig.variant;
@@ -65,11 +69,14 @@ export class FilterHostComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private handleVisibilityChange(isVisible: boolean): void {
-    console.log('FilterHostComponent.handleVisibilityChange - ', this.hostConfig.variant, this.hostConfig.filterConfig.id, isVisible);
     if (isVisible) {
       this.injectFilter();
     } else {
       this.clearFilter(true);
+    }
+
+    if (this.hostConfig.variant === FILTER_VARIANT.CONTENT) {
+      this.drawerSeparatorVisibilitySubject.next(isVisible);
     }
   }
 }

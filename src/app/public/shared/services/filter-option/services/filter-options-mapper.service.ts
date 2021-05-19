@@ -75,10 +75,16 @@ export class FilterOptionsMapperService {
   public formatSizeNGender(sizeNGender: SizeNGenderResponse, params: QueryParams<'gender'>): FilterOption[];
   public formatSizeNGender(response: unknown, params: QueryParams): FilterOption[];
   public formatSizeNGender(sizeNGender: SizeNGenderResponse, params: QueryParams<'gender'>): FilterOption[] {
-    return sizeNGender[params.gender].map((size) => ({
-      value: size.id.toString(),
-      label: size.text,
-    }));
+    const sizes = sizeNGender[params.gender];
+
+    if (sizes) {
+      return sizeNGender[params.gender].map((size) => ({
+        value: size.id.toString(),
+        label: size.text,
+      }));
+    }
+
+    return [];
   }
 
   // TODO: We need to set something up for isPopular cases
