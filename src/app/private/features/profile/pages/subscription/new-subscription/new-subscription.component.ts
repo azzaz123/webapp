@@ -72,10 +72,14 @@ export class NewSubscriptionComponent implements OnInit {
     this.getAllCards();
     this.selectedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.default_tier_id);
     this.benefits = this.subscriptionsService.getBenefits(this.subscription.category_id);
+    this.subscribeStripeEvents();
+    this.trackViewSubscriptionTier();
+  }
+
+  private subscribeStripeEvents(): void {
     this.eventService.subscribe(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, (response: string | PaymentError) => {
       this.managePaymentResponse(response);
     });
-    this.trackViewSubscriptionTier();
   }
 
   private managePaymentResponse(paymentResponse: string | PaymentError): void {
@@ -155,10 +159,6 @@ export class NewSubscriptionComponent implements OnInit {
     this.selectedTier = tier;
   }
 
-  public onBillingInfoFormSaved(): void {
-    this.purchaseSubscription();
-  }
-
   public onPurchaseButtonClick(): void {
     if (this.isInvoiceRequired) {
       this.eventService.emit(EventService.BILLING_INFO_FORM_SUBMITED);
@@ -167,7 +167,7 @@ export class NewSubscriptionComponent implements OnInit {
     }
   }
 
-  private purchaseSubscription() {
+  public purchaseSubscription(): void {
     this.isLoading = true;
     this.trackSubscriptionPayConfirmation();
     if (this.isSavedCard) {
@@ -177,7 +177,7 @@ export class NewSubscriptionComponent implements OnInit {
     }
   }
 
-  onChangeSelectedCard(card: FinancialCard) {
+  public onChangeSelectedCard(card: FinancialCard): void {
     this.selectedCard = card;
   }
 
@@ -356,5 +356,9 @@ export class NewSubscriptionComponent implements OnInit {
       },
     };
     this.analyticsService.trackEvent(event);
+  }
+
+  ngOnDestroy() {
+    this.eventService.unsubscribeAll(STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
   }
 }

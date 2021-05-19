@@ -49,7 +49,7 @@
             <div class="GenericCard__subtitle" i18n="@@web_add_new_subscription_modal_step3_subtitle">For services other than
                 subscriptions (e.g. visibility packs) you won't receive invoices.</div>
             <tsl-profile-pro-billing id="billing" [containerType]="INVOICE_COMPONENT_TYPE.SUBSCRIPTION_INFO"
-                (billingInfoFormSaved)="onBillingInfoFormSaved()" (billingInfoNotUpdateRequired)="onBillingInfoFormSaved()">
+                (billingInfoFormSaved)="purchaseSubscription()" (billingInfoNotUpdateRequired)="purchaseSubscription()">
             </tsl-profile-pro-billing>
         </div>
     </div>
