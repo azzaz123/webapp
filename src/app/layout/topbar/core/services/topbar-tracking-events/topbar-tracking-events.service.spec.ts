@@ -28,7 +28,7 @@ describe('TopbarTrackingEventsService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when user click keyaboard search button (enter)', () => {
+  describe('when user click keyboard search button (enter)', () => {
     const searchText = 'searchText';
 
     const event: AnalyticsEvent<ClickKeyboardSearchButton> = {
@@ -40,7 +40,7 @@ describe('TopbarTrackingEventsService', () => {
       },
     };
 
-    it('should send click keyaboard search button event', () => {
+    it('should send click keyboard search button event', () => {
       spyOn(analyticsService, 'trackEvent');
 
       service.trackClickKeyboardSearchButtonEvent(searchText);
