@@ -10,7 +10,6 @@ import {
   MOCK_DELIVERY_ADDRESS_2,
 } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { DeliveryAddressErrorService } from '../../services/address/delivery-address-error/delivery-address-error.service';
 import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
@@ -50,7 +49,6 @@ describe('DeliveryAddressComponent', () => {
   let fixture: ComponentFixture<DeliveryAddressComponent>;
   let deliveryAddressService: DeliveryAddressService;
   let deliveryAddressStoreService: DeliveryAddressStoreService;
-  let deliveryAddressErrorService: DeliveryAddressErrorService;
   let deliveryLocationsService: DeliveryLocationsService;
   let deliveryCountriesService: DeliveryCountriesService;
   let errorsService: ErrorsService;
@@ -72,12 +70,7 @@ describe('DeliveryAddressComponent', () => {
         DeliveryAddressApiService,
         DeliveryCountriesApiService,
         DeliveryLocationsApiService,
-        {
-          provide: DeliveryAddressErrorService,
-          useValue: {
-            generateErrors() {},
-          },
-        },
+
         {
           provide: UuidService,
           useValue: {
@@ -121,7 +114,6 @@ describe('DeliveryAddressComponent', () => {
     deliveryLocationsService = TestBed.inject(DeliveryLocationsService);
     deliveryCountriesService = TestBed.inject(DeliveryCountriesService);
     deliveryAddressStoreService = TestBed.inject(DeliveryAddressStoreService);
-    deliveryAddressErrorService = TestBed.inject(DeliveryAddressErrorService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -287,10 +279,10 @@ describe('DeliveryAddressComponent', () => {
 
       describe('and the save fails...', () => {
         beforeEach(() => {
-          spyOn(deliveryAddressErrorService, 'generateErrors').and.returnValue([
-            MOCK_MAPPED_ADDRESS_ERROR_INVALID_MOBILE_PHONE_NUMBER,
-            MOCK_MAPPED_ADDRESS_ERROR_INVALID_POSTAL_CODE,
-          ]);
+          // spyOn(deliveryAddressErrorService, 'generateErrors').and.returnValue([
+          //   MOCK_MAPPED_ADDRESS_ERROR_INVALID_MOBILE_PHONE_NUMBER,
+          //   MOCK_MAPPED_ADDRESS_ERROR_INVALID_POSTAL_CODE,
+          // ]);
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(throwError('network error'));
 
           component.onSubmit();
@@ -301,9 +293,9 @@ describe('DeliveryAddressComponent', () => {
           expect(component.deliveryAddressForm.get('postal_code').getError('incorrect')).toBeTruthy();
         });
 
-        it('should set the phone number error message when apply', () => {
-          expect(component.phoneNumberErrorMessage).toBe(MOCK_MAPPED_ADDRESS_ERROR_INVALID_MOBILE_PHONE_NUMBER.translation);
-        });
+        // it('should set the phone number error message when apply', () => {
+        //   expect(component.phoneNumberErrorMessage).toBe(MOCK_MAPPED_ADDRESS_ERROR_INVALID_MOBILE_PHONE_NUMBER.translation);
+        // });
       });
     });
 

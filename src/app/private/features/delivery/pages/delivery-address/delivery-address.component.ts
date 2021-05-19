@@ -4,9 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MappedAddressError, ADDRESS_ERROR_TYPE } from '../../interfaces/delivery-address/delivery-address-error.interface';
 import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
-import { DeliveryAddressErrorService } from '../../services/address/delivery-address-error/delivery-address-error.service';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
@@ -24,7 +22,7 @@ import { finalize, map, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DeliveryAddressError } from '../../errors/delivery-address/delivery-address-error';
+import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -69,7 +67,6 @@ export class DeliveryAddressComponent implements OnInit {
     private modalService: NgbModal,
     private deliveryLocationsService: DeliveryLocationsService,
     private router: Router,
-    private deliveryAddressErrorService: DeliveryAddressErrorService,
     private i18nService: I18nService
   ) {}
 
@@ -135,8 +132,9 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  public isIncorrectFormcontrol(formControlAtr: AbstractControl): boolean {
-    return formControlAtr.invalid && (formControlAtr.dirty || formControlAtr.touched);
+  public isIncorrectFormcontrol(formControlAtr: AbstractControl, formName: string): boolean {
+    const isValidAndEdited = formControlAtr.invalid && (formControlAtr.dirty || formControlAtr.touched);
+    return formName === 'postal_code' ? isValidAndEdited : isValidAndEdited && this.deliveryAddressForm.pending;
   }
 
   private clearFormWhenCountryChange(): void {
@@ -233,25 +231,29 @@ export class DeliveryAddressComponent implements OnInit {
           this.initForm(false);
           this.redirect();
         },
-        (errors: HttpErrorResponse) => {
-          const errorResponse: DeliveryAddressError[] = errors?.error;
-          const generatedErrors = this.deliveryAddressErrorService.generateErrors(errorResponse);
-          generatedErrors.forEach((generatedError: MappedAddressError) => {
-            this.deliveryAddressForm.get(generatedError.formControlName).setErrors(null);
-            this.deliveryAddressForm.get(generatedError.formControlName).setErrors({ incorrect: true });
-            this.handleFormMessagesErrors(generatedError);
-          });
+        (e: HttpErrorResponse) => {
+          if (e.status === INVALID_DELIVERY_ADDRESS_CODE) {
+            this.onError(e);
+          } else {
+            this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
+          }
         }
       );
   }
 
-  private handleFormMessagesErrors(generatedError: MappedAddressError): void {
-    if (generatedError.type === ADDRESS_ERROR_TYPE.FORM) {
-      switch (generatedError.formControlName) {
-        case 'phone_number':
-          this.formErrorMessages.phone_number = generatedError.translation;
-      }
-    }
+  private onError(e: HttpErrorResponse): void {
+    const errorResponse = e?.error;
+    this.deliveryAddressForm.markAsPending();
+    this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
+
+    errorResponse.forEach((error) => {
+      const generatedError = new DeliveryAddressError(error.error_code);
+      this.deliveryAddressForm.get(generatedError.formControlName).setErrors(null);
+      this.deliveryAddressForm.get(generatedError.formControlName).setErrors({ incorrect: true });
+      this.formErrorMessages[generatedError.formControlName] = this.i18nService.translate(generatedError.translationKey);
+    });
+
+    throw new DeliveryAddressError(errorResponse[0].error_code);
   }
 
   private redirect(): void {
@@ -282,12 +284,12 @@ export class DeliveryAddressComponent implements OnInit {
           this.cities = cities;
           this.handleLocationsResponse(this.locations);
         },
-        (errors: HttpErrorResponse) => {
-          if (errors.error[0].error_code === 'postal code is not allowed') {
-            this.setIncorrectControlAndShowError('postal_code', TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR);
-          }
-          if (errors.error[0].message.includes('invalid')) {
+        (e: HttpErrorResponse) => {
+          if (e.status === INVALID_DELIVERY_ADDRESS_CODE) {
+            this.onError(e);
+          } else {
             this.setIncorrectControlAndShowError('postal_code', TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR);
+            throw new DeliveryAddressError('invalid postal code');
           }
         }
       );
