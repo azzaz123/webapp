@@ -161,7 +161,7 @@ export class NewSubscriptionComponent implements OnInit {
 
   public onPurchaseButtonClick(): void {
     if (this.isInvoiceRequired) {
-      this.eventService.emit('formSubmited');
+      this.eventService.emit(EventService.BILLING_INFO_FORM_SUBMITED);
     } else {
       this.purchaseSubscription();
     }
@@ -331,7 +331,7 @@ export class NewSubscriptionComponent implements OnInit {
   }
 
   public isDisableButton(): boolean {
-    const isDisable = !this.selectedCard || this.isLoading;
+    const isDisable = !this.selectedCard || this.isLoading || !!this.paymentError;
     if (!isDisable && !this.buttonEnabledTracked) {
       this.buttonEnabledTracked = true;
       this.trackSubscriptionPaymentButtonAvailable();

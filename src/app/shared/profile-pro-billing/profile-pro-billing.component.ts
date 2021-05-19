@@ -14,6 +14,7 @@ import { validDNI, validNIE, validCIF } from 'spain-id';
 import { UuidService } from '../../core/uuid/uuid.service';
 import { whitespaceValidator } from 'app/core/form-validators/formValidators.func';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { isEqual } from 'lodash-es';
 
 export enum BILLING_TYPE {
   NATURAL = 'natural',
@@ -36,9 +37,11 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   public isNewBillingInfoForm = true;
   public loading = true;
   public type: string;
+  private savedData: unknown;
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
   @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
+  @Output() billingInfoNotUpdateRequired: EventEmitter<void> = new EventEmitter();
   @Output() billingInfoFormSaved: EventEmitter<FormGroup> = new EventEmitter();
   @Input() containerType: COMPONENT_TYPE;
 
@@ -51,8 +54,12 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
     private eventService: EventService
   ) {
     this.buildForm();
-    this.eventService.subscribe('formSubmited', () => {
-      this.onSubmit();
+    this.eventService.subscribe(EventService.BILLING_INFO_FORM_SUBMITED, () => {
+      if (isEqual(this.savedData, this.billingForm.getRawValue())) {
+        this.billingInfoNotUpdateRequired.emit();
+      } else {
+        this.onSubmit();
+      }
     });
   }
 
@@ -70,7 +77,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   }
 
   ngOnDestroy() {
-    this.eventService.unsubscribeAll('formSubmited');
+    this.eventService.unsubscribeAll(EventService.BILLING_INFO_FORM_SUBMITED);
   }
 
   buildForm(): void {
@@ -97,6 +104,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
           this.isNewBillingInfoForm = false;
           this.type = billingInfo.type || BILLING_TYPE.NATURAL;
           this.billingForm.patchValue(billingInfo);
+          this.savedData = this.billingForm.getRawValue();
           if (this.isSpanishCifOrNifValid(billingInfo.cif)) {
             this.billingForm.controls['cif'].disable();
             this.billingForm.controls['type'].disable();
