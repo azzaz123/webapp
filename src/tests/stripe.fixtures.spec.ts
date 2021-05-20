@@ -10,6 +10,12 @@ export class MockStripeService {
   public getCards(): Observable<FinancialCard[]> {
     return of([]);
   }
+
+  public addNewCard(): Observable<unknown> {
+    return of();
+  }
+
+  public actionPayment() {}
 }
 
 export const STRIPE_CARD: StripeCard = {
