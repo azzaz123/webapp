@@ -57,4 +57,12 @@ $item-flag-height: 38px;
       display: none;
     }
   }
+
+  &--smallerIndicators {
+    ::ng-deep .carousel-indicators li {
+      width: 4px;
+      height: 4px;
+      margin: 0px 4px;
+    }
+  }
 }

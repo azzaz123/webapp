@@ -27,6 +27,7 @@ describe('SlidesCarouselComponent', () => {
   const hideControllerClass = '.SlidesCarousel--hideControllers';
   const hideIndicatorsClass = '.SlidesCarousel--hideIndicators';
   const noBackgroundIndicatorsClass = '.SlidesCarousel--noBackgroundIndicators';
+  const smallerIndicatorsClass = '.SlidesCarousel--smallerIndicators';
 
   let component: SlidesCarouselComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
@@ -198,6 +199,16 @@ describe('SlidesCarouselComponent', () => {
       fixture.detectChanges();
 
       expect(fixture.debugElement.query(By.css(noBackgroundIndicatorsClass))).toBeTruthy();
+    });
+  });
+
+  describe('when specifying smaller indicators', () => {
+    it('should style with smaller indicators', () => {
+      component.smallerIndicators = true;
+
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.css(smallerIndicatorsClass))).toBeTruthy();
     });
   });
 

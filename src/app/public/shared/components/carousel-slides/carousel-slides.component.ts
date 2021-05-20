@@ -32,6 +32,7 @@ export class SlidesCarouselComponent implements AfterContentInit {
   @Input() noBackgroundIndicators: boolean;
   @Input() hideControllers = false;
   @Input() hideIndicators = false;
+  @Input() smallerIndicators = false;
   @Input() initialIndex = 0;
 
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
