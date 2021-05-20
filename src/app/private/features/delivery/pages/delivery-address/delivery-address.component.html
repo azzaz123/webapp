@@ -27,7 +27,7 @@
                   <label for="full_name" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_name_label">Name and surname</label>
                   <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="full_name" formControlName="full_name"/>
-                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.full_name, 'full_name')" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
+                    <div *ngIf="deliveryAddressForm.controls.full_name.invalid && deliveryAddressForm.pending" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
                       <ng-container *ngIf="deliveryAddressForm.controls.full_name.errors as fullNameError">
                         <span *ngIf="fullNameError.required" i18n="@@address_view_all_users_form_textfield_name_missing_info_inline_error">
                           The name field can't be empty
@@ -43,7 +43,7 @@
                   <label for="street" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_street_label">Street and number</label>
                   <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="street" formControlName="street" maxlength="55"/>
-                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.street, 'street')" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
+                    <div *ngIf="deliveryAddressForm.controls.street.invalid && deliveryAddressForm.pending" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
                       <ng-container *ngIf="deliveryAddressForm.controls.street.errors as streetError">
                         <span *ngIf="streetError.required" i18n="@@address_view_all_users_form_textfield_street_missing_info_inline_error">
                           The address field can't be empty
@@ -59,10 +59,8 @@
                   <label for="flat_and_floor" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_door_label">Floor and door number</label>
                   <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="flat_and_floor" formControlName="flat_and_floor" maxlength="15"/>
-                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.flat_and_floor, 'flat_and_floor')" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
-                      <span *ngIf="deliveryAddressForm.controls.flat_and_floor.errors.invalid">
-                        {{formErrorMessages.flat_and_floor}}
-                      </span>
+                    <div *ngIf="deliveryAddressForm.controls.flat_and_floor.invalid && deliveryAddressForm.pending" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
+                      <span>{{formErrorMessages.flat_and_floor}}</span>
                     </div>
                   </div>
                 </div>
@@ -70,14 +68,15 @@
                   <label for="postal_code" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_postalcode_label">Postal code</label>
                   <div class="col-sm-12 col-md-5">
                     <input type="text"
-                      [ngClass]="{'DeliveryAddress__form__input DeliveryAddress__form__input--invalid': isIncorrectFormcontrol(deliveryAddressForm.controls.postal_code, 'postal_code')}"  
+                      [ngClass]="{'DeliveryAddress__form__input DeliveryAddress__form__input--invalid': deliveryAddressForm.controls.postal_code.invalid}" 
+                      (blur)="checkIfIsInvalidPostalCode()"
                       class="form-control" id="postal_code" formControlName="postal_code" maxlength="5"/>
-                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.postal_code, 'postal_code')" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
+                    <div *ngIf="deliveryAddressForm.controls.postal_code.invalid" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
                       <ng-container *ngIf="deliveryAddressForm.controls.postal_code.errors as postalCodeError">
                         <span *ngIf="postalCodeError.required" i18n="@@address_view_all_users_form_textfield_postalcode_missing_info_inline_error">
                           The ZIP code field can't be empty
                         </span>
-                        <span *ngIf="postalCodeError.incorrect">
+                        <span *ngIf="postalCodeError.invalid">
                           {{formErrorMessages.postal_code}}
                         </span>
                       </ng-container>
@@ -89,7 +88,7 @@
                   <div class="col-sm-12 col-md-5">
                     <tsl-dropdown i18n-placeholder="@@address_view_all_users_form_textfield_city_label" class="form-control" formControlName="city" id="city" [options]="cities" [disabled]="cities?.length <= 1">
                     </tsl-dropdown>
-                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.city, 'city')" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
+                    <div *ngIf="deliveryAddressForm.controls.city.invalid && deliveryAddressForm.pending" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
                       <span *ngIf="deliveryAddressForm.controls.city.errors.required" i18n="@@address_view_all_users_form_textfield_city_missing_info_inline_error">
                         The city field can't be empty
                       </span>
@@ -100,7 +99,7 @@
                   <label for="phone_number" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_phone_label">Phone number</label>
                   <div class="col-sm-12 col-md-5">
                     <input type="tel" class="form-control" id="phone_number" formControlName="phone_number" maxLength="20"/>
-                    <div *ngIf="isIncorrectFormcontrol(deliveryAddressForm.controls.phone_number, 'phone_number')" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
+                    <div *ngIf="deliveryAddressForm.controls.phone_number.invalid && deliveryAddressForm.pending" class="DeliveryAddress__form__message DeliveryAddress__form__message--error">
                       <ng-container *ngIf="deliveryAddressForm.controls.phone_number.errors as phoneNumberError">
                         <span *ngIf="phoneNumberError.required" i18n="@@address_view_all_users_form_textfield_phone_missing_info_inline_error">
                           The contact number field can't be empty

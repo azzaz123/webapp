@@ -34,13 +34,10 @@ import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/d
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { DELIVERY_PATHS } from '../../delivery-routing-constants';
 import { Router } from '@angular/router';
-import {
-  MOCK_MAPPED_ADDRESS_ERROR_INVALID_MOBILE_PHONE_NUMBER,
-  MOCK_MAPPED_ADDRESS_ERROR_INVALID_POSTAL_CODE,
-} from '@fixtures/private/delivery/delivery-address-error.fixtures.spec';
 import { By } from '@angular/platform-browser';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
+import { INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__form__payViewInfoMessage';
@@ -70,7 +67,6 @@ describe('DeliveryAddressComponent', () => {
         DeliveryAddressApiService,
         DeliveryCountriesApiService,
         DeliveryLocationsApiService,
-
         {
           provide: UuidService,
           useValue: {
@@ -267,8 +263,8 @@ describe('DeliveryAddressComponent', () => {
             expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.SHIPMENT_TRACKING]);
           });
 
-          it('should redirect to the delivery address list if we come from address list page', () => {
-            component.whereUserComes = PREVIOUS_PAGE.ADDRESSES_LIST;
+          it('should redirect to the delivery address list by default', () => {
+            component.whereUserComes = null;
 
             component.onSubmit();
 
@@ -279,23 +275,31 @@ describe('DeliveryAddressComponent', () => {
 
       describe('and the save fails...', () => {
         beforeEach(() => {
-          // spyOn(deliveryAddressErrorService, 'generateErrors').and.returnValue([
-          //   MOCK_MAPPED_ADDRESS_ERROR_INVALID_MOBILE_PHONE_NUMBER,
-          //   MOCK_MAPPED_ADDRESS_ERROR_INVALID_POSTAL_CODE,
-          // ]);
-          spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(throwError('network error'));
+          spyOn(errorsService, 'i18nError');
+          spyOn(i18nService, 'translate');
+          spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
+            throwError([
+              { error_code: 'invalid mobile phone number', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' },
+              { error_code: 'invalid postal code', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' },
+            ])
+          );
 
           component.onSubmit();
         });
 
-        it('should set errors if the backend return an invalid field', () => {
-          expect(component.deliveryAddressForm.get('phone_number').getError('incorrect')).toBeTruthy();
-          expect(component.deliveryAddressForm.get('postal_code').getError('incorrect')).toBeTruthy();
+        it('should show error toast', () => {
+          expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FORM_FIELD_ERROR);
         });
 
-        // it('should set the phone number error message when apply', () => {
-        //   expect(component.phoneNumberErrorMessage).toBe(MOCK_MAPPED_ADDRESS_ERROR_INVALID_MOBILE_PHONE_NUMBER.translation);
-        // });
+        it('should set errors if the backend return an invalid field', () => {
+          expect(component.deliveryAddressForm.get('phone_number').getError('invalid')).toBeTruthy();
+          expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
+        });
+
+        it('should ask to the backend for the correct copys', () => {
+          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_PHONE_MISSMATCH_LOCATION_ERROR);
+          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR);
+        });
       });
     });
 
@@ -530,7 +534,7 @@ describe('DeliveryAddressComponent', () => {
         });
 
         it('should mark the postal code as invalid', () => {
-          expect(component.deliveryAddressForm.get('postal_code').getError('incorrect')).toBeTruthy();
+          expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
         });
 
         it('should show an error message', () => {
@@ -542,14 +546,14 @@ describe('DeliveryAddressComponent', () => {
         beforeEach(() => {
           spyOn(i18nService, 'translate');
           spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(
-            throwError({ error: ['postal code is not allowed'] })
+            throwError([{ error_code: 'postal code is not allowed', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' }])
           );
 
           component.deliveryAddressForm.get('postal_code').setValue('08040');
         });
 
         it('should mark the postal code as invalid', () => {
-          expect(component.deliveryAddressForm.get('postal_code').getError('incorrect')).toBeTruthy();
+          expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
         });
 
         it('should show an error message', () => {
