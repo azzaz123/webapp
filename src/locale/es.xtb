@@ -727,11 +727,11 @@
   <translation id="web_step4of4">Paso <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> de <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>4<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="web_invoice_information">Información de facturación</translation>
   <translation id="web_name_required">El nombre es obligatorio.</translation>
-  <translation id="web_name_max_length">El nombre no puede tener más de 32 catacteres.</translation>
+  <translation id="web_name_max_length">El nombre no puede tener más de 32 carácteres.</translation>
   <translation id="web_surname_required">El apellido es requerido.</translation>
-  <translation id="web_surname_max_length">El apellido no puede tener más de 32 catacteres.</translation>
+  <translation id="web_surname_max_length">El apellido no puede tener más de 32 carácteres.</translation>
   <translation id="web_company_name_required">El nombre de empresa es requerido.</translation>
-  <translation id="web_company_name_max_length">El nombre de empresa no puede tener más de 32 catacteres.</translation>
+  <translation id="web_company_name_max_length">El nombre de empresa no puede tener más de 32 carácteres.</translation>
   <translation id="web_cif_required">El CIF/NIF es requerido.</translation>
   <translation id="web_cif_format">El CIF/NIF debe ser válido.</translation>
   <translation id="web_email_required">E-mail is required.</translation>
