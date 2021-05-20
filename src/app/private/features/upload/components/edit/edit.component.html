@@ -1,28 +1,42 @@
 <div class="page-content" #scrollPanel>
   <div class="container upload-page">
-    <a class="upload-close-icon d-none d-md-block" [routerLink]="['/catalog/list']"><tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon></a>
-    <a class="catalog-back d-flex d-md-none pb-3" [routerLink]="['/catalog/list']"><tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon><span class="ml-2" i18n="@@web_upload_components_edit_366">Back to catalog</span></a>
-    <tsl-upload-car *ngIf="item.itemType === itemTypes.CARS"
-                    [item]="item"
-                    (onValidationError)="onValidationError()"
-                    (onFormChanged)="onFormChanged($event)"
-                    [urgentPrice]="urgentPrice"
-                    (locationSelected)="getUrgentPrice(100)">
+    <a class="upload-close-icon d-none d-md-block" [routerLink]="['/catalog/list']"
+      ><tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon
+    ></a>
+    <a class="catalog-back d-flex d-md-none pb-3" [routerLink]="['/catalog/list']"
+      ><tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon
+      ><span class="ml-2" i18n="@@web_upload_components_edit_366">Back to catalog</span></a
+    >
+    <tsl-upload-car
+      *ngIf="item.itemType === itemTypes.CARS"
+      [item]="item"
+      [isReactivation]="isReactivation"
+      (onValidationError)="onValidationError()"
+      (onFormChanged)="onFormChanged($event)"
+      [urgentPrice]="urgentPrice"
+      (locationSelected)="getUrgentPrice(100)"
+    >
     </tsl-upload-car>
-    <tsl-upload-realestate *ngIf="item.itemType === itemTypes.REAL_ESTATE"
-                    [item]="item"
-                    (onValidationError)="onValidationError()"
-                    (onFormChanged)="onFormChanged($event)"
-                    [urgentPrice]="urgentPrice"
-                    (locationSelected)="getUrgentPrice(13000)">
+    <tsl-upload-realestate
+      *ngIf="item.itemType === itemTypes.REAL_ESTATE"
+      [item]="item"
+      [isReactivation]="isReactivation"
+      (onValidationError)="onValidationError()"
+      (onFormChanged)="onFormChanged($event)"
+      [urgentPrice]="urgentPrice"
+      (locationSelected)="getUrgentPrice(13000)"
+    >
     </tsl-upload-realestate>
-    <tsl-upload-product *ngIf="item.itemType === itemTypes.CONSUMER_GOODS"
-                        [item]="item"
-                        (onValidationError)="onValidationError()"
-                        (onFormChanged)="onFormChanged($event)"
-                        [urgentPrice]="urgentPrice"
-                        (onCategorySelect)="getUrgentPrice($event)"
-                        (locationSelected)="getUrgentPrice(categoryId)">
+    <tsl-upload-product
+      *ngIf="item.itemType === itemTypes.CONSUMER_GOODS"
+      [item]="item"
+      [isReactivation]="isReactivation"
+      (onValidationError)="onValidationError()"
+      (onFormChanged)="onFormChanged($event)"
+      [urgentPrice]="urgentPrice"
+      (onCategorySelect)="getUrgentPrice($event)"
+      (locationSelected)="getUrgentPrice(categoryId)"
+    >
     </tsl-upload-product>
   </div>
 </div>
