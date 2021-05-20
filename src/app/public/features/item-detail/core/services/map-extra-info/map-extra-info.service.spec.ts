@@ -2,8 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import {
   MOCK_ITEM_CELLPHONES,
+  MOCK_ITEM_CELLPHONES_WITHOUT_EXTRA_INFO,
   MOCK_ITEM_FASHION,
   MOCK_ITEM_FASHION_WITHOUT_EXTRA_INFO,
+  MOCK_ITEM_GAMES_CONSOLES,
   MOCK_ITEM_GAMES_CONSOLES_WITH_EXTRA_INFO,
 } from '@fixtures/item.fixtures.spec';
 import {
@@ -29,7 +31,9 @@ describe('MapExtraInfoService', () => {
 
   describe('when the item does not have extra info', () => {
     it('should return nothing', () => {
+      expect(service.mapExtraInfo(MOCK_ITEM_GAMES_CONSOLES)).toEqual([]);
       expect(service.mapExtraInfo(MOCK_ITEM_FASHION_WITHOUT_EXTRA_INFO)).toEqual([]);
+      expect(service.mapExtraInfo(MOCK_ITEM_CELLPHONES_WITHOUT_EXTRA_INFO)).toEqual([]);
     });
   });
 
