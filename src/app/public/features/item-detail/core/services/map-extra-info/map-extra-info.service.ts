@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Car } from '@core/item/car';
 import { Item } from '@core/item/item';
 import { Size } from '@public/shared/services/filter-option/interfaces/option-responses/fashion-size-n-gender.interface';
-import { ItemCondition } from '@core/item/item-condition';
+import { getTranslatedItemCondition } from '@core/item/item-condition';
 import { capitalizeString } from '@core/helpers/capitalize-string/capitalize-string';
 
 @Injectable({
@@ -62,7 +62,7 @@ export class MapExtraInfoService {
       return value?.text;
     }
     if (key === 'condition') {
-      return this.getTranslatedCondition(value);
+      return getTranslatedItemCondition(value);
     }
     if (key === '_km') {
       return value + 'Km';
@@ -85,28 +85,5 @@ export class MapExtraInfoService {
   private isSpecificationDefined(specification: string | Size): boolean {
     const label = this.typeCheckService.isSize(specification) ? specification.text : specification;
     return label !== null && label !== undefined && label !== '';
-  }
-
-  private getTranslatedCondition(condition: ItemCondition): string {
-    switch (condition) {
-      case 'un_opened':
-        return $localize`:@@web_condition_un_opened:Unopened`;
-      case 'un_worn':
-        return $localize`:@@web_condition_unworn:Unworn`;
-      case 'in_box':
-        return $localize`:@@web_condition_in_box:In its box`;
-      case 'new':
-        return $localize`:@@web_new:New`;
-      case 'as_good_as_new':
-        return $localize`:@@web_condition_as_good_as_new:As good as new`;
-      case 'good':
-        return $localize`:@@web_good_condition:Good condition`;
-      case 'fair':
-        return $localize`:@@web_condition_fair:Fair condition`;
-      case 'has_given_it_all':
-        return $localize`:@@web_condition_has_given_it_all:May have to be repaired`;
-      default:
-        return $localize`:@@web_undefined:Undefined`;
-    }
   }
 }
