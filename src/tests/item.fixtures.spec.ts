@@ -299,6 +299,10 @@ export const ITEM_CELLPHONES_EXTRA_INFO_NO_OBJECT_TYPE: ItemExtraInfo = {
   model: 'iPhone 11 Pro',
 };
 
+export const ITEM_GENERIC_EXTRA_INFO: ItemExtraInfo = {
+  condition: 'has_given_it_all',
+};
+
 export const MOCK_ITEM: Item = new Item(
   ITEM_DATA.id,
   ITEM_DATA.legacy_id,
@@ -508,6 +512,30 @@ export const MOCK_ITEM_GAMES_CONSOLES: Item = new Item(
   ITEM_DATA.web_slug,
   ITEM_DATA.published_date,
   ITEM_DATA.delivery_info
+);
+
+export const MOCK_ITEM_GAMES_CONSOLES_WITH_EXTRA_INFO: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  CATEGORY_IDS.GAMES_CONSOLES,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info,
+  ITEM_TYPES.CONSUMER_GOODS,
+  ITEM_GENERIC_EXTRA_INFO
 );
 
 export const MOCK_ITEM_CELLPHONES: Item = new Item(
