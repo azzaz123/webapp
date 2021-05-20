@@ -1,8 +1,10 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { MOCK_DELIVERY_ADDRESS_ERRORS_API } from '@fixtures/private/delivery/delivery-address-error.fixtures.spec';
 import { MOCK_DELIVERY_ADDRESS, MOCK_DELIVERY_ADDRESS_2 } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
+import { DeliveryAddressError } from '@private/features/delivery/errors/delivery-address/delivery-address-error';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { DeliveryAddressApiService } from '../../api/delivery-address-api/delivery-address-api.service';
 import { DeliveryAddressStoreService } from '../delivery-address-store/delivery-address-store.service';
 
@@ -78,12 +80,31 @@ describe('DeliveryAddressService', () => {
   });
 
   describe('when updating the delivery address...', () => {
-    it('should call the api service', () => {
-      spyOn(deliveryAddressApiService, 'update').and.returnValue(of(null));
+    describe('and the petition succeed...', () => {
+      it('should call the api service', () => {
+        spyOn(deliveryAddressApiService, 'update').and.returnValue(of(null));
 
-      service.updateOrCreate(MOCK_DELIVERY_ADDRESS, false).subscribe();
+        service.updateOrCreate(MOCK_DELIVERY_ADDRESS, false).subscribe();
 
-      expect(deliveryAddressApiService.update).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS);
+        expect(deliveryAddressApiService.update).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS);
+      });
+    });
+
+    describe('and the petition fails...', () => {
+      it('should map the error to DeliveryAddressError', () => {
+        let response: DeliveryAddressError[];
+        spyOn(deliveryAddressApiService, 'update').and.returnValue(throwError(MOCK_DELIVERY_ADDRESS_ERRORS_API));
+
+        service.updateOrCreate(MOCK_DELIVERY_ADDRESS, false).subscribe({
+          error: (deliveryAddressErrors: DeliveryAddressError[]) => {
+            response = deliveryAddressErrors;
+          },
+        });
+
+        response.forEach((error) => {
+          expect(error instanceof DeliveryAddressError).toBeTruthy();
+        });
+      });
     });
   });
 });

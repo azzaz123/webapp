@@ -26,11 +26,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { finalize, map, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
-import {
-  DeliveryAddressError,
-  INVALID_DELIVERY_ADDRESS_CODE,
-  INVALID_DELIVERY_ADDRESS_POSTAL_CODE,
-} from '../../errors/delivery-address/delivery-address-error';
+import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -242,7 +238,7 @@ export class DeliveryAddressComponent implements OnInit {
         (errors: DeliveryAddressError[]) => {
           if (errors[0].status === INVALID_DELIVERY_ADDRESS_CODE) {
             this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
-            this.onError(errors);
+            this.onError(errors, true);
           } else {
             this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
           }
@@ -250,18 +246,17 @@ export class DeliveryAddressComponent implements OnInit {
       );
   }
 
-  private onError(errors: DeliveryAddressError[], errorMessage?: DELIVERY_ADDRESS_ERROR, markAsPending = true): void {
+  private onError(errors: DeliveryAddressError[], isSave = false): void {
     errors.forEach((deliveryAddressError: DeliveryAddressError) => {
       const generatedError = DeliveryAddressErrorsSpecifications.find(
         (errorSpecification: DeliveryAddressErrorSpecification) =>
-          errorSpecification.error_code === errorMessage ||
           errorSpecification.error_code === DELIVERY_ADDRESS_ERROR[deliveryAddressError.error_code]
       );
 
       this.setIncorrectControlAndShowError(generatedError.formControlName, generatedError.translationKey);
     });
 
-    if (markAsPending) {
+    if (isSave) {
       this.deliveryAddressForm.markAsPending();
     }
   }
@@ -295,14 +290,7 @@ export class DeliveryAddressComponent implements OnInit {
           this.handleLocationsResponse(this.locations);
         },
         (errors: DeliveryAddressError[]) => {
-          const firstErrorStatus = errors[0].status;
-          if (firstErrorStatus === INVALID_DELIVERY_ADDRESS_CODE) {
-            this.onError(errors, null, false);
-          }
-
-          if (firstErrorStatus === INVALID_DELIVERY_ADDRESS_POSTAL_CODE) {
-            this.onError(errors, DELIVERY_ADDRESS_ERROR['invalid postal code'], false);
-          }
+          this.onError(errors);
         }
       );
   }

@@ -4,8 +4,11 @@ import { DeliveryLocationsApiService } from '../../api/delivery-locations-api/de
 import { DeliveryLocationApi } from '@private/features/delivery/interfaces/delivery-location/delivery-location-api.interface';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DeliveryAddressErrorApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-error.interface';
-import { DeliveryAddressError } from '@private/features/delivery/errors/delivery-address/delivery-address-error';
+import { DELIVERY_ADDRESS_ERROR } from '@private/features/delivery/interfaces/delivery-address/delivery-address-error.interface';
+import {
+  DeliveryAddressError,
+  INVALID_DELIVERY_ADDRESS_POSTAL_CODE,
+} from '@private/features/delivery/errors/delivery-address/delivery-address-error';
 
 @Injectable()
 export class DeliveryLocationsService {
@@ -14,8 +17,11 @@ export class DeliveryLocationsService {
   public getLocationsByPostalCodeAndCountry(postalCode: string, countryISOCode: string): Observable<DeliveryLocationApi[]> {
     return this.deliveryLocationsApiService.getByPostalCodeAndCountry(postalCode, countryISOCode).pipe(
       catchError((e: HttpErrorResponse) => {
-        const errors: DeliveryAddressErrorApi[] = e?.error;
-        const mappedErrors: DeliveryAddressError[] = errors?.map((err) => new DeliveryAddressError(err.error_code, e.status, err.message));
+        const mappedErrors: DeliveryAddressError[] = e?.error?.map((err) => {
+          const errorCode =
+            e.status === INVALID_DELIVERY_ADDRESS_POSTAL_CODE ? DELIVERY_ADDRESS_ERROR['invalid postal code'] : err.error_code;
+          return new DeliveryAddressError(errorCode, e.status, err.message);
+        });
         return throwError(mappedErrors);
       })
     );

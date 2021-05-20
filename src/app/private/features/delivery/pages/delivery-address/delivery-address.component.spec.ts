@@ -114,7 +114,7 @@ describe('DeliveryAddressComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('initForm', () => {
+  describe('initForm when init...', () => {
     describe('and the petition succeed...', () => {
       describe('and we have a delivery address...', () => {
         beforeEach(() => {
@@ -125,6 +125,7 @@ describe('DeliveryAddressComponent', () => {
           spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
           spyOn(component.formComponent, 'initFormControl');
 
+          component.ngOnInit();
           component.initForm();
         });
 
@@ -152,7 +153,7 @@ describe('DeliveryAddressComponent', () => {
         });
       });
 
-      describe(`and don't we have a delivery address...`, () => {
+      describe(`and we don't have a delivery address...`, () => {
         beforeEach(() => {
           spyOn(deliveryCountriesService, 'getCountriesAsOptionsAndDefault').and.returnValue(
             of(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT)
@@ -160,6 +161,7 @@ describe('DeliveryAddressComponent', () => {
           spyOn(deliveryAddressService, 'get').and.returnValue(of(null));
           spyOn(component.formComponent, 'initFormControl');
 
+          component.ngOnInit();
           component.initForm();
         });
 
@@ -190,6 +192,7 @@ describe('DeliveryAddressComponent', () => {
         spyOn(deliveryAddressService, 'get').and.returnValue(throwError('network error!'));
         spyOn(component.formComponent, 'initFormControl');
 
+        component.ngOnInit();
         component.initForm();
       });
 
