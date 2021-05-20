@@ -36,7 +36,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from '@private/features/profile/modal/payment-success/payment-success-modal.component';
 import { of, throwError } from 'rxjs';
 
-import { NewSubscriptionComponent } from './new-subscription.component';
+import { NewSubscriptionComponent, PAYMENT_SUCCESSFUL_CODE } from './new-subscription.component';
 
 @Component({
   selector: 'tsl-subscription-card-selector',
@@ -369,7 +369,7 @@ describe('NewSubscriptionComponent', () => {
 
       it('should call new subscription if card was atached successfuly', fakeAsync(() => {
         spyOn(stripeService, 'addNewCard').and.returnValue(of(null));
-        spyOn(subscriptionsService, 'newSubscription').and.returnValue(of({ status: 202 }));
+        spyOn(subscriptionsService, 'newSubscription').and.returnValue(of({ status: PAYMENT_SUCCESSFUL_CODE }));
         component.selectedCard = CARDS_WITH_ONE_DEFAULT[0];
 
         component.purchaseSubscription();
@@ -381,7 +381,7 @@ describe('NewSubscriptionComponent', () => {
     });
     describe('addSubscriptionFromSavedCard', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(subscriptionsService, 'newSubscription').and.returnValue(of({ status: 202 }));
+        spyOn(subscriptionsService, 'newSubscription').and.returnValue(of({ status: PAYMENT_SUCCESSFUL_CODE }));
         component.selectedCard = CARDS_WITH_ONE_DEFAULT[0];
         component.stripeCards = CARDS_WITH_ONE_DEFAULT;
         component.isRetryPayment = false;

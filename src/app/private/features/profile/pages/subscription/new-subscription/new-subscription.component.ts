@@ -1,6 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -28,6 +27,9 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from '@private/features/profile/modal/payment-success/payment-success-modal.component';
 import { COMPONENT_TYPE, ProfileProBillingComponent } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { FinancialCard } from '@shared/profile/credit-card-info/financial-card';
+import { filter, mergeMap } from 'rxjs/operators';
+
+export const PAYMENT_SUCCESSFUL_CODE = 202;
 
 @Component({
   selector: 'tsl-new-subscription',
@@ -199,26 +201,23 @@ export class NewSubscriptionComponent implements OnInit {
     if (this.isRetryPayment) {
       this.retrySubscription();
     } else {
-      this.subscriptionsService.newSubscription(this.selectedTier.id, this.selectedCard.id, this.isInvoiceRequired).subscribe(
-        (response) => {
-          if (response.status === 202) {
-            this.subscriptionsService.checkNewSubscriptionStatus().subscribe(
-              (response: SubscriptionResponse) => {
-                if (!response.payment_status) {
-                  return this.paymentSucceeded();
-                }
-                this.managePaymentStatus(response);
-              },
-              (error) => {
-                this.requestNewPayment(error);
-              }
-            );
+      this.subscriptionsService
+        .newSubscription(this.selectedTier.id, this.selectedCard.id, this.isInvoiceRequired)
+        .pipe(
+          filter((response) => response.status === PAYMENT_SUCCESSFUL_CODE),
+          mergeMap(() => this.subscriptionsService.checkNewSubscriptionStatus())
+        )
+        .subscribe(
+          (response: SubscriptionResponse) => {
+            if (!response.payment_status) {
+              return this.paymentSucceeded();
+            }
+            this.managePaymentStatus(response);
+          },
+          (error) => {
+            this.requestNewPayment(error);
           }
-        },
-        (error) => {
-          this.requestNewPayment(error);
-        }
-      );
+        );
     }
   }
 
@@ -244,23 +243,20 @@ export class NewSubscriptionComponent implements OnInit {
 
   private retrySubscription(paymentMethodId = this.selectedCard.id): void {
     this.isLoading = true;
-    this.subscriptionsService.retrySubscription(this._invoiceId, paymentMethodId).subscribe(
-      (response) => {
-        if (response.status === 202) {
-          this.subscriptionsService.checkRetrySubscriptionStatus().subscribe(
-            (response) => {
-              this.managePaymentStatus(response);
-            },
-            (error) => {
-              this.requestNewPayment(error);
-            }
-          );
+    this.subscriptionsService
+      .retrySubscription(this._invoiceId, paymentMethodId)
+      .pipe(
+        filter((response) => response.status === PAYMENT_SUCCESSFUL_CODE),
+        mergeMap(() => this.subscriptionsService.checkRetrySubscriptionStatus())
+      )
+      .subscribe(
+        (response: SubscriptionResponse) => {
+          this.managePaymentStatus(response);
+        },
+        (error) => {
+          this.requestNewPayment(error);
         }
-      },
-      (error) => {
-        this.requestNewPayment(error);
-      }
-    );
+      );
   }
 
   private openPaymentSuccessModal(): void {
