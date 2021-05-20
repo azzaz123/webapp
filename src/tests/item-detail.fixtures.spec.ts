@@ -1,4 +1,4 @@
-import { MOCK_CAR_EXTRA_INFO } from '@public/features/item-detail/core/services/map-extra-info/map-extra-info.fixtures.spec';
+import { MOCK_CAR_EXTRA_INFO_LABELS } from '@public/features/item-detail/core/services/map-extra-info/map-extra-info.fixtures.spec';
 import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.interface';
 import { ItemDetailLocation } from '@public/features/item-detail/pages/constants/item-detail.interface';
 import { ItemTaxonomies } from '@public/features/item-detail/components/item-taxonomies/interfaces/item-taxonomies.interface';
@@ -45,7 +45,7 @@ export const MOCK_CAR_ITEM_DETAIL: ItemDetail = {
   images: null,
   bigImages: null,
   userStats: of(MOCK_USER_STATS),
-  extraInfo: MOCK_CAR_EXTRA_INFO,
+  extraInfo: MOCK_CAR_EXTRA_INFO_LABELS,
   locationSpecifications: MOCK_ITEM_DETAIL_LOCATION_SPECIFICATIONS,
   taxonomiesSpecifications: of(MOCK_ITEM_TAXONOMIES),
   haveCoordinates: true,
