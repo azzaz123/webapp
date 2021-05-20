@@ -32,16 +32,19 @@ export class MapExtraInfoService {
       return specifications;
     }
 
-    this.specificationKeys(item).forEach((key) => {
-      if (this.specificationExistsAndDefined(objectToCheck, key)) {
-        specifications.push(this.defineSpecification(key, objectToCheck[key]));
+    const specificationKeys = this.getSpecificationKeys(item);
+    specificationKeys.forEach((key) => {
+      const isMappable = this.isSpecificationMappable(objectToCheck, key);
+      if (isMappable) {
+        const newSpecification = this.defineSpecification(key, objectToCheck[key]);
+        specifications.push(newSpecification);
       }
     });
 
     return specifications;
   }
 
-  private specificationKeys(item: Item | Car): string[] {
+  private getSpecificationKeys(item: Item | Car): string[] {
     if (this.typeCheckService.isFashion(item)) {
       return this.fashionSpecifications;
     }
@@ -68,10 +71,15 @@ export class MapExtraInfoService {
     return value.toString();
   }
 
-  private specificationExistsAndDefined(objectToSearch: ItemExtraInfo | Car, key: string): boolean {
-    return (
-      !!objectToSearch && Object.keys(objectToSearch).find((itemKey) => itemKey === key) && this.isSpecificationDefined(objectToSearch[key])
-    );
+  private isSpecificationMappable(objectToSearch: ItemExtraInfo | Car, key: string): boolean {
+    const isObjectDefined = !!objectToSearch;
+    const isFound = this.isSpecificationFound(objectToSearch, key);
+    const isDefined = this.isSpecificationDefined(objectToSearch[key]);
+    return isObjectDefined && isFound && isDefined;
+  }
+
+  private isSpecificationFound(objectToSearch: ItemExtraInfo | Car, key: string): boolean {
+    return !!Object.keys(objectToSearch).find((itemKey) => itemKey === key);
   }
 
   private isSpecificationDefined(specification: string | Size): boolean {
