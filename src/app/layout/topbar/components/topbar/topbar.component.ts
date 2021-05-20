@@ -14,7 +14,6 @@ import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
 import { Subscription } from 'rxjs';
 import { FeatureflagService } from '@core/user/featureflag.service';
-import { Router } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
@@ -46,7 +45,6 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private modalService: NgbModal,
     private featureFlagService: FeatureflagService,
-    private router: Router,
     private searchNavigator: SearchNavigatorService,
     private topbarTrackingEventsService: TopbarTrackingEventsService,
     @Inject('SUBDOMAIN') private subdomain: string
@@ -103,19 +101,32 @@ export class TopbarComponent implements OnInit, OnDestroy {
     this.cookieService.put('creditQuantity', this.wallacoins.toString(), cookieOptions);
   }
 
-  public onSearchSubmit(searchValue: SearchBoxValue): void {
-    // TODO: This can be removed after tests
-    const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
+  public searchCancel(searchValue: SearchBoxValue): void {
+    this.topbarTrackingEventsService.trackCancelSearchEvent(searchValue.keywords);
+    this.submitResetSearch();
+  }
 
+  public onSearchSubmit(searchValue: SearchBoxValue): void {
     if (!searchValue.category_ids) {
       this.topbarTrackingEventsService.trackClickKeyboardSearchButtonEvent(searchValue.keywords);
     }
+
+    this.redirectToSearch(searchValue);
+  }
+
+  private redirectToSearch(searchValue: SearchBoxValue): void {
+    // TODO: This can be removed after tests
+    const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
 
     if (isExperimentalFeaturesEnabled) {
       this.redirectToSearchPage(searchValue);
     } else {
       this.redirectToOldSearch(searchValue);
     }
+  }
+
+  private submitResetSearch(): void {
+    this.redirectToSearch({ keywords: '' });
   }
 
   private redirectToSearchPage(searchParams: SearchBoxValue) {
