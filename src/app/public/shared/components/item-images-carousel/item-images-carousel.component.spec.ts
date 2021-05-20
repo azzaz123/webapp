@@ -1,12 +1,19 @@
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { DeviceService } from '@core/device/device.service';
+import { MockDeviceService } from '@fixtures/device.fixtures.spec';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { SlidesCarouselComponent } from '../carousel-slides/carousel-slides.component';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '../item-flag/item-flag-constants';
+import { ItemFlagComponent } from '../item-flag/item-flag.component';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
 
 describe('ItemImagesCarouselComponent', () => {
   let component: ItemImagesCarouselComponent;
   let fixture: ComponentFixture<ItemImagesCarouselComponent>;
+  let deviceService: DeviceService;
   const flagRightClass = '.ItemFlag--right';
   const flagLeftClass = '.ItemFlag--left';
   const disabledCarouselClass = '.ItemImagesCarousel--disabled';
@@ -14,8 +21,9 @@ describe('ItemImagesCarouselComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemImagesCarouselComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [{ provide: DeviceService, useValue: MockDeviceService }],
+      imports: [SvgIconModule, HttpClientTestingModule],
+      declarations: [ItemImagesCarouselComponent, SlidesCarouselComponent, ItemFlagComponent],
     })
       .overrideComponent(ItemImagesCarouselComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -25,7 +33,9 @@ describe('ItemImagesCarouselComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemImagesCarouselComponent);
+    deviceService = TestBed.inject(DeviceService);
     component = fixture.componentInstance;
+    component.images = [];
     fixture.detectChanges();
   });
 
@@ -101,6 +111,78 @@ describe('ItemImagesCarouselComponent', () => {
         fixture.detectChanges();
 
         expect(component.imageClick.emit).toHaveBeenCalled();
+      });
+    });
+
+    describe('when item has more than 10 images', () => {
+      beforeEach(() => {
+        component.images = [...Array(20)].map(() => (Math.random() * 12345).toString());
+      });
+
+      describe('and when user device is a mobile', () => {
+        beforeEach(() => {
+          spyOn(deviceService, 'isMobile').and.returnValue(true);
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('should show smaller carousel indicators', () => {
+          const carouselComponent: SlidesCarouselComponent = fixture.debugElement.query(By.directive(SlidesCarouselComponent))
+            .componentInstance;
+
+          expect(carouselComponent.smallerIndicators).toBe(true);
+        });
+      });
+
+      describe("and when the user's device is not a mobile", () => {
+        beforeEach(() => {
+          spyOn(deviceService, 'isMobile').and.returnValue(false);
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('should NOT show smaller carousel indicators', () => {
+          const carouselComponent: SlidesCarouselComponent = fixture.debugElement.query(By.directive(SlidesCarouselComponent))
+            .componentInstance;
+
+          expect(carouselComponent.smallerIndicators).toBe(false);
+        });
+      });
+    });
+
+    describe('when item has less than 10 images', () => {
+      beforeEach(() => {
+        component.images = [...Array(8)].map(() => (Math.random() * 12345).toString());
+      });
+
+      describe('and when user device is a mobile', () => {
+        beforeEach(() => {
+          spyOn(deviceService, 'isMobile').and.returnValue(true);
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('should NOT show smaller carousel indicators', () => {
+          const carouselComponent: SlidesCarouselComponent = fixture.debugElement.query(By.directive(SlidesCarouselComponent))
+            .componentInstance;
+
+          expect(carouselComponent.smallerIndicators).toBe(false);
+        });
+      });
+
+      describe("and when the user's device is not a mobile", () => {
+        beforeEach(() => {
+          spyOn(deviceService, 'isMobile').and.returnValue(false);
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('should NOT show smaller carousel indicators', () => {
+          const carouselComponent: SlidesCarouselComponent = fixture.debugElement.query(By.directive(SlidesCarouselComponent))
+            .componentInstance;
+
+          expect(carouselComponent.smallerIndicators).toBe(false);
+        });
       });
     });
 
