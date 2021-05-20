@@ -16,6 +16,7 @@ export class UserBasicInfoComponent {
   @Input() userInfo: User;
   @Input() styleSize: USER_INFO_SIZE = USER_INFO_SIZE.SMALL;
   @Input() clickable = false;
+  @Input() showProBadge = false;
 
   constructor(private router: Router) {}
 
