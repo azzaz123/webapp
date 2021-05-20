@@ -312,7 +312,7 @@ export class NewSubscriptionComponent implements OnInit {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
       },
     };
-    this.analyticsService.trackPageView(event);
+    this.analyticsService.trackEvent(event);
   }
 
   private trackSubscriptionPaymentButtonAvailable(): void {
@@ -339,7 +339,7 @@ export class NewSubscriptionComponent implements OnInit {
     return isDisable;
   }
 
-  public trackSubscriptionPayConfirmation(): void {
+  private trackSubscriptionPayConfirmation(): void {
     const discountPercent = this.subscriptionsService.getTierDiscountPercentatge(this.selectedTier);
     const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
       name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
