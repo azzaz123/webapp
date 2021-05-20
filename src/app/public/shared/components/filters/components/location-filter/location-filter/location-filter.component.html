@@ -2,6 +2,8 @@
     [title]="config.title" [icon]="config.icon" [hasValue]="bubbleActive" (apply)="handleApply()"
     (openStateChange)="openStateChange.emit($event)">
 
+  <tsl-drawer-placeholder-template></tsl-drawer-placeholder-template>
+
     <form [formGroup]="componentLocationForm">
         <div class="LocationFilter py-2">
             <div class="LocationFilter__search">

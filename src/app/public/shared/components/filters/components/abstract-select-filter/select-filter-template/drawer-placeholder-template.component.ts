@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'tsl-select-filter-template',
-  templateUrl: './select-filter-template.component.html',
-  styleUrls: ['./select-filter-template.component.scss'],
+  selector: 'tsl-drawer-placeholder-template',
+  templateUrl: './drawer-placeholder-template.component.html',
+  styleUrls: ['./drawer-placeholder-template.component.scss'],
 })
-export class SelectFilterTemplateComponent {
+export class DrawerPlaceholderTemplateComponent {
   @Input() hasContentPlaceholder: boolean;
   @Input() placeholderLabel: string;
   @Input() placeholderSublabel?: string;

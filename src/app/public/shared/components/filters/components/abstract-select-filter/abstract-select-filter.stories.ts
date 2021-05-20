@@ -34,7 +34,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
       (clear)="handleClear()"
       (openStateChange)="openStateChange.emit($event)"
     >
-      <tsl-select-filter-template
+      <tsl-drawer-placeholder-template
         [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
         [placeholderLabel]="drawerPlaceholder"
         [contentTitle]="contentTitle"
@@ -43,7 +43,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
           <stories-lorem-ipsum></stories-lorem-ipsum>
           <stories-lorem-ipsum></stories-lorem-ipsum>
         </div>
-      </tsl-select-filter-template>
+      </tsl-drawer-placeholder-template>
     </tsl-filter-template>
   `,
 })

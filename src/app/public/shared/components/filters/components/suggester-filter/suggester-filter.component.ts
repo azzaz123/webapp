@@ -1,7 +1,7 @@
 import { AfterContentInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractSelectFilter } from '../abstract-select-filter/abstract-select-filter';
 import { SuggesterFilterParams } from './interfaces/suggester-filter-params.interface';
-import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
+import { DrawerPlaceholderTemplateComponent } from '../abstract-select-filter/select-filter-template/drawer-placeholder-template.component';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOption } from '../../core/interfaces/filter-option.interface';
@@ -24,8 +24,8 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilterParams> implements OnInit, OnDestroy, AfterContentInit {
   @Input() config: SuggesterFilterConfig;
 
-  @ViewChild('selectFilterTemplateComponent', { read: SelectFilterTemplateComponent })
-  public selectFilterTemplate: SelectFilterTemplateComponent;
+  @ViewChild('selectFilterTemplateComponent', { read: DrawerPlaceholderTemplateComponent })
+  public selectFilterTemplate: DrawerPlaceholderTemplateComponent;
   @ViewChild('filterTemplateComponent', { read: FilterTemplateComponent })
   public filterTemplate: FilterTemplateComponent;
 
