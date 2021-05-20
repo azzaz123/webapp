@@ -163,7 +163,7 @@
   <msg id="delivery_address_save_success"><source>src/app/core/i18n/translations/constants/translations.ts:104</source>Address edited successfully!</msg>
   <msg id="delivery_address_save_error"><source>src/app/core/i18n/translations/constants/translations.ts:105</source>Sorry, something went wrong. Try again.</msg>
   <msg id="delivery_address_postal_code_not_exist_error"><source>src/app/core/i18n/translations/constants/translations.ts:106</source>Postal code doesn&apos;t exist.</msg>
-  <msg id="delivery_address_save_invalid_phone_number_error"><source>src/app/core/i18n/translations/constants/translations.ts:107</source>This phone number is invalid.</msg>
+  <msg id="delivery_address_invalid_phone_number_error"><source>src/app/core/i18n/translations/constants/translations.ts:107</source>This phone number is invalid.</msg>
   <msg id="delivery_address_too_long_hint_error"><source>src/app/core/i18n/translations/constants/translations.ts:108</source>That&apos;s is too long! Please write it shorter.</msg>
   <msg id="address_view_all_users_form_textfield_postalcode_missmatch_location_inline_error"><source>src/app/core/i18n/translations/constants/translations.ts:109</source>The ZIP code must be from the country you are located.</msg>
   <msg id="address_view_all_users_form_textfield_phone_missmatch_location_inline_error"><source>src/app/core/i18n/translations/constants/translations.ts:110</source>The contact number must be from the country you are located.</msg>
