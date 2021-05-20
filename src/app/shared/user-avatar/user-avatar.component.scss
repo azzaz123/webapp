@@ -1,5 +1,7 @@
 @import '~style/common';
 
+$pro-badge-radius: 11px;
+
 :host {
   display: inline-block;
 }
@@ -32,4 +34,14 @@ div {
   background-size: cover;
   border-radius: 50%;
   background-position: center;
+}
+
+.UserAvatar {
+  position: relative;
+}
+
+.UserAvatar__PRO-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
