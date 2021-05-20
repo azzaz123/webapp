@@ -11,7 +11,7 @@
         },
         "locales": {
           "es": {
-            "code": "es",
+            "translation": "src/locale/messages.es.json",
             "baseHref": ""
           }
         }
