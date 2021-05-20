@@ -1,5 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Params, Router, Scroll } from '@angular/router';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
@@ -36,6 +36,8 @@ import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -131,7 +133,10 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.subscription.add(
       this.queryParamsChange().subscribe((params) => {
         if (!this.paramsHaveLocation(params)) {
-          this.searchNavigatorService.navigate(params, null);
+          this.searchNavigatorService.navigate(
+            params,
+            (params.find((parameter) => parameter.key === FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE).value || null) as FILTERS_SOURCE
+          );
         } else {
           this.filterParameterStore.setParameters(params);
         }
