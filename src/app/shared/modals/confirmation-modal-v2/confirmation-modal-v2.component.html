@@ -1,0 +1,14 @@
+<div class="modal-close p-1 position-absolute" (click)="activeModal.dismiss()">
+  <tsl-button className="btn-icon"><tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon></tsl-button>
+</div>
+<div class="modal-body text-center pt-5">
+  <p class="modal-header__title mb-4">{{ title }}</p>
+  <p class="modal-body__text px-4 mb-4">{{ text }}</p>
+  <img class="modal-body__image" [src]="image" [alt]="title" />
+</div>
+<div class="modal-footer justify-content-center border-0 flex-wrap">
+  <tsl-button class="modal-footer__button" className="btn-primary w-100" (click)="primaryBtnClick.emit()">{{ primaryBtnText }}</tsl-button>
+  <tsl-button class="modal-footer__button" className="basic basic--grey w-100" (click)="secondaryBtnClick.emit()">{{
+    secondaryBtnText
+  }}</tsl-button>
+</div>
