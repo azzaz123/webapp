@@ -46,8 +46,10 @@ class I18nNormalizer {
     '2. Print missing translations\n' +
     '3. Normalize keys\n' +
     '4. Clean translations files\n' +
+    '5. Prepare Phrase files\n' +
     'e. Exit\n' +
     'Ans: ';
+  private confirmDoneString = '\n\nPress enter to clean when done uploading: ';
 
   private copyLocations: CopyLocation[] = [{
     language: LANGUAGE.ENGLISH,
@@ -68,15 +70,7 @@ class I18nNormalizer {
   private cumulativeIndex = 0;
 
   public async menu(): Promise<void> {
-    const readlineInterface = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
-    const answer = await new Promise(resolve => readlineInterface.question(this.menuString, (ans) => {
-      readlineInterface.close();
-      resolve(ans);
-    }));
+    const answer = await this.askInput(this.menuString);
 
     switch (answer) {
       case '1':
@@ -93,11 +87,28 @@ class I18nNormalizer {
       case '4':
         this.cleanTranslationFiles();
         break;
+      case '5':
+        await this.preparePhraseFiles();
+        break;
       default:
         return;
     }
 
     return this.menu();
+  }
+
+  private async preparePhraseFiles(): Promise<void> {
+    const languageCopies = this.getLanguageCopies();
+
+    const languages = Object.values(LANGUAGE);
+
+    languages.forEach(lang => {
+      fs.writeFileSync(`src/locale/phrase.${lang}.json`, JSON.stringify(languageCopies[lang]));
+    });
+
+    await this.askInput(this.confirmDoneString);
+
+    execSync(`rm src/locale/phrase.*.json`);
   }
 
   private cleanTranslationFiles(): void {
@@ -404,6 +415,18 @@ class I18nNormalizer {
     }
 
     return newKey;
+  }
+
+  private async askInput(message: string): Promise<string> {
+    const readlineInterface = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    return new Promise(resolve => readlineInterface.question(message, (ans) => {
+      readlineInterface.close();
+      resolve(ans);
+    }));
   }
 }
 
