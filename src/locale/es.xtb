@@ -1410,7 +1410,7 @@
   <translation id="web_wallapop_pro_about">Más información sobre Wallapop PRO</translation>
   <translation id="web_wallapop_pro_about_href">https://ayuda.wallapop.com/hc/es-es/sections/360001165358--Qu%C3%A9-es-Wallapop-PRO</translation>
   <translation id="web_start">Probar</translation>
- <translation id="address_view_all_users_form_textfield_country_label">País</translation>
+  <translation id="address_view_all_users_form_textfield_country_label">País</translation>
   <translation id="address_view_all_users_form_textfield_name_label">Nombre y apellidos</translation>
   <translation id="address_view_all_users_form_textfield_street_label">Calle y número</translation>
   <translation id="address_view_all_users_form_textfield_door_label">Piso y puerta</translation>

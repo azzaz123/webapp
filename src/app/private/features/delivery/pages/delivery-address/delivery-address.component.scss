@@ -8,13 +8,6 @@
       }
     }
 
-    &.disabled {
-      .form-control:disabled {
-        cursor: auto;
-        border: 0;
-      }
-    }
-
     &__message {
       &--error {
         font-size: $font-size-s;

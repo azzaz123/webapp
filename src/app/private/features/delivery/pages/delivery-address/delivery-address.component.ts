@@ -212,7 +212,6 @@ export class DeliveryAddressComponent implements OnInit {
 
   private handleNewForm(): void {
     this.loading = false;
-    this.buildForm();
     this.prepareFormAndInitializeCountries(true);
   }
 
