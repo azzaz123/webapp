@@ -5,34 +5,40 @@ import { Car } from '@core/item/car';
 import { Item } from '@core/item/item';
 import { Size } from '@public/shared/services/filter-option/interfaces/option-responses/fashion-size-n-gender.interface';
 import { ItemCondition } from '@core/item/item-condition';
+import { capitalizeString } from '@core/helpers/capitalize-string/capitalize-string';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MapExtraInfoService {
-  constructor(private typeCheckService: TypeCheckService) {}
   private phoneSpecifications = ['brand', 'model', 'condition'];
   private fashionSpecifications = ['size'].concat(this.phoneSpecifications);
   private carSpecifications = ['_version', '_year', '_km'];
+  private genericSpecifications = ['condition'];
+
+  constructor(private typeCheckService: TypeCheckService) {}
 
   public mapExtraInfo(item: Item | Car): string[] {
-    if (this.isItemCategoryWithExtraInfo(item)) {
-      const objectToCheck = this.typeCheckService.isCar(item) ? item : item.extraInfo;
-      const specifications = [];
-
-      this.specificationKeys(item).forEach((key) => {
-        if (this.specificationExistsAndDefined(objectToCheck, key)) {
-          specifications.push(this.defineSpecification(key, objectToCheck[key]));
-        }
-      });
-
-      return this.getCapitalizedLabels(specifications);
-    }
-    return [];
+    const objectToCheck = this.typeCheckService.isCar(item) ? item : item.extraInfo;
+    const specifications = this.generateSpecifications(item, objectToCheck);
+    const capitalizedSpecifications = specifications.map((spec) => capitalizeString(spec));
+    return capitalizedSpecifications;
   }
 
-  private isItemCategoryWithExtraInfo(item: Item | Car): boolean {
-    return this.typeCheckService.isCar(item) || this.typeCheckService.isCellPhoneAccessories(item) || this.typeCheckService.isFashion(item);
+  private generateSpecifications(item: Item | Car, objectToCheck: ItemExtraInfo | Car): string[] {
+    const specifications = [];
+
+    if (!objectToCheck) {
+      return specifications;
+    }
+
+    this.specificationKeys(item).forEach((key) => {
+      if (this.specificationExistsAndDefined(objectToCheck, key)) {
+        specifications.push(this.defineSpecification(key, objectToCheck[key]));
+      }
+    });
+
+    return specifications;
   }
 
   private specificationKeys(item: Item | Car): string[] {
@@ -45,6 +51,7 @@ export class MapExtraInfoService {
     if (this.typeCheckService.isCar(item)) {
       return this.carSpecifications;
     }
+    return this.genericSpecifications;
   }
 
   private defineSpecification(key: string, value: any): string {
@@ -93,9 +100,5 @@ export class MapExtraInfoService {
       default:
         return $localize`:@@web_undefined:Undefined`;
     }
-  }
-
-  private getCapitalizedLabels(labels: string[]): string[] {
-    return labels.map((label) => label.charAt(0).toUpperCase() + label.substr(1));
   }
 }
