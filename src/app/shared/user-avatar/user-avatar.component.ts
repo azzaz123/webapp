@@ -1,3 +1,4 @@
+import { NgStyle } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { InboxUser } from '@private/features/chat/core/model';
 import { environment } from '../../../environments/environment';
@@ -13,6 +14,7 @@ export class UserAvatarComponent implements OnInit, OnChanges {
   public uploadedAvatar;
   public fallback: string;
   public badgeSize = 22;
+  public badgeStyles = {};
   @Input() user: User | InboxUser;
   @Input() size = 40;
   @Input() imageUrl: string;
@@ -21,9 +23,7 @@ export class UserAvatarComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnInit(): void {
-    if (this.showProBadge) {
-      this.badgeSize = this.calculateBadgeSize();
-    }
+    this.checkPROBadgeProperties();
   }
 
   ngOnChanges(changes?: any) {
@@ -44,6 +44,21 @@ export class UserAvatarComponent implements OnInit, OnChanges {
       }
     }
     this.fallback = PLACEHOLDER_AVATAR;
+  }
+
+  private checkPROBadgeProperties(): void {
+    if (this.showProBadge) {
+      this.badgeSize = this.calculateBadgeSize();
+      this.badgeStyles = this.calculateBadgeStyles();
+    }
+  }
+
+  // FIXME: PROs team will change the pro-seal.svg and this won't be needed
+  private calculateBadgeStyles(): Object {
+    return {
+      'right.px': -1 * (this.badgeSize / 2) + 4,
+      'bottom.px': -1 * (this.badgeSize / 2) + 4,
+    };
   }
 
   private calculateBadgeSize(): number {
