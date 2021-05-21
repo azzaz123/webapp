@@ -3,7 +3,7 @@
         <tsl-credit-card-info class="mr-md-3 mb-md-0 mb-2 mr-0" [financialCard]="selectedCard" [disableDelete]="true" [error]="error" [disableEdit]="!showChangeLink" (onSetChangeCard)="addNewSubscriptionCard()">
         </tsl-credit-card-info>
     </ng-container>
-    <div class="SubscriptionCardSelector__newCard" (click)="addNewCard()">
+    <div class="SubscriptionCardSelector__newCard d-flex flex-column align-items-center justify-content-center" (click)="addNewCard()">
         <span i18n="@@web_add_card">Add card</span>
     </div>
 </div>

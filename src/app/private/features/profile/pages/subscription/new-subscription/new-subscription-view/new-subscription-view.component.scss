@@ -10,12 +10,11 @@
   }
 
   &__title {
-    font-size: 20px;
+    font-size: $font-size-l;
   }
 
   &__subtitle {
-    font-size: 16px;
-    color: #607d8b;
+    color: $blue-grey-2;
   }
 
   &__text {
@@ -24,7 +23,7 @@
 
   &__benefits {
     font-size: 14px;
-    color: #607d8b;
+    color: $blue-grey-2;
   }
 
   &__trialBanner {
