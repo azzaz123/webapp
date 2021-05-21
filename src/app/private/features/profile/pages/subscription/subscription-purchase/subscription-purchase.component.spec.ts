@@ -35,8 +35,7 @@ import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from '@private/features/profile/modal/payment-success/payment-success-modal.component';
 import { of, throwError } from 'rxjs';
-
-import { NewSubscriptionComponent, PAYMENT_SUCCESSFUL_CODE } from './new-subscription.component';
+import { SubscriptionPurchaseComponent, PAYMENT_SUCCESSFUL_CODE } from './subscription-purchase.component';
 
 @Component({
   selector: 'tsl-subscription-card-selector',
@@ -44,9 +43,9 @@ import { NewSubscriptionComponent, PAYMENT_SUCCESSFUL_CODE } from './new-subscri
 })
 class MockSubscriptionCardSelector {}
 
-describe('NewSubscriptionComponent', () => {
-  let component: NewSubscriptionComponent;
-  let fixture: ComponentFixture<NewSubscriptionComponent>;
+describe('SubscriptionPurchaseComponent', () => {
+  let component: SubscriptionPurchaseComponent;
+  let fixture: ComponentFixture<SubscriptionPurchaseComponent>;
   let stripeService: StripeService;
   let errorsService: ErrorsService;
   let subscriptionsService: SubscriptionsService;
@@ -57,7 +56,7 @@ describe('NewSubscriptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NewSubscriptionComponent, MockSubscriptionCardSelector],
+      declarations: [SubscriptionPurchaseComponent, MockSubscriptionCardSelector],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
@@ -98,7 +97,7 @@ describe('NewSubscriptionComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewSubscriptionComponent);
+    fixture = TestBed.createComponent(SubscriptionPurchaseComponent);
     component = fixture.componentInstance;
     component.subscription = MAPPED_SUBSCRIPTIONS[0];
     component.user = MOCK_USER;

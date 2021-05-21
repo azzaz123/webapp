@@ -1,11 +1,8 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FREE_TRIAL_AVAILABLE_SUBSCRIPTION, MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
-import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-
-import { NewSubscriptionViewComponent } from './new-subscription-view.component';
+import { SubscriptionPurchaseHeaderComponent } from './subscription-purchase-header.component';
 
 @Component({
   selector: 'tsl-svg-icon',
@@ -15,23 +12,23 @@ class MockSvgIconComponent {
   @Input() src: string;
 }
 
-describe('NewSubscriptionViewComponent', () => {
-  let component: NewSubscriptionViewComponent;
-  let fixture: ComponentFixture<NewSubscriptionViewComponent>;
+describe('SubscriptionPurchaseHeaderComponent', () => {
+  let component: SubscriptionPurchaseHeaderComponent;
+  let fixture: ComponentFixture<SubscriptionPurchaseHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NewSubscriptionViewComponent, MockSvgIconComponent],
+      declarations: [SubscriptionPurchaseHeaderComponent, MockSvgIconComponent],
       schemas: [NO_ERRORS_SCHEMA],
     })
-      .overrideComponent(NewSubscriptionViewComponent, {
+      .overrideComponent(SubscriptionPurchaseHeaderComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewSubscriptionViewComponent);
+    fixture = TestBed.createComponent(SubscriptionPurchaseHeaderComponent);
     component = fixture.componentInstance;
     component.subscription = MAPPED_SUBSCRIPTIONS[0];
     component.benefits = ['benefit1', 'benefit2'];

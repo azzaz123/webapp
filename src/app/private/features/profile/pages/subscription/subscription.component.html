@@ -5,5 +5,5 @@
 </ng-container>
 
 <ng-template #newSubscriptionCard>
-  <tsl-new-subscription [subscription]="newSubscription" [user]="user" (purchaseSuccessful)="subscriptionChangeSuccessful()" (unselectSubcription)="onUnselectSubcription()"></tsl-new-subscription>
+  <tsl-subscription-purchase [subscription]="newSubscription" [user]="user" (purchaseSuccessful)="subscriptionChangeSuccessful()" (unselectSubcription)="onUnselectSubcription()"></tsl-subscription-purchase>
 </ng-template>

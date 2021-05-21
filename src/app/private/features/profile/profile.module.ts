@@ -24,11 +24,11 @@ import { SubscriptionCardComponent } from './pages/subscription/subscription-car
 import { SubscriptionListComponent } from './pages/subscription/subscription-list/subscription-list.component';
 import { SubscriptionIconPipe } from './pipes/subscription-icon.pipe';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
-import { NewSubscriptionComponent } from './pages/subscription/new-subscription/new-subscription.component';
-import { NewSubscriptionViewComponent } from './pages/subscription/new-subscription/new-subscription-view/new-subscription-view.component';
 import { SubscriptionTierSelectorComponent } from './pages/subscription/subscription-tier-selector/subscription-tier-selector.component';
 import { SubscriptionCardSelectorComponent } from './pages/subscription/subscription-card-selector/subscription-card-selector.component';
 import { SubscriptionPurchaseFooterComponent } from './pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component';
+import { SubscriptionPurchaseComponent } from './pages/subscription/subscription-purchase/subscription-purchase.component';
+import { SubscriptionPurchaseHeaderComponent } from './pages/subscription/subscription-purchase-header/subscription-purchase-header.component';
 
 @NgModule({
   imports: [
@@ -64,8 +64,9 @@ import { SubscriptionPurchaseFooterComponent } from './pages/subscription/subscr
     SubscriptionBenefitComponent,
     SubscriptionListComponent,
     SubscriptionCardComponent,
-    NewSubscriptionComponent,
-    NewSubscriptionViewComponent,
+    SubscriptionPurchaseComponent,
+    SubscriptionPurchaseHeaderComponent,
+    SubscriptionPurchaseFooterComponent,
     SubscriptionTierSelectorComponent,
     SubscriptionCardSelectorComponent,
     SubscriptionPurchaseFooterComponent,

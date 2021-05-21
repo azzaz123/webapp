@@ -32,11 +32,11 @@ import { filter, mergeMap } from 'rxjs/operators';
 export const PAYMENT_SUCCESSFUL_CODE = 202;
 
 @Component({
-  selector: 'tsl-new-subscription',
-  templateUrl: './new-subscription.component.html',
-  styleUrls: ['./new-subscription.component.scss'],
+  selector: 'tsl-subscription-purchase',
+  templateUrl: './subscription-purchase.component.html',
+  styleUrls: ['./subscription-purchase.component.scss'],
 })
-export class NewSubscriptionComponent implements OnInit {
+export class SubscriptionPurchaseComponent implements OnInit {
   @Input() subscription: SubscriptionsResponse;
   @Input() user: User;
   @Output() purchaseSuccessful: EventEmitter<void> = new EventEmitter();

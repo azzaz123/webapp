@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
-  selector: 'tsl-new-subscription-view',
-  templateUrl: './new-subscription-view.component.html',
-  styleUrls: ['./new-subscription-view.component.scss'],
+  selector: 'tsl-subscription-purchase-header',
+  templateUrl: './subscription-purchase-header.component.html',
+  styleUrls: ['./subscription-purchase-header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewSubscriptionViewComponent {
+export class SubscriptionPurchaseHeaderComponent {
   @Input() subscription: SubscriptionsResponse;
   @Input() benefits: string[];
 
