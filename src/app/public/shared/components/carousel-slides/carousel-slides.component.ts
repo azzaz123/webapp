@@ -14,6 +14,7 @@ import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
 import { CarouselSlide } from './carousel-slide.interface';
+import { DeviceService } from '@core/device/device.service';
 
 export enum SWIPE_DIRECTION {
   'RIGHT',
@@ -32,7 +33,6 @@ export class SlidesCarouselComponent implements AfterContentInit {
   @Input() noBackgroundIndicators: boolean;
   @Input() hideControllers = false;
   @Input() hideIndicators = false;
-  @Input() smallerIndicators = false;
   @Input() initialIndex = 0;
 
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
@@ -40,11 +40,13 @@ export class SlidesCarouselComponent implements AfterContentInit {
   public readonly NGB_SLIDE = 'ngb-slide-';
   public slides: CarouselSliderDirective[];
   public activeId: string;
+  public smallerIndicators = false;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private deviceService: DeviceService) {}
 
   ngAfterContentInit() {
     this.slides = this.sections.toArray();
+    this.checkSmallerIndicators();
     this.activeId = this.NGB_SLIDE + this.initialIndex;
     this.cdr.detectChanges();
   }
@@ -66,6 +68,12 @@ export class SlidesCarouselComponent implements AfterContentInit {
 
   private isTouchDevice(): boolean {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+  }
+
+  private checkSmallerIndicators() {
+    if (this.slides?.length > 10 && this.deviceService.isMobile()) {
+      this.smallerIndicators = true;
+    }
   }
 
   get isSingleSlide(): boolean {

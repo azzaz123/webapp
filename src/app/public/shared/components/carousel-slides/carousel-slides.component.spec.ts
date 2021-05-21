@@ -4,8 +4,9 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SlidesCarouselComponent } from './carousel-slides.component';
-
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
+import { DeviceService } from '@core/device/device.service';
+import { MockDeviceService } from '@fixtures/device.fixtures.spec';
 
 @Component({
   selector: 'tsl-carousel-slides-test',
@@ -31,10 +32,12 @@ describe('SlidesCarouselComponent', () => {
 
   let component: SlidesCarouselComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
+  let deviceService: DeviceService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NgbCarouselModule, ImageFallbackModule],
+      providers: [{ provide: DeviceService, useValue: MockDeviceService }],
       declarations: [SlidesCarouselComponent, TestWrapperComponent, CarouselSliderDirective],
     })
       .overrideComponent(SlidesCarouselComponent, {
@@ -47,6 +50,7 @@ describe('SlidesCarouselComponent', () => {
     fixture = TestBed.createComponent(TestWrapperComponent);
     component = fixture.debugElement.children[0].componentInstance;
     fixture.detectChanges();
+    deviceService = TestBed.inject(DeviceService);
   });
 
   it('should create', () => {
@@ -178,6 +182,70 @@ describe('SlidesCarouselComponent', () => {
         expect(fixture.debugElement.query(By.css(hideIndicatorsClass))).toBeFalsy();
       });
     });
+
+    describe('when item has more than 10 images', () => {
+      beforeEach(() => {
+        fixture.componentInstance.images = [...Array(20)].map(() => (Math.random() * 12345).toString());
+      });
+
+      describe('and when user device is a mobile', () => {
+        beforeEach(() => {
+          spyOn(deviceService, 'isMobile').and.returnValue(true);
+          fixture.detectChanges();
+          component.ngAfterContentInit();
+          fixture.detectChanges();
+        });
+
+        it('should show smaller carousel indicators', () => {
+          expect(fixture.debugElement.query(By.css(smallerIndicatorsClass))).toBeTruthy();
+        });
+      });
+
+      describe("and when the user's device is not a mobile", () => {
+        beforeEach(() => {
+          spyOn(deviceService, 'isMobile').and.returnValue(false);
+          fixture.detectChanges();
+          component.ngAfterContentInit();
+          fixture.detectChanges();
+        });
+
+        it('should NOT show smaller carousel indicators', () => {
+          expect(fixture.debugElement.query(By.css(smallerIndicatorsClass))).toBeFalsy();
+        });
+      });
+    });
+
+    describe('when item has less than 10 images', () => {
+      beforeEach(() => {
+        fixture.componentInstance.images = [...Array(8)].map(() => (Math.random() * 12345).toString());
+      });
+
+      describe('and when user device is a mobile', () => {
+        beforeEach(() => {
+          spyOn(deviceService, 'isMobile').and.returnValue(true);
+          fixture.detectChanges();
+          component.ngAfterContentInit();
+          fixture.detectChanges();
+        });
+
+        it('should NOT show smaller carousel indicators', () => {
+          expect(fixture.debugElement.query(By.css(smallerIndicatorsClass))).toBeFalsy();
+        });
+      });
+
+      describe("and when the user's device is not a mobile", () => {
+        beforeEach(() => {
+          spyOn(deviceService, 'isMobile').and.returnValue(false);
+          fixture.detectChanges();
+          component.ngAfterContentInit();
+          fixture.detectChanges();
+        });
+
+        it('should NOT show smaller carousel indicators', () => {
+          expect(fixture.debugElement.query(By.css(smallerIndicatorsClass))).toBeFalsy();
+        });
+      });
+    });
   });
 
   describe(`when we don't have slides...`, () => {
@@ -199,16 +267,6 @@ describe('SlidesCarouselComponent', () => {
       fixture.detectChanges();
 
       expect(fixture.debugElement.query(By.css(noBackgroundIndicatorsClass))).toBeTruthy();
-    });
-  });
-
-  describe('when specifying smaller indicators', () => {
-    it('should style with smaller indicators', () => {
-      component.smallerIndicators = true;
-
-      fixture.detectChanges();
-
-      expect(fixture.debugElement.query(By.css(smallerIndicatorsClass))).toBeTruthy();
     });
   });
 
