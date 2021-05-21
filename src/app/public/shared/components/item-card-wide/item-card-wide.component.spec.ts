@@ -16,6 +16,8 @@ import { ItemExtraInfoModule } from '../item-extra-info/item-extra-info.module';
 
 import { ItemCardWideComponent } from './item-card-wide.component';
 import { MOCK_ITEM_CARD_WIDE_BUMPED, MOCK_ITEM_CARD_WIDE_GBP } from './item-card-wide.mock.stories';
+import { DeviceService } from '@core/device/device.service';
+import { MockDeviceService } from '@fixtures/device.fixtures.spec';
 
 describe('ItemCardWideComponent', () => {
   const favouriteIconSelector = 'tsl-favourite-icon';
@@ -46,7 +48,12 @@ describe('ItemCardWideComponent', () => {
         SlidesCarouselModule,
         ItemExtraInfoModule,
       ],
-      providers: [TypeCheckService, DecimalPipe, { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock }],
+      providers: [
+        TypeCheckService,
+        DecimalPipe,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
+        { provide: DeviceService, useValue: MockDeviceService },
+      ],
     }).compileComponents();
   });
 
