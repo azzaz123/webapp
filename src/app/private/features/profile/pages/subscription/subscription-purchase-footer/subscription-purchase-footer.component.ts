@@ -13,6 +13,7 @@ export class SubscriptionPurchaseFooterComponent implements OnInit {
   @Input() subscription: SubscriptionsResponse;
   @Input() isLoading: boolean;
   @Output() buttonPurchaseClick: EventEmitter<void> = new EventEmitter();
+  @Output() buttonEnabled: EventEmitter<void> = new EventEmitter();
 
   public descriptionText: string;
   public buttonText: string;
@@ -23,6 +24,13 @@ export class SubscriptionPurchaseFooterComponent implements OnInit {
 
   ngOnInit(): void {
     this.setButtonText();
+  }
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    const { buttonDisable } = changes;
+    if (buttonDisable && buttonDisable.currentValue !== buttonDisable.previousValue) {
+      this.buttonEnabled.emit();
+    }
   }
 
   private setButtonText(): void {

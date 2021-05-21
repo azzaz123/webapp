@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -25,7 +25,7 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { User } from '@core/user/user';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from '@private/features/profile/modal/payment-success/payment-success-modal.component';
-import { COMPONENT_TYPE, ProfileProBillingComponent } from '@shared/profile-pro-billing/profile-pro-billing.component';
+import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { FinancialCard } from '@shared/profile/credit-card-info/financial-card';
 import { filter, mergeMap } from 'rxjs/operators';
 
@@ -41,7 +41,6 @@ export class SubscriptionPurchaseComponent implements OnInit {
   @Input() user: User;
   @Output() purchaseSuccessful: EventEmitter<void> = new EventEmitter();
   @Output() unselectSubcription: EventEmitter<void> = new EventEmitter();
-  @ViewChild(ProfileProBillingComponent, { static: true }) profileProBillingComponent: ElementRef;
 
   public stripeCards: FinancialCard[];
   public selectedCard: FinancialCard;
@@ -50,7 +49,6 @@ export class SubscriptionPurchaseComponent implements OnInit {
   public paymentError: STRIPE_ERROR;
   public benefits: string[];
   public isLoading: boolean;
-  private buttonEnabledTracked: boolean;
   public isRetryPayment = false;
   private _invoiceId: string;
   public INVOICE_COMPONENT_TYPE = COMPONENT_TYPE;
@@ -311,7 +309,7 @@ export class SubscriptionPurchaseComponent implements OnInit {
     this.analyticsService.trackEvent(event);
   }
 
-  private trackSubscriptionPaymentButtonAvailable(): void {
+  public trackSubscriptionPaymentButtonAvailable(): void {
     const event: AnalyticsEvent<SubscriptionPaymentButtonAvailable> = {
       name: ANALYTICS_EVENT_NAMES.SubscriptionPaymentButtonAvailable,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -324,15 +322,6 @@ export class SubscriptionPurchaseComponent implements OnInit {
       },
     };
     this.analyticsService.trackPageView(event);
-  }
-
-  public isDisableButton(): boolean {
-    const isDisable = !this.selectedCard || this.isLoading || !!this.paymentError;
-    if (!isDisable && !this.buttonEnabledTracked) {
-      this.buttonEnabledTracked = true;
-      this.trackSubscriptionPaymentButtonAvailable();
-    }
-    return isDisable;
   }
 
   private trackSubscriptionPayConfirmation(): void {

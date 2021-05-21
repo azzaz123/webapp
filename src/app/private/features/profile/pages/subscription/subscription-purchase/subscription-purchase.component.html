@@ -54,7 +54,7 @@
         </div>
     </div>
 </div>
-<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="isDisableButton()"
-    [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()">
+<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="!selectedCard || isLoading || paymentError"
+    [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()" (buttonEnabled)="trackSubscriptionPaymentButtonAvailable()">
 
 </tsl-subscription-purchase-footer>
