@@ -26,6 +26,7 @@ import { finalize, map, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
 import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
+import { DeleteDeliveryAddressModalComponent } from '../../modals/delete-delivery-address-modal/delete-delivery-address-modal.component';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -77,7 +78,7 @@ export class DeliveryAddressComponent implements OnInit {
     this.eventService.subscribe(this.formSubmittedEventKey, () => {
       this.onSubmit();
     });
-    this.clearFormWhenCountryChange();
+    this.clearFormAndResetLocationsWhenCountryChange();
     this.requestLocationsWhenPostalCodeChange();
     this.updateRegionWhenCityChange();
   }
@@ -141,24 +142,46 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  private clearFormWhenCountryChange(): void {
+  public deleteForm(): void {
+    this.modalService.open(DeleteDeliveryAddressModalComponent).result.then((result: boolean) => {
+      if (result) {
+        this.deliveryAddressService.delete(this.deliveryAddressForm.get('id').value).subscribe(
+          () => {
+            this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS);
+            this.deliveryAddressForm.get('id').setValue(this.uuidService.getUUID());
+            this.clearForm();
+            this.prepareFormAndInitializeCountries(true);
+          },
+          () => {
+            this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
+          }
+        );
+      }
+    });
+  }
+
+  private clearFormAndResetLocationsWhenCountryChange(): void {
     const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
 
     const subscription = countryISOCode.valueChanges.subscribe(() => {
       if (countryISOCode.dirty) {
         this.resetCitiesAndLocations();
-        this.deliveryAddressForm.clearValidators();
-        this.deliveryAddressForm.get('full_name').reset();
-        this.deliveryAddressForm.get('street').reset();
-        this.deliveryAddressForm.get('flat_and_floor').reset();
-        this.deliveryAddressForm.get('postal_code').reset();
-        this.deliveryAddressForm.get('city').reset();
-        this.deliveryAddressForm.get('phone_number').reset();
-        this.deliveryAddressForm.get('region').reset();
+        this.clearForm();
       }
     });
 
     this.subscriptions.add(subscription);
+  }
+
+  private clearForm(): void {
+    this.deliveryAddressForm.clearValidators();
+    this.deliveryAddressForm.get('full_name').reset();
+    this.deliveryAddressForm.get('street').reset();
+    this.deliveryAddressForm.get('flat_and_floor').reset();
+    this.deliveryAddressForm.get('postal_code').reset();
+    this.deliveryAddressForm.get('city').reset();
+    this.deliveryAddressForm.get('phone_number').reset();
+    this.deliveryAddressForm.get('region').reset();
   }
 
   private requestLocationsWhenPostalCodeChange(): void {
