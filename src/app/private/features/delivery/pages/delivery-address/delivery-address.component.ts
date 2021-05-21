@@ -180,11 +180,9 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private updateRegionWhenCityChange(): void {
-    const city = this.deliveryAddressForm.get('city');
-
-    const subscription = city.valueChanges.subscribe(() => {
-      if (city.dirty && this.locations.length > 1) {
-        const selectedLocation = this.locations.find((location: DeliveryLocationApi) => location.city === city.value);
+    const subscription = this.deliveryAddressForm.get('city').valueChanges.subscribe((newCity: string) => {
+      if (this.deliveryAddressForm.get('postal_code').valid && this.locations.length > 1) {
+        const selectedLocation = this.locations.find((location: DeliveryLocationApi) => location.city === newCity);
         this.deliveryAddressForm.get('region').setValue(selectedLocation.region);
       }
     });
@@ -229,8 +227,8 @@ export class DeliveryAddressComponent implements OnInit {
       )
       .subscribe(
         () => {
+          this.isNewForm = false;
           this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS);
-          this.initForm(false);
           this.redirect();
         },
         (errors: DeliveryAddressError[]) => {

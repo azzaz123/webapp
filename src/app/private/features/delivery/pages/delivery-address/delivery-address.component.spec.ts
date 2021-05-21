@@ -233,10 +233,10 @@ describe('DeliveryAddressComponent', () => {
           expect(errorsService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS);
         });
 
-        it('should init the form control', () => {
+        it('should update the new form flag to false', () => {
           component.onSubmit();
 
-          expect(component.initForm).toHaveBeenCalledWith(false);
+          expect(component.isNewForm).toBe(false);
         });
 
         describe('when redirecting to the next page...', () => {
