@@ -257,4 +257,14 @@ describe('ItemDetailStoreService', () => {
       expect(itemDetailFlagsStoreService.updateStatusFlag).toBeCalledWith(service.itemDetail.item.flags);
     });
   });
+
+  describe('when the component is destroyed', () => {
+    it('should clear the item information that was saved in the store', () => {
+      service.itemDetail = MOCK_CAR_ITEM_DETAIL;
+
+      service.clear();
+
+      expect(service.itemDetail).toBeNull();
+    });
+  });
 });

@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from
 import { ActivatedRoute } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
-import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOthersItemCGDetail } from '@core/analytics/analytics-constants';
-import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -58,7 +56,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private typeCheckService: TypeCheckService,
     private userService: UserService,
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
-    private analyticsService: AnalyticsService,
     private recommenderItemCardFavouriteCheckedService: RecommenderItemCardFavouriteCheckedService
   ) {}
 
@@ -77,6 +74,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.itemDetailStoreService.clear();
     this.subscriptions.unsubscribe();
   }
 
@@ -191,25 +189,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  private trackViewOthersCGDetailEvent(itemDetail: ItemDetail): void {
-    const item = itemDetail.item;
-    const user = itemDetail.user;
-    const event: AnalyticsPageView<ViewOthersItemCGDetail> = {
-      name: ANALYTICS_EVENT_NAMES.ViewOthersItemCGDetail,
-      attributes: {
-        itemId: item.id,
-        categoryId: item.categoryId,
-        salePrice: item.salePrice,
-        title: item.title,
-        isPro: user.featured,
-        screenId: SCREEN_IDS.ItemDetail,
-      },
-    };
-    this.analyticsService.trackPageView(event);
-  }
-
   get itemDetail$(): Observable<ItemDetail> {
-    return this.itemDetailStoreService.itemDetail$;
+    return this.itemDetailStoreService.itemDetail$.pipe(filter((itemDetail: ItemDetail) => !!itemDetail?.item));
   }
 
   get statusFlag$(): Observable<STATUS_ITEM_FLAG_TYPES> {
