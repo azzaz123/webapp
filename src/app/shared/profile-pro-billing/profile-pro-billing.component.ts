@@ -24,7 +24,6 @@ export enum BILLING_TYPE {
 export enum COMPONENT_TYPE {
   PROFILE_INFO = 'profile-info',
   SUBSCRIPTION_INFO = 'subscription-info',
-  MODAL = 'modal',
 }
 
 @Component({
@@ -263,16 +262,8 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
     return pattern.test(control.value) ? null : { email: true };
   }
 
-  get containerTypeIsModal(): boolean {
-    return this.containerType === COMPONENT_TYPE.MODAL;
-  }
-
   get isSubmitShown(): boolean {
-    return !(this.containerType === COMPONENT_TYPE.MODAL || this.containerType === COMPONENT_TYPE.SUBSCRIPTION_INFO);
-  }
-
-  get containerTypeIsProfileInfo(): boolean {
-    return this.containerType === COMPONENT_TYPE.SUBSCRIPTION_INFO || this.containerType === COMPONENT_TYPE.PROFILE_INFO;
+    return this.containerType !== COMPONENT_TYPE.SUBSCRIPTION_INFO;
   }
 
   private cpValidator(control: AbstractControl): { [key: string]: boolean } {

@@ -255,14 +255,6 @@ describe('ProfileProBillingComponent', () => {
     });
   });
 
-  describe('containerTypeIsModal', () => {
-    it('should return true if component is inside a modal', () => {
-      component.containerType = COMPONENT_TYPE.MODAL;
-
-      expect(component.containerTypeIsModal).toBe(true);
-    });
-  });
-
   describe('when we fill the form...', () => {
     const validForm = {
       cif: '06353225G',
