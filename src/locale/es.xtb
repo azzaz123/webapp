@@ -1443,4 +1443,8 @@
   <translation id="delivery_address_too_long_hint_error">Texto demasiado largo. Escríbelo más corto.</translation>
   <translation id="delivery_address_save_success">¡Dirección editada satisfactoriamente!</translation>
   <translation id="address_view_all_users_snackbar_missing_info_error">Los datos que faltan son necesarios para guardar</translation>
+  <translation id="delivery_delete_address_confirmation_popup_message">Esta acción no se puede deshacer. ¿Seguro que quieres borrar tu dirección?</translation>
+  <translation id="delivery_delete_address_succeed">La dirección se ha eliminado correctamente.</translation>
+  <translation id="delete">Eliminar</translation>
+  <translation id="cancel">Cancelar</translation>
 </translationbundle>
