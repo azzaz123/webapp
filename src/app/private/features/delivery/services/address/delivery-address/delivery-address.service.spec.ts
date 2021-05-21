@@ -36,7 +36,6 @@ describe('DeliveryAddressService', () => {
         it('should get the address from the store', () => {
           spyOn(deliveryAddressApiService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS_2));
           jest.spyOn(deliveryAddressStoreService, 'deliveryAddress', 'get').mockReturnValue(MOCK_DELIVERY_ADDRESS);
-          jest.spyOn(deliveryAddressStoreService, 'deliveryAddress$', 'get').mockReturnValue(of(MOCK_DELIVERY_ADDRESS));
 
           service.get().subscribe((deliveryAddress: DeliveryAddressApi) => {
             expect(deliveryAddress).toBe(MOCK_DELIVERY_ADDRESS);
@@ -47,46 +46,91 @@ describe('DeliveryAddressService', () => {
       });
 
       describe(`and we don't have the address already saved...`, () => {
-        it('should request the address', () => {
+        beforeEach(() => {
           spyOn(deliveryAddressApiService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS_2));
-          jest.spyOn(deliveryAddressStoreService, 'deliveryAddress', 'get').mockReturnValue(null);
+          deliveryAddressStoreService.deliveryAddress = null;
 
           service.get().subscribe();
+        });
 
+        it('should request the address', () => {
           expect(deliveryAddressApiService.get).toHaveBeenCalled();
+        });
+
+        it('should update the delivery address in the store', () => {
+          expect(deliveryAddressStoreService.deliveryAddress).toStrictEqual(MOCK_DELIVERY_ADDRESS_2);
         });
       });
     });
 
     describe('and the cache is not activated...', () => {
-      it('should request the address', () => {
+      beforeEach(() => {
         spyOn(deliveryAddressApiService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
 
         service.get(false).subscribe();
+      });
 
+      it('should request the address', () => {
         expect(deliveryAddressApiService.get).toHaveBeenCalled();
+      });
+
+      it('should update the delivery address in the store', () => {
+        expect(deliveryAddressStoreService.deliveryAddress).toStrictEqual(MOCK_DELIVERY_ADDRESS);
       });
     });
   });
 
   describe('when creating the delivery address...', () => {
-    it('should call the api service', () => {
-      spyOn(deliveryAddressApiService, 'create').and.returnValue(of(null));
+    describe('and the petition succeed...', () => {
+      beforeEach(() => {
+        spyOn(deliveryAddressApiService, 'create').and.returnValue(of(null));
 
-      service.updateOrCreate(MOCK_DELIVERY_ADDRESS, true).subscribe();
+        service.updateOrCreate(MOCK_DELIVERY_ADDRESS, true).subscribe();
+      });
 
-      expect(deliveryAddressApiService.create).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS);
+      it('should call the api service', () => {
+        expect(deliveryAddressApiService.create).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS);
+      });
+
+      it('should update the delivery address in the store', () => {
+        expect(deliveryAddressStoreService.deliveryAddress).toEqual(MOCK_DELIVERY_ADDRESS);
+      });
+    });
+
+    describe('and the petition fails...', () => {
+      it('should map the error to DeliveryAddressError', () => {
+        let response: DeliveryAddressError[];
+        spyOn(deliveryAddressApiService, 'create').and.returnValue(throwError(MOCK_DELIVERY_ADDRESS_ERRORS_API));
+
+        service.updateOrCreate(MOCK_DELIVERY_ADDRESS, true).subscribe({
+          error: (deliveryAddressErrors: DeliveryAddressError[]) => {
+            response = deliveryAddressErrors;
+          },
+        });
+
+        response.forEach((error) => {
+          expect(error instanceof DeliveryAddressError).toBeTruthy();
+        });
+      });
     });
   });
 
   describe('when updating the delivery address...', () => {
     describe('and the petition succeed...', () => {
-      it('should call the api service', () => {
+      beforeEach(() => {
         spyOn(deliveryAddressApiService, 'update').and.returnValue(of(null));
 
         service.updateOrCreate(MOCK_DELIVERY_ADDRESS, false).subscribe();
+      });
 
-        expect(deliveryAddressApiService.update).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS);
+      describe('and the petition succeed...', () => {
+        it('should call the api service', () => {
+          expect(deliveryAddressApiService.update).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS);
+        });
+
+        it('should update the delivery address in the store', () => {
+          expect(deliveryAddressStoreService.deliveryAddress).toEqual(MOCK_DELIVERY_ADDRESS);
+        });
       });
     });
 

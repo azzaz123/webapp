@@ -22,7 +22,7 @@ export class DeliveryAddressService {
 
     return this.deliveryAddressApiService.get().pipe(
       tap((address: DeliveryAddressApi) => {
-        this.deliveryAddressStoreService.deliveryAddress = address;
+        this.updateDeliveryAddressStore(address);
       })
     );
   }
@@ -33,6 +33,9 @@ export class DeliveryAddressService {
       : this.deliveryAddressApiService.update(newDeliveryAddress);
 
     return observable.pipe(
+      tap(() => {
+        this.updateDeliveryAddressStore(newDeliveryAddress);
+      }),
       catchError((e: HttpErrorResponse) => {
         const errors: DeliveryAddressErrorApi[] = e?.error;
         const mappedErrors: DeliveryAddressError[] = errors?.map((err) => new DeliveryAddressError(err.error_code, e.status, err.message));
@@ -40,5 +43,9 @@ export class DeliveryAddressService {
         return throwError(mappedErrors);
       })
     );
+  }
+
+  private updateDeliveryAddressStore(newDeliveryAddress: DeliveryAddressApi): void {
+    this.deliveryAddressStoreService.deliveryAddress = { ...newDeliveryAddress };
   }
 }

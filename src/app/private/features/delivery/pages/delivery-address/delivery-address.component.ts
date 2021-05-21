@@ -9,7 +9,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
@@ -64,7 +63,6 @@ export class DeliveryAddressComponent implements OnInit {
     private fb: FormBuilder,
     private deliveryAddressService: DeliveryAddressService,
     private deliveryCountriesService: DeliveryCountriesService,
-    private deliveryAddressStoreService: DeliveryAddressStoreService,
     private eventService: EventService,
     private errorsService: ErrorsService,
     private uuidService: UuidService,
@@ -164,15 +162,15 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private requestLocationsWhenPostalCodeChange(): void {
-    const postalCode = this.deliveryAddressForm.get('postal_code');
-    const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
+    const subscription = this.deliveryAddressForm.get('postal_code').valueChanges.subscribe((newPostalCode: string) => {
+      const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
+      const postalCode = this.deliveryAddressForm.get('postal_code');
 
-    const subscription = postalCode.valueChanges.subscribe((newPostalCode: string) => {
       if (postalCode.dirty) {
         this.resetCitiesAndLocations();
         this.deliveryAddressForm.get('city').reset();
         this.deliveryAddressForm.get('region').reset();
-        if (postalCode.valid && newPostalCode.length === 5 && newPostalCode) {
+        if (postalCode.valid && newPostalCode?.length === 5) {
           this.getLocationsAndHandlePostalCode(newPostalCode, countryISOCode.value);
         }
       }
@@ -231,7 +229,6 @@ export class DeliveryAddressComponent implements OnInit {
       )
       .subscribe(
         () => {
-          this.deliveryAddressStoreService.deliveryAddress = this.deliveryAddressForm.value;
           this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS);
           this.initForm(false);
           this.redirect();

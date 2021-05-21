@@ -10,7 +10,6 @@ import {
   MOCK_DELIVERY_ADDRESS_2,
 } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
@@ -45,7 +44,6 @@ describe('DeliveryAddressComponent', () => {
   let component: DeliveryAddressComponent;
   let fixture: ComponentFixture<DeliveryAddressComponent>;
   let deliveryAddressService: DeliveryAddressService;
-  let deliveryAddressStoreService: DeliveryAddressStoreService;
   let deliveryLocationsService: DeliveryLocationsService;
   let deliveryCountriesService: DeliveryCountriesService;
   let errorsService: ErrorsService;
@@ -62,7 +60,6 @@ describe('DeliveryAddressComponent', () => {
         I18nService,
         ErrorsService,
         DeliveryCountriesService,
-        DeliveryAddressStoreService,
         DeliveryCountriesStoreService,
         DeliveryAddressApiService,
         DeliveryCountriesApiService,
@@ -109,7 +106,6 @@ describe('DeliveryAddressComponent', () => {
     deliveryAddressService = TestBed.inject(DeliveryAddressService);
     deliveryLocationsService = TestBed.inject(DeliveryLocationsService);
     deliveryCountriesService = TestBed.inject(DeliveryCountriesService);
-    deliveryAddressStoreService = TestBed.inject(DeliveryAddressStoreService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -229,12 +225,6 @@ describe('DeliveryAddressComponent', () => {
           spyOn(errorsService, 'i18nSuccess');
           spyOn(component, 'initForm');
           spyOn(router, 'navigate');
-        });
-
-        it('should update the delivery address in the store', () => {
-          component.onSubmit();
-
-          expect(deliveryAddressStoreService.deliveryAddress).toStrictEqual(MOCK_DELIVERY_ADDRESS_2);
         });
 
         it('should show a success message', () => {
