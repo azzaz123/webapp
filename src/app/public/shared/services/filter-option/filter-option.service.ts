@@ -20,6 +20,11 @@ import {
 } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
+interface ExcludedFieldsOption {
+  id?: string;
+  excluded_fields?: string[];
+}
+
 @Injectable()
 export class FilterOptionService {
   constructor(
@@ -136,10 +141,7 @@ export class FilterOptionService {
     return typeof mapper !== 'string';
   }
 
-  private handleVisibilityModifier(
-    visibilityModifierConfig: VisibilityModifierConfig,
-    options: { id?: string; excluded_fields?: string[] }[]
-  ): void {
+  private handleVisibilityModifier(visibilityModifierConfig: VisibilityModifierConfig, options: ExcludedFieldsOption[]): void {
     const visibilityConditions: QueryParamVisibilityCondition[] = options
       .filter((option) => option.excluded_fields?.length && option.id)
       .reduce((acc, option) => {

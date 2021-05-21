@@ -62,11 +62,10 @@ export class HostVisibilityService {
   }
 
   public addVisibilityConditions(conditions: QueryParamVisibilityCondition[]): void {
-    let newConditions = [...this.visibilityConditionsSubject.getValue()];
+    let newConditions: QueryParamVisibilityCondition[] = [...this.visibilityConditionsSubject.getValue()];
 
-    for (const condition of conditions) {
+    conditions.forEach((condition) => {
       const foundCondition = newConditions.find((cond) => cond.queryParam === condition.queryParam);
-
       if (!foundCondition) {
         newConditions.push(condition);
       } else {
@@ -80,7 +79,7 @@ export class HostVisibilityService {
         newConditions = newConditions.filter((cond) => cond.queryParam !== newCondition.queryParam);
         newConditions.push(newCondition);
       }
-    }
+    });
 
     this.visibilityConditionsSubject.next(newConditions);
   }
@@ -116,7 +115,9 @@ export class HostVisibilityService {
   }
 
   private isHostVisible(queryParams: FILTER_QUERY_PARAM_KEY[], variant: FILTER_VARIANT): boolean {
-    const relatedConditions = this.visibilityConditionsSubject.getValue().filter((condition) => queryParams.includes(condition.queryParam));
+    const relatedConditions: QueryParamVisibilityCondition[] = this.visibilityConditionsSubject
+      .getValue()
+      .filter((condition) => queryParams.includes(condition.queryParam));
 
     for (const condition of relatedConditions) {
       if (!this.isConditionVisible(condition, variant)) {
