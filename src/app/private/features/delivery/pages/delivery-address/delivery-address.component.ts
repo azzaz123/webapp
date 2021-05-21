@@ -32,6 +32,7 @@ export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
   PAYVIEW_PAY,
 }
+
 @Component({
   selector: 'tsl-delivery-address',
   templateUrl: './delivery-address.component.html',
@@ -268,9 +269,6 @@ export class DeliveryAddressComponent implements OnInit {
         break;
       case PREVIOUS_PAGE.PAYVIEW_PAY:
         this.router.navigate([DELIVERY_PATHS.SHIPMENT_TRACKING]);
-        break;
-      default:
-        this.router.navigate([DELIVERY_PATHS.ADDRESSES_LIST]);
         break;
     }
   }

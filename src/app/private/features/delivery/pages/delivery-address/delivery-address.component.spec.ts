@@ -266,12 +266,12 @@ describe('DeliveryAddressComponent', () => {
             expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.SHIPMENT_TRACKING]);
           });
 
-          it('should redirect to the delivery address list by default', () => {
+          it('should stay at the same page by default', () => {
             component.whereUserComes = null;
 
             component.onSubmit();
 
-            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.ADDRESSES_LIST]);
+            expect(router.navigate).not.toHaveBeenCalled();
           });
         });
       });
