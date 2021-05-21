@@ -68,7 +68,7 @@ export class SearchService {
     this.currentCategoryIdSubject.next(categoryId);
   }
 
-  get searchId$(): Observable<string> {
+  get newSearch$(): Observable<string> {
     return this.searchIdSubject.asObservable();
   }
 

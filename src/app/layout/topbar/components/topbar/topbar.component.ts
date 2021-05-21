@@ -15,9 +15,11 @@ import { CookieService } from 'ngx-cookie';
 import { Subscription } from 'rxjs';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
 @Component({
   selector: 'tsl-topbar',
@@ -144,7 +146,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.searchNavigator.navigate(filterParams, true);
+    this.searchNavigator.navigate(filterParams, FILTERS_SOURCE.SEARCH_BOX, true);
   }
 
   private redirectToOldSearch(searchParams: SearchBoxValue) {
@@ -154,6 +156,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
       oldSearchURL.searchParams.set(FILTER_QUERY_PARAM_KEY.categoryId, searchParams[FILTER_QUERY_PARAM_KEY.categoryId]);
     }
     oldSearchURL.searchParams.set(FILTER_QUERY_PARAM_KEY.keywords, searchParams[FILTER_QUERY_PARAM_KEY.keywords]);
+    oldSearchURL.searchParams.set(FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE, FILTERS_SOURCE.SEARCH_BOX);
 
     window.location.href = `${oldSearchURL}`;
   }

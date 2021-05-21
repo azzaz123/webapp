@@ -40,6 +40,8 @@ import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { MockSearchListTrackingEventService, MOCK_SEARCH_ID } from '../../search/core/services/search-list-tracking-events.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
+import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import { MockSearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service.fixture';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -60,6 +62,8 @@ describe('SearchComponent', () => {
   let publicFooterServiceMock;
   let searchAdsServiceMock;
   let searchListTrackingEventsService: SearchListTrackingEventsService;
+  let searchTrackingEventsService: SearchTrackingEventsService;
+  let filterParameterStoreService: FilterParameterStoreService;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
   const isLoadingResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const isLoadingPaginationResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -82,8 +86,9 @@ describe('SearchComponent', () => {
       isLoadingResults$: isLoadingResultsSubject.asObservable(),
       isLoadingPaginationResults$: isLoadingPaginationResultsSubject.asObservable(),
       currentCategoryId$: currentCategoryIdSubject.asObservable(),
+      newSearch$: searchIdSubject.asObservable(),
+
       init: () => {},
-      searchId$: searchIdSubject.asObservable(),
       loadMore: () => {},
       close: () => {},
     };
@@ -145,6 +150,10 @@ describe('SearchComponent', () => {
           provide: SearchListTrackingEventsService,
           useClass: MockSearchListTrackingEventService,
         },
+        {
+          provide: SearchTrackingEventsService,
+          useClass: MockSearchTrackingEventsService,
+        },
       ],
     }).compileComponents();
   });
@@ -152,6 +161,8 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     searchListTrackingEventsService = TestBed.inject(SearchListTrackingEventsService);
+    searchTrackingEventsService = TestBed.inject(SearchTrackingEventsService);
+    filterParameterStoreService = TestBed.inject(FilterParameterStoreService);
     component = fixture.componentInstance;
   });
 
@@ -522,6 +533,20 @@ describe('SearchComponent', () => {
 
         expect(component.slotsConfig).toEqual(SLOTS_CONFIG_MOBILE);
       });
+    });
+  });
+
+  describe('when new search is performed', () => {
+    const searchId = 'searchId';
+
+    beforeEach(() => {
+      spyOn(searchTrackingEventsService, 'trackSearchEvent');
+    });
+
+    it('should send search event', () => {
+      searchIdSubject.next(searchId);
+
+      expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(searchId, filterParameterStoreService.getParameters());
     });
   });
 });
