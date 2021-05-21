@@ -70,9 +70,9 @@ export const STRIPE_CARD_OPTION_SUBSCRIPTION: any = {
   stripeCard: STRIPE_CARD,
 };
 
-export const CARDS_WITH_ONE_DEFAULT: FinancialCard[] = [createDefaultFinancialCardFixture(), createDefaultFinancialCardFixture()];
+export const CARDS_WITH_ONE_DEFAULT: FinancialCard[] = [createFinancialCardFixture(), createDefaultFinancialCardFixture()];
 
-export const CARDS_WITHOUT_DEFAULT: FinancialCard[] = [createDefaultFinancialCardFixture(), createFavoriteFinancialCardFixture()];
+export const CARDS_WITHOUT_DEFAULT: FinancialCard[] = [createFinancialCardFixture(), createFavoriteFinancialCardFixture()];
 
 export function createFinancialCardFixture(): FinancialCard {
   return new FinancialCard('2/2020', 'pm_a0b1c2', '4242', null, null, STRIPE_CARD);

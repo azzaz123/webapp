@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { SubscriptionResponse } from '@core/subscriptions/subscriptions.interface';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeCardModalComponent } from '@shared/modals/change-card-modal/change-card-modal.component';
 import { NewCardModalComponent } from '@shared/modals/new-card-modal/new-card-modal.component';
@@ -10,7 +9,7 @@ import { FinancialCard } from '@shared/profile/credit-card-info/financial-card';
   templateUrl: './subscription-card-selector.component.html',
   styleUrls: ['./subscription-card-selector.component.scss'],
 })
-export class SubscriptionCardSelectorComponent implements OnInit, OnChanges {
+export class SubscriptionCardSelectorComponent implements OnChanges {
   @Input() stripeCards: FinancialCard[];
   @Input() selectedCard: FinancialCard;
   @Input() error: boolean;
@@ -20,14 +19,17 @@ export class SubscriptionCardSelectorComponent implements OnInit, OnChanges {
 
   constructor(private modalService: NgbModal) {}
 
-  ngOnInit(): void {}
-
   ngOnChanges() {
-    this.showChangeLink =
-      this.stripeCards?.length > 1 || (this.stripeCards?.length > 0 && !this.stripeCards.find((card) => card.id === this.selectedCard.id));
+    this.setShowChangeLink();
   }
 
-  public addNewCard(): void {
+  private setShowChangeLink(): void {
+    this.showChangeLink =
+      this.stripeCards?.length > 1 ||
+      (this.stripeCards?.length === 1 && !this.stripeCards.find((card) => card.id === this.selectedCard.id));
+  }
+
+  public onAddCard(): void {
     this.clickNewCard.emit();
     let modalRef: NgbModalRef = this.modalService.open(NewCardModalComponent, {
       windowClass: 'review',
@@ -42,13 +44,13 @@ export class SubscriptionCardSelectorComponent implements OnInit, OnChanges {
       .catch(() => {});
   }
 
-  public addNewSubscriptionCard(): void {
+  public onChangeCard(): void {
     let modalRef: NgbModalRef = this.modalService.open(ChangeCardModalComponent, { windowClass: 'review' });
     modalRef.componentInstance.isNewSubscription = true;
     modalRef.result
       .then(
-        (card) => {
-          this.changeSelectedCard.emit(card);
+        (financialCard: FinancialCard) => {
+          this.changeSelectedCard.emit(financialCard);
         },
         () => {}
       )
