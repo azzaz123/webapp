@@ -1,12 +1,18 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { FINANCIAL_CARD } from '@fixtures/payments.fixtures.spec';
-import { CARDS_WITH_ONE_DEFAULT, STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
+import { CARDS_WITH_ONE_DEFAULT } from '@fixtures/stripe.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeCardModalComponent } from '@shared/modals/change-card-modal/change-card-modal.component';
 import { NewCardModalComponent } from '@shared/modals/new-card-modal/new-card-modal.component';
-
 import { SubscriptionCardSelectorComponent } from './subscription-card-selector.component';
+
+@Component({
+  selector: 'tsl-credit-card-info',
+  template: '',
+})
+class MockCreditCardInfo {}
 
 describe('SubscriptionCardSelectorComponent', () => {
   let component: SubscriptionCardSelectorComponent;
@@ -15,7 +21,7 @@ describe('SubscriptionCardSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionCardSelectorComponent],
+      declarations: [SubscriptionCardSelectorComponent, MockCreditCardInfo],
       providers: [
         {
           provide: NgbModal,
@@ -94,6 +100,40 @@ describe('SubscriptionCardSelectorComponent', () => {
 
         expect(component.changeSelectedCard.emit).not.toHaveBeenCalled();
       }));
+    });
+  });
+  describe('Card selector', () => {
+    describe('has stripe cards', () => {
+      it('should show card selector', () => {
+        component.stripeCards = CARDS_WITH_ONE_DEFAULT;
+
+        fixture.detectChanges();
+        const cardSelector = fixture.debugElement.query(By.directive(MockCreditCardInfo));
+
+        expect(cardSelector).toBeTruthy();
+      });
+      describe('has selected card', () => {
+        it('should show card selector', () => {
+          component.selectedCard = CARDS_WITH_ONE_DEFAULT[1];
+          component.stripeCards = null;
+
+          fixture.detectChanges();
+          const cardSelector = fixture.debugElement.query(By.directive(MockCreditCardInfo));
+
+          expect(cardSelector).toBeTruthy();
+        });
+        describe('has not selected card and stripe cards', () => {
+          it('should show card selector', () => {
+            component.selectedCard = null;
+            component.stripeCards = null;
+
+            fixture.detectChanges();
+            const cardSelector = fixture.debugElement.query(By.directive(MockCreditCardInfo));
+
+            expect(cardSelector).toBeFalsy();
+          });
+        });
+      });
     });
   });
   describe('Click change card', () => {

@@ -130,7 +130,7 @@ export class SubscriptionPurchaseComponent implements OnInit {
   }
 
   get isSavedCard(): boolean {
-    return !!this.stripeCards.find((card) => card.id === this.selectedCard.id);
+    return !!this.stripeCards?.find((card) => card.id === this.selectedCard.id);
   }
 
   public onChageSubscription(): void {

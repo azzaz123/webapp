@@ -7,7 +7,7 @@ import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.i
   templateUrl: './subscription-purchase-footer.component.html',
   styleUrls: ['./subscription-purchase-footer.component.scss'],
 })
-export class SubscriptionPurchaseFooterComponent implements OnInit {
+export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
   @Input() selectedTier: Tier;
   @Input() buttonDisable: boolean;
   @Input() subscription: SubscriptionsResponse;
@@ -28,7 +28,7 @@ export class SubscriptionPurchaseFooterComponent implements OnInit {
 
   public ngOnChanges(changes: SimpleChanges): void {
     const { buttonDisable } = changes;
-    if (buttonDisable && buttonDisable.currentValue !== buttonDisable.previousValue) {
+    if (buttonDisable && !buttonDisable.currentValue && buttonDisable.currentValue !== buttonDisable.previousValue) {
       this.buttonEnabled.emit();
     }
   }

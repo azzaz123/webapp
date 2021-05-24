@@ -23,11 +23,9 @@
     <div class="GenericCard">
         <div class="GenericCard__title" i18n="@@web_stripe_cards_535">Payment method</div>
         <div class="GenericCard__subtitle" i18n="@@web_card_selector_subtitle">Encrypted and secure</div>
-        <ng-container *ngIf="selectedCard">
-            <tsl-subscription-card-selector [stripeCards]="stripeCards" [selectedCard]="selectedCard" (clickNewCard)="trackClickSubscriptionAddCard()"
-                [error]="!!paymentError" (changeSelectedCard)="onChangeSelectedCard($event)">
-            </tsl-subscription-card-selector>
-        </ng-container>
+        <tsl-subscription-card-selector [stripeCards]="stripeCards" [selectedCard]="selectedCard" (clickNewCard)="trackClickSubscriptionAddCard()"
+            [error]="!!paymentError" (changeSelectedCard)="onChangeSelectedCard($event)">
+        </tsl-subscription-card-selector>
         <div class="mt-4">
             <label i18n="@@web_receive_invoices">Do you want to receive invoices?</label>
             <div class="d-flex">
@@ -54,7 +52,7 @@
         </div>
     </div>
 </div>
-<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="!selectedCard || isLoading || paymentError"
+<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="!selectedCard || isLoading || !!paymentError"
     [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()" (buttonEnabled)="trackSubscriptionPaymentButtonAvailable()">
 
 </tsl-subscription-purchase-footer>

@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -37,12 +36,6 @@ import { PaymentSuccessModalComponent } from '@private/features/profile/modal/pa
 import { of, throwError } from 'rxjs';
 import { SubscriptionPurchaseComponent, PAYMENT_SUCCESSFUL_CODE } from './subscription-purchase.component';
 
-@Component({
-  selector: 'tsl-subscription-card-selector',
-  template: '',
-})
-class MockSubscriptionCardSelector {}
-
 describe('SubscriptionPurchaseComponent', () => {
   let component: SubscriptionPurchaseComponent;
   let fixture: ComponentFixture<SubscriptionPurchaseComponent>;
@@ -56,7 +49,7 @@ describe('SubscriptionPurchaseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionPurchaseComponent, MockSubscriptionCardSelector],
+      declarations: [SubscriptionPurchaseComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
@@ -122,11 +115,6 @@ describe('SubscriptionPurchaseComponent', () => {
           expect(stripeService.getCards).toHaveBeenCalledWith(false);
           expect(component.selectedCard).toEqual(CARDS_WITH_ONE_DEFAULT[1]);
         });
-        it('should show card selector', () => {
-          const cardSelector = fixture.debugElement.query(By.directive(MockSubscriptionCardSelector));
-
-          expect(cardSelector).toBeTruthy();
-        });
       });
       describe('has not default card', () => {
         beforeEach(() => {
@@ -137,11 +125,6 @@ describe('SubscriptionPurchaseComponent', () => {
           expect(stripeService.getCards).toBeCalledTimes(1);
           expect(stripeService.getCards).toHaveBeenCalledWith(false);
           expect(component.selectedCard).toEqual(CARDS_WITHOUT_DEFAULT[0]);
-        });
-        it('should show card selector', () => {
-          const cardSelector = fixture.debugElement.query(By.directive(MockSubscriptionCardSelector));
-
-          expect(cardSelector).toBeTruthy();
         });
       });
       describe('has not cards', () => {
@@ -155,11 +138,6 @@ describe('SubscriptionPurchaseComponent', () => {
           expect(component.stripeCards).toEqual([]);
           expect(component.selectedCard).toBeUndefined();
         });
-        it('should show card selector', () => {
-          const cardSelector = fixture.debugElement.query(By.directive(MockSubscriptionCardSelector));
-
-          expect(cardSelector).toBeFalsy();
-        });
       });
       describe('has error', () => {
         beforeEach(() => {
@@ -172,11 +150,6 @@ describe('SubscriptionPurchaseComponent', () => {
           expect(stripeService.getCards).toHaveBeenCalledWith(false);
           expect(component.stripeCards).toBeUndefined();
           expect(component.selectedCard).toBeUndefined();
-        });
-        it('should show card selector', () => {
-          const cardSelector = fixture.debugElement.query(By.directive(MockSubscriptionCardSelector));
-
-          expect(cardSelector).toBeFalsy();
         });
         it('should show error', () => {
           expect(errorsService.i18nError).toHaveBeenCalledTimes(1);
