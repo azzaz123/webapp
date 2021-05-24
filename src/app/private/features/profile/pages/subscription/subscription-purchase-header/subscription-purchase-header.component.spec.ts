@@ -40,7 +40,7 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
     it('should show subscription name', () => {
       const titleElement: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__title')).nativeElement;
 
-      expect(titleElement.textContent).toContain(component.subscription.category_name.toUpperCase());
+      expect(titleElement.textContent).toContain(component.subscription.category_name);
     });
 
     it('should show image', () => {

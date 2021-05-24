@@ -39,11 +39,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'app/core/user/user.service';
 import { of } from 'rxjs';
 import { SubscriptionsComponent } from './subscription.component';
-import { NewSubscriptionComponent } from './new-subscription/new-subscription.component';
 import { By } from '@angular/platform-browser';
 
 @Component({
-  selector: 'tsl-new-subscription',
+  selector: 'tsl-subscription-purchase',
   template: '',
 })
 class MockNewSubscriptionComponent {}
