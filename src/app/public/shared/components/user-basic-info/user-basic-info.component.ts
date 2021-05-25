@@ -24,7 +24,7 @@ export class UserBasicInfoComponent {
     return STYLE_SIZES.find((style) => style.size === this.styleSize);
   }
 
-  public onClickUser() {
+  public onClickUser(): void {
     if (this.clickable) {
       this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.USER_DETAIL}/${this.userInfo.id}`]);
     }
