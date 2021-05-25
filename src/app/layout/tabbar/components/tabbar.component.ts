@@ -9,21 +9,6 @@ import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { Subscription } from 'rxjs';
 import { TabbarService } from '../core/services/tabbar.service';
 
-export const INPUT_TYPE = {
-  TEXT: 'text',
-  DATE: 'date',
-  PASSWORD: 'password',
-  NUMBER: 'number',
-  radio: 'radio',
-};
-
-export const KEYBOARD_INPUT_TYPES = [INPUT_TYPE.TEXT, INPUT_TYPE.DATE, INPUT_TYPE.PASSWORD, INPUT_TYPE.NUMBER];
-
-export const ELEMENT_TYPE = {
-  TEXT_AREA: 'TEXTAREA',
-  INPUT: 'INPUT',
-};
-
 @Component({
   selector: 'tsl-tabbar',
   templateUrl: './tabbar.component.html',
@@ -70,29 +55,19 @@ export class TabbarComponent implements OnInit {
     );
   }
 
-  private isTextInputOrTextarea(element: any): boolean {
-    const elementTarget = element.target;
-    if (elementTarget.nodeName === ELEMENT_TYPE.TEXT_AREA) {
-      return true;
-    }
-
-    if (elementTarget.nodeName !== ELEMENT_TYPE.INPUT) {
-      return false;
-    }
-
-    const inputType = elementTarget.attributes?.type?.nodeValue;
-    return KEYBOARD_INPUT_TYPES.includes(inputType);
+  private isTextInputOrTextarea(elementType: string) {
+    return elementType === 'INPUT' || elementType === 'TEXTAREA';
   }
 
-  @HostListener('window:focusin', ['$event'])
-  onFocusIn(elementType: any) {
+  @HostListener('window:focusin', ['$event.target.nodeName'])
+  onFocusIn(elementType: string) {
     if (this.isTextInputOrTextarea(elementType)) {
       this.hidden = true;
     }
   }
 
-  @HostListener('window:focusout', ['$event'])
-  onFocusOut(elementType: any) {
+  @HostListener('window:focusout', ['$event.target.nodeName'])
+  onFocusOut(elementType: string) {
     if (this.isTextInputOrTextarea(elementType)) {
       this.hidden = false;
     }
