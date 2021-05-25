@@ -6,7 +6,7 @@
                     <b><span i18n="@@web_total">Total</span></b>
                 </div>
                 <div class="SubscriptionPurchaseFooter__amount">
-                    <b>{{subscription.trial_available ? "0,00" : selectedTier.price}}{{selectedTier.currency}}</b>
+                    <b>{{priceText}}{{selectedTier.currency}}</b>
                 </div>
                 <div class="SubscriptionPurchaseFooter__description">
                     <ng-container *ngIf="subscription.trial_available; else noTrialDescription">

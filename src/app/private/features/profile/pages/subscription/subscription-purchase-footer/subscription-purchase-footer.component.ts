@@ -17,6 +17,7 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
 
   public descriptionText: string;
   public buttonText: string;
+  public priceText: string;
   public readonly termsAndConditionsURL = TERMS_AND_CONDITIONS_URL;
   public readonly policyPrivacyURL = PRIVACY_POLICY_URL;
 
@@ -24,6 +25,7 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.setButtonText();
+    this.setPriceText();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -35,6 +37,10 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
 
   private setButtonText(): void {
     this.buttonText = this.subscription.trial_available ? $localize`:@@web_start_free_trial:Start free trial` : $localize`:@@web_pay:Pay`;
+  }
+
+  private setPriceText(): void {
+    this.priceText = `${this.subscription.trial_available ? '0,00' : this.selectedTier.price}`;
   }
 
   public onClickButton(): void {

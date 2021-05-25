@@ -100,8 +100,10 @@ describe('SubscriptionPurchaseFooterComponent', () => {
       });
 
       it('should show empty price', () => {
-        const price: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__amount')).nativeElement;
+        component.ngOnInit();
+        fixture.detectChanges();
 
+        const price: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__amount')).nativeElement;
         expect(price.textContent).toContain('0,00');
         expect(price.textContent).toContain(component.selectedTier.currency);
       });

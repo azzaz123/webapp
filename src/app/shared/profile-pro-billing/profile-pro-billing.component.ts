@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation-modal/delete-info-confirmation-modal.component';
@@ -31,12 +31,13 @@ export enum COMPONENT_TYPE {
   templateUrl: './profile-pro-billing.component.html',
   styleUrls: ['./profile-pro-billing.component.scss'],
 })
-export class ProfileProBillingComponent implements CanComponentDeactivate, OnDestroy {
+export class ProfileProBillingComponent implements CanComponentDeactivate, OnInit, OnDestroy {
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
   public loading = true;
   public type: string;
   private savedData: unknown;
+  private isSubmitShown: boolean;
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
   @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
@@ -60,6 +61,10 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
         this.onSubmit();
       }
     });
+  }
+
+  ngOnInit() {
+    this.isSubmitShown = this.containerType !== COMPONENT_TYPE.SUBSCRIPTION_INFO;
   }
 
   onChanges() {
@@ -260,10 +265,6 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
     const pattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
     return pattern.test(control.value) ? null : { email: true };
-  }
-
-  get isSubmitShown(): boolean {
-    return this.containerType !== COMPONENT_TYPE.SUBSCRIPTION_INFO;
   }
 
   private cpValidator(control: AbstractControl): { [key: string]: boolean } {
