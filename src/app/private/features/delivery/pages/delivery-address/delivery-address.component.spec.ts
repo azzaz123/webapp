@@ -8,6 +8,7 @@ import {
   MOCK_INVALID_DELIVERY_ADDRESS,
   MOCK_DELIVERY_ADDRESS_EMPTY,
   MOCK_DELIVERY_ADDRESS_2,
+  MOCK_DELIVERY_ADDRESS_RESET,
 } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
@@ -614,13 +615,77 @@ describe('DeliveryAddressComponent', () => {
 
   describe('when clicking the delete button...', () => {
     describe('and we confirm the action...', () => {
+      beforeEach(() => {
+        spyOn(modalService, 'open').and.returnValue({
+          result: Promise.resolve(true),
+        });
+      });
+
       describe('and the delete action succeed...', () => {
-        // TODO: rename		Date: 2021/05/25
-        it('should prepare form and initialize countries', () => {});
-        it('should delete the address ', () => {});
-        it('should show a sucess toast message', () => {});
-        it('should clear the form', () => {});
-        it('should reset the id', () => {});
+        beforeEach(() => {
+          component.deliveryAddressForm.setValue(MOCK_DELIVERY_ADDRESS);
+
+          spyOn(errorsService, 'i18nSuccess');
+          spyOn(component.formComponent, 'initFormControl');
+          spyOn(deliveryAddressService, 'delete').and.returnValue(of(null));
+
+          fixture.debugElement.query(By.css(deleteButtonSelector)).nativeElement.click();
+        });
+
+        it('should prepare form and set the default country', fakeAsync(() => {
+          tick();
+
+          expect(component.isNewForm).toBe(true);
+          expect(component.formComponent.initFormControl).toHaveBeenCalled();
+          expect(component.deliveryAddressForm.get('country_iso_code').value).toBe(
+            MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.iso_code
+          );
+        }));
+
+        it('should call the delete action with the address id', fakeAsync(() => {
+          tick();
+
+          expect(deliveryAddressService.delete).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS.id);
+        }));
+
+        it('should show a success toast message', fakeAsync(() => {
+          tick();
+
+          expect(errorsService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS);
+        }));
+
+        it('should clear the form', fakeAsync(() => {
+          tick();
+
+          expect(component.deliveryAddressForm.value).toStrictEqual(MOCK_DELIVERY_ADDRESS_RESET);
+        }));
+
+        it('should reset the id', fakeAsync(() => {
+          tick();
+
+          expect(component.deliveryAddressForm.get('id').value).not.toStrictEqual(MOCK_DELIVERY_ADDRESS.id);
+        }));
+      });
+
+      describe('and the delete action fails...', () => {
+        beforeEach(() => {
+          spyOn(deliveryAddressService, 'delete').and.returnValue(throwError('network error'));
+          spyOn(errorsService, 'i18nError');
+
+          fixture.debugElement.query(By.css(deleteButtonSelector)).nativeElement.click();
+        });
+
+        it('should call the delete action with the address id', fakeAsync(() => {
+          tick();
+
+          expect(deliveryAddressService.delete).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS.id);
+        }));
+
+        it('should show an error toast message', fakeAsync(() => {
+          tick();
+
+          expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
+        }));
       });
     });
 
@@ -640,11 +705,11 @@ describe('DeliveryAddressComponent', () => {
         expect(modalService.open).toHaveBeenCalledWith(DeleteDeliveryAddressModalComponent);
       }));
 
-      it('should call the service', () => {
+      it('should NOT call the service', fakeAsync(() => {
         tick();
 
         expect(deliveryAddressService.delete).not.toHaveBeenCalled();
-      });
+      }));
     });
   });
 });
