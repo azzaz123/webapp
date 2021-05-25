@@ -9,7 +9,7 @@
     "HostES": "web.beta.wallapop.com",
     "HostEN": "web-en.beta.wallapop.com",
     "HostedZoneName": "wallapop.com.",
-    "Certificate": "arn:aws:acm:eu-west-1:139222918132:certificate/8b778f90-3ad3-413b-ae5e-0bd9e5ff9c22"
+    "Certificate": "arn:aws:acm:us-east-1:139222918132:certificate/c99aab6a-a8b9-4363-8f2b-edf8a507b970"
   },
   "Tags": {
     "Project": "webapp",
