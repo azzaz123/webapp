@@ -37,10 +37,12 @@ import { By } from '@angular/platform-browser';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
+import { DeleteDeliveryAddressModalComponent } from '../../modals/delete-delivery-address-modal/delete-delivery-address-modal.component';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__form__payViewInfoMessage';
   const countriesDropdownSelector = '#country_iso_code';
+  const deleteButtonSelector = '#deleteButton';
   let component: DeliveryAddressComponent;
   let fixture: ComponentFixture<DeliveryAddressComponent>;
   let deliveryAddressService: DeliveryAddressService;
@@ -88,6 +90,9 @@ describe('DeliveryAddressComponent', () => {
               return of(MOCK_DELIVERY_ADDRESS);
             },
             updateOrCreate() {
+              return of();
+            },
+            delete() {
               return of();
             },
           },
@@ -323,22 +328,44 @@ describe('DeliveryAddressComponent', () => {
   });
 
   describe('when the user comes from the pay on payview...', () => {
-    it('should show an info message', () => {
+    beforeEach(() => {
       component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_PAY;
 
       fixture.detectChanges();
+    });
 
+    it('should show an info message', () => {
       expect(fixture.debugElement.query(By.css(payViewMessageSelector))).toBeTruthy();
+    });
+
+    it('should not appear the delete button', () => {
+      expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
     });
   });
 
-  describe('when the user NOT comes from the pay on payview...', () => {
-    it('should NOT show an info message', () => {
+  describe('when the user NOT comes from the pay button on payview...', () => {
+    beforeEach(() => {
       component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
 
       fixture.detectChanges();
+    });
 
+    it('should NOT show an info message', () => {
       expect(fixture.debugElement.query(By.css(payViewMessageSelector))).toBeFalsy();
+    });
+
+    it('should not appear the delete button', () => {
+      expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
+    });
+  });
+
+  describe('when the user NOT comes from the payview...', () => {
+    it('should appear the delete button', () => {
+      component.whereUserComes = null;
+
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeTruthy();
     });
   });
 
@@ -581,6 +608,42 @@ describe('DeliveryAddressComponent', () => {
         cityFormControl.setValue('Málaga');
 
         expect(component.deliveryAddressForm.get('region').value).toBe(MOCK_DELIVERY_LOCATION_ES.region);
+      });
+    });
+  });
+
+  describe('when clicking the delete button...', () => {
+    describe('and we confirm the action...', () => {
+      describe('and the delete action succeed...', () => {
+        // TODO: rename		Date: 2021/05/25
+        it('should prepare form and initialize countries', () => {});
+        it('should delete the address ', () => {});
+        it('should show a sucess toast message', () => {});
+        it('should clear the form', () => {});
+        it('should reset the id', () => {});
+      });
+    });
+
+    describe('and we NOT confirm the action...', () => {
+      beforeEach(() => {
+        spyOn(deliveryAddressService, 'delete');
+        spyOn(modalService, 'open').and.returnValue({
+          result: Promise.resolve(false),
+        });
+
+        fixture.debugElement.query(By.css(deleteButtonSelector)).nativeElement.click();
+      });
+
+      it('should open the delete confirmation modal', fakeAsync(() => {
+        tick();
+
+        expect(modalService.open).toHaveBeenCalledWith(DeleteDeliveryAddressModalComponent);
+      }));
+
+      it('should call the service', () => {
+        tick();
+
+        expect(deliveryAddressService.delete).not.toHaveBeenCalled();
       });
     });
   });
