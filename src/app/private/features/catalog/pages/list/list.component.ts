@@ -31,6 +31,7 @@ import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-acti
 import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { CONFIRM_COLOR_TYPES } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
@@ -109,7 +110,8 @@ export class ListComponent implements OnInit, OnDestroy {
     protected i18n: I18nService,
     private subscriptionsService: SubscriptionsService,
     private deviceService: DeviceDetectorService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private i18nService: I18nService
   ) {}
 
   get itemsAmount() {
@@ -493,9 +495,16 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public delete() {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
-      windowClass: 'modal-prompt',
+      backdrop: 'static',
     });
-    modalRef.componentInstance.type = 1;
+
+    modalRef.componentInstance.properties = {
+      title: this.i18nService.translate(TRANSLATION_KEY.DELETE_ITEMS_TITLE),
+      description: this.i18nService.translate(TRANSLATION_KEY.DELETE_ITEMS_DESCRIPTION),
+      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELETE_BUTTON),
+      confirmColor: CONFIRM_COLOR_TYPES.RED,
+    };
+
     modalRef.result.then(
       () => {
         this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {

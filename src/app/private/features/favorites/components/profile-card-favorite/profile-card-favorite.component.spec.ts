@@ -9,7 +9,7 @@ import { USER_ID } from '@fixtures/user.fixtures.spec';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ProfileService } from '@core/profile/profile.service';
 import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
-import { environment } from '@environments/environment';
+import { I18nService } from '@core/i18n/i18n.service';
 
 describe('ProfileCardFavoriteComponent', () => {
   let component: ProfileCardFavoriteComponent;
@@ -35,6 +35,7 @@ describe('ProfileCardFavoriteComponent', () => {
         declarations: [ProfileCardFavoriteComponent, CustomCurrencyPipe, UserProfileRoutePipe],
         providers: [
           DecimalPipe,
+          I18nService,
           {
             provide: NgbModal,
             useValue: {
@@ -100,11 +101,7 @@ describe('ProfileCardFavoriteComponent', () => {
     });
 
     it('should open accept modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
-    });
-
-    it('should set modal type "5" if profile is featured', () => {
-      expect(modalRef.componentInstance.type).toEqual(5);
+      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { backdrop: 'static' });
     });
 
     it('should call removeFavorite method ', fakeAsync(() => {

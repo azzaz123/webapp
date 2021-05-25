@@ -102,7 +102,22 @@ export enum TRANSLATION_KEY {
   IMAGE_UPLOADED,
   SUGGESTED_CATEGORY,
   DELETE_BILLING_INFO,
-
+  DELETE_ITEMS_TITLE,
+  DELETE_ITEMS_DESCRIPTION,
+  DELETE_BUTTON,
+  RESERVE_ITEMS_TITLE,
+  RESERVE_ITEMS_DESCRIPTION,
+  RESERVE_BUTTON,
+  REMOVE_FEATURED_PROFILE_FAVORITE_TITLE,
+  REMOVE_FEATURED_PROFILE_FAVORITE_DESCRIPTION,
+  REMOVE_BUTTON,
+  PROFILE_NO_LONGER_FEATURED_TITLE,
+  PROFILE_NO_LONGER_FEATURED_DESCRIPTION,
+  REMOVE_ITEM_FROM_FAVORITES_TITLE,
+  REMOVE_ITEM_FROM_FAVORITES_DESCRIPTION,
+  DELETE_CARD_TITLE,
+  DELETE_CARD_DESCRIPTION,
+  I_AM_SURE_CONFIRMATION,
   // TODO: Remaining keys with no explicit usage. Some of them might come from the backend so we need to keep it's string value
   //       We leave cleaning this keys after Italy release, as some of them come from some legacy parts (chat, calls..)
   //       and it is really difficult to follow the keys as this part needs a refactor

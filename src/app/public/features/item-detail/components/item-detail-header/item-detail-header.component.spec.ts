@@ -26,6 +26,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { ItemDetailTrackEventsService } from '../../core/services/item-detail-track-events/item-detail-track-events.service';
 import { MockItemdDetailTrackEventService } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { I18nService } from '@core/i18n/i18n.service';
 
 describe('ItemDetailHeaderComponent', () => {
   let component: ItemDetailHeaderComponent;
@@ -55,6 +56,7 @@ describe('ItemDetailHeaderComponent', () => {
         RecommenderApiService,
         MapItemService,
         ToastService,
+        I18nService,
         {
           provide: ItemDetailTrackEventsService,
           useClass: MockItemdDetailTrackEventService,
@@ -279,7 +281,7 @@ describe('ItemDetailHeaderComponent', () => {
           trashButton.click();
           tick();
 
-          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
+          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { backdrop: 'static' });
           expect(itemDetailService.deleteItem).toHaveBeenCalledWith(component.item.id);
         }));
       });
