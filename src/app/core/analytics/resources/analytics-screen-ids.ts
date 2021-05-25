@@ -75,4 +75,9 @@ export enum SCREEN_IDS {
   EditCardSubscriptionPay = 246,
   ShippingReactivationPopup = 247,
   VerificationsAndSecurityScreen = 248,
+  VerificationScreen = 249,
+  SubscriptionSummary = 250,
+  ResetPassword = 251,
+  ResetPasswordError = 252,
+  SubscriptionCategories = 253,
 }

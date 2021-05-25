@@ -10,10 +10,6 @@
  */
 export interface ClickAdCustomNative {
   /**
-   * Identifier of the campaign that the ad belongs to
-   */
-  lineitemId: string;
-  /**
    * Identifier of the adunit where the ad is shown
    */
   adUnit: string;
@@ -22,7 +18,15 @@ export interface ClickAdCustomNative {
    */
   categoryId?: string;
   /**
+   * The unique identifier for an item
+   */
+  itemId?: string;
+  /**
+   * Identifier of the campaign that the ad belongs to
+   */
+  lineitemId: string;
+  /**
    * Identifier of the screen that the ad was showed from
    */
-  screenId: 225;
+  screenId: 115 | 225;
 }
