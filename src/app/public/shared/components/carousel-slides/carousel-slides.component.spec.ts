@@ -28,7 +28,7 @@ describe('SlidesCarouselComponent', () => {
   const hideControllerClass = '.SlidesCarousel--hideControllers';
   const hideIndicatorsClass = '.SlidesCarousel--hideIndicators';
   const noBackgroundIndicatorsClass = '.SlidesCarousel--noBackgroundIndicators';
-  const smallerIndicatorsClass = '.SlidesCarousel--smallerIndicators';
+  const manyImagesClass = '.SlidesCarousel--manyImages';
 
   let component: SlidesCarouselComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
@@ -186,64 +186,26 @@ describe('SlidesCarouselComponent', () => {
     describe('when item has more than 10 images', () => {
       beforeEach(() => {
         fixture.componentInstance.images = [...Array(20)].map(() => (Math.random() * 12345).toString());
+        fixture.detectChanges();
+        component.ngAfterContentInit();
+        fixture.detectChanges();
       });
 
-      describe('and when user device is a mobile', () => {
-        beforeEach(() => {
-          spyOn(deviceService, 'isMobile').and.returnValue(true);
-          fixture.detectChanges();
-          component.ngAfterContentInit();
-          fixture.detectChanges();
-        });
-
-        it('should show smaller carousel indicators', () => {
-          expect(fixture.debugElement.query(By.css(smallerIndicatorsClass))).toBeTruthy();
-        });
-      });
-
-      describe("and when the user's device is not a mobile", () => {
-        beforeEach(() => {
-          spyOn(deviceService, 'isMobile').and.returnValue(false);
-          fixture.detectChanges();
-          component.ngAfterContentInit();
-          fixture.detectChanges();
-        });
-
-        it('should NOT show smaller carousel indicators', () => {
-          expect(fixture.debugElement.query(By.css(smallerIndicatorsClass))).toBeFalsy();
-        });
+      it('should notify browser about many images', () => {
+        expect(fixture.debugElement.query(By.css(manyImagesClass))).toBeTruthy();
       });
     });
 
     describe('when item has less than 10 images', () => {
       beforeEach(() => {
         fixture.componentInstance.images = [...Array(8)].map(() => (Math.random() * 12345).toString());
+        fixture.detectChanges();
+        component.ngAfterContentInit();
+        fixture.detectChanges();
       });
 
-      describe('and when user device is a mobile', () => {
-        beforeEach(() => {
-          spyOn(deviceService, 'isMobile').and.returnValue(true);
-          fixture.detectChanges();
-          component.ngAfterContentInit();
-          fixture.detectChanges();
-        });
-
-        it('should NOT show smaller carousel indicators', () => {
-          expect(fixture.debugElement.query(By.css(smallerIndicatorsClass))).toBeFalsy();
-        });
-      });
-
-      describe("and when the user's device is not a mobile", () => {
-        beforeEach(() => {
-          spyOn(deviceService, 'isMobile').and.returnValue(false);
-          fixture.detectChanges();
-          component.ngAfterContentInit();
-          fixture.detectChanges();
-        });
-
-        it('should NOT show smaller carousel indicators', () => {
-          expect(fixture.debugElement.query(By.css(smallerIndicatorsClass))).toBeFalsy();
-        });
+      it('should NOT notify to browser about many images', () => {
+        expect(fixture.debugElement.query(By.css(manyImagesClass))).toBeFalsy();
       });
     });
   });

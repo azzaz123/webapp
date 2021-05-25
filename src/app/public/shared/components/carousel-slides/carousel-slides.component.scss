@@ -60,11 +60,13 @@ $item-flag-height: 38px;
     }
   }
 
-  &--smallerIndicators {
-    ::ng-deep .carousel-indicators li {
-      width: 4px;
-      height: 4px;
-      margin: 0px 4px;
+  &--manyImages {
+    @include media-breakpoint-down(sm) {
+      ::ng-deep .carousel-indicators li {
+        width: 4px;
+        height: 4px;
+        margin: 0px 4px;
+      }
     }
   }
 }
