@@ -327,7 +327,6 @@ describe('SubscriptionComponent', () => {
         result: Promise.resolve(undefined),
         componentInstance: componentInstance,
       });
-
       component.subscriptions = MAPPED_SUBSCRIPTIONS;
 
       component.manageSubscription(MAPPED_SUBSCRIPTIONS[0]);
@@ -340,7 +339,6 @@ describe('SubscriptionComponent', () => {
         result: Promise.resolve('update'),
         componentInstance: componentInstance,
       });
-
       component.subscriptions = MAPPED_SUBSCRIPTIONS;
 
       component.manageSubscription(MAPPED_SUBSCRIPTIONS[0]);
@@ -358,7 +356,6 @@ describe('SubscriptionComponent', () => {
     spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
     spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
     spyOn(router, 'navigate');
-
     component.subscriptions = MAPPED_SUBSCRIPTIONS;
 
     component.manageSubscription(MAPPED_SUBSCRIPTIONS[1]);
@@ -390,7 +387,6 @@ describe('SubscriptionComponent', () => {
     });
     spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
     spyOn(router, 'navigate');
-
     component.subscriptions = MAPPED_SUBSCRIPTIONS;
 
     component.subscriptionChangeSuccessful();

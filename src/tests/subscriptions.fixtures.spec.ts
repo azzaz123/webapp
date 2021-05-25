@@ -413,7 +413,6 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_FWuHrLv9WislLd',
-
         price: 69.99,
         currency: '€',
       },
@@ -451,7 +450,6 @@ export const SUBSCRIPTIONS: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_FWuHrLv9WislLd',
-
         price: 69.99,
         currency: '€',
       },
@@ -939,7 +937,6 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       },
       {
         id: 'plan_FWuHrLv9WislLd',
-
         price: 69.99,
         currency: '€',
       },
