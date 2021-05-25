@@ -4,5 +4,5 @@
   </div>
   <div class="modal-footer">
     <button type="button" id="cancelButton" class="btn" i18n="@@web_modal_confirmation_692" (click)="activeModal.dismiss()">Cancel</button>
-    <button type="button" id="confirmButton" class="btn btn-warn" (click)="activeModal.close()">{{properties.confirmMessage}}</button>
+    <button type="button" id="confirmButton" [style.color]="properties.confirmColor" class="btn btn-warn" (click)="activeModal.close()">{{properties.confirmMessage}}</button>
   </div>
