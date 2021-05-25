@@ -53,7 +53,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
     private eventService: EventService
   ) {
     this.buildForm();
-    this.eventService.subscribe(EventService.BILLING_INFO_FORM_SUBMITED, () => {
+    this.eventService.subscribe(EventService.BILLING_INFO_FORM_SUBMITTED, () => {
       if (isEqual(this.savedData, this.billingForm.getRawValue())) {
         this.billingInfoNotUpdateRequired.emit();
       } else {
@@ -76,7 +76,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   }
 
   ngOnDestroy() {
-    this.eventService.unsubscribeAll(EventService.BILLING_INFO_FORM_SUBMITED);
+    this.eventService.unsubscribeAll(EventService.BILLING_INFO_FORM_SUBMITTED);
   }
 
   buildForm(): void {
