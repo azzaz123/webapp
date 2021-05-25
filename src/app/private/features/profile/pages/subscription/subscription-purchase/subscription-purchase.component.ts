@@ -20,6 +20,7 @@ import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { PaymentError, STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { StripeService, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from '@core/stripe/stripe.service';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
@@ -65,13 +66,14 @@ export class SubscriptionPurchaseComponent implements OnInit {
     private modalService: NgbModal,
     private scrollIntoViewService: ScrollIntoViewService,
     private eventService: EventService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private benefitsService: SubscriptionBenefitsService
   ) {}
 
   ngOnInit(): void {
     this.getAllCards();
     this.selectedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.default_tier_id);
-    this.benefits = this.subscriptionsService.getBenefits(this.subscription.category_id);
+    this.benefits = this.benefitsService.getBenefitsByCategory(this.subscription.category_id);
     this.subscribeStripeEvents();
     this.trackViewSubscriptionTier();
   }

@@ -18,11 +18,13 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { StripeService } from '@core/stripe/stripe.service';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockErrorService } from '@fixtures/error.fixtures.spec';
 import { CARDS_WITHOUT_DEFAULT, CARDS_WITH_ONE_DEFAULT, MockStripeService } from '@fixtures/stripe.fixtures.spec';
+import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import {
   MockSubscriptionService,
   MAPPED_SUBSCRIPTIONS,
@@ -42,6 +44,7 @@ describe('SubscriptionPurchaseComponent', () => {
   let stripeService: StripeService;
   let errorsService: ErrorsService;
   let subscriptionsService: SubscriptionsService;
+  let benefitsService: SubscriptionBenefitsService;
   let analyticsService: AnalyticsService;
   let scrollIntoViewService: ScrollIntoViewService;
   let eventService: EventService;
@@ -63,6 +66,10 @@ describe('SubscriptionPurchaseComponent', () => {
         {
           provide: SubscriptionsService,
           useClass: MockSubscriptionService,
+        },
+        {
+          provide: SubscriptionBenefitsService,
+          useClass: MockSubscriptionBenefitsService,
         },
         {
           provide: ScrollIntoViewService,
@@ -101,6 +108,7 @@ describe('SubscriptionPurchaseComponent', () => {
     scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
     eventService = TestBed.inject(EventService);
     modalService = TestBed.inject(NgbModal);
+    benefitsService = TestBed.inject(SubscriptionBenefitsService);
   });
 
   describe('NgOnInit', () => {
@@ -172,7 +180,7 @@ describe('SubscriptionPurchaseComponent', () => {
       describe('has benefits', () => {
         it('should set benefits', () => {
           const benefits = ['benefit1', 'benefit2'];
-          spyOn(subscriptionsService, 'getBenefits').and.returnValue(benefits);
+          spyOn(benefitsService, 'getBenefitsByCategory').and.returnValue(benefits);
           fixture.detectChanges();
 
           expect(component.benefits).toEqual(benefits);

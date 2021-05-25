@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 
@@ -15,7 +16,7 @@ export class SubscriptionListComponent {
 
   public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
 
-  constructor(private subscriptionsService: SubscriptionsService) {}
+  constructor(private subscriptionsService: SubscriptionsService, private benefitsService: SubscriptionBenefitsService) {}
 
   private showEdit(subscription: SubscriptionsResponse): boolean {
     return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
@@ -73,6 +74,6 @@ export class SubscriptionListComponent {
   }
 
   public getBenefits(subscription: SubscriptionsResponse): string[] {
-    return this.subscriptionsService.getBenefits(subscription.category_id);
+    return this.benefitsService.getBenefitsByCategory(subscription.category_id);
   }
 }

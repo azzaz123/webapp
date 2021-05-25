@@ -1,11 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  SubscriptionsService,
-  SUBSCRIPTIONS_URL,
-  SUBSCRIPTIONS_SLOTS_ENDPOINT,
-  SUBSCRIPTION_TYPES,
-  genericBenefits,
-} from './subscriptions.service';
+import { SubscriptionsService, SUBSCRIPTIONS_URL, SUBSCRIPTIONS_SLOTS_ENDPOINT, SUBSCRIPTION_TYPES } from './subscriptions.service';
 import { of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { FeatureflagService } from '../user/featureflag.service';
@@ -491,24 +485,6 @@ describe('SubscriptionsService', () => {
         const result = service.hasFreeTrialByCategoryId(mockSubscriptions, CATEGORY_IDS.MOTOR_ACCESSORIES);
 
         expect(result).toEqual(false);
-      });
-    });
-  });
-
-  describe('getBenefits', () => {
-    describe('is everything else category', () => {
-      it('should return benefits', () => {
-        const result = service.getBenefits(CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE);
-
-        expect(result).toEqual([$localize`:@@web_subscription_benefit_title_branding:Boost your branding`, ...genericBenefits]);
-      });
-    });
-
-    describe('is not everything else category', () => {
-      it('should return benefits', () => {
-        const result = service.getBenefits(CATEGORY_SUBSCRIPTIONS_IDS.CAR);
-
-        expect(result).toEqual([$localize`:@@web_subscription_benefit_title_limit:Set your listing limit`, ...genericBenefits]);
       });
     });
   });

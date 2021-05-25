@@ -24,20 +24,12 @@ export const SUBSCRIPTIONS_URL = 'bff/subscriptions';
 
 export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'api/v3/users/me/slots-info';
 
-import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
-
 export enum SUBSCRIPTION_TYPES {
   notSubscribed = 1,
   carDealer = 2,
   inApp = 3,
   stripe = 4,
 }
-
-export const genericBenefits: string[] = [
-  $localize`:@@web_subscription_benefit_title_visibility:Gain more visibility`,
-  $localize`:@@web_subscription_benefit_title_time:Save management time`,
-  $localize`:@@web_subscription_benefit_title_share:Share your phone and website`,
-];
 
 @Injectable()
 export class SubscriptionsService {
@@ -322,13 +314,5 @@ export class SubscriptionsService {
     }
 
     return this.hasTrial(selectedsubscription) && !selectedsubscription.subscribed_from;
-  }
-
-  public getBenefits(id: number): string[] {
-    const customBenefit =
-      id !== CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE
-        ? $localize`:@@web_subscription_benefit_title_limit:Set your listing limit`
-        : $localize`:@@web_subscription_benefit_title_branding:Boost your branding`;
-    return [customBenefit, ...genericBenefits];
   }
 }
