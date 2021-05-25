@@ -1,4 +1,4 @@
-<div class="UserAvatar">
+<div class="position-relative">
   <div
     *ngIf="!uploadedAvatar"
     [tslsanitizedBackground]="avatar"
@@ -10,5 +10,5 @@
        [src]="uploadedAvatar"
        class="avatar-rounded"
        [ngClass]="'avatar-' + size" />
-  <tsl-svg-icon *ngIf="showProBadge" class="UserAvatar__PRO-badge" src="/assets/icons/pro-seal.svg" [width]="badgeSize" [height]="badgeSize" [ngStyle]="badgeStyles"></tsl-svg-icon>
+  <tsl-svg-icon *ngIf="showProBadge" class="position-absolute bottom-0 end-0" src="/assets/icons/pro-seal.svg" [width]="badgeSize" [height]="badgeSize" [ngStyle]="badgeStyles"></tsl-svg-icon>
 </div>
