@@ -70,6 +70,34 @@ describe('DrawerPlaceholderTemplateComponent', () => {
 
       expect(content).toBeTruthy();
     });
+
+    describe('and has the apply button', () => {
+      describe('when clicking the apply button', () => {
+        beforeEach(() => {
+          component.isPlaceholderOpen = true;
+          component.hasContentPlaceholder = true;
+          component.hasApplyButtonInDrawer = true;
+          fixture.detectChanges();
+        });
+
+        it('should close the placeholder', () => {
+          spyOn(component.placeholderOpenStateChange, 'emit');
+          const applyButton = debugElement.query(By.css('tsl-button')).nativeElement;
+
+          applyButton.click();
+
+          expect(component.placeholderOpenStateChange.emit).toHaveBeenCalledWith(false);
+        });
+        it('should apply the filter value', () => {
+          spyOn(component.apply, 'emit');
+          const applyButton = debugElement.query(By.css('tsl-button')).nativeElement;
+
+          applyButton.click();
+
+          expect(component.apply.emit).toHaveBeenCalled();
+        });
+      });
+    });
   });
 
   describe('when it has content placeholder', () => {

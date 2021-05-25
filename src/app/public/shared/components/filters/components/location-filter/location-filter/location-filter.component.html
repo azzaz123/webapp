@@ -3,8 +3,8 @@
   (openStateChange)="openStateChange.emit($event)">
 
   <tsl-drawer-placeholder-template [contentTitle]="config.title" [hasContentPlaceholder]="!(variant | isBubble)"
-    [isClearable]="false" [placeholderLabel]="label" [placeholderIcon]="config.icon"
-    (placeholderOpenStateChange)="openStateChange.emit($event)">
+    [hasApplyButtonInDrawer]="true" [isClearable]="false" [placeholderLabel]="label" [placeholderIcon]="config.icon"
+    (placeholderOpenStateChange)="openStateChange.emit($event)" (apply)="handleApply()">
 
     <form [formGroup]="componentLocationForm">
       <div class="LocationFilter py-2" [ngClass]="{'w-100 px-3': !(variant | isBubble)}">

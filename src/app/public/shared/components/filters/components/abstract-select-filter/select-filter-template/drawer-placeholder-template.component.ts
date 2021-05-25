@@ -12,7 +12,9 @@ export class DrawerPlaceholderTemplateComponent {
   @Input() placeholderIcon?: string;
   @Input() contentTitle?: string;
   @Input() isClearable?: boolean;
+  @Input() hasApplyButtonInDrawer?: boolean;
   @Output() clear = new EventEmitter<void>();
+  @Output() apply = new EventEmitter<void>();
   @Output() placeholderOpenStateChange = new EventEmitter<boolean>();
 
   public isPlaceholderOpen = false;
@@ -20,6 +22,11 @@ export class DrawerPlaceholderTemplateComponent {
   public togglePlaceholderOpen(): void {
     this.isPlaceholderOpen = !this.isPlaceholderOpen;
     this.placeholderOpenStateChange.emit(this.isPlaceholderOpen);
+  }
+
+  public handleApply(): void {
+    this.togglePlaceholderOpen();
+    this.apply.emit();
   }
 
   public handleClear(): void {
