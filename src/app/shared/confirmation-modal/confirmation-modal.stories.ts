@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { moduleMetadata } from '@storybook/angular';
 import { ButtonModule } from '@shared/button/button.module';
 import { ConfirmationModalComponent } from './confirmation-modal.component';
-import { CONFIRM_COLOR_TYPES } from '@shared/confirmation-modal/confirmation-modal.interface';
+import { COLORS } from '@core/colors/colors-constants';
 
 export default {
   title: 'Webapp/Shared/Modals/ConfirmationModal',
@@ -28,7 +28,7 @@ GreenConfirmColor.args = {
     title: 'This is a title!',
     description: 'This is the modal description',
     confirmMessage: 'Confirm',
-    confirmColor: CONFIRM_COLOR_TYPES.GREEN,
+    confirmColor: COLORS.WALLA_MAIN,
   },
 };
 
@@ -38,6 +38,6 @@ RedConfirmColor.args = {
     title: 'This is a title!',
     description: 'This is the modal description',
     confirmMessage: 'Delete',
-    confirmColor: CONFIRM_COLOR_TYPES.RED,
+    confirmColor: COLORS.NEGATIVE_MAIN,
   },
 };

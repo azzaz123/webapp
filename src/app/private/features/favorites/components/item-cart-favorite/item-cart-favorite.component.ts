@@ -5,7 +5,7 @@ import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmat
 import { Item } from '@core/item/item';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { CONFIRM_COLOR_TYPES } from '@shared/confirmation-modal/confirmation-modal.interface';
+import { COLORS } from '@core/colors/colors-constants';
 
 @Component({
   selector: 'tsl-item-cart-favorite',
@@ -40,7 +40,7 @@ export class ItemCartFavoriteComponent implements OnInit {
       title: this.i18nService.translate(TRANSLATION_KEY.REMOVE_ITEM_FROM_FAVORITES_TITLE),
       description: this.i18nService.translate(TRANSLATION_KEY.REMOVE_ITEM_FROM_FAVORITES_DESCRIPTION),
       confirmMessage: this.i18nService.translate(TRANSLATION_KEY.REMOVE_BUTTON),
-      confirmColor: CONFIRM_COLOR_TYPES.RED,
+      confirmColor: COLORS.NEGATIVE_MAIN,
     };
 
     modalRef.result.then(

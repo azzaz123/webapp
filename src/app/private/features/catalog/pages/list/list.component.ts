@@ -12,6 +12,7 @@ import {
   ANALYTIC_EVENT_TYPES,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { COLORS } from '@core/colors/colors-constants';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -31,7 +32,6 @@ import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-acti
 import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
-import { CONFIRM_COLOR_TYPES } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
@@ -502,7 +502,7 @@ export class ListComponent implements OnInit, OnDestroy {
       title: this.i18nService.translate(TRANSLATION_KEY.DELETE_ITEMS_TITLE),
       description: this.i18nService.translate(TRANSLATION_KEY.DELETE_ITEMS_DESCRIPTION),
       confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELETE_BUTTON),
-      confirmColor: CONFIRM_COLOR_TYPES.RED,
+      confirmColor: COLORS.NEGATIVE_MAIN,
     };
 
     modalRef.result.then(

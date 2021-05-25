@@ -4,7 +4,7 @@ import { ConfirmationModalComponent } from './confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { CONFIRM_COLOR_TYPES } from './confirmation-modal.interface';
+import { COLORS } from '@core/colors/colors-constants';
 
 describe('ConfirmationModalComponent', () => {
   let component: ConfirmationModalComponent;
@@ -30,7 +30,7 @@ describe('ConfirmationModalComponent', () => {
       title: 'Title',
       description: 'Description',
       confirmMessage: 'Confirm',
-      confirmColor: CONFIRM_COLOR_TYPES.RED,
+      confirmColor: COLORS.NEGATIVE_MAIN,
     };
 
     fixture.detectChanges();

@@ -5,7 +5,7 @@ import { ProfileService } from '@core/profile/profile.service';
 import { Profile } from '@core/profile/profile';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { CONFIRM_COLOR_TYPES } from '@shared/confirmation-modal/confirmation-modal.interface';
+import { COLORS } from '@core/colors/colors-constants';
 
 @Component({
   selector: 'tsl-profile-card-favorite',
@@ -36,7 +36,7 @@ export class ProfileCardFavoriteComponent {
       title: this.i18nService.translate(title),
       description: this.i18nService.translate(description),
       confirmMessage: this.i18nService.translate(TRANSLATION_KEY.REMOVE_BUTTON),
-      confirmColor: CONFIRM_COLOR_TYPES.RED,
+      confirmColor: COLORS.NEGATIVE_MAIN,
     };
 
     modalRef.result.then(
