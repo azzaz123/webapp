@@ -29,7 +29,6 @@ import { I18nService } from '../i18n/i18n.service';
 import { UuidService } from '../uuid/uuid.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { cloneDeep } from 'lodash-es';
-import { CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
 
 describe('SubscriptionsService', () => {
   let service: SubscriptionsService;
