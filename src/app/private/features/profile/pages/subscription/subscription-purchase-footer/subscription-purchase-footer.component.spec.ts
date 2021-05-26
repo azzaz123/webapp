@@ -100,7 +100,7 @@ describe('SubscriptionPurchaseFooterComponent', () => {
       });
 
       it('should show empty price', () => {
-        component.ngOnInit();
+        component.ngOnChanges({ selectedTier: new SimpleChange(null, component.selectedTier, false) });
         fixture.detectChanges();
 
         const price: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__amount')).nativeElement;
@@ -119,8 +119,10 @@ describe('SubscriptionPurchaseFooterComponent', () => {
       });
 
       it('should show price', () => {
-        const price: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__amount')).nativeElement;
+        component.ngOnChanges({ selectedTier: new SimpleChange(null, component.selectedTier, false) });
+        fixture.detectChanges();
 
+        const price: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__amount')).nativeElement;
         expect(price.textContent).toContain(component.selectedTier.price);
         expect(price.textContent).toContain(component.selectedTier.currency);
       });

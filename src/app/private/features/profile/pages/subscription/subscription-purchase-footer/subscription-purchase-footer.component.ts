@@ -25,13 +25,15 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.setButtonText();
-    this.setPriceText();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    const { buttonDisable } = changes;
+    const { buttonDisable, selectedTier } = changes;
     if (buttonDisable && !buttonDisable.currentValue && buttonDisable.currentValue !== buttonDisable.previousValue) {
       this.buttonEnabled.emit();
+    }
+    if (selectedTier) {
+      this.setPriceText();
     }
   }
 
