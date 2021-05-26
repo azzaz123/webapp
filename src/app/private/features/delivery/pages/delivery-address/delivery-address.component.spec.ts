@@ -41,7 +41,7 @@ import { INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/del
 import { DeleteDeliveryAddressModalComponent } from '../../modals/delete-delivery-address-modal/delete-delivery-address-modal.component';
 
 describe('DeliveryAddressComponent', () => {
-  const payViewMessageSelector = '.DeliveryAddress__form__payViewInfoMessage';
+  const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
   const countriesDropdownSelector = '#country_iso_code';
   const deleteButtonSelector = '#deleteButton';
   let component: DeliveryAddressComponent;
@@ -374,6 +374,7 @@ describe('DeliveryAddressComponent', () => {
     describe('and the form is not a new one... ', () => {
       describe('and the user did not accept the terms yet...', () => {
         beforeEach(() => {
+          component.countries = MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.countryOptions;
           component.isNewForm = false;
           component.isCountryEditable = false;
         });
@@ -426,6 +427,7 @@ describe('DeliveryAddressComponent', () => {
       describe('and the user already accepted the terms...', () => {
         it('should open the dropdown', fakeAsync(() => {
           spyOn(component.countriesDropdown, 'open');
+          component.countries = MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.countryOptions;
           component.isNewForm = false;
           component.isCountryEditable = true;
 

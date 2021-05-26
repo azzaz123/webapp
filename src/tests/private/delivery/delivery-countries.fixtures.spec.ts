@@ -1,5 +1,7 @@
-import { DeliveryCountriesApi } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
-import { CountryOptionsAndDefault } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
+import {
+  CountryOptionsAndDefault,
+  DeliveryCountriesApi,
+} from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
 
 export const MOCK_DELIVERY_COUNTRIES_API: DeliveryCountriesApi = {
   countries: [

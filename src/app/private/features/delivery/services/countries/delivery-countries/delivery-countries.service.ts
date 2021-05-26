@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { DeliveryCountriesApi, DeliveryCountryApi } from '../../../interfaces/delivery-countries/delivery-countries-api.interface';
+import {
+  CountryOptionsAndDefault,
+  DeliveryCountriesApi,
+  DeliveryCountryApi,
+} from '../../../interfaces/delivery-countries/delivery-countries-api.interface';
 import { DeliveryCountriesApiService } from '../../api/delivery-countries-api/delivery-countries-api.service';
 import { DeliveryCountriesStoreService } from '../delivery-countries-store/delivery-countries-store.service';
 
-export interface CountryOptionsAndDefault {
-  countryOptions: IOption[];
-  defaultCountry: DeliveryCountryApi;
-}
 @Injectable()
 export class DeliveryCountriesService {
   constructor(

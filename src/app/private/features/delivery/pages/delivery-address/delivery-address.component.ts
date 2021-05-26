@@ -4,7 +4,7 @@ import {
   DeliveryAddressFormErrorMessages,
   DELIVERY_ADDRESS_ERROR,
 } from '@private/features/delivery/interfaces/delivery-address/delivery-address-error.interface';
-import { CountryOptionsAndDefault, DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
+import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
@@ -27,6 +27,7 @@ import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
 import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
 import { DeleteDeliveryAddressModalComponent } from '../../modals/delete-delivery-address-modal/delete-delivery-address-modal.component';
+import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -123,7 +124,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   public handleShowWarningCountry(): void {
-    if (!this.isNewForm && !this.isCountryEditable) {
+    if (!this.isNewForm && !this.isCountryEditable && this.countries?.length > 1) {
       this.modalService.open(ChangeCountryConfirmationModalComponent).result.then((result: boolean) => {
         if (result) {
           this.isCountryEditable = true;
@@ -135,7 +136,7 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  public checkIfIsInvalidPostalCode(): void {
+  public isInvalidPostalCode(): void {
     const postalCode = this.deliveryAddressForm.get('postal_code');
     if (postalCode.value.length < 5 && !postalCode.errors?.required) {
       this.setIncorrectControlAndShowError('postal_code', TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR);
