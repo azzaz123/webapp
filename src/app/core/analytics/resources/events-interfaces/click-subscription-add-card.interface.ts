@@ -6,11 +6,11 @@
  */
 
 /**
- * User views Subscription tier screen (to choose the tier within the subscription)
+ * User clicks on add credit card
  */
-export interface ViewSubscriptionTier {
+export interface ClickSubscriptionAddCard {
   /**
-   * Identifier of the Subscription tier screen
+   * Identifier of the screen where the click is done
    */
   screenId: 241;
   /**
