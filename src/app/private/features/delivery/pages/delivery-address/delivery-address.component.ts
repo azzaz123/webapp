@@ -26,8 +26,8 @@ import { finalize, map, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
 import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
-import { DeleteDeliveryAddressModalComponent } from '../../modals/delete-delivery-address-modal/delete-delivery-address-modal.component';
 import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -144,7 +144,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   public deleteForm(): void {
-    this.modalService.open(DeleteDeliveryAddressModalComponent).result.then((result: boolean) => {
+    this.modalService.open(ConfirmationModalComponent).result.then((result: boolean) => {
       if (result) {
         this.deliveryAddressService.delete(this.deliveryAddressForm.get('id').value).subscribe(
           () => {

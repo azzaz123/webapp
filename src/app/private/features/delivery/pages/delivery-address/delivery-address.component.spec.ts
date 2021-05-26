@@ -38,7 +38,7 @@ import { By } from '@angular/platform-browser';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
-import { DeleteDeliveryAddressModalComponent } from '../../modals/delete-delivery-address-modal/delete-delivery-address-modal.component';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -704,7 +704,7 @@ describe('DeliveryAddressComponent', () => {
       it('should open the delete confirmation modal', fakeAsync(() => {
         tick();
 
-        expect(modalService.open).toHaveBeenCalledWith(DeleteDeliveryAddressModalComponent);
+        expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
       }));
 
       it('should NOT call the service', fakeAsync(() => {
