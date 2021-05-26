@@ -7,20 +7,31 @@ import { FilterOption } from '../../components/filters/core/interfaces/filter-op
 import { OPTIONS_ORIGIN_CONFIGURATION, OriginConfigurationValue } from './configurations/options-origin-configuration';
 import { ConfigurationId } from '../../components/filters/core/types/configuration-id.type';
 import { HARDCODED_OPTIONS } from './data/hardcoded-options';
-import { KeyMapper, OptionsApiOrigin, RequiredSiblingParam } from './interfaces/option-api-origin.interface';
+import { VisibilityModifierConfig, KeyMapper, OptionsApiOrigin, RequiredSiblingParam } from './interfaces/option-api-origin.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   FILTER_PARAMETER_DRAFT_STORE_TOKEN,
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import {
+  HostVisibilityService,
+  QueryParamVisibilityCondition,
+} from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+
+interface ExcludedFieldsOption {
+  id?: string;
+  excluded_fields?: string[];
+}
 
 @Injectable()
 export class FilterOptionService {
   constructor(
     private filterOptionsApiService: FilterOptionsApiService,
     private filterOptionsMapperService: FilterOptionsMapperService,
-    @Inject(FILTER_PARAMETER_DRAFT_STORE_TOKEN) private filterParameterDraftService: FilterParameterStoreService
+    @Inject(FILTER_PARAMETER_DRAFT_STORE_TOKEN) private filterParameterDraftService: FilterParameterStoreService,
+    private hostVisibilityService: HostVisibilityService
   ) {}
 
   public getOptions(
@@ -56,7 +67,7 @@ export class FilterOptionService {
     params?: QueryParams,
     paginationOptions?: PaginationOptions
   ): Observable<FilterOption[]> {
-    const { apiConfiguration, mapperConfiguration } = configuration;
+    const { apiConfiguration, mapperConfiguration, visibilityModifierConfig } = configuration;
 
     const apiSiblingParams = this.getSiblingParams(apiConfiguration.requiredSiblingParams);
 
@@ -66,17 +77,21 @@ export class FilterOptionService {
     };
 
     return this.filterOptionsApiService.getApiOptions(apiConfiguration.method, unifiedApiParams, paginationOptions).pipe(
-      map((value: FilterOption[]) => {
+      map((options: unknown[]) => {
+        if (visibilityModifierConfig) {
+          this.handleVisibilityModifier(visibilityModifierConfig, options);
+        }
+
         if (mapperConfiguration) {
           const mapperSiblingParams = this.getSiblingParams(mapperConfiguration.requiredSiblingParams);
           return this.filterOptionsMapperService.formatApiResponse(
             mapperConfiguration.method,
-            value,
+            options,
             this.mapSiblingParams(mapperSiblingParams, mapperConfiguration.keyMappers)
           );
         }
 
-        return value;
+        return options as FilterOption[];
       })
     );
   }
@@ -124,5 +139,47 @@ export class FilterOptionService {
 
   private isKeyMapper(mapper: KeyMapper | string): mapper is KeyMapper {
     return typeof mapper !== 'string';
+  }
+
+  private handleVisibilityModifier(visibilityModifierConfig: VisibilityModifierConfig, options: ExcludedFieldsOption[]): void {
+    const visibilityConditions: QueryParamVisibilityCondition[] = options
+      .filter((option) => option.excluded_fields?.length && option.id)
+      .reduce((acc, option) => {
+        const excludedFields = option.excluded_fields;
+
+        for (const field of excludedFields) {
+          const accumulatedCondition = acc.find((condition) => condition.queryParam === field);
+
+          if (!accumulatedCondition) {
+            acc.push({
+              queryParam: field as FILTER_QUERY_PARAM_KEY,
+              excludingParameters: [
+                {
+                  queryParam: visibilityModifierConfig.ownKey,
+                  values: [option.id],
+                },
+              ],
+              requiredQueryParams: [],
+            });
+          } else {
+            const accumulatedExcludingParameter = accumulatedCondition.excludingParameters.find(
+              (excludingParameter) => excludingParameter.queryParam === visibilityModifierConfig.ownKey
+            );
+
+            if (accumulatedExcludingParameter) {
+              accumulatedExcludingParameter.values.push(option.id);
+            } else {
+              accumulatedCondition.excludingParameters.push({
+                queryParam: visibilityModifierConfig.ownKey,
+                values: [option.id],
+              });
+            }
+          }
+        }
+
+        return acc;
+      }, [] as QueryParamVisibilityCondition[]);
+
+    this.hostVisibilityService.addVisibilityConditions(visibilityConditions);
   }
 }

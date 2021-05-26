@@ -4,7 +4,10 @@ import { ConditionResponse } from '../interfaces/option-responses/condition.inte
 import { IconOption } from '../interfaces/option-responses/icon-option.interface';
 import { ObjectType } from '../interfaces/option-responses/object-type.interface';
 import { BrandModel } from '../interfaces/option-responses/brand-model.interface';
-import { SizeNGenderResponse } from '@public/shared/services/filter-option/interfaces/option-responses/fashion-size-n-gender.interface';
+import {
+  Size,
+  SizeNGenderResponse,
+} from '@public/shared/services/filter-option/interfaces/option-responses/fashion-size-n-gender.interface';
 import { FashionBrand } from '@public/shared/services/filter-option/interfaces/option-responses/fashion-brand.interface';
 import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params.interface';
 
@@ -75,10 +78,16 @@ export class FilterOptionsMapperService {
   public formatSizeNGender(sizeNGender: SizeNGenderResponse, params: QueryParams<'gender'>): FilterOption[];
   public formatSizeNGender(response: unknown, params: QueryParams): FilterOption[];
   public formatSizeNGender(sizeNGender: SizeNGenderResponse, params: QueryParams<'gender'>): FilterOption[] {
-    return sizeNGender[params.gender].map((size) => ({
-      value: size.id.toString(),
-      label: size.text,
-    }));
+    const sizes: Size[] = sizeNGender[params.gender];
+
+    if (sizes) {
+      return sizeNGender[params.gender].map((size) => ({
+        value: size.id.toString(),
+        label: size.text,
+      }));
+    }
+
+    return [];
   }
 
   // TODO: We need to set something up for isPopular cases

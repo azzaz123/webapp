@@ -3,7 +3,7 @@
     <ngb-carousel *ngIf="slides?.length; else fallbackImage" interval="0" id="defaultCarousel"
         (swipeleft)="swipe(SWIPE_DIRECTION.LEFT)" (swiperight)="swipe(SWIPE_DIRECTION.RIGHT)" 
         [ngClass]="{'SlidesCarousel--hideControllers': hideControllers || isSingleSlide,
-                    'SlidesCarousel--hideIndicators': hideIndicators}"
+                    'SlidesCarousel--hideIndicators': hideIndicators || isSingleSlide}"
         [activeId]="activeId">
         <ng-template *ngFor="let slide of slides; let i = index" ngbSlide [id]="NGB_SLIDE + i">
             <div *ngIf="(currentSlide) === NGB_SLIDE+i || activeId === NGB_SLIDE + i" (click)="emitCurrentIndex(i)"
