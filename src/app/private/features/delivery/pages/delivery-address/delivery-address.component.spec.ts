@@ -332,6 +332,7 @@ describe('DeliveryAddressComponent', () => {
     beforeEach(() => {
       component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_PAY;
 
+      component.ngOnInit();
       fixture.detectChanges();
     });
 
@@ -348,6 +349,7 @@ describe('DeliveryAddressComponent', () => {
     beforeEach(() => {
       component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
 
+      component.ngOnInit();
       fixture.detectChanges();
     });
 
@@ -364,6 +366,7 @@ describe('DeliveryAddressComponent', () => {
     it('should appear the delete button', () => {
       component.whereUserComes = null;
 
+      component.ngOnInit();
       fixture.detectChanges();
 
       expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeTruthy();
