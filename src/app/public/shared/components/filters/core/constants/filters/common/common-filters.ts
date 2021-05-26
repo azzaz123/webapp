@@ -67,7 +67,7 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONFIGURATION_ID.LOCATION,
     type: FILTER_TYPES.LOCATION,
-    title: $localize`:@@filterLocationTitle:Where?`,
+    title: $localize`:@@web_filter_location_title:Where?`,
     bubblePlaceholder: $localize`:@@web_filter_location_bubble_placeholder:Location`,
     drawerPlaceholder: $localize`:@@web_filter_location_drawer_placeholder:Any location`,
     icon: '/assets/icons/filters/location.svg',

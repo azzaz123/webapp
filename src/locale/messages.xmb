@@ -162,11 +162,11 @@
   <msg id="web_user_edited"><source>src/app/core/i18n/translations/constants/translations.ts:103</source>Your data has been edited correctly</msg>
   <msg id="delivery_address_save_success"><source>src/app/core/i18n/translations/constants/translations.ts:104</source>Address edited successfully!</msg>
   <msg id="delivery_address_save_error"><source>src/app/core/i18n/translations/constants/translations.ts:105</source>Sorry, something went wrong. Try again.</msg>
-  <msg id="delivery_address_postal_code_not_exist_error"><source>src/app/core/i18n/translations/constants/translations.ts:106</source>Postal code doesn&apos;t exist.</msg>
-  <msg id="delivery_address_invalid_phone_number_error"><source>src/app/core/i18n/translations/constants/translations.ts:107</source>This phone number is invalid.</msg>
+  <msg id="delivery_address_postal_code_not_exist_error"><source>src/app/core/i18n/translations/constants/translations.ts:106</source>Postal code doesn&apos;t exist</msg>
+  <msg id="delivery_address_invalid_phone_number_error"><source>src/app/core/i18n/translations/constants/translations.ts:107</source>This phone number is invalid</msg>
   <msg id="delivery_address_too_long_hint_error"><source>src/app/core/i18n/translations/constants/translations.ts:108</source>That&apos;s is too long! Please write it shorter.</msg>
-  <msg id="address_view_all_users_form_textfield_postalcode_missmatch_location_inline_error"><source>src/app/core/i18n/translations/constants/translations.ts:109</source>The ZIP code must be from the country you are located.</msg>
-  <msg id="address_view_all_users_form_textfield_phone_missmatch_location_inline_error"><source>src/app/core/i18n/translations/constants/translations.ts:110</source>The contact number must be from the country you are located.</msg>
+  <msg id="address_view_all_users_form_textfield_postalcode_missmatch_location_inline_error"><source>src/app/core/i18n/translations/constants/translations.ts:109</source>The ZIP code must be from the country you are located</msg>
+  <msg id="address_view_all_users_form_textfield_phone_missmatch_location_inline_error"><source>src/app/core/i18n/translations/constants/translations.ts:110</source>The contact number must be from the country you are located</msg>
   <msg id="delivery_address_postal_code_not_allowed_error"><source>src/app/core/i18n/translations/constants/translations.ts:111</source>Postal code not accepted</msg>
   <msg id="delivery_address_invalid_postal_code_error"><source>src/app/core/i18n/translations/constants/translations.ts:112</source>This postal code isn&apos;t valid</msg>
   <msg id="web_image_uploaded"><source>src/app/core/i18n/translations/constants/translations.ts:113</source>Image uploaded!</msg>
@@ -1154,6 +1154,7 @@
   <msg id="web_filters_category_jobs"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:194</source>Jobs</msg>
   <msg id="web_filters_category_services"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:204</source>Services</msg>
   <msg id="web_filters_category_other"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:214</source>Other</msg>
+  <msg id="web_filter_location_error"><source>src/app/public/shared/components/filters/components/location-filter/services/location-filter.service.ts:74</source>We couldn&apos;t get your location</msg>
   <msg id="web_from"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.html:27</source>From</msg>
   <msg id="web_to"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.html:31</source>To</msg>
   <msg id="web_limitless"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.ts:17</source>No limit</msg>
@@ -1188,6 +1189,9 @@
   <msg id="web_filter_condition_title"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:56</source>Item condition</msg>
   <msg id="web_filter_condition_bubble_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:57</source>Item condition</msg>
   <msg id="web_filter_condition_drawer_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:58</source>Any item condition</msg>
+  <msg id="web_filter_location_title"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:69</source>Where?</msg>
+  <msg id="web_filter_location_bubble_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:70</source>Location</msg>
+  <msg id="web_filter_location_drawer_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:71</source>Any location</msg>
   <msg id="web_filter_gender_title"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:9</source>Gender</msg>
   <msg id="web_filter_gender_bubble_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:10</source>Gender</msg>
   <msg id="web_filter_gender_drawer_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:11</source>Select gender</msg>
