@@ -1309,6 +1309,7 @@
   <translation id="web_filter_location_title">¿Dónde?</translation>
   <translation id="web_filter_location_bubble_placeholder">Ubicación</translation>
   <translation id="web_filter_location_drawer_placeholder">Sin ubicación</translation>
+  <translation id="web_filter_location_error">No hemos podido obtener tu ubicación</translation>
   <translation id="web_filter_gender_title">Género</translation>
   <translation id="web_filter_gender_bubble_placeholder">Género</translation>
   <translation id="web_filter_gender_drawer_placeholder">Selecciona género</translation>
