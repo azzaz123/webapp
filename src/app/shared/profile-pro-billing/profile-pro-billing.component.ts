@@ -36,8 +36,8 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnIni
   public isNewBillingInfoForm = true;
   public loading = true;
   public type: string;
+  public isSubmitShown: boolean;
   private savedData: unknown;
-  private isSubmitShown: boolean;
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
   @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
