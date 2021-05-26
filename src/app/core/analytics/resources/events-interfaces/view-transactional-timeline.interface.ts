@@ -12,15 +12,15 @@ export interface ViewTransactionalTimeline {
   /**
    * The unique identifier for an item
    */
-  itemId: string;
+  itemId?: string;
   /**
    * Identifier of the user interested in the item
    */
-  buyerUserId: string;
+  buyerUserId?: string;
   /**
    * Identifier of the user that the item belongs to
    */
-  sellerUserId: string;
+  sellerUserId?: string;
   /**
    * Identifier of the transaction request
    */
@@ -28,13 +28,17 @@ export interface ViewTransactionalTimeline {
   /**
    * Identifier of the category that the transaction item belongs to
    */
-  categoryId: number;
+  categoryId?: number;
   /**
    * Status of the transaction
    */
-  status: string;
+  status?: string;
   /**
    * Identifier of the transaction timeline screen
    */
   screenId: 205;
+  /**
+   * Test group of the users
+   */
+  experiment?: 'jtrex_tts_baseline' | 'jtrex_tts_variation';
 }

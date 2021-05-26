@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
+import { DeliveryAddressComponent } from './delivery-address.component';
 
-// TODO: Add DeliveryAddressComponent when created		Date: 2021/04/22
 const routes: Route[] = [
   {
     path: '',
+    component: DeliveryAddressComponent,
   },
 ];
 
@@ -14,4 +15,4 @@ const routes: Route[] = [
 })
 export class DeliveryAddressRoutingModule {}
 
-export const deliveryAddressRoutedComponents = [];
+export const deliveryAddressRoutedComponents = [DeliveryAddressComponent];

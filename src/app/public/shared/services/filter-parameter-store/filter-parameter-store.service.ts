@@ -21,8 +21,8 @@ export class FilterParameterStoreService {
   }
 
   public setParameters(parameters: FilterParameter[]): void {
-    this.parameters = parameters;
-    this.parametersSubject.next(parameters.filter((parameter) => parameter.value));
+    this.parameters = parameters.filter((parameter) => parameter.value);
+    this.parametersSubject.next(this.parameters.filter((parameter) => parameter.value));
   }
 
   public upsertParameters(parameters: FilterParameter[]): void {

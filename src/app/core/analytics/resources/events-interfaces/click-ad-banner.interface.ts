@@ -10,15 +10,19 @@
  */
 export interface ClickAdBanner {
   /**
-   * Identifier of the campaign that the ad belongs to
-   */
-  lineitemId: string;
-  /**
    * Identifier of the category where the ad is shown
    */
   categoryId?: string;
   /**
+   * The unique identifier for an item
+   */
+  itemId?: string;
+  /**
+   * Identifier of the campaign that the ad belongs to
+   */
+  lineitemId: string;
+  /**
    * Identifier of the screen that the ad was showed from
    */
-  screenId: 226;
+  screenId: 115 | 226;
 }

@@ -1,5 +1,4 @@
 <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="real-estate-form">
-
   <div class="box">
     <div class="row">
       <div class="col-12">
@@ -7,8 +6,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col" [ngbPopover]="coachmarkOperation" [autoClose]="false" popoverClass="ml-3"
-        triggers="mouseenter:mouseleave">
+      <div class="col" [ngbPopover]="coachmarkOperation" [autoClose]="false" popoverClass="ml-3" triggers="mouseenter:mouseleave">
         <div class="row">
           <div class="col-12">
             <h3 class="selector-title" i18n="@@web_upload_pages_realestate_425">Rent or sale?</h3>
@@ -21,7 +19,7 @@
                 <label ngbButtonLabel class="btn selector" *ngFor="let operation of operations">
                   <div class="selector-icon" [class.error-required]="hasErrorToShow('operation')">
                     <input ngbButton type="radio" name="operation" [value]="operation.id" />
-                    <tsl-svg-icon src="/assets/icons/{{operation.icon_id}}.svg"></tsl-svg-icon>
+                    <tsl-svg-icon src="/assets/icons/{{ operation.icon_id }}.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text">{{ operation.text }}</span>
                 </label>
@@ -35,8 +33,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col" [ngbPopover]="coachmarkType" [autoClose]="false" popoverClass="ml-3"
-        triggers="mouseenter:mouseleave">
+      <div class="col" [ngbPopover]="coachmarkType" [autoClose]="false" popoverClass="ml-3" triggers="mouseenter:mouseleave">
         <div class="row">
           <div class="col">
             <h3 class="selector-title" i18n="@@web_upload_pages_realestate_427">Type of space</h3>
@@ -49,7 +46,7 @@
                 <label ngbButtonLabel class="selector" *ngFor="let type of types">
                   <div class="selector-icon" [class.error-required]="hasErrorToShow('type')">
                     <input ngbButton type="radio" name="type" [value]="type.id" />
-                    <tsl-svg-icon src="/assets/icons/{{type.icon_id}}.svg"></tsl-svg-icon>
+                    <tsl-svg-icon src="/assets/icons/{{ type.icon_id }}.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text">{{ type.text }}</span>
                 </label>
@@ -66,61 +63,85 @@
       <div class="col-6 col-md-3">
         <div class="form-group">
           <label for="price" i18n="@@web_upload_pages_realestate_606">Price</label>
-          <input i18n-placeholder="@@web_upload_pages_realestate_607" placeholder="With love..." type="number" class="form-control"
-            formControlName="sale_price" id="price" min="0" max="999999999" />
+          <input
+            i18n-placeholder="@@web_upload_pages_realestate_607"
+            placeholder="With love..."
+            type="number"
+            class="form-control"
+            formControlName="sale_price"
+            id="price"
+            min="0"
+            max="999999999"
+          />
         </div>
       </div>
       <div class="col-6 col-md-2">
         <div class="form-group">
           <label for="currency" i18n="@@web_upload_pages_realestate_608">Currency</label>
-          <tsl-dropdown class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
-            noFilter="10"></tsl-dropdown>
+          <tsl-dropdown
+            class="form-control"
+            formControlName="currency_code"
+            id="currency"
+            [options]="currencies"
+            noFilter="10"
+          ></tsl-dropdown>
         </div>
       </div>
       <div class="col-6 col-md-3">
         <div class="form-group">
           <label for="surface" i18n="@@web_upload_pages_realestate_429">Area m2</label>
-          <input placeholder="m2" type="number" class="form-control" formControlName="surface" id="surface" min="0"
-            max="999999999" />
+          <input placeholder="m2" type="number" class="form-control" formControlName="surface" id="surface" min="0" max="999999999" />
         </div>
       </div>
       <div class="col-6 col-md-4">
         <div class="form-group">
           <label for="condition" i18n="@@web_upload_pages_realestate_430">Status</label>
-          <tsl-dropdown id="condition" class="form-control" formControlName="condition" [options]="conditions"
-            noFilter="10"></tsl-dropdown>
+          <tsl-dropdown id="condition" class="form-control" formControlName="condition" [options]="conditions" noFilter="10"></tsl-dropdown>
         </div>
       </div>
       <ng-template #coachmarkPrice>
-        <div i18n="@@web_upload_pages_realestate_431">          Add a fair price and the area in m2. Tell us also the state of the
-          property.
-        </div>
+        <div i18n="@@web_upload_pages_realestate_431">Add a fair price and the area in m2. Tell us also the state of the property.</div>
       </ng-template>
     </div>
-    <div class="row" *ngIf="
-        uploadForm.value?.type === 'house' ||
-        uploadForm.value?.type === 'apartment'
-      " [ngbPopover]="coachmarkRooms" [autoClose]="false" popoverClass="ml-3">
+    <div
+      class="row"
+      *ngIf="uploadForm.value?.type === 'house' || uploadForm.value?.type === 'apartment'"
+      [ngbPopover]="coachmarkRooms"
+      [autoClose]="false"
+      popoverClass="ml-3"
+    >
       <div class="col-6 col-md-3">
         <div class="form-group">
           <label for="rooms" i18n="@@web_upload_pages_realestate_432">Nº of rooms</label>
-          <input placeholder="1, 2, 3..." type="number" class="form-control" formControlName="rooms" id="rooms" min="0"
-            max="999999999" />
+          <input placeholder="1, 2, 3..." type="number" class="form-control" formControlName="rooms" id="rooms" min="0" max="999999999" />
         </div>
       </div>
       <div class="col-6 col-md-3">
         <div class="form-group">
           <label for="bathrooms" i18n="@@web_upload_pages_realestate_433">Nº of bathrooms</label>
-          <input placeholder="1, 2, 3..." type="number" class="form-control" formControlName="bathrooms" id="bathrooms"
-            min="0" max="999999999" />
+          <input
+            placeholder="1, 2, 3..."
+            type="number"
+            class="form-control"
+            formControlName="bathrooms"
+            id="bathrooms"
+            min="0"
+            max="999999999"
+          />
         </div>
       </div>
       <ng-template #coachmarkRooms>
         <div i18n="@@web_upload_pages_realestate_434">How many rooms and bathrooms does it have?</div>
       </ng-template>
     </div>
-    <div class="row" *ngIf="uploadForm.value?.type === 'house' || uploadForm.value?.type === 'apartment'"
-      [ngbPopover]="coachmarkExtras" [autoClose]="false" popoverClass="ml-3" triggers="mouseenter:mouseleave">
+    <div
+      class="row"
+      *ngIf="uploadForm.value?.type === 'house' || uploadForm.value?.type === 'apartment'"
+      [ngbPopover]="coachmarkExtras"
+      [autoClose]="false"
+      popoverClass="ml-3"
+      triggers="mouseenter:mouseleave"
+    >
       <div class="col">
         <div class="row">
           <div class="col">
@@ -134,7 +155,7 @@
                 <label class="selector" [class.active]="uploadForm.value[extra.id]" *ngFor="let extra of extras">
                   <div class="selector-icon">
                     <input type="checkbox" [formControlName]="extra.id" />
-                    <tsl-svg-icon src="/assets/icons/{{extra.icon_id}}.svg"></tsl-svg-icon>
+                    <tsl-svg-icon src="/assets/icons/{{ extra.icon_id }}.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text">{{ extra.text }}</span>
                 </label>
@@ -152,14 +173,19 @@
         <div class="form-group">
           <label for="title" i18n="@@web_upload_pages_realestate_609">Title</label>
           <span class="chars-counter">{{ uploadForm.value?.title?.length }}/50</span>
-          <input i18n-placeholder="@@web_upload_pages_realestate_610" placeholder="In some words..." type="text" class="form-control"
-            formControlName="title" id="title" maxlength="50" />
+          <input
+            i18n-placeholder="@@web_upload_pages_realestate_610"
+            placeholder="In some words..."
+            type="text"
+            class="form-control"
+            formControlName="title"
+            id="title"
+            maxlength="50"
+          />
         </div>
       </div>
       <ng-template #coachmarkTitle>
-        <div i18n="@@web_upload_pages_realestate_437">          Pay attention to spelling mistakes, so our users can find your
-          property easily.
-        </div>
+        <div i18n="@@web_upload_pages_realestate_437">Pay attention to spelling mistakes, so our users can find your property easily.</div>
       </ng-template>
     </div>
     <div class="row" [ngbPopover]="coachmarkDescription" [autoClose]="false" popoverClass="ml-3">
@@ -167,8 +193,15 @@
         <div class="form-group last">
           <label for="storytelling" i18n="@@web_upload_pages_realestate_659">Description</label>
           <span class="chars-counter">{{ uploadForm.value?.storytelling?.length }}/650</span>
-          <textarea i18n-placeholder="@@web_upload_pages_realestate_438" placeholder="Tell us more about your space" fz-elastic class="form-control"
-            formControlName="storytelling" id="storytelling" maxlength="650"></textarea>
+          <textarea
+            i18n-placeholder="@@web_upload_pages_realestate_438"
+            placeholder="Tell us more about your space"
+            fz-elastic
+            class="form-control"
+            formControlName="storytelling"
+            id="storytelling"
+            maxlength="650"
+          ></textarea>
         </div>
       </div>
       <ng-template #coachmarkDescription>
@@ -178,23 +211,34 @@
   </div>
   <div class="main-box">
     <h2 i18n="@@web_upload_pages_realestate_440">Property location</h2>
-    <div class="row" [ngbPopover]="coachmarkLocation" [autoClose]="false" popoverClass="ml-3"
-      triggers="mouseenter:mouseleave">
+    <div class="row" [ngbPopover]="coachmarkLocation" [autoClose]="false" popoverClass="ml-3" triggers="mouseenter:mouseleave">
       <div class="col-12">
         <div class="form-group">
-          <tsl-location-select *ngIf="!!uploadForm" [form]="uploadForm" name="location"
-            (locationSelected)="emitLocation()" [updateLocation]="false"></tsl-location-select>
-          <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small" [isApproximateLocation]="
-              uploadForm.value.location.approximated_location
-            "></tsl-here-maps>
+          <tsl-location-select
+            *ngIf="!!uploadForm"
+            [form]="uploadForm"
+            name="location"
+            (locationSelected)="emitLocation()"
+            [updateLocation]="false"
+          ></tsl-location-select>
+          <tsl-here-maps
+            *ngIf="coordinates"
+            [coordinates]="coordinates"
+            zoom="15"
+            size="small"
+            [isApproximateLocation]="uploadForm.value.location.approximated_location"
+          ></tsl-here-maps>
           <div class="fake-map" *ngIf="!coordinates"></div>
-          <p i18n="@@web_upload_pages_realestate_441" class="my-2">This is the spot where your space is located. This location could be
-            different from your profile location.
+          <p i18n="@@web_upload_pages_realestate_441" class="my-2">
+            This is the spot where your space is located. This location could be different from your profile location.
           </p>
           <label class="checkbox checkbox-corporate" formGroupName="location">
-            <div class="select" [ngClass]="{
+            <div
+              class="select"
+              [ngClass]="{
                 selected: uploadForm.value.location.approximated_location
-              }">
+              }"
+            >
               <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
               <input type="checkbox" formControlName="approximated_location" (change)="emitLocation()" />
             </div>
@@ -208,17 +252,25 @@
     </div>
   </div>
   <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave">
-    <h2 [ngClass]="{
-        'ng-invalid':
-          !uploadForm.controls.images.valid && uploadForm.controls.images.dirty
-      }" i18n="@@web_upload_pages_realestate_444">      Photos
+    <h2
+      [ngClass]="{
+        'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty
+      }"
+      i18n="@@web_upload_pages_realestate_444"
+    >
+      Photos
     </h2>
-    <tsl-drop-area 
-      (onError)="onError($event)" formControlName="images" [isUpdatingItem]="!!item" (onOrderImages)="onOrderImages()" (onDeleteImage)="onDeleteImage($event)" (onAddImage)="onAddImage($event)"
-      ></tsl-drop-area>
+    <tsl-drop-area
+      (onError)="onError($event)"
+      formControlName="images"
+      [isUpdatingItem]="!!item"
+      (onOrderImages)="onOrderImages()"
+      (onDeleteImage)="onDeleteImage($event)"
+      (onAddImage)="onAddImage($event)"
+    ></tsl-drop-area>
     <ng-template #coachmarkPictures>
-      <div i18n="@@web_upload_pages_realestate_445">        You can drag and drop your photos here. Also drag and drop to change the
-        order. Max 4MB.
+      <div i18n="@@web_upload_pages_realestate_445">
+        You can drag and drop your photos here. Also drag and drop to change the order. Max 4MB.
       </div>
     </ng-template>
   </div>
@@ -226,14 +278,25 @@
     <div class="col-12 col-md-5">
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
         <span *ngIf="!item && !loading" i18n="@@web_upload_pages_realestate_660">Post Ad</span>
-        <span *ngIf="item && !loading" i18n="@@web_upload_pages_realestate_661">Update</span>
+        <ng-container *ngIf="item && !loading">
+          <span *ngIf="!isReactivation" i18n="@@web_upload_pages_realestate_661">Update</span>
+          <span *ngIf="isReactivation" i18n="@@web_upload_seller_reactivation_button">Reactivate item</span>
+        </ng-container>
         <span *ngIf="loading && !pendingFiles" i18n="@@web_upload_product_submit_loading">Uploading... {{ uploadCompletedPercentage }}%</span>
-        <span *ngIf="loading && pendingFiles" i18n="@@web_upload_images_submit_loading">Uploading image... {{ pendingFiles.currentUploading}}/{{pendingFiles.totalFiles}}</span>
+        <span *ngIf="loading && pendingFiles" i18n="@@web_upload_images_submit_loading"
+          >Uploading image... {{ pendingFiles.currentUploading }}/{{ pendingFiles.totalFiles }}</span
+        >
       </tsl-button>
     </div>
     <div class="col-md-3 d-none d-md-block">
-      <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid"
-        i18n="@@web_upload_pages_realestate_446">        How does it look?
+      <button
+        type="button"
+        (click)="preview()"
+        class="btn btn-link"
+        [disabled]="!uploadForm.valid"
+        i18n="@@web_upload_pages_realestate_446"
+      >
+        How does it look?
       </button>
     </div>
   </div>
