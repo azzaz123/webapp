@@ -21,13 +21,14 @@ import { Observable, Subscription } from 'rxjs';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { finalize, map, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
 import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
 import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { COLORS } from '@core/colors/colors-constants';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -144,20 +145,26 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   public deleteForm(): void {
-    this.modalService.open(ConfirmationModalComponent).result.then((result: boolean) => {
-      if (result) {
-        this.deliveryAddressService.delete(this.deliveryAddressForm.get('id').value).subscribe(
-          () => {
-            this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS);
-            this.deliveryAddressForm.get('id').setValue(this.uuidService.getUUID());
-            this.clearForm();
-            this.prepareFormAndInitializeCountries(true);
-          },
-          () => {
-            this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
-          }
-        );
-      }
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
+
+    modalRef.componentInstance.properties = {
+      description: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST),
+      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELETE_BUTTON),
+      confirmColor: COLORS.NEGATIVE_MAIN,
+    };
+
+    modalRef.result.then(() => {
+      this.deliveryAddressService.delete(this.deliveryAddressForm.get('id').value).subscribe(
+        () => {
+          this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS);
+          this.deliveryAddressForm.get('id').setValue(this.uuidService.getUUID());
+          this.clearForm();
+          this.prepareFormAndInitializeCountries(true);
+        },
+        () => {
+          this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
+        }
+      );
     });
   }
 

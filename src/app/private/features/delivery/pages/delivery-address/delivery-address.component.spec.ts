@@ -617,21 +617,20 @@ describe('DeliveryAddressComponent', () => {
 
   describe('when clicking the delete button...', () => {
     describe('and we confirm the action...', () => {
-      beforeEach(() => {
-        spyOn(modalService, 'open').and.returnValue({
-          result: Promise.resolve(true),
-        });
-      });
-
       describe('and the delete action succeed...', () => {
         beforeEach(() => {
           component.deliveryAddressForm.setValue(MOCK_DELIVERY_ADDRESS);
 
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
           spyOn(errorsService, 'i18nSuccess');
           spyOn(component.formComponent, 'initFormControl');
           spyOn(deliveryAddressService, 'delete').and.returnValue(of(null));
 
           fixture.debugElement.query(By.css(deleteButtonSelector)).nativeElement.click();
+        });
+
+        it('should open confirmation modal', () => {
+          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
         });
 
         it('should prepare form and set the default country', fakeAsync(() => {
@@ -671,10 +670,15 @@ describe('DeliveryAddressComponent', () => {
 
       describe('and the delete action fails...', () => {
         beforeEach(() => {
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
           spyOn(deliveryAddressService, 'delete').and.returnValue(throwError('network error'));
           spyOn(errorsService, 'i18nError');
 
           fixture.debugElement.query(By.css(deleteButtonSelector)).nativeElement.click();
+        });
+
+        it('should open confirmation modal', () => {
+          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
         });
 
         it('should call the delete action with the address id', fakeAsync(() => {
@@ -694,9 +698,7 @@ describe('DeliveryAddressComponent', () => {
     describe('and we NOT confirm the action...', () => {
       beforeEach(() => {
         spyOn(deliveryAddressService, 'delete');
-        spyOn(modalService, 'open').and.returnValue({
-          result: Promise.resolve(false),
-        });
+        spyOn(modalService, 'open').and.returnValue({ result: Promise.reject(), componentInstance: { ConfirmationModalComponent } });
 
         fixture.debugElement.query(By.css(deleteButtonSelector)).nativeElement.click();
       });
