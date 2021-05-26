@@ -59,6 +59,7 @@ export class DeliveryAddressComponent implements OnInit {
     street: '',
     flat_and_floor: '',
   };
+  public comesFromPayView: boolean;
   private subscriptions: Subscription = new Subscription();
   private readonly formSubmittedEventKey = 'formSubmitted';
 
@@ -76,6 +77,7 @@ export class DeliveryAddressComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.comesFromPayView = this.whereUserComes === PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS || this.whereUserComes === PREVIOUS_PAGE.PAYVIEW_PAY;
     this.buildForm();
     this.eventService.subscribe(this.formSubmittedEventKey, () => {
       this.onSubmit();
