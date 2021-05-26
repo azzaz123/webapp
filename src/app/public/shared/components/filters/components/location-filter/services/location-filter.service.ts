@@ -54,6 +54,8 @@ export class LocationFilterService {
     );
   }
 
+  // TODO: This could be moved to a higher level service
+  // and be used in the other geolocation implementation that is in the application (Ads)
   public getLocationFromBrowserAPI(): Promise<SearchLocation> {
     if (navigator.geolocation) {
       return new Promise((resolve, reject) => {
