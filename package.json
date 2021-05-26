@@ -28,7 +28,8 @@
     "libphonenumber-metadata": "./scripts/generate-metadata/generate-metadata.sh",
     "storybook": "start-storybook -p 6006 -s ./src/stories/assets,./src",
     "storybook-beta": "./scripts/docknum/update.sh beta && start-storybook",
-    "i18n-normalizer": "ts-node scripts/i18n/i18n-normalizer.ts"
+    "i18n-normalizer": "ts-node scripts/i18n/i18n-normalizer.ts",
+    "merge-phrase": "ts-node scripts/i18n/phrase.ts"
   },
   "private": true,
   "dependencies": {

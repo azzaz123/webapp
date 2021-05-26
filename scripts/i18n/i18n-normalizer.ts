@@ -341,7 +341,7 @@ class I18nNormalizer {
     }, {} as LanguageCopies);
   }
 
-  private getJsonCopies(copiesFileLocation): Record<string, string> {
+  private getJsonCopies(copiesFileLocation: string): Record<string, string> {
     const rawCopiesFile = fs.readFileSync(copiesFileLocation, 'utf8');
 
     const copiesObject = JSON.parse(rawCopiesFile);
