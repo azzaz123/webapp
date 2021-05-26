@@ -64,12 +64,12 @@ export class HostVisibilityService {
   public addVisibilityConditions(conditions: QueryParamVisibilityCondition[]): void {
     let newConditions: QueryParamVisibilityCondition[] = [...this.visibilityConditionsSubject.getValue()];
 
-    conditions.forEach((condition) => {
-      const foundCondition = newConditions.find((cond) => cond.queryParam === condition.queryParam);
+    conditions.forEach((condition: QueryParamVisibilityCondition) => {
+      const foundCondition: QueryParamVisibilityCondition = newConditions.find((cond) => cond.queryParam === condition.queryParam);
       if (!foundCondition) {
         newConditions.push(condition);
       } else {
-        const newCondition = { ...foundCondition };
+        const newCondition: QueryParamVisibilityCondition = { ...foundCondition };
 
         newCondition.requiredQueryParams = [...newCondition.requiredQueryParams, ...condition.requiredQueryParams].filter(
           (value, index, array) => array.indexOf(value) === index
@@ -86,7 +86,7 @@ export class HostVisibilityService {
 
   public attach(host: FilterHostComponent): Observable<boolean> {
     const { filterConfig, variant } = host.hostConfig;
-    const queryParams = Object.values(filterConfig.mapKey);
+    const queryParams: FILTER_QUERY_PARAM_KEY[] = Object.values(filterConfig.mapKey);
     const subject = new BehaviorSubject(this.isHostVisible(queryParams, variant));
 
     const listener: VisibilityListener = {
@@ -151,7 +151,9 @@ export class HostVisibilityService {
       const currentParams = store.getParametersByKeys(excludingParameters.map((excludingParam) => excludingParam.queryParam));
 
       for (const currentParam of currentParams) {
-        const excludingParameter = excludingParameters.find((excludingParam) => excludingParam.queryParam === currentParam.key);
+        const excludingParameter: ExcludingParameter = excludingParameters.find(
+          (excludingParam) => excludingParam.queryParam === currentParam.key
+        );
 
         if (excludingParameter.values.includes(currentParam.value)) {
           return false;
