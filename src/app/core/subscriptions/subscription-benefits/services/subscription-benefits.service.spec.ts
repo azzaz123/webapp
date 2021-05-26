@@ -3,7 +3,7 @@ import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscri
 import { subscriptionBenefits } from '../constants/subscription-benefits';
 import { SubscriptionBenefit } from '../interfaces/subscription-benefit.interface';
 
-import { genericBenefits, SubscriptionBenefitsService } from './subscription-benefits.service';
+import { GENERIC_BENEFITS, SubscriptionBenefitsService } from './subscription-benefits.service';
 
 describe('SubscriptionBenefitsService', () => {
   let service: SubscriptionBenefitsService;
@@ -34,7 +34,7 @@ describe('SubscriptionBenefitsService', () => {
       it('should return benefits', () => {
         const result = service.getBenefitsByCategory(CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE);
 
-        expect(result).toEqual([$localize`:@@web_subscription_benefit_title_branding:Boost your branding`, ...genericBenefits]);
+        expect(result).toEqual([$localize`:@@web_subscription_benefit_title_branding:Boost your branding`, ...GENERIC_BENEFITS]);
       });
     });
 
@@ -42,7 +42,7 @@ describe('SubscriptionBenefitsService', () => {
       it('should return benefits', () => {
         const result = service.getBenefitsByCategory(CATEGORY_SUBSCRIPTIONS_IDS.CAR);
 
-        expect(result).toEqual([$localize`:@@web_subscription_benefit_title_limit:Set your listing limit`, ...genericBenefits]);
+        expect(result).toEqual([$localize`:@@web_subscription_benefit_title_limit:Set your listing limit`, ...GENERIC_BENEFITS]);
       });
     });
   });
