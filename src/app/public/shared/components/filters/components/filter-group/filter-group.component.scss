@@ -7,17 +7,4 @@
       width: 100%;
     }
   }
-
-  &--drawer {
-    > * {
-      &::after {
-        display: block;
-        content: '';
-        background-color: $blue-grey-5;
-        height: 1px;
-        width: 100%;
-        margin: ($spacer * 1.5) 0;
-      }
-    }
-  }
 }

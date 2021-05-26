@@ -37,6 +37,7 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -134,6 +135,7 @@ describe('SearchComponent', () => {
         QueryStringLocationService,
         { provide: 'SUBDOMAIN', useValue: 'es' },
         { provide: CookieService, useValue: MockCookieService },
+        HostVisibilityService,
       ],
     }).compileComponents();
   });
@@ -144,6 +146,7 @@ describe('SearchComponent', () => {
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
