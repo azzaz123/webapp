@@ -47,9 +47,7 @@ export class CreditCardInfoComponent {
   }
 
   public deleteStripeCard() {
-    const modalRef = this.modalService.open(ConfirmationModalComponent, {
-      windowClass: 'modal-prompt',
-    });
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
 
     modalRef.componentInstance.properties = {
       title: this.i18nService.translate(TRANSLATION_KEY.DELETE_CARD_TITLE),

@@ -494,9 +494,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public delete() {
-    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
-      windowClass: 'modal-prompt',
-    });
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
 
     modalRef.componentInstance.properties = {
       title: this.i18nService.translate(TRANSLATION_KEY.DELETE_ITEMS_TITLE),

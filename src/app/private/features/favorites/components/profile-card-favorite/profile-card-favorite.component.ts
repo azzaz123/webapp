@@ -28,9 +28,7 @@ export class ProfileCardFavoriteComponent {
       ? TRANSLATION_KEY.REMOVE_FEATURED_PROFILE_FAVORITE_DESCRIPTION
       : TRANSLATION_KEY.PROFILE_NO_LONGER_FEATURED_DESCRIPTION;
 
-    const modalRef = this.modalService.open(ConfirmationModalComponent, {
-      windowClass: 'modal-prompt',
-    });
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
 
     modalRef.componentInstance.properties = {
       title: this.i18nService.translate(title),

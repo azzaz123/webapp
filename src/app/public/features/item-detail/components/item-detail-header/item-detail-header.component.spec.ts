@@ -281,7 +281,7 @@ describe('ItemDetailHeaderComponent', () => {
           trashButton.click();
           tick();
 
-          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
+          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
           expect(itemDetailService.deleteItem).toHaveBeenCalledWith(component.item.id);
         }));
       });
