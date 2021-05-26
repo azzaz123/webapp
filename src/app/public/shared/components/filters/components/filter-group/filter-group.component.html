@@ -1,4 +1,4 @@
-<div [class.FilterGroup--drawer]="variant === FILTER_VARIANT.CONTENT" [class.d-flex]="variant === FILTER_VARIANT.BUBBLE">
+<div [class.d-flex]="variant === FILTER_VARIANT.BUBBLE">
     <div class="FilterGroup__filter m-1"
     [class.FilterGroup__filter--bubble]="variant === FILTER_VARIANT.BUBBLE" *ngFor="let config of (filterConfigs$ | async)">
       <tsl-filter-host [hostConfig]="config" [values]="values | filterValues:config.filterConfig"

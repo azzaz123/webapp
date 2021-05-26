@@ -281,53 +281,6 @@ $modal-border-radius: 0.3rem;
   }
 }
 
-.modal.modal-prompt {
-  .modal-dialog {
-    max-width: $modal-standard-width;
-  }
-  .modal-content {
-    width: $modal-standard-width !important;
-    max-width: unset;
-    .modal-body {
-      text-align: center;
-      margin-top: $spacing-xxl;
-      h2 {
-        font-size: $font-size-l;
-      }
-      p {
-        font-size: $font-size-m;
-        color: $blue-grey-2;
-      }
-    }
-    .modal-footer {
-      justify-content: center;
-      padding-bottom: $spacing-xxl;
-      .btn {
-        width: 170px;
-        height: 40px;
-        line-height: 40px;
-        background-color: $blue-grey-5 !important;
-        color: $blue-grey-2 !important;
-        border: 0 !important;
-        border-radius: 20px !important;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        &.btn-warn {
-          background-color: $warn !important;
-          color: $white !important;
-        }
-        &:hover {
-          opacity: 0.8;
-        }
-      }
-    }
-    @include media-breakpoint-down(sm) {
-      width: 100% !important;
-    }
-  }
-}
-
 .modal.full-screen {
   $modal-width: 100%;
   $modal-height: 100%;
