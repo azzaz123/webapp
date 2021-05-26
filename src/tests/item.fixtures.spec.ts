@@ -40,6 +40,7 @@ import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from './subscriptions.fixtures.spec'
 import { MOCK_USER, USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { MOCK_ITEM_VISIBILITY_FLAGS_BUMPED } from '@fixtures/item-detail-flags.fixtures.spec';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
+import { ItemCondition } from '@core/item/item-condition';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
 export const ITEM_CATEGORY_ID = 12545;
@@ -264,7 +265,7 @@ export const ITEM_FASHION_EXTRA_INFO: ItemExtraInfo = {
   },
   brand: 'Zara',
   model: 'Ring',
-  condition: 'new',
+  condition: ItemCondition.NEW,
   size: {
     id: '1',
     text: 'XXL / 48 / 58',
@@ -300,7 +301,7 @@ export const ITEM_CELLPHONES_EXTRA_INFO_NO_OBJECT_TYPE: ItemExtraInfo = {
 };
 
 export const ITEM_GENERIC_EXTRA_INFO: ItemExtraInfo = {
-  condition: 'has_given_it_all',
+  condition: ItemCondition.HAS_GIVEN_IT_ALL,
 };
 
 export const MOCK_ITEM: Item = new Item(
