@@ -14,6 +14,4 @@ export class ItemImagesCarouselComponent {
   @Input() statusFlag: STATUS_ITEM_FLAG_TYPES;
   @Input() bumpedFlag: BUMPED_ITEM_FLAG_TYPES;
   @Output() imageClick: EventEmitter<CarouselSlide> = new EventEmitter<CarouselSlide>();
-
-  constructor() {}
 }
