@@ -33,7 +33,7 @@ export class ItemCartFavoriteComponent implements OnInit {
   removeFavoriteModal(e: Event) {
     e.stopPropagation();
     const modalRef = this.modalService.open(ConfirmationModalComponent, {
-      backdrop: 'static',
+      windowClass: 'modal-prompt',
     });
 
     modalRef.componentInstance.properties = {

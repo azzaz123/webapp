@@ -100,7 +100,7 @@ describe('CreditCardInfoComponent', () => {
       tick();
 
       expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
-        backdrop: 'static',
+        windowClass: 'modal-prompt',
       });
       expect(component.onDeleteStripeCard.emit).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     }));

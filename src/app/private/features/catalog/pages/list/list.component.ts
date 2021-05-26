@@ -495,7 +495,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public delete() {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
-      backdrop: 'static',
+      windowClass: 'modal-prompt',
     });
 
     modalRef.componentInstance.properties = {

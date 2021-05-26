@@ -112,7 +112,7 @@ describe('ItemCartFavoriteComponent', () => {
     });
 
     it('should open accept modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { backdrop: 'static' });
+      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
     });
 
     it('should call removeFavorite method ', fakeAsync(() => {

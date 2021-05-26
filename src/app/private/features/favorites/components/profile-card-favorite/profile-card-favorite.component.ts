@@ -29,7 +29,7 @@ export class ProfileCardFavoriteComponent {
       : TRANSLATION_KEY.PROFILE_NO_LONGER_FEATURED_DESCRIPTION;
 
     const modalRef = this.modalService.open(ConfirmationModalComponent, {
-      backdrop: 'static',
+      windowClass: 'modal-prompt',
     });
 
     modalRef.componentInstance.properties = {

@@ -79,7 +79,7 @@ export class ItemDetailHeaderComponent implements OnInit {
 
   public deleteItem(): void {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
-      backdrop: 'static',
+      windowClass: 'modal-prompt',
     });
 
     modalRef.componentInstance.properties = {

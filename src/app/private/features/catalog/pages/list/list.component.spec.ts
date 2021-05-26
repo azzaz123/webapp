@@ -696,7 +696,7 @@ describe('ListComponent', () => {
       }));
       it('should call modal and bulkDelete', () => {
         expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
-          backdrop: 'static',
+          windowClass: 'modal-prompt',
         });
         expect(itemService.bulkDelete).toHaveBeenCalledWith('active');
       });
