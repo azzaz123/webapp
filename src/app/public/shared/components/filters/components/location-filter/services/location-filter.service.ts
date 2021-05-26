@@ -72,7 +72,7 @@ export class LocationFilterService {
         );
       });
     } else {
-      return Promise.reject(new GeolocationNotAvailableError($localize`:@@web_location_filter_error:We couldn't get your location`));
+      return Promise.reject(new GeolocationNotAvailableError($localize`:@@web_filter_location_error:We couldn't get your location`));
     }
   }
 
