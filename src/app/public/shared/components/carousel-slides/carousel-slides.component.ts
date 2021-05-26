@@ -70,9 +70,7 @@ export class SlidesCarouselComponent implements AfterContentInit {
   }
 
   private checkManyImages() {
-    if (this.slides?.length > 10) {
-      this.manyImages = true;
-    }
+    this.manyImages = this.slides?.length > 10;
   }
 
   get isSingleSlide(): boolean {
