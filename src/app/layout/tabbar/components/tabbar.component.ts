@@ -85,14 +85,14 @@ export class TabbarComponent implements OnInit {
   }
 
   @HostListener('window:focusin', ['$event'])
-  onFocusIn(elementType: any) {
+  onFocusIn(elementType: unknown) {
     if (this.isTextInputOrTextarea(elementType)) {
       this.hidden = true;
     }
   }
 
   @HostListener('window:focusout', ['$event'])
-  onFocusOut(elementType: any) {
+  onFocusOut(elementType: unknown) {
     if (this.isTextInputOrTextarea(elementType)) {
       this.hidden = false;
     }
