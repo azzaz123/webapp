@@ -17,4 +17,8 @@ export interface ViewSubscriptionTier {
    * Whether the subscription offers free trial
    */
   freeTrial?: boolean;
+  /**
+   * Subscription category type that reached the limit
+   */
+  subscription?: 0 | 100 | 14000 | 12800;
 }

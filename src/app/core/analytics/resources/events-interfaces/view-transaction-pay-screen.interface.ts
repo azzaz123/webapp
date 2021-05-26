@@ -30,6 +30,10 @@ export interface ViewTransactionPayScreen {
    */
   itemPrice: number;
   /**
+   * Total price of the transaction including fees (delivery, insurance)
+   */
+  totalPrice?: number;
+  /**
    * Identifier of the user that the item belongs to
    */
   sellerUserId: string;
@@ -40,5 +44,9 @@ export interface ViewTransactionPayScreen {
   /**
    * Preselected payment method
    */
-  preselectedPaymentMethod?: 'bank card' | 'wallet' | 'wallet, bank card' | 'paypal' | 'wallet, paypal';
+  preselectedPaymentMethod?: 'bank card' | 'paypal';
+  /**
+   * Indicates whether wallet toggle is switched on
+   */
+  useWallet?: boolean;
 }

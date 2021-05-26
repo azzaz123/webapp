@@ -57,4 +57,8 @@ export interface ListItemCG {
    * shippingAllowed
    */
   shippingAllowed?: boolean;
+  /**
+   * If the item has the weight informed
+   */
+  shippingWeight?: number;
 }

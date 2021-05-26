@@ -18,6 +18,10 @@ export interface TransactionPaymentSuccess {
    */
   paymentMethod: 'bank card' | 'wallet' | 'wallet, bank card' | 'paypal' | 'wallet, paypal';
   /**
+   * Id of the shipping request
+   */
+  requestId?: string;
+  /**
    * Identifier of the checkout screen
    */
   screenId: 238;
