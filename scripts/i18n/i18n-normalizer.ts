@@ -47,11 +47,6 @@ interface TranslationSet {
   translations: Translation[];
 }
 
-interface RegexFormatter {
-  regex: RegExp;
-  replacer: (index: number) => ReplacerFunc;
-}
-
 type ReplacerFunc = ((substring: string, ...args: any[]) => string);
 
 interface CopyLocation {
@@ -246,7 +241,7 @@ class I18nNormalizer {
     const currentTranslationSets = this.getCurrentTranslationSets();
     const originalTranslations = currentTranslationSets.find(languageCopy => languageCopy.locale === this.originalLanguage).translations;
     const otherTranslationSets = currentTranslationSets.filter(languageCopy => languageCopy.locale !== this.originalLanguage);
-    const missingTranslations = [];
+    const missingTranslations: MissingTranslation[] = [];
 
     originalTranslations.forEach(originalTranslation => {
       const missingLanguages = [];
