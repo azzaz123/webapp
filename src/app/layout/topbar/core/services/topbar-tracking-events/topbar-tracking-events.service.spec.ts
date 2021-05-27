@@ -6,6 +6,7 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
+  CancelSearch,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -44,6 +45,27 @@ describe('TopbarTrackingEventsService', () => {
       spyOn(analyticsService, 'trackEvent');
 
       service.trackClickKeyboardSearchButtonEvent(searchText);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
+    });
+  });
+
+  describe('when user cancels the search (cross button)', () => {
+    const searchText = 'searchText';
+
+    const event: AnalyticsEvent<CancelSearch> = {
+      name: ANALYTICS_EVENT_NAMES.CancelSearch,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.Search,
+        searchText: searchText,
+      },
+    };
+
+    it('should send cancel search event', () => {
+      spyOn(analyticsService, 'trackEvent');
+
+      service.trackCancelSearchEvent(searchText);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
     });

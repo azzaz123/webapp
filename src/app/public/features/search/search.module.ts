@@ -24,10 +24,11 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
 import { SearchAdsService } from './core/ads/search-ads.service';
-import { SearchListTrackingEventsService } from './core/services/search-list-tracking-events.service';
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import { SearchListTrackingEventsService } from './core/services/search-list-tracking-events.service';
 
 @NgModule({
   imports: [
@@ -49,6 +50,7 @@ import { HostVisibilityService } from '@public/shared/components/filters/compone
     SearchAPIService,
     SearchFavouritesService,
     SearchStoreService,
+    SearchTrackingEventsService,
     {
       provide: FILTER_PARAMETER_STORE_TOKEN,
       useClass: FilterParameterStoreService,

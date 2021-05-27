@@ -36,6 +36,9 @@ import { isEqual } from 'lodash-es';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
+import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -65,7 +68,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
   public isLoadingPaginationResults$: Observable<boolean> = this.searchService.isLoadingPaginationResults$;
   public currentCategoryId$: Observable<string> = this.searchService.currentCategoryId$;
-  public searchId$: Observable<string> = this.searchService.searchId$;
+  public newSearch$: Observable<string> = this.searchService.newSearch$;
   public items$: Observable<ItemCard[]> = this.searchService.items$;
   public hasMoreItems$: Observable<boolean> = this.searchService.hasMore$;
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
@@ -106,14 +109,16 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     private queryStringService: SearchQueryStringService,
     private searchNavigatorService: SearchNavigatorService,
     private searchListTrackingEventsService: SearchListTrackingEventsService,
+    private searchTrackingEventsService: SearchTrackingEventsService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
     this.device = this.deviceService.getDeviceType();
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(
-      this.searchId$.pipe(skip(1)).subscribe((searchId: string) => {
+      this.newSearch$.pipe(skip(1)).subscribe((searchId: string) => {
         this.searchId = searchId;
+        this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
       })
     );
   }
@@ -131,7 +136,10 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.subscription.add(
       this.queryParamsChange().subscribe((params) => {
         if (!this.paramsHaveLocation(params)) {
-          this.searchNavigatorService.navigate(params);
+          this.searchNavigatorService.navigate(
+            params,
+            (params.find((parameter) => parameter.key === FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE).value || null) as FILTERS_SOURCE
+          );
         } else {
           this.filterParameterStore.setParameters(params);
         }
@@ -158,8 +166,8 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     }
   }
 
-  public trackClickItemCardEvent(ClickedItemCard: ClickedItemCard): void {
-    const { itemCard, index } = ClickedItemCard;
+  public trackClickItemCardEvent(clickedItemCard: ClickedItemCard): void {
+    const { itemCard, index } = clickedItemCard;
     this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, this.searchId);
   }
 
