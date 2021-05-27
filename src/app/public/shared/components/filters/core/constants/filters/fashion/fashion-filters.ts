@@ -51,9 +51,9 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
   {
     id: FASHION_CONFIGURATION_ID.SIZE,
     type: FILTER_TYPES.SELECT,
-    title: $localize`:@@filterFashionBrandTitle:Size`,
-    bubblePlaceholder: $localize`:@@filterFashionSizeBubblePlaceholder:Size`,
-    drawerPlaceholder: $localize`:@@filterFashionSizeDrawerPlaceholder:Select size`,
+    title: $localize`:@@web_filter_fashion_size_title:Size`,
+    bubblePlaceholder: $localize`:@@web_filter_fashion_size_bubble_placeholder:Size`,
+    drawerPlaceholder: $localize`:@@web_filter_fashion_size_drawer_placeholder:Select size`,
     icon: '/assets/icons/filters/size.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.size,

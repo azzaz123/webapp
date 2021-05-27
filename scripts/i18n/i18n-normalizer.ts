@@ -19,17 +19,14 @@ type Translation = Record<LANGUAGE, string | Object>;
 
 interface Copy {
   key: string;
-  source: string;
   translation: Translation;
 }
 
-interface CopyNode {
-  id: string;
-  source?: string;
-  text: string | Object; // BEFOREMERGE: Type object
+interface SourcedCopy extends Copy {
+  source: string;
 }
 
-type TranslatedNodes = Record<Partial<LANGUAGE>, CopyNode[]>;
+type LanguageCopies = Record<Partial<LANGUAGE>, Record<string, string>>;
 
 interface MissingTranslation {
   id: string;
@@ -47,23 +44,24 @@ class I18nNormalizer {
     'What should I do?\n' +
     '1. Run i18n\n' +
     '2. Print missing translations\n' +
-    '3. Clean up keys\n' +
+    '3. Normalize keys\n' +
+    '4. Clean translations files\n' +
     'e. Exit\n' +
     'Ans: ';
 
   private copyLocations: CopyLocation[] = [{
     language: LANGUAGE.ENGLISH,
-    file: 'src/locale/messages.xmb'
+    file: 'src/locale/messages.en.json'
   }, {
     language: LANGUAGE.SPANISH,
-    file: 'src/locale/es.xtb'
+    file: 'src/locale/messages.es.json'
   }];
+
+  private sourcedMessagesFile = 'src/locale/messages.xmb';
 
   private pathsToSkip = [
     'node_modules'
   ];
-  private escapeLesserThan = '$LESSER_THAN';
-  private escapeGreaterThan = '$GREATER_THAN';
 
   private originalLanguage = LANGUAGE.ENGLISH;
 
@@ -90,6 +88,10 @@ class I18nNormalizer {
       case '3':
         await this.addMissingKeys();
         await this.normalizeKeys();
+        this.runI18n();
+        break;
+      case '4':
+        this.cleanTranslationFiles();
         break;
       default:
         return;
@@ -98,24 +100,71 @@ class I18nNormalizer {
     return this.menu();
   }
 
-  private getCopies(): Copy[] {
-    const translatedNodes = this.getTranslatedNodes();
-    const originalNodes = translatedNodes[this.originalLanguage];
+  private cleanTranslationFiles(): void {
+    const languageCopies = this.getLanguageCopies();
+    const originalCopies = languageCopies[this.originalLanguage];
 
-    return originalNodes.map(node => {
+    this.copyLocations.filter((location) => location.language !== this.originalLanguage).forEach(location => {
+      const copies = languageCopies[location.language];
+      const translations = {};
+
+      const keys = Object.keys(originalCopies);
+      keys.forEach(key => {
+        translations[key] = copies[key];
+      });
+
+      fs.writeFileSync(location.file, JSON.stringify({ locale: location.language, translations}, undefined, 2));
+    });
+  }
+
+  private generateSourcedCopies(): void {
+    execSync('ng extract-i18n --format=xmb --output-path=src/locale');
+  }
+
+  private clearSourcedCopies(): void {
+    execSync(`rm ${this.sourcedMessagesFile}`);
+  }
+
+  private getSourcedCopies(): SourcedCopy[] {
+    const languageCopies = this.getLanguageCopies();
+    const sources = this.getCopySources();
+
+    const originalCopies = languageCopies[this.originalLanguage];
+    const originalKeys = Object.keys(originalCopies);
+
+    return originalKeys.map(key => {
       const languages = Object.values(LANGUAGE) as LANGUAGE[];
 
       return  {
-        key: node.id,
-        source: node.source,
+        key,
+        source: sources[key],
         translation: languages.reduce((acc, lang) => {
           return {
             ...acc,
-            [lang]: translatedNodes[lang].find(translatedNode => translatedNode.id === node.id)?.text
+            [lang]: languageCopies[lang][key]
           };
         }, {} as Translation)
       };
     });
+  }
+
+  private getCopySources(): Record<string, string> {
+    this.generateSourcedCopies();
+    const rawCopiesFile = fs.readFileSync(this.sourcedMessagesFile, 'utf8');
+
+    const cleanedFileString = this.cleanupRawXMB(rawCopiesFile);
+    const rawCopiesJSON = xmlParser.toJson(cleanedFileString);
+    const messages = JSON.parse(rawCopiesJSON).messagebundle.msg;
+    const translations = messages.reduce((acc, obj) => {
+      return {
+        ...acc,
+        [obj.id]: obj.source
+      };
+    }, {});
+
+    this.clearSourcedCopies();
+
+    return translations;
   }
 
   private runI18n() {
@@ -123,7 +172,7 @@ class I18nNormalizer {
   }
 
   private async addMissingKeys(): Promise<void> {
-    const copies = this.getCopies();
+    const copies = this.getSourcedCopies();
     const copiesWithoutKey = copies.filter(copy => this.isNumericKey(copy.key));
     if (copiesWithoutKey.length > 0) {
       const substitutionKeys = copiesWithoutKey.map((copy) => ({
@@ -150,7 +199,22 @@ class I18nNormalizer {
   }
 
   private printMissingTranslations(): void {
-    const copies = this.getCopies();
+    const languageCopies = this.getLanguageCopies();
+    const originalCopies = languageCopies[this.originalLanguage];
+    const languages = Object.values(LANGUAGE);
+
+    const keys = Object.keys(originalCopies);
+
+    const copies = keys.map(key => ({
+      key,
+      translation: languages.reduce((acc, lang) => {
+        return {
+          ...acc,
+          [lang]: languageCopies[lang][key]
+        };
+      }, {})
+    }));
+
     const missingTranslations = copies.reduce((acc, copy) => {
       const languageKeys: LANGUAGE[] = Object.keys(copy.translation) as LANGUAGE[];
 
@@ -178,8 +242,8 @@ class I18nNormalizer {
   }
 
   private async normalizeKeys(): Promise<void> {
-    const copies = this.getCopies();
-    const processedCopies: Copy[] = copies.map(copy => ({
+    const copies = this.getSourcedCopies().filter((copy) => !this.shouldSkipSource(copy));
+    const processedCopies: SourcedCopy[] = copies.map(copy => ({
       ...copy,
       key: this.generateNormalizedKey(copy.key)
     }));
@@ -226,9 +290,9 @@ class I18nNormalizer {
       this.setNewKeyInSourceFiles(substitutionKey);
     });
 
-    this.setNewKeysInFiles(substitutionKeys);
+    this.setNewKeysInTranslationFiles(substitutionKeys);
 
-    this.runI18n();
+    this.generateSourcedCopies();
   }
 
   private setNewKeyInSourceFiles(substitutionKey: SubstitutionKey): void {
@@ -243,7 +307,7 @@ class I18nNormalizer {
     fs.writeFileSync(filePath, rawFile);
   }
 
-  private setNewKeysInFiles(substitutionKeys: SubstitutionKey[]): void {
+  private setNewKeysInTranslationFiles(substitutionKeys: SubstitutionKey[]): void {
     this.copyLocations.forEach(({ file }) => {
       let rawFile = fs.readFileSync(file, 'utf8');
 
@@ -257,44 +321,23 @@ class I18nNormalizer {
     });
   }
 
-  private getTranslatedNodes(): TranslatedNodes {
+  private getLanguageCopies(): LanguageCopies {
     return this.copyLocations.reduce((acc, location) => {
       return {
         ...acc,
-        [location.language]: this.getNodeMessages(location.file)
+        [location.language]: this.getJsonCopies(location.file)
       };
-    }, {} as TranslatedNodes);
+    }, {} as LanguageCopies);
   }
 
-  private getNodeMessages(copiesFileLocation): CopyNode[] {
-    const copyNodes = this.getTranslationNodesFromFile(copiesFileLocation);
-    return copyNodes.filter(node => !this.shouldSkipPath(node));
-  }
-
-  private getTranslationNodesFromFile(copiesFileLocation): CopyNode[] {
+  private getJsonCopies(copiesFileLocation): Record<string, string> {
     const rawCopiesFile = fs.readFileSync(copiesFileLocation, 'utf8');
 
-    const isXMB = copiesFileLocation.endsWith('.xmb');
-    const isXTB = copiesFileLocation.endsWith('.xtb');
-
-    if (isXMB) {
-      const cleanedFileString = this.cleanupRawXMB(rawCopiesFile);
-      const rawCopiesJSON = xmlParser.toJson(cleanedFileString);
-      const copiesObject = JSON.parse(rawCopiesJSON);
-      return copiesObject.messagebundle.msg;
-    }
-
-    if (isXTB) {
-      const cleanedFileString = this.cleanupRawXTB(rawCopiesFile);
-      const rawCopiesJSON = xmlParser.toJson(cleanedFileString, { alternateTextNode: 'text' } );
-      const copiesObject = JSON.parse(rawCopiesJSON);
-      return copiesObject.translationbundle.translation;
-    }
-
-    return [];
+    const copiesObject = JSON.parse(rawCopiesFile);
+    return copiesObject.translations;
   }
 
-  private shouldSkipPath(node: CopyNode): boolean {
+  private shouldSkipSource(node: SourcedCopy): boolean {
     if (node.source) {
       for (const path of this.pathsToSkip) {
         if (node.source.startsWith(path)) {
@@ -321,19 +364,6 @@ class I18nNormalizer {
       .replace(regexpCleanupInterpolations, interpolationsReplacement);
   }
 
-  private cleanupRawXTB(rawStringFile): string {
-    const allLines = rawStringFile.split('\n');
-    allLines.forEach((line, i) => {
-      line = line.replace(/<ph/g, `${this.escapeLesserThan}ph`);
-      line = line.replace(/<ex>/g, `${this.escapeLesserThan}ex${this.escapeGreaterThan}`);
-      line = line.replace(/<\/ex>/g, `${this.escapeLesserThan}/ex${this.escapeGreaterThan}`);
-      line = line.replace(/<\/ph>/g, `${this.escapeLesserThan}/ph${this.escapeGreaterThan}`);
-      allLines[i] = line;
-    });
-
-    return allLines.join('\n');
-  }
-
   private isNumericKey(id): boolean {
     return !isNaN(id) && !isNaN(parseFloat(id));
   }
@@ -350,7 +380,7 @@ class I18nNormalizer {
     return `${normalizedKey}_${this.cumulativeIndex}`;
   }
 
-  private getNewKey(node: Copy): string {
+  private getNewKey(node: SourcedCopy): string {
     const isAutogenerated = this.isNumericKey(node.key);
     if (isAutogenerated) {
       return this.generateKeyByPath(node.source);

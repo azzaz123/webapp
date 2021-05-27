@@ -13,7 +13,8 @@ $sort-filter-height: 38px;
 
   &__bubble {
     padding: 0;
-    min-width: 380px;
+    min-width: 360px;
+    overflow: hidden;
   }
 
   &__toolbar {
@@ -28,12 +29,6 @@ $sort-filter-height: 38px;
   &__actions {
     background-color: $white;
     height: $actions-height;
-    @include media-breakpoint-down(sm) {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      left: 0;
-    }
   }
 
   &__value {
