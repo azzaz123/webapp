@@ -16,7 +16,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
-import { MOCK_SEARCH_ID } from './search-list-tracking-events.fixtures.spec';
+import { MOCK_SEARCH_ID } from './search-list-tracking-events/search-list-tracking-events.fixtures.spec';
 
 describe('SearchService', () => {
   let service: SearchService;

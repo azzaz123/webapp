@@ -2,7 +2,6 @@ import { Image } from '@core/user/user-response.interface';
 import { ItemCard, ItemCardsWithPagination, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
 import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
-import { MOCK_SEARCH_ID } from '@public/features/search/core/services/search-list-tracking-events.fixtures.spec';
 import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
 import {
   ITEM_BUMP_FLAGS,

@@ -40,4 +40,29 @@ describe('SearchListTrackingEventsService', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH);
     });
   });
+
+  describe('when user triggers on favourite button', () => {
+    it('should send favourite item event', () => {
+      const event = { ...MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH };
+      const searchId = 'searchId';
+      event.attributes.searchId = searchId;
+      spyOn(service, 'trackFavouriteItemEvent');
+      spyOn(analyticsService, 'trackEvent');
+
+      service.trackFavouriteItemEvent(MOCK_ITEM_CARD, searchId);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
+    });
+  });
+
+  describe('when user triggers on unfavourite button', () => {
+    it('should send unfavourite item event', () => {
+      spyOn(service, 'trackUnavouriteItemEvent');
+      spyOn(analyticsService, 'trackEvent');
+
+      service.trackUnavouriteItemEvent(MOCK_ITEM_CARD);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH);
+    });
+  });
 });

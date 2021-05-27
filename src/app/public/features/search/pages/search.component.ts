@@ -21,7 +21,6 @@ import {
   AD_SHOPPING_PUBLIC_SEARCH,
   AdShoppingPageOptionPublicSearchFactory,
 } from '../core/ads/shopping/search-ads-shopping.config';
-import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events.service';
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
@@ -35,6 +34,7 @@ import { isEqual } from 'lodash-es';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
+import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events/search-list-tracking-events.service';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -158,6 +158,13 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public trackClickItemCardEvent(ClickedItemCard: ClickedItemCard): void {
     const { itemCard, index } = ClickedItemCard;
     this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, this.searchId);
+  }
+
+  public trackFavouriteToggleEvent(item: ItemCard): void {
+    console.log('trackFavouriteToggleEvent', item);
+    item.flags.favorite
+      ? this.searchListTrackingEventsService.trackFavouriteItemEvent(item, this.searchId)
+      : this.searchListTrackingEventsService.trackUnavouriteItemEvent(item);
   }
 
   public handleFilterOpened(opened: boolean) {
