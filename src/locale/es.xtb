@@ -1447,4 +1447,19 @@
   <translation id="delivery_address_too_long_hint_error">Texto demasiado largo. Escríbelo más corto.</translation>
   <translation id="delivery_address_save_success">¡Dirección editada satisfactoriamente!</translation>
   <translation id="address_view_all_users_snackbar_missing_info_error">Los datos que faltan son necesarios para guardar</translation>
+  <translation id="delivery_add_bank_account_title">Añadir cuenta bancaria</translation>
+  <translation id="saving_bank_account_first_name_hint">Nombre completo</translation>
+  <translation id="saving_bank_account_error_incomplete_first_name">Sin tu nombre, no podemos avanzar</translation>
+  <translation id="saving_bank_account_last_name_hint">Apellido</translation>
+  <translation id="saving_bank_account_error_incomplete_last_name">¡Oye! También necesitamos tu apellido</translation>
+  <translation id="saving_bank_account_iban_hint">IBAN</translation>
+  <translation id="saving_bank_account_error_incomplete_iban">Debes rellenar el campo "IBAN"</translation>
+  <translation id="add_back_account_address_field_hint">Calle y número</translation>
+  <translation id="saving_bank_account_error_incomplete_address">Dirección incompleta</translation>
+  <translation id="shipping_flat_and_door_section_hint">Piso y puerta</translation>
+  <translation id="add_back_account_postal_code_field_hint">Código postal</translation>
+  <translation id="saving_bank_account_error_incomplete_postal_code">Debes rellenar el campo "Código postal"</translation>
+  <translation id="add_back_account_city_field_hint">Ciudad</translation>
+  <translation id="saving_bank_account_error_incomplete_city">Debes rellenar el campo "Ciudad"</translation>
+  <translation id="delivery_add_bank_account_action_button">Guardar</translation>
 </translationbundle>

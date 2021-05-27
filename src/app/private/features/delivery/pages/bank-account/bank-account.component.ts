@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UuidService } from '@core/uuid/uuid.service';
+import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 
 @Component({
   selector: 'tsl-bank-account',
@@ -6,7 +9,32 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./bank-account.component.scss'],
 })
 export class BankAccountComponent implements OnInit {
-  constructor() {}
+  @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
 
-  ngOnInit(): void {}
+  public bankAccountForm: FormGroup;
+  public loading = true;
+  public formErrorMessages;
+
+  constructor(private fb: FormBuilder, private uuidService: UuidService) {}
+
+  ngOnInit(): void {
+    this.buildForm();
+  }
+
+  public initForm(): void {}
+
+  public onSubmit(): void {}
+
+  private buildForm(): void {
+    this.bankAccountForm = this.fb.group({
+      id: this.uuidService.getUUID(),
+      iban: ['', [Validators.required]],
+      first_name: ['', [Validators.required]],
+      last_name: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      flat_and_floor: [''],
+      postal_code: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+    });
+  }
 }
