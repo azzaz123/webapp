@@ -35,8 +35,8 @@ interface RegexFormatter {
 class PhraseRetriever {
   private projectId = '6f8665baabfafbb8482640f06712bf9a'; // TODO: Playground id. Use WallapopApp id
   private bearerToken = '5b84d7edef0d28a953e445a7372f5ed859543733b0f7de83a459f19d381ac4ef'; // TODO: Test token. Use production token
-  private phraseTags = ['legacy_web'];
-  // private phraseTags = ['multiplatform'];
+  // private phraseTags = ['legacy_web'];
+  private phraseTags = ['multiplatform'];
 
   private phraseHtmlRegexFormatters: RegexFormatter[] = [{
     regex: /<b>(.+?)<\/b>/,
@@ -150,18 +150,14 @@ class PhraseRetriever {
     return (substring: string, interpolatorIndex: string) => {
       const interpolationValue = Number.parseInt(interpolatorIndex, 0) - 1;
 
-      if (interpolationValue) {
-        return `{$INTERPOLATION_${interpolationValue}}`;
-      }
-
-      return '{$INTERPOLATION}';
+      return interpolationValue ? `{$INTERPOLATION_${interpolationValue}}` : '{$INTERPOLATION}';
     };
   }
 
   private simpleTagReplacer(placeholder: string, index: number): ReplacerFunc {
     return (substring: string, content: string) => {
-      const startTag = index ? `{$START_${placeholder}_${index}` : `{$START_${placeholder}`;
-      const endTag = `{END_${placeholder}}`;
+      const startTag = index ? `{$START_${placeholder}_${index}}` : `{$START_${placeholder}}`;
+      const endTag = `{$END_${placeholder}}`;
 
       return `${startTag}${content}${endTag}`;
     };
