@@ -1,5 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router, Scroll } from '@angular/router';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
@@ -24,6 +24,7 @@ import {
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 import {
   FILTER_PARAMETER_STORE_TOKEN,
   FilterParameterStoreService,
@@ -97,6 +98,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     private deviceService: DeviceService,
     private searchService: SearchService,
     private publicFooterService: PublicFooterService,
+    private hostVisibilityService: HostVisibilityService,
     private searchAdsService: SearchAdsService,
     private viewportScroller: ViewportScroller,
     private router: Router,
@@ -117,6 +119,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   }
 
   public ngOnInit(): void {
+    this.hostVisibilityService.init();
     this.slotsConfig = this.deviceService.isMobile() ? SLOTS_CONFIG_MOBILE : SLOTS_CONFIG_DESKTOP;
 
     this.searchService.init();

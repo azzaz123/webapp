@@ -7,6 +7,7 @@ import { SelectFilterComponent } from '../../select-filter/select-filter.compone
 import { SuggesterFilterComponent } from '../../suggester-filter/suggester-filter.component';
 import { GridSelectFilterComponent } from '../../grid-select-filter/grid-select-filter.component';
 import { CategoriesFilterComponent } from '../../categories-filter/categories-filter.component';
+import { LocationFilterComponent } from '../../location-filter/location-filter/location-filter.component';
 
 export const FILTER_TYPE_COMPONENT: Record<FILTER_TYPES, Type<AbstractFilter<unknown>>> = {
   [FILTER_TYPES.CATEGORIES]: CategoriesFilterComponent,
@@ -15,4 +16,5 @@ export const FILTER_TYPE_COMPONENT: Record<FILTER_TYPES, Type<AbstractFilter<unk
   [FILTER_TYPES.SELECT]: SelectFilterComponent,
   [FILTER_TYPES.SUGGESTER]: SuggesterFilterComponent,
   [FILTER_TYPES.GRID]: GridSelectFilterComponent,
+  [FILTER_TYPES.LOCATION]: LocationFilterComponent,
 };

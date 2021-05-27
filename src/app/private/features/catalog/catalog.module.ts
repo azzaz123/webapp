@@ -17,6 +17,8 @@ import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confir
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
+import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
+import { CatalogItemTrackingEventService } from './core/services/catalog-item-tracking-event.service';
 
 @NgModule({
   imports: [
@@ -30,7 +32,7 @@ import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-sl
     ItemAvatarModule,
     CustomCurrencyModule,
   ],
-  providers: [BumpTutorialService],
+  providers: [BumpTutorialService, ItemRequiredDataService, CatalogItemTrackingEventService],
   declarations: [
     catalogRoutedComponents,
     CatalogItemComponent,

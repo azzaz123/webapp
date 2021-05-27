@@ -1,7 +1,7 @@
 <div *ngxPermissionsOnly="['isProfessional']" class="header">
   <h2>
     <span i18n="@@web_your_messages">Your Messages</span>
-    <tsl-pro-badge></tsl-pro-badge>
+    <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
   </h2>
 </div>
 
@@ -32,7 +32,7 @@
   <div class="inbox-header-menu" *ngIf="shouldDisplayHeader()">
     <div class="dropdown-header">
       <div *ngIf="isInbox" class="header-title" i18n="@@web_inbox_box">Inbox</div>
-      <tsl-pro-badge></tsl-pro-badge>
+      <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
     </div>
   </div>
 </div>

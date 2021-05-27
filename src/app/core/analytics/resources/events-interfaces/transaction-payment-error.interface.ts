@@ -24,7 +24,13 @@ export interface TransactionPaymentError {
   /**
    * Short description of the error
    */
-  errorType: 'missing or incorrect information' | 'payment failed' | 'cancel payment';
+  errorType:
+    | 'missing or incorrect information'
+    | 'payment failed'
+    | 'cancel payment'
+    | 'address missing'
+    | 'saving payment preferences failed'
+    | 'sending 3DS info failed';
   /**
    * Identifier of the checkout screen
    */

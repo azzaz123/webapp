@@ -12,6 +12,7 @@ import {
   ANALYTIC_EVENT_TYPES,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { COLORS } from '@core/colors/colors-constants';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -109,7 +110,8 @@ export class ListComponent implements OnInit, OnDestroy {
     protected i18n: I18nService,
     private subscriptionsService: SubscriptionsService,
     private deviceService: DeviceDetectorService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private i18nService: I18nService
   ) {}
 
   get itemsAmount() {
@@ -492,10 +494,15 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public delete() {
-    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
-      windowClass: 'modal-prompt',
-    });
-    modalRef.componentInstance.type = 1;
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
+
+    modalRef.componentInstance.properties = {
+      title: this.i18nService.translate(TRANSLATION_KEY.DELETE_ITEMS_TITLE),
+      description: this.i18nService.translate(TRANSLATION_KEY.DELETE_ITEMS_DESCRIPTION),
+      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELETE_BUTTON),
+      confirmColor: COLORS.NEGATIVE_MAIN,
+    };
+
     modalRef.result.then(
       () => {
         this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {

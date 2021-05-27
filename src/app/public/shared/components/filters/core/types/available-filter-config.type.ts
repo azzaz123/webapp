@@ -4,6 +4,7 @@ import { CategoriesFilterConfig } from '../../components/categories-filter/inter
 import { SuggesterFilterConfig } from '../../components/suggester-filter/interfaces/suggester-filter-config.interface';
 import { GridSelectFilterConfig } from '../../components/grid-select-filter/interfaces/grid-select-filter-config.interface';
 import { SelectFilterConfig } from '@public/shared/components/filters/components/select-filter/interfaces/select-filter-config.interface';
+import { LocationFilterConfig } from '../../components/location-filter/interfaces/location-filter-config.interface';
 
 export type AvailableFilterConfig =
   | RangeFilterConfig
@@ -11,4 +12,5 @@ export type AvailableFilterConfig =
   | CategoriesFilterConfig
   | SelectFilterConfig
   | SuggesterFilterConfig
-  | GridSelectFilterConfig;
+  | GridSelectFilterConfig
+  | LocationFilterConfig;

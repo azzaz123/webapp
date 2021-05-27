@@ -10,6 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { USER_ID } from '@fixtures/user.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { I18nService } from '@core/i18n/i18n.service';
 
 describe('ItemCartFavoriteComponent', () => {
   let component: ItemCartFavoriteComponent;
@@ -36,6 +37,7 @@ describe('ItemCartFavoriteComponent', () => {
         declarations: [ItemCartFavoriteComponent, CustomCurrencyPipe],
         providers: [
           DecimalPipe,
+          I18nService,
           {
             provide: ItemService,
             useValue: {
@@ -110,11 +112,7 @@ describe('ItemCartFavoriteComponent', () => {
     });
 
     it('should open accept modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
-    });
-
-    it('should set modal type "3" ', () => {
-      expect(modalRef.componentInstance.type).toEqual(3);
+      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
     });
 
     it('should call removeFavorite method ', fakeAsync(() => {

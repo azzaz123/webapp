@@ -43,6 +43,9 @@ import {
 } from '../core/services/search-list-tracking-events/search-list-tracking-events.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events/search-list-tracking-events.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -148,6 +151,8 @@ describe('SearchComponent', () => {
           provide: SearchListTrackingEventsService,
           useClass: MockSearchListTrackingEventService,
         },
+        { provide: ToastService, useClass: MockToastService },
+        HostVisibilityService,
       ],
     }).compileComponents();
   });
@@ -159,6 +164,7 @@ describe('SearchComponent', () => {
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 

@@ -53,7 +53,6 @@ import { EmailModalComponent } from './profile/edit-email/email-modal/email-moda
 import { EditPasswordComponent } from './profile/edit-password/edit-password.component';
 import { PasswordModalComponent } from './profile/edit-password/password-modal/password-modal.component';
 import { PictureUploadComponent } from './profile/picture-upload/picture-upload.component';
-import { ProfileFormComponent } from './profile/profile-form/profile-form.component';
 import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.component';
 import { RestrictInputNumberDirective } from './restrict-input-number/restrict-input-number.directive';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
@@ -73,6 +72,7 @@ import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
+import { ProfileFormModule } from './profile/profile-form/profile-form.module';
 import { NavLinksModule } from './nav-links/nav-links.module';
 import { HeaderModule } from './header/header.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
@@ -102,6 +102,7 @@ import { VisibleDirectiveModule } from './directives/visible/visible.directive.m
     UserCoverModule,
     ButtonModule,
     DateCountDownModule,
+    ProfileFormModule,
     NavLinksModule,
     HeaderModule,
   ],
@@ -136,7 +137,6 @@ import { VisibleDirectiveModule } from './directives/visible/visible.directive.m
     EditPasswordComponent,
     PasswordModalComponent,
     PictureUploadComponent,
-    ProfileFormComponent,
     CreditCardInfoComponent,
     CatalogCardComponent,
     CatalogItemActionsComponent,
@@ -170,6 +170,7 @@ import { VisibleDirectiveModule } from './directives/visible/visible.directive.m
     DateCountDownModule,
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
+    ProfileFormModule,
     NavLinksModule,
     InfiniteScrollDirective,
     VisibleDirectiveModule,
@@ -200,7 +201,6 @@ import { VisibleDirectiveModule } from './directives/visible/visible.directive.m
     EditPasswordComponent,
     PasswordModalComponent,
     PictureUploadComponent,
-    ProfileFormComponent,
     CreditCardInfoComponent,
     CatalogCardComponent,
     CatalogItemActionsComponent,

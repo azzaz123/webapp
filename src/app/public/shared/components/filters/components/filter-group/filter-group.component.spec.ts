@@ -18,10 +18,12 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { FilterConfig } from '@public/shared/components/filters/interfaces/filter-config.interface';
 import {
   FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { FASHION_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/fashion-configuration-ids.enum';
 import { SelectFilterComponent } from '@public/shared/components/filters/components/select-filter/select-filter.component';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 
 @Component({
   selector: 'tsl-test-component',
@@ -95,6 +97,11 @@ describe('FilterGroupComponent', () => {
           provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
           useClass: FilterParameterStoreService,
         },
+        {
+          provide: FILTER_PARAMETER_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+        HostVisibilityService,
       ],
     }).compileComponents();
   });
