@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from '@shared/button/button.module';
@@ -6,7 +7,7 @@ import { SpinnerModule } from '@shared/spinner/spinner.module';
 import { bankAccountRoutedComponents, BankAccountRoutingModule } from './bank-account.routing.module';
 
 @NgModule({
-  imports: [BankAccountRoutingModule, SpinnerModule, ReactiveFormsModule, ProfileFormModule, ButtonModule],
+  imports: [BankAccountRoutingModule, CommonModule, SpinnerModule, ReactiveFormsModule, ProfileFormModule, ButtonModule],
   declarations: [bankAccountRoutedComponents],
 })
 export class BankAccountModule {}
