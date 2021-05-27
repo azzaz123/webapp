@@ -7,6 +7,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_OTHER_USER } from '@fixtures/user.fixtures.spec';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { MOCK_ITEM_INDEX } from '../../../../item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 
 export const MOCK_SEARCH_ID = 'e72c12f7-c662-421a-a821-6ad54d110d76';
@@ -31,4 +32,6 @@ export const MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH: AnalyticsEvent<ClickItemCar
 
 export class MockSearchListTrackingEventService {
   trackClickItemCardEvent() {}
+  trackFavouriteItemEvent(item: ItemCard, searchId: string): void {}
+  trackUnfavouriteItemEvent(item: ItemCard): void {}
 }

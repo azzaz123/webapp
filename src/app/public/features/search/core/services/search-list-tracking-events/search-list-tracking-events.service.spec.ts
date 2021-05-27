@@ -57,10 +57,10 @@ describe('SearchListTrackingEventsService', () => {
 
   describe('when user triggers on unfavourite button', () => {
     it('should send unfavourite item event', () => {
-      spyOn(service, 'trackUnavouriteItemEvent');
+      spyOn(service, 'trackUnfavouriteItemEvent');
       spyOn(analyticsService, 'trackEvent');
 
-      service.trackUnavouriteItemEvent(MOCK_ITEM_CARD);
+      service.trackUnfavouriteItemEvent(MOCK_ITEM_CARD);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH);
     });

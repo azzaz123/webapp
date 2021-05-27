@@ -59,7 +59,7 @@ export class SearchListTrackingEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public async trackUnavouriteItemEvent(item: ItemCard): Promise<void> {
+  public async trackUnfavouriteItemEvent(item: ItemCard): Promise<void> {
     const event: AnalyticsEvent<UnfavoriteItem> = {
       name: ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
