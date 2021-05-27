@@ -1,0 +1,25 @@
+@import '~style/common';
+
+.DeliveryAddress {
+  &__input {
+    &--invalid {
+      border: 1px solid $negative-main !important;
+    }
+  }
+
+  &__message {
+    &--error {
+      font-size: $font-size-s;
+      color: $negative-main;
+    }
+  }
+
+  &__payViewInfoMessage {
+    color: $blue-grey-2;
+  }
+
+  &__phoneInfoMessage {
+    font-size: $font-size-s;
+    color: $blue-grey-3;
+  }
+}

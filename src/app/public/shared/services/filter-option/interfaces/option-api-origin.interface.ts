@@ -18,7 +18,12 @@ export interface RequiredSiblingParam {
   defaultValue?: string;
 }
 
+export interface VisibilityModifierConfig {
+  ownKey: FILTER_QUERY_PARAM_KEY;
+}
+
 export interface OptionsApiOrigin {
   apiConfiguration: ParamsConfiguration<FilterOptionsApiMethods>;
   mapperConfiguration?: ParamsConfiguration<FilterOptionsMapperMethods>;
+  visibilityModifierConfig?: VisibilityModifierConfig;
 }
