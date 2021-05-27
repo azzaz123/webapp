@@ -64,8 +64,6 @@ interface CopySource {
   sources: string[];
 }
 
-type LanguageCopies = Record<Partial<LANGUAGE>, Record<string, string>>;
-
 interface MissingTranslation {
   id: string;
   missingLanguages: LANGUAGE[];
@@ -150,12 +148,20 @@ class I18nNormalizer {
   }
 
   private async preparePhraseFiles(): Promise<void> {
-    const languageCopies = this.getLanguageCopies();
+    const currentTranslationSets = this.getCurrentTranslationSets();
 
     const languages = Object.values(LANGUAGE);
 
     languages.forEach(lang => {
-      fs.writeFileSync(`src/locale/phrase.${lang}.json`, JSON.stringify(languageCopies[lang]));
+      const translationArray = currentTranslationSets.find(set => set.locale === lang).translations;
+      const translations = translationArray.reduce((acc, tr) => {
+        return {
+          ...acc,
+          [tr.key]: tr.value
+        };
+      }, {});
+
+      fs.writeFileSync(`src/locale/phrase.${lang}.json`, JSON.stringify(translations, undefined, 2));
     });
 
     await this.askInput(this.confirmDoneString);
@@ -164,16 +170,16 @@ class I18nNormalizer {
   }
 
   private cleanTranslationFiles(): void {
-    const languageCopies = this.getLanguageCopies();
-    const originalCopies = languageCopies[this.originalLanguage];
+    const translationSets = this.getCurrentTranslationSets();
+    const originalCopies = translationSets.find(set => set.locale === this.originalLanguage).translations;
 
     this.copyLocations.filter((location) => location.language !== this.originalLanguage).forEach(location => {
-      const copies = languageCopies[location.language];
+      const copies = translationSets.find(set => set.locale === location.language).translations;
       const translations = {};
 
-      const keys = Object.keys(originalCopies);
+      const keys = originalCopies.map(copy => copy.key);
       keys.forEach(key => {
-        translations[key] = copies[key];
+        translations[key] = copies.find(copy => copy.key === key).value;
       });
 
       fs.writeFileSync(location.file, JSON.stringify({ locale: location.language, translations}, undefined, 2));
@@ -191,7 +197,6 @@ class I18nNormalizer {
   }
 
   public async mergeTranslationsWithLocal(): Promise<void> {
-    console.log('Retrieving translations from phrase');
     const locales = await this.getPhraseLocales();
 
     const sources = this.getCopySources();
@@ -238,36 +243,29 @@ class I18nNormalizer {
   }
 
   private printMissingTranslations(): void {
-    const languageCopies = this.getLanguageCopies();
-    const originalCopies = languageCopies[this.originalLanguage];
-    const languages = Object.values(LANGUAGE);
+    const currentTranslationSets = this.getCurrentTranslationSets();
+    const originalTranslations = currentTranslationSets.find(languageCopy => languageCopy.locale === this.originalLanguage).translations;
+    const otherTranslationSets = currentTranslationSets.filter(languageCopy => languageCopy.locale !== this.originalLanguage);
+    const missingTranslations = [];
 
-    const keys = Object.keys(originalCopies);
+    originalTranslations.forEach(originalTranslation => {
+      const missingLanguages = [];
 
-    const copies = keys.map(key => ({
-      key,
-      translation: languages.reduce((acc, lang) => {
-        return {
-          ...acc,
-          [lang]: languageCopies[lang][key]
-        };
-      }, {})
-    }));
+      otherTranslationSets.forEach(set => {
+        const foundTr = set.translations.find(tr => tr.key === originalTranslation.key);
 
-    const missingTranslations = copies.reduce((acc, copy) => {
-      const languageKeys: LANGUAGE[] = Object.keys(copy.translation) as LANGUAGE[];
-
-      const missingLanguages = languageKeys.filter(lang => copy.translation[lang] === undefined);
+        if (!foundTr) {
+          missingLanguages.push(set.locale);
+        }
+      });
 
       if (missingLanguages.length > 0) {
-        acc.push({
-          id: copy.key,
+        missingTranslations.push({
+          id: originalTranslation.key,
           missingLanguages
         });
       }
-
-      return acc;
-    }, [] as MissingTranslation[]);
+    });
 
     if (missingTranslations.length > 0) {
       console.log(
@@ -280,20 +278,27 @@ class I18nNormalizer {
     }
   }
 
-  private getLanguageCopies(): LanguageCopies {
-    return this.copyLocations.reduce((acc, location) => {
+  private getCurrentTranslationSets(): TranslationSet[] {
+    return this.copyLocations.map(location => {
       return {
-        ...acc,
-        [location.language]: this.getJsonCopies(location.file)
+        locale: location.language,
+        translations: this.getJsonCopies(location.file)
       };
-    }, {} as LanguageCopies);
+    });
   }
 
-  private getJsonCopies(copiesFileLocation: string): Record<string, string> {
+  private getJsonCopies(copiesFileLocation: string): Translation[] {
     const rawCopiesFile = fs.readFileSync(copiesFileLocation, 'utf8');
 
     const copiesObject = JSON.parse(rawCopiesFile);
-    return copiesObject.translations;
+    const translations = copiesObject.translations;
+
+    const keys = Object.keys(translations);
+
+    return keys.map(key => ({
+      key,
+      value: translations[key]
+    }));
   }
 
   private async askInput(message: string): Promise<string> {
@@ -309,6 +314,7 @@ class I18nNormalizer {
   }
 
   private async getPhraseLocales(): Promise<TranslatedPhraseLocale[]> {
+    console.log('Retrieving translations from phrase...');
     const locales = await this.getLocales();
 
     return Promise.all(locales.map(async locale => {
@@ -331,6 +337,7 @@ class I18nNormalizer {
   }
 
   private getOriginalTranslationSets(locales: TranslatedPhraseLocale[]): TranslationSet[] {
+    console.log('Recovering original translations...');
     return locales.map(locale => ({
       locale: locale.name,
       translations: locale.originals
@@ -338,6 +345,7 @@ class I18nNormalizer {
   }
 
   private getFormattedTranslationSets(locales: TranslatedPhraseLocale[]): TranslationSet[] {
+    console.log('Recovering formatted translations...');
     const translationSets: TranslationSet[] = [];
 
     for (const locale of locales) {
