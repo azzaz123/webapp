@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LocationFilterServiceService } from './location-filter-service.service';
+import { LocationFilterService } from './location-filter.service';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
@@ -9,8 +9,8 @@ import { SEARCH_LOCATION_KEY } from '@public/features/search/core/services/enums
 import { SEO_COOKIE_LOCATION_KEY } from '@public/features/search/core/services/enums/seo-cookie-location-key.enum';
 import { of } from 'rxjs/internal/observable/of';
 
-describe('LocationFilterServiceService', () => {
-  let service: LocationFilterServiceService;
+describe('LocationFilterService', () => {
+  let service: LocationFilterService;
   let geolocationService: GeolocationService;
   let cookieService: CookieService;
 
@@ -19,7 +19,7 @@ describe('LocationFilterServiceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        LocationFilterServiceService,
+        LocationFilterService,
         {
           provide: CookieService,
           useValue: MockCookieService,
@@ -32,7 +32,7 @@ describe('LocationFilterServiceService', () => {
         },
       ],
     });
-    service = TestBed.inject(LocationFilterServiceService);
+    service = TestBed.inject(LocationFilterService);
     geolocationService = TestBed.inject(GeolocationService);
     cookieService = TestBed.inject(CookieService);
   });

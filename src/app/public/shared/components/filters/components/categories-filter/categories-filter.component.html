@@ -19,18 +19,18 @@
                           [columnsSm]="3">
     </tsl-grid-select-form>
 
-    <tsl-select-filter-template *ngIf="variant === VARIANT.CONTENT"
-                                [contentTitle]="config.title"
-                                [hasContentPlaceholder]="true"
-                                [isClearable]="false"
-                                [placeholderLabel]="label$ | async"
-                                [placeholderIcon]="placeholderIcon$ | async"
-                                (placeholderOpenStateChange)="openStateChange.emit($event)">
+    <tsl-drawer-placeholder-template *ngIf="variant === VARIANT.CONTENT"
+                                     [contentTitle]="config.title"
+                                     [hasContentPlaceholder]="true"
+                                     [isClearable]="false"
+                                     [placeholderLabel]="label$ | async"
+                                     [placeholderIcon]="placeholderIcon$ | async"
+                                     (placeholderOpenStateChange)="openStateChange.emit($event)">
         <tsl-select-form
           formControlName="select"
           [options]="this.config.options | formatSelectOptions">
         </tsl-select-form>
-    </tsl-select-filter-template>
+    </tsl-drawer-placeholder-template>
   </form>
 
 </tsl-filter-template>

@@ -1172,6 +1172,7 @@
   <msg id="web_filters_category_jobs"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:194</source>Jobs</msg>
   <msg id="web_filters_category_services"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:204</source>Services</msg>
   <msg id="web_filters_category_other"><source>src/app/public/shared/components/filters/components/categories-filter/data/category_options.ts:214</source>Other</msg>
+  <msg id="web_filter_location_error"><source>src/app/public/shared/components/filters/components/location-filter/services/location-filter.service.ts:74</source>We couldn&apos;t get your location</msg>
   <msg id="web_from"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.html:27</source>From</msg>
   <msg id="web_to"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.html:31</source>To</msg>
   <msg id="web_limitless"><source>src/app/public/shared/components/filters/components/range-filter/range-filter.component.ts:17</source>No limit</msg>
@@ -1206,6 +1207,9 @@
   <msg id="web_filter_condition_title"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:56</source>Item condition</msg>
   <msg id="web_filter_condition_bubble_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:57</source>Item condition</msg>
   <msg id="web_filter_condition_drawer_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:58</source>Any item condition</msg>
+  <msg id="web_filter_location_title"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:69</source>Where?</msg>
+  <msg id="web_filter_location_bubble_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:70</source>Location</msg>
+  <msg id="web_filter_location_drawer_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/common/common-filters.ts:71</source>Any location</msg>
   <msg id="web_filter_gender_title"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:9</source>Gender</msg>
   <msg id="web_filter_gender_bubble_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:10</source>Gender</msg>
   <msg id="web_filter_gender_drawer_placeholder"><source>src/app/public/shared/components/filters/core/constants/filters/fashion/fashion-filters.ts:11</source>Select gender</msg>

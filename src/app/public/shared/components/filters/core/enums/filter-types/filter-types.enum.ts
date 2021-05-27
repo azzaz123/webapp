@@ -5,4 +5,5 @@ export enum FILTER_TYPES {
   SELECT,
   SUGGESTER,
   GRID,
+  LOCATION,
 }

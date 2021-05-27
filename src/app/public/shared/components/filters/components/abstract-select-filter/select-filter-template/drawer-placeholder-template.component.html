@@ -18,6 +18,11 @@
   <div class="SelectFilterTemplate__content--open">
     <ng-template [ngTemplateOutlet]="content"></ng-template>
   </div>
+
+  <div *ngIf="hasApplyButtonInDrawer" class="d-flex justify-content-end mt-4 mx-3">
+    <tsl-button i18n="@@web_apply" className="btn-primary btn-filter"
+      (click)="handleApply()">Apply</tsl-button>
+  </div>
 </div>
 
 <ng-template #content>
