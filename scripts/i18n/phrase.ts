@@ -8,10 +8,7 @@ interface TranslationSet {
 
 type PhraseLocaleTranslations = Record<string, { message: string }>;
 
-interface CopyLocation {
-  language: LANGUAGE;
-  file: string;
-}
+type ReplacerFunc = ((substring: string, ...args: any[]) => string);
 
 interface PhraseLocale {
   id: string;
@@ -32,16 +29,36 @@ interface PhraseLocale {
 
 interface RegexFormatter {
   regex: RegExp;
-  replacer: string;
+  replacer: (index: number) => ReplacerFunc;
 }
 
 class PhraseRetriever {
   private projectId = '6f8665baabfafbb8482640f06712bf9a'; // TODO: Playground id. Use WallapopApp id
   private bearerToken = '5b84d7edef0d28a953e445a7372f5ed859543733b0f7de83a459f19d381ac4ef'; // TODO: Test token. Use production token
+  private phraseTags = ['legacy_web'];
+  // private phraseTags = ['multiplatform'];
 
   private phraseHtmlRegexFormatters: RegexFormatter[] = [{
-    regex: / /,
-    replacer: ''
+    regex: /<b>(.+?)<\/b>/,
+    replacer: (index) => this.simpleTagReplacer('BOLD_TEXT', index)
+  }, {
+    regex: /<i>(.+?)<\/i>/,
+    replacer: (index) => this.simpleTagReplacer('ITALIC_TEXT', index)
+  }, {
+    regex: /<u>(.+?)<\/u>/,
+    replacer: (index) => this.simpleTagReplacer('UNDERLINED_TEXT', index)
+  }, {
+    regex: /<s>(.+?)<\/s>/,
+    replacer: (index) => this.simpleTagReplacer('STRIKETHROUGH_TEXT', index)
+  }, {
+    regex: /<span>(.+?)<\/span>/,
+    replacer: (index) => this.simpleTagReplacer('TAG_SPAN', index)
+  }, {
+    regex: /<a(?: .*?>|>)(.+?)<\/a>/,
+    replacer: (index) => this.simpleTagReplacer('LINK', index)
+  }, {
+    regex: /%(\d+?)\$s/,
+    replacer: () => this.interpolationReplacer()
   }];
 
   public async mergeTranslationsWithLocal(): Promise<void> {
@@ -81,13 +98,23 @@ class PhraseRetriever {
   private formatPhraseHtmlNodes(message: string): string {
     let formattedMessage = message;
 
-    this.phraseHtmlRegexFormatters.forEach(({ regex, replacer }) => formattedMessage = formattedMessage.replace(regex, replacer));
+    this.phraseHtmlRegexFormatters.forEach(({ regex, replacer }) => {
+      const globalRegex = new RegExp(regex, 'gm');
+
+      const matches = message.match(globalRegex);
+
+      if (matches) {
+        (matches).forEach((substr, index) => {
+          formattedMessage = formattedMessage.replace(regex, replacer(index) as any);
+        });
+      }
+    });
 
     return formattedMessage;
   }
 
   private getLocaleTranslations(locale: PhraseLocale): Promise<PhraseLocaleTranslations> {
-    return this.get<PhraseLocaleTranslations>(`https://api.phrase.com/v2/projects/${this.projectId}/locales/${locale.id}/download?file_format=json`);
+    return this.get<PhraseLocaleTranslations>(`https://api.phrase.com/v2/projects/${this.projectId}/locales/${locale.id}/download?file_format=json&tags=${this.phraseTags.join(',')}`);
   }
 
   private getLocales(): Promise<PhraseLocale[]> {
@@ -117,6 +144,27 @@ class PhraseRetriever {
         reject(err);
       });
     });
+  }
+
+  private interpolationReplacer(): ReplacerFunc {
+    return (substring: string, interpolatorIndex: string) => {
+      const interpolationValue = Number.parseInt(interpolatorIndex, 0) - 1;
+
+      if (interpolationValue) {
+        return `{$INTERPOLATION_${interpolationValue}}`;
+      }
+
+      return '{$INTERPOLATION}';
+    };
+  }
+
+  private simpleTagReplacer(placeholder: string, index: number): ReplacerFunc {
+    return (substring: string, content: string) => {
+      const startTag = index ? `{$START_${placeholder}_${index}` : `{$START_${placeholder}`;
+      const endTag = `{END_${placeholder}}`;
+
+      return `${startTag}${content}${endTag}`;
+    };
   }
 }
 
