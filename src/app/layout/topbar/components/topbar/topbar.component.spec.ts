@@ -388,7 +388,11 @@ describe('TopbarComponent', () => {
         });
 
         it('should navigate to the new search page', () => {
-          expect(navigator.navigate).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: '' }], true);
+          expect(navigator.navigate).toHaveBeenCalledWith(
+            [{ key: FILTER_QUERY_PARAM_KEY.keywords, value: '' }],
+            FILTERS_SOURCE.SEARCH_BOX,
+            true
+          );
         });
 
         it('should send cancel search event', () => {
@@ -407,7 +411,7 @@ describe('TopbarComponent', () => {
         });
 
         it('should redirect to the old search page', () => {
-          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.keywords}=`;
+          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.keywords}=&${FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE}=${FILTERS_SOURCE.SEARCH_BOX}`;
 
           expect(router.navigate).not.toHaveBeenCalled();
           expect(window.location.href).toEqual(expectedUrl);
