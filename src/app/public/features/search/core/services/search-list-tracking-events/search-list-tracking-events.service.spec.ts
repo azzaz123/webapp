@@ -6,12 +6,14 @@ import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
+import { of } from 'rxjs';
 import { MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH, MOCK_SEARCH_ID } from './search-list-tracking-events.fixtures.spec';
 import { SearchListTrackingEventsService } from './search-list-tracking-events.service';
 
 describe('SearchListTrackingEventsService', () => {
   let service: SearchListTrackingEventsService;
   let analyticsService: AnalyticsService;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -24,6 +26,7 @@ describe('SearchListTrackingEventsService', () => {
     });
     service = TestBed.inject(SearchListTrackingEventsService);
     analyticsService = TestBed.inject(AnalyticsService);
+    userService = TestBed.inject(AnalyticsService);
   });
 
   it('should be created', () => {
@@ -42,6 +45,10 @@ describe('SearchListTrackingEventsService', () => {
   });
 
   describe('when user triggers on favourite button', () => {
+    beforeEach(() => {
+      spyOn(userService, 'isPro').and.returnValue(of(false));
+    });
+
     it('should send favourite item event', () => {
       const event = { ...MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH };
       const searchId = 'searchId';
@@ -56,8 +63,13 @@ describe('SearchListTrackingEventsService', () => {
   });
 
   describe('when user triggers on unfavourite button', () => {
+    beforeEach(() => {
+      spyOn(userService, 'isPro').and.returnValue(of(false));
+    });
+
     it('should send unfavourite item event', () => {
       spyOn(service, 'trackUnfavouriteItemEvent');
+
       spyOn(analyticsService, 'trackEvent');
 
       service.trackUnfavouriteItemEvent(MOCK_ITEM_CARD);
