@@ -39,7 +39,7 @@ interface Translation {
 
 interface RegexFormatter {
   regex: RegExp;
-  replacer: (index: number) => ReplacerFunc;
+  replacer: string | ((index: number) => ReplacerFunc);
 }
 
 interface TranslationSet {
@@ -88,29 +88,29 @@ class I18nNormalizer {
 
   private originalLanguage = LANGUAGE.ENGLISH;
 
-  private projectId = '6f8665baabfafbb8482640f06712bf9a'; // TODO: Playground id. Use WallapopApp id
-  private bearerToken = '5b84d7edef0d28a953e445a7372f5ed859543733b0f7de83a459f19d381ac4ef'; // TODO: Test token. Use production token
-  private phraseTags = ['legacy_web', 'multiplatform'];
-  // private phraseTags = ['test'];
+  private projectId = '00bf7dee267ad3d87db0f7f4da989e43';
+  private bearerToken = '67f5e5862f1ac8f3fed7bce2cc8653fd5d41911f80848f490e1464f3aa507100';
+  private phraseTags = ['multiplatform'];
+  // private phraseTags = ['multiplatform', 'legacy_web'];
 
   private phraseHtmlRegexFormatters: RegexFormatter[] = [{
-    regex: /<b>(.+?)<\/b>/,
-    replacer: (index) => this.simpleTagReplacer('BOLD_TEXT', index)
+    regex: /<b(?: .*?>|>)(.+?)<\/b>/,
+    replacer: '$1'
   }, {
-    regex: /<i>(.+?)<\/i>/,
-    replacer: (index) => this.simpleTagReplacer('ITALIC_TEXT', index)
+    regex: /<i(?: .*?>|>)(.+?)<\/i>/,
+    replacer: '$1'
   }, {
-    regex: /<u>(.+?)<\/u>/,
-    replacer: (index) => this.simpleTagReplacer('UNDERLINED_TEXT', index)
+    regex: /<u(?: .*?>|>)(.+?)<\/u>/,
+    replacer: '$1'
   }, {
-    regex: /<s>(.+?)<\/s>/,
-    replacer: (index) => this.simpleTagReplacer('STRIKETHROUGH_TEXT', index)
+    regex: /<s(?: .*?>|>)(.+?)<\/s>/,
+    replacer: '$1'
   }, {
-    regex: /<span>(.+?)<\/span>/,
-    replacer: (index) => this.simpleTagReplacer('TAG_SPAN', index)
+    regex: /<span(?: .*?>|>)(.+?)<\/span>/,
+    replacer: '$1'
   }, {
     regex: /<a(?: .*?>|>)(.+?)<\/a>/,
-    replacer: (index) => this.simpleTagReplacer('LINK', index)
+    replacer: '$1'
   }, {
     regex: /%(\d+?)\$s/,
     replacer: () => this.interpolationReplacer()
@@ -194,13 +194,11 @@ class I18nNormalizer {
   public async mergeTranslationsWithLocal(): Promise<void> {
     const locales = await this.getPhraseLocales();
 
-    const sources = this.getCopySources();
     const originalTranslationSets = this.getOriginalTranslationSets(locales);
     const formattedTranslationSets = this.getFormattedTranslationSets(locales);
 
     // TODO: Merge will be added on another PR
 
-    console.log(sources);
     console.log(originalTranslationSets);
     console.log(formattedTranslationSets);
 
@@ -368,7 +366,11 @@ class I18nNormalizer {
 
       if (matches) {
         (matches).forEach((substr, index) => {
-          formattedMessage = formattedMessage.replace(regex, replacer(index) as any);
+          if (typeof replacer === 'string') {
+            formattedMessage = formattedMessage.replace(regex, replacer);
+          } else {
+            formattedMessage = formattedMessage.replace(regex, replacer(index));
+          }
         });
       }
     });
@@ -409,34 +411,11 @@ class I18nNormalizer {
     });
   }
 
-  private async askForConfirmation(): Promise<boolean> {
-    const readlineInterface = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
-    const answer = await new Promise(resolve => readlineInterface.question('Do you want to proceed? (Y/n): ', (ans) => {
-      readlineInterface.close();
-      resolve(ans);
-    }));
-
-    return answer === 'y' || answer === 'Y';
-  }
-
   private interpolationReplacer(): ReplacerFunc {
     return (substring: string, interpolatorIndex: string) => {
       const interpolationValue = Number.parseInt(interpolatorIndex, 0) - 1;
 
       return interpolationValue ? `{$INTERPOLATION_${interpolationValue}}` : '{$INTERPOLATION}';
-    };
-  }
-
-  private simpleTagReplacer(placeholder: string, index: number): ReplacerFunc {
-    return (substring: string, content: string) => {
-      const startTag = index ? `{$START_${placeholder}_${index}}` : `{$START_${placeholder}}`;
-      const endTag = `{$END_${placeholder}}`;
-
-      return `${startTag}${content}${endTag}`;
     };
   }
 }
