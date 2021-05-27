@@ -13,12 +13,20 @@ export class BankAccountComponent implements OnInit {
 
   public bankAccountForm: FormGroup;
   public loading = false;
+  public maxLengthIBAN: number;
   public formErrorMessages;
 
   constructor(private fb: FormBuilder, private uuidService: UuidService) {}
 
   ngOnInit(): void {
+    this.generateIBANMaxLength();
     this.buildForm();
+  }
+
+  private generateIBANMaxLength(): void {
+    const IBANLength = 40;
+    const spacingAllowed = IBANLength / 4 - 2;
+    this.maxLengthIBAN = IBANLength + spacingAllowed;
   }
 
   public initForm(): void {}
