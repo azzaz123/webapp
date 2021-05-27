@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from './user';
 
 export interface FeatureFlag {
   name: string;
@@ -15,6 +17,7 @@ export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
 export enum FEATURE_FLAGS_ENUM {
   DELIVERY = 'web_delivery',
   STRIPE = 'web_stripe',
+  VISIBILITY = 'visibility',
 }
 
 @Injectable({
@@ -23,13 +26,21 @@ export enum FEATURE_FLAGS_ENUM {
 export class FeatureflagService {
   private storedFeatureFlags: FeatureFlag[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private permissionService: NgxPermissionsService) {}
 
   public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
     const storedFeatureFlag = this.storedFeatureFlags.find((sff) => sff.name === name);
 
     if (name === FEATURE_FLAGS_ENUM.DELIVERY) {
       return of(this.getDeliveryFeatureFlag());
+    }
+
+    if (name === FEATURE_FLAGS_ENUM.VISIBILITY) {
+      const isEnabled = this.getVisibilityFeatureFlag();
+      if (isEnabled) {
+        this.addPermisions(PERMISSIONS.visibility);
+      }
+      return of(isEnabled);
     }
 
     if (storedFeatureFlag && cache) {
@@ -61,5 +72,13 @@ export class FeatureflagService {
 
   private getDeliveryFeatureFlag(): boolean {
     return isDevMode() || this.isExperimentalFeaturesEnabled();
+  }
+
+  private getVisibilityFeatureFlag(): boolean {
+    return localStorage.getItem('visibility') === 'true';
+  }
+
+  private addPermisions(permission: string): void {
+    this.permissionService.addPermission(permission);
   }
 }

@@ -24,7 +24,7 @@ import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { SubscriptionSlot, SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
-import { User } from '@core/user/user';
+import { PERMISSIONS, User } from '@core/user/user';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -38,6 +38,7 @@ import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disa
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { find, findIndex } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { NgxPermissionsService } from 'ngx-permissions';
 import { take, takeWhile } from 'rxjs/operators';
 import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
 import { OrderEvent, STATUS } from '../../components/selected-items/selected-product.interface';
@@ -111,7 +112,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private subscriptionsService: SubscriptionsService,
     private deviceService: DeviceDetectorService,
     private analyticsService: AnalyticsService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private permissionService: NgxPermissionsService
   ) {}
 
   get itemsAmount() {
@@ -294,13 +296,19 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private showBumpSuggestionModal(itemId: string): void {
-    this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
-      windowClass: 'modal-standard',
-    });
-    this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
-      this.bumpSuggestionModalRef = null;
-      if (result?.redirect) {
-        this.router.navigate(['catalog/checkout', { itemId }]);
+    this.permissionService.hasPermission(PERMISSIONS.visibility).then((hasVisibility) => {
+      if (hasVisibility) {
+        this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
+          windowClass: 'modal-standard',
+        });
+        this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
+          this.bumpSuggestionModalRef = null;
+          if (result?.redirect) {
+            this.router.navigate(['catalog/checkout', { itemId }]);
+          }
+        });
+      } else {
+        this.errorService.i18nSuccess(TRANSLATION_KEY.TOAST_PRODUCT_CREATED);
       }
     });
   }

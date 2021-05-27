@@ -60,9 +60,11 @@ export const routes: Route[] = [
           isMyZone: true,
           isProducts: true,
           permissions: {
+            only: PERMISSIONS.visibility,
             except: PERMISSIONS.professional,
             redirectTo: {
-              isProfessional: isNormalCheckoutPermissions,
+              [PERMISSIONS.professional]: isNormalCheckoutPermissions,
+              default: '',
             },
           },
         },

@@ -9,6 +9,7 @@ export const PERMISSIONS = {
   normal: 'isNormal',
   professional: 'isProfessional',
   featured: 'isFeatured',
+  visibility: 'visibility',
 };
 
 export class User implements Model {
