@@ -47,11 +47,6 @@ interface TranslationSet {
   translations: Translation[];
 }
 
-interface PhraseData {
-  translationSets: TranslationSet[];
-  interpolationOriginals: Record<string, string>;
-}
-
 interface RegexFormatter {
   regex: RegExp;
   replacer: (index: number) => ReplacerFunc;
@@ -195,11 +190,17 @@ class I18nNormalizer {
 
   public async mergeTranslationsWithLocal(): Promise<void> {
     console.log('Retrieving translations from phrase');
+    const locales = await this.getPhraseLocales();
+
     const sources = this.getCopySources();
-    const locales = await this.getPhraseTranslations();
-    const translationSets = this.getTranslationSets(locales);
+    const originalTranslationSets = this.getOriginalTranslationSets(locales);
+    const formattedTranslationSets = this.getFormattedTranslationSets(locales);
 
     // TODO: Merge will be added on another PR
+
+    console.log(sources);
+    console.log(originalTranslationSets);
+    console.log(formattedTranslationSets);
 
     // this.mergeCopySets(translationSets);
   }
@@ -305,7 +306,7 @@ class I18nNormalizer {
     }));
   }
 
-  private async getPhraseTranslations(): Promise<TranslatedPhraseLocale[]> {
+  private async getPhraseLocales(): Promise<TranslatedPhraseLocale[]> {
     const locales = await this.getLocales();
 
     return Promise.all(locales.map(async locale => {
@@ -327,7 +328,14 @@ class I18nNormalizer {
     }));
   }
 
-  private getTranslationSets(locales: TranslatedPhraseLocale[]): TranslationSet[] {
+  private getOriginalTranslationSets(locales: TranslatedPhraseLocale[]): TranslationSet[] {
+    return locales.map(locale => ({
+      locale: locale.name,
+      translations: locale.originals
+    }));
+  }
+
+  private getFormattedTranslationSets(locales: TranslatedPhraseLocale[]): TranslationSet[] {
     const translationSets: TranslationSet[] = [];
 
     for (const locale of locales) {
