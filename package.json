@@ -13,7 +13,7 @@
     "buildprod": "ng build -c=production --no-progress",
     "reinstall": "rm -rf node_modules && yarn install",
     "i18n": "yarn generate-angular-messages",
-    "generate-angular-messages": "ng extract-i18n --format=xmb --output-path=src/locale",
+    "generate-angular-messages": "ng extract-i18n --format=json --output-path=src/locale --out-file=messages.en.json",
     "serve": "ng serve -c=es",
     "test-once": "jest -c=src/configs/jest/jest.config.js",
     "test": "yarn test-once --watch",
