@@ -20,7 +20,7 @@ import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enu
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { SelectParentOptionComponent } from '../abstract-select-filter/select-parent-option/select-parent-option.component';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
-import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
+import { DrawerPlaceholderTemplateComponent } from '../abstract-select-filter/select-filter-template/drawer-placeholder-template.component';
 import { BubbleComponent } from '../../../bubble/bubble.component';
 import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 import { of } from 'rxjs/internal/observable/of';
@@ -45,7 +45,7 @@ describe('SuggesterFilterComponent', () => {
   let optionService: FilterOptionService;
 
   const filterPredicate = By.directive(FilterTemplateComponent);
-  const selectFilterTemplate = By.directive(SelectFilterTemplateComponent);
+  const selectFilterTemplate = By.directive(DrawerPlaceholderTemplateComponent);
   const placeholderPredicate = By.directive(SelectParentOptionComponent);
   const selectFormPredicate = By.directive(SelectFormComponent);
 
@@ -601,7 +601,7 @@ describe('SuggesterFilterComponent', () => {
           formInstance.handleOptionClick('default_1');
           fixture.detectChanges();
 
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(By.directive(SelectFilterTemplateComponent))
+          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(By.directive(DrawerPlaceholderTemplateComponent))
             .componentInstance;
 
           expect(component.value).toEqual([
@@ -620,7 +620,7 @@ describe('SuggesterFilterComponent', () => {
           fixture.detectChanges();
         });
         it('should restart values', () => {
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
+          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
           expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.brand, value: 'default_1' }]);
 
           selectTemplate.clear.emit();
@@ -629,7 +629,7 @@ describe('SuggesterFilterComponent', () => {
         });
 
         it('should restart label', () => {
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
+          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
           expect(selectTemplate.placeholderLabel).toEqual('default_1');
 
           selectTemplate.clear.emit();
@@ -640,7 +640,7 @@ describe('SuggesterFilterComponent', () => {
 
         it('should emit value changes', () => {
           spyOn(component.valueChange, 'emit');
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
+          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
 
           selectTemplate.clear.emit();
 

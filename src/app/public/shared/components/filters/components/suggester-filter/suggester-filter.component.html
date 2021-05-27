@@ -9,13 +9,13 @@
                      (clear)="handleClear()"
                      (openStateChange)="openStateChange.emit($event)">
 
-  <tsl-select-filter-template #selectFilterTemplateComponent
-                              [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
-                              [placeholderLabel]="label$ | async"
-                              [contentTitle]="contentTitle"
-                              [isClearable]="hasValue$ | async"
-                              (placeholderOpenStateChange)="openStateChange.emit($event)"
-                              (clear)="handleClear()">
+  <tsl-drawer-placeholder-template #selectFilterTemplateComponent
+                                   [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
+                                   [placeholderLabel]="label$ | async"
+                                   [contentTitle]="contentTitle"
+                                   [isClearable]="hasValue$ | async"
+                                   (placeholderOpenStateChange)="openStateChange.emit($event)"
+                                   (clear)="handleClear()">
 
     <div class="SuggesterFilter__search_box">
       <input [placeholder]="config.suggesterPlaceholder" class="SuggesterFilter__search_box_input mx-3" type="text"
@@ -37,6 +37,6 @@
       </form>
     </div>
 
-  </tsl-select-filter-template>
+  </tsl-drawer-placeholder-template>
 
 </tsl-filter-template>

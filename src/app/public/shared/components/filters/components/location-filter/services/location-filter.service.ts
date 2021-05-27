@@ -7,11 +7,17 @@ import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constan
 import { Observable, of } from 'rxjs';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { map } from 'rxjs/operators';
+import { GeolocationNotAvailableError } from '../errors/geolocation-not-available.error';
 
 // TODO: This should be placed at the location filter level when implemented
 
+const GEOLOCATION_OPTIONS: PositionOptions = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+};
+
 @Injectable()
-export class LocationFilterServiceService {
+export class LocationFilterService {
   constructor(private cookieService: CookieService, private geolocationService: GeolocationService) {}
 
   public setUserLocation(location: LabeledSearchLocation): void {
@@ -46,6 +52,30 @@ export class LocationFilterServiceService {
         return this.formatLabel(label);
       })
     );
+  }
+
+  // TODO: This could be moved to a higher level service
+  // and be used in the other geolocation implementation that is in the application (Ads)
+  public getLocationFromBrowserAPI(): Promise<SearchLocation> {
+    if (navigator.geolocation) {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          (position: Position) => {
+            const latitude = `${position.coords.latitude}`;
+            const longitude = `${position.coords.longitude}`;
+            const location: SearchLocation = { latitude, longitude };
+
+            resolve(location);
+          },
+          (error: PositionError) => {
+            reject(error);
+          },
+          GEOLOCATION_OPTIONS
+        );
+      });
+    } else {
+      return Promise.reject(new GeolocationNotAvailableError($localize`:@@web_filter_location_error:We couldn't get your location`));
+    }
   }
 
   private getDefaultLocations(): LabeledSearchLocation[] {
