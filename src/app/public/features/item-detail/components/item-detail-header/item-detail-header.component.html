@@ -1,6 +1,6 @@
 <div ngbDropdown placement="bottom-right"
     class="ItemDetailHeader ItemDetailHeader__dropdown py-3 d-flex justify-content-between align-items-center">
-    <tsl-user-basic-info [userStats]="userStats" [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL"
+    <tsl-user-basic-info [userStats]="userStats" [userInfo]="user" [styleSize]="USER_INFO_SIZE.SMALL" [clickable]="true" [showProBadge]="user.featured"
         class="ItemDetailHeader__userInfo">
     </tsl-user-basic-info>
 
@@ -74,7 +74,7 @@
         <div *ngIf="showOptions" class="d-flex justify-content-end align-items-center ml-3">
             <tsl-button className="stripe" class="ItemDetailHeader__button mr-2" (click)="toggleFavouriteItem()"
                 id="favouriteButton">
-                <tsl-favourite-icon [active]="item?.flags?.favorite">
+                <tsl-favourite-icon [active]="item?.flags?.favorite" [redStroke]="true">
                 </tsl-favourite-icon>
             </tsl-button>
             <tsl-button className="btn-primary" class="ItemDetailHeader__button" [routerLink]="['/chat']"
