@@ -5,6 +5,7 @@ $form-control-height: 50px;
 .form-group {
   input[type='text'],
   input[type='number'],
+  input[type='tel'],
   textarea {
     display: block;
     height: $form-control-height;

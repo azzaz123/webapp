@@ -1,6 +1,5 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { AdsService } from '@core/ads/services';
 import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewChatScreen } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { EventService } from '@core/event/event.service';
@@ -88,8 +87,7 @@ export class InboxComponent implements OnInit, OnDestroy {
     private inboxService: InboxService,
     private eventService: EventService,
     private inboxConversationService: InboxConversationService,
-    private userService: UserService,
-    private adService: AdsService,
+    public userService: UserService,
     private remoteConsoleService: RemoteConsoleService,
     private analyticsService: AnalyticsService
   ) {}

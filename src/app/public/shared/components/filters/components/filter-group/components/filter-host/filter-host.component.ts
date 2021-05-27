@@ -2,8 +2,10 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { FilterHostDirective } from '../../directives/filter-host.directive';
 import { FilterHostConfig } from './interfaces/filter-host-config.interface';
 import { FilterParameter } from '../../../../interfaces/filter-parameter.interface';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { AbstractFilter } from '@public/shared/components/filters/components/abstract-filter/abstract-filter';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import { FILTER_VARIANT } from '@public/shared/components/filters/components/abstract-filter/abstract-filter.enum';
 
 @Component({
   selector: 'tsl-filter-host',
@@ -17,28 +19,64 @@ export class FilterHostComponent implements OnInit, OnChanges, OnDestroy {
   @Output() valueChange = new EventEmitter<FilterParameter[]>();
   @Output() openStateChange = new EventEmitter<boolean>();
 
-  private subscriptions = new Subscription();
+  private visibilitySubscription = new Subscription();
+  private filterSubscription: Subscription;
   private filter: AbstractFilter<unknown>;
 
+  private drawerSeparatorVisibilitySubject = new BehaviorSubject<boolean>(false);
+  public drawerSeparatorVisibility$ = this.drawerSeparatorVisibilitySubject.asObservable();
+
+  public constructor(private visibilityService: HostVisibilityService) {}
+
   public ngOnInit(): void {
-    const ref = this.host.viewContainerRef.createComponent(this.hostConfig.factory);
+    this.visibilitySubscription.add(this.visibilityService.attach(this).subscribe(this.handleVisibilityChange.bind(this)));
+  }
+
+  private injectFilter(): void {
+    const ref = this.host.viewContainerRef.createComponent(this.hostConfig.factory, 0);
     this.filter = ref.instance;
     this.filter.value = this.values;
     this.filter.variant = this.hostConfig.variant;
     this.filter.config = this.hostConfig.filterConfig;
 
-    this.subscriptions.add(this.filter.valueChange.subscribe((value) => this.valueChange.emit(value)));
-    this.subscriptions.add(this.filter.openStateChange.subscribe((value) => this.openStateChange.emit(value)));
+    this.filterSubscription = new Subscription();
+    this.filterSubscription.add(this.filter.valueChange.subscribe((value) => this.valueChange.emit(value)));
+    this.filterSubscription.add(this.filter.openStateChange.subscribe((value) => this.openStateChange.emit(value)));
+  }
+
+  private clearFilter(clearValue: boolean): void {
+    if (this.filter && clearValue) {
+      this.filter.handleClear();
+      this.filter = undefined;
+    }
+    this.host.viewContainerRef.clear();
+    if (this.filterSubscription) {
+      this.filterSubscription.unsubscribe();
+    }
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
     const { values } = changes;
-    if (values && !values.isFirstChange()) {
+    if (this.filter && values && !values.isFirstChange()) {
       this.filter.value = values.currentValue;
     }
   }
 
   public ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    this.clearFilter(false);
+    this.visibilitySubscription.unsubscribe();
+    this.visibilityService.detach(this);
+  }
+
+  private handleVisibilityChange(isVisible: boolean): void {
+    if (isVisible) {
+      this.injectFilter();
+    } else {
+      this.clearFilter(true);
+    }
+
+    if (this.hostConfig.variant === FILTER_VARIANT.CONTENT) {
+      this.drawerSeparatorVisibilitySubject.next(isVisible);
+    }
   }
 }

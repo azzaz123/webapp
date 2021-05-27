@@ -1,5 +1,4 @@
 <form *ngIf="!!uploadForm" [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
-
   <div class="box">
     <div class="row">
       <div class="col-12">
@@ -16,22 +15,45 @@
               <span *ngIf="customMake" i18n="@@web_upload_pages_car_383">Select a predefined make</span>
             </a>
           </div>
-          <tsl-dropdown *ngIf="!customMake" i18n-placeholder="@@web_upload_pages_car_384" placeholder="E.g. Seat" class="form-control"
+          <tsl-dropdown
+            *ngIf="!customMake"
+            i18n-placeholder="@@web_upload_pages_car_384"
+            placeholder="E.g. Seat"
+            class="form-control"
             [options]="brands"
-            formControlName="brand" id="brand">
+            formControlName="brand"
+            id="brand"
+          >
           </tsl-dropdown>
-          <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand"
-            id="brand" />
+          <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand" id="brand" />
         </div>
       </div>
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="model" i18n="@@web_upload_pages_car_385">Model</label>
-          <tsl-dropdown *ngIf="!customMake" i18n-placeholder="@@web_upload_pages_car_386" placeholder="E.g. Ibiza" class="form-control" [isLoading]="isLoadingModels" (opened)="onIsModelsNeeded()"
-            formControlName="model" id="model" [options]="models" [disableControl]="modelFieldDisabled">
+          <tsl-dropdown
+            *ngIf="!customMake"
+            i18n-placeholder="@@web_upload_pages_car_386"
+            placeholder="E.g. Ibiza"
+            class="form-control"
+            [isLoading]="isLoadingModels"
+            (opened)="onIsModelsNeeded()"
+            formControlName="model"
+            id="model"
+            [options]="models"
+            [disableControl]="modelFieldDisabled"
+          >
           </tsl-dropdown>
-          <input *ngIf="customMake" type="text" i18n-placeholder="@@web_upload_pages_car_593" placeholder="E.g. Ibiza" class="form-control"
-            formControlName="model" id="model" [disableControl]="modelFieldDisabled" />
+          <input
+            *ngIf="customMake"
+            type="text"
+            i18n-placeholder="@@web_upload_pages_car_593"
+            placeholder="E.g. Ibiza"
+            class="form-control"
+            formControlName="model"
+            id="model"
+            [disableControl]="modelFieldDisabled"
+          />
         </div>
       </div>
       <ng-template #coachmarkMake>
@@ -42,22 +64,43 @@
       <div class="col-12 col-md-5">
         <div class="form-group">
           <label for="price" i18n="@@web_upload_pages_car_388">Cash price</label>
-          <input i18n-placeholder="@@web_upload_pages_car_389" placeholder="With love..." type="number" class="form-control"
-            formControlName="sale_price" id="price" min="0" max="999999999" />
+          <input
+            i18n-placeholder="@@web_upload_pages_car_389"
+            placeholder="With love..."
+            type="number"
+            class="form-control"
+            formControlName="sale_price"
+            id="price"
+            min="0"
+            max="999999999"
+          />
         </div>
       </div>
       <div class="col-12 col-md-5">
         <div class="form-group">
           <label for="price" i18n="@@web_upload_pages_car_390">Financed price (optional)</label>
-          <input i18n-placeholder="@@web_upload_pages_car_391" placeholder="Final price when financed" type="number" class="form-control"
-            formControlName="financed_price" id="financed_price" min="0" max="999999999" />
+          <input
+            i18n-placeholder="@@web_upload_pages_car_391"
+            placeholder="Final price when financed"
+            type="number"
+            class="form-control"
+            formControlName="financed_price"
+            id="financed_price"
+            min="0"
+            max="999999999"
+          />
         </div>
       </div>
       <div class="col-12 col-md-2">
         <div class="form-group">
           <label for="currency" i18n="@@web_upload_pages_car_392">Currency</label>
-          <tsl-dropdown class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
-            noFilter="10"></tsl-dropdown>
+          <tsl-dropdown
+            class="form-control"
+            formControlName="currency_code"
+            id="currency"
+            [options]="currencies"
+            noFilter="10"
+          ></tsl-dropdown>
         </div>
       </div>
       <ng-template #coachmarkPrice>
@@ -68,19 +111,46 @@
       <div class="col-12 col-md-4">
         <div class="form-group">
           <label for="year" i18n="@@web_upload_pages_car_394">Year</label>
-          <tsl-dropdown *ngIf="!customMake" i18n-placeholder="@@web_upload_pages_car_395" placeholder="Number plate" class="form-control"
-            formControlName="year" id="year" [options]="years" [disableControl]="yearFieldDisabled" [isLoading]="isLoadingYears" (opened)="onIsYearsNeeded()">
+          <tsl-dropdown
+            *ngIf="!customMake"
+            i18n-placeholder="@@web_upload_pages_car_395"
+            placeholder="Number plate"
+            class="form-control"
+            formControlName="year"
+            id="year"
+            [options]="years"
+            [disableControl]="yearFieldDisabled"
+            [isLoading]="isLoadingYears"
+            (opened)="onIsYearsNeeded()"
+          >
           </tsl-dropdown>
-          <input *ngIf="customMake" type="number" i18n-placeholder="@@web_upload_pages_car_594" placeholder="Number plate" class="form-control"
-            formControlName="year" id="year" [disableControl]="yearFieldDisabled" min="1900" [max]="currentYear"/>
+          <input
+            *ngIf="customMake"
+            type="number"
+            i18n-placeholder="@@web_upload_pages_car_594"
+            placeholder="Number plate"
+            class="form-control"
+            formControlName="year"
+            id="year"
+            [disableControl]="yearFieldDisabled"
+            min="1900"
+            [max]="currentYear"
+          />
         </div>
       </div>
       <div class="col-12 col-md-8">
         <div class="form-group last">
           <label for="headline" i18n="@@web_upload_pages_car_396">Title</label>
-          <span class="chars-counter">{{uploadForm.value?.title?.length}}/50</span>
-          <input i18n-placeholder="@@web_upload_pages_car_397" placeholder="This is what you will see in the ad" type="text" class="form-control"
-            formControlName="title" id="headline" maxlength="50" />
+          <span class="chars-counter">{{ uploadForm.value?.title?.length }}/50</span>
+          <input
+            i18n-placeholder="@@web_upload_pages_car_397"
+            placeholder="This is what you will see in the ad"
+            type="text"
+            class="form-control"
+            formControlName="title"
+            id="headline"
+            maxlength="50"
+          />
         </div>
       </div>
       <ng-template #coachmarkTitle>
@@ -100,17 +170,41 @@
               <span *ngIf="customVersion" i18n="@@web_upload_pages_car_402">Select a predefined version</span>
             </a>
           </div>
-          <tsl-dropdown *ngIf="!customMake && !customVersion" i18n-placeholder="@@web_upload_pages_car_403"            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
-            for="version" [options]="versions" [disableControl]="versionFieldDisabled"></tsl-dropdown>
-          <input *ngIf="customMake || customVersion" type="text" i18n-placeholder="@@web_upload_pages_car_595"            placeholder="Is is a particular model or series?" class="form-control" formControlName="version"
-            id="version" [disableControl]="versionFieldDisabled"/>
+          <tsl-dropdown
+            *ngIf="!customMake && !customVersion"
+            i18n-placeholder="@@web_upload_pages_car_403"
+            placeholder="Is is a particular model or series?"
+            class="form-control"
+            formControlName="version"
+            for="version"
+            [options]="versions"
+            [disableControl]="versionFieldDisabled"
+          ></tsl-dropdown>
+          <input
+            *ngIf="customMake || customVersion"
+            type="text"
+            i18n-placeholder="@@web_upload_pages_car_595"
+            placeholder="Is is a particular model or series?"
+            class="form-control"
+            formControlName="version"
+            id="version"
+            [disableControl]="versionFieldDisabled"
+          />
         </div>
       </div>
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="seats" i18n="@@web_upload_pages_car_404">Number of seats</label>
-          <input i18n-placeholder="@@web_upload_pages_car_405" placeholder="Add a number" type="number" class="form-control"
-            formControlName="num_seats" id="seats" min="0" max="99" />
+          <input
+            i18n-placeholder="@@web_upload_pages_car_405"
+            placeholder="Add a number"
+            type="number"
+            class="form-control"
+            formControlName="num_seats"
+            id="seats"
+            min="0"
+            max="99"
+          />
         </div>
       </div>
       <ng-template #coachmarkSeats>
@@ -121,15 +215,31 @@
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="seats" i18n="@@web_upload_pages_car_407">Number of doors</label>
-          <input i18n-placeholder="@@web_upload_pages_car_596" placeholder="Add a number" type="number" class="form-control"
-            formControlName="num_doors" id="doors" min="0" max="99" />
+          <input
+            i18n-placeholder="@@web_upload_pages_car_596"
+            placeholder="Add a number"
+            type="number"
+            class="form-control"
+            formControlName="num_doors"
+            id="doors"
+            min="0"
+            max="99"
+          />
         </div>
       </div>
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="seats" i18n="@@web_upload_pages_car_408">Horsepower</label>
-          <input i18n-placeholder="@@web_upload_pages_car_658" placeholder="Add a number" type="number" class="form-control"
-            formControlName="horsepower" id="horsepower" min="0" max="999" />
+          <input
+            i18n-placeholder="@@web_upload_pages_car_658"
+            placeholder="Add a number"
+            type="number"
+            class="form-control"
+            formControlName="horsepower"
+            id="horsepower"
+            min="0"
+            max="999"
+          />
         </div>
       </div>
     </div>
@@ -137,23 +247,37 @@
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="carType" i18n="@@web_upload_pages_car_409">Type of car</label>
-          <tsl-dropdown i18n-placeholder="@@web_upload_pages_car_410" placeholder="Small, coupé, sedan, family, van..." class="form-control"
-            formControlName="body_type" id="carType" [options]="carTypes" noFilter="20"></tsl-dropdown>
+          <tsl-dropdown
+            i18n-placeholder="@@web_upload_pages_car_410"
+            placeholder="Small, coupé, sedan, family, van..."
+            class="form-control"
+            formControlName="body_type"
+            id="carType"
+            [options]="carTypes"
+            noFilter="20"
+          ></tsl-dropdown>
         </div>
       </div>
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="km" i18n="@@web_upload_pages_car_411">Kilometers</label>
-          <input i18n-placeholder="@@web_upload_pages_car_412" placeholder="Exact kilometers" type="number" class="form-control" formControlName="km"
-            id="km" min="0" max="999999999" />
+          <input
+            i18n-placeholder="@@web_upload_pages_car_412"
+            placeholder="Exact kilometers"
+            type="number"
+            class="form-control"
+            formControlName="km"
+            id="km"
+            min="0"
+            max="999999999"
+          />
         </div>
       </div>
       <ng-template #coachmarkType>
         <div i18n="@@web_upload_pages_car_413">Is it for getting around at the weekend or for everyday use?</div>
       </ng-template>
     </div>
-    <div class="row" [ngbPopover]="coachmarkMotor" [autoClose]="false" popoverClass="ml-3"
-      triggers="mouseenter:mouseleave">
+    <div class="row" [ngbPopover]="coachmarkMotor" [autoClose]="false" popoverClass="ml-3" triggers="mouseenter:mouseleave">
       <div class="col-12 col-md-6">
         <div class="row">
           <div class="col">
@@ -166,28 +290,28 @@
               <div class="selector-container">
                 <label ngbButtonLabel class="selector selector--cars">
                   <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="engine" value="gasoline">
+                    <input ngbButton type="radio" name="engine" value="gasoline" />
                     <tsl-svg-icon src="/assets/icons/gasoline.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_597">Petrol</span>
                 </label>
                 <label ngbButtonLabel class="selector selector--cars">
                   <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="engine" value="gasoil">
+                    <input ngbButton type="radio" name="engine" value="gasoil" />
                     <tsl-svg-icon src="/assets/icons/gasoil.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_598">Diesel</span>
                 </label>
                 <label ngbButtonLabel class="selector selector--cars">
                   <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="engine" value="electric-hybrid">
+                    <input ngbButton type="radio" name="engine" value="electric-hybrid" />
                     <tsl-svg-icon src="/assets/icons/electric-hybrid.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_599">Electric</span>
                 </label>
                 <label ngbButtonLabel class="selector selector--cars">
                   <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="engine" value="others">
+                    <input ngbButton type="radio" name="engine" value="others" />
                     <tsl-svg-icon src="/assets/icons/others.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_600">Other...</span>
@@ -212,14 +336,14 @@
               <div class="selector-container">
                 <label ngbButtonLabel class="selector selector--cars">
                   <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="gearbox" value="manual">
+                    <input ngbButton type="radio" name="gearbox" value="manual" />
                     <tsl-svg-icon src="/assets/icons/manual.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_601">Manual</span>
                 </label>
                 <label ngbButtonLabel class="selector selector--cars">
                   <div class="selector-icon btn">
-                    <input ngbButton type="radio" name="gearbox" value="automatic">
+                    <input ngbButton type="radio" name="gearbox" value="automatic" />
                     <tsl-svg-icon src="/assets/icons/automatic.svg"></tsl-svg-icon>
                   </div>
                   <span class="selector-text selector-text--uppercase" i18n="@@web_upload_pages_car_602">Automatic</span>
@@ -234,9 +358,16 @@
       <div class="col-12">
         <div class="form-group last">
           <label for="tellUs" i18n="@@web_upload_pages_car_603">Description</label>
-          <span class="chars-counter">{{uploadForm.value?.storytelling?.length}}/650</span>
-          <textarea i18n-placeholder="@@web_upload_pages_car_417" placeholder="Tell us more. Used or new? Yellow or red? Has it got any bumps?"
-            fz-elastic class="form-control" formControlName="storytelling" id="tellUs" maxlength="650"></textarea>
+          <span class="chars-counter">{{ uploadForm.value?.storytelling?.length }}/650</span>
+          <textarea
+            i18n-placeholder="@@web_upload_pages_car_417"
+            placeholder="Tell us more. Used or new? Yellow or red? Has it got any bumps?"
+            fz-elastic
+            class="form-control"
+            formControlName="storytelling"
+            id="tellUs"
+            maxlength="650"
+          ></textarea>
         </div>
       </div>
       <ng-template #coachmarkDescription>
@@ -246,31 +377,52 @@
   </div>
 
   <div class="box product-photos" [ngbPopover]="coachmarkPictures" [autoClose]="false" triggers="mouseenter:mouseleave">
-    <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n="@@web_upload_pages_car_419">Photos
+    <h2
+      [ngClass]="{ 'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty }"
+      i18n="@@web_upload_pages_car_419"
+    >
+      Photos
     </h2>
     <tsl-drop-area
-      (onError)="onError($event)" formControlName="images" [isUpdatingItem]="!!item" (onOrderImages)="onOrderImages()" (onDeleteImage)="onDeleteImage($event)" (onAddImage)="onAddImage($event)"
-      ></tsl-drop-area>
+      (onError)="onError($event)"
+      formControlName="images"
+      [isUpdatingItem]="!!item"
+      (onOrderImages)="onOrderImages()"
+      (onDeleteImage)="onDeleteImage($event)"
+      (onAddImage)="onAddImage($event)"
+    ></tsl-drop-area>
     <ng-template #coachmarkPictures>
-      <div i18n="@@web_upload_pages_car_420">You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only
-        .jpg images.</div>
+      <div i18n="@@web_upload_pages_car_420">
+        You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.
+      </div>
     </ng-template>
   </div>
 
-  <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"
-    title="Your car is in:" i18n-title="@@web_upload_pages_car_421"></tsl-location-box>
+  <tsl-location-box
+    *ngIf="!!uploadForm"
+    [form]="uploadForm"
+    name="location"
+    (locationSelected)="emitLocation()"
+    title="Your car is in:"
+    i18n-title="@@web_upload_pages_car_421"
+  ></tsl-location-box>
   <div class="row">
     <div class="col-12 col-md-5">
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">
         <span *ngIf="!item && !loading" i18n="@@web_upload_pages_car_604">Post Ad</span>
-        <span *ngIf="item && !loading" i18n="@@web_upload_pages_car_605">Update</span>
+        <ng-container *ngIf="item && !loading">
+          <span *ngIf="!isReactivation" i18n="@@web_upload_pages_car_605">Update</span>
+          <span *ngIf="isReactivation" i18n="@@web_upload_seller_reactivation_button">Reactivate item</span>
+        </ng-container>
         <span *ngIf="loading && !pendingFiles" i18n="@@web_upload_product_submit_loading">Uploading... {{ uploadCompletedPercentage }}%</span>
-        <span *ngIf="loading && pendingFiles" i18n="@@web_upload_images_submit_loading">Uploading image... {{ pendingFiles.currentUploading}}/{{pendingFiles.totalFiles}}</span>
+        <span *ngIf="loading && pendingFiles" i18n="@@web_upload_images_submit_loading"
+          >Uploading image... {{ pendingFiles.currentUploading }}/{{ pendingFiles.totalFiles }}</span >
       </tsl-button>
     </div>
     <div class="col-md-3 d-none d-md-block">
-      <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid"
-        i18n="@@web_upload_pages_car_422">How does it look?</button>
+      <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid" i18n="@@web_upload_pages_car_422">
+        How does it look?
+      </button>
     </div>
   </div>
 </form>

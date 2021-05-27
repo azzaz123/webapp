@@ -3,7 +3,7 @@ import { AbstractSelectFilter } from '../abstract-select-filter/abstract-select-
 import { FilterOption } from '../../core/interfaces/filter-option.interface';
 import { take } from 'rxjs/operators';
 import { SelectFilterParams } from './interfaces/select-filter-params.interface';
-import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
+import { DrawerPlaceholderTemplateComponent } from '../abstract-select-filter/select-filter-template/drawer-placeholder-template.component';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { SelectFilterConfig } from './interfaces/select-filter-config.interface';
@@ -23,8 +23,8 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterParams> implements OnInit, OnDestroy {
   @Input() config: SelectFilterConfig;
 
-  @ViewChild('selectFilterTemplateComponent', { read: SelectFilterTemplateComponent })
-  public selectFilterTemplate: SelectFilterTemplateComponent;
+  @ViewChild('selectFilterTemplateComponent', { read: DrawerPlaceholderTemplateComponent })
+  public selectFilterTemplate: DrawerPlaceholderTemplateComponent;
   @ViewChild('filterTemplateComponent', { read: FilterTemplateComponent })
   public filterTemplate: FilterTemplateComponent;
 

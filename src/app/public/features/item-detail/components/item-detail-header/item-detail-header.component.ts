@@ -13,6 +13,8 @@ import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmat
 import { finalize } from 'rxjs/operators';
 import { ItemDetailTrackEventsService } from '../../core/services/item-detail-track-events/item-detail-track-events.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { I18nService } from '@core/i18n/i18n.service';
+import { COLORS } from '@core/colors/colors-constants';
 
 @Component({
   selector: 'tsl-item-detail-header',
@@ -43,7 +45,8 @@ export class ItemDetailHeaderComponent implements OnInit {
     private itemDetailTrackEventsService: ItemDetailTrackEventsService,
     private errorsService: ErrorsService,
     private checkSessionService: CheckSessionService,
-    private router: Router
+    private router: Router,
+    private i18nService: I18nService
   ) {}
 
   ngOnInit(): void {
@@ -75,11 +78,14 @@ export class ItemDetailHeaderComponent implements OnInit {
   }
 
   public deleteItem(): void {
-    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
-      windowClass: 'modal-prompt',
-    });
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
 
-    modalRef.componentInstance.type = 1;
+    modalRef.componentInstance.properties = {
+      title: this.i18nService.translate(TRANSLATION_KEY.DELETE_ITEMS_TITLE),
+      description: this.i18nService.translate(TRANSLATION_KEY.DELETE_ITEMS_DESCRIPTION),
+      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELETE_BUTTON),
+      confirmColor: COLORS.NEGATIVE_MAIN,
+    };
 
     modalRef.result.then(() => {
       this.itemDetailService.deleteItem(this.item.id).subscribe(

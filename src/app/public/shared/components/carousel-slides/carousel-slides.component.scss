@@ -6,6 +6,8 @@ $item-flag-height: 38px;
   ngb-carousel {
     width: 100%;
     height: 100%;
+    // Allow vertical scroll when capturing swipe events with HammerJS
+    touch-action: pan-y !important;
     ::ng-deep {
       .SlidesCarousel__slide,
       .carousel-inner,
@@ -55,6 +57,16 @@ $item-flag-height: 38px;
   &--hideIndicators {
     ::ng-deep .carousel-indicators li {
       display: none;
+    }
+  }
+
+  &--manyImages {
+    @include media-breakpoint-down(sm) {
+      ::ng-deep .carousel-indicators li {
+        width: 4px;
+        height: 4px;
+        margin: 0px 4px;
+      }
     }
   }
 }
