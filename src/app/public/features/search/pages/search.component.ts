@@ -1,5 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router, Scroll } from '@angular/router';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
@@ -39,6 +39,7 @@ import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { debounce } from '@core/helpers/debounce/debounce';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -97,6 +98,14 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public isWall$: Observable<boolean> = this.searchService.isWall$;
   public slotsConfig: SlotsConfig;
 
+  private resetSearchId = true;
+
+  @HostListener('window:scroll', ['$event'])
+  @debounce(500)
+  onWindowScroll() {
+    this.resetSearchId = true;
+  }
+
   constructor(
     private deviceService: DeviceService,
     private searchService: SearchService,
@@ -117,7 +126,11 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(
       this.newSearch$.pipe(skip(1)).subscribe((searchId: string) => {
-        this.searchId = searchId;
+        if (this.resetSearchId) {
+          this.searchId = searchId;
+          this.resetSearchId = false;
+        }
+
         this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
       })
     );
@@ -138,7 +151,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
         if (!this.paramsHaveLocation(params)) {
           this.searchNavigatorService.navigate(
             params,
-            (params.find((parameter) => parameter.key === FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE).value || null) as FILTERS_SOURCE
+            (params.find((parameter) => parameter.key === FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE)?.value || null) as FILTERS_SOURCE
           );
         } else {
           this.filterParameterStore.setParameters(params);
@@ -149,6 +162,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   public onAttach(): void {
     this.componentAttached = true;
+    this.resetSearchId = true;
   }
 
   public onDetach(): void {
@@ -164,6 +178,10 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     if (this.componentAttached) {
       this.searchService.loadMore();
     }
+
+    console.log('scrolled');
+
+    this.resetSearchId = true;
   }
 
   public trackClickItemCardEvent(clickedItemCard: ClickedItemCard): void {
