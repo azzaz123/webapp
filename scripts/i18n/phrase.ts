@@ -3,7 +3,7 @@ const fs = require('fs');
 
 interface TranslationSet {
   locale: string;
-  translations: Record<string, string>;
+  translations: Translation[];
 }
 
 type PhraseLocaleTranslations = Record<string, { message: string }>;
@@ -27,16 +27,30 @@ interface PhraseLocale {
   updated_at: string;
 }
 
+interface TranslatedPhraseLocale extends PhraseLocale {
+  originals: Translation[];
+}
+
+interface Translation {
+  key: string;
+  value: string;
+}
+
 interface RegexFormatter {
   regex: RegExp;
   replacer: (index: number) => ReplacerFunc;
 }
 
+interface PhraseData {
+  translationSets: TranslationSet[];
+  interpolationOriginals: Record<string, string>;
+}
+
 class PhraseRetriever {
   private projectId = '6f8665baabfafbb8482640f06712bf9a'; // TODO: Playground id. Use WallapopApp id
   private bearerToken = '5b84d7edef0d28a953e445a7372f5ed859543733b0f7de83a459f19d381ac4ef'; // TODO: Test token. Use production token
-  // private phraseTags = ['legacy_web'];
-  private phraseTags = ['multiplatform'];
+  // private phraseTags = ['legacy_web', 'multiplatform'];
+  private phraseTags = ['test'];
 
   private phraseHtmlRegexFormatters: RegexFormatter[] = [{
     regex: /<b>(.+?)<\/b>/,
@@ -63,32 +77,48 @@ class PhraseRetriever {
 
   public async mergeTranslationsWithLocal(): Promise<void> {
     console.log('Retrieving translations from phrase');
-    const translationSets = await this.getTranslationSets();
-
-    console.log('PhraseRetriever.mergeTranslationsWithLocal - TranslationSets', translationSets);
+    const locales = await this.getPhraseTranslations();
+    const translationSets = this.getTranslationSets(locales);
 
     // TODO: Merge will be added on another PR
 
     // this.mergeCopySets(translationSets);
   }
 
-  private async getTranslationSets(): Promise<TranslationSet[]> {
+  private async getPhraseTranslations(): Promise<TranslatedPhraseLocale[]> {
     const locales = await this.getLocales();
 
+    return Promise.all(locales.map(async locale => {
+      const phraseTranslations = await this.getLocaleTranslations(locale);
+      const originals: Translation[] = [];
+      const keys = Object.keys(phraseTranslations);
+
+      keys.forEach(key => {
+        originals.push({
+          key,
+          value: phraseTranslations[key].message
+        });
+      });
+
+      return {
+        ...locale,
+        originals
+      };
+    }));
+  }
+
+  private getTranslationSets(locales: TranslatedPhraseLocale[]): TranslationSet[] {
     const translationSets: TranslationSet[] = [];
 
     for (const locale of locales) {
-      const phraseTranslations = await this.getLocaleTranslations(locale);
-      const translations = {};
-      const keys = Object.keys(phraseTranslations);
-
-      for (const key of keys) {
-        translations[key] = this.formatPhraseHtmlNodes(phraseTranslations[key].message);
-      }
+      const phraseTranslations = locale.originals;
 
       translationSets.push({
         locale: locale.name,
-        translations
+        translations: phraseTranslations.map(translation => ({
+          key: translation.key,
+          value: this.formatPhraseHtmlNodes(translation.value)
+        }))
       });
     }
 

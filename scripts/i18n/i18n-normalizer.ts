@@ -15,11 +15,11 @@ interface CopyLocation {
   file: string;
 }
 
-type Translation = Record<LANGUAGE, string | Object>;
+type TranslationRecord = Record<LANGUAGE, string | Object>;
 
 interface Copy {
   key: string;
-  translation: Translation;
+  translation: TranslationRecord;
 }
 
 interface SourcedCopy extends Copy {
@@ -154,7 +154,7 @@ class I18nNormalizer {
             ...acc,
             [lang]: languageCopies[lang][key]
           };
-        }, {} as Translation)
+        }, {} as TranslationRecord)
       };
     });
   }
