@@ -97,8 +97,8 @@ class I18nNormalizer {
 
   private projectId = '6f8665baabfafbb8482640f06712bf9a'; // TODO: Playground id. Use WallapopApp id
   private bearerToken = '5b84d7edef0d28a953e445a7372f5ed859543733b0f7de83a459f19d381ac4ef'; // TODO: Test token. Use production token
-  // private phraseTags = ['legacy_web', 'multiplatform'];
-  private phraseTags = ['test'];
+  private phraseTags = ['legacy_web', 'multiplatform'];
+  // private phraseTags = ['test'];
 
   private phraseHtmlRegexFormatters: RegexFormatter[] = [{
     regex: /<b>(.+?)<\/b>/,
@@ -134,10 +134,10 @@ class I18nNormalizer {
         this.printMissingTranslations();
         break;
       case '3':
-        await this.mergeTranslationsWithLocal();
+        this.cleanTranslationFiles();
         break;
       case '4':
-        this.cleanTranslationFiles();
+        await this.mergeTranslationsWithLocal();
         break;
       case '5':
         await this.preparePhraseFiles();
@@ -181,10 +181,12 @@ class I18nNormalizer {
   }
 
   private generateSourcedCopies(): void {
+    console.log('Generating sources...');
     execSync('ng extract-i18n --output-path=src/locale');
   }
 
   private clearSourcedCopies(): void {
+    console.log('Cleaning generated source files...');
     execSync(`rm ${this.sourcedMessagesFile}`);
   }
 
