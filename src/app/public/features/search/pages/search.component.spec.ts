@@ -7,7 +7,7 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { ViewportService } from '@core/viewport/viewport.service';
-import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { MOCK_ITEM_CARD, MOCK_PUBLISHED_ITEM_CARD_FAVOURITED } from '@fixtures/item-card.fixtures.spec';
 import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
@@ -30,7 +30,6 @@ import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrap
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { SortFilterModule } from '../components/sort-filter/sort-filter.module';
 import { SearchAdsService } from '../core/ads/search-ads.service';
-import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events.service';
 import { SearchService } from '../core/services/search.service';
 import { REGULAR_CARDS_COLUMNS_CONFIG, SearchComponent, WIDE_CARDS_COLUMNS_CONFIG } from './search.component';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
@@ -38,8 +37,12 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
-import { MockSearchListTrackingEventService, MOCK_SEARCH_ID } from '../../search/core/services/search-list-tracking-events.fixtures.spec';
+import {
+  MockSearchListTrackingEventService,
+  MOCK_SEARCH_ID,
+} from '../core/services/search-list-tracking-events/search-list-tracking-events.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
+import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events/search-list-tracking-events.service';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -496,6 +499,44 @@ describe('SearchComponent', () => {
       publicItemCard.triggerEventHandler('clickedItemAndIndex', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
 
       expect(searchListTrackingEventsService.trackClickItemCardEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
+    });
+  });
+
+  describe('when click on favourite item card', () => {
+    describe('and item is not favourite', () => {
+      beforeEach(() => {
+        spyOn(searchListTrackingEventsService, 'trackFavouriteItemEvent');
+        searchIdSubject.next(MOCK_SEARCH_ID);
+        itemsSubject.next([MOCK_ITEM_CARD]);
+        fixture.detectChanges();
+      });
+
+      it('should track favourite item event', () => {
+        const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
+        const MOCK_ITEM_CARD_FAVOURITED = { ...MOCK_ITEM_CARD, flags: { favorite: true } };
+
+        publicItemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD_FAVOURITED);
+
+        expect(searchListTrackingEventsService.trackFavouriteItemEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD_FAVOURITED, MOCK_SEARCH_ID);
+      });
+    });
+
+    describe('and item is already favourite', () => {
+      beforeEach(() => {
+        spyOn(searchListTrackingEventsService, 'trackUnfavouriteItemEvent');
+        searchIdSubject.next(MOCK_SEARCH_ID);
+        itemsSubject.next([MOCK_ITEM_CARD]);
+        fixture.detectChanges();
+      });
+
+      it('should track unfavourite item event', () => {
+        const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
+        const MOCK_ITEM_CARD_NOT_FAVOURITED = { ...MOCK_ITEM_CARD, flags: { favorite: false } };
+
+        publicItemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD_NOT_FAVOURITED);
+
+        expect(searchListTrackingEventsService.trackUnfavouriteItemEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD_NOT_FAVOURITED);
+      });
     });
   });
 
