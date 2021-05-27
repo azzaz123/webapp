@@ -115,7 +115,7 @@ describe('TabbarComponent', () => {
 
   describe('when using a text input: on focus in', () => {
     it('should hide the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
@@ -126,7 +126,7 @@ describe('TabbarComponent', () => {
         },
       };
 
-      component.onFocusIn(element);
+      component.onFocusIn(event);
 
       expect(component.hidden).toBe(true);
     });
@@ -134,7 +134,7 @@ describe('TabbarComponent', () => {
 
   describe('when using a text input: on focus out', () => {
     it('should show the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
@@ -145,7 +145,7 @@ describe('TabbarComponent', () => {
         },
       };
 
-      component.onFocusOut(element);
+      component.onFocusOut(event);
 
       expect(component.hidden).toBe(false);
     });
@@ -153,7 +153,7 @@ describe('TabbarComponent', () => {
 
   describe('when using a password input: on focus in', () => {
     it('should hide the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
@@ -164,7 +164,7 @@ describe('TabbarComponent', () => {
         },
       };
 
-      component.onFocusIn(element);
+      component.onFocusIn(event);
 
       expect(component.hidden).toBe(true);
     });
@@ -172,7 +172,7 @@ describe('TabbarComponent', () => {
 
   describe('when using a password input: on focus out', () => {
     it('should show the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
@@ -183,7 +183,7 @@ describe('TabbarComponent', () => {
         },
       };
 
-      component.onFocusOut(element);
+      component.onFocusOut(event);
 
       expect(component.hidden).toBe(false);
     });
@@ -191,7 +191,7 @@ describe('TabbarComponent', () => {
 
   describe('when using a number input: on focus in', () => {
     it('should hide the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
@@ -202,7 +202,7 @@ describe('TabbarComponent', () => {
         },
       };
 
-      component.onFocusIn(element);
+      component.onFocusIn(event);
 
       expect(component.hidden).toBe(true);
     });
@@ -210,7 +210,7 @@ describe('TabbarComponent', () => {
 
   describe('when using a number input: on focus out', () => {
     it('should show the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
@@ -221,7 +221,7 @@ describe('TabbarComponent', () => {
         },
       };
 
-      component.onFocusOut(element);
+      component.onFocusOut(event);
 
       expect(component.hidden).toBe(false);
     });
@@ -229,7 +229,7 @@ describe('TabbarComponent', () => {
 
   describe('when using a date input: on focus in', () => {
     it('should hide the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
@@ -240,7 +240,7 @@ describe('TabbarComponent', () => {
         },
       };
 
-      component.onFocusIn(element);
+      component.onFocusIn(event);
 
       expect(component.hidden).toBe(true);
     });
@@ -248,7 +248,7 @@ describe('TabbarComponent', () => {
 
   describe('when using a date input: on focus out', () => {
     it('should show the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
@@ -259,7 +259,7 @@ describe('TabbarComponent', () => {
         },
       };
 
-      component.onFocusOut(element);
+      component.onFocusOut(event);
 
       expect(component.hidden).toBe(false);
     });
@@ -267,7 +267,7 @@ describe('TabbarComponent', () => {
 
   describe('when using a radio input: on focus in', () => {
     it('should show the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
@@ -278,7 +278,7 @@ describe('TabbarComponent', () => {
         },
       };
 
-      component.onFocusIn(element);
+      component.onFocusIn(event);
 
       expect(component.hidden).toBe(false);
     });
@@ -286,7 +286,7 @@ describe('TabbarComponent', () => {
 
   describe('when using a radio input: on focus out', () => {
     it('should show the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.INPUT,
           attributes: {
@@ -297,7 +297,7 @@ describe('TabbarComponent', () => {
         },
       };
 
-      component.onFocusOut(element);
+      component.onFocusOut(event);
 
       expect(component.hidden).toBe(false);
     });
@@ -305,12 +305,12 @@ describe('TabbarComponent', () => {
 
   describe('when using a textarea: on focus in', () => {
     it('should hide the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.TEXT_AREA,
         },
       };
-      component.onFocusIn(element);
+      component.onFocusIn(event);
 
       expect(component.hidden).toBe(true);
     });
@@ -318,12 +318,12 @@ describe('TabbarComponent', () => {
 
   describe('when using a textarea: on focus out', () => {
     it('should show the tab bar', () => {
-      const element = {
+      const event = {
         target: {
           nodeName: ELEMENT_TYPE.TEXT_AREA,
         },
       };
-      component.onFocusOut(element);
+      component.onFocusOut(event);
 
       expect(component.hidden).toBe(false);
     });
