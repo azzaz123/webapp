@@ -12,7 +12,7 @@ export class BankAccountComponent implements OnInit {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
 
   public bankAccountForm: FormGroup;
-  public loading = true;
+  public loading = false;
   public formErrorMessages;
 
   constructor(private fb: FormBuilder, private uuidService: UuidService) {}
