@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class FavouriteIconComponent {
   @Input() active: boolean = false;
+  @Input() redStroke = false;
 }

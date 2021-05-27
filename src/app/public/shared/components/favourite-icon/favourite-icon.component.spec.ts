@@ -9,7 +9,10 @@ describe('FavouriteIconComponent', () => {
   let component: FavouriteIconComponent;
   let de: DebugElement;
   let el: HTMLElement;
+  let iconElement: Element;
   let fixture: ComponentFixture<FavouriteIconComponent>;
+  const activeClassName = 'FavouriteIcon--active';
+  const redStrokeClassName = 'FavouriteIcon--redStroke';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,34 +27,50 @@ describe('FavouriteIconComponent', () => {
     de = fixture.debugElement;
     el = de.nativeElement;
     fixture.detectChanges();
+    iconElement = el.querySelector('tsl-svg-icon');
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when active status changes', () => {
-    const activeClassName = 'FavouriteIcon--active';
-    let elementToCheck: Element;
+  describe('when icon is active', () => {
+    beforeEach(() => (component.active = true));
 
-    beforeEach(() => {
-      elementToCheck = el.querySelector('tsl-svg-icon');
-    });
-
-    it('should have active status if is active ', () => {
-      component.active = true;
-
+    it('should style icon as active', () => {
       fixture.detectChanges();
 
-      expect(elementToCheck.className).toContain(activeClassName);
+      expect(iconElement.className).toContain(activeClassName);
     });
 
-    it('should have inactive status if is NOT active ', () => {
-      component.active = false;
+    describe('and when icon stroke should be red', () => {
+      beforeEach(() => (component.redStroke = true));
 
+      it('should NOT style icon with red stroke', () => {
+        fixture.detectChanges();
+
+        expect(iconElement.className).not.toContain(redStrokeClassName);
+      });
+    });
+  });
+
+  describe('when icon is not active', () => {
+    beforeEach(() => (component.active = false));
+
+    it('should style icon as not active', () => {
       fixture.detectChanges();
 
-      expect(elementToCheck.className).not.toContain(activeClassName);
+      expect(iconElement.className).not.toContain(activeClassName);
+    });
+
+    describe('and when icon stroke should be red', () => {
+      beforeEach(() => (component.redStroke = true));
+
+      it('should style icon with red stroke', () => {
+        fixture.detectChanges();
+
+        expect(iconElement.className).toContain(redStrokeClassName);
+      });
     });
   });
 });
