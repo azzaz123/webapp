@@ -31,6 +31,7 @@ import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.servi
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { ProfileComponent } from './profile.component';
+import { SubscriptionsComponent } from './subscription/subscription.component';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -40,12 +41,15 @@ describe('ProfileComponent', () => {
   let analyticsService: AnalyticsService;
   let subscriptionsService: SubscriptionsService;
   let i18n: I18nService;
-  let hasOneTrialSubscription = false;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
+        imports: [
+          NgxPermissionsModule.forRoot(),
+          HttpClientTestingModule,
+          RouterTestingModule.withRoutes([{ path: 'subscriptions', component: SubscriptionsComponent }]),
+        ],
         declarations: [ProfileComponent, StarsComponent, ProBadgeComponent, UserProfileRoutePipe],
         providers: [
           EventService,
@@ -136,9 +140,8 @@ describe('ProfileComponent', () => {
       it('should not show a PRO badge', () => {
         mockBeforeEachInit();
 
-        const proBadgeHTML = fixture.debugElement.query(By.directive(ProBadgeComponent)).childNodes[0].nativeNode;
-        expect(proBadgeHTML.hasAttribute('hidden')).toBe(true);
-        expect(component.isPro).toBe(false);
+        const proBadgeComponentElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
+        expect(proBadgeComponentElement).toBeFalsy();
       });
     });
 
@@ -146,9 +149,8 @@ describe('ProfileComponent', () => {
       it('should show a PRO badge', () => {
         mockBeforeEachInit(true);
 
-        const proBadgeHTML = fixture.debugElement.query(By.directive(ProBadgeComponent)).childNodes[0].nativeNode;
-        expect(proBadgeHTML.hasAttribute('hidden')).toBe(false);
-        expect(component.isPro).toBe(true);
+        const proBadgeComponentElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
+        expect(proBadgeComponentElement).toBeTruthy();
       });
     });
   });

@@ -24,7 +24,7 @@ import { TypeCheckService } from '@public/core/services/type-check/type-check.se
 import { ItemTaxonomies } from '@public/features/item-detail/components/item-taxonomies/interfaces/item-taxonomies.interface';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { of } from 'rxjs';
-import { MOCK_FASHION_EXTRA_INFO } from '../map-extra-info/map-extra-info.fixtures.spec';
+import { MOCK_FASHION_EXTRA_INFO_LABELS } from '../map-extra-info/map-extra-info.fixtures.spec';
 import { MapExtraInfoService } from '../map-extra-info/map-extra-info.service';
 import { MapSpecificationsService } from '../map-specifications/map-specifications.service';
 import { MapItemDetailStoreService } from './map-item-detail-store.service';
@@ -241,10 +241,10 @@ describe('MapItemDetailStoreService', () => {
 
       describe('when we handle the extraInfo...', () => {
         it('should get the extra info', () => {
-          spyOn(mapExtraInfoService, 'mapExtraInfo').and.returnValue(MOCK_FASHION_EXTRA_INFO);
+          spyOn(mapExtraInfoService, 'mapExtraInfo').and.returnValue(MOCK_FASHION_EXTRA_INFO_LABELS);
 
           const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
-          expect(itemDetail.extraInfo).toBe(MOCK_FASHION_EXTRA_INFO);
+          expect(itemDetail.extraInfo).toBe(MOCK_FASHION_EXTRA_INFO_LABELS);
         });
       });
 
