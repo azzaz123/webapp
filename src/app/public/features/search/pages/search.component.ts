@@ -164,9 +164,11 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   }
 
   public trackFavouriteToggleEvent(item: ItemCard): void {
-    item.flags.favorite
-      ? this.searchListTrackingEventsService.trackFavouriteItemEvent(item, this.searchId)
-      : this.searchListTrackingEventsService.trackUnfavouriteItemEvent(item);
+    if (item.flags.favorite) {
+      this.searchListTrackingEventsService.trackFavouriteItemEvent(item, this.searchId);
+    } else {
+      this.searchListTrackingEventsService.trackUnfavouriteItemEvent(item);
+    }
   }
 
   public handleFilterOpened(opened: boolean) {
