@@ -69,7 +69,7 @@ export class SlidesCarouselComponent implements AfterContentInit {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
   }
 
-  private checkManyImages() {
+  private checkManyImages(): void {
     this.manyImages = this.slides?.length > 10;
   }
 
