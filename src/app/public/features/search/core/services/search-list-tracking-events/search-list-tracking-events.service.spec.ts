@@ -26,7 +26,7 @@ describe('SearchListTrackingEventsService', () => {
     });
     service = TestBed.inject(SearchListTrackingEventsService);
     analyticsService = TestBed.inject(AnalyticsService);
-    userService = TestBed.inject(AnalyticsService);
+    userService = TestBed.inject(UserService);
   });
 
   it('should be created', () => {
