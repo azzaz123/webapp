@@ -4,8 +4,9 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SlidesCarouselComponent } from './carousel-slides.component';
-
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
+import { DeviceService } from '@core/device/device.service';
+import { MockDeviceService } from '@fixtures/device.fixtures.spec';
 
 @Component({
   selector: 'tsl-carousel-slides-test',
@@ -27,13 +28,16 @@ describe('SlidesCarouselComponent', () => {
   const hideControllerClass = '.SlidesCarousel--hideControllers';
   const hideIndicatorsClass = '.SlidesCarousel--hideIndicators';
   const noBackgroundIndicatorsClass = '.SlidesCarousel--noBackgroundIndicators';
+  const manyImagesClass = '.SlidesCarousel--manyImages';
 
   let component: SlidesCarouselComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
+  let deviceService: DeviceService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NgbCarouselModule, ImageFallbackModule],
+      providers: [{ provide: DeviceService, useValue: MockDeviceService }],
       declarations: [SlidesCarouselComponent, TestWrapperComponent, CarouselSliderDirective],
     })
       .overrideComponent(SlidesCarouselComponent, {
@@ -46,6 +50,7 @@ describe('SlidesCarouselComponent', () => {
     fixture = TestBed.createComponent(TestWrapperComponent);
     component = fixture.debugElement.children[0].componentInstance;
     fixture.detectChanges();
+    deviceService = TestBed.inject(DeviceService);
   });
 
   it('should create', () => {
@@ -175,6 +180,32 @@ describe('SlidesCarouselComponent', () => {
         fixture.detectChanges();
 
         expect(fixture.debugElement.query(By.css(hideIndicatorsClass))).toBeFalsy();
+      });
+    });
+
+    describe('when item has more than 10 images', () => {
+      beforeEach(() => {
+        fixture.componentInstance.images = [...Array(20)].map(() => (Math.random() * 12345).toString());
+        fixture.detectChanges();
+        component.ngAfterContentInit();
+        fixture.detectChanges();
+      });
+
+      it('should notify browser about many images', () => {
+        expect(fixture.debugElement.query(By.css(manyImagesClass))).toBeTruthy();
+      });
+    });
+
+    describe('when item has less than 10 images', () => {
+      beforeEach(() => {
+        fixture.componentInstance.images = [...Array(8)].map(() => (Math.random() * 12345).toString());
+        fixture.detectChanges();
+        component.ngAfterContentInit();
+        fixture.detectChanges();
+      });
+
+      it('should NOT notify to browser about many images', () => {
+        expect(fixture.debugElement.query(By.css(manyImagesClass))).toBeFalsy();
       });
     });
   });

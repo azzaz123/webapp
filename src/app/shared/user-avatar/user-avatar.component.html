@@ -1,11 +1,14 @@
-<div
-  *ngIf="!uploadedAvatar"
-  [tslsanitizedBackground]="avatar"
-  [fallback]="fallback"
-  class="avatar-rounded"
-  [ngClass]="'avatar-' + size"></div>
-
-<img *ngIf="uploadedAvatar"
-     [src]="uploadedAvatar"
-     class="avatar-rounded"
-     [ngClass]="'avatar-' + size" />
+<div class="position-relative">
+  <div
+    *ngIf="!uploadedAvatar"
+    [tslsanitizedBackground]="avatar"
+    [fallback]="fallback"
+    class="avatar-rounded"
+    [ngClass]="'avatar-' + size"></div>
+  
+  <img *ngIf="uploadedAvatar"
+       [src]="uploadedAvatar"
+       class="avatar-rounded"
+       [ngClass]="'avatar-' + size" />
+  <tsl-svg-icon *ngIf="showProBadge" class="position-absolute bottom-0 end-0" src="/assets/icons/pro-seal.svg" [width]="badgeSize" [height]="badgeSize" [ngStyle]="badgeStyles"></tsl-svg-icon>
+</div>
