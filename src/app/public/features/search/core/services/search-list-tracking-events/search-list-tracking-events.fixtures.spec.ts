@@ -3,11 +3,14 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   ClickItemCard,
+  FavoriteItem,
   SCREEN_IDS,
+  UnfavoriteItem,
 } from '@core/analytics/analytics-constants';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_OTHER_USER } from '@fixtures/user.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { FavouriteItemAnalyticsEvent } from '@public/features/public-profile/core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { MOCK_ITEM_INDEX } from '../../../../item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 
 export const MOCK_SEARCH_ID = 'e72c12f7-c662-421a-a821-6ad54d110d76';
@@ -25,6 +28,37 @@ export const MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH: AnalyticsEvent<ClickItemCar
     title: MOCK_ITEM_CARD.title,
     itemDistance: MOCK_ITEM_CARD.distance,
     shippingAllowed: !!MOCK_ITEM_CARD.saleConditions?.shipping_allowed,
+    sellerUserId: MOCK_ITEM_CARD.ownerId,
+    isBumped: !!MOCK_ITEM_CARD.bumpFlags?.bumped,
+  },
+};
+
+export const MOCK_FAVOURITE_ITEM_EVENT_FROM_SEARCH: AnalyticsEvent<FavoriteItem> = {
+  name: ANALYTICS_EVENT_NAMES.FavoriteItem,
+  eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+  attributes: {
+    itemId: MOCK_ITEM_CARD.id,
+    categoryId: MOCK_ITEM_CARD.categoryId,
+    searchId: MOCK_SEARCH_ID,
+    screenId: SCREEN_IDS.Search,
+    isPro: false,
+    salePrice: MOCK_ITEM_CARD.salePrice,
+    title: MOCK_ITEM_CARD.title,
+    sellerUserId: MOCK_ITEM_CARD.ownerId,
+    isBumped: !!MOCK_ITEM_CARD.bumpFlags?.bumped,
+  },
+};
+
+export const MOCK_UNFAVOURITE_ITEM_EVENT_FROM_SEARCH: AnalyticsEvent<UnfavoriteItem> = {
+  name: ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+  eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+  attributes: {
+    itemId: MOCK_ITEM_CARD.id,
+    categoryId: MOCK_ITEM_CARD.categoryId,
+    screenId: SCREEN_IDS.Search,
+    isPro: false,
+    salePrice: MOCK_ITEM_CARD.salePrice,
+    title: MOCK_ITEM_CARD.title,
     sellerUserId: MOCK_ITEM_CARD.ownerId,
     isBumped: !!MOCK_ITEM_CARD.bumpFlags?.bumped,
   },
