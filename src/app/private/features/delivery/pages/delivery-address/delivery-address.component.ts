@@ -127,15 +127,19 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   public handleShowWarningCountry(): void {
-    if (!this.isNewForm && !this.isCountryEditable && this.countries?.length > 1) {
-      this.modalService.open(ChangeCountryConfirmationModalComponent).result.then((result: boolean) => {
-        if (result) {
-          this.isCountryEditable = true;
-          setTimeout(() => {
-            this.countriesDropdown.open();
-          });
-        }
-      });
+    if (!this.isCountryEditable && this.countries?.length > 1) {
+      if (this.isNewForm) {
+        this.isCountryEditable = true;
+      } else {
+        this.modalService.open(ChangeCountryConfirmationModalComponent).result.then((result: boolean) => {
+          if (result) {
+            this.isCountryEditable = true;
+            setTimeout(() => {
+              this.countriesDropdown.open();
+            });
+          }
+        });
+      }
     }
   }
 
@@ -250,6 +254,7 @@ export class DeliveryAddressComponent implements OnInit {
 
   private submitValidForm(): void {
     this.loading = true;
+    this.isCountryEditable = false;
 
     this.deliveryAddressService
       .updateOrCreate(this.deliveryAddressForm.getRawValue(), this.isNewForm)

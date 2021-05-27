@@ -450,6 +450,7 @@ describe('DeliveryAddressComponent', () => {
         fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();
         tick();
 
+        expect(component.isCountryEditable).toBe(false);
         expect(component.countriesDropdown.open).not.toHaveBeenCalled();
       }));
     });
