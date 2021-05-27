@@ -155,13 +155,12 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     }
   }
 
-  public trackClickItemCardEvent(ClickedItemCard: ClickedItemCard): void {
-    const { itemCard, index } = ClickedItemCard;
+  public trackClickItemCardEvent(clickedItemCard: ClickedItemCard): void {
+    const { itemCard, index } = clickedItemCard;
     this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, this.searchId);
   }
 
   public trackFavouriteToggleEvent(item: ItemCard): void {
-    console.log('trackFavouriteToggleEvent', item);
     item.flags.favorite
       ? this.searchListTrackingEventsService.trackFavouriteItemEvent(item, this.searchId)
       : this.searchListTrackingEventsService.trackUnavouriteItemEvent(item);
