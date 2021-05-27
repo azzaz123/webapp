@@ -25,7 +25,7 @@ export class BankAccountComponent implements OnInit {
 
   private generateIBANMaxLength(): void {
     const IBANLength = 40;
-    const spacingAllowed = IBANLength / 4 - 2;
+    const spacingAllowed = IBANLength / 4 - 1;
     this.maxLengthIBAN = IBANLength + spacingAllowed;
   }
 
