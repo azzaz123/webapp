@@ -179,8 +179,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
       this.searchService.loadMore();
     }
 
-    console.log('scrolled');
-
     this.resetSearchId = true;
   }
 
