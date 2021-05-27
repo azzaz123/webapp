@@ -1,30 +1,20 @@
-import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProBadgeComponent } from './pro-badge.component';
-import { UserService } from '../../core/user/user.service';
 import { By } from '@angular/platform-browser';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 describe('ProBadgeComponent', () => {
-  let injector: TestBed;
   let fixture: ComponentFixture<ProBadgeComponent>;
   let component: ProBadgeComponent;
-  let userService: UserService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [],
-        providers: [
-          {
-            provide: UserService,
-            useValue: {
-              isPro: false,
-            },
-          },
-        ],
+        imports: [HttpClientTestingModule, SvgIconModule],
         declarations: [ProBadgeComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );
@@ -33,29 +23,16 @@ describe('ProBadgeComponent', () => {
     fixture = TestBed.createComponent(ProBadgeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
-    injector = getTestBed();
-    userService = injector.get(UserService);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when user is not PRO', () => {
-    it('should hide the PRO badge', () => {
-      const proBadgeHTML = fixture.debugElement.query(By.css('.ProBadge')).nativeNode;
-      expect(proBadgeHTML.hasAttribute('hidden')).toBe(true);
-    });
-  });
+  it('should show the PRO badge', () => {
+    const proBadgeSvgIconComponent: SvgIconComponent = fixture.debugElement.query(By.directive(SvgIconComponent)).componentInstance;
 
-  describe('when user is PRO', () => {
-    it('should show the PRO badge', () => {
-      spyOn(userService, 'isPro').and.returnValue(true);
-      fixture.detectChanges();
-
-      const proBadgeHTML = fixture.debugElement.query(By.css('.ProBadge')).nativeNode;
-      expect(proBadgeHTML.hasAttribute('hidden')).toBe(false);
-    });
+    expect(proBadgeSvgIconComponent).toBeTruthy();
+    expect(proBadgeSvgIconComponent.src).toEqual('/assets/icons/pro-seal.svg');
   });
 });

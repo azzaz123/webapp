@@ -7,18 +7,9 @@ import { AbstractSelectFilterModule } from '@public/shared/components/filters/co
 import { ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { FormatSelectOptionsPipe } from '@public/shared/components/filters/components/categories-filter/pipes/format-select-options.pipe';
-import { ToggleFilterModule } from '@public/shared/components/filters/components/toggle-filter/toggle-filter.module';
 
 @NgModule({
   declarations: [CategoriesFilterComponent, FormatSelectOptionsPipe],
-  imports: [
-    CommonModule,
-    AbstractFilterModule,
-    GridSelectFormModule,
-    AbstractSelectFilterModule,
-    ReactiveFormsModule,
-    SelectFormModule,
-    ToggleFilterModule,
-  ],
+  imports: [CommonModule, AbstractFilterModule, GridSelectFormModule, AbstractSelectFilterModule, ReactiveFormsModule, SelectFormModule],
 })
 export class CategoriesFilterModule {}

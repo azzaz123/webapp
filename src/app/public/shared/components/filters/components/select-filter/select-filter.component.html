@@ -9,14 +9,14 @@
   (clear)="handleClear()"
   (openStateChange)="openStateChange.emit($event)">
 
-  <tsl-select-filter-template #selectFilterTemplateComponent
-    [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
-    [placeholderLabel]="label$ | async"
-    [placeholderIcon]="placeholderIcon$ | async"
-    [contentTitle]="contentTitle"
-    [isClearable]="hasValue$ | async"
-    (placeholderOpenStateChange)="openStateChange.emit($event)"
-    (clear)="handleClear()">
+  <tsl-drawer-placeholder-template #selectFilterTemplateComponent
+                                   [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
+                                   [placeholderLabel]="label$ | async"
+                                   [placeholderIcon]="placeholderIcon$ | async"
+                                   [contentTitle]="contentTitle"
+                                   [isClearable]="hasValue$ | async"
+                                   (placeholderOpenStateChange)="openStateChange.emit($event)"
+                                   (clear)="handleClear()">
 
     <div [class.SelectFilter--bubble]="variant | isBubble">
       <form [formGroup]="formGroup">
@@ -27,6 +27,6 @@
       </form>
     </div>
 
-  </tsl-select-filter-template>
+  </tsl-drawer-placeholder-template>
 
 </tsl-filter-template>

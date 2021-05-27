@@ -18,7 +18,7 @@ import { CATEGORY_OPTIONS } from './data/category_options';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
 import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
-import { SelectFilterTemplateComponent } from '@public/shared/components/filters/components/abstract-select-filter/select-filter-template/select-filter-template.component';
+import { DrawerPlaceholderTemplateComponent } from '@public/shared/components/filters/components/abstract-select-filter/select-filter-template/drawer-placeholder-template.component';
 import { GridSelectFormComponent } from '@shared/form/components/grid-select/grid-select-form.component';
 import { SelectFormComponent } from '@shared/form/components/select/select-form.component';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -42,7 +42,7 @@ describe('CategoriesFilterComponent', () => {
   let debugElement: DebugElement;
 
   const filterTemplatePredicate = By.directive(FilterTemplateComponent);
-  const placeholderTemplatePredicate = By.directive(SelectFilterTemplateComponent);
+  const placeholderTemplatePredicate = By.directive(DrawerPlaceholderTemplateComponent);
   const gridFormPredicate = By.directive(GridSelectFormComponent);
   const listFormPredicate = By.directive(SelectFormComponent);
   const config: CategoriesFilterConfig = {
@@ -335,7 +335,7 @@ describe('CategoriesFilterComponent', () => {
     describe('on form value change', () => {
       beforeEach(() => {
         fixture.detectChanges();
-        const placeholderTemplate: SelectFilterTemplateComponent = debugElement.query(placeholderTemplatePredicate).componentInstance;
+        const placeholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(placeholderTemplatePredicate).componentInstance;
         placeholderTemplate.togglePlaceholderOpen();
         fixture.detectChanges();
       });
@@ -377,7 +377,7 @@ describe('CategoriesFilterComponent', () => {
         gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
         fixture.detectChanges();
 
-        const placeholderTemplate: SelectFilterTemplateComponent = debugElement.query(placeholderTemplatePredicate).componentInstance;
+        const placeholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(placeholderTemplatePredicate).componentInstance;
         expect(placeholderTemplate.isPlaceholderOpen).toBeFalsy();
       });
     });
