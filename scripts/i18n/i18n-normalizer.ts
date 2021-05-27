@@ -2,28 +2,71 @@ const fs = require('fs');
 const xmlParser = require('xml2json');
 const { execSync } = require('child_process');
 const readline = require('readline');
-
-const keyPrefix = 'web_';
+const https = require('https');
 
 enum LANGUAGE {
   SPANISH = 'es',
   ENGLISH = 'en'
 }
 
+interface PhraseLocale {
+  id: string;
+  name: string;
+  code: string;
+  default: true;
+  main: false;
+  rtl: false;
+  plural_forms: string[];
+  source_locale: {
+    id: string,
+    name: string,
+    code: string
+  };
+  created_at: string;
+  updated_at: string;
+}
+
+type PhraseLocaleTranslations = Record<string, { message: string }>;
+
+interface TranslatedPhraseLocale extends PhraseLocale {
+  originals: Translation[];
+}
+
+interface Translation {
+  key: string;
+  value: string;
+}
+
+interface RegexFormatter {
+  regex: RegExp;
+  replacer: (index: number) => ReplacerFunc;
+}
+
+interface TranslationSet {
+  locale: string;
+  translations: Translation[];
+}
+
+interface PhraseData {
+  translationSets: TranslationSet[];
+  interpolationOriginals: Record<string, string>;
+}
+
+interface RegexFormatter {
+  regex: RegExp;
+  replacer: (index: number) => ReplacerFunc;
+}
+
+type ReplacerFunc = ((substring: string, ...args: any[]) => string);
+
 interface CopyLocation {
   language: LANGUAGE;
   file: string;
 }
 
-type TranslationRecord = Record<LANGUAGE, string | Object>;
-
-interface Copy {
+interface CopySource {
   key: string;
-  translation: TranslationRecord;
-}
-
-interface SourcedCopy extends Copy {
-  source: string;
+  sources: string[];
 }
 
 type LanguageCopies = Record<Partial<LANGUAGE>, Record<string, string>>;
@@ -33,20 +76,14 @@ interface MissingTranslation {
   missingLanguages: LANGUAGE[];
 }
 
-interface SubstitutionKey {
-  oldKey: string;
-  newKey: string;
-  source: string;
-}
-
 class I18nNormalizer {
   private menuString = '\n\n' +
     'What should I do?\n' +
     '1. Run i18n\n' +
     '2. Print missing translations\n' +
-    '3. Normalize keys\n' +
-    '4. Clean translations files\n' +
-    '5. Prepare Phrase files\n' +
+    '3. Clean translations files\n' +
+    '4. Download and merge Phrase\n' +
+    '5. Prepare Phrase files to upload\n' +
     'e. Exit\n' +
     'Ans: ';
   private confirmDoneString = '\n\nPress enter to clean when done uploading: ';
@@ -59,15 +96,37 @@ class I18nNormalizer {
     file: 'src/locale/messages.es.json'
   }];
 
-  private sourcedMessagesFile = 'src/locale/messages.xmb';
-
-  private pathsToSkip = [
-    'node_modules'
-  ];
+  private sourcedMessagesFile = 'src/locale/messages.xlf';
 
   private originalLanguage = LANGUAGE.ENGLISH;
 
-  private cumulativeIndex = 0;
+  private projectId = '6f8665baabfafbb8482640f06712bf9a'; // TODO: Playground id. Use WallapopApp id
+  private bearerToken = '5b84d7edef0d28a953e445a7372f5ed859543733b0f7de83a459f19d381ac4ef'; // TODO: Test token. Use production token
+  // private phraseTags = ['legacy_web', 'multiplatform'];
+  private phraseTags = ['test'];
+
+  private phraseHtmlRegexFormatters: RegexFormatter[] = [{
+    regex: /<b>(.+?)<\/b>/,
+    replacer: (index) => this.simpleTagReplacer('BOLD_TEXT', index)
+  }, {
+    regex: /<i>(.+?)<\/i>/,
+    replacer: (index) => this.simpleTagReplacer('ITALIC_TEXT', index)
+  }, {
+    regex: /<u>(.+?)<\/u>/,
+    replacer: (index) => this.simpleTagReplacer('UNDERLINED_TEXT', index)
+  }, {
+    regex: /<s>(.+?)<\/s>/,
+    replacer: (index) => this.simpleTagReplacer('STRIKETHROUGH_TEXT', index)
+  }, {
+    regex: /<span>(.+?)<\/span>/,
+    replacer: (index) => this.simpleTagReplacer('TAG_SPAN', index)
+  }, {
+    regex: /<a(?: .*?>|>)(.+?)<\/a>/,
+    replacer: (index) => this.simpleTagReplacer('LINK', index)
+  }, {
+    regex: /%(\d+?)\$s/,
+    replacer: () => this.interpolationReplacer()
+  }];
 
   public async menu(): Promise<void> {
     const answer = await this.askInput(this.menuString);
@@ -80,9 +139,7 @@ class I18nNormalizer {
         this.printMissingTranslations();
         break;
       case '3':
-        await this.addMissingKeys();
-        await this.normalizeKeys();
-        this.runI18n();
+        await this.mergeTranslationsWithLocal();
         break;
       case '4':
         this.cleanTranslationFiles();
@@ -129,84 +186,52 @@ class I18nNormalizer {
   }
 
   private generateSourcedCopies(): void {
-    execSync('ng extract-i18n --format=xmb --output-path=src/locale');
+    execSync('ng extract-i18n --output-path=src/locale');
   }
 
   private clearSourcedCopies(): void {
     execSync(`rm ${this.sourcedMessagesFile}`);
   }
 
-  private getSourcedCopies(): SourcedCopy[] {
-    const languageCopies = this.getLanguageCopies();
+  public async mergeTranslationsWithLocal(): Promise<void> {
+    console.log('Retrieving translations from phrase');
     const sources = this.getCopySources();
+    const locales = await this.getPhraseTranslations();
+    const translationSets = this.getTranslationSets(locales);
 
-    const originalCopies = languageCopies[this.originalLanguage];
-    const originalKeys = Object.keys(originalCopies);
+    // TODO: Merge will be added on another PR
 
-    return originalKeys.map(key => {
-      const languages = Object.values(LANGUAGE) as LANGUAGE[];
+    // this.mergeCopySets(translationSets);
+  }
 
-      return  {
-        key,
-        source: sources[key],
-        translation: languages.reduce((acc, lang) => {
-          return {
-            ...acc,
-            [lang]: languageCopies[lang][key]
-          };
-        }, {} as TranslationRecord)
+  private getCopySources(): CopySource[] {
+    this.generateSourcedCopies();
+    const rawCopiesFile = fs.readFileSync(this.sourcedMessagesFile, 'utf8');
+
+    const rawCopiesJSON = xmlParser.toJson(rawCopiesFile);
+    const transUnits = JSON.parse(rawCopiesJSON).xliff.file.body['trans-unit'];
+
+    this.clearSourcedCopies();
+
+    return transUnits.map(transUnit => {
+      const contextGroup = transUnit['context-group'];
+
+      const contexts = contextGroup instanceof Array
+        ? contextGroup.reduce((acc, group) => {
+            acc.push(...group.context);
+            return acc;
+          }, [])
+        : contextGroup.context;
+
+      return {
+        key: transUnit.id,
+        sources: contexts.filter(context => context['context-type'] === 'sourcefile').map(context => context.$t)
       };
     });
   }
 
-  private getCopySources(): Record<string, string> {
-    this.generateSourcedCopies();
-    const rawCopiesFile = fs.readFileSync(this.sourcedMessagesFile, 'utf8');
-
-    const cleanedFileString = this.cleanupRawXMB(rawCopiesFile);
-    const rawCopiesJSON = xmlParser.toJson(cleanedFileString);
-    const messages = JSON.parse(rawCopiesJSON).messagebundle.msg;
-    const translations = messages.reduce((acc, obj) => {
-      return {
-        ...acc,
-        [obj.id]: obj.source
-      };
-    }, {});
-
-    this.clearSourcedCopies();
-
-    return translations;
-  }
-
   private runI18n() {
     execSync('yarn i18n');
-  }
-
-  private async addMissingKeys(): Promise<void> {
-    const copies = this.getSourcedCopies();
-    const copiesWithoutKey = copies.filter(copy => this.isNumericKey(copy.key));
-    if (copiesWithoutKey.length > 0) {
-      const substitutionKeys = copiesWithoutKey.map((copy) => ({
-        oldKey: copy.key,
-        source: copy.source,
-        newKey: this.getNewKey(copy)
-      }));
-
-      console.log(
-        '\nKeys to be added:\n',
-        substitutionKeys.map(({ source, oldKey, newKey }) => `${source}: ${oldKey} -> ${newKey}`).join('\n')
-      );
-
-      if (await this.askForConfirmation()) {
-        this.substituteKeys(substitutionKeys);
-
-        console.log('\nChecking for more keys...\n');
-        await this.addMissingKeys();
-      }
-
-    } else {
-      console.log('\nNo missing keys\n');
-    }
   }
 
   private printMissingTranslations(): void {
@@ -252,86 +277,6 @@ class I18nNormalizer {
     }
   }
 
-  private async normalizeKeys(): Promise<void> {
-    const copies = this.getSourcedCopies().filter((copy) => !this.shouldSkipSource(copy));
-    const processedCopies: SourcedCopy[] = copies.map(copy => ({
-      ...copy,
-      key: this.generateNormalizedKey(copy.key)
-    }));
-
-    const substitutionKeys: SubstitutionKey[] = processedCopies.map((copy, index) => ({
-      newKey: copy.key,
-      oldKey: copies[index].key,
-      source: copy.source
-    })).filter(copy => copy.newKey !== copy.oldKey);
-
-    if (substitutionKeys.length > 0) {
-      console.log(
-        `\nKeys to normalize:\n`,
-        substitutionKeys.map(({ source, oldKey, newKey }) => `${source}: ${oldKey} -> ${newKey}`).join('\n')
-      );
-
-      if (await this.askForConfirmation()) {
-        this.substituteKeys(substitutionKeys);
-        console.log('\nChecking for more keys...\n');
-        await this.normalizeKeys();
-      }
-
-    } else {
-      console.log('No keys to normalize');
-    }
-  }
-
-  private async askForConfirmation(): Promise<boolean> {
-    const readlineInterface = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
-    const answer = await new Promise(resolve => readlineInterface.question('Do you want to proceed? (Y/n): ', (ans) => {
-      readlineInterface.close();
-      resolve(ans);
-    }));
-
-    return answer === 'y' || answer === 'Y';
-  }
-
-  private substituteKeys(substitutionKeys: SubstitutionKey[]): void {
-    substitutionKeys.forEach((substitutionKey) => {
-      this.setNewKeyInSourceFiles(substitutionKey);
-    });
-
-    this.setNewKeysInTranslationFiles(substitutionKeys);
-
-    this.generateSourcedCopies();
-  }
-
-  private setNewKeyInSourceFiles(substitutionKey: SubstitutionKey): void {
-    const {source, oldKey, newKey} = substitutionKey;
-    const splitPath = source.split(':');
-    const filePath = splitPath[0];
-
-    let rawFile = fs.readFileSync(filePath, 'UTF-8');
-
-    rawFile = rawFile.replace(new RegExp(`@@${oldKey}`, 'g'), `@@${newKey}`);
-
-    fs.writeFileSync(filePath, rawFile);
-  }
-
-  private setNewKeysInTranslationFiles(substitutionKeys: SubstitutionKey[]): void {
-    this.copyLocations.forEach(({ file }) => {
-      let rawFile = fs.readFileSync(file, 'utf8');
-
-      substitutionKeys.forEach(({oldKey, newKey}) => {
-        const regexpFindOldKey = new RegExp(`"${oldKey}"`, 'g');
-
-        rawFile = rawFile.replace(regexpFindOldKey, `"${newKey}"`);
-      });
-
-      fs.writeFileSync(file, rawFile);
-    });
-  }
-
   private getLanguageCopies(): LanguageCopies {
     return this.copyLocations.reduce((acc, location) => {
       return {
@@ -348,75 +293,6 @@ class I18nNormalizer {
     return copiesObject.translations;
   }
 
-  private shouldSkipSource(node: SourcedCopy): boolean {
-    if (node.source) {
-      for (const path of this.pathsToSkip) {
-        if (node.source.startsWith(path)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  private cleanupRawXMB(rawStringFile): string {
-    const translationTagSeparator = `msg`;
-    const regexpMatchTranslationSeparatorsAperture = new RegExp(`</source>`, 'g');
-    const regexpMatchTranslationSeparatorsClosure = new RegExp(`</${translationTagSeparator}>`, 'g');
-    const apertureReplacement = '</source><text>';
-    const closureReplacement = `</text></${translationTagSeparator}>`;
-    const regexpCleanupInterpolations = new RegExp('/<ph.*\/>/', 'g');
-    const interpolationsReplacement = '__INTERPOLATION__';
-
-    return rawStringFile
-      .replace(regexpMatchTranslationSeparatorsAperture, apertureReplacement)
-      .replace(regexpMatchTranslationSeparatorsClosure, closureReplacement)
-      .replace(regexpCleanupInterpolations, interpolationsReplacement);
-  }
-
-  private isNumericKey(id): boolean {
-    return !isNaN(id) && !isNaN(parseFloat(id));
-  }
-
-  private generateKeyByPath(path: string): string {
-    const pathWithoutFileLines = path.split(':')[0];
-    const pathWithoutExtension = pathWithoutFileLines.replace('.component.html', '');
-    const normalizedPath = pathWithoutExtension.replace(/-/g, '/');
-    const splitBySlash = normalizedPath.split('/');
-    const key = splitBySlash.slice(4, splitBySlash.length + 1).join('_');
-    const normalizedKey = this.generateNormalizedKey(key);
-
-    this.cumulativeIndex++;
-    return `${normalizedKey}_${this.cumulativeIndex}`;
-  }
-
-  private getNewKey(node: SourcedCopy): string {
-    const isAutogenerated = this.isNumericKey(node.key);
-    if (isAutogenerated) {
-      return this.generateKeyByPath(node.source);
-    } else {
-      return this.generateNormalizedKey(node.key);
-    }
-  }
-
-  private snakeCase(string: string): string {
-    return string.replace(/\W+/g, ' ')
-      .split(/ |\B(?=[A-Z])/)
-      .map(word => word.toLowerCase())
-      .join('_');
-  }
-
-  private generateNormalizedKey(key: string): string {
-    let newKey = this.snakeCase(key);
-    const needsPrefix = !newKey.startsWith(keyPrefix);
-    if (needsPrefix) {
-      newKey = `${keyPrefix}${newKey}`;
-    }
-
-    return newKey;
-  }
-
   private async askInput(message: string): Promise<string> {
     const readlineInterface = readline.createInterface({
       input: process.stdin,
@@ -427,6 +303,128 @@ class I18nNormalizer {
       readlineInterface.close();
       resolve(ans);
     }));
+  }
+
+  private async getPhraseTranslations(): Promise<TranslatedPhraseLocale[]> {
+    const locales = await this.getLocales();
+
+    return Promise.all(locales.map(async locale => {
+      const phraseTranslations = await this.getLocaleTranslations(locale);
+      const originals: Translation[] = [];
+      const keys = Object.keys(phraseTranslations);
+
+      keys.forEach(key => {
+        originals.push({
+          key,
+          value: phraseTranslations[key].message
+        });
+      });
+
+      return {
+        ...locale,
+        originals
+      };
+    }));
+  }
+
+  private getTranslationSets(locales: TranslatedPhraseLocale[]): TranslationSet[] {
+    const translationSets: TranslationSet[] = [];
+
+    for (const locale of locales) {
+      const phraseTranslations = locale.originals;
+
+      translationSets.push({
+        locale: locale.name,
+        translations: phraseTranslations.map(translation => ({
+          key: translation.key,
+          value: this.formatPhraseHtmlNodes(translation.value)
+        }))
+      });
+    }
+
+    return translationSets;
+  }
+
+  private formatPhraseHtmlNodes(message: string): string {
+    let formattedMessage = message;
+
+    this.phraseHtmlRegexFormatters.forEach(({ regex, replacer }) => {
+      const globalRegex = new RegExp(regex, 'gm');
+
+      const matches = message.match(globalRegex);
+
+      if (matches) {
+        (matches).forEach((substr, index) => {
+          formattedMessage = formattedMessage.replace(regex, replacer(index) as any);
+        });
+      }
+    });
+
+    return formattedMessage;
+  }
+
+  private getLocaleTranslations(locale: PhraseLocale): Promise<PhraseLocaleTranslations> {
+    return this.get<PhraseLocaleTranslations>(`https://api.phrase.com/v2/projects/${this.projectId}/locales/${locale.id}/download?file_format=json&tags=${this.phraseTags.join(',')}`);
+  }
+
+  private getLocales(): Promise<PhraseLocale[]> {
+    return this.get<PhraseLocale[]>(`https://api.phrase.com/v2/projects/${this.projectId}/locales`);
+  }
+
+  private get<T>(endpoint: string): Promise<T> {
+    return new Promise((resolve, reject) => {
+      https.get(endpoint, {
+        headers: {
+          Authorization: `Bearer ${this.bearerToken}`
+        }
+      }, (resp) => {
+        let data = '';
+
+        // A chunk of data has been received.
+        resp.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        // The whole response has been received. Print out the result.
+        resp.on('end', () => {
+          resolve(JSON.parse(data));
+        });
+
+      }).on('error', (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  private async askForConfirmation(): Promise<boolean> {
+    const readlineInterface = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    const answer = await new Promise(resolve => readlineInterface.question('Do you want to proceed? (Y/n): ', (ans) => {
+      readlineInterface.close();
+      resolve(ans);
+    }));
+
+    return answer === 'y' || answer === 'Y';
+  }
+
+  private interpolationReplacer(): ReplacerFunc {
+    return (substring: string, interpolatorIndex: string) => {
+      const interpolationValue = Number.parseInt(interpolatorIndex, 0) - 1;
+
+      return interpolationValue ? `{$INTERPOLATION_${interpolationValue}}` : '{$INTERPOLATION}';
+    };
+  }
+
+  private simpleTagReplacer(placeholder: string, index: number): ReplacerFunc {
+    return (substring: string, content: string) => {
+      const startTag = index ? `{$START_${placeholder}_${index}}` : `{$START_${placeholder}}`;
+      const endTag = `{$END_${placeholder}}`;
+
+      return `${startTag}${content}${endTag}`;
+    };
   }
 }
 
