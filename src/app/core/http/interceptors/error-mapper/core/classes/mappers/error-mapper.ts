@@ -15,7 +15,7 @@ export abstract class ErrorMapper {
     );
   }
 
-  private generateErrorByRequest(networkError: HttpErrorResponse): Error {
+  protected generateErrorByRequest(networkError: HttpErrorResponse): Error | Error[] {
     return new Error(networkError.message);
   }
 }
