@@ -8,14 +8,34 @@ export abstract class ErrorMapper {
 
   public map(): Observable<HttpEvent<unknown>> {
     return this.handler.handle(this.request).pipe(
-      catchError((error) => {
-        const generatedError = this.generateErrorByRequest(error);
+      catchError((errorResponse: HttpErrorResponse) => {
+        const generatedError = this.generateErrorByRequest(errorResponse);
+        const emptyError = this.generateEmptyError(generatedError, errorResponse);
+        if (emptyError) {
+          return throwError(emptyError);
+        }
         return throwError(generatedError);
       })
     );
   }
 
-  protected generateErrorByRequest(networkError: HttpErrorResponse): Error | Error[] {
-    return new Error(networkError.message);
+  protected generateErrorByRequest(errorResponse: HttpErrorResponse): Error | Error[] {
+    return new Error(this.getErrorMessageFromResponse(errorResponse));
+  }
+
+  private generateEmptyError(error: null | Error | Error[], errorResponse: HttpErrorResponse): Error | Error[] {
+    if (!error) {
+      return new Error(this.getErrorMessageFromResponse(errorResponse));
+    }
+
+    if (Array.isArray(error) && !error.length) {
+      return [new Error(this.getErrorMessageFromResponse(errorResponse))];
+    }
+  }
+
+  private getErrorMessageFromResponse(errorResponse: HttpErrorResponse): string {
+    const { error } = errorResponse;
+    const message = error[0]?.message || error?.message;
+    return message || 'Error';
   }
 }
