@@ -114,7 +114,13 @@
                 <div class="row">
                   <div class="col-12 text-center d-flex flex-column">
                     <span i18n="@@web_address_view_all_users_form_plain_text_phone_number_need_explanation_text" class="DeliveryAddress__phoneInfoMessage mb-4">Add a phone number to receive free SMS in case we need to inform you about the status of your shipment.</span>
-                    <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big" i18n="@@web_address_view_all_users_bottom_bar_save_button">Save</tsl-button>
+                    <div class="d-flex justify-content-center">
+                      <tsl-button [type]="'submit'" class="col-md-4 col-7" [ngClass]="{'col-12': isNewForm || comesFromPayView}" [loading]="loading" className="btn-primary btn-block" i18n="@@web_address_view_all_users_bottom_bar_save_button">Save</tsl-button>
+                      <tsl-button
+                        *ngIf="!isNewForm && !comesFromPayView" 
+                        class="col-md-3 col-5" className="btn btn-link btn-link--negative" id="deleteButton"
+                        (click)="deleteForm()">Delete</tsl-button>
+                    </div>
                   </div>
                 </div>
               </div>
