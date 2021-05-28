@@ -30,7 +30,6 @@ import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrap
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { SortFilterModule } from '../components/sort-filter/sort-filter.module';
 import { SearchAdsService } from '../core/ads/search-ads.service';
-import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events.service';
 import { SearchService } from '../core/services/search.service';
 import { REGULAR_CARDS_COLUMNS_CONFIG, SearchComponent, WIDE_CARDS_COLUMNS_CONFIG } from './search.component';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
@@ -38,13 +37,17 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
-import { MockSearchListTrackingEventService, MOCK_SEARCH_ID } from '../../search/core/services/search-list-tracking-events.fixtures.spec';
-import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
-import { ToastService } from '@layout/toast/core/services/toast.service';
 import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
-import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 import { MockSearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service.fixture';
+import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import {
+  MockSearchListTrackingEventService,
+  MOCK_SEARCH_ID,
+} from '../core/services/search-list-tracking-events/search-list-tracking-events.fixtures.spec';
+import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events/search-list-tracking-events.service';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -513,6 +516,44 @@ describe('SearchComponent', () => {
       publicItemCard.triggerEventHandler('clickedItemAndIndex', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
 
       expect(searchListTrackingEventsService.trackClickItemCardEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
+    });
+  });
+
+  describe('when click on favourite item card', () => {
+    describe('and item is not favourite', () => {
+      beforeEach(() => {
+        spyOn(searchListTrackingEventsService, 'trackFavouriteItemEvent');
+        searchIdSubject.next(MOCK_SEARCH_ID);
+        itemsSubject.next([MOCK_ITEM_CARD]);
+        fixture.detectChanges();
+      });
+
+      it('should track favourite item event', () => {
+        const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
+        const MOCK_ITEM_CARD_FAVOURITED = { ...MOCK_ITEM_CARD, flags: { favorite: true } };
+
+        publicItemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD_FAVOURITED);
+
+        expect(searchListTrackingEventsService.trackFavouriteItemEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD_FAVOURITED, MOCK_SEARCH_ID);
+      });
+    });
+
+    describe('and item is already favourite', () => {
+      beforeEach(() => {
+        spyOn(searchListTrackingEventsService, 'trackUnfavouriteItemEvent');
+        searchIdSubject.next(MOCK_SEARCH_ID);
+        itemsSubject.next([MOCK_ITEM_CARD]);
+        fixture.detectChanges();
+      });
+
+      it('should track unfavourite item event', () => {
+        const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
+        const MOCK_ITEM_CARD_NOT_FAVOURITED = { ...MOCK_ITEM_CARD, flags: { favorite: false } };
+
+        publicItemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD_NOT_FAVOURITED);
+
+        expect(searchListTrackingEventsService.trackUnfavouriteItemEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD_NOT_FAVOURITED);
+      });
     });
   });
 

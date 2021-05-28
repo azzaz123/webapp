@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { environment } from '@environments/environment';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { MOCK_SEARCH_ID } from '../../search-list-tracking-events.fixtures.spec';
+import { MOCK_SEARCH_ID } from '../../search-list-tracking-events/search-list-tracking-events.fixtures.spec';
 import { SearchCarResponse } from '../cars/search-car-response';
 import { SearchItemCarResponseMapper } from '../cars/search-cars-response.mapper';
 import { SearchCustomerGoodsResponse } from '../customer-goods/search-costumer-goods-response.interface';

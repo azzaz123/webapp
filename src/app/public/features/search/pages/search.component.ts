@@ -21,7 +21,6 @@ import {
   AD_SHOPPING_PUBLIC_SEARCH,
   AdShoppingPageOptionPublicSearchFactory,
 } from '../core/ads/shopping/search-ads-shopping.config';
-import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events.service';
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
@@ -36,6 +35,7 @@ import { isEqual } from 'lodash-es';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
+import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events/search-list-tracking-events.service';
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
@@ -138,7 +138,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
         if (!this.paramsHaveLocation(params)) {
           this.searchNavigatorService.navigate(
             params,
-            (params.find((parameter) => parameter.key === FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE).value || null) as FILTERS_SOURCE
+            (params.find((parameter) => parameter.key === FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE)?.value || null) as FILTERS_SOURCE
           );
         } else {
           this.filterParameterStore.setParameters(params);
@@ -169,6 +169,14 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public trackClickItemCardEvent(clickedItemCard: ClickedItemCard): void {
     const { itemCard, index } = clickedItemCard;
     this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, this.searchId);
+  }
+
+  public trackFavouriteToggleEvent(item: ItemCard): void {
+    if (item.flags.favorite) {
+      this.searchListTrackingEventsService.trackFavouriteItemEvent(item, this.searchId);
+    } else {
+      this.searchListTrackingEventsService.trackUnfavouriteItemEvent(item);
+    }
   }
 
   public handleFilterOpened(opened: boolean) {

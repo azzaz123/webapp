@@ -10,7 +10,7 @@ import { SearchRealEstateResponse } from '../real_estate/search-item-real-state-
 import { wallParameters } from './search-api-url.factory';
 import { SearchResponse } from './search-response.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import { MOCK_SEARCH_ID } from '../../search-list-tracking-events.fixtures.spec';
+import { MOCK_SEARCH_ID } from '../../search-list-tracking-events/search-list-tracking-events.fixtures.spec';
 
 export function FilterParametersWallFactory(categoryId: string): FilterParameter[] {
   return wallParameters.map((key: FILTER_QUERY_PARAM_KEY) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));
