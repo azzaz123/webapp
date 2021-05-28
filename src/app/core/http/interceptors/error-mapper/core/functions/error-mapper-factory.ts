@@ -1,6 +1,7 @@
 import { HttpRequest, HttpHandler } from '@angular/common/http';
 import { environment } from '@environments/environment.beta';
 import { DeliveryAddressErrorMapper } from '../classes/mappers/delivery/address/delivery-address-error-maper';
+import { DeliveryPostalCodesErrorMapper } from '../classes/mappers/delivery/postal-codes/delivery-postal-codes-error-mapper';
 import { ErrorMapper } from '../classes/mappers/error-mapper';
 import { ERROR_MAPPABLE_ENDPOINTS } from '../constants/error-mappable-endpoints';
 
@@ -9,6 +10,10 @@ export function ErrorMapperFactory(request: HttpRequest<unknown>, handler: HttpH
 
   if (errorMapperType === DeliveryAddressErrorMapper) {
     return new DeliveryAddressErrorMapper(request, handler);
+  }
+
+  if (errorMapperType === DeliveryPostalCodesErrorMapper) {
+    return new DeliveryPostalCodesErrorMapper(request, handler);
   }
 
   return null;
@@ -20,6 +25,11 @@ const getErrorMapperByEndpoint = (request: HttpRequest<unknown>): typeof ErrorMa
   const isDeliveryAddressRequest = url.startsWith(getMapableEndpointWithBase(ERROR_MAPPABLE_ENDPOINTS.DELIVERY_ADDRESS));
   if (isDeliveryAddressRequest) {
     return DeliveryAddressErrorMapper;
+  }
+
+  const isDeliveryPostalCodes = url.startsWith(getMapableEndpointWithBase(ERROR_MAPPABLE_ENDPOINTS.DELIVERY_POSTAL_CODES));
+  if (isDeliveryPostalCodes) {
+    return DeliveryPostalCodesErrorMapper;
   }
 };
 
