@@ -4,10 +4,10 @@ import { CreditCardInfoComponent } from './credit-card-info.component';
 import { of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
-import { StripeService } from '../../../core/stripe/stripe.service';
-import { I18nService } from '../../../core/i18n/i18n.service';
-import { STRIPE_CARD_OPTION, STRIPE_CARD_OPTION_SUBSCRIPTION } from '../../../../tests/stripe.fixtures.spec';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { StripeService } from '../../core/stripe/stripe.service';
+import { I18nService } from '../../core/i18n/i18n.service';
+import { STRIPE_CARD_OPTION, STRIPE_CARD_OPTION_SUBSCRIPTION } from '../../../tests/stripe.fixtures.spec';
 import { delay } from 'rxjs/operators';
 import { NoCardModalComponent } from 'app/shared/modals/no-card-modal/no-card-modal.component';
 

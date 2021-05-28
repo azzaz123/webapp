@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
-import { StripeService } from '../../../core/stripe/stripe.service';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { StripeService } from '../../core/stripe/stripe.service';
 import { FinancialCard } from './financial-card';
 import { finalize } from 'rxjs/operators';
 import { NoCardModalComponent } from 'app/shared/modals/no-card-modal/no-card-modal.component';

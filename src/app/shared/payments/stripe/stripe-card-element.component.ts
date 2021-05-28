@@ -12,13 +12,13 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CartBase } from '../../catalog/cart/cart-base';
-import { I18nService } from '../../../core/i18n/i18n.service';
-import { StripeService } from '../../../core/stripe/stripe.service';
-import { FinancialCard } from '../../profile/credit-card-info/financial-card';
-import { PaymentMethodResponse, SetupIntent } from '../../../core/payments/payment.interface';
+import { I18nService } from '@core/i18n/i18n.service';
+import { StripeService } from '@core/stripe/stripe.service';
+import { FinancialCard } from '@shared/credit-card-info/financial-card';
+import { PaymentMethodResponse, SetupIntent } from '@core/payments/payment.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { Tier } from '../../../core/subscriptions/subscriptions.interface';
-import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '../../../core/constants';
+import { Tier } from '@core/subscriptions/subscriptions.interface';
+import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '@core/constants';
 import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
