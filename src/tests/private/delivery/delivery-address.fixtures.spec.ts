@@ -36,6 +36,18 @@ export const MOCK_DELIVERY_ADDRESS_EMPTY: DeliveryAddressApi = {
   street: '',
 };
 
+export const MOCK_DELIVERY_ADDRESS_RESET: DeliveryAddressApi = {
+  city: null,
+  country_iso_code: 'ES',
+  flat_and_floor: null,
+  full_name: null,
+  id: 'FAKE_UUID',
+  phone_number: null,
+  postal_code: null,
+  region: null,
+  street: null,
+};
+
 export const MOCK_DELIVERY_ADDRESS_2: DeliveryAddressApi = {
   id: '1212',
   full_name: 'Lalli',

@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 import { LoadExternalLibsService } from './load-external-libs.service';
 
@@ -9,11 +9,17 @@ class ScriptElementStub {
   async: boolean;
   defer: boolean;
 
-  constructor() {
-    setTimeout(() => this.onload(), 100);
+  constructor(fakeError = false) {
+    setTimeout(() => {
+      if (fakeError) {
+        return this.onerror();
+      }
+      this.onload();
+    }, 100);
   }
 
   onload: () => void;
+  onerror: () => void;
 }
 
 const TextScriptMock = `
@@ -21,6 +27,8 @@ const TextScriptMock = `
     window.scriptLoaded = true
   })(window)
 `;
+
+const externalSourceUrl = 'http://external-lib.com/js';
 
 class DocumentStub {
   body = {
@@ -70,11 +78,10 @@ describe('LoadExternalLibService', () => {
   });
 
   it('should cache observable of the libs', () => {
-    const source = 'http://external-lib.com/js';
     spyOn(documentStub, 'createElement').and.returnValue(new ScriptElementStub());
 
-    service.loadScriptBySource(source).subscribe();
-    service.loadScriptBySource(source).subscribe();
+    service.loadScriptBySource(externalSourceUrl).subscribe();
+    service.loadScriptBySource(externalSourceUrl).subscribe();
 
     expect(documentStub.createElement).toHaveBeenCalledTimes(1);
   });
@@ -94,5 +101,17 @@ describe('LoadExternalLibService', () => {
     service.loadScriptByText('textScript', TextScriptMock).subscribe();
 
     expect(documentStub.createElement).toHaveBeenCalledTimes(1);
+  });
+
+  describe('when script fails loading', () => {
+    it('should notify error', fakeAsync(() => {
+      spyOn(documentStub, 'createElement').and.returnValue(new ScriptElementStub(true));
+      const expectedError = new Error(`Error loading script with source ${externalSourceUrl}`);
+
+      expect(() => {
+        service.loadScriptBySource(externalSourceUrl).subscribe();
+        tick(200);
+      }).toThrowError(expectedError);
+    }));
   });
 });
