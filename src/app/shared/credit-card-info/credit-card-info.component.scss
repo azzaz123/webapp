@@ -30,16 +30,6 @@ $card-height: 88px;
 }
 
 .CreditCard__info {
-  &--loading {
-    border: solid 1px $blue-grey-5;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    width: $card-width;
-    height: $card-height;
-    background: white;
-  }
   &--info {
     width: 100%;
     display: flex;

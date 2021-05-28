@@ -1,51 +1,19 @@
 import { ComponentFixture, fakeAsync, tick, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { CreditCardInfoComponent } from './credit-card-info.component';
-import { of } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
-import { StripeService } from '../../core/stripe/stripe.service';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { STRIPE_CARD_OPTION, STRIPE_CARD_OPTION_SUBSCRIPTION } from '../../../tests/stripe.fixtures.spec';
-import { delay } from 'rxjs/operators';
-import { NoCardModalComponent } from 'app/shared/modals/no-card-modal/no-card-modal.component';
 
 describe('CreditCardInfoComponent', () => {
+  const VISA_SRC_PATH = '/assets/icons/card-visa.svg';
+  const MASTERCARD_SRC_PATH = '/assets/icons/card-mastercard.svg';
+  const GENERIC_CARD_SRC_PATH = '/assets/icons/card.svg';
+
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
-  let stripeService: StripeService;
-  let modalService: NgbModal;
-  let deleteStripeCardButton;
-  const componentInstance: any = {};
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [CreditCardInfoComponent],
-        providers: [
-          I18nService,
-          {
-            provide: StripeService,
-            useValue: {
-              deleteCard() {
-                return of({});
-              },
-            },
-          },
-          {
-            provide: NgbModal,
-            useValue: {
-              open() {
-                return {
-                  result: Promise.resolve(),
-                  componentInstance: componentInstance,
-                };
-              },
-              close() {},
-            },
-          },
-        ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
@@ -55,86 +23,63 @@ describe('CreditCardInfoComponent', () => {
     fixture = TestBed.createComponent(CreditCardInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    stripeService = TestBed.inject(StripeService);
-    modalService = TestBed.inject(NgbModal);
-    component.financialCard = STRIPE_CARD_OPTION;
   });
 
-  describe('checkDelete', () => {
+  describe('when clicking in change card button...', () => {
     beforeEach(() => {
-      deleteStripeCardButton = fixture.debugElement.nativeElement.querySelector('.CreditCard__info--actions-delete');
-      component.financialCard = STRIPE_CARD_OPTION_SUBSCRIPTION;
+      component.canChangeCard = true;
+
+      fixture.detectChanges();
     });
-    it('should open NoCardModalComponent modal if card is default', fakeAsync(() => {
-      spyOn(modalService, 'open').and.callThrough();
 
-      deleteStripeCardButton.click();
+    it('should emit the changeCardClick event', fakeAsync(() => {
+      spyOn(component.changeCardClick, 'emit');
+
+      fixture.debugElement.nativeElement.querySelector('.CreditCard__info--actions-change').click();
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(NoCardModalComponent, {
-        windowClass: 'review',
-      });
-    }));
-
-    it('should call deleteCard', fakeAsync(() => {
-      spyOn(modalService, 'open').and.returnValue({
-        result: Promise.resolve('deleteCardModal'),
-        componentInstance: componentInstance,
-      });
-      spyOn(component, 'deleteStripeCard').and.callThrough();
-      component.financialCard = STRIPE_CARD_OPTION;
-
-      deleteStripeCardButton.click();
-      tick();
-
-      expect(component.deleteStripeCard).toHaveBeenCalled();
+      expect(component.changeCardClick.emit).toHaveBeenCalled();
     }));
   });
 
-  describe('deleteStripeCreditCard', () => {
-    it('should open modal when clicking in add more cards button', fakeAsync(() => {
-      spyOn(modalService, 'open').and.callThrough();
-      spyOn(component.onDeleteStripeCard, 'emit');
+  describe('when clicking in delete card button...', () => {
+    it('should emit the deleteCardClick event', fakeAsync(() => {
+      spyOn(component.deleteCardClick, 'emit');
 
-      component.deleteStripeCard();
+      fixture.debugElement.nativeElement.querySelector('.CreditCard__info--actions-delete').click();
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
-      expect(component.onDeleteStripeCard.emit).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
+      expect(component.deleteCardClick.emit).toHaveBeenCalled();
     }));
+  });
 
-    it('should ask to Stripe backend to delete the card', fakeAsync(() => {
-      spyOn(stripeService, 'deleteCard').and.callThrough();
+  describe('when the credit card brand is mastercard...', () => {
+    it('the credit card src path should be a mastercard svg', () => {
+      component.brand = 'mastercard';
 
-      component.deleteStripeCard();
-      tick();
+      component.ngOnInit();
 
-      expect(stripeService.deleteCard).toHaveBeenCalled();
-      expect(component.financialCard).toBeNull();
-    }));
+      expect(component.creditCardBrandSrc).toStrictEqual(MASTERCARD_SRC_PATH);
+    });
+  });
 
-    it('should show a loading component while waiting backend response', fakeAsync(() => {
-      const backendResponseTimeMs = 3000;
-      spyOn(stripeService, 'deleteCard').and.returnValue(of().pipe(delay(backendResponseTimeMs)));
+  describe('when the credit card brand is visa...', () => {
+    it('the credit card src path should be a mastercard svg', () => {
+      component.brand = 'visa';
 
-      component.deleteStripeCard();
-      tick();
-      fixture.detectChanges();
+      component.ngOnInit();
 
-      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('.CreditCard__info--loading > tsl-svg-icon');
-      expect(loadingComponent).toBeTruthy();
-      expect(loadingComponent.getAttribute('src')).toContain('spinner');
-      tick(backendResponseTimeMs);
-    }));
+      expect(component.creditCardBrandSrc).toStrictEqual(VISA_SRC_PATH);
+    });
+  });
 
-    it('should hide the loading component when backend answered', fakeAsync(() => {
-      const backendResponseTimeMs = 3000;
-      spyOn(stripeService, 'deleteCard').and.returnValue(of().pipe(delay(backendResponseTimeMs)));
+  describe('when the credit card brand is not mastercard or visa...', () => {
+    it('the credit card src path should be a generic card svg', () => {
+      component.brand = 'blablabla';
 
-      tick(backendResponseTimeMs + 1);
+      component.ngOnInit();
 
-      const loadingComponent: HTMLElement = fixture.nativeElement.querySelector('.CreditCard__info--loading');
-      expect(loadingComponent).toBeFalsy();
-    }));
+      expect(component.creditCardBrandSrc).toStrictEqual(GENERIC_CARD_SRC_PATH);
+    });
   });
 });
