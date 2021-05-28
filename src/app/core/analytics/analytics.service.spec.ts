@@ -106,6 +106,7 @@ describe('AnalyticsService', () => {
           identifyRequest: { userIdentities: expectedIdentities },
           identityCallback: expect.anything(),
           isDevelopmentMode: expect.anything(),
+          dataPlan: expect.anything(),
         });
       });
     });
@@ -122,6 +123,7 @@ describe('AnalyticsService', () => {
           identifyRequest: { userIdentities: expectedIdentities },
           identityCallback: expect.anything(),
           isDevelopmentMode: expect.anything(),
+          dataPlan: expect.anything(),
         });
       });
     });

@@ -6,7 +6,6 @@ import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module'
 import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-select-filter.module';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ToggleFilterModule } from '@public/shared/components/filters/components/toggle-filter/toggle-filter.module';
 
 @NgModule({
   declarations: [SelectFilterComponent],
@@ -18,7 +17,6 @@ import { ToggleFilterModule } from '@public/shared/components/filters/components
     AbstractSelectFilterModule,
     SelectFormModule,
     ReactiveFormsModule,
-    ToggleFilterModule,
   ],
 })
 export class SelectFilterModule {}

@@ -39,11 +39,13 @@ export class SlidesCarouselComponent implements AfterContentInit {
   public readonly NGB_SLIDE = 'ngb-slide-';
   public slides: CarouselSliderDirective[];
   public activeId: string;
+  public manyImages = false;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterContentInit() {
     this.slides = this.sections.toArray();
+    this.checkManyImages();
     this.activeId = this.NGB_SLIDE + this.initialIndex;
     this.cdr.detectChanges();
   }
@@ -65,6 +67,10 @@ export class SlidesCarouselComponent implements AfterContentInit {
 
   private isTouchDevice(): boolean {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+  }
+
+  private checkManyImages(): void {
+    this.manyImages = this.slides?.length > 10;
   }
 
   get isSingleSlide(): boolean {

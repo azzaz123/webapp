@@ -16,7 +16,7 @@ import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-s
 import { SelectFilterConfig } from './interfaces/select-filter-config.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
-import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
+import { DrawerPlaceholderTemplateComponent } from '../abstract-select-filter/select-filter-template/drawer-placeholder-template.component';
 import { SelectParentOptionComponent } from '../abstract-select-filter/select-parent-option/select-parent-option.component';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
@@ -42,7 +42,7 @@ describe('SelectFilterComponent', () => {
   let fixture: ComponentFixture<TestWrapperComponent>;
 
   const filterPredicate = By.directive(FilterTemplateComponent);
-  const selectFilterTemplate = By.directive(SelectFilterTemplateComponent);
+  const selectFilterTemplate = By.directive(DrawerPlaceholderTemplateComponent);
   const placeholderPredicate = By.directive(SelectParentOptionComponent);
   const selectFormPredicate = By.directive(SelectFormComponent);
   const basicConfig: SelectFilterConfig = {
@@ -127,7 +127,7 @@ describe('SelectFilterComponent', () => {
       });
 
       it('should set label to drawer placeholder', () => {
-        const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
+        const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
 
         expect(selectTemplate.placeholderLabel).toEqual(basicConfig.drawerPlaceholder);
       });
@@ -258,7 +258,7 @@ describe('SelectFilterComponent', () => {
           formInstance.handleOptionClick('male');
           fixture.detectChanges();
 
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(By.directive(SelectFilterTemplateComponent))
+          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(By.directive(DrawerPlaceholderTemplateComponent))
             .componentInstance;
           const formDebugElement = debugElement.query(selectFormPredicate);
           const parent = debugElement.query(placeholderPredicate);
@@ -297,7 +297,7 @@ describe('SelectFilterComponent', () => {
           fixture.detectChanges();
         });
         it('should restart values', () => {
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
+          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
           expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.gender, value: 'male' }]);
 
           selectTemplate.clear.emit();
@@ -306,7 +306,7 @@ describe('SelectFilterComponent', () => {
         });
 
         it('should restart label', () => {
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
+          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
           expect(selectTemplate.placeholderLabel).toEqual('Male');
 
           selectTemplate.clear.emit();
@@ -317,7 +317,7 @@ describe('SelectFilterComponent', () => {
 
         it('should emit value changes', () => {
           spyOn(component.valueChange, 'emit');
-          const selectTemplate: SelectFilterTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
+          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(selectFilterTemplate).componentInstance;
 
           selectTemplate.clear.emit();
 

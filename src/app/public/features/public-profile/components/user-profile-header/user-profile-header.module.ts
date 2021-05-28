@@ -7,10 +7,20 @@ import { UserCoverModule } from '@shared/user-cover/user-cover.module';
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { UserStatsModule } from '../user-stats/user-stats.module';
 import { UserBasicInfoModule } from '@public/shared/components/user-basic-info/user-basic-info.module';
+import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
 
 @NgModule({
   declarations: [UserProfileHeaderComponent],
-  imports: [CommonModule, UserCoverModule, UserAvatarModule, StarsModule, SvgIconModule, UserStatsModule, UserBasicInfoModule],
+  imports: [
+    CommonModule,
+    UserCoverModule,
+    UserAvatarModule,
+    StarsModule,
+    SvgIconModule,
+    UserStatsModule,
+    UserBasicInfoModule,
+    ProBadgeModule,
+  ],
   exports: [UserProfileHeaderComponent],
 })
 export class UserProfileHeaderModule {}

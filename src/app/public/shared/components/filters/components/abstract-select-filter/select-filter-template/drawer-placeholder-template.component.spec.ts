@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectFilterTemplateComponent } from './select-filter-template.component';
+import { DrawerPlaceholderTemplateComponent } from './drawer-placeholder-template.component';
 import { Component, DebugElement, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { SelectOptionComponent } from '@shared/form/components/select/select-option/select-option.component';
@@ -12,25 +12,25 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
   // tslint:disable-next-line:component-selector
   selector: 'test-select-filter-template',
   template: `
-    <tsl-select-filter-template
+    <tsl-drawer-placeholder-template
       [hasContentPlaceholder]="hasContentPlaceholder"
       placeholderLabel="drawerPlaceholder"
       contentTitle="contentTitle"
     >
       <div class="content"></div>
-    </tsl-select-filter-template>
+    </tsl-drawer-placeholder-template>
   `,
 })
 class TestSelectFilterTemplateComponent {
   @Input() hasContentPlaceholder;
 }
 
-describe('SelectFilterTemplateComponent', () => {
+describe('DrawerPlaceholderTemplateComponent', () => {
   const contentPredicate = By.css('.content');
   const placeholderPredicate = By.css('.SelectParentOption');
   const openPlaceholderPredicate = By.css('.SelectFilterTemplate--open');
 
-  let component: SelectFilterTemplateComponent;
+  let component: DrawerPlaceholderTemplateComponent;
   let testComponent: TestSelectFilterTemplateComponent;
   let debugElement: DebugElement;
   let fixture: ComponentFixture<TestSelectFilterTemplateComponent>;
@@ -39,7 +39,7 @@ describe('SelectFilterTemplateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [
-        SelectFilterTemplateComponent,
+        DrawerPlaceholderTemplateComponent,
         TestSelectFilterTemplateComponent,
         SelectParentOptionComponent,
         SelectOptionComponent,
@@ -51,7 +51,7 @@ describe('SelectFilterTemplateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestSelectFilterTemplateComponent);
     testComponent = fixture.componentInstance;
-    debugElement = fixture.debugElement.query(By.directive(SelectFilterTemplateComponent));
+    debugElement = fixture.debugElement.query(By.directive(DrawerPlaceholderTemplateComponent));
     component = debugElement.componentInstance;
     fixture.detectChanges();
   });
@@ -69,6 +69,34 @@ describe('SelectFilterTemplateComponent', () => {
       const content = debugElement.query(contentPredicate);
 
       expect(content).toBeTruthy();
+    });
+
+    describe('and has the apply button', () => {
+      describe('when clicking the apply button', () => {
+        beforeEach(() => {
+          component.isPlaceholderOpen = true;
+          component.hasContentPlaceholder = true;
+          component.hasApplyButtonInDrawer = true;
+          fixture.detectChanges();
+        });
+
+        it('should close the placeholder', () => {
+          spyOn(component.placeholderOpenStateChange, 'emit');
+          const applyButton = debugElement.query(By.css('tsl-button')).nativeElement;
+
+          applyButton.click();
+
+          expect(component.placeholderOpenStateChange.emit).toHaveBeenCalledWith(false);
+        });
+        it('should apply the filter value', () => {
+          spyOn(component.apply, 'emit');
+          const applyButton = debugElement.query(By.css('tsl-button')).nativeElement;
+
+          applyButton.click();
+
+          expect(component.apply.emit).toHaveBeenCalled();
+        });
+      });
     });
   });
 

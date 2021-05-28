@@ -46,6 +46,9 @@ export class LoadExternalLibsService {
       subject.next();
       subject.complete();
     };
+    script.onerror = () => {
+      subject.error(new Error(`Error loading script with source ${script.src}`));
+    };
     return subject;
   }
 

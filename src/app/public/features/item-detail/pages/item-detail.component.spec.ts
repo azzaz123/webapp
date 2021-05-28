@@ -97,6 +97,7 @@ describe('ItemDetailComponent', () => {
     toggleFavouriteItem: () => of({}),
     markItemAsSold: () => {},
     initializeItemAndFlags: () => {},
+    clear: () => {},
   };
 
   let component: ItemDetailComponent;

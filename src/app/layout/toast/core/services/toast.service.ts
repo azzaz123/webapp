@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Toast } from '../interfaces/toast.interface';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ToastService {
   public toasts: Toast[] = [];
   constructor() {}
