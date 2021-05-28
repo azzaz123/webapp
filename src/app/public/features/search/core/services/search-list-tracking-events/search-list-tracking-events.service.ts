@@ -87,10 +87,11 @@ export class SearchListTrackingEventsService {
         this.userService.get(userId).subscribe(
           (user: User) => {
             observer.next(user.featured);
-            observer.complete();
           },
           () => {
             observer.next(null);
+          },
+          () => {
             observer.complete();
           }
         );
