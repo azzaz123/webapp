@@ -63,7 +63,7 @@ interface AngularTranslationJson {
   translations: Record<string, string>;
 }
 
-class I18nNormalizer {
+class I18nHelper {
   private menuString = '\n\n' +
     'What should I do?\n' +
     '1. Run i18n\n' +
@@ -113,7 +113,25 @@ class I18nNormalizer {
     replacer: () => this.interpolationReplacer()
   }];
 
-  public async menu(): Promise<void> {
+  public async cli(): Promise<void> {
+    const args = process.argv.slice(2);
+
+    switch (args.length) {
+      case 0:
+        return this.menu();
+      case 1:
+        if (args[0] === 'merge-phrase') {
+          return this.mergeTranslationsWithLocal();
+        }
+
+        console.error(`Argument '${args[0]}' not supported`);
+        break;
+      default:
+        console.error('Incorrect number of arguments');
+    }
+  }
+
+  private async menu(): Promise<void> {
     const answer = await this.askInput(this.menuString);
 
     switch (answer) {
@@ -414,6 +432,6 @@ class I18nNormalizer {
   }
 }
 
-new I18nNormalizer().menu().then(() => {
+new I18nHelper().cli().then(() => {
   console.log('Bye!');
 });
