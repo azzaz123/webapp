@@ -141,6 +141,7 @@
     "web_invoice_downloaded": "Your invoice has been successfully downloaded",
     "web_user_edited": "Your data has been edited correctly",
     "web_delivery_address_save_success": "Address edited successfully!",
+    "web_delivery_delete_address_succeed": "Address deleted successfully",
     "web_delivery_address_save_error": "Sorry, something went wrong. Try again.",
     "web_delivery_address_postal_code_not_exist_error": "Postal code doesn't exist",
     "web_delivery_address_invalid_phone_number_error": "This phone number is invalid",
@@ -149,6 +150,7 @@
     "web_address_view_all_users_form_textfield_phone_missmatch_location_inline_error": "The contact number must be from the country you are located",
     "web_delivery_address_postal_code_not_allowed_error": "Postal code not accepted",
     "web_delivery_address_invalid_postal_code_error": "This postal code isn't valid",
+    "web_delivery_delete_address_confirmation_popup_message": "You cannot undo this action. Are you sure you want to delete your address?",
     "web_image_uploaded": "Image uploaded!",
     "web_suggested_category": "It seems that your product belongs to another category, so we’ve changed it.",
     "web_delete_billing_info": "Your billing info has been deleted",
@@ -1420,8 +1422,6 @@
     "web_add_new_subscription_card": "Link a card to your subscriptions",
     "web_current_cards": "Saved cards",
     "web_spinner_536": "Loading...",
-    "web_spinner_537": "We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.",
-    "web_delivery_delete_address_confirmation_popup_message": "You cannot undo this action. Are you sure you want to delete your address?",
-    "web_delivery_delete_address_succeed": "Address deleted successfully"
+    "web_spinner_537": "We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished."
   }
 }
