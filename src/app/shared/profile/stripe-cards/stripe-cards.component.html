@@ -5,12 +5,17 @@
           <h3 class="section-title" i18n="@@web_stripe_cards_535">Payment method</h3>
       </div>
     </div>
-    <div class="form-group row mb-0">
+    <div *ngIf="!loading" class="form-group row mb-0">
       <div *ngIf="isSubscribed" class="col-12 col-md-4 offset-md-2">
           <h4 i18n="@@web_subscription_card">Card linked to subscriptions</h4>
           <div class="StripeCards__card" *ngFor="let subscriptionStripeCard of subscriptionStripeCards">
-            <tsl-credit-card-info [financialCard]="subscriptionStripeCard"
-              (onSetChangeCard)="onSetChangeCard($event)" (onDeleteStripeCard)="onDeleteCard($event)">
+            <tsl-credit-card-info
+              [brand]="subscriptionStripeCard.stripeCard?.brand"
+              [numberCard]="subscriptionStripeCard.number"
+              [expireDate]="subscriptionStripeCard.expire_date"
+              [canChangeCard]="subscriptionStripeCard.invoices_default"
+              (changeCardClick)="onSetChangeCard($event)"
+              (deleteCardClick)="handleDeleteCard(subscriptionStripeCard)">
             </tsl-credit-card-info>
           </div>
           <div class="StripeCards__addNew" *ngIf="subscriptionStripeCards?.length <= 0">
@@ -21,8 +26,13 @@
         <h4 i18n="@@web_current_cards">Saved cards</h4>
         <div class="StripeCards__group">
           <div class="StripeCards__card" *ngFor="let stripeCard of stripeCards">
-            <tsl-credit-card-info [financialCard]="stripeCard"
-              (onDeleteStripeCard)="onDeleteCard($event)">
+            <tsl-credit-card-info
+              [brand]="stripeCard.stripeCard?.brand"
+              [numberCard]="stripeCard.number"
+              [expireDate]="stripeCard.expire_date"
+              [canChangeCard]="stripeCard.invoices_default"
+              (deleteCardClick)="handleDeleteCard(stripeCard)"
+              >
             </tsl-credit-card-info>
           </div>
           <div class="StripeCards__addNew" *ngIf="stripeCards?.length < 10">
@@ -30,6 +40,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div *ngIf="loading" class="d-flex justify-content-center">
+      <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
     </div>
   </div>
 </div>

@@ -103,6 +103,7 @@
     "web_no_results_found": "No hay resultados",
     "web_pro_subscription_card_set": "Tu tarjeta se ha guardado correctamente",
     "web_pro_subscription_card_deleted": "Tu tarjeta se ha borrado correctamente",
+    "web_pro_subscription_card_deleted_error": "La tarjeta no ha podido eliminarse",
     "web_search_input_placeholder": "Busca productos",
     "web_default_error_message": "Servicio no disponible temporalmente. Inténtelo de nuevo más tarde",
     "web_toast_default_success_title": "¡Bien!",
