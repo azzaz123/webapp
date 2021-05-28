@@ -103,7 +103,9 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   @HostListener('window:scroll', ['$event'])
   @debounce(500)
   onWindowScroll() {
-    this.resetSearchId = true;
+    if (this.componentAttached) {
+      this.resetSearchId = true;
+    }
   }
 
   constructor(
