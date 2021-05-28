@@ -1,8 +1,9 @@
 import { DeliveryPostalCodesError } from './delivery-postal-codes.error';
 import { DeliveryPostalCodesErrorEnum } from './delivery-postal-codes-error.enum';
+import { DeliveryPostalCodesErrorTranslations } from '../../../../constants/delivery-error-translations';
 
-export class InvalidPostalCode extends DeliveryPostalCodesError {
-  constructor(public error_code: DeliveryPostalCodesErrorEnum.INVALID_POSTAL_CODE, public message: string) {
-    super(error_code, message);
+export class InvalidPostalCodeError extends DeliveryPostalCodesError {
+  constructor() {
+    super(DeliveryPostalCodesErrorEnum.INVALID_POSTAL_CODE, DeliveryPostalCodesErrorTranslations.INVALID_POSTAL_CODE);
   }
 }

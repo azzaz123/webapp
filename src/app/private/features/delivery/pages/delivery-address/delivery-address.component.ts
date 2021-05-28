@@ -27,6 +27,8 @@ import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
 import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
 import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
+import { DeliveryPostalCodesError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/delivery-postal-codes.error';
+import { InvalidPostalCodeError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/invalid-postal-code.error';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -138,7 +140,7 @@ export class DeliveryAddressComponent implements OnInit {
   public isInvalidPostalCode(): void {
     const postalCode = this.deliveryAddressForm.get('postal_code');
     if (postalCode.value.length < 5 && !postalCode.errors?.required) {
-      this.setIncorrectControlAndShowError('postal_code', TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR);
+      this.handlePostalCodesErrors([new InvalidPostalCodeError()]);
     }
   }
 
@@ -258,6 +260,10 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
+  private handlePostalCodesErrors(errors: DeliveryPostalCodesError[]): void {
+    errors.forEach((error) => this.setIncorrectControlAndShowError('postal_code', error.message, false));
+  }
+
   private redirect(): void {
     switch (this.whereUserComes) {
       case PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS:
@@ -283,9 +289,7 @@ export class DeliveryAddressComponent implements OnInit {
           this.cities = cities;
           this.handleLocationsResponse(this.locations);
         },
-        (errors: DeliveryAddressError[]) => {
-          this.onError(errors);
-        }
+        (errors: DeliveryPostalCodesError[]) => this.handlePostalCodesErrors(errors)
       );
   }
 
@@ -299,11 +303,16 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  private setIncorrectControlAndShowError(formControl: string, translationKey: TRANSLATION_KEY): void {
+  private setIncorrectControlAndShowError(formControl: string, translation: TRANSLATION_KEY | string, isTranslationKey = true): void {
     this.deliveryAddressForm.get(formControl).setErrors(null);
     this.deliveryAddressForm.get(formControl).setErrors({ invalid: true });
     this.deliveryAddressForm.get(formControl).markAsDirty();
-    this.formErrorMessages[formControl] = this.i18nService.translate(translationKey);
+
+    if (isTranslationKey) {
+      this.formErrorMessages[formControl] = this.i18nService.translate(translation as TRANSLATION_KEY);
+    } else {
+      this.formErrorMessages[formControl] = translation;
+    }
   }
 
   private patchFormValues(): void {

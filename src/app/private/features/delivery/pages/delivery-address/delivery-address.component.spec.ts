@@ -37,6 +37,9 @@ import { By } from '@angular/platform-browser';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
+import { DeliveryPostalCodesErrorEnum } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/delivery-postal-codes-error.enum';
+import { PostalCodeIsNotAllowed } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/postal-code-is-not-allowed.error';
+import { InvalidPostalCodeError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/invalid-postal-code.error';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -273,7 +276,7 @@ describe('DeliveryAddressComponent', () => {
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
             throwError([
               { error_code: 'invalid mobile phone number', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' },
-              { error_code: 'invalid postal code', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' },
+              new InvalidPostalCodeError(),
             ])
           );
 
@@ -291,7 +294,6 @@ describe('DeliveryAddressComponent', () => {
 
         it('should ask to the backend for the correct copys', () => {
           expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_PHONE_MISSMATCH_LOCATION_ERROR);
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR);
         });
       });
     });
@@ -538,11 +540,11 @@ describe('DeliveryAddressComponent', () => {
       });
 
       describe('and the backend fails for an postal code invalid error...', () => {
+        const postalCodeError = new PostalCodeIsNotAllowed();
+
         beforeEach(() => {
           spyOn(i18nService, 'translate');
-          spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(
-            throwError([{ error_code: 'postal code is not allowed', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' }])
-          );
+          spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(throwError([postalCodeError]));
 
           component.deliveryAddressForm.get('postal_code').setValue('08040');
         });
@@ -551,8 +553,8 @@ describe('DeliveryAddressComponent', () => {
           expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
         });
 
-        it('should show an error message', () => {
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR);
+        fit('should show an error message', () => {
+          expect(component.formErrorMessages.postal_code).toEqual(postalCodeError.message);
         });
       });
     });

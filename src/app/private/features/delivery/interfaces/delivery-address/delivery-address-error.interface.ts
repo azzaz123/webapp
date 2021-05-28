@@ -37,18 +37,6 @@ export const DeliveryAddressErrorsSpecifications: DeliveryAddressErrorSpecificat
     translationKey: TRANSLATION_KEY.DELIVERY_ADDRESS_PHONE_NUMBER_INVALID_ERROR,
   },
   {
-    error_code: DELIVERY_ADDRESS_ERROR['invalid postal code'],
-    name: 'invalidPostalCode',
-    formControlName: 'postal_code',
-    translationKey: TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR,
-  },
-  {
-    error_code: DELIVERY_ADDRESS_ERROR['postal code is not allowed'],
-    name: 'postalCodeNotAllowed',
-    formControlName: 'postal_code',
-    translationKey: TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR,
-  },
-  {
     error_code: DELIVERY_ADDRESS_ERROR['delivery address too long'],
     name: 'addressTooLong',
     formControlName: 'street',
@@ -59,12 +47,6 @@ export const DeliveryAddressErrorsSpecifications: DeliveryAddressErrorSpecificat
     name: 'flatAndFloorTooLong',
     formControlName: 'flat_and_floor',
     translationKey: TRANSLATION_KEY.DELIVERY_ADDRESS_TOO_LONG_HINT_ERROR,
-  },
-  {
-    error_code: DELIVERY_ADDRESS_ERROR['postal code not exists'],
-    name: 'postalCodeNotExists',
-    formControlName: 'postal_code',
-    translationKey: TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_EXISTS_ERROR,
   },
   {
     error_code: DELIVERY_ADDRESS_ERROR['invalid mobile phone number'],

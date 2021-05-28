@@ -1,7 +1,7 @@
 import { DeliveryErrorApi } from '../../../errors/delivery/delivery-api.error';
 import { DeliveryPostalCodesError } from '../../../errors/delivery/postal-codes/delivery-postal-codes.error';
 import { DeliveryPostalCodesErrorEnum } from '../../../errors/delivery/postal-codes/delivery-postal-codes-error.enum';
-import { InvalidPostalCode } from '../../../errors/delivery/postal-codes/invalid-postal-code.error';
+import { InvalidPostalCodeError } from '../../../errors/delivery/postal-codes/invalid-postal-code.error';
 import { PostalCodeDoesNotExist } from '../../../errors/delivery/postal-codes/postal-code-does-not-exist.error';
 import { PostalCodeIsNotAllowed } from '../../../errors/delivery/postal-codes/postal-code-is-not-allowed.error';
 import { ErrorMapper } from '../../error-mapper';
@@ -13,15 +13,15 @@ export class DeliveryPostalCodesErrorMapper extends ErrorMapper {
 
     backendDeliveryErrors.forEach((error) => {
       if (error.error_code === DeliveryPostalCodesErrorEnum.INVALID_POSTAL_CODE) {
-        mappedErrors.push(new InvalidPostalCode(error.error_code, error.message));
+        mappedErrors.push(new InvalidPostalCodeError());
       }
 
       if (error.error_code === DeliveryPostalCodesErrorEnum.POSTAL_CODE_DOES_NOT_EXISTS) {
-        mappedErrors.push(new PostalCodeDoesNotExist(error.error_code, error.message));
+        mappedErrors.push(new PostalCodeDoesNotExist());
       }
 
       if (error.error_code === DeliveryPostalCodesErrorEnum.POSTAL_CODE_IS_NOT_ALLOWED) {
-        mappedErrors.push(new PostalCodeIsNotAllowed(error.error_code, error.message));
+        mappedErrors.push(new PostalCodeIsNotAllowed());
       }
     });
 
