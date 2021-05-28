@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Injectable, isDevMode } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
@@ -8,7 +8,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from './user';
 
 export interface FeatureFlag {
-  name: string;
+  name: FEATURE_FLAGS_ENUM;
   isActive: boolean;
 }
 
@@ -17,8 +17,14 @@ export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
 export enum FEATURE_FLAGS_ENUM {
   DELIVERY = 'web_delivery',
   STRIPE = 'web_stripe',
-  VISIBILITY = 'visibility',
+  VISIBILITY = 'EnableBumps',
 }
+
+export const ACTIVE_DEV_FEATURE_FLAGS: FEATURE_FLAGS_ENUM[] = [FEATURE_FLAGS_ENUM.VISIBILITY];
+
+export const featurePermissionConfig: Partial<Record<FEATURE_FLAGS_ENUM, string>> = {
+  [FEATURE_FLAGS_ENUM.VISIBILITY]: PERMISSIONS.visibility,
+};
 
 @Injectable({
   providedIn: 'root',
@@ -35,16 +41,16 @@ export class FeatureflagService {
       return of(this.getDeliveryFeatureFlag());
     }
 
-    if (name === FEATURE_FLAGS_ENUM.VISIBILITY) {
-      const isEnabled = this.getVisibilityFeatureFlag();
-      if (isEnabled) {
-        this.addPermisions(PERMISSIONS.visibility);
-      }
-      return of(isEnabled);
+    if (isDevMode() && ACTIVE_DEV_FEATURE_FLAGS.includes(name)) {
+      this.addPermisions(name);
+      return of(true);
     }
 
     if (storedFeatureFlag && cache) {
-      return of(storedFeatureFlag).pipe(map((sff) => sff.isActive));
+      return of(storedFeatureFlag).pipe(
+        tap((sff) => this.checkPermission(sff)),
+        map((sff) => sff.isActive)
+      );
     } else {
       return this.http
         .get(`${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`, {
@@ -60,6 +66,7 @@ export class FeatureflagService {
             if (!alreadyStored) {
               this.storedFeatureFlags.push(featureFlag);
             }
+            this.checkPermission(featureFlag);
             return featureFlag.isActive;
           })
         );
@@ -74,11 +81,16 @@ export class FeatureflagService {
     return isDevMode() || this.isExperimentalFeaturesEnabled();
   }
 
-  private getVisibilityFeatureFlag(): boolean {
-    return localStorage.getItem('visibility') === 'true';
+  private checkPermission(featureFlag: FeatureFlag): void {
+    if (featureFlag.isActive) {
+      this.addPermisions(featureFlag.name);
+    }
   }
 
-  private addPermisions(permission: string): void {
-    this.permissionService.addPermission(permission);
+  private addPermisions(featureFlag: FEATURE_FLAGS_ENUM): void {
+    const permission = featurePermissionConfig[featureFlag];
+    if (permission) {
+      this.permissionService.addPermission(permission);
+    }
   }
 }
