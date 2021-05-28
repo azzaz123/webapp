@@ -1,6 +1,6 @@
 import { HttpRequest, HttpHandler } from '@angular/common/http';
 import { environment } from '@environments/environment.beta';
-import { DeliveryAddressErrorMapper } from '../classes/mappers/delivery/address/delivery-address-error-maper';
+import { DeliveryAddressErrorMapper } from '../classes/mappers/delivery/address/delivery-address-error-mapper';
 import { DeliveryPostalCodesErrorMapper } from '../classes/mappers/delivery/postal-codes/delivery-postal-codes-error-mapper';
 import { ErrorMapper } from '../classes/mappers/error-mapper';
 import { ERROR_MAPPABLE_ENDPOINTS } from '../constants/error-mappable-endpoints';
