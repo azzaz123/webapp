@@ -3,5 +3,3 @@ export class DeliveryError extends Error {
     super(message);
   }
 }
-
-export * from './delivery';
