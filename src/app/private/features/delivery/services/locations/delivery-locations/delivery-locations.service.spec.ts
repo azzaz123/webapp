@@ -45,42 +45,5 @@ describe('DeliveryLocationsService', () => {
         expect(deliveryLocationsApiService.getByPostalCodeAndCountry).toHaveBeenCalledWith(MOCK_POSTAL_CODE, MOCK_COUNTRY_ISO_CODE);
       });
     });
-
-    describe('and the petition fails...', () => {
-      describe('and the invalid code is the invalid postal code one (500)...', () => {
-        it('should map the error to DeliveryAddressError with custom error code', () => {
-          let response: DeliveryAddressError[];
-          spyOn(deliveryLocationsApiService, 'getByPostalCodeAndCountry').and.returnValue(
-            throwError(MOCK_DELIVERY_ADDRESS_ERRORS_INVALID_POSTAL_CODE_API)
-          );
-
-          service.getLocationsByPostalCodeAndCountry(MOCK_POSTAL_CODE, MOCK_COUNTRY_ISO_CODE).subscribe({
-            error: (deliveryAddressErrors: DeliveryAddressError[]) => {
-              response = deliveryAddressErrors;
-            },
-          });
-
-          response.forEach((error) => {
-            expect(error instanceof DeliveryAddressError).toBeTruthy();
-            expect(error.error_code).toBe(DELIVERY_ADDRESS_ERROR['invalid postal code']);
-          });
-        });
-      });
-
-      it('should map the error to DeliveryAddressError', () => {
-        let response: DeliveryAddressError[];
-        spyOn(deliveryLocationsApiService, 'getByPostalCodeAndCountry').and.returnValue(throwError(MOCK_DELIVERY_ADDRESS_ERRORS_API));
-
-        service.getLocationsByPostalCodeAndCountry(MOCK_POSTAL_CODE, MOCK_COUNTRY_ISO_CODE).subscribe({
-          error: (deliveryAddressErrors: DeliveryAddressError[]) => {
-            response = deliveryAddressErrors;
-          },
-        });
-
-        response.forEach((error) => {
-          expect(error instanceof DeliveryAddressError).toBeTruthy();
-        });
-      });
-    });
   });
 });
