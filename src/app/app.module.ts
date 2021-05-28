@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { CoreModule } from './core/core.module';
 import { HttpModule } from './core/http/http.module';
-import { DataModule } from './data/data.module';
 import { PROVIDERS } from './providers';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { PROVIDERS } from './providers';
     CoreModule,
     BrowserModule,
     HttpModule,
-    DataModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: isSWEnabled,
