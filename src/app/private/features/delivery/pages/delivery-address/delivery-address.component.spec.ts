@@ -1,6 +1,5 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ErrorsService } from '@core/errors/errors.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import {
@@ -49,7 +48,7 @@ describe('DeliveryAddressComponent', () => {
   let deliveryAddressService: DeliveryAddressService;
   let deliveryLocationsService: DeliveryLocationsService;
   let deliveryCountriesService: DeliveryCountriesService;
-  let errorsService: ErrorsService;
+  let toastService: ToastService;
   let i18nService: I18nService;
   let modalService: NgbModal;
   let router: Router;
@@ -61,7 +60,7 @@ describe('DeliveryAddressComponent', () => {
       providers: [
         FormBuilder,
         I18nService,
-        ErrorsService,
+        ToastService,
         DeliveryCountriesService,
         DeliveryCountriesStoreService,
         DeliveryAddressApiService,
@@ -108,7 +107,7 @@ describe('DeliveryAddressComponent', () => {
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
     i18nService = TestBed.inject(I18nService);
-    errorsService = TestBed.inject(ErrorsService);
+    toastService = TestBed.inject(ToastService);
     deliveryAddressService = TestBed.inject(DeliveryAddressService);
     deliveryLocationsService = TestBed.inject(DeliveryLocationsService);
     deliveryCountriesService = TestBed.inject(DeliveryCountriesService);
@@ -228,7 +227,7 @@ describe('DeliveryAddressComponent', () => {
       describe('and the save succeed...', () => {
         beforeEach(() => {
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(of(null));
-          spyOn(errorsService, 'i18nSuccess');
+          spyOn(toastService, 'show');
           spyOn(component, 'initForm');
           spyOn(router, 'navigate');
         });
@@ -236,7 +235,10 @@ describe('DeliveryAddressComponent', () => {
         it('should show a success message', () => {
           component.onSubmit();
 
-          expect(errorsService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS);
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS),
+            type: 'success',
+          });
         });
 
         it('should update the new form flag to false', () => {
@@ -274,28 +276,35 @@ describe('DeliveryAddressComponent', () => {
 
       describe('and the save fails...', () => {
         beforeEach(() => {
-          spyOn(errorsService, 'i18nError');
-          spyOn(i18nService, 'translate');
+          spyOn(toastService, 'show');
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
             throwError([
               { error_code: 'invalid mobile phone number', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' },
               { error_code: 'invalid postal code', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' },
             ])
           );
-
-          component.onSubmit();
         });
-
         it('should show error toast', () => {
-          expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FORM_FIELD_ERROR);
+          component.onSubmit();
+
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
+            type: 'error',
+          });
         });
 
         it('should set errors if the backend return an invalid field', () => {
+          component.onSubmit();
+
           expect(component.deliveryAddressForm.get('phone_number').getError('invalid')).toBeTruthy();
           expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
         });
 
         it('should ask to the backend for the correct copys', () => {
+          spyOn(i18nService, 'translate');
+
+          component.onSubmit();
+
           expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_PHONE_MISSMATCH_LOCATION_ERROR);
           expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR);
         });
@@ -304,7 +313,7 @@ describe('DeliveryAddressComponent', () => {
 
     describe('when the form is NOT valid...', () => {
       beforeEach(() => {
-        spyOn(errorsService, 'i18nError');
+        spyOn(toastService, 'show');
         spyOn(component, 'onSubmit').and.callThrough();
         component.deliveryAddressForm.patchValue(MOCK_INVALID_DELIVERY_ADDRESS);
 
@@ -312,7 +321,10 @@ describe('DeliveryAddressComponent', () => {
       });
 
       it('should show a toast with a form field error message', () => {
-        expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FORM_FIELD_ERROR);
+        expect(toastService.show).toHaveBeenCalledWith({
+          text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
+          type: 'error',
+        });
       });
 
       it('should mark as dirty the invalid form controls', () => {
@@ -626,7 +638,7 @@ describe('DeliveryAddressComponent', () => {
           component.deliveryAddressForm.setValue(MOCK_DELIVERY_ADDRESS);
 
           spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
-          spyOn(errorsService, 'i18nSuccess');
+          spyOn(toastService, 'show');
           spyOn(component.formComponent, 'initFormControl');
           spyOn(deliveryAddressService, 'delete').and.returnValue(of(null));
 
@@ -656,7 +668,10 @@ describe('DeliveryAddressComponent', () => {
         it('should show a success toast message', fakeAsync(() => {
           tick();
 
-          expect(errorsService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS);
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS),
+            type: 'success',
+          });
         }));
 
         it('should clear the form', fakeAsync(() => {
@@ -676,7 +691,7 @@ describe('DeliveryAddressComponent', () => {
         beforeEach(() => {
           spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
           spyOn(deliveryAddressService, 'delete').and.returnValue(throwError('network error'));
-          spyOn(errorsService, 'i18nError');
+          spyOn(toastService, 'show');
 
           fixture.debugElement.query(By.css(deleteButtonSelector)).nativeElement.click();
         });
@@ -694,7 +709,10 @@ describe('DeliveryAddressComponent', () => {
         it('should show an error toast message', fakeAsync(() => {
           tick();
 
-          expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR),
+            type: 'error',
+          });
         }));
       });
     });

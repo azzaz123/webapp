@@ -16,7 +16,7 @@ import { DeliveryLocationApi } from '../../interfaces/delivery-location/delivery
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { DELIVERY_PATHS } from './../../delivery-routing-constants';
-import { ErrorsService } from '@core/errors/errors.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { Observable, Subscription } from 'rxjs';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -68,7 +68,7 @@ export class DeliveryAddressComponent implements OnInit {
     private deliveryAddressService: DeliveryAddressService,
     private deliveryCountriesService: DeliveryCountriesService,
     private eventService: EventService,
-    private errorsService: ErrorsService,
+    private toastService: ToastService,
     private uuidService: UuidService,
     private modalService: NgbModal,
     private deliveryLocationsService: DeliveryLocationsService,
@@ -117,7 +117,7 @@ export class DeliveryAddressComponent implements OnInit {
       this.submitValidForm();
     } else {
       this.deliveryAddressForm.markAsPending();
-      this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
+      this.showToast(TRANSLATION_KEY.FORM_FIELD_ERROR, 'error');
       for (const control in this.deliveryAddressForm.controls) {
         if (this.deliveryAddressForm.controls.hasOwnProperty(control) && !this.deliveryAddressForm.controls[control].valid) {
           this.deliveryAddressForm.controls[control].markAsDirty();
@@ -162,13 +162,12 @@ export class DeliveryAddressComponent implements OnInit {
     modalRef.result.then(() => {
       this.deliveryAddressService.delete(this.deliveryAddressForm.get('id').value).subscribe(
         () => {
-          this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS);
-          this.deliveryAddressForm.get('id').setValue(this.uuidService.getUUID());
-          this.clearForm();
+          this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS, 'success');
+          this.clearForm(true);
           this.prepareFormAndInitializeCountries(true);
         },
         () => {
-          this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
+          this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR, 'error');
         }
       );
     });
@@ -180,22 +179,22 @@ export class DeliveryAddressComponent implements OnInit {
     const subscription = countryISOCode.valueChanges.subscribe(() => {
       if (countryISOCode.dirty) {
         this.resetCitiesAndLocations();
-        this.clearForm();
+        this.clearForm(false);
       }
     });
 
     this.subscriptions.add(subscription);
   }
 
-  private clearForm(): void {
+  private clearForm(isNewForm: boolean): void {
+    const id = isNewForm ? this.uuidService.getUUID() : this.deliveryAddressForm.get('id').value;
+    const country_iso_code = this.deliveryAddressForm.get('country_iso_code').value;
+
     this.deliveryAddressForm.clearValidators();
-    this.deliveryAddressForm.get('full_name').reset();
-    this.deliveryAddressForm.get('street').reset();
-    this.deliveryAddressForm.get('flat_and_floor').reset();
-    this.deliveryAddressForm.get('postal_code').reset();
-    this.deliveryAddressForm.get('city').reset();
-    this.deliveryAddressForm.get('phone_number').reset();
-    this.deliveryAddressForm.get('region').reset();
+    this.deliveryAddressForm.reset({
+      id,
+      country_iso_code,
+    });
   }
 
   private requestLocationsWhenPostalCodeChange(): void {
@@ -266,15 +265,15 @@ export class DeliveryAddressComponent implements OnInit {
       .subscribe(
         () => {
           this.isNewForm = false;
-          this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS);
+          this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS, 'success');
           this.redirect();
         },
         (errors: DeliveryAddressError[]) => {
           if (errors[0].status === INVALID_DELIVERY_ADDRESS_CODE) {
-            this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
+            this.showToast(TRANSLATION_KEY.FORM_FIELD_ERROR, 'error');
             this.onError(errors, true);
           } else {
-            this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
+            this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR, 'error');
           }
         }
       );
@@ -404,6 +403,13 @@ export class DeliveryAddressComponent implements OnInit {
       postal_code: ['', [Validators.required]],
       city: ['', [Validators.required]],
       phone_number: ['', [Validators.required]],
+    });
+  }
+
+  private showToast(key: TRANSLATION_KEY, type: 'error' | 'success'): void {
+    this.toastService.show({
+      text: `${this.i18nService.translate(key)}`,
+      type,
     });
   }
 }
