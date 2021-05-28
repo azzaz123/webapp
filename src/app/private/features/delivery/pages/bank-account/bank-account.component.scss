@@ -1,0 +1,16 @@
+@import '~style/common';
+
+.BankAccount {
+  &__input {
+    &--invalid {
+      border: 1px solid $negative-main !important;
+    }
+  }
+
+  &__message {
+    &--error {
+      font-size: $font-size-s;
+      color: $negative-main;
+    }
+  }
+}
