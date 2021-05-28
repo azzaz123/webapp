@@ -5,7 +5,7 @@ import {
   TOKEN_AUTHORIZATION_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
-} from '@core/http/interceptors/token.interceptor';
+} from '@core/http/interceptors/token/token.interceptor';
 import { ITEM_TYPES } from '@core/item/item';
 import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { CarContent, ItemResponse, RealEstateResponse } from '@core/item/item-response.interface';
