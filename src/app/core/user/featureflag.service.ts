@@ -1,12 +1,14 @@
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Injectable, isDevMode } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from './user';
 
 export interface FeatureFlag {
-  name: string;
+  name: FEATURE_FLAGS_ENUM;
   isActive: boolean;
 }
 
@@ -15,7 +17,14 @@ export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
 export enum FEATURE_FLAGS_ENUM {
   DELIVERY = 'web_delivery',
   STRIPE = 'web_stripe',
+  BUMPS = 'EnableBumps',
 }
+
+export const ACTIVE_DEV_FEATURE_FLAGS: FEATURE_FLAGS_ENUM[] = [FEATURE_FLAGS_ENUM.BUMPS];
+
+export const featurePermissionConfig: Partial<Record<FEATURE_FLAGS_ENUM, string>> = {
+  [FEATURE_FLAGS_ENUM.BUMPS]: PERMISSIONS.bumps,
+};
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +32,7 @@ export enum FEATURE_FLAGS_ENUM {
 export class FeatureflagService {
   private storedFeatureFlags: FeatureFlag[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private permissionService: NgxPermissionsService) {}
 
   public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
     const storedFeatureFlag = this.storedFeatureFlags.find((sff) => sff.name === name);
@@ -32,8 +41,16 @@ export class FeatureflagService {
       return of(this.getDeliveryFeatureFlag());
     }
 
+    if (isDevMode() && ACTIVE_DEV_FEATURE_FLAGS.includes(name)) {
+      this.addPermisions(name);
+      return of(true);
+    }
+
     if (storedFeatureFlag && cache) {
-      return of(storedFeatureFlag).pipe(map((sff) => sff.isActive));
+      return of(storedFeatureFlag).pipe(
+        tap((sff) => this.checkPermission(sff)),
+        map((sff) => sff.isActive)
+      );
     } else {
       return this.http
         .get(`${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`, {
@@ -49,6 +66,7 @@ export class FeatureflagService {
             if (!alreadyStored) {
               this.storedFeatureFlags.push(featureFlag);
             }
+            this.checkPermission(featureFlag);
             return featureFlag.isActive;
           })
         );
@@ -61,5 +79,18 @@ export class FeatureflagService {
 
   private getDeliveryFeatureFlag(): boolean {
     return isDevMode() || this.isExperimentalFeaturesEnabled();
+  }
+
+  private checkPermission(featureFlag: FeatureFlag): void {
+    if (featureFlag.isActive) {
+      this.addPermisions(featureFlag.name);
+    }
+  }
+
+  private addPermisions(featureFlag: FEATURE_FLAGS_ENUM): void {
+    const permission = featurePermissionConfig[featureFlag];
+    if (permission) {
+      this.permissionService.addPermission(permission);
+    }
   }
 }
