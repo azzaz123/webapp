@@ -17,13 +17,13 @@ export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
 export enum FEATURE_FLAGS_ENUM {
   DELIVERY = 'web_delivery',
   STRIPE = 'web_stripe',
-  VISIBILITY = 'EnableBumps',
+  BUMPS = 'EnableBumps',
 }
 
-export const ACTIVE_DEV_FEATURE_FLAGS: FEATURE_FLAGS_ENUM[] = [FEATURE_FLAGS_ENUM.VISIBILITY];
+export const ACTIVE_DEV_FEATURE_FLAGS: FEATURE_FLAGS_ENUM[] = [FEATURE_FLAGS_ENUM.BUMPS];
 
 export const featurePermissionConfig: Partial<Record<FEATURE_FLAGS_ENUM, string>> = {
-  [FEATURE_FLAGS_ENUM.VISIBILITY]: PERMISSIONS.visibility,
+  [FEATURE_FLAGS_ENUM.BUMPS]: PERMISSIONS.bumps,
 };
 
 @Injectable({
