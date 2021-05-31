@@ -37,7 +37,6 @@ import { By } from '@angular/platform-browser';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
-import { DeliveryPostalCodesErrorEnum } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/delivery-postal-codes-error.enum';
 import { PostalCodeIsNotAllowed } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/postal-code-is-not-allowed.error';
 import { InvalidPostalCodeError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/invalid-postal-code.error';
 

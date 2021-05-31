@@ -1,9 +1,3 @@
-import {
-  DeliveryAddressErrorSpecification,
-  DeliveryAddressErrorsSpecifications,
-  DeliveryAddressFormErrorMessages,
-  DELIVERY_ADDRESS_ERROR,
-} from '@private/features/delivery/interfaces/delivery-address/delivery-address-error.interface';
 import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
@@ -25,10 +19,14 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { finalize, map, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
-import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
 import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
 import { DeliveryPostalCodesError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/delivery-postal-codes.error';
 import { InvalidPostalCodeError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/invalid-postal-code.error';
+import { DeliveryAddressError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/address/delivery-address.error';
+import { InvalidPhoneNumberError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/address/invalid-phone-number.error';
+import { InvalidMobilePhoneNumber } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/address/invalid-mobile-phone-number.error';
+import { AddressTooLongError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/address/address-too-long.error';
+import { FlatAndFloorTooLongError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/address/flat-and-floor-too-long.error';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -53,7 +51,7 @@ export class DeliveryAddressComponent implements OnInit {
   public isCountryEditable = false;
   public locations: DeliveryLocationApi[] = [];
   public readonly PREVIOUS_PAGE = PREVIOUS_PAGE;
-  public formErrorMessages: DeliveryAddressFormErrorMessages = {
+  public formErrorMessages = {
     phone_number: '',
     postal_code: '',
     street: '',
@@ -234,34 +232,38 @@ export class DeliveryAddressComponent implements OnInit {
           this.errorsService.i18nSuccess(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS);
           this.redirect();
         },
-        (errors: DeliveryAddressError[]) => {
-          if (errors[0].status === INVALID_DELIVERY_ADDRESS_CODE) {
-            this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR);
-            this.onError(errors, true);
-          } else {
-            this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
-          }
-        }
+        (errors: DeliveryAddressError[]) => this.handleAddressErrors(errors)
       );
   }
 
-  private onError(errors: DeliveryAddressError[], isSave = false): void {
-    errors.forEach((deliveryAddressError: DeliveryAddressError) => {
-      const generatedError = DeliveryAddressErrorsSpecifications.find(
-        (errorSpecification: DeliveryAddressErrorSpecification) =>
-          errorSpecification.error_code === DELIVERY_ADDRESS_ERROR[deliveryAddressError.error_code]
-      );
+  private handleAddressErrors(errors: DeliveryAddressError[], isBackendResponse = true): void {
+    errors.forEach((error: DeliveryAddressError) => {
+      if (error instanceof InvalidPhoneNumberError) {
+        this.setIncorrectControlAndShowError('phone_number', error.message);
+      }
 
-      this.setIncorrectControlAndShowError(generatedError.formControlName, generatedError.translationKey);
+      if (error instanceof InvalidMobilePhoneNumber) {
+        this.setIncorrectControlAndShowError('phone_number', error.message);
+      }
+
+      if (error instanceof AddressTooLongError) {
+        this.setIncorrectControlAndShowError('street', error.message);
+      }
+
+      if (error instanceof FlatAndFloorTooLongError) {
+        this.setIncorrectControlAndShowError('flat_and_floor', error.message);
+      }
+
+      this.deliveryAddressForm.markAsPending();
     });
 
-    if (isSave) {
-      this.deliveryAddressForm.markAsPending();
+    if (isBackendResponse) {
+      this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR);
     }
   }
 
   private handlePostalCodesErrors(errors: DeliveryPostalCodesError[]): void {
-    errors.forEach((error) => this.setIncorrectControlAndShowError('postal_code', error.message, false));
+    errors.forEach((error) => this.setIncorrectControlAndShowError('postal_code', error.message));
   }
 
   private redirect(): void {
@@ -295,7 +297,7 @@ export class DeliveryAddressComponent implements OnInit {
 
   private handleLocationsResponse(locations: DeliveryLocationApi[]): void {
     if (!locations.length) {
-      this.setIncorrectControlAndShowError('postal_code', TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR);
+      this.handleAddressErrors([new InvalidMobilePhoneNumber()], false);
     }
     if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {
       this.deliveryAddressForm.get('city').setValue(locations[0].city);
@@ -303,16 +305,11 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  private setIncorrectControlAndShowError(formControl: string, translation: TRANSLATION_KEY | string, isTranslationKey = true): void {
+  private setIncorrectControlAndShowError(formControl: string, message: string): void {
     this.deliveryAddressForm.get(formControl).setErrors(null);
     this.deliveryAddressForm.get(formControl).setErrors({ invalid: true });
     this.deliveryAddressForm.get(formControl).markAsDirty();
-
-    if (isTranslationKey) {
-      this.formErrorMessages[formControl] = this.i18nService.translate(translation as TRANSLATION_KEY);
-    } else {
-      this.formErrorMessages[formControl] = translation;
-    }
+    this.formErrorMessages[formControl] = message;
   }
 
   private patchFormValues(): void {

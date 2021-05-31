@@ -120,9 +120,6 @@ export enum TRANSLATION_KEY {
   I_AM_SURE_CONFIRMATION,
   DELIVERY_ADDRESS_SAVE_SUCCESS,
   DELIVERY_ADDRESS_SAVE_ERROR,
-  DELIVERY_ADDRESS_PHONE_NUMBER_INVALID_ERROR,
-  DELIVERY_ADDRESS_TOO_LONG_HINT_ERROR,
-  DELIVERY_ADDRESS_PHONE_MISSMATCH_LOCATION_ERROR,
   DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR,
   // TODO: Remaining keys with no explicit usage. Some of them might come from the backend so we need to keep it's string value
   //       We leave cleaning this keys after Italy release, as some of them come from some legacy parts (chat, calls..)
