@@ -360,6 +360,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         }
         return this.getUploadExtraInfoControl(formFieldName).disable();
       });
+    } else {
+      this.dataReadyToValidate$.next(true);
     }
   }
 
