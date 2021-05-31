@@ -151,4 +151,20 @@ describe('DeliveryAddressService', () => {
       });
     });
   });
+
+  describe('when deleting the delivery address...', () => {
+    beforeEach(() => {
+      spyOn(deliveryAddressApiService, 'delete').and.returnValue(of(null));
+
+      service.delete(MOCK_DELIVERY_ADDRESS.id).subscribe();
+    });
+
+    it('should call the api service', () => {
+      expect(deliveryAddressApiService.delete).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS.id);
+    });
+
+    it('should update the delivery address in the store', () => {
+      expect(deliveryAddressStoreService.deliveryAddress).toEqual(null);
+    });
+  });
 });

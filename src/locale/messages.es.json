@@ -1435,6 +1435,8 @@
     "web_saving_bank_account_error_incomplete_postal_code":"Debes rellenar el campo \"Código postal\"",
     "web_add_back_account_city_field_hint":"Ciudad",
     "web_saving_bank_account_error_incomplete_city":"Debes rellenar el campo \"Ciudad\"",
-    "web_delivery_add_bank_account_action_button":"Guardar"
+    "web_delivery_add_bank_account_action_button":"Guardar",
+    "web_delivery_delete_address_confirmation_popup_message": "Esta acción no se puede deshacer. ¿Seguro que quieres borrar tu dirección?",
+    "web_delivery_delete_address_succeed": "La dirección se ha eliminado correctamente."
   }
 }
