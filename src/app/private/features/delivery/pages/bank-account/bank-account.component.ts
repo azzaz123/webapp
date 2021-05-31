@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 
+export const IBAN_LENGTH = 40;
 @Component({
   selector: 'tsl-bank-account',
   templateUrl: './bank-account.component.html',
@@ -24,9 +25,8 @@ export class BankAccountComponent implements OnInit {
   }
 
   private generateIBANMaxLength(): void {
-    const IBANLength = 40;
-    const spacingAllowed = IBANLength / 4 - 1;
-    this.maxLengthIBAN = IBANLength + spacingAllowed;
+    const spacingAllowed = IBAN_LENGTH / 4 - 1;
+    this.maxLengthIBAN = IBAN_LENGTH + spacingAllowed;
   }
 
   public initForm(): void {}
