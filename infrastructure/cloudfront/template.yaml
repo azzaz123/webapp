@@ -11,12 +11,6 @@ Parameters:
   BucketEN:
     Description: 'Bucket where the EN webapp resides'
     Type: String
-  AliasES:
-      Description: 'Alias used in ES Cloudfront distribution'
-      Type: String
-  AliasEN:
-      Description: 'Alias used in EN Cloudfront distribution'
-      Type: String
   HostES:
     Description: 'URL to access to it'
     Type: String
@@ -36,7 +30,7 @@ Resources:
     Properties:
       DistributionConfig:
         Aliases:
-          - !Ref AliasES
+          - !Ref HostES
         CustomErrorResponses:
           - ErrorCachingMinTTL: 60
             ErrorCode: 404
@@ -74,7 +68,7 @@ Resources:
     Properties:
       DistributionConfig:
         Aliases:
-          - !Ref AliasEN
+          - !Ref HostEN
         CustomErrorResponses:
           - ErrorCachingMinTTL: 60
             ErrorCode: 404
