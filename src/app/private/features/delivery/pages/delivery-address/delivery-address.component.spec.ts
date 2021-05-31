@@ -46,9 +46,10 @@ describe('DeliveryAddressComponent', () => {
   const deleteButtonSelector = '#deleteButton';
   let component: DeliveryAddressComponent;
   let fixture: ComponentFixture<DeliveryAddressComponent>;
-  let deliveryAddressService: DeliveryAddressService;
+  let deliveryAddressTrackEventsService: DeliveryAddressTrackEventsService;
   let deliveryLocationsService: DeliveryLocationsService;
   let deliveryCountriesService: DeliveryCountriesService;
+  let deliveryAddressService: DeliveryAddressService;
   let toastService: ToastService;
   let i18nService: I18nService;
   let modalService: NgbModal;
@@ -67,7 +68,12 @@ describe('DeliveryAddressComponent', () => {
         DeliveryAddressApiService,
         DeliveryCountriesApiService,
         DeliveryLocationsApiService,
-        DeliveryAddressTrackEventsService,
+        {
+          provide: DeliveryAddressTrackEventsService,
+          useValue: {
+            trackClickSaveButton() {},
+          },
+        },
         {
           provide: UuidService,
           useValue: {
@@ -113,6 +119,7 @@ describe('DeliveryAddressComponent', () => {
     deliveryAddressService = TestBed.inject(DeliveryAddressService);
     deliveryLocationsService = TestBed.inject(DeliveryLocationsService);
     deliveryCountriesService = TestBed.inject(DeliveryCountriesService);
+    deliveryAddressTrackEventsService = TestBed.inject(DeliveryAddressTrackEventsService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -229,9 +236,16 @@ describe('DeliveryAddressComponent', () => {
       describe('and the save succeed...', () => {
         beforeEach(() => {
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(of(null));
+          spyOn(deliveryAddressTrackEventsService, 'trackClickSaveButton');
           spyOn(toastService, 'show');
           spyOn(component, 'initForm');
           spyOn(router, 'navigate');
+        });
+
+        it('should call the event track click event ', () => {
+          component.onSubmit();
+
+          expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalled();
         });
 
         it('should show a success message', () => {
@@ -316,10 +330,15 @@ describe('DeliveryAddressComponent', () => {
     describe('when the form is NOT valid...', () => {
       beforeEach(() => {
         spyOn(toastService, 'show');
+        spyOn(deliveryAddressTrackEventsService, 'trackClickSaveButton');
         spyOn(component, 'onSubmit').and.callThrough();
         component.deliveryAddressForm.patchValue(MOCK_INVALID_DELIVERY_ADDRESS);
 
         component.onSubmit();
+      });
+
+      it('should call the event track click event ', () => {
+        expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalled();
       });
 
       it('should show a toast with a form field error message', () => {
