@@ -584,16 +584,38 @@ describe('SearchComponent', () => {
   });
 
   describe('when new search is performed', () => {
-    const searchId = 'searchId';
+    describe('and searchId should be reset', () => {
+      const oldSearchId = 'oldSearchId';
+      const newSearchId = 'newSearchId';
 
-    beforeEach(() => {
-      spyOn(searchTrackingEventsService, 'trackSearchEvent');
+      beforeEach(() => {
+        spyOn(searchTrackingEventsService, 'trackSearchEvent');
+      });
+
+      it('should send search event', () => {
+        searchIdSubject.next(oldSearchId);
+        component['resetSearchId'] = true;
+        searchIdSubject.next(newSearchId);
+
+        expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(newSearchId, filterParameterStoreService.getParameters());
+      });
     });
 
-    it('should send search event', () => {
-      searchIdSubject.next(searchId);
+    describe('and searchId should not be reset', () => {
+      const oldSearchId = 'oldSearchId';
+      const newSearchId = 'newSearchId';
 
-      expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(searchId, filterParameterStoreService.getParameters());
+      beforeEach(() => {
+        spyOn(searchTrackingEventsService, 'trackSearchEvent');
+      });
+
+      it('should send search event', () => {
+        searchIdSubject.next(oldSearchId);
+        component['resetSearchId'] = false;
+        searchIdSubject.next(newSearchId);
+
+        expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(oldSearchId, filterParameterStoreService.getParameters());
+      });
     });
   });
 });
