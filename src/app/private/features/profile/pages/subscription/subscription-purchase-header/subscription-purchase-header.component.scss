@@ -2,10 +2,9 @@
 
 .SubscriptionPurchaseHeader {
   &__icon {
+    @include square(80px);
     padding: 15px;
     border-radius: 50%;
-    width: 80px;
-    height: 80px;
     background-color: $blue-grey-5;
   }
 
