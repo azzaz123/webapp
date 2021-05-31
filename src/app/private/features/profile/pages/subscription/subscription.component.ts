@@ -126,7 +126,7 @@ export class SubscriptionsComponent implements OnInit {
     this.trackOpenModalEvent(subscription, modal);
   }
 
-  public subscriptionChangeSuccessful() {
+  public subscriptionChangeSuccessful(): void {
     this.newSubscription = null;
     this.loading = true;
     if (this.user.featured) {
@@ -204,7 +204,7 @@ export class SubscriptionsComponent implements OnInit {
     this.analyticsService.trackPageView(pageView);
   }
 
-  private trackClickSubscriptionManagementPlus(subscription: SubscriptionsResponse) {
+  private trackClickSubscriptionManagementPlus(subscription: SubscriptionsResponse): void {
     const event: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
       name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -218,7 +218,7 @@ export class SubscriptionsComponent implements OnInit {
     return this.analyticsService.trackEvent(event);
   }
 
-  private trackOpenModalEvent(subscription: SubscriptionsResponse, modalType: SubscriptionModal) {
+  private trackOpenModalEvent(subscription: SubscriptionsResponse, modalType: SubscriptionModal): void {
     if (modalType === EditSubscriptionModalComponent) {
       const event: AnalyticsEvent<ClickProfileEditCurrentSubscription> = {
         name: ANALYTICS_EVENT_NAMES.ClickProfileEditCurrentSubscription,
