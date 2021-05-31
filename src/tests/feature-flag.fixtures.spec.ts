@@ -1,5 +1,5 @@
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag.interface';
 import { Observable, of } from 'rxjs';
-import { FEATURE_FLAGS_ENUM } from '../app/core/user/featureflag.service';
 
 export const mockFeatureFlagsResponses = [
   { name: 'flag1', active: false },

@@ -6,25 +6,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from './user';
-
-export interface FeatureFlag {
-  name: FEATURE_FLAGS_ENUM;
-  isActive: boolean;
-}
+import { FeatureFlag, FEATURE_FLAGS_ENUM, ACTIVE_DEV_FEATURE_FLAGS, featurePermissionConfig } from './featureflag.interface';
 
 export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
-
-export enum FEATURE_FLAGS_ENUM {
-  DELIVERY = 'web_delivery',
-  STRIPE = 'web_stripe',
-  BUMPS = 'EnableBumps',
-}
-
-export const ACTIVE_DEV_FEATURE_FLAGS: FEATURE_FLAGS_ENUM[] = [FEATURE_FLAGS_ENUM.BUMPS];
-
-export const featurePermissionConfig: Partial<Record<FEATURE_FLAGS_ENUM, string>> = {
-  [FEATURE_FLAGS_ENUM.BUMPS]: PERMISSIONS.bumps,
-};
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +26,10 @@ export class FeatureflagService {
     }
 
     if (isDevMode() && ACTIVE_DEV_FEATURE_FLAGS.includes(name)) {
-      this.addPermisions(name);
+      const permission = featurePermissionConfig[name];
+      if (permission) {
+        this.addPermisions(permission);
+      }
       return of(true);
     }
 
@@ -82,15 +69,17 @@ export class FeatureflagService {
   }
 
   private checkPermission(featureFlag: FeatureFlag): void {
-    if (featureFlag.isActive) {
-      this.addPermisions(featureFlag.name);
+    const permission = featurePermissionConfig[featureFlag.name];
+    if (permission) {
+      featureFlag.isActive ? this.addPermisions(permission) : this.removePermisions(permission);
     }
   }
 
-  private addPermisions(featureFlag: FEATURE_FLAGS_ENUM): void {
-    const permission = featurePermissionConfig[featureFlag];
-    if (permission) {
-      this.permissionService.addPermission(permission);
-    }
+  private addPermisions(permission: PERMISSIONS): void {
+    this.permissionService.addPermission(permission);
+  }
+
+  private removePermisions(permission: PERMISSIONS): void {
+    this.permissionService.removePermission(permission);
   }
 }
