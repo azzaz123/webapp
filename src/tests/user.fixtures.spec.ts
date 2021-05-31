@@ -307,6 +307,7 @@ export const MockUserService = {
   me() {
     return of(MockUser);
   },
+  isLogged: true,
   get(userId: string) {
     return of(MOCK_USER);
   },

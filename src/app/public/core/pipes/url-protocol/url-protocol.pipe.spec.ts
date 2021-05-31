@@ -1,10 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Profile, UserId } from '@data/user';
-import { ProfileMother, UserIdMother } from '@fixtures/data/user/domain';
-import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
 import { UrlProtocolPipe } from './url-protocol.pipe';
 
 @Component({
@@ -17,12 +13,8 @@ class TestComponent {
 describe('urlProtocolPipe', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
-  let storeMock;
 
   beforeEach(() => {
-    storeMock = {
-      select: () => {},
-    };
     TestBed.configureTestingModule({
       imports: [CommonModule],
       declarations: [UrlProtocolPipe, TestComponent],

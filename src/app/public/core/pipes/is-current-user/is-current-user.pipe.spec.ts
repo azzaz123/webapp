@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Profile, UserId } from '@data/user';
-import { ProfileMother, UserIdMother } from '@fixtures/data/user/domain';
-import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
+import { UserService } from '@core/user/user.service';
+import { MockUser, MockUserService, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 import { IsCurrentUserPipe } from './is-current-user.pipe';
 
 @Component({
-  template: '{{userId | isCurrentUser | async}}',
+  template: '{{userId | isCurrentUser}}',
 })
 class TestComponent {
   public userId: string;
@@ -17,32 +15,28 @@ class TestComponent {
 describe('isCurrentUserPipe', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
-  let storeMock;
+  let userService: UserService;
 
   beforeEach(() => {
-    storeMock = {
-      select: () => {},
-    };
     TestBed.configureTestingModule({
       imports: [CommonModule],
       declarations: [IsCurrentUserPipe, TestComponent],
       providers: [
         {
-          provide: Store,
-          useValue: storeMock,
+          provide: UserService,
+          useValue: MockUserService,
         },
       ],
     });
 
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
+    userService = TestBed.inject(UserService);
   });
 
   describe('when user logged', () => {
     it('should return true if session user id is equal', () => {
-      const userId: UserId = UserIdMother.random();
-      component.userId = userId;
-      spyOn(storeMock, 'select').and.returnValue(of(userId));
+      component.userId = MockUser.id;
 
       fixture.detectChanges();
 
@@ -50,10 +44,7 @@ describe('isCurrentUserPipe', () => {
     });
 
     it('should return false if session user id is not equal', () => {
-      const userStore: Profile = ProfileMother.random();
-      spyOn(storeMock, 'select').and.returnValue(of(userStore));
-      const userId_2: UserId = UserIdMother.random();
-      component.userId = userId_2;
+      component.userId = OTHER_USER_ID;
 
       fixture.detectChanges();
 
@@ -63,10 +54,7 @@ describe('isCurrentUserPipe', () => {
 
   describe('when user not logged', () => {
     it('should return false', () => {
-      const userId: UserId = UserIdMother.random();
-      component.userId = userId;
-
-      spyOn(storeMock, 'select').and.returnValue(of(null));
+      spyOn(userService, 'isLogged').and.returnValue(false);
 
       fixture.detectChanges();
 
