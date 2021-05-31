@@ -5,11 +5,17 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { User } from '../user/user';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
-import { filter } from 'rxjs/operators';
 import { DeviceService } from '@core/device/device.service';
 
 // TODO: This should not be exported. Anything that uses this should start using the getDeviceId method
 export const DEVICE_ID_COOKIE_NAME = 'device_id';
+export const COMMON_MPARTICLE_CONFIG = {
+  isDevelopmentMode: !environment.production,
+  dataPlan: {
+    planId: 'dataplan',
+    planVersion: 1,
+  },
+};
 
 @Injectable({
   providedIn: 'root',
@@ -24,39 +30,44 @@ export class AnalyticsService {
   }
 
   public initialize(): void {
-    this.userService
-      .me()
-      .pipe(filter((user) => !!user))
-      .subscribe((user: User) => {
-        const CONFIG = {
-          isDevelopmentMode: !environment.production,
-          identifyRequest: { userIdentities: this.getUserIdentities(user) },
-          dataPlan: {
-            planId: 'dataplan',
-            planVersion: 1,
-          },
-          identityCallback: (result) => {
-            const mParticleUser = result.getUser();
-            if (mParticleUser) {
-              mParticleUser.setUserAttribute('deviceId', this.deviceService.getDeviceId());
-            }
-          },
-        };
-        mParticle.init(environment.mParticleKey, CONFIG);
-        mParticle.ready(() => {
-          this._mParticleReady$.next();
-        });
-      });
+    const isUserLogged = this.userService.isLogged;
+
+    if (isUserLogged) {
+      const user = this.userService.user;
+      const mParticleLoggedConfig = {
+        ...COMMON_MPARTICLE_CONFIG,
+        identifyRequest: {
+          userIdentities: this.getUserIdentities(user),
+        },
+        identityCallback: (result) => {
+          const mParticleUser = result.getUser();
+
+          if (mParticleUser) {
+            mParticleUser.setUserAttribute('deviceId', this.deviceService.getDeviceId());
+          }
+        },
+      };
+
+      this.initializeMParticleSDK(mParticleLoggedConfig);
+    } else {
+      const mParticleNotLoggedConfig = COMMON_MPARTICLE_CONFIG;
+
+      this.initializeMParticleSDK(mParticleNotLoggedConfig);
+    }
   }
 
-  private getUserIdentities(user: User): { email?: string; customerid?: string } {
-    if (!user.email || !user.id) {
-      return {};
-    }
+  private getUserIdentities(user: User): { email: string; customerid: string } {
     return {
       email: user.email,
       customerid: user.id,
     };
+  }
+
+  private initializeMParticleSDK(config: unknown): void {
+    mParticle.init(environment.mParticleKey, config);
+    mParticle.ready(() => {
+      this._mParticleReady$.next();
+    });
   }
 
   public trackEvent<T>(event: AnalyticsEvent<T>) {
