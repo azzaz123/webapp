@@ -1,5 +1,6 @@
 import { Directive, TemplateRef, ViewContainerRef, OnInit } from '@angular/core';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '@core/user/featureflag.service';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag.interface';
+import { FeatureflagService } from '@core/user/featureflag.service';
 
 @Directive({
   selector: '[tslDeliveryDevelopment]',
