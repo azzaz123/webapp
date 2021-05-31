@@ -29,7 +29,7 @@ describe('SubscriptionBenefitsService', () => {
     });
   });
 
-  describe('getBenefits', () => {
+  describe('get benefits list by category', () => {
     describe('is everything else category', () => {
       it('should return benefits', () => {
         const result = service.getBenefitsByCategory(CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE);
