@@ -38,6 +38,7 @@ import { ChangeCountryConfirmationModalComponent } from '../../modals/change-cou
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -66,6 +67,7 @@ describe('DeliveryAddressComponent', () => {
         DeliveryAddressApiService,
         DeliveryCountriesApiService,
         DeliveryLocationsApiService,
+        DeliveryAddressTrackEventsService,
         {
           provide: UuidService,
           useValue: {
