@@ -36,6 +36,18 @@ export class DeliveryAddressService {
     );
   }
 
+  public delete(addressId: string): Observable<null> {
+    return this.deliveryAddressApiService.delete(addressId).pipe(
+      tap(() => {
+        this.cleanDeliveryAddressStore();
+      })
+    );
+  }
+
+  private cleanDeliveryAddressStore(): void {
+    this.deliveryAddressStoreService.deliveryAddress = null;
+  }
+
   private updateDeliveryAddressStore(newDeliveryAddress: DeliveryAddressApi): void {
     this.deliveryAddressStoreService.deliveryAddress = { ...newDeliveryAddress };
   }

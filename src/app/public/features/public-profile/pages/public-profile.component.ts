@@ -141,27 +141,27 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   }
 
   private initializeFavouriteUser(): void {
-    this.isCurrentUserPipe.transform(this.userId).subscribe((isOurOwnUser: boolean) => {
-      if (!isOurOwnUser) {
-        this.getFavouriteUser();
-      }
-    });
+    const isOurOwnUser = this.isCurrentUserPipe.transform(this.userId);
+
+    if (!isOurOwnUser) {
+      this.getFavouriteUser();
+    }
   }
 
   private trackViewProfileEvent(): void {
-    this.isCurrentUserPipe.transform(this.userId).subscribe((isOwnUser: boolean) => {
-      if (isOwnUser) {
-        this.publicProfileTrackingEventsService.trackViewOwnProfile(this.userInfo.featured);
-      } else {
-        this.publicProfileTrackingEventsService.trackViewOtherProfile(this.userInfo, this.userStats.counters.publish);
-      }
-    });
+    const isOwnUser = this.isCurrentUserPipe.transform(this.userId);
+
+    if (isOwnUser) {
+      this.publicProfileTrackingEventsService.trackViewOwnProfile(this.userInfo.featured);
+    } else {
+      this.publicProfileTrackingEventsService.trackViewOtherProfile(this.userInfo, this.userStats.counters.publish);
+    }
   }
 
   private trackViewOwnOrOtherReviews(): void {
-    this.isCurrentUserPipe.transform(this.userId).subscribe((isOwnUser: boolean) => {
-      this.publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews(this.userInfo, this.userStats, isOwnUser);
-    });
+    const isOwnUser = this.isCurrentUserPipe.transform(this.userId);
+
+    this.publicProfileTrackingEventsService.trackViewOwnReviewsorViewOtherReviews(this.userInfo, this.userStats, isOwnUser);
   }
 
   private getFavouriteUser(): void {

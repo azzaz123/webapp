@@ -1,6 +1,5 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ErrorsService } from '@core/errors/errors.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import {
@@ -8,6 +7,7 @@ import {
   MOCK_INVALID_DELIVERY_ADDRESS,
   MOCK_DELIVERY_ADDRESS_EMPTY,
   MOCK_DELIVERY_ADDRESS_2,
+  MOCK_DELIVERY_ADDRESS_RESET,
 } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
@@ -39,16 +39,18 @@ import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
 import { PostalCodeIsNotAllowed } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/postal-code-is-not-allowed.error';
 import { InvalidPostalCodeError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/invalid-postal-code.error';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
   const countriesDropdownSelector = '#country_iso_code';
+  const deleteButtonSelector = '#deleteButton';
   let component: DeliveryAddressComponent;
   let fixture: ComponentFixture<DeliveryAddressComponent>;
   let deliveryAddressService: DeliveryAddressService;
   let deliveryLocationsService: DeliveryLocationsService;
   let deliveryCountriesService: DeliveryCountriesService;
-  let errorsService: ErrorsService;
+  let toastService: ToastService;
   let i18nService: I18nService;
   let modalService: NgbModal;
   let router: Router;
@@ -60,7 +62,7 @@ describe('DeliveryAddressComponent', () => {
       providers: [
         FormBuilder,
         I18nService,
-        ErrorsService,
+        ToastService,
         DeliveryCountriesService,
         DeliveryCountriesStoreService,
         DeliveryAddressApiService,
@@ -92,6 +94,9 @@ describe('DeliveryAddressComponent', () => {
             updateOrCreate() {
               return of();
             },
+            delete() {
+              return of();
+            },
           },
         },
       ],
@@ -104,7 +109,7 @@ describe('DeliveryAddressComponent', () => {
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
     i18nService = TestBed.inject(I18nService);
-    errorsService = TestBed.inject(ErrorsService);
+    toastService = TestBed.inject(ToastService);
     deliveryAddressService = TestBed.inject(DeliveryAddressService);
     deliveryLocationsService = TestBed.inject(DeliveryLocationsService);
     deliveryCountriesService = TestBed.inject(DeliveryCountriesService);
@@ -224,7 +229,7 @@ describe('DeliveryAddressComponent', () => {
       describe('and the save succeed...', () => {
         beforeEach(() => {
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(of(null));
-          spyOn(errorsService, 'i18nSuccess');
+          spyOn(toastService, 'show');
           spyOn(component, 'initForm');
           spyOn(router, 'navigate');
         });
@@ -232,7 +237,10 @@ describe('DeliveryAddressComponent', () => {
         it('should show a success message', () => {
           component.onSubmit();
 
-          expect(errorsService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS);
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS),
+            type: 'success',
+          });
         });
 
         it('should update the new form flag to false', () => {
@@ -270,28 +278,35 @@ describe('DeliveryAddressComponent', () => {
 
       describe('and the save fails...', () => {
         beforeEach(() => {
-          spyOn(errorsService, 'i18nError');
-          spyOn(i18nService, 'translate');
+          spyOn(toastService, 'show');
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
             throwError([
               { error_code: 'invalid mobile phone number', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' },
               new InvalidPostalCodeError(),
             ])
           );
-
-          component.onSubmit();
         });
-
         it('should show error toast', () => {
-          expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FORM_FIELD_ERROR);
+          component.onSubmit();
+
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
+            type: 'error',
+          });
         });
 
         it('should set errors if the backend return an invalid field', () => {
+          component.onSubmit();
+
           expect(component.deliveryAddressForm.get('phone_number').getError('invalid')).toBeTruthy();
           expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
         });
 
         it('should ask to the backend for the correct copys', () => {
+          spyOn(i18nService, 'translate');
+
+          component.onSubmit();
+
           expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_PHONE_MISSMATCH_LOCATION_ERROR);
         });
       });
@@ -299,7 +314,7 @@ describe('DeliveryAddressComponent', () => {
 
     describe('when the form is NOT valid...', () => {
       beforeEach(() => {
-        spyOn(errorsService, 'i18nError');
+        spyOn(toastService, 'show');
         spyOn(component, 'onSubmit').and.callThrough();
         component.deliveryAddressForm.patchValue(MOCK_INVALID_DELIVERY_ADDRESS);
 
@@ -307,7 +322,10 @@ describe('DeliveryAddressComponent', () => {
       });
 
       it('should show a toast with a form field error message', () => {
-        expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FORM_FIELD_ERROR);
+        expect(toastService.show).toHaveBeenCalledWith({
+          text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
+          type: 'error',
+        });
       });
 
       it('should mark as dirty the invalid form controls', () => {
@@ -324,22 +342,47 @@ describe('DeliveryAddressComponent', () => {
   });
 
   describe('when the user comes from the pay on payview...', () => {
-    it('should show an info message', () => {
+    beforeEach(() => {
       component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_PAY;
 
+      component.ngOnInit();
       fixture.detectChanges();
+    });
 
+    it('should show an info message', () => {
       expect(fixture.debugElement.query(By.css(payViewMessageSelector))).toBeTruthy();
+    });
+
+    it('should not appear the delete button', () => {
+      expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
     });
   });
 
-  describe('when the user NOT comes from the pay on payview...', () => {
-    it('should NOT show an info message', () => {
+  describe('when the user NOT comes from the pay button on payview...', () => {
+    beforeEach(() => {
       component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
 
+      component.ngOnInit();
+      fixture.detectChanges();
+    });
+
+    it('should NOT show an info message', () => {
+      expect(fixture.debugElement.query(By.css(payViewMessageSelector))).toBeFalsy();
+    });
+
+    it('should not appear the delete button', () => {
+      expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
+    });
+  });
+
+  describe('when the user NOT comes from the payview...', () => {
+    it('should appear the delete button', () => {
+      component.whereUserComes = null;
+
+      component.ngOnInit();
       fixture.detectChanges();
 
-      expect(fixture.debugElement.query(By.css(payViewMessageSelector))).toBeFalsy();
+      expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeTruthy();
     });
   });
 
@@ -420,6 +463,7 @@ describe('DeliveryAddressComponent', () => {
         fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();
         tick();
 
+        expect(component.isCountryEditable).toBe(false);
         expect(component.countriesDropdown.open).not.toHaveBeenCalled();
       }));
     });
@@ -585,6 +629,114 @@ describe('DeliveryAddressComponent', () => {
 
         expect(component.deliveryAddressForm.get('region').value).toBe(MOCK_DELIVERY_LOCATION_ES.region);
       });
+    });
+  });
+
+  describe('when clicking the delete button...', () => {
+    describe('and we confirm the action...', () => {
+      describe('and the delete action succeed...', () => {
+        beforeEach(() => {
+          component.deliveryAddressForm.setValue(MOCK_DELIVERY_ADDRESS);
+
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
+          spyOn(toastService, 'show');
+          spyOn(component.formComponent, 'initFormControl');
+          spyOn(deliveryAddressService, 'delete').and.returnValue(of(null));
+
+          fixture.debugElement.query(By.css(deleteButtonSelector)).nativeElement.click();
+        });
+
+        it('should open confirmation modal', () => {
+          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+        });
+
+        it('should prepare form and set the default country', fakeAsync(() => {
+          tick();
+
+          expect(component.isNewForm).toBe(true);
+          expect(component.formComponent.initFormControl).toHaveBeenCalled();
+          expect(component.deliveryAddressForm.get('country_iso_code').value).toBe(
+            MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.iso_code
+          );
+        }));
+
+        it('should call the delete action with the address id', fakeAsync(() => {
+          tick();
+
+          expect(deliveryAddressService.delete).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS.id);
+        }));
+
+        it('should show a success toast message', fakeAsync(() => {
+          tick();
+
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS),
+            type: 'success',
+          });
+        }));
+
+        it('should clear the form', fakeAsync(() => {
+          tick();
+
+          expect(component.deliveryAddressForm.value).toStrictEqual(MOCK_DELIVERY_ADDRESS_RESET);
+        }));
+
+        it('should reset the id', fakeAsync(() => {
+          tick();
+
+          expect(component.deliveryAddressForm.get('id').value).not.toStrictEqual(MOCK_DELIVERY_ADDRESS.id);
+        }));
+      });
+
+      describe('and the delete action fails...', () => {
+        beforeEach(() => {
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
+          spyOn(deliveryAddressService, 'delete').and.returnValue(throwError('network error'));
+          spyOn(toastService, 'show');
+
+          fixture.debugElement.query(By.css(deleteButtonSelector)).nativeElement.click();
+        });
+
+        it('should open confirmation modal', () => {
+          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+        });
+
+        it('should call the delete action with the address id', fakeAsync(() => {
+          tick();
+
+          expect(deliveryAddressService.delete).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS.id);
+        }));
+
+        it('should show an error toast message', fakeAsync(() => {
+          tick();
+
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR),
+            type: 'error',
+          });
+        }));
+      });
+    });
+
+    describe('and we NOT confirm the action...', () => {
+      beforeEach(() => {
+        spyOn(deliveryAddressService, 'delete');
+        spyOn(modalService, 'open').and.returnValue({ result: Promise.reject(), componentInstance: { ConfirmationModalComponent } });
+
+        fixture.debugElement.query(By.css(deleteButtonSelector)).nativeElement.click();
+      });
+
+      it('should open the delete confirmation modal', fakeAsync(() => {
+        tick();
+
+        expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+      }));
+
+      it('should NOT call the service', fakeAsync(() => {
+        tick();
+
+        expect(deliveryAddressService.delete).not.toHaveBeenCalled();
+      }));
     });
   });
 });
