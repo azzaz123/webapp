@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { CategoriesFilterIcon } from './interfaces/categories-filter-icon.interface';
 import { CategoriesFilterOption } from './interfaces/categories-filter-option.interface';
 import { FilterTemplateComponent } from '../abstract-filter/filter-template/filter-template.component';
-import { SelectFilterTemplateComponent } from '../abstract-select-filter/select-filter-template/select-filter-template.component';
+import { DrawerPlaceholderTemplateComponent } from '../abstract-select-filter/select-filter-template/drawer-placeholder-template.component';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { CategoriesFilterConfig } from './interfaces/categories-filter-config.interface';
 
@@ -26,7 +26,7 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   });
 
   @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
-  @ViewChild(SelectFilterTemplateComponent) placeholderTemplate: SelectFilterTemplateComponent;
+  @ViewChild(DrawerPlaceholderTemplateComponent) placeholderTemplate: DrawerPlaceholderTemplateComponent;
 
   private iconSubject = new BehaviorSubject('');
   private placeholderIconSubject = new BehaviorSubject('');
@@ -115,7 +115,7 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private updateSubjects(value: string = ''): void {
-    this.iconSubject.next(this.getCategoryIcon(value, value === '' ? 'standard' : 'stroke'));
+    this.iconSubject.next(this.getCategoryIcon(value, 'stroke'));
     this.placeholderIconSubject.next(this.getCategoryIcon(value, 'standard'));
     this.labelSubject.next(this.getCategoryLabel(value));
   }

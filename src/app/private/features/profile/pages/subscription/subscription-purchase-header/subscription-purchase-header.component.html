@@ -9,9 +9,8 @@
                     subscription
                 </span></b>
                 <span *ngIf="subscription.trial_available" class="d-block d-md-inline">
-                    <span i18n="@@web_subscription_price_discount_days_trial_free" class="SubscriptionPurchaseHeader__trialBanner px-2 ">
-                        {{subscription.trial_days}}-day trial for free
-                    </span>
+                    <span i18n="@@web_subscription_price_discount_days_trial_free"
+                     class="SubscriptionPurchaseHeader__trialBanner px-2">{{subscription.trial_days}}-day trial for free</span>
                 </span>
         </div>
         <div class="mb-2 SubscriptionPurchaseHeader__subtitle" i18n="@@web_subscription_purchase_subscription_subtitle">

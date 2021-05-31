@@ -9,6 +9,7 @@ export const CAR_FILTER_CONFIGURATION: BubbleDrawerConfiguration = {
     CAR_FILTER_ID.BRAND_N_MODEL,
     CAR_FILTER_ID.YEAR,
     CAR_FILTER_ID.KM,
+    CAR_FILTER_ID.LOCATION,
   ],
   drawer: [
     CAR_FILTER_ID.CATEGORIES,
@@ -23,6 +24,7 @@ export const CAR_FILTER_CONFIGURATION: BubbleDrawerConfiguration = {
     CAR_FILTER_ID.ENGINE,
     CAR_FILTER_ID.GEARBOX,
     CAR_FILTER_ID.WARRANTY,
+    CAR_FILTER_ID.LOCATION,
     CAR_FILTER_ID.POSTED_AGO,
   ],
 };

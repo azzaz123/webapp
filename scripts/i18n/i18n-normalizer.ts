@@ -2,44 +2,66 @@ const fs = require('fs');
 const xmlParser = require('xml2json');
 const { execSync } = require('child_process');
 const readline = require('readline');
-
-const keyPrefix = 'web_';
+const https = require('https');
 
 enum LANGUAGE {
   SPANISH = 'es',
   ENGLISH = 'en'
 }
 
+interface PhraseLocale {
+  id: string;
+  name: string;
+  code: string;
+  default: true;
+  main: false;
+  rtl: false;
+  plural_forms: string[];
+  source_locale: {
+    id: string,
+    name: string,
+    code: string
+  };
+  created_at: string;
+  updated_at: string;
+}
+
+type PhraseLocaleTranslations = Record<string, { message: string }>;
+
+interface TranslatedPhraseLocale extends PhraseLocale {
+  originals: Translation[];
+}
+
+interface Translation {
+  key: string;
+  value: string;
+}
+
+interface RegexFormatter {
+  regex: RegExp;
+  replacer: string | ((index: number) => ReplacerFunc);
+}
+
+interface TranslationSet {
+  locale: string;
+  translations: Translation[];
+}
+
+type ReplacerFunc = ((substring: string, ...args: any[]) => string);
+
 interface CopyLocation {
   language: LANGUAGE;
   file: string;
 }
 
-type Translation = Record<LANGUAGE, string | Object>;
-
-interface Copy {
+interface CopySource {
   key: string;
-  source: string;
-  translation: Translation;
+  sources: string[];
 }
-
-interface CopyNode {
-  id: string;
-  source?: string;
-  text: string | Object; // BEFOREMERGE: Type object
-}
-
-type TranslatedNodes = Record<Partial<LANGUAGE>, CopyNode[]>;
 
 interface MissingTranslation {
   id: string;
   missingLanguages: LANGUAGE[];
-}
-
-interface SubstitutionKey {
-  oldKey: string;
-  newKey: string;
-  source: string;
 }
 
 class I18nNormalizer {
@@ -47,38 +69,55 @@ class I18nNormalizer {
     'What should I do?\n' +
     '1. Run i18n\n' +
     '2. Print missing translations\n' +
-    '3. Clean up keys\n' +
+    '3. Clean translations files\n' +
+    '4. Download and merge Phrase\n' +
+    '5. Prepare Phrase files to upload\n' +
     'e. Exit\n' +
     'Ans: ';
+  private confirmDoneString = '\n\nPress enter to clean when done uploading: ';
 
   private copyLocations: CopyLocation[] = [{
     language: LANGUAGE.ENGLISH,
-    file: 'src/locale/messages.xmb'
+    file: 'src/locale/messages.en.json'
   }, {
     language: LANGUAGE.SPANISH,
-    file: 'src/locale/es.xtb'
+    file: 'src/locale/messages.es.json'
   }];
 
-  private pathsToSkip = [
-    'node_modules'
-  ];
-  private escapeLesserThan = '$LESSER_THAN';
-  private escapeGreaterThan = '$GREATER_THAN';
+  private sourcedMessagesFile = 'src/locale/messages.xlf';
 
   private originalLanguage = LANGUAGE.ENGLISH;
 
-  private cumulativeIndex = 0;
+  private projectId = '00bf7dee267ad3d87db0f7f4da989e43';
+  private bearerToken = '67f5e5862f1ac8f3fed7bce2cc8653fd5d41911f80848f490e1464f3aa507100';
+  private phraseTags = ['multiplatform'];
+  // private phraseTags = ['multiplatform', 'legacy_web'];
+
+  private phraseHtmlRegexFormatters: RegexFormatter[] = [{
+    regex: /<b(?: .*?>|>)(.+?)<\/b>/,
+    replacer: '$1'
+  }, {
+    regex: /<i(?: .*?>|>)(.+?)<\/i>/,
+    replacer: '$1'
+  }, {
+    regex: /<u(?: .*?>|>)(.+?)<\/u>/,
+    replacer: '$1'
+  }, {
+    regex: /<s(?: .*?>|>)(.+?)<\/s>/,
+    replacer: '$1'
+  }, {
+    regex: /<span(?: .*?>|>)(.+?)<\/span>/,
+    replacer: '$1'
+  }, {
+    regex: /<a(?: .*?>|>)(.+?)<\/a>/,
+    replacer: '$1'
+  }, {
+    regex: /%(\d+?)\$s/,
+    replacer: () => this.interpolationReplacer()
+  }];
 
   public async menu(): Promise<void> {
-    const readlineInterface = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
-    const answer = await new Promise(resolve => readlineInterface.question(this.menuString, (ans) => {
-      readlineInterface.close();
-      resolve(ans);
-    }));
+    const answer = await this.askInput(this.menuString);
 
     switch (answer) {
       case '1':
@@ -88,8 +127,13 @@ class I18nNormalizer {
         this.printMissingTranslations();
         break;
       case '3':
-        await this.addMissingKeys();
-        await this.normalizeKeys();
+        this.cleanTranslationFiles();
+        break;
+      case '4':
+        await this.mergeTranslationsWithLocal();
+        break;
+      case '5':
+        await this.preparePhraseFiles();
         break;
       default:
         return;
@@ -98,22 +142,91 @@ class I18nNormalizer {
     return this.menu();
   }
 
-  private getCopies(): Copy[] {
-    const translatedNodes = this.getTranslatedNodes();
-    const originalNodes = translatedNodes[this.originalLanguage];
+  private async preparePhraseFiles(): Promise<void> {
+    const currentTranslationSets = this.getCurrentTranslationSets();
 
-    return originalNodes.map(node => {
-      const languages = Object.values(LANGUAGE) as LANGUAGE[];
+    const languages = Object.values(LANGUAGE);
 
-      return  {
-        key: node.id,
-        source: node.source,
-        translation: languages.reduce((acc, lang) => {
-          return {
-            ...acc,
-            [lang]: translatedNodes[lang].find(translatedNode => translatedNode.id === node.id)?.text
-          };
-        }, {} as Translation)
+    languages.forEach(lang => {
+      const translationArray = currentTranslationSets.find(set => set.locale === lang).translations;
+      const translations = translationArray.reduce((acc, tr) => {
+        return {
+          ...acc,
+          [tr.key]: tr.value
+        };
+      }, {});
+
+      fs.writeFileSync(`src/locale/phrase.${lang}.json`, JSON.stringify(translations, undefined, 2));
+    });
+
+    await this.askInput(this.confirmDoneString);
+
+    execSync(`rm src/locale/phrase.*.json`);
+  }
+
+  private cleanTranslationFiles(): void {
+    const translationSets = this.getCurrentTranslationSets();
+    const originalCopies = translationSets.find(set => set.locale === this.originalLanguage).translations;
+
+    this.copyLocations.filter((location) => location.language !== this.originalLanguage).forEach(location => {
+      const copies = translationSets.find(set => set.locale === location.language).translations;
+      const translations = {};
+
+      const keys = originalCopies.map(copy => copy.key);
+      keys.forEach(key => {
+        translations[key] = copies.find(copy => copy.key === key).value;
+      });
+
+      fs.writeFileSync(location.file, JSON.stringify({ locale: location.language, translations}, undefined, 2));
+    });
+  }
+
+  private generateSourcedCopies(): void {
+    console.log('Generating sources...');
+    execSync('ng extract-i18n --output-path=src/locale');
+  }
+
+  private clearSourcedCopies(): void {
+    console.log('Cleaning generated source files...');
+    execSync(`rm ${this.sourcedMessagesFile}`);
+  }
+
+  public async mergeTranslationsWithLocal(): Promise<void> {
+    const locales = await this.getPhraseLocales();
+
+    const originalTranslationSets = this.getOriginalTranslationSets(locales);
+    const formattedTranslationSets = this.getFormattedTranslationSets(locales);
+
+    // TODO: Merge will be added on another PR
+
+    console.log(originalTranslationSets);
+    console.log(formattedTranslationSets);
+
+    // this.mergeCopySets(translationSets);
+  }
+
+  private getCopySources(): CopySource[] {
+    this.generateSourcedCopies();
+    const rawCopiesFile = fs.readFileSync(this.sourcedMessagesFile, 'utf8');
+
+    const rawCopiesJSON = xmlParser.toJson(rawCopiesFile);
+    const transUnits = JSON.parse(rawCopiesJSON).xliff.file.body['trans-unit'];
+
+    this.clearSourcedCopies();
+
+    return transUnits.map(transUnit => {
+      const contextGroup = transUnit['context-group'];
+
+      const contexts = contextGroup instanceof Array
+        ? contextGroup.reduce((acc, group) => {
+            acc.push(...group.context);
+            return acc;
+          }, [])
+        : contextGroup.context;
+
+      return {
+        key: transUnit.id,
+        sources: contexts.filter(context => context['context-type'] === 'sourcefile').map(context => context.$t)
       };
     });
   }
@@ -122,49 +235,30 @@ class I18nNormalizer {
     execSync('yarn i18n');
   }
 
-  private async addMissingKeys(): Promise<void> {
-    const copies = this.getCopies();
-    const copiesWithoutKey = copies.filter(copy => this.isNumericKey(copy.key));
-    if (copiesWithoutKey.length > 0) {
-      const substitutionKeys = copiesWithoutKey.map((copy) => ({
-        oldKey: copy.key,
-        source: copy.source,
-        newKey: this.getNewKey(copy)
-      }));
-
-      console.log(
-        '\nKeys to be added:\n',
-        substitutionKeys.map(({ source, oldKey, newKey }) => `${source}: ${oldKey} -> ${newKey}`).join('\n')
-      );
-
-      if (await this.askForConfirmation()) {
-        this.substituteKeys(substitutionKeys);
-
-        console.log('\nChecking for more keys...\n');
-        await this.addMissingKeys();
-      }
-
-    } else {
-      console.log('\nNo missing keys\n');
-    }
-  }
-
   private printMissingTranslations(): void {
-    const copies = this.getCopies();
-    const missingTranslations = copies.reduce((acc, copy) => {
-      const languageKeys: LANGUAGE[] = Object.keys(copy.translation) as LANGUAGE[];
+    const currentTranslationSets = this.getCurrentTranslationSets();
+    const originalTranslations = currentTranslationSets.find(languageCopy => languageCopy.locale === this.originalLanguage).translations;
+    const otherTranslationSets = currentTranslationSets.filter(languageCopy => languageCopy.locale !== this.originalLanguage);
+    const missingTranslations: MissingTranslation[] = [];
 
-      const missingLanguages = languageKeys.filter(lang => copy.translation[lang] === undefined);
+    originalTranslations.forEach(originalTranslation => {
+      const missingLanguages = [];
+
+      otherTranslationSets.forEach(set => {
+        const foundTr = set.translations.find(tr => tr.key === originalTranslation.key);
+
+        if (!foundTr) {
+          missingLanguages.push(set.locale);
+        }
+      });
 
       if (missingLanguages.length > 0) {
-        acc.push({
-          id: copy.key,
+        missingTranslations.push({
+          id: originalTranslation.key,
           missingLanguages
         });
       }
-
-      return acc;
-    }, [] as MissingTranslation[]);
+    });
 
     if (missingTranslations.length > 0) {
       console.log(
@@ -177,203 +271,152 @@ class I18nNormalizer {
     }
   }
 
-  private async normalizeKeys(): Promise<void> {
-    const copies = this.getCopies();
-    const processedCopies: Copy[] = copies.map(copy => ({
-      ...copy,
-      key: this.generateNormalizedKey(copy.key)
-    }));
-
-    const substitutionKeys: SubstitutionKey[] = processedCopies.map((copy, index) => ({
-      newKey: copy.key,
-      oldKey: copies[index].key,
-      source: copy.source
-    })).filter(copy => copy.newKey !== copy.oldKey);
-
-    if (substitutionKeys.length > 0) {
-      console.log(
-        `\nKeys to normalize:\n`,
-        substitutionKeys.map(({ source, oldKey, newKey }) => `${source}: ${oldKey} -> ${newKey}`).join('\n')
-      );
-
-      if (await this.askForConfirmation()) {
-        this.substituteKeys(substitutionKeys);
-        console.log('\nChecking for more keys...\n');
-        await this.normalizeKeys();
-      }
-
-    } else {
-      console.log('No keys to normalize');
-    }
+  private getCurrentTranslationSets(): TranslationSet[] {
+    return this.copyLocations.map(location => {
+      return {
+        locale: location.language,
+        translations: this.getJsonCopies(location.file)
+      };
+    });
   }
 
-  private async askForConfirmation(): Promise<boolean> {
+  private getJsonCopies(copiesFileLocation: string): Translation[] {
+    const rawCopiesFile = fs.readFileSync(copiesFileLocation, 'utf8');
+
+    const copiesObject = JSON.parse(rawCopiesFile);
+    const translations = copiesObject.translations;
+
+    const keys = Object.keys(translations);
+
+    return keys.map(key => ({
+      key,
+      value: translations[key]
+    }));
+  }
+
+  private async askInput(message: string): Promise<string> {
     const readlineInterface = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
     });
 
-    const answer = await new Promise(resolve => readlineInterface.question('Do you want to proceed? (Y/n): ', (ans) => {
+    return new Promise(resolve => readlineInterface.question(message, (ans) => {
       readlineInterface.close();
       resolve(ans);
     }));
-
-    return answer === 'y' || answer === 'Y';
   }
 
-  private substituteKeys(substitutionKeys: SubstitutionKey[]): void {
-    substitutionKeys.forEach((substitutionKey) => {
-      this.setNewKeyInSourceFiles(substitutionKey);
-    });
+  private async getPhraseLocales(): Promise<TranslatedPhraseLocale[]> {
+    console.log('Retrieving translations from phrase...');
+    const locales = await this.getLocales();
 
-    this.setNewKeysInFiles(substitutionKeys);
+    return Promise.all(locales.map(async locale => {
+      const phraseTranslations = await this.getLocaleTranslations(locale);
+      const originals: Translation[] = [];
+      const keys = Object.keys(phraseTranslations);
 
-    this.runI18n();
-  }
-
-  private setNewKeyInSourceFiles(substitutionKey: SubstitutionKey): void {
-    const {source, oldKey, newKey} = substitutionKey;
-    const splitPath = source.split(':');
-    const filePath = splitPath[0];
-
-    let rawFile = fs.readFileSync(filePath, 'UTF-8');
-
-    rawFile = rawFile.replace(new RegExp(`@@${oldKey}`, 'g'), `@@${newKey}`);
-
-    fs.writeFileSync(filePath, rawFile);
-  }
-
-  private setNewKeysInFiles(substitutionKeys: SubstitutionKey[]): void {
-    this.copyLocations.forEach(({ file }) => {
-      let rawFile = fs.readFileSync(file, 'utf8');
-
-      substitutionKeys.forEach(({oldKey, newKey}) => {
-        const regexpFindOldKey = new RegExp(`"${oldKey}"`, 'g');
-
-        rawFile = rawFile.replace(regexpFindOldKey, `"${newKey}"`);
+      keys.forEach(key => {
+        originals.push({
+          key,
+          value: phraseTranslations[key].message
+        });
       });
 
-      fs.writeFileSync(file, rawFile);
-    });
-  }
-
-  private getTranslatedNodes(): TranslatedNodes {
-    return this.copyLocations.reduce((acc, location) => {
       return {
-        ...acc,
-        [location.language]: this.getNodeMessages(location.file)
+        ...locale,
+        originals
       };
-    }, {} as TranslatedNodes);
+    }));
   }
 
-  private getNodeMessages(copiesFileLocation): CopyNode[] {
-    const copyNodes = this.getTranslationNodesFromFile(copiesFileLocation);
-    return copyNodes.filter(node => !this.shouldSkipPath(node));
+  private getOriginalTranslationSets(locales: TranslatedPhraseLocale[]): TranslationSet[] {
+    console.log('Recovering original translations...');
+    return locales.map(locale => ({
+      locale: locale.name,
+      translations: locale.originals
+    }));
   }
 
-  private getTranslationNodesFromFile(copiesFileLocation): CopyNode[] {
-    const rawCopiesFile = fs.readFileSync(copiesFileLocation, 'utf8');
+  private getFormattedTranslationSets(locales: TranslatedPhraseLocale[]): TranslationSet[] {
+    console.log('Recovering formatted translations...');
+    const translationSets: TranslationSet[] = [];
 
-    const isXMB = copiesFileLocation.endsWith('.xmb');
-    const isXTB = copiesFileLocation.endsWith('.xtb');
+    for (const locale of locales) {
+      const phraseTranslations = locale.originals;
 
-    if (isXMB) {
-      const cleanedFileString = this.cleanupRawXMB(rawCopiesFile);
-      const rawCopiesJSON = xmlParser.toJson(cleanedFileString);
-      const copiesObject = JSON.parse(rawCopiesJSON);
-      return copiesObject.messagebundle.msg;
+      translationSets.push({
+        locale: locale.name,
+        translations: phraseTranslations.map(translation => ({
+          key: translation.key,
+          value: this.formatPhraseHtmlNodes(translation.value)
+        }))
+      });
     }
 
-    if (isXTB) {
-      const cleanedFileString = this.cleanupRawXTB(rawCopiesFile);
-      const rawCopiesJSON = xmlParser.toJson(cleanedFileString, { alternateTextNode: 'text' } );
-      const copiesObject = JSON.parse(rawCopiesJSON);
-      return copiesObject.translationbundle.translation;
-    }
-
-    return [];
+    return translationSets;
   }
 
-  private shouldSkipPath(node: CopyNode): boolean {
-    if (node.source) {
-      for (const path of this.pathsToSkip) {
-        if (node.source.startsWith(path)) {
-          return true;
-        }
+  private formatPhraseHtmlNodes(message: string): string {
+    let formattedMessage = message;
+
+    this.phraseHtmlRegexFormatters.forEach(({ regex, replacer }) => {
+      const globalRegex = new RegExp(regex, 'gm');
+
+      const matches = message.match(globalRegex);
+
+      if (matches) {
+        (matches).forEach((substr, index) => {
+          if (typeof replacer === 'string') {
+            formattedMessage = formattedMessage.replace(regex, replacer);
+          } else {
+            formattedMessage = formattedMessage.replace(regex, replacer(index));
+          }
+        });
       }
-    }
-
-    return false;
-  }
-
-  private cleanupRawXMB(rawStringFile): string {
-    const translationTagSeparator = `msg`;
-    const regexpMatchTranslationSeparatorsAperture = new RegExp(`</source>`, 'g');
-    const regexpMatchTranslationSeparatorsClosure = new RegExp(`</${translationTagSeparator}>`, 'g');
-    const apertureReplacement = '</source><text>';
-    const closureReplacement = `</text></${translationTagSeparator}>`;
-    const regexpCleanupInterpolations = new RegExp('/<ph.*\/>/', 'g');
-    const interpolationsReplacement = '__INTERPOLATION__';
-
-    return rawStringFile
-      .replace(regexpMatchTranslationSeparatorsAperture, apertureReplacement)
-      .replace(regexpMatchTranslationSeparatorsClosure, closureReplacement)
-      .replace(regexpCleanupInterpolations, interpolationsReplacement);
-  }
-
-  private cleanupRawXTB(rawStringFile): string {
-    const allLines = rawStringFile.split('\n');
-    allLines.forEach((line, i) => {
-      line = line.replace(/<ph/g, `${this.escapeLesserThan}ph`);
-      line = line.replace(/<ex>/g, `${this.escapeLesserThan}ex${this.escapeGreaterThan}`);
-      line = line.replace(/<\/ex>/g, `${this.escapeLesserThan}/ex${this.escapeGreaterThan}`);
-      line = line.replace(/<\/ph>/g, `${this.escapeLesserThan}/ph${this.escapeGreaterThan}`);
-      allLines[i] = line;
     });
 
-    return allLines.join('\n');
+    return formattedMessage;
   }
 
-  private isNumericKey(id): boolean {
-    return !isNaN(id) && !isNaN(parseFloat(id));
+  private getLocaleTranslations(locale: PhraseLocale): Promise<PhraseLocaleTranslations> {
+    return this.get<PhraseLocaleTranslations>(`https://api.phrase.com/v2/projects/${this.projectId}/locales/${locale.id}/download?file_format=json&tags=${this.phraseTags.join(',')}`);
   }
 
-  private generateKeyByPath(path: string): string {
-    const pathWithoutFileLines = path.split(':')[0];
-    const pathWithoutExtension = pathWithoutFileLines.replace('.component.html', '');
-    const normalizedPath = pathWithoutExtension.replace(/-/g, '/');
-    const splitBySlash = normalizedPath.split('/');
-    const key = splitBySlash.slice(4, splitBySlash.length + 1).join('_');
-    const normalizedKey = this.generateNormalizedKey(key);
-
-    this.cumulativeIndex++;
-    return `${normalizedKey}_${this.cumulativeIndex}`;
+  private getLocales(): Promise<PhraseLocale[]> {
+    return this.get<PhraseLocale[]>(`https://api.phrase.com/v2/projects/${this.projectId}/locales`);
   }
 
-  private getNewKey(node: Copy): string {
-    const isAutogenerated = this.isNumericKey(node.key);
-    if (isAutogenerated) {
-      return this.generateKeyByPath(node.source);
-    } else {
-      return this.generateNormalizedKey(node.key);
-    }
+  private get<T>(endpoint: string): Promise<T> {
+    return new Promise((resolve, reject) => {
+      https.get(endpoint, {
+        headers: {
+          Authorization: `Bearer ${this.bearerToken}`
+        }
+      }, (resp) => {
+        let data = '';
+
+        // A chunk of data has been received.
+        resp.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        // The whole response has been received. Print out the result.
+        resp.on('end', () => {
+          resolve(JSON.parse(data));
+        });
+
+      }).on('error', (err) => {
+        reject(err);
+      });
+    });
   }
 
-  private snakeCase(string: string): string {
-    return string.replace(/\W+/g, ' ')
-      .split(/ |\B(?=[A-Z])/)
-      .map(word => word.toLowerCase())
-      .join('_');
-  }
+  private interpolationReplacer(): ReplacerFunc {
+    return (substring: string, interpolatorIndex: string) => {
+      const interpolationValue = Number.parseInt(interpolatorIndex, 0) - 1;
 
-  private generateNormalizedKey(key: string): string {
-    let newKey = this.snakeCase(key);
-    const needsPrefix = !newKey.startsWith(keyPrefix);
-    if (needsPrefix) {
-      newKey = `${keyPrefix}${newKey}`;
-    }
-
-    return newKey;
+      return interpolationValue ? `{$INTERPOLATION_${interpolationValue}}` : '{$INTERPOLATION}';
+    };
   }
 }
 

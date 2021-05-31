@@ -9,10 +9,7 @@
           <div class="w-100">
             <tsl-user-basic-info [userStats]="userStats" [userInfo]="userInfo" [styleSize]="USER_INFO_SIZE.BIG">
             </tsl-user-basic-info>
-            <div class="ProBadge d-flex align-items-center" *ngIf="userInfo.featured">
-              <tsl-svg-icon class="ml-3" src="/assets/icons/pro-seal.svg"></tsl-svg-icon>
-              <div class="ml-2 d-inline ProfileUser__container__title--bold">PRO</div>
-            </div>
+            <tsl-pro-badge *ngIf="userInfo.featured" class="d-flex align-items-center"></tsl-pro-badge>
           </div>
         </div>
       </div>
@@ -20,7 +17,7 @@
         <tsl-user-stats [userStats]="userStats" [userInfo]="userInfo"></tsl-user-stats>
       </div>
     </div>
-    <div class="row px-2 px-md-4 mt-3 mt-sm-0" *ngIf="isProAndHaveDescription()">
+    <div class="row px-2 px-md-4 mt-3 mt-sm-0" *ngIf="isProAndHasDescription">
       <div class="col-12">
         <div class="row mb-1">
           <div class="col-12">

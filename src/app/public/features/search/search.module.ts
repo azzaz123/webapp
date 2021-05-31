@@ -24,6 +24,7 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SearchStoreService } from '@public/features/search/core/services/search-store.service';
 import { SearchAdsService } from './core/ads/search-ads.service';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import { SearchAdsService } from './core/ads/search-ads.service';
       useClass: FilterParameterStoreService,
     },
     SearchAdsService,
+    HostVisibilityService,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
 })

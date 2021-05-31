@@ -5,6 +5,9 @@ import { StripeService } from '../../../core/stripe/stripe.service';
 import { FinancialCard } from './financial-card';
 import { finalize } from 'rxjs/operators';
 import { NoCardModalComponent } from 'app/shared/modals/no-card-modal/no-card-modal.component';
+import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { COLORS } from '@core/colors/colors-constants';
 
 @Component({
   selector: 'tsl-credit-card-info',
@@ -21,7 +24,7 @@ export class CreditCardInfoComponent {
   @Output() onSetChangeCard: EventEmitter<Event> = new EventEmitter();
   @Output() onDeleteStripeCard: EventEmitter<FinancialCard> = new EventEmitter();
 
-  constructor(private modalService: NgbModal, private stripeService: StripeService) {}
+  constructor(private modalService: NgbModal, private stripeService: StripeService, private i18nService: I18nService) {}
 
   public checkDelete(e: Event) {
     e.stopPropagation();
@@ -47,10 +50,15 @@ export class CreditCardInfoComponent {
   }
 
   public deleteStripeCard() {
-    const modalRef = this.modalService.open(ConfirmationModalComponent, {
-      windowClass: 'modal-prompt',
-    });
-    modalRef.componentInstance.type = 4;
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
+
+    modalRef.componentInstance.properties = {
+      title: this.i18nService.translate(TRANSLATION_KEY.DELETE_CARD_TITLE),
+      description: this.i18nService.translate(TRANSLATION_KEY.DELETE_CARD_DESCRIPTION),
+      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELETE_BUTTON),
+      confirmColor: COLORS.NEGATIVE_MAIN,
+    };
+
     modalRef.componentInstance.financialCard = this.financialCard;
     modalRef.result.then(
       () => {

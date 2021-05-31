@@ -7,7 +7,6 @@ import { ToastService } from './core/services/toast.service';
 @NgModule({
   imports: [CommonModule, NgbToastModule],
   declarations: [ToastComponent],
-  providers: [ToastService],
   exports: [ToastComponent],
 })
 export class ToastModule {}

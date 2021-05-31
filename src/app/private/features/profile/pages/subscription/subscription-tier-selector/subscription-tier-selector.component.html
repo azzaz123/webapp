@@ -7,8 +7,7 @@
                     {{ getLimitText(tier) }}
                 </div>
                 <div class="GenericCard__subtitle Card__subtitle">
-                    <b><span i18n="@@web_profile_pages_subscription_326">
-                            {{tier.price}}{{tier.currency}}/month</span></b>
+                    <b><span i18n="@@web_profile_pages_subscription_326">{{tier.price}}{{tier.currency}}/month</span></b>
                     <ng-container *ngIf="subscription.trial_available">&nbsp;<span i18n="@@web_after_free_trial">after free trial</span>
                     </ng-container>
                 </div>

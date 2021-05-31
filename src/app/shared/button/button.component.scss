@@ -200,6 +200,21 @@ $vertical-padding: $spacing-ms;
     max-width: 371px;
   }
 
+  &.btn-link {
+    color: $walla-main;
+
+    &--negative {
+      color: $negative-main;
+    }
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
   &--width {
     width: 100%;
   }

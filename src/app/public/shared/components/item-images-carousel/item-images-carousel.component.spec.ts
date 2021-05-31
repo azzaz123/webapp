@@ -1,12 +1,19 @@
-import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { DeviceService } from '@core/device/device.service';
+import { MockDeviceService } from '@fixtures/device.fixtures.spec';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { SlidesCarouselComponent } from '../carousel-slides/carousel-slides.component';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '../item-flag/item-flag-constants';
+import { ItemFlagComponent } from '../item-flag/item-flag.component';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
 
 describe('ItemImagesCarouselComponent', () => {
   let component: ItemImagesCarouselComponent;
   let fixture: ComponentFixture<ItemImagesCarouselComponent>;
+  let deviceService: DeviceService;
   const flagRightClass = '.ItemFlag--right';
   const flagLeftClass = '.ItemFlag--left';
   const disabledCarouselClass = '.ItemImagesCarousel--disabled';
@@ -14,8 +21,9 @@ describe('ItemImagesCarouselComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemImagesCarouselComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [{ provide: DeviceService, useValue: MockDeviceService }],
+      imports: [SvgIconModule, HttpClientTestingModule],
+      declarations: [ItemImagesCarouselComponent, SlidesCarouselComponent, ItemFlagComponent],
     })
       .overrideComponent(ItemImagesCarouselComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -25,7 +33,9 @@ describe('ItemImagesCarouselComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemImagesCarouselComponent);
+    deviceService = TestBed.inject(DeviceService);
     component = fixture.componentInstance;
+    component.images = [];
     fixture.detectChanges();
   });
 

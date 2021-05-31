@@ -7,8 +7,8 @@ import { ToggleFilterComponent } from './toggle-filter.component';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 @NgModule({
-  declarations: [ToggleFilterComponent, IsBubblePipe],
+  declarations: [ToggleFilterComponent],
   imports: [CommonModule, AbstractFilterModule, ToggleFormModule, FormsModule],
-  exports: [ToggleFilterComponent, IsBubblePipe],
+  exports: [ToggleFilterComponent],
 })
 export class ToggleFilterModule {}

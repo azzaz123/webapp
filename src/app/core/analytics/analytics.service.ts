@@ -31,6 +31,10 @@ export class AnalyticsService {
         const CONFIG = {
           isDevelopmentMode: !environment.production,
           identifyRequest: { userIdentities: this.getUserIdentities(user) },
+          dataPlan: {
+            planId: 'dataplan',
+            planVersion: 1,
+          },
           identityCallback: (result) => {
             const mParticleUser = result.getUser();
             if (mParticleUser) {

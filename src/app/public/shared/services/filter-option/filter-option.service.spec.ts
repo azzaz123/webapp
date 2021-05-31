@@ -6,7 +6,12 @@ import { FilterOptionsApiService } from './services/filter-options-api.service';
 import { FilterOptionsMapperService } from './services/filter-options-mapper.service';
 import { ConfigurationId } from '../../components/filters/core/types/configuration-id.type';
 import { MockFilterOptionApiService, MockFilterOptionMapperService, MockFilterParameterService } from '@fixtures/filter-option.fixtures';
-import { FILTER_PARAMETER_DRAFT_STORE_TOKEN } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 
 jest.mock('./data/hardcoded-options', () => ({
   HARDCODED_OPTIONS: {
@@ -86,6 +91,11 @@ describe('FilterOptionService', () => {
         {
           provide: FilterOptionsMapperService,
           useClass: MockFilterOptionMapperService,
+        },
+        HostVisibilityService,
+        {
+          provide: FILTER_PARAMETER_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
         },
       ],
     });

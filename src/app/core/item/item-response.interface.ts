@@ -387,7 +387,7 @@ export interface DeliveryInfo {
 
 export interface ItemExtraInfo {
   object_type?: ItemObjectType;
-  brand: string;
+  brand?: string;
   model?: string;
   gender?: string;
   size?: {

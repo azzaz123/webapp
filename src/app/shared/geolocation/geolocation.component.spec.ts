@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeolocationComponent } from './geolocation.component';
 import { of } from 'rxjs';
-import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
 import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
 import { GeolocationService } from '../../core/geolocation/geolocation.service';
 import { CookieService } from 'ngx-cookie';
 import { UserService } from '../../core/user/user.service';
+import { MOCK_LOCATION_SUGGESTIONS } from '@fixtures/core/geolocation/geolocation-service.fixtures.spec';
 
 describe('GeolocationComponent', () => {
   let component: GeolocationComponent;
@@ -27,7 +27,7 @@ describe('GeolocationComponent', () => {
             provide: GeolocationService,
             useValue: {
               search: () => {
-                return of(GEOLOCATION_DATA_WEB);
+                return of(MOCK_LOCATION_SUGGESTIONS);
               },
               geocode: () => {
                 return of(COORDINATE_DATA_WEB);
@@ -102,11 +102,11 @@ describe('GeolocationComponent', () => {
       const newLocation = {
         latitude: COORDINATE_DATA_WEB.latitude,
         longitude: COORDINATE_DATA_WEB.longitude,
-        name: GEOLOCATION_DATA_WEB[0].item.description,
+        name: MOCK_LOCATION_SUGGESTIONS[0].description,
       };
       done();
 
-      component.selectItem(GEOLOCATION_DATA_WEB[0]);
+      component.selectItem(MOCK_LOCATION_SUGGESTIONS[0]);
 
       expect(component.newCoordinate.emit).toHaveBeenCalledWith(COORDINATE_DATA_WEB);
       expect(userService.updateSearchLocationCookies).toHaveBeenCalledWith(newLocation);
@@ -115,7 +115,7 @@ describe('GeolocationComponent', () => {
     it('should not save cookies if updateLocation false', () => {
       component.updateLocation = false;
 
-      component.selectItem(GEOLOCATION_DATA_WEB[0]);
+      component.selectItem(MOCK_LOCATION_SUGGESTIONS[0]);
 
       expect(userService.updateSearchLocationCookies).toHaveBeenCalledTimes(0);
     });

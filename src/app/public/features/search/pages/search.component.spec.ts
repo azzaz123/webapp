@@ -12,7 +12,6 @@ import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { SearchErrorLayoutComponentStub } from '@fixtures/shared/components/search-error-layout.component.stub';
-import { Store } from '@ngrx/store';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
@@ -37,6 +36,9 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -104,10 +106,6 @@ describe('SearchComponent', () => {
           provide: SearchService,
           useValue: searchServiceMock,
         },
-        {
-          provide: Store,
-          useValue: storeMock,
-        },
         { provide: DeviceDetectorService, useValue: { isMobile: () => false } },
         { provide: ViewportService, useValue: { onViewportChange: of('') } },
         {
@@ -134,6 +132,8 @@ describe('SearchComponent', () => {
         QueryStringLocationService,
         { provide: 'SUBDOMAIN', useValue: 'es' },
         { provide: CookieService, useValue: MockCookieService },
+        { provide: ToastService, useClass: MockToastService },
+        HostVisibilityService,
       ],
     }).compileComponents();
   });
@@ -144,6 +144,7 @@ describe('SearchComponent', () => {
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
