@@ -115,7 +115,7 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private updateSubjects(value: string = ''): void {
-    this.iconSubject.next(this.getCategoryIcon(value, value === '' ? 'standard' : 'stroke'));
+    this.iconSubject.next(this.getCategoryIcon(value, 'stroke'));
     this.placeholderIconSubject.next(this.getCategoryIcon(value, 'standard'));
     this.labelSubject.next(this.getCategoryLabel(value));
   }

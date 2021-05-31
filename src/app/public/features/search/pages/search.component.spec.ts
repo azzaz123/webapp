@@ -12,7 +12,6 @@ import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { SearchErrorLayoutComponentStub } from '@fixtures/shared/components/search-error-layout.component.stub';
-import { Store } from '@ngrx/store';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
@@ -106,10 +105,6 @@ describe('SearchComponent', () => {
         {
           provide: SearchService,
           useValue: searchServiceMock,
-        },
-        {
-          provide: Store,
-          useValue: storeMock,
         },
         { provide: DeviceDetectorService, useValue: { isMobile: () => false } },
         { provide: ViewportService, useValue: { onViewportChange: of('') } },
