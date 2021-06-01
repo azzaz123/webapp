@@ -5,6 +5,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { SELECT_FORM_OPTIONS_CONFIG } from './sort-filter.config';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
 @Component({
   selector: 'tsl-sort-filter',
@@ -43,7 +44,7 @@ export class SortFilterComponent implements OnInit {
       newValue = null;
     }
 
-    this.searchNavigatorService.navigate([{ key: SortFilterComponent.KEY_PARAMETER, value: newValue }], true);
+    this.searchNavigatorService.navigate([{ key: SortFilterComponent.KEY_PARAMETER, value: newValue }], FILTERS_SOURCE.QUICK_FILTERS, true);
 
     this.closeDropdown();
   }

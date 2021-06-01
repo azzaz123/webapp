@@ -6,6 +6,8 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
+import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +27,7 @@ export class SearchNavigatorService {
     FILTER_QUERY_PARAM_KEY.orderBy,
   ];
 
-  public navigate(filterParams: FilterParameter[], keepCurrentParams?: boolean): void {
+  public navigate(filterParams: FilterParameter[], filtersSource: FILTERS_SOURCE, keepCurrentParams?: boolean): void {
     const currentParams = this.route.snapshot.queryParams;
     let newParams = this.queryStringService.mapFilterToQueryParams(filterParams);
 
@@ -36,7 +38,10 @@ export class SearchNavigatorService {
     const cleanParams = this.cleanParams(currentParams, newParams);
 
     this.router.navigate(['/search'], {
-      queryParams: this.prepareFinalParams(currentParams, newParams, cleanParams),
+      queryParams: {
+        ...this.prepareFinalParams(currentParams, newParams, cleanParams),
+        [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersSource,
+      },
     });
   }
 
