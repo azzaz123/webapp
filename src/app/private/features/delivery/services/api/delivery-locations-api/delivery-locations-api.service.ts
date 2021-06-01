@@ -4,7 +4,7 @@ import { environment } from '@environments/environment';
 import {
   DeliveryPostalCodesErrorMapper,
   DeliveryPostalCodesErrorResponse,
-} from '@private/features/delivery/errors/mappers/postal-codes/delivery-postal-codes-error-mapper';
+} from '@private/features/delivery/errors/mappers/postal-codes/delivery-postal-codes.error-mapper';
 import { DeliveryLocationApi } from '@private/features/delivery/interfaces/delivery-location/delivery-location-api.interface';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';

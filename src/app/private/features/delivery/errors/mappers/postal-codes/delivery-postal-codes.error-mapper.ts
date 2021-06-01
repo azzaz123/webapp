@@ -1,12 +1,11 @@
-import { DeliveryErrorApi } from '../../classes/delivery-api.error';
+import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
 import { DELIVERY_POSTAL_CODES_ERROR_CODES } from '../../classes/postal-codes/delivery-postal-codes-error.enum';
-import { DeliveryPostalCodesError } from '../../classes/postal-codes/delivery-postal-codes.error';
 import { InvalidPostalCodeError } from '../../classes/postal-codes/invalid-postal-code.error';
 import { PostalCodeDoesNotExist } from '../../classes/postal-codes/postal-code-does-not-exist.error';
 import { PostalCodeIsNotAllowed } from '../../classes/postal-codes/postal-code-is-not-allowed.error';
 import { ErrorMapper } from '../error-mapper';
 
-export type DeliveryPostalCodesErrorResponse = DeliveryErrorApi<DeliveryPostalCodesError>;
+export type DeliveryPostalCodesErrorResponse = DeliveryErrorResponseApi<DELIVERY_POSTAL_CODES_ERROR_CODES>;
 
 export class DeliveryPostalCodesErrorMapper extends ErrorMapper<DeliveryPostalCodesErrorResponse> {
   protected generateErrorByRequest(networkError: DeliveryPostalCodesErrorResponse): Error[] {
