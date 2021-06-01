@@ -36,10 +36,9 @@ import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
-import { INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
-import { PostalCodeIsNotAllowed } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/postal-code-is-not-allowed.error';
-import { InvalidPostalCodeError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/invalid-postal-code.error';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { InvalidPostalCodeError, PostalCodeIsNotAllowed } from '../../errors/classes/postal-codes';
+import { InvalidMobilePhoneNumber } from '../../errors/classes/address';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -280,10 +279,7 @@ describe('DeliveryAddressComponent', () => {
         beforeEach(() => {
           spyOn(toastService, 'show');
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
-            throwError([
-              { error_code: 'invalid mobile phone number', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' },
-              new InvalidPostalCodeError(),
-            ])
+            throwError([new InvalidMobilePhoneNumber(), new InvalidPostalCodeError()])
           );
         });
         it('should show error toast', () => {
@@ -307,7 +303,7 @@ describe('DeliveryAddressComponent', () => {
 
           component.onSubmit();
 
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_PHONE_MISSMATCH_LOCATION_ERROR);
+          expect(i18nService.translate).toHaveBeenCalledWith();
         });
       });
     });

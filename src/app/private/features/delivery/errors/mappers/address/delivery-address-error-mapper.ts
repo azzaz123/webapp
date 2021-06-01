@@ -1,9 +1,11 @@
-import { AddressTooLongError } from '../../classes/address/address-too-long.error';
-import { DELIVERY_ADDRESS_ERROR_CODES } from '../../classes/address/delivery-address-error.enum';
-import { DeliveryAddressError } from '../../classes/address/delivery-address.error';
-import { FlatAndFloorTooLongError } from '../../classes/address/flat-and-floor-too-long.error';
-import { InvalidMobilePhoneNumber } from '../../classes/address/invalid-mobile-phone-number.error';
-import { InvalidPhoneNumberError } from '../../classes/address/invalid-phone-number.error';
+import {
+  DeliveryAddressError,
+  DELIVERY_ADDRESS_ERROR_CODES,
+  InvalidPhoneNumberError,
+  InvalidMobilePhoneNumber,
+  AddressTooLongError,
+  FlatAndFloorTooLongError,
+} from '../../classes/address';
 import { DeliveryErrorApi } from '../../classes/delivery-api.error';
 import { ErrorMapper } from '../error-mapper';
 

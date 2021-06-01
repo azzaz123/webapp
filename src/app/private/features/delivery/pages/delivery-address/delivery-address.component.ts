@@ -20,18 +20,21 @@ import { finalize, map, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
 import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
-import { DeliveryPostalCodesError } from '../../errors/classes/postal-codes/delivery-postal-codes.error';
-import { DeliveryAddressError } from '../../errors/classes/address/delivery-address.error';
-import { InvalidPhoneNumberError } from '../../errors/classes/address/invalid-phone-number.error';
-import { InvalidMobilePhoneNumber } from '../../errors/classes/address/invalid-mobile-phone-number.error';
-import { AddressTooLongError } from '../../errors/classes/address/address-too-long.error';
-import { FlatAndFloorTooLongError } from '../../errors/classes/address/flat-and-floor-too-long.error';
+
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
 import {
   DeliveryAddressErrorTranslations,
   DeliveryPostalCodesErrorTranslations,
 } from '@private/features/delivery/errors/constants/delivery-error-translations';
+import {
+  DeliveryAddressError,
+  InvalidPhoneNumberError,
+  InvalidMobilePhoneNumber,
+  AddressTooLongError,
+  FlatAndFloorTooLongError,
+} from '../../errors/classes/address';
+import { DeliveryPostalCodesError } from '../../errors/classes/postal-codes';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
