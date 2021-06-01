@@ -122,7 +122,7 @@ describe('UploadProductComponent', () => {
             provide: UserService,
             useValue: {
               isProUser() {
-                return of(false);
+                return false;
               },
               isPro: false,
             },

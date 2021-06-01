@@ -35,7 +35,14 @@ import {
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
   SUBSCRIPTIONS_NOT_SUB,
 } from '@fixtures/subscriptions.fixtures.spec';
-import { MOCK_FULL_USER, MOCK_FULL_USER_NON_FEATURED, MOCK_NON_FEATURED_USER_RESPONSE, USER_DATA } from '@fixtures/user.fixtures.spec';
+import {
+  MOCK_FULL_USER,
+  MOCK_FULL_USER_FEATURED,
+  MOCK_FULL_USER_NON_FEATURED,
+  MOCK_NON_FEATURED_USER_RESPONSE,
+  MOCK_USER,
+  USER_DATA,
+} from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'app/core/user/user.service';
 import { of } from 'rxjs';
@@ -101,9 +108,8 @@ describe('SubscriptionComponent', () => {
           {
             provide: UserService,
             useValue: {
-              me() {
-                return of(USER_DATA);
-              },
+              user: USER_DATA,
+              getLoggedUserInformation: () => of(MOCK_FULL_USER_FEATURED),
             },
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
@@ -137,11 +143,8 @@ describe('SubscriptionComponent', () => {
     });
 
     it('should set the user information', () => {
-      spyOn(userService, 'me').and.callThrough();
-
       component.ngOnInit();
 
-      expect(userService.me).toHaveBeenCalledTimes(1);
       expect(component.user).toEqual(USER_DATA);
     });
 
@@ -205,8 +208,8 @@ describe('SubscriptionComponent', () => {
 
     describe('when is not PRO', () => {
       it('should send event', () => {
+        component.user.featured = false;
         spyOn(analyticsService, 'trackPageView');
-        spyOn(userService, 'me').and.returnValue(of(MOCK_NON_FEATURED_USER_RESPONSE));
         const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
           name: ANALYTICS_EVENT_NAMES.ViewSubscription,
           attributes: {
@@ -226,6 +229,7 @@ describe('SubscriptionComponent', () => {
 
     describe('when is redirect from landing', () => {
       it('should send event', () => {
+        component.user.featured = true;
         spyOn(analyticsService, 'trackPageView');
         spyOn(route.snapshot.queryParamMap, 'get').and.returnValue('landing_banner');
         const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
@@ -247,8 +251,8 @@ describe('SubscriptionComponent', () => {
 
     describe('when has trial availables', () => {
       it('should send event', () => {
+        component.user.featured = false;
         spyOn(analyticsService, 'trackPageView');
-        spyOn(userService, 'me').and.returnValue(of(MOCK_NON_FEATURED_USER_RESPONSE));
         spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
 
         const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
@@ -270,6 +274,7 @@ describe('SubscriptionComponent', () => {
 
     describe('when has no trial available', () => {
       it('should send event', () => {
+        component.user.featured = true;
         spyOn(analyticsService, 'trackPageView');
         const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
           name: ANALYTICS_EVENT_NAMES.ViewSubscription,
@@ -345,6 +350,7 @@ describe('SubscriptionComponent', () => {
   });
 
   it('should redirect to subscriptions if action is present and user is featured', fakeAsync(() => {
+    component.user.featured = true;
     spyOn(modalService, 'open').and.returnValue({
       result: Promise.resolve('add'),
       componentInstance: componentInstance,
@@ -365,7 +371,6 @@ describe('SubscriptionComponent', () => {
       result: Promise.resolve('add'),
       componentInstance: componentInstance,
     });
-    spyOn(userService, 'me').and.returnValue(of(MOCK_FULL_USER));
     spyOn(router, 'navigate');
 
     component.user = MOCK_FULL_USER_NON_FEATURED;

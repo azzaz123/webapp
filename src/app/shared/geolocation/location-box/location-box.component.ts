@@ -17,7 +17,6 @@ export class LocationBoxComponent implements OnInit {
   @Input() location;
   @Input() isIncorrectAddress = false;
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
-  public user: User;
   public coordinates: Coordinate;
 
   constructor(private userService: UserService) {}
