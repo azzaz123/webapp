@@ -7,6 +7,7 @@ import { PostalCodeIsNotAllowed } from '../../classes/postal-codes/postal-code-i
 import { ErrorMapper } from '../error-mapper';
 
 export type DeliveryPostalCodesErrorResponse = DeliveryErrorApi<DeliveryPostalCodesError>;
+
 export class DeliveryPostalCodesErrorMapper extends ErrorMapper<DeliveryPostalCodesErrorResponse> {
   protected generateErrorByRequest(networkError: DeliveryPostalCodesErrorResponse): Error[] {
     const mappedErrors: Error[] = [];
