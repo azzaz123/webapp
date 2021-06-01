@@ -8,9 +8,9 @@ import { AccessTokenService } from '../http/access-token.service';
 import * as coreLibrary from '@angular/core';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { MockPermissionsService } from '@fixtures/permissions.fixtures';
-import { PERMISSIONS } from './user';
 import { FEATURE_FLAGS_ENUM } from './featureflag-constants';
 import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
+import { PERMISSIONS } from './user-constants';
 
 const isDevMode = jasmine.createSpy().and.returnValue(true);
 

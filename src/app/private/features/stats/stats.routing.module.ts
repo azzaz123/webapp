@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
 import { LoggedGuard } from '@core/user/logged.guard';
-import { PERMISSIONS } from '@core/user/user';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { ItemsStatsComponent } from './components/items-stats/items-stats.component';

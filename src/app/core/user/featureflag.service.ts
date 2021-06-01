@@ -5,8 +5,8 @@ import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { PERMISSIONS } from './user';
 import { FeatureFlag, FEATURE_FLAGS_ENUM, ACTIVE_DEV_FEATURE_FLAGS, featurePermissionConfig } from './featureflag-constants';
+import { PERMISSIONS } from './user-constants';
 
 export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
 
