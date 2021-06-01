@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureflagService } from '@core/user/featureflag.service';
-import { DEFAULT_PERMISSIONS } from '@core/user/user-contants';
+import { DEFAULT_PERMISSIONS } from '@core/user/user-constants';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { take } from 'rxjs/operators';
 @Component({
