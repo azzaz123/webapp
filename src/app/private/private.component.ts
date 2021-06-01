@@ -26,7 +26,6 @@ import { ExternalCommsService } from '@core/external-comms.service';
 import { OpenWallapop } from '@core/analytics/resources/events-interfaces';
 import { ANALYTICS_EVENT_NAMES } from '@core/analytics/resources/analytics-event-names';
 import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
-import { FeatureflagService, FEATURE_FLAGS_ENUM } from '@core/user/featureflag.service';
 
 @Component({
   selector: 'tsl-private',
@@ -62,8 +61,7 @@ export class PrivateComponent implements OnInit {
     private uuidService: UuidService,
     private serviceWorker: SwUpdate,
     private deviceService: DeviceService,
-    private externalCommsService: ExternalCommsService,
-    private featureFlagService: FeatureflagService
+    private externalCommsService: ExternalCommsService
   ) {}
 
   ngOnInit() {
@@ -72,11 +70,6 @@ export class PrivateComponent implements OnInit {
     this.initializeServices();
     this.initializeRouterEventListeners();
     this.subscribeSWChanges();
-    this.getFeatureFlags();
-  }
-
-  private getFeatureFlags() {
-    this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).subscribe();
   }
 
   private subscribeSWChanges() {
