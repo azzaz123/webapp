@@ -1,5 +1,5 @@
 export class DeliveryError extends Error {
-  constructor(public error_code: string, public message: string) {
+  constructor(public message: string) {
     super(message);
   }
 }
