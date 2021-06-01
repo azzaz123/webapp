@@ -21,12 +21,12 @@
   }
 
   &__benefits {
-    font-size: 14px;
+    font-size: $font-size-s;
     color: $blue-grey-2;
   }
 
   &__trialBanner {
-    background-color: #edfcf8;
+    background-color: $walla-soft;
     border-radius: 2px;
     white-space: nowrap;
   }
