@@ -278,7 +278,7 @@ export class DeliveryAddressComponent implements OnInit {
       );
   }
 
-  private handleAddressErrors(errors: DeliveryAddressError[], isBackendResponse = true): void {
+  private handleAddressErrors(errors: DeliveryAddressError[]): void {
     errors.forEach((error: DeliveryAddressError) => {
       if (error instanceof InvalidPhoneNumberError) {
         this.setIncorrectControlAndShowError('phone_number', error.message);
@@ -299,7 +299,7 @@ export class DeliveryAddressComponent implements OnInit {
       this.deliveryAddressForm.markAsPending();
     });
 
-    if (isBackendResponse) {
+    if (!errors.length) {
       this.toastService.show({ type: 'error', text: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR) });
     }
   }
@@ -339,7 +339,10 @@ export class DeliveryAddressComponent implements OnInit {
 
   private handleLocationsResponse(locations: DeliveryLocationApi[]): void {
     if (!locations.length) {
-      this.setIncorrectControlAndShowError('phone_number', DeliveryAddressErrorTranslations.PHONE_MISSMATCH_LOCATION);
+      this.setIncorrectControlAndShowError(
+        'phone_number',
+        this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR)
+      );
     }
     if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {
       this.deliveryAddressForm.get('city').setValue(locations[0].city);
