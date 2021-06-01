@@ -6,8 +6,9 @@ import { PostalCodeDoesNotExist } from '../../classes/postal-codes/postal-code-d
 import { PostalCodeIsNotAllowed } from '../../classes/postal-codes/postal-code-is-not-allowed.error';
 import { ErrorMapper } from '../error-mapper';
 
-export class DeliveryPostalCodesErrorMapper extends ErrorMapper {
-  protected generateErrorByRequest(networkError: DeliveryErrorApi<DeliveryPostalCodesError>): Error[] {
+export type DeliveryPostalCodesErrorResponse = DeliveryErrorApi<DeliveryPostalCodesError>;
+export class DeliveryPostalCodesErrorMapper extends ErrorMapper<DeliveryPostalCodesErrorResponse> {
+  protected generateErrorByRequest(networkError: DeliveryPostalCodesErrorResponse): Error[] {
     const mappedErrors: Error[] = [];
     const { error: backendDeliveryErrors } = networkError;
 

@@ -7,8 +7,10 @@ import { InvalidPhoneNumberError } from '../../classes/address/invalid-phone-num
 import { DeliveryErrorApi } from '../../classes/delivery-api.error';
 import { ErrorMapper } from '../error-mapper';
 
-export class DeliveryAddressErrorMapper extends ErrorMapper {
-  protected generateErrorByRequest(networkError: DeliveryErrorApi<DeliveryAddressError>): Error[] {
+export type DeliveryAddressErrorResponse = DeliveryErrorApi<DeliveryAddressError>;
+
+export class DeliveryAddressErrorMapper extends ErrorMapper<DeliveryAddressErrorResponse> {
+  protected generateErrorByRequest(networkError: DeliveryAddressErrorResponse): Error[] {
     const mappedErrors: Error[] = [];
     const { error: backendDeliveryErrors } = networkError;
 

@@ -2,8 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 
-export abstract class ErrorMapper {
-  public map(errorResponse: HttpErrorResponse): Observable<never> {
+export abstract class ErrorMapper<T extends HttpErrorResponse> {
+  public map(errorResponse: T): Observable<never> {
     const generatedError = this.generateErrorByRequest(errorResponse);
     const emptyError = this.generateEmptyError(generatedError, errorResponse);
     if (emptyError) {
