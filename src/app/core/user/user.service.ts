@@ -349,11 +349,7 @@ export class UserService {
   }
 
   public hasPerm(permission: string): Observable<boolean> {
-    return this.me().pipe(
-      mergeMap(() => {
-        return from(this.permissionService.hasPermission(PERMISSIONS[permission]));
-      })
-    );
+    return from(this.permissionService.hasPermission(PERMISSIONS[permission]));
   }
 
   // TODO: This is if user is car dealer, should be `isCarDealer`
