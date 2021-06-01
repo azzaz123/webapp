@@ -1,0 +1,71 @@
+<div class="CreditCard mt-3">
+    <tsl-profile-form [profileForm]="cardForm" (onInit)="initForm()">
+        <form [formGroup]="cardForm" (submit)="onSubmit()">
+            <div class="box profile-box" [hidden]="loading">
+                <div class="col-12 col-md-11 offset-md-1">
+                    <div class="row">
+                        <div class="col-12">
+                        <h3 i18n="@@delivery_add_credit_card_title">Add credit card</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="form-group row align-items-center">
+                                <label for="holder_name" class="col-sm-12 col-md-5" i18n="@@card_draf_name_hint">Name and surname</label>
+                                <div class="col-sm-12 col-md-5">
+                                    <input type="text" class="form-control" id="holder_name" formControlName="holder_name"/>
+                                    <div *ngIf="cardForm.controls.holder_name.invalid && cardForm.pending" class="CreditCard__message CreditCard__message--error">
+                                        <ng-container *ngIf="cardForm.controls.holder_name.errors as holderNameError">
+                                        <span *ngIf="holderNameError.required" i18n="@@credit_card_owner_name_error">Invalid owner name</span>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center">
+                                <label for="card_number" class="col-sm-12 col-md-5" i18n="@@card_number_hint">Card number</label>
+                                <div class="col-sm-12 col-md-5">
+                                    <input type="text" class="form-control" id="card_number" formControlName="card_number" maxlength="20" pattern="[0-9]*"/>
+                                    <div *ngIf="cardForm.controls.card_number.invalid && cardForm.pending" class="CreditCard__message CreditCard__message--error">
+                                        <ng-container *ngIf="cardForm.controls.card_number.errors as cardNumberError">
+                                            <span *ngIf="cardNumberError.required" i18n="@@credit_card_number_error">Invalid card number</span>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center">
+                                <label for="expiration_date" class="col-sm-12 col-md-5" i18n="@@card_date_hint" maxlength="5">MM/YY</label>
+                                <div class="col-sm-12 col-md-5">
+                                    <input type="text" class="form-control" id="expiration_date"  formControlName="expiration_date" pattern="[0-9]*"/>
+                                    <div *ngIf="cardForm.controls.expiration_date.invalid && cardForm.pending" class="CreditCard__message CreditCard__message--error">
+                                        <ng-container *ngIf="cardForm.controls.expiration_date.errors as expirationDateError">
+                                            <span *ngIf="expirationDateError.required" i18n="@@credit_card_date_error">Invalid date</span>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center">
+                                <label for="cvv" class="col-sm-12 col-md-5">CVV</label>
+                                <div class="col-sm-12 col-md-5">
+                                    <input type="text" class="form-control" id="cvv" formControlName="cvv" maxlength="4" pattern="[0-9]*"/>
+                                    <div *ngIf="cardForm.controls.cvv.invalid && cardForm.pending" class="CreditCard__message CreditCard__message--error">
+                                        <ng-container *ngIf="cardForm.controls.cvv.errors as CVVError">
+                                            <span *ngIf="CVVError.required" i18n="@@credit_card_cvv_error">Invalid CCV number</span>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-center d-flex flex-column">
+                                    <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big" i18n="@@delivery_add_credit_card_save_button">Save</tsl-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </tsl-profile-form>
+    <div class="row loading-center justify-content-center">
+        <tsl-spinner [hidden]="!loading"></tsl-spinner>
+    </div>
+</div> 

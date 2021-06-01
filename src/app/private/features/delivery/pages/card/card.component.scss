@@ -1,0 +1,10 @@
+@import '~style/common';
+
+.CreditCard {
+  &__message {
+    &--error {
+      font-size: $font-size-s;
+      color: $negative-main;
+    }
+  }
+}

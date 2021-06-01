@@ -29,7 +29,7 @@ export class CardComponent implements OnInit {
     this.cardForm = this.fb.group({
       id: this.uuidService.getUUID(),
       holder_name: ['', Validators.required],
-      number: ['', [Validators.required]],
+      card_number: ['', [Validators.required]],
       expiration_date: ['', Validators.required],
       cvv: ['', [Validators.required]],
     });

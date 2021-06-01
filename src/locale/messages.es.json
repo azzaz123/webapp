@@ -1422,6 +1422,15 @@
     "web_spinner_536": "Cargando...",
     "web_spinner_537": "Estamos cargando todos tus mensajes por primera vez. Estarán disponibles antes de que acaben las obras de la Sagrada Família, un abrazo.",
     "web_delivery_delete_address_confirmation_popup_message": "Esta acción no se puede deshacer. ¿Seguro que quieres borrar tu dirección?",
-    "web_delivery_delete_address_succeed": "La dirección se ha eliminado correctamente."
+    "web_delivery_delete_address_succeed": "La dirección se ha eliminado correctamente.",
+    "delivery_add_credit_card_title": "Añadir tarjeta",
+    "card_draf_name_hint": "Nombre y Apellidos",
+    "card_number_hint": "Número de tarjeta",
+    "card_date_hint": "MM/AA",
+    "credit_card_owner_name_error": "El nombre de la tarjeta no es válido",
+    "credit_card_number_error": "Número de tarjeta no válido",
+    "credit_card_date_error": "Fecha inválida",
+    "credit_card_cvv_error": "CVV no válido",
+    "delivery_add_credit_card_save_button": "Save"
   }
 }

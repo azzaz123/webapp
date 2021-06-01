@@ -1,5 +1,8 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { UuidService } from '@core/uuid/uuid.service';
+import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 
 import { CardComponent } from './card.component';
 
@@ -10,7 +13,19 @@ describe('CardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      declarations: [CardComponent],
+      declarations: [CardComponent, ProfileFormComponent],
+      providers: [
+        FormBuilder,
+        {
+          provide: UuidService,
+          useValue: {
+            getUUID() {
+              return 'FAKE_UUID';
+            },
+          },
+        },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
