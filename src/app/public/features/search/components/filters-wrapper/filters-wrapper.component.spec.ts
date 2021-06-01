@@ -21,6 +21,7 @@ import { QueryStringLocationService } from '@core/search/query-string-location.s
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
 @Component({
   selector: 'tsl-test-component',
@@ -187,7 +188,7 @@ describe('FiltersWrapperComponent', () => {
       component.bubbleChange(newValues);
 
       expect(navigator.navigate).toHaveBeenCalledTimes(1);
-      expect(navigator.navigate).toHaveBeenCalledWith(newValues, true);
+      expect(navigator.navigate).toHaveBeenCalledWith(newValues, FILTERS_SOURCE.QUICK_FILTERS, true);
     });
   });
 

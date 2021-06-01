@@ -19,6 +19,7 @@ export class SearchService {
   private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_LOADING_STATE);
   private readonly isLoadingPaginationResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_PAGINATION_LOADING_STATE);
   private readonly currentCategoryIdSubject = new BehaviorSubject<string>(undefined);
+  private readonly searchIdSubject = new BehaviorSubject<string>(undefined);
 
   private subscription: Subscription = new Subscription();
 
@@ -67,6 +68,14 @@ export class SearchService {
     this.currentCategoryIdSubject.next(categoryId);
   }
 
+  get newSearch$(): Observable<string> {
+    return this.searchIdSubject.asObservable();
+  }
+
+  private set searchId(searchId: string) {
+    this.searchIdSubject.next(searchId);
+  }
+
   constructor(
     private searchStoreService: SearchStoreService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private parameterStoreService: FilterParameterStoreService,
@@ -94,11 +103,16 @@ export class SearchService {
         this.isLoadingResults = true;
       }),
       switchMap((filterParameters: FilterParameter[]) =>
-        this.infrastructureService.search(filterParameters).pipe(map((r) => this.mapSearchResponse(r, filterParameters)))
+        this.infrastructureService.search(filterParameters).pipe(
+          map((r) => {
+            return this.mapSearchResponse(r, filterParameters);
+          })
+        )
       ),
-      tap(({ items, hasMore, categoryId }: SearchPaginationWithCategory) => {
+      tap(({ items, hasMore, categoryId, searchId }: SearchPaginationWithCategory) => {
         this.isLoadingResults = false;
         this.currentCategoryId = categoryId;
+        this.searchId = searchId;
         this.searchStoreService.setItems(items);
         this.searchStoreService.setHasMore(hasMore);
       })
@@ -118,11 +132,11 @@ export class SearchService {
   }
 
   private mapSearchResponse(pagination: SearchPagination, filterParameters: FilterParameter[]): SearchPaginationWithCategory {
-    const { items, hasMore } = pagination;
-
+    const { items, hasMore, searchId } = pagination;
     return {
       items,
       hasMore,
+      searchId,
       categoryId: this.getCategoryIdFromParams(filterParameters),
     };
   }
