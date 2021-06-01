@@ -9,6 +9,7 @@ import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { ItemCard, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
+import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { RecommenderItemCardFavouriteCheckedService } from '@public/features/item-detail/core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
@@ -56,7 +57,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     private typeCheckService: TypeCheckService,
     private userService: UserService,
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
-    private recommenderItemCardFavouriteCheckedService: RecommenderItemCardFavouriteCheckedService
+    private recommenderItemCardFavouriteCheckedService: RecommenderItemCardFavouriteCheckedService,
+    private isCurrentUser: IsCurrentUserPipe
   ) {}
 
   ngOnInit(): void {
@@ -157,26 +159,21 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private trackViewEvents(itemDetail: ItemDetail): void {
     const item = itemDetail.item;
     const user = itemDetail.user;
-    const subscription: Subscription = this.userService
-      .me()
-      .pipe(take(1))
-      .subscribe((userMe: User) => {
-        if (user.id === userMe.id) {
-          this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
-        } else {
-          if (this.typeCheckService.isRealEstate(item)) {
-            this.itemDetailTrackEventsService.trackViewOthersItemREDetailEvent(item, user);
-          }
-          if (this.typeCheckService.isCar(item)) {
-            this.itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent(item, user);
-          }
-          if (!this.typeCheckService.isRealEstate(item) && !this.typeCheckService.isCar(item)) {
-            this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(item, user);
-          }
-        }
-      });
+    const isCurrentUser = this.isCurrentUser.transform(user.id);
 
-    this.subscriptions.add(subscription);
+    if (isCurrentUser) {
+      this.itemDetailTrackEventsService.trackViewOwnItemDetail(item, user);
+    } else {
+      if (this.typeCheckService.isRealEstate(item)) {
+        this.itemDetailTrackEventsService.trackViewOthersItemREDetailEvent(item, user);
+      }
+      if (this.typeCheckService.isCar(item)) {
+        this.itemDetailTrackEventsService.trackViewOthersItemCarDetailEvent(item, user);
+      }
+      if (!this.typeCheckService.isRealEstate(item) && !this.typeCheckService.isCar(item)) {
+        this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(item, user);
+      }
+    }
   }
 
   private setAdSlot({ item }: ItemDetail): void {
