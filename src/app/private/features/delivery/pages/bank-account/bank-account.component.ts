@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
-import { DELIVERY_INPUTS_MAX_LENGTH } from '@shared/enums/inputs-length/delivery-inputs-length.enum';
+import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 
 export const IBAN_LENGTH = 40;

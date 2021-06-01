@@ -29,7 +29,7 @@ import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../error
 import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
-import { DELIVERY_INPUTS_MAX_LENGTH } from '@shared/enums/inputs-length/delivery-inputs-length.enum';
+import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
