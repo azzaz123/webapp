@@ -118,7 +118,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
 
-  private dataReadyToValidate$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  private dataReadyToValidate$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private fb: FormBuilder,
@@ -160,7 +160,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
     this.detectTitleKeyboardChanges();
 
-    this.dataReadyToValidate$.pipe(skip(1), take(1)).subscribe((dataReadyToValidate: boolean) => {
+    this.dataReadyToValidate$.pipe(skip(1), debounceTime(500), take(1)).subscribe((dataReadyToValidate: boolean) => {
       if (this.isReactivation && dataReadyToValidate) {
         this.itemReactivationService.reactivationValidation(this.uploadForm);
       }
@@ -568,6 +568,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
             this.brandSuggestions.next(suggestions);
           });
       }
+
+      this.dataReadyToValidate$.next(true);
     });
   }
 
@@ -586,6 +588,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           suggestions.push({ suggestion: model.model, value: model });
         });
         this.modelSuggestions.next(suggestions);
+
+        this.dataReadyToValidate$.next(true);
       });
   }
 
@@ -601,6 +605,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         (sizes: IOption[]) => {
           if (sizes.length) this.getUploadExtraInfoControl('size').enable();
           this.sizes = sizes;
+
+          this.dataReadyToValidate$.next(true);
         },
         () => {
           this.clearSizes();
@@ -722,6 +728,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.getUploadExtraInfoControl('condition').reset();
     this.generalSuggestionsService.getConditions(currentCategoryId).subscribe((conditions: IOption[]) => {
       this.conditions = conditions;
+      this.dataReadyToValidate$.next(true);
     });
   }
 
