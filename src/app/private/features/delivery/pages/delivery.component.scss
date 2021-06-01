@@ -1,0 +1,9 @@
+@import '~style/common';
+
+.Delivery {
+  &__content {
+    @include media-breakpoint-down(sm) {
+      margin: 0px -15px;
+    }
+  }
+}
