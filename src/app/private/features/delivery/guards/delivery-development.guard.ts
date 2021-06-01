@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Router } from '@angular/router';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag.interface';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';

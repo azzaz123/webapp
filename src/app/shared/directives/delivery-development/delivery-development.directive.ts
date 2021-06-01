@@ -1,5 +1,5 @@
 import { Directive, TemplateRef, ViewContainerRef, OnInit } from '@angular/core';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag.interface';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureflagService } from '@core/user/featureflag.service';
 
 @Directive({

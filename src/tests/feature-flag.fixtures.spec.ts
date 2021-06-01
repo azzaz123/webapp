@@ -1,4 +1,4 @@
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag.interface';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { Observable, of } from 'rxjs';
 
 export const mockFeatureFlagsResponses = [
