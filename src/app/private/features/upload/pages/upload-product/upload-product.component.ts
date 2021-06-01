@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   AfterContentInit,
-  AfterViewChecked,
   Component,
   ElementRef,
   EventEmitter,
@@ -39,8 +38,8 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, skip, take, tap } from 'rxjs/operators';
+import { fromEvent, Observable, Subject } from 'rxjs';
+import { debounceTime, map, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -118,7 +117,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
 
-  private dataReadyToValidate$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -154,17 +153,17 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.detectObjectTypeChanges();
       if (this.item) {
         this.initializeEditForm();
+
+        this.dataReadyToValidate$.pipe(debounceTime(500), take(1)).subscribe(() => {
+          if (this.isReactivation) {
+            this.itemReactivationService.reactivationValidation(this.uploadForm);
+          }
+        });
       }
       this.detectFormChanges();
       this.handleUploadFormExtraFields();
     });
     this.detectTitleKeyboardChanges();
-
-    this.dataReadyToValidate$.pipe(skip(1), debounceTime(500), take(1)).subscribe((dataReadyToValidate: boolean) => {
-      if (this.isReactivation && dataReadyToValidate) {
-        this.itemReactivationService.reactivationValidation(this.uploadForm);
-      }
-    });
   }
 
   private fillForm(): void {
@@ -361,7 +360,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         return this.getUploadExtraInfoControl(formFieldName).disable();
       });
     } else {
-      this.dataReadyToValidate$.next(true);
+      this.dataReadyToValidate$.next();
     }
   }
 
@@ -569,7 +568,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           });
       }
 
-      this.dataReadyToValidate$.next(true);
+      this.dataReadyToValidate$.next();
     });
   }
 
@@ -589,7 +588,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         });
         this.modelSuggestions.next(suggestions);
 
-        this.dataReadyToValidate$.next(true);
+        this.dataReadyToValidate$.next();
       });
   }
 
@@ -606,7 +605,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           if (sizes.length) this.getUploadExtraInfoControl('size').enable();
           this.sizes = sizes;
 
-          this.dataReadyToValidate$.next(true);
+          this.dataReadyToValidate$.next();
         },
         () => {
           this.clearSizes();
@@ -633,7 +632,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         });
       }
 
-      this.dataReadyToValidate$.next(true);
+      this.dataReadyToValidate$.next();
     });
   }
 
@@ -728,7 +727,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.getUploadExtraInfoControl('condition').reset();
     this.generalSuggestionsService.getConditions(currentCategoryId).subscribe((conditions: IOption[]) => {
       this.conditions = conditions;
-      this.dataReadyToValidate$.next(true);
+      this.dataReadyToValidate$.next();
     });
   }
 
