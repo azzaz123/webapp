@@ -24,13 +24,15 @@ import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootst
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { isEqual, omit } from 'lodash-es';
-import { tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Key } from '../../core/models/key.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
+import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { RealestateKeysService } from '../../core/services/realstate-keys/realestate-keys.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { forkJoin, Observable, of, OperatorFunction } from 'rxjs';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -42,6 +44,7 @@ export class UploadRealestateComponent implements OnInit {
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Realestate;
+  @Input() isReactivation = false;
   public coordinates: ItemLocation;
 
   public uploadForm: FormGroup;
@@ -70,6 +73,7 @@ export class UploadRealestateComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private uploadService: UploadService,
+    private itemReactivationService: ItemReactivationService,
     config: NgbPopoverConfig
   ) {
     this.uploadForm = fb.group({
@@ -104,7 +108,12 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getOptions();
+    this.getOptions().subscribe(() => {
+      if (this.item && this.isReactivation) {
+        this.itemReactivationService.reactivationValidation(this.uploadForm);
+      }
+    });
+
     if (this.item) {
       this.uploadForm.patchValue({
         id: this.item.id,
@@ -137,17 +146,28 @@ export class UploadRealestateComponent implements OnInit {
     }
   }
 
-  private getOptions() {
-    this.realestateKeysService.getOperations().subscribe((operations: Key[]) => {
-      this.operations = operations;
-    });
-    this.realestateKeysService.getConditions().subscribe((conditions: IOption[]) => {
-      this.conditions = conditions;
-    });
+  private getOptions(): Observable<void> {
     this.getTypes('rent');
     this.uploadForm.get('operation').valueChanges.subscribe((operation: string) => this.getTypes(operation));
     this.uploadForm.get('type').valueChanges.subscribe((type: string) => this.getExtras(type));
+
+    const operations$ = this.realestateKeysService.getOperations().pipe(catchError(this.handleOptionsError));
+    const conditions$ = this.realestateKeysService.getConditions().pipe(catchError(this.handleOptionsError));
+
+    return forkJoin({
+      operations$,
+      conditions$,
+    }).pipe(
+      map(({ operations$, conditions$ }) => {
+        this.operations = operations$;
+        this.conditions = conditions$;
+      })
+    );
   }
+
+  private handleOptionsError = () => {
+    return of([]);
+  };
 
   public emitLocation(): void {
     this.coordinates = this.uploadForm.value.location;
