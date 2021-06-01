@@ -64,13 +64,9 @@ export class SubscriptionsComponent implements OnInit {
 
   private initData(): void {
     this.loading = true;
-    const user$ = this.userService.me(true);
     const subscriptions$ = this.subscriptionsService.getSubscriptions(false);
 
-    forkJoin({
-      user$,
-      subscriptions$,
-    })
+    subscriptions$
       .pipe(
         take(1),
         finalize(() => {
@@ -78,9 +74,11 @@ export class SubscriptionsComponent implements OnInit {
           this.trackPageView();
         })
       )
-      .subscribe(({ user$, subscriptions$ }) => {
-        this.user = user$;
-        this.subscriptions = subscriptions$;
+      .subscribe((subscriptions) => {
+        const user = this.userService.user;
+
+        this.user = user;
+        this.subscriptions = subscriptions;
       });
   }
 
@@ -121,7 +119,7 @@ export class SubscriptionsComponent implements OnInit {
 
   private isUserUpdated() {
     this.userService
-      .me(false)
+      .getLoggedUserInformation()
       .pipe(
         repeatWhen((completed) =>
           completed.pipe(

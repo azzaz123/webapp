@@ -152,20 +152,8 @@ export class UserService {
     return new User(id, 'No disponible');
   }
 
-  public me(useCache = true): Observable<User> {
-    if (useCache && this._user) {
-      return of(this._user);
-    }
-
-    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`).pipe(
-      map((r) => this.mapRecordData(r)),
-      tap((user) => (this._user = user)),
-      // TODO: This will need to be parsed when devops team adds CORS headers on API gateway error
-      catchError((error) => {
-        this.logout(null);
-        return of(error);
-      })
-    );
+  public getLoggedUserInformation(): Observable<User> {
+    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`).pipe(map((r) => this.mapRecordData(r)));
   }
 
   public checkUserStatus() {
@@ -331,10 +319,13 @@ export class UserService {
   }
 
   public initializeUserWithPermissions(): Observable<boolean> {
-    return this.me(false).pipe(
+    return this.getLoggedUserInformation().pipe(
+      tap((user) => (this._user = user)),
       tap((user) => this.setPermission(user)),
-      map(() => true),
-      catchError(() => of(true))
+      catchError((error) => {
+        this.logout(null);
+        return of(error);
+      })
     );
   }
 
