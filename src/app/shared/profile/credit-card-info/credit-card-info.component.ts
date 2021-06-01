@@ -18,8 +18,8 @@ export class CreditCardInfoComponent {
   public loading = false;
 
   @Input() financialCard: FinancialCard;
-  @Input() disableDelete: boolean;
-  @Input() disableEdit: boolean;
+  @Input() hideDelete: boolean;
+  @Input() hideEdit: boolean;
   @Input() error: boolean;
   @Output() onSetChangeCard: EventEmitter<Event> = new EventEmitter();
   @Output() onDeleteStripeCard: EventEmitter<FinancialCard> = new EventEmitter();
