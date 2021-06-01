@@ -10,7 +10,7 @@ import { AdSlotShoppingComponent } from './ad-slot-shopping.component';
 @Component({
   selector: 'stories-ad-slot-shopping',
   template:
-    '<tsl-sky-shopping [isWide]="isWide" [adSlotContainer]="adSlotContainer" [adShoppingPageOptions]="adShoppingPageOptions" [index]="index"></tsl-sky-shopping>',
+    '<tsl-sky-shopping [cardType]="cardType" [adSlotContainer]="adSlotContainer" [adShoppingPageOptions]="adShoppingPageOptions" [index]="index"></tsl-sky-shopping>',
 })
 class StoryAdSlotShoppingComponent extends AdSlotShoppingComponent {
   constructor(adsService: AdsService, deviceService: DeviceService) {
@@ -36,7 +36,7 @@ const Template: Story<StoryAdSlotShoppingComponent> = (args: StoryAdSlotShopping
   component: StoryAdSlotShoppingComponent,
   props: args,
   template:
-    '<stories-ad-slot-shopping [isWide]="isWide" [adSlotContainer]="adSlotContainer" [adShoppingPageOptions]="adShoppingPageOptions" [index]="index"></stories-ad-slot-shopping>',
+    '<stories-ad-slot-shopping [cardType]="cardType" [adSlotContainer]="adSlotContainer" [adShoppingPageOptions]="adShoppingPageOptions" [index]="index"></stories-ad-slot-shopping>',
 });
 
 export const Default = Template.bind({});
