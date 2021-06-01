@@ -1,4 +1,3 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -11,7 +10,6 @@ describe('DeliveryAddressTrackEventsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       providers: [DeliveryAddressTrackEventsService, { provide: AnalyticsService, useClass: MockAnalyticsService }],
     });
     service = TestBed.inject(DeliveryAddressTrackEventsService);
@@ -24,7 +22,6 @@ describe('DeliveryAddressTrackEventsService', () => {
 
   describe('when user clicks save button', () => {
     it('should send track save button event', () => {
-      spyOn(service, 'trackClickSaveButton').and.callThrough();
       spyOn(analyticsService, 'trackEvent');
 
       service.trackClickSaveButton();
