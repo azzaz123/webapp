@@ -29,20 +29,19 @@ export class LocationBoxComponent implements OnInit {
         longitude: this.location.approximated_longitude,
       });
     } else {
-      this.userService.me().subscribe((user: User) => {
-        this.user = user;
-        if (user.location) {
-          this.form.get(this.name).patchValue({
-            address: user.location.title,
-            latitude: user.location.approximated_latitude,
-            longitude: user.location.approximated_longitude,
-          });
-          this.setLocation({
-            latitude: user.location.approximated_latitude,
-            longitude: user.location.approximated_longitude,
-          });
-        }
-      });
+      const user = this.userService.user;
+
+      if (user && user.location) {
+        this.form.get(this.name).patchValue({
+          address: user.location.title,
+          latitude: user.location.approximated_latitude,
+          longitude: user.location.approximated_longitude,
+        });
+        this.setLocation({
+          latitude: user.location.approximated_latitude,
+          longitude: user.location.approximated_longitude,
+        });
+      }
     }
 
     this.form.get(this.name).valueChanges.subscribe((location: Coordinate) => {
