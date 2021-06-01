@@ -21,7 +21,6 @@ import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
 import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
 import { DeliveryPostalCodesError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/delivery-postal-codes.error';
-import { InvalidPostalCodeError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/postal-codes/invalid-postal-code.error';
 import { DeliveryAddressError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/address/delivery-address.error';
 import { InvalidPhoneNumberError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/address/invalid-phone-number.error';
 import { InvalidMobilePhoneNumber } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/address/invalid-mobile-phone-number.error';
@@ -29,6 +28,10 @@ import { AddressTooLongError } from '@core/http/interceptors/error-mapper/core/c
 import { FlatAndFloorTooLongError } from '@core/http/interceptors/error-mapper/core/classes/errors/delivery/address/flat-and-floor-too-long.error';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
+import {
+  DeliveryAddressErrorTranslations,
+  DeliveryPostalCodesErrorTranslations,
+} from '@core/http/interceptors/error-mapper/core/constants/delivery-error-translations';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -146,7 +149,7 @@ export class DeliveryAddressComponent implements OnInit {
   public isInvalidPostalCode(): void {
     const postalCode = this.deliveryAddressForm.get('postal_code');
     if (postalCode.value.length < 5 && !postalCode.errors?.required) {
-      this.handlePostalCodesErrors([new InvalidPostalCodeError()]);
+      this.setIncorrectControlAndShowError('postal_code', DeliveryPostalCodesErrorTranslations.INVALID_POSTAL_CODE);
     }
   }
 
@@ -333,7 +336,7 @@ export class DeliveryAddressComponent implements OnInit {
 
   private handleLocationsResponse(locations: DeliveryLocationApi[]): void {
     if (!locations.length) {
-      this.handleAddressErrors([new InvalidMobilePhoneNumber()], false);
+      this.setIncorrectControlAndShowError('phone_number', DeliveryAddressErrorTranslations.PHONE_MISSMATCH_LOCATION);
     }
     if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {
       this.deliveryAddressForm.get('city').setValue(locations[0].city);
