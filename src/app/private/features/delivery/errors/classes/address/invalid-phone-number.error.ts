@@ -1,4 +1,4 @@
-import { DeliveryAddressErrorTranslations } from '../../../../constants/delivery-error-translations';
+import { DeliveryAddressErrorTranslations } from '../../constants/delivery-error-translations';
 import { DELIVERY_ADDRESS_ERROR_CODES } from './delivery-address-error.enum';
 import { DeliveryAddressError } from './delivery-address.error';
 

@@ -1,10 +1,10 @@
-import { DeliveryErrorApi } from '../../../errors/delivery/delivery-api.error';
-import { DeliveryPostalCodesError } from '../../../errors/delivery/postal-codes/delivery-postal-codes.error';
-import { DELIVERY_POSTAL_CODES_ERROR_CODES } from '../../../errors/delivery/postal-codes/delivery-postal-codes-error.enum';
-import { InvalidPostalCodeError } from '../../../errors/delivery/postal-codes/invalid-postal-code.error';
-import { PostalCodeDoesNotExist } from '../../../errors/delivery/postal-codes/postal-code-does-not-exist.error';
-import { PostalCodeIsNotAllowed } from '../../../errors/delivery/postal-codes/postal-code-is-not-allowed.error';
-import { ErrorMapper } from '../../error-mapper';
+import { DeliveryErrorApi } from '../../classes/delivery-api.error';
+import { DELIVERY_POSTAL_CODES_ERROR_CODES } from '../../classes/postal-codes/delivery-postal-codes-error.enum';
+import { DeliveryPostalCodesError } from '../../classes/postal-codes/delivery-postal-codes.error';
+import { InvalidPostalCodeError } from '../../classes/postal-codes/invalid-postal-code.error';
+import { PostalCodeDoesNotExist } from '../../classes/postal-codes/postal-code-does-not-exist.error';
+import { PostalCodeIsNotAllowed } from '../../classes/postal-codes/postal-code-is-not-allowed.error';
+import { ErrorMapper } from '../error-mapper';
 
 export class DeliveryPostalCodesErrorMapper extends ErrorMapper {
   protected generateErrorByRequest(networkError: DeliveryErrorApi<DeliveryPostalCodesError>): Error[] {

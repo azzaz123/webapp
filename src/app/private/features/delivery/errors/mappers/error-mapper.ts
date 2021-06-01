@@ -1,22 +1,15 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { catchError } from 'rxjs/operators';
 
 export abstract class ErrorMapper {
-  constructor(private request: HttpRequest<unknown>, private handler: HttpHandler) {}
-
-  public map(): Observable<HttpEvent<unknown>> {
-    return this.handler.handle(this.request).pipe(
-      catchError((errorResponse: HttpErrorResponse) => {
-        const generatedError = this.generateErrorByRequest(errorResponse);
-        const emptyError = this.generateEmptyError(generatedError, errorResponse);
-        if (emptyError) {
-          return throwError(emptyError);
-        }
-        return throwError(generatedError);
-      })
-    );
+  public map(errorResponse: HttpErrorResponse): Observable<never> {
+    const generatedError = this.generateErrorByRequest(errorResponse);
+    const emptyError = this.generateEmptyError(generatedError, errorResponse);
+    if (emptyError) {
+      return throwError(emptyError);
+    }
+    return throwError(generatedError);
   }
 
   protected generateErrorByRequest(errorResponse: HttpErrorResponse): Error | Error[] {
