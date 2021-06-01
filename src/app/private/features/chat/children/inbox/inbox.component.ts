@@ -257,9 +257,9 @@ export class InboxComponent implements OnInit, OnDestroy {
     const hasDuplicated = find(conversationsIds, (numberOfConversation) => numberOfConversation > 1);
 
     if (hasDuplicated) {
-      this.userService
-        .me()
-        .subscribe((user) => this.remoteConsoleService.sendDuplicateConversations(user.id, callMethodClient, conversationsIds));
+      const user = this.userService.user;
+
+      this.remoteConsoleService.sendDuplicateConversations(user.id, callMethodClient, conversationsIds);
     }
   }
 

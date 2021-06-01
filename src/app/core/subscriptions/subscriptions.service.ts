@@ -44,9 +44,9 @@ export class SubscriptionsService {
     private categoryService: CategoryService,
     private uuidService: UuidService
   ) {
-    this.userService.me().subscribe((user: User) => {
-      this.fullName = user ? `${user.firstName} ${user.lastName}` : '';
-    });
+    const user = this.userService.user;
+
+    this.fullName = user ? `${user.firstName} ${user.lastName}` : '';
   }
 
   public getSlots(): Observable<SubscriptionSlot[]> {
