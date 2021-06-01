@@ -40,16 +40,17 @@ import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from './subscriptions.fixtures.spec'
 import { MOCK_USER, USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { MOCK_ITEM_VISIBILITY_FLAGS_BUMPED } from '@fixtures/item-detail-flags.fixtures.spec';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
+import { ItemCondition } from '@core/item/item-condition';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
 export const ITEM_CATEGORY_ID = 12545;
-
 export const ITEM_ID = '9jd7ryx5odjk';
 export const ITEM_LEGACY_ID = 500002512;
 export const ITEM_TITLE = 'The title';
 export const ITEM_TITLE2 = 'The title2';
 export const ITEM_DESCRIPTION = 'The description';
 export const ITEM_DESCRIPTION2 = 'The description2';
+export const ITEM_DISTANCE = 2353;
 
 export const ITEM_LOCATION: UserLocation = {
   id: 101,
@@ -264,7 +265,7 @@ export const ITEM_FASHION_EXTRA_INFO: ItemExtraInfo = {
   },
   brand: 'Zara',
   model: 'Ring',
-  condition: 'new',
+  condition: ItemCondition.NEW,
   size: {
     id: '1',
     text: 'XXL / 48 / 58',
@@ -297,6 +298,10 @@ export const ITEM_CELLPHONES_EXTRA_INFO_PARENT_OBJECT_TYPE: ItemExtraInfo = {
 export const ITEM_CELLPHONES_EXTRA_INFO_NO_OBJECT_TYPE: ItemExtraInfo = {
   brand: 'Apple',
   model: 'iPhone 11 Pro',
+};
+
+export const ITEM_GENERIC_EXTRA_INFO: ItemExtraInfo = {
+  condition: ItemCondition.HAS_GIVEN_IT_ALL,
 };
 
 export const MOCK_ITEM: Item = new Item(
@@ -510,6 +515,30 @@ export const MOCK_ITEM_GAMES_CONSOLES: Item = new Item(
   ITEM_DATA.delivery_info
 );
 
+export const MOCK_ITEM_GAMES_CONSOLES_WITH_EXTRA_INFO: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  CATEGORY_IDS.GAMES_CONSOLES,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info,
+  ITEM_TYPES.CONSUMER_GOODS,
+  ITEM_GENERIC_EXTRA_INFO
+);
+
 export const MOCK_ITEM_CELLPHONES: Item = new Item(
   ITEM_DATA.id,
   ITEM_DATA.legacy_id,
@@ -532,6 +561,52 @@ export const MOCK_ITEM_CELLPHONES: Item = new Item(
   ITEM_DATA.delivery_info,
   ITEM_TYPES.CONSUMER_GOODS,
   ITEM_CELLPHONES_EXTRA_INFO
+);
+
+export const MOCK_ITEM_CELLPHONES_WITHOUT_EXTRA_INFO: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info,
+  ITEM_TYPES.CONSUMER_GOODS
+);
+
+export const MOCK_ITEM_FASHION_WITHOUT_EXTRA_INFO: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  CATEGORY_IDS.FASHION_ACCESSORIES,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info,
+  ITEM_TYPES.CONSUMER_GOODS
 );
 
 export const MOCK_ITEM_CELLPHONES_PARENT_SUBCATEGORY: Item = new Item(

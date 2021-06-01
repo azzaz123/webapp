@@ -13,6 +13,7 @@ export function SearchItemCustomerGoodsResponseMapper({search_objects}: SearchRe
     description: item.description,
     salePrice: item.price,
     currencyCode: item.currency,
+    distance: item.distance,
     ownerId: item.user.id,
     webSlug: item.web_slug,
     images: item.images.map(SearchItemImageMapper),

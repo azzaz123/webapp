@@ -83,7 +83,7 @@ describe('Service: Errors', () => {
 
   describe('i18nError', () => {
     it('should call toastService.show method for type error with i18n message', () => {
-      spyOn(i18n, 'translate').and.returnValues('message', 'title');
+      spyOn(i18n, 'translate').and.returnValues('title', 'message');
 
       service.i18nError('key' as TRANSLATION_KEY);
 
@@ -95,7 +95,7 @@ describe('Service: Errors', () => {
     });
 
     it('should call toastService.show method for type error with i18n message, concatenating text', () => {
-      spyOn(i18n, 'translate').and.returnValues('message', 'title');
+      spyOn(i18n, 'translate').and.returnValues('title', 'message');
 
       service.i18nError('key' as TRANSLATION_KEY, 'text');
 
@@ -109,7 +109,7 @@ describe('Service: Errors', () => {
 
   describe('i18nSuccess', () => {
     it('should call toastService.show method for type success with i18n message', () => {
-      spyOn(i18n, 'translate').and.returnValues('message', 'title');
+      spyOn(i18n, 'translate').and.returnValues('title', 'message');
 
       service.i18nSuccess('key' as TRANSLATION_KEY);
 
@@ -120,7 +120,7 @@ describe('Service: Errors', () => {
       });
     });
     it('should call toastService.show method for type success with i18n message, concatenating text', () => {
-      spyOn(i18n, 'translate').and.returnValues('message', 'title');
+      spyOn(i18n, 'translate').and.returnValues('title', 'message');
 
       service.i18nSuccess('key' as TRANSLATION_KEY, 'text');
 

@@ -23,19 +23,20 @@ export class ErrorsService {
   }
 
   public i18nError(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY): void {
-    this.showToast('error', key, concatText, titleKey);
+    const title = titleKey ? this.i18n.translate(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE);
+    this.showToast('error', key, concatText, title);
   }
 
   public i18nSuccess(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY): void {
-    this.showToast('success', key, concatText, titleKey);
+    const title = titleKey ? this.i18n.translate(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE);
+    this.showToast('success', key, concatText, title);
   }
 
-  private showToast(type: 'error' | 'success', key: TRANSLATION_KEY, concatText: string, titleKey?: TRANSLATION_KEY): void {
+  private showToast(type: 'error' | 'success', key: TRANSLATION_KEY, concatText: string, title: string): void {
     const translatedText = this.i18n.translate(key) || this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
     const spacedConcatText = concatText ? ` ${concatText}` : '';
 
     const text = `${translatedText}${spacedConcatText}`;
-    const title = titleKey ? this.i18n.translate(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE);
 
     this.toastService.show({
       text,

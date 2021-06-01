@@ -1,16 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { selectUserProfileDetailId, UserId } from '@data/user';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { UserService } from '@core/user/user.service';
 
 @Pipe({
   name: 'isCurrentUser',
 })
 export class IsCurrentUserPipe implements PipeTransform {
-  constructor(private store: Store) {}
+  constructor(private userService: UserService) {}
 
-  transform(userId: string): Observable<boolean> {
-    return this.store.select(selectUserProfileDetailId).pipe(map((userIdStore: UserId | null) => userIdStore === userId));
+  transform(userId: string): boolean {
+    return this.userService.isLogged && this.userService.user.id === userId;
   }
 }

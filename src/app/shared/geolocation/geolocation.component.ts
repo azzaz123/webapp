@@ -4,7 +4,7 @@ import { debounceTime, switchMap, distinctUntilChanged, catchError } from 'rxjs/
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../core/geolocation/geolocation.service';
-import { GeolocationResponse } from '../../core/geolocation/geolocation-response.interface';
+import { ItemPlace } from '../../core/geolocation/geolocation-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { UserService } from '../../core/user/user.service';
 
@@ -56,15 +56,15 @@ export class GeolocationComponent implements OnInit, OnChanges {
 
   public formatter = (x: any) => x.description;
 
-  public selectItem(address: GeolocationResponse) {
-    this.geolocationService.geocode(address.item.description).subscribe((data: Coordinate) => {
+  public selectItem(address: ItemPlace) {
+    this.geolocationService.geocode(address.description).subscribe((data: Coordinate) => {
       this.newCoordinate.emit(data);
 
       if (this.updateLocation) {
         const newLocation: Coordinate = {
           latitude: data.latitude,
           longitude: data.longitude,
-          name: address.item.description,
+          name: address.description,
         };
         this.userService.updateSearchLocationCookies(newLocation);
       }
