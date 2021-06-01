@@ -1,4 +1,4 @@
-import { PERMISSIONS } from './user';
+import { PERMISSIONS } from './user-constants';
 
 export interface FeatureFlag {
   name: FEATURE_FLAGS_ENUM;

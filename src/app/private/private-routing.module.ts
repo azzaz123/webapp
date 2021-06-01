@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DeliveryDevelopmentGuard } from './features/delivery/guards/delivery-development.guard';
-import { PERMISSIONS } from '@core/user/user';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PRIVATE_PATHS } from './private-routing-constants';
 import { PrivateComponent } from './private.component';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 const routes: Routes = [
   {
