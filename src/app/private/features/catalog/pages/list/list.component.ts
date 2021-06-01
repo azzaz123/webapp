@@ -39,7 +39,8 @@ import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disa
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { find, findIndex } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { NgxPermissionsService } from 'ngx-permissions';
+import { NgxPermissionsObject, NgxPermissionsService } from 'ngx-permissions';
+import { Subscription } from 'rxjs';
 import { take, takeWhile } from 'rxjs/operators';
 import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
 import { OrderEvent, STATUS } from '../../components/selected-items/selected-product.interface';
@@ -95,6 +96,8 @@ export class ListComponent implements OnInit, OnDestroy {
   public showTryProSlot: boolean;
   public hasTrialAvailable: boolean;
   private subscriptions: SubscriptionsResponse[];
+  private permissions: NgxPermissionsObject;
+  private componentSubscriptions: Subscription[] = [];
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true })
@@ -121,8 +124,13 @@ export class ListComponent implements OnInit, OnDestroy {
     return this.page * this.pageSize;
   }
 
+  private subscribePermissions(): void {
+    this.componentSubscriptions.push(this.permissionService.permissions$.subscribe((permissions) => (this.permissions = permissions)));
+  }
+
   ngOnInit() {
     this.getUserInfo();
+    this.subscribePermissions();
     this.subscriptionSelectedNavLinks = [
       { id: STATUS.ACTIVE, display: this.i18n.translate(TRANSLATION_KEY.ACTIVE) },
       {
@@ -297,21 +305,19 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private showBumpSuggestionModal(itemId: string): void {
-    this.permissionService.hasPermission(PERMISSIONS.visibility).then((hasVisibility) => {
-      if (hasVisibility) {
-        this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
-          windowClass: 'modal-standard',
-        });
-        this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
-          this.bumpSuggestionModalRef = null;
-          if (result?.redirect) {
-            this.router.navigate(['catalog/checkout', { itemId }]);
-          }
-        });
-      } else {
-        this.errorService.i18nSuccess(TRANSLATION_KEY.TOAST_PRODUCT_CREATED);
-      }
-    });
+    if (this.permissions[PERMISSIONS.visibility]) {
+      this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
+        windowClass: 'modal-standard',
+      });
+      this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
+        this.bumpSuggestionModalRef = null;
+        if (result?.redirect) {
+          this.router.navigate(['catalog/checkout', { itemId }]);
+        }
+      });
+    } else {
+      this.errorService.i18nSuccess(TRANSLATION_KEY.TOAST_PRODUCT_CREATED);
+    }
   }
 
   private getCheapestProductPrice(modalRef: NgbModalRef, itemId: string, creditInfo: CreditInfo): void {
@@ -345,6 +351,9 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.active = false;
+    this.componentSubscriptions.forEach((subscription: Subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   public logout() {
