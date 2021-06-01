@@ -1,6 +1,7 @@
 export enum PERMISSIONS {
   normal = 'isNormal',
   professional = 'isProfessional',
+  featured = 'isFeatured',
   visibility = 'visibility',
 }
 
