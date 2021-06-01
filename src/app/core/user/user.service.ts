@@ -358,8 +358,8 @@ export class UserService {
   }
 
   // TODO: This logic is correct for now, but should be checked using the subscriptions BFF
-  public isProUser(): Observable<boolean> {
-    return this.me().pipe(map((user) => user.featured));
+  public isProUser(): boolean {
+    return this.user.featured;
   }
 
   private getDistanceInKilometers(coord1: Coordinate, coord2: Coordinate): number {
