@@ -98,6 +98,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private subscriptions: SubscriptionsResponse[];
   private permissions: NgxPermissionsObject;
   private componentSubscriptions: Subscription[] = [];
+  public readonly PERMISSIONS = PERMISSIONS;
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true })
