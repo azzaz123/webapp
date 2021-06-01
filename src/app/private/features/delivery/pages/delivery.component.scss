@@ -1,0 +1,7 @@
+.Delivery {
+  &__content {
+    @include media-breakpoint-up(sm) {
+      margin: 0px -15px;
+    }
+  }
+}
