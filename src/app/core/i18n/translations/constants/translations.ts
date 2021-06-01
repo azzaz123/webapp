@@ -106,7 +106,6 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS]: $localize`:@@web_delivery_delete_address_succeed:Address deleted successfully`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR]: $localize`:@@web_delivery_address_save_error:Sorry, something went wrong. Try again.`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR]: $localize`:@@web_address_view_all_users_form_textfield_postalcode_missmatch_location_inline_error:The ZIP code must be from the country you are located`,
-  [TRANSLATION_KEY.DELIVERY_ADDRESS_PHONE_MISSMATCH_LOCATION_ERROR]: $localize`:@@web_address_view_all_users_form_textfield_phone_missmatch_location_inline_error:The contact number must be from the country you are located`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR]: $localize`:@@web_delivery_address_postal_code_not_allowed_error:Postal code not accepted`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR]: $localize`:@@web_delivery_address_invalid_postal_code_error:This postal code isn't valid`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST]: $localize`:@@web_delivery_delete_address_confirmation_popup_message:You cannot undo this action. Are you sure you want to delete your address?`,
