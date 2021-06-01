@@ -242,7 +242,7 @@ describe('DeliveryAddressComponent', () => {
           spyOn(router, 'navigate');
         });
 
-        it('should call the event track click event ', () => {
+        it('should call the event track save click event', () => {
           component.onSubmit();
 
           expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalled();
@@ -337,7 +337,7 @@ describe('DeliveryAddressComponent', () => {
         component.onSubmit();
       });
 
-      it('should call the event track click event ', () => {
+      it('should call the event track save click event ', () => {
         expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalled();
       });
 
