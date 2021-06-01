@@ -65,7 +65,7 @@
                             <div class="form-group row align-items-center">
                                 <label for="flat_and_floor" class="col-sm-12 col-md-5" i18n="@@web_shipping_flat_and_door_section_hint">Floor and door number</label>
                                 <div class="col-sm-12 col-md-5">
-                                    <input type="text" class="form-control" id="flat_and_floor" formControlName="flat_and_floor" maxlength="15"/>
+                                    <input type="text" class="form-control" id="flat_and_floor" formControlName="flat_and_floor" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.FLAT_AND_FLOOR"/>
                                     <div *ngIf="bankAccountForm.controls.flat_and_floor.invalid && bankAccountForm.pending" class="BankAccountForm__message BankAccountForm__message--error">
                                         <span>{{formErrorMessages.flat_and_floor}}</span>
                                     </div>

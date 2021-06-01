@@ -29,6 +29,7 @@ import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../error
 import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
+import { DELIVERY_INPUTS_MAX_LENGTH } from '@shared/enums/inputs-length/delivery-inputs-length.enum';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -45,6 +46,7 @@ export class DeliveryAddressComponent implements OnInit {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
+  public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public countries: IOption[] = [];
   public cities: IOption[] = [];
   public deliveryAddressForm: FormGroup;

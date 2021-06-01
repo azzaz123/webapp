@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
+import { DELIVERY_INPUTS_MAX_LENGTH } from '@shared/enums/inputs-length/delivery-inputs-length.enum';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 
 export const IBAN_LENGTH = 40;
@@ -12,6 +13,7 @@ export const IBAN_LENGTH = 40;
 export class BankAccountComponent implements OnInit {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
 
+  public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public bankAccountForm: FormGroup;
   public loading = false;
   public maxLengthIBAN: number;
