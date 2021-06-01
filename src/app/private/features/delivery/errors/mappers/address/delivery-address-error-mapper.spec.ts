@@ -3,13 +3,13 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import {
   AddressTooLongError,
   DeliveryAddressError,
-  DELIVERY_ADDRESS_ERROR_CODES,
   FlatAndFloorTooLongError,
   InvalidMobilePhoneNumber,
   InvalidPhoneNumberError,
 } from '../../classes/address';
 import { DeliveryErrorApi } from '../../classes/delivery-error-response-api';
 import { DeliveryAddressErrorMapper, DeliveryAddressErrorResponse } from './delivery-address-error-mapper';
+import { DELIVERY_ADDRESS_ERROR_CODES } from './delivery-address-error.enum';
 
 const deliveryAddressErrorMapper = new DeliveryAddressErrorMapper();
 

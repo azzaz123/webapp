@@ -1,12 +1,7 @@
-import {
-  DELIVERY_ADDRESS_ERROR_CODES,
-  InvalidPhoneNumberError,
-  InvalidMobilePhoneNumber,
-  AddressTooLongError,
-  FlatAndFloorTooLongError,
-} from '../../classes/address';
+import { InvalidPhoneNumberError, InvalidMobilePhoneNumber, AddressTooLongError, FlatAndFloorTooLongError } from '../../classes/address';
 import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
 import { ErrorMapper } from '../error-mapper';
+import { DELIVERY_ADDRESS_ERROR_CODES } from './delivery-address-error.enum';
 
 export type DeliveryAddressErrorResponse = DeliveryErrorResponseApi<DELIVERY_ADDRESS_ERROR_CODES>;
 

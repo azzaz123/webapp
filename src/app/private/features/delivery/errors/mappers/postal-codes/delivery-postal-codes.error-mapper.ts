@@ -1,9 +1,7 @@
 import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
-import { DELIVERY_POSTAL_CODES_ERROR_CODES } from '../../classes/postal-codes/delivery-postal-codes-error.enum';
-import { InvalidPostalCodeError } from '../../classes/postal-codes/invalid-postal-code.error';
-import { PostalCodeDoesNotExist } from '../../classes/postal-codes/postal-code-does-not-exist.error';
-import { PostalCodeIsNotAllowed } from '../../classes/postal-codes/postal-code-is-not-allowed.error';
+import { InvalidPostalCodeError, PostalCodeDoesNotExist, PostalCodeIsNotAllowed } from '../../classes/postal-codes';
 import { ErrorMapper } from '../error-mapper';
+import { DELIVERY_POSTAL_CODES_ERROR_CODES } from './delivery-postal-codes-error.enum';
 
 export type DeliveryPostalCodesErrorResponse = DeliveryErrorResponseApi<DELIVERY_POSTAL_CODES_ERROR_CODES>;
 

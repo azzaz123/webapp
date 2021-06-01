@@ -1,15 +1,10 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MOCK_DELIVERY_LOCATION } from '@fixtures/private/delivery/delivery-location.fixtures.spec';
-import { DeliveryAddressError } from '@private/features/delivery/errors/delivery-address/delivery-address-error';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { DeliveryLocationsApiService } from '../../api/delivery-locations-api/delivery-locations-api.service';
-import {
-  MOCK_DELIVERY_ADDRESS_ERRORS_API,
-  MOCK_DELIVERY_ADDRESS_ERRORS_INVALID_POSTAL_CODE_API,
-} from '@fixtures/private/delivery/delivery-address-error.fixtures.spec';
+
 import { DeliveryLocationsService } from './delivery-locations.service';
-import { DELIVERY_ADDRESS_ERROR } from '@private/features/delivery/interfaces/delivery-address/delivery-address-error.interface';
 
 describe('DeliveryLocationsService', () => {
   const MOCK_POSTAL_CODE = '08027';
