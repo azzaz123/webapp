@@ -4,11 +4,11 @@ import { UuidService } from '@core/uuid/uuid.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 
 @Component({
-  selector: 'tsl-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss'],
+  selector: 'tsl-credit-card',
+  templateUrl: './credit-card.component.html',
+  styleUrls: ['./credit-card.component.scss'],
 })
-export class CardComponent implements OnInit {
+export class CreditCardComponent implements OnInit {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
 
   public cardForm: FormGroup;

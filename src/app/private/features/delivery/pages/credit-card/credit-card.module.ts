@@ -4,10 +4,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from '@shared/button/button.module';
 import { ProfileFormModule } from '@shared/profile/profile-form/profile-form.module';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
-import { cardRoutedComponents, CardRoutingModule } from './card.routing.module';
+import { creditCardRoutedComponents, CreditCardRoutingModule } from './credit-card.routing.module';
 
 @NgModule({
-  imports: [CardRoutingModule, CommonModule, SpinnerModule, ReactiveFormsModule, ProfileFormModule, ButtonModule],
-  declarations: [cardRoutedComponents],
+  imports: [CreditCardRoutingModule, CommonModule, SpinnerModule, ReactiveFormsModule, ProfileFormModule, ButtonModule],
+  declarations: [creditCardRoutedComponents],
 })
-export class CardModule {}
+export class CreditCardModule {}

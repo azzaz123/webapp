@@ -4,16 +4,16 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 
-import { CardComponent } from './card.component';
+import { CreditCardComponent } from './credit-card.component';
 
-describe('CardComponent', () => {
-  let component: CardComponent;
-  let fixture: ComponentFixture<CardComponent>;
+describe('CreditCreditCardComponent', () => {
+  let component: CreditCardComponent;
+  let fixture: ComponentFixture<CreditCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      declarations: [CardComponent, ProfileFormComponent],
+      declarations: [CreditCardComponent, ProfileFormComponent],
       providers: [
         FormBuilder,
         {
@@ -30,7 +30,7 @@ describe('CardComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CardComponent);
+    fixture = TestBed.createComponent(CreditCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

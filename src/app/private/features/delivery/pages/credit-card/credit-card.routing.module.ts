@@ -1,11 +1,11 @@
 import { Route, RouterModule } from '@angular/router';
-import { CardComponent } from './card.component';
+import { CreditCardComponent } from './credit-card.component';
 import { NgModule } from '@angular/core';
 
 const routes: Route[] = [
   {
     path: '',
-    component: CardComponent,
+    component: CreditCardComponent,
   },
 ];
 
@@ -13,6 +13,6 @@ const routes: Route[] = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CardRoutingModule {}
+export class CreditCardRoutingModule {}
 
-export const cardRoutedComponents = [CardComponent];
+export const creditCardRoutedComponents = [CreditCardComponent];

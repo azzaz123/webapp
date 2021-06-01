@@ -7,7 +7,7 @@ export enum DELIVERY_PATHS {
   SHIPMENT_TRACKING = 'shipments',
   BANK_ACCOUNT = 'bank-account',
   DISPUTE = 'dispute',
-  CARD = 'card',
+  CREDIT_CARD = 'card',
 }
 
 export enum DELIVERY_PATH_PARAMS {}
