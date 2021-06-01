@@ -331,10 +331,6 @@ export class UserService {
   }
 
   public checkUserPermissions(): Observable<boolean> {
-    if (!this.isLogged) {
-      return of(true);
-    }
-
     return this.me(false).pipe(
       tap((user) => this.setPermission(user)),
       map(() => true),
