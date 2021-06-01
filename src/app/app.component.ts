@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag.interface';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureflagService } from '@core/user/featureflag.service';
-import { PERMISSIONS } from '@core/user/user';
+import { DEFAULT_PERMISSIONS } from '@core/user/user-contants';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { take } from 'rxjs/operators';
 @Component({
   selector: 'tsl-root',
   templateUrl: './app.component.html',
@@ -12,11 +13,11 @@ export class AppComponent implements OnInit {
   constructor(private permissionsService: NgxPermissionsService, private featureFlagService: FeatureflagService) {}
 
   ngOnInit(): void {
-    this.permissionsService.addPermission(PERMISSIONS.visibility);
+    this.permissionsService.addPermission(DEFAULT_PERMISSIONS);
     this.getFeatureFlags();
   }
 
   private getFeatureFlags() {
-    this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).subscribe();
+    this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).pipe(take(1)).subscribe();
   }
 }
