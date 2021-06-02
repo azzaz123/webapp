@@ -49,7 +49,7 @@ describe('FeatureflagService', () => {
     httpMock = TestBed.inject(HttpTestingController);
     service = TestBed.inject(FeatureflagService);
     permissionService = TestBed.inject(NgxPermissionsService);
-
+    isDevMode.and.returnValue(false);
     spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
   });
 
@@ -118,7 +118,7 @@ describe('FeatureflagService', () => {
           isDevMode.and.returnValue(false);
           let dataResponse: boolean;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+          service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
 
           expect(dataResponse).toBe(true);
         });
@@ -130,7 +130,7 @@ describe('FeatureflagService', () => {
           isDevMode.and.returnValue(true);
           let dataResponse: boolean;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+          service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
 
           expect(dataResponse).toBe(true);
         });
@@ -142,7 +142,7 @@ describe('FeatureflagService', () => {
           isDevMode.and.returnValue(false);
           let dataResponse: boolean;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+          service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
 
           expect(dataResponse).toBe(false);
         });
@@ -243,14 +243,21 @@ describe('FeatureflagService', () => {
       });
 
       describe('and is not active in dev mode', () => {
-        it('should call API', () => {
-          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.STRIPE}&timestamp=${TIMESTAMP}`;
+        it('should return false', () => {
+          let dataResponse: boolean;
+
+          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+
+          expect(dataResponse).toBe(false);
+        });
+        it('should not call API', () => {
+          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.DELIVERY}&timestamp=${TIMESTAMP}`;
           const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
           const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.STRIPE).subscribe();
+          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe();
 
-          httpMock.expectOne(expectedUrlWithEndpointAndParams);
+          httpMock.expectNone(expectedUrlWithEndpointAndParams);
         });
       });
     });

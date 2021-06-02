@@ -21,16 +21,16 @@ export class FeatureflagService {
   public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
     const storedFeatureFlag = this.storedFeatureFlags.find((sff) => sff.name === name);
 
-    if (name === FEATURE_FLAGS_ENUM.DELIVERY) {
-      return of(this.getDeliveryFeatureFlag());
-    }
-
-    if (isDevMode() && ACTIVE_DEV_FEATURE_FLAGS.includes(name)) {
-      const permission = featurePermissionConfig[name];
-      if (permission) {
-        this.addPermisions(permission);
+    if (isDevMode()) {
+      console.log('ENTRACA', isDevMode());
+      const isActive = ACTIVE_DEV_FEATURE_FLAGS.includes(name);
+      if (isActive) {
+        const permission = featurePermissionConfig[name];
+        if (permission) {
+          this.addPermisions(permission);
+        }
       }
-      return of(true);
+      return of(isActive);
     }
 
     if (storedFeatureFlag && cache) {
@@ -57,6 +57,13 @@ export class FeatureflagService {
             return featureFlag.isActive;
           })
         );
+    }
+  }
+
+  // TODO add permissions if is required
+  public getLocalFlag(name: FEATURE_FLAGS_ENUM) {
+    if (name === FEATURE_FLAGS_ENUM.DELIVERY) {
+      return of(this.getDeliveryFeatureFlag());
     }
   }
 
