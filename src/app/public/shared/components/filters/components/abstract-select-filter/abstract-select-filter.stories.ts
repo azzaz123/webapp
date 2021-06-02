@@ -15,7 +15,6 @@ import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { SelectFilterParams } from '../select-filter/interfaces/select-filter-params.interface';
 import { AbstractSelectFilterConfig } from './interfaces/abstract-select-filter-config.interface';
-import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
@@ -56,7 +55,7 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [AbstractSelectFilterModule, AbstractFilterModule, SvgIconModule, HttpClientModule, CommonModule],
-      declarations: [StoryAbstractSelectFilterComponent, LoremIpsumComponent, IsBubblePipe],
+      declarations: [StoryAbstractSelectFilterComponent, LoremIpsumComponent],
       providers: [
         { provide: CookieService, useValue: MockCookieService },
         { provide: FilterOptionService, useValue: {} },

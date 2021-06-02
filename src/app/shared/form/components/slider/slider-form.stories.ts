@@ -2,7 +2,7 @@ import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { Component, Input } from '@angular/core';
 import { SliderFormModule } from './slider-form.module';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'tsl-story-slider',
@@ -55,7 +55,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StorySliderFormComponent],
-      imports: [SliderFormModule, ReactiveFormsModule],
+      imports: [SliderFormModule, ReactiveFormsModule, FormsModule],
     }),
   ],
 };

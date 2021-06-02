@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { SvgIconModule } from '@core/svg-icon/svg-icon.module';
 import { CAR_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/cars-constants';
 import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { CounterSpecificationComponent } from './counter-specification.component';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 export default {
   title: 'Webapp/Public/Shared/Components/CounterSpecification',
@@ -25,8 +25,8 @@ const Template: Story<CounterSpecificationComponent> = (args: CounterSpecificati
   component: CounterSpecificationComponent,
   props: args,
   moduleMetadata: {
-    declarations: [CounterSpecificationComponent],
-    imports: [CommonModule, SvgIconModule, HttpClientModule],
+    declarations: [CounterSpecificationComponent, SvgIconComponent],
+    imports: [CommonModule, HttpClientModule],
   },
   template: '<tsl-counter-specification [type]="type" [counter]="counter" [label]="label"></tsl-counter-specification>',
 });
