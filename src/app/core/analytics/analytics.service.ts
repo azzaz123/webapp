@@ -30,29 +30,37 @@ export class AnalyticsService {
   }
 
   public initialize(): void {
-    const isUserLogged = this.userService.isLogged;
+    const loggedUser = this.userService.isLogged;
 
-    if (isUserLogged) {
+    if (loggedUser) {
       const user = this.userService.user;
       const mParticleLoggedConfig = {
         ...COMMON_MPARTICLE_CONFIG,
         identifyRequest: {
           userIdentities: this.getUserIdentities(user),
         },
-        identityCallback: (result) => {
-          const mParticleUser = result.getUser();
-
-          if (mParticleUser) {
-            mParticleUser.setUserAttribute('deviceId', this.deviceService.getDeviceId());
-          }
-        },
+        identityCallback: (result) => this.mParticleIdentityCallback(result),
       };
 
       this.initializeMParticleSDK(mParticleLoggedConfig);
     } else {
-      const mParticleNotLoggedConfig = COMMON_MPARTICLE_CONFIG;
+      const mParticleNotLoggedConfig = {
+        ...COMMON_MPARTICLE_CONFIG,
+        identifyRequest: {
+          userIdentities: {},
+        },
+        identityCallback: (result) => this.mParticleIdentityCallback(result),
+      };
 
       this.initializeMParticleSDK(mParticleNotLoggedConfig);
+    }
+  }
+
+  private mParticleIdentityCallback(result) {
+    const mParticleUser = result.getUser();
+
+    if (mParticleUser) {
+      mParticleUser.setUserAttribute('deviceId', this.deviceService.getDeviceId());
     }
   }
 
