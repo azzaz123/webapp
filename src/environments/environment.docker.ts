@@ -20,9 +20,9 @@ export const docknum = getDockNum();
 export const environment: Environment = {
   production: false,
   name: 'docker',
-  baseUrl: 'https://beta.wallapop.com/',
-  xmppDomain: 'beta.wallapop.com',
-  wsUrl: 'wss://mongooseimprotool-beta.wallapop.com:443/ws-xmpp',
+  baseUrl: `https://apigw.${docknum}.wallapop.com/`,
+  xmppDomain: `${docknum}.wallapop.com`,
+  wsUrl: `wss://${docknum}.wallapop.com:5282/ws-xmpp`,
   siteUrl: `https://es.${docknum}.wallapop.com/`,
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
   cookieSuffix: `${docknum}`,
