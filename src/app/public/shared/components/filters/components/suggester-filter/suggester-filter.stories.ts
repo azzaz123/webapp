@@ -18,7 +18,6 @@ import { AbstractSelectFilterModule } from '@public/shared/components/filters/co
 import { ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
@@ -103,7 +102,7 @@ export default {
           useClass: MockFilterOptionService,
         },
       ],
-      declarations: [FiltersComponent, SuggesterFilterComponent, IsBubblePipe],
+      declarations: [FiltersComponent, SuggesterFilterComponent],
     }),
   ],
 } as Meta;

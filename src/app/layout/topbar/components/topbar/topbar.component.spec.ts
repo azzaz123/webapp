@@ -28,6 +28,13 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
+import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { SuggesterComponent } from '../suggester/suggester.component';
+import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -66,6 +73,7 @@ describe('TopbarComponent', () => {
   let featureFlagService: FeatureFlagServiceMock;
   let router: Router;
   let navigator: SearchNavigatorService;
+  let topbarTrackingEventsService: TopbarTrackingEventsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -136,8 +144,17 @@ describe('TopbarComponent', () => {
           EventService,
           SearchQueryStringService,
           QueryStringLocationService,
+          TopbarTrackingEventsService,
+          {
+            provide: AnalyticsService,
+            useValue: MockAnalyticsService,
+          },
+          {
+            provide: SuggesterService,
+            useValue: {},
+          },
         ],
-        declarations: [TopbarComponent, CustomCurrencyPipe],
+        declarations: [SuggesterComponent, TopbarComponent, CustomCurrencyPipe],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
       userService = TestBed.inject(UserService);
@@ -157,6 +174,7 @@ describe('TopbarComponent', () => {
     featureFlagService = TestBed.inject(FeatureflagService);
     navigator = TestBed.inject(SearchNavigatorService);
     router = TestBed.inject(Router);
+    topbarTrackingEventsService = TestBed.inject(TopbarTrackingEventsService);
   });
 
   it('should be created', () => {
@@ -301,9 +319,26 @@ describe('TopbarComponent', () => {
         [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
       };
 
+      describe('and the user does not select any suggestion', () => {
+        const MOCK_SEARCH_BOX_ONLY_TEXT_VALUE: SearchBoxValue = {
+          [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone',
+        };
+
+        it('should send click keyboard search button event', () => {
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
+          spyOn(topbarTrackingEventsService, 'trackClickKeyboardSearchButtonEvent');
+
+          searchBox.triggerEventHandler('searchSubmit', MOCK_SEARCH_BOX_ONLY_TEXT_VALUE);
+
+          expect(topbarTrackingEventsService.trackClickKeyboardSearchButtonEvent).toHaveBeenCalledWith(
+            MOCK_SEARCH_BOX_ONLY_TEXT_VALUE.keywords
+          );
+        });
+      });
+
       describe('and the experimental features flag is enabled', () => {
         it('should navigate to the new search page', () => {
-          const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
           spyOn(navigator, 'navigate');
 
@@ -314,6 +349,7 @@ describe('TopbarComponent', () => {
               { key: 'keywords', value: 'iphone' },
               { key: 'category_ids', value: '16000' },
             ],
+            FILTERS_SOURCE.SEARCH_BOX,
             true
           );
         });
@@ -321,9 +357,9 @@ describe('TopbarComponent', () => {
 
       describe('and the experimental features flag is not enabled', () => {
         it('should redirect to the old search page', () => {
-          const searchBox = fixture.debugElement.query(By.css('tsl-suggester'));
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
           const { category_ids, keywords } = MOCK_SEARCH_BOX_VALUE;
-          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.categoryId}=${category_ids}&${FILTER_QUERY_PARAM_KEY.keywords}=${keywords}`;
+          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.categoryId}=${category_ids}&${FILTER_QUERY_PARAM_KEY.keywords}=${keywords}&${FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE}=${FILTERS_SOURCE.SEARCH_BOX}`;
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
           spyOn(router, 'navigate');
 
@@ -331,6 +367,58 @@ describe('TopbarComponent', () => {
 
           expect(router.navigate).not.toHaveBeenCalled();
           expect(window.location.href).toEqual(expectedUrl);
+        });
+      });
+    });
+
+    describe('when a search has been canceled from the search box', () => {
+      const MOCK_SEARCH_BOX_VALUE: SearchBoxValue = {
+        [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone',
+        [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
+      };
+
+      describe('and the experimental features flag is enabled', () => {
+        beforeEach(() => {
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
+          spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
+          spyOn(navigator, 'navigate');
+          spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
+
+          searchBox.triggerEventHandler('searchCancel', MOCK_SEARCH_BOX_VALUE);
+        });
+
+        it('should navigate to the new search page', () => {
+          expect(navigator.navigate).toHaveBeenCalledWith(
+            [{ key: FILTER_QUERY_PARAM_KEY.keywords, value: '' }],
+            FILTERS_SOURCE.SEARCH_BOX,
+            true
+          );
+        });
+
+        it('should send cancel search event', () => {
+          expect(topbarTrackingEventsService.trackCancelSearchEvent).toHaveBeenCalledWith(MOCK_SEARCH_BOX_VALUE.keywords);
+        });
+      });
+
+      describe('and the experimental features flag is not enabled', () => {
+        beforeEach(() => {
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
+          spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
+          spyOn(router, 'navigate');
+          spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
+
+          searchBox.triggerEventHandler('searchCancel', MOCK_SEARCH_BOX_VALUE);
+        });
+
+        it('should redirect to the old search page', () => {
+          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.keywords}=&${FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE}=${FILTERS_SOURCE.SEARCH_BOX}`;
+
+          expect(router.navigate).not.toHaveBeenCalled();
+          expect(window.location.href).toEqual(expectedUrl);
+        });
+
+        it('should send cancel search event', () => {
+          expect(topbarTrackingEventsService.trackCancelSearchEvent).toHaveBeenCalledWith(MOCK_SEARCH_BOX_VALUE.keywords);
         });
       });
     });

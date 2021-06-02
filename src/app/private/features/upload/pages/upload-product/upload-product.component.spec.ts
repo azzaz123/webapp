@@ -1604,10 +1604,10 @@ describe('UploadProductComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should check reactivation validation on form init', () => {
+    it('should check reactivation validation after all data is ready', () => {
       spyOn(itemReactivationService, 'reactivationValidation');
 
-      component.ngOnInit();
+      component['dataReadyToValidate$'].next(true);
 
       expect(itemReactivationService.reactivationValidation).toHaveBeenCalledWith(component.uploadForm);
     });

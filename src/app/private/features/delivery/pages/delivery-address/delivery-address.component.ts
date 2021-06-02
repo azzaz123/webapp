@@ -23,10 +23,7 @@ import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/de
 
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
-import {
-  DeliveryAddressErrorTranslations,
-  DeliveryPostalCodesErrorTranslations,
-} from '@private/features/delivery/errors/constants/delivery-error-translations';
+import { DeliveryPostalCodesErrorTranslations } from '@private/features/delivery/errors/constants/delivery-error-translations';
 import {
   DeliveryAddressError,
   InvalidPhoneNumberError,
@@ -36,6 +33,7 @@ import {
 } from '../../errors/classes/address';
 import { DeliveryPostalCodesError } from '../../errors/classes/postal-codes';
 import { Toast } from '@layout/toast/core/interfaces/toast.interface';
+import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -80,7 +78,8 @@ export class DeliveryAddressComponent implements OnInit {
     private modalService: NgbModal,
     private deliveryLocationsService: DeliveryLocationsService,
     private router: Router,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private deliveryAddressTrackEventsService: DeliveryAddressTrackEventsService
   ) {}
 
   ngOnInit() {
@@ -120,6 +119,8 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   public onSubmit(): void {
+    this.deliveryAddressTrackEventsService.trackClickSaveButton();
+
     if (this.deliveryAddressForm.valid) {
       this.submitValidForm();
     } else {
