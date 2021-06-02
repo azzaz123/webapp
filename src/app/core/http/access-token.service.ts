@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 import * as CryptoJSHSha256 from 'crypto-js/hmac-sha256';
 import * as CryptoJSBase64 from 'crypto-js/enc-base64';
 

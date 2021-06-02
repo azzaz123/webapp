@@ -1,7 +1,7 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { environment } from '../../../../../environments/environment';
+import { environment } from '@environments/environment';
 import { MockInterceptor } from './mock.interceptor';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 
