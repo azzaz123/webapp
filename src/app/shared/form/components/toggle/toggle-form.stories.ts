@@ -2,7 +2,7 @@ import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { Component } from '@angular/core';
 import { ToggleFormModule } from './toggle-form.module';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'tsl-story-toggle',
@@ -31,7 +31,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StoryToggleFormComponent],
-      imports: [ToggleFormModule, ReactiveFormsModule],
+      imports: [ToggleFormModule, ReactiveFormsModule, FormsModule],
     }),
   ],
 };

@@ -1,7 +1,7 @@
 import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from './select-form.module';
 import { SelectFormOption } from './interfaces/select-form-option.interface';
 import { HttpClientModule } from '@angular/common/http';
@@ -37,7 +37,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StorySelectFormComponent],
-      imports: [SelectFormModule, ReactiveFormsModule, HttpClientModule],
+      imports: [SelectFormModule, ReactiveFormsModule, HttpClientModule, FormsModule],
     }),
   ],
 };
