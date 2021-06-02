@@ -25,6 +25,7 @@ import { UploadProductComponent } from './pages/upload-product/upload-product.co
 import { UploadRealestateComponent } from './pages/upload-realestate/upload-realestate.component';
 import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
+import { HashtagSuggestionsService } from './core/services/hashtag-suggestions/hashtag-suggestions.service';
 
 @NgModule({
   imports: [
@@ -62,6 +63,7 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.mo
     GeneralSuggestionsService,
     ItemReactivationService,
     EditTrackingEventService,
+    HashtagSuggestionsService,
   ],
   entryComponents: [RemoveConfirmModalComponent, PreviewModalComponent],
 })
