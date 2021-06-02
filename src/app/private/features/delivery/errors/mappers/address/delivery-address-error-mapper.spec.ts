@@ -1,5 +1,5 @@
-import { HttpEventType, HttpHeaders } from '@angular/common/http';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { MOCK_DELIVERY_BASE_ERROR_RESPONSE } from '@fixtures/private/delivery/errors/delivery-errors.fixtures.spec';
 import {
   AddressTooLongError,
   DeliveryAddressError,
@@ -13,18 +13,6 @@ import { DELIVERY_ADDRESS_ERROR_CODES } from './delivery-address-error.enum';
 
 const deliveryAddressErrorMapper = new DeliveryAddressErrorMapper();
 
-const commonErrorResponseAttributes: DeliveryAddressErrorResponse = {
-  message: 'Http failure response',
-  name: 'HttpErrorResponse',
-  ok: false,
-  status: 409,
-  statusText: 'Conflict',
-  url: 'url',
-  error: [],
-  type: HttpEventType.Response,
-  headers: new HttpHeaders(),
-};
-
 describe('when mapping an error from delivery address backend', () => {
   describe('and server notifies delivery address location is too long', () => {
     it('should notify invalid postal code error', fakeAsync(() => {
@@ -33,7 +21,7 @@ describe('when mapping an error from delivery address backend', () => {
         message: 'Delivery address is too long ( ͡° ͜ʖ ͡°)',
       };
       const mockBackendError: DeliveryAddressErrorResponse = {
-        ...commonErrorResponseAttributes,
+        ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
         error: [mockErrorResponse],
       };
       let result: DeliveryAddressError;
@@ -54,7 +42,7 @@ describe('when mapping an error from delivery address backend', () => {
         message: 'Flat and floor too long ( ͡° ͜ʖ ͡°)',
       };
       const mockBackendError: DeliveryAddressErrorResponse = {
-        ...commonErrorResponseAttributes,
+        ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
         error: [mockErrorResponse],
       };
       let result: DeliveryAddressError;
@@ -76,7 +64,7 @@ describe('when mapping an error from delivery address backend', () => {
         message: 'The contact number must be from the country you are located',
       };
       const mockBackendError: DeliveryAddressErrorResponse = {
-        ...commonErrorResponseAttributes,
+        ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
         error: [mockErrorResponse],
       };
       let result: DeliveryAddressError;
@@ -98,7 +86,7 @@ describe('when mapping an error from delivery address backend', () => {
         message: 'The phone number is invalid',
       };
       const mockBackendError: DeliveryAddressErrorResponse = {
-        ...commonErrorResponseAttributes,
+        ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
         error: [mockErrorResponse],
       };
       let result: DeliveryAddressError;

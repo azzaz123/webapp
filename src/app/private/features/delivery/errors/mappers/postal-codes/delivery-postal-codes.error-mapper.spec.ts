@@ -1,5 +1,6 @@
 import { HttpEventType, HttpHeaders } from '@angular/common/http';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { MOCK_DELIVERY_BASE_ERROR_RESPONSE } from '@fixtures/private/delivery/errors/delivery-errors.fixtures.spec';
 import { DeliveryErrorApi } from '../../classes/delivery-error-response-api';
 import {
   DeliveryPostalCodesError,
@@ -12,18 +13,6 @@ import { DeliveryPostalCodesErrorMapper, DeliveryPostalCodesErrorResponse } from
 
 const deliveryPostalCodesErrorMapper = new DeliveryPostalCodesErrorMapper();
 
-const commonErrorResponseAttributes: DeliveryPostalCodesErrorResponse = {
-  message: 'Http failure response',
-  name: 'HttpErrorResponse',
-  ok: false,
-  status: 409,
-  statusText: 'Conflict',
-  url: 'url',
-  error: [],
-  type: HttpEventType.Response,
-  headers: new HttpHeaders(),
-};
-
 describe('when mapping an error from delivery postal code backend', () => {
   describe('and server notifies postal code is not valid', () => {
     it('should notify invalid postal code error', fakeAsync(() => {
@@ -32,7 +21,7 @@ describe('when mapping an error from delivery postal code backend', () => {
         message: 'Postal code XXX is not valid',
       };
       const mockBackendError: DeliveryPostalCodesErrorResponse = {
-        ...commonErrorResponseAttributes,
+        ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
         error: [mockErrorResponse],
       };
       let result: DeliveryPostalCodesError;
@@ -54,7 +43,7 @@ describe('when mapping an error from delivery postal code backend', () => {
         message: 'Postal code XXX es invent',
       };
       const mockBackendError: DeliveryPostalCodesErrorResponse = {
-        ...commonErrorResponseAttributes,
+        ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
         error: [mockErrorResponse],
       };
       let result: DeliveryPostalCodesError;
@@ -76,7 +65,7 @@ describe('when mapping an error from delivery postal code backend', () => {
         message: 'Postal code XXX not allowed',
       };
       const mockBackendError: DeliveryPostalCodesErrorResponse = {
-        ...commonErrorResponseAttributes,
+        ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
         error: [mockErrorResponse],
       };
       let result: DeliveryPostalCodesError;
