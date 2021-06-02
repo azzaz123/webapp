@@ -38,10 +38,9 @@ describe('when mapping an error from delivery address backend', () => {
       };
       let result: DeliveryAddressError;
 
-      deliveryAddressErrorMapper.map(mockBackendError).subscribe(
-        () => {},
-        (errors) => (result = errors[0])
-      );
+      deliveryAddressErrorMapper.map(mockBackendError).subscribe({
+        error: (errors) => (result = errors[0]),
+      });
       tick();
 
       expect(result instanceof AddressTooLongError).toBe(true);
