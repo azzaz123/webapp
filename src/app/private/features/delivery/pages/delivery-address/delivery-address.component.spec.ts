@@ -592,7 +592,7 @@ describe('DeliveryAddressComponent', () => {
           expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
         });
 
-        fit('should show an error message', () => {
+        it('should show an error message', () => {
           expect(component.formErrorMessages.postal_code).toEqual(postalCodeError.message);
         });
       });
