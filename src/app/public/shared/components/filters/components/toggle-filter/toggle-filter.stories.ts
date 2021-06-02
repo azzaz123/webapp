@@ -12,7 +12,6 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { ToggleFilterConfig } from './interfaces/toggle-filter-config.interface';
 import { ToggleFilterComponent } from './toggle-filter.component';
-import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-filters',
@@ -46,7 +45,7 @@ export default {
   title: 'Webapp/Public/Shared/Components/Filters/ToggleFilter',
   decorators: [
     moduleMetadata({
-      declarations: [ToggleFilterComponent, IsBubblePipe],
+      declarations: [ToggleFilterComponent],
       imports: [CommonModule, AbstractFilterModule, ToggleFormModule, HttpClientModule],
       providers: [{ provide: CookieService, useValue: MockCookieService }, DeviceDetectorService],
     }),

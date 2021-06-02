@@ -28,6 +28,13 @@ import {
   FILTER_PARAMETER_STORE_TOKEN,
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
+import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
+import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import { SearchAdsService } from '@public/features/search/core/ads/search-ads.service';
+import { SearchListTrackingEventsService } from '@public/features/search/core/services/search-list-tracking-events/search-list-tracking-events.service';
+import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import { SortFilterModule } from '@public/features/search/components/sort-filter/sort-filter.module';
 
 export default {
   title: 'Webapp/Public/Features/Search/Pages/Search',
@@ -54,6 +61,11 @@ export default {
           provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
           useClass: FilterParameterStoreService,
         },
+        PublicFooterService,
+        HostVisibilityService,
+        SearchAdsService,
+        SearchListTrackingEventsService,
+        SearchTrackingEventsService,
       ],
       declarations: [SearchComponent, SearchLayoutComponent],
       imports: [
@@ -63,9 +75,11 @@ export default {
         ItemApiModule,
         CheckSessionModule,
         ItemCardListModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([{ path: 'search', redirectTo: '' }]),
         FiltersWrapperModule,
         AdSlotShoppingModule,
+        ItemFavouritesModule,
+        SortFilterModule,
       ],
     }),
     styledWrapperDecorator('margin: -1rem;'),

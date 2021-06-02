@@ -8,11 +8,12 @@ import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '@shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { TopbarTrackingEventsService } from './core/services/topbar-tracking-events/topbar-tracking-events.service';
 
 @NgModule({
   imports: [CommonModule, SharedModule, FormsModule, RouterModule, NgbTypeaheadModule, CustomCurrencyModule],
   exports: [TopbarComponent, SuggesterComponent],
   declarations: [TopbarComponent, SuggesterComponent],
-  providers: [SuggesterService],
+  providers: [SuggesterService, TopbarTrackingEventsService],
 })
 export class TopbarModule {}
