@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { InboxItem } from '@private/features/chat/core/model';
 import { environment } from '../../../environments/environment';
 import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH, Item } from '../../core/item/item';
@@ -11,6 +12,7 @@ import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH,
 export class ItemAvatarComponent implements OnChanges {
   public avatar: string;
   public fallback: string;
+  public readonly PERMISSIONS = PERMISSIONS;
   @Input() fallbackLight: boolean;
   @Input() item: Item;
   @Input() inboxItem: InboxItem;
