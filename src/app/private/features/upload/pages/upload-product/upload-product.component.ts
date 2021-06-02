@@ -39,8 +39,8 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
+import { debounceTime, map, skip, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -118,6 +118,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
 
+  private dataReadyToValidate$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -157,6 +159,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.handleUploadFormExtraFields();
     });
     this.detectTitleKeyboardChanges();
+
+    this.dataReadyToValidate$.pipe(skip(1), take(1)).subscribe((dataReadyToValidate: boolean) => {
+      if (this.isReactivation && dataReadyToValidate) {
+        this.itemReactivationService.reactivationValidation(this.uploadForm);
+      }
+    });
   }
 
   private fillForm(): void {
@@ -227,10 +235,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       images: this.uploadService.convertImagesToFiles(this.item.images),
     });
     this.oldDeliveryValue = this.getDeliveryInfo();
-
-    if (this.isReactivation) {
-      this.itemReactivationService.reactivationValidation(this.uploadForm);
-    }
   }
 
   private detectFormChanges() {
@@ -356,6 +360,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         }
         return this.getUploadExtraInfoControl(formFieldName).disable();
       });
+    } else {
+      this.dataReadyToValidate$.next(true);
     }
   }
 
@@ -621,6 +627,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           extra_info: this.getExtraInfo(),
         });
       }
+
+      this.dataReadyToValidate$.next(true);
     });
   }
 

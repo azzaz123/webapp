@@ -3,7 +3,7 @@
     <i class="ic-logo-web"></i>
   </a>
 </div>
-<tsl-suggester id="top-bar-suggester" (searchSubmit)="onSearchSubmit($event)"></tsl-suggester>
+<tsl-suggester id="top-bar-suggester" (searchSubmit)="onSearchSubmit($event)" (searchCancel)="searchCancel($event)"></tsl-suggester>
 <div class="main-header-login d-none d-lg-flex" [class.professional]="isProfessional">
   <ng-container *ngIf="isLogged && currencyName && wallacoins > 0">
       <a id="top-bar-wallacoins" *ngxPermissionsExcept="['isProfessional']"
