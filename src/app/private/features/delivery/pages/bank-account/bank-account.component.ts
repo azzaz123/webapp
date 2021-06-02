@@ -16,6 +16,7 @@ export class BankAccountComponent implements OnInit {
   public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public bankAccountForm: FormGroup;
   public loading = false;
+  public loadingButton = false;
   public maxLengthIBAN: number;
   public formErrorMessages;
 
