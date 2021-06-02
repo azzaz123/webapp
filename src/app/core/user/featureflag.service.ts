@@ -60,10 +60,11 @@ export class FeatureflagService {
   }
 
   // TODO add permissions if is required
-  public getLocalFlag(name: FEATURE_FLAGS_ENUM) {
+  public getLocalFlag(name: FEATURE_FLAGS_ENUM): Observable<boolean> {
     if (name === FEATURE_FLAGS_ENUM.DELIVERY) {
       return of(this.getDeliveryFeatureFlag());
     }
+    return of(false);
   }
 
   public isExperimentalFeaturesEnabled(): boolean {
