@@ -22,7 +22,6 @@ export class FeatureflagService {
     const storedFeatureFlag = this.storedFeatureFlags.find((sff) => sff.name === name);
 
     if (isDevMode()) {
-      console.log('ENTRACA', isDevMode());
       const isActive = ACTIVE_DEV_FEATURE_FLAGS.includes(name);
       if (isActive) {
         const permission = featurePermissionConfig[name];
