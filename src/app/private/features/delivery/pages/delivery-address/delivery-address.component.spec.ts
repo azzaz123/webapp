@@ -37,8 +37,8 @@ import { By } from '@angular/platform-browser';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
-import { InvalidPostalCodeError, PostalCodeIsNotAllowed } from '../../errors/classes/postal-codes';
-import { InvalidMobilePhoneNumber } from '../../errors/classes/address';
+import { PostalCodeIsNotAllowed } from '../../errors/classes/postal-codes';
+import { FlatAndFloorTooLongError, InvalidMobilePhoneNumber } from '../../errors/classes/address';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -279,9 +279,10 @@ describe('DeliveryAddressComponent', () => {
         beforeEach(() => {
           spyOn(toastService, 'show');
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
-            throwError([new InvalidMobilePhoneNumber(), new InvalidPostalCodeError()])
+            throwError([new InvalidMobilePhoneNumber(), new FlatAndFloorTooLongError()])
           );
         });
+
         it('should show error toast', () => {
           component.onSubmit();
 
@@ -295,15 +296,7 @@ describe('DeliveryAddressComponent', () => {
           component.onSubmit();
 
           expect(component.deliveryAddressForm.get('phone_number').getError('invalid')).toBeTruthy();
-          expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
-        });
-
-        it('should ask to the backend for the correct copys', () => {
-          spyOn(i18nService, 'translate');
-
-          component.onSubmit();
-
-          expect(i18nService.translate).toHaveBeenCalledWith();
+          expect(component.deliveryAddressForm.get('flat_and_floor').getError('invalid')).toBeTruthy();
         });
       });
     });
@@ -562,12 +555,13 @@ describe('DeliveryAddressComponent', () => {
       });
 
       describe('and the backend NOT returns locations...', () => {
-        beforeEach(() => {
+        beforeEach(fakeAsync(() => {
           spyOn(i18nService, 'translate');
           spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([]));
 
           component.deliveryAddressForm.get('postal_code').setValue('08040');
-        });
+          tick();
+        }));
 
         it('should mark the postal code as invalid', () => {
           expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();

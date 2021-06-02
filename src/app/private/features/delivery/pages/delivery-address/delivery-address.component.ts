@@ -35,6 +35,7 @@ import {
   FlatAndFloorTooLongError,
 } from '../../errors/classes/address';
 import { DeliveryPostalCodesError } from '../../errors/classes/postal-codes';
+import { Toast } from '@layout/toast/core/interfaces/toast.interface';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -299,9 +300,13 @@ export class DeliveryAddressComponent implements OnInit {
       this.deliveryAddressForm.markAsPending();
     });
 
-    if (!errors.length) {
-      this.toastService.show({ type: 'error', text: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR) });
-    }
+    const key: TRANSLATION_KEY = !errors.length ? TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR : TRANSLATION_KEY.FORM_FIELD_ERROR;
+    const toast: Toast = {
+      type: 'error',
+      text: this.i18nService.translate(key),
+    };
+
+    this.toastService.show(toast);
   }
 
   private handlePostalCodesErrors(errors: DeliveryPostalCodesError[]): void {
@@ -340,7 +345,7 @@ export class DeliveryAddressComponent implements OnInit {
   private handleLocationsResponse(locations: DeliveryLocationApi[]): void {
     if (!locations.length) {
       this.setIncorrectControlAndShowError(
-        'phone_number',
+        'postal_code',
         this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR)
       );
     }
