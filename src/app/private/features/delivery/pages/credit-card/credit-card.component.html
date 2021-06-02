@@ -24,7 +24,7 @@
                             <div class="form-group row align-items-center">
                                 <label for="card_number" class="col-sm-12 col-md-5" i18n="@@card_number_hint">Card number</label>
                                 <div class="col-sm-12 col-md-5">
-                                    <input type="text" class="form-control" id="card_number" formControlName="card_number" maxlength="20" pattern="[0-9]*"/>
+                                    <input type="text" class="form-control" id="card_number" formControlName="card_number" maxlength="20" pattern="[0-9]*" tslNumbersOnly/>
                                     <div *ngIf="cardForm.controls.card_number.invalid && cardForm.pending" class="CreditCard__message CreditCard__message--error">
                                         <ng-container *ngIf="cardForm.controls.card_number.errors as cardNumberError">
                                             <span *ngIf="cardNumberError.required" i18n="@@credit_card_number_error">Invalid card number</span>
@@ -46,7 +46,7 @@
                             <div class="form-group row align-items-center">
                                 <label for="cvv" class="col-sm-12 col-md-5">CVV</label>
                                 <div class="col-sm-12 col-md-5">
-                                    <input type="text" class="form-control" id="cvv" formControlName="cvv" maxlength="4" pattern="[0-9]*"/>
+                                    <input type="text" class="form-control" id="cvv" formControlName="cvv" maxlength="4" pattern="[0-9]*" tslNumbersOnly/>
                                     <div *ngIf="cardForm.controls.cvv.invalid && cardForm.pending" class="CreditCard__message CreditCard__message--error">
                                         <ng-container *ngIf="cardForm.controls.cvv.errors as CVVError">
                                             <span *ngIf="CVVError.required" i18n="@@credit_card_cvv_error">Invalid CCV number</span>
