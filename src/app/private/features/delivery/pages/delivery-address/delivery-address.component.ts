@@ -30,6 +30,7 @@ import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/de
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
 import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
+import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
@@ -75,7 +76,8 @@ export class DeliveryAddressComponent implements OnInit {
     private modalService: NgbModal,
     private deliveryLocationsService: DeliveryLocationsService,
     private router: Router,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private deliveryAddressTrackEventsService: DeliveryAddressTrackEventsService
   ) {}
 
   ngOnInit() {
@@ -115,6 +117,8 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   public onSubmit(): void {
+    this.deliveryAddressTrackEventsService.trackClickSaveButton();
+
     if (this.deliveryAddressForm.valid) {
       this.submitValidForm();
     } else {

@@ -13,7 +13,6 @@ import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { RangeFilterConfig } from './interfaces/range-filter-config.interface';
 import { RangeFilterComponent } from './range-filter.component';
-import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 
 @Component({
   selector: 'tsl-filters',
@@ -47,7 +46,7 @@ export default {
   title: 'Webapp/Public/Shared/Components/Filters/RangeFilter',
   decorators: [
     moduleMetadata({
-      declarations: [FiltersComponent, RangeFilterComponent, IsBubblePipe],
+      declarations: [FiltersComponent, RangeFilterComponent],
       imports: [CommonModule, AbstractFilterModule, SliderFormModule, ReactiveFormsModule, HttpClientModule],
       providers: [{ provide: CookieService, useValue: MockCookieService }],
     }),

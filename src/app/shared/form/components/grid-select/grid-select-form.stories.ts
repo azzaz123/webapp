@@ -3,7 +3,7 @@ import { Story } from '@storybook/angular/types-6-0';
 import { HttpClientModule } from '@angular/common/http';
 import { GridSelectFormOption } from './interfaces/grid-select-form-option.interface';
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-select-form.module';
 import { FormComplexIcon } from '@shared/form/interfaces/form-complex-icon.interface';
 
@@ -61,7 +61,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StoryGridSelectFormFormComponent],
-      imports: [HttpClientModule, ReactiveFormsModule, GridSelectFormModule],
+      imports: [HttpClientModule, ReactiveFormsModule, FormsModule, GridSelectFormModule],
     }),
   ],
 };
