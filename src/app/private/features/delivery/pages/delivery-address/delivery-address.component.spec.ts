@@ -342,9 +342,12 @@ describe('DeliveryAddressComponent', () => {
 
   describe('when the user comes from the pay on payview...', () => {
     beforeEach(() => {
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
       component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_PAY;
 
       component.ngOnInit();
+      component.initForm();
       fixture.detectChanges();
     });
 
@@ -359,9 +362,12 @@ describe('DeliveryAddressComponent', () => {
 
   describe('when the user NOT comes from the pay button on payview...', () => {
     beforeEach(() => {
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
       component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
 
       component.ngOnInit();
+      component.initForm();
       fixture.detectChanges();
     });
 
@@ -376,9 +382,12 @@ describe('DeliveryAddressComponent', () => {
 
   describe('when the user NOT comes from the payview...', () => {
     it('should appear the delete button', () => {
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
       component.whereUserComes = null;
 
       component.ngOnInit();
+      component.initForm();
       fixture.detectChanges();
 
       expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeTruthy();
@@ -386,6 +395,14 @@ describe('DeliveryAddressComponent', () => {
   });
 
   describe('when clicking in the countries dropdown...', () => {
+    beforeEach(() => {
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
+
+      component.initForm();
+      fixture.detectChanges();
+    });
+
     describe('and the form is not a new one... ', () => {
       describe('and the user did not accept the terms yet...', () => {
         beforeEach(() => {
@@ -632,6 +649,14 @@ describe('DeliveryAddressComponent', () => {
   });
 
   describe('when clicking the delete button...', () => {
+    beforeEach(() => {
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
+
+      component.initForm();
+      fixture.detectChanges();
+    });
+
     describe('and we confirm the action...', () => {
       describe('and the delete action succeed...', () => {
         beforeEach(() => {
