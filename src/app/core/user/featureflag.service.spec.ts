@@ -153,7 +153,7 @@ describe('FeatureflagService', () => {
         spyOn(permissionService, 'addPermission').and.callThrough();
         spyOn(permissionService, 'removePermission').and.callThrough();
       });
-      describe('Is feature flag active', () => {
+      describe('when feature flag is active', () => {
         describe('and has permissions configured', () => {
           it('should set permissions', () => {
             const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.VISIBILITY}&timestamp=${TIMESTAMP}`;
@@ -180,7 +180,7 @@ describe('FeatureflagService', () => {
           });
         });
         describe('and has not permissions configured', () => {
-          it('should not  set permissions', () => {
+          it('should not set permissions', () => {
             const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.STRIPE}&timestamp=${TIMESTAMP}`;
             const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
             const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
@@ -193,7 +193,7 @@ describe('FeatureflagService', () => {
           });
         });
       });
-      describe('Is not feature flag active', () => {
+      describe('when feature flag is not active', () => {
         it('should not add permissions', () => {
           const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.VISIBILITY}&timestamp=${TIMESTAMP}`;
           const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
@@ -219,7 +219,7 @@ describe('FeatureflagService', () => {
         });
       });
     });
-    describe('Is dev mode', () => {
+    describe('when is dev mode', () => {
       beforeEach(() => {
         isDevMode.and.returnValue(true);
       });
