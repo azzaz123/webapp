@@ -3,11 +3,11 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { DeliveryErrorApi } from '../../classes/delivery-error-response-api';
 import {
   DeliveryPostalCodesError,
-  DELIVERY_POSTAL_CODES_ERROR_CODES,
   InvalidPostalCodeError,
   PostalCodeDoesNotExist,
   PostalCodeIsNotAllowed,
 } from '../../classes/postal-codes';
+import { DELIVERY_POSTAL_CODES_ERROR_CODES } from './delivery-postal-codes-error.enum';
 import { DeliveryPostalCodesErrorMapper, DeliveryPostalCodesErrorResponse } from './delivery-postal-codes.error-mapper';
 
 const deliveryPostalCodesErrorMapper = new DeliveryPostalCodesErrorMapper();
