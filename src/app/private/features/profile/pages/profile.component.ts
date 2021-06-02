@@ -22,6 +22,7 @@ import { AnalyticsService } from 'app/core/analytics/analytics.service';
 export class ProfileComponent implements OnInit {
   public user: User;
   public userStats: UserStats;
+  public isFeatured = false;
   private hasOneTrialSubscription: boolean;
 
   constructor(
@@ -33,6 +34,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.userService.user;
+    this.isFeatured = this.userService.isPro;
     this.subscriptionService.getSubscriptions().subscribe((subscriptions) => {
       if (!!subscriptions) {
         this.hasOneTrialSubscription = this.subscriptionService.hasOneTrialSubscription(subscriptions);

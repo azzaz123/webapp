@@ -151,7 +151,7 @@ describe('ProfileComponent', () => {
 
     describe('and the user is a pro user', () => {
       it('should show a PRO badge', () => {
-        component.user.featured = true;
+        component.isFeatured = true;
 
         fixture.detectChanges();
 
