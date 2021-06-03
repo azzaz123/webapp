@@ -1,9 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { HashtagSuggester, HashtagSuggesterResponse } from '../../models/hashtag-suggester.interface';
+import { MOCK_HASHTAG_SUGGESTERS } from '../../../../../../../tests/hashtag-suggester.fixtures.spec';
+//import { MOCK_HASHTAG_SUGGESTERS } from '@fixtures/hashtag-suggester.fixtures.spec';
 
 export const HASHTAG_SUGGESTERS_API = `api/v3/suggesters/hashtags`;
 export const GENERAL_HASHTAG_SUGGESTERS_API = `${HASHTAG_SUGGESTERS_API}/general`;
@@ -14,7 +16,7 @@ export class HashtagSuggestionsService {
   constructor(private http: HttpClient) {}
 
   private getHashTagSuggesters(category_id: string, start: string, prefix?: string): Observable<HashtagSuggesterResponse> {
-    const url = `${environment.baseUrl}/${HASHTAG_SUGGESTERS_API}`;
+    const url = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}`;
     let httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix, start } });
     return this.http.get<HashtagSuggesterResponse>(url, { params: httpParams });
   }
