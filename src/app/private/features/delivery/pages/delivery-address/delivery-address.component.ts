@@ -29,6 +29,7 @@ import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../error
 import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
+import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 
 export enum PREVIOUS_PAGE {
@@ -46,11 +47,13 @@ export class DeliveryAddressComponent implements OnInit {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
+  public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public countries: IOption[] = [];
   public cities: IOption[] = [];
   public deliveryAddressForm: FormGroup;
   public loading = true;
   public isNewForm = true;
+  public loadingButton = false;
   public isCountryEditable = false;
   public locations: DeliveryLocationApi[] = [];
   public readonly PREVIOUS_PAGE = PREVIOUS_PAGE;
@@ -256,14 +259,14 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private submitValidForm(): void {
-    this.loading = true;
+    this.loadingButton = true;
     this.isCountryEditable = false;
 
     this.deliveryAddressService
       .updateOrCreate(this.deliveryAddressForm.getRawValue(), this.isNewForm)
       .pipe(
         finalize(() => {
-          this.loading = false;
+          this.loadingButton = false;
         })
       )
       .subscribe(
