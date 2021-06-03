@@ -2,9 +2,13 @@
 
 .CreditCard {
   &__message {
+    font-size: $font-size-s;
+
     &--error {
-      font-size: $font-size-s;
       color: $negative-main;
+    }
+    &--info {
+      color: $blue-grey-3;
     }
   }
 }
