@@ -2,7 +2,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
+import { MOCK_EMPTY_CREDIT_CARD } from '@fixtures/private/delivery/credit-card/credit-card.fixtures.spec';
 import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-only.directive';
+import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 
 import { CreditCardComponent } from './credit-card.component';
@@ -14,7 +16,7 @@ describe('CreditCreditCardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      declarations: [CreditCardComponent, ProfileFormComponent, NumbersOnlyDirective],
+      declarations: [CreditCardComponent, ProfileFormComponent, NumbersOnlyDirective, SeparateWordByCharacterPipe],
       providers: [
         FormBuilder,
         {
@@ -38,5 +40,15 @@ describe('CreditCreditCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('when we initialize the form...', () => {
+    beforeEach(() => {
+      component.ngOnInit();
+    });
+
+    it('should build the form', () => {
+      expect(component.cardForm.value).toStrictEqual(MOCK_EMPTY_CREDIT_CARD);
+    });
   });
 });
