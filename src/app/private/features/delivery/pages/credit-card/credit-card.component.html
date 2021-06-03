@@ -50,14 +50,10 @@
                     </div>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col">
-                    <span i18n="@@delivery_add_credit_card_text_info" class="CreditCard__message CreditCard__message--info">0,10 € will be charged in order to validate credit or debit card. The amount will be returned in 7 working days.</span>
-                </div>
-            </div>
             <div class="row">
-                <div class="col-12 text-center d-flex flex-column">
-                    <tsl-button [type]="'submit'" [loading]="loadingButton" className="btn-primary btn-big" i18n="@@delivery_add_credit_card_save_button">Save</tsl-button>
+                <div class="col-12 text-center d-flex flex-column align-items-center">
+                    <span i18n="@@delivery_add_credit_card_text_info" class="CreditCard__message CreditCard__message--info mb-4">0,10 € will be charged in order to validate credit or debit card. The amount will be returned in 7 working days.</span>
+                    <tsl-button class="col-12 col-md-4" [type]="'submit'" [loading]="loadingButton" className="btn-primary btn-block" i18n="@@delivery_add_credit_card_save_button">Save</tsl-button>
                 </div>
             </div>
         </form>
