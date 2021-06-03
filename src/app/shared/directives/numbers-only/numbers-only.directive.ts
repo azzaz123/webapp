@@ -1,16 +1,16 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, HostListener } from '@angular/core';
 
 @Directive({
   selector: '[tslNumbersOnly]',
 })
 export class NumbersOnlyDirective {
-  constructor(private el: ElementRef) {}
-
-  @HostListener('input', ['$event']) onInputChange(event: Event) {
-    const initalValue = this.el.nativeElement.value;
-    this.el.nativeElement.value = initalValue.replace(/[^0-9]*/g, '');
-    if (initalValue !== this.el.nativeElement.value) {
-      event.stopPropagation();
+  @HostListener('keydown', ['$event']) onKeyDown(e: KeyboardEvent) {
+    const key = e.key;
+    if (key === 'Backspace') {
+      return;
+    }
+    if (isNaN(Number(key)) || key === ' ') {
+      e.preventDefault();
     }
   }
 }
