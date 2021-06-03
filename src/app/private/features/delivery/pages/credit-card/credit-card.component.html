@@ -20,7 +20,7 @@
             <div class="form-group row align-items-center">
                 <label for="card_number" class="col-sm-12 col-md-5" i18n="@@web_card_number_hint">Card number</label>
                 <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="card_number" formControlName="card_number" maxlength="20" pattern="[0-9]*" tslNumbersOnly/>
+                    <input type="text" class="form-control" id="card_number" formControlName="card_number" maxlength="24" pattern="[0-9]*" [value]="cardForm.get('card_number').value | separateWordByCharacter:4:' '" tslNumbersOnly/>
                     <div *ngIf="cardForm.controls.card_number.invalid && cardForm.pending" class="CreditCard__message CreditCard__message--error">
                         <ng-container *ngIf="cardForm.controls.card_number.errors as cardNumberError">
                             <span *ngIf="cardNumberError.required" i18n="@@web_credit_card_number_error">Invalid card number</span>
@@ -31,7 +31,7 @@
             <div class="form-group row align-items-center">
                 <label for="expiration_date" class="col-sm-12 col-md-5" i18n="@@web_card_date_hint">MM/YY</label>
                 <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="expiration_date"  formControlName="expiration_date" pattern="[0-9]*" maxlength="5"/>
+                    <input type="text" class="form-control" id="expiration_date"  formControlName="expiration_date" pattern="[0-9]*" maxlength="5" [value]="cardForm.get('expiration_date').value | separateWordByCharacter:2:'/'" tslNumbersOnly/>
                     <div *ngIf="cardForm.controls.expiration_date.invalid && cardForm.pending" class="CreditCard__message CreditCard__message--error">
                         <ng-container *ngIf="cardForm.controls.expiration_date.errors as expirationDateError">
                             <span *ngIf="expirationDateError.required" i18n="@@web_credit_card_date_error">Invalid date</span>
