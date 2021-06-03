@@ -109,14 +109,14 @@ describe('EditComponent', () => {
       expect(component.getUrgentPrice).toHaveBeenCalled();
     });
 
-    // it('should track view event when alytics service is ready', () => {
-    //   spyOn(editTrackingEventService, 'trackViewEditItemEvent');
+    it('should track view event when alytics service is ready', () => {
+      spyOn(editTrackingEventService, 'trackViewEditItemEvent');
 
-    //   component.ngOnInit();
-    //   analyticsService.initialize();
+      component.ngOnInit();
+      analyticsService.initialize();
 
-    //   expect(editTrackingEventService.trackViewEditItemEvent).toHaveBeenCalledWith(component.item.categoryId, component.isReactivation);
-    // });
+      expect(editTrackingEventService.trackViewEditItemEvent).toHaveBeenCalledWith(component.item.categoryId, component.isReactivation);
+    });
   });
 
   describe('onValidationError', () => {

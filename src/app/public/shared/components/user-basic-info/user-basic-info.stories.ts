@@ -6,6 +6,7 @@ import { StarsModule } from '@shared/stars/stars.module';
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { UserBasicInfoComponent } from './user-basic-info.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
   title: 'Webapp/Public/Shared/Components/UserBasicInfo',
@@ -27,7 +28,7 @@ const Template: Story<UserBasicInfoComponent> = (args: UserBasicInfoComponent) =
   props: args,
   moduleMetadata: {
     declarations: [UserBasicInfoComponent],
-    imports: [CommonModule, StarsModule, UserAvatarModule, HttpClientModule],
+    imports: [CommonModule, StarsModule, UserAvatarModule, HttpClientModule, RouterTestingModule],
   },
   template: '<tsl-user-basic-info [userStats]="userStats" [userInfo]="userInfo" [styleSize]="styleSize"></tsl-user-basic-info>',
 });
