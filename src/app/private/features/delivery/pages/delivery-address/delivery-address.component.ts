@@ -55,6 +55,7 @@ export class DeliveryAddressComponent implements OnInit {
   public deliveryAddressForm: FormGroup;
   public loading = true;
   public isNewForm = true;
+  public loadingButton = false;
   public isCountryEditable = false;
   public locations: DeliveryLocationApi[] = [];
   public readonly PREVIOUS_PAGE = PREVIOUS_PAGE;
@@ -260,14 +261,14 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private submitValidForm(): void {
-    this.loading = true;
+    this.loadingButton = true;
     this.isCountryEditable = false;
 
     this.deliveryAddressService
       .updateOrCreate(this.deliveryAddressForm.getRawValue(), this.isNewForm)
       .pipe(
         finalize(() => {
-          this.loading = false;
+          this.loadingButton = false;
         })
       )
       .subscribe(
