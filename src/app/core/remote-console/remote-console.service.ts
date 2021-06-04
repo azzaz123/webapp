@@ -64,19 +64,19 @@ export class RemoteConsoleService implements OnDestroy {
     this.chatConnectionMetric.update(connectionType, success);
 
     if (this.chatConnectionMetric.canBeSent) {
-      this.userService.me().subscribe((user: User) => {
-        this.chatConnectionMetric.sendingToBackend = true;
-        this.remoteConsoleClientService
-          .info$({
-            ...this.getCommonLog(user.id),
-            connection_time: this.chatConnectionMetric.getConnectionTime(),
-            xmpp_retry_count: this.chatConnectionMetric.xmppRetryCount,
-            inbox_retry_count: this.chatConnectionMetric.inboxRetryCount,
-            metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
-          })
-          .pipe(finalize(() => (this.chatConnectionMetric.sendingToBackend = false)))
-          .subscribe(() => (this.chatConnectionMetric.alreadySent = true));
-      });
+      const user = this.userService.user;
+
+      this.chatConnectionMetric.sendingToBackend = true;
+      this.remoteConsoleClientService
+        .info$({
+          ...this.getCommonLog(user.id),
+          connection_time: this.chatConnectionMetric.getConnectionTime(),
+          xmpp_retry_count: this.chatConnectionMetric.xmppRetryCount,
+          inbox_retry_count: this.chatConnectionMetric.inboxRetryCount,
+          metric_type: MetricTypeEnum.CHAT_CONNECTION_TIME,
+        })
+        .pipe(finalize(() => (this.chatConnectionMetric.sendingToBackend = false)))
+        .subscribe(() => (this.chatConnectionMetric.alreadySent = true));
     }
   }
 
@@ -151,13 +151,13 @@ export class RemoteConsoleService implements OnDestroy {
   }
 
   public sendXmppConnectionClosedWithError(): void {
-    this.userService.me().subscribe((user: User) =>
-      this.remoteConsoleClientService.info({
-        ...this.getCommonLog(user.id),
-        metric_type: MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
-        message: '',
-      })
-    );
+    const user = this.userService.user;
+
+    this.remoteConsoleClientService.info({
+      ...this.getCommonLog(user.id),
+      metric_type: MetricTypeEnum.XMPP_CONNECTION_CLOSED_WITH_ERROR,
+      message: '',
+    });
   }
 
   public getReleaseVersion(appVersion: string): number {
