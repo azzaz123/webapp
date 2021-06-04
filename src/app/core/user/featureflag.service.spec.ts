@@ -8,7 +8,7 @@ import { AccessTokenService } from '../http/access-token.service';
 import * as coreLibrary from '@angular/core';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { MockPermissionsService } from '@fixtures/permissions.fixtures';
-import { FEATURE_FLAGS_ENUM } from './featureflag-constants';
+import { ACTIVE_DEV_FEATURE_FLAGS, FEATURE_FLAGS_ENUM } from './featureflag-constants';
 import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { PERMISSIONS } from './user-constants';
 
@@ -227,16 +227,17 @@ describe('FeatureflagService', () => {
         it('should return true', () => {
           let dataResponse: boolean;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).subscribe((isActive) => (dataResponse = isActive));
+          service.getFlag(ACTIVE_DEV_FEATURE_FLAGS[0]).subscribe((isActive) => (dataResponse = isActive));
 
           expect(dataResponse).toBe(true);
         });
         it('should not call API', () => {
-          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.VISIBILITY}&timestamp=${TIMESTAMP}`;
+          const featureFlag = ACTIVE_DEV_FEATURE_FLAGS[0];
+          const expectedUrlParams = `featureFlags=${featureFlag}&timestamp=${TIMESTAMP}`;
           const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
           const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).subscribe();
+          service.getFlag(featureFlag).subscribe();
 
           httpMock.expectNone(expectedUrlWithEndpointAndParams);
         });
