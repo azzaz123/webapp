@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable, of } from 'rxjs';
@@ -21,10 +21,14 @@ export class HashtagSuggestionsService {
     return this.http.get<HashtagSuggesterResponse>(url, { params: httpParams });
   }
 
-  private getGeneralHashTagSuggesters(category_id: string, start: string, prefix?: string): Observable<HashtagSuggesterResponse> {
+  private getGeneralHashTagSuggesters(
+    category_id: string,
+    start: string,
+    prefix?: string
+  ): Observable<HttpResponse<HashtagSuggesterResponse>> {
     const url = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}`;
     let httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix, start } });
-    return this.http.get<HashtagSuggesterResponse>(url, { params: httpParams });
+    return this.http.get<HashtagSuggesterResponse>(url, { params: httpParams, observe: 'response' });
   }
 
   public loadHashtagSugessters(categoryId: number, prefix?: string, page: number = 0): Observable<HashtagSuggester[]> {
@@ -41,8 +45,10 @@ export class HashtagSuggestionsService {
     const category_id = categoryId.toString();
     const start = page.toString();
     return this.getGeneralHashTagSuggesters(category_id, start, prefix).pipe(
-      map((hashTagResponse: HashtagSuggesterResponse) => {
-        return hashTagResponse.hashtags;
+      map((response) => {
+        const nextPage = response.headers.get('x-nextpage');
+        console.log('nextpage header', nextPage);
+        return response.body.hashtags;
       })
     );
   }
