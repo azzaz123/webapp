@@ -9,11 +9,13 @@ import { DeviceService } from '@core/device/device.service';
 
 // TODO: This should not be exported. Anything that uses this should start using the getDeviceId method
 export const DEVICE_ID_COOKIE_NAME = 'device_id';
+export const DATA_PLAN_NAME = 'dataplan';
+export const DATA_PLAN_VERSION = 1;
 export const COMMON_MPARTICLE_CONFIG = {
   isDevelopmentMode: !environment.production,
   dataPlan: {
-    planId: 'dataplan',
-    planVersion: 1,
+    planId: DATA_PLAN_NAME,
+    planVersion: DATA_PLAN_VERSION,
   },
 };
 
@@ -34,23 +36,12 @@ export class AnalyticsService {
 
     if (loggedUser) {
       const user = this.userService.user;
-      const mParticleLoggedConfig = {
-        ...COMMON_MPARTICLE_CONFIG,
-        identifyRequest: {
-          userIdentities: this.getUserIdentities(user),
-        },
-        identityCallback: (result) => this.mParticleIdentityCallback(result),
-      };
+      const userIdentities = this.getUserIdentities(user);
+      const mParticleLoggedConfig = this.getMParticleConfig(userIdentities);
 
       this.initializeMParticleSDK(mParticleLoggedConfig);
     } else {
-      const mParticleNotLoggedConfig = {
-        ...COMMON_MPARTICLE_CONFIG,
-        identifyRequest: {
-          userIdentities: {},
-        },
-        identityCallback: (result) => this.mParticleIdentityCallback(result),
-      };
+      const mParticleNotLoggedConfig = this.getMParticleConfig({});
 
       this.initializeMParticleSDK(mParticleNotLoggedConfig);
     }
@@ -76,6 +67,18 @@ export class AnalyticsService {
     mParticle.ready(() => {
       this._mParticleReady$.next();
     });
+  }
+
+  private getMParticleConfig(userIdentities: unknown) {
+    const mParticleConfig = {
+      ...COMMON_MPARTICLE_CONFIG,
+      identifyRequest: {
+        userIdentities,
+      },
+      identityCallback: (result) => this.mParticleIdentityCallback(result),
+    };
+
+    return mParticleConfig;
   }
 
   public trackEvent<T>(event: AnalyticsEvent<T>) {
