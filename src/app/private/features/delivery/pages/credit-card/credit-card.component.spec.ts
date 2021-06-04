@@ -47,7 +47,7 @@ describe('CreditCreditCardComponent', () => {
       component.ngOnInit();
     });
 
-    it('should build the form', () => {
+    it('should construct the credit card form', () => {
       expect(component.cardForm.value).toStrictEqual(MOCK_EMPTY_CREDIT_CARD);
     });
   });
