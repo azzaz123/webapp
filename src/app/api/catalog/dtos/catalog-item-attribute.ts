@@ -1,4 +1,4 @@
-enum CAR_ATTRIBUTE_TYPE {
+export enum CAR_ATTRIBUTE_TYPE {
   GEARBOX = 'gearbox',
   BODY_TYPE = 'body_type',
   SEATS = 'seats',
@@ -11,7 +11,7 @@ enum CAR_ATTRIBUTE_TYPE {
   HORSEPOWER = 'gehorsepowerarbox',
 }
 
-enum REAL_ESTATE_ATTRIBUTE_TYPE {
+export enum REAL_ESTATE_ATTRIBUTE_TYPE {
   SURFACE = 'surface',
   ROOMS = 'rooms',
   BATHROOMS = 'bathrooms',
@@ -25,7 +25,7 @@ enum REAL_ESTATE_ATTRIBUTE_TYPE {
   TERRACE = 'terrace',
 }
 
-type ATTRIBUTE_TYPE = CAR_ATTRIBUTE_TYPE | REAL_ESTATE_ATTRIBUTE_TYPE;
+export type ATTRIBUTE_TYPE = CAR_ATTRIBUTE_TYPE | REAL_ESTATE_ATTRIBUTE_TYPE;
 
 export interface CatalogItemAttribute {
   type: ATTRIBUTE_TYPE;
