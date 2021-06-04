@@ -142,7 +142,9 @@ describe('ProfileComponent', () => {
 
     describe('and the user is not a pro user', () => {
       it('should not show a PRO badge', () => {
-        mockBeforeEachInit();
+        jest.spyOn(userService, 'isPro', 'get').mockReturnValue(false);
+
+        fixture.detectChanges();
 
         const proBadgeComponentElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
         expect(proBadgeComponentElement).toBeFalsy();
@@ -151,7 +153,7 @@ describe('ProfileComponent', () => {
 
     describe('and the user is a pro user', () => {
       it('should show a PRO badge', () => {
-        component.isFeatured = true;
+        jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
 
         fixture.detectChanges();
 
