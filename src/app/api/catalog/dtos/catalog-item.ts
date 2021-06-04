@@ -4,6 +4,7 @@ import { CatalogItemAttribute } from './catalog-item-attribute';
 
 export interface CatalogItem {
   id: string;
+  category_id: string;
   title: string;
   description: string;
   images: CatalogItemImage[];

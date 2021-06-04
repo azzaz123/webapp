@@ -5,9 +5,11 @@ import { ATTRIBUTE_TYPE, CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_A
 import { Injectable } from '@angular/core';
 import { ImageMapperService } from './image-mapper.service';
 import { capitalizeString } from '@core/helpers/capitalize-string/capitalize-string';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 @Injectable()
 export class PublishedItemMapperService extends AbstractMapperService<CatalogItem, ItemCard> {
+  private STORY_TELLING_CATEGORIES: number[] = [CATEGORY_IDS.CAR, CATEGORY_IDS.REAL_ESTATE];
   private STORY_TELLING_UPPER_ORDERED_ATTRS: ATTRIBUTE_TYPE[] = [
     CAR_ATTRIBUTE_TYPE.BRAND,
     CAR_ATTRIBUTE_TYPE.MODEL,
@@ -41,12 +43,12 @@ export class PublishedItemMapperService extends AbstractMapperService<CatalogIte
   }
 
   protected map(item: CatalogItem): ItemCard {
-    const { id, title, description, price, images = [], attributes = [], slug } = item;
+    const { id, category_id, title, description, price, images = [], attributes = [], slug } = item;
 
     return {
       id,
       title,
-      description: this.formatStorytellingDescription(description, attributes),
+      description: this.formatDescription(category_id, description, attributes),
       salePrice: price.amount,
       currencyCode: price.currency,
       webSlug: slug,
@@ -55,7 +57,11 @@ export class PublishedItemMapperService extends AbstractMapperService<CatalogIte
     };
   }
 
-  private formatStorytellingDescription(description: string, attributes: CatalogItemAttribute[]): string {
+  private formatDescription(categoryId: string, description: string, attributes: CatalogItemAttribute[]): string {
+    if (!this.STORY_TELLING_CATEGORIES.includes(Number.parseInt(categoryId, 0))) {
+      return description;
+    }
+
     const upperStorytelling = this.reduceAttrStorytelling(attributes, this.STORY_TELLING_UPPER_ORDERED_ATTRS);
     const lowerStoryTelling = this.reduceAttrStorytelling(attributes, this.STORY_TELLING_LOWER_ORDERED_ATTRS);
     const lowerBooleanValuedStoryTelling = this.reduceAttrStorytelling(attributes, this.STORY_TELLING_LOW_ORDERED_BOOLEAN_ATTRS, true);
@@ -72,7 +78,7 @@ export class PublishedItemMapperService extends AbstractMapperService<CatalogIte
           return `${acc} ${capitalizeString(itemAttribute.title)}: ${capitalizeString(itemAttribute.text)}`;
         }
 
-        if (itemAttribute && isBooleanValued) {
+        if (itemAttribute && isBooleanValued && itemAttribute.value === 'true') {
           return `${acc ? `${acc},` : acc} ${capitalizeString(itemAttribute.title)}`;
         }
 

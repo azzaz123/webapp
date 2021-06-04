@@ -8,7 +8,7 @@ export enum CAR_ATTRIBUTE_TYPE {
   MODEL = 'model',
   YEAR = 'year',
   KM = 'km',
-  HORSEPOWER = 'gehorsepowerarbox',
+  HORSEPOWER = 'horsepower',
 }
 
 export enum REAL_ESTATE_ATTRIBUTE_TYPE {
