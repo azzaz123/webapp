@@ -12,7 +12,7 @@ export class PublishedItemMapperService extends AbstractMapperService<CatalogIte
   }
 
   protected map(item: CatalogItem): ItemCard {
-    const { id, title, description, price, images = [], attributes = [] } = item;
+    const { id, title, description, price, images = [], attributes = [], slug } = item;
 
     return {
       id,
@@ -20,7 +20,7 @@ export class PublishedItemMapperService extends AbstractMapperService<CatalogIte
       description: this.formatStorytellingDescription(description, attributes),
       salePrice: price.amount,
       currencyCode: price.currency,
-      webSlug: 'pending', // TODO: Needs to be added when it's added to the endpoint
+      webSlug: slug,
       images: this.imageMapperService.transform(images),
       ownerId: '', // BEFOREMERGE: Check behaviour for this flag
     };

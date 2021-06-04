@@ -9,4 +9,5 @@ export interface CatalogItem {
   images: CatalogItemImage[];
   price: CatalogItemPrice;
   attributes: CatalogItemAttribute[];
+  slug: string;
 }
