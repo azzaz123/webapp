@@ -12,7 +12,7 @@
     "buildbeta": "ng build -c=beta --no-progress",
     "buildprod": "ng build -c=production --no-progress",
     "reinstall": "rm -rf node_modules && yarn install",
-    "i18n": "yarn generate-angular-messages",
+    "i18n": "yarn generate-angular-messages && yarn i18n-helper:merge-phrase",
     "generate-angular-messages": "ng extract-i18n --format=json --output-path=src/locale --out-file=messages.en.json",
     "serve": "ng serve -c=es",
     "test-once": "jest -c=src/configs/jest/jest.config.js",
@@ -28,7 +28,8 @@
     "libphonenumber-metadata": "./scripts/generate-metadata/generate-metadata.sh",
     "storybook": "start-storybook -p 6006 -s ./src/stories/assets,./src",
     "storybook-beta": "./scripts/docknum/update.sh beta && start-storybook",
-    "i18n-normalizer": "ts-node scripts/i18n/i18n-normalizer.ts"
+    "i18n-helper": "ts-node scripts/i18n/i18n-helper.ts",
+    "i18n-helper:merge-phrase": "ts-node scripts/i18n/i18n-helper.ts merge-phrase"
   },
   "private": true,
   "dependencies": {
