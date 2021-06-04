@@ -109,7 +109,7 @@ describe('SubscriptionComponent', () => {
             provide: UserService,
             useValue: {
               user: USER_DATA,
-              getLoggedUserInformation: () => of(MOCK_FULL_USER_FEATURED),
+              getAndUpdateLoggedUser: () => of(MOCK_FULL_USER_FEATURED),
             },
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
