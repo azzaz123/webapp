@@ -41,6 +41,13 @@ export enum PREVIOUS_PAGE {
   PAYVIEW_PAY,
 }
 
+export interface DeliveryAddressFormErrorMessages {
+  phone_number: string;
+  postal_code: string;
+  street: string;
+  flat_and_floor: string;
+}
+
 @Component({
   selector: 'tsl-delivery-address',
   templateUrl: './delivery-address.component.html',
@@ -61,7 +68,7 @@ export class DeliveryAddressComponent implements OnInit {
   public isCountryEditable = false;
   public locations: DeliveryLocationApi[] = [];
   public readonly PREVIOUS_PAGE = PREVIOUS_PAGE;
-  public formErrorMessages = {
+  public formErrorMessages: DeliveryAddressFormErrorMessages = {
     phone_number: '',
     postal_code: '',
     street: '',
