@@ -33,6 +33,7 @@ import {
 } from '../../errors/classes/address';
 import { DeliveryPostalCodesError } from '../../errors/classes/postal-codes';
 import { Toast } from '@layout/toast/core/interfaces/toast.interface';
+import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 
 export enum PREVIOUS_PAGE {
@@ -50,6 +51,7 @@ export class DeliveryAddressComponent implements OnInit {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
+  public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public countries: IOption[] = [];
   public cities: IOption[] = [];
   public deliveryAddressForm: FormGroup;

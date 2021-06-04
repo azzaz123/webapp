@@ -9,9 +9,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../../../../core/event/event.service';
 import { UserService } from '../../../../core/user/user.service';
 import { WallacoinsTutorialComponent } from '../components/wallacoins-tutorial/wallacoins-tutorial.component';
-import { Observable } from 'rxjs';
-import { User } from '../../../../core/user/user';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -109,14 +106,12 @@ export class WallacoinsComponent implements OnInit {
   }
 
   private openTutorialModal() {
-    this.isAlreadyDisplayed().subscribe((isDisplayed: boolean) => {
-      if (!isDisplayed) {
-        this.setDisplayed();
-        this.modalService.open(WallacoinsTutorialComponent, {
-          windowClass: 'tutorial-wallacoins',
-        });
-      }
-    });
+    if (!this.isAlreadyDisplayed()) {
+      this.setDisplayed();
+      this.modalService.open(WallacoinsTutorialComponent, {
+        windowClass: 'tutorial-wallacoins',
+      });
+    }
   }
 
   private setDisplayed(): void {
@@ -125,7 +120,9 @@ export class WallacoinsComponent implements OnInit {
     }
   }
 
-  private isAlreadyDisplayed(): Observable<boolean> {
-    return this.userService.me().pipe(map((user: User) => !!localStorage.getItem(user.id + this.localStorageName)));
+  private isAlreadyDisplayed(): boolean {
+    const user = this.userService.user;
+
+    return !!localStorage.getItem(user.id + this.localStorageName);
   }
 }

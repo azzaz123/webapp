@@ -303,9 +303,6 @@ export const MockUser: Partial<User> = {
 
 export const MockUserService = {
   user: MockUser,
-  me() {
-    return of(MockUser);
-  },
   isLogged: true,
   get(userId: string) {
     return of(MOCK_USER);
@@ -328,7 +325,9 @@ export class MockedUserService {
         data.scoring_starts,
         data.response_rate,
         data.online,
-        data.featured
+        data.type,
+        0,
+        data.web_slug
       )
     );
   }
@@ -341,12 +340,12 @@ export class MockedUserService {
     return new User(USER_ID);
   }
 
-  get isPro(): boolean {
-    return this.user.featured;
+  get isLogged(): boolean {
+    return true;
   }
 
-  public me(): Observable<User> {
-    return of(new User(USER_ID));
+  get isPro(): boolean {
+    return this.user.featured;
   }
 
   public isProfessional(): Observable<boolean> {
@@ -355,8 +354,16 @@ export class MockedUserService {
 
   public getPhoneInfo(userId: string) {}
 
+  public getStats() {
+    return of(MOCK_USER_STATS);
+  }
+
   public checkUserPermissions(): Observable<boolean> {
     return of(true);
+  }
+
+  public logout(): Observable<any> {
+    return of(null);
   }
 }
 

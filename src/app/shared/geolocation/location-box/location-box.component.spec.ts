@@ -21,9 +21,7 @@ describe('LocationBoxComponent', () => {
           {
             provide: UserService,
             useValue: {
-              me() {
-                return of(MOCK_USER);
-              },
+              user: MOCK_USER,
             },
           },
         ],
@@ -52,13 +50,7 @@ describe('LocationBoxComponent', () => {
       beforeEach(() => {
         component.location = MOCK_USER.location;
 
-        spyOn(userService, 'me').and.callThrough();
-
         component.ngOnInit();
-      });
-
-      it('should not call me', () => {
-        expect(userService.me).not.toHaveBeenCalled();
       });
 
       it('should set coordinates from provided location', () => {
@@ -68,15 +60,6 @@ describe('LocationBoxComponent', () => {
     });
 
     describe('if a location is not provided', () => {
-      it('should call me and set user', () => {
-        spyOn(userService, 'me').and.callThrough();
-
-        component.ngOnInit();
-
-        expect(userService.me).toHaveBeenCalled();
-        expect(component.user).toEqual(MOCK_USER);
-      });
-
       it('should add user location values', fakeAsync(() => {
         component.ngOnInit();
 

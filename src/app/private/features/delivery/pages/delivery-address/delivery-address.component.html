@@ -37,7 +37,7 @@
       <div class="form-group row align-items-center">
         <label for="street" class="col-sm-12 col-md-5" i18n="@@web_address_view_all_users_form_textfield_street_label">Street and number</label>
         <div class="col-sm-12 col-md-5">
-          <input type="text" class="form-control" id="street" formControlName="street" maxlength="55"/>
+          <input type="text" class="form-control" id="street" formControlName="street" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.STREET"/>
           <div *ngIf="deliveryAddressForm.controls.street.invalid && deliveryAddressForm.pending" class="DeliveryAddress__message DeliveryAddress__message--error">
             <ng-container *ngIf="deliveryAddressForm.controls.street.errors as streetError">
               <span *ngIf="streetError.required" i18n="@@web_address_view_all_users_form_textfield_street_missing_info_inline_error">
@@ -53,7 +53,7 @@
       <div class="form-group row align-items-center">
         <label for="flat_and_floor" class="col-sm-12 col-md-5" i18n="@@web_address_view_all_users_form_textfield_door_label">Floor and door number</label>
         <div class="col-sm-12 col-md-5">
-          <input type="text" class="form-control" id="flat_and_floor" formControlName="flat_and_floor" maxlength="15"/>
+          <input type="text" class="form-control" id="flat_and_floor" formControlName="flat_and_floor" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.FLAT_AND_FLOOR"/>
           <div *ngIf="deliveryAddressForm.controls.flat_and_floor.invalid && deliveryAddressForm.pending" class="DeliveryAddress__message DeliveryAddress__message--error">
             <span>{{formErrorMessages.flat_and_floor}}</span>
           </div>
@@ -65,7 +65,7 @@
           <input type="text"
           [ngClass]="{'DeliveryAddress__input DeliveryAddress__input--invalid': deliveryAddressForm.controls.postal_code.invalid && deliveryAddressForm.controls.postal_code.dirty}" 
           (blur)="isInvalidPostalCode()"
-          class="form-control" id="postal_code" formControlName="postal_code" maxlength="5"/>
+          class="form-control" id="postal_code" formControlName="postal_code" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.POSTAL_CODE"/>
           <div *ngIf="deliveryAddressForm.controls.postal_code.invalid && deliveryAddressForm.controls.postal_code.dirty" class="DeliveryAddress__message DeliveryAddress__message--error">
             <ng-container *ngIf="deliveryAddressForm.controls.postal_code.errors as postalCodeError">
               <span *ngIf="postalCodeError.required" i18n="@@web_address_view_all_users_form_textfield_postalcode_missing_info_inline_error">
@@ -93,7 +93,7 @@
       <div class="form-group row align-items-center">
         <label for="phone_number" class="col-sm-12 col-md-5" i18n="@@web_address_view_all_users_form_textfield_phone_label">Phone number</label>
         <div class="col-sm-12 col-md-5">
-          <input type="tel" class="form-control" id="phone_number" formControlName="phone_number" maxLength="20"/>
+          <input type="tel" class="form-control" id="phone_number" formControlName="phone_number" [maxLength]="DELIVERY_INPUTS_MAX_LENGTH.PHONE_NUMBER"/>
           <div *ngIf="deliveryAddressForm.controls.phone_number.invalid && deliveryAddressForm.pending" class="DeliveryAddress__message DeliveryAddress__message--error">
             <ng-container *ngIf="deliveryAddressForm.controls.phone_number.errors as phoneNumberError">
               <span *ngIf="phoneNumberError.required" i18n="@@web_address_view_all_users_form_textfield_phone_missing_info_inline_error">
