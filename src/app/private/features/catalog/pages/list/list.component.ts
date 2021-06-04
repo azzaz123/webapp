@@ -840,11 +840,11 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private getUserInfo() {
-    this.userService.me().subscribe((user) => {
-      this.user = user;
-      this.userService.getInfo(user.id).subscribe((info) => {
-        this.userScore = info.scoring_stars;
-      });
+    const user = this.userService.user;
+
+    this.user = user;
+    this.userService.getInfo(user.id).subscribe((info) => {
+      this.userScore = info.scoring_stars;
     });
   }
 

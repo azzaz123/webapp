@@ -72,9 +72,9 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.userService.me().subscribe((user: User) => {
-      this.myUserId = user.id;
-    });
+    const user = this.userService.user;
+
+    this.myUserId = user.id;
   }
 
   ngOnChanges(changes?: any) {
