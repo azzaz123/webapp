@@ -27,8 +27,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'app/core/user/user';
 import { UserService } from 'app/core/user/user.service';
 import { isEqual } from 'lodash-es';
-import { delay, finalize, repeatWhen, take, takeWhile, tap } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
+import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
 
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
@@ -119,7 +118,7 @@ export class SubscriptionsComponent implements OnInit {
 
   private isUserUpdated() {
     this.userService
-      .getLoggedUserInformation()
+      .getAndUpdateLoggedUser()
       .pipe(
         repeatWhen((completed) =>
           completed.pipe(

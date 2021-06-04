@@ -329,6 +329,12 @@ export class UserService {
     );
   }
 
+  //TODO: This is needed for the current subscriptions flow but this should handled in some other way when
+  // the application is reactive to changes in the user object
+  public getAndUpdateLoggedUser(): Observable<User> {
+    return this.getLoggedUserInformation().pipe(tap((user) => (this._user = user)));
+  }
+
   public setPermission(user: User): void {
     user.featured && user.type !== USER_TYPE.PROFESSIONAL
       ? this.permissionService.addPermission(PERMISSIONS[USER_TYPE.FEATURED])
