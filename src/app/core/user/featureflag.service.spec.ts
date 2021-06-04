@@ -49,7 +49,7 @@ describe('FeatureflagService', () => {
     httpMock = TestBed.inject(HttpTestingController);
     service = TestBed.inject(FeatureflagService);
     permissionService = TestBed.inject(NgxPermissionsService);
-
+    isDevMode.and.returnValue(false);
     spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
   });
 
@@ -118,7 +118,7 @@ describe('FeatureflagService', () => {
           isDevMode.and.returnValue(false);
           let dataResponse: boolean;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+          service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
 
           expect(dataResponse).toBe(true);
         });
@@ -130,7 +130,7 @@ describe('FeatureflagService', () => {
           isDevMode.and.returnValue(true);
           let dataResponse: boolean;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+          service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
 
           expect(dataResponse).toBe(true);
         });
@@ -142,7 +142,7 @@ describe('FeatureflagService', () => {
           isDevMode.and.returnValue(false);
           let dataResponse: boolean;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+          service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
 
           expect(dataResponse).toBe(false);
         });
@@ -153,7 +153,7 @@ describe('FeatureflagService', () => {
         spyOn(permissionService, 'addPermission').and.callThrough();
         spyOn(permissionService, 'removePermission').and.callThrough();
       });
-      describe('Is feature flag active', () => {
+      describe('when feature flag is active', () => {
         describe('and has permissions configured', () => {
           it('should set permissions', () => {
             const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.VISIBILITY}&timestamp=${TIMESTAMP}`;
@@ -180,7 +180,7 @@ describe('FeatureflagService', () => {
           });
         });
         describe('and has not permissions configured', () => {
-          it('should not  set permissions', () => {
+          it('should not set permissions', () => {
             const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.STRIPE}&timestamp=${TIMESTAMP}`;
             const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
             const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
@@ -193,7 +193,7 @@ describe('FeatureflagService', () => {
           });
         });
       });
-      describe('Is not feature flag active', () => {
+      describe('when feature flag is not active', () => {
         it('should not add permissions', () => {
           const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.VISIBILITY}&timestamp=${TIMESTAMP}`;
           const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
@@ -219,7 +219,7 @@ describe('FeatureflagService', () => {
         });
       });
     });
-    describe('Is dev mode', () => {
+    describe('when is dev mode', () => {
       beforeEach(() => {
         isDevMode.and.returnValue(true);
       });
@@ -244,14 +244,21 @@ describe('FeatureflagService', () => {
       });
 
       describe('and is not active in dev mode', () => {
-        it('should call API', () => {
-          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.STRIPE}&timestamp=${TIMESTAMP}`;
+        it('should return false', () => {
+          let dataResponse: boolean;
+
+          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+
+          expect(dataResponse).toBe(false);
+        });
+        it('should not call API', () => {
+          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.DELIVERY}&timestamp=${TIMESTAMP}`;
           const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
           const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.STRIPE).subscribe();
+          service.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe();
 
-          httpMock.expectOne(expectedUrlWithEndpointAndParams);
+          httpMock.expectNone(expectedUrlWithEndpointAndParams);
         });
       });
     });

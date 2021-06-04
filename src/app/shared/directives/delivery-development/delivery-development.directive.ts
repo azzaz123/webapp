@@ -15,7 +15,7 @@ export class DeliveryDevelopmentDirective implements OnInit {
   ngOnInit() {
     this.viewContainer.clear();
 
-    this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
+    this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
       if (isActive) {
         this.viewContainer.createEmbeddedView(this.templateRef);
       }

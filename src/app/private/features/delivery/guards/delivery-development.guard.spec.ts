@@ -41,7 +41,7 @@ describe('DeliveryDevelopmentGuard', () => {
 
   describe('when the feature flag gets the delivery feature flag...', () => {
     it('should return true', () => {
-      spyOn(featureFlagService, 'getFlag').and.returnValue(of(true));
+      spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(true));
       let flagResponse: boolean;
 
       guard.canLoad().subscribe((isActive: boolean) => (flagResponse = isActive));
@@ -52,7 +52,7 @@ describe('DeliveryDevelopmentGuard', () => {
 
   describe(`when the feature flag don't get the delivery feature flag...`, () => {
     beforeEach(() => {
-      spyOn(featureFlagService, 'getFlag').and.returnValue(of(false));
+      spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(false));
       spyOn(router, 'navigate');
     });
 

@@ -17,5 +17,8 @@ export class FeatureFlagServiceMock {
   getFlag(_flag: FEATURE_FLAGS_ENUM): Observable<boolean> {
     return of(true);
   }
+  getLocalFlag(_flag: FEATURE_FLAGS_ENUM): Observable<boolean> {
+    return of(true);
+  }
   isExperimentalFeaturesEnabled() {}
 }

@@ -21,21 +21,15 @@ export class FeatureflagService {
   public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
     const storedFeatureFlag = this.storedFeatureFlags.find((sff) => sff.name === name);
 
-    if (name === FEATURE_FLAGS_ENUM.DELIVERY) {
-      return of(this.getDeliveryFeatureFlag());
-    }
-
-    if (isDevMode() && ACTIVE_DEV_FEATURE_FLAGS.includes(name)) {
-      const permission = featurePermissionConfig[name];
-      if (permission) {
-        this.addPermisions(permission);
-      }
-      return of(true);
+    if (isDevMode()) {
+      const isActive = ACTIVE_DEV_FEATURE_FLAGS.includes(name);
+      this.checkPermission(name, isActive);
+      return of(isActive);
     }
 
     if (storedFeatureFlag && cache) {
       return of(storedFeatureFlag).pipe(
-        tap((sff) => this.checkPermission(sff)),
+        tap((sff) => this.checkPermission(sff.name, sff.isActive)),
         map((sff) => sff.isActive)
       );
     } else {
@@ -53,11 +47,19 @@ export class FeatureflagService {
             if (!alreadyStored) {
               this.storedFeatureFlags.push(featureFlag);
             }
-            this.checkPermission(featureFlag);
+            this.checkPermission(featureFlag.name, featureFlag.isActive);
             return featureFlag.isActive;
           })
         );
     }
+  }
+
+  // TODO add permissions if is required
+  public getLocalFlag(name: FEATURE_FLAGS_ENUM): Observable<boolean> {
+    if (name === FEATURE_FLAGS_ENUM.DELIVERY) {
+      return of(this.getDeliveryFeatureFlag());
+    }
+    return of(false);
   }
 
   public isExperimentalFeaturesEnabled(): boolean {
@@ -68,10 +70,10 @@ export class FeatureflagService {
     return isDevMode() || this.isExperimentalFeaturesEnabled();
   }
 
-  private checkPermission(featureFlag: FeatureFlag): void {
-    const permission = featurePermissionConfig[featureFlag.name];
+  private checkPermission(featureFlagName: FEATURE_FLAGS_ENUM, isActive: boolean): void {
+    const permission = featurePermissionConfig[featureFlagName];
     if (permission) {
-      featureFlag.isActive ? this.addPermisions(permission) : this.removePermisions(permission);
+      isActive ? this.addPermisions(permission) : this.removePermisions(permission);
     }
   }
 

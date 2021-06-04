@@ -10,7 +10,7 @@ export class DeliveryDevelopmentGuard implements CanLoad {
   constructor(private router: Router, private featureflagService: FeatureflagService) {}
 
   public canLoad(): Observable<boolean> {
-    return this.featureflagService.getFlag(FEATURE_FLAGS_ENUM.DELIVERY).pipe(
+    return this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).pipe(
       tap((isActive) => {
         if (!isActive) {
           this.router.navigate(['/chat']);
