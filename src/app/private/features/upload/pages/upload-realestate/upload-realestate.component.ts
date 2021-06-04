@@ -279,7 +279,8 @@ export class UploadRealestateComponent implements OnInit {
       params.onHold = true;
     }
 
-    this.trackEditOrUpload(!!this.item, response).subscribe(() => this.router.navigate(['/catalog/list', params]));
+    this.trackEditOrUpload(!!this.item, response);
+    this.router.navigate(['/catalog/list', params]);
   }
 
   onError(error: HttpErrorResponse | any): void {
@@ -310,44 +311,41 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private trackEditOrUpload(isEdit: boolean, item: RealestateContent) {
-    return this.userService.isProUser().pipe(
-      tap((isProfessional: boolean) => {
-        const baseEventAttrs: any = {
-          itemId: item.id,
-          categoryId: item.category_id,
-          salePrice: item.sale_price,
-          title: item.title,
-          operation: item.operation,
-          type: item.type,
-          condition: item.condition,
-          surface: item.surface || null,
-          rooms: item.rooms || null,
-          isPro: isProfessional,
-        };
+    const isPro = this.userService.isProUser();
+    const baseEventAttrs: any = {
+      itemId: item.id,
+      categoryId: item.category_id,
+      salePrice: item.sale_price,
+      title: item.title,
+      operation: item.operation,
+      type: item.type,
+      condition: item.condition,
+      surface: item.surface || null,
+      rooms: item.rooms || null,
+      isPro,
+    };
 
-        if (isEdit) {
-          const editItemREEvent: AnalyticsEvent<EditItemRE> = {
-            name: ANALYTICS_EVENT_NAMES.EditItemRE,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
-            attributes: {
-              ...baseEventAttrs,
-              screenId: SCREEN_IDS.EditItem,
-            },
-          };
-          this.analyticsService.trackEvent(editItemREEvent);
-        } else {
-          const listItemREEvent: AnalyticsEvent<ListItemRE> = {
-            name: ANALYTICS_EVENT_NAMES.ListItemRE,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
-            attributes: {
-              ...baseEventAttrs,
-              screenId: SCREEN_IDS.Upload,
-            },
-          };
-          this.analyticsService.trackEvent(listItemREEvent);
-        }
-      })
-    );
+    if (isEdit) {
+      const editItemREEvent: AnalyticsEvent<EditItemRE> = {
+        name: ANALYTICS_EVENT_NAMES.EditItemRE,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          ...baseEventAttrs,
+          screenId: SCREEN_IDS.EditItem,
+        },
+      };
+      this.analyticsService.trackEvent(editItemREEvent);
+    } else {
+      const listItemREEvent: AnalyticsEvent<ListItemRE> = {
+        name: ANALYTICS_EVENT_NAMES.ListItemRE,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          ...baseEventAttrs,
+          screenId: SCREEN_IDS.Upload,
+        },
+      };
+      this.analyticsService.trackEvent(listItemREEvent);
+    }
   }
 
   public onDeleteImage(imageId: string): void {

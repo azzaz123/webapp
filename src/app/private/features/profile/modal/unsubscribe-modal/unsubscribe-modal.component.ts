@@ -29,7 +29,7 @@ export class UnsubscribeModalComponent implements OnInit {
     this.userService.getUnsubscribeReasons().subscribe((reasons: UnsubscribeReason[]) => {
       this.reasons = reasons;
     });
-    this.userService.isProUser().subscribe((isPro) => (this.hasSubscription = isPro));
+    this.hasSubscription = this.userService.isProUser();
   }
 
   public send() {

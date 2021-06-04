@@ -34,7 +34,6 @@ export enum SUBSCRIPTION_TYPES {
 @Injectable()
 export class SubscriptionsService {
   public uuid: string;
-  public fullName: string;
   public subscriptions: SubscriptionsResponse[];
   private _userSubscriptionType: SUBSCRIPTION_TYPES;
 
@@ -43,11 +42,7 @@ export class SubscriptionsService {
     private http: HttpClient,
     private categoryService: CategoryService,
     private uuidService: UuidService
-  ) {
-    this.userService.me().subscribe((user: User) => {
-      this.fullName = user ? `${user.firstName} ${user.lastName}` : '';
-    });
-  }
+  ) {}
 
   public getSlots(): Observable<SubscriptionSlot[]> {
     return this.http.get<SubscriptionSlotGeneralResponse>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`).pipe(
