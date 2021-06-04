@@ -37,8 +37,8 @@ import { By } from '@angular/platform-browser';
 import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
-import { PostalCodeIsNotAllowed } from '../../errors/classes/postal-codes';
-import { FlatAndFloorTooLongError, InvalidMobilePhoneNumber } from '../../errors/classes/address';
+import { PostalCodeIsNotAllowedError } from '../../errors/classes/postal-codes';
+import { FlatAndFloorTooLongError, InvalidMobilePhoneNumberError } from '../../errors/classes/address';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 
 describe('DeliveryAddressComponent', () => {
@@ -295,7 +295,7 @@ describe('DeliveryAddressComponent', () => {
         beforeEach(() => {
           spyOn(toastService, 'show');
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
-            throwError([new InvalidMobilePhoneNumber(), new FlatAndFloorTooLongError()])
+            throwError([new InvalidMobilePhoneNumberError(), new FlatAndFloorTooLongError()])
           );
         });
 
@@ -611,7 +611,7 @@ describe('DeliveryAddressComponent', () => {
       });
 
       describe('and the backend fails for an postal code invalid error...', () => {
-        const postalCodeError = new PostalCodeIsNotAllowed();
+        const postalCodeError = new PostalCodeIsNotAllowedError();
 
         beforeEach(() => {
           spyOn(i18nService, 'translate');

@@ -27,7 +27,7 @@ import { DeliveryPostalCodesErrorTranslations } from '@private/features/delivery
 import {
   DeliveryAddressError,
   InvalidPhoneNumberError,
-  InvalidMobilePhoneNumber,
+  InvalidMobilePhoneNumberError,
   AddressTooLongError,
   FlatAndFloorTooLongError,
 } from '../../errors/classes/address';
@@ -296,7 +296,7 @@ export class DeliveryAddressComponent implements OnInit {
         this.setIncorrectControlAndShowError('phone_number', error.message);
       }
 
-      if (error instanceof InvalidMobilePhoneNumber) {
+      if (error instanceof InvalidMobilePhoneNumberError) {
         this.setIncorrectControlAndShowError('phone_number', error.message);
       }
 

@@ -4,7 +4,7 @@ import {
   AddressTooLongError,
   DeliveryAddressError,
   FlatAndFloorTooLongError,
-  InvalidMobilePhoneNumber,
+  InvalidMobilePhoneNumberError,
   InvalidPhoneNumberError,
 } from '../../classes/address';
 import { DeliveryErrorApi } from '../../classes/delivery-error-response-api';
@@ -75,7 +75,7 @@ describe('when mapping an error from delivery address backend', () => {
       );
       tick();
 
-      expect(result instanceof InvalidMobilePhoneNumber).toBe(true);
+      expect(result instanceof InvalidMobilePhoneNumberError).toBe(true);
     }));
   });
 

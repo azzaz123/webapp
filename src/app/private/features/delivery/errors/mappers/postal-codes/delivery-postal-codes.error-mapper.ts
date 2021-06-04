@@ -1,5 +1,5 @@
 import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
-import { InvalidPostalCodeError, PostalCodeDoesNotExist, PostalCodeIsNotAllowed } from '../../classes/postal-codes';
+import { InvalidPostalCodeError, PostalCodeDoesNotExistError, PostalCodeIsNotAllowedError } from '../../classes/postal-codes';
 import { ErrorMapper } from '../error-mapper';
 import { DELIVERY_POSTAL_CODES_ERROR_CODES } from './delivery-postal-codes-error.enum';
 
@@ -16,11 +16,11 @@ export class DeliveryPostalCodesErrorMapper extends ErrorMapper<DeliveryPostalCo
       }
 
       if (error.error_code === DELIVERY_POSTAL_CODES_ERROR_CODES.POSTAL_CODE_DOES_NOT_EXISTS) {
-        mappedErrors.push(new PostalCodeDoesNotExist());
+        mappedErrors.push(new PostalCodeDoesNotExistError());
       }
 
       if (error.error_code === DELIVERY_POSTAL_CODES_ERROR_CODES.POSTAL_CODE_IS_NOT_ALLOWED) {
-        mappedErrors.push(new PostalCodeIsNotAllowed());
+        mappedErrors.push(new PostalCodeIsNotAllowedError());
       }
     });
 

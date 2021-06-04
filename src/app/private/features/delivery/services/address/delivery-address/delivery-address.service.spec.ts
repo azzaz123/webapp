@@ -1,7 +1,11 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MOCK_DELIVERY_ADDRESS, MOCK_DELIVERY_ADDRESS_2 } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
-import { DeliveryAddressError, InvalidMobilePhoneNumber, InvalidPhoneNumberError } from '@private/features/delivery/errors/classes/address';
+import {
+  DeliveryAddressError,
+  InvalidMobilePhoneNumberError,
+  InvalidPhoneNumberError,
+} from '@private/features/delivery/errors/classes/address';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 import { of, throwError } from 'rxjs';
 import { DeliveryAddressApiService } from '../../api/delivery-address-api/delivery-address-api.service';
@@ -13,7 +17,7 @@ describe('DeliveryAddressService', () => {
   let service: DeliveryAddressService;
   let deliveryAddressStoreService: DeliveryAddressStoreService;
   let deliveryAddressApiService: DeliveryAddressApiService;
-  const mockDeliveryAddressErrors: DeliveryAddressError[] = [new InvalidPhoneNumberError(), new InvalidMobilePhoneNumber()];
+  const mockDeliveryAddressErrors: DeliveryAddressError[] = [new InvalidPhoneNumberError(), new InvalidMobilePhoneNumberError()];
 
   beforeEach(() => {
     TestBed.configureTestingModule({

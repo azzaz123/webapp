@@ -1,4 +1,9 @@
-import { InvalidPhoneNumberError, InvalidMobilePhoneNumber, AddressTooLongError, FlatAndFloorTooLongError } from '../../classes/address';
+import {
+  InvalidPhoneNumberError,
+  InvalidMobilePhoneNumberError,
+  AddressTooLongError,
+  FlatAndFloorTooLongError,
+} from '../../classes/address';
 import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
 import { ErrorMapper } from '../error-mapper';
 import { DELIVERY_ADDRESS_ERROR_CODES } from './delivery-address-error.enum';
@@ -16,7 +21,7 @@ export class DeliveryAddressErrorMapper extends ErrorMapper<DeliveryAddressError
       }
 
       if (error.error_code === DELIVERY_ADDRESS_ERROR_CODES.INVALID_MOBILE_PHONE_NUMBER) {
-        mappedErrors.push(new InvalidMobilePhoneNumber());
+        mappedErrors.push(new InvalidMobilePhoneNumberError());
       }
 
       if (error.error_code === DELIVERY_ADDRESS_ERROR_CODES.DELIVERY_ADDRESS_TOO_LONG) {

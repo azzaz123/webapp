@@ -5,8 +5,8 @@ import { DeliveryErrorApi } from '../../classes/delivery-error-response-api';
 import {
   DeliveryPostalCodesError,
   InvalidPostalCodeError,
-  PostalCodeDoesNotExist,
-  PostalCodeIsNotAllowed,
+  PostalCodeDoesNotExistError,
+  PostalCodeIsNotAllowedError,
 } from '../../classes/postal-codes';
 import { DELIVERY_POSTAL_CODES_ERROR_CODES } from './delivery-postal-codes-error.enum';
 import { DeliveryPostalCodesErrorMapper, DeliveryPostalCodesErrorResponse } from './delivery-postal-codes.error-mapper';
@@ -54,7 +54,7 @@ describe('when mapping an error from delivery postal code backend', () => {
       );
       tick();
 
-      expect(result instanceof PostalCodeDoesNotExist).toBe(true);
+      expect(result instanceof PostalCodeDoesNotExistError).toBe(true);
     }));
   });
 
@@ -76,7 +76,7 @@ describe('when mapping an error from delivery postal code backend', () => {
       );
       tick();
 
-      expect(result instanceof PostalCodeIsNotAllowed).toBe(true);
+      expect(result instanceof PostalCodeIsNotAllowedError).toBe(true);
     }));
   });
 });
