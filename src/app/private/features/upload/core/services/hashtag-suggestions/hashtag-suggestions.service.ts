@@ -15,10 +15,10 @@ export class HashtagSuggestionsService {
   public readonly suggestors: HashtagSuggester[] = [];
   constructor(private http: HttpClient) {}
 
-  private getHashTagSuggesters(category_id: string, start: string, prefix?: string): Observable<HashtagSuggesterResponse> {
+  private getHashTagSuggesters(category_id: string, start: string, prefix?: string): Observable<HttpResponse<HashtagSuggesterResponse>> {
     const url = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}`;
     let httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix, start } });
-    return this.http.get<HashtagSuggesterResponse>(url, { params: httpParams });
+    return this.http.get<HashtagSuggesterResponse>(url, { params: httpParams, observe: 'response' });
   }
 
   private getGeneralHashTagSuggesters(
@@ -31,24 +31,32 @@ export class HashtagSuggestionsService {
     return this.http.get<HashtagSuggesterResponse>(url, { params: httpParams, observe: 'response' });
   }
 
-  public loadHashtagSugessters(categoryId: number, prefix?: string, page: number = 0): Observable<HashtagSuggester[]> {
+  public loadHashtagSugessters(
+    categoryId: number,
+    prefix?: string,
+    page: number = 0
+  ): Observable<{ data: HashtagSuggester[]; nextPage: boolean }> {
     const category_id = categoryId.toString();
     const start = page.toString();
     return this.getHashTagSuggesters(category_id, start, prefix).pipe(
-      map((hashTagResponse: HashtagSuggesterResponse) => {
-        return hashTagResponse.hashtags;
+      map((response) => {
+        const nextPage = !!response.headers.get('x-nextpage');
+        return { data: response.body.hashtags, nextPage: nextPage };
       })
     );
   }
 
-  public loadGeneralHashtagSugessters(categoryId: number, prefix?: string, page: number = 0): Observable<HashtagSuggester[]> {
+  public loadGeneralHashtagSugessters(
+    categoryId: number,
+    prefix?: string,
+    page: number = 0
+  ): Observable<{ data: HashtagSuggester[]; nextPage: boolean }> {
     const category_id = categoryId.toString();
     const start = page.toString();
     return this.getGeneralHashTagSuggesters(category_id, start, prefix).pipe(
       map((response) => {
-        const nextPage = response.headers.get('x-nextpage');
-        console.log('nextpage header', nextPage);
-        return response.body.hashtags;
+        const nextPage = !!response.headers.get('x-nextpage');
+        return { data: response.body.hashtags, nextPage: nextPage };
       })
     );
   }
