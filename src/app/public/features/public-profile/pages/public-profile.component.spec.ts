@@ -160,7 +160,7 @@ describe('PublicProfileComponent', () => {
 
         describe('when is our own user...', () => {
           beforeEach(() => {
-            spyOn(isCurrentUserPipe, 'transform').and.returnValue(of(true));
+            spyOn(isCurrentUserPipe, 'transform').and.returnValue(true);
           });
           it('should NOT ask for the favourited user flag', () => {
             spyOn(publicProfileService, 'isFavourite');
@@ -196,6 +196,10 @@ describe('PublicProfileComponent', () => {
         });
 
         describe('when is NOT our own user...', () => {
+          beforeEach(() => {
+            spyOn(isCurrentUserPipe, 'transform').and.returnValue(false);
+          });
+
           it('should ask for the favourited user flag', () => {
             spyOn(publicProfileService, 'isFavourite');
 

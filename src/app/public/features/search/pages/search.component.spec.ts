@@ -12,7 +12,6 @@ import { AdSlotGroupShoppingComponentSub } from '@fixtures/shared/components/ad-
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
 import { SearchErrorLayoutComponentStub } from '@fixtures/shared/components/search-error-layout.component.stub';
-import { Store } from '@ngrx/store';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
@@ -37,9 +36,17 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
-import { ToastService } from '@layout/toast/core/services/toast.service';
 import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import { MockSearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service.fixture';
+import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import {
+  MockSearchListTrackingEventService,
+  MOCK_SEARCH_ID,
+} from '../core/services/search-list-tracking-events/search-list-tracking-events.fixtures.spec';
+import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events/search-list-tracking-events.service';
 
 @Directive({
   selector: '[infinite-scroll]',
@@ -51,6 +58,7 @@ class InfiniteScrollStubDirective {
 }
 
 describe('SearchComponent', () => {
+  const itemCardListTag = 'tsl-public-item-card-list';
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let deviceServiceMock;
@@ -58,10 +66,14 @@ describe('SearchComponent', () => {
   let searchServiceMock;
   let publicFooterServiceMock;
   let searchAdsServiceMock;
+  let searchListTrackingEventsService: SearchListTrackingEventsService;
+  let searchTrackingEventsService: SearchTrackingEventsService;
+  let filterParameterStoreService: FilterParameterStoreService;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
   const isLoadingResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const isLoadingPaginationResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const currentCategoryIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
+  const searchIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   const hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   beforeEach(async () => {
@@ -79,6 +91,8 @@ describe('SearchComponent', () => {
       isLoadingResults$: isLoadingResultsSubject.asObservable(),
       isLoadingPaginationResults$: isLoadingPaginationResultsSubject.asObservable(),
       currentCategoryId$: currentCategoryIdSubject.asObservable(),
+      newSearch$: searchIdSubject.asObservable(),
+
       init: () => {},
       loadMore: () => {},
       close: () => {},
@@ -107,10 +121,6 @@ describe('SearchComponent', () => {
           provide: SearchService,
           useValue: searchServiceMock,
         },
-        {
-          provide: Store,
-          useValue: storeMock,
-        },
         { provide: DeviceDetectorService, useValue: { isMobile: () => false } },
         { provide: ViewportService, useValue: { onViewportChange: of('') } },
         {
@@ -137,14 +147,25 @@ describe('SearchComponent', () => {
         QueryStringLocationService,
         { provide: 'SUBDOMAIN', useValue: 'es' },
         { provide: CookieService, useValue: MockCookieService },
+        {
+          provide: SearchListTrackingEventsService,
+          useClass: MockSearchListTrackingEventService,
+        },
         { provide: ToastService, useClass: MockToastService },
         HostVisibilityService,
+        {
+          provide: SearchTrackingEventsService,
+          useClass: MockSearchTrackingEventsService,
+        },
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
+    searchListTrackingEventsService = TestBed.inject(SearchListTrackingEventsService);
+    searchTrackingEventsService = TestBed.inject(SearchTrackingEventsService);
+    filterParameterStoreService = TestBed.inject(FilterParameterStoreService);
     component = fixture.componentInstance;
   });
 
@@ -203,7 +224,7 @@ describe('SearchComponent', () => {
 
       component.items$.subscribe(() => {
         fixture.detectChanges();
-        const itemCardList = fixture.debugElement.query(By.css('tsl-public-item-card-list')).componentInstance;
+        const itemCardList = fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
 
         expect(itemCardList.isLoading).toBe(true);
         done();
@@ -235,7 +256,7 @@ describe('SearchComponent', () => {
 
           component.items$.subscribe(() => {
             fixture.detectChanges();
-            const itemCardList = fixture.debugElement.query(By.css('tsl-public-item-card-list')).componentInstance;
+            const itemCardList = fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
 
             expect(itemCardList.showPlaceholder).toBe(true);
             done();
@@ -261,14 +282,14 @@ describe('SearchComponent', () => {
 
   describe('when search category changes', () => {
     function getItemCardListInstance() {
-      return fixture.debugElement.query(By.css('tsl-public-item-card-list')).componentInstance;
+      return fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
     }
 
     beforeEach(() => {
       itemsSubject.next([MOCK_ITEM_CARD]);
     });
 
-    describe('and new serch category is cars', () => {
+    describe('and new search category is cars', () => {
       it('should show wide cards', (done) => {
         currentCategoryIdSubject.next(`${CATEGORY_IDS.CAR}`);
 
@@ -292,7 +313,7 @@ describe('SearchComponent', () => {
       });
     });
 
-    describe('and new serch category is real estate', () => {
+    describe('and new search category is real estate', () => {
       it('should show wide cards', (done) => {
         currentCategoryIdSubject.next(`${CATEGORY_IDS.REAL_ESTATE}`);
 
@@ -316,7 +337,7 @@ describe('SearchComponent', () => {
       });
     });
 
-    describe('and new serch category is from consumer goods', () => {
+    describe('and new search category is from consumer goods', () => {
       it('should show regular cards', (done) => {
         currentCategoryIdSubject.next(`${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`);
 
@@ -479,6 +500,58 @@ describe('SearchComponent', () => {
     });
   });
 
+  describe('when click on item card', () => {
+    it('should send track click item card event', () => {
+      spyOn(searchListTrackingEventsService, 'trackClickItemCardEvent');
+      searchIdSubject.next(MOCK_SEARCH_ID);
+      itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
+      fixture.detectChanges();
+      const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
+
+      publicItemCard.triggerEventHandler('clickedItemAndIndex', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
+
+      expect(searchListTrackingEventsService.trackClickItemCardEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
+    });
+  });
+
+  describe('when click on favourite item card', () => {
+    describe('and item is not favourite', () => {
+      beforeEach(() => {
+        spyOn(searchListTrackingEventsService, 'trackFavouriteItemEvent');
+        searchIdSubject.next(MOCK_SEARCH_ID);
+        itemsSubject.next([MOCK_ITEM_CARD]);
+        fixture.detectChanges();
+      });
+
+      it('should track favourite item event', () => {
+        const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
+        const MOCK_ITEM_CARD_FAVOURITED = { ...MOCK_ITEM_CARD, flags: { favorite: true } };
+
+        publicItemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD_FAVOURITED);
+
+        expect(searchListTrackingEventsService.trackFavouriteItemEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD_FAVOURITED, MOCK_SEARCH_ID);
+      });
+    });
+
+    describe('and item is already favourite', () => {
+      beforeEach(() => {
+        spyOn(searchListTrackingEventsService, 'trackUnfavouriteItemEvent');
+        searchIdSubject.next(MOCK_SEARCH_ID);
+        itemsSubject.next([MOCK_ITEM_CARD]);
+        fixture.detectChanges();
+      });
+
+      it('should track unfavourite item event', () => {
+        const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
+        const MOCK_ITEM_CARD_NOT_FAVOURITED = { ...MOCK_ITEM_CARD, flags: { favorite: false } };
+
+        publicItemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD_NOT_FAVOURITED);
+
+        expect(searchListTrackingEventsService.trackUnfavouriteItemEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD_NOT_FAVOURITED);
+      });
+    });
+  });
+
   describe('when we want to show ads natives', () => {
     describe('on desktop or tablet', () => {
       beforeEach(() => {
@@ -501,6 +574,42 @@ describe('SearchComponent', () => {
         fixture.detectChanges();
 
         expect(component.slotsConfig).toEqual(SLOTS_CONFIG_MOBILE);
+      });
+    });
+  });
+
+  describe('when new search is performed', () => {
+    describe('and searchId should be reset', () => {
+      const oldSearchId = 'oldSearchId';
+      const newSearchId = 'newSearchId';
+
+      beforeEach(() => {
+        spyOn(searchTrackingEventsService, 'trackSearchEvent');
+      });
+
+      it('should send search event', () => {
+        searchIdSubject.next(oldSearchId);
+        component['resetSearchId'] = true;
+        searchIdSubject.next(newSearchId);
+
+        expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(newSearchId, filterParameterStoreService.getParameters());
+      });
+    });
+
+    describe('and searchId should not be reset', () => {
+      const oldSearchId = 'oldSearchId';
+      const newSearchId = 'newSearchId';
+
+      beforeEach(() => {
+        spyOn(searchTrackingEventsService, 'trackSearchEvent');
+      });
+
+      it('should send search event', () => {
+        searchIdSubject.next(oldSearchId);
+        component['resetSearchId'] = false;
+        searchIdSubject.next(newSearchId);
+
+        expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(oldSearchId, filterParameterStoreService.getParameters());
       });
     });
   });

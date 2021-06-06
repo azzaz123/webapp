@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '@core/user/user.service';
 import { PaymentService } from '@core/payments/payment.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { EventService } from '@core/event/event.service';
@@ -17,21 +16,14 @@ export class BumpConfirmationModalComponent implements OnInit {
   public spent: number;
   public creditInfo: CreditInfo;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private userService: UserService,
-    private paymentService: PaymentService,
-    private eventService: EventService
-  ) {}
+  constructor(public activeModal: NgbActiveModal, private paymentService: PaymentService, private eventService: EventService) {}
 
   ngOnInit() {
-    this.userService.me().subscribe(() => {
-      if (this.code === '200') {
-        ga('send', 'event', 'Item', 'bump-ok');
-      } else {
-        ga('send', 'event', 'Item', 'bump-ko');
-      }
-    });
+    if (this.code === '200') {
+      ga('send', 'event', 'Item', 'bump-ok');
+    } else {
+      ga('send', 'event', 'Item', 'bump-ko');
+    }
     setTimeout(() => {
       this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
         if (creditInfo.credit === 0 && !this.creditUsed) {
