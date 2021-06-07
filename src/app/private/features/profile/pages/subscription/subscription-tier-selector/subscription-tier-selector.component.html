@@ -1,0 +1,17 @@
+<div class="SubscriptionTierSelector container">
+    <div class="row">
+        <ng-container *ngFor="let tier of subscription.tiers">
+            <div class="GenericCard Card col-md col-sm-12" [class.Card--selected]="selectedTier?.id === tier.id"
+                (click)="onTierSelectedChanged(tier)">
+                <div class="GenericCard__title Card__title">
+                    {{ getLimitText(tier) }}
+                </div>
+                <div class="GenericCard__subtitle Card__subtitle">
+                    <b><span i18n="@@web_profile_pages_subscription_326">{{tier.price}}{{tier.currency}}/month</span></b>
+                    <ng-container *ngIf="subscription.trial_available">&nbsp;<span i18n="@@web_after_free_trial">after free trial</span>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

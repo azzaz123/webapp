@@ -1447,6 +1447,17 @@
     "credit_card_date_error": "Fecha inválida",
     "credit_card_cvv_error": "CVV no válido",
     "delivery_add_credit_card_save_button": "Guardar",
-    "delivery_add_credit_card_text_info": "Se cobrarán 0,10 € para validar la tarjeta de crédito o débito, que serán devueltos en 7 días laborables."
+    "delivery_add_credit_card_text_info": "Se cobrarán 0,10 € para validar la tarjeta de crédito o débito, que serán devueltos en 7 días laborables.",
+    "web_change_subscription":"Cambiar suscripción",
+    "web_tier_selector_title":"¿Cuántos artículos quieres publicar?",
+    "web_subscription_purchase_subscription_title":"Suscripción {$INTERPOLATION}",
+    "web_tier_selector_subtitle":"Elige el plan que encaje con tus objetivos",
+    "web_card_selector_subtitle":"Encriptado y seguro",
+    "web_monthly_renewal_plan":"El plan se renovará mensualmente",
+    "web_pay":"Pagar",
+    "web_after_free_trial":"tras la prueba gratis",
+    "web_total":"Total",
+    "web_subscription_purchase_subscription_subtitle":"Convierte tus ventas en un auténtico negocio",
+    "web_price_after_free_days":"al terminar la prueba gratuita"
   }
 }
