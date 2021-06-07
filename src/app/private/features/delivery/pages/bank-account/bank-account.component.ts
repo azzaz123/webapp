@@ -71,7 +71,7 @@ export class BankAccountComponent implements OnInit {
       )
       .subscribe(
         (bankAccount: BankAccount) => {
-          this.isNewForm = !!bankAccount;
+          this.isNewForm = !bankAccount;
           if (bankAccount) {
             this.patchCurrentForm(bankAccount);
           }
