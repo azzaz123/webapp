@@ -62,7 +62,9 @@ export class TopbarComponent implements OnInit, OnDestroy {
         this.isProfessional = value;
       })
     );
-    this.updateCreditInfo();
+    if (this.isLogged) {
+      this.updateCreditInfo();
+    }
     this.componentSubscriptions.push(
       this.eventService.subscribe(EventService.TOTAL_CREDITS_UPDATED, (totalCredits: number) => {
         if (totalCredits) {

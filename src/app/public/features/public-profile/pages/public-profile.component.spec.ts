@@ -6,11 +6,12 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
+import { UserService } from '@core/user/user.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { IsCurrentUserPipeMock } from '@fixtures/is-current-user.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
 import { AdComponentStub } from '@fixtures/shared';
-import { IMAGE, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { IMAGE, MockedUserService, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { of, Subject, throwError } from 'rxjs';
@@ -93,6 +94,7 @@ describe('PublicProfileComponent', () => {
             events: routerEvents,
           },
         },
+        { provide: UserService, useClass: MockedUserService },
         { provide: IsCurrentUserPipe, useClass: IsCurrentUserPipeMock },
         SlugsUtilService,
       ],

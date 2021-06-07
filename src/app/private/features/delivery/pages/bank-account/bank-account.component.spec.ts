@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
 import { MOCK_EMPTY_BANK_ACCOUNT } from '@fixtures/private/delivery/bank-account/bank-account.fixtures.spec';
+import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numbers-only.directive.module';
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 
@@ -14,7 +15,7 @@ describe('BankAccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, NumbersOnlyDirectiveModule],
       declarations: [BankAccountComponent, ProfileFormComponent, SeparateWordByCharacterPipe],
       providers: [
         FormBuilder,
