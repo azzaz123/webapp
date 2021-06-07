@@ -44,7 +44,6 @@ import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
 import { GeneralSuggestionsService } from '../../core/services/general-suggestions/general-suggestions.service';
-import { HashtagSuggestionsService } from '../../core/services/hashtag-suggestions/hashtag-suggestions.service';
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
@@ -68,7 +67,6 @@ function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   selector: 'tsl-upload-product',
   templateUrl: './upload-product.component.html',
   styleUrls: ['./upload-product.component.scss'],
-  //  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
   @Input() categoryId: string;
@@ -79,8 +77,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Output() onCategorySelect = new EventEmitter<string>();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() suggestionValue: string;
-
-  // @ViewChild('scroller') scroller: CdkVirtualScrollViewport;
 
   MAX_DESCRIPTION_LENGTH = 640;
   MAX_TITLE_LENGTH = 50;
@@ -119,8 +115,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
-  public generalHashTagInPage = [];
-
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -137,8 +131,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private i18n: I18nService,
     private uploadService: UploadService,
     private subscriptionService: SubscriptionsService,
-    private itemReactivationService: ItemReactivationService,
-    private hashtagSuggestionsService: HashtagSuggestionsService
+    private itemReactivationService: ItemReactivationService
   ) {
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
@@ -151,9 +144,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
-    this.hashtagSuggestionsService.loadGeneralHashtagSugessters(100).subscribe((n) => {
-      this.generalHashTagInPage = n;
-    });
     this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories;
 
