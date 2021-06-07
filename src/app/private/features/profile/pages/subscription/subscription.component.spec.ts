@@ -34,14 +34,7 @@ import {
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
   SUBSCRIPTIONS_NOT_SUB,
 } from '@fixtures/subscriptions.fixtures.spec';
-import {
-  MOCK_FULL_USER,
-  MOCK_FULL_USER_FEATURED,
-  MOCK_FULL_USER_NON_FEATURED,
-  MOCK_NON_FEATURED_USER_RESPONSE,
-  MOCK_USER,
-  USER_DATA,
-} from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER, MOCK_FULL_USER_FEATURED, MOCK_FULL_USER_NON_FEATURED, USER_DATA } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'app/core/user/user.service';
 import { of } from 'rxjs';
@@ -114,8 +107,10 @@ describe('SubscriptionComponent', () => {
           {
             provide: UserService,
             useValue: {
-              user: USER_DATA,
               getAndUpdateLoggedUser: () => of(MOCK_FULL_USER_FEATURED),
+              get user() {
+                return USER_DATA;
+              },
             },
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
@@ -375,7 +370,7 @@ describe('SubscriptionComponent', () => {
       result: Promise.resolve(true),
       componentInstance: componentInstance,
     });
-    spyOn(userService, 'me').and.returnValue(of(MOCK_FULL_USER));
+    jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_FULL_USER);
     spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
     spyOn(router, 'navigate');
 
