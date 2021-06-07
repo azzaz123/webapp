@@ -1,7 +1,9 @@
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import {
   MAPPED_SUBSCRIPTIONS_ADDED,
   MockSubscriptionService,
@@ -23,7 +25,10 @@ describe('SubscriptionListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SubscriptionListComponent, SpinnerComponent, MockCardComponent],
-      providers: [{ provide: SubscriptionsService, useClass: MockSubscriptionService }],
+      providers: [
+        { provide: SubscriptionsService, useClass: MockSubscriptionService },
+        { provide: SubscriptionBenefitsService, useClass: MockSubscriptionBenefitsService },
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -64,14 +69,14 @@ describe('SubscriptionListComponent', () => {
   });
   describe('card events', () => {
     beforeEach(() => {
-      spyOn(component.openSubscriptionModal, 'emit');
+      spyOn(component.clickButton, 'emit');
     });
     it('should emit to parent', () => {
       const subscription = MAPPED_SUBSCRIPTIONS_ADDED[0];
-      component.onOpenSubscriptionModal(subscription);
+      component.onClickButton(subscription);
 
-      expect(component.openSubscriptionModal.emit).toHaveBeenCalledTimes(1);
-      expect(component.openSubscriptionModal.emit).toHaveBeenCalledWith(subscription);
+      expect(component.clickButton.emit).toHaveBeenCalledTimes(1);
+      expect(component.clickButton.emit).toHaveBeenCalledWith(subscription);
     });
   });
   describe('subscription CTA text', () => {

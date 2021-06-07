@@ -57,7 +57,6 @@ describe('RemoteConsoleService', () => {
 
     spyOn(remoteConsoleClientService, 'info');
     spyOn(remoteConsoleClientService, 'info$').and.returnValue(of({}));
-    spyOn(userService, 'me').and.returnValue(of({ id: USER_ID }));
 
     commonLog = {
       timestamp: 4000,

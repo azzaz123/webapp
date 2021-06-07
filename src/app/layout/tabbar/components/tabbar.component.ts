@@ -51,7 +51,7 @@ export class TabbarComponent implements OnInit {
 
   ngOnInit() {
     this.isLogged = this.userService.isLogged;
-    this.componentSubscriptions.push(this.userService.me().subscribe((user) => (this.user = user)));
+    this.user = this.userService.user;
     this.componentSubscriptions.push(this.tabBarService.tabBarHidden$.subscribe((hidden) => (this.hidden = hidden)));
     this.componentSubscriptions.push(
       this.unreadChatMessagesService.totalUnreadMessages$.subscribe((unreadMessages) => (this.hasUnreadMessages = !!unreadMessages))

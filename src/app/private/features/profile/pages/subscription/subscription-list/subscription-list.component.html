@@ -4,7 +4,11 @@
             <h4 class="section-title mb-2" i18n="@@web_wallapop_pro_subscription_title">Boost your online business with Wallapop PRO</h4>
             <p class="section-subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a subscription to take your sales to the next level</p>
             <div class="Subscriptions d-flex justify-content-between row">
-                <tsl-subscription-card class="col-lg-3 col-md-6 col-sm-12 p-0 px-md-1 mb-lg-0 mb-2" (buttonClick)="onOpenSubscriptionModal(subscription)" (clickLink)="onOpenSubscriptionModal(subscription)" [isSubscribed]="isSubscribed(subscription)"  [subscription]="subscription" [textButton]="getTextButton(subscription)" [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
+                <tsl-subscription-card class="col-lg-3 col-md-6 col-sm-12 p-0 px-md-1 mb-lg-0 mb-2"
+                    (buttonClick)="onClickButton(subscription)"
+                    [isSubscribed]="isSubscribed(subscription)"
+                    [subscription]="subscription" [textButton]="getTextButton(subscription)"
+                    [hasTrialAvailable]="hasOneFreeSubscription(subscription)" [subscriptionBenefits]="getBenefits(subscription)"
                     *ngFor="let subscription of subscriptions">
                 </tsl-subscription-card>
             </div>

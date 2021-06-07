@@ -1,10 +1,9 @@
 const fs = require('fs');
-const xmlParser = require('xml2json');
 const { execSync } = require('child_process');
 const readline = require('readline');
 const https = require('https');
 
-enum LANGUAGE {
+enum LOCALE {
   SPANISH = 'es',
   ENGLISH = 'en'
 }
@@ -50,21 +49,21 @@ interface TranslationSet {
 type ReplacerFunc = ((substring: string, ...args: any[]) => string);
 
 interface CopyLocation {
-  language: LANGUAGE;
+  language: LOCALE;
   file: string;
-}
-
-interface CopySource {
-  key: string;
-  sources: string[];
 }
 
 interface MissingTranslation {
   id: string;
-  missingLanguages: LANGUAGE[];
+  missingLanguages: LOCALE[];
 }
 
-class I18nNormalizer {
+interface AngularTranslationJson {
+  locale: string;
+  translations: Record<string, string>;
+}
+
+class I18nHelper {
   private menuString = '\n\n' +
     'What should I do?\n' +
     '1. Run i18n\n' +
@@ -77,21 +76,18 @@ class I18nNormalizer {
   private confirmDoneString = '\n\nPress enter to clean when done uploading: ';
 
   private copyLocations: CopyLocation[] = [{
-    language: LANGUAGE.ENGLISH,
+    language: LOCALE.ENGLISH,
     file: 'src/locale/messages.en.json'
   }, {
-    language: LANGUAGE.SPANISH,
+    language: LOCALE.SPANISH,
     file: 'src/locale/messages.es.json'
   }];
 
-  private sourcedMessagesFile = 'src/locale/messages.xlf';
-
-  private originalLanguage = LANGUAGE.ENGLISH;
+  private originalLanguage = LOCALE.ENGLISH;
 
   private projectId = '00bf7dee267ad3d87db0f7f4da989e43';
   private bearerToken = '67f5e5862f1ac8f3fed7bce2cc8653fd5d41911f80848f490e1464f3aa507100';
-  private phraseTags = ['multiplatform'];
-  // private phraseTags = ['multiplatform', 'legacy_web'];
+  private phraseTags = ['multiplatform', 'legacy_web'];
 
   private phraseHtmlRegexFormatters: RegexFormatter[] = [{
     regex: /<b(?: .*?>|>)(.+?)<\/b>/,
@@ -116,7 +112,25 @@ class I18nNormalizer {
     replacer: () => this.interpolationReplacer()
   }];
 
-  public async menu(): Promise<void> {
+  public async cli(): Promise<void> {
+    const args = process.argv.slice(2);
+
+    switch (args.length) {
+      case 0:
+        return this.menu();
+      case 1:
+        if (args[0] === 'merge-phrase') {
+          return this.mergeTranslationsWithLocal();
+        }
+
+        console.error(`Argument '${args[0]}' not supported`);
+        break;
+      default:
+        console.error('Incorrect number of arguments');
+    }
+  }
+
+  private async menu(): Promise<void> {
     const answer = await this.askInput(this.menuString);
 
     switch (answer) {
@@ -145,7 +159,7 @@ class I18nNormalizer {
   private async preparePhraseFiles(): Promise<void> {
     const currentTranslationSets = this.getCurrentTranslationSets();
 
-    const languages = Object.values(LANGUAGE);
+    const languages = Object.values(LOCALE);
 
     languages.forEach(lang => {
       const translationArray = currentTranslationSets.find(set => set.locale === lang).translations;
@@ -181,54 +195,59 @@ class I18nNormalizer {
     });
   }
 
-  private generateSourcedCopies(): void {
-    console.log('Generating sources...');
-    execSync('ng extract-i18n --output-path=src/locale');
-  }
-
-  private clearSourcedCopies(): void {
-    console.log('Cleaning generated source files...');
-    execSync(`rm ${this.sourcedMessagesFile}`);
-  }
-
   public async mergeTranslationsWithLocal(): Promise<void> {
+    const originalTranslationSets = this.getCurrentTranslationSets();
     const locales = await this.getPhraseLocales();
+    const phraseTranslationSets = this.getFormattedTranslationSets(locales);
 
-    const originalTranslationSets = this.getOriginalTranslationSets(locales);
-    const formattedTranslationSets = this.getFormattedTranslationSets(locales);
+    const mergedTranslations = this.mergeCopySets(originalTranslationSets, phraseTranslationSets);
 
-    // TODO: Merge will be added on another PR
-
-    console.log(originalTranslationSets);
-    console.log(formattedTranslationSets);
-
-    // this.mergeCopySets(translationSets);
+    this.saveTranslationSets(mergedTranslations);
   }
 
-  private getCopySources(): CopySource[] {
-    this.generateSourcedCopies();
-    const rawCopiesFile = fs.readFileSync(this.sourcedMessagesFile, 'utf8');
+  private saveTranslationSets(translationSets: TranslationSet[]): void {
+    translationSets.forEach(set => {
+      const location = this.copyLocations.find(loc => loc.language === set.locale);
 
-    const rawCopiesJSON = xmlParser.toJson(rawCopiesFile);
-    const transUnits = JSON.parse(rawCopiesJSON).xliff.file.body['trans-unit'];
-
-    this.clearSourcedCopies();
-
-    return transUnits.map(transUnit => {
-      const contextGroup = transUnit['context-group'];
-
-      const contexts = contextGroup instanceof Array
-        ? contextGroup.reduce((acc, group) => {
-            acc.push(...group.context);
-            return acc;
-          }, [])
-        : contextGroup.context;
-
-      return {
-        key: transUnit.id,
-        sources: contexts.filter(context => context['context-type'] === 'sourcefile').map(context => context.$t)
-      };
+      if (location) {
+        fs.writeFileSync(location.file, JSON.stringify(this.setToJson(set), undefined, 2));
+      }
     });
+  }
+
+  private setToJson(translationSet: TranslationSet): AngularTranslationJson {
+    return {
+      locale: translationSet.locale,
+      translations: translationSet.translations.reduce((acc, tr) => {
+        return {
+          ...acc,
+          [tr.key]: tr.value
+        };
+      }, {})
+    };
+  }
+
+  private mergeCopySets(originalSets: TranslationSet[], phraseSets: TranslationSet[]): TranslationSet[] {
+    const locales = Object.values(LOCALE);
+    const sets: TranslationSet[] = [];
+
+    locales.map(locale => {
+      const originalTranslations = originalSets.find(set => set.locale === locale).translations;
+      const phraseTranslations = phraseSets.find(set => set.locale === locale).translations;
+
+      const mergedTranslations = originalTranslations.map(translation => {
+        const phraseTranslation = phraseTranslations.find(tr => tr.key === translation.key);
+
+        return phraseTranslation || translation;
+      });
+
+      sets.push({
+        locale,
+        translations: mergedTranslations
+      });
+    });
+
+    return sets;
   }
 
   private runI18n() {
@@ -329,14 +348,6 @@ class I18nNormalizer {
     }));
   }
 
-  private getOriginalTranslationSets(locales: TranslatedPhraseLocale[]): TranslationSet[] {
-    console.log('Recovering original translations...');
-    return locales.map(locale => ({
-      locale: locale.name,
-      translations: locale.originals
-    }));
-  }
-
   private getFormattedTranslationSets(locales: TranslatedPhraseLocale[]): TranslationSet[] {
     console.log('Recovering formatted translations...');
     const translationSets: TranslationSet[] = [];
@@ -420,6 +431,6 @@ class I18nNormalizer {
   }
 }
 
-new I18nNormalizer().menu().then(() => {
+new I18nHelper().cli().then(() => {
   console.log('Bye!');
 });

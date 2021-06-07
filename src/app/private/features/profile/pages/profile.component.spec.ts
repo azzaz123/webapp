@@ -13,7 +13,13 @@ import { UserService, USER_ENDPOINT, USER_STATS_ENDPOINT } from '@core/user/user
 import { environment } from '@environments/environment';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
-import { MOCK_NON_FEATURED_USER_RESPONSE, MOCK_USER_STATS_RESPONSE, USER_DATA } from '@fixtures/user.fixtures.spec';
+import {
+  MockedUserService,
+  MOCK_NON_FEATURED_USER_RESPONSE,
+  MOCK_USER_STATS_RESPONSE,
+  USER_DATA,
+  USER_WEB_SLUG,
+} from '@fixtures/user.fixtures.spec';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { UserProfileRoutePipe } from '@shared/pipes';
 import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
@@ -71,7 +77,10 @@ describe('ProfileComponent', () => {
             },
           },
           FeatureflagService,
-          UserService,
+          {
+            provide: UserService,
+            useClass: MockedUserService,
+          },
           {
             provide: 'SUBDOMAIN',
             useValue: 'www',
@@ -100,25 +109,18 @@ describe('ProfileComponent', () => {
 
   afterAll(() => httpMock.verify());
 
-  const mockBeforeEachInit = (isFeaturedUser?: boolean) => {
+  const mockBeforeEachInit = () => {
     component.ngOnInit();
-
-    const userMeReq = httpMock.match((req) => req.urlWithParams === `${environment.baseUrl}${USER_ENDPOINT}`)[0];
-    if (isFeaturedUser) {
-      userMeReq.flush(USER_DATA);
-    } else {
-      userMeReq.flush(MOCK_NON_FEATURED_USER_RESPONSE);
-    }
-
-    httpMock.match((req) => req.urlWithParams === `${environment.baseUrl}${USER_STATS_ENDPOINT}`)[0].flush(MOCK_USER_STATS_RESPONSE);
 
     fixture.detectChanges();
   };
 
   describe('when the component loads', () => {
     it('should set correctly the public url link', () => {
-      mockBeforeEachInit();
+      component.user.webSlug = USER_WEB_SLUG;
       const expectedPublicProfileRoute = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.USER_DETAIL}/${USER_DATA.web_slug}`;
+
+      fixture.detectChanges();
       const publicProfileUrlHTML = fixture.debugElement.query(By.css('.header-row > .header-link'));
       const routerLinkInstance = publicProfileUrlHTML.injector.get(RouterLinkWithHref);
 
@@ -126,7 +128,9 @@ describe('ProfileComponent', () => {
     });
 
     it('should show user review numbers and stars', () => {
-      mockBeforeEachInit();
+      component.userStats.counters.reviews = 2;
+
+      fixture.detectChanges();
       const expectedUserReviewsText = MOCK_USER_STATS_RESPONSE.counters.find((r) => r.type === 'reviews').value.toString();
       const userReviewsText: string = fixture.debugElement.query(By.css('.reviews-rating-value')).nativeElement.innerHTML;
       const userStars: number = fixture.debugElement.query(By.directive(StarsComponent)).componentInstance.stars;
@@ -138,7 +142,9 @@ describe('ProfileComponent', () => {
 
     describe('and the user is not a pro user', () => {
       it('should not show a PRO badge', () => {
-        mockBeforeEachInit();
+        jest.spyOn(userService, 'isPro', 'get').mockReturnValue(false);
+
+        fixture.detectChanges();
 
         const proBadgeComponentElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
         expect(proBadgeComponentElement).toBeFalsy();
@@ -147,7 +153,9 @@ describe('ProfileComponent', () => {
 
     describe('and the user is a pro user', () => {
       it('should show a PRO badge', () => {
-        mockBeforeEachInit(true);
+        jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
+
+        fixture.detectChanges();
 
         const proBadgeComponentElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
         expect(proBadgeComponentElement).toBeTruthy();
@@ -158,7 +166,7 @@ describe('ProfileComponent', () => {
   describe('when clicking on logout button', () => {
     it('should perform logout logic', () => {
       mockBeforeEachInit();
-      spyOn(userService, 'logout');
+      spyOn(userService, 'logout').and.callThrough();
       const logoutButton: HTMLElement = fixture.debugElement.query(By.css('.btn-logout')).nativeElement;
 
       logoutButton.click();
