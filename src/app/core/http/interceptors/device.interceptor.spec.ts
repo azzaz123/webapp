@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 
-import { DeviceInterceptor, DEVICE_HEADER_NAME, DEVICE_OS } from './device.interceptor';
+import { API_V3, DeviceInterceptor, DEVICE_HEADER_NAME_API_V1, DEVICE_HEADER_NAME_API_V3, DEVICE_OS } from './device.interceptor';
 
 describe('DeviceInterceptor', () => {
   let http: HttpClient;
@@ -30,16 +30,32 @@ describe('DeviceInterceptor', () => {
   });
 
   describe('when doing a request to wallapop monolith server', () => {
-    it('should add the device header', () => {
-      const expectedUrl = environment.baseUrl;
-      const expectedHeaderValue = DEVICE_OS.WEB.toString();
+    describe('and the request is to the api v3', () => {
+      it('should add the new device header', () => {
+        const expectedUrl = `${environment.baseUrl}${API_V3}random`;
+        const expectedHeaderValue = DEVICE_OS.WEB.toString();
 
-      http.get(expectedUrl).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush({});
+        http.get(expectedUrl).subscribe();
+        const req: TestRequest = httpMock.expectOne(expectedUrl);
+        req.flush({});
 
-      expect(req.request.headers.has(DEVICE_HEADER_NAME)).toBe(true);
-      expect(req.request.headers.get(DEVICE_HEADER_NAME)).toEqual(expectedHeaderValue);
+        expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V3)).toBe(true);
+        expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V3)).toEqual(expectedHeaderValue);
+      });
+    });
+
+    describe('and the request is NOT to the api v3', () => {
+      it('should add the old device header', () => {
+        const expectedUrl = `${environment.baseUrl}shnm-portlet/api/v1/random`;
+        const expectedHeaderValue = DEVICE_OS.WEB.toString();
+
+        http.get(expectedUrl).subscribe();
+        const req: TestRequest = httpMock.expectOne(expectedUrl);
+        req.flush({});
+
+        expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V1)).toBe(true);
+        expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V1)).toEqual(expectedHeaderValue);
+      });
     });
   });
 
@@ -51,8 +67,10 @@ describe('DeviceInterceptor', () => {
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
-      expect(req.request.headers.has(DEVICE_HEADER_NAME)).toBe(false);
-      expect(req.request.headers.get(DEVICE_HEADER_NAME)).toEqual(null);
+      expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V1)).toBe(false);
+      expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V1)).toEqual(null);
+      expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V3)).toBe(false);
+      expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V3)).toEqual(null);
     });
   });
 });
