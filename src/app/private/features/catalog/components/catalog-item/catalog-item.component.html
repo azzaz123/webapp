@@ -80,7 +80,7 @@
             </div>
           </div>
         </ng-container>
-          <div class="actions align-items-center justify-content-md-end col col-md-4" *ngIf="!item.flags.pending && !item.flags.expired" [hidden]="selectMode">
+          <div class="actions align-items-center justify-content-md-end col col-md-4 ml-auto" *ngIf="!item.flags.pending && !item.flags.expired" [hidden]="selectMode">
             <ng-container *ngIf="!item.flags.onhold">
               <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)"
                 [item]="item" ngbTooltip="{{tooltipMessages.markAsSold}}"  placement="top">
