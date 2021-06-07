@@ -5,7 +5,6 @@ import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.e
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { EventService } from '@core/event/event.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { Subscription } from 'rxjs';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { I18nService } from '@core/i18n/i18n.service';
 import { BankAccountService } from '../../services/bank-account/bank-account.service';
