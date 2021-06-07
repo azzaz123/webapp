@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { MapPublishedItemCardService } from '../../core/services/map-published-item-card/map-published-item-card.service';
 import { UserPublishedComponent } from './user-published.component';
 import { By } from '@angular/platform-browser';
 import { EmptyStateComponent } from '@public/shared/components/empty-state/empty-state.component';
@@ -14,7 +13,6 @@ import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card
 import { MOCK_ITEM_CARD, MOCK_PAGINATED_CARD_LIST } from '@fixtures/item-card.fixtures.spec';
 import { UuidService } from '@core/uuid/uuid.service';
 import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
-import { PublishedItemCardFavouriteCheckedModule } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.module';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { MockUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
@@ -41,10 +39,9 @@ describe('UserPublishedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, PublishedItemCardFavouriteCheckedModule, ItemFavouritesModule, CatalogApiModule],
+      imports: [HttpClientTestingModule, ItemFavouritesModule, CatalogApiModule],
       declarations: [UserPublishedComponent, ItemCardListComponentStub, EmptyStateComponent],
       providers: [
-        MapPublishedItemCardService,
         UuidService,
         PublicUserApiService,
         DeviceDetectorService,

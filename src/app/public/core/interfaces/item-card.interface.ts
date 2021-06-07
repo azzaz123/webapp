@@ -18,10 +18,6 @@ export interface ItemCard {
   saleConditions?: ItemSaleConditions;
 }
 
-export interface ItemCardsWithPagination {
-  nextPaginationItem: number;
-  items: ItemCard[];
-}
 export interface ItemCardsWithRecommenedType {
   recommendedType: RECOMMENDER_TYPE;
   recommendedItems: ItemCard[];

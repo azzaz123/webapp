@@ -5,7 +5,6 @@ import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { EMPTY_STATS } from './constants/stats-constants';
 import {
-  MOCK_FULL_USER,
   MOCK_FULL_USER_FEATURED,
   MOCK_USER_STATS,
   USERS_STATS,
@@ -162,55 +161,6 @@ describe('PublicProfileService', () => {
     });
   });
 
-  describe('when getting published items...', () => {
-    it('should get user published items', () => {
-      spyOn(publicUserApiService, 'getPublishedItems');
-
-      publicProfileService.getPublishedItems(userId);
-
-      expect(publicUserApiService.getPublishedItems).toHaveBeenCalledWith(userId, 0);
-    });
-
-    it('should get user published items with correct pagination', () => {
-      const itemsFrom = 40;
-      spyOn(publicUserApiService, 'getPublishedItems');
-
-      publicProfileService.getPublishedItems(userId, itemsFrom);
-
-      expect(publicUserApiService.getPublishedItems).toHaveBeenCalledWith(userId, itemsFrom);
-    });
-  });
-
-  describe('when getting sold items...', () => {
-    it('should get user sold items', () => {
-      spyOn(publicUserApiService, 'getSoldItems');
-
-      publicProfileService.getSoldItems(userId);
-
-      expect(publicUserApiService.getSoldItems).toHaveBeenCalledWith(userId);
-    });
-  });
-
-  describe('when getting buy transactions...', () => {
-    it('should get user buy transactions', () => {
-      spyOn(publicUserApiService, 'getBuyTransactions');
-
-      publicProfileService.getBuyTransactions(userId);
-
-      expect(publicUserApiService.getBuyTransactions).toHaveBeenCalledWith(userId);
-    });
-  });
-
-  describe('when getting solds transactions...', () => {
-    it('should get user solds transactions', () => {
-      spyOn(publicUserApiService, 'getSoldsTransactions');
-
-      publicProfileService.getSoldsTransactions(userId);
-
-      expect(publicUserApiService.getSoldsTransactions).toHaveBeenCalledWith(userId);
-    });
-  });
-
   describe('when getting user...', () => {
     it('should get user', () => {
       let expectedResponse = {};
@@ -220,21 +170,6 @@ describe('PublicProfileService', () => {
       });
 
       expect(expectedResponse).toEqual(MOCK_FULL_USER_FEATURED);
-    });
-  });
-
-  describe('when checking if user is pro...', () => {
-    it('should return false if the user is NOT pro', () => {
-      const MOCK_NORMAL_INFO = MOCK_FULL_USER;
-      MOCK_NORMAL_INFO.featured = false;
-
-      expect(publicProfileService.isPro(MOCK_NORMAL_INFO)).toBe(false);
-    });
-    it('should return true if the user is pro', () => {
-      const MOCK_PRO_INFO = MOCK_FULL_USER;
-      MOCK_PRO_INFO.featured = true;
-
-      expect(publicProfileService.isPro(MOCK_PRO_INFO)).toBe(true);
     });
   });
 

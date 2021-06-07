@@ -6,7 +6,6 @@ import { User } from '@core/user/user';
 import { Image, UserExtrainfo, UserFavourited, UserResponse } from '@core/user/user-response.interface';
 import { MarkAsFavouriteBodyResponse } from '../interfaces/public-profile-request.interface';
 import { ReviewResponse } from '@private/features/reviews/core/review-response.interface';
-import { ItemResponse } from '@core/item/item-response.interface';
 import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { EMPTY_STATS } from './constants/stats-constants';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
@@ -50,24 +49,6 @@ export class PublicProfileService {
     return this.publicUserApiService.getReviews(userId, init);
   }
 
-  public getPublishedItems(userId: string, init: number = 0): Observable<PaginationResponse<ItemResponse>> {
-    return this.publicUserApiService.getPublishedItems(userId, init);
-  }
-
-  public getSoldItems(userId: string): Observable<any> {
-    return this.publicUserApiService.getSoldItems(userId);
-  }
-
-  // FIXME: Seems its not being used
-  public getBuyTransactions(userId: string): Observable<any> {
-    return this.publicUserApiService.getBuyTransactions(userId);
-  }
-
-  // FIXME: Seems its not being used
-  public getSoldsTransactions(userId: string): Observable<any> {
-    return this.publicUserApiService.getSoldsTransactions(userId);
-  }
-
   public getUser(userId: string, useCache = true): Observable<User> {
     if (useCache && this._user) {
       return of(this._user);
@@ -77,10 +58,6 @@ export class PublicProfileService {
       map((user) => this.mapRecordData(user)),
       tap((user) => (this._user = user))
     );
-  }
-
-  public isPro(user: User | UserResponse): boolean {
-    return user && user.featured;
   }
 
   public getCoverImage(userId: string): Observable<Image> {
