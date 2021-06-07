@@ -1,5 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router, Scroll } from '@angular/router';
 import { AdShoppingPageOptions } from '@core/ads/models/ad-shopping-page.options';
 import { AdSlotGroupShoppingConfiguration } from '@core/ads/models/ad-slot-shopping-configuration';
@@ -10,11 +10,11 @@ import { OnAttach, OnDetach } from '@public/core/directives/public-router-outlet
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
+import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { delay, distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
-import { AD_PUBLIC_SEARCH, AdSlotSearch } from '../core/ads/search-ads.config';
+import { delay, distinctUntilChanged, filter, skip, map, tap } from 'rxjs/operators';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
   AD_SHOPPING_CONTAINER_PUBLIC_SEARCH,
@@ -34,6 +34,12 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
 import { isEqual } from 'lodash-es';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
+import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events/search-list-tracking-events.service';
+import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { debounce } from '@core/helpers/debounce/debounce';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -59,9 +65,11 @@ export const WIDE_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
 export class SearchComponent implements OnInit, OnAttach, OnDetach {
   private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscription: Subscription = new Subscription();
+  private searchId: string;
   public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
   public isLoadingPaginationResults$: Observable<boolean> = this.searchService.isLoadingPaginationResults$;
   public currentCategoryId$: Observable<string> = this.searchService.currentCategoryId$;
+  public newSearch$: Observable<string> = this.searchService.newSearch$;
   public items$: Observable<ItemCard[]> = this.searchService.items$;
   public hasMoreItems$: Observable<boolean> = this.searchService.hasMore$;
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
@@ -69,13 +77,11 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public filterOpened: boolean;
   public componentAttached = true;
   public DevicesType: typeof DeviceType = DeviceType;
-
   public infiniteScrollDisabled$: Observable<boolean> = this.buildInfiniteScrollDisabledObservable();
   public listCardType$: Observable<CARD_TYPES> = this.buildCardTypeObservable();
   public listColumnsConfig$: Observable<ColumnsConfig> = this.buildListConfigObservable();
   public showPlaceholder$: Observable<boolean> = this.buildShowPlaceholderObservable();
   public searchWithoutResults$: Observable<boolean> = this.buildSearchWithoutResultsObservable();
-
   public columnsConfig: ColumnsConfig = {
     xl: 4,
     lg: 4,
@@ -83,17 +89,24 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     sm: 2,
     xs: 2,
   };
-
   public adSlotGroupShoppingConfiguration: AdSlotGroupShoppingConfiguration = AD_SHOPPING_PUBLIC_SEARCH;
   public adSlotShoppingContainer: string = AD_SHOPPING_CONTAINER_PUBLIC_SEARCH;
   public adShoppingGroupPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(AdShoppingChannel.SEARCH_PAGE);
   public adShoppingNativeListPageOptions: AdShoppingPageOptions = AdShoppingPageOptionPublicSearchFactory(
     AdShoppingChannel.SEARCH_LIST_SHOPPING
   );
-
   public isWall$: Observable<boolean> = this.searchService.isWall$;
-
   public slotsConfig: SlotsConfig;
+
+  private resetSearchId = true;
+
+  @HostListener('window:scroll', ['$event'])
+  @debounce(500)
+  onWindowScroll() {
+    if (this.componentAttached) {
+      this.resetSearchId = true;
+    }
+  }
 
   constructor(
     private deviceService: DeviceService,
@@ -106,9 +119,23 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     private route: ActivatedRoute,
     private queryStringService: SearchQueryStringService,
     private searchNavigatorService: SearchNavigatorService,
+    private searchListTrackingEventsService: SearchListTrackingEventsService,
+    private searchTrackingEventsService: SearchTrackingEventsService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
+    this.device = this.deviceService.getDeviceType();
+    this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
+    this.subscription.add(
+      this.newSearch$.pipe(skip(1)).subscribe((searchId: string) => {
+        if (this.resetSearchId) {
+          this.searchId = searchId;
+          this.resetSearchId = false;
+        }
+
+        this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
+      })
+    );
   }
 
   public ngOnInit(): void {
@@ -124,7 +151,10 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.subscription.add(
       this.queryParamsChange().subscribe((params) => {
         if (!this.paramsHaveLocation(params)) {
-          this.searchNavigatorService.navigate(params);
+          this.searchNavigatorService.navigate(
+            params,
+            (params.find((parameter) => parameter.key === FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE)?.value || null) as FILTERS_SOURCE
+          );
         } else {
           this.filterParameterStore.setParameters(params);
         }
@@ -134,6 +164,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   public onAttach(): void {
     this.componentAttached = true;
+    this.resetSearchId = true;
   }
 
   public onDetach(): void {
@@ -148,6 +179,21 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public scrolled(): void {
     if (this.componentAttached) {
       this.searchService.loadMore();
+    }
+
+    this.resetSearchId = true;
+  }
+
+  public trackClickItemCardEvent(clickedItemCard: ClickedItemCard): void {
+    const { itemCard, index } = clickedItemCard;
+    this.searchListTrackingEventsService.trackClickItemCardEvent(itemCard, index, this.searchId);
+  }
+
+  public trackFavouriteToggleEvent(item: ItemCard): void {
+    if (item.flags.favorite) {
+      this.searchListTrackingEventsService.trackFavouriteItemEvent(item, this.searchId);
+    } else {
+      this.searchListTrackingEventsService.trackUnfavouriteItemEvent(item);
     }
   }
 

@@ -1,0 +1,38 @@
+@import '~style/common';
+.SubscriptionTierSelector {
+  .Card {
+    border: solid 2px $blue-grey-5;
+    &:not(:last-child) {
+      margin-right: $spacing-ms;
+    }
+
+    @include media-breakpoint-down(sm) {
+      margin-right: 0 !important;
+      margin-bottom: $spacing-s;
+    }
+    cursor: pointer;
+
+    &__title {
+      color: $blue-grey-2;
+    }
+
+    &__subtitle {
+      margin: 0;
+    }
+
+    &:hover {
+      transform: $item-card-hover-translate;
+      box-shadow: $item-card-hover-box-shadow;
+      .Card__title {
+        color: $blue-grey-1;
+      }
+    }
+
+    &--selected {
+      border: solid 2px $blue-grey-2;
+      .Card__title {
+        color: $blue-grey-1;
+      }
+    }
+  }
+}

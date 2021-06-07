@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   AfterContentInit,
-  AfterViewChecked,
   Component,
   ElementRef,
   EventEmitter,
@@ -40,7 +39,7 @@ import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } fr
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, tap } from 'rxjs/operators';
+import { debounceTime, map, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -118,6 +117,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
 
+  private dataReadyToValidate$: Subject<void> = new Subject<void>();
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -152,6 +153,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.detectObjectTypeChanges();
       if (this.item) {
         this.initializeEditForm();
+
+        this.dataReadyToValidate$.pipe(debounceTime(500), take(1)).subscribe(() => {
+          if (this.isReactivation) {
+            this.itemReactivationService.reactivationValidation(this.uploadForm);
+          }
+        });
       }
       this.detectFormChanges();
       this.handleUploadFormExtraFields();
@@ -227,10 +234,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       images: this.uploadService.convertImagesToFiles(this.item.images),
     });
     this.oldDeliveryValue = this.getDeliveryInfo();
-
-    if (this.isReactivation) {
-      this.itemReactivationService.reactivationValidation(this.uploadForm);
-    }
   }
 
   private detectFormChanges() {
@@ -356,6 +359,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         }
         return this.getUploadExtraInfoControl(formFieldName).disable();
       });
+    } else {
+      this.dataReadyToValidate$.next();
     }
   }
 
@@ -456,7 +461,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private redirectToList(action: UPLOAD_ACTION, response: ItemContent, type: SUBSCRIPTION_TYPES = SUBSCRIPTION_TYPES.notSubscribed): void {
     const params = this.getRedirectParams(action, response, type);
 
-    this.trackEditOrUpload(!!this.item, response).subscribe(() => this.router.navigate(['/catalog/list', params]));
+    this.trackEditOrUpload(!!this.item, response);
+    this.router.navigate(['/catalog/list', params]);
   }
 
   private getRedirectParams(action: UPLOAD_ACTION, response: ItemContent, userType: SUBSCRIPTION_TYPES): void {
@@ -562,6 +568,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
             this.brandSuggestions.next(suggestions);
           });
       }
+
+      this.dataReadyToValidate$.next();
     });
   }
 
@@ -580,6 +588,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           suggestions.push({ suggestion: model.model, value: model });
         });
         this.modelSuggestions.next(suggestions);
+
+        this.dataReadyToValidate$.next();
       });
   }
 
@@ -595,6 +605,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         (sizes: IOption[]) => {
           if (sizes.length) this.getUploadExtraInfoControl('size').enable();
           this.sizes = sizes;
+
+          this.dataReadyToValidate$.next();
         },
         () => {
           this.clearSizes();
@@ -620,6 +632,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           extra_info: this.getExtraInfo(),
         });
       }
+
+      this.dataReadyToValidate$.next();
     });
   }
 
@@ -714,6 +728,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.getUploadExtraInfoControl('condition').reset();
     this.generalSuggestionsService.getConditions(currentCategoryId).subscribe((conditions: IOption[]) => {
       this.conditions = conditions;
+      this.dataReadyToValidate$.next();
     });
   }
 
@@ -727,51 +742,48 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private trackEditOrUpload(isEdit: boolean, item: ItemContent) {
-    return this.userService.isProUser().pipe(
-      tap((isProfessional: boolean) => {
-        let baseEventAttrs: any = {
-          itemId: item.id,
-          categoryId: item.category_id,
-          salePrice: item.sale_price,
-          title: item.title,
-          isPro: isProfessional,
-        };
+    const isPro = this.userService.isProUser();
+    let baseEventAttrs: any = {
+      itemId: item.id,
+      categoryId: item.category_id,
+      salePrice: item.sale_price,
+      title: item.title,
+      isPro,
+    };
 
-        if (item.extra_info) {
-          if (item.extra_info.object_type && item.extra_info.object_type.id) {
-            baseEventAttrs.objectType = item.extra_info.object_type.name;
-          }
-          if (item.extra_info.brand) {
-            baseEventAttrs.brand = item.extra_info.brand;
-          }
-          if (item.extra_info.model) {
-            baseEventAttrs.model = item.extra_info.model;
-          }
-        }
+    if (item.extra_info) {
+      if (item.extra_info.object_type && item.extra_info.object_type.id) {
+        baseEventAttrs.objectType = item.extra_info.object_type.name;
+      }
+      if (item.extra_info.brand) {
+        baseEventAttrs.brand = item.extra_info.brand;
+      }
+      if (item.extra_info.model) {
+        baseEventAttrs.model = item.extra_info.model;
+      }
+    }
 
-        if (isEdit) {
-          const editItemCGEvent: AnalyticsEvent<EditItemCG> = {
-            name: ANALYTICS_EVENT_NAMES.EditItemCG,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
-            attributes: {
-              ...baseEventAttrs,
-              screenId: SCREEN_IDS.EditItem,
-            },
-          };
-          this.analyticsService.trackEvent(editItemCGEvent);
-        } else {
-          const listItemCGEvent: AnalyticsEvent<ListItemCG> = {
-            name: ANALYTICS_EVENT_NAMES.ListItemCG,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
-            attributes: {
-              ...baseEventAttrs,
-              screenId: SCREEN_IDS.Upload,
-            },
-          };
-          this.analyticsService.trackEvent(listItemCGEvent);
-        }
-      })
-    );
+    if (isEdit) {
+      const editItemCGEvent: AnalyticsEvent<EditItemCG> = {
+        name: ANALYTICS_EVENT_NAMES.EditItemCG,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          ...baseEventAttrs,
+          screenId: SCREEN_IDS.EditItem,
+        },
+      };
+      this.analyticsService.trackEvent(editItemCGEvent);
+    } else {
+      const listItemCGEvent: AnalyticsEvent<ListItemCG> = {
+        name: ANALYTICS_EVENT_NAMES.ListItemCG,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          ...baseEventAttrs,
+          screenId: SCREEN_IDS.Upload,
+        },
+      };
+      this.analyticsService.trackEvent(listItemCGEvent);
+    }
   }
 
   private getUploadExtraInfoControl(field?: string): AbstractControl {

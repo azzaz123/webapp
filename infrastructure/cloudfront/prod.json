@@ -4,8 +4,6 @@
     "ProjectName": "webapp",
     "BucketES": "web-es.wallapop.com",
     "BucketEN": "web-en.wallapop.com",
-    "AliasES": "web.wallapop.com",
-    "AliasEN": "web-en.wallapop.com",
     "HostES": "web.wallapop.com",
     "HostEN": "web-en.wallapop.com",
     "HostedZoneName": "wallapop.com.",

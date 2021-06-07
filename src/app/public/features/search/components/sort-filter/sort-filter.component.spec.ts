@@ -16,6 +16,10 @@ import { QueryStringLocationService } from '@core/search/query-string-location.s
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ButtonModule } from '@shared/button/button.module';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
 @Component({
   selector: 'tsl-select-form',
@@ -39,6 +43,9 @@ describe('SortFilterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ButtonModule,
+        HttpClientTestingModule,
+        SvgIconModule,
         NgbDropdownModule,
         RouterTestingModule.withRoutes([
           {
@@ -117,7 +124,7 @@ describe('SortFilterComponent', () => {
       fixture.detectChanges();
 
       expect(navigator.navigate).toHaveBeenCalledTimes(1);
-      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: lastOption.value }], true);
+      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: lastOption.value }], FILTERS_SOURCE.QUICK_FILTERS, true);
     });
 
     it('should send default value (null) if it is the first option', () => {
@@ -128,7 +135,7 @@ describe('SortFilterComponent', () => {
       fixture.detectChanges();
 
       expect(navigator.navigate).toHaveBeenCalledTimes(1);
-      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: null }], true);
+      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: null }], FILTERS_SOURCE.QUICK_FILTERS, true);
     });
   });
 });

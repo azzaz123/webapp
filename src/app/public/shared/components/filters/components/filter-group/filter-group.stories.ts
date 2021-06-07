@@ -16,6 +16,12 @@ import { FilterGroupComponent } from './filter-group.component';
 import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
 import { IsBubblePipe } from '@public/shared/components/filters/components/abstract-filter/pipes/is-bubble.pipe';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import {
+  FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+  FILTER_PARAMETER_STORE_TOKEN,
+  FilterParameterStoreService,
+} from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 
 @Component({
   selector: 'tsl-filters',
@@ -37,7 +43,19 @@ export default {
     moduleMetadata({
       declarations: [FilterGroupComponent, FilterHostDirective],
       imports: [CommonModule, FiltersModule, HttpClientModule],
-      providers: [{ provide: CookieService, useValue: MockCookieService }, IsBubblePipe],
+      providers: [
+        { provide: CookieService, useValue: MockCookieService },
+        IsBubblePipe,
+        HostVisibilityService,
+        {
+          provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+        {
+          provide: FILTER_PARAMETER_STORE_TOKEN,
+          useClass: FilterParameterStoreService,
+        },
+      ],
     }),
   ],
   argTypes: { valueChange: { action: 'valueChange' } },

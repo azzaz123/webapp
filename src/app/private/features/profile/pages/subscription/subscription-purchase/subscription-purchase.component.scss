@@ -1,0 +1,21 @@
+@import '~style/common';
+
+.SubscriptionPurchase {
+  margin-bottom: $subscription-footer-height;
+
+  > .GenericCard {
+    &:not(:last-child) {
+      margin-bottom: $spacing-ml;
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    margin-bottom: $spacing-ml;
+  }
+
+  tsl-profile-pro-billing {
+    ::ng-deep .box {
+      border: 0;
+    }
+  }
+}

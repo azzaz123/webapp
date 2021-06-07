@@ -42,9 +42,9 @@ export class TutorialService {
     }
   }
 
-  public isAlreadyDisplayed(): Observable<boolean> {
-    return this.userService
-      .me()
-      .pipe(map((user: User) => (user.type === 'professional' ? true : !!localStorage.getItem(user.id + this.localStorageName))));
+  public isAlreadyDisplayed(): boolean {
+    const user = this.userService.user;
+
+    return user.type === 'professional' ? true : !!localStorage.getItem(user.id + this.localStorageName);
   }
 }
