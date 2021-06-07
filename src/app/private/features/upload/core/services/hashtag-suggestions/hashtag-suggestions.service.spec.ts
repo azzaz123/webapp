@@ -62,7 +62,7 @@ describe('HashtagSuggestionsService', () => {
     it('should offer us the selected hashtags with the new added hashtag', () => {
       service.addSuggesters(MOCK_HASHTAG_SUGGESTERS[0]);
 
-      expect(service.selectedSuggestors).toEqual([MOCK_HASHTAG_SUGGESTERS[0]]);
+      expect(service.selectedSuggesters).toEqual([MOCK_HASHTAG_SUGGESTERS[0]]);
     });
   });
 
@@ -70,7 +70,7 @@ describe('HashtagSuggestionsService', () => {
     it('should offer us the selected hashtags without the hashtag we want to delete', () => {
       service.deleteSuggesters(MOCK_HASHTAG_SUGGESTERS[0]);
 
-      expect(service.selectedSuggestors).toEqual([]);
+      expect(service.selectedSuggesters).toEqual([]);
     });
   });
 });
