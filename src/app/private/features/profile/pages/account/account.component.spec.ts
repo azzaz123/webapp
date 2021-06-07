@@ -34,9 +34,6 @@ describe('AccountComponent', () => {
             provide: UserService,
             useValue: {
               user: MOCK_FULL_USER,
-              me() {
-                return of(MOCK_FULL_USER);
-              },
               edit() {
                 return of({});
               },
@@ -79,19 +76,12 @@ describe('AccountComponent', () => {
     component = fixture.componentInstance;
     component.formComponent = TestBed.inject(ProfileFormComponent);
     userService = TestBed.inject(UserService);
-    spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
     errorsService = TestBed.inject(ErrorsService);
     modalService = TestBed.inject(NgbModal);
   });
 
   describe('initForm', () => {
-    it('should call userService.me', () => {
-      component.initForm();
-
-      expect(userService.me).toHaveBeenCalled();
-    });
-
     it('should set profileForm with user data', () => {
       component.initForm();
 

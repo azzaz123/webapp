@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteInfoConfirmationModalComponent } from './delete-info-confirmation-modal/delete-info-confirmation-modal.component';
@@ -14,10 +14,16 @@ import { validDNI, validNIE, validCIF } from 'spain-id';
 import { UuidService } from '../../core/uuid/uuid.service';
 import { whitespaceValidator } from 'app/core/form-validators/formValidators.func';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { isEqual } from 'lodash-es';
 
 export enum BILLING_TYPE {
   NATURAL = 'natural',
   LEGAL = 'legal',
+}
+
+export enum COMPONENT_TYPE {
+  PROFILE_INFO = 'profile-info',
+  SUBSCRIPTION_INFO = 'subscription-info',
 }
 
 @Component({
@@ -25,16 +31,19 @@ export enum BILLING_TYPE {
   templateUrl: './profile-pro-billing.component.html',
   styleUrls: ['./profile-pro-billing.component.scss'],
 })
-export class ProfileProBillingComponent implements CanComponentDeactivate, OnDestroy {
+export class ProfileProBillingComponent implements CanComponentDeactivate, OnInit, OnDestroy {
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
   public loading = true;
   public type: string;
+  public isSubmitShown: boolean;
+  private savedData: unknown;
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
   @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
+  @Output() billingInfoNotUpdateRequired: EventEmitter<void> = new EventEmitter();
   @Output() billingInfoFormSaved: EventEmitter<FormGroup> = new EventEmitter();
-  @Input() containerType: string;
+  @Input() containerType: COMPONENT_TYPE;
 
   constructor(
     private fb: FormBuilder,
@@ -45,9 +54,17 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
     private eventService: EventService
   ) {
     this.buildForm();
-    this.eventService.subscribe('formSubmited', () => {
-      this.onSubmit();
+    this.eventService.subscribe(EventService.BILLING_INFO_FORM_SUBMITTED, () => {
+      if (isEqual(this.savedData, this.billingForm.getRawValue())) {
+        this.billingInfoNotUpdateRequired.emit();
+      } else {
+        this.onSubmit();
+      }
     });
+  }
+
+  ngOnInit() {
+    this.isSubmitShown = this.containerType !== COMPONENT_TYPE.SUBSCRIPTION_INFO;
   }
 
   onChanges() {
@@ -64,7 +81,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
   }
 
   ngOnDestroy() {
-    this.eventService.unsubscribeAll('formSubmited');
+    this.eventService.unsubscribeAll(EventService.BILLING_INFO_FORM_SUBMITTED);
   }
 
   buildForm(): void {
@@ -91,6 +108,7 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
           this.isNewBillingInfoForm = false;
           this.type = billingInfo.type || BILLING_TYPE.NATURAL;
           this.billingForm.patchValue(billingInfo);
+          this.savedData = this.billingForm.getRawValue();
           if (this.isSpanishCifOrNifValid(billingInfo.cif)) {
             this.billingForm.controls['cif'].disable();
             this.billingForm.controls['type'].disable();
@@ -247,14 +265,6 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnDes
     const pattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
     return pattern.test(control.value) ? null : { email: true };
-  }
-
-  get containerTypeIsModal(): boolean {
-    return this.containerType === 'modal';
-  }
-
-  get containerTypeIsModalOrProfileInfo(): boolean {
-    return this.containerType === 'modal' || this.containerType === 'profile-info';
   }
 
   private cpValidator(control: AbstractControl): { [key: string]: boolean } {

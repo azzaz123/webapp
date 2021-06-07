@@ -122,7 +122,7 @@ describe('UploadProductComponent', () => {
             provide: UserService,
             useValue: {
               isProUser() {
-                return of(false);
+                return false;
               },
               isPro: false,
             },
@@ -1207,7 +1207,6 @@ describe('UploadProductComponent', () => {
         latitude: USER_LOCATION.approximated_latitude,
         longitude: USER_LOCATION.approximated_longitude,
       });
-
       component.preview();
 
       tick();
@@ -1604,13 +1603,15 @@ describe('UploadProductComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should check reactivation validation after all data is ready', () => {
+    it('should check reactivation validation after all data is ready', fakeAsync(() => {
       spyOn(itemReactivationService, 'reactivationValidation');
+      component.ngOnInit();
 
-      component['dataReadyToValidate$'].next(true);
+      component['dataReadyToValidate$'].next();
+      tick(600);
 
       expect(itemReactivationService.reactivationValidation).toHaveBeenCalledWith(component.uploadForm);
-    });
+    }));
 
     describe('and loading has ended', () => {
       beforeEach(() => {
