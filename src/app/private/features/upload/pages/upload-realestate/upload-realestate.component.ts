@@ -24,7 +24,7 @@ import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootst
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { isEqual, omit } from 'lodash-es';
-import { tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Key } from '../../core/models/key.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
@@ -32,6 +32,7 @@ import { RealestateKeysService } from '../../core/services/realstate-keys/reales
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { forkJoin, Observable, of, OperatorFunction } from 'rxjs';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -107,7 +108,12 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getOptions();
+    this.getOptions().subscribe(() => {
+      if (this.item && this.isReactivation) {
+        this.itemReactivationService.reactivationValidation(this.uploadForm);
+      }
+    });
+
     if (this.item) {
       this.uploadForm.patchValue({
         id: this.item.id,
@@ -137,24 +143,31 @@ export class UploadRealestateComponent implements OnInit {
         approximated_location: this.item.location.approximated_location,
       };
       this.detectFormChanges();
-
-      if (this.isReactivation) {
-        this.itemReactivationService.reactivationValidation(this.uploadForm);
-      }
     }
   }
 
-  private getOptions() {
-    this.realestateKeysService.getOperations().subscribe((operations: Key[]) => {
-      this.operations = operations;
-    });
-    this.realestateKeysService.getConditions().subscribe((conditions: IOption[]) => {
-      this.conditions = conditions;
-    });
+  private getOptions(): Observable<void> {
     this.getTypes('rent');
     this.uploadForm.get('operation').valueChanges.subscribe((operation: string) => this.getTypes(operation));
     this.uploadForm.get('type').valueChanges.subscribe((type: string) => this.getExtras(type));
+
+    const operations$ = this.realestateKeysService.getOperations().pipe(catchError(this.handleOptionsError));
+    const conditions$ = this.realestateKeysService.getConditions().pipe(catchError(this.handleOptionsError));
+
+    return forkJoin({
+      operations$,
+      conditions$,
+    }).pipe(
+      map(({ operations$, conditions$ }) => {
+        this.operations = operations$;
+        this.conditions = conditions$;
+      })
+    );
   }
+
+  private handleOptionsError = () => {
+    return of([]);
+  };
 
   public emitLocation(): void {
     this.coordinates = this.uploadForm.value.location;
@@ -266,7 +279,8 @@ export class UploadRealestateComponent implements OnInit {
       params.onHold = true;
     }
 
-    this.trackEditOrUpload(!!this.item, response).subscribe(() => this.router.navigate(['/catalog/list', params]));
+    this.trackEditOrUpload(!!this.item, response);
+    this.router.navigate(['/catalog/list', params]);
   }
 
   onError(error: HttpErrorResponse | any): void {
@@ -297,44 +311,41 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private trackEditOrUpload(isEdit: boolean, item: RealestateContent) {
-    return this.userService.isProUser().pipe(
-      tap((isProfessional: boolean) => {
-        const baseEventAttrs: any = {
-          itemId: item.id,
-          categoryId: item.category_id,
-          salePrice: item.sale_price,
-          title: item.title,
-          operation: item.operation,
-          type: item.type,
-          condition: item.condition,
-          surface: item.surface || null,
-          rooms: item.rooms || null,
-          isPro: isProfessional,
-        };
+    const isPro = this.userService.isProUser();
+    const baseEventAttrs: any = {
+      itemId: item.id,
+      categoryId: item.category_id,
+      salePrice: item.sale_price,
+      title: item.title,
+      operation: item.operation,
+      type: item.type,
+      condition: item.condition,
+      surface: item.surface || null,
+      rooms: item.rooms || null,
+      isPro,
+    };
 
-        if (isEdit) {
-          const editItemREEvent: AnalyticsEvent<EditItemRE> = {
-            name: ANALYTICS_EVENT_NAMES.EditItemRE,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
-            attributes: {
-              ...baseEventAttrs,
-              screenId: SCREEN_IDS.EditItem,
-            },
-          };
-          this.analyticsService.trackEvent(editItemREEvent);
-        } else {
-          const listItemREEvent: AnalyticsEvent<ListItemRE> = {
-            name: ANALYTICS_EVENT_NAMES.ListItemRE,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
-            attributes: {
-              ...baseEventAttrs,
-              screenId: SCREEN_IDS.Upload,
-            },
-          };
-          this.analyticsService.trackEvent(listItemREEvent);
-        }
-      })
-    );
+    if (isEdit) {
+      const editItemREEvent: AnalyticsEvent<EditItemRE> = {
+        name: ANALYTICS_EVENT_NAMES.EditItemRE,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          ...baseEventAttrs,
+          screenId: SCREEN_IDS.EditItem,
+        },
+      };
+      this.analyticsService.trackEvent(editItemREEvent);
+    } else {
+      const listItemREEvent: AnalyticsEvent<ListItemRE> = {
+        name: ANALYTICS_EVENT_NAMES.ListItemRE,
+        eventType: ANALYTIC_EVENT_TYPES.Other,
+        attributes: {
+          ...baseEventAttrs,
+          screenId: SCREEN_IDS.Upload,
+        },
+      };
+      this.analyticsService.trackEvent(listItemREEvent);
+    }
   }
 
   public onDeleteImage(imageId: string): void {

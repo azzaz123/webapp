@@ -204,8 +204,9 @@ describe('ListComponent', () => {
           {
             provide: UserService,
             useValue: {
+              user: MOCK_USER,
               logout() {
-                return of();
+                return of(null);
               },
               suggestPro() {
                 return false;
@@ -214,9 +215,6 @@ describe('ListComponent', () => {
                 return of({
                   counters: mockCounters,
                 });
-              },
-              me() {
-                return of(MOCK_USER);
               },
               getInfo() {
                 return of(USER_INFO_RESPONSE);

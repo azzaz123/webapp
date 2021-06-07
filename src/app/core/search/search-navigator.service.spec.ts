@@ -9,6 +9,8 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 
 @Component({
   selector: 'tsl-blank',
@@ -19,6 +21,7 @@ class BlankComponent {}
 describe('SearchNavigatorService', () => {
   let service: SearchNavigatorService;
   let router: Router;
+  const filtersource = FILTERS_SOURCE.QUICK_FILTERS;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -72,6 +75,7 @@ describe('SearchNavigatorService', () => {
               value: 'otherParam',
             },
           ],
+          filtersource,
           true
         );
 
@@ -82,6 +86,7 @@ describe('SearchNavigatorService', () => {
             [FILTER_QUERY_PARAM_KEY.latitude]: '10',
             [FILTER_QUERY_PARAM_KEY.longitude]: '10',
             otherParam: 'otherParam',
+            [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
           },
         });
       });
@@ -99,12 +104,15 @@ describe('SearchNavigatorService', () => {
 
         spyOn(router, 'navigate');
 
-        service.navigate([
-          {
-            key: 'otherParam' as FILTER_QUERY_PARAM_KEY,
-            value: 'otherParam',
-          },
-        ]);
+        service.navigate(
+          [
+            {
+              key: 'otherParam' as FILTER_QUERY_PARAM_KEY,
+              value: 'otherParam',
+            },
+          ],
+          filtersource
+        );
 
         expect(router.navigate).toHaveBeenCalledTimes(1);
         expect(router.navigate).toHaveBeenCalledWith(['/search'], {
@@ -112,6 +120,7 @@ describe('SearchNavigatorService', () => {
             [FILTER_QUERY_PARAM_KEY.latitude]: '10',
             [FILTER_QUERY_PARAM_KEY.longitude]: '10',
             otherParam: 'otherParam',
+            [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
           },
         });
       });
@@ -131,16 +140,19 @@ describe('SearchNavigatorService', () => {
 
           spyOn(router, 'navigate');
 
-          service.navigate([
-            {
-              key: FILTER_QUERY_PARAM_KEY.categoryId,
-              value: '200',
-            },
-            {
-              key: 'other_param' as FILTER_QUERY_PARAM_KEY,
-              value: 'otherParam',
-            },
-          ]);
+          service.navigate(
+            [
+              {
+                key: FILTER_QUERY_PARAM_KEY.categoryId,
+                value: '200',
+              },
+              {
+                key: 'other_param' as FILTER_QUERY_PARAM_KEY,
+                value: 'otherParam',
+              },
+            ],
+            filtersource
+          );
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
           expect(router.navigate).toHaveBeenCalledWith(['/search'], {
@@ -148,6 +160,7 @@ describe('SearchNavigatorService', () => {
               [FILTER_QUERY_PARAM_KEY.categoryId]: '200',
               [FILTER_QUERY_PARAM_KEY.latitude]: '10',
               [FILTER_QUERY_PARAM_KEY.longitude]: '10',
+              [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
             },
           });
         });
@@ -168,24 +181,27 @@ describe('SearchNavigatorService', () => {
 
           spyOn(router, 'navigate');
 
-          service.navigate([
-            {
-              key: FILTER_QUERY_PARAM_KEY.categoryId,
-              value: '200',
-            },
-            {
-              key: FILTER_QUERY_PARAM_KEY.type,
-              value: 'house',
-            },
-            {
-              key: FILTER_QUERY_PARAM_KEY.minPrice,
-              value: '200',
-            },
-            {
-              key: FILTER_QUERY_PARAM_KEY.operation,
-              value: 'rent',
-            },
-          ]);
+          service.navigate(
+            [
+              {
+                key: FILTER_QUERY_PARAM_KEY.categoryId,
+                value: '200',
+              },
+              {
+                key: FILTER_QUERY_PARAM_KEY.type,
+                value: 'house',
+              },
+              {
+                key: FILTER_QUERY_PARAM_KEY.minPrice,
+                value: '200',
+              },
+              {
+                key: FILTER_QUERY_PARAM_KEY.operation,
+                value: 'rent',
+              },
+            ],
+            filtersource
+          );
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
           expect(router.navigate).toHaveBeenCalledWith(['/search'], {
@@ -195,6 +211,7 @@ describe('SearchNavigatorService', () => {
               [FILTER_QUERY_PARAM_KEY.type]: 'house',
               [FILTER_QUERY_PARAM_KEY.latitude]: '10',
               [FILTER_QUERY_PARAM_KEY.longitude]: '10',
+              [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
             },
           });
         });
@@ -214,16 +231,19 @@ describe('SearchNavigatorService', () => {
 
             spyOn(router, 'navigate');
 
-            service.navigate([
-              {
-                key: FILTER_QUERY_PARAM_KEY.categoryId,
-                value: '4',
-              },
-              {
-                key: FILTER_QUERY_PARAM_KEY.distance,
-                value: undefined,
-              },
-            ]);
+            service.navigate(
+              [
+                {
+                  key: FILTER_QUERY_PARAM_KEY.categoryId,
+                  value: '4',
+                },
+                {
+                  key: FILTER_QUERY_PARAM_KEY.distance,
+                  value: undefined,
+                },
+              ],
+              filtersource
+            );
 
             expect(router.navigate).toHaveBeenCalledTimes(1);
             expect(router.navigate).toHaveBeenCalledWith(['/search'], {
@@ -231,6 +251,7 @@ describe('SearchNavigatorService', () => {
                 [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
                 [FILTER_QUERY_PARAM_KEY.latitude]: '10',
                 [FILTER_QUERY_PARAM_KEY.longitude]: '10',
+                [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
               },
             });
           });
@@ -247,20 +268,23 @@ describe('SearchNavigatorService', () => {
 
               spyOn(router, 'navigate');
 
-              service.navigate([
-                {
-                  key: FILTER_QUERY_PARAM_KEY.categoryId,
-                  value: '4',
-                },
-                {
-                  key: FILTER_QUERY_PARAM_KEY.longitude,
-                  value: undefined,
-                },
-                {
-                  key: FILTER_QUERY_PARAM_KEY.latitude,
-                  value: undefined,
-                },
-              ]);
+              service.navigate(
+                [
+                  {
+                    key: FILTER_QUERY_PARAM_KEY.categoryId,
+                    value: '4',
+                  },
+                  {
+                    key: FILTER_QUERY_PARAM_KEY.longitude,
+                    value: undefined,
+                  },
+                  {
+                    key: FILTER_QUERY_PARAM_KEY.latitude,
+                    value: undefined,
+                  },
+                ],
+                filtersource
+              );
 
               expect(router.navigate).toHaveBeenCalledTimes(1);
               expect(router.navigate).toHaveBeenCalledWith(['/search'], {
@@ -268,6 +292,7 @@ describe('SearchNavigatorService', () => {
                   [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
                   [FILTER_QUERY_PARAM_KEY.latitude]: '40.4893538',
                   [FILTER_QUERY_PARAM_KEY.longitude]: '-3.6827461',
+                  [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
                 },
               });
             });
@@ -286,12 +311,15 @@ describe('SearchNavigatorService', () => {
 
             spyOn(router, 'navigate');
 
-            service.navigate([
-              {
-                key: FILTER_QUERY_PARAM_KEY.categoryId,
-                value: '4',
-              },
-            ]);
+            service.navigate(
+              [
+                {
+                  key: FILTER_QUERY_PARAM_KEY.categoryId,
+                  value: '4',
+                },
+              ],
+              filtersource
+            );
 
             expect(router.navigate).toHaveBeenCalledTimes(1);
             expect(router.navigate).toHaveBeenCalledWith(['/search'], {
@@ -299,6 +327,7 @@ describe('SearchNavigatorService', () => {
                 [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
                 [FILTER_QUERY_PARAM_KEY.latitude]: '10',
                 [FILTER_QUERY_PARAM_KEY.longitude]: '10',
+                [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
               },
             });
           });

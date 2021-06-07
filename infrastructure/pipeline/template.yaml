@@ -25,16 +25,6 @@ Parameters:
     Type: String
     Default: "wallapop-trigger-link-cicd"
 
-# TODO: clean this up and leave a single config for the beta environment when everything is migrated to the new account
-# We need this for now to be able to have a bucket in the  new account with a different name than the current one in beta
-Mappings:
-  ConfigFileName:
-    '745640521341':
-      beta: 'beta'
-      prod: 'prod'
-    '139222918132':
-      beta: 'beta_account'
-
 Resources:
   CodeBuildDeployScripts:
     Type: AWS::CodeBuild::Project
@@ -180,10 +170,7 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 Capabilities: CAPABILITY_IAM
                 StackName: !Sub webapp-pipeline-${EnvName}
-                TemplateConfiguration:
-                  !Sub
-                    - 'App::infrastructure/pipeline/${ConfigFile}.json'
-                    - ConfigFile: !FindInMap [ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName]
+                TemplateConfiguration: !Sub 'App::infrastructure/pipeline/${EnvName}.json'
                 TemplatePath: App::infrastructure/pipeline/template.yaml
                 RoleArn:
                   Fn::ImportValue: manage-pipeline-stack-role
@@ -200,10 +187,7 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 Capabilities: CAPABILITY_IAM
                 StackName: !Sub webapp-s3-${EnvName}
-                TemplateConfiguration:
-                  !Sub
-                  - 'App::infrastructure/s3/${ConfigFile}.json'
-                  - ConfigFile: !FindInMap [ ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName ]
+                TemplateConfiguration: !Sub 'App::infrastructure/s3/${EnvName}.json'
                 TemplatePath: App::infrastructure/s3/template.yml
                 RoleArn:
                   Fn::ImportValue: manage-serverless-stack-role
@@ -220,10 +204,7 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 Capabilities: CAPABILITY_IAM
                 StackName: !Sub Webapp-${EnvName}
-                TemplateConfiguration:
-                  !Sub
-                  - 'App::infrastructure/cloudfront/${ConfigFile}.json'
-                  - ConfigFile: !FindInMap [ ConfigFileName, !Ref "AWS::AccountId", !Ref EnvName ]
+                TemplateConfiguration: !Sub 'App::infrastructure/cloudfront/${EnvName}.json'
                 TemplatePath: App::infrastructure/cloudfront/template.yaml
                 RoleArn:
                   Fn::ImportValue: manage-serverless-stack-role
