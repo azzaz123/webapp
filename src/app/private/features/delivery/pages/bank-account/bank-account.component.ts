@@ -36,7 +36,6 @@ export class BankAccountComponent implements OnInit {
 
   private isNewForm = true;
   private readonly formSubmittedEventKey = 'formSubmitted';
-  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private fb: FormBuilder,
@@ -58,7 +57,6 @@ export class BankAccountComponent implements OnInit {
 
   ngOnDestroy() {
     this.eventService.unsubscribeAll(this.formSubmittedEventKey);
-    this.subscriptions.unsubscribe();
   }
 
   public initForm(): void {

@@ -10,7 +10,7 @@
                 <label for="first_name" class="col-sm-12 col-md-5" i18n="@@saving_bank_account_first_name_hint">Full legal name</label>
                 <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="first_name" formControlName="first_name"/>
-                    <div *ngIf="bankAccountForm.controls.first_name.invalid && bankAccountForm.pending" class="BankAccountForm__message BankAccountForm__message--error">
+                    <div *ngIf="bankAccountForm.controls.first_name.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                         <ng-container *ngIf="bankAccountForm.controls.first_name.errors as firstNameError">
                         <span *ngIf="firstNameError.required" i18n="@@saving_bank_account_error_incomplete_first_name">
                             Without your name, we are stuck
@@ -23,7 +23,7 @@
                 <label for="last_name" class="col-sm-12 col-md-5" i18n="@@saving_bank_account_last_name_hint">Surname</label>
                 <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="last_name" formControlName="last_name"/>
-                    <div *ngIf="bankAccountForm.controls.last_name.invalid && bankAccountForm.pending" class="BankAccountForm__message BankAccountForm__message--error">
+                    <div *ngIf="bankAccountForm.controls.last_name.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                         <ng-container *ngIf="bankAccountForm.controls.last_name.errors as lastNameError">
                             <span *ngIf="lastNameError.required" i18n="@@saving_bank_account_error_incomplete_last_name">
                                 Hey! We also need your surname
@@ -36,7 +36,7 @@
                 <label for="iban" class="col-sm-12 col-md-5" i18n="@@saving_bank_account_iban_hint">IBAN</label>
                 <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="iban"  [value]="bankAccountForm.get('iban').value | separateWordByCharacter:4: ' '" formControlName="iban" [maxlength]="maxLengthIBAN"/>
-                    <div *ngIf="bankAccountForm.controls.iban.invalid && bankAccountForm.pending" class="BankAccountForm__message BankAccountForm__message--error">
+                    <div *ngIf="bankAccountForm.controls.iban.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                         <ng-container *ngIf="bankAccountForm.controls.iban.errors as IBANError">
                             <span *ngIf="IBANError.required" i18n="@@saving_bank_account_error_incomplete_iban">
                                 "IBAN" field must be filled
@@ -49,7 +49,7 @@
                 <label for="address" class="col-sm-12 col-md-5" i18n="@@add_back_account_address_field_hint">Street name and number</label>
                 <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="address" formControlName="address"/>
-                    <div *ngIf="bankAccountForm.controls.address.invalid && bankAccountForm.pending" class="BankAccountForm__message BankAccountForm__message--error">
+                    <div *ngIf="bankAccountForm.controls.address.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                         <ng-container *ngIf="bankAccountForm.controls.address.errors as addressError">
                             <span *ngIf="addressError.required" i18n="@@saving_bank_account_error_incomplete_address">
                                 Incomplete address
@@ -62,7 +62,7 @@
                 <label for="flat_and_floor" class="col-sm-12 col-md-5" i18n="@@shipping_flat_and_door_section_hint">Floor and door number</label>
                 <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="flat_and_floor" formControlName="flat_and_floor" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.FLAT_AND_FLOOR"/>
-                    <div *ngIf="bankAccountForm.controls.flat_and_floor.invalid && bankAccountForm.pending" class="BankAccountForm__message BankAccountForm__message--error">
+                    <div *ngIf="bankAccountForm.controls.flat_and_floor.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                         <span>{{formErrorMessages.flat_and_floor}}</span>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                 <label for="postal_code" class="col-sm-12 col-md-5" i18n="@@add_back_account_postal_code_field_hint">Postal code</label>
                 <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="postal_code" formControlName="postal_code" tslNumbersOnly/>
-                    <div *ngIf="bankAccountForm.controls.postal_code.invalid && bankAccountForm.pending" class="BankAccountForm__message BankAccountForm__message--error">
+                    <div *ngIf="bankAccountForm.controls.postal_code.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                         <ng-container *ngIf="bankAccountForm.controls.postal_code.errors as postalCodeError">
                             <span *ngIf="postalCodeError.required" i18n="@@saving_bank_account_error_incomplete_postal_code">
                                 "Zip code" field must be filled
@@ -84,7 +84,7 @@
                 <label for="city" class="col-sm-12 col-md-5" i18n="@@add_back_account_city_field_hint">City</label>
                 <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="city" formControlName="city"/>
-                    <div *ngIf="bankAccountForm.controls.city.invalid && bankAccountForm.pending" class="BankAccountForm__message BankAccountForm__message--error">
+                    <div *ngIf="bankAccountForm.controls.city.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                         <ng-container *ngIf="bankAccountForm.controls.city.errors as cityError">
                             <span *ngIf="cityError.required" i18n="@@saving_bank_account_error_incomplete_city">
                                 "City" field must be filled
