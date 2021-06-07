@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 import {
   MOCK_HASHTAG_SUGGESTERS,
   MOCK_HASHTAG_SUGGESTERS_RESPONSE,
