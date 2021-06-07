@@ -18,6 +18,12 @@ export const PROVIDERS: Provider[] = [
     multi: true,
   },
   {
+    provide: APP_INITIALIZER,
+    useFactory: defaultPermissionsFactory,
+    deps: [UserService, NgxPermissionsService],
+    multi: true,
+  },
+  {
     provide: RouteReuseStrategy,
     useClass: CustomRouteReuseStrategy,
   },
@@ -30,4 +36,8 @@ export function subdomainFactory(cookieService: CookieService) {
 
 export function userPermissionsFactory(userService: UserService): () => Promise<boolean> {
   return () => userService.isLogged && userService.initializeUserWithPermissions().toPromise();
+}
+
+export function defaultPermissionsFactory(userService: UserService): () => Promise<boolean> {
+  return () => userService.initializeDefaultPermissions().toPromise();
 }
