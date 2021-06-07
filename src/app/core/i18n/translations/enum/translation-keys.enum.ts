@@ -129,6 +129,8 @@ export enum TRANSLATION_KEY {
   DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR,
   DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR,
   DELIVERY_ADDRESS_DELETE_REQUEST,
+  DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS,
+  DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS,
   // TODO: Remaining keys with no explicit usage. Some of them might come from the backend so we need to keep it's string value
   //       We leave cleaning this keys after Italy release, as some of them come from some legacy parts (chat, calls..)
   //       and it is really difficult to follow the keys as this part needs a refactor

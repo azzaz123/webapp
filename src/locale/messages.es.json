@@ -1458,6 +1458,8 @@
     "web_after_free_trial":"tras la prueba gratis",
     "web_total":"Total",
     "web_subscription_purchase_subscription_subtitle":"Convierte tus ventas en un auténtico negocio",
-    "web_price_after_free_days":"al terminar la prueba gratuita"
+    "web_price_after_free_days":"al terminar la prueba gratuita",
+    "web_delivery_create_bank_account_succeed": "¡Cuenta bancaria añadida satisfactoriamente!",
+    "web_delivery_edit_bank_account_succeed": "¡Cuenta bancaria editada satisfactoriamente!"
   }
 }
