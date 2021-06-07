@@ -6,12 +6,12 @@ import { EmptyStateProperties } from '@public/shared/components/empty-state/empt
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { finalize, take } from 'rxjs/operators';
 import { PublicProfileTrackingEventsService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
-import { PublishedItemCardFavouriteCheckedService } from '../../core/services/published-item-card-favourite-checked/published-item-card-favourite-checked.service';
 import { CatalogApiService } from '../../../../../api/catalog/catalog-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { Subscription } from 'rxjs';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
+import { PaginatedList } from '../../../../../api/core/model/paginated-list.interface';
 
 @Component({
   selector: 'tsl-user-published',
@@ -25,7 +25,7 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
     illustrationSrc: '/assets/images/commons/flashlight.svg',
   };
   public items: ItemCard[] = [];
-  public nextPaginationItem = 0;
+  public nextId;
   public loading = true;
 
   private subscriptions = new Subscription();
@@ -33,7 +33,6 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
 
   constructor(
     private catalogApiService: CatalogApiService,
-    private publishedItemCardFavouriteCheckedService: PublishedItemCardFavouriteCheckedService,
     private publicProfileTrackingEventsService: PublicProfileTrackingEventsService,
     private userService: UserService,
     private route: ActivatedRoute,
@@ -70,13 +69,14 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
 
     try {
       this.catalogApiService
-        .getUserPublishedItems(this.userId)
+        .getUserPublishedItems(this.userId, this.nextId)
         .pipe(
           finalize(() => (this.loading = false)),
           take(1)
         )
-        .subscribe((items: ItemCard[]) => {
-          this.items = this.items.concat(items);
+        .subscribe(({ list, nextId }: PaginatedList<ItemCard>) => {
+          this.items = this.items.concat(list);
+          this.nextId = nextId;
         }, this.onError);
     } catch (err: any) {
       this.onError();
