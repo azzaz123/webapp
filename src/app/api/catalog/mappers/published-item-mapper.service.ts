@@ -8,7 +8,7 @@ import { capitalizeString } from '@core/helpers/capitalize-string/capitalize-str
 import { CATEGORY_IDS } from '@core/category/category-ids';
 
 @Injectable()
-export class PublishedItemMapperService extends AbstractMapperService<CatalogItem, ItemCard> {
+export class PublishedItemMapperService extends AbstractMapperService<CatalogItem, ItemCard, [string, string[]]> {
   private STORY_TELLING_CATEGORIES: number[] = [CATEGORY_IDS.CAR, CATEGORY_IDS.REAL_ESTATE];
   private STORY_TELLING_UPPER_ORDERED_ATTRS: ATTRIBUTE_TYPE[] = [
     CAR_ATTRIBUTE_TYPE.BRAND,
@@ -42,7 +42,7 @@ export class PublishedItemMapperService extends AbstractMapperService<CatalogIte
     super();
   }
 
-  protected map(item: CatalogItem): ItemCard {
+  protected map(item: CatalogItem, userId: string, favoriteIds: string[]): ItemCard {
     const { id, category_id, title, description, price, images = [], attributes = [], slug } = item;
 
     return {
@@ -53,7 +53,15 @@ export class PublishedItemMapperService extends AbstractMapperService<CatalogIte
       currencyCode: price.currency,
       webSlug: slug,
       images: this.imageMapperService.transform(images),
-      ownerId: '', // BEFOREMERGE: Check behaviour for this flag
+      ownerId: userId,
+      flags: {
+        pending: false,
+        sold: false,
+        expired: false,
+        banned: false,
+        reserved: false,
+        favorite: favoriteIds.includes(id),
+      },
     };
   }
 

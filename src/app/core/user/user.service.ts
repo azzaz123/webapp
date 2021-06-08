@@ -119,6 +119,10 @@ export class UserService {
     return !!this.accessTokenService.accessToken;
   }
 
+  public isCurrentUser(userId: string): boolean {
+    return this.isLogged && this.user.id === userId;
+  }
+
   private sendUserPresence() {
     return this.http.post(`${environment.baseUrl}${USER_ONLINE_ENDPOINT}`, null).subscribe();
   }
