@@ -15,7 +15,7 @@ export class DeliveryPostalCodesErrorMapper extends ErrorMapper<DeliveryPostalCo
         mappedErrors.push(new PostalCodeIsInvalidError());
       }
 
-      if (error.error_code === DELIVERY_POSTAL_CODES_ERROR_CODES.POSTAL_CODE_DOES_NOT_EXISTS) {
+      if (error.error_code === DELIVERY_POSTAL_CODES_ERROR_CODES.POSTAL_CODE_DOES_NOT_EXIST) {
         mappedErrors.push(new PostalCodeDoesNotExistError());
       }
 
