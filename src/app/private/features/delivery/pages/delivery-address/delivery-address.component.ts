@@ -320,12 +320,8 @@ export class DeliveryAddressComponent implements OnInit {
 
     const key: TRANSLATION_KEY =
       !errors.length || hasUniqueAddressError ? TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR : TRANSLATION_KEY.FORM_FIELD_ERROR;
-    const toast: Toast = {
-      type: 'error',
-      text: this.i18nService.translate(key),
-    };
 
-    this.toastService.show(toast);
+    this.showToast(key, 'error');
   }
 
   private handlePostalCodesErrors(errors: DeliveryPostalCodesError[]): void {
@@ -447,7 +443,7 @@ export class DeliveryAddressComponent implements OnInit {
 
   private showToast(key: TRANSLATION_KEY, type: 'error' | 'success'): void {
     this.toastService.show({
-      text: `${this.i18nService.translate(key)}`,
+      text: this.i18nService.translate(key),
       type,
     });
   }
