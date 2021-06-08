@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { AccessTokenService } from './access-token.service';
 import { CookieService } from 'ngx-cookie';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 
 describe('AccessTokenService', () => {
   const aToken = 'abc';
