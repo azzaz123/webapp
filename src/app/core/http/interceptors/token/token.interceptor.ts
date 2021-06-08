@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { AccessTokenService } from '../access-token.service';
-import { environment } from '../../../../environments/environment';
-import { LOGIN_ENDPOINT } from '@public/features/login/core/services/login.service';
+import { AccessTokenService } from '@core/http/access-token.service';
+import { environment } from '@environments/environment';
 
 export const TOKEN_AUTHORIZATION_HEADER_NAME = 'Authorization';
 export const TOKEN_TIMESTAMP_HEADER_NAME = 'Timestamp';
