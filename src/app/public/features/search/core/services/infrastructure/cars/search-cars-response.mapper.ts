@@ -1,9 +1,9 @@
-import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { ItemCard, ItemCardWideCars } from '@public/core/interfaces/item-card.interface';
 import { SearchResponse } from '../api/search-response.interface';
 import { SearchItemImageMapper } from '../models/search-item-image-mapper.response';
 import { SearchCarResponse } from './search-car-response';
 
-export function SearchItemCarResponseMapper({search_objects}: SearchResponse<SearchCarResponse>): ItemCard[] {
+export function SearchItemCarResponseMapper({search_objects}: SearchResponse<SearchCarResponse>): ItemCardWideCars[] {
   return search_objects.map(({id, content}: SearchCarResponse) => ({
     id,
     title: content.title,
@@ -32,6 +32,12 @@ export function SearchItemCarResponseMapper({search_objects}: SearchResponse<Sea
     },
     categoryId: content.category_id,
     saleConditions: null,
+    specs: {
+      engine: content.engine,
+      gearbox: content.gearbox,
+      horsepower: content.horsepower,
+      year: content.year
+    }
   }));
 }
 

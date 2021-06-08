@@ -1,10 +1,10 @@
-import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { ItemCard, ItemCardWideRealEstate } from '@public/core/interfaces/item-card.interface';
 import { SearchResponse } from '../api/search-response.interface';
 import { SearchItemImageMapper } from '../models/search-item-image-mapper.response';
 import { SearchRealEstateResponse } from './search-item-real-state-response';
 
 
-export function searchItemRealEstateResponseMapper({search_objects}: SearchResponse<SearchRealEstateResponse>): ItemCard[] {
+export function searchItemRealEstateResponseMapper({search_objects}: SearchResponse<SearchRealEstateResponse>): ItemCardWideRealEstate[] {
   return search_objects.map(({id, content}: SearchRealEstateResponse) => ({
     id,
     title: content.title,
@@ -33,5 +33,10 @@ export function searchItemRealEstateResponseMapper({search_objects}: SearchRespo
     },
     categoryId: content.category_id,
     saleConditions: null,
+    specs: {
+      rooms: content.rooms,
+      bathrooms: content.bathrooms,
+      surface: content.surface
+    }
   }));
 }
