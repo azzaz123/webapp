@@ -30,6 +30,7 @@ import {
   InvalidMobilePhoneNumberError,
   AddressTooLongError,
   FlatAndFloorTooLongError,
+  UniqueAddressByUserError,
 } from '../../errors/classes/address';
 import { DeliveryPostalCodesError } from '../../errors/classes/postal-codes';
 import { Toast } from '@layout/toast/core/interfaces/toast.interface';
@@ -291,6 +292,8 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private handleAddressErrors(errors: DeliveryAddressError[]): void {
+    let hasUniqueAddressError = false;
+
     errors.forEach((error: DeliveryAddressError) => {
       if (error instanceof InvalidPhoneNumberError) {
         this.setIncorrectControlAndShowError('phone_number', error.message);
@@ -308,10 +311,15 @@ export class DeliveryAddressComponent implements OnInit {
         this.setIncorrectControlAndShowError('flat_and_floor', error.message);
       }
 
-      this.deliveryAddressForm.markAsPending();
+      if (error instanceof UniqueAddressByUserError) {
+        hasUniqueAddressError = true;
+      } else {
+        this.deliveryAddressForm.markAsPending();
+      }
     });
 
-    const key: TRANSLATION_KEY = !errors.length ? TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR : TRANSLATION_KEY.FORM_FIELD_ERROR;
+    const key: TRANSLATION_KEY =
+      !errors.length || hasUniqueAddressError ? TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR : TRANSLATION_KEY.FORM_FIELD_ERROR;
     const toast: Toast = {
       type: 'error',
       text: this.i18nService.translate(key),

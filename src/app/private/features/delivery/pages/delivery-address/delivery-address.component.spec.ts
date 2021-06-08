@@ -38,7 +38,7 @@ import { ChangeCountryConfirmationModalComponent } from '../../modals/change-cou
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { PostalCodeIsNotAllowedError } from '../../errors/classes/postal-codes';
-import { FlatAndFloorTooLongError, InvalidMobilePhoneNumberError } from '../../errors/classes/address';
+import { FlatAndFloorTooLongError, InvalidMobilePhoneNumberError, UniqueAddressByUserError } from '../../errors/classes/address';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 
 describe('DeliveryAddressComponent', () => {
@@ -294,12 +294,13 @@ describe('DeliveryAddressComponent', () => {
       describe('and the save fails...', () => {
         beforeEach(() => {
           spyOn(toastService, 'show');
-          spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
-            throwError([new InvalidMobilePhoneNumberError(), new FlatAndFloorTooLongError()])
-          );
         });
 
         it('should show error toast', () => {
+          spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
+            throwError([new InvalidMobilePhoneNumberError(), new FlatAndFloorTooLongError()])
+          );
+
           component.onSubmit();
 
           expect(toastService.show).toHaveBeenCalledWith({
@@ -309,10 +310,37 @@ describe('DeliveryAddressComponent', () => {
         });
 
         it('should set errors if the backend return an invalid field', () => {
+          spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
+            throwError([new InvalidMobilePhoneNumberError(), new FlatAndFloorTooLongError()])
+          );
+
           component.onSubmit();
 
           expect(component.deliveryAddressForm.get('phone_number').getError('invalid')).toBeTruthy();
           expect(component.deliveryAddressForm.get('flat_and_floor').getError('invalid')).toBeTruthy();
+        });
+
+        describe('and when the fail is because server notifies unique address by user', () => {
+          beforeEach(() => {
+            spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
+              throwError([new UniqueAddressByUserError('Unique address violation')])
+            );
+          });
+
+          it('should not mark form as pending', () => {
+            component.onSubmit();
+
+            expect(component.deliveryAddressForm.pending).toBe(false);
+          });
+
+          it('should show toast with generic error', () => {
+            component.onSubmit();
+
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR),
+              type: 'error',
+            });
+          });
         });
       });
     });

@@ -6,8 +6,15 @@ import {
   FlatAndFloorTooLongError,
   InvalidMobilePhoneNumberError,
   InvalidPhoneNumberError,
+  UniqueAddressByUserError,
 } from '../../classes/address';
 import { DeliveryErrorApi } from '../../classes/delivery-error-response-api';
+import {
+  DeliveryPostalCodesError,
+  InvalidPostalCodeError,
+  PostalCodeDoesNotExistError,
+  PostalCodeIsNotAllowedError,
+} from '../../classes/postal-codes';
 import { DeliveryAddressErrorMapper, DeliveryAddressErrorResponse } from './delivery-address-error-mapper';
 import { DELIVERY_ADDRESS_ERROR_CODES } from './delivery-address-error.enum';
 
@@ -98,6 +105,94 @@ describe('when mapping an error from delivery address backend', () => {
       tick();
 
       expect(result instanceof InvalidPhoneNumberError).toBe(true);
+    }));
+  });
+
+  describe('and server notifies postal code is not valid', () => {
+    it('should notify invalid postal code error', fakeAsync(() => {
+      const mockErrorResponse: DeliveryErrorApi<DELIVERY_ADDRESS_ERROR_CODES> = {
+        error_code: DELIVERY_ADDRESS_ERROR_CODES.INVALID_POSTAL_CODE,
+        message: 'Postal code XXX is not valid',
+      };
+      const mockBackendError: DeliveryAddressErrorResponse = {
+        ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
+        error: [mockErrorResponse],
+      };
+      let result: DeliveryPostalCodesError;
+
+      deliveryAddressErrorMapper.map(mockBackendError).subscribe(
+        () => {},
+        (errors) => (result = errors[0])
+      );
+      tick();
+
+      expect(result instanceof InvalidPostalCodeError).toBe(true);
+    }));
+  });
+
+  describe('and server notifies postal code does not exist', () => {
+    it('should notify postal code does not exist error', fakeAsync(() => {
+      const mockErrorResponse: DeliveryErrorApi<DELIVERY_ADDRESS_ERROR_CODES> = {
+        error_code: DELIVERY_ADDRESS_ERROR_CODES.POSTAL_CODE_DOES_NOT_EXIST,
+        message: 'Postal code XXX es invent',
+      };
+      const mockBackendError: DeliveryAddressErrorResponse = {
+        ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
+        error: [mockErrorResponse],
+      };
+      let result: DeliveryPostalCodesError;
+
+      deliveryAddressErrorMapper.map(mockBackendError).subscribe(
+        () => {},
+        (errors) => (result = errors[0])
+      );
+      tick();
+
+      expect(result instanceof PostalCodeDoesNotExistError).toBe(true);
+    }));
+  });
+
+  describe('and server notifies postal code is not allowed', () => {
+    it('should notify postal code is not allowed error', fakeAsync(() => {
+      const mockErrorResponse: DeliveryErrorApi<DELIVERY_ADDRESS_ERROR_CODES> = {
+        error_code: DELIVERY_ADDRESS_ERROR_CODES.POSTAL_CODE_IS_NOT_ALLOWED,
+        message: 'Postal code XXX not allowed',
+      };
+      const mockBackendError: DeliveryAddressErrorResponse = {
+        ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
+        error: [mockErrorResponse],
+      };
+      let result: DeliveryPostalCodesError;
+
+      deliveryAddressErrorMapper.map(mockBackendError).subscribe(
+        () => {},
+        (errors) => (result = errors[0])
+      );
+      tick();
+
+      expect(result instanceof PostalCodeIsNotAllowedError).toBe(true);
+    }));
+  });
+
+  describe('and server notifies address should be unique', () => {
+    it('should notify unique address by user error', fakeAsync(() => {
+      const mockErrorResponse: DeliveryErrorApi<DELIVERY_ADDRESS_ERROR_CODES> = {
+        error_code: DELIVERY_ADDRESS_ERROR_CODES.UNIQUE_ADDRESS_BY_USER,
+        message: 'Cagada pastorets',
+      };
+      const mockBackendError: DeliveryAddressErrorResponse = {
+        ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
+        error: [mockErrorResponse],
+      };
+      let result: DeliveryAddressError;
+
+      deliveryAddressErrorMapper.map(mockBackendError).subscribe(
+        () => {},
+        (errors) => (result = errors[0])
+      );
+      tick();
+
+      expect(result instanceof UniqueAddressByUserError).toBe(true);
     }));
   });
 });
