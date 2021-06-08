@@ -4,14 +4,14 @@ import {
   AddressTooLongError,
   DeliveryAddressError,
   FlatAndFloorTooLongError,
-  InvalidMobilePhoneNumberError,
-  InvalidPhoneNumberError,
+  MobilePhoneNumberIsInvalidError,
+  PhoneNumberIsInvalidError,
   UniqueAddressByUserError,
 } from '../../classes/address';
 import { DeliveryErrorApi } from '../../classes/delivery-error-response-api';
 import {
   DeliveryPostalCodesError,
-  InvalidPostalCodeError,
+  PostalCodeIsInvalidError,
   PostalCodeDoesNotExistError,
   PostalCodeIsNotAllowedError,
 } from '../../classes/postal-codes';
@@ -82,7 +82,7 @@ describe('when mapping an error from delivery address backend', () => {
       );
       tick();
 
-      expect(result instanceof InvalidMobilePhoneNumberError).toBe(true);
+      expect(result instanceof MobilePhoneNumberIsInvalidError).toBe(true);
     }));
   });
 
@@ -104,7 +104,7 @@ describe('when mapping an error from delivery address backend', () => {
       );
       tick();
 
-      expect(result instanceof InvalidPhoneNumberError).toBe(true);
+      expect(result instanceof PhoneNumberIsInvalidError).toBe(true);
     }));
   });
 
@@ -126,7 +126,7 @@ describe('when mapping an error from delivery address backend', () => {
       );
       tick();
 
-      expect(result instanceof InvalidPostalCodeError).toBe(true);
+      expect(result instanceof PostalCodeIsInvalidError).toBe(true);
     }));
   });
 

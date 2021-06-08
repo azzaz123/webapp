@@ -4,7 +4,7 @@ import { MOCK_DELIVERY_BASE_ERROR_RESPONSE } from '@fixtures/private/delivery/er
 import { DeliveryErrorApi } from '../../classes/delivery-error-response-api';
 import {
   DeliveryPostalCodesError,
-  InvalidPostalCodeError,
+  PostalCodeIsInvalidError,
   PostalCodeDoesNotExistError,
   PostalCodeIsNotAllowedError,
 } from '../../classes/postal-codes';
@@ -32,7 +32,7 @@ describe('when mapping an error from delivery postal code backend', () => {
       );
       tick();
 
-      expect(result instanceof InvalidPostalCodeError).toBe(true);
+      expect(result instanceof PostalCodeIsInvalidError).toBe(true);
     }));
   });
 

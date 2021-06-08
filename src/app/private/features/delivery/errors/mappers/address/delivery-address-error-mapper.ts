@@ -1,12 +1,12 @@
 import {
-  InvalidPhoneNumberError,
-  InvalidMobilePhoneNumberError,
+  PhoneNumberIsInvalidError,
+  MobilePhoneNumberIsInvalidError,
   AddressTooLongError,
   FlatAndFloorTooLongError,
 } from '../../classes/address';
 import { UniqueAddressByUserError } from '../../classes/address/unique-address.error';
 import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
-import { InvalidPostalCodeError, PostalCodeDoesNotExistError, PostalCodeIsNotAllowedError } from '../../classes/postal-codes';
+import { PostalCodeIsInvalidError, PostalCodeDoesNotExistError, PostalCodeIsNotAllowedError } from '../../classes/postal-codes';
 import { ErrorMapper } from '../error-mapper';
 import { DELIVERY_ADDRESS_ERROR_CODES } from './delivery-address-error.enum';
 
@@ -19,15 +19,15 @@ export class DeliveryAddressErrorMapper extends ErrorMapper<DeliveryAddressError
 
     backendDeliveryErrors.forEach((error) => {
       if (error.error_code === DELIVERY_ADDRESS_ERROR_CODES.INVALID_PHONE_NUMBER) {
-        mappedErrors.push(new InvalidPhoneNumberError());
+        mappedErrors.push(new PhoneNumberIsInvalidError());
       }
 
       if (error.error_code === DELIVERY_ADDRESS_ERROR_CODES.INVALID_MOBILE_PHONE_NUMBER) {
-        mappedErrors.push(new InvalidMobilePhoneNumberError());
+        mappedErrors.push(new MobilePhoneNumberIsInvalidError());
       }
 
       if (error.error_code === DELIVERY_ADDRESS_ERROR_CODES.INVALID_POSTAL_CODE) {
-        mappedErrors.push(new InvalidPostalCodeError());
+        mappedErrors.push(new PostalCodeIsInvalidError());
       }
 
       if (error.error_code === DELIVERY_ADDRESS_ERROR_CODES.POSTAL_CODE_IS_NOT_ALLOWED) {

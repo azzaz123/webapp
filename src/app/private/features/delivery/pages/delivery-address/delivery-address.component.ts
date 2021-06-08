@@ -26,8 +26,8 @@ import { COLORS } from '@core/colors/colors-constants';
 import { DeliveryPostalCodesErrorTranslations } from '@private/features/delivery/errors/constants/delivery-error-translations';
 import {
   DeliveryAddressError,
-  InvalidPhoneNumberError,
-  InvalidMobilePhoneNumberError,
+  PhoneNumberIsInvalidError,
+  MobilePhoneNumberIsInvalidError,
   AddressTooLongError,
   FlatAndFloorTooLongError,
   UniqueAddressByUserError,
@@ -295,11 +295,11 @@ export class DeliveryAddressComponent implements OnInit {
     let hasUniqueAddressError = false;
 
     errors.forEach((error: DeliveryAddressError) => {
-      if (error instanceof InvalidPhoneNumberError) {
+      if (error instanceof PhoneNumberIsInvalidError) {
         this.setIncorrectControlAndShowError('phone_number', error.message);
       }
 
-      if (error instanceof InvalidMobilePhoneNumberError) {
+      if (error instanceof MobilePhoneNumberIsInvalidError) {
         this.setIncorrectControlAndShowError('phone_number', error.message);
       }
 

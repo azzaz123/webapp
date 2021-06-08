@@ -38,7 +38,7 @@ import { ChangeCountryConfirmationModalComponent } from '../../modals/change-cou
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { PostalCodeIsNotAllowedError } from '../../errors/classes/postal-codes';
-import { FlatAndFloorTooLongError, InvalidMobilePhoneNumberError, UniqueAddressByUserError } from '../../errors/classes/address';
+import { FlatAndFloorTooLongError, MobilePhoneNumberIsInvalidError, UniqueAddressByUserError } from '../../errors/classes/address';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 
 describe('DeliveryAddressComponent', () => {
@@ -298,7 +298,7 @@ describe('DeliveryAddressComponent', () => {
 
         it('should show error toast', () => {
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
-            throwError([new InvalidMobilePhoneNumberError(), new FlatAndFloorTooLongError()])
+            throwError([new MobilePhoneNumberIsInvalidError(), new FlatAndFloorTooLongError()])
           );
 
           component.onSubmit();
@@ -311,7 +311,7 @@ describe('DeliveryAddressComponent', () => {
 
         it('should set errors if the backend return an invalid field', () => {
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
-            throwError([new InvalidMobilePhoneNumberError(), new FlatAndFloorTooLongError()])
+            throwError([new MobilePhoneNumberIsInvalidError(), new FlatAndFloorTooLongError()])
           );
 
           component.onSubmit();

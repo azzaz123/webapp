@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MOCK_DELIVERY_LOCATION } from '@fixtures/private/delivery/delivery-location.fixtures.spec';
-import { DeliveryPostalCodesError, InvalidPostalCodeError } from '@private/features/delivery/errors/classes/postal-codes';
+import { DeliveryPostalCodesError, PostalCodeIsInvalidError } from '@private/features/delivery/errors/classes/postal-codes';
 import { DELIVERY_POSTAL_CODES_ERROR_CODES } from '@private/features/delivery/errors/mappers/postal-codes/delivery-postal-codes-error.enum';
 import { DeliveryLocationApi } from '@private/features/delivery/interfaces/delivery-location/delivery-location-api.interface';
 import { DeliveryLocationsApiService, DELIVERY_LOCATIONS_API_URL } from './delivery-locations-api.service';
@@ -60,7 +60,7 @@ describe('DeliveryLocationsApiService', () => {
       it('should map to specific error', fakeAsync(() => {
         service.getByPostalCodeAndCountry(postalCode, countryISOCode).subscribe({
           error: (errorResponse: DeliveryPostalCodesError[]) => {
-            expect(errorResponse[0] instanceof InvalidPostalCodeError).toBe(true);
+            expect(errorResponse[0] instanceof PostalCodeIsInvalidError).toBe(true);
           },
         });
         const req: TestRequest = httpMock.expectOne(expectedUrl);

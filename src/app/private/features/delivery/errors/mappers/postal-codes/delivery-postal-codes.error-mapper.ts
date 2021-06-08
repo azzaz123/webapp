@@ -1,5 +1,5 @@
 import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
-import { InvalidPostalCodeError, PostalCodeDoesNotExistError, PostalCodeIsNotAllowedError } from '../../classes/postal-codes';
+import { PostalCodeIsInvalidError, PostalCodeDoesNotExistError, PostalCodeIsNotAllowedError } from '../../classes/postal-codes';
 import { ErrorMapper } from '../error-mapper';
 import { DELIVERY_POSTAL_CODES_ERROR_CODES } from './delivery-postal-codes-error.enum';
 
@@ -12,7 +12,7 @@ export class DeliveryPostalCodesErrorMapper extends ErrorMapper<DeliveryPostalCo
 
     backendDeliveryErrors.forEach((error) => {
       if (error.error_code === DELIVERY_POSTAL_CODES_ERROR_CODES.INVALID_POSTAL_CODE) {
-        mappedErrors.push(new InvalidPostalCodeError());
+        mappedErrors.push(new PostalCodeIsInvalidError());
       }
 
       if (error.error_code === DELIVERY_POSTAL_CODES_ERROR_CODES.POSTAL_CODE_DOES_NOT_EXISTS) {

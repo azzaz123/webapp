@@ -1,8 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MOCK_DELIVERY_ADDRESS } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
-import { DeliveryAddressError, InvalidPhoneNumberError } from '@private/features/delivery/errors/classes/address';
-import { DeliveryAddressErrorResponse } from '@private/features/delivery/errors/mappers/address/delivery-address-error-mapper';
+import { DeliveryAddressError, PhoneNumberIsInvalidError } from '@private/features/delivery/errors/classes/address';
 import { DELIVERY_ADDRESS_ERROR_CODES } from '@private/features/delivery/errors/mappers/address/delivery-address-error.enum';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 
@@ -76,7 +75,7 @@ describe('DeliveryAddressApiService', () => {
       it('should map to specific error', fakeAsync(() => {
         service.create(MOCK_DELIVERY_ADDRESS).subscribe({
           error: (errorResponse: DeliveryAddressError[]) => {
-            expect(errorResponse[0] instanceof InvalidPhoneNumberError).toBe(true);
+            expect(errorResponse[0] instanceof PhoneNumberIsInvalidError).toBe(true);
           },
         });
         const req: TestRequest = httpMock.expectOne(DELIVERY_ADDRESS_API_URL);
@@ -117,7 +116,7 @@ describe('DeliveryAddressApiService', () => {
       it('should map to specific error', fakeAsync(() => {
         service.update(MOCK_DELIVERY_ADDRESS).subscribe({
           error: (errorResponse: DeliveryAddressError[]) => {
-            expect(errorResponse[0] instanceof InvalidPhoneNumberError).toBe(true);
+            expect(errorResponse[0] instanceof PhoneNumberIsInvalidError).toBe(true);
           },
         });
         const req: TestRequest = httpMock.expectOne(DELIVERY_ADDRESS_API_URL);
