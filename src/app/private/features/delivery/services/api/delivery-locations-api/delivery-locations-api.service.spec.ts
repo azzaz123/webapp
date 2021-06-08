@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MOCK_DELIVERY_LOCATION } from '@fixtures/private/delivery/delivery-location.fixtures.spec';
 import { DeliveryPostalCodesError, PostalCodeIsInvalidError } from '@private/features/delivery/errors/classes/postal-codes';
 import { DELIVERY_POSTAL_CODES_ERROR_CODES } from '@private/features/delivery/errors/mappers/postal-codes/delivery-postal-codes-error.enum';
@@ -43,31 +43,33 @@ describe('DeliveryLocationsApiService', () => {
     });
 
     describe('and when there is an unknown error from server', () => {
-      it('should map to generic error', fakeAsync(() => {
+      it('should map to generic error', () => {
+        let response: DeliveryPostalCodesError[];
+
         service.getByPostalCodeAndCountry(postalCode, countryISOCode).subscribe({
           error: (errorResponse: DeliveryPostalCodesError[]) => {
-            expect(errorResponse[0] instanceof Error).toBe(true);
+            response = errorResponse;
           },
         });
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.error([{ error_code: 'unknown', message: 'rip' }] as any);
 
-        tick();
-      }));
+        expect(response[0] instanceof Error).toBe(true);
+      });
     });
 
     describe('and when there is a known error from server', () => {
-      it('should map to specific error', fakeAsync(() => {
+      it('should map to specific error', () => {
+        let response: DeliveryPostalCodesError[];
+
         service.getByPostalCodeAndCountry(postalCode, countryISOCode).subscribe({
-          error: (errorResponse: DeliveryPostalCodesError[]) => {
-            expect(errorResponse[0] instanceof PostalCodeIsInvalidError).toBe(true);
-          },
+          error: (errorResponse: DeliveryPostalCodesError[]) => (response = errorResponse),
         });
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.error([{ error_code: DELIVERY_POSTAL_CODES_ERROR_CODES.INVALID_POSTAL_CODE, message: 'rip' }] as any);
 
-        tick();
-      }));
+        expect(response[0] instanceof PostalCodeIsInvalidError).toBe(true);
+      });
     });
   });
 });
