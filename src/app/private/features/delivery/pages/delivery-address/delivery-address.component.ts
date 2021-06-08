@@ -33,20 +33,13 @@ import {
   UniqueAddressByUserError,
 } from '../../errors/classes/address';
 import { DeliveryPostalCodesError } from '../../errors/classes/postal-codes';
-import { Toast } from '@layout/toast/core/interfaces/toast.interface';
 import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
+import { DeliveryAddressFormErrorMessages } from '../../interfaces/delivery-address/delivery-address-form-error-messages.interface';
 
 export enum PREVIOUS_PAGE {
   PAYVIEW_ADD_ADDRESS,
   PAYVIEW_PAY,
-}
-
-export interface DeliveryAddressFormErrorMessages {
-  phone_number: string;
-  postal_code: string;
-  street: string;
-  flat_and_floor: string;
 }
 
 @Component({
