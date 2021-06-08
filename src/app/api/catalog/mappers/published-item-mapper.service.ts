@@ -48,6 +48,7 @@ export class PublishedItemMapperService extends AbstractMapperService<CatalogIte
     return {
       id,
       title,
+      categoryId: Number.parseInt(category_id, 0),
       description: this.formatDescription(category_id, description, attributes),
       salePrice: price.amount,
       currencyCode: price.currency,
