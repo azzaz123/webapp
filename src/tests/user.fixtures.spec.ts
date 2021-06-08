@@ -3,7 +3,6 @@ import { Coordinate } from '../app/core/geolocation/address-response.interface';
 import { Counters, Ratings, ShippingCounterResponse, UserStats } from '../app/core/user/user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
-
 import { Image, UserExtrainfo, UserLocation, UserResponse, UserStatsOld, UserValidations } from '../app/core/user/user-response.interface';
 import { Observable, of } from 'rxjs';
 import { Item } from '../app/core/item/item';
@@ -304,9 +303,6 @@ export const MockUser: Partial<User> = {
 
 export const MockUserService = {
   user: MockUser,
-  me() {
-    return of(MockUser);
-  },
   isLogged: true,
   get(userId: string) {
     return of(MOCK_USER);
@@ -328,7 +324,10 @@ export class MockedUserService {
         data.scoring_stars,
         data.scoring_starts,
         data.response_rate,
-        data.online
+        data.online,
+        data.type,
+        0,
+        data.web_slug
       )
     );
   }
@@ -341,8 +340,12 @@ export class MockedUserService {
     return new User(USER_ID);
   }
 
-  public me(): Observable<User> {
-    return of(new User(USER_ID));
+  get isLogged(): boolean {
+    return true;
+  }
+
+  get isPro(): boolean {
+    return this.user.featured;
   }
 
   public isProfessional(): Observable<boolean> {
@@ -351,8 +354,16 @@ export class MockedUserService {
 
   public getPhoneInfo(userId: string) {}
 
+  public getStats() {
+    return of(MOCK_USER_STATS);
+  }
+
   public checkUserPermissions(): Observable<boolean> {
     return of(true);
+  }
+
+  public logout(): Observable<any> {
+    return of(null);
   }
 }
 

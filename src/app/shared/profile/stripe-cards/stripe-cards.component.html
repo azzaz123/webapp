@@ -13,8 +13,8 @@
               [brand]="subscriptionStripeCard.stripeCard?.brand"
               [numberCard]="subscriptionStripeCard.number"
               [expireDate]="subscriptionStripeCard.expire_date"
-              [canChangeCard]="subscriptionStripeCard.invoices_default"
-              (changeCardClick)="onSetChangeCard($event)"
+              [hideEdit]="!subscriptionStripeCard.invoices_default"
+              (changeCardClick)="addNewSubscriptionCard()"
               (deleteCardClick)="handleDeleteCard(subscriptionStripeCard)">
             </tsl-credit-card-info>
           </div>
@@ -30,7 +30,7 @@
               [brand]="stripeCard.stripeCard?.brand"
               [numberCard]="stripeCard.number"
               [expireDate]="stripeCard.expire_date"
-              [canChangeCard]="stripeCard.invoices_default"
+              [hideEdit]="!stripeCard.invoices_default"
               (deleteCardClick)="handleDeleteCard(stripeCard)"
               >
             </tsl-credit-card-info>

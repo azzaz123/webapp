@@ -49,14 +49,6 @@ describe('StripeService', () => {
           },
         },
         {
-          provide: UserService,
-          useValue: {
-            me() {
-              return of(USER_DATA);
-            },
-          },
-        },
-        {
           provide: PaymentService,
           useValue: {
             paymentIntents() {
@@ -104,7 +96,6 @@ describe('StripeService', () => {
       };
       let response: PaymentIntents;
 
-      userService.me = jasmine.createSpy().and.returnValue(of(USER_DATA));
       paymentService.paymentIntents(orderId, paymentId).subscribe((data: PaymentIntents) => {
         response = data;
       });

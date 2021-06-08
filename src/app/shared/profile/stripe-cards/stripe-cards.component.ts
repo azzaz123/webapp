@@ -96,10 +96,6 @@ export class StripeCardsComponent implements OnInit {
       });
   }
 
-  public onSetChangeCard(event: any): void {
-    this.addNewSubscriptionCard();
-  }
-
   private openInvoicesDefaultModalAndDeleteCard(financialCardID: string): void {
     const modalRef: NgbModalRef = this.modalService.open(NoCardModalComponent, {
       windowClass: 'review',

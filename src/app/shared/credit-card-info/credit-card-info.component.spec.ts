@@ -26,12 +26,6 @@ describe('CreditCardInfoComponent', () => {
   });
 
   describe('when clicking in change card button...', () => {
-    beforeEach(() => {
-      component.canChangeCard = true;
-
-      fixture.detectChanges();
-    });
-
     it('should emit the changeCardClick event', fakeAsync(() => {
       spyOn(component.changeCardClick, 'emit');
 
@@ -57,7 +51,7 @@ describe('CreditCardInfoComponent', () => {
     it('the credit card src path should be a mastercard svg', () => {
       component.brand = 'mastercard';
 
-      component.ngOnInit();
+      component.ngOnChanges();
 
       expect(component.creditCardBrandSrc).toStrictEqual(MASTERCARD_SRC_PATH);
     });
@@ -67,7 +61,7 @@ describe('CreditCardInfoComponent', () => {
     it('the credit card src path should be a mastercard svg', () => {
       component.brand = 'visa';
 
-      component.ngOnInit();
+      component.ngOnChanges();
 
       expect(component.creditCardBrandSrc).toStrictEqual(VISA_SRC_PATH);
     });
@@ -77,7 +71,7 @@ describe('CreditCardInfoComponent', () => {
     it('the credit card src path should be a generic card svg', () => {
       component.brand = 'blablabla';
 
-      component.ngOnInit();
+      component.ngOnChanges();
 
       expect(component.creditCardBrandSrc).toStrictEqual(GENERIC_CARD_SRC_PATH);
     });

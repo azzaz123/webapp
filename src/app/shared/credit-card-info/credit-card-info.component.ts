@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FinancialCard } from './financial-card';
 
 @Component({
@@ -6,11 +6,13 @@ import { FinancialCard } from './financial-card';
   templateUrl: './credit-card-info.component.html',
   styleUrls: ['./credit-card-info.component.scss'],
 })
-export class CreditCardInfoComponent implements OnInit {
+export class CreditCardInfoComponent implements OnChanges {
   @Input() brand: string;
   @Input() numberCard: string;
   @Input() expireDate: Date;
-  @Input() canChangeCard: boolean;
+  @Input() error: boolean;
+  @Input() hideEdit: boolean;
+  @Input() hideDelete: boolean;
 
   @Output() changeCardClick: EventEmitter<Event> = new EventEmitter();
   @Output() deleteCardClick: EventEmitter<FinancialCard> = new EventEmitter();
@@ -19,7 +21,7 @@ export class CreditCardInfoComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
+  ngOnChanges() {
     this.checkCreditCardBrandSrc();
   }
 

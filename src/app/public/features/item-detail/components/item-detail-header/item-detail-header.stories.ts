@@ -23,9 +23,10 @@ import { ItemApiService } from '@public/core/services/api/item/item-api.service'
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
-import { NgxPermissionsModule, NgxPermissionsService, USE_PERMISSIONS_STORE } from 'ngx-permissions';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { CookieModule } from 'ngx-cookie';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ItemDetailTrackEventsService } from '@public/features/item-detail/core/services/item-detail-track-events/item-detail-track-events.service';
 
 export default {
   title: 'Webapp/Public/Features/ItemDetail/Components/ItemDetailHeader',
@@ -68,6 +69,7 @@ const Template: Story<ItemDetailHeaderComponent> = (args: ItemDetailHeaderCompon
       NgxPermissionsService,
       { provide: 'SUBDOMAIN', useValue: 'es' },
       { provide: APP_BASE_HREF, useValue: '/' },
+      ItemDetailTrackEventsService,
     ],
   },
   template: '<tsl-item-detail-header [item]="item" [user]="user" [userStats]="userStats" [isOwner]="isOwner" ></tsl-item-detail-header>',

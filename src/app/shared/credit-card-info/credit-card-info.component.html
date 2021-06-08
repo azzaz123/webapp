@@ -1,13 +1,13 @@
 <div class="CreditCard__info">
-  <div class="credit-card-field">
+  <div class="CreditCard__field" [ngClass]="{'CreditCard__field--error': error}">
     <div class="CreditCard__info--info">
       <tsl-svg-icon [src]="creditCardBrandSrc" class="card-icon"></tsl-svg-icon>
       <div class="number"><span>**** **** **** </span>{{numberCard}}</div>
       <div class="date">{{expireDate}}</div>
     </div>
     <div class="CreditCard__info--actions">
-      <div class="CreditCard__info--actions-change" *ngIf="canChangeCard" (click)="changeCardClick.emit($event)" i18n="@@web_change_card">Change card</div>
-      <div class="CreditCard__info--actions-delete" (click)="deleteCardClick.emit($event)" i18n="@@web_delete_card">Delete card</div>
+      <div class="CreditCard__info--actions-change" *ngIf="!hideEdit" (click)="changeCardClick.emit($event)" i18n="@@web_change_card">Change card</div>
+      <div class="CreditCard__info--actions-delete" *ngIf="!hideDelete" (click)="deleteCardClick.emit($event)" i18n="@@web_delete_card">Delete card</div>
     </div>
   </div>
 </div>

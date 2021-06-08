@@ -33,6 +33,7 @@ import { ItemFavouritesModule } from '@public/core/services/item-favourites/item
 import { RecommenderItemCardFavouriteCheckedService } from './core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
 import { ItemDetailPlaceholderComponent } from './components/item-detail-placeholder/item-detail-placeholder.component';
 import { VisibleDirectiveModule } from '@shared/directives/visible/visible.directive.module';
+import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents, ItemDetailPlaceholderComponent],
@@ -72,6 +73,7 @@ import { VisibleDirectiveModule } from '@shared/directives/visible/visible.direc
     ItemDetailFlagsStoreService,
     MapItemDetailFlagsStoreService,
     RecommenderItemCardFavouriteCheckedService,
+    IsCurrentUserPipe,
   ],
 })
 export class ItemDetailModule {}

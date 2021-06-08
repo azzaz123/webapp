@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { SearchPagination } from '../../../interfaces/search-pagination.interface';
 import { SearchAPIService } from './api/search-api.service';
 import { SearchFavouritesService } from './favorites/search-favourites.service';
@@ -23,11 +23,11 @@ export class SearchInfrastructureService {
       .pipe(switchMap((searchPagination: SearchPagination) => this.setFavourites(searchPagination)));
   }
 
-  private setFavourites({items, hasMore}: SearchPagination): Observable<SearchPagination> {
+  private setFavourites({items, hasMore, searchId}: SearchPagination): Observable<SearchPagination> {
     return this.searchFavouritesService
       .getFavouritesByItems(items)
       .pipe(
-        map((favItems: ItemCard[]) => ({ items: favItems, hasMore }))
+        map((favItems: ItemCard[]) => ({ items: favItems, hasMore, searchId }))
       );
   }
 }

@@ -17,7 +17,6 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UserService } from '@core/user/user.service';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
-import { CoreStoreModule } from '@core/store/core-store.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ShowSlotPipe } from './pipes/show-slot.pipe';
 
@@ -34,7 +33,6 @@ export default {
         CookieModule.forRoot(),
         PublicPipesModule,
         NgxPermissionsModule.forRoot(),
-        CoreStoreModule,
         RouterTestingModule,
       ],
       providers: [

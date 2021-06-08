@@ -152,20 +152,8 @@ export class UserService {
     return new User(id, 'No disponible');
   }
 
-  public me(useCache = true): Observable<User> {
-    if (useCache && this._user) {
-      return of(this._user);
-    }
-
-    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`).pipe(
-      map((r) => this.mapRecordData(r)),
-      tap((user) => (this._user = user)),
-      // TODO: This will need to be parsed when devops team adds CORS headers on API gateway error
-      catchError((error) => {
-        this.logout(null);
-        return of(error);
-      })
-    );
+  public getLoggedUserInformation(): Observable<User> {
+    return this.http.get<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`).pipe(map((r) => this.mapRecordData(r)));
   }
 
   public checkUserStatus() {
@@ -330,16 +318,21 @@ export class UserService {
     );
   }
 
-  public checkUserPermissions(): Observable<boolean> {
-    if (!this.isLogged) {
-      return of(true);
-    }
-
-    return this.me(false).pipe(
+  public initializeUserWithPermissions(): Observable<boolean> {
+    return this.getLoggedUserInformation().pipe(
+      tap((user) => (this._user = user)),
       tap((user) => this.setPermission(user)),
-      map(() => true),
-      catchError(() => of(true))
+      catchError((error) => {
+        this.logout(null);
+        return of(error);
+      })
     );
+  }
+
+  //TODO: This is needed for the current subscriptions flow but this should handled in some other way when
+  // the application is reactive to changes in the user object
+  public getAndUpdateLoggedUser(): Observable<User> {
+    return this.getLoggedUserInformation().pipe(tap((user) => (this._user = user)));
   }
 
   public setPermission(user: User): void {
@@ -349,11 +342,7 @@ export class UserService {
   }
 
   public hasPerm(permission: string): Observable<boolean> {
-    return this.me().pipe(
-      mergeMap(() => {
-        return from(this.permissionService.hasPermission(PERMISSIONS[permission]));
-      })
-    );
+    return from(this.permissionService.hasPermission(PERMISSIONS[permission]));
   }
 
   // TODO: This is if user is car dealer, should be `isCarDealer`
@@ -362,8 +351,8 @@ export class UserService {
   }
 
   // TODO: This logic is correct for now, but should be checked using the subscriptions BFF
-  public isProUser(): Observable<boolean> {
-    return this.me().pipe(map((user) => user.featured));
+  public isProUser(): boolean {
+    return this.user.featured;
   }
 
   private getDistanceInKilometers(coord1: Coordinate, coord2: Coordinate): number {

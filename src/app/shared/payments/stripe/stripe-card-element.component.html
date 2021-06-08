@@ -17,9 +17,8 @@
             <div *ngIf="showSavedCardOption()" class="card-feedback__action"(click)="clickUseSavedCard()" i18n="@@web_use_saved_card">Use saved card</div>
         </div>
 
-        <div [hidden]="type !== 'subscription'" class="StripeCardElement__legal-info" i18n="@@web_stripe_card_element_513">            By subscribing, you are accepting the <a href="{{termsAndConditionsURL}}" target="_blank">terms & conditions</a>
-            and the <a href="{{policyPrivacyURL}}" target="_blank">privacy policy</a> of Wallapop S.L. and Stripe Ltd
-        </div>
+        <div [hidden]="type !== 'subscription'" class="StripeCardElement__legal-info" i18n="@@web_stripe_card_element_513">By subscribing, you accept the <a href="{{termsAndConditionsURL}}" target="_blank">Terms of use</a>
+            and <a href="{{policyPrivacyURL}}" target="_blank">Privacy policy</a> of Wallapop S.L. and Stripe Ltd</div>
 
         <tsl-button [hidden]="type === 'new' || type === 'subscription' || type === 'setDefault'"
                     id="checkout-card-button"

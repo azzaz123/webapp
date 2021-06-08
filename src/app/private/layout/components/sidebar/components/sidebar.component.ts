@@ -24,9 +24,7 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userService.me().subscribe((user) => {
-      this.user = user;
-    });
+    this.user = this.userService.user;
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });

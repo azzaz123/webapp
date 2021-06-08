@@ -77,7 +77,6 @@ export class ItemDetailTrackEventsService {
         salePrice: recommendedItemCard.salePrice,
         title: recommendedItemCard.title,
         itemSourceRecommendationId: sourceItem.id,
-        itemDistance: recommenedItemOwner.itemDistance,
         shippingAllowed: !!recommendedItemCard.saleConditions?.shipping_allowed,
         sellerUserId: recommendedItemCard.ownerId,
         isBumped: !!recommendedItemCard.bumpFlags?.bumped,

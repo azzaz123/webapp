@@ -271,16 +271,6 @@ describe('StripeCardsComponent', () => {
     });
   });
 
-  describe('onSetChangeCard', () => {
-    it('should call addNewSubscriptionCard', () => {
-      spyOn(component, 'addNewSubscriptionCard').and.callThrough();
-
-      component.onSetChangeCard('e');
-
-      expect(component.addNewSubscriptionCard).toHaveBeenCalled();
-    });
-  });
-
   describe('addNewSubscriptionCard', () => {
     it('should open the ChangeCardModalComponent modal', fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
