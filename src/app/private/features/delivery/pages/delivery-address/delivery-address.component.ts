@@ -36,11 +36,7 @@ import { DeliveryPostalCodesError } from '../../errors/classes/postal-codes';
 import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 import { DeliveryAddressFormErrorMessages } from '../../interfaces/delivery-address/delivery-address-form-error-messages.interface';
-
-export enum PREVIOUS_PAGE {
-  PAYVIEW_ADD_ADDRESS,
-  PAYVIEW_PAY,
-}
+import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -48,7 +44,7 @@ export enum PREVIOUS_PAGE {
   styleUrls: ['./delivery-address.component.scss'],
 })
 export class DeliveryAddressComponent implements OnInit {
-  @Input() whereUserComes: PREVIOUS_PAGE;
+  @Input() whereUserComes: DELIVERY_ADDRESS_PREVIOUS_PAGE;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
@@ -61,7 +57,7 @@ export class DeliveryAddressComponent implements OnInit {
   public loadingButton = false;
   public isCountryEditable = false;
   public locations: DeliveryLocationApi[] = [];
-  public readonly PREVIOUS_PAGE = PREVIOUS_PAGE;
+  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE;
   public formErrorMessages: DeliveryAddressFormErrorMessages = {
     phone_number: '',
     postal_code: '',
@@ -87,7 +83,9 @@ export class DeliveryAddressComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.comesFromPayView = this.whereUserComes === PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS || this.whereUserComes === PREVIOUS_PAGE.PAYVIEW_PAY;
+    this.comesFromPayView =
+      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS ||
+      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
     this.buildForm();
     this.eventService.subscribe(this.formSubmittedEventKey, () => {
       this.onSubmit();
@@ -323,10 +321,10 @@ export class DeliveryAddressComponent implements OnInit {
 
   private redirect(): void {
     switch (this.whereUserComes) {
-      case PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS:
+      case DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS:
         this.router.navigate([DELIVERY_PATHS.PAYVIEW]);
         break;
-      case PREVIOUS_PAGE.PAYVIEW_PAY:
+      case DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY:
         this.router.navigate([DELIVERY_PATHS.SHIPMENT_TRACKING]);
         break;
     }

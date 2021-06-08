@@ -14,7 +14,7 @@ import { DeliveryAddressService } from '../../services/address/delivery-address/
 import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { FormBuilder } from '@angular/forms';
-import { DeliveryAddressComponent, PREVIOUS_PAGE } from './delivery-address.component';
+import { DeliveryAddressComponent } from './delivery-address.component';
 import { DeliveryCountriesApiService } from '../../services/api/delivery-countries-api/delivery-countries-api.service';
 import { DeliveryLocationsApiService } from '../../services/api/delivery-locations-api/delivery-locations-api.service';
 import { DeliveryAddressApiService } from '../../services/api/delivery-address-api/delivery-address-api.service';
@@ -40,6 +40,7 @@ import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmat
 import { PostalCodeIsNotAllowedError } from '../../errors/classes/postal-codes';
 import { FlatAndFloorTooLongError, MobilePhoneNumberIsInvalidError, UniqueAddressByUserError } from '../../errors/classes/address';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
+import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -266,7 +267,7 @@ describe('DeliveryAddressComponent', () => {
 
         describe('when redirecting to the next page...', () => {
           it('should redirect to the payview if we come from payview add address button', () => {
-            component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
+            component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
 
             component.onSubmit();
 
@@ -274,7 +275,7 @@ describe('DeliveryAddressComponent', () => {
           });
 
           it('should redirect to shipment tracking if we come from payview pay button', () => {
-            component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_PAY;
+            component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
 
             component.onSubmit();
 
@@ -383,7 +384,7 @@ describe('DeliveryAddressComponent', () => {
     beforeEach(() => {
       spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
       spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
-      component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_PAY;
+      component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
 
       component.ngOnInit();
       component.initForm();
@@ -403,7 +404,7 @@ describe('DeliveryAddressComponent', () => {
     beforeEach(() => {
       spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
       spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
-      component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
+      component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
 
       component.ngOnInit();
       component.initForm();
