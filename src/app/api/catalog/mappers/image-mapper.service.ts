@@ -4,7 +4,7 @@ import { Image } from '@core/user/user-response.interface';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class ImageMapperService extends AbstractMapperService<CatalogItemImage, Image, never> {
+export class ImageMapperService extends AbstractMapperService<CatalogItemImage, Image> {
   protected map(image: CatalogItemImage): Image {
     const { average_color, urls } = image;
     const { big: imageBigUrl, medium: imageMediumUrl, small: imageSmallUrl } = urls;

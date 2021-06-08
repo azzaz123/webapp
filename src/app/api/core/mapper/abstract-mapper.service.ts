@@ -1,6 +1,6 @@
 import { MapperService } from './mapper-service.interface';
 
-export abstract class AbstractMapperService<S, T, A extends Array<unknown>> implements MapperService<S, T, A> {
+export abstract class AbstractMapperService<S, T, A extends Array<unknown> = never> implements MapperService<S, T, A> {
   protected abstract map(entity: S, ...args: unknown[]): T;
 
   transform(entity: S, ...args: A): T;
