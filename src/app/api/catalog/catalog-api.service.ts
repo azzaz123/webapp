@@ -5,19 +5,15 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { PUBLISHED_ITEMS_ENDPOINT } from './endpoints';
 import { CatalogPublicProfileItemsResponse } from './dtos/catalog-public-profile-items-response';
 import { map, switchMap } from 'rxjs/operators';
-import { PublishedItemMapperService } from './mappers/published-item-mapper.service';
 import { PaginatedList } from '../core/model/paginated-list.interface';
 import { ACCEPTED_PARAMETERS } from './enums/accepted-parameters.enum';
 import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';
 import { CatalogItem } from './dtos/catalog-item';
+import { mapCatalogItemsToItemCards } from './mappers/published-item-mapper';
 
 @Injectable()
 export class CatalogApiService {
-  constructor(
-    private httpClient: HttpClient,
-    private publishedItemMapperService: PublishedItemMapperService,
-    private favouriteService: FavouritesApiService
-  ) {}
+  constructor(private httpClient: HttpClient, private favouriteService: FavouritesApiService) {}
 
   // TODO: For now this service maps the response to ItemCard model, as it is currently the common model on the public domain. We need to
   //       port this to an "Item" model once we have a decent definition of the item domain.
@@ -44,7 +40,7 @@ export class CatalogApiService {
           return forkJoin(of(response), favouriteIds$).pipe(
             map(([res, favouritedIds]: [CatalogPublicProfileItemsResponse, string[]]) => {
               return {
-                list: this.publishedItemMapperService.transform(res.data, userId, favouritedIds),
+                list: mapCatalogItemsToItemCards(res.data, userId, favouritedIds),
                 nextId: res.meta.next,
               };
             })
