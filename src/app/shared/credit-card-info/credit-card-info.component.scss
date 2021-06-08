@@ -1,58 +1,36 @@
 @import '~style/common';
 
-$card-width: 300px;
-$card-height: 88px;
-
-.CreditCard__field {
+.CreditCardInfo {
   border: solid 1px $blue-grey-5;
-  height: $card-height;
-  padding: 0 $spacing-ml;
-  flex-direction: column;
   border-radius: 6px;
-  align-items: center;
+  padding: $spacing-ml;
   font-size: $font-size-s;
-  min-width: $card-width;
-  display: flex;
-  justify-content: center;
+
   &--error {
     border: solid 1px $warn;
   }
-  .card-icon {
-    flex: 0 0 34px;
-    margin-right: $spacing-m;
+
+  &__brand {
+    font-weight: $font-weight-chunky;
   }
-  .number {
-    flex: 1;
-  }
-  .date {
-    color: $blue-grey-3;
+
+  &__date {
     span {
       font-size: $font-size-xs;
     }
   }
 
-  &--error {
-    border: solid 1px $warn;
+  &__number {
+    flex: 1;
   }
-}
 
-.CreditCard__info {
-  &--info {
-    width: 100%;
-    display: flex;
-    padding: 0;
-    margin-bottom: $spacing-s;
+  .grey-text {
+    color: $blue-grey-3;
   }
-  &--actions {
+
+  &__actions {
     font-size: $font-size-s;
-    display: flex;
-    width: 100%;
-    a {
-      cursor: pointer;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+
     &-change,
     &-delete {
       cursor: pointer;
@@ -62,12 +40,9 @@ $card-height: 88px;
     }
     &-change {
       color: $walla-main;
-      text-align: left;
     }
     &-delete {
-      color: $blue-grey-3;
-      text-align: right;
-      margin-left: auto;
+      color: $negative-main;
     }
   }
 }
