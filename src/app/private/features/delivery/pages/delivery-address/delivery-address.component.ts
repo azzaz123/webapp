@@ -57,7 +57,7 @@ export class DeliveryAddressComponent implements OnInit {
   public loadingButton = false;
   public isCountryEditable = false;
   public locations: DeliveryLocationApi[] = [];
-  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE;
+  public readonly PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE;
   public formErrorMessages: DeliveryAddressFormErrorMessages = {
     phone_number: '',
     postal_code: '',
