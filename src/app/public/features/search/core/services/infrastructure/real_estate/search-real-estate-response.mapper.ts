@@ -5,9 +5,9 @@ import { SearchRealEstateResponse } from './search-item-real-state-response';
 
 
 export function searchItemRealEstateResponseMapper({search_objects}: SearchResponse<SearchRealEstateResponse>): ItemCard[] {
-  return search_objects.map(({id, title, content}: SearchRealEstateResponse) => ({
+  return search_objects.map(({id, content}: SearchRealEstateResponse) => ({
     id,
-    title,
+    title: content.title,
     description: content.storytelling,
     salePrice: content.price,
     currencyCode: content.currency,

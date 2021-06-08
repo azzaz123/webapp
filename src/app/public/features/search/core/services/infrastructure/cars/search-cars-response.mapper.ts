@@ -4,9 +4,9 @@ import { SearchItemImageMapper } from '../models/search-item-image-mapper.respon
 import { SearchCarResponse } from './search-car-response';
 
 export function SearchItemCarResponseMapper({search_objects}: SearchResponse<SearchCarResponse>): ItemCard[] {
-  return search_objects.map(({id, title, content}: SearchCarResponse) => ({
+  return search_objects.map(({id, content}: SearchCarResponse) => ({
     id,
-    title,
+    title: content.title,
     description: content.storytelling,
     salePrice: content.price,
     currencyCode: content.currency,

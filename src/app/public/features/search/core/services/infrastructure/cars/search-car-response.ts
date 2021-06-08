@@ -14,7 +14,7 @@ export interface SearchItemCarResponse extends SearchBaseItemResponse {
 
 export interface SearchCarResponse {
   id: string;
-  title: string;
+  type: string;
   content: SearchItemCarResponse;
 }
 
