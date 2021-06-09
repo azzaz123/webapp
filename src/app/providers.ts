@@ -48,7 +48,7 @@ export function defaultPermissionsFactory(
   permissionService.addPermission(DEFAULT_PERMISSIONS);
   return () =>
     featureFlagService
-      .getFlag(FEATURE_FLAGS_ENUM.VISIBILITY)
+      .getFlag(FEATURE_FLAGS_ENUM.BUMPS)
       .toPromise()
       .catch(() => true);
 }
