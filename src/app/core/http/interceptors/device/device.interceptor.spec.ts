@@ -29,9 +29,9 @@ describe('DeviceInterceptor', () => {
     httpMock.verify();
   });
 
-  describe('when doing a request to wallapop monolith server', () => {
+  describe('when doing a request to wallapop server', () => {
     describe('and the request is to the api v3', () => {
-      it('should add the new device header', () => {
+      it('should add the new device header and the old one', () => {
         const expectedUrl = `${environment.baseUrl}${API_V3}random`;
         const expectedHeaderValue = DEVICE_OS.WEB.toString();
 
@@ -39,13 +39,15 @@ describe('DeviceInterceptor', () => {
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.flush({});
 
+        expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V1)).toBe(true);
+        expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V1)).toEqual(expectedHeaderValue);
         expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V3)).toBe(true);
         expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V3)).toEqual(expectedHeaderValue);
       });
     });
 
     describe('and the request is NOT to the api v3', () => {
-      it('should add the old device header', () => {
+      it('should add only the old device header', () => {
         const expectedUrl = `${environment.baseUrl}shnm-portlet/api/v1/random`;
         const expectedHeaderValue = DEVICE_OS.WEB.toString();
 
@@ -55,11 +57,12 @@ describe('DeviceInterceptor', () => {
 
         expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V1)).toBe(true);
         expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V1)).toEqual(expectedHeaderValue);
+        expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V3)).toBe(false);
       });
     });
   });
 
-  describe('when doing a request to a server that is not the wallapop monolith one', () => {
+  describe('when doing a request to a server that is not the wallapop one', () => {
     it('should not add the device header', () => {
       const expectedUrl = `https://google.com/`;
 

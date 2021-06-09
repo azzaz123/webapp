@@ -12,7 +12,7 @@ import { finalize } from 'rxjs/operators';
 import { BankAccount } from '../../interfaces/bank-account/bank-account-api.interface';
 import { DELIVERY_PATHS } from '../../delivery-routing-constants';
 import { Router } from '@angular/router';
-import { BankAccountFormErrorMessages } from '../../interfaces/bank-account/bank-account-error.interface';
+import { BankAccountFormErrorMessages } from '../../interfaces/bank-account/bank-account-form-error-messages.interface';
 
 export const IBAN_LENGTH = 40;
 @Component({
