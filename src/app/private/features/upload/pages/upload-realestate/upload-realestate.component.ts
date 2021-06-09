@@ -33,6 +33,7 @@ import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { forkJoin, Observable, of, OperatorFunction } from 'rxjs';
+import { LocationSelectorModal } from '@shared/modals/select-location-modal/select-location-modal.component';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -108,6 +109,7 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.modalService.open(LocationSelectorModal);
     this.getOptions().subscribe(() => {
       if (this.item && this.isReactivation) {
         this.itemReactivationService.reactivationValidation(this.uploadForm);
