@@ -71,7 +71,7 @@ function formatDescription(categoryId: string, description: string, attributes: 
   const lowerStoryTelling = reduceAttrStorytelling(attributes, STORY_TELLING_LOWER_ORDERED_ATTRS);
   const lowerBooleanValuedStoryTelling = reduceAttrStorytelling(attributes, STORY_TELLING_LOW_ORDERED_BOOLEAN_ATTRS, true);
 
-  return `${upperStorytelling} ${description} ${lowerStoryTelling} ${lowerBooleanValuedStoryTelling}`;
+  return [upperStorytelling, description, lowerStoryTelling, lowerBooleanValuedStoryTelling].filter((text) => !!text).join(' ');
 }
 
 function reduceAttrStorytelling(attributes: CatalogItemAttribute[], attrList: ATTRIBUTE_TYPE[], isBooleanValued?: boolean): string {
@@ -80,11 +80,11 @@ function reduceAttrStorytelling(attributes: CatalogItemAttribute[], attrList: AT
       const itemAttribute = attributes.find((attribute) => attribute.type === orderedAttribute);
 
       if (itemAttribute && !isBooleanValued) {
-        return `${acc} ${capitalizeString(itemAttribute.title)}: ${capitalizeString(itemAttribute.text)}`;
+        return `${acc ? `${acc} ` : acc}${capitalizeString(itemAttribute.title)}: ${capitalizeString(itemAttribute.text)}`;
       }
 
       if (itemAttribute && isBooleanValued && itemAttribute.value === 'true') {
-        return `${acc ? `${acc},` : acc} ${capitalizeString(itemAttribute.title)}`;
+        return `${acc ? `${acc}, ` : acc}${capitalizeString(itemAttribute.title)}`;
       }
 
       return acc;
