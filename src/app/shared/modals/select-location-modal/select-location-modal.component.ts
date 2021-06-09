@@ -2,9 +2,12 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Item } from '@core/item/item';
 import { SocialShareService } from '@core/social-share/social-share.service';
-import { ItemLocation } from '@core/geolocation/address-response.interface';
+import { Coordinate, ItemLocation } from '@core/geolocation/address-response.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core';
+import { UserService } from '@core/user/user.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-select-location-modal',
@@ -12,15 +15,17 @@ import { OnInit } from '@angular/core';
   styleUrls: ['./select-location-modal.component.scss'],
 })
 export class LocationSelectorModal implements OnInit {
-  public coordinates: ItemLocation;
-
-  public item: Item;
-  public productPrice: number;
-  public productCurrency: string;
-
   public locationForm: FormGroup;
+  public coordinates: ItemLocation;
+  public isLoading: boolean;
+  public error: boolean;
 
-  constructor(public activeModal: NgbActiveModal, private fb: FormBuilder) {}
+  constructor(
+    public activeModal: NgbActiveModal,
+    private fb: FormBuilder,
+    private userService: UserService,
+    private errorService: ErrorsService
+  ) {}
 
   ngOnInit() {
     this.locationForm = this.fb.group({
@@ -32,5 +37,28 @@ export class LocationSelectorModal implements OnInit {
     });
   }
 
-  onSubmit() {}
+  onSubmit() {
+    if (this.isLoading) {
+      return;
+    }
+    this.isLoading = true;
+    const location = this.locationForm.get('location').value;
+    const newLocation: Coordinate = {
+      latitude: location.latitude,
+      longitude: location.longitude,
+      name: location.address,
+    };
+    this.userService.updateLocation(newLocation).subscribe(
+      (newUserLocation) => {
+        this.isLoading = false;
+        this.userService.user.location = newUserLocation;
+        this.userService.updateSearchLocationCookies(newLocation);
+        this.activeModal.close(true);
+      },
+      () => {
+        this.isLoading = false;
+        this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+      }
+    );
+  }
 }
