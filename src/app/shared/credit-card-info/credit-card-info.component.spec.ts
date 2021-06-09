@@ -42,7 +42,7 @@ describe('CreditCardInfoComponent', () => {
   });
 
   describe('when hideEdit is false', () => {
-    it('should not render the edit buttton', () => {
+    it('should render the edit buttton', () => {
       component.hideEdit = false;
 
       fixture.detectChanges();
@@ -61,8 +61,8 @@ describe('CreditCardInfoComponent', () => {
     });
   });
 
-  describe('when hideDelete is true', () => {
-    it('should not render the delete buttton', () => {
+  describe('when hideDelete is false', () => {
+    it('should render the delete buttton', () => {
       component.hideDelete = false;
 
       fixture.detectChanges();
