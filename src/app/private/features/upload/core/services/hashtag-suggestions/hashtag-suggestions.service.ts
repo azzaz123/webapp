@@ -10,8 +10,6 @@ export const GENERAL_HASHTAG_SUGGESTERS_API = `${HASHTAG_SUGGESTERS_API}/general
 
 @Injectable()
 export class HashtagSuggestionsService {
-  public selectedSuggesters: HashtagSuggester[] = [];
-
   constructor(private http: HttpClient) {}
 
   private getHashTagSuggesters(
@@ -41,15 +39,5 @@ export class HashtagSuggestionsService {
         return { data: response.body.hashtags, nextPage: nextPage };
       })
     );
-  }
-
-  public addSuggesters(hashtagSuggester: HashtagSuggester): void {
-    this.selectedSuggesters = this.selectedSuggesters.concat(hashtagSuggester);
-  }
-
-  public deleteSuggesters(hashtagSuggester: HashtagSuggester): void {
-    this.selectedSuggesters = this.selectedSuggesters.filter((hashtag) => {
-      hashtag !== hashtagSuggester;
-    });
   }
 }
