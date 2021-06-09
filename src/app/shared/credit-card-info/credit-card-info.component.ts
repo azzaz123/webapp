@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { BRAND_CARDS_WITH_SVG } from './credit-card-info.enum';
 import { FinancialCard } from './financial-card';
 
 @Component({
@@ -24,7 +25,7 @@ export class CreditCardInfoComponent implements OnChanges {
   constructor() {}
 
   ngOnChanges() {
-    this.isMasterCardOrVisa = this.brand === 'mastercard' || this.brand === 'visa';
+    this.isMasterCardOrVisa = this.brand === BRAND_CARDS_WITH_SVG.MASTERCARD || this.brand === BRAND_CARDS_WITH_SVG.VISA;
     this.checkCreditCardBrandSrc();
   }
 
