@@ -3,7 +3,15 @@
 $profile-image-size: 80px;
 
 .HeaderPro {
-  height: 160px;
+  height: 300px;
+
+  @include media-breakpoint-down(lg) {
+    height: 240px;
+  }
+
+  @include media-breakpoint-down(md) {
+    height: 160px;
+  }
 }
 
 .ProfileUser__container {

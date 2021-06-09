@@ -1,13 +1,17 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
-import { environment } from '../../../../environments/environment';
-import { AccessTokenService } from '../access-token.service';
-import { TOKEN_AUTHORIZATION_HEADER_NAME } from './index';
-import { TOKEN_TIMESTAMP_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TokenInterceptor } from './token.interceptor';
+import { environment } from '@environments/environment';
+import {
+  TOKEN_TIMESTAMP_HEADER_NAME,
+  TOKEN_AUTHORIZATION_HEADER_NAME,
+  TOKEN_SIGNATURE_HEADER_NAME,
+  TokenInterceptor,
+} from './token.interceptor';
 import { HttpClient, HttpResponse, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LOGIN_ENDPOINT } from '@public/features/login/core/services/login.service';
 import { CookieModule } from 'ngx-cookie';
+import { AccessTokenService } from '@core/http/access-token.service';
 
 const MOCK_TOKEN = 'token';
 const MOCK_V3_ENDPOINT = 'api/v3/endpoint';
