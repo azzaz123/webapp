@@ -25,7 +25,6 @@ import { ReleaseVersionService } from '@core/release-version/release-version.ser
 
 import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
-import { FeatureflagService } from './featureflag.service';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
@@ -72,7 +71,6 @@ export class UserService {
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
     private releaseVersionService: ReleaseVersionService,
-    private featureFlagService: FeatureflagService,
     @Inject('SUBDOMAIN') private subdomain: string
   ) {}
 
