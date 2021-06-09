@@ -25,7 +25,7 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
     illustrationSrc: '/assets/images/commons/flashlight.svg',
   };
   public items: ItemCard[] = [];
-  public nextId;
+  public paginationParameter: string;
   public loading = true;
 
   private subscriptions = new Subscription();
@@ -70,14 +70,14 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
 
     try {
       this.catalogApiService
-        .getUserPublishedItems(this.userId, shouldCheckForFavourites, this.nextId)
+        .getUserPublishedItems(this.userId, shouldCheckForFavourites, this.paginationParameter)
         .pipe(
           finalize(() => (this.loading = false)),
           take(1)
         )
-        .subscribe(({ list, nextId }: PaginatedList<ItemCard>) => {
+        .subscribe(({ list, paginationParameter }: PaginatedList<ItemCard>) => {
           this.items = this.items.concat(list);
-          this.nextId = nextId;
+          this.paginationParameter = paginationParameter;
         }, this.onError);
     } catch (err: any) {
       this.onError();

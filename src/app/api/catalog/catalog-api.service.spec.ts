@@ -39,11 +39,11 @@ describe('CatalogApiService', () => {
         });
 
         const publishedItemsRequest: TestRequest = httpMock.expectOne(PUBLISHED_ITEMS_ENDPOINT(userIdFixture));
-        publishedItemsRequest.flush({ data: [catalogItemFixture], meta: { next: 'nextId' } });
+        publishedItemsRequest.flush({ data: [catalogItemFixture], meta: { next: 'paginationParameter' } });
 
         httpMock.expectNone(CHECK_FAVOURITES_ENDPOINT);
 
-        expect(response).toEqual({ list: [mappedCatalogItemFixture], nextId: 'nextId' });
+        expect(response).toEqual({ list: [mappedCatalogItemFixture], paginationParameter: 'paginationParameter' });
         expect(publishedItemsRequest.request.url).toEqual(PUBLISHED_ITEMS_ENDPOINT(userIdFixture));
         expect(publishedItemsRequest.request.method).toBe('GET');
       });
@@ -58,12 +58,12 @@ describe('CatalogApiService', () => {
         });
 
         const publishedItemsRequest: TestRequest = httpMock.expectOne(PUBLISHED_ITEMS_ENDPOINT(userIdFixture));
-        publishedItemsRequest.flush({ data: [catalogItemFixture], meta: { next: 'nextId' } });
+        publishedItemsRequest.flush({ data: [catalogItemFixture], meta: { next: 'paginationParameter' } });
 
         const favouritesRequest: TestRequest = httpMock.expectOne(CHECK_FAVOURITES_ENDPOINT);
         favouritesRequest.flush({ favorites: [mappedFavouritedCatalogItemFixture.id] });
 
-        expect(response).toEqual({ list: [mappedFavouritedCatalogItemFixture], nextId: 'nextId' });
+        expect(response).toEqual({ list: [mappedFavouritedCatalogItemFixture], paginationParameter: 'paginationParameter' });
         expect(publishedItemsRequest.request.url).toEqual(PUBLISHED_ITEMS_ENDPOINT(userIdFixture));
         expect(publishedItemsRequest.request.method).toBe('GET');
         expect(favouritesRequest.request.url).toEqual(CHECK_FAVOURITES_ENDPOINT);

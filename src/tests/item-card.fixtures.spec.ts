@@ -31,7 +31,7 @@ export const MOCK_ITEM_CARD: ItemCard = {
 };
 
 export const MOCK_PAGINATED_CARD_LIST: PaginatedList<ItemCard> = {
-  nextId: 'nextId',
+  paginationParameter: 'paginationParameter',
   list: [MOCK_ITEM_CARD, MOCK_ITEM_CARD],
 };
 export const MOCK_PUBLISHED_ITEM_CARD_IMAGE: Image = {

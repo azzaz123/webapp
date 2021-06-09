@@ -41,7 +41,7 @@ export class CatalogApiService {
             map(([res, favouritedIds]: [CatalogPublicProfileItemsResponse, string[]]) => {
               return {
                 list: mapCatalogItemsToItemCards(res.data, userId, favouritedIds),
-                nextId: res.meta.next,
+                paginationParameter: res.meta.next,
               };
             })
           );
