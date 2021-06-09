@@ -24,9 +24,8 @@ import { InboxUser, InboxItem } from '@private/features/chat/core/model';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
 import mParticle from '@mparticle/web-sdk';
-import { DEFAULT_PERMISSIONS, PERMISSIONS } from './user-constants';
+import { PERMISSIONS } from './user-constants';
 import { FeatureflagService } from './featureflag.service';
-import { FEATURE_FLAGS_ENUM } from './featureflag-constants';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
@@ -320,11 +319,6 @@ export class UserService {
       data.featured,
       data.extra_info
     );
-  }
-
-  public initializeDefaultPermissions(): Observable<boolean> {
-    this.permissionService.addPermission(DEFAULT_PERMISSIONS);
-    return this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.BUMPS).pipe(catchError(() => of(true)));
   }
 
   public initializeUserWithPermissions(): Observable<boolean> {
