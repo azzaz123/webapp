@@ -306,7 +306,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private showBumpSuggestionModal(itemId: string): void {
-    if (this.permissions[PERMISSIONS.visibility]) {
+    if (this.permissions[PERMISSIONS.bumps]) {
       this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
         windowClass: 'modal-standard',
       });

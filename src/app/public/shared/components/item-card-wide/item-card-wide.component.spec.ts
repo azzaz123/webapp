@@ -203,7 +203,7 @@ describe('ItemCardWideComponent', () => {
 
         describe('and has visibility permissions', () => {
           beforeEach(() => {
-            permissionService.addPermission(PERMISSIONS.visibility);
+            permissionService.addPermission(PERMISSIONS.bumps);
           });
           it('should show item as bumped', () => {
             fixture.detectChanges();
@@ -215,7 +215,7 @@ describe('ItemCardWideComponent', () => {
 
         describe('and not has visibility permissions', () => {
           beforeEach(() => {
-            permissionService.removePermission(PERMISSIONS.visibility);
+            permissionService.removePermission(PERMISSIONS.bumps);
           });
           it('should show item as bumped', () => {
             fixture.detectChanges();
@@ -234,7 +234,7 @@ describe('ItemCardWideComponent', () => {
 
         describe('and has visibility permissions', () => {
           beforeEach(() => {
-            permissionService.addPermission(PERMISSIONS.visibility);
+            permissionService.addPermission(PERMISSIONS.bumps);
           });
           it('should show item as bumped and reserved', () => {
             const reservedPartialSrc = 'reserved';
@@ -248,7 +248,7 @@ describe('ItemCardWideComponent', () => {
 
         describe('and has not visibility permissions', () => {
           beforeEach(() => {
-            permissionService.removePermission(PERMISSIONS.visibility);
+            permissionService.removePermission(PERMISSIONS.bumps);
           });
           it('should show item as bumped and reserved', () => {
             const reservedPartialSrc = 'reserved';
@@ -287,7 +287,7 @@ describe('ItemCardWideComponent', () => {
 
         describe('and has visibility permissions', () => {
           beforeEach(() => {
-            permissionService.addPermission(PERMISSIONS.visibility);
+            permissionService.addPermission(PERMISSIONS.bumps);
           });
           it('should show item as country bumped', () => {
             fixture.detectChanges();
@@ -298,7 +298,7 @@ describe('ItemCardWideComponent', () => {
         });
         describe('and has not visibility permissions', () => {
           beforeEach(() => {
-            permissionService.removePermission(PERMISSIONS.visibility);
+            permissionService.removePermission(PERMISSIONS.bumps);
           });
           it('should not show item as country bumped', () => {
             fixture.detectChanges();

@@ -12,7 +12,7 @@
   <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured && !item?.purchases && !item?.notAvailable">
     <tsl-svg-icon src="/assets/icons/reserved.svg"></tsl-svg-icon>
   </span>
-  <ng-container *ngxPermissionsOnly="PERMISSIONS.visibility">
+  <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
     <span class="featured"
           *ngIf="item?.featured && !item?.purchases && !item?.urgent && !item?.sold && !item.flags.onhold"
           [ngClass]="item?.flags?.bump_type">

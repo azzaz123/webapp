@@ -51,7 +51,7 @@ describe('ItemImagesCarouselComponent', () => {
     describe('and is bumped or country bumped...', () => {
       describe('and has visibility permissions', () => {
         beforeEach(() => {
-          permissionService.addPermission(PERMISSIONS.visibility);
+          permissionService.addPermission(PERMISSIONS.bumps);
         });
         it('should show one flag on the right when is bumped', () => {
           component.bumpedFlag = BUMPED_ITEM_FLAG_TYPES.BUMPED;
@@ -73,7 +73,7 @@ describe('ItemImagesCarouselComponent', () => {
       });
       describe('and has not visibility permissions', () => {
         beforeEach(() => {
-          permissionService.removePermission(PERMISSIONS.visibility);
+          permissionService.removePermission(PERMISSIONS.bumps);
         });
         it('should show one flag on the right when is bumped', () => {
           component.bumpedFlag = BUMPED_ITEM_FLAG_TYPES.BUMPED;

@@ -8,11 +8,11 @@ export interface FeatureFlag {
 export enum FEATURE_FLAGS_ENUM {
   DELIVERY = 'web_delivery',
   STRIPE = 'web_stripe',
-  VISIBILITY = 'EnableVisibility',
+  BUMPS = 'EnableVisibility',
 }
 
-export const ACTIVE_DEV_FEATURE_FLAGS: FEATURE_FLAGS_ENUM[] = [FEATURE_FLAGS_ENUM.VISIBILITY];
+export const ACTIVE_DEV_FEATURE_FLAGS: FEATURE_FLAGS_ENUM[] = [FEATURE_FLAGS_ENUM.BUMPS];
 
 export const featurePermissionConfig: Partial<Record<FEATURE_FLAGS_ENUM, PERMISSIONS>> = {
-  [FEATURE_FLAGS_ENUM.VISIBILITY]: PERMISSIONS.visibility,
+  [FEATURE_FLAGS_ENUM.BUMPS]: PERMISSIONS.bumps,
 };

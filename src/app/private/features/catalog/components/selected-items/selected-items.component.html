@@ -55,7 +55,7 @@
 
           <div class="SelectedItems__feature d-none d-md-flex flex-column ml-4" *ngIf="!hideFeaturedButton || showActiveButton">
             <!-- Feature -->
-            <ng-container *ngxPermissionsOnly="PERMISSIONS.visibility">
+            <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
               <ng-container *ngIf="!hideFeaturedButton">
                 <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
                 [routerLink]="['/catalog/checkout']" 

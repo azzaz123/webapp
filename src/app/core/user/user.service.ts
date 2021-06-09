@@ -324,7 +324,7 @@ export class UserService {
 
   public initializeDefaultPermissions(): Observable<boolean> {
     this.permissionService.addPermission(DEFAULT_PERMISSIONS);
-    return this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).pipe(catchError(() => of(true)));
+    return this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.BUMPS).pipe(catchError(() => of(true)));
   }
 
   public initializeUserWithPermissions(): Observable<boolean> {
