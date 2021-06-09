@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
 import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
@@ -20,7 +20,7 @@ export const IBAN_LENGTH = 40;
   templateUrl: './bank-account.component.html',
   styleUrls: ['./bank-account.component.scss'],
 })
-export class BankAccountComponent implements OnInit {
+export class BankAccountComponent implements OnInit, OnDestroy {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
 
   public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
