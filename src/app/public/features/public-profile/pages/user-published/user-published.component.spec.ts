@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
@@ -26,13 +26,19 @@ import { ActivatedRoute } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { CatalogApiService } from '../../../../../api/catalog/catalog-api.service';
 
+@Component({
+  selector: 'tsl-test-component',
+  template: '<tsl-user-published></tsl-user-published>',
+})
+class TestComponent {}
+
 describe('UserPublishedComponent', () => {
   const publicItemCardListTag = 'tsl-public-item-card-list';
   const userHashId = 'npj9rd2p8oje';
   let component: UserPublishedComponent;
   let de: DebugElement;
   let el: HTMLElement;
-  let fixture: ComponentFixture<UserPublishedComponent>;
+  let fixture: ComponentFixture<TestComponent>;
   let catalogApiService: CatalogApiService;
   let userService: UserService;
   let publicProfileTrackingEventsService: PublicProfileTrackingEventsService;
@@ -40,7 +46,7 @@ describe('UserPublishedComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, ItemFavouritesModule, CatalogApiModule],
-      declarations: [UserPublishedComponent, ItemCardListComponentStub, EmptyStateComponent],
+      declarations: [TestComponent, UserPublishedComponent, ItemCardListComponentStub, EmptyStateComponent],
       providers: [
         UuidService,
         PublicUserApiService,
@@ -80,13 +86,13 @@ describe('UserPublishedComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserPublishedComponent);
+    fixture = TestBed.createComponent(TestComponent);
     catalogApiService = TestBed.inject(CatalogApiService);
     userService = TestBed.inject(UserService);
     publicProfileTrackingEventsService = TestBed.inject(PublicProfileTrackingEventsService);
-    component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
+    component = de.query(By.directive(UserPublishedComponent)).componentInstance;
   });
 
   it('should create', () => {
@@ -103,7 +109,7 @@ describe('UserPublishedComponent', () => {
 
       it('should ask for the items', () => {
         expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledTimes(1);
-        expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledWith(userHashId, undefined);
+        expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledWith(userHashId, true, undefined);
       });
 
       it('should set same amount of items received', () => {
@@ -119,7 +125,8 @@ describe('UserPublishedComponent', () => {
       });
 
       it('should ask for the items', () => {
-        expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledWith(userHashId, undefined);
+        expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledTimes(1);
+        expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledWith(userHashId, true, undefined);
       });
 
       it('should set an empty array', () => {

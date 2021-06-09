@@ -1,12 +1,12 @@
-import { UserInfoResponse, UserProInfo } from '../app/core/user/user-info.interface';
-import { Coordinate } from '../app/core/geolocation/address-response.interface';
-import { Counters, Ratings, ShippingCounterResponse, UserStats } from '../app/core/user/user-stats.interface';
-import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
-import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
-import { Image, UserExtrainfo, UserLocation, UserResponse, UserStatsOld, UserValidations } from '../app/core/user/user-response.interface';
+import { UserInfoResponse, UserProInfo } from '@core/user/user-info.interface';
+import { Coordinate } from '@core/geolocation/address-response.interface';
+import { Counters, Ratings, ShippingCounterResponse, UserStats } from '@core/user/user-stats.interface';
+import { UserData, UserProData, UserProDataNotifications } from '@core/user/user-data.interface';
+import { UnsubscribeReason } from '@core/user/unsubscribe-reason.interface';
+import { Image, UserExtrainfo, UserLocation, UserResponse, UserStatsOld, UserValidations } from '@core/user/user-response.interface';
 import { Observable, of } from 'rxjs';
-import { Item } from '../app/core/item/item';
-import { User } from '../app/core/user/user';
+import { Item } from '@core/item/item';
+import { User } from '@core/user/user';
 
 export const USER_ID = 'l1kmzn82zn3p';
 export const OTHER_USER_ID = 'qxkmav12tp8f';
@@ -304,6 +304,9 @@ export const MockUser: Partial<User> = {
 export const MockUserService = {
   user: MockUser,
   isLogged: true,
+  isCurrentUser(userId: string) {
+    return userId === MOCK_USER.id;
+  },
   get(userId: string) {
     return of(MOCK_USER);
   },

@@ -7,7 +7,7 @@ import {
   mappedCatalogItemFixture,
   mappedFavouritedCatalogItemFixture,
   userIdFixture,
-} from '../fixtures/catalog/catalog-item.fixture.spec';
+} from '../fixtures/catalog/catalog-item.fixtures';
 import { PaginatedList } from '../core/model/paginated-list.interface';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PUBLISHED_ITEMS_ENDPOINT } from './endpoints';

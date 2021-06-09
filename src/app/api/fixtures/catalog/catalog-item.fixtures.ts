@@ -1,5 +1,5 @@
 import { CatalogItem } from '../../catalog/dtos/catalog-item';
-import { catalogItemImageFixture, mappedCatalogItemImageFixture } from './catalog-image.fixtures.spec';
+import { catalogItemImageFixture, mappedCatalogItemImageFixture } from './catalog-image.fixtures';
 import { CatalogItemPrice } from '../../catalog/dtos/catalog-item-price';
 import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../catalog/dtos/catalog-item-attribute';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';

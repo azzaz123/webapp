@@ -7,7 +7,7 @@ import {
   mappedCatalogItemFixture,
   favouriteIdsFixture,
   mappedFavouritedCatalogItemFixture,
-} from '../../fixtures/catalog/catalog-item.fixture.spec';
+} from '../../fixtures/catalog/catalog-item.fixtures';
 
 describe('CatalogImageMapper', () => {
   describe('when mapping from catalog item dto to item card domain', () => {
