@@ -17,11 +17,15 @@ export class CatalogApiService {
 
   // TODO: For now this service maps the response to ItemCard model, as it is currently the common model on the public domain. We need to
   //       port this to an "Item" model once we have a decent definition of the item domain.
-  public getUserPublishedItems(userId: string, checkFavourites: boolean, nextId?: string): Observable<PaginatedList<ItemCard>> {
+  public getUserPublishedItems(
+    userId: string,
+    checkFavourites: boolean,
+    paginationParameter?: string
+  ): Observable<PaginatedList<ItemCard>> {
     let params = new HttpParams();
 
-    if (nextId) {
-      params = params.append(ACCEPTED_PARAMETERS.SINCE, nextId);
+    if (paginationParameter) {
+      params = params.append(ACCEPTED_PARAMETERS.SINCE, paginationParameter);
     }
 
     return this.httpClient
