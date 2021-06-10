@@ -1,10 +1,10 @@
-import { ItemCard, ItemCardWideCars } from '@public/core/interfaces/item-card.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { SearchResponse } from '../api/search-response.interface';
 import { SearchItemImageMapper } from '../models/search-item-image-mapper.response';
-import { SearchCarResponse } from './search-car-response';
+import { SearchCarResponse, SearchItemCarResponse } from './search-car-response';
 
-export function SearchItemCarResponseMapper({search_objects}: SearchResponse<SearchCarResponse>): ItemCardWideCars[] {
-  return search_objects.map(({id, content}: SearchCarResponse) => ({
+export function SearchItemCarResponseMapper({ search_objects }: SearchResponse<SearchCarResponse>): ItemCard[] {
+  return search_objects.map(({ id, content }: SearchCarResponse) => ({
     id,
     title: content.title,
     description: content.storytelling,
@@ -32,12 +32,29 @@ export function SearchItemCarResponseMapper({search_objects}: SearchResponse<Sea
     },
     categoryId: content.category_id,
     saleConditions: null,
-    specs: {
-      engine: content.engine,
-      gearbox: content.gearbox,
-      horsepower: content.horsepower,
-      year: content.year
-    }
+    specs: SearchItemCarSpecsMapper(content)
   }));
+}
+
+export function SearchItemCarSpecsMapper(content: SearchItemCarResponse): string[] {
+  const specs: string[] = [];
+  const { engine, gearbox, horsepower, year, km } = content;
+
+  if (engine) {
+    specs.push(engine);
+  }
+  if (gearbox) {
+    specs.push(gearbox);
+  }
+  if (horsepower) {
+    specs.push(`${horsepower} cv`);
+  }
+  if (year) {
+    specs.push(`${year}`);
+  }
+  if (km) {
+    specs.push(`${km} km`);
+  }
+  return specs;
 }
 

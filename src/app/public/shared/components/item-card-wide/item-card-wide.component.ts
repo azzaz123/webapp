@@ -10,7 +10,6 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 })
 export class ItemCardWideComponent {
   @Input() item: ItemCard;
-  @Input() itemExtraInfo: string[];
   @Input() showFavourite = true;
 
   @Output() toggleFavourite: EventEmitter<void> = new EventEmitter<void>();
