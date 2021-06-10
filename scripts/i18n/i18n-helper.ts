@@ -5,7 +5,8 @@ const https = require('https');
 
 enum LOCALE {
   SPANISH = 'es',
-  ENGLISH = 'en'
+  ENGLISH = 'en',
+  ITALIAN = 'it'
 }
 
 interface PhraseLocale {
@@ -81,6 +82,9 @@ class I18nHelper {
   }, {
     language: LOCALE.SPANISH,
     file: 'src/locale/messages.es.json'
+  }, {
+    language: LOCALE.ITALIAN,
+    file: 'src/locale/messages.it.json'
   }];
 
   private originalLanguage = LOCALE.ENGLISH;

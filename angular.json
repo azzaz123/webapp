@@ -13,6 +13,10 @@
           "es": {
             "translation": "src/locale/messages.es.json",
             "baseHref": ""
+          },
+          "it": {
+            "translation": "src/locale/messages.it.json",
+            "baseHref": ""
           }
         }
       },
