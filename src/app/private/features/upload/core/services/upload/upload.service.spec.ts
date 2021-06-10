@@ -31,9 +31,6 @@ describe('UploadService', () => {
           provide: AccessTokenService,
           useValue: {
             accessToken: 'thetoken',
-            getTokenSignature() {
-              return 'thesignature';
-            },
           },
         },
         {

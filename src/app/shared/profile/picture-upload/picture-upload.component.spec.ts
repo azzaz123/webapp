@@ -43,9 +43,6 @@ describe('PictureUploadComponent', () => {
             provide: AccessTokenService,
             useValue: {
               accessToken: 'thetoken',
-              getTokenSignature() {
-                return 'thesignature';
-              },
             },
           },
           {

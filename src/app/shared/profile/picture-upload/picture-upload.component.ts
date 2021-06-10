@@ -68,8 +68,6 @@ export class PictureUploadComponent implements OnInit {
   private uploadPicture(): void {
     this.isLoading = true;
     const url = 'api/v3/users/me/image';
-    const timestamp = new Date().getTime();
-    const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
     const headers = {
       [AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
     };

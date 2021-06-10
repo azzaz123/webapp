@@ -31,9 +31,6 @@ describe('FeatureflagService', () => {
           useValue: {
             accessToken: 'ACCESS_TOKEN',
           },
-          getTokenSignature() {
-            return 'thesignature';
-          },
         },
       ],
     });

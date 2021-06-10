@@ -158,9 +158,6 @@ export class UploadService {
   }
 
   private getUploadHeaders(url: string, additionalHeaders?: any): any {
-    const timestamp = Date.now();
-    const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
-
     return {
       ...additionalHeaders,
       [AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
