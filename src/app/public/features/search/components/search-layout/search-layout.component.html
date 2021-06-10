@@ -8,7 +8,7 @@
     <div class="col">
       <ng-content select="[main]"></ng-content>
     </div>
-    <div *ngIf="shouldRenderRightColumn | async" class="col d-none d-xl-block SearchLayout__fixed-width-column">
+    <div *ngIf="shouldRenderRightColumn | async" class="col d-none d-xl-flex SearchLayout__fixed-width-column">
       <ng-content select="[right]"></ng-content>
     </div>
   </div>
