@@ -29,5 +29,12 @@ function mapCatalogImageToImage(image: CatalogItemImage): Image {
 }
 
 function forceHttps(url: string): string {
-  return url.replace('http://', 'https://');
+  // TODO: This is a dirty trick to replace the protocol of the images from HTTP to HTTPS
+  //       and should be changed using a better approach
+
+  if (typeof url === 'string' && url.includes('http://')) {
+    return url.replace('http://', 'https://');
+  }
+
+  return url;
 }
