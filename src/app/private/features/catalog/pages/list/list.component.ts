@@ -96,7 +96,6 @@ export class ListComponent implements OnInit, OnDestroy {
   public showTryProSlot: boolean;
   public hasTrialAvailable: boolean;
   private subscriptions: SubscriptionsResponse[];
-  private permissions: NgxPermissionsObject;
   private componentSubscriptions: Subscription[] = [];
   public readonly PERMISSIONS = PERMISSIONS;
 
@@ -125,13 +124,8 @@ export class ListComponent implements OnInit, OnDestroy {
     return this.page * this.pageSize;
   }
 
-  private subscribePermissions(): void {
-    this.componentSubscriptions.push(this.permissionService.permissions$.subscribe((permissions) => (this.permissions = permissions)));
-  }
-
   ngOnInit() {
     this.getUserInfo();
-    this.subscribePermissions();
     this.subscriptionSelectedNavLinks = [
       { id: STATUS.ACTIVE, display: this.i18n.translate(TRANSLATION_KEY.ACTIVE) },
       {
@@ -306,19 +300,21 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private showBumpSuggestionModal(itemId: string): void {
-    if (this.permissions[PERMISSIONS.bumps]) {
-      this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
-        windowClass: 'modal-standard',
-      });
-      this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
-        this.bumpSuggestionModalRef = null;
-        if (result?.redirect) {
-          this.router.navigate(['catalog/checkout', { itemId }]);
-        }
-      });
-    } else {
-      this.errorService.i18nSuccess(TRANSLATION_KEY.TOAST_PRODUCT_CREATED);
-    }
+    this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
+      if (permissions[PERMISSIONS.bumps]) {
+        this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
+          windowClass: 'modal-standard',
+        });
+        this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
+          this.bumpSuggestionModalRef = null;
+          if (result?.redirect) {
+            this.router.navigate(['catalog/checkout', { itemId }]);
+          }
+        });
+      } else {
+        this.errorService.i18nSuccess(TRANSLATION_KEY.TOAST_PRODUCT_CREATED);
+      }
+    });
   }
 
   private getCheapestProductPrice(modalRef: NgbModalRef, itemId: string, creditInfo: CreditInfo): void {
