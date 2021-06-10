@@ -21,7 +21,7 @@
                 [expireDate]="subscriptionStripeCard.expire_date"
                 [hideEdit]="!subscriptionStripeCard.invoices_default"
                 (changeCardClick)="addNewSubscriptionCard()"
-                (deleteCardClick)="handleDeleteCard(subscriptionStripeCard)">
+                (deleteCardClick)="openDeleteCardModal(subscriptionStripeCard)">
               </tsl-credit-card-info>
             </div>
             <div class="col-12 col-md-6"> 
@@ -43,7 +43,7 @@
               [numberCard]="stripeCard.number"
               [expireDate]="stripeCard.expire_date"
               [hideEdit]="!stripeCard.invoices_default"
-              (deleteCardClick)="handleDeleteCard(stripeCard)"
+              (deleteCardClick)="openDeleteCardModal(stripeCard)"
               >
             </tsl-credit-card-info>
           </div>

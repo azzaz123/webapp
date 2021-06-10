@@ -40,7 +40,7 @@ export class StripeCardsComponent implements OnInit {
     this.getAllCards();
   }
 
-  public handleDeleteCard(financialCard: FinancialCard): void {
+  public openDeleteCardModal(financialCard: FinancialCard): void {
     if (financialCard.invoices_default) {
       this.openInvoicesDefaultModalAndDeleteCard(financialCard.id);
     } else {

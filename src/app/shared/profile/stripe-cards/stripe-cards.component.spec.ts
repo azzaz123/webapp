@@ -139,7 +139,7 @@ describe('StripeCardsComponent', () => {
       beforeEach(() => {
         spyOn(stripeService, 'deleteCard').and.returnValue(of(null));
 
-        component.handleDeleteCard(STRIPE_CARD_OPTION_SUBSCRIPTION);
+        component.openDeleteCardModal(STRIPE_CARD_OPTION_SUBSCRIPTION);
       });
 
       it('should open NoCardModalComponent modal', fakeAsync(() => {
@@ -177,7 +177,7 @@ describe('StripeCardsComponent', () => {
       beforeEach(() => {
         spyOn(stripeService, 'deleteCard').and.returnValue(throwError('network error'));
 
-        component.handleDeleteCard(STRIPE_CARD_OPTION_SUBSCRIPTION);
+        component.openDeleteCardModal(STRIPE_CARD_OPTION_SUBSCRIPTION);
       });
 
       it('should open NoCardModalComponent modal', fakeAsync(() => {
@@ -213,7 +213,7 @@ describe('StripeCardsComponent', () => {
       beforeEach(() => {
         spyOn(stripeService, 'deleteCard').and.returnValue(of(null));
 
-        component.handleDeleteCard(STRIPE_CARD_OPTION);
+        component.openDeleteCardModal(STRIPE_CARD_OPTION);
       });
 
       it('should open NoCardModalComponent modal', fakeAsync(() => {
@@ -249,7 +249,7 @@ describe('StripeCardsComponent', () => {
       beforeEach(() => {
         spyOn(stripeService, 'deleteCard').and.returnValue(throwError('network error'));
 
-        component.handleDeleteCard(STRIPE_CARD_OPTION);
+        component.openDeleteCardModal(STRIPE_CARD_OPTION);
       });
 
       it('should open ConfirmationModalComponent modal', fakeAsync(() => {
