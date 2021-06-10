@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { environment } from '@environments/environment';
 
-export const AUTHORIZATION_HEADER_NAME = 'Authorization';
 export const TOKEN_TIMESTAMP_HEADER_NAME = 'Timestamp';
 export const TOKEN_SIGNATURE_HEADER_NAME = 'X-Signature';
 
@@ -19,11 +18,6 @@ export class TokenInterceptor implements HttpInterceptor {
     }
     {
       const setHeaders: any = {};
-
-      if (!request.headers.has(AUTHORIZATION_HEADER_NAME) && !!this.accessTokenService.accessToken) {
-        setHeaders[AUTHORIZATION_HEADER_NAME] = `Bearer ${this.accessTokenService.accessToken}`;
-      }
-
       if (request.url.indexOf('v3') !== -1) {
         const timestamp = new Date().getTime();
         const endpoint = request.url.replace(environment.baseUrl, '');

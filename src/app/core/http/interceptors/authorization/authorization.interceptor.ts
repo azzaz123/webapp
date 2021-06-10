@@ -3,7 +3,8 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
 import { AccessTokenService } from '@core/http/access-token.service';
-import { AUTHORIZATION_HEADER_NAME } from '@core/http/interceptors';
+
+export const AUTHORIZATION_HEADER_NAME = 'Authorization';
 
 @Injectable()
 export class AuthorizationInterceptor implements HttpInterceptor {

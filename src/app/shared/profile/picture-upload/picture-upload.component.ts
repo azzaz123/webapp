@@ -1,8 +1,4 @@
-import {
-  AUTHORIZATION_HEADER_NAME,
-  TOKEN_SIGNATURE_HEADER_NAME,
-  TOKEN_TIMESTAMP_HEADER_NAME,
-} from '@core/http/interceptors/token/token.interceptor';
+import { TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from '@core/http/interceptors/token/token.interceptor';
 import { Component, Input, OnInit } from '@angular/core';
 import { User } from '@core/user/user';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -15,6 +11,7 @@ import { filter, finalize, take } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { AUTHORIZATION_HEADER_NAME } from '@core/http/interceptors';
 
 @Component({
   selector: 'tsl-picture-upload',
