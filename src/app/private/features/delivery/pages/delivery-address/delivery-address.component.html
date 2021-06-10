@@ -3,29 +3,30 @@
     <form class="col" *ngIf="!loading; else loadingState" [formGroup]="deliveryAddressForm" (submit)="onSubmit()">
       <div class="row">
         <div class="col-md-11 offset-md-1">
-          <h3 *ngIf="isNewForm" i18n="@@address_view_all_users_top_bar_add_title">Add your address</h3>
-          <h3 *ngIf="!isNewForm" i18n="@@address_view_all_users_top_bar_edit_title">Edit your address</h3>
+          <h3 i18n="@@web_address_view_all_users_top_bar_add_title">Add your address</h3>
         </div>
       </div>
       <div class="row" *ngIf="whereUserComes === PREVIOUS_PAGE.PAYVIEW_PAY">
         <div class="col-md-11 offset-md-1">
-          <span i18n="@@address_view_all_users_form_plain_text_sender_need_explanation_text" class="DeliveryAddress__payViewInfoMessage">We need your address to be the sender in case of return</span>
+          <span i18n="@@web_address_view_all_users_form_plain_text_sender_need_explanation_text" class="DeliveryAddress__payViewInfoMessage">We need your address to be the sender in case of return</span>
         </div>
       </div>
       <div class="form-group row align-items-center mt-2">
-        <label for="country_iso_code" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_sheet_country_selection_title">Country</label>
+        <label for="country_iso_code" class="col-sm-12 col-md-5" i18n="@@web_address_view_all_users_form_textfield_country_label">Country</label>
         <div class="col-sm-12 col-md-5">
-          <tsl-dropdown i18n-placeholder="@@address_view_all_users_sheet_country_selection_title" class="form-control" formControlName="country_iso_code" id="country_iso_code" #country_iso_code [isLoading]="!isCountryEditable" [options]="countries" [disabled]="countries?.length <= 1" (click)="handleShowWarningCountry()">
+          <tsl-dropdown i18n-placeholder="@@web_address_view_all_users_form_textfield_country_label" class="form-control" formControlName="country_iso_code" id="country_iso_code" #country_iso_code [isLoading]="!isCountryEditable" [options]="countries" [disabled]="countries?.length <= 1" (click)="handleShowWarningCountry()">
           </tsl-dropdown>
         </div>
       </div>
       <div class="form-group row align-items-center">
-        <label for="full_name" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_name_label">Name and surname</label>
+        <label for="full_name" class="col-sm-12 col-md-5" i18n="@@web_address_view_all_users_form_textfield_name_label">Name and surname</label>
         <div class="col-sm-12 col-md-5">
           <input type="text" class="form-control" id="full_name" formControlName="full_name"/>
           <div *ngIf="deliveryAddressForm.controls.full_name.invalid && deliveryAddressForm.pending" class="DeliveryAddress__message DeliveryAddress__message--error">
             <ng-container *ngIf="deliveryAddressForm.controls.full_name.errors as fullNameError">
-              <span *ngIf="fullNameError.required" i18n="@@address_view_all_users_form_textfield_name_missing_info_inline_error">The "name amb surname" field can't be empty</span>
+              <span *ngIf="fullNameError.required" i18n="@@web_address_view_all_users_form_textfield_name_missing_info_inline_error">
+                The name field can't be empty
+              </span>
               <span *ngIf="!fullNameError.required">
                 {{formErrorMessages.full_name}}
               </span>
@@ -34,12 +35,14 @@
         </div>
       </div>
       <div class="form-group row align-items-center">
-        <label for="street" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_street_label">Street name and number</label>
+        <label for="street" class="col-sm-12 col-md-5" i18n="@@web_address_view_all_users_form_textfield_street_label">Street and number</label>
         <div class="col-sm-12 col-md-5">
           <input type="text" class="form-control" id="street" formControlName="street" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.STREET"/>
           <div *ngIf="deliveryAddressForm.controls.street.invalid && deliveryAddressForm.pending" class="DeliveryAddress__message DeliveryAddress__message--error">
             <ng-container *ngIf="deliveryAddressForm.controls.street.errors as streetError">
-              <span *ngIf="streetError.required" i18n="@@address_view_all_users_form_textfield_street_missing_info_inline_error">The "address" field can't be empty</span>
+              <span *ngIf="streetError.required" i18n="@@web_address_view_all_users_form_textfield_street_missing_info_inline_error">
+                The address field can't be empty
+              </span>
               <span *ngIf="!streetError.required">
                 {{formErrorMessages.street}}
               </span>
@@ -48,7 +51,7 @@
         </div>
       </div>
       <div class="form-group row align-items-center">
-        <label for="flat_and_floor" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_door_label">Floor and door number</label>
+        <label for="flat_and_floor" class="col-sm-12 col-md-5" i18n="@@web_address_view_all_users_form_textfield_door_label">Floor and door number</label>
         <div class="col-sm-12 col-md-5">
           <input type="text" class="form-control" id="flat_and_floor" formControlName="flat_and_floor" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.FLAT_AND_FLOOR"/>
           <div *ngIf="deliveryAddressForm.controls.flat_and_floor.invalid && deliveryAddressForm.pending" class="DeliveryAddress__message DeliveryAddress__message--error">
@@ -57,7 +60,7 @@
         </div>
       </div>
       <div class="form-group row align-items-center">
-        <label for="postal_code" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_postalcode_label">ZIP code</label>
+        <label for="postal_code" class="col-sm-12 col-md-5" i18n="@@web_address_view_all_users_form_textfield_postalcode_label">Postal code</label>
         <div class="col-sm-12 col-md-5">
           <input type="text"
             [ngClass]="{'DeliveryAddress__input DeliveryAddress__input--invalid': deliveryAddressForm.controls.postal_code.invalid && deliveryAddressForm.controls.postal_code.dirty}" 
@@ -66,7 +69,9 @@
             tslNumbersOnly/>
           <div *ngIf="deliveryAddressForm.controls.postal_code.invalid && deliveryAddressForm.controls.postal_code.dirty" class="DeliveryAddress__message DeliveryAddress__message--error">
             <ng-container *ngIf="deliveryAddressForm.controls.postal_code.errors as postalCodeError">
-              <span *ngIf="postalCodeError.required" i18n="@@address_view_all_users_form_textfield_postalcode_missing_info_inline_error">The "ZIP code" field can't be empty</span>
+              <span *ngIf="postalCodeError.required" i18n="@@web_address_view_all_users_form_textfield_postalcode_missing_info_inline_error">
+                The ZIP code field can't be empty
+              </span>
               <span *ngIf="!postalCodeError.required">
                 {{formErrorMessages.postal_code}}
               </span>
@@ -75,22 +80,26 @@
         </div>
       </div>
       <div class="form-group row align-items-center">
-        <label for="city" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_city_label">City</label>
+        <label for="city" class="col-sm-12 col-md-5" i18n="@@web_address_view_all_users_form_textfield_city_label">City</label>
         <div class="col-sm-12 col-md-5">
-          <tsl-dropdown i18n-placeholder="@@address_view_all_users_form_textfield_city_label" class="form-control" formControlName="city" id="city" [options]="cities" [disabled]="cities?.length <= 1">
+          <tsl-dropdown i18n-placeholder="@@web_address_view_all_users_form_textfield_city_label" class="form-control" formControlName="city" id="city" [options]="cities" [disabled]="cities?.length <= 1">
           </tsl-dropdown>
           <div *ngIf="deliveryAddressForm.controls.city.invalid && deliveryAddressForm.pending" class="DeliveryAddress__message DeliveryAddress__message--error">
-            <span *ngIf="deliveryAddressForm.controls.city.errors.required" i18n="@@address_view_all_users_form_textfield_city_missing_info_inline_error">The "city" field can't be empty</span>
+            <span *ngIf="deliveryAddressForm.controls.city.errors.required" i18n="@@web_address_view_all_users_form_textfield_city_missing_info_inline_error">
+              The city field can't be empty
+            </span>
           </div>
         </div>
       </div>
       <div class="form-group row align-items-center">
-        <label for="phone_number" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_phone_label">Phone number</label>
+        <label for="phone_number" class="col-sm-12 col-md-5" i18n="@@web_address_view_all_users_form_textfield_phone_label">Phone number</label>
         <div class="col-sm-12 col-md-5">
           <input type="tel" class="form-control" id="phone_number" formControlName="phone_number" [maxLength]="DELIVERY_INPUTS_MAX_LENGTH.PHONE_NUMBER"/>
           <div *ngIf="deliveryAddressForm.controls.phone_number.invalid && deliveryAddressForm.pending" class="DeliveryAddress__message DeliveryAddress__message--error">
             <ng-container *ngIf="deliveryAddressForm.controls.phone_number.errors as phoneNumberError">
-              <span *ngIf="phoneNumberError.required" i18n="@@address_view_all_users_form_textfield_phone_missing_info_inline_error">The "phone number" field can't be empty</span>
+              <span *ngIf="phoneNumberError.required" i18n="@@web_address_view_all_users_form_textfield_phone_missing_info_inline_error">
+                The contact number field can't be empty
+              </span>
               <span *ngIf="!phoneNumberError.required">
                 {{formErrorMessages.phone_number}}
               </span>
@@ -100,14 +109,13 @@
       </div>
       <div class="row">
         <div class="col text-center d-flex flex-column">
-          <span i18n="@@address_view_all_users_form_plain_text_phone_number_need_explanation_text" class="DeliveryAddress__phoneInfoMessage mb-4">We will share your information with the courier company to manage your shipments. To learn more, please check the Terms of use and Privacy policies of Wallapop.</span>
+          <span i18n="@@web_address_view_all_users_form_plain_text_phone_number_need_explanation_text" class="DeliveryAddress__phoneInfoMessage mb-4">Add a phone number to receive free SMS in case we need to inform you about the status of your shipment.</span>
           <div class="d-flex justify-content-center">
-            <tsl-button [type]="'submit'" class="col-md-2 col-7" [ngClass]="{'col-12': isNewForm || comesFromPayView}" [loading]="loadingButton" className="btn-primary btn-block" i18n="@@address_view_all_users_bottom_bar_save_button">Save</tsl-button>
+            <tsl-button [type]="'submit'" class="col-md-2 col-7" [ngClass]="{'col-12': isNewForm || comesFromPayView}" [loading]="loadingButton" className="btn-primary btn-block" i18n="@@web_address_view_all_users_bottom_bar_save_button">Save</tsl-button>
             <tsl-button
-              *ngIf="!isNewForm && !comesFromPayView"
-              i18n="@@delivery_delete_address"
-              class="col-md-2 col-5" className="btn btn-link btn-link--negative" id="deleteButton"
-              (click)="deleteForm()">Delete</tsl-button>
+            *ngIf="!isNewForm && !comesFromPayView"
+            class="col-md-2 col-5" className="btn btn-link btn-link--negative" id="deleteButton"
+            (click)="deleteForm()">Delete</tsl-button>
           </div>
         </div>
       </div>
