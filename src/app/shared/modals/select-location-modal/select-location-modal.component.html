@@ -12,7 +12,7 @@
     <form class="d-flex flex-column w-100" [formGroup]="locationForm" (submit)="onSubmit()">
       <tsl-location-box [form]="locationForm" name="location" [updateLocation]="false" [disableFocus]="true"
         [disableTitle]="true" [disableFooter]="true" [disablePopover]="true"></tsl-location-box>
-      <tsl-button class="mt-3" className="btn-primary btn-modal-primary btn--width" [disabled]="locationForm.get('location').get('address').invalid" (click)="onSubmit()"
+      <tsl-button class="mt-3" className="btn-primary btn-modal-primary btn--width" [disabled]="locationForm.invalid" (click)="onSubmit()"
         i18n="@@add_user_location_requirement_seller_modal_save_button" [loading]="isLoading">Save</tsl-button>
     </form>
   </div>

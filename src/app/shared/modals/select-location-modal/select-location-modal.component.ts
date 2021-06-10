@@ -6,6 +6,8 @@ import { OnInit } from '@angular/core';
 import { UserService } from '@core/user/user.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { format } from 'path';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-select-location-modal',
@@ -24,6 +26,10 @@ export class LocationSelectorModal implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.buildForm();
+  }
+
+  private buildForm(): void {
     this.locationForm = this.fb.group({
       location: this.fb.group({
         address: ['', [Validators.required]],
@@ -34,7 +40,7 @@ export class LocationSelectorModal implements OnInit {
   }
 
   public onSubmit(): void {
-    if (this.isLoading) {
+    if (this.isLoading || this.locationForm.invalid) {
       return;
     }
     this.isLoading = true;
@@ -48,17 +54,18 @@ export class LocationSelectorModal implements OnInit {
   }
 
   private saveLocation(newLocation: Coordinate): void {
-    this.userService.updateLocation(newLocation).subscribe(
-      (newUserLocation) => {
-        this.isLoading = false;
-        this.userService.user.location = newUserLocation;
-        this.userService.updateSearchLocationCookies(newLocation);
-        this.activeModal.close(true);
-      },
-      () => {
-        this.isLoading = false;
-        this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
-      }
-    );
+    this.userService
+      .updateLocation(newLocation)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        (newUserLocation) => {
+          this.userService.user.location = newUserLocation;
+          this.userService.updateSearchLocationCookies(newLocation);
+          this.activeModal.close(true);
+        },
+        () => {
+          this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+        }
+      );
   }
 }
