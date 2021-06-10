@@ -52,9 +52,11 @@
       </div>
     </div>
     <div class="graphs-container graph-info" *ngIf="!item.featured && !item.flags.expired && !item.flags.onhold">
+      <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
       <h2 i18n="@@web_stats_components_item_row_341">Get your listing in shape</h2>
       <p class="note" i18n="@@web_stats_components_item_row_342">Improve the stats of your listing. The more visits you get, the more you sell!</p>
       <tsl-button className="btn-primary btn-block" *ngIf="price" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n="@@web_stats_components_item_row_343">Feature it now from {{price | customCurrency}}</tsl-button>
+      </ng-container>
     </div>
     <div class="graphs-container graph-info reactivate" *ngIf="item.flags.expired">
       <h2 i18n="@@web_stats_components_item_row_344">Reactivate your product</h2>
@@ -65,9 +67,11 @@
       <p class="note" i18n="@@web_stats_components_item_row_347">Publish your product to see your stats and so that other users can contact you.</p>
     </div>
     <div class="graphs-container graph-info" *ngIf="item.featured">
+      <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
       <h2 i18n="@@web_stats_components_item_row_348">This product is Featured</h2>
       <p class="note" i18n="@@web_stats_components_item_row_349">You will get more views, chats and more interested people.</p>
       <p class="bump-note" i18n="@@web_stats_components_item_row_350">Your feature ends on {{item.bumpExpiringDate | date:publishedItemDateFormat}}</p>
+      </ng-container>
     </div>
   </div>
 </div>
