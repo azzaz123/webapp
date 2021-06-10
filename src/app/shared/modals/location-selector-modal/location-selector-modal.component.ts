@@ -16,6 +16,7 @@ import { finalize } from 'rxjs/operators';
 export class LocationSelectorModal implements OnInit {
   public locationForm: FormGroup;
   public isLoading: boolean;
+  public isShownMap = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -26,6 +27,14 @@ export class LocationSelectorModal implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+    this.showMap();
+  }
+
+  private showMap(): void {
+    setTimeout(() => {
+      // To prevent here map wider than modal width
+      this.isShownMap = true;
+    });
   }
 
   private buildForm(): void {
