@@ -34,13 +34,13 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { DELIVERY_PATHS } from '../../delivery-routing-constants';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
-import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { PostalCodeIsNotAllowedError } from '../../errors/classes/postal-codes';
 import { FlatAndFloorTooLongError, MobilePhoneNumberIsInvalidError, UniqueAddressByUserError } from '../../errors/classes/address';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
+import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-only.directive';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -60,7 +60,7 @@ describe('DeliveryAddressComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, NgbModalModule, HttpClientTestingModule],
-      declarations: [DeliveryAddressComponent, ProfileFormComponent, DropdownComponent],
+      declarations: [DeliveryAddressComponent, ProfileFormComponent, DropdownComponent, NumbersOnlyDirective],
       providers: [
         FormBuilder,
         I18nService,
@@ -452,21 +452,17 @@ describe('DeliveryAddressComponent', () => {
         });
 
         it('should open the change country confirmation modal', () => {
-          spyOn(modalService, 'open').and.returnValue({
-            result: Promise.resolve(),
-          });
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
 
           fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();
 
-          expect(modalService.open).toHaveBeenCalledWith(ChangeCountryConfirmationModalComponent);
+          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
         });
 
         describe('when we click on accept on the change country confirmation modal ', () => {
           beforeEach(() => {
             spyOn(component.countriesDropdown, 'open');
-            spyOn(modalService, 'open').and.returnValue({
-              result: Promise.resolve(true),
-            });
+            spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
           });
 
           it('should make the country editable and open the dropdown again', fakeAsync(() => {
@@ -481,13 +477,12 @@ describe('DeliveryAddressComponent', () => {
         describe('when we click on cancel on the change country confirmation modal ', () => {
           beforeEach(() => {
             spyOn(component.countriesDropdown, 'open');
-            spyOn(modalService, 'open').and.returnValue({
-              result: Promise.resolve(false),
-            });
+            spyOn(modalService, 'open').and.returnValue({ result: Promise.reject(), componentInstance: { ConfirmationModalComponent } });
+
+            fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();
           });
 
           it('should NOT make the country editable and should NOT open the countries dropdown', fakeAsync(() => {
-            fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();
             tick();
 
             expect(component.isCountryEditable).toBe(false);
