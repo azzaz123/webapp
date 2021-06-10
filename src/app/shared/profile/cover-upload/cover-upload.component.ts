@@ -1,4 +1,3 @@
-import { TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from '@core/http/interceptors/token/token.interceptor';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { User } from '@core/user/user';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -77,8 +76,6 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
     const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
     const headers = {
       [AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
-      [TOKEN_SIGNATURE_HEADER_NAME]: signature,
-      [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString(),
     };
 
     const uploadinput: UploadInput = {

@@ -1,4 +1,3 @@
-import { TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from '@core/http/interceptors/token/token.interceptor';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PictureUploadComponent } from './picture-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -78,8 +77,6 @@ describe('PictureUploadComponent', () => {
       });
       const headers = {
         [AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
-        [TOKEN_SIGNATURE_HEADER_NAME]: 'thesignature',
-        [TOKEN_TIMESTAMP_HEADER_NAME]: `${TIMESTAMP}`,
       };
 
       fixture.detectChanges();

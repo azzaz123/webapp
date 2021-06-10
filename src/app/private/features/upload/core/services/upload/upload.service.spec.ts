@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { AUTHORIZATION_HEADER_NAME } from '@core/http/interceptors';
-import { TOKEN_SIGNATURE_HEADER_NAME, TOKEN_TIMESTAMP_HEADER_NAME } from '@core/http/interceptors/token/token.interceptor';
 import { ITEM_TYPES } from '@core/item/item';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { ItemService } from '@core/item/item.service';
@@ -22,8 +21,6 @@ describe('UploadService', () => {
   const TIMESTAMP = 123456789;
   const headers = {
     [AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
-    [TOKEN_SIGNATURE_HEADER_NAME]: 'thesignature',
-    [TOKEN_TIMESTAMP_HEADER_NAME]: `${TIMESTAMP}`,
   };
 
   beforeEach(() => {
