@@ -51,21 +51,23 @@
         </a>
       </div>
     </tsl-header>
-    <tsl-try-pro-slot *ngIf="showTryProSlot"
-      class="d-md-block"
-      [hasTrialAvailable]="hasTrialAvailable"
-      (clickCTA)="onClickTryProSlot()"
-      (close)="onCloseTryProSlot()"
-    >
-    </tsl-try-pro-slot>
-    <tsl-subscriptions-slots-list
-      class="d-md-block"
-      [subscriptionsSlots]="subscriptionSlots"
-      [selectedSubscriptionSlot]="selectedSubscriptionSlot"
-      (subscriptionSlotSelected)="onSelectSubscriptionSlot($event)"
-    >
-    </tsl-subscriptions-slots-list>
-
+    <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+      <tsl-try-pro-slot *ngIf="showTryProSlot"
+        class="d-md-block"
+        [hasTrialAvailable]="hasTrialAvailable"
+        (clickCTA)="onClickTryProSlot()"
+        (close)="onCloseTryProSlot()"
+        >
+      </tsl-try-pro-slot>
+      <tsl-subscriptions-slots-list
+        class="d-md-block"
+        [subscriptionsSlots]="subscriptionSlots"
+        [selectedSubscriptionSlot]="selectedSubscriptionSlot"
+        (subscriptionSlotSelected)="onSelectSubscriptionSlot($event)"
+        >
+      </tsl-subscriptions-slots-list>
+  </ng-container>
+  
     <tsl-nav-links
       [searchPlaceholder]="searchPlaceholder"
       [showSearchInput]="selectedSubscriptionSlot"
