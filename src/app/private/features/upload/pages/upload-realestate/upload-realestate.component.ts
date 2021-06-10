@@ -33,7 +33,7 @@ import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { forkJoin, Observable, of } from 'rxjs';
-import { LocationSelectorModal } from '@shared/modals/select-location-modal/select-location-modal.component';
+import { LocationSelectorModal } from '@shared/modals/location-selector-modal/location-selector-modal.component';
 
 @Component({
   selector: 'tsl-upload-realestate',

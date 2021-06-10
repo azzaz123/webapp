@@ -6,13 +6,12 @@ import { OnInit } from '@angular/core';
 import { UserService } from '@core/user/user.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { format } from 'path';
 import { finalize } from 'rxjs/operators';
 
 @Component({
-  selector: 'tsl-select-location-modal',
-  templateUrl: './select-location-modal.component.html',
-  styleUrls: ['./select-location-modal.component.scss'],
+  selector: 'tsl-location-selector-modal',
+  templateUrl: './location-selector-modal.component.html',
+  styleUrls: ['./location-selector-modal.component.scss'],
 })
 export class LocationSelectorModal implements OnInit {
   public locationForm: FormGroup;

@@ -4,7 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ButtonComponent } from '@shared/button/button.component';
-import { LocationSelectorModal } from './select-location-modal.component';
+import { LocationSelectorModal } from './location-selector-modal.component';
 import { UserService } from '@core/user/user.service';
 import { FormBuilder } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
