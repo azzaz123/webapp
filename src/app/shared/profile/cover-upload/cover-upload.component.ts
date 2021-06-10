@@ -1,5 +1,5 @@
 import {
-  TOKEN_AUTHORIZATION_HEADER_NAME,
+  AUTHORIZATION_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
 } from '@core/http/interceptors/token/token.interceptor';
@@ -79,7 +79,7 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
     const timestamp = new Date().getTime();
     const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
     const headers = {
-      [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
+      [AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
       [TOKEN_SIGNATURE_HEADER_NAME]: signature,
       [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString(),
     };

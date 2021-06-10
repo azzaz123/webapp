@@ -1,5 +1,5 @@
 import {
-  TOKEN_AUTHORIZATION_HEADER_NAME,
+  AUTHORIZATION_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
 } from '@core/http/interceptors/token/token.interceptor';
@@ -80,7 +80,7 @@ describe('PictureUploadComponent', () => {
         imageType: IMAGE_TYPE.AVATAR,
       });
       const headers = {
-        [TOKEN_AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
+        [AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
         [TOKEN_SIGNATURE_HEADER_NAME]: 'thesignature',
         [TOKEN_TIMESTAMP_HEADER_NAME]: `${TIMESTAMP}`,
       };

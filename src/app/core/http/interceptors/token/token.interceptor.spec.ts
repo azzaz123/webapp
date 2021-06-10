@@ -2,12 +2,7 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
 import { environment } from '@environments/environment';
-import {
-  TOKEN_TIMESTAMP_HEADER_NAME,
-  TOKEN_AUTHORIZATION_HEADER_NAME,
-  TOKEN_SIGNATURE_HEADER_NAME,
-  TokenInterceptor,
-} from './token.interceptor';
+import { TOKEN_TIMESTAMP_HEADER_NAME, AUTHORIZATION_HEADER_NAME, TOKEN_SIGNATURE_HEADER_NAME, TokenInterceptor } from './token.interceptor';
 import { HttpClient, HttpResponse, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LOGIN_ENDPOINT } from '@public/features/login/core/services/login.service';
 import { CookieModule } from 'ngx-cookie';
@@ -79,7 +74,7 @@ describe(`TokenInterceptor`, () => {
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
-      const authHeaderValue = req.request.headers.get(TOKEN_AUTHORIZATION_HEADER_NAME);
+      const authHeaderValue = req.request.headers.get(AUTHORIZATION_HEADER_NAME);
       expect(authHeaderValue).toBeFalsy();
     });
   });
@@ -92,7 +87,7 @@ describe(`TokenInterceptor`, () => {
       const req: TestRequest = httpMock.expectOne(environment.baseUrl);
       req.flush({});
 
-      const authHeaderValue = req.request.headers.get(TOKEN_AUTHORIZATION_HEADER_NAME);
+      const authHeaderValue = req.request.headers.get(AUTHORIZATION_HEADER_NAME);
       expect(authHeaderValue).toBeTruthy();
       expect(authHeaderValue).toBe(`Bearer ${MOCK_TOKEN}`);
     });

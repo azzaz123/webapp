@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AccessTokenService } from '@core/http/access-token.service';
 import {
-  TOKEN_AUTHORIZATION_HEADER_NAME,
+  AUTHORIZATION_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
 } from '@core/http/interceptors/token/token.interceptor';
@@ -167,7 +167,7 @@ export class UploadService {
 
     return {
       ...additionalHeaders,
-      [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
+      [AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
       [TOKEN_SIGNATURE_HEADER_NAME]: signature,
       [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString(),
     };
