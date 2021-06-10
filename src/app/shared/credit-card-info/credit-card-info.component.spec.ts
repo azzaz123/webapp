@@ -7,8 +7,8 @@ describe('CreditCardInfoComponent', () => {
   const VISA_SRC_PATH = '/assets/icons/card-visa.svg';
   const MASTERCARD_SRC_PATH = '/assets/icons/card-mastercard.svg';
   const GENERIC_CARD_SRC_PATH = '/assets/icons/card.svg';
-  const changeCardButtonSelector = '.CreditCardInfo__actions-change';
-  const deleteCardButtonSelector = '.CreditCardInfo__actions-delete';
+  const changeCardButtonSelector = '.CreditCardInfo__actions--change';
+  const deleteCardButtonSelector = '.CreditCardInfo__actions--delete';
 
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;

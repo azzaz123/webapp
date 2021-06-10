@@ -24,24 +24,24 @@
     flex: 1;
   }
 
-  .grey-text {
+  &--grey {
     color: $blue-grey-3;
   }
 
   &__actions {
     font-size: $font-size-s;
 
-    &-change,
-    &-delete {
+    &--change,
+    &--delete {
       cursor: pointer;
       &:hover {
         text-decoration: underline;
       }
     }
-    &-change {
+    &--change {
       color: $walla-main;
     }
-    &-delete {
+    &--delete {
       color: $negative-main;
     }
   }
