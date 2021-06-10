@@ -221,11 +221,15 @@ export class UploadRealestateComponent implements OnInit {
 
   public onSubmit(): void {
     if (this.uploadForm.valid) {
-      this.loading = true;
-      this.item ? this.updateItem() : this.checkUserLocation();
+      this.checkUserLocation();
     } else {
       this.invalidForm();
     }
+  }
+
+  private saveItem(): void {
+    this.loading = true;
+    this.item ? this.updateItem() : this.createItem();
   }
 
   private invalidForm(): void {
@@ -246,11 +250,11 @@ export class UploadRealestateComponent implements OnInit {
     if (!this.userService.user.location) {
       this.modalService.open(LocationSelectorModal).result.then((locationUpdated: boolean) => {
         if (locationUpdated) {
-          this.createItem();
+          this.saveItem();
         }
       });
     } else {
-      this.createItem();
+      this.saveItem();
     }
   }
 
