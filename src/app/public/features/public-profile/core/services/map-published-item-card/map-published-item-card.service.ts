@@ -37,7 +37,7 @@ export class MapPublishedItemCardService {
       title: publishedItemResponse.title,
       description: publishedItemResponse.description,
       salePrice: publishedItemResponse.price,
-      images: !!publishedItemResponse.images?.length ? publishedItemResponse.images : [this.getMainImage(publishedItemResponse.image)],
+      images: [this.getMainImage(publishedItemResponse.image)],
       flags: publishedItemResponse.flags,
       bumpFlags: publishedItemResponse.visibility_flags,
       webSlug: publishedItemResponse.web_slug,
