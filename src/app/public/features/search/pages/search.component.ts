@@ -82,6 +82,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public listColumnsConfig$: Observable<ColumnsConfig> = this.buildListConfigObservable();
   public showPlaceholder$: Observable<boolean> = this.buildShowPlaceholderObservable();
   public searchWithoutResults$: Observable<boolean> = this.buildSearchWithoutResultsObservable();
+  public searchWithKeyword$: Observable<boolean> = this.buildSearchWithKeywordObservable();
   public columnsConfig: ColumnsConfig = {
     xl: 4,
     lg: 4,
@@ -233,6 +234,12 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   private buildSearchWithoutResultsObservable(): Observable<boolean> {
     return combineLatest([this.items$, this.isLoadingResults$]).pipe(
       map(([items, isLoadingResults]) => items.length === 0 && !isLoadingResults)
+    );
+  }
+
+  private buildSearchWithKeywordObservable(): Observable<boolean> {
+    return this.filterParameterStore.parameters$.pipe(
+      map((params) => !!params.find((param) => param.key === FILTER_QUERY_PARAM_KEY.keywords))
     );
   }
 
