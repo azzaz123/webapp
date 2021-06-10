@@ -13,7 +13,7 @@ export class PaymentSuccessModalComponent implements OnInit {
   public tier: string;
   public isNewSubscriber = true;
   public isNewCard = true;
-  public isInvoice = 'false';
+  public isInvoice = false;
   public subscriptionCategoryId: SUBSCRIPTION_CATEGORIES;
 
   constructor(public activeModal: NgbActiveModal, private analyticsService: AnalyticsService) {}

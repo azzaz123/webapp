@@ -3,7 +3,7 @@
 $card-width: 300px;
 $card-height: 88px;
 
-.credit-card-field {
+.CreditCard__field {
   border: solid 1px $blue-grey-5;
   height: $card-height;
   padding: 0 $spacing-ml;
@@ -11,9 +11,12 @@ $card-height: 88px;
   border-radius: 6px;
   align-items: center;
   font-size: $font-size-s;
-  width: $card-width;
+  min-width: $card-width;
   display: flex;
   justify-content: center;
+  &--error {
+    border: solid 1px $warn;
+  }
   .card-icon {
     flex: 0 0 34px;
     margin-right: $spacing-m;
@@ -49,7 +52,6 @@ $card-height: 88px;
   &--actions {
     font-size: $font-size-s;
     display: flex;
-    justify-content: flex-end;
     width: 100%;
     a {
       cursor: pointer;
@@ -59,7 +61,6 @@ $card-height: 88px;
     }
     &-change,
     &-delete {
-      width: 50%;
       cursor: pointer;
       &:hover {
         text-decoration: underline;
@@ -72,6 +73,7 @@ $card-height: 88px;
     &-delete {
       color: $blue-grey-3;
       text-align: right;
+      margin-left: auto;
     }
   }
 }

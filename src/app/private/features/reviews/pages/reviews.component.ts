@@ -30,10 +30,10 @@ export class ReviewsComponent implements OnInit {
   }
 
   public getUserScore() {
-    this.userService.me().subscribe((user: User) => {
-      this.userService.getInfo(user.id).subscribe((info: UserInfoResponse) => {
-        this.userScore = info.scoring_stars;
-      });
+    const user = this.userService.user;
+
+    this.userService.getInfo(user.id).subscribe((info: UserInfoResponse) => {
+      this.userScore = info.scoring_stars;
     });
   }
 

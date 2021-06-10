@@ -6,6 +6,7 @@ import {
   ClickChatButton,
   ClickItemCard,
   FavoriteItem,
+  SaveAddress,
   SCREEN_IDS,
   ShareItem,
   UnfavoriteItem,
@@ -233,6 +234,14 @@ export const MOCK_VIEW_ITEM_DETAIL_RECOMMENDEATION_SLIDER_EVENT: AnalyticsPageVi
     recommendedItemIds: RECOMMENDED_ITEM_IDS_MOCK,
     screenId: SCREEN_IDS.ItemDetail,
     isPro: MOCK_USER.featured,
+  },
+};
+
+export const MOCK_SAVE_DELIVERY_ADDRESS_EVENT: AnalyticsEvent<SaveAddress> = {
+  name: ANALYTICS_EVENT_NAMES.SaveAddress,
+  eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+  attributes: {
+    screenId: SCREEN_IDS.EditAddress,
   },
 };
 

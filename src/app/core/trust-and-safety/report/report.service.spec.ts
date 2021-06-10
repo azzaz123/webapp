@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ITEMS_API_URL } from '@core/item/item.service';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 import { APP_VERSION } from '@environments/version';
 import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { USER_ID } from '@fixtures/user.fixtures.spec';

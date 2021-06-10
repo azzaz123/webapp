@@ -7,7 +7,7 @@
             <tsl-svg-icon *ngIf="item.flags?.reserved" width="15"
                 class="ItemCardWide__icon ItemCardWide__icon--left position-absolute d-flex justify-content-center align-items-center"
                 src="/assets/icons/item-card/reserved.svg"></tsl-svg-icon>
-            <ng-container *ngxPermissionsOnly="PERMISSIONS.visibility">
+            <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
                 <tsl-svg-icon *ngIf="item.bumpFlags?.bumped" width="18"
                 class="ItemCardWide__icon ItemCardWide__icon--right position-absolute ItemCardWide__icon--bumped d-flex justify-content-center align-items-center"
                 src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon>

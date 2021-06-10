@@ -32,9 +32,7 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userService.me().subscribe((user) => {
-      this.user = user;
-    });
+    this.user = this.userService.user;
     this.subscriptionService.getSubscriptions().subscribe((subscriptions) => {
       if (!!subscriptions) {
         this.hasOneTrialSubscription = this.subscriptionService.hasOneTrialSubscription(subscriptions);

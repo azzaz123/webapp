@@ -7,7 +7,7 @@
     <div *ngIf="isOwner; else basicOperations" class="d-flex justify-content-end align-items-center"
         [ngClass]="{'ItemDetailHeader--mineNotSold': showOptions }">
         <div class="mx-2" *ngIf="showOptions">
-            <ng-container *ngxPermissionsOnly="PERMISSIONS.visibility">
+            <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
                 <!-- Feature -->
                 <tsl-button *ngIf="!item.bumpExpiringDate" class="ItemDetailHeader__featureButton" className="btn-feature"
                 [routerLink]="['/catalog/checkout', {itemId: item.id}]" id="featureItemButton">

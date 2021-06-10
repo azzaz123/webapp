@@ -1,5 +1,5 @@
-<div class="CreditCard__info" *ngIf="!loading">
-  <div class="credit-card-field">
+<div class="CreditCard__info" *ngIf="!loading" >
+  <div class="CreditCard__field" [ngClass]="{'CreditCard__field--error': error}">
     <div class="CreditCard__info--info">
       <tsl-svg-icon src="/assets/icons/card-{{financialCard?.stripeCard?.brand}}.svg"
       *ngIf="financialCard?.stripeCard?.brand === 'visa' || financialCard?.stripeCard?.brand === 'mastercard'"
@@ -13,8 +13,8 @@
       <div class="date">{{financialCard?.expire_date}}</div>
     </div>
     <div class="CreditCard__info--actions">
-      <div class="CreditCard__info--actions-change" *ngIf="financialCard?.invoices_default" (click)="changeStripeCard($event)" i18n="@@web_change_card">Change card</div>
-      <div class="CreditCard__info--actions-delete" (click)="checkDelete($event)" i18n="@@web_delete_card">Delete card</div>
+      <div *ngIf="!hideEdit" class="CreditCard__info--actions-change" (click)="changeStripeCard($event)" i18n="@@web_change_card">Change card</div>
+      <div *ngIf="!hideDelete" class="CreditCard__info--actions-delete" (click)="checkDelete($event)" i18n="@@web_delete_card">Delete card</div>
     </div>
   </div>
 </div>

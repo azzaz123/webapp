@@ -13,4 +13,4 @@ export class MockPermissionsService {
   }
 }
 
-export const MOCK_PERMISSIONS: NgxPermissionsObject = { [PERMISSIONS.visibility]: { name: PERMISSIONS.visibility } };
+export const MOCK_PERMISSIONS: NgxPermissionsObject = { [PERMISSIONS.bumps]: { name: PERMISSIONS.bumps } };

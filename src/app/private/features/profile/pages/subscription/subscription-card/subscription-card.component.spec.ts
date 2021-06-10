@@ -142,7 +142,7 @@ describe('SubscriptionCardComponent', () => {
         component.hasTrialAvailable = false;
         fixture.detectChanges();
       });
-      it('should show trial banner', () => {
+      it('should not show trial banner', () => {
         const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
 
         expect(trialBannerHidden).toBeTruthy();
@@ -159,36 +159,12 @@ describe('SubscriptionCardComponent', () => {
       expect(title.textContent).toEqual(component.subscription.category_name);
     });
 
-    describe('and the category is different to everything else', () => {
-      it('should show set limit benefit', () => {
-        const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+    it('should show benefits', () => {
+      component.subscriptionBenefits = ['benefit1', 'benefit2'];
+      fixture.detectChanges();
 
-        expect(info.textContent).toContain($localize`:@@web_subscription_benefit_title_limit:Set your listing limit`);
-      });
-    });
-
-    describe('and the category is different to everything else', () => {
-      it('should show bost your branding benefit', () => {
-        component.subscription.category_id = CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE;
-
-        fixture.detectChanges();
-        const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
-
-        expect(info.textContent).toContain($localize`:@@web_subscription_benefit_title_branding:Boost your branding`);
-      });
-    });
-
-    describe('and has text link', () => {
-      beforeEach(() => {
-        component.textButton = 'test';
-        fixture.detectChanges();
-      });
-
-      it('should not show text link', () => {
-        const link = fixture.debugElement.query(By.css('.SubscriptionCard__info--edit'));
-
-        expect(link).toBeFalsy();
-      });
+      const benefitsContainer: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+      expect(benefitsContainer.children[0].children.length).toBe(2);
     });
   });
 

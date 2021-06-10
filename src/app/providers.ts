@@ -4,6 +4,9 @@ import { UserService } from './core/user/user.service';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './core/custom-route-reuse-strategy/custom-route-reuse-strategy';
+import { FeatureflagService } from '@core/user/featureflag.service';
+import { DEFAULT_PERMISSIONS } from '@core/user/user-constants';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 
 export const PROVIDERS: Provider[] = [
   {
@@ -18,6 +21,12 @@ export const PROVIDERS: Provider[] = [
     multi: true,
   },
   {
+    provide: APP_INITIALIZER,
+    useFactory: defaultPermissionsFactory,
+    deps: [FeatureflagService, NgxPermissionsService],
+    multi: true,
+  },
+  {
     provide: RouteReuseStrategy,
     useClass: CustomRouteReuseStrategy,
   },
@@ -29,5 +38,17 @@ export function subdomainFactory(cookieService: CookieService) {
 }
 
 export function userPermissionsFactory(userService: UserService): () => Promise<boolean> {
-  return () => userService.checkUserPermissions().toPromise();
+  return () => userService.isLogged && userService.initializeUserWithPermissions().toPromise();
+}
+
+export function defaultPermissionsFactory(
+  featureFlagService: FeatureflagService,
+  permissionService: NgxPermissionsService
+): () => Promise<boolean> {
+  permissionService.addPermission(DEFAULT_PERMISSIONS);
+  return () =>
+    featureFlagService
+      .getFlag(FEATURE_FLAGS_ENUM.BUMPS)
+      .toPromise()
+      .catch(() => true);
 }

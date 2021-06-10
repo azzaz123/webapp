@@ -44,9 +44,7 @@ describe('Component: Item', () => {
         {
           provide: UserService,
           useValue: {
-            me() {
-              return of(MOCK_USER);
-            },
+            user: MOCK_USER,
           },
         },
         {
@@ -74,16 +72,6 @@ describe('Component: Item', () => {
 
   it('should create an instance', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('ngOnInit', () => {
-    it('should call the me method on userServed when the component initialises', () => {
-      spyOn(userService, 'me').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(userService.me).toHaveBeenCalled();
-    });
   });
 
   describe('isCarItem', () => {

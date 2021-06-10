@@ -10,7 +10,6 @@ import { InvoiceItemComponent } from './components/invoice-item/invoice-item.com
 import { SubscriptionBenefitComponent } from './components/subscription-benefits/subscription-benefit/subscription-benefit.component';
 import { SubscriptionBenefitsComponent } from './components/subscription-benefits/subscription-benefits.component';
 import { SubscriptionPriceDiscountComponent } from './components/subscription-price-discount/subscription-price-discount.component';
-import { AddNewSubscriptionModalComponent } from './modal/add-new-subscription/add-new-subscription-modal.component';
 import { BecomeProModalComponent } from './modal/become-pro-modal/become-pro-modal.component';
 import { CancelSubscriptionModalComponent } from './modal/cancel-subscription/cancel-subscription-modal.component';
 import { CheckSubscriptionInAppModalComponent } from './modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
@@ -25,6 +24,11 @@ import { SubscriptionCardComponent } from './pages/subscription/subscription-car
 import { SubscriptionListComponent } from './pages/subscription/subscription-list/subscription-list.component';
 import { SubscriptionIconPipe } from './pipes/subscription-icon.pipe';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
+import { SubscriptionTierSelectorComponent } from './pages/subscription/subscription-tier-selector/subscription-tier-selector.component';
+import { SubscriptionCardSelectorComponent } from './pages/subscription/subscription-card-selector/subscription-card-selector.component';
+import { SubscriptionPurchaseFooterComponent } from './pages/subscription/subscription-purchase-footer/subscription-purchase-footer.component';
+import { SubscriptionPurchaseComponent } from './pages/subscription/subscription-purchase/subscription-purchase.component';
+import { SubscriptionPurchaseHeaderComponent } from './pages/subscription/subscription-purchase-header/subscription-purchase-header.component';
 
 @NgModule({
   imports: [
@@ -48,7 +52,6 @@ import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes'
     SubscriptionIconPipe,
     VisibilityProductsModalComponent,
     PaymentSuccessModalComponent,
-    AddNewSubscriptionModalComponent,
     EditSubscriptionModalComponent,
     CancelSubscriptionModalComponent,
     ContinueSubscriptionModalComponent,
@@ -61,6 +64,12 @@ import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes'
     SubscriptionBenefitComponent,
     SubscriptionListComponent,
     SubscriptionCardComponent,
+    SubscriptionPurchaseComponent,
+    SubscriptionPurchaseHeaderComponent,
+    SubscriptionPurchaseFooterComponent,
+    SubscriptionTierSelectorComponent,
+    SubscriptionCardSelectorComponent,
+    SubscriptionPurchaseFooterComponent,
   ],
   entryComponents: [
     UnsubscribeModalComponent,
@@ -68,7 +77,6 @@ import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes'
     DeleteInfoConfirmationModalComponent,
     VisibilityProductsModalComponent,
     PaymentSuccessModalComponent,
-    AddNewSubscriptionModalComponent,
     EditSubscriptionModalComponent,
     CancelSubscriptionModalComponent,
     ContinueSubscriptionModalComponent,

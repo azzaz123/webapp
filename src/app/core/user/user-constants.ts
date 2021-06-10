@@ -2,7 +2,7 @@ export enum PERMISSIONS {
   normal = 'isNormal',
   professional = 'isProfessional',
   featured = 'isFeatured',
-  visibility = 'visibility',
+  bumps = 'bumps',
 }
 
-export const DEFAULT_PERMISSIONS: PERMISSIONS[] = [PERMISSIONS.visibility];
+export const DEFAULT_PERMISSIONS: PERMISSIONS[] = [PERMISSIONS.bumps];

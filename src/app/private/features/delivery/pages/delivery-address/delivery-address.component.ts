@@ -1,12 +1,5 @@
-import {
-  DeliveryAddressErrorSpecification,
-  DeliveryAddressErrorsSpecifications,
-  DeliveryAddressFormErrorMessages,
-  DELIVERY_ADDRESS_ERROR,
-} from '@private/features/delivery/interfaces/delivery-address/delivery-address-error.interface';
 import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
@@ -25,15 +18,24 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { finalize, map, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
-import { DeliveryAddressError, INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
 import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
+
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
-
-export enum PREVIOUS_PAGE {
-  PAYVIEW_ADD_ADDRESS,
-  PAYVIEW_PAY,
-}
+import { DeliveryPostalCodesErrorTranslations } from '@private/features/delivery/errors/constants/delivery-error-translations';
+import {
+  DeliveryAddressError,
+  PhoneNumberIsInvalidError,
+  MobilePhoneNumberIsInvalidError,
+  AddressTooLongError,
+  FlatAndFloorTooLongError,
+  UniqueAddressByUserError,
+} from '../../errors/classes/address';
+import { DeliveryPostalCodesError } from '../../errors/classes/postal-codes';
+import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
+import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
+import { DeliveryAddressFormErrorMessages } from '../../interfaces/delivery-address/delivery-address-form-error-messages.interface';
+import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -41,18 +43,20 @@ export enum PREVIOUS_PAGE {
   styleUrls: ['./delivery-address.component.scss'],
 })
 export class DeliveryAddressComponent implements OnInit {
-  @Input() whereUserComes: PREVIOUS_PAGE;
+  @Input() whereUserComes: DELIVERY_ADDRESS_PREVIOUS_PAGE;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
+  public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public countries: IOption[] = [];
   public cities: IOption[] = [];
   public deliveryAddressForm: FormGroup;
   public loading = true;
   public isNewForm = true;
+  public loadingButton = false;
   public isCountryEditable = false;
   public locations: DeliveryLocationApi[] = [];
-  public readonly PREVIOUS_PAGE = PREVIOUS_PAGE;
+  public readonly PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE;
   public formErrorMessages: DeliveryAddressFormErrorMessages = {
     phone_number: '',
     postal_code: '',
@@ -73,11 +77,14 @@ export class DeliveryAddressComponent implements OnInit {
     private modalService: NgbModal,
     private deliveryLocationsService: DeliveryLocationsService,
     private router: Router,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private deliveryAddressTrackEventsService: DeliveryAddressTrackEventsService
   ) {}
 
   ngOnInit() {
-    this.comesFromPayView = this.whereUserComes === PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS || this.whereUserComes === PREVIOUS_PAGE.PAYVIEW_PAY;
+    this.comesFromPayView =
+      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS ||
+      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
     this.buildForm();
     this.eventService.subscribe(this.formSubmittedEventKey, () => {
       this.onSubmit();
@@ -113,6 +120,8 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   public onSubmit(): void {
+    this.deliveryAddressTrackEventsService.trackClickSaveButton();
+
     if (this.deliveryAddressForm.valid) {
       this.submitValidForm();
     } else {
@@ -131,13 +140,14 @@ export class DeliveryAddressComponent implements OnInit {
       if (this.isNewForm) {
         this.isCountryEditable = true;
       } else {
-        this.modalService.open(ChangeCountryConfirmationModalComponent).result.then((result: boolean) => {
-          if (result) {
-            this.isCountryEditable = true;
-            setTimeout(() => {
-              this.countriesDropdown.open();
-            });
-          }
+        this.generateConfirmationModalRef(
+          TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE,
+          TRANSLATION_KEY.DELIVERY_ADDRESS_CONTINUE_BUTTON
+        ).result.then(() => {
+          this.isCountryEditable = true;
+          setTimeout(() => {
+            this.countriesDropdown.open();
+          });
         });
       }
     }
@@ -146,20 +156,12 @@ export class DeliveryAddressComponent implements OnInit {
   public isInvalidPostalCode(): void {
     const postalCode = this.deliveryAddressForm.get('postal_code');
     if (postalCode.value.length < 5 && !postalCode.errors?.required) {
-      this.setIncorrectControlAndShowError('postal_code', TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR);
+      this.setIncorrectControlAndShowError('postal_code', DeliveryPostalCodesErrorTranslations.INVALID_POSTAL_CODE);
     }
   }
 
   public deleteForm(): void {
-    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
-
-    modalRef.componentInstance.properties = {
-      description: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST),
-      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELETE_BUTTON),
-      confirmColor: COLORS.NEGATIVE_MAIN,
-    };
-
-    modalRef.result.then(() => {
+    this.generateConfirmationModalRef(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST, TRANSLATION_KEY.DELETE_BUTTON).result.then(() => {
       this.deliveryAddressService.delete(this.deliveryAddressForm.get('id').value).subscribe(
         () => {
           this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS, 'success');
@@ -252,14 +254,14 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private submitValidForm(): void {
-    this.loading = true;
+    this.loadingButton = true;
     this.isCountryEditable = false;
 
     this.deliveryAddressService
       .updateOrCreate(this.deliveryAddressForm.getRawValue(), this.isNewForm)
       .pipe(
         finalize(() => {
-          this.loading = false;
+          this.loadingButton = false;
         })
       )
       .subscribe(
@@ -268,38 +270,53 @@ export class DeliveryAddressComponent implements OnInit {
           this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS, 'success');
           this.redirect();
         },
-        (errors: DeliveryAddressError[]) => {
-          if (errors[0].status === INVALID_DELIVERY_ADDRESS_CODE) {
-            this.showToast(TRANSLATION_KEY.FORM_FIELD_ERROR, 'error');
-            this.onError(errors, true);
-          } else {
-            this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR, 'error');
-          }
-        }
+        (errors: DeliveryAddressError[]) => this.handleAddressErrors(errors)
       );
   }
 
-  private onError(errors: DeliveryAddressError[], isSave = false): void {
-    errors.forEach((deliveryAddressError: DeliveryAddressError) => {
-      const generatedError = DeliveryAddressErrorsSpecifications.find(
-        (errorSpecification: DeliveryAddressErrorSpecification) =>
-          errorSpecification.error_code === DELIVERY_ADDRESS_ERROR[deliveryAddressError.error_code]
-      );
+  private handleAddressErrors(errors: DeliveryAddressError[]): void {
+    let hasUniqueAddressError = false;
 
-      this.setIncorrectControlAndShowError(generatedError.formControlName, generatedError.translationKey);
+    errors.forEach((error: DeliveryAddressError) => {
+      if (error instanceof PhoneNumberIsInvalidError) {
+        this.setIncorrectControlAndShowError('phone_number', error.message);
+      }
+
+      if (error instanceof MobilePhoneNumberIsInvalidError) {
+        this.setIncorrectControlAndShowError('phone_number', error.message);
+      }
+
+      if (error instanceof AddressTooLongError) {
+        this.setIncorrectControlAndShowError('street', error.message);
+      }
+
+      if (error instanceof FlatAndFloorTooLongError) {
+        this.setIncorrectControlAndShowError('flat_and_floor', error.message);
+      }
+
+      if (error instanceof UniqueAddressByUserError) {
+        hasUniqueAddressError = true;
+      } else {
+        this.deliveryAddressForm.markAsPending();
+      }
     });
 
-    if (isSave) {
-      this.deliveryAddressForm.markAsPending();
-    }
+    const key: TRANSLATION_KEY =
+      !errors.length || hasUniqueAddressError ? TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR : TRANSLATION_KEY.FORM_FIELD_ERROR;
+
+    this.showToast(key, 'error');
+  }
+
+  private handlePostalCodesErrors(errors: DeliveryPostalCodesError[]): void {
+    errors.forEach((error) => this.setIncorrectControlAndShowError('postal_code', error.message));
   }
 
   private redirect(): void {
     switch (this.whereUserComes) {
-      case PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS:
+      case DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS:
         this.router.navigate([DELIVERY_PATHS.PAYVIEW]);
         break;
-      case PREVIOUS_PAGE.PAYVIEW_PAY:
+      case DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY:
         this.router.navigate([DELIVERY_PATHS.SHIPMENT_TRACKING]);
         break;
     }
@@ -319,15 +336,16 @@ export class DeliveryAddressComponent implements OnInit {
           this.cities = cities;
           this.handleLocationsResponse(this.locations);
         },
-        (errors: DeliveryAddressError[]) => {
-          this.onError(errors);
-        }
+        (errors: DeliveryPostalCodesError[]) => this.handlePostalCodesErrors(errors)
       );
   }
 
   private handleLocationsResponse(locations: DeliveryLocationApi[]): void {
     if (!locations.length) {
-      this.setIncorrectControlAndShowError('postal_code', TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR);
+      this.setIncorrectControlAndShowError(
+        'postal_code',
+        this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR)
+      );
     }
     if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {
       this.deliveryAddressForm.get('city').setValue(locations[0].city);
@@ -335,11 +353,11 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  private setIncorrectControlAndShowError(formControl: string, translationKey: TRANSLATION_KEY): void {
+  private setIncorrectControlAndShowError(formControl: string, message: string): void {
     this.deliveryAddressForm.get(formControl).setErrors(null);
     this.deliveryAddressForm.get(formControl).setErrors({ invalid: true });
     this.deliveryAddressForm.get(formControl).markAsDirty();
-    this.formErrorMessages[formControl] = this.i18nService.translate(translationKey);
+    this.formErrorMessages[formControl] = message;
   }
 
   private patchFormValues(): void {
@@ -408,8 +426,20 @@ export class DeliveryAddressComponent implements OnInit {
 
   private showToast(key: TRANSLATION_KEY, type: 'error' | 'success'): void {
     this.toastService.show({
-      text: `${this.i18nService.translate(key)}`,
+      text: this.i18nService.translate(key),
       type,
     });
+  }
+
+  private generateConfirmationModalRef(descriptionKey: TRANSLATION_KEY, confirmMessageKey: TRANSLATION_KEY): NgbModalRef {
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
+
+    modalRef.componentInstance.properties = {
+      description: this.i18nService.translate(descriptionKey),
+      confirmMessage: this.i18nService.translate(confirmMessageKey),
+      confirmColor: COLORS.NEGATIVE_MAIN,
+    };
+
+    return modalRef;
   }
 }

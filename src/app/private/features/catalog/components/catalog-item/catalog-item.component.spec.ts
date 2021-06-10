@@ -205,70 +205,70 @@ describe('CatalogItemComponent', () => {
     });
   });
 
-  // describe('reactivateItem', () => {
-  //   let item: Item;
-  //   let event: ItemChangeEvent;
+  describe('reactivateItem', () => {
+    let item: Item;
+    let event: ItemChangeEvent;
 
-  //   beforeEach(fakeAsync(() => {
-  //     item = MOCK_ITEM;
-  //     spyOn(itemService, 'reactivateItem').and.callThrough();
+    beforeEach(fakeAsync(() => {
+      item = MOCK_ITEM;
+      spyOn(itemService, 'reactivateItem').and.callThrough();
 
-  //     component.itemChange.subscribe(($event: ItemChangeEvent) => {
-  //       event = $event;
-  //     });
-  //   }));
+      component.itemChange.subscribe(($event: ItemChangeEvent) => {
+        event = $event;
+      });
+    }));
 
-  //   afterEach(() => {
-  //     event = undefined;
-  //   });
+    afterEach(() => {
+      event = undefined;
+    });
 
-  //   it('should check if all required data is informed', () => {
-  //     spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').and.callThrough();
+    it('should check if all required data is informed', () => {
+      spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').and.callThrough();
 
-  //     component.reactivate(item);
+      component.reactivate(item);
 
-  //     expect(itemRequiredDataService.hasMissingRequiredDataByItemId).toHaveBeenCalledWith(component.item.id);
-  //   });
+      expect(itemRequiredDataService.hasMissingRequiredDataByItemId).toHaveBeenCalledWith(component.item.id);
+    });
 
-  //   it('should track reactivation event', () => {
-  //     jest.spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').mockReturnValue(of(false));
-  //     spyOn(catalogItemTrackingEventService, 'trackReactivateItemEvent').and.callThrough();
+    it('should track reactivation event', () => {
+      jest.spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').mockReturnValue(of(false));
+      spyOn(catalogItemTrackingEventService, 'trackReactivateItemEvent').and.callThrough();
 
-  //     component.reactivate(item);
+      component.reactivate(item);
 
-  //     expect(catalogItemTrackingEventService.trackReactivateItemEvent).toHaveBeenCalledWith(component.item);
-  //   });
+      expect(catalogItemTrackingEventService.trackReactivateItemEvent).toHaveBeenCalledWith(component.item);
+    });
 
-  //   describe('and item has all required data', () => {
-  //     beforeEach(() => {
-  //       jest.spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').mockReturnValue(of(false));
+    describe('and item has all required data', () => {
+      beforeEach(() => {
+        jest.spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').mockReturnValue(of(false));
 
-  //       component.reactivate(item);
-  //     });
+        component.reactivate(item);
+      });
 
-  //     it('should call reactivateItem', () => {
-  //       expect(itemService.reactivateItem).toHaveBeenCalledWith(ITEM_ID);
-  //     });
+      it('should call reactivateItem', () => {
+        expect(itemService.reactivateItem).toHaveBeenCalledWith(ITEM_ID);
+      });
 
-  //     it('should emit the updated item', () => {
-  //       expect(event.item).toEqual(item);
-  //       expect(event.action).toBe('reactivated');
-  //     });
-  //   });
+      it('should emit the updated item', () => {
+        expect(event.item).toEqual(item);
+        expect(event.action).toBe('reactivated');
+      });
+    });
 
-  //   describe('and item has missing data', () => {
-  //     beforeEach(() => {
-  //       jest.spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').mockReturnValue(of(true));
-  //       spyOn(router, 'navigate');
+    describe('and item has missing data', () => {
+      beforeEach(() => {
+        jest.spyOn(itemRequiredDataService, 'hasMissingRequiredDataByItemId').mockReturnValue(of(true));
+        spyOn(router, 'navigate');
 
-  //       component.reactivate(item);
-  //     });
+        component.reactivate(item);
+      });
 
-  //     it('should navigate to reactivation view reactivateItem', () => {
-  //       expect(router.navigate).toHaveBeenCalledWith([`/catalog/edit/${component.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
-  //     });
-  //   });
-  // });
+      it('should navigate to reactivation view reactivateItem', () => {
+        expect(router.navigate).toHaveBeenCalledWith([`/catalog/edit/${component.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
+      });
+    });
+  });
 
   describe('select', () => {
     it('should set selected true and call selectItem', () => {

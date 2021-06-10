@@ -115,12 +115,12 @@ input::-webkit-calendar-picker-indicator {
     width: 14px;
     height: 14px;
     border-radius: 7px;
-    background-color: $blue-grey-5;
     border: 1px solid $blue-grey-4;
     appearance: none;
     position: relative;
     cursor: pointer;
     &:checked {
+      border: 1px solid $walla-main;
       &:after {
         content: '';
         position: absolute;
@@ -131,6 +131,13 @@ input::-webkit-calendar-picker-indicator {
         transform: translate(-50%, -50%);
         background-color: $walla-main;
         border-radius: 50%;
+      }
+    }
+    &:disabled {
+      cursor: default;
+      border: 1px solid $blue-grey-4;
+      &:after {
+        background-color: $blue-grey-4;
       }
     }
   }

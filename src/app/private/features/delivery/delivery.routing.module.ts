@@ -10,6 +10,7 @@ import { PayviewModule } from './pages/payview/payview.module';
 import { ShipmentTrackingModule } from './pages/shipment-tracking/shipment-tracking.module';
 import { BankAccountModule } from './pages/bank-account/bank-account.module';
 import { CreateDisputeModule } from './pages/create-dispute/create-dispute.module';
+import { CreditCardModule } from './pages/credit-card/credit-card.module';
 
 // NOTE: they childs are begin loaded in a NON LAZY way but with the module
 const routes: Route[] = [
@@ -48,6 +49,10 @@ const routes: Route[] = [
       {
         path: DELIVERY_PATHS.DISPUTE,
         loadChildren: () => CreateDisputeModule,
+      },
+      {
+        path: DELIVERY_PATHS.CREDIT_CARD,
+        loadChildren: () => CreditCardModule,
       },
     ],
   },

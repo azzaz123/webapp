@@ -81,7 +81,7 @@ describe('UnsubscribeModalComponent', () => {
     });
 
     it('should show warning if user is pro', () => {
-      spyOn(userService, 'isProUser').and.returnValue(of(true));
+      spyOn(userService, 'isProUser').and.returnValue(true);
 
       component.ngOnInit();
 
@@ -90,7 +90,7 @@ describe('UnsubscribeModalComponent', () => {
     });
 
     it('should show normal message if user is not pro', () => {
-      spyOn(userService, 'isProUser').and.returnValue(of(false));
+      spyOn(userService, 'isProUser').and.returnValue(false);
 
       component.ngOnInit();
 

@@ -6,7 +6,7 @@ import { ErrorBoxModule } from '@shared/error-box/error-box.module';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { ErrorComponent } from './error.component';
 
-fdescribe('ErrorComponent', () => {
+describe('ErrorComponent', () => {
   let component: ErrorComponent;
   let fixture: ComponentFixture<ErrorComponent>;
   let router: Router;

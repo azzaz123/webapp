@@ -19,14 +19,14 @@ const routes: Route[] = [
       item: ItemResolverService,
     },
   },
-  // {
-  //   path: `:${UPLOAD_PATH_PARAMS.ID}/${UPLOAD_PATHS.REACTIVATE}`,
-  //   component: EditComponent,
-  //   canDeactivate: [ExitConfirmGuard],
-  //   resolve: {
-  //     item: ItemResolverService,
-  //   },
-  // },
+  {
+    path: `:${UPLOAD_PATH_PARAMS.ID}/${UPLOAD_PATHS.REACTIVATE}`,
+    component: EditComponent,
+    canDeactivate: [ExitConfirmGuard],
+    resolve: {
+      item: ItemResolverService,
+    },
+  },
 ];
 
 @NgModule({

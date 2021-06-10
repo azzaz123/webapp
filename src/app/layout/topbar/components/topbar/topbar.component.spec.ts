@@ -84,9 +84,7 @@ describe('TopbarComponent', () => {
           {
             provide: UserService,
             useValue: {
-              me(): Observable<User> {
-                return of(MOCK_USER);
-              },
+              user: MOCK_USER,
               isProfessional() {
                 return of(true);
               },

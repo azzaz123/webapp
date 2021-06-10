@@ -37,7 +37,7 @@ export class MapPublishedItemCardService {
       title: publishedItemResponse.title,
       description: publishedItemResponse.description,
       salePrice: publishedItemResponse.price,
-      images: !!publishedItemResponse.images?.length ? publishedItemResponse.images : [this.getMainImage(publishedItemResponse.image)],
+      images: [this.getMainImage(publishedItemResponse.image)],
       flags: publishedItemResponse.flags,
       bumpFlags: publishedItemResponse.visibility_flags,
       webSlug: publishedItemResponse.web_slug,
@@ -46,6 +46,14 @@ export class MapPublishedItemCardService {
   }
 
   private getMainImage(imageURLs: ItemImagesURLs): Image {
+    // TODO: This is a dirty trick to replace the protocol of the images from HTTP to HTTPS
+    // and should be changed using a better approach
+    Object.keys(imageURLs).map((key) => {
+      if (typeof imageURLs[key] === 'string' && imageURLs[key].includes('http://')) {
+        imageURLs[key] = imageURLs[key].replace('http://', 'https://');
+      }
+    });
+
     return {
       id: this.uuidService.getUUID(),
       original_width: imageURLs?.original_width || null,

@@ -197,7 +197,7 @@ describe('ItemDetailHeaderComponent', () => {
         });
         describe('and has visibility permissions', () => {
           beforeEach(() => {
-            permissionService.addPermission(PERMISSIONS.visibility);
+            permissionService.addPermission(PERMISSIONS.bumps);
           });
           it('should show the countdown button', () => {
             fixture.detectChanges();
@@ -208,7 +208,7 @@ describe('ItemDetailHeaderComponent', () => {
         });
         describe('and has not visibility permissions', () => {
           beforeEach(() => {
-            permissionService.removePermission(PERMISSIONS.visibility);
+            permissionService.removePermission(PERMISSIONS.bumps);
           });
           it('should show the countdown button', () => {
             fixture.detectChanges();
@@ -225,7 +225,7 @@ describe('ItemDetailHeaderComponent', () => {
         });
         describe('and has visibility permissions', () => {
           beforeEach(() => {
-            permissionService.addPermission(PERMISSIONS.visibility);
+            permissionService.addPermission(PERMISSIONS.bumps);
           });
           it('should show the feature button', () => {
             fixture.detectChanges();
@@ -235,7 +235,7 @@ describe('ItemDetailHeaderComponent', () => {
         });
         describe('and has not visibility permissions', () => {
           beforeEach(() => {
-            permissionService.removePermission(PERMISSIONS.visibility);
+            permissionService.removePermission(PERMISSIONS.bumps);
           });
           it('should show the feature button', () => {
             fixture.detectChanges();

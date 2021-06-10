@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CheckUserPermissionsResolver } from './resolvers/check-user-permissions.resolver';
 import { ConversationModule } from '@core/conversation/conversation.module';
 import { ProfileModule } from '@core/profile/profile.module';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -27,7 +26,6 @@ import { DeliveryDevelopmentGuard } from '@private/features/delivery/guards/deli
 @NgModule({
   imports: [ConversationModule.forRoot(), ProfileModule, RemoteConsoleModule],
   providers: [
-    CheckUserPermissionsResolver,
     ErrorsService,
     TutorialService,
     DesktopNotificationsService,

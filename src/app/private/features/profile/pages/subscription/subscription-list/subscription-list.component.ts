@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 
@@ -11,11 +12,11 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 export class SubscriptionListComponent {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
-  @Output() openSubscriptionModal: EventEmitter<SubscriptionsResponse> = new EventEmitter();
+  @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
 
   public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
 
-  constructor(private subscriptionsService: SubscriptionsService) {}
+  constructor(private subscriptionsService: SubscriptionsService, private benefitsService: SubscriptionBenefitsService) {}
 
   private showEdit(subscription: SubscriptionsResponse): boolean {
     return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
@@ -68,7 +69,11 @@ export class SubscriptionListComponent {
     return subscription.tiers.length > 1 ? $localize`:@@web_see_plans:See plans` : $localize`:@@web_start:Start`;
   }
 
-  public onOpenSubscriptionModal(subscription: SubscriptionsResponse): void {
-    this.openSubscriptionModal.emit(subscription);
+  public onClickButton(subscription: SubscriptionsResponse): void {
+    this.clickButton.emit(subscription);
+  }
+
+  public getBenefits(subscription: SubscriptionsResponse): string[] {
+    return this.benefitsService.getBenefitsByCategory(subscription.category_id);
   }
 }

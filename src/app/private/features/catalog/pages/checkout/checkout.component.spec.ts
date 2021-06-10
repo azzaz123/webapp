@@ -7,7 +7,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
-import { environment } from '@environments/environment.beta';
 import { ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE, ITEM_ID } from '@fixtures/item.fixtures.spec';
 
 describe('CheckoutComponent', () => {

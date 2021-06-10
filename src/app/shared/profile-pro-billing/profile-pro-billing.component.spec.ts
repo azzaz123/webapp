@@ -1,7 +1,7 @@
 import { throwError, of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 
-import { ProfileProBillingComponent } from './profile-pro-billing.component';
+import { COMPONENT_TYPE, ProfileProBillingComponent } from './profile-pro-billing.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -252,14 +252,6 @@ describe('ProfileProBillingComponent', () => {
 
         expect(component.formComponent.canExit).toHaveBeenCalled();
       });
-    });
-  });
-
-  describe('containerTypeIsModal', () => {
-    it('should return true if component is inside a modal', () => {
-      component.containerType = 'modal';
-
-      expect(component.containerTypeIsModal).toBe(true);
     });
   });
 

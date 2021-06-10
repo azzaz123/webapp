@@ -56,17 +56,15 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLogged = this.userService.isLogged;
-    this.componentSubscriptions.push(
-      this.userService.me().subscribe((user) => {
-        this.user = user;
-      })
-    );
+    this.user = this.userService.user;
     this.componentSubscriptions.push(
       this.userService.isProfessional().subscribe((value: boolean) => {
         this.isProfessional = value;
       })
     );
-    this.updateCreditInfo();
+    if (this.isLogged) {
+      this.updateCreditInfo();
+    }
     this.componentSubscriptions.push(
       this.eventService.subscribe(EventService.TOTAL_CREDITS_UPDATED, (totalCredits: number) => {
         if (totalCredits) {

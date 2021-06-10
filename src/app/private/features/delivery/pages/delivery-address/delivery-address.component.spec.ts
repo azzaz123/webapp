@@ -14,7 +14,7 @@ import { DeliveryAddressService } from '../../services/address/delivery-address/
 import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { FormBuilder } from '@angular/forms';
-import { DeliveryAddressComponent, PREVIOUS_PAGE } from './delivery-address.component';
+import { DeliveryAddressComponent } from './delivery-address.component';
 import { DeliveryCountriesApiService } from '../../services/api/delivery-countries-api/delivery-countries-api.service';
 import { DeliveryLocationsApiService } from '../../services/api/delivery-locations-api/delivery-locations-api.service';
 import { DeliveryAddressApiService } from '../../services/api/delivery-address-api/delivery-address-api.service';
@@ -34,10 +34,13 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { DELIVERY_PATHS } from '../../delivery-routing-constants';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
-import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
-import { INVALID_DELIVERY_ADDRESS_CODE } from '../../errors/delivery-address/delivery-address-error';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { PostalCodeIsNotAllowedError } from '../../errors/classes/postal-codes';
+import { FlatAndFloorTooLongError, MobilePhoneNumberIsInvalidError, UniqueAddressByUserError } from '../../errors/classes/address';
+import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
+import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
+import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-only.directive';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -45,9 +48,10 @@ describe('DeliveryAddressComponent', () => {
   const deleteButtonSelector = '#deleteButton';
   let component: DeliveryAddressComponent;
   let fixture: ComponentFixture<DeliveryAddressComponent>;
-  let deliveryAddressService: DeliveryAddressService;
+  let deliveryAddressTrackEventsService: DeliveryAddressTrackEventsService;
   let deliveryLocationsService: DeliveryLocationsService;
   let deliveryCountriesService: DeliveryCountriesService;
+  let deliveryAddressService: DeliveryAddressService;
   let toastService: ToastService;
   let i18nService: I18nService;
   let modalService: NgbModal;
@@ -56,7 +60,7 @@ describe('DeliveryAddressComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, NgbModalModule, HttpClientTestingModule],
-      declarations: [DeliveryAddressComponent, ProfileFormComponent, DropdownComponent],
+      declarations: [DeliveryAddressComponent, ProfileFormComponent, DropdownComponent, NumbersOnlyDirective],
       providers: [
         FormBuilder,
         I18nService,
@@ -66,6 +70,12 @@ describe('DeliveryAddressComponent', () => {
         DeliveryAddressApiService,
         DeliveryCountriesApiService,
         DeliveryLocationsApiService,
+        {
+          provide: DeliveryAddressTrackEventsService,
+          useValue: {
+            trackClickSaveButton() {},
+          },
+        },
         {
           provide: UuidService,
           useValue: {
@@ -111,6 +121,7 @@ describe('DeliveryAddressComponent', () => {
     deliveryAddressService = TestBed.inject(DeliveryAddressService);
     deliveryLocationsService = TestBed.inject(DeliveryLocationsService);
     deliveryCountriesService = TestBed.inject(DeliveryCountriesService);
+    deliveryAddressTrackEventsService = TestBed.inject(DeliveryAddressTrackEventsService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -227,9 +238,16 @@ describe('DeliveryAddressComponent', () => {
       describe('and the save succeed...', () => {
         beforeEach(() => {
           spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(of(null));
+          spyOn(deliveryAddressTrackEventsService, 'trackClickSaveButton');
           spyOn(toastService, 'show');
           spyOn(component, 'initForm');
           spyOn(router, 'navigate');
+        });
+
+        it('should call the event track save click event', () => {
+          component.onSubmit();
+
+          expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalled();
         });
 
         it('should show a success message', () => {
@@ -249,7 +267,7 @@ describe('DeliveryAddressComponent', () => {
 
         describe('when redirecting to the next page...', () => {
           it('should redirect to the payview if we come from payview add address button', () => {
-            component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
+            component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
 
             component.onSubmit();
 
@@ -257,7 +275,7 @@ describe('DeliveryAddressComponent', () => {
           });
 
           it('should redirect to shipment tracking if we come from payview pay button', () => {
-            component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_PAY;
+            component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
 
             component.onSubmit();
 
@@ -277,14 +295,13 @@ describe('DeliveryAddressComponent', () => {
       describe('and the save fails...', () => {
         beforeEach(() => {
           spyOn(toastService, 'show');
-          spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
-            throwError([
-              { error_code: 'invalid mobile phone number', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' },
-              { error_code: 'invalid postal code', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' },
-            ])
-          );
         });
+
         it('should show error toast', () => {
+          spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
+            throwError([new MobilePhoneNumberIsInvalidError(), new FlatAndFloorTooLongError()])
+          );
+
           component.onSubmit();
 
           expect(toastService.show).toHaveBeenCalledWith({
@@ -294,19 +311,37 @@ describe('DeliveryAddressComponent', () => {
         });
 
         it('should set errors if the backend return an invalid field', () => {
+          spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
+            throwError([new MobilePhoneNumberIsInvalidError(), new FlatAndFloorTooLongError()])
+          );
+
           component.onSubmit();
 
           expect(component.deliveryAddressForm.get('phone_number').getError('invalid')).toBeTruthy();
-          expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
+          expect(component.deliveryAddressForm.get('flat_and_floor').getError('invalid')).toBeTruthy();
         });
 
-        it('should ask to the backend for the correct copys', () => {
-          spyOn(i18nService, 'translate');
+        describe('and when the fail is because server notifies unique address by user', () => {
+          beforeEach(() => {
+            spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
+              throwError([new UniqueAddressByUserError('Unique address violation')])
+            );
+          });
 
-          component.onSubmit();
+          it('should not mark form as pending', () => {
+            component.onSubmit();
 
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_PHONE_MISSMATCH_LOCATION_ERROR);
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR);
+            expect(component.deliveryAddressForm.pending).toBe(false);
+          });
+
+          it('should show toast with generic error', () => {
+            component.onSubmit();
+
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR),
+              type: 'error',
+            });
+          });
         });
       });
     });
@@ -314,10 +349,15 @@ describe('DeliveryAddressComponent', () => {
     describe('when the form is NOT valid...', () => {
       beforeEach(() => {
         spyOn(toastService, 'show');
+        spyOn(deliveryAddressTrackEventsService, 'trackClickSaveButton');
         spyOn(component, 'onSubmit').and.callThrough();
         component.deliveryAddressForm.patchValue(MOCK_INVALID_DELIVERY_ADDRESS);
 
         component.onSubmit();
+      });
+
+      it('should call the event track save click event ', () => {
+        expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalled();
       });
 
       it('should show a toast with a form field error message', () => {
@@ -342,9 +382,12 @@ describe('DeliveryAddressComponent', () => {
 
   describe('when the user comes from the pay on payview...', () => {
     beforeEach(() => {
-      component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_PAY;
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
+      component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
 
       component.ngOnInit();
+      component.initForm();
       fixture.detectChanges();
     });
 
@@ -359,9 +402,12 @@ describe('DeliveryAddressComponent', () => {
 
   describe('when the user NOT comes from the pay button on payview...', () => {
     beforeEach(() => {
-      component.whereUserComes = PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
+      component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
 
       component.ngOnInit();
+      component.initForm();
       fixture.detectChanges();
     });
 
@@ -376,9 +422,12 @@ describe('DeliveryAddressComponent', () => {
 
   describe('when the user NOT comes from the payview...', () => {
     it('should appear the delete button', () => {
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
       component.whereUserComes = null;
 
       component.ngOnInit();
+      component.initForm();
       fixture.detectChanges();
 
       expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeTruthy();
@@ -386,6 +435,14 @@ describe('DeliveryAddressComponent', () => {
   });
 
   describe('when clicking in the countries dropdown...', () => {
+    beforeEach(() => {
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
+
+      component.initForm();
+      fixture.detectChanges();
+    });
+
     describe('and the form is not a new one... ', () => {
       describe('and the user did not accept the terms yet...', () => {
         beforeEach(() => {
@@ -395,21 +452,17 @@ describe('DeliveryAddressComponent', () => {
         });
 
         it('should open the change country confirmation modal', () => {
-          spyOn(modalService, 'open').and.returnValue({
-            result: Promise.resolve(),
-          });
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
 
           fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();
 
-          expect(modalService.open).toHaveBeenCalledWith(ChangeCountryConfirmationModalComponent);
+          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
         });
 
         describe('when we click on accept on the change country confirmation modal ', () => {
           beforeEach(() => {
             spyOn(component.countriesDropdown, 'open');
-            spyOn(modalService, 'open').and.returnValue({
-              result: Promise.resolve(true),
-            });
+            spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
           });
 
           it('should make the country editable and open the dropdown again', fakeAsync(() => {
@@ -424,13 +477,12 @@ describe('DeliveryAddressComponent', () => {
         describe('when we click on cancel on the change country confirmation modal ', () => {
           beforeEach(() => {
             spyOn(component.countriesDropdown, 'open');
-            spyOn(modalService, 'open').and.returnValue({
-              result: Promise.resolve(false),
-            });
+            spyOn(modalService, 'open').and.returnValue({ result: Promise.reject(), componentInstance: { ConfirmationModalComponent } });
+
+            fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();
           });
 
           it('should NOT make the country editable and should NOT open the countries dropdown', fakeAsync(() => {
-            fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();
             tick();
 
             expect(component.isCountryEditable).toBe(false);
@@ -565,12 +617,13 @@ describe('DeliveryAddressComponent', () => {
       });
 
       describe('and the backend NOT returns locations...', () => {
-        beforeEach(() => {
+        beforeEach(fakeAsync(() => {
           spyOn(i18nService, 'translate');
           spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([]));
 
           component.deliveryAddressForm.get('postal_code').setValue('08040');
-        });
+          tick();
+        }));
 
         it('should mark the postal code as invalid', () => {
           expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
@@ -582,11 +635,11 @@ describe('DeliveryAddressComponent', () => {
       });
 
       describe('and the backend fails for an postal code invalid error...', () => {
+        const postalCodeError = new PostalCodeIsNotAllowedError();
+
         beforeEach(() => {
           spyOn(i18nService, 'translate');
-          spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(
-            throwError([{ error_code: 'postal code is not allowed', status: INVALID_DELIVERY_ADDRESS_CODE, message: '' }])
-          );
+          spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(throwError([postalCodeError]));
 
           component.deliveryAddressForm.get('postal_code').setValue('08040');
         });
@@ -596,7 +649,7 @@ describe('DeliveryAddressComponent', () => {
         });
 
         it('should show an error message', () => {
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR);
+          expect(component.formErrorMessages.postal_code).toEqual(postalCodeError.message);
         });
       });
     });
@@ -632,6 +685,14 @@ describe('DeliveryAddressComponent', () => {
   });
 
   describe('when clicking the delete button...', () => {
+    beforeEach(() => {
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
+
+      component.initForm();
+      fixture.detectChanges();
+    });
+
     describe('and we confirm the action...', () => {
       describe('and the delete action succeed...', () => {
         beforeEach(() => {

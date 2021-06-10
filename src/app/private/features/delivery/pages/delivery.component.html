@@ -1,7 +1,7 @@
 <div class="page-content">
   <div class="container">
     <tsl-header>
-      <div class="col-12">
+      <div class="col">
         <div class="header-row">
           <h1 class="header-title" i18n="@@web_delivery_info_title">Your shipping info</h1>
         </div>
@@ -11,7 +11,7 @@
       </div>
     </tsl-header>
     <div class="row">
-      <div class="col-12">
+      <div class="col">
         <tsl-nav-links
           [navLinks]="navLinks"
           [selectedLinkId]="selectedNavLinkId"
@@ -21,6 +21,10 @@
         </tsl-nav-links>
       </div>
     </div>
-    <router-outlet></router-outlet>
+    <div class="row box profile-box mt-3">
+      <div class="col">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
   </div>
 </div>

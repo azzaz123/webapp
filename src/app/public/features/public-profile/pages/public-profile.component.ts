@@ -16,6 +16,7 @@ import { PUBLIC_PROFILE_AD } from '../core/ads/public-profile-ads.config';
 import { PublicProfileTrackingEventsService } from '../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { PublicProfileService } from '../core/services/public-profile.service';
 import { PUBLIC_PROFILE_PATHS } from '../public-profile-routing-constants';
+import { UserService } from '@core/user/user.service';
 
 @Component({
   selector: 'tsl-public-profile',
@@ -43,7 +44,8 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     private adsService: AdsService,
     private isCurrentUserPipe: IsCurrentUserPipe,
     private slugsUtilService: SlugsUtilService,
-    private publicProfileTrackingEventsService: PublicProfileTrackingEventsService
+    private publicProfileTrackingEventsService: PublicProfileTrackingEventsService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -142,8 +144,9 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   private initializeFavouriteUser(): void {
     const isOurOwnUser = this.isCurrentUserPipe.transform(this.userId);
+    const isLogged = this.userService.isLogged;
 
-    if (!isOurOwnUser) {
+    if (!isOurOwnUser && isLogged) {
       this.getFavouriteUser();
     }
   }

@@ -20,9 +20,7 @@
                 </tsl-subscription-price-discount>
             </ng-container>
             <ng-template #subscriptionPrice>
-                <span i18n="@@web_profile_pages_subscription_326">
-                    {{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month
-                </span>
+                <span i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span>
             </ng-template>
         </div>
         <hr />
@@ -30,12 +28,7 @@
     <div class="d-flex flex-column SubscriptionCard__info w-100 mb-2">
         <ng-container *ngIf="!isSubscribed; else subscriptionBody">
             <div class="d-flex flex-column text-left">
-                <div class="d-flex mb-2">
-                    <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
-                    </tsl-svg-icon>
-                    <span>{{ noSubscriptionBodyText }}</span>
-                </div>
-                <div class="d-flex mb-2" *ngFor="let benefit of subcriptionBenefits">
+                <div class="d-flex mb-2" *ngFor="let benefit of subscriptionBenefits">
                     <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
                     </tsl-svg-icon>
                     <span>{{ benefit }}</span>

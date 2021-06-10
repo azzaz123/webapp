@@ -1,0 +1,29 @@
+<div class="GenericCard GenericCard--dark d-flex align-items-center flex-wrap justify-content-center flex-column flex-md-row">
+    <div class="SubscriptionPurchaseHeader__icon mr-md-3 mr-sm-2 mr-0 mb-2 mb-md-0">
+        <tsl-svg-icon [src]="iconSrc">
+        </tsl-svg-icon>
+    </div>
+    <div class="SubscriptionPurchaseHeader__text text-center text-md-left">
+        <div class="mb-2 d-block d-md-flex flex-wrap justify-content-center justify-content-md-start">
+            <b><span i18n="@@web_subscription_purchase_subscription_title" class="SubscriptionPurchaseHeader__title mr-md-3">{{subscription.category_name}}
+                    subscription
+                </span></b>
+                <span *ngIf="subscription.trial_available" class="d-block d-md-inline">
+                    <span i18n="@@web_subscription_price_discount_days_trial_free"
+                     class="SubscriptionPurchaseHeader__trialBanner px-2">{{subscription.trial_days}}-day trial for free</span>
+                </span>
+        </div>
+        <div class="mb-2 SubscriptionPurchaseHeader__subtitle" i18n="@@web_subscription_purchase_subscription_subtitle">
+            Turn your sales into a real business
+        </div>
+        <div class="SubscriptionPurchaseHeader__benefits text-left w-100 container">
+            <div class="row">
+                <span class="d-flex col-lg-auto col-md-6 col-sm-12 px-2" *ngFor="let benefit of benefits">
+                    <tsl-svg-icon class="mr-1 mt-1 SubscriptionPurchaseHeader__iconCheck" src="assets/icons/check.svg">
+                    </tsl-svg-icon>
+                    {{benefit}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

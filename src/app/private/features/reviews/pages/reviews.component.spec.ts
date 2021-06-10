@@ -22,9 +22,7 @@ describe('ReviewsComponent', () => {
           {
             provide: UserService,
             useValue: {
-              me() {
-                return of(MOCK_USER);
-              },
+              user: MOCK_USER,
               getInfo() {
                 return of(USER_INFO_RESPONSE);
               },
@@ -102,14 +100,12 @@ describe('ReviewsComponent', () => {
   describe('getUserScore', () => {
     beforeEach(fakeAsync(() => {
       spyOn(component, 'getUserScore').and.callThrough();
-      spyOn(userService, 'me').and.callThrough();
       spyOn(userService, 'getInfo').and.callThrough();
     }));
 
     it('should get the user score', () => {
       component.getUserScore();
 
-      expect(userService.me).toHaveBeenCalled();
       expect(userService.getInfo).toHaveBeenCalled();
       expect(component.userScore).toEqual(USER_INFO_RESPONSE.scoring_stars);
     });

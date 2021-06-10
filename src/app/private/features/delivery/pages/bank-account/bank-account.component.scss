@@ -1,0 +1,10 @@
+@import '~style/common';
+
+.BankAccount {
+  &__message {
+    &--error {
+      font-size: $font-size-s;
+      color: $negative-main;
+    }
+  }
+}

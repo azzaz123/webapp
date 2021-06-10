@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
+import { BankAccountComponent } from './bank-account.component';
 
-// TODO: Add BankAccountComponent when created		Date: 2021/04/26
 const routes: Route[] = [
   {
     path: '',
+    component: BankAccountComponent,
   },
 ];
 
@@ -14,4 +15,4 @@ const routes: Route[] = [
 })
 export class BankAccountRoutingModule {}
 
-export const bankAccountRoutedComponents = [];
+export const bankAccountRoutedComponents = [BankAccountComponent];

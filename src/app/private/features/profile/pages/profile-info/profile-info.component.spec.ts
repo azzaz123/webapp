@@ -49,11 +49,8 @@ describe('ProfileInfoComponent', () => {
             provide: UserService,
             useValue: {
               user: MOCK_FULL_USER,
-              me() {
-                return of(MOCK_FULL_USER);
-              },
               isProUser() {
-                return of({});
+                return true;
               },
               getProInfo() {
                 return of({});
@@ -123,8 +120,6 @@ describe('ProfileInfoComponent', () => {
     router = TestBed.inject(Router);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     component.formComponent = TestBed.inject(ProfileFormComponent);
-    spyOn(userService, 'me').and.callThrough();
-    spyOn(userService, 'isProUser').and.returnValue(of(true));
     spyOn(userService, 'getUserCover').and.returnValue(of(IMAGE));
     fixture.detectChanges();
   });
@@ -133,11 +128,12 @@ describe('ProfileInfoComponent', () => {
     it('should call userService.me and set user', () => {
       component.initForm();
 
-      expect(userService.me).toHaveBeenCalled();
       expect(component.user).toBe(MOCK_FULL_USER);
     });
 
     it('should call userService.isProUser and set isPro', () => {
+      spyOn(userService, 'isProUser').and.callThrough();
+
       component.initForm();
 
       expect(userService.isProUser).toHaveBeenCalled();

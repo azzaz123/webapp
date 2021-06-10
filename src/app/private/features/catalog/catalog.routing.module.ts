@@ -60,7 +60,7 @@ export const routes: Route[] = [
           isMyZone: true,
           isProducts: true,
           permissions: {
-            only: PERMISSIONS.visibility,
+            only: PERMISSIONS.bumps,
             except: PERMISSIONS.professional,
             redirectTo: {
               [PERMISSIONS.professional]: isNormalCheckoutPermissions,

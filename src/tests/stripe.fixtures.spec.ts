@@ -1,5 +1,22 @@
 import { FinancialCard } from '../app/shared/profile/credit-card-info/financial-card';
 import { FinancialCardOption, StripeCard } from '../app/core/payments/payment.interface';
+import { Observable, of } from 'rxjs';
+
+export class MockStripeService {
+  public init() {
+    return {};
+  }
+
+  public getCards(): Observable<FinancialCard[]> {
+    return of([]);
+  }
+
+  public addNewCard(): Observable<unknown> {
+    return of();
+  }
+
+  public actionPayment() {}
+}
 
 export const STRIPE_CARD: StripeCard = {
   brand: null,
@@ -53,9 +70,16 @@ export const STRIPE_CARD_OPTION_SUBSCRIPTION: any = {
   stripeCard: STRIPE_CARD,
 };
 
+export const CARDS_WITH_ONE_DEFAULT: FinancialCard[] = [createFinancialCardFixture(), createDefaultFinancialCardFixture()];
+
+export const CARDS_WITHOUT_DEFAULT: FinancialCard[] = [createFinancialCardFixture(), createFavoriteFinancialCardFixture()];
+
 export function createFinancialCardFixture(): FinancialCard {
   return new FinancialCard('2/2020', 'pm_a0b1c2', '4242', null, null, STRIPE_CARD);
 }
 export function createFavoriteFinancialCardFixture(): FinancialCard {
   return new FinancialCard('01/2021', 'pm_2f2f2f', '4242', null, true, STRIPE_CARD);
+}
+export function createDefaultFinancialCardFixture(): FinancialCard {
+  return new FinancialCard('01/2021', 'pm_2f2f84', '4242', true, null, STRIPE_CARD);
 }

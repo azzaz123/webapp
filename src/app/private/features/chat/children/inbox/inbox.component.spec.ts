@@ -56,11 +56,9 @@ describe('Component: InboxComponent', () => {
         {
           provide: UserService,
           useValue: {
+            user: MOCK_USER,
             isProfessional(): Observable<boolean> {
               return of(false);
-            },
-            me(): Observable<User> {
-              return of(MOCK_USER);
             },
             calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
               return 5.5;

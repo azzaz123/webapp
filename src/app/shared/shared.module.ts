@@ -73,7 +73,6 @@ import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 import { ProfileFormModule } from './profile/profile-form/profile-form.module';
-import { NavLinksModule } from './nav-links/nav-links.module';
 import { HeaderModule } from './header/header.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
@@ -103,7 +102,6 @@ import { VisibleDirectiveModule } from './directives/visible/visible.directive.m
     ButtonModule,
     DateCountDownModule,
     ProfileFormModule,
-    NavLinksModule,
     HeaderModule,
   ],
   exports: [
@@ -171,7 +169,6 @@ import { VisibleDirectiveModule } from './directives/visible/visible.directive.m
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
     ProfileFormModule,
-    NavLinksModule,
     InfiniteScrollDirective,
     VisibleDirectiveModule,
   ],

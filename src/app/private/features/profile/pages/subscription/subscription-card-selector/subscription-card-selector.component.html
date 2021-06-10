@@ -1,0 +1,9 @@
+<div class="SubscriptionCardSelector d-flex flex-wrap">
+    <ng-container *ngIf="stripeCards?.length || selectedCard">
+        <tsl-credit-card-info class="mr-md-3 mb-md-0 mb-2 mr-0" [financialCard]="selectedCard" [hideDelete]="true" [error]="error" [hideEdit]="!showChangeLink" (onSetChangeCard)="onChangeCard()">
+        </tsl-credit-card-info>
+    </ng-container>
+    <div class="SubscriptionCardSelector__newCard d-flex flex-column align-items-center justify-content-center" (click)="onAddCard()">
+        <span i18n="@@web_add_card">Add card</span>
+    </div>
+</div>

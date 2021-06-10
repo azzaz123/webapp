@@ -76,7 +76,7 @@ describe('UploadRealestateComponent', () => {
             provide: UserService,
             useValue: {
               isProUser() {
-                return of(false);
+                return false;
               },
             },
           },

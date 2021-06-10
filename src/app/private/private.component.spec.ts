@@ -8,7 +8,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie';
-import { of, Subject, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_ITEM_V3 } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
@@ -112,10 +112,9 @@ describe('PrivateComponent', () => {
         {
           provide: UserService,
           useValue: {
+            user: MOCK_USER,
+            initializeUserWithPermissions() {},
             checkUserStatus() {},
-            me() {
-              return of(MOCK_USER);
-            },
             logout() {},
             setPermission() {},
             sendUserPresenceInterval() {},
@@ -351,17 +350,6 @@ describe('PrivateComponent', () => {
 
         expect(realTime.reconnect).toHaveBeenCalled();
       });
-    });
-
-    it('should NOT call userService.sendUserPresenceInterval is the user has not successfully logged in', () => {
-      spyOn(userService, 'me').and.returnValue(throwError({}));
-      spyOn(errorsService, 'show');
-      spyOn(userService, 'sendUserPresenceInterval');
-
-      component.ngOnInit();
-      eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-      expect(userService.sendUserPresenceInterval).not.toHaveBeenCalled();
     });
 
     it('should init notifications', () => {

@@ -1,0 +1,32 @@
+<div class="SubscriptionPurchaseFooter">
+    <div class="container SubscriptionPurchaseFooter__container ">
+        <div class="d-flex align-items-center justify-content-between flex-wrap">
+            <div>
+                <div>
+                    <b><span i18n="@@web_total">Total</span></b>
+                </div>
+                <div class="SubscriptionPurchaseFooter__amount">
+                    <b>{{priceText}}{{selectedTier.currency}}</b>
+                </div>
+                <div class="SubscriptionPurchaseFooter__description">
+                    <ng-container *ngIf="subscription.trial_available; else noTrialDescription">
+                        <b><span i18n="@@web_profile_pages_subscription_326">{{selectedTier.price}}{{selectedTier.currency}}/month</span>
+                        </b>&nbsp;<span i18n="@@web_price_after_free_days">at the end of free trial</span>
+                    </ng-container>
+                    <ng-template #noTrialDescription>
+                        <span i18n="@@web_monthly_renewal_plan">The plan will be renewed monthly</span>
+                    </ng-template>
+                </div>
+            </div>
+            <tsl-button className="btn btn-primary btn-primary--bold btn--big btn--width" [loading]="isLoading"
+                [disabled]="buttonDisable" (click)="onClickButton()">
+                {{buttonText}}
+            </tsl-button>
+        </div>
+        <div>
+            <span class="SubscriptionPurchaseFooter__legal" i18n="@@web_stripe_card_element_513">By subscribing, you
+                accept the <a href="{{termsAndConditionsURL}}" target="_blank">Terms of use</a>
+                and <a href="{{policyPrivacyURL}}" target="_blank">Privacy policy</a> of Wallapop S.L. and Stripe Ltd</span>
+        </div>
+    </div>
+</div>

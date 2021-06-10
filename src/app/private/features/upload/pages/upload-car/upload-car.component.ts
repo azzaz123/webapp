@@ -469,8 +469,10 @@ export class UploadCarComponent implements OnInit {
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {
-    return forkJoin([this.userService.isProfessional(), this.userService.isProUser()]).pipe(
-      tap((values: any[]) => {
+    const isPro = this.userService.isProUser();
+
+    return this.userService.isProfessional().pipe(
+      tap((isCarDealer: boolean) => {
         const baseEventAttrs: any = {
           itemId: item.id,
           categoryId: item.category_id,
@@ -485,8 +487,8 @@ export class UploadCarComponent implements OnInit {
           hp: item.horsepower || null,
           numDoors: item.num_doors || null,
           bodyType: item.body_type || null,
-          isCarDealer: values[0],
-          isPro: values[1],
+          isCarDealer,
+          isPro,
         };
 
         if (isEdit) {

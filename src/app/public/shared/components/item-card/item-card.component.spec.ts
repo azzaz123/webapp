@@ -118,7 +118,7 @@ describe('ItemCardComponent', () => {
       });
       describe('and has visibility permissions', () => {
         beforeEach(() => {
-          permissionService.addPermission(PERMISSIONS.visibility);
+          permissionService.addPermission(PERMISSIONS.bumps);
         });
         it('should show item as bumped', () => {
           fixture.detectChanges();
@@ -128,7 +128,7 @@ describe('ItemCardComponent', () => {
       });
       describe('and has not visibility permissions', () => {
         beforeEach(() => {
-          permissionService.removePermission(PERMISSIONS.visibility);
+          permissionService.removePermission(PERMISSIONS.bumps);
         });
         it('should not show item as bumped', () => {
           fixture.detectChanges();
@@ -146,7 +146,7 @@ describe('ItemCardComponent', () => {
 
       describe('and has visibility permissions', () => {
         beforeEach(() => {
-          permissionService.addPermission(PERMISSIONS.visibility);
+          permissionService.addPermission(PERMISSIONS.bumps);
         });
         it('should show item as bumped and reserved', () => {
           const reservedPartialSrc = 'reserved';
@@ -159,7 +159,7 @@ describe('ItemCardComponent', () => {
       });
       describe('and has not visibility permissions', () => {
         beforeEach(() => {
-          permissionService.removePermission(PERMISSIONS.visibility);
+          permissionService.removePermission(PERMISSIONS.bumps);
         });
         it('should show item as reserved', () => {
           const reservedPartialSrc = 'reserved';

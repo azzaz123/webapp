@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MOCK_DELIVERY_ADDRESS_ERRORS_API } from '@fixtures/private/delivery/delivery-address-error.fixtures.spec';
 import { MOCK_DELIVERY_ADDRESS, MOCK_DELIVERY_ADDRESS_2 } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
-import { DeliveryAddressError } from '@private/features/delivery/errors/delivery-address/delivery-address-error';
+import { MOCK_DELIVERY_ADDRESS_ERRORS } from '@fixtures/private/delivery/errors/delivery-errors.fixtures.spec';
+import { DeliveryAddressError } from '@private/features/delivery/errors/classes/address';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 import { of, throwError } from 'rxjs';
 import { DeliveryAddressApiService } from '../../api/delivery-address-api/delivery-address-api.service';
@@ -100,7 +100,7 @@ describe('DeliveryAddressService', () => {
     describe('and the petition fails...', () => {
       it('should map the error to DeliveryAddressError', () => {
         let response: DeliveryAddressError[];
-        spyOn(deliveryAddressApiService, 'create').and.returnValue(throwError(MOCK_DELIVERY_ADDRESS_ERRORS_API));
+        spyOn(deliveryAddressApiService, 'create').and.returnValue(throwError(MOCK_DELIVERY_ADDRESS_ERRORS));
 
         service.updateOrCreate(MOCK_DELIVERY_ADDRESS, true).subscribe({
           error: (deliveryAddressErrors: DeliveryAddressError[]) => {
@@ -137,7 +137,7 @@ describe('DeliveryAddressService', () => {
     describe('and the petition fails...', () => {
       it('should map the error to DeliveryAddressError', () => {
         let response: DeliveryAddressError[];
-        spyOn(deliveryAddressApiService, 'update').and.returnValue(throwError(MOCK_DELIVERY_ADDRESS_ERRORS_API));
+        spyOn(deliveryAddressApiService, 'update').and.returnValue(throwError(MOCK_DELIVERY_ADDRESS_ERRORS));
 
         service.updateOrCreate(MOCK_DELIVERY_ADDRESS, false).subscribe({
           error: (deliveryAddressErrors: DeliveryAddressError[]) => {

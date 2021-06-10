@@ -199,11 +199,9 @@ export class PrivateComponent implements OnInit {
 
   private subscribeEventUserLogin(): void {
     this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
-      this.setLoading(true);
-      this.userService
-        .me()
-        .pipe(finalize(() => this.setLoading(false)))
-        .subscribe((user) => this.handleUserLoggedIn(user, accessToken));
+      const user = this.userService.user;
+
+      this.handleUserLoggedIn(user, accessToken);
     });
   }
 

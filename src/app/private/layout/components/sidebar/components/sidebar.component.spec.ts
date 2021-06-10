@@ -55,13 +55,11 @@ describe('SidebarComponent', () => {
           {
             provide: UserService,
             useValue: {
+              user: MOCK_USER,
               getStats() {
                 return of({
                   counters: mockCounters,
                 });
-              },
-              me(): Observable<User> {
-                return of(MOCK_USER);
               },
               isProfessional() {
                 return of(true);
@@ -89,16 +87,12 @@ describe('SidebarComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.inject(UserService);
     analyticsService = TestBed.inject(AnalyticsService);
-    spyOn(userService, 'me').and.callThrough();
     spyOn(analyticsService, 'trackPageView');
     router = TestBed.get(Router);
     fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
-    it('should call userService.me', () => {
-      expect(userService.me).toHaveBeenCalled();
-    });
     it('should set the private user variable with the content of the user', () => {
       expect(component.user).toBe(MOCK_USER);
     });

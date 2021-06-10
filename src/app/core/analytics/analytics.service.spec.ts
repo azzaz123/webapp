@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
-import { MOCK_FULL_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_FULL_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import { DeviceService } from '@core/device/device.service';
@@ -21,6 +21,7 @@ jest.mock('@mparticle/web-sdk', () => ({
     },
     logEvent: (_eventName, _eventType, _eventAttributes) => {},
     logPageView: (_pageName, _pageAttributes, _pageFlags) => {},
+    ready: () => {},
     Identity: {
       getCurrentUser: () => user,
     },
@@ -41,11 +42,7 @@ describe('AnalyticsService', () => {
       providers: [
         {
           provide: UserService,
-          useValue: {
-            me() {
-              return of(MOCK_USER);
-            },
-          },
+          useClass: MockedUserService,
         },
         {
           provide: DeviceService,
@@ -93,7 +90,7 @@ describe('AnalyticsService', () => {
     describe('when there is a user logged with email and id', () => {
       it('should initialize the analytics library with email and id', () => {
         spyOn(mParticle, 'init').and.callThrough();
-        spyOn(userService, 'me').and.returnValue(of(MOCK_FULL_USER));
+        jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_FULL_USER);
         const expectedIdentities = {
           customerid: MOCK_FULL_USER.id,
           email: MOCK_FULL_USER.email,
@@ -114,6 +111,7 @@ describe('AnalyticsService', () => {
     describe('when there is not a user logged with email and id', () => {
       it('should initialize the analytics library without user Identities', () => {
         spyOn(mParticle, 'init').and.callThrough();
+        jest.spyOn(userService, 'isLogged', 'get').mockReturnValue(false);
         const expectedIdentities = {};
 
         service.initialize();

@@ -6,8 +6,8 @@
     "BucketEN": "web-en.beta.wallapop.com",
     "HostES": "web.beta.wallapop.com",
     "HostEN": "web-en.beta.wallapop.com",
-    "HostedZoneName": "wallapop.com.",
-    "Certificate": "arn:aws:acm:us-east-1:745640521341:certificate/1927ef21-ffc9-44c8-887e-c9f0ef3da20f"
+    "HostedZoneName": "beta.wallapop.com.",
+    "Certificate": "arn:aws:acm:us-east-1:139222918132:certificate/c99aab6a-a8b9-4363-8f2b-edf8a507b970"
   },
   "Tags": {
     "Project": "webapp",

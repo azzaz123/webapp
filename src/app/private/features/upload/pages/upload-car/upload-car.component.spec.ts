@@ -95,7 +95,7 @@ describe('UploadCarComponent', () => {
                 return of(false);
               },
               isProUser() {
-                return of(false);
+                return false;
               },
             },
           },

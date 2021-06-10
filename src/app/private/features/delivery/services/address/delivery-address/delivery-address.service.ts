@@ -1,9 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DeliveryAddressError } from '@private/features/delivery/errors/delivery-address/delivery-address-error';
-import { DeliveryAddressErrorApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-error.interface';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { DeliveryAddressApi } from '../../../interfaces/delivery-address/delivery-address-api.interface';
 import { DeliveryAddressApiService } from '../../api/delivery-address-api/delivery-address-api.service';
 import { DeliveryAddressStoreService } from '../delivery-address-store/delivery-address-store.service';
@@ -35,12 +32,6 @@ export class DeliveryAddressService {
     return observable.pipe(
       tap(() => {
         this.updateDeliveryAddressStore(newDeliveryAddress);
-      }),
-      catchError((e: HttpErrorResponse) => {
-        const errors: DeliveryAddressErrorApi[] = e?.error;
-        const mappedErrors: DeliveryAddressError[] = errors?.map((err) => new DeliveryAddressError(err.error_code, e.status, err.message));
-
-        return throwError(mappedErrors);
       })
     );
   }

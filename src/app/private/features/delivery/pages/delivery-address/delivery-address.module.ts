@@ -15,6 +15,8 @@ import { DeliveryLocationsApiService } from '../../services/api/delivery-locatio
 import { CommonModule } from '@angular/common';
 import { DeliveryAddressStoreService } from '../../services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryCountriesStoreService } from '../../services/countries/delivery-countries-store/delivery-countries-store.service';
+import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
+import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numbers-only.directive.module';
 
 @NgModule({
   imports: [
@@ -25,6 +27,7 @@ import { DeliveryCountriesStoreService } from '../../services/countries/delivery
     DropdownModule,
     ButtonModule,
     CommonModule,
+    NumbersOnlyDirectiveModule,
   ],
   declarations: [deliveryAddressRoutedComponents],
   providers: [
@@ -37,6 +40,7 @@ import { DeliveryCountriesStoreService } from '../../services/countries/delivery
     DeliveryLocationsService,
     DeliveryLocationsApiService,
     ErrorsService,
+    DeliveryAddressTrackEventsService,
   ],
 })
 export class DeliveryAddressModule {}

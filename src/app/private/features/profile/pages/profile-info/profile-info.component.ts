@@ -86,17 +86,21 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   }
 
   initForm() {
-    forkJoin([this.userService.me(), this.userService.isProUser(), this.userService.getUserCover()])
+    this.userService
+      .getUserCover()
       .pipe(
         finalize(() => {
           this.getProUserData();
         })
       )
-      .subscribe((values) => {
-        this.user = values[0];
-        this.isPro = values[1];
-        if (values[2]) {
-          this.user.coverImage = values[2];
+      .subscribe((coverImage) => {
+        const user = this.userService.user;
+        const isPro = this.userService.isProUser();
+
+        this.user = user;
+        this.isPro = isPro;
+        if (coverImage) {
+          this.user.coverImage = coverImage;
         }
       });
   }

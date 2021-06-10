@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ITEMS_API_URL } from '@core/item/item.service';
 import { USER_ENDPOINT } from '@core/user/user.service';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 import { APP_VERSION } from '@environments/version';
 import { Observable, of } from 'rxjs';
 import { ITEM_REPORT_REASONS } from './constants/item-report-reasons';

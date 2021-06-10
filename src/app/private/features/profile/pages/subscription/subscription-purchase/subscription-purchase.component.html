@@ -1,0 +1,58 @@
+<div class="SubscriptionPurchase">
+    <div class="GenericCard">
+        <div class="d-flex justify-content-between">
+            <span class="GenericCard__title" i18n="@@web_wallapop_pro_subscription_title">Boost your online business with
+                Wallapop PRO</span>
+            <span class="GenericCard__link text-right d-md-inline d-none" i18n="@@web_change_subscription"
+                (click)="onChageSubscription()">Change
+                subscription</span>
+        </div>
+        <div class="GenericCard__subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a subscription to take your
+            sales to the next level</div>
+        <tsl-subscription-purchase-header [subscription]="subscription" [benefits]="benefits"> </tsl-subscription-purchase-header>
+        <div class="GenericCard__link d-md-none mt-3" i18n="@@web_change_subscription"
+        (click)="onChageSubscription()">Change
+        subscription</div>
+    </div>
+    <div *ngIf="subscription.tiers.length > 1" class="GenericCard">
+        <div class="GenericCard__title" i18n="@@web_tier_selector_title">How many items you want to list?</div>
+        <div class="GenericCard__subtitle" i18n="@@web_tier_selector_subtitle">Choose the plan that fits your goals</div>
+        <tsl-subscription-tier-selector [subscription]="subscription" [selectedTier]="selectedTier"
+            (changeSelectedTier)="onSelectedTierChanged($event)"> </tsl-subscription-tier-selector>
+    </div>
+    <div class="GenericCard">
+        <div class="GenericCard__title" i18n="@@web_stripe_cards_535">Payment method</div>
+        <div class="GenericCard__subtitle" i18n="@@web_card_selector_subtitle">Encrypted and secure</div>
+        <tsl-subscription-card-selector [stripeCards]="stripeCards" [selectedCard]="selectedCard" (clickNewCard)="trackClickSubscriptionAddCard()"
+            [error]="!!paymentError" (changeSelectedCard)="onChangeSelectedCard($event)">
+        </tsl-subscription-card-selector>
+        <div class="mt-4">
+            <label i18n="@@web_receive_invoices">Do you want to receive invoices?</label>
+            <div class="d-flex">
+                <div class="mr-5 input-radio">
+                    <input type="radio" class="mr-2" [value]="true" id="type-natural" required
+                        (click)="onScrollToInvoice()" [(ngModel)]="isInvoiceRequired">
+                    <span i18n="@@web_yes">Yes</span>
+                </div>
+                <div class="input-radio">
+                    <input type="radio" class="mr-2" [value]="false" id="type-legal" [(ngModel)]="isInvoiceRequired">
+                    <span i18n="@@web_no">No</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isInvoiceRequired">
+        <div class="GenericCard">
+            <div class="GenericCard__title" i18n="@@web_invoice_information">Invoice information</div>
+            <div class="GenericCard__subtitle" i18n="@@web_add_new_subscription_modal_step3_subtitle">For services other than
+                subscriptions (e.g. visibility packs) you won't receive invoices.</div>
+            <tsl-profile-pro-billing id="billing" [containerType]="INVOICE_COMPONENT_TYPE.SUBSCRIPTION_INFO"
+                (billingInfoFormSaved)="purchaseSubscription()" (billingInfoNotUpdateRequired)="purchaseSubscription()">
+            </tsl-profile-pro-billing>
+        </div>
+    </div>
+</div>
+<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="!selectedCard || isLoading || !!paymentError"
+    [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()" (buttonEnabled)="trackSubscriptionPaymentButtonAvailable()">
+
+</tsl-subscription-purchase-footer>

@@ -15,9 +15,6 @@ describe('TutorialService', () => {
           provide: UserService,
           useValue: {
             user: MOCK_USER,
-            me() {
-              return of(MOCK_USER);
-            },
             isProfessional() {
               return of(true);
             },
@@ -72,9 +69,7 @@ describe('TutorialService', () => {
       spyOn(localStorage, 'getItem').and.returnValue('true');
       let displayed: boolean;
 
-      service.isAlreadyDisplayed().subscribe((val: boolean) => {
-        displayed = val;
-      });
+      displayed = service.isAlreadyDisplayed();
 
       expect(localStorage.getItem).toHaveBeenCalledWith(USER_ID + '-tutorial');
       expect(displayed).toBeTruthy();
@@ -84,9 +79,7 @@ describe('TutorialService', () => {
       spyOn(localStorage, 'getItem').and.returnValue(undefined);
       let displayed: boolean;
 
-      service.isAlreadyDisplayed().subscribe((val: boolean) => {
-        displayed = val;
-      });
+      displayed = service.isAlreadyDisplayed();
 
       expect(localStorage.getItem).toHaveBeenCalledWith(USER_ID + '-tutorial');
       expect(displayed).toBeFalsy();

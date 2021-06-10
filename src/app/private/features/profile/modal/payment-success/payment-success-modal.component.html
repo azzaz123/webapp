@@ -9,7 +9,7 @@
     <div class="SubscribedSuccessfully__box-content text-center text-md-left">
       <h3 i18n="@@web_perfect">Perfect!</h3>
       <p i18n="@@web_subscription_created">The subscription has been correctly created. Everything is prepared to boost your sales!</p>
-      <p i18n="@@web_invoice_email" *ngIf="isInvoice === 'true'">You will receive an e-mail with your invoice shortly.</p>
+      <p i18n="@@web_invoice_email" *ngIf="isInvoice">You will receive an e-mail with your invoice shortly.</p>
       <div class="d-flex justify-content-center"><tsl-button className="btn btn-primary" (click)="close()" i18n="@@web_go_to_my_profile">Go to my profile</tsl-button></div>
     </div>
   </div>

@@ -44,12 +44,12 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
 
   ngOnInit() {
     this.item = this.route.snapshot.data['item'];
-    // this.isReactivation = this.router.url.endsWith(UPLOAD_PATHS.REACTIVATE);
+    this.isReactivation = this.router.url.endsWith(UPLOAD_PATHS.REACTIVATE);
     this.getUrgentPrice();
 
-    // this.editTrackingEventService.viewTrackingReady$.pipe(take(1)).subscribe(() => {
-    //   this.editTrackingEventService.trackViewEditItemEvent(this.item.categoryId, this.isReactivation);
-    // });
+    this.editTrackingEventService.viewTrackingReady$.pipe(take(1)).subscribe(() => {
+      this.editTrackingEventService.trackViewEditItemEvent(this.item.categoryId, this.isReactivation);
+    });
   }
 
   public onValidationError() {

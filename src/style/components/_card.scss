@@ -21,3 +21,32 @@
     border-radius: $border-radius;
   }
 }
+.GenericCard {
+  border-radius: $border-radius;
+  padding: $spacing-ml;
+  background-color: $white;
+  border: 1px solid $blue-grey-5;
+
+  &__title {
+    font-size: $font-size-m;
+    color: $blue-grey-1;
+    font-weight: $font-weight-chunky;
+    margin-bottom: $spacing-xs;
+  }
+  &__subtitle {
+    font-size: $font-size-m;
+    color: $blue-grey-2;
+    margin-bottom: $spacing-ml;
+    line-height: 1;
+  }
+
+  &__link {
+    cursor: pointer;
+    color: $walla-main;
+    font-size: $font-size-s;
+  }
+
+  &--dark {
+    background-color: $blue-grey-6;
+  }
+}
