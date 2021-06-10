@@ -247,12 +247,15 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private checkUserLocation(): void {
-    if (!this.userService.user.location) {
-      this.modalService.open(LocationSelectorModal).result.then((locationUpdated: boolean) => {
-        if (locationUpdated) {
-          this.saveItem();
-        }
-      });
+    if (this.userService.user.location) {
+      this.modalService.open(LocationSelectorModal).result.then(
+        (locationUpdated: boolean) => {
+          if (locationUpdated) {
+            this.saveItem();
+          }
+        },
+        () => {}
+      );
     } else {
       this.saveItem();
     }

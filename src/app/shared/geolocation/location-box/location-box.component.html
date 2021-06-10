@@ -1,4 +1,4 @@
-<div class="main-box" [ngbPopover]="coachmarkLocation" [autoClose]="false" triggers="mouseenter:mouseleave">
+<div class="main-box" [ngbPopover]="disablePopover ? null : coachmarkLocation" [autoClose]="false" triggers="mouseenter:mouseleave">
   <h2 *ngIf="!disableTitle">
     <span *ngIf="title">{{title}}</span>
     <span *ngIf="!title" i18n="@@web_location_box_498">Your products are in:</span>
