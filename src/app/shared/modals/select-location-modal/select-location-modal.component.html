@@ -10,7 +10,6 @@
   </div>
   <div class="w-100">
     <form class="d-flex flex-column w-100" [formGroup]="locationForm" (submit)="onSubmit()">
-      <input type="text" autofocus="true" />
       <tsl-location-box [form]="locationForm" name="location" [updateLocation]="false" [disableFocus]="true"
         [disableTitle]="true" [disableFooter]="true"></tsl-location-box>
       <tsl-button class="mt-3" className="btn-primary btn-modal-primary btn--width" [disabled]="locationForm.get('location').get('address').invalid" (click)="onSubmit()"
