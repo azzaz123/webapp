@@ -46,8 +46,12 @@ export const routes: Route[] = [
           isMyZone: true,
           isProducts: true,
           permissions: {
-            only: PERMISSIONS.professional,
-            redirectTo: '/catalog/checkout',
+            only: PERMISSIONS.bumps,
+            except: PERMISSIONS.normal,
+            redirectTo: {
+              [PERMISSIONS.normal]: '/catalog/checkout',
+              default: '',
+            },
           },
         },
       },

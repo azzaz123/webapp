@@ -11,17 +11,28 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
 import { FavouriteIconComponent } from '../favourite-icon/favourite-icon.component';
 
 import { ItemCardComponent } from './item-card.component';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 describe('ItemCardComponent', () => {
   let component: ItemCardComponent;
   let fixture: ComponentFixture<ItemCardComponent>;
   let de: DebugElement;
   let el: HTMLElement;
+  let permissionService: NgxPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardComponent],
-      imports: [CommonModule, FavouriteIconModule, CustomCurrencyModule, SvgIconModule, ImageFallbackModule, HttpClientTestingModule],
+      imports: [
+        CommonModule,
+        FavouriteIconModule,
+        CustomCurrencyModule,
+        SvgIconModule,
+        ImageFallbackModule,
+        HttpClientTestingModule,
+        NgxPermissionsModule.forRoot(),
+      ],
     })
       .overrideComponent(ItemCardComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -31,6 +42,7 @@ describe('ItemCardComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemCardComponent);
+    permissionService = TestBed.inject(NgxPermissionsService);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
@@ -103,11 +115,26 @@ describe('ItemCardComponent', () => {
     describe('when is bumped', () => {
       beforeEach(() => {
         component.item.bumpFlags.bumped = true;
-        fixture.detectChanges();
       });
+      describe('and has visibility permissions', () => {
+        beforeEach(() => {
+          permissionService.addPermission(PERMISSIONS.bumps);
+        });
+        it('should show item as bumped', () => {
+          fixture.detectChanges();
 
-      it('should show item as bumped', () => {
-        expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeTruthy();
+          expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeTruthy();
+        });
+      });
+      describe('and has not visibility permissions', () => {
+        beforeEach(() => {
+          permissionService.removePermission(PERMISSIONS.bumps);
+        });
+        it('should not show item as bumped', () => {
+          fixture.detectChanges();
+
+          expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeFalsy();
+        });
       });
     });
 
@@ -115,14 +142,33 @@ describe('ItemCardComponent', () => {
       beforeEach(() => {
         component.item.bumpFlags.bumped = true;
         component.item.flags.reserved = true;
-        fixture.detectChanges();
       });
 
-      it('should show item as bumped and reserved', () => {
-        const reservedPartialSrc = 'reserved';
+      describe('and has visibility permissions', () => {
+        beforeEach(() => {
+          permissionService.addPermission(PERMISSIONS.bumps);
+        });
+        it('should show item as bumped and reserved', () => {
+          const reservedPartialSrc = 'reserved';
 
-        expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeTruthy();
-        expect(el.querySelector(`[src*="${reservedPartialSrc}"]`)).toBeTruthy();
+          fixture.detectChanges();
+
+          expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeTruthy();
+          expect(el.querySelector(`[src*="${reservedPartialSrc}"]`)).toBeTruthy();
+        });
+      });
+      describe('and has not visibility permissions', () => {
+        beforeEach(() => {
+          permissionService.removePermission(PERMISSIONS.bumps);
+        });
+        it('should show item as reserved', () => {
+          const reservedPartialSrc = 'reserved';
+
+          fixture.detectChanges();
+
+          expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeFalsy();
+          expect(el.querySelector(`[src*="${reservedPartialSrc}"]`)).toBeTruthy();
+        });
       });
     });
 

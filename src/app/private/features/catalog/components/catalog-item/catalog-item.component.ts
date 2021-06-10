@@ -12,6 +12,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { I18nService } from '@core/i18n/i18n.service';
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
 import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -23,6 +24,7 @@ export class CatalogItemComponent implements OnInit {
   @Input() showPublishCTA = false;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
   @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
+  public readonly PERMISSIONS = PERMISSIONS;
   public link: string;
   public selectMode = false;
   public tooltipMessages = {

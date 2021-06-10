@@ -8,7 +8,7 @@ import { AccessTokenService } from '../http/access-token.service';
 import * as coreLibrary from '@angular/core';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { MockPermissionsService } from '@fixtures/permissions.fixtures';
-import { FEATURE_FLAGS_ENUM } from './featureflag-constants';
+import { ACTIVE_DEV_FEATURE_FLAGS, FEATURE_FLAGS_ENUM } from './featureflag-constants';
 import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { PERMISSIONS } from './user-constants';
 
@@ -156,25 +156,25 @@ describe('FeatureflagService', () => {
       describe('when feature flag is active', () => {
         describe('and has permissions configured', () => {
           it('should set permissions', () => {
-            const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.VISIBILITY}&timestamp=${TIMESTAMP}`;
+            const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.BUMPS}&timestamp=${TIMESTAMP}`;
             const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
             const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-            service.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).subscribe();
+            service.getFlag(FEATURE_FLAGS_ENUM.BUMPS).subscribe();
             const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
-            req.flush([{ name: FEATURE_FLAGS_ENUM.VISIBILITY, active: true }]);
+            req.flush([{ name: FEATURE_FLAGS_ENUM.BUMPS, active: true }]);
 
             expect(permissionService.addPermission).toBeCalledTimes(1);
-            expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.visibility);
+            expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.bumps);
           });
           it('should not remove permissions', () => {
-            const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.VISIBILITY}&timestamp=${TIMESTAMP}`;
+            const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.BUMPS}&timestamp=${TIMESTAMP}`;
             const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
             const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-            service.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).subscribe();
+            service.getFlag(FEATURE_FLAGS_ENUM.BUMPS).subscribe();
             const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
-            req.flush([{ name: FEATURE_FLAGS_ENUM.VISIBILITY, active: true }]);
+            req.flush([{ name: FEATURE_FLAGS_ENUM.BUMPS, active: true }]);
 
             expect(permissionService.removePermission).not.toHaveBeenCalled();
           });
@@ -195,27 +195,27 @@ describe('FeatureflagService', () => {
       });
       describe('when feature flag is not active', () => {
         it('should not add permissions', () => {
-          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.VISIBILITY}&timestamp=${TIMESTAMP}`;
+          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.BUMPS}&timestamp=${TIMESTAMP}`;
           const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
           const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).subscribe();
+          service.getFlag(FEATURE_FLAGS_ENUM.BUMPS).subscribe();
           const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
-          req.flush([{ name: FEATURE_FLAGS_ENUM.VISIBILITY, active: false }]);
+          req.flush([{ name: FEATURE_FLAGS_ENUM.BUMPS, active: false }]);
 
           expect(permissionService.addPermission).not.toHaveBeenCalled();
         });
         it('should remove permissions', () => {
-          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.VISIBILITY}&timestamp=${TIMESTAMP}`;
+          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.BUMPS}&timestamp=${TIMESTAMP}`;
           const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
           const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).subscribe();
+          service.getFlag(FEATURE_FLAGS_ENUM.BUMPS).subscribe();
           const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
-          req.flush([{ name: FEATURE_FLAGS_ENUM.VISIBILITY, active: false }]);
+          req.flush([{ name: FEATURE_FLAGS_ENUM.BUMPS, active: false }]);
 
           expect(permissionService.removePermission).toBeCalledTimes(1);
-          expect(permissionService.removePermission).toHaveBeenCalledWith(PERMISSIONS.visibility);
+          expect(permissionService.removePermission).toHaveBeenCalledWith(PERMISSIONS.bumps);
         });
       });
     });
@@ -227,16 +227,17 @@ describe('FeatureflagService', () => {
         it('should return true', () => {
           let dataResponse: boolean;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).subscribe((isActive) => (dataResponse = isActive));
+          service.getFlag(ACTIVE_DEV_FEATURE_FLAGS[0]).subscribe((isActive) => (dataResponse = isActive));
 
           expect(dataResponse).toBe(true);
         });
         it('should not call API', () => {
-          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.VISIBILITY}&timestamp=${TIMESTAMP}`;
+          const featureFlag = ACTIVE_DEV_FEATURE_FLAGS[0];
+          const expectedUrlParams = `featureFlags=${featureFlag}&timestamp=${TIMESTAMP}`;
           const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
           const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
-          service.getFlag(FEATURE_FLAGS_ENUM.VISIBILITY).subscribe();
+          service.getFlag(featureFlag).subscribe();
 
           httpMock.expectNone(expectedUrlWithEndpointAndParams);
         });

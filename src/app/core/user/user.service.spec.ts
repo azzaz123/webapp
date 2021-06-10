@@ -79,7 +79,6 @@ describe('Service: User', () => {
   let cookieService: CookieService;
   let releaseVersionService: ReleaseVersionService;
   let permissionService: NgxPermissionsService;
-  let featureflagService: FeatureflagService;
   let httpMock: HttpTestingController;
   let eventService: EventService;
 
@@ -126,14 +125,6 @@ describe('Service: User', () => {
             hasPermission() {},
           },
         },
-        {
-          provide: FeatureflagService,
-          useValue: {
-            getFlag() {
-              return of(true);
-            },
-          },
-        },
       ],
     });
     service = TestBed.inject(UserService);
@@ -143,7 +134,6 @@ describe('Service: User', () => {
     event = TestBed.inject(EventService);
     cookieService = TestBed.inject(CookieService);
     permissionService = TestBed.inject(NgxPermissionsService);
-    featureflagService = TestBed.inject(FeatureflagService);
     httpMock = TestBed.inject(HttpTestingController);
     eventService = TestBed.inject(EventService);
   });

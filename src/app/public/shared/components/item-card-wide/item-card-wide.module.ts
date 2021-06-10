@@ -7,10 +7,20 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
 import { SlidesCarouselModule } from '../carousel-slides/carousel-slides.module';
 import { ItemExtraInfoModule } from '@public/shared/components/item-extra-info/item-extra-info.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   declarations: [ItemCardWideComponent, ItemCardWidePlaceholderComponent],
-  imports: [CommonModule, FavouriteIconModule, CustomCurrencyModule, SlidesCarouselModule, ItemExtraInfoModule],
+  imports: [
+    CommonModule,
+    FavouriteIconModule,
+    CustomCurrencyModule,
+    SlidesCarouselModule,
+    ItemExtraInfoModule,
+    SvgIconModule,
+    NgxPermissionsModule.forChild(),
+  ],
   exports: [ItemCardWideComponent, ItemCardWidePlaceholderComponent],
   providers: [DeviceDetectorService],
 })
