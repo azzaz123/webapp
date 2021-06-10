@@ -40,6 +40,11 @@
             <tsl-sky-shopping [adSlotContainer]="adSlotShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index" [cardType]="listCardType$ | async"></tsl-sky-shopping>
           </ng-template>
         </ng-container>
+        <ng-container *ngIf="device === DevicesType.MOBILE">
+          <ng-template #inlineSlotTemplate let-index>
+            <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
+          </ng-template>
+        </ng-container>
       </tsl-public-item-card-list>
 
       <div class="Search__spinner d-flex align-items-center justify-content-center py-5" *ngIf="(isLoadingPaginationResults$ | async)">
