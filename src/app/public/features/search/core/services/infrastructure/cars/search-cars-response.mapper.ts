@@ -1,3 +1,5 @@
+import { translations } from '@core/i18n/translations/constants/translations';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { SearchResponse } from '../api/search-response.interface';
 import { SearchItemImageMapper } from '../models/search-item-image-mapper.response';
@@ -41,10 +43,12 @@ export function SearchItemCarSpecsMapper(content: SearchItemCarResponse): string
   const { engine, gearbox, horsepower, year, km } = content;
 
   if (engine) {
-    specs.push(engine);
+    const translationKey = engine.toLowerCase();
+
+    specs.push(getCarsSpecTranslation(translationKey));
   }
   if (gearbox) {
-    specs.push(gearbox);
+    specs.push(getCarsSpecTranslation(gearbox));
   }
   if (horsepower) {
     specs.push(`${horsepower} cv`);
@@ -56,5 +60,9 @@ export function SearchItemCarSpecsMapper(content: SearchItemCarResponse): string
     specs.push(`${km} km`);
   }
   return specs;
+}
+
+export function getCarsSpecTranslation(translationKey: string) {
+  return translations[translationKey] || '';
 }
 

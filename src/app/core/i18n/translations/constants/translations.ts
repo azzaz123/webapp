@@ -164,4 +164,10 @@ export const translations: Translations = {
   [TRANSLATION_KEY.RESERVE_ITEMS_TITLE]: $localize`:@@web_modal_confirmation_482:Reserve items`,
   [TRANSLATION_KEY.RESERVE_ITEMS_DESCRIPTION]: $localize`:@@web_modal_confirmation_483:The selected items will be reserved.`,
   [TRANSLATION_KEY.RESERVE_BUTTON]: $localize`:@@web_modal_confirmation_670:Reserve`,
+  [TRANSLATION_KEY.TO_CLEAN_CARS_ENGINE_GASOIL]: $localize`:@@web_gasoil:Gasoil`,
+  [TRANSLATION_KEY.TO_CLEAN_CARS_ENGINE_GASOLINE]: $localize`:@@web_gasoline:Gasoline`,
+  [TRANSLATION_KEY.TO_CLEAN_CARS_ENGINE_ELECTRIC_HYBRID]: $localize`:@@web_electric:Electric`,
+  [TRANSLATION_KEY.TO_CLEAN_CARS_ENGINE_OTHERS]: $localize`:@@web_others:Others`,
+  [TRANSLATION_KEY.TO_CLEAN_CARS_GEARBOX_MANUAL]: $localize`:@@web_manual:Manual`,
+  [TRANSLATION_KEY.TO_CLEAN_CARS_GEARBOX_AUTOMATIC]: $localize`:@@web_automatic:Automatic`,
 };

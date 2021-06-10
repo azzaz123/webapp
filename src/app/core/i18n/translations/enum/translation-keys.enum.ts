@@ -165,4 +165,10 @@ export enum TRANSLATION_KEY {
   TO_CLEAN_REVIEWS = 'reviews',
   TO_CLEAN_ERROR_SAVING_DATA = 'errorSavingData',
   TO_CLEAN_CITY_BUMP = 'citybump',
+  TO_CLEAN_CARS_ENGINE_GASOIL = 'gasoil',
+  TO_CLEAN_CARS_ENGINE_GASOLINE = 'gasoline',
+  TO_CLEAN_CARS_ENGINE_ELECTRIC_HYBRID = 'electric-hybrid',
+  TO_CLEAN_CARS_ENGINE_OTHERS = 'others',
+  TO_CLEAN_CARS_GEARBOX_MANUAL = 'manual',
+  TO_CLEAN_CARS_GEARBOX_AUTOMATIC = 'automatic',
 }
