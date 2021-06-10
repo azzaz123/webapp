@@ -2,8 +2,8 @@
   "Parameters": {
     "EnvName": "beta",
     "ProjectName": "webapp",
-    "BucketES": "web-es.beta-account.wallapop.com",
-    "BucketEN": "web-en.beta-account.wallapop.com",
+    "BucketES": "web-es.beta.wallapop.com",
+    "BucketEN": "web-en.beta.wallapop.com",
     "HostES": "web.beta.wallapop.com",
     "HostEN": "web-en.beta.wallapop.com",
     "HostedZoneName": "beta.wallapop.com.",

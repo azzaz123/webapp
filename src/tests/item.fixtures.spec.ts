@@ -101,6 +101,19 @@ export const ITEM_FLAGS: ItemFlags = {
   highlighted: false,
 };
 
+export const ITEM_FLAGS_BUMPED: ItemFlags = {
+  pending: false,
+  sold: false,
+  favorite: false,
+  reserved: false,
+  removed: false,
+  banned: false,
+  expired: false,
+  review_done: false,
+  bumped: true,
+  highlighted: false,
+};
+
 export const ITEM_ACTIONS_ALLOWED: ItemActions = {
   chat: true,
   share: true,
@@ -338,7 +351,7 @@ export const MOCK_ITEM_FEATURED: Item = new Item(
   ITEM_DATA.currency_code,
   ITEM_DATA.modified_date,
   ITEM_DATA.url,
-  ITEM_DATA.flags,
+  ITEM_FLAGS_BUMPED,
   ITEM_DATA.actions_allowed,
   ITEM_DATA.sale_conditions,
   ITEM_DATA.main_image,

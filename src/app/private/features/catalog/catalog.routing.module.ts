@@ -5,7 +5,7 @@ import { CatalogComponent } from './pages/catalog.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { isEmpty } from 'lodash-es';
 import { LoggedGuard } from '@core/user/logged.guard';
-import { PERMISSIONS } from '@core/user/user';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { ListComponent } from './pages/list/list.component';
 
@@ -60,9 +60,11 @@ export const routes: Route[] = [
           isMyZone: true,
           isProducts: true,
           permissions: {
+            only: PERMISSIONS.bumps,
             except: PERMISSIONS.professional,
             redirectTo: {
-              isProfessional: isNormalCheckoutPermissions,
+              [PERMISSIONS.professional]: isNormalCheckoutPermissions,
+              default: '',
             },
           },
         },

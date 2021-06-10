@@ -27,6 +27,8 @@ import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { ItemDetailTrackEventsService } from '../../core/services/item-detail-track-events/item-detail-track-events.service';
 import { MockItemdDetailTrackEventService } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
 import { I18nService } from '@core/i18n/i18n.service';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 describe('ItemDetailHeaderComponent', () => {
   let component: ItemDetailHeaderComponent;
@@ -34,6 +36,7 @@ describe('ItemDetailHeaderComponent', () => {
   let checkSessionService: CheckSessionService;
   let itemDetailService: ItemDetailService;
   let itemDetailTrackEventsService: ItemDetailTrackEventsService;
+  let permissionService: NgxPermissionsService;
   let modalService: NgbModal;
 
   const trashButtonId = '#trashButton';
@@ -49,7 +52,7 @@ describe('ItemDetailHeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemDetailHeaderComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, CommonModule],
+      imports: [HttpClientTestingModule, RouterTestingModule, CommonModule, NgxPermissionsModule.forRoot()],
       providers: [
         PublicUserApiService,
         ItemApiService,
@@ -130,6 +133,7 @@ describe('ItemDetailHeaderComponent', () => {
     checkSessionService = TestBed.inject(CheckSessionService);
     itemDetailTrackEventsService = TestBed.inject(ItemDetailTrackEventsService);
     modalService = TestBed.inject(NgbModal);
+    permissionService = TestBed.inject(NgxPermissionsService);
     component.item = MOCK_ITEM;
     component.user = MOCK_USER;
     component.userStats = MOCK_USER_STATS;
@@ -190,22 +194,54 @@ describe('ItemDetailHeaderComponent', () => {
       describe('and the item is featured...', () => {
         beforeEach(() => {
           component.item.bumpExpiringDate = 232332323;
-          fixture.detectChanges();
         });
-        it('should show the countdown button', () => {
-          expect(fixture.debugElement.query(By.css(dateCountDownTag))).toBeTruthy();
-          expect(fixture.debugElement.query(By.css(featureItemButtonId))).toBeFalsy();
+        describe('and has visibility permissions', () => {
+          beforeEach(() => {
+            permissionService.addPermission(PERMISSIONS.bumps);
+          });
+          it('should show the countdown button', () => {
+            fixture.detectChanges();
+
+            expect(fixture.debugElement.query(By.css(dateCountDownTag))).toBeTruthy();
+            expect(fixture.debugElement.query(By.css(featureItemButtonId))).toBeFalsy();
+          });
+        });
+        describe('and has not visibility permissions', () => {
+          beforeEach(() => {
+            permissionService.removePermission(PERMISSIONS.bumps);
+          });
+          it('should show the countdown button', () => {
+            fixture.detectChanges();
+
+            expect(fixture.debugElement.query(By.css(dateCountDownTag))).toBeFalsy();
+            expect(fixture.debugElement.query(By.css(featureItemButtonId))).toBeFalsy();
+          });
         });
       });
 
       describe('and the item NOT is featured...', () => {
         beforeEach(() => {
           component.item.bumpExpiringDate = null;
-          fixture.detectChanges();
         });
-        it('should show the feature button', () => {
-          expect(fixture.debugElement.query(By.css(dateCountDownTag))).toBeFalsy();
-          expect(fixture.debugElement.query(By.css(featureItemButtonId))).toBeTruthy();
+        describe('and has visibility permissions', () => {
+          beforeEach(() => {
+            permissionService.addPermission(PERMISSIONS.bumps);
+          });
+          it('should show the feature button', () => {
+            fixture.detectChanges();
+            expect(fixture.debugElement.query(By.css(dateCountDownTag))).toBeFalsy();
+            expect(fixture.debugElement.query(By.css(featureItemButtonId))).toBeTruthy();
+          });
+        });
+        describe('and has not visibility permissions', () => {
+          beforeEach(() => {
+            permissionService.removePermission(PERMISSIONS.bumps);
+          });
+          it('should show the feature button', () => {
+            fixture.detectChanges();
+            expect(fixture.debugElement.query(By.css(dateCountDownTag))).toBeFalsy();
+            expect(fixture.debugElement.query(By.css(featureItemButtonId))).toBeFalsy();
+          });
         });
       });
 
