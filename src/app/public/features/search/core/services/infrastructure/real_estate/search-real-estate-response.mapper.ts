@@ -1,11 +1,11 @@
-import { ItemCard, ItemCardWideRealEstate } from '@public/core/interfaces/item-card.interface';
+import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { SearchResponse } from '../api/search-response.interface';
 import { SearchItemImageMapper } from '../models/search-item-image-mapper.response';
-import { SearchRealEstateResponse } from './search-item-real-state-response';
+import { SearchItemRealStateResponse, SearchRealEstateResponse } from './search-item-real-state-response';
 
 
-export function searchItemRealEstateResponseMapper({search_objects}: SearchResponse<SearchRealEstateResponse>): ItemCardWideRealEstate[] {
-  return search_objects.map(({id, content}: SearchRealEstateResponse) => ({
+export function searchItemRealEstateResponseMapper({ search_objects }: SearchResponse<SearchRealEstateResponse>): ItemCard[] {
+  return search_objects.map(({ id, content }: SearchRealEstateResponse) => ({
     id,
     title: content.title,
     description: content.storytelling,
@@ -33,10 +33,22 @@ export function searchItemRealEstateResponseMapper({search_objects}: SearchRespo
     },
     categoryId: content.category_id,
     saleConditions: null,
-    specs: {
-      rooms: content.rooms,
-      bathrooms: content.bathrooms,
-      surface: content.surface
-    }
+    specs: SearchItemRealEstateSpecsMapper(content)
   }));
+}
+
+export function SearchItemRealEstateSpecsMapper(content: SearchItemRealStateResponse): string[] {
+  const specs: string[] = [];
+  const { rooms, bathrooms, surface } = content;
+
+  if (rooms) {
+    specs.push(`${rooms}`);
+  }
+  if (bathrooms) {
+    specs.push(`${bathrooms}`);
+  }
+  if (surface) {
+    specs.push(`${surface} m2`)
+  }
+  return specs;
 }
