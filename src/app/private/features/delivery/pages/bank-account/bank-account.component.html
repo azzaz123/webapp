@@ -70,7 +70,7 @@
             <div class="form-group row align-items-center">
                 <label for="postal_code" class="col-sm-12 col-md-5" i18n="@@add_back_account_postal_code_field_hint">Postal code</label>
                 <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="postal_code" formControlName="postal_code"/>
+                    <input type="text" class="form-control" id="postal_code" formControlName="postal_code" tslNumbersOnly/>
                     <div *ngIf="bankAccountForm.controls.postal_code.invalid && bankAccountForm.pending" class="BankAccountForm__message BankAccountForm__message--error">
                         <ng-container *ngIf="bankAccountForm.controls.postal_code.errors as postalCodeError">
                             <span *ngIf="postalCodeError.required" i18n="@@saving_bank_account_error_incomplete_postal_code">

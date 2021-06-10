@@ -2,7 +2,7 @@ import {
   TOKEN_AUTHORIZATION_HEADER_NAME,
   TOKEN_TIMESTAMP_HEADER_NAME,
   TOKEN_SIGNATURE_HEADER_NAME,
-} from '@core/http/interceptors/token.interceptor';
+} from '@core/http/interceptors/token/token.interceptor';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CoverUploadComponent } from './cover-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
