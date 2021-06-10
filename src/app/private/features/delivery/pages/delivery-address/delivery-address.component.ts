@@ -126,7 +126,7 @@ export class DeliveryAddressComponent implements OnInit {
       this.submitValidForm();
     } else {
       this.deliveryAddressForm.markAsPending();
-      this.showToast(TRANSLATION_KEY.FORM_FIELD_ERROR, 'error');
+      this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR, 'error');
       for (const control in this.deliveryAddressForm.controls) {
         if (this.deliveryAddressForm.controls.hasOwnProperty(control) && !this.deliveryAddressForm.controls[control].valid) {
           this.deliveryAddressForm.controls[control].markAsDirty();

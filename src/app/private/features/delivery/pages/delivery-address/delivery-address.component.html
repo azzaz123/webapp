@@ -102,7 +102,7 @@
         <div class="col text-center d-flex flex-column">
           <span i18n="@@address_view_all_users_form_plain_text_phone_number_need_explanation_text" class="DeliveryAddress__phoneInfoMessage mb-4">We will share your information with the courier company to manage your shipments. To learn more, please check the Terms of use and Privacy policies of Wallapop.</span>
           <div class="d-flex justify-content-center">
-            <tsl-button [type]="'submit'" class="col-md-2 col-7" [ngClass]="{'col-12': isNewForm || comesFromPayView}" [loading]="loadingButton" className="btn-primary btn-block" i18n="@@delivery_address_save">Save</tsl-button>
+            <tsl-button [type]="'submit'" class="col-md-2 col-7" [ngClass]="{'col-12': isNewForm || comesFromPayView}" [loading]="loadingButton" className="btn-primary btn-block" i18n="@@address_view_all_users_bottom_bar_save_button">Save</tsl-button>
             <tsl-button
               *ngIf="!isNewForm && !comesFromPayView"
               i18n="@@delivery_delete_address"
