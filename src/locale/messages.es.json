@@ -1458,6 +1458,9 @@
     "web_after_free_trial": "tras la prueba gratis",
     "web_total": "Total",
     "web_subscription_purchase_subscription_subtitle": "Convierte tus ventas en un auténtico negocio",
-    "web_price_after_free_days": "al terminar la prueba gratuita"
+    "web_price_after_free_days": "al terminar la prueba gratuita",
+    "add_user_location_requirement_seller_modal_description": "Para subir este artículo, tienes que añadir tu ubicación como vendedor.",
+    "add_user_location_requirement_seller_modal_save_button": "Guardar",
+    "add_user_location_requirement_seller_modal_title": "Añade tu ubicación"
   }
 }
