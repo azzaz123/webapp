@@ -42,10 +42,14 @@ export function SearchItemRealEstateSpecsMapper(content: SearchItemRealStateResp
   const { rooms, bathrooms, surface } = content;
 
   if (rooms) {
-    specs.push(`${rooms}`);
+    const label = rooms > 1 ? $localize`:@@web_rooms:Rooms` : $localize`:@@web_room:Room`;
+
+    specs.push(`${rooms} ${label}`);
   }
   if (bathrooms) {
-    specs.push(`${bathrooms}`);
+    const label = bathrooms > 1 ? $localize`:@@web_bathrooms:Bathrooms` : $localize`:@@web_bathroom:Bathroom`;
+
+    specs.push(`${bathrooms} ${label}`);
   }
   if (surface) {
     specs.push(`${surface} m2`)
