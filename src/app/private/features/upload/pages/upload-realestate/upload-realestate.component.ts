@@ -49,7 +49,7 @@ export class UploadRealestateComponent implements OnInit {
   public coordinates: ItemLocation;
 
   public uploadForm: FormGroup;
-  public loading: boolean;
+  public loading = false;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
 
@@ -247,7 +247,7 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private checkUserLocation(): void {
-    if (this.userService.user.location) {
+    if (!this.userService.user.location) {
       this.modalService.open(LocationSelectorModal).result.then(
         (locationUpdated: boolean) => {
           if (locationUpdated) {

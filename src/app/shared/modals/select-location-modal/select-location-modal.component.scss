@@ -22,18 +22,6 @@
   &__title {
     font-size: $font-size-l;
     margin-bottom: $spacing-ms;
-    font-weight: bold;
-  }
-
-  &__actions {
-    .Dismiss {
-      margin-top: $spacing-m;
-      color: $blue-grey-3;
-      cursor: pointer;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+    font-weight: $font-weight-chunky;
   }
 }

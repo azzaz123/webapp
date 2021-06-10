@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Item } from '@core/item/item';
-import { SocialShareService } from '@core/social-share/social-share.service';
-import { Coordinate, ItemLocation } from '@core/geolocation/address-response.interface';
+import { Coordinate } from '@core/geolocation/address-response.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core';
 import { UserService } from '@core/user/user.service';
@@ -16,9 +14,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 })
 export class LocationSelectorModal implements OnInit {
   public locationForm: FormGroup;
-  public coordinates: ItemLocation;
   public isLoading: boolean;
-  public error: boolean;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -37,7 +33,7 @@ export class LocationSelectorModal implements OnInit {
     });
   }
 
-  onSubmit() {
+  public onSubmit(): void {
     if (this.isLoading) {
       return;
     }
@@ -48,6 +44,10 @@ export class LocationSelectorModal implements OnInit {
       longitude: location.longitude,
       name: location.address,
     };
+    this.saveLocation(newLocation);
+  }
+
+  private saveLocation(newLocation: Coordinate): void {
     this.userService.updateLocation(newLocation).subscribe(
       (newUserLocation) => {
         this.isLoading = false;
