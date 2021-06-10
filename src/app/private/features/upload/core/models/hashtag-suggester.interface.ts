@@ -1,9 +1,12 @@
-export interface HashtagSuggester {
+export interface Hashtag {
   text: string;
+}
+
+export interface GeneralHashtag extends Hashtag {
   ocurrencies: number;
 }
 
-export interface HashtagSuggesterResponse {
+export interface HashtagResponse {
   prefix: string;
-  hashtags: HashtagSuggester[];
+  hashtags: GeneralHashtag[];
 }
