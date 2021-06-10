@@ -32,7 +32,7 @@ import { RealestateKeysService } from '../../core/services/realstate-keys/reales
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { forkJoin, Observable, of, OperatorFunction } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { LocationSelectorModal } from '@shared/modals/select-location-modal/select-location-modal.component';
 
 @Component({
@@ -109,7 +109,6 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.modalService.open(LocationSelectorModal);
     this.getOptions().subscribe(() => {
       if (this.item && this.isReactivation) {
         this.itemReactivationService.reactivationValidation(this.uploadForm);
@@ -223,7 +222,7 @@ export class UploadRealestateComponent implements OnInit {
   public onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
-      this.item ? this.updateItem() : this.createItem();
+      this.item ? this.updateItem() : this.checkUserLocation();
     } else {
       this.invalidForm();
     }
@@ -240,6 +239,18 @@ export class UploadRealestateComponent implements OnInit {
     } else {
       this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
       this.onValidationError.emit();
+    }
+  }
+
+  private checkUserLocation(): void {
+    if (!this.userService.user.location) {
+      this.modalService.open(LocationSelectorModal).result.then((locationUpdated: boolean) => {
+        if (locationUpdated) {
+          this.createItem();
+        }
+      });
+    } else {
+      this.createItem();
     }
   }
 
