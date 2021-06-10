@@ -6,10 +6,11 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   declarations: [ItemCardComponent, ItemCardPlaceholderComponent],
-  imports: [CommonModule, FavouriteIconModule, CustomCurrencyModule, SvgIconModule, ImageFallbackModule],
+  imports: [CommonModule, FavouriteIconModule, CustomCurrencyModule, SvgIconModule, ImageFallbackModule, NgxPermissionsModule.forChild()],
   exports: [ItemCardComponent, ItemCardPlaceholderComponent],
 })
 export class ItemCardModule {}

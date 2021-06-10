@@ -5,10 +5,11 @@
     <tsl-svg-icon *ngIf="item.flags?.reserved"
         class="ItemCard__icon ItemCard__icon--left ItemCard__icon--small position-absolute d-flex justify-content-center align-items-center"
         src="/assets/icons/item-card/reserved.svg"></tsl-svg-icon>
-    <tsl-svg-icon *ngIf="item.bumpFlags?.bumped"
+    <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
+        <tsl-svg-icon *ngIf="item.bumpFlags?.bumped"
         class="ItemCard__icon ItemCard__icon--right ItemCard__icon--medium position-absolute ItemCard__icon--wallapop d-flex justify-content-center align-items-center"
         src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon>
-
+    </ng-container>
     <div class="ItemCard__image" [ngClass]="{'ItemCard__image--with-description px-1 pt-1' : showDescription}">
         <img class="w-100 h-100" [src]="mainImage?.urls_by_size?.small" [fallback]="IMAGE_FALLBACK" [alt]="item.title"
             loading="lazy" />
