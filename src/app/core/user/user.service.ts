@@ -2,7 +2,7 @@ import { from, Observable, of } from 'rxjs';
 
 import { mergeMap, catchError, tap, map, take, finalize } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
-import { PERMISSIONS, User } from './user';
+import { User } from './user';
 import { EventService } from '../event/event.service';
 import { Item } from '../item/item';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
@@ -24,6 +24,7 @@ import { InboxUser, InboxItem } from '@private/features/chat/core/model';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
 import mParticle from '@mparticle/web-sdk';
+import { PERMISSIONS } from './user-constants';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';

@@ -1,6 +1,5 @@
 import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ChangeCountryConfirmationModalComponent } from '../../modals/change-country-confirmation-modal/change-country-confirmation-modal.component';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
@@ -141,13 +140,14 @@ export class DeliveryAddressComponent implements OnInit {
       if (this.isNewForm) {
         this.isCountryEditable = true;
       } else {
-        this.modalService.open(ChangeCountryConfirmationModalComponent).result.then((result: boolean) => {
-          if (result) {
-            this.isCountryEditable = true;
-            setTimeout(() => {
-              this.countriesDropdown.open();
-            });
-          }
+        this.generateConfirmationModalRef(
+          TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE,
+          TRANSLATION_KEY.DELIVERY_ADDRESS_CONTINUE_BUTTON
+        ).result.then(() => {
+          this.isCountryEditable = true;
+          setTimeout(() => {
+            this.countriesDropdown.open();
+          });
         });
       }
     }
@@ -161,15 +161,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   public deleteForm(): void {
-    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
-
-    modalRef.componentInstance.properties = {
-      description: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST),
-      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELETE_BUTTON),
-      confirmColor: COLORS.NEGATIVE_MAIN,
-    };
-
-    modalRef.result.then(() => {
+    this.generateConfirmationModalRef(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST, TRANSLATION_KEY.DELETE_BUTTON).result.then(() => {
       this.deliveryAddressService.delete(this.deliveryAddressForm.get('id').value).subscribe(
         () => {
           this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS, 'success');
@@ -437,5 +429,17 @@ export class DeliveryAddressComponent implements OnInit {
       text: this.i18nService.translate(key),
       type,
     });
+  }
+
+  private generateConfirmationModalRef(descriptionKey: TRANSLATION_KEY, confirmMessageKey: TRANSLATION_KEY): NgbModalRef {
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
+
+    modalRef.componentInstance.properties = {
+      description: this.i18nService.translate(descriptionKey),
+      confirmMessage: this.i18nService.translate(confirmMessageKey),
+      confirmColor: COLORS.NEGATIVE_MAIN,
+    };
+
+    return modalRef;
   }
 }

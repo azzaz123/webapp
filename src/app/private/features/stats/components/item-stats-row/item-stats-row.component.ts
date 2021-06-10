@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Item } from '@core/item/item';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from '@private/features/stats/core/item-stats-response.interface';
 import { ItemStatsService } from '@private/features/stats/core/services/item-stats.service';
 import { every, isEmpty } from 'lodash-es';
@@ -25,6 +26,7 @@ export class ItemStatsRowComponent implements OnInit {
     chats: $localize`:@@web_stats_item_chats_tooltip:Chats`,
     favourites: $localize`:@@web_stats_item_favourites_tooltip:Favourites`,
   };
+  public readonly PERMISSIONS = PERMISSIONS;
 
   constructor(@Inject('SUBDOMAIN') private subdomain: string, private itemStatsService: ItemStatsService) {}
 

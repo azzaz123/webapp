@@ -52,7 +52,7 @@ describe('DeliveryDevelopmentDirective', () => {
 
   describe(`when the delivery feature flag don't have experimental features and is not dev mode...`, () => {
     it('should NOT show the dom element', () => {
-      spyOn(featureflagService, 'getFlag').and.returnValue(of(false));
+      spyOn(featureflagService, 'getLocalFlag').and.returnValue(of(false));
 
       fixture.detectChanges();
 

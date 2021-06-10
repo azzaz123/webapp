@@ -49,6 +49,9 @@ phases:
       # INSTALL NODE DEPENDENCIES
       - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn install
 
+      # RUN PHRASE INTEGRATION
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn -v ~/.ssh:/root/.ssh --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn i18n-helper:merge-phrase
+
       # ADD DOCKNUM 137 TO ENVIRONMENT FOR TESTS
       - ./scripts/docknum/update.sh 137
 

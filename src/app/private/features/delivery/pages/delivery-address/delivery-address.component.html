@@ -63,9 +63,10 @@
         <label for="postal_code" class="col-sm-12 col-md-5" i18n="@@web_address_view_all_users_form_textfield_postalcode_label">Postal code</label>
         <div class="col-sm-12 col-md-5">
           <input type="text"
-          [ngClass]="{'DeliveryAddress__input DeliveryAddress__input--invalid': deliveryAddressForm.controls.postal_code.invalid && deliveryAddressForm.controls.postal_code.dirty}" 
-          (blur)="isInvalidPostalCode()"
-          class="form-control" id="postal_code" formControlName="postal_code" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.POSTAL_CODE"/>
+            [ngClass]="{'DeliveryAddress__input DeliveryAddress__input--invalid': deliveryAddressForm.controls.postal_code.invalid && deliveryAddressForm.controls.postal_code.dirty}" 
+            (blur)="isInvalidPostalCode()"
+            class="form-control" id="postal_code" formControlName="postal_code" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.POSTAL_CODE"
+            tslNumbersOnly/>
           <div *ngIf="deliveryAddressForm.controls.postal_code.invalid && deliveryAddressForm.controls.postal_code.dirty" class="DeliveryAddress__message DeliveryAddress__message--error">
             <ng-container *ngIf="deliveryAddressForm.controls.postal_code.errors as postalCodeError">
               <span *ngIf="postalCodeError.required" i18n="@@web_address_view_all_users_form_textfield_postalcode_missing_info_inline_error">
