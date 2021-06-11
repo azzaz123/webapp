@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { MOCK_HASHTAGS } from '@fixtures/hashtag-suggester.fixtures.spec';
-
 import { HashtagStoreService } from './hashtag-store.service';
 
 describe('HashtagStoreService', () => {
