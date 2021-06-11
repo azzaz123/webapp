@@ -452,8 +452,12 @@ export class ListComponent implements OnInit, OnDestroy {
     reactivatedItem.flags.expired = false;
     reactivatedItem.flags.pending = true;
     if (!this.user.featured) {
-      this.openSuggestProModal(reactivatedItem, index);
-      return;
+      this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
+        if (permissions[PERMISSIONS.subscriptions]) {
+          this.openSuggestProModal(reactivatedItem, index);
+          return;
+        }
+      });
     }
     this.reloadItem(reactivatedItem.id, index);
   }
