@@ -44,7 +44,7 @@ describe(`AuthorizationInterceptor`, () => {
     beforeEach(() => (targetUrl = `${environment.baseUrl}${LOGIN_ENDPOINT}`));
 
     describe('and when the user has access token', () => {
-      beforeEach(() => accessTokenService.storeAccessToken(token));
+      beforeEach(() => jest.spyOn(accessTokenService, 'accessToken', 'get').mockReturnValue(token));
 
       describe('and when the request does NOT have an authorization header', () => {
         it('should add the authorization header', () => {
@@ -76,7 +76,7 @@ describe(`AuthorizationInterceptor`, () => {
     });
 
     describe('and when the user does NOT have access token', () => {
-      beforeEach(() => accessTokenService.deleteAccessToken());
+      beforeEach(() => jest.spyOn(accessTokenService, 'accessToken', 'get').mockReturnValue(null));
 
       it('should NOT add the authorization header', () => {
         http.get(targetUrl).subscribe();
