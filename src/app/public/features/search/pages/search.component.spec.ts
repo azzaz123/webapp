@@ -23,7 +23,7 @@ import {
 import { ButtonModule } from '@shared/button/button.module';
 import { random } from 'faker';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
 import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrapper.module';
 import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
@@ -47,13 +47,15 @@ import {
   MOCK_SEARCH_ID,
 } from '../core/services/search-list-tracking-events/search-list-tracking-events.fixtures.spec';
 import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events/search-list-tracking-events.service';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { AdSlotShoppingComponentStub } from '@fixtures/shared/components/ad-shopping.component.stub';
 
 @Directive({
-  selector: '[infinite-scroll]',
+  selector: '[tslInfiniteScroll]',
 })
 class InfiniteScrollStubDirective {
   @Input() public infiniteScrollDistance: number;
-  @Input() public infiniteScrollThrottle: number;
   @Input() public infiniteScrollDisabled: number;
 }
 
@@ -66,6 +68,7 @@ describe('SearchComponent', () => {
   let searchServiceMock;
   let publicFooterServiceMock;
   let searchAdsServiceMock;
+  let filterParameterStoreServiceMock;
   let searchListTrackingEventsService: SearchListTrackingEventsService;
   let searchTrackingEventsService: SearchTrackingEventsService;
   let filterParameterStoreService: FilterParameterStoreService;
@@ -75,6 +78,7 @@ describe('SearchComponent', () => {
   const currentCategoryIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
   const searchIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   const hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  const parametersSubject: ReplaySubject<FilterParameter[]> = new ReplaySubject<FilterParameter[]>();
 
   beforeEach(async () => {
     deviceServiceMock = {
@@ -97,6 +101,11 @@ describe('SearchComponent', () => {
       loadMore: () => {},
       close: () => {},
     };
+    filterParameterStoreServiceMock = {
+      parameters$: parametersSubject.asObservable(),
+      getParameters: () => [],
+      getParametersByKeys: () => [],
+    };
     publicFooterServiceMock = {
       setShow: (show: boolean) => {},
     };
@@ -112,6 +121,7 @@ describe('SearchComponent', () => {
         SearchErrorLayoutComponentStub,
         AdComponentStub,
         AdSlotGroupShoppingComponentSub,
+        AdSlotShoppingComponentStub,
         ItemCardListComponentStub,
         InfiniteScrollStubDirective,
       ],
@@ -133,11 +143,11 @@ describe('SearchComponent', () => {
         },
         {
           provide: FILTER_PARAMETER_STORE_TOKEN,
-          useClass: FilterParameterStoreService,
+          useValue: filterParameterStoreServiceMock,
         },
         {
           provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
-          useClass: FilterParameterStoreService,
+          useValue: filterParameterStoreServiceMock,
         },
         {
           provide: PublicFooterService,
@@ -611,6 +621,19 @@ describe('SearchComponent', () => {
 
         expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(oldSearchId, filterParameterStoreService.getParameters());
       });
+    });
+  });
+
+  describe('when the search has a keyword applied', () => {
+    it('should show the Google shopping Ads at the bottom of the page', () => {
+      component.device = DeviceType.DESKTOP;
+      itemsSubject.next([MOCK_ITEM_CARD]);
+
+      parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: 'iPhone' }]);
+      fixture.detectChanges();
+      const shoppingSlotGroup = fixture.debugElement.query(By.css('tsl-sky-slot-group-shopping'));
+
+      expect(shoppingSlotGroup).toBeTruthy();
     });
   });
 });
