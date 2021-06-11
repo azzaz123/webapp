@@ -1,22 +1,19 @@
-import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { MOCK_HASHTAG_RESPONSE, MOCK_PREFIX_HASHTAG } from '@fixtures/hashtag-suggester.fixtures.spec';
-import { NEXT_HEADER_PAGE } from '@public/features/search/core/services/infrastructure/api/search-api.service';
+import { GENERAL_HASHTAG_SUGGESTERS_API, HashtagService, HASHTAG_SUGGESTERS_API } from './hashtag.service';
 
-import { GENERAL_HASHTAG_SUGGESTERS_API, HashtagSuggestionsService, HASHTAG_SUGGESTERS_API } from './hashtag-suggestions.service';
-
-describe('HashtagSuggestionsService', () => {
-  let service: HashtagSuggestionsService;
+describe('HashtagService', () => {
+  let service: HashtagService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [HashtagSuggestionsService],
+      providers: [HashtagService],
     });
-    service = TestBed.inject(HashtagSuggestionsService);
+    service = TestBed.inject(HashtagService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 

@@ -9,7 +9,7 @@ export const HASHTAG_SUGGESTERS_API = `api/v3/suggesters/hashtags`;
 export const GENERAL_HASHTAG_SUGGESTERS_API = `${HASHTAG_SUGGESTERS_API}/general`;
 
 @Injectable()
-export class HashtagSuggestionsService {
+export class HashtagService {
   constructor(private http: HttpClient) {}
 
   private getGeneralHashtags(category_id: string, start: string, prefix: string): Observable<HttpResponse<HashtagResponse>> {
