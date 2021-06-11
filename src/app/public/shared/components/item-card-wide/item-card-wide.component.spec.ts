@@ -18,6 +18,8 @@ import { ItemCardWideComponent } from './item-card-wide.component';
 import { MOCK_ITEM_CARD_WIDE_BUMPED, MOCK_ITEM_CARD_WIDE_GBP } from './item-card-wide.mock.stories';
 import { DeviceService } from '@core/device/device.service';
 import { MockDeviceService } from '@fixtures/device.fixtures.spec';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 describe('ItemCardWideComponent', () => {
   const favouriteIconSelector = 'tsl-favourite-icon';
@@ -33,6 +35,7 @@ describe('ItemCardWideComponent', () => {
   let component: ItemCardWideComponent;
   let fixture: ComponentFixture<ItemCardWideComponent>;
   let decimalPipe: DecimalPipe;
+  let permissionService: NgxPermissionsService;
   let de: DebugElement;
   let el: HTMLElement;
 
@@ -47,10 +50,12 @@ describe('ItemCardWideComponent', () => {
         HttpClientTestingModule,
         SlidesCarouselModule,
         ItemExtraInfoModule,
+        NgxPermissionsModule.forRoot(),
       ],
       providers: [
         TypeCheckService,
         DecimalPipe,
+        NgxPermissionsService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: DeviceService, useValue: MockDeviceService },
       ],
@@ -61,6 +66,7 @@ describe('ItemCardWideComponent', () => {
     fixture = TestBed.createComponent(ItemCardWideComponent);
     component = fixture.componentInstance;
     decimalPipe = TestBed.inject(DecimalPipe);
+    permissionService = TestBed.inject(NgxPermissionsService);
     de = fixture.debugElement;
     el = de.nativeElement;
     component.item = MOCK_ITEM_CARD_WIDE_BUMPED;
@@ -193,12 +199,30 @@ describe('ItemCardWideComponent', () => {
       describe('when is bumped', () => {
         beforeEach(() => {
           component.item.bumpFlags.bumped = true;
-          fixture.detectChanges();
         });
 
-        it('should show item as bumped', () => {
-          expect(de.query(By.css(bumpedClass))).toBeTruthy();
-          expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeTruthy();
+        describe('and has visibility permissions', () => {
+          beforeEach(() => {
+            permissionService.addPermission(PERMISSIONS.bumps);
+          });
+          it('should show item as bumped', () => {
+            fixture.detectChanges();
+
+            expect(de.query(By.css(bumpedClass))).toBeTruthy();
+            expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeTruthy();
+          });
+        });
+
+        describe('and not has visibility permissions', () => {
+          beforeEach(() => {
+            permissionService.removePermission(PERMISSIONS.bumps);
+          });
+          it('should show item as bumped', () => {
+            fixture.detectChanges();
+
+            expect(de.query(By.css(bumpedClass))).toBeFalsy();
+            expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeFalsy();
+          });
         });
       });
 
@@ -206,14 +230,34 @@ describe('ItemCardWideComponent', () => {
         beforeEach(() => {
           component.item.bumpFlags.bumped = true;
           component.item.flags.reserved = true;
-          fixture.detectChanges();
         });
 
-        it('should show item as bumped and reserved', () => {
-          const reservedPartialSrc = 'reserved';
+        describe('and has visibility permissions', () => {
+          beforeEach(() => {
+            permissionService.addPermission(PERMISSIONS.bumps);
+          });
+          it('should show item as bumped and reserved', () => {
+            const reservedPartialSrc = 'reserved';
 
-          expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeTruthy();
-          expect(el.querySelector(`[src*="${reservedPartialSrc}"]`)).toBeTruthy();
+            fixture.detectChanges();
+
+            expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeTruthy();
+            expect(el.querySelector(`[src*="${reservedPartialSrc}"]`)).toBeTruthy();
+          });
+        });
+
+        describe('and has not visibility permissions', () => {
+          beforeEach(() => {
+            permissionService.removePermission(PERMISSIONS.bumps);
+          });
+          it('should show item as bumped and reserved', () => {
+            const reservedPartialSrc = 'reserved';
+
+            fixture.detectChanges();
+
+            expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeFalsy();
+            expect(el.querySelector(`[src*="${reservedPartialSrc}"]`)).toBeTruthy();
+          });
         });
       });
 
@@ -239,12 +283,29 @@ describe('ItemCardWideComponent', () => {
       describe('when is country bumped', () => {
         beforeEach(() => {
           component.item.bumpFlags.country_bumped = true;
-          fixture.detectChanges();
         });
 
-        it('should show item as country bumped', () => {
-          expect(de.query(By.css(countryBumpedClass))).toBeTruthy();
-          expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeTruthy();
+        describe('and has visibility permissions', () => {
+          beforeEach(() => {
+            permissionService.addPermission(PERMISSIONS.bumps);
+          });
+          it('should show item as country bumped', () => {
+            fixture.detectChanges();
+
+            expect(de.query(By.css(countryBumpedClass))).toBeTruthy();
+            expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeTruthy();
+          });
+        });
+        describe('and has not visibility permissions', () => {
+          beforeEach(() => {
+            permissionService.removePermission(PERMISSIONS.bumps);
+          });
+          it('should not show item as country bumped', () => {
+            fixture.detectChanges();
+
+            expect(de.query(By.css(countryBumpedClass))).toBeFalsy();
+            expect(el.querySelector(`[src*="${iconPartialSrc}"]`)).toBeFalsy();
+          });
         });
       });
 

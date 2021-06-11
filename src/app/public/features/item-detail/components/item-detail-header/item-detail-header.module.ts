@@ -12,6 +12,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { RouterModule } from '@angular/router';
 import { ReviewService } from '@core/review/review.service';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   declarations: [ItemDetailHeaderComponent],
@@ -26,6 +27,7 @@ import { ReviewService } from '@core/review/review.service';
     NgbTooltipModule,
     NgbDropdownModule,
     RouterModule,
+    NgxPermissionsModule.forChild(),
   ],
   exports: [ItemDetailHeaderComponent],
   providers: [PublicProfileService, ErrorsService, ToastService, ReviewService],

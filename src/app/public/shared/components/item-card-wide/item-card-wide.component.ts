@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -14,6 +15,8 @@ export class ItemCardWideComponent {
   @Input() showFavourite = true;
 
   @Output() toggleFavourite: EventEmitter<void> = new EventEmitter<void>();
+
+  public readonly PERMISSIONS = PERMISSIONS;
 
   constructor(public typeCheckService: TypeCheckService, public deviceDetectorService: DeviceDetectorService) {}
 
