@@ -7,6 +7,7 @@ import { GENERAL_HASHTAG_SUGGESTERS_API, HashtagService, HASHTAG_SUGGESTERS_API 
 describe('HashtagService', () => {
   let service: HashtagService;
   let httpMock: HttpTestingController;
+  const categoryId = 100;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,7 +26,7 @@ describe('HashtagService', () => {
     it('if they are general hashtags, we should load general hashtags', () => {
       const expectedUrl = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}?category_id=100&prefix=${MOCK_PREFIX_HASHTAG}&start=0`;
 
-      service.loadGeneralHashtags(100, MOCK_PREFIX_HASHTAG).subscribe((response) => {
+      service.loadGeneralHashtags(categoryId, MOCK_PREFIX_HASHTAG).subscribe((response) => {
         expect(response).toEqual(MOCK_HASHTAG_RESPONSE);
       });
 
@@ -37,7 +38,7 @@ describe('HashtagService', () => {
     it('if they are not general hashtags, we should load hashtags that are not from general endpoint', () => {
       const expectedUrl = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}?category_id=100&prefix=${MOCK_PREFIX_HASHTAG}&start=0`;
 
-      service.loadHashtags(100, MOCK_PREFIX_HASHTAG).subscribe((response) => {
+      service.loadHashtags(categoryId, MOCK_PREFIX_HASHTAG).subscribe((response) => {
         console.log('response', response);
         expect(response).toEqual(MOCK_HASHTAG_RESPONSE);
       });
