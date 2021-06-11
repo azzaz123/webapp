@@ -5,11 +5,6 @@ import { Item } from '../item/item';
 export const USER_BASE_PATH = 'http://es.wallapop.com/user/';
 export const PLACEHOLDER_AVATAR = '/assets/images/user.png';
 export const PLACEHOLDER_COVER = '/assets/images/cover.svg';
-export const PERMISSIONS = {
-  normal: 'isNormal',
-  professional: 'isProfessional',
-  featured: 'isFeatured',
-};
 
 export class User implements Model {
   private _itemDistance: number;

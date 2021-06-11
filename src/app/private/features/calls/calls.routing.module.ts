@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
-import { PERMISSIONS } from '@core/user/user';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { CallsComponent } from './pages/calls.component';

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
 import { LoggedGuard } from 'app/core/user/logged.guard';
-import { PERMISSIONS } from 'app/core/user/user';
+import { PERMISSIONS } from 'app/core/user/user-constants';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { ReviewsComponent } from './pages/reviews.component';
 

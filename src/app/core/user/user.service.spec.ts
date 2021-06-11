@@ -35,7 +35,7 @@ import { of } from 'rxjs';
 import { EventService } from '../event/event.service';
 import { FeatureflagService } from './featureflag.service';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
-import { PERMISSIONS, User } from './user';
+import { User } from './user';
 import { Image, UserLocation } from './user-response.interface';
 import { UserStats } from './user-stats.interface';
 import {
@@ -59,6 +59,7 @@ import {
   USER_UNSUBSCRIBE_REASONS_ENDPOINT,
 } from './user.service';
 import mParticle from '@mparticle/web-sdk';
+import { PERMISSIONS } from './user-constants';
 
 jest.mock('@mparticle/web-sdk', () => ({
   __esModule: true,
@@ -78,7 +79,6 @@ describe('Service: User', () => {
   let cookieService: CookieService;
   let releaseVersionService: ReleaseVersionService;
   let permissionService: NgxPermissionsService;
-  let featureflagService: FeatureflagService;
   let httpMock: HttpTestingController;
   let eventService: EventService;
 
@@ -125,14 +125,6 @@ describe('Service: User', () => {
             hasPermission() {},
           },
         },
-        {
-          provide: FeatureflagService,
-          useValue: {
-            getFlag() {
-              return of(true);
-            },
-          },
-        },
       ],
     });
     service = TestBed.inject(UserService);
@@ -142,7 +134,6 @@ describe('Service: User', () => {
     event = TestBed.inject(EventService);
     cookieService = TestBed.inject(CookieService);
     permissionService = TestBed.inject(NgxPermissionsService);
-    featureflagService = TestBed.inject(FeatureflagService);
     httpMock = TestBed.inject(HttpTestingController);
     eventService = TestBed.inject(EventService);
   });
