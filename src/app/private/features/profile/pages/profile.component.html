@@ -5,7 +5,9 @@
         <div class="header-row">
           <h1 class="header-title">
             <span class="Profile__title" i18n="@@web_profile_pages_315">Your profile</span>
-            <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
+            <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+              <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
+            </ng-container>
           </h1>
         </div>
         <div class="header-row">
@@ -34,14 +36,14 @@
           <a class="nav-link" [routerLink]="['info']" routerLinkActive="active" i18n="@@web_profile_pages_318">Profile</a>
           <a class="nav-link" [routerLink]="['account']" routerLinkActive="active" i18n="@@web_profile_pages_319">Account</a>
           <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-          <a class="nav-link d-none d-md-inline-block" [routerLink]="['billing']" routerLinkActive="active" i18n="@@web_profile_pages_320">Billing
-            information</a>
-          <a class="nav-link d-inline-block d-md-none" [routerLink]="['billing']" routerLinkActive="active"
-            i18n="@@web_profile_pages_321">Billing</a>
-            <a class="nav-link" [routerLink]="['subscriptions']" routerLinkActive="active"
-            *ngxPermissionsExcept="['isProfessional']" (click)="trackClickSubscriptionTab()">{{getSubscriptionTabName()}}</a>
-            <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active"
-            *ngxPermissionsOnly="['isProfessional']" i18n="@@web_wallapop_pro">Wallapop PRO</a>
+            <a class="nav-link d-none d-md-inline-block" [routerLink]="['billing']" routerLinkActive="active" i18n="@@web_profile_pages_320">Billing
+              information</a>
+            <a class="nav-link d-inline-block d-md-none" [routerLink]="['billing']" routerLinkActive="active"
+              i18n="@@web_profile_pages_321">Billing</a>
+              <a class="nav-link" [routerLink]="['subscriptions']" routerLinkActive="active"
+              *ngxPermissionsExcept="['isProfessional']" (click)="trackClickSubscriptionTab()">{{getSubscriptionTabName()}}</a>
+              <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active"
+              *ngxPermissionsOnly="['isProfessional']" i18n="@@web_wallapop_pro">Wallapop PRO</a>
           </ng-container>
           </nav>
       </div>
