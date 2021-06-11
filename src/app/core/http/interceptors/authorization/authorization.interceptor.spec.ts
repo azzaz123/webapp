@@ -1,8 +1,8 @@
-import { HttpClient, HTTP_INTERCEPTORS, HttpResponse } from '@angular/common/http';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 import { LOGIN_ENDPOINT } from '@public/features/login/core/services/login.service';
 import { CookieModule } from 'ngx-cookie';
 

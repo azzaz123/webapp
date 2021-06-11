@@ -11,7 +11,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
   constructor(private accessTokenService: AccessTokenService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    let setHeaders: { [key: string]: string } = {};
+    const setHeaders: { [key: string]: string } = {};
 
     const isWallapopRequest = request.url.startsWith(environment.baseUrl);
     const isHeaderNotPresent = !request.headers.has(AUTHORIZATION_HEADER_NAME);
