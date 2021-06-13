@@ -39,7 +39,7 @@ import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disa
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { find, findIndex } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { NgxPermissionsObject, NgxPermissionsService } from 'ngx-permissions';
+import { NgxPermissionsService } from 'ngx-permissions';
 import { Subscription } from 'rxjs';
 import { take, takeWhile } from 'rxjs/operators';
 import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
@@ -452,14 +452,20 @@ export class ListComponent implements OnInit, OnDestroy {
     reactivatedItem.flags.expired = false;
     reactivatedItem.flags.pending = true;
     if (!this.user.featured) {
-      this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
-        if (permissions[PERMISSIONS.subscriptions]) {
-          this.openSuggestProModal(reactivatedItem, index);
-          return;
-        }
-      });
+      this.reactivatedNoFeaturedUser(reactivatedItem, index);
+    } else {
+      this.reloadItem(reactivatedItem.id, index);
     }
-    this.reloadItem(reactivatedItem.id, index);
+  }
+
+  private reactivatedNoFeaturedUser(item: Item, index: number): void {
+    this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
+      if (permissions[PERMISSIONS.subscriptions]) {
+        this.openSuggestProModal(item, index);
+      } else {
+        this.reloadItem(item.id, index);
+      }
+    });
   }
 
   private openSuggestProModal(reactivatedItem: Item, index: number): void {
