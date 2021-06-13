@@ -10,6 +10,8 @@ import { DebugElement } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickProInfo, SCREEN_IDS } from '@core/analytics/analytics-constants';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { MockPermissionsService } from '@fixtures/permissions.fixtures';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -18,13 +20,18 @@ describe('FooterComponent', () => {
   let el: HTMLElement;
   let i18nService: I18nService;
   let analyticsService: AnalyticsService;
+  let permissionService: NgxPermissionsService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [SvgIconModule, HttpClientTestingModule],
         declarations: [FooterComponent],
-        providers: [I18nService, { provide: AnalyticsService, useClass: MockAnalyticsService }],
+        providers: [
+          I18nService,
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+          { provide: NgxPermissionsService, useClass: MockPermissionsService },
+        ],
       }).compileComponents();
     })
   );
@@ -36,6 +43,7 @@ describe('FooterComponent', () => {
     el = de.nativeElement;
     i18nService = TestBed.inject(I18nService);
     analyticsService = TestBed.inject(AnalyticsService);
+    permissionService = TestBed.inject(NgxPermissionsService);
     fixture.detectChanges();
   });
 
@@ -65,6 +73,10 @@ describe('FooterComponent', () => {
         expect(el.querySelector(`[href="${sectionLink.href}"]`)).toBeTruthy();
       });
     });
+  });
+
+  describe('and has links with permissions', () => {
+    describe('and has links with permissions', () => {});
   });
 
   describe('Tracking events', () => {

@@ -9,8 +9,11 @@ export class MockPermissionsService {
   flushPermissions() {}
   hasPermission() {}
   get permissions$(): Observable<NgxPermissionsObject> {
-    return of({});
+    return of(MOCK_PERMISSIONS);
   }
 }
 
-export const MOCK_PERMISSIONS: NgxPermissionsObject = { [PERMISSIONS.bumps]: { name: PERMISSIONS.bumps } };
+export const MOCK_PERMISSIONS: NgxPermissionsObject = {
+  [PERMISSIONS.bumps]: { name: PERMISSIONS.bumps },
+  [PERMISSIONS.subscriptions]: { name: PERMISSIONS.subscriptions },
+};

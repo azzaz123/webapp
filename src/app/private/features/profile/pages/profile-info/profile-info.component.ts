@@ -11,7 +11,6 @@ import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.
 import { metadata } from 'assets/js/metadata-phonenumber';
 import { isValidNumber } from 'libphonenumber-js/custom';
 import * as moment from 'moment';
-import { forkJoin } from 'rxjs';
 import { finalize, take } from 'rxjs/operators';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
