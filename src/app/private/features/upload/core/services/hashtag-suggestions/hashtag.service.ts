@@ -29,7 +29,9 @@ export class HashtagService {
     const category_id = categoryId.toString();
     const start = page.toString();
     return this.paginationService.getItems(
-      prefix === null ? this.getHashtags(category_id, start) : this.getHashtagsByPrefix(category_id, start, prefix) // Set the prefix to null as a defaul value to prevent the case if in the textarea, we get the empty string
+      // Set the prefix to null as a defaul value to prevent the case if in the textarea, we get the empty string
+      prefix === null ? this.getHashtags(category_id, start) : this.getHashtagsByPrefix(category_id, start, prefix),
+      'start'
     );
   }
 }
