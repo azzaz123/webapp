@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SlidesCarouselComponent } from './carousel-slides.component';
+import { NEXT_CONTROL_CLASS_NAME, PREV_CONTROL_CLASS_NAME, SlidesCarouselComponent } from './carousel-slides.component';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
 import { DeviceService } from '@core/device/device.service';
 import { MockDeviceService } from '@fixtures/device.fixtures.spec';
@@ -229,6 +229,22 @@ describe('SlidesCarouselComponent', () => {
       fixture.detectChanges();
 
       expect(fixture.debugElement.query(By.css(noBackgroundIndicatorsClass))).toBeTruthy();
+    });
+  });
+
+  describe('when clicking in the carousel controls', () => {
+    it('should not propagate the click event', () => {
+      const carouselElement = fixture.debugElement.nativeElement;
+      const controlElements = carouselElement.querySelectorAll(`${PREV_CONTROL_CLASS_NAME}, ${NEXT_CONTROL_CLASS_NAME}`);
+
+      controlElements.forEach((e: HTMLInputElement) => {
+        const event = new Event('click');
+        spyOn(event, 'stopPropagation');
+
+        e.dispatchEvent(event);
+
+        expect(event.stopPropagation).toHaveBeenCalledTimes(1);
+      });
     });
   });
 
