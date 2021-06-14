@@ -8,7 +8,7 @@ export class NullQueryParamsInterceptor implements HttpInterceptor {
     let params = new HttpParams();
     request.params.keys().forEach((paramKey) => {
       const paramValue = request.params.get(paramKey);
-      if (paramValue !== null && paramValue !== undefined) {
+      if (paramValue !== null) {
         params = params.append(paramKey, paramValue);
       }
     });
