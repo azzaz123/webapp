@@ -39,7 +39,6 @@ describe('HashtagService', () => {
       const expectedUrl = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}?category_id=100&prefix=${MOCK_PREFIX_HASHTAG}&start=0`;
 
       service.loadHashtags(categoryId, MOCK_PREFIX_HASHTAG).subscribe((response) => {
-        console.log('response', response);
         expect(response).toEqual(MOCK_HASHTAG_RESPONSE);
       });
 
