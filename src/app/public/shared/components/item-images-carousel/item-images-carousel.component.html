@@ -1,7 +1,9 @@
 <div class="position-absolute ItemFlag d-flex w-100">
     <tsl-item-flag *ngIf="statusFlag" [type]="statusFlag" class="position-absolute ItemFlag--left">
     </tsl-item-flag>
-    <tsl-item-flag *ngIf="bumpedFlag" [type]="bumpedFlag" class="position-absolute ItemFlag--right" i18n="@@web_featured">Featured</tsl-item-flag>
+    <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
+        <tsl-item-flag *ngIf="bumpedFlag" [type]="bumpedFlag" class="position-absolute ItemFlag--right" i18n="@@web_featured">Featured</tsl-item-flag>
+    </ng-container>
 </div>
 <div class="ItemImagesCarousel w-100 h-100" [ngClass]="{ 'ItemImagesCarousel--disabled': isExpired }">
     <tsl-carousel-slides (slideClick)="imageClick.emit($event)" [hideControllers]="isExpired" [hideIndicators]="isExpired">

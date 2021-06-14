@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
 import { environment } from '@environments/environment';
-import * as CryptoJSHSha256 from 'crypto-js/hmac-sha256';
-import * as CryptoJSBase64 from 'crypto-js/enc-base64';
-
-export const SECRET =
-  'UTI5dVozSmhkSE1zSUhsdmRTZDJaU0JtYjNWdVpDQnBkQ0VnUVhKbElIbHZkU0J5WldGa2VTQjBieUJxYjJsdUlIVnpQeUJxYjJKelFIZGhiR3hoY0c5d0xtTnZiUT09';
 
 @Injectable({
   providedIn: 'root',
@@ -32,12 +27,6 @@ export class AccessTokenService {
     this._accessToken = null;
     this.deleteAccessTokenLocalhost();
   }
-
-  public getTokenSignature = (url: string, method: string, timestamp: number) => {
-    const separator = '+#+';
-    const signature = ['/' + url.split('?')[0], method, timestamp].join(separator) + separator;
-    return CryptoJSBase64.stringify(CryptoJSHSha256(signature, CryptoJSBase64.parse(SECRET)));
-  };
 
   get deviceAccessToken(): string {
     return this.cookieService.get('deviceAccessToken' + environment.cookieSuffix)

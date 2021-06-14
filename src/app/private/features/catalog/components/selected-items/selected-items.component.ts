@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
 import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { Subscription } from 'rxjs';
 import { STATUS } from './selected-product.interface';
 
@@ -20,6 +21,7 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
   public selectedItems: Item[];
   public disableFeatureOption: boolean;
   public showActiveOption: boolean;
+  public readonly PERMISSIONS = PERMISSIONS;
   private selectedItemsSubscription: Subscription;
 
   constructor(public itemService: ItemService) {}

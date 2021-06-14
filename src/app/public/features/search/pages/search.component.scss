@@ -1,5 +1,8 @@
 @import '~style/common';
 
+$filters-offset-top: 120px;
+$search-sidebar-ads-top: $topbar-height + $filters-offset-top;
+
 .Search {
   &__filters {
     position: sticky;
@@ -10,14 +13,11 @@
     }
   }
 
-  &__ad {
-    &--top {
-      top: 200px;
-      height: 58%;
-    }
+  &__sky {
+    flex: 1;
+  }
 
-    &--bottom {
-      height: 40%;
-    }
+  &__sky-wrapper {
+    top: $search-sidebar-ads-top;
   }
 }
