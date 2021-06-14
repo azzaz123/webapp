@@ -5,10 +5,10 @@ import { NullQueryParamsInterceptor } from '@core/http/interceptors';
 import { environment } from '@environments/environment';
 import { MOCK_HASHTAGS, MOCK_PREFIX_HASHTAG } from '@fixtures/hashtag.fixtures.spec';
 import { NEXT_HEADER_PAGE } from '@public/features/search/core/services/infrastructure/api/search-api.service';
-import { GENERAL_HASHTAG_SUGGESTERS_API, HashtagService, HASHTAG_SUGGESTERS_API } from './hashtag.service';
+import { GENERAL_HASHTAG_SUGGESTERS_API, HashtagSuggesterApiService, HASHTAG_SUGGESTERS_API } from './hashtag-suggester-api.service';
 
-describe('HashtagService', () => {
-  let service: HashtagService;
+describe('HashtagSuggesterApiService', () => {
+  let service: HashtagSuggesterApiService;
   let httpMock: HttpTestingController;
   const categoryId = 100;
   const page = 0;
@@ -17,7 +17,7 @@ describe('HashtagService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        HashtagService,
+        HashtagSuggesterApiService,
         {
           provide: HTTP_INTERCEPTORS,
           useClass: NullQueryParamsInterceptor,
@@ -25,7 +25,7 @@ describe('HashtagService', () => {
         },
       ],
     });
-    service = TestBed.inject(HashtagService);
+    service = TestBed.inject(HashtagSuggesterApiService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
