@@ -9,7 +9,7 @@ export class FilterParameterStoreService {
   private static INITIAL_PARAMETERS: FilterParameter[] = [];
 
   private parameters: FilterParameter[] = [];
-  private parametersSubject = new ReplaySubject<FilterParameter[]>();
+  private parametersSubject = new ReplaySubject<FilterParameter[]>(1);
   public parameters$ = this.parametersSubject.asObservable();
 
   public getParameters(): FilterParameter[] {
