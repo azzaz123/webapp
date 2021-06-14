@@ -32,7 +32,7 @@ import { RealestateKeysService } from '../../core/services/realstate-keys/reales
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, Observable, of, Subscriber } from 'rxjs';
 import { LocationSelectorModal } from '@shared/modals/location-selector-modal/location-selector-modal.component';
 
 @Component({
@@ -221,7 +221,11 @@ export class UploadRealestateComponent implements OnInit {
 
   public onSubmit(): void {
     if (this.uploadForm.valid) {
-      this.checkUserLocation();
+      this.checkUserLocation().subscribe((readyToSave: boolean) => {
+        if (readyToSave) {
+          this.saveItem();
+        }
+      });
     } else {
       this.invalidForm();
     }
@@ -246,18 +250,19 @@ export class UploadRealestateComponent implements OnInit {
     }
   }
 
-  private checkUserLocation(): void {
+  private checkUserLocation(): Observable<boolean> {
     if (!this.userService.user.location) {
-      this.modalService.open(LocationSelectorModal).result.then(
-        (locationUpdated: boolean) => {
-          if (locationUpdated) {
-            this.saveItem();
-          }
-        },
-        () => {}
-      );
+      return new Observable((observer: Subscriber<boolean>) => {
+        this.modalService
+          .open(LocationSelectorModal)
+          .result.then((locationUpdated: boolean) => {
+            return observer.next(locationUpdated);
+          })
+          .catch(() => observer.next(false))
+          .finally(() => observer.complete());
+      });
     } else {
-      this.saveItem();
+      return of(true);
     }
   }
 

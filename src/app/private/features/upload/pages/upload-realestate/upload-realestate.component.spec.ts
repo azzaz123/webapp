@@ -361,6 +361,9 @@ describe('UploadRealestateComponent', () => {
 
     describe('and has not user location', () => {
       beforeEach(() => {
+        spyOn(modalService, 'open').and.returnValue({
+          result: Promise.resolve(false),
+        });
         jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_USER_WITHOUT_LOCATION);
         spyOn(uploadService, 'createItem').and.callThrough();
         component.uploadForm.patchValue(UPLOAD_FORM_REALESTATE_VALUES);
@@ -373,8 +376,6 @@ describe('UploadRealestateComponent', () => {
       });
 
       it('should open location modal', () => {
-        spyOn(modalService, 'open').and.callThrough();
-
         component.onSubmit();
 
         expect(modalService.open).toHaveBeenCalledTimes(1);
@@ -737,11 +738,11 @@ describe('UploadRealestateComponent', () => {
         });
       });
 
-      it('should not save data', fakeAsync(() => {
+      it('should not save data', () => {
         component.onSubmit();
 
         expect(uploadService.createItem).not.toHaveBeenCalled();
-      }));
+      });
     });
   });
 });
