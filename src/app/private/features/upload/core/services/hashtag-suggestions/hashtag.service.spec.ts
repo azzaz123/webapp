@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
-import { MOCK_HASHTAG_RESPONSE, MOCK_PREFIX_HASHTAG } from '@fixtures/hashtag-suggester.fixtures.spec';
+import { MOCK_HASHTAG_RESPONSE, MOCK_PREFIX_HASHTAG } from '@fixtures/hashtag.fixtures.spec';
 import { GENERAL_HASHTAG_SUGGESTERS_API, HashtagService, HASHTAG_SUGGESTERS_API } from './hashtag.service';
 
 describe('HashtagService', () => {
