@@ -65,6 +65,7 @@ interface AngularTranslationJson {
 }
 
 class I18nHelper {
+  private originalLocale = LOCALE.ENGLISH;
   private menuString = '\n\n' +
     'What should I do?\n' +
     '1. Run i18n\n' +
@@ -235,14 +236,18 @@ class I18nHelper {
     const locales = Object.values(LOCALE);
     const sets: TranslationSet[] = [];
 
+    const originalSet = originalSets.find(set => set.locale === this.originalLocale);
+
+
     locales.map(locale => {
       const originalTranslations = originalSets.find(set => set.locale === locale).translations;
       const phraseTranslations = phraseSets.find(set => set.locale === locale).translations;
 
-      const mergedTranslations = originalTranslations.map(translation => {
+      const mergedTranslations = originalSet.translations.map(translation => {
         const phraseTranslation = phraseTranslations.find(tr => tr.key === translation.key);
+        const originalTranslation = originalTranslations.find(tr => tr.key === translation.key);
 
-        return phraseTranslation || translation;
+        return phraseTranslation || originalTranslation || translation;
       });
 
       sets.push({
