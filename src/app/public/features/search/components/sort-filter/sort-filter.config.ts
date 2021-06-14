@@ -1,5 +1,11 @@
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 
+export const SORT_BY_RELEVANCE_OPTION: SelectFormOption<string> = {
+  label: $localize`:@@web_filter_sort_by_relevance:Relevance`,
+  icon: '/assets/icons/filters/sort-by-relevance.svg',
+  value: 'relevance',
+};
+
 export const SELECT_FORM_OPTIONS_CONFIG: SelectFormOption<string>[] = [
   {
     label: $localize`:@@web_filter_sort_by_distance:Distance`,
