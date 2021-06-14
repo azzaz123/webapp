@@ -23,10 +23,10 @@ describe('HashtagService', () => {
   });
 
   describe('when we load hashtags...', () => {
-    it('if they are general hashtags, we should load general hashtags', () => {
+    it('should load hashtags by prefix if we load hashtags through textarea typing', () => {
       const expectedUrl = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}?category_id=100&prefix=${MOCK_PREFIX_HASHTAG}&start=0`;
 
-      service.loadGeneralHashtags(categoryId, MOCK_PREFIX_HASHTAG).subscribe((response) => {
+      service.loadHashtagsByPrefix(categoryId, MOCK_PREFIX_HASHTAG).subscribe((response) => {
         expect(response).toEqual(MOCK_HASHTAG_RESPONSE);
       });
 
@@ -36,9 +36,9 @@ describe('HashtagService', () => {
     });
 
     it('if they are not general hashtags, we should load hashtags that are not from general endpoint', () => {
-      const expectedUrl = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}?category_id=100&prefix=${MOCK_PREFIX_HASHTAG}&start=0`;
+      const expectedUrl = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}?category_id=100&start=0`;
 
-      service.loadHashtags(categoryId, MOCK_PREFIX_HASHTAG).subscribe((response) => {
+      service.loadHashtags(categoryId).subscribe((response) => {
         expect(response).toEqual(MOCK_HASHTAG_RESPONSE);
       });
 

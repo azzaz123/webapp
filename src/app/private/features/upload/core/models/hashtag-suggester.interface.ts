@@ -2,11 +2,15 @@ export interface Hashtag {
   text: string;
 }
 
-export interface GeneralHashtag extends Hashtag {
+export interface HashtagWithOccurenciesInfo extends Hashtag {
   ocurrencies: number;
 }
 
-export interface HashtagResponse {
+export interface HashtagWithPrefixResponse {
   prefix: string;
-  hashtags: GeneralHashtag[];
+  hashtags: HashtagWithOccurenciesInfo[];
+}
+
+export interface HashtagResponse {
+  hashtags: Hashtag[];
 }
