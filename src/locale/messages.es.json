@@ -1056,6 +1056,7 @@
     "web_filter_sort_title": "Ordenar por:",
     "web_filter_sort_bubble_title": "Ordenar por",
     "web_filter_sort_cancel": "Cancelar",
+    "web_filter_sort_by_relevance": "Relevancia",
     "web_filter_sort_by_distance": "Distancia",
     "web_filter_sort_by_price_low_high": "De más barato a más caro",
     "web_filter_sort_by_price_high_low": "De más caro a más barato",
