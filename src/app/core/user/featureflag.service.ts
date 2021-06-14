@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { FeatureFlag, FEATURE_FLAGS_ENUM, ACTIVE_DEV_FEATURE_FLAGS, featurePermissionConfig } from './featureflag-constants';
+import { FeatureFlag, FEATURE_FLAGS_ENUM, featurePermissionConfig } from './featureflag-constants';
 import { PERMISSIONS } from './user-constants';
 
 export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
@@ -21,20 +21,14 @@ export class FeatureflagService {
   public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
     const storedFeatureFlag = this.storedFeatureFlags.find((sff) => sff.name === name);
 
-    if (isDevMode()) {
-      const isActive = ACTIVE_DEV_FEATURE_FLAGS.includes(name);
-      this.checkPermission(name, isActive);
-      return of(isActive);
-    }
-
     if (storedFeatureFlag && cache) {
       return of(storedFeatureFlag).pipe(
-        tap((sff) => this.checkPermission(sff.name, sff.isActive)),
-        map((sff) => sff.isActive)
+        tap((sff) => this.checkPermission(sff.name, sff.active)),
+        map((sff) => sff.active)
       );
     } else {
       return this.http
-        .get(`${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`, {
+        .get<FeatureFlag[]>(`${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`, {
           params: {
             featureFlags: name.toString(),
             timestamp: new Date().getTime().toString(), // Prevent browser cache with timestamp parameter
@@ -42,16 +36,61 @@ export class FeatureflagService {
         })
         .pipe(
           map((response) => {
-            const featureFlag = response[0] ? { name, isActive: response[0].active } : { name, isActive: false };
+            const featureFlag = response[0] ? { name, active: response[0].active } : { name, active: false };
             const alreadyStored = this.storedFeatureFlags.find((sff) => sff.name === name);
             if (!alreadyStored) {
               this.storedFeatureFlags.push(featureFlag);
             }
-            this.checkPermission(featureFlag.name, featureFlag.isActive);
-            return featureFlag.isActive;
+            this.checkPermission(featureFlag.name, featureFlag.active);
+            return featureFlag.active;
           })
         );
     }
+  }
+
+  public getStoredFlag(name: FEATURE_FLAGS_ENUM): FeatureFlag {
+    const storedFeatureFlag = this.storedFeatureFlags.find((sff) => sff.name === name);
+
+    if (storedFeatureFlag) {
+      this.checkPermission(storedFeatureFlag.name, storedFeatureFlag.active);
+    }
+
+    return storedFeatureFlag;
+  }
+
+  public getFlags(names: FEATURE_FLAGS_ENUM[], cache = true): Observable<FeatureFlag[]> {
+    const featureFlags = [];
+    const flagsToRequest: FEATURE_FLAGS_ENUM[] = [];
+    names.forEach((name) => {
+      const storedFeatureFlag = this.getStoredFlag(name);
+      if (storedFeatureFlag != null && cache) {
+        featureFlags.push(storedFeatureFlag);
+      } else {
+        flagsToRequest.push(name);
+      }
+    });
+
+    if (cache && featureFlags.length === names.length) {
+      return of(featureFlags);
+    }
+
+    return this.http
+      .get<FeatureFlag[]>(`${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`, {
+        params: {
+          featureFlags: flagsToRequest,
+          timestamp: new Date().getTime().toString(), // Prevent browser cache with timestamp parameter
+        },
+      })
+      .pipe(
+        map((response) => {
+          response.forEach((featureFlag) => {
+            this.checkPermission(featureFlag.name, featureFlag.active);
+          });
+          this.storedFeatureFlags.push(...response);
+          featureFlags.push(response);
+          return featureFlags;
+        })
+      );
   }
 
   // TODO add permissions if is required
