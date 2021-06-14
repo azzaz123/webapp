@@ -4,6 +4,5 @@ export interface Hashtag {
 }
 
 export interface HashtagResponse {
-  prefix?: string;
   hashtags: Hashtag[];
 }

@@ -7,11 +7,6 @@ export const MOCK_HASHTAGS: Hashtag[] = [
   { text: 'abc', ocurrencies: 2 },
 ];
 
-export const MOCK_HASHTAG_WITHOUT_PRIFX_RESPONSE: HashtagResponse = {
-  hashtags: MOCK_HASHTAGS,
-};
-
 export const MOCK_HASHTAG_RESPONSE: HashtagResponse = {
-  prefix: MOCK_PREFIX_HASHTAG,
   hashtags: MOCK_HASHTAGS,
 };
