@@ -8,7 +8,7 @@ import { AccessTokenService } from '../http/access-token.service';
 import * as coreLibrary from '@angular/core';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { MockPermissionsService } from '@fixtures/permissions.fixtures';
-import { FEATURE_FLAGS_ENUM } from './featureflag-constants';
+import { FeatureFlag, FEATURE_FLAGS_ENUM } from './featureflag-constants';
 import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { PERMISSIONS } from './user-constants';
 
@@ -211,6 +211,155 @@ describe('FeatureflagService', () => {
           const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
 
           service.getFlag(FEATURE_FLAGS_ENUM.BUMPS).subscribe();
+          const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+          req.flush([{ name: FEATURE_FLAGS_ENUM.BUMPS, active: false }]);
+
+          expect(permissionService.removePermission).toBeCalledTimes(1);
+          expect(permissionService.removePermission).toHaveBeenCalledWith(PERMISSIONS.bumps);
+        });
+      });
+    });
+  });
+  describe('getFlags', () => {
+    it('should call valid endpoint', () => {
+      const featureFlagNames = [mockFeatureFlagsEnum.FLAG1, mockFeatureFlagsEnum.FLAG2];
+      const expectedUrlParams = `featureFlags=${mockFeatureFlagsEnum.FLAG1}&featureFlags=${mockFeatureFlagsEnum.FLAG2}&timestamp=${TIMESTAMP}`;
+      const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+      const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+
+      service.getFlags(featureFlagNames as any).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+      req.flush([]);
+
+      expect(req.request.url).toBe(expectedUrlWithEndpoint);
+      expect(req.request.urlWithParams.toString()).toBe(expectedUrlWithEndpointAndParams);
+      expect(req.request.method).toBe('GET');
+    });
+
+    it('should not do extra HTTP request when all feature flags were already fetched', () => {
+      const featureFlagNames = [mockFeatureFlagsEnum.FLAG1, mockFeatureFlagsEnum.FLAG2];
+      const expectedUrlParams = `featureFlags=${mockFeatureFlagsEnum.FLAG1}&featureFlags=${mockFeatureFlagsEnum.FLAG2}&timestamp=${TIMESTAMP}`;
+      const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+      const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+      const response = [
+        { name: mockFeatureFlagsEnum.FLAG1, active: true },
+        { name: mockFeatureFlagsEnum.FLAG2, active: true },
+      ];
+
+      service
+        .getFlags(featureFlagNames as any)
+        .pipe(
+          mergeMap(() => {
+            return service.getFlags(featureFlagNames as any);
+          })
+        )
+        .subscribe();
+
+      const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+      req.flush(response);
+    });
+
+    it('should do HTTP call only with feature flags not saved', () => {
+      const expectedUrlParams1 = `featureFlags=${mockFeatureFlagsEnum.FLAG1}&timestamp=${TIMESTAMP}`;
+      const expectedUrlParams2 = `featureFlags=${mockFeatureFlagsEnum.FLAG2}&timestamp=${TIMESTAMP}`;
+      const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+      const expectedUrlWithEndpointAndParams1 = `${expectedUrlWithEndpoint}?${expectedUrlParams1}`;
+      const expectedUrlWithEndpointAndParams2 = `${expectedUrlWithEndpoint}?${expectedUrlParams2}`;
+      const response = [{ name: mockFeatureFlagsEnum.FLAG1, active: true }];
+
+      service
+        .getFlags([mockFeatureFlagsEnum.FLAG1] as any)
+        .pipe(
+          mergeMap(() => {
+            return service.getFlags([mockFeatureFlagsEnum.FLAG1, mockFeatureFlagsEnum.FLAG2] as any);
+          })
+        )
+        .subscribe();
+
+      const req1: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams1);
+      req1.flush(response);
+      const req2: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams2);
+      req2.flush([]);
+    });
+
+    it('should return Feature flags observable with valid value', () => {
+      const featureFlagName = mockFeatureFlagsEnum.FLAG1;
+      const response = [{ name: mockFeatureFlagsEnum.FLAG1, active: true }];
+      const expectedUrlParams = `featureFlags=${featureFlagName}&timestamp=${TIMESTAMP}`;
+      const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+      const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+      let dataResponse: FeatureFlag[];
+
+      service.getFlags([featureFlagName] as any).subscribe((flags) => (dataResponse = flags));
+      const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+      req.flush(response);
+
+      expect(dataResponse).toEqual(response);
+    });
+
+    describe('Permissions', () => {
+      beforeEach(() => {
+        spyOn(permissionService, 'addPermission').and.callThrough();
+        spyOn(permissionService, 'removePermission').and.callThrough();
+      });
+      describe('when feature flag is active', () => {
+        describe('and has permissions configured', () => {
+          it('should set permissions', () => {
+            const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.BUMPS}&timestamp=${TIMESTAMP}`;
+            const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+            const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+
+            service.getFlags([FEATURE_FLAGS_ENUM.BUMPS]).subscribe();
+            const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+            req.flush([{ name: FEATURE_FLAGS_ENUM.BUMPS, active: true }]);
+
+            expect(permissionService.addPermission).toBeCalledTimes(1);
+            expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.bumps);
+          });
+          it('should not remove permissions', () => {
+            const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.BUMPS}&timestamp=${TIMESTAMP}`;
+            const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+            const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+
+            service.getFlags([FEATURE_FLAGS_ENUM.BUMPS]).subscribe();
+            const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+            req.flush([{ name: FEATURE_FLAGS_ENUM.BUMPS, active: true }]);
+
+            expect(permissionService.removePermission).not.toHaveBeenCalled();
+          });
+        });
+        describe('and has not permissions configured', () => {
+          it('should not set permissions', () => {
+            const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.STRIPE}&timestamp=${TIMESTAMP}`;
+            const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+            const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+
+            service.getFlags([FEATURE_FLAGS_ENUM.STRIPE]).subscribe();
+            const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+            req.flush([{ name: FEATURE_FLAGS_ENUM.STRIPE, active: true }]);
+
+            expect(permissionService.addPermission).not.toHaveBeenCalled();
+          });
+        });
+      });
+      describe('when feature flag is not active', () => {
+        it('should not add permissions', () => {
+          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.BUMPS}&timestamp=${TIMESTAMP}`;
+          const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+          const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+
+          service.getFlags([FEATURE_FLAGS_ENUM.BUMPS]).subscribe();
+          const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
+          req.flush([{ name: FEATURE_FLAGS_ENUM.BUMPS, active: false }]);
+
+          expect(permissionService.addPermission).not.toHaveBeenCalled();
+        });
+        it('should remove permissions', () => {
+          const expectedUrlParams = `featureFlags=${FEATURE_FLAGS_ENUM.BUMPS}&timestamp=${TIMESTAMP}`;
+          const expectedUrlWithEndpoint = `${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`;
+          const expectedUrlWithEndpointAndParams = `${expectedUrlWithEndpoint}?${expectedUrlParams}`;
+
+          service.getFlags([FEATURE_FLAGS_ENUM.BUMPS]).subscribe();
           const req: TestRequest = httpMock.expectOne(expectedUrlWithEndpointAndParams);
           req.flush([{ name: FEATURE_FLAGS_ENUM.BUMPS, active: false }]);
 

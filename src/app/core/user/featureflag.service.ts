@@ -59,7 +59,7 @@ export class FeatureflagService {
   }
 
   public getFlags(names: FEATURE_FLAGS_ENUM[], cache = true): Observable<FeatureFlag[]> {
-    const featureFlags = [];
+    const featureFlags: FeatureFlag[] = [];
     const flagsToRequest: FEATURE_FLAGS_ENUM[] = [];
     names.forEach((name) => {
       const storedFeatureFlag = this.getStoredFlag(name);
@@ -87,7 +87,7 @@ export class FeatureflagService {
             this.checkPermission(featureFlag.name, featureFlag.active);
           });
           this.storedFeatureFlags.push(...response);
-          featureFlags.push(response);
+          featureFlags.push(...response);
           return featureFlags;
         })
       );
