@@ -636,4 +636,15 @@ describe('SearchComponent', () => {
       expect(shoppingSlotGroup).toBeTruthy();
     });
   });
+
+  describe('if the device is a mobile', () => {
+    it('should show an Ad placement just after the view more button', () => {
+      component.device = DeviceType.MOBILE;
+
+      fixture.detectChanges();
+      const bottomAdSlot = fixture.debugElement.query(By.css('.ItemCardList__sky-bottom'));
+
+      expect(bottomAdSlot).toBeTruthy();
+    });
+  });
 });

@@ -44,6 +44,11 @@
             <tsl-sky-shopping [adSlotContainer]="adSlotShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index" [cardType]="listCardType$ | async"></tsl-sky-shopping>
           </ng-template>
         </ng-container>
+        <ng-container *ngIf="device === DevicesType.MOBILE">
+          <ng-template #inlineSlotTemplate>
+            <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
+          </ng-template>
+        </ng-container>
       </tsl-public-item-card-list>
 
       <div class="Search__spinner d-flex align-items-center justify-content-center py-5" *ngIf="(isLoadingPaginationResults$ | async)">
@@ -56,6 +61,9 @@
         </div>
         <div *ngIf="device === DevicesType.DESKTOP && (searchWithKeyword$ | async)" class="row justify-content-center my-4">
           <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
+        </div>
+        <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
+          <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
         </div>
       </ng-container>
     </ng-container>
