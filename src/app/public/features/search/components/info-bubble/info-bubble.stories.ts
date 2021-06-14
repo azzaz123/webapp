@@ -1,6 +1,7 @@
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
 import { InfoBubbleComponent } from './info-bubble.component';
+import { InfoBubbleModule } from './info-bubble.module';
 
 export default {
   title: 'Webapp/Public/Features/Search/Components/InfoBubble',
@@ -12,7 +13,7 @@ const Template: Story<InfoBubbleComponent> = (args: InfoBubbleComponent) => ({
   component: InfoBubbleComponent,
   props: args,
   moduleMetadata: {
-    declarations: [InfoBubbleComponent],
+    imports: [InfoBubbleModule],
   },
   template: `<tsl-info-bubble>Random text</tsl-info-bubble>
   <tsl-info-bubble>Random LONG text Random LONG text Random LONG text Random LONG text</tsl-info-bubble>`,
