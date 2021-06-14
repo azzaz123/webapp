@@ -14,7 +14,8 @@ const Template: Story<InfoBubbleComponent> = (args: InfoBubbleComponent) => ({
   moduleMetadata: {
     declarations: [InfoBubbleComponent],
   },
-  template: `<tsl-info-bubble></tsl-info-bubble>`,
+  template: `<tsl-info-bubble>Random text</tsl-info-bubble>
+  <tsl-info-bubble>Random LONG text Random LONG text Random LONG text Random LONG text</tsl-info-bubble>`,
 });
 
 export const Default = Template.bind({});
