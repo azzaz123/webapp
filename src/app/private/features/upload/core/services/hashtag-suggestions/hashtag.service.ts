@@ -25,11 +25,11 @@ export class HashtagService {
     return this.http.get<HashtagResponse>(url, { params: httpParams, observe: 'response' });
   }
 
-  public getPaginationHashtags(categoryId: number, page: number = 0, prefix?: string): Observable<PaginationResponse<Hashtag[]>> {
+  public getPaginationHashtags(categoryId: number, page: number = 0, prefix: string = null): Observable<PaginationResponse<Hashtag[]>> {
     const category_id = categoryId.toString();
     const start = page.toString();
     return this.paginationService.getItems(
-      prefix ? this.getHashtagsByPrefix(category_id, start, prefix) : this.getHashtags(category_id, start)
+      prefix === null ? this.getHashtags(category_id, start) : this.getHashtagsByPrefix(category_id, start, prefix) // Set the prefix to null as a defaul value to prevent the case if in the textarea, we get the empty string
     );
   }
 }
