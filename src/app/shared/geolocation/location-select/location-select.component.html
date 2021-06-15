@@ -1,5 +1,5 @@
 <div [formGroup]="form">
   <div [formGroupName]="name">
-    <input #input type="text" class="form-control" placeholder="Set a location" i18n-placeholder="@@web_location_select_501" formControlName="address" id="location" (focus)="open(input)" />
+    <input #input type="text" class="form-control" placeholder="Set a location" i18n-placeholder="@@web_location_select_501" formControlName="address" id="location" (focus)="onFocus(input)" (click)="onClick(input)" (keyup)="onClick(input)" />
   </div>
 </div>

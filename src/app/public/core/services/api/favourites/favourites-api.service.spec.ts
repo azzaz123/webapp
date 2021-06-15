@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { GET_FAVOURITES } from './favourites-api.service';
+import { CHECK_FAVOURITES_ENDPOINT } from './favourites-api.service';
 import { FavouritesApiService } from './favourites-api.service';
 
 describe('FavouritesApiService', () => {
@@ -28,12 +28,12 @@ describe('FavouritesApiService', () => {
         let response: string[];
 
         service.getFavouriteItemsId(MOCK_IDS).subscribe((r) => (response = r));
-        const req = httpMock.expectOne(GET_FAVOURITES);
+        const req = httpMock.expectOne(CHECK_FAVOURITES_ENDPOINT);
         req.flush({
           favorites: MOCK_IDS,
         });
 
-        expect(req.request.url).toEqual(GET_FAVOURITES);
+        expect(req.request.url).toEqual(CHECK_FAVOURITES_ENDPOINT);
         expect(req.request.method).toBe('POST');
         expect(req.request.body).toEqual({
           ids: MOCK_IDS,
@@ -47,10 +47,10 @@ describe('FavouritesApiService', () => {
         let response: string[];
 
         service.getFavouriteItemsId(MOCK_IDS).subscribe((r) => (response = r));
-        const req = httpMock.expectOne(GET_FAVOURITES);
+        const req = httpMock.expectOne(CHECK_FAVOURITES_ENDPOINT);
         req.flush(null, { status: 400, statusText: 'Bad Request' });
 
-        expect(req.request.url).toEqual(GET_FAVOURITES);
+        expect(req.request.url).toEqual(CHECK_FAVOURITES_ENDPOINT);
         expect(req.request.method).toBe('POST');
         expect(req.request.body).toEqual({
           ids: MOCK_IDS,

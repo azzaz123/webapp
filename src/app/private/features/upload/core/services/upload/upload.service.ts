@@ -1,11 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AccessTokenService } from '@core/http/access-token.service';
-import {
-  TOKEN_AUTHORIZATION_HEADER_NAME,
-  TOKEN_SIGNATURE_HEADER_NAME,
-  TOKEN_TIMESTAMP_HEADER_NAME,
-} from '@core/http/interceptors/token/token.interceptor';
+import { AUTHORIZATION_HEADER_NAME } from '@core/http/interceptors';
 import { ITEM_TYPES } from '@core/item/item';
 import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { CarContent, ItemResponse, RealEstateResponse } from '@core/item/item-response.interface';
@@ -162,14 +158,9 @@ export class UploadService {
   }
 
   private getUploadHeaders(url: string, additionalHeaders?: any): any {
-    const timestamp = Date.now();
-    const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
-
     return {
       ...additionalHeaders,
-      [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
-      [TOKEN_SIGNATURE_HEADER_NAME]: signature,
-      [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString(),
+      [AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
     };
   }
 
