@@ -8,7 +8,7 @@ import * as CryptoJSAES from 'crypto-js/aes';
 
 describe('LoggedGuard', (): void => {
   let loggedGuard: LoggedGuard;
-  let accessTokenService: AccessTokenService;
+  let cookieService: CookieService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -26,7 +26,7 @@ describe('LoggedGuard', (): void => {
       ],
     });
     loggedGuard = TestBed.inject(LoggedGuard);
-    accessTokenService = TestBed.inject(AccessTokenService);
+    cookieService = TestBed.inject(CookieService);
 
     window.location.href = 'https://web.wallapop.com';
   });
@@ -52,7 +52,7 @@ describe('LoggedGuard', (): void => {
     });
 
     describe('when access token in cookies', () => {
-      beforeEach(() => accessTokenService.storeAccessToken('abc'));
+      beforeEach(() => spyOn(cookieService, 'get').and.returnValue('abc'));
 
       it('should allow access and NOT redirect to SEO web if access token', () => {
         const notExpectedUrl = `${environment.siteUrl}login?redirectUrl=`;
@@ -82,7 +82,7 @@ describe('LoggedGuard', (): void => {
     });
 
     describe('when access token in cookies', () => {
-      beforeEach(() => accessTokenService.storeAccessToken('abc'));
+      beforeEach(() => spyOn(cookieService, 'get').and.returnValue('abc'));
 
       it('should allow access and NOT redirect to SEO web if access token', () => {
         const notExpectedUrl = `${environment.siteUrl}login?redirectUrl=`;
