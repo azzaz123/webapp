@@ -15,6 +15,7 @@ import { ItemDetailTrackEventsService } from '../../core/services/item-detail-tr
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { I18nService } from '@core/i18n/i18n.service';
 import { COLORS } from '@core/colors/colors-constants';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-item-detail-header',
@@ -31,6 +32,7 @@ export class ItemDetailHeaderComponent implements OnInit {
   @Output() soldItemChange: EventEmitter<void> = new EventEmitter();
 
   public readonly USER_INFO_SIZE = USER_INFO_SIZE;
+  public readonly PERMISSIONS = PERMISSIONS;
   public showOptions = false;
   public loading = true;
   public tooltipMessages = {

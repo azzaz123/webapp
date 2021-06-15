@@ -19,6 +19,7 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
 import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
 import { CatalogItemTrackingEventService } from './core/services/catalog-item-tracking-event.service';
+import { NavLinksModule } from '@shared/nav-links/nav-links.module';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { CatalogItemTrackingEventService } from './core/services/catalog-item-tr
     ReviewsModule,
     ItemAvatarModule,
     CustomCurrencyModule,
+    NavLinksModule,
   ],
   providers: [BumpTutorialService, ItemRequiredDataService, CatalogItemTrackingEventService],
   declarations: [

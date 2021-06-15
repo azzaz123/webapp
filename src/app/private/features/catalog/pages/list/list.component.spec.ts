@@ -64,6 +64,8 @@ import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-mod
 import { ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { Counters } from '@core/user/user-stats.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { MockPermissionsService, MOCK_PERMISSIONS } from '@fixtures/permissions.fixtures';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -86,6 +88,7 @@ describe('ListComponent', () => {
   let eventService: EventService;
   let deviceService: DeviceDetectorService;
   let analyticsService: AnalyticsService;
+  let permissionService: NgxPermissionsService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -225,6 +228,10 @@ describe('ListComponent', () => {
             provide: DeviceDetectorService,
             useClass: DeviceDetectorServiceMock,
           },
+          {
+            provide: NgxPermissionsService,
+            useClass: MockPermissionsService,
+          },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
         schemas: [NO_ERRORS_SCHEMA],
@@ -247,6 +254,7 @@ describe('ListComponent', () => {
     eventService = TestBed.inject(EventService);
     deviceService = TestBed.inject(DeviceDetectorService);
     analyticsService = TestBed.inject(AnalyticsService);
+    permissionService = TestBed.inject(NgxPermissionsService);
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     spyOn(errorService, 'i18nError');
@@ -361,39 +369,64 @@ describe('ListComponent', () => {
         });
       });
 
-      it('should open bump suggestion modal if item is created', fakeAsync(() => {
-        component.ngOnInit();
-        tick();
-
-        expect(modalService.open).toHaveBeenCalledWith(BumpSuggestionModalComponent, {
-          windowClass: 'modal-standard',
+      describe('and has visibility permissions', () => {
+        beforeEach(() => {
+          jest.spyOn(permissionService, 'permissions$', 'get').mockReturnValue(of(MOCK_PERMISSIONS));
         });
-      }));
+        it('should open bump suggestion modal if item is created', fakeAsync(() => {
+          component.ngOnInit();
+          tick();
 
-      it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
-        modalSpy.and.returnValue({
-          result: Promise.resolve({ redirect: true }),
-          componentInstance: { item: null },
+          expect(modalService.open).toHaveBeenCalledWith(BumpSuggestionModalComponent, {
+            windowClass: 'modal-standard',
+          });
+        }));
+
+        it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
+          modalSpy.and.returnValue({
+            result: Promise.resolve({ redirect: true }),
+            componentInstance: { item: null },
+          });
+          spyOn(router, 'navigate');
+          component.ngOnInit();
+          tick();
+
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith(['catalog/checkout', { itemId: '1' }]);
+        }));
+
+        it('should not redirect when modal is closed', fakeAsync(() => {
+          modalSpy.and.returnValue({
+            result: Promise.resolve({ redirect: false }),
+            componentInstance: { item: null },
+          });
+          spyOn(router, 'navigate');
+          component.ngOnInit();
+          tick();
+
+          expect(router.navigate).not.toHaveBeenCalled();
+        }));
+      });
+      describe('and has not visibility permissions', () => {
+        beforeEach(() => {
+          jest.spyOn(permissionService, 'permissions$', 'get').mockReturnValue(of({}));
         });
-        spyOn(router, 'navigate');
-        component.ngOnInit();
-        tick();
+        it('should not open suggestion bump modal', fakeAsync(() => {
+          component.ngOnInit();
+          tick();
 
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith(['catalog/checkout', { itemId: '1' }]);
-      }));
+          expect(modalService.open).not.toHaveBeenCalled();
+        }));
 
-      it('should not redirect when modal is closed', fakeAsync(() => {
-        modalSpy.and.returnValue({
-          result: Promise.resolve({ redirect: false }),
-          componentInstance: { item: null },
-        });
-        spyOn(router, 'navigate');
-        component.ngOnInit();
-        tick();
+        it('should show successful toast ', fakeAsync(() => {
+          spyOn(errorService, 'i18nSuccess').and.callThrough();
+          component.ngOnInit();
+          tick();
 
-        expect(router.navigate).not.toHaveBeenCalled();
-      }));
+          expect(errorService.i18nSuccess).toHaveBeenCalledTimes(1);
+          expect(errorService.i18nSuccess).toHaveBeenCalledWith(TRANSLATION_KEY.TOAST_PRODUCT_CREATED);
+        }));
+      });
     });
 
     it('should open the listing fee modal if transaction is set as purchaseListingFee', fakeAsync(() => {

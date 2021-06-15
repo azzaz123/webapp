@@ -19,6 +19,7 @@ export class LocationSelectComponent implements OnChanges {
   @Input() name: string;
   @Input() updateLocation = true;
   @Input() isIncorrect = false;
+  @Input() disableFocus = false;
   @Output() locationSelected: EventEmitter<Coordinate> = new EventEmitter();
   private control: AbstractControl;
   private latitudeControl: AbstractControl;
@@ -39,7 +40,21 @@ export class LocationSelectComponent implements OnChanges {
     }
   }
 
-  public open(element: HTMLElement) {
+  public onFocus(element: HTMLElement): void {
+    if (this.disableFocus) {
+      return;
+    }
+    this.open(element);
+  }
+
+  public onClick(element: HTMLElement): void {
+    if (!this.disableFocus) {
+      return;
+    }
+    this.open(element);
+  }
+
+  private open(element: HTMLElement): void {
     setTimeout(() => {
       element.blur();
       this.control.markAsDirty();

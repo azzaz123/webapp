@@ -21,6 +21,7 @@ import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { CARD_TYPES } from './enums/card-types.enum';
 import { SlotsConfig } from './interfaces/slots-config.interface';
 import { ItemCardListComponent } from './item-card-list.component';
@@ -64,7 +65,7 @@ describe('ItemCardListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardListComponent, IsCurrentUserStub, ShowSlotPipe, ItemCardListWrapperComponent],
-      imports: [CommonModule, ItemCardModule, ItemApiModule, HttpClientTestingModule],
+      imports: [CommonModule, ItemCardModule, ItemApiModule, HttpClientTestingModule, NgxPermissionsModule.forRoot()],
       providers: [
         ItemCardService,
         CheckSessionService,
