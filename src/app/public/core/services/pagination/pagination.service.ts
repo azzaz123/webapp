@@ -10,16 +10,13 @@ import { PaginationRequestOptions, PaginationResponse } from './pagination.inter
 export class PaginationService {
   constructor() {}
 
-  public getItems(
-    endpointSubscribable: Observable<HttpResponse<any>>,
-    pageParam: 'init' | 'start' = 'init'
-  ): Observable<PaginationResponse<any>> {
+  public getItems(endpointSubscribable: Observable<HttpResponse<any>>): Observable<PaginationResponse<any>> {
     return endpointSubscribable.pipe(
       map((r: HttpResponse<any>) => {
         const nextPage: string = r.headers.get('x-nextpage');
         return {
           results: r.body,
-          init: nextPage ? parseInt(nextPage.replace(`${pageParam}=`, '')) : null,
+          init: nextPage ? parseInt(nextPage.replace(`init=`, '')) : null,
         };
       })
     );
