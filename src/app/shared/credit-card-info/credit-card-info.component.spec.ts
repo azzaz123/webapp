@@ -9,6 +9,7 @@ describe('CreditCardInfoComponent', () => {
   const GENERIC_CARD_SRC_PATH = '/assets/icons/card.svg';
   const changeCardButtonSelector = '.CreditCardInfo__actions--change';
   const deleteCardButtonSelector = '.CreditCardInfo__actions--delete';
+  const errorStyleSelector = '.CreditCardInfo--error';
 
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
@@ -69,6 +70,26 @@ describe('CreditCardInfoComponent', () => {
       fixture.detectChanges();
 
       expect(el.querySelector(deleteCardButtonSelector)).not.toBeNull();
+    });
+  });
+
+  describe('when the card has errors...', () => {
+    it('should apply the error style', () => {
+      component.error = true;
+
+      fixture.detectChanges();
+
+      expect(el.querySelector(errorStyleSelector)).not.toBeNull();
+    });
+  });
+
+  describe(`when the card don't has errors...`, () => {
+    it('should NOT apply the error style', () => {
+      component.error = false;
+
+      fixture.detectChanges();
+
+      expect(el.querySelector(errorStyleSelector)).toBeNull();
     });
   });
 
