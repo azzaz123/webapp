@@ -1,0 +1,31 @@
+@import '~style/common';
+
+.LocationSelectorModal {
+  padding: $spacing-xxl $spacing-xxxl $spacing-ml $spacing-xxxl;
+  color: $blue-grey-1;
+
+  @include media-breakpoint-down(sm) {
+    padding: $spacing-ml;
+  }
+
+  &__close {
+    @include square($spacing-ms);
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    tsl-svg-icon {
+      @include square($spacing-ms);
+      line-height: initial;
+      ::ng-deep svg path {
+        fill: $blue-grey-3;
+      }
+    }
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    margin-bottom: $spacing-ms;
+    font-weight: $font-weight-chunky;
+  }
+}

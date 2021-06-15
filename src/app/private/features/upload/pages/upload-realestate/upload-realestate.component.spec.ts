@@ -28,7 +28,7 @@ import {
   UPLOAD_FILE_DONE,
   UPLOAD_FILE_DONE_2,
 } from '@fixtures/upload.fixtures.spec';
-import { IMAGE, USER_LOCATION } from '@fixtures/user.fixtures.spec';
+import { IMAGE, MOCK_USER_WITHOUT_LOCATION, USER_DATA, USER_LOCATION } from '@fixtures/user.fixtures.spec';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { UPLOAD_ACTION } from '@shared/uploader/upload.interface';
@@ -40,6 +40,7 @@ import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { UploadRealestateComponent } from './upload-realestate.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { LocationSelectorModal } from '@shared/modals/location-selector-modal/location-selector-modal.component';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -51,6 +52,7 @@ describe('UploadRealestateComponent', () => {
   let analyticsService: AnalyticsService;
   let itemService: ItemService;
   let uploadService: UploadService;
+  let userService: UserService;
   let itemReactivationService: ItemReactivationService;
   const RESPONSE: Key[] = [{ id: 'test', icon_id: 'test', text: 'test' }];
   const RESPONSE_OPTION: IOption[] = [{ value: 'test', label: 'test' }];
@@ -77,6 +79,9 @@ describe('UploadRealestateComponent', () => {
             useValue: {
               isProUser() {
                 return false;
+              },
+              get user() {
+                return USER_DATA;
               },
             },
           },
@@ -146,6 +151,7 @@ describe('UploadRealestateComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     uploadService = TestBed.inject(UploadService);
     itemReactivationService = TestBed.inject(ItemReactivationService);
+    userService = TestBed.inject(UserService);
     fixture.detectChanges();
   });
 
@@ -350,6 +356,30 @@ describe('UploadRealestateComponent', () => {
         expect(component.onUploaded).not.toHaveBeenCalled();
         expect(errorService.i18nError).toHaveBeenCalledTimes(1);
         expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.SERVER_ERROR, 'error');
+      });
+    });
+
+    describe('and has not user location', () => {
+      beforeEach(() => {
+        spyOn(modalService, 'open').and.returnValue({
+          result: Promise.resolve(false),
+        });
+        jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_USER_WITHOUT_LOCATION);
+        spyOn(uploadService, 'createItem').and.callThrough();
+        component.uploadForm.patchValue(UPLOAD_FORM_REALESTATE_VALUES);
+      });
+      it('should not save data', () => {
+        component.onSubmit();
+
+        expect(uploadService.createItem).not.toHaveBeenCalled();
+        expect(component.loading).toBe(false);
+      });
+
+      it('should open location modal', () => {
+        component.onSubmit();
+
+        expect(modalService.open).toHaveBeenCalledTimes(1);
+        expect(modalService.open).toHaveBeenCalledWith(LocationSelectorModal);
       });
     });
   });
@@ -675,6 +705,43 @@ describe('UploadRealestateComponent', () => {
         const submitButtonTextElement: HTMLElement = fixture.debugElement.query(By.css('tsl-button span')).nativeElement;
 
         expect(submitButtonTextElement.innerHTML).toEqual('Reactivate item');
+      });
+    });
+  });
+
+  describe('user location modal', () => {
+    beforeEach(() => {
+      jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_USER_WITHOUT_LOCATION);
+      spyOn(uploadService, 'createItem').and.callThrough();
+      component.uploadForm.patchValue(UPLOAD_FORM_REALESTATE_VALUES);
+    });
+
+    describe('Is location saved', () => {
+      beforeEach(() => {
+        spyOn(modalService, 'open').and.returnValue({
+          result: Promise.resolve(true),
+        });
+      });
+
+      it('should save data', fakeAsync(() => {
+        component.onSubmit();
+        tick();
+
+        expect(uploadService.createItem).toHaveBeenCalledTimes(1);
+      }));
+    });
+
+    describe('Is location not saved', () => {
+      beforeEach(() => {
+        spyOn(modalService, 'open').and.returnValue({
+          result: Promise.resolve(false),
+        });
+      });
+
+      it('should not save data', () => {
+        component.onSubmit();
+
+        expect(uploadService.createItem).not.toHaveBeenCalled();
       });
     });
   });
