@@ -75,4 +75,22 @@ describe(`NullQueryParamsInterceptor`, () => {
       expect(req.request.params.has('param3')).toEqual(true);
     });
   });
+
+  describe('when doing a request to the backend with same param name', () => {
+    it('should not modify them', () => {
+      const expectedParams = 'param1=aaa&param1=bbb&param2=123';
+      const expectedUrl = `${environment.baseUrl}?${expectedParams}`;
+
+      httpClient
+        .get(environment.baseUrl, {
+          params: { param1: ['aaa', 'bbb'], param2: 123 } as any,
+        })
+        .subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush({});
+
+      expect(req.request.params.getAll('param1')).toEqual(['aaa', 'bbb']);
+      expect(req.request.params.has('param2')).toEqual(true);
+    });
+  });
 });
