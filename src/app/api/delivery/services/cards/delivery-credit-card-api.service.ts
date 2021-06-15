@@ -1,17 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DeliveryCreateCreditCardApi } from '@api/delivery/dtos/requests/delivery-create-credit-card-api.interface';
+import { DeliverySyncCreditCardApi } from '@api/delivery/dtos/requests/delivery-sync-credit-card-api.interface';
+import { DeliveryUpdateCreditCardApi } from '@api/delivery/dtos/requests/delivery-update-credit-card-api.interface';
+import { DeliveryCreditCardApi } from '@api/delivery/dtos/responses/delivery-credit-card-api.interface';
+import { TokenizerInformationApi } from '@api/delivery/dtos/responses/tokenizer-information-api.interface';
+import { DELIVERY_CREDIT_CARDS_ENDPOINT, DELIVERY_CREDIT_CARDS_TOKENIZER_ENDPOINT } from '@api/delivery/endpoints';
 import { UuidService } from '@core/uuid/uuid.service';
-import { environment } from '@environments/environment';
-import { DeliveryCreateCreditCardApi } from '@private/features/delivery/interfaces/delivery-credit-card/api/delivery-create-credit-card-api.interface';
-import { DeliveryCreditCardApi } from '@private/features/delivery/interfaces/delivery-credit-card/api/delivery-credit-card-api.interface';
-import { DeliverySyncCreditCardApi } from '@private/features/delivery/interfaces/delivery-credit-card/api/delivery-sync-credit-card-api.interface';
-import { DeliveryUpdateCreditCardApi } from '@private/features/delivery/interfaces/delivery-credit-card/api/delivery-update-credit-card-api.interface';
-import { TokenizerInformationApi } from '@private/features/delivery/interfaces/delivery-credit-card/api/tokenizer-information-api.interface';
 import { Observable } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
-
-export const DELIVERY_CREDIT_CARDS_ENDPOINT = `${environment.baseUrl}/api/v3/payments/cards`;
-export const DELIVERY_CREDIT_CARDS_TOKENIZER_ENDPOINT = `${DELIVERY_CREDIT_CARDS_ENDPOINT}/tokenizer/information`;
 
 @Injectable()
 export class DeliveryCreditCardApiService {
