@@ -13,6 +13,10 @@
           "es": {
             "translation": "src/locale/messages.es.json",
             "baseHref": ""
+          },
+          "it": {
+            "translation": "src/locale/messages.it.json",
+            "baseHref": ""
           }
         }
       },
@@ -87,7 +91,7 @@
                   "with": "src/environments/environment.docker.ts"
                 }
               ],
-              "localize": ["es"]
+              "localize": true
             },
             "beta": {
               "fileReplacements": [

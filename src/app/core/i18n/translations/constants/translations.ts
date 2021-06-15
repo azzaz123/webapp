@@ -161,6 +161,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.RESERVE_ITEMS_TITLE]: $localize`:@@web_modal_confirmation_482:Reserve items`,
   [TRANSLATION_KEY.RESERVE_ITEMS_DESCRIPTION]: $localize`:@@web_modal_confirmation_483:The selected items will be reserved.`,
   [TRANSLATION_KEY.RESERVE_BUTTON]: $localize`:@@web_modal_confirmation_670:Reserve`,
+  [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS]: $localize`:@@web_delivery_create_bank_account_succeed:Bank account added successfully!`,
+  [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS]: $localize`:@@web_delivery_edit_bank_account_succeed:Bank account edited successfully!`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE]: $localize`:@@web_address_view_all_users_modal_warning_country_selection_description:Each country has its own shipping methods. Changing the country will change the shipping services available. Do you want to continue?`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_CONTINUE_BUTTON]: $localize`:@@web_address_view_all_users_modal_warning_country_selection_continue_button:Continue`,
 };
