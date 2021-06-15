@@ -16,7 +16,7 @@
                 *ngIf="item.bumpFlags?.country_bumped" width="18"
                 src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon>
             </ng-container>
-            <tsl-carousel-slides class="h-100" [hideControllers]="deviceDetectorService.isMobile()">
+            <tsl-carousel-slides class="h-100" [controlsSize]="carouselControlSize" [hideControllers]="deviceDetectorService.isMobile()">
                 <ng-template carousel-slider *ngFor="let image of item.images">
                     <img [src]="image.urls_by_size?.medium" />
                 </ng-template>
