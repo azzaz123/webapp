@@ -257,8 +257,11 @@ export class DeliveryAddressComponent implements OnInit {
     this.loadingButton = true;
     this.isCountryEditable = false;
 
-    this.deliveryAddressService
-      .updateOrCreate(this.deliveryAddressForm.getRawValue(), this.isNewForm)
+    const subscription = this.isNewForm
+      ? this.deliveryAddressService.create(this.deliveryAddressForm.getRawValue())
+      : this.deliveryAddressService.update(this.deliveryAddressForm.getRawValue());
+
+    subscription
       .pipe(
         finalize(() => {
           this.loadingButton = false;

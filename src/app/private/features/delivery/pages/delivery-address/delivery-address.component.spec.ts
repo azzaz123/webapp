@@ -99,7 +99,10 @@ describe('DeliveryAddressComponent', () => {
             get() {
               return of(MOCK_DELIVERY_ADDRESS);
             },
-            updateOrCreate() {
+            create() {
+              return of();
+            },
+            update() {
               return of();
             },
             delete() {
@@ -163,6 +166,19 @@ describe('DeliveryAddressComponent', () => {
             ...MOCK_DELIVERY_ADDRESS,
           });
         });
+
+        describe('and we save the address...', () => {
+          beforeEach(() => {
+            spyOn(deliveryAddressService, 'update').and.returnValue(of());
+            component.deliveryAddressForm.patchValue(MOCK_DELIVERY_ADDRESS_2);
+
+            component.onSubmit();
+          });
+
+          it('should update the address', () => {
+            expect(deliveryAddressService.update).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS_2);
+          });
+        });
       });
 
       describe(`and we don't have a delivery address...`, () => {
@@ -194,6 +210,19 @@ describe('DeliveryAddressComponent', () => {
           expect(component.deliveryAddressForm.get('country_iso_code').value).toBe(
             MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.iso_code
           );
+        });
+
+        describe('and we save the address...', () => {
+          beforeEach(() => {
+            spyOn(deliveryAddressService, 'create').and.returnValue(of());
+            component.deliveryAddressForm.patchValue(MOCK_DELIVERY_ADDRESS_2);
+
+            component.onSubmit();
+          });
+
+          it('should create the address', () => {
+            expect(deliveryAddressService.create).toHaveBeenCalledWith(MOCK_DELIVERY_ADDRESS_2);
+          });
         });
       });
     });
@@ -237,7 +266,7 @@ describe('DeliveryAddressComponent', () => {
 
       describe('and the save succeed...', () => {
         beforeEach(() => {
-          spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(of(null));
+          spyOn(deliveryAddressService, 'update').and.returnValue(of(null));
           spyOn(deliveryAddressTrackEventsService, 'trackClickSaveButton');
           spyOn(toastService, 'show');
           spyOn(component, 'initForm');
@@ -298,20 +327,20 @@ describe('DeliveryAddressComponent', () => {
         });
 
         it('should show error toast', () => {
-          spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
+          spyOn(deliveryAddressService, 'update').and.returnValue(
             throwError([new MobilePhoneNumberIsInvalidError(), new FlatAndFloorTooLongError()])
           );
 
           component.onSubmit();
 
           expect(toastService.show).toHaveBeenCalledWith({
-            text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
             type: 'error',
           });
         });
 
         it('should set errors if the backend return an invalid field', () => {
-          spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
+          spyOn(deliveryAddressService, 'update').and.returnValue(
             throwError([new MobilePhoneNumberIsInvalidError(), new FlatAndFloorTooLongError()])
           );
 
@@ -323,9 +352,7 @@ describe('DeliveryAddressComponent', () => {
 
         describe('and when the fail is because server notifies unique address by user', () => {
           beforeEach(() => {
-            spyOn(deliveryAddressService, 'updateOrCreate').and.returnValue(
-              throwError([new UniqueAddressByUserError('Unique address violation')])
-            );
+            spyOn(deliveryAddressService, 'update').and.returnValue(throwError([new UniqueAddressByUserError('Unique address violation')]));
           });
 
           it('should not mark form as pending', () => {
@@ -362,7 +389,7 @@ describe('DeliveryAddressComponent', () => {
 
       it('should show a toast with a form field error message', () => {
         expect(toastService.show).toHaveBeenCalledWith({
-          text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
+          text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
           type: 'error',
         });
       });
