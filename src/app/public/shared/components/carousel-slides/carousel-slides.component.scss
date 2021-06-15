@@ -18,6 +18,7 @@ $item-flag-height: 38px;
       .carousel-control-prev,
       .carousel-control-next {
         cursor: pointer;
+        transition: opacity 0.15s ease;
       }
       .carousel-indicators {
         background: linear-gradient(to top, rgba($black, 0.25), rgba($black, 0));
@@ -60,12 +61,25 @@ $item-flag-height: 38px;
     }
   }
 
-  &--manyImages {
-    @include media-breakpoint-down(sm) {
-      ::ng-deep .carousel-indicators li {
-        width: 4px;
-        height: 4px;
-        margin: 0px 4px;
+  &--smallControls {
+    ::ng-deep {
+      .carousel-control-next-icon,
+      .carousel-control-prev-icon {
+        width: 24px;
+        height: 24px;
+        background-size: 13px;
+        background-position: center;
+      }
+      .carousel-indicators {
+        li {
+          width: 4px;
+          height: 4px;
+          &.active {
+            width: 6px;
+            height: 6px;
+          }
+          margin: 0px 4px;
+        }
       }
     }
   }

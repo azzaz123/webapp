@@ -1,10 +1,10 @@
-<div class="SlidesCarousel position-relative h-100 w-100"
-    [ngClass]="{'SlidesCarousel--noBackgroundIndicators': noBackgroundIndicators}">
+<div class="SlidesCarousel position-relative h-100 w-100" [ngClass]="{
+    'SlidesCarousel--noBackgroundIndicators': noBackgroundIndicators, 
+    'SlidesCarousel--hideControllers': hideControllers || isSingleSlide,
+    'SlidesCarousel--hideIndicators': hideIndicators || isSingleSlide,
+    'SlidesCarousel--smallControls': controlsSize === CONTROLS_SIZES.SMALL}">
     <ngb-carousel *ngIf="slides?.length; else fallbackImage" interval="0" id="defaultCarousel"
-        (swipeleft)="swipe(SWIPE_DIRECTION.LEFT)" (swiperight)="swipe(SWIPE_DIRECTION.RIGHT)" 
-        [ngClass]="{'SlidesCarousel--hideControllers': hideControllers || isSingleSlide,
-                    'SlidesCarousel--hideIndicators': hideIndicators || isSingleSlide,
-                    'SlidesCarousel--manyImages': manyImages}"
+        (swipeleft)="swipe(SWIPE_DIRECTION.LEFT)" (swiperight)="swipe(SWIPE_DIRECTION.RIGHT)" [ngClass]="{}"
         [activeId]="activeId">
         <ng-template *ngFor="let slide of slides; let i = index" ngbSlide [id]="NGB_SLIDE + i">
             <div *ngIf="(currentSlide) === NGB_SLIDE+i || activeId === NGB_SLIDE + i" (click)="emitCurrentIndex(i)"
