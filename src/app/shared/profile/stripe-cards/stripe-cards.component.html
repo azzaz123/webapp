@@ -48,8 +48,8 @@
             </tsl-credit-card-info>
           </div>
           <div class="col-12 col-md-6">
-            <div class="StripeCards__addNew" *ngIf="stripeCards?.length < 10">
-              <span (click)="addNewCard()" i18n="@@web_add_card">Add card</span>
+            <div (click)="addNewCard()" class="StripeCards__addNew" *ngIf="stripeCards?.length < 10">
+              <span i18n="@@web_add_card">Add card</span>
             </div>
           </div>
         </div>

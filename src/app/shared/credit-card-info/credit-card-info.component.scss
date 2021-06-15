@@ -1,10 +1,13 @@
 @import '~style/common';
 
+$card-height: 151px;
+
 .CreditCardInfo {
   border: solid 1px $blue-grey-5;
   border-radius: 6px;
   padding: $spacing-ml;
   font-size: $font-size-s;
+  min-height: $card-height;
 
   &--error {
     border: solid 1px $warn;
