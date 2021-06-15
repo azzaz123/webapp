@@ -68,6 +68,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.SEARCH_INPUT_PLACEHOLDER]: $localize`:@@web_search_input_placeholder:Search items`,
   [TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE]: $localize`:@@web_default_error_message:Service unavailable temporarily. Try it later`,
   [TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE]: $localize`:@@web_toast_default_success_title:Yup!`,
+  [TRANSLATION_KEY.TOAST_PRODUCT_CREATED]: $localize`:@@web_bump_suggestion_modal_title:Great! Now your item is on Wallapop`,
   [TRANSLATION_KEY.SUBSCRIPTION_CARD_NOT_SET_ERROR]: $localize`:@@web_subscription_card_not_set_error:Your card could not be saved`,
   [TRANSLATION_KEY.STRIPE_CARDS_RETRIEVAL_ERROR]: $localize`:@@web_stripe_cards_retrieval_error:Your cards could not be retrieved`,
   [TRANSLATION_KEY.NO_CARD_SELECTED_ERROR]: $localize`:@@web_no_card_selected_error:Please select a credit card`,
@@ -160,6 +161,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.RESERVE_ITEMS_TITLE]: $localize`:@@web_modal_confirmation_482:Reserve items`,
   [TRANSLATION_KEY.RESERVE_ITEMS_DESCRIPTION]: $localize`:@@web_modal_confirmation_483:The selected items will be reserved.`,
   [TRANSLATION_KEY.RESERVE_BUTTON]: $localize`:@@web_modal_confirmation_670:Reserve`,
+  [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS]: $localize`:@@web_delivery_create_bank_account_succeed:Bank account added successfully!`,
+  [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS]: $localize`:@@web_delivery_edit_bank_account_succeed:Bank account edited successfully!`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE]: $localize`:@@web_address_view_all_users_modal_warning_country_selection_description:Each country has its own shipping methods. Changing the country will change the shipping services available. Do you want to continue?`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_CONTINUE_BUTTON]: $localize`:@@web_address_view_all_users_modal_warning_country_selection_continue_button:Continue`,
 };

@@ -32,6 +32,11 @@ $numCols: 1, 2, 3, 4, 5;
     border-radius: $border-radius;
   }
 
+  &__inline-slot {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+
   &--loading {
     opacity: $loading-opacity;
   }

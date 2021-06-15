@@ -32,7 +32,8 @@ import { RealestateKeysService } from '../../core/services/realstate-keys/reales
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { forkJoin, Observable, of, OperatorFunction } from 'rxjs';
+import { forkJoin, Observable, of, Subscriber } from 'rxjs';
+import { LocationSelectorModal } from '@shared/modals/location-selector-modal/location-selector-modal.component';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -48,7 +49,7 @@ export class UploadRealestateComponent implements OnInit {
   public coordinates: ItemLocation;
 
   public uploadForm: FormGroup;
-  public loading: boolean;
+  public loading = false;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
 
@@ -220,11 +221,19 @@ export class UploadRealestateComponent implements OnInit {
 
   public onSubmit(): void {
     if (this.uploadForm.valid) {
-      this.loading = true;
-      this.item ? this.updateItem() : this.createItem();
+      this.checkUserLocation().subscribe((readyToSave: boolean) => {
+        if (readyToSave) {
+          this.saveItem();
+        }
+      });
     } else {
       this.invalidForm();
     }
+  }
+
+  private saveItem(): void {
+    this.loading = true;
+    this.item ? this.updateItem() : this.createItem();
   }
 
   private invalidForm(): void {
@@ -238,6 +247,22 @@ export class UploadRealestateComponent implements OnInit {
     } else {
       this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
       this.onValidationError.emit();
+    }
+  }
+
+  private checkUserLocation(): Observable<boolean> {
+    if (!this.userService.user.location) {
+      return new Observable((observer: Subscriber<boolean>) => {
+        this.modalService
+          .open(LocationSelectorModal)
+          .result.then((locationUpdated: boolean) => {
+            return observer.next(locationUpdated);
+          })
+          .catch(() => observer.next(false))
+          .finally(() => observer.complete());
+      });
+    } else {
+      return of(true);
     }
   }
 

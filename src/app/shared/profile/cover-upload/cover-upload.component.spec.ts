@@ -1,8 +1,3 @@
-import {
-  TOKEN_AUTHORIZATION_HEADER_NAME,
-  TOKEN_TIMESTAMP_HEADER_NAME,
-  TOKEN_SIGNATURE_HEADER_NAME,
-} from '@core/http/interceptors/token/token.interceptor';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CoverUploadComponent } from './cover-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -17,6 +12,7 @@ import { of, throwError } from 'rxjs';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { MockUploaderService } from '@fixtures/uploader.fixtures.spec';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { AUTHORIZATION_HEADER_NAME } from '@core/http/interceptors';
 
 describe('CoverUploadComponent', () => {
   let component: CoverUploadComponent;
@@ -47,9 +43,6 @@ describe('CoverUploadComponent', () => {
             provide: AccessTokenService,
             useValue: {
               accessToken: 'thetoken',
-              getTokenSignature() {
-                return 'thesignature';
-              },
             },
           },
           {
@@ -82,9 +75,7 @@ describe('CoverUploadComponent', () => {
       });
 
       const headers = {
-        [TOKEN_AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
-        [TOKEN_SIGNATURE_HEADER_NAME]: 'thesignature',
-        [TOKEN_TIMESTAMP_HEADER_NAME]: `${TIMESTAMP}`,
+        [AUTHORIZATION_HEADER_NAME]: 'Bearer thetoken',
       };
 
       fixture.detectChanges();

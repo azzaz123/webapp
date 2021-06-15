@@ -1,16 +1,16 @@
-<div class="main-box" [ngbPopover]="coachmarkLocation" [autoClose]="false" triggers="mouseenter:mouseleave">
-  <h2>
+<div class="main-box" [ngbPopover]="disablePopover ? null : coachmarkLocation" [autoClose]="false" triggers="mouseenter:mouseleave">
+  <h2 *ngIf="!disableTitle">
     <span *ngIf="title">{{title}}</span>
     <span *ngIf="!title" i18n="@@web_location_box_498">Your products are in:</span>
   </h2>
   <div class="row">
     <div class="col-sm-12">
       <div class="form-group">
-        <tsl-location-select [form]="form" [name]="name" [updateLocation]="updateLocation"
+        <tsl-location-select [form]="form" [name]="name" [updateLocation]="updateLocation" [disableFocus]="disableFocus"
           (locationSelected)="emitLocation()" [isIncorrect]="isIncorrectAddress"></tsl-location-select>
         <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"></tsl-here-maps>
         <div class="fake-map" *ngIf="!coordinates"></div>
-        <p i18n="@@web_wallapop_profile_spot_description">This is the spot where your Wallapop profile is located. We will show all your products here.</p>
+        <p *ngIf="!disableFooter" i18n="@@web_wallapop_profile_spot_description">This is the spot where your Wallapop profile is located. We will show all your products here.</p>
       </div>
     </div>
   </div>

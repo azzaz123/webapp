@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Input,
   Output,
@@ -15,9 +16,16 @@ import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '@core/item/item';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
 import { CarouselSlide } from './carousel-slide.interface';
 
+export const PREV_CONTROL_CLASS_NAME = '.carousel-control-prev';
+export const NEXT_CONTROL_CLASS_NAME = '.carousel-control-next';
+
 export enum SWIPE_DIRECTION {
   'RIGHT',
   'LEFT',
+}
+export enum CAROUSEL_CONTROL_SIZE {
+  SMALL,
+  REGULAR,
 }
 @Component({
   selector: 'tsl-carousel-slides',
@@ -33,21 +41,22 @@ export class SlidesCarouselComponent implements AfterContentInit {
   @Input() hideControllers = false;
   @Input() hideIndicators = false;
   @Input() initialIndex = 0;
+  @Input() controlsSize = CAROUSEL_CONTROL_SIZE.REGULAR;
 
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
   public readonly SWIPE_DIRECTION = SWIPE_DIRECTION;
   public readonly NGB_SLIDE = 'ngb-slide-';
+  public readonly CONTROLS_SIZES = CAROUSEL_CONTROL_SIZE;
   public slides: CarouselSliderDirective[];
   public activeId: string;
-  public manyImages = false;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {}
 
   ngAfterContentInit() {
     this.slides = this.sections.toArray();
-    this.checkManyImages();
     this.activeId = this.NGB_SLIDE + this.initialIndex;
     this.cdr.detectChanges();
+    this.preventPropagationOnControlsClick();
   }
 
   public emitCurrentIndex(slideIndex: number): void {
@@ -69,8 +78,13 @@ export class SlidesCarouselComponent implements AfterContentInit {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
   }
 
-  private checkManyImages(): void {
-    this.manyImages = this.slides?.length > 10;
+  private preventPropagationOnControlsClick(): void {
+    const carouselElement = this.elementRef.nativeElement;
+    const controlElements = carouselElement.querySelectorAll(`${PREV_CONTROL_CLASS_NAME}, ${NEXT_CONTROL_CLASS_NAME}`);
+
+    controlElements.forEach((e: HTMLInputElement) => {
+      e.addEventListener('click', (e) => e.stopPropagation());
+    });
   }
 
   get isSingleSlide(): boolean {

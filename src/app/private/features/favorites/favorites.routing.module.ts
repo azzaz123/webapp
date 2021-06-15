@@ -3,7 +3,7 @@ import { RouterModule, Route } from '@angular/router';
 import { FavoritesComponent } from './pages/favorites.component';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { PERMISSIONS } from '@core/user/user';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 const routes: Route[] = [
   {
