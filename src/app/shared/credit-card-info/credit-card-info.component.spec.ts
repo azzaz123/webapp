@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, tick, TestBed, waitForAsync } from '@angular/core/testing';
 import { CreditCardInfoComponent } from './credit-card-info.component';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { BRAND_CARDS_WITH_SVG } from './credit-card-info.enum';
+import { BRAND_CARDS } from './credit-card-info.enum';
 
 describe('CreditCardInfoComponent', () => {
   const VISA_SRC_PATH = '/assets/icons/card-visa.svg';
@@ -117,7 +117,7 @@ describe('CreditCardInfoComponent', () => {
 
   describe('when the credit card brand is mastercard...', () => {
     it('the credit card src path should be a mastercard svg', () => {
-      component.brand = BRAND_CARDS_WITH_SVG.MASTERCARD;
+      component.brand = BRAND_CARDS.MASTERCARD;
 
       component.ngOnChanges();
 
@@ -127,7 +127,7 @@ describe('CreditCardInfoComponent', () => {
 
   describe('when the credit card brand is visa...', () => {
     it('the credit card src path should be a mastercard svg', () => {
-      component.brand = BRAND_CARDS_WITH_SVG.VISA;
+      component.brand = BRAND_CARDS.VISA;
 
       component.ngOnChanges();
 
