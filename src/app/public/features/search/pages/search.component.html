@@ -14,13 +14,17 @@
     <div top class="d-block h-100 position-relative">
       <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
     </div>
-    <div right class="d-block h-100 position-relative">
+    <div right class="d-flex flex-column h-100">
       <ng-container *ngIf="device === DevicesType.DESKTOP">
-        <div class="Search__ad--top position-sticky w-100 mb-3">
-          <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
+        <div class="Search__sky w-100 mb-3">
+          <div class="Search__sky-wrapper position-sticky">
+            <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
+          </div>
         </div>
-        <div class="Search__ad--bottom position-sticky w-100 mb-3">
-          <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
+        <div class="Search__sky w-100">
+          <div class="Search__sky-wrapper position-sticky">
+            <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
+          </div>
         </div>
       </ng-container>
     </div>
@@ -35,9 +39,14 @@
           (clickedItemAndIndex)="trackClickItemCardEvent($event)"
           (toggleFavouriteEvent)="trackFavouriteToggleEvent($event)"
         >
-        <ng-container *ngIf="(isWall$ | async) === false">
+        <ng-container *ngIf="searchWithKeyword$ | async">
           <ng-template #slotTemplate let-index>
             <tsl-sky-shopping [adSlotContainer]="adSlotShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index" [cardType]="listCardType$ | async"></tsl-sky-shopping>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="device === DevicesType.MOBILE">
+          <ng-template #inlineSlotTemplate>
+            <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
           </ng-template>
         </ng-container>
       </tsl-public-item-card-list>
@@ -50,8 +59,11 @@
         <div class="row justify-content-center mt-4" *ngIf="hasMoreItems$ | async">
           <tsl-button id="btn-load-more" (click)="loadMoreProducts()" i18n="@@web_search_view_more_products">View more products</tsl-button>
         </div>
-        <div *ngIf="device === DevicesType.DESKTOP && (isWall$ | async) === false" class="row justify-content-center my-4">
+        <div *ngIf="device === DevicesType.DESKTOP && (searchWithKeyword$ | async)" class="row justify-content-center my-4">
           <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
+        </div>
+        <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
+          <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
         </div>
       </ng-container>
     </ng-container>

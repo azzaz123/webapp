@@ -37,8 +37,10 @@ export class ItemCardListComponent {
   @Output() toggleFavouriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
 
   @ContentChild('slotTemplate') slotTemplate: TemplateRef<unknown>;
+  @ContentChild('inlineSlotTemplate') inlineSlotTemplate: TemplateRef<unknown>;
 
   public cardTypes = CARD_TYPES;
+  public readonly INLINE_SLOT_POSITION = 6;
   private static DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS = 15;
 
   constructor(

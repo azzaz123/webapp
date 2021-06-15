@@ -1,6 +1,6 @@
 import { from, Observable, of } from 'rxjs';
 
-import { mergeMap, catchError, tap, map, take, finalize } from 'rxjs/operators';
+import { catchError, tap, map, take, finalize } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { User } from './user';
 import { EventService } from '../event/event.service';
@@ -8,7 +8,7 @@ import { Item } from '../item/item';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
 import { Counters, Ratings, UserStats, UserStatsResponse } from './user-stats.interface';
@@ -18,7 +18,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { PhoneMethodResponse } from './phone-method.interface';
 
-import { APP_VERSION } from '../../../environments/version';
+import { APP_VERSION } from '@environments/version';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { InboxUser, InboxItem } from '@private/features/chat/core/model';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
@@ -118,6 +118,10 @@ export class UserService {
 
   public get isLogged(): boolean {
     return !!this.accessTokenService.accessToken;
+  }
+
+  public isCurrentUser(userId: string): boolean {
+    return this.isLogged && this.user?.id === userId;
   }
 
   private sendUserPresence() {
