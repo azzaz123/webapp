@@ -37,7 +37,7 @@ describe('SearchLayoutComponent', () => {
   });
 
   describe('When viewport is...', () => {
-    const rightColSelector = By.css('.col.d-none.d-xl-block');
+    const rightColSelector = By.css('.col.d-none.d-xl-flex');
     const bottomRowSelector = By.css('.row.d-md-none');
     describe('XS', () => {
       beforeEach(() => {

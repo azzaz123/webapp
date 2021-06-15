@@ -7,13 +7,15 @@
             <tsl-svg-icon *ngIf="item.flags?.reserved" width="15"
                 class="ItemCardWide__icon ItemCardWide__icon--left position-absolute d-flex justify-content-center align-items-center"
                 src="/assets/icons/item-card/reserved.svg"></tsl-svg-icon>
-            <tsl-svg-icon *ngIf="item.bumpFlags?.bumped" width="18"
+            <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
+                <tsl-svg-icon *ngIf="item.bumpFlags?.bumped" width="18"
                 class="ItemCardWide__icon ItemCardWide__icon--right position-absolute ItemCardWide__icon--bumped d-flex justify-content-center align-items-center"
                 src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon>
-            <tsl-svg-icon 
+                <tsl-svg-icon 
                 class="ItemCardWide__icon ItemCardWide__icon--right position-absolute ItemCardWide__icon--contryBumped d-flex justify-content-center align-items-center"
                 *ngIf="item.bumpFlags?.country_bumped" width="18"
                 src="/assets/icons/item-card/bumped.svg"></tsl-svg-icon>
+            </ng-container>
             <tsl-carousel-slides class="h-100" [hideControllers]="deviceDetectorService.isMobile()">
                 <ng-template carousel-slider *ngFor="let image of item.images">
                     <img [src]="image.urls_by_size?.medium" />

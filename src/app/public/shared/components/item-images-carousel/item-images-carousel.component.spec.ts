@@ -3,8 +3,10 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DeviceService } from '@core/device/device.service';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { MockDeviceService } from '@fixtures/device.fixtures.spec';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { SlidesCarouselComponent } from '../carousel-slides/carousel-slides.component';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '../item-flag/item-flag-constants';
 import { ItemFlagComponent } from '../item-flag/item-flag.component';
@@ -13,6 +15,7 @@ import { ItemImagesCarouselComponent } from './item-images-carousel.component';
 describe('ItemImagesCarouselComponent', () => {
   let component: ItemImagesCarouselComponent;
   let fixture: ComponentFixture<ItemImagesCarouselComponent>;
+  let permissionService: NgxPermissionsService;
   let deviceService: DeviceService;
   const flagRightClass = '.ItemFlag--right';
   const flagLeftClass = '.ItemFlag--left';
@@ -21,8 +24,8 @@ describe('ItemImagesCarouselComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [{ provide: DeviceService, useValue: MockDeviceService }],
-      imports: [SvgIconModule, HttpClientTestingModule],
+      providers: [{ provide: DeviceService, useValue: MockDeviceService }, NgxPermissionsService],
+      imports: [SvgIconModule, HttpClientTestingModule, NgxPermissionsModule.forRoot()],
       declarations: [ItemImagesCarouselComponent, SlidesCarouselComponent, ItemFlagComponent],
     })
       .overrideComponent(ItemImagesCarouselComponent, {
@@ -34,6 +37,7 @@ describe('ItemImagesCarouselComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemImagesCarouselComponent);
     deviceService = TestBed.inject(DeviceService);
+    permissionService = TestBed.inject(NgxPermissionsService);
     component = fixture.componentInstance;
     component.images = [];
     fixture.detectChanges();
@@ -45,22 +49,49 @@ describe('ItemImagesCarouselComponent', () => {
 
   describe('when is an item...', () => {
     describe('and is bumped or country bumped...', () => {
-      it('should show one flag on the right when is bumped', () => {
-        component.bumpedFlag = BUMPED_ITEM_FLAG_TYPES.BUMPED;
-        fixture.detectChanges();
+      describe('and has visibility permissions', () => {
+        beforeEach(() => {
+          permissionService.addPermission(PERMISSIONS.bumps);
+        });
+        it('should show one flag on the right when is bumped', () => {
+          component.bumpedFlag = BUMPED_ITEM_FLAG_TYPES.BUMPED;
+          fixture.detectChanges();
 
-        const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
+          const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
 
-        expect(bumpedFlag).toBeTruthy();
+          expect(bumpedFlag).toBeTruthy();
+        });
+
+        it('should show one flag on the right when is country bumped', () => {
+          component.bumpedFlag = BUMPED_ITEM_FLAG_TYPES.COUNTRY_BUMP;
+          fixture.detectChanges();
+
+          const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
+
+          expect(bumpedFlag).toBeTruthy();
+        });
       });
+      describe('and has not visibility permissions', () => {
+        beforeEach(() => {
+          permissionService.removePermission(PERMISSIONS.bumps);
+        });
+        it('should show one flag on the right when is bumped', () => {
+          component.bumpedFlag = BUMPED_ITEM_FLAG_TYPES.BUMPED;
+          fixture.detectChanges();
 
-      it('should show one flag on the right when is country bumped', () => {
-        component.bumpedFlag = BUMPED_ITEM_FLAG_TYPES.COUNTRY_BUMP;
-        fixture.detectChanges();
+          const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
 
-        const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
+          expect(bumpedFlag).toBeFalsy();
+        });
 
-        expect(bumpedFlag).toBeTruthy();
+        it('should show one flag on the right when is country bumped', () => {
+          component.bumpedFlag = BUMPED_ITEM_FLAG_TYPES.COUNTRY_BUMP;
+          fixture.detectChanges();
+
+          const bumpedFlag = fixture.debugElement.query(By.css(flagRightClass));
+
+          expect(bumpedFlag).toBeFalsy();
+        });
       });
     });
 

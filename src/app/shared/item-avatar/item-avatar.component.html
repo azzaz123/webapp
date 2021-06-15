@@ -12,14 +12,16 @@
   <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured && !item?.purchases && !item?.notAvailable">
     <tsl-svg-icon src="/assets/icons/reserved.svg"></tsl-svg-icon>
   </span>
-  <span class="featured"
-        *ngIf="item?.featured && !item?.purchases && !item?.urgent && !item?.sold && !item.flags.onhold"
-        [ngClass]="item?.flags?.bump_type">
-    <tsl-svg-icon src="/assets/icons/wing.svg"></tsl-svg-icon>
-  </span>
-  <span class="featured" [class.planned]="item.purchases.scheduled_bump_type && !item.plannedStartsToday"
-        *ngIf="item?.purchases && !item?.urgent && !item?.sold && !item.flags.onhold"
-        [ngClass]="item?.purchases?.bump_type || item?.purchases?.scheduled_bump_type">
-    <tsl-svg-icon src="/assets/icons/wing.svg"></tsl-svg-icon>
-  </span>
+  <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
+    <span class="featured"
+          *ngIf="item?.featured && !item?.purchases && !item?.urgent && !item?.sold && !item.flags.onhold"
+          [ngClass]="item?.flags?.bump_type">
+      <tsl-svg-icon src="/assets/icons/wing.svg"></tsl-svg-icon>
+    </span>
+    <span class="featured" [class.planned]="item.purchases.scheduled_bump_type && !item.plannedStartsToday"
+      *ngIf="item?.purchases && !item?.urgent && !item?.sold && !item.flags.onhold"
+      [ngClass]="item?.purchases?.bump_type || item?.purchases?.scheduled_bump_type">
+      <tsl-svg-icon src="/assets/icons/wing.svg"></tsl-svg-icon>
+    </span>
+  </ng-container>
 </div>
