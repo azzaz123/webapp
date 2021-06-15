@@ -283,7 +283,7 @@ describe('DeliveryAddressComponent', () => {
           component.onSubmit();
 
           expect(toastService.show).toHaveBeenCalledWith({
-            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS),
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_EDIT_SUCCESS),
             type: 'success',
           });
         });

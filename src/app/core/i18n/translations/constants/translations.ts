@@ -103,7 +103,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.INVOICE_GENERATED]: $localize`:@@web_invoice_generated:Your invoice has been successfully generated`,
   [TRANSLATION_KEY.INVOICE_DOWNLOADED]: $localize`:@@web_invoice_downloaded:Your invoice has been successfully downloaded`,
   [TRANSLATION_KEY.USER_EDITED]: $localize`:@@web_user_edited:Your data has been edited correctly`,
-  [TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS]: $localize`:@@web_delivery_address_save_success:Address edited successfully!`,
+  [TRANSLATION_KEY.DELIVERY_ADDRESS_CREATE_SUCCESS]: $localize`:@@web_delivery_address_create_success:Address created successfully!`,
+  [TRANSLATION_KEY.DELIVERY_ADDRESS_EDIT_SUCCESS]: $localize`:@@web_delivery_address_edit_success:Address edited successfully!`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS]: $localize`:@@web_delivery_delete_address_succeed:Address deleted successfully`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR]: $localize`:@@address_view_all_users_snackbar_generic_save_error:Sorry, something went wrong. Try again.`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR]: $localize`:@@address_view_all_users_snackbar_missing_info_error:The missing data is necessary to save.`,
@@ -165,5 +166,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS]: $localize`:@@web_delivery_create_bank_account_succeed:Bank account added successfully!`,
   [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS]: $localize`:@@web_delivery_edit_bank_account_succeed:Bank account edited successfully!`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE]: $localize`:@@address_view_all_users_modal_warning_country_selection_description:Each country has its own shipping methods. Changing the country will change the shipping services available. Do you want to continue?`,
-  [TRANSLATION_KEY.DELIVERY_ADDRESS_CONTINUE_BUTTON]: $localize`:@@address_view_all_users_modal_warning_country_selection_continue_button:Continue`,
+  [TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_SELECTION_CONTINUE_BUTTON]: $localize`:@@address_view_all_users_modal_warning_country_selection_continue_button:Continue`,
+  [TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_SELECTION_CANCEL_BUTTON]: $localize`:@@address_view_all_users_modal_warning_country_selection_cancel_button:Cancel`,
+  [TRANSLATION_KEY.CANCEL_BUTTON]: $localize`:@@web_cancel_button:Cancel`,
 };

@@ -36,6 +36,7 @@ import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.e
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 import { DeliveryAddressFormErrorMessages } from '../../interfaces/delivery-address/delivery-address-form-error-messages.interface';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
+import { ConfirmationModalKeyProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -140,10 +141,11 @@ export class DeliveryAddressComponent implements OnInit {
       if (this.isNewForm) {
         this.isCountryEditable = true;
       } else {
-        this.generateConfirmationModalRef(
-          TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE,
-          TRANSLATION_KEY.DELIVERY_ADDRESS_CONTINUE_BUTTON
-        ).result.then(() => {
+        this.generateConfirmationModalRef({
+          description: TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE,
+          confirmMessage: TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_SELECTION_CONTINUE_BUTTON,
+          cancelMessage: TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_SELECTION_CANCEL_BUTTON,
+        }).result.then(() => {
           this.isCountryEditable = true;
           setTimeout(() => {
             this.countriesDropdown.open();
@@ -161,7 +163,10 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   public deleteForm(): void {
-    this.generateConfirmationModalRef(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST, TRANSLATION_KEY.DELETE_BUTTON).result.then(() => {
+    this.generateConfirmationModalRef({
+      description: TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST,
+      confirmMessage: TRANSLATION_KEY.DELETE_BUTTON,
+    }).result.then(() => {
       this.deliveryAddressService.delete(this.deliveryAddressForm.get('id').value).subscribe(
         () => {
           this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS, 'success');
@@ -269,8 +274,12 @@ export class DeliveryAddressComponent implements OnInit {
       )
       .subscribe(
         () => {
+          const successKey = this.isNewForm
+            ? TRANSLATION_KEY.DELIVERY_ADDRESS_CREATE_SUCCESS
+            : TRANSLATION_KEY.DELIVERY_ADDRESS_EDIT_SUCCESS;
+
           this.isNewForm = false;
-          this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS, 'success');
+          this.showToast(successKey, 'success');
           this.redirect();
         },
         (errors: DeliveryAddressError[]) => this.handleAddressErrors(errors)
@@ -436,12 +445,13 @@ export class DeliveryAddressComponent implements OnInit {
     });
   }
 
-  private generateConfirmationModalRef(descriptionKey: TRANSLATION_KEY, confirmMessageKey: TRANSLATION_KEY): NgbModalRef {
+  private generateConfirmationModalRef(keyProperties: ConfirmationModalKeyProperties): NgbModalRef {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
 
     modalRef.componentInstance.properties = {
-      description: this.i18nService.translate(descriptionKey),
-      confirmMessage: this.i18nService.translate(confirmMessageKey),
+      description: this.i18nService.translate(keyProperties.description),
+      confirmMessage: this.i18nService.translate(keyProperties.confirmMessage),
+      cancelMessage: keyProperties.cancelMessage ? this.i18nService.translate(keyProperties.cancelMessage) : null,
       confirmColor: COLORS.NEGATIVE_MAIN,
     };
 

@@ -5,6 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { COLORS } from '@core/colors/colors-constants';
+import { I18nService } from '@core/i18n/i18n.service';
 
 describe('ConfirmationModalComponent', () => {
   let component: ConfirmationModalComponent;
@@ -15,7 +16,7 @@ describe('ConfirmationModalComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        providers: [NgbActiveModal],
+        providers: [NgbActiveModal, I18nService],
         declarations: [ConfirmationModalComponent],
       }).compileComponents();
     })
