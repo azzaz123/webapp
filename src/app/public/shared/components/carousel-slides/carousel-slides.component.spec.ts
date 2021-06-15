@@ -3,7 +3,12 @@ import { By } from '@angular/platform-browser';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NEXT_CONTROL_CLASS_NAME, PREV_CONTROL_CLASS_NAME, SlidesCarouselComponent } from './carousel-slides.component';
+import {
+  CAROUSEL_CONTROL_SIZE,
+  NEXT_CONTROL_CLASS_NAME,
+  PREV_CONTROL_CLASS_NAME,
+  SlidesCarouselComponent,
+} from './carousel-slides.component';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
 import { DeviceService } from '@core/device/device.service';
 import { MockDeviceService } from '@fixtures/device.fixtures.spec';
@@ -183,29 +188,14 @@ describe('SlidesCarouselComponent', () => {
       });
     });
 
-    describe('when item has more than 10 images', () => {
-      beforeEach(() => {
-        fixture.componentInstance.images = [...Array(20)].map(() => (Math.random() * 12345).toString());
-        fixture.detectChanges();
-        component.ngAfterContentInit();
-        fixture.detectChanges();
-      });
+    describe('when the component has a small controls configuration', () => {
+      it('should show the controls with a small size', () => {
+        component.controlsSize = CAROUSEL_CONTROL_SIZE.SMALL;
 
-      it('should notify browser about many images', () => {
-        expect(fixture.debugElement.query(By.css(manyImagesClass))).toBeTruthy();
-      });
-    });
-
-    describe('when item has less than 10 images', () => {
-      beforeEach(() => {
-        fixture.componentInstance.images = [...Array(8)].map(() => (Math.random() * 12345).toString());
         fixture.detectChanges();
-        component.ngAfterContentInit();
-        fixture.detectChanges();
-      });
+        const carouselSlidesElement = fixture.debugElement.query(By.css('.SlidesCarousel')).nativeElement;
 
-      it('should NOT notify to browser about many images', () => {
-        expect(fixture.debugElement.query(By.css(manyImagesClass))).toBeFalsy();
+        expect(carouselSlidesElement.classList).toContain('SlidesCarousel--smallControls');
       });
     });
   });
