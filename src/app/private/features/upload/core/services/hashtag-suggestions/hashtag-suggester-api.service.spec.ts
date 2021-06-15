@@ -10,8 +10,8 @@ import { GENERAL_HASHTAG_SUGGESTERS_API, HashtagSuggesterApiService, HASHTAG_SUG
 describe('HashtagSuggesterApiService', () => {
   let service: HashtagSuggesterApiService;
   let httpMock: HttpTestingController;
-  const categoryId = 100;
-  const page = 0;
+  const category_id = '100';
+  const start = '0';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,22 +35,22 @@ describe('HashtagSuggesterApiService', () => {
 
   describe('when we load hashtags...', () => {
     it('should load hashtags and call getHashtagsByPrefix endpint if we load hashtags through textarea typing', () => {
-      const expectedUrl = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}?category_id=${categoryId}&prefix=${MOCK_PREFIX_HASHTAG}&start=${page}`;
+      const expectedUrl = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}?category_id=${category_id}&prefix=${MOCK_PREFIX_HASHTAG}&start=${start}`;
 
-      service.getPaginationHashtags(categoryId, page, MOCK_PREFIX_HASHTAG).subscribe();
+      service.getHashtagsByPrefix(category_id, start, MOCK_PREFIX_HASHTAG).subscribe();
       const request = httpMock.expectOne(expectedUrl);
-      request.flush({ MOCK_HASHTAGS, headers: new HttpHeaders().set(NEXT_HEADER_PAGE, `category_id=${categoryId}&start=${page}`) });
+      request.flush({ MOCK_HASHTAGS, headers: new HttpHeaders().set(NEXT_HEADER_PAGE, `category_id=${category_id}&start=${start}`) });
 
       expect(request.request.urlWithParams).toEqual(expectedUrl);
       expect(request.request.method).toBe('GET');
     });
 
     it('should load hashtags and call getHashtags endpint if we load hashtags when we initiate hashtag section', () => {
-      const expectedUrl = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}?category_id=${categoryId}&start=${page}`;
+      const expectedUrl = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}?category_id=${category_id}&start=${start}`;
 
-      service.getPaginationHashtags(categoryId, page).subscribe();
+      service.getHashtags(category_id, start).subscribe();
       const request = httpMock.expectOne(expectedUrl);
-      request.flush({ MOCK_HASHTAGS, headers: new HttpHeaders().set(NEXT_HEADER_PAGE, `category_id=${categoryId}&start=${page}`) });
+      request.flush({ MOCK_HASHTAGS, headers: new HttpHeaders().set(NEXT_HEADER_PAGE, `category_id=${category_id}&start=${start}`) });
 
       expect(request.request.urlWithParams).toEqual(expectedUrl);
       expect(request.request.method).toBe('GET');
