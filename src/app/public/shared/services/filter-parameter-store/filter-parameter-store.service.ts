@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 export const FILTER_PARAMETER_STORE_TOKEN = new InjectionToken<string>('filterParameterStore');
 export const FILTER_PARAMETER_DRAFT_STORE_TOKEN = new InjectionToken<string>('filterParameterDraftStore');
@@ -9,7 +9,7 @@ export class FilterParameterStoreService {
   private static INITIAL_PARAMETERS: FilterParameter[] = [];
 
   private parameters: FilterParameter[] = [];
-  private parametersSubject = new Subject<FilterParameter[]>();
+  private parametersSubject = new ReplaySubject<FilterParameter[]>(1);
   public parameters$ = this.parametersSubject.asObservable();
 
   public getParameters(): FilterParameter[] {
