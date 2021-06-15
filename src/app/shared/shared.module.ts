@@ -76,6 +76,7 @@ import { ProfileFormModule } from './profile/profile-form/profile-form.module';
 import { HeaderModule } from './header/header.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
+import { LocationSelectorModal } from './modals/location-selector-modal/location-selector-modal.component';
 
 @NgModule({
   imports: [
@@ -230,6 +231,7 @@ import { VisibleDirectiveModule } from './directives/visible/visible.directive.m
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
     InfiniteScrollDirective,
+    LocationSelectorModal,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [

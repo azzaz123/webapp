@@ -121,7 +121,7 @@ describe('LocationSelectComponent', () => {
 
       describe('with updateLocation true', () => {
         beforeEach(fakeAsync(() => {
-          component.open(element);
+          component.onFocus(element);
           tick(LOCATION_MODAL_TIMEOUT);
         }));
 
@@ -163,7 +163,7 @@ describe('LocationSelectComponent', () => {
       describe('with updateLocation false', () => {
         beforeEach(fakeAsync(() => {
           component.updateLocation = false;
-          component.open(element);
+          component.onFocus(element);
           tick(LOCATION_MODAL_TIMEOUT);
         }));
 
@@ -206,7 +206,7 @@ describe('LocationSelectComponent', () => {
         component.form.get('location.longitude').setValue(USER_LOCATION_COORDINATES.longitude);
         component.form.get('location.approximated_location').setValue(true);
 
-        component.open(element);
+        component.onFocus(element);
         tick(LOCATION_MODAL_TIMEOUT);
 
         expect(componentInstance.init).toHaveBeenCalledWith(
