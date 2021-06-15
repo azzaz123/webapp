@@ -1,5 +1,5 @@
 import { Image } from '@core/user/user-response.interface';
-import { ItemCard, ItemCardsWithPagination, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
+import { ItemCard, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
 import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
@@ -12,6 +12,7 @@ import {
   MOCK_ITEM_RESPONSE_FAVOURITED,
 } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';
+import { PaginatedList } from '../app/api/core/model/paginated-list.interface';
 
 export const MOCK_ITEM_CARD: ItemCard = {
   id: ITEM_DATA.id,
@@ -29,9 +30,9 @@ export const MOCK_ITEM_CARD: ItemCard = {
   distance: ITEM_DISTANCE,
 };
 
-export const MOCK_ITEM_CARDS_WITH_PAGINATION: ItemCardsWithPagination = {
-  nextPaginationItem: 2,
-  items: [MOCK_ITEM_CARD, MOCK_ITEM_CARD],
+export const MOCK_PAGINATED_CARD_LIST: PaginatedList<ItemCard> = {
+  paginationParameter: 'paginationParameter',
+  list: [MOCK_ITEM_CARD, MOCK_ITEM_CARD],
 };
 export const MOCK_PUBLISHED_ITEM_CARD_IMAGE: Image = {
   id: '1213',
