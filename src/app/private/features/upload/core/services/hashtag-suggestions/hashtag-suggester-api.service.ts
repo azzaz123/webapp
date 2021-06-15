@@ -44,14 +44,4 @@ export class HashtagSuggesterApiService {
       })
     );
   }
-
-  /*   public getPaginationHashtags(categoryId: number, page: number = 0, prefix: string = null): Observable<PaginationResponse<Hashtag[]>> {
-    const category_id = categoryId.toString();
-    const start = page.toString();
-    return this.paginationService.getItems(
-      // Set the prefix to null as a defaul value to prevent the case if in the textarea, we get the empty string
-      prefix === null ? this.getHashtags(category_id, start) : this.getHashtagsByPrefix(category_id, start, prefix),
-      'start'
-    );
-  } */
 }
