@@ -198,6 +198,17 @@ describe('SlidesCarouselComponent', () => {
         expect(carouselSlidesElement.classList).toContain('SlidesCarousel--smallControls');
       });
     });
+
+    describe('when the component has a regular controls configuration', () => {
+      it('should show the controls with a regular size', () => {
+        component.controlsSize = CAROUSEL_CONTROL_SIZE.REGULAR;
+
+        fixture.detectChanges();
+        const carouselSlidesElement = fixture.debugElement.query(By.css('.SlidesCarousel')).nativeElement;
+
+        expect(carouselSlidesElement.classList).not.toContain('SlidesCarousel--smallControls');
+      });
+    });
   });
 
   describe(`when we don't have slides...`, () => {
