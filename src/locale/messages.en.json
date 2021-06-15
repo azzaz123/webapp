@@ -106,6 +106,7 @@
     "web_search_input_placeholder": "Search items",
     "web_default_error_message": "Service unavailable temporarily. Try it later",
     "web_toast_default_success_title": "Yup!",
+    "web_bump_suggestion_modal_title": "Great! Now your item is on Wallapop",
     "web_subscription_card_not_set_error": "Your card could not be saved",
     "web_stripe_cards_retrieval_error": "Your cards could not be retrieved",
     "web_no_card_selected_error": "Please select a credit card",
@@ -198,6 +199,8 @@
     "web_modal_confirmation_482": "Reserve items",
     "web_modal_confirmation_483": "The selected items will be reserved.",
     "web_modal_confirmation_670": "Reserve",
+    "web_delivery_create_bank_account_succeed": "Bank account added successfully!",
+    "web_delivery_edit_bank_account_succeed": "Bank account edited successfully!",
     "web_address_view_all_users_modal_warning_country_selection_description": "Each country has its own shipping methods. Changing the country will change the shipping services available. Do you want to continue?",
     "web_address_view_all_users_modal_warning_country_selection_continue_button": "Continue",
     "web_condition_un_opened": "Unopened",
@@ -1316,7 +1319,6 @@
     "web_location_box_499": "Mark the location in a place where you usually are. This will help other users to find you and improve your user experience.",
     "web_location_select_modal_500": "Apply",
     "web_location_select_501": "Set a location",
-    "web_bump_suggestion_modal_title": "Great! Now your item is on Wallapop",
     "web_bump_suggestion_modal_subtitle": "Want to sell it quickly?",
     "web_bump_suggestion_modal_description": "Highlight your item so that more people see it. Many more!",
     "web_bump_suggestion_modal_button": "Feature it from {$INTERPOLATION}",
@@ -1420,8 +1422,6 @@
     "web_add_new_subscription_card": "Link a card to your subscriptions",
     "web_current_cards": "Saved cards",
     "web_spinner_536": "Loading...",
-    "web_spinner_537": "We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.",
-    "web_delivery_create_bank_account_succeed": "Bank account added successfully!",
-    "web_delivery_edit_bank_account_succeed": "Bank account edited successfully!"
+    "web_spinner_537": "We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished."
   }
 }
