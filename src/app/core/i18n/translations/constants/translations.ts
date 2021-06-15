@@ -105,7 +105,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.USER_EDITED]: $localize`:@@web_user_edited:Your data has been edited correctly`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_SUCCESS]: $localize`:@@web_delivery_address_save_success:Address edited successfully!`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS]: $localize`:@@web_delivery_delete_address_succeed:Address deleted successfully`,
-  [TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR]: $localize`:@@web_delivery_address_save_error:Sorry, something went wrong. Try again.`,
+  [TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR]: $localize`:@@address_view_all_users_snackbar_generic_save_error:Sorry, something went wrong. Try again.`,
+  [TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR]: $localize`:@@address_view_all_users_snackbar_missing_info_error:The missing data is necessary to save.`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR]: $localize`:@@web_address_view_all_users_form_textfield_postalcode_missmatch_location_inline_error:The ZIP code must be from the country you are located`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR]: $localize`:@@web_delivery_address_postal_code_not_allowed_error:Postal code not accepted`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR]: $localize`:@@web_delivery_address_invalid_postal_code_error:This postal code isn't valid`,
@@ -163,6 +164,6 @@ export const translations: Translations = {
   [TRANSLATION_KEY.RESERVE_BUTTON]: $localize`:@@web_modal_confirmation_670:Reserve`,
   [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS]: $localize`:@@web_delivery_create_bank_account_succeed:Bank account added successfully!`,
   [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS]: $localize`:@@web_delivery_edit_bank_account_succeed:Bank account edited successfully!`,
-  [TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE]: $localize`:@@web_address_view_all_users_modal_warning_country_selection_description:Each country has its own shipping methods. Changing the country will change the shipping services available. Do you want to continue?`,
-  [TRANSLATION_KEY.DELIVERY_ADDRESS_CONTINUE_BUTTON]: $localize`:@@web_address_view_all_users_modal_warning_country_selection_continue_button:Continue`,
+  [TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE]: $localize`:@@address_view_all_users_modal_warning_country_selection_description:Each country has its own shipping methods. Changing the country will change the shipping services available. Do you want to continue?`,
+  [TRANSLATION_KEY.DELIVERY_ADDRESS_CONTINUE_BUTTON]: $localize`:@@address_view_all_users_modal_warning_country_selection_continue_button:Continue`,
 };
