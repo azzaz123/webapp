@@ -108,5 +108,15 @@ describe('AccessTokenService', () => {
       expect(token).toBe(aToken);
       expect(cookieService.get).toHaveBeenCalledWith(cookieName);
     });
+
+    it('from cache if has been called before', () => {
+      spyOn(cookieService, 'get');
+      service['_accessToken'] = aToken;
+
+      const token = service.accessToken;
+
+      expect(token).toBe(aToken);
+      expect(cookieService.get).not.toHaveBeenCalled();
+    });
   });
 });

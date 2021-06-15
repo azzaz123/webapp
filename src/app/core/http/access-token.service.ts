@@ -35,7 +35,11 @@ export class AccessTokenService {
   }
 
   get accessToken(): string {
-    return this.cookieService.get(this.getCookieName());
+    if (!this._accessToken) {
+      const cookieName = this.getCookieName();
+      this._accessToken = this.cookieService.get(cookieName);
+    }
+    return this._accessToken;
   }
 
   private getCookieName() {
