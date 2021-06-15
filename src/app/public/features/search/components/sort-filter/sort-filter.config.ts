@@ -14,7 +14,7 @@ export const SORT_BY_RELEVANCE_OPTION: SelectFormOption<string> = {
   value: SORT_BY.RELEVANCE,
 };
 
-export const SELECT_FORM_OPTIONS_CONFIG: SelectFormOption<SORT_BY_OPTION_VALUE>[] = [
+export const SELECT_FORM_OPTIONS_CONFIG: SelectFormOption<SORT_BY>[] = [
   {
     label: $localize`:@@web_filter_sort_by_distance:Distance`,
     icon: '/assets/icons/filters/location.svg',
