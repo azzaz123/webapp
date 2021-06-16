@@ -41,9 +41,9 @@
             <a class="nav-link d-inline-block d-md-none" [routerLink]="['billing']" routerLinkActive="active"
               i18n="@@web_profile_pages_321">Billing</a>
               <a class="nav-link" [routerLink]="['subscriptions']" routerLinkActive="active"
-              *ngxPermissionsExcept="['isProfessional']" (click)="trackClickSubscriptionTab()">{{getSubscriptionTabName()}}</a>
+              *ngxPermissionsExcept="[PERMISSIONS.professional]" (click)="trackClickSubscriptionTab()">{{getSubscriptionTabName()}}</a>
               <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active"
-              *ngxPermissionsOnly="['isProfessional']" i18n="@@web_wallapop_pro">Wallapop PRO</a>
+              *ngxPermissionsOnly="[PERMISSIONS.professional]" i18n="@@web_wallapop_pro">Wallapop PRO</a>
           </ng-container>
           </nav>
       </div>
