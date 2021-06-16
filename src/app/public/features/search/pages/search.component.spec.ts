@@ -191,9 +191,9 @@ describe('SearchComponent', () => {
         expect(component.items$).toBeTruthy();
       });
 
-      it('should initialise items observable', () => {
+      it('should initialise sortBy observable', () => {
         fixture.detectChanges();
-        expect(component.items$).toBeTruthy();
+        expect(component.sortBy$).toBeTruthy();
       });
 
       it('should initialize ads slots', () => {
