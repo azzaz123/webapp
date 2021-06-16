@@ -9,7 +9,7 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { SortFilterComponent } from './sort-filter.component';
-import { SELECT_FORM_OPTIONS_CONFIG } from './sort-filter.config';
+import { SELECT_FORM_OPTIONS_CONFIG, SORT_BY } from './sort-filter.config';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
@@ -82,7 +82,7 @@ describe('SortFilterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('OnInit', () => {
+  describe('by default', () => {
     it('should set sort by distance', () => {
       const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
 
@@ -93,6 +93,44 @@ describe('SortFilterComponent', () => {
       const dropdown: NgbDropdown = component.dropdown;
 
       expect(dropdown.isOpen()).toBe(false);
+    });
+  });
+
+  describe('on value input', () => {
+    describe('and valid value', () => {
+      const validSortByValue = SORT_BY.NEWEST;
+      let validSortByOption: SelectFormOption<SORT_BY>;
+
+      beforeEach(() => {
+        component.value = validSortByValue;
+        validSortByOption = component.selectFormOptionsConfig.find((option) => option.value === validSortByValue);
+        fixture.detectChanges();
+      });
+
+      it('should set sort by the given value', () => {
+        const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
+
+        expect(value.textContent).toBe(validSortByOption.label);
+        expect(component.selected).toBe(validSortByOption);
+        expect(component.formControl.value).toBe(validSortByOption.value);
+      });
+    });
+
+    describe('and invalid value', () => {
+      const defaultSortByValue = SORT_BY.DEFAULT;
+      let defaultSortByOption: SelectFormOption<SORT_BY>;
+
+      beforeEach(() => {
+        component.value = 'invalid' as SORT_BY;
+        fixture.detectChanges();
+        defaultSortByOption = component.selectFormOptionsConfig.find((option) => option.value === defaultSortByValue);
+      });
+
+      it('should set sort by the default value', () => {
+        const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
+
+        expect(value.textContent).toBe(defaultSortByOption?.label);
+      });
     });
   });
 
