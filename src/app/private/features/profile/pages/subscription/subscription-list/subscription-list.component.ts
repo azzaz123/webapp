@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -13,6 +14,25 @@ export class SubscriptionListComponent {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
+
+  readonly firstRowOrder = [
+    CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE,
+    CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES,
+    CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
+  ];
+  readonly seconrRowOrder = [CATEGORY_SUBSCRIPTIONS_IDS.CAR, CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE];
+
+  get firstSubscriptionsRow() {
+    return this.firstRowOrder.map((categoryId) => {
+      return this.subscriptions.find((subscription) => subscription.category_id === categoryId);
+    });
+  }
+
+  get secondSubscriptionsRow() {
+    return this.seconrRowOrder.map((categoryId) => {
+      return this.subscriptions.find((subscription) => subscription.category_id === categoryId);
+    });
+  }
 
   public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
 
