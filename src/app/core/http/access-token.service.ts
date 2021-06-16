@@ -42,6 +42,10 @@ export class AccessTokenService {
     return this._accessToken;
   }
 
+  get accessTokenFromCookies(): string {
+    return this.cookieService.get(this.getCookieName());
+  }
+
   private getCookieName() {
     const cookieName = 'accessToken';
     return environment.production ? cookieName : cookieName + environment.cookieSuffix;

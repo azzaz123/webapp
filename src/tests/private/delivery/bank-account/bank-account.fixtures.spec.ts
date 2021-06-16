@@ -38,6 +38,17 @@ export const MOCK_BANK_ACCOUNT: BankAccount = {
   city: 'Barcelona',
 };
 
+export const MOCK_BANK_ACCOUNT_INVALID: BankAccount = {
+  id: 'FAKE_UUID',
+  iban: 'ES213872392738273',
+  first_name: 'Laia',
+  last_name: 'Lopez',
+  address: 'C/ Meridiana',
+  flat_and_floor: '6t',
+  postal_code: null,
+  city: 'Barcelona',
+};
+
 export const MOCK_API_BANK_ACCOUNT: BankAccountApi = {
   id: 'FAKE_UUID',
   iban: 'ES213872392738273',

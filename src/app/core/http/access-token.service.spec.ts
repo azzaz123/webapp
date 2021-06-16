@@ -119,4 +119,17 @@ describe('AccessTokenService', () => {
       expect(cookieService.get).not.toHaveBeenCalled();
     });
   });
+
+  describe('get accessToken from cookies ', () => {
+    it('should get access token from cookies', () => {
+      const sessionToken = 's';
+      const cookieToken = 'c';
+      spyOn(cookieService, 'get').and.returnValue(cookieToken);
+      service['_accessToken'] = sessionToken;
+
+      const token = service.accessTokenFromCookies;
+
+      expect(token).toBe(cookieToken);
+    });
+  });
 });

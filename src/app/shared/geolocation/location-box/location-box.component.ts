@@ -2,7 +2,6 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UserService } from '../../../core/user/user.service';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
-import { User } from '../../../core/user/user';
 
 @Component({
   selector: 'tsl-location-box',
@@ -16,6 +15,10 @@ export class LocationBoxComponent implements OnInit {
   @Input() updateLocation = true;
   @Input() location;
   @Input() isIncorrectAddress = false;
+  @Input() disableFocus: boolean;
+  @Input() disableTitle: boolean;
+  @Input() disableFooter: boolean;
+  @Input() disablePopover: boolean;
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   public coordinates: Coordinate;
 
