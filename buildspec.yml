@@ -66,6 +66,8 @@ phases:
           zip -r webapp-${IMAGE_TAG}.zip es/*
           mv dist/en ./
           zip -r webapp-${IMAGE_TAG}.zip en/*
+          mv dist/it ./
+          zip -r webapp-${IMAGE_TAG}.zip it/*
           rm -rf dist
         fi
 
@@ -76,6 +78,8 @@ phases:
           zip -r webapp-${IMAGE_TAG}.zip es/*
           mv dist/en ./
           zip -r webapp-${IMAGE_TAG}.zip en/*
+          mv dist/it ./
+          zip -r webapp-${IMAGE_TAG}.zip it/*
           rm -rf dist
         fi
 
