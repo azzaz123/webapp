@@ -41,7 +41,7 @@ import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.e
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 import { DeliveryAddressFormErrorMessages } from '../../interfaces/delivery-address/delivery-address-form-error-messages.interface';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
-import { ConfirmationModalKeyProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -147,9 +147,10 @@ export class DeliveryAddressComponent implements OnInit {
         this.isCountryEditable = true;
       } else {
         this.generateConfirmationModalRef({
-          description: TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE,
-          confirmMessage: TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_SELECTION_CONTINUE_BUTTON,
-          cancelMessage: TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_SELECTION_CANCEL_BUTTON,
+          description: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE),
+          confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_SELECTION_CONTINUE_BUTTON),
+          cancelMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_SELECTION_CANCEL_BUTTON),
+          confirmColor: COLORS.NEGATIVE_MAIN,
         }).result.then(() => {
           this.isCountryEditable = true;
           setTimeout(() => {
@@ -169,10 +170,11 @@ export class DeliveryAddressComponent implements OnInit {
 
   public deleteForm(): void {
     this.generateConfirmationModalRef({
-      title: TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST_TITLE,
-      description: TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST_DESCRIPTION,
-      confirmMessage: TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_CONFIRM,
-      cancelMessage: TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_CANCEL,
+      title: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST_TITLE),
+      description: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST_DESCRIPTION),
+      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_CONFIRM),
+      cancelMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_CANCEL),
+      confirmColor: COLORS.NEGATIVE_MAIN,
     }).result.then(() => {
       this.deliveryAddressService.delete(this.deliveryAddressForm.get('id').value).subscribe(
         () => {
@@ -296,8 +298,9 @@ export class DeliveryAddressComponent implements OnInit {
   private handleAddressErrors(errors: DeliveryAddressError[]): void {
     let hasUniqueAddressError = false;
 
-    if (errors.length > 1) {
-      this.handleMultiplePostalCodeErrors(errors);
+    if (errors.length > 1 && this.postalCodeIsInvalidAndNotExist(errors)) {
+      this.handleMultiplePostalCodeErrors();
+      return;
     }
 
     errors.forEach((error: DeliveryAddressError) => {
@@ -331,6 +334,7 @@ export class DeliveryAddressComponent implements OnInit {
       }
     });
 
+    // Note: We need a generic error form to substitute the DELIVERY_ADDRESS_MISSING_INFO_ERROR in this case
     const key: TRANSLATION_KEY =
       !errors.length || hasUniqueAddressError
         ? TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR
@@ -339,18 +343,21 @@ export class DeliveryAddressComponent implements OnInit {
     this.showToast(key, 'error');
   }
 
-  private handleMultiplePostalCodeErrors(errors: DeliveryAddressError[]): void {
+  private handleMultiplePostalCodeErrors(): void {
+    this.setIncorrectControlAndShowError(
+      'postal_code',
+      this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_AFTER_SAVE_ERROR)
+    );
+
+    this.deliveryAddressForm.markAsPending();
+    // Note: We need a generic error form to substitute the DELIVERY_ADDRESS_MISSING_INFO_ERROR in this case
+    this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR, 'error');
+  }
+
+  private postalCodeIsInvalidAndNotExist(errors: DeliveryAddressError[]): boolean {
     const postalCodeIsInvalid = errors.find((error) => error instanceof PostalCodeIsInvalidError);
     const postalCodeNotExist = errors.find((error) => error instanceof PostalCodeDoesNotExistError);
-    if (postalCodeIsInvalid && postalCodeNotExist) {
-      this.setIncorrectControlAndShowError(
-        'postal_code',
-        this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_AFTER_SAVE_ERROR)
-      );
-
-      this.deliveryAddressForm.markAsPending();
-      return;
-    }
+    return !!postalCodeIsInvalid && !!postalCodeNotExist;
   }
 
   private handlePostalCodesErrors(errors: DeliveryPostalCodesError[]): void {
@@ -480,16 +487,10 @@ export class DeliveryAddressComponent implements OnInit {
     });
   }
 
-  private generateConfirmationModalRef(keyProperties: ConfirmationModalKeyProperties): NgbModalRef {
+  private generateConfirmationModalRef(properties: ConfirmationModalProperties): NgbModalRef {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
 
-    modalRef.componentInstance.properties = {
-      title: keyProperties.title ? this.i18nService.translate(keyProperties.title) : null,
-      description: this.i18nService.translate(keyProperties.description),
-      confirmMessage: this.i18nService.translate(keyProperties.confirmMessage),
-      cancelMessage: keyProperties.cancelMessage ? this.i18nService.translate(keyProperties.cancelMessage) : null,
-      confirmColor: COLORS.NEGATIVE_MAIN,
-    };
+    modalRef.componentInstance.properties = properties;
 
     return modalRef;
   }

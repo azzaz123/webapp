@@ -322,58 +322,75 @@ describe('DeliveryAddressComponent', () => {
       });
 
       describe('and the save fails...', () => {
-        beforeEach(() => {
-          spyOn(toastService, 'show');
-        });
+        describe('and when the fail is because server notifies flat and floor too long and mobile phone number is invalid', () => {
+          beforeEach(() => {
+            spyOn(toastService, 'show');
+            spyOn(deliveryAddressService, 'update').and.returnValue(
+              throwError([new MobilePhoneNumberIsInvalidError(), new FlatAndFloorTooLongError()])
+            );
 
-        it('should show error toast', () => {
-          spyOn(deliveryAddressService, 'update').and.returnValue(
-            throwError([new MobilePhoneNumberIsInvalidError(), new FlatAndFloorTooLongError()])
-          );
+            component.onSubmit();
+          });
 
-          component.onSubmit();
+          it('should show error toast', () => {
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
+              type: 'error',
+            });
+          });
 
-          expect(toastService.show).toHaveBeenCalledWith({
-            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
-            type: 'error',
+          it('should mark form as pending', () => {
+            expect(component.deliveryAddressForm.pending).toBe(true);
+          });
+
+          it('should set phone number invalid error', () => {
+            expect(component.deliveryAddressForm.get('phone_number').getError('invalid')).toBeTruthy();
+          });
+
+          it('should set flat and floor invalid error', () => {
+            expect(component.deliveryAddressForm.get('flat_and_floor').getError('invalid')).toBeTruthy();
           });
         });
 
-        it('should set errors if the backend return an invalid field', () => {
-          spyOn(deliveryAddressService, 'update').and.returnValue(
-            throwError([new MobilePhoneNumberIsInvalidError(), new FlatAndFloorTooLongError()])
-          );
+        describe('and when the fail is because server notifies postal code is invalid and not exists', () => {
+          beforeEach(() => {
+            spyOn(toastService, 'show');
+            spyOn(deliveryAddressService, 'update').and.returnValue(
+              throwError([new PostalCodeIsInvalidError(), new PostalCodeDoesNotExistError()])
+            );
 
-          component.onSubmit();
+            component.onSubmit();
+          });
 
-          expect(component.deliveryAddressForm.get('phone_number').getError('invalid')).toBeTruthy();
-          expect(component.deliveryAddressForm.get('flat_and_floor').getError('invalid')).toBeTruthy();
-        });
+          it('should mark form as pending', () => {
+            expect(component.deliveryAddressForm.pending).toBe(true);
+          });
 
-        it('should set postal code error if the backend return multiple postal code errors', () => {
-          spyOn(deliveryAddressService, 'update').and.returnValue(
-            throwError([new PostalCodeIsInvalidError(), new PostalCodeDoesNotExistError()])
-          );
+          it('should show error toast with generic error', () => {
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR),
+              type: 'error',
+            });
+          });
 
-          component.onSubmit();
-
-          expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
+          it('should set postal code error', () => {
+            expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
+          });
         });
 
         describe('and when the fail is because server notifies unique address by user', () => {
           beforeEach(() => {
+            spyOn(toastService, 'show');
             spyOn(deliveryAddressService, 'update').and.returnValue(throwError([new UniqueAddressByUserError('Unique address violation')]));
+
+            component.onSubmit();
           });
 
           it('should not mark form as pending', () => {
-            component.onSubmit();
-
             expect(component.deliveryAddressForm.pending).toBe(false);
           });
 
           it('should show toast with generic error', () => {
-            component.onSubmit();
-
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR),
               type: 'error',

@@ -8,10 +8,3 @@ export interface ConfirmationModalProperties {
   cancelMessage?: string;
   confirmColor: COLORS.WALLA_MAIN | COLORS.NEGATIVE_MAIN;
 }
-
-export interface ConfirmationModalKeyProperties {
-  title?: TRANSLATION_KEY;
-  description: TRANSLATION_KEY;
-  confirmMessage: TRANSLATION_KEY;
-  cancelMessage?: TRANSLATION_KEY;
-}
