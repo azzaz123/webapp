@@ -3,7 +3,12 @@ import { By } from '@angular/platform-browser';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SlidesCarouselComponent } from './carousel-slides.component';
+import {
+  CAROUSEL_CONTROL_SIZE,
+  NEXT_CONTROL_CLASS_NAME,
+  PREV_CONTROL_CLASS_NAME,
+  SlidesCarouselComponent,
+} from './carousel-slides.component';
 import { CarouselSliderDirective } from './directives/carousel-slider.directive';
 import { DeviceService } from '@core/device/device.service';
 import { MockDeviceService } from '@fixtures/device.fixtures.spec';
@@ -183,29 +188,25 @@ describe('SlidesCarouselComponent', () => {
       });
     });
 
-    describe('when item has more than 10 images', () => {
-      beforeEach(() => {
-        fixture.componentInstance.images = [...Array(20)].map(() => (Math.random() * 12345).toString());
-        fixture.detectChanges();
-        component.ngAfterContentInit();
-        fixture.detectChanges();
-      });
+    describe('when the component has a small controls configuration', () => {
+      it('should show the controls with a small size', () => {
+        component.controlsSize = CAROUSEL_CONTROL_SIZE.SMALL;
 
-      it('should notify browser about many images', () => {
-        expect(fixture.debugElement.query(By.css(manyImagesClass))).toBeTruthy();
+        fixture.detectChanges();
+        const carouselSlidesElement = fixture.debugElement.query(By.css('.SlidesCarousel')).nativeElement;
+
+        expect(carouselSlidesElement.classList).toContain('SlidesCarousel--smallControls');
       });
     });
 
-    describe('when item has less than 10 images', () => {
-      beforeEach(() => {
-        fixture.componentInstance.images = [...Array(8)].map(() => (Math.random() * 12345).toString());
-        fixture.detectChanges();
-        component.ngAfterContentInit();
-        fixture.detectChanges();
-      });
+    describe('when the component has a regular controls configuration', () => {
+      it('should show the controls with a regular size', () => {
+        component.controlsSize = CAROUSEL_CONTROL_SIZE.REGULAR;
 
-      it('should NOT notify to browser about many images', () => {
-        expect(fixture.debugElement.query(By.css(manyImagesClass))).toBeFalsy();
+        fixture.detectChanges();
+        const carouselSlidesElement = fixture.debugElement.query(By.css('.SlidesCarousel')).nativeElement;
+
+        expect(carouselSlidesElement.classList).not.toContain('SlidesCarousel--smallControls');
       });
     });
   });
@@ -229,6 +230,22 @@ describe('SlidesCarouselComponent', () => {
       fixture.detectChanges();
 
       expect(fixture.debugElement.query(By.css(noBackgroundIndicatorsClass))).toBeTruthy();
+    });
+  });
+
+  describe('when clicking in the carousel controls', () => {
+    it('should not propagate the click event', () => {
+      const carouselElement = fixture.debugElement.nativeElement;
+      const controlElements = carouselElement.querySelectorAll(`${PREV_CONTROL_CLASS_NAME}, ${NEXT_CONTROL_CLASS_NAME}`);
+
+      controlElements.forEach((e: HTMLInputElement) => {
+        const event = new Event('click');
+        spyOn(event, 'stopPropagation');
+
+        e.dispatchEvent(event);
+
+        expect(event.stopPropagation).toHaveBeenCalledTimes(1);
+      });
     });
   });
 

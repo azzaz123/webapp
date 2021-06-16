@@ -3,6 +3,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { CAROUSEL_CONTROL_SIZE } from '../carousel-slides/carousel-slides.component';
 
 @Component({
   selector: 'tsl-item-card-wide',
@@ -17,6 +18,7 @@ export class ItemCardWideComponent {
   @Output() toggleFavourite: EventEmitter<void> = new EventEmitter<void>();
 
   public readonly PERMISSIONS = PERMISSIONS;
+  public readonly carouselControlSize = CAROUSEL_CONTROL_SIZE.SMALL;
 
   constructor(public typeCheckService: TypeCheckService, public deviceDetectorService: DeviceDetectorService) {}
 

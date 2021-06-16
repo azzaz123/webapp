@@ -10,5 +10,5 @@
         </tsl-empty-state>
     </div>
     <tsl-public-item-card-list (clickedItemAndIndex)="itemCardClicked($event)" (toggleFavouriteEvent)="toggleFavourite($event)" [items]="items"></tsl-public-item-card-list>
-    <tsl-button *ngIf="nextPaginationItem" (click)="loadMore()" [className]="'btn-primary'" class="d-block mt-4 text-center" i18n="@@web_user_published_load_more">Load more products</tsl-button>
+    <tsl-button *ngIf="paginationParameter" (click)="loadMore()" [className]="'btn-primary'" class="d-block mt-4 text-center" i18n="@@web_user_published_load_more">Load more products</tsl-button>
 </div>

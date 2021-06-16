@@ -7,7 +7,7 @@ import { PaymentService, PAYMENT_RESPONSE_STATUS } from '../payments/payment.ser
 import { PaymentIntents } from '../payments/payment.interface';
 import { Router } from '@angular/router';
 import { USER_DATA } from '../../../tests/user.fixtures.spec';
-import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
+import { FinancialCard } from '@shared/credit-card-info/financial-card';
 import { PAYMENT_METHOD_CARD_RESPONSE, PAYMENT_METHOD_DATA } from '../../../tests/payments.fixtures.spec';
 import { createFinancialCardFixture } from '../../../tests/stripe.fixtures.spec';
 import { FeatureflagService } from '../user/featureflag.service';
