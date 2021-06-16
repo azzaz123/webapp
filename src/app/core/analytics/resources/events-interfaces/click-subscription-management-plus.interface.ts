@@ -16,7 +16,7 @@ export interface ClickSubscriptionManagementPlus {
   /**
    * Subscription type
    */
-  subscription: 0 | 100 | 14000 | 12800;
+  subscription: 0 | 100 | 200 | 14000 | 12800;
   /**
    * If the user is a new subscriber
    */

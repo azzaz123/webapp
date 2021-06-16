@@ -223,6 +223,17 @@ describe('ItemCardListComponent', () => {
         expect(adSlot.nativeElement.textContent).toBe('ad-' + (slotConfig.start + index * slotConfig.offset));
       });
     });
+
+    describe('and showing wide cards', () => {
+      it('should show shopping ads with wide card styles', () => {
+        componentWrapper.cardType = CARD_TYPES.WIDE;
+
+        fixtureWrapper.detectChanges();
+        const wideShippingSlot = fixtureWrapper.debugElement.query(By.css('.ItemCardList__slot')).nativeElement;
+
+        expect(wideShippingSlot.classList).toContain('ItemCardList__slot--wide');
+      });
+    });
   });
 
   describe('when having a wide acards configuration', () => {

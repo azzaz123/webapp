@@ -16,6 +16,7 @@ describe(`AuthorizationInterceptor`, () => {
   let targetUrl: string;
 
   const token = 'tokensito';
+  const cookieToken = 'c';
   const expectedAuthorizationHeaderValue = `Bearer ${token}`;
 
   beforeEach(() => {
@@ -34,6 +35,7 @@ describe(`AuthorizationInterceptor`, () => {
     http = injector.inject(HttpClient);
     httpMock = injector.inject(HttpTestingController);
     accessTokenService = injector.inject(AccessTokenService);
+    jest.spyOn(accessTokenService, 'accessTokenFromCookies', 'get').mockReturnValue(token);
   });
 
   afterEach((): void => {
@@ -76,7 +78,10 @@ describe(`AuthorizationInterceptor`, () => {
     });
 
     describe('and when the user does NOT have access token', () => {
-      beforeEach(() => jest.spyOn(accessTokenService, 'accessToken', 'get').mockReturnValue(null));
+      beforeEach(() => {
+        jest.spyOn(accessTokenService, 'accessTokenFromCookies', 'get').mockReturnValue(null);
+        jest.spyOn(accessTokenService, 'accessToken', 'get').mockReturnValue(null);
+      });
 
       it('should NOT add the authorization header', () => {
         http.get(targetUrl).subscribe();
@@ -90,15 +95,57 @@ describe(`AuthorizationInterceptor`, () => {
   });
 
   describe('when the request is NOT against the Wallapop server', () => {
-    beforeEach(() => (targetUrl = 'https://api.chucknorris.io/jokes/random'));
+    describe('and there is no access token', () => {
+      beforeEach(() => {
+        targetUrl = 'https://api.chucknorris.io/jokes/random';
+        jest.spyOn(accessTokenService, 'accessTokenFromCookies', 'get').mockReturnValue(null);
+        jest.spyOn(accessTokenService, 'accessToken', 'get').mockReturnValue(null);
+      });
 
-    it('should NOT add the authorization header', () => {
-      http.get(targetUrl).subscribe();
-      const req: TestRequest = httpMock.expectOne(targetUrl);
-      req.flush({});
+      it('should NOT add the authorization header', () => {
+        http.get(targetUrl).subscribe();
+        const req: TestRequest = httpMock.expectOne(targetUrl);
+        req.flush({});
 
-      const authorizationHeaderValue = req.request.headers.get(AUTHORIZATION_HEADER_NAME);
-      expect(authorizationHeaderValue).toBeFalsy();
+        const authorizationHeaderValue = req.request.headers.get(AUTHORIZATION_HEADER_NAME);
+        expect(authorizationHeaderValue).toBeFalsy();
+      });
+    });
+  });
+
+  describe('when a request is performed', () => {
+    describe('and access tokens do NOT match', () => {
+      beforeEach(() => {
+        jest.spyOn(accessTokenService, 'accessTokenFromCookies', 'get').mockReturnValue(cookieToken);
+        jest.spyOn(accessTokenService, 'accessToken', 'get').mockReturnValue(token);
+      });
+
+      it('should refresh the browser', () => {
+        spyOn(window.location, 'reload');
+
+        http.get(targetUrl).subscribe();
+        const req: TestRequest = httpMock.expectOne(targetUrl);
+        req.flush({});
+
+        expect(window.location.reload).toHaveBeenCalled();
+      });
+    });
+
+    describe('and access tokens do  match', () => {
+      beforeEach(() => {
+        jest.spyOn(accessTokenService, 'accessTokenFromCookies', 'get').mockReturnValue(token);
+        jest.spyOn(accessTokenService, 'accessToken', 'get').mockReturnValue(token);
+      });
+
+      it('should refresh the browser', () => {
+        spyOn(window.location, 'reload');
+
+        http.get(targetUrl).subscribe();
+        const req: TestRequest = httpMock.expectOne(targetUrl);
+        req.flush({});
+
+        expect(window.location.reload).not.toHaveBeenCalled();
+      });
     });
   });
 });

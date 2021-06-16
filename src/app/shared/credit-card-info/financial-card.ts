@@ -1,5 +1,5 @@
-import { StripeCard } from '../../../core/payments/payment.interface';
-import { Model } from '../../../core/resource/model.interface';
+import { StripeCard } from '@core/payments/payment.interface';
+import { Model } from '@core/resource/model.interface';
 
 export class FinancialCard implements Model {
   constructor(

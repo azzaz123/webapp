@@ -28,7 +28,7 @@ export interface ClickAffiliationPartner {
   /**
    * Identifier of the screen that the affiliation button partner was showed from
    */
-  screenId?: 115;
+  screenId?: 115 | 258;
   /**
    * Name of the experiment or A/B testing applied to the user who click the affiliation partner button. The default value would be 'baseline'
    */
