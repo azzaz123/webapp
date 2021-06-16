@@ -112,7 +112,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_EXISTS_ERROR]: $localize`:@@address_view_all_users_form_textfield_postalcode_not_exist_inline_error:This ZIP doesn’t belong to the country where you are located`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR_BEFORE_SAVE]: $localize`:@@address_view_all_users_form_textfield_postalcode_not_allowed_before_save_inline_error:This ZIP code doesn't allow to proceed with the shipment`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR_AFTER_SAVE]: $localize`:@@address_view_all_users_form_textfield_postalcode_not_allowed_after_save_inline_error:This ZIP code doesn't allow to proceed with the shipment`,
-  [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_ERROR]: $localize`:@@address_view_all_users_form_textfield_postalcode_not_valid_after_save_inline_error:This ZIP code isn't valid`,
+  [TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_AFTER_SAVE_ERROR]: $localize`:@@address_view_all_users_form_textfield_postalcode_not_valid_after_save_inline_error:This ZIP code isn't valid`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST]: $localize`:@@web_delivery_delete_address_confirmation_popup_message:You cannot undo this action. Are you sure you want to delete your address?`,
   [TRANSLATION_KEY.IMAGE_UPLOADED]: $localize`:@@web_image_uploaded:Image uploaded!`,
   [TRANSLATION_KEY.SUGGESTED_CATEGORY]: $localize`:@@web_suggested_category:It seems that your product belongs to another category, so we’ve changed it.`,

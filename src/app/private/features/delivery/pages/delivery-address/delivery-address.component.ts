@@ -31,7 +31,12 @@ import {
   FlatAndFloorTooLongError,
   UniqueAddressByUserError,
 } from '../../errors/classes/address';
-import { DeliveryPostalCodesError, PostalCodeIsNotAllowedError } from '../../errors/classes/postal-codes';
+import {
+  DeliveryPostalCodesError,
+  PostalCodeDoesNotExistError,
+  PostalCodeIsInvalidError,
+  PostalCodeIsNotAllowedError,
+} from '../../errors/classes/postal-codes';
 import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 import { DeliveryAddressFormErrorMessages } from '../../interfaces/delivery-address/delivery-address-form-error-messages.interface';
@@ -289,6 +294,10 @@ export class DeliveryAddressComponent implements OnInit {
   private handleAddressErrors(errors: DeliveryAddressError[]): void {
     let hasUniqueAddressError = false;
 
+    if (errors.length > 1) {
+      this.handleMultiplePostalCodeErrors(errors);
+    }
+
     errors.forEach((error: DeliveryAddressError) => {
       if (error instanceof PhoneNumberIsInvalidError) {
         this.setIncorrectControlAndShowError('phone_number', error.message);
@@ -326,6 +335,20 @@ export class DeliveryAddressComponent implements OnInit {
         : TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR;
 
     this.showToast(key, 'error');
+  }
+
+  private handleMultiplePostalCodeErrors(errors: DeliveryAddressError[]): void {
+    const postalCodeIsInvalid = errors.find((error) => error instanceof PostalCodeIsInvalidError);
+    const postalCodeNotExist = errors.find((error) => error instanceof PostalCodeDoesNotExistError);
+    if (postalCodeIsInvalid && postalCodeNotExist) {
+      this.setIncorrectControlAndShowError(
+        'postal_code',
+        this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_INVALID_AFTER_SAVE_ERROR)
+      );
+
+      this.deliveryAddressForm.markAsPending();
+      return;
+    }
   }
 
   private handlePostalCodesErrors(errors: DeliveryPostalCodesError[]): void {
