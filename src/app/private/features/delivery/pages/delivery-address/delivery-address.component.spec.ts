@@ -36,7 +36,7 @@ import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
-import { PostalCodeIsNotAllowedError } from '../../errors/classes/postal-codes';
+import { PostalCodeDoesNotExistError, PostalCodeIsInvalidError, PostalCodeIsNotAllowedError } from '../../errors/classes/postal-codes';
 import { FlatAndFloorTooLongError, MobilePhoneNumberIsInvalidError, UniqueAddressByUserError } from '../../errors/classes/address';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
@@ -348,6 +348,16 @@ describe('DeliveryAddressComponent', () => {
 
           expect(component.deliveryAddressForm.get('phone_number').getError('invalid')).toBeTruthy();
           expect(component.deliveryAddressForm.get('flat_and_floor').getError('invalid')).toBeTruthy();
+        });
+
+        it('should set postal code error if the backend return multiple postal code errors', () => {
+          spyOn(deliveryAddressService, 'update').and.returnValue(
+            throwError([new PostalCodeIsInvalidError(), new PostalCodeDoesNotExistError()])
+          );
+
+          component.onSubmit();
+
+          expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
         });
 
         describe('and when the fail is because server notifies unique address by user', () => {
