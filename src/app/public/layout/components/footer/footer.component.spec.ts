@@ -11,7 +11,8 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickProInfo, SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { MockPermissionsService } from '@fixtures/permissions.fixtures';
+import { MockPermissionsService, MOCK_PERMISSIONS } from '@fixtures/permissions.fixtures';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -76,7 +77,45 @@ describe('FooterComponent', () => {
   });
 
   describe('and has links with permissions', () => {
-    describe('and has links with permissions', () => {});
+    describe('and has valid permission', () => {
+      it('should show link', () => {
+        const included = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+          return MOCK_PERMISSIONS[footerLinkSection.permission];
+        });
+
+        included.forEach((footerLinkSection: FooterLinkSection) => {
+          expect(component.FOOTER_LINKS).toContain(footerLinkSection);
+        });
+      });
+    });
+
+    describe('and has invalid permission', () => {
+      const MOCK_LINKS: FooterLinkSection[] = [FOOTER_LINKS[0]];
+      beforeEach(() => {
+        MOCK_LINKS[0].permission = PERMISSIONS.professional;
+      });
+      it('should not show link', () => {
+        const included = MOCK_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+          return MOCK_PERMISSIONS[footerLinkSection.permission];
+        });
+
+        included.forEach((footerLinkSection: FooterLinkSection) => {
+          expect(component.FOOTER_LINKS).not.toContain(footerLinkSection);
+        });
+      });
+    });
+
+    describe('and has not permission set', () => {
+      it('should show link', () => {
+        const included = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+          return !footerLinkSection.permission && !footerLinkSection.excludedLanguages;
+        });
+
+        included.forEach((footerLinkSection: FooterLinkSection) => {
+          expect(component.FOOTER_LINKS).toContain(footerLinkSection);
+        });
+      });
+    });
   });
 
   describe('Tracking events', () => {
