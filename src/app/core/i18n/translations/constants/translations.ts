@@ -166,4 +166,6 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS]: $localize`:@@web_delivery_edit_bank_account_succeed:Bank account edited successfully!`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE]: $localize`:@@web_address_view_all_users_modal_warning_country_selection_description:Each country has its own shipping methods. Changing the country will change the shipping services available. Do you want to continue?`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_CONTINUE_BUTTON]: $localize`:@@web_address_view_all_users_modal_warning_country_selection_continue_button:Continue`,
+  [TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR]: $localize`:@@saving_bank_account_unknown_error:Sorry, something went wrong`,
+  [TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR]: $localize`:@@bank_account_all_users_snackbar_missing_info_error:The missing data is necessary to save.`,
 };

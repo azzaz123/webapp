@@ -1,6 +1,6 @@
 import { DeliveryError } from '../delivery.error';
 
-export class BankAccountError extends DeliveryError {
+export abstract class BankAccountError extends DeliveryError {
   constructor(public message: string) {
     super(message);
   }

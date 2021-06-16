@@ -13,6 +13,15 @@ import { BankAccount } from '../../interfaces/bank-account/bank-account-api.inte
 import { DELIVERY_PATHS } from '../../delivery-routing-constants';
 import { Router } from '@angular/router';
 import { BankAccountFormErrorMessages } from '../../interfaces/bank-account/bank-account-form-error-messages.interface';
+import {
+  BankAccountError,
+  IbanCountryIsInvalidError,
+  IbanIsInvalidError,
+  FirstNameIsInvalidError,
+  PlatformResponseIsInvalidError,
+  UniqueBankAccountByUserError,
+  LastNameIsInvalidError,
+} from '../../errors/classes/bank-account';
 
 export const IBAN_LENGTH = 40;
 @Component({
@@ -88,7 +97,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       this.submitValidForm();
     } else {
       this.bankAccountForm.markAsPending();
-      this.showToast(TRANSLATION_KEY.FORM_FIELD_ERROR, 'error');
+      this.showToast(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR, 'error');
       for (const control in this.bankAccountForm.controls) {
         if (this.bankAccountForm.controls.hasOwnProperty(control) && !this.bankAccountForm.controls[control].valid) {
           this.bankAccountForm.controls[control].markAsDirty();
@@ -119,11 +128,44 @@ export class BankAccountComponent implements OnInit, OnDestroy {
           this.isNewForm = false;
           this.router.navigate([DELIVERY_PATHS.BANK_DETAILS]);
         },
-        (errors: any) => {
-          // TODO: map + handle our custom errors		Date: 2021/06/07
+        (errors: BankAccountError[]) => {
+          this.handleBankAccountErrors(errors);
           this.showToast(TRANSLATION_KEY.FORM_FIELD_ERROR, 'error');
         }
       );
+  }
+
+  private handleBankAccountErrors(errors: BankAccountError[]): void {
+    let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR;
+
+    errors.forEach((error: BankAccountError) => {
+      if (error instanceof IbanCountryIsInvalidError || error instanceof IbanIsInvalidError) {
+        this.setIncorrectControlAndShowError('iban', error.message);
+      }
+
+      if (error instanceof FirstNameIsInvalidError) {
+        this.setIncorrectControlAndShowError('first_name', error.message);
+      }
+
+      if (error instanceof LastNameIsInvalidError) {
+        this.setIncorrectControlAndShowError('last_name', error.message);
+      }
+
+      if (error instanceof PlatformResponseIsInvalidError || error instanceof UniqueBankAccountByUserError) {
+        translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
+      }
+
+      this.bankAccountForm.markAsPending();
+    });
+
+    this.showToast(translationKey, 'error');
+  }
+
+  private setIncorrectControlAndShowError(formControl: string, message: string): void {
+    this.bankAccountForm.get(formControl).setErrors(null);
+    this.bankAccountForm.get(formControl).setErrors({ invalid: true });
+    this.bankAccountForm.get(formControl).markAsDirty();
+    this.formErrorMessages[formControl] = message;
   }
 
   private initializeAndPatchForm(): void {
