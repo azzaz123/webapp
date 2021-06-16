@@ -6,7 +6,7 @@ import { PAYMENT_RESPONSE_STATUS, PaymentService } from '../payments/payment.ser
 import { Router } from '@angular/router';
 import { EventService } from '../event/event.service';
 import { PaymentIntents, PaymentMethodCardResponse, PaymentMethodResponse } from '../payments/payment.interface';
-import { FinancialCard } from '../../shared/profile/credit-card-info/financial-card';
+import { FinancialCard } from '@shared/credit-card-info/financial-card';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ErrorsService } from '../errors/errors.service';

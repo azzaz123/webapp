@@ -1,8 +1,3 @@
-import {
-  TOKEN_AUTHORIZATION_HEADER_NAME,
-  TOKEN_SIGNATURE_HEADER_NAME,
-  TOKEN_TIMESTAMP_HEADER_NAME,
-} from '@core/http/interceptors/token/token.interceptor';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { User } from '@core/user/user';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -15,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { filter, finalize, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { AUTHORIZATION_HEADER_NAME } from '@core/http/interceptors';
 
 @Component({
   selector: 'tsl-cover-upload',
@@ -76,12 +72,8 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
   private uploadPicture(): void {
     this.isLoading = true;
     const url = 'api/v3/users/me/cover-image';
-    const timestamp = new Date().getTime();
-    const signature = this.accesTokenService.getTokenSignature(url, 'POST', timestamp);
     const headers = {
-      [TOKEN_AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
-      [TOKEN_SIGNATURE_HEADER_NAME]: signature,
-      [TOKEN_TIMESTAMP_HEADER_NAME]: timestamp.toString(),
+      [AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
     };
 
     const uploadinput: UploadInput = {

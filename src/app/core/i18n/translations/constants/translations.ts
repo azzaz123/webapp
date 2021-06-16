@@ -65,6 +65,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.NO_RESULTS_FOUND]: $localize`:@@web_no_results_found:No results found`,
   [TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_SET]: $localize`:@@web_pro_subscription_card_set:Your card has been saved successfully`,
   [TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED]: $localize`:@@web_pro_subscription_card_deleted:Your card has been deleted`,
+  [TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED_ERROR]: $localize`:@@web_pro_subscription_card_deleted_error:Your card could not be deleted`,
   [TRANSLATION_KEY.SEARCH_INPUT_PLACEHOLDER]: $localize`:@@web_search_input_placeholder:Search items`,
   [TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE]: $localize`:@@web_default_error_message:Service unavailable temporarily. Try it later`,
   [TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE]: $localize`:@@web_toast_default_success_title:Yup!`,
@@ -161,6 +162,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.RESERVE_ITEMS_TITLE]: $localize`:@@web_modal_confirmation_482:Reserve items`,
   [TRANSLATION_KEY.RESERVE_ITEMS_DESCRIPTION]: $localize`:@@web_modal_confirmation_483:The selected items will be reserved.`,
   [TRANSLATION_KEY.RESERVE_BUTTON]: $localize`:@@web_modal_confirmation_670:Reserve`,
+  [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS]: $localize`:@@web_delivery_create_bank_account_succeed:Bank account added successfully!`,
+  [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS]: $localize`:@@web_delivery_edit_bank_account_succeed:Bank account edited successfully!`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_COUNTRY_CHANGE_CONFIRMATION_MESSAGE]: $localize`:@@web_address_view_all_users_modal_warning_country_selection_description:Each country has its own shipping methods. Changing the country will change the shipping services available. Do you want to continue?`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_CONTINUE_BUTTON]: $localize`:@@web_address_view_all_users_modal_warning_country_selection_continue_button:Continue`,
 };

@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FinancialCard } from '@shared/credit-card-info/financial-card';
 import { ChangeCardModalComponent } from '@shared/modals/change-card-modal/change-card-modal.component';
 import { NewCardModalComponent } from '@shared/modals/new-card-modal/new-card-modal.component';
-import { FinancialCard } from '@shared/profile/credit-card-info/financial-card';
 
 @Component({
   selector: 'tsl-subscription-card-selector',

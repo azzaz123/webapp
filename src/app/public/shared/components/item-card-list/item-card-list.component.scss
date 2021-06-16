@@ -1,4 +1,5 @@
 @import '~style/common';
+@import '../item-card-wide/styles/item-card-wide-variables';
 
 $margin: $spacer * 0.75;
 $loading-opacity: 0.4;
@@ -30,6 +31,16 @@ $numCols: 1, 2, 3, 4, 5;
   &__slot {
     background-color: $blue-grey-5;
     border-radius: $border-radius;
+    &--wide {
+      margin: auto;
+      width: 100%;
+      max-width: $card-max-width;
+    }
+  }
+
+  &__inline-slot {
+    grid-column-start: 1;
+    grid-column-end: 3;
   }
 
   &--loading {

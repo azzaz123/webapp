@@ -103,15 +103,7 @@ describe('SubscriptionCardSelectorComponent', () => {
     });
   });
   describe('Card selector', () => {
-    describe('has stripe cards', () => {
-      it('should show card selector', () => {
-        component.stripeCards = CARDS_WITH_ONE_DEFAULT;
-
-        fixture.detectChanges();
-        const cardSelector = fixture.debugElement.query(By.directive(MockCreditCardInfo));
-
-        expect(cardSelector).toBeTruthy();
-      });
+    describe('has selected cards', () => {
       describe('has selected card', () => {
         it('should show card selector', () => {
           component.selectedCard = CARDS_WITH_ONE_DEFAULT[1];
@@ -123,7 +115,7 @@ describe('SubscriptionCardSelectorComponent', () => {
           expect(cardSelector).toBeTruthy();
         });
         describe('has not selected card and stripe cards', () => {
-          it('should show card selector', () => {
+          it('should NOT show card selector', () => {
             component.selectedCard = null;
             component.stripeCards = null;
 
