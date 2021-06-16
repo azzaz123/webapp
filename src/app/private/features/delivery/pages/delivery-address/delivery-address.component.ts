@@ -484,6 +484,7 @@ export class DeliveryAddressComponent implements OnInit {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
 
     modalRef.componentInstance.properties = {
+      title: keyProperties.title ? this.i18nService.translate(keyProperties.title) : null,
       description: this.i18nService.translate(keyProperties.description),
       confirmMessage: this.i18nService.translate(keyProperties.confirmMessage),
       cancelMessage: keyProperties.cancelMessage ? this.i18nService.translate(keyProperties.cancelMessage) : null,
