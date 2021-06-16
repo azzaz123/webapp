@@ -196,6 +196,9 @@ describe('ProfileComponent', () => {
       });
       describe('and the user is not a PRO', () => {
         let subscriptionTabElement;
+        beforeEach(() => {
+          fixture.detectChanges();
+        });
         it('should should show tab title Become a PRO', () => {
           const expectedText = 'Become a PRO';
           spyOn(i18n, 'translate').and.returnValue(expectedText);
@@ -213,6 +216,9 @@ describe('ProfileComponent', () => {
 
       describe('and the user is PRO', () => {
         let subscriptionTabElement;
+        beforeEach(() => {
+          fixture.detectChanges();
+        });
         it('should should show tab title Wallapop PRO', () => {
           const expectedText = 'Wallapop PRO';
           spyOn(i18n, 'translate').and.returnValue(expectedText);
@@ -231,21 +237,19 @@ describe('ProfileComponent', () => {
 
       describe("and when user clicks in 'Subscriptions' tab", () => {
         let subscriptionTabElement;
-
+        const expectedText = 'Become a PRO';
         beforeEach(() => {
-          const expectedText = 'Become a PRO';
           spyOn(analyticsService, 'trackEvent');
           spyOn(i18n, 'translate').and.returnValue(expectedText);
 
           fixture.detectChanges();
-
-          subscriptionTabElement = fixture.debugElement
-            .queryAll(By.css('a'))
-            .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
         });
 
         describe('and there is no free trial', () => {
-          beforeEach(() => spyOn(subscriptionsService, 'hasOneTrialSubscription').and.returnValue(false));
+          beforeEach(() => {
+            spyOn(subscriptionsService, 'hasOneTrialSubscription').and.returnValue(false);
+            fixture.detectChanges();
+          });
 
           it('should track the event', () => {
             const expectedEvent: AnalyticsEvent<ClickProSubscription> = {
@@ -256,6 +260,9 @@ describe('ProfileComponent', () => {
                 freeTrial: false,
               },
             };
+            subscriptionTabElement = fixture.debugElement
+              .queryAll(By.css('a'))
+              .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
 
             subscriptionTabElement.click();
 
@@ -267,6 +274,7 @@ describe('ProfileComponent', () => {
           beforeEach(() => {
             spyOn(subscriptionsService, 'hasOneTrialSubscription').and.returnValue(true);
             component.ngOnInit();
+            fixture.detectChanges();
           });
 
           it('should track the event', () => {
@@ -278,6 +286,9 @@ describe('ProfileComponent', () => {
                 freeTrial: true,
               },
             };
+            subscriptionTabElement = fixture.debugElement
+              .queryAll(By.css('a'))
+              .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
 
             subscriptionTabElement.click();
 
