@@ -20,18 +20,14 @@ export class SubscriptionListComponent {
     CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES,
     CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
   ];
-  readonly seconrRowOrder = [CATEGORY_SUBSCRIPTIONS_IDS.CAR, CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE];
+  readonly secondRowOrder = [CATEGORY_SUBSCRIPTIONS_IDS.CAR, CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE];
 
   get firstSubscriptionsRow() {
-    return this.firstRowOrder.map((categoryId) => {
-      return this.subscriptions.find((subscription) => subscription.category_id === categoryId);
-    });
+    return this.orderByCategory(this.firstRowOrder);
   }
 
   get secondSubscriptionsRow() {
-    return this.seconrRowOrder.map((categoryId) => {
-      return this.subscriptions.find((subscription) => subscription.category_id === categoryId);
-    });
+    return this.orderByCategory(this.secondRowOrder);
   }
 
   public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
@@ -95,5 +91,11 @@ export class SubscriptionListComponent {
 
   public getBenefits(subscription: SubscriptionsResponse): string[] {
     return this.benefitsService.getBenefitsByCategory(subscription.category_id);
+  }
+
+  private orderByCategory(order: number[]): SubscriptionsResponse[] {
+    return order.map((categoryId) => {
+      return this.subscriptions.find((subscription) => subscription.category_id === categoryId);
+    });
   }
 }
