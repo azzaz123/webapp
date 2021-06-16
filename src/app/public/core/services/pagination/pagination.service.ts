@@ -16,7 +16,7 @@ export class PaginationService {
         const nextPage: string = r.headers.get('x-nextpage');
         return {
           results: r.body,
-          init: nextPage ? parseInt(nextPage.replace(`init=`, '')) : null,
+          init: nextPage ? parseInt(nextPage.replace('init=', '')) : null,
         };
       })
     );
