@@ -169,8 +169,10 @@ export class DeliveryAddressComponent implements OnInit {
 
   public deleteForm(): void {
     this.generateConfirmationModalRef({
-      description: TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST,
-      confirmMessage: TRANSLATION_KEY.DELETE_BUTTON,
+      title: TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST_TITLE,
+      description: TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_REQUEST_DESCRIPTION,
+      confirmMessage: TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_CONFIRM,
+      cancelMessage: TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_CANCEL,
     }).result.then(() => {
       this.deliveryAddressService.delete(this.deliveryAddressForm.get('id').value).subscribe(
         () => {
