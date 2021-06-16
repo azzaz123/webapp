@@ -1,4 +1,4 @@
-export interface DeliverySyncCreditCardApi {
+export interface PaymentsSyncCreditCardApi {
   id: string;
   token: string;
   registration_id: string;

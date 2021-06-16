@@ -1,4 +1,4 @@
-export interface DeliveryCreateCreditCardApi {
+export interface PaymentsCreateCreditCardApi {
   fullname: string;
   cardNumber: string;
   cardExpirationDate: string;
