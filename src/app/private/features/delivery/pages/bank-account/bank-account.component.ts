@@ -155,7 +155,9 @@ export class BankAccountComponent implements OnInit, OnDestroy {
         translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
       }
 
-      this.bankAccountForm.markAsPending();
+      if (!(error instanceof PlatformResponseIsInvalidError) && !(error instanceof UniqueBankAccountByUserError)) {
+        this.bankAccountForm.markAsPending();
+      }
     });
 
     this.showToast(translationKey, 'error');
