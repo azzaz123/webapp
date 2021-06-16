@@ -1,8 +1,7 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { PaginationRequestOptions, PaginationResponse } from '@public/core/services/pagination/pagination.interface';
-import { PaginationService } from '@public/core/services/pagination/pagination.service';
+import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HashtagResponse, Hashtag } from '../../models/hashtag.interface';
