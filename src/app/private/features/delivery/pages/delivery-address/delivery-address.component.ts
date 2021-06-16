@@ -31,7 +31,7 @@ import {
   FlatAndFloorTooLongError,
   UniqueAddressByUserError,
 } from '../../errors/classes/address';
-import { DeliveryPostalCodesError } from '../../errors/classes/postal-codes';
+import { DeliveryPostalCodesError, PostalCodeIsNotAllowedError } from '../../errors/classes/postal-codes';
 import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 import { DeliveryAddressFormErrorMessages } from '../../interfaces/delivery-address/delivery-address-form-error-messages.interface';
@@ -306,6 +306,13 @@ export class DeliveryAddressComponent implements OnInit {
         this.setIncorrectControlAndShowError('flat_and_floor', error.message);
       }
 
+      if (error instanceof PostalCodeIsNotAllowedError) {
+        this.setIncorrectControlAndShowError(
+          'postal_code',
+          this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR_AFTER_SAVE)
+        );
+      }
+
       if (error instanceof UniqueAddressByUserError) {
         hasUniqueAddressError = true;
       } else {
@@ -322,6 +329,9 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private handlePostalCodesErrors(errors: DeliveryPostalCodesError[]): void {
+    errors.find((error) => error instanceof PostalCodeIsNotAllowedError).message = this.i18nService.translate(
+      TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR_BEFORE_SAVE
+    );
     errors.forEach((error) => this.setIncorrectControlAndShowError('postal_code', error.message));
   }
 
@@ -358,7 +368,7 @@ export class DeliveryAddressComponent implements OnInit {
     if (!locations.length) {
       this.setIncorrectControlAndShowError(
         'postal_code',
-        this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR)
+        this.i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_EXISTS_ERROR)
       );
     }
     if (locations.length === 1 && !this.deliveryAddressForm.get('city').value) {

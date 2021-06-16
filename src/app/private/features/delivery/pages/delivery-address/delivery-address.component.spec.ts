@@ -657,12 +657,12 @@ describe('DeliveryAddressComponent', () => {
         });
 
         it('should show an error message', () => {
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_MISSMATCH_LOCATION_ERROR);
+          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_EXISTS_ERROR);
         });
       });
 
       describe('and the backend fails for an postal code invalid error...', () => {
-        const postalCodeError = new PostalCodeIsNotAllowedError();
+        const postalCodeError = new PostalCodeIsNotAllowedError('');
 
         beforeEach(() => {
           spyOn(i18nService, 'translate');

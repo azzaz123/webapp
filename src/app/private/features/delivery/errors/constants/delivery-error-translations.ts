@@ -1,6 +1,5 @@
 export const DeliveryPostalCodesErrorTranslations = {
-  INVALID_POSTAL_CODE: $localize`:@@address_view_all_users_form_textfield_postalcode_not_valid_after_save_inline_error:This ZIP code isn't valid`,
-  POSTAL_CODE_NOT_ALLOWED: $localize`:@@address_view_all_users_form_textfield_postalcode_not_allowed_before_save_inline_error:This ZIP code doesn't allow to proceed with the shipment`,
+  INVALID_POSTAL_CODE: $localize`:@@address_view_all_users_form_textfield_postalcode_not_too_inline_error:This ZIP code has too many characters... Try to rewrite it`,
   POSTAL_CODE_DOES_NOT_EXIST: $localize`:@@address_view_all_users_form_textfield_postalcode_not_exist_inline_error:This ZIP doesn’t belong to the country where you are located`,
 };
 

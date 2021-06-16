@@ -20,7 +20,7 @@ export class DeliveryPostalCodesErrorMapper extends ErrorMapper<DeliveryPostalCo
       }
 
       if (error.error_code === DELIVERY_POSTAL_CODES_ERROR_CODES.POSTAL_CODE_IS_NOT_ALLOWED) {
-        mappedErrors.push(new PostalCodeIsNotAllowedError());
+        mappedErrors.push(new PostalCodeIsNotAllowedError(error.error_code));
       }
     });
 
