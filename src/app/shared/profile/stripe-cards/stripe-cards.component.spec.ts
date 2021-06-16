@@ -1,20 +1,22 @@
 import { throwError, of } from 'rxjs';
 import { fakeAsync, tick, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
+import { FINANCIAL_STRIPE_CARD } from '@fixtures/payments.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { StripeCardsComponent } from './stripe-cards.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { createFinancialCardFixture } from '../../../../tests/stripe.fixtures.spec';
+import { createFinancialCardFixture, STRIPE_CARD_OPTION_SUBSCRIPTION, STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
 import { delay } from 'rxjs/operators';
 import { ButtonComponent } from '../../button/button.component';
 import { NewCardModalComponent } from 'app/shared/modals/new-card-modal/new-card-modal.component';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
-import { MAPPED_SUBSCRIPTIONS } from '../../../../tests/subscriptions.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { NoCardModalComponent } from '@shared/modals/no-card-modal/no-card-modal.component';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 
 describe('StripeCardsComponent', () => {
   let component: StripeCardsComponent;
@@ -23,7 +25,7 @@ describe('StripeCardsComponent', () => {
   let modalService: NgbModal;
   let errorService: ErrorsService;
   let modalSpy: jasmine.Spy;
-  let activeModal: NgbActiveModal;
+  let i18nService: I18nService;
   let subscriptionsService: SubscriptionsService;
   let toastService: ToastService;
 
@@ -49,6 +51,9 @@ describe('StripeCardsComponent', () => {
               },
               addNewCard() {
                 return of({});
+              },
+              deleteCard() {
+                return of();
               },
             },
           },
@@ -90,7 +95,7 @@ describe('StripeCardsComponent', () => {
     stripeService = TestBed.inject(StripeService);
     modalService = TestBed.inject(NgbModal);
     errorService = TestBed.inject(ErrorsService);
-    activeModal = TestBed.inject(NgbActiveModal);
+    i18nService = TestBed.inject(I18nService);
     toastService = TestBed.inject(ToastService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
   });
@@ -122,23 +127,147 @@ describe('StripeCardsComponent', () => {
     });
   });
 
-  describe('onDeleteCard', () => {
-    it('should call getCards service and set the cards', () => {
-      spyOn(stripeService, 'getCards').and.callThrough();
+  describe('when we try to delete a default card...', () => {
+    beforeEach(() => {
+      spyOn(toastService, 'show');
+      spyOn(errorService, 'i18nError');
+      spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve('deleteCardModal') });
+      spyOn(stripeService, 'getCards').and.returnValue(of([FINANCIAL_STRIPE_CARD]));
+    });
 
-      component.onDeleteCard();
+    describe('and the delete petition succeed...', () => {
+      beforeEach(() => {
+        spyOn(stripeService, 'deleteCard').and.returnValue(of(null));
 
-      expect(stripeService.getCards).toHaveBeenCalledWith(false);
+        component.openDeleteCardModal(STRIPE_CARD_OPTION_SUBSCRIPTION);
+      });
+
+      it('should open NoCardModalComponent modal', fakeAsync(() => {
+        tick();
+
+        expect(modalService.open).toHaveBeenCalledWith(NoCardModalComponent, {
+          windowClass: 'review',
+        });
+      }));
+
+      it('should call deleteCard service action', fakeAsync(() => {
+        tick();
+
+        expect(stripeService.deleteCard).toHaveBeenCalledWith(STRIPE_CARD_OPTION_SUBSCRIPTION.id);
+      }));
+
+      it('should show a success toast', fakeAsync(() => {
+        tick();
+
+        expect(toastService.show).toHaveBeenCalledWith({
+          title: i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
+          text: i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED),
+          type: 'success',
+        });
+      }));
+
+      it('should request all the cards again', fakeAsync(() => {
+        tick();
+
+        expect(stripeService.getCards).toHaveBeenCalledWith(false);
+      }));
+    });
+
+    describe('and the delete petition fails...', () => {
+      beforeEach(() => {
+        spyOn(stripeService, 'deleteCard').and.returnValue(throwError('network error'));
+
+        component.openDeleteCardModal(STRIPE_CARD_OPTION_SUBSCRIPTION);
+      });
+
+      it('should open NoCardModalComponent modal', fakeAsync(() => {
+        tick();
+
+        expect(modalService.open).toHaveBeenCalledWith(NoCardModalComponent, {
+          windowClass: 'review',
+        });
+      }));
+
+      it('should call deleteCard service action', fakeAsync(() => {
+        tick();
+
+        expect(stripeService.deleteCard).toHaveBeenCalledWith(STRIPE_CARD_OPTION_SUBSCRIPTION.id);
+      }));
+
+      it('should show an error toast', fakeAsync(() => {
+        tick();
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED_ERROR);
+      }));
     });
   });
 
-  describe('onSetChangeCard', () => {
-    it('should call addNewSubscriptionCard', () => {
-      spyOn(component, 'addNewSubscriptionCard').and.callThrough();
+  describe('when we try to delete a non default card...', () => {
+    beforeEach(() => {
+      spyOn(toastService, 'show');
+      spyOn(errorService, 'i18nError');
+      spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: {} });
+      spyOn(stripeService, 'getCards').and.returnValue(of([FINANCIAL_STRIPE_CARD]));
+    });
 
-      component.onSetChangeCard('e');
+    describe('and the delete petition succeed...', () => {
+      beforeEach(() => {
+        spyOn(stripeService, 'deleteCard').and.returnValue(of(null));
 
-      expect(component.addNewSubscriptionCard).toHaveBeenCalled();
+        component.openDeleteCardModal(STRIPE_CARD_OPTION);
+      });
+
+      it('should open NoCardModalComponent modal', fakeAsync(() => {
+        tick();
+
+        expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+      }));
+
+      it('should call deleteCard service action', fakeAsync(() => {
+        tick();
+
+        expect(stripeService.deleteCard).toHaveBeenCalledWith(STRIPE_CARD_OPTION.id);
+      }));
+
+      it('should show a success toast', fakeAsync(() => {
+        tick();
+
+        expect(toastService.show).toHaveBeenCalledWith({
+          title: i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
+          text: i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED),
+          type: 'success',
+        });
+      }));
+
+      it('should request all the cards again', fakeAsync(() => {
+        tick();
+
+        expect(stripeService.getCards).toHaveBeenCalledWith(false);
+      }));
+    });
+
+    describe('and the delete petition fails...', () => {
+      beforeEach(() => {
+        spyOn(stripeService, 'deleteCard').and.returnValue(throwError('network error'));
+
+        component.openDeleteCardModal(STRIPE_CARD_OPTION);
+      });
+
+      it('should open ConfirmationModalComponent modal', fakeAsync(() => {
+        tick();
+
+        expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+      }));
+
+      it('should call deleteCard service action', fakeAsync(() => {
+        tick();
+
+        expect(stripeService.deleteCard).toHaveBeenCalledWith(STRIPE_CARD_OPTION_SUBSCRIPTION.id);
+      }));
+
+      it('should show an error toast', fakeAsync(() => {
+        tick();
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED_ERROR);
+      }));
     });
   });
 

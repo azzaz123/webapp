@@ -20,5 +20,5 @@ export interface ClickSubscriptionAddCard {
   /**
    * Subscription category type that reached the limit
    */
-  subscription?: 0 | 100 | 14000 | 12800;
+  subscription?: 0 | 100 | 200 | 14000 | 12800;
 }

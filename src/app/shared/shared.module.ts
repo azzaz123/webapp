@@ -47,7 +47,7 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
 import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
 import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
 import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
-import { CreditCardInfoComponent } from './profile/credit-card-info/credit-card-info.component';
+import { CreditCardInfoComponent } from './credit-card-info/credit-card-info.component';
 import { EditEmailComponent } from './profile/edit-email/edit-email.component';
 import { EmailModalComponent } from './profile/edit-email/email-modal/email-modal.component';
 import { EditPasswordComponent } from './profile/edit-password/edit-password.component';

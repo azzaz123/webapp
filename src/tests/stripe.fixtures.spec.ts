@@ -1,4 +1,4 @@
-import { FinancialCard } from '../app/shared/profile/credit-card-info/financial-card';
+import { FinancialCard } from '@shared/credit-card-info/financial-card';
 import { FinancialCardOption, StripeCard } from '../app/core/payments/payment.interface';
 import { Observable, of } from 'rxjs';
 

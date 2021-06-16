@@ -26,8 +26,8 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { User } from '@core/user/user';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from '@private/features/profile/modal/payment-success/payment-success-modal.component';
+import { FinancialCard } from '@shared/credit-card-info/financial-card';
 import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
-import { FinancialCard } from '@shared/profile/credit-card-info/financial-card';
 import { filter, mergeMap } from 'rxjs/operators';
 
 export const PAYMENT_SUCCESSFUL_CODE = 202;
