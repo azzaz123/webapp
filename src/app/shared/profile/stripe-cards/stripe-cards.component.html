@@ -5,31 +5,58 @@
           <h3 class="section-title" i18n="@@web_stripe_cards_535">Payment method</h3>
       </div>
     </div>
-    <div class="form-group row mb-0">
-      <div *ngIf="isSubscribed" class="col-12 col-md-4 offset-md-2">
-          <h4 i18n="@@web_subscription_card">Card linked to subscriptions</h4>
-          <div class="StripeCards__card" *ngFor="let subscriptionStripeCard of subscriptionStripeCards">
-            <tsl-credit-card-info [financialCard]="subscriptionStripeCard" [hideEdit]="!subscriptionStripeCard.invoices_default"
-              (onSetChangeCard)="onSetChangeCard($event)" (onDeleteStripeCard)="onDeleteCard($event)">
+    <div class="offset-md-2">
+      <div class="container" *ngIf="!loading">
+        <ng-container *ngIf="isSubscribed" >
+          <div class="row">
+            <div class="col">
+              <h4 i18n="@@web_subscription_card">Card linked to subscriptions</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="StripeCards__card col-12 col-md-6 mb-4" *ngFor="let subscriptionStripeCard of subscriptionStripeCards">
+              <tsl-credit-card-info
+                [brand]="subscriptionStripeCard.stripeCard?.brand"
+                [numberCard]="subscriptionStripeCard.number"
+                [expireDate]="subscriptionStripeCard.expire_date"
+                [hideEdit]="!subscriptionStripeCard.invoices_default"
+                (changeCardClick)="addNewSubscriptionCard()"
+                (deleteCardClick)="openDeleteCardModal(subscriptionStripeCard)">
+              </tsl-credit-card-info>
+            </div>
+            <div class="col-12 col-md-6"> 
+              <div class="StripeCards__addNew  mb-4" *ngIf="subscriptionStripeCards?.length <= 0">
+                <span i18n="@@web_add_new_subscription_card" (click)="addNewSubscriptionCard()">Link a card to your subscriptions</span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div class="row">
+          <div class="col">
+            <h4 i18n="@@web_current_cards">Saved cards</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 mb-4" *ngFor="let stripeCard of stripeCards">
+            <tsl-credit-card-info
+            [brand]="stripeCard.stripeCard?.brand"
+              [numberCard]="stripeCard.number"
+              [expireDate]="stripeCard.expire_date"
+              [hideEdit]="!stripeCard.invoices_default"
+              (deleteCardClick)="openDeleteCardModal(stripeCard)"
+              >
             </tsl-credit-card-info>
           </div>
-          <div class="StripeCards__addNew" *ngIf="subscriptionStripeCards?.length <= 0">
-            <span i18n="@@web_add_new_subscription_card" (click)="addNewSubscriptionCard()">Link a card to your subscriptions</span>
-          </div>
-      </div>
-      <div class="col-12 col-md-4 " [ngClass]="{'offset-md-1': isSubscribed,'offset-md-2': !isSubscribed}">
-        <h4 i18n="@@web_current_cards">Saved cards</h4>
-        <div class="StripeCards__group">
-          <div class="StripeCards__card" *ngFor="let stripeCard of stripeCards">
-            <tsl-credit-card-info [financialCard]="stripeCard" [hideEdit]="!stripeCard.invoices_default"
-              (onDeleteStripeCard)="onDeleteCard($event)">
-            </tsl-credit-card-info>
-          </div>
-          <div class="StripeCards__addNew" *ngIf="stripeCards?.length < 10">
-              <span (click)="addNewCard()" i18n="@@web_add_card">Add card</span>
+          <div class="col-12 col-md-6">
+            <div (click)="addNewCard()" class="StripeCards__addNew" *ngIf="stripeCards?.length < 10">
+              <span i18n="@@web_add_card">Add card</span>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+    <div *ngIf="loading" class="d-flex justify-content-center">
+      <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
     </div>
   </div>
 </div>
