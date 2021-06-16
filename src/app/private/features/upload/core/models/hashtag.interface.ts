@@ -1,6 +1,6 @@
 export interface Hashtag {
   text: string;
-  ocurrencies: number;
+  occurrencies: number;
 }
 
 export interface HashtagResponse {
