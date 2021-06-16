@@ -6,13 +6,13 @@
  */
 
 /**
- * User clicks on one of the affiliation partner buttons to visit their website
+ * Users views of the WordPress affiliation landing
  */
-export interface ClickAffiliationPartner {
+export interface ViewAffiliationLanding {
   /**
-   * Identifier of the partner that the user has clicked
+   * Identifier of the pro subscription limit popup screen
    */
-  partnerName: string;
+  screenId: 258;
   /**
    * Url of the landing where the affiliation partner button was clicked
    */
@@ -22,19 +22,7 @@ export interface ClickAffiliationPartner {
    */
   itemId?: string;
   /**
-   * Identifier of the category where the affiliation button was clicked
-   */
-  categoryId?: string;
-  /**
-   * Identifier of the screen that the affiliation button partner was showed from
-   */
-  screenId?: 115 | 258;
-  /**
    * Name of the experiment or A/B testing applied to the user who click the affiliation partner button. The default value would be 'baseline'
    */
   experiment?: string;
-  /**
-   * The type of affiliation service
-   */
-  typeOfService?: 'Insurance' | 'Loan' | 'Mortgage' | 'Guaranty' | 'Internet' | 'Energy' | 'Other';
 }

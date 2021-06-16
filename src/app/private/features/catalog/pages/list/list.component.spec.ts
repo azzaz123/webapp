@@ -12,6 +12,7 @@ import {
   RemoveProSubscriptionBanner,
   SCREEN_IDS,
   ViewOwnSaleItems,
+  ViewProExpiredItemsPopup,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CategoryService } from '@core/category/category.service';
@@ -1325,6 +1326,54 @@ describe('ListComponent', () => {
         expect(modalService.open).toHaveBeenCalledTimes(1);
         expect(modalService.open).toHaveBeenCalledWith(SuggestProModalComponent, {
           windowClass: 'modal-standard',
+        });
+      });
+      describe('and open modal', () => {
+        describe('and has free trial category', () => {
+          beforeEach(() => {
+            spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(true);
+          });
+          it('should track modal', () => {
+            const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+              name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+              attributes: {
+                screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+                freeTrial: true,
+              },
+            };
+            const item = cloneDeep(component.items[3]);
+
+            component.itemChanged({
+              item: item,
+              action: ITEM_CHANGE_ACTION.REACTIVATED,
+            });
+
+            expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+            expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+          });
+        });
+        describe('and has not free trial category', () => {
+          beforeEach(() => {
+            spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(false);
+          });
+          it('should track modal', () => {
+            const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+              name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+              attributes: {
+                screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+                freeTrial: false,
+              },
+            };
+            const item = cloneDeep(component.items[3]);
+
+            component.itemChanged({
+              item: item,
+              action: ITEM_CHANGE_ACTION.REACTIVATED,
+            });
+
+            expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+            expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+          });
         });
       });
       describe('and click cta button', () => {

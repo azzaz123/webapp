@@ -6,23 +6,15 @@
  */
 
 /**
- * User clicks continue payment button after selecting subscription
+ * User ends a subscription
  */
-export interface ClickSubscriptionContinuePayment {
+export interface EndSubscription {
   /**
-   * Subscription category type
+   * Subscription type
    */
   subscription: 0 | 100 | 200 | 14000 | 12800;
   /**
    * Identifier of the subscription tier
    */
-  tier: string;
-  /**
-   * If the user is a new or recurrent subscriber
-   */
-  isNewSubscriber: boolean;
-  /**
-   * Identifier of the Profile Subscription screen
-   */
-  screenId: 206;
+  tier?: string;
 }

@@ -6,23 +6,27 @@
  */
 
 /**
- * User clicks continue payment button after selecting subscription
+ * User clicks the confirmation payment on the subcription web flow
  */
-export interface ClickSubscriptionContinuePayment {
+export interface SubscriptionPaymentFailed {
   /**
    * Subscription category type
    */
   subscription: 0 | 100 | 200 | 14000 | 12800;
   /**
-   * Identifier of the subscription tier
+   * Tier of the subscription
    */
   tier: string;
   /**
-   * If the user is a new or recurrent subscriber
+   * If the payment is to automatically renew an existing subscription
    */
-  isNewSubscriber: boolean;
+  isRenewal: boolean;
   /**
-   * Identifier of the Profile Subscription screen
+   * Number of retries that have failed for the payment
    */
-  screenId: 206;
+  retryNumber: number;
+  /**
+   * Error causing the payment to fail
+   */
+  error: string;
 }
