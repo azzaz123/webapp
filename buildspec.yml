@@ -60,8 +60,7 @@ phases:
 
       # INSTALL ENV
       - >
-        if [ "`echo $ENV | grep prod`" != "" ];
-        then
+        if [ "`echo $ENV | grep prod`" != "" ]; then
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn buildprod
           mv dist/es ./
           zip -r webapp-${IMAGE_TAG}.zip es/*
