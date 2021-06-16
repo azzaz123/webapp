@@ -27,7 +27,6 @@
               maxlength="50" />
           </div>
         </div>
-        <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
         <div class="form-group row align-items-center" *ngIf="isPro">
           <label for="name" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_293">Name</label>
           <div class="col-12 col-md-6 offset-md-1 d-flex">
@@ -36,7 +35,6 @@
             <input type="text" class="form-control" formControlName="last_name" tslRestrictInput maxlength="50" />
           </div>
         </div>
-      </ng-container>
         <div class="form-group row">
           <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_294">Product location</label>
           <div class="col-12 col-md-6 offset-md-1" tslVisible (visible)="onMapContainerVisible()">
