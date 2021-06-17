@@ -36,7 +36,6 @@ import { ReviewModalComponent } from './modals/review-modal/review-modal.compone
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
 import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
-import { NavLinksComponent } from './nav-links/nav-links.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
 import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
@@ -47,7 +46,6 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
 import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
 import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
 import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
-import { CreditCardInfoComponent } from './credit-card-info/credit-card-info.component';
 import { EditEmailComponent } from './profile/edit-email/edit-email.component';
 import { EmailModalComponent } from './profile/edit-email/email-modal/email-modal.component';
 import { EditPasswordComponent } from './profile/edit-password/edit-password.component';
@@ -77,6 +75,7 @@ import { HeaderModule } from './header/header.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
 import { LocationSelectorModal } from './modals/location-selector-modal/location-selector-modal.component';
+import { CreditCardInfoModule } from './credit-card-info/credit-card-info.module';
 
 @NgModule({
   imports: [
@@ -104,6 +103,7 @@ import { LocationSelectorModal } from './modals/location-selector-modal/location
     DateCountDownModule,
     ProfileFormModule,
     HeaderModule,
+    CreditCardInfoModule,
   ],
   exports: [
     SpinnerModule,
@@ -136,7 +136,6 @@ import { LocationSelectorModal } from './modals/location-selector-modal/location
     EditPasswordComponent,
     PasswordModalComponent,
     PictureUploadComponent,
-    CreditCardInfoComponent,
     CatalogCardComponent,
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
@@ -172,6 +171,7 @@ import { LocationSelectorModal } from './modals/location-selector-modal/location
     ProfileFormModule,
     InfiniteScrollDirective,
     VisibleDirectiveModule,
+    CreditCardInfoModule,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -199,7 +199,6 @@ import { LocationSelectorModal } from './modals/location-selector-modal/location
     EditPasswordComponent,
     PasswordModalComponent,
     PictureUploadComponent,
-    CreditCardInfoComponent,
     CatalogCardComponent,
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
