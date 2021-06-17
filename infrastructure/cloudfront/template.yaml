@@ -148,7 +148,7 @@ Resources:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties:
       CloudFrontOriginAccessIdentityConfig:
-        Comment: 'Access identity for CloudFront'
+        Comment: 'Access identity for CloudFront web-es'
 
   BucketESPolicy:
     Type: AWS::S3::BucketPolicy
@@ -186,13 +186,13 @@ Resources:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties:
       CloudFrontOriginAccessIdentityConfig:
-        Comment: 'Access identity for CloudFront'
+        Comment: 'Access identity for CloudFront web-en'
 
   BucketITCloudFrontOriginaccessIdentity:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties:
       CloudFrontOriginAccessIdentityConfig:
-        Comment: 'Access identity for CloudFront'
+        Comment: 'Access identity for CloudFront web-it'
 
   BucketITPolicy:
     Type: AWS::S3::BucketPolicy
