@@ -3,9 +3,10 @@
     <div class="d-flex w-100 mb-2">
       <tsl-svg-icon [src]="creditCardBrandSrc" class="mr-3"></tsl-svg-icon>
       <div *ngIf="isCardWithIcon" class="CreditCardInfo__brand">{{brand | titlecase}}</div>
+      <div *ngIf="isBankAccount" class="CreditCardInfo__brand align-self-center" i18n="@@bankAccount">Bank account</div>
     </div>
     <div class="d-flex w-100">
-      <div class="CreditCardInfo__number CreditCardInfo--grey"><span>**** **** **** </span>{{numberCard}}</div>
+      <div class="CreditCardInfo__number CreditCardInfo--grey">**** <span *ngIf="!isBankAccount">**** **** </span>{{numberCard}}</div>
       <div class="CreditCardInfo__date CreditCardInfo--grey">{{expireDate}}</div>
     </div>
     <div *ngIf="ownerName" class="CreditCardInfo--grey mt-1">{{ownerName}}</div>

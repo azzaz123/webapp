@@ -15,6 +15,7 @@ export class CreditCardInfoComponent implements OnChanges {
   @Input() error: boolean;
   @Input() hideEdit: boolean;
   @Input() hideDelete: boolean;
+  @Input() isBankAccount: boolean;
 
   @Output() changeCardClick: EventEmitter<Event> = new EventEmitter();
   @Output() deleteCardClick: EventEmitter<FinancialCard> = new EventEmitter();
@@ -26,7 +27,7 @@ export class CreditCardInfoComponent implements OnChanges {
 
   ngOnChanges() {
     this.isCardWithIcon = BRAND_CARDS_WITH_SVG.includes(this.brand as BRAND_CARDS);
-
+    this.numberCard = this.numberCard.substr(-5) || null;
     this.checkCreditCardBrandSrc();
   }
 
