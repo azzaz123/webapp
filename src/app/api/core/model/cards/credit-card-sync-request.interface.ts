@@ -1,4 +1,5 @@
-export interface PaymentsCreateCreditCardApi {
+export interface CreditCardSyncRequest {
+  id: string;
   fullname: string;
   cardNumber: string;
   cardExpirationDate: string;
