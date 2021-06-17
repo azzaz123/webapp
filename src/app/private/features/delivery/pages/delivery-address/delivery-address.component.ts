@@ -42,6 +42,7 @@ import { DeliveryAddressTrackEventsService } from '../../services/address/delive
 import { DeliveryAddressFormErrorMessages } from '../../interfaces/delivery-address/delivery-address-form-error-messages.interface';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
+import { DELIVERY_ADDRESS_LINKS } from '../../enums/delivery-address-links.enum';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -54,6 +55,7 @@ export class DeliveryAddressComponent implements OnInit {
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
   public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
+  public readonly DELIVERY_ADDRESS_LINKS = DELIVERY_ADDRESS_LINKS;
   public countries: IOption[] = [];
   public cities: IOption[] = [];
   public deliveryAddressForm: FormGroup;

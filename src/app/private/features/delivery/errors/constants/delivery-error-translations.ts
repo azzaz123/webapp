@@ -1,5 +1,5 @@
 export const DeliveryPostalCodesErrorTranslations = {
-  INVALID_POSTAL_CODE: $localize`:@@address_view_all_users_form_textfield_postalcode_not_too_inline_error:This ZIP code has too many characters... Try to rewrite it`,
+  INVALID_POSTAL_CODE: $localize`:@@address_view_all_users_form_textfield_postalcode_not_too_inline_error:This ZIP code has too many characters; you should revise it`,
   POSTAL_CODE_DOES_NOT_EXIST: $localize`:@@address_view_all_users_form_textfield_postalcode_not_exist_inline_error:This ZIP doesn’t belong to the country where you are located`,
 };
 
