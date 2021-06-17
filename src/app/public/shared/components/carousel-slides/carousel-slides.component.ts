@@ -83,7 +83,10 @@ export class SlidesCarouselComponent implements AfterContentInit {
     const controlElements = carouselElement.querySelectorAll(`${PREV_CONTROL_CLASS_NAME}, ${NEXT_CONTROL_CLASS_NAME}`);
 
     controlElements.forEach((e: HTMLInputElement) => {
-      e.addEventListener('click', (e) => e.stopPropagation());
+      e.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
     });
   }
 

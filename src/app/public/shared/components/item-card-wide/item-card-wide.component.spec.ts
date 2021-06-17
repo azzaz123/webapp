@@ -155,6 +155,19 @@ describe('ItemCardWideComponent', () => {
 
             expect(component.toggleFavourite.emit).toBeCalled();
           });
+
+          it('should not propagate the click event', () => {
+            const event = new Event('click');
+            spyOn(event, 'preventDefault');
+            spyOn(event, 'stopPropagation');
+            spyOn(component.toggleFavourite, 'emit');
+
+            favouriteIconElement.dispatchEvent(event);
+
+            expect(component.toggleFavourite.emit).toBeCalled();
+            expect(event.preventDefault).toHaveBeenCalled();
+            expect(event.stopPropagation).toHaveBeenCalled();
+          });
         });
 
         describe('when is NOT favourite', () => {
