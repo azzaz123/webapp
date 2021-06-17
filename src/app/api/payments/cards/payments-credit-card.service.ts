@@ -14,4 +14,8 @@ export class PaymentsCreditCardService {
   public get(): Observable<CreditCard> {
     return this.paymentsCreditCardHttpService.get().pipe(map(mapPaymentsCreditCardToCreditCard));
   }
+
+  public delete(): Observable<null> {
+    return this.paymentsCreditCardHttpService.delete();
+  }
 }
