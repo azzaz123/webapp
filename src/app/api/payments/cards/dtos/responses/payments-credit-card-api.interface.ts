@@ -1,8 +1,4 @@
-export enum PAYMENTS_CREDIT_CARD_STATUS_API_ENUM {
-  PENDING_3DS = 'PENDING_3DS',
-  VALID = 'VALID',
-  INVALID = 'INVALID',
-}
+export type PaymentsCreditCardStatusApi = 'PENDING_3DS' | 'VALID' | 'INVALID';
 
 export interface PaymentsCreditCardApi {
   card_holder_name: string;
@@ -10,5 +6,5 @@ export interface PaymentsCreditCardApi {
   expiration_date: string;
   id: string;
   number_alias: string;
-  status: PAYMENTS_CREDIT_CARD_STATUS_API_ENUM;
+  status: PaymentsCreditCardStatusApi;
 }
