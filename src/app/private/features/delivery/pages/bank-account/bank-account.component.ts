@@ -130,7 +130,6 @@ export class BankAccountComponent implements OnInit, OnDestroy {
         },
         (errors: BankAccountError[]) => {
           this.handleBankAccountErrors(errors);
-          this.showToast(TRANSLATION_KEY.FORM_FIELD_ERROR, 'error');
         }
       );
   }

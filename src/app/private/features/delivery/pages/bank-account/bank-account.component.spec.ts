@@ -51,19 +51,12 @@ describe('BankAccountComponent', () => {
         BankAccountService,
         BankAccountApiService,
         MapBankAccountService,
+        I18nService,
         {
           provide: UuidService,
           useValue: {
             getUUID() {
               return 'FAKE_UUID';
-            },
-          },
-        },
-        {
-          provide: I18nService,
-          useValue: {
-            translate() {
-              return '';
             },
           },
         },
@@ -180,7 +173,7 @@ describe('BankAccountComponent', () => {
 
           it('should show a succeed message', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: '',
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS),
               type: 'success',
             });
           });
@@ -206,7 +199,7 @@ describe('BankAccountComponent', () => {
 
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
-                text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
+                text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
                 type: 'error',
               });
             });
@@ -217,8 +210,6 @@ describe('BankAccountComponent', () => {
             });
 
             it('should mark form as pending', () => {
-              component.onSubmit();
-
               expect(component.bankAccountForm.pending).toBe(true);
             });
 
@@ -281,7 +272,7 @@ describe('BankAccountComponent', () => {
 
         it('should show a succeed message', () => {
           expect(toastService.show).toHaveBeenCalledWith({
-            text: '',
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS),
             type: 'success',
           });
         });
@@ -294,7 +285,7 @@ describe('BankAccountComponent', () => {
       describe('and the petition fails...', () => {
         describe('and when the fail is because server notifies iban country is invalid', () => {
           beforeEach(() => {
-            spyOn(bankAccountService, 'update').and.returnValue([new IbanCountryIsInvalidError()]);
+            spyOn(bankAccountService, 'update').and.returnValue(throwError([new IbanCountryIsInvalidError()]));
 
             triggerFormSubmit();
           });
@@ -309,7 +300,7 @@ describe('BankAccountComponent', () => {
 
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: '',
+              text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
               type: 'error',
             });
           });
@@ -317,13 +308,13 @@ describe('BankAccountComponent', () => {
 
         describe('and when the fail is because server notifies unique bank account response', () => {
           beforeEach(() => {
-            spyOn(bankAccountService, 'create').and.returnValue(throwError([new UniqueBankAccountByUserError('')]));
+            spyOn(bankAccountService, 'update').and.returnValue(throwError([new UniqueBankAccountByUserError('')]));
 
             triggerFormSubmit();
           });
 
-          it('should call the create endpoint', () => {
-            expect(bankAccountService.create).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
+          it('should call the update endpoint', () => {
+            expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
           });
 
           it('should show an error toast', () => {
@@ -369,7 +360,7 @@ describe('BankAccountComponent', () => {
 
     it('should show an error toast', () => {
       expect(toastService.show).toHaveBeenCalledWith({
-        text: '',
+        text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
         type: 'error',
       });
     });
