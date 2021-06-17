@@ -11,6 +11,7 @@ import { ShipmentTrackingModule } from './pages/shipment-tracking/shipment-track
 import { BankAccountModule } from './pages/bank-account/bank-account.module';
 import { CreateDisputeModule } from './pages/create-dispute/create-dispute.module';
 import { CreditCardModule } from './pages/credit-card/credit-card.module';
+import { BankDetailsModule } from './pages/bank-details/bank-details.module';
 
 // NOTE: they childs are begin loaded in a NON LAZY way but with the module
 const routes: Route[] = [
@@ -53,6 +54,10 @@ const routes: Route[] = [
       {
         path: DELIVERY_PATHS.CREDIT_CARD,
         loadChildren: () => CreditCardModule,
+      },
+      {
+        path: DELIVERY_PATHS.BANK_DETAILS,
+        loadChildren: () => BankDetailsModule,
       },
     ],
   },

@@ -16,8 +16,8 @@ export class DeliveryComponent implements OnInit {
       display: $localize`:@@web_delivery_shipment_tracking:Tracking`,
     },
     {
-      id: `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_ACCOUNT}`,
-      display: $localize`:@@web_delivery_bank_details:Bank`,
+      id: `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`,
+      display: $localize`:@@web_delivery_bank_details:Bank details`,
     },
     {
       id: `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
