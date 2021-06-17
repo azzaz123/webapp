@@ -1,0 +1,48 @@
+<div class="BankDetails container">
+    <div class="row"> 
+        <div class="col" *ngIf="!loading; else loadingState">
+            <div class="row mb-2">
+                <div class="col col-md-11 offset-md-1">
+                    <h3 class="BankDetails__title">Bank details</h3>
+                </div>
+            </div>
+            <div class="row offset-md-2">
+                <div class="col-sm-12 col-md-5 mb-sm-3 mb-md-0">
+                    <div class="row mb-2">
+                        <div class="col">
+                            <span class="BankDetails__subtitle">Tarjeta de crédito o débito</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <tsl-credit-card-info *ngIf="creditCard else addCreditCard" class="col">
+                        </tsl-credit-card-info>
+                        <ng-template #addCreditCard>
+                            <tsl-add-credit-card class="col">
+                                <span>Añadir tarjeta de crédito o débito</span>
+                            </tsl-add-credit-card>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-5">
+                    <div class="row mb-2">
+                        <div class="col">
+                            <span class="BankDetails__subtitle">Cuenta bancaria</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <tsl-credit-card-info  *ngIf="bankAccount else addBankAccount" class="col">
+                        </tsl-credit-card-info>
+                        <ng-template #addBankAccount>
+                            <tsl-add-credit-card class="col">
+                                <span>Añadir cuenta bancaria</span>
+                            </tsl-add-credit-card>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-template class="col loading-center justify-content-center" #loadingState>
+            <tsl-spinner></tsl-spinner>
+        </ng-template>
+    </div>
+</div>
