@@ -4,18 +4,10 @@ import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-re
 import { UuidService } from '@core/uuid/uuid.service';
 import { Observable } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
+import { TokenizeCardRegistrationRequest, PreSyncCreditCardData } from '../dtos/other';
 import { PaymentsSyncCreditCardApi } from '../dtos/requests';
 import { PaymentsCreditCardApi, TokenizerInformationApi } from '../dtos/responses';
 import { PAYMENTS_CREDIT_CARDS_ENDPOINT, PAYMENTS_CREDIT_CARDS_TOKENIZER_ENDPOINT } from './endpoints';
-
-interface TokenizeCardRegistrationRequest {
-  request: CreditCardSyncRequest;
-  tokenizerInfo: TokenizerInformationApi;
-}
-
-interface PreSyncCreditCardData extends TokenizeCardRegistrationRequest {
-  tokenizedCard: string;
-}
 
 @Injectable()
 export class PaymentsCreditCardHttpService {
