@@ -5,4 +5,4 @@ import { PaymentsCreditCardService } from './payments-credit-card.service';
 @NgModule({
   providers: [PaymentsCreditCardService, PaymentsCreditCardHttpService],
 })
-export class PaymentsCreditCardApiModule {}
+export class PaymentsCreditCardModule {}
