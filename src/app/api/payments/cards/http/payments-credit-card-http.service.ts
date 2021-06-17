@@ -8,9 +8,12 @@ import { PaymentsSyncCreditCardApi } from '../dtos/requests';
 import { PaymentsCreditCardApi, TokenizerInformationApi } from '../dtos/responses';
 import { PAYMENTS_CREDIT_CARDS_ENDPOINT, PAYMENTS_CREDIT_CARDS_TOKENIZER_ENDPOINT } from './endpoints';
 
-interface PreSyncCreditCardData {
-  tokenizerInfo: TokenizerInformationApi;
+interface TokenizeCardRegistrationRequest {
   request: CreditCardSyncRequest;
+  tokenizerInfo: TokenizerInformationApi;
+}
+
+interface PreSyncCreditCardData extends TokenizeCardRegistrationRequest {
   tokenizedCard: string;
 }
 
@@ -38,13 +41,6 @@ export class PaymentsCreditCardHttpService {
     return this.http.get<TokenizerInformationApi>(PAYMENTS_CREDIT_CARDS_TOKENIZER_ENDPOINT);
   }
 
-  private getTokenizedCard(tokenizerInfo: TokenizerInformationApi, request: CreditCardSyncRequest): Observable<string> {
-    const { card_registration_url: url } = tokenizerInfo;
-    const body = this.generateCardRegistrationBody(tokenizerInfo, request);
-
-    return this.postToUrlAsFormUrlEncoded(url, body);
-  }
-
   private postToUrlAsFormUrlEncoded(url: string, body: string): Observable<string> {
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -53,9 +49,24 @@ export class PaymentsCreditCardHttpService {
     return this.http.post<string>(url, body, { headers, responseType: 'text' as 'json' });
   }
 
-  private generateCardRegistrationBody(tokenizerInfo: TokenizerInformationApi, request: CreditCardSyncRequest): string {
-    const { access_key: accessKeyRef, card_registration_url: cardRegistrationURL, pre_registration_data: data } = tokenizerInfo;
-    const { cardNumber, cardExpirationDate, cardCvx } = request;
+  private createCardInServer(body: PaymentsSyncCreditCardApi): Observable<null> {
+    return this.http.post<null>(PAYMENTS_CREDIT_CARDS_ENDPOINT, body);
+  }
+
+  private updateCardInServer(body: PaymentsSyncCreditCardApi): Observable<null> {
+    return this.http.put<null>(PAYMENTS_CREDIT_CARDS_ENDPOINT, body);
+  }
+
+  private getTokenizedCard(tokenizeRequest: TokenizeCardRegistrationRequest): Observable<string> {
+    const { card_registration_url: url } = tokenizeRequest.tokenizerInfo;
+    const body = this.generateCardRegistrationBody(tokenizeRequest);
+
+    return this.postToUrlAsFormUrlEncoded(url, body);
+  }
+
+  private generateCardRegistrationBody(tokenizeRequest: TokenizeCardRegistrationRequest): string {
+    const { access_key: accessKeyRef, pre_registration_data: data } = tokenizeRequest.tokenizerInfo;
+    const { cardNumber, cardExpirationDate, cardCvx } = tokenizeRequest.request;
 
     const bodyAsObject = {
       data,
@@ -71,14 +82,6 @@ export class PaymentsCreditCardHttpService {
     return bodyAsQueryParams.toString();
   }
 
-  private createCardInServer(body: PaymentsSyncCreditCardApi): Observable<null> {
-    return this.http.post<null>(PAYMENTS_CREDIT_CARDS_ENDPOINT, body);
-  }
-
-  private updateCardInServer(body: PaymentsSyncCreditCardApi): Observable<null> {
-    return this.http.put<null>(PAYMENTS_CREDIT_CARDS_ENDPOINT, body);
-  }
-
   private generateSyncCreditCardBody(data: PreSyncCreditCardData, isUpdate: boolean): PaymentsSyncCreditCardApi {
     const body: PaymentsSyncCreditCardApi = {
       id: isUpdate ? data.request.id : this.uuidService.getUUID(),
@@ -92,17 +95,13 @@ export class PaymentsCreditCardHttpService {
 
   private getCreditCardRequest(data: PreSyncCreditCardData, isUpdate: boolean): Observable<null> {
     const body = this.generateSyncCreditCardBody(data, isUpdate);
-    if (isUpdate) {
-      return this.updateCardInServer(body);
-    } else {
-      return this.createCardInServer(body);
-    }
+    return isUpdate ? this.updateCardInServer(body) : this.createCardInServer(body);
   }
 
   private concatenateCreditCardRequests(request: CreditCardSyncRequest, isUpdate: boolean): Observable<null> {
     return this.getTokenizerInformation().pipe(
       concatMap((tokenizerInfo) => {
-        return this.getTokenizedCard(tokenizerInfo, request).pipe(
+        return this.getTokenizedCard({ tokenizerInfo, request }).pipe(
           concatMap((tokenizedCard) => {
             return this.getCreditCardRequest({ tokenizerInfo, request, tokenizedCard }, isUpdate);
           })
