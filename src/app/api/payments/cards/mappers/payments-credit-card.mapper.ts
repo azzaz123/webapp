@@ -1,5 +1,5 @@
 import { CreditCard, CreditCardBrand } from '@api/core/model/cards/credit-card.interface';
-import { ToDomainMapper } from '@api/core/types/to-domain-mapper.type';
+import { ToDomainMapper } from '@api/core/types';
 import { PaymentsCreditCardApi } from '../dtos/responses';
 
 export const mapPaymentsCreditCardToCreditCard: ToDomainMapper<PaymentsCreditCardApi, CreditCard> = (

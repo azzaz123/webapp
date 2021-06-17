@@ -1,1 +1,3 @@
-export type ToDomainMapper<ApiType, DomainType> = (input: ApiType) => DomainType;
+import { MapperFunction } from './mapper-function.type';
+
+export type ToDomainMapper<Input, Output> = MapperFunction<Input, Output>;
