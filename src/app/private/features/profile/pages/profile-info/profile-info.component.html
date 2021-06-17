@@ -3,7 +3,7 @@
     <div class="row box profile-box">
       <div class="col-12 col-md-11 offset-md-1">
         <tsl-picture-upload [user]="user"></tsl-picture-upload>
-        <tsl-cover-upload (clickNotPro)="openBecomeProModal(ANALYTICS_FIELDS.HEADER_PHOTO)" [user]="user" [isPro]="isPro"></tsl-cover-upload>
+        <tsl-cover-upload *ngxPermissionsOnly="PERMISSIONS.subscriptions" (clickNotPro)="openBecomeProModal(ANALYTICS_FIELDS.HEADER_PHOTO)" [user]="user" [isPro]="isPro"></tsl-cover-upload>
       </div>
     </div>
     <div class="row box profile-box">
@@ -42,6 +42,7 @@
               [updateLocation]="updateLocationWhenSearching" [isIncorrectAddress]="isIncorrectAddress"></tsl-location-box>
           </div>
         </div>
+        <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
         <div class="pro-section" [class.not-pro]="!isPro">
           <div class="form-group row">
             <label for="description" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_295">Description</label>
@@ -77,6 +78,7 @@
             </div>
           </div>
         </div>
+      </ng-container>
         <div class="row">
           <div class="col-12 text-center">
             <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big"

@@ -1,27 +1,15 @@
 @import '~style/common';
 
-$card-width: 300px;
-$card-height: 88px;
+$card-height: 151px;
 
 .SubscriptionCardSelector {
   &__newCard {
     border: solid 1px $blue-grey-5;
     color: $walla-main;
     cursor: pointer;
-    height: $card-height;
+    min-height: $card-height;
     padding: 0 $spacing-ml;
     border-radius: 6px;
     font-size: $font-size-s;
-    min-width: $card-width;
-  }
-
-  @include media-breakpoint-down(sm) {
-    &__newCard {
-      width: 100%;
-    }
-
-    tsl-credit-card-info {
-      width: 100%;
-    }
   }
 }

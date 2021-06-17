@@ -1,16 +1,18 @@
 @import '~style/common';
 
 :host {
-  .Sky__container {
-    margin: 0 auto;
-    border-radius: $border-radius;
-    overflow: hidden;
+  width: 100%;
+}
 
-    box-shadow: $item-card-box-shadow;
+.Sky__container {
+  margin: 0 auto;
+  border-radius: $border-radius;
+  overflow: hidden;
 
-    &:hover {
-      transform: $item-card-hover-translate;
-      box-shadow: $item-card-hover-box-shadow;
-    }
+  box-shadow: $item-card-box-shadow;
+
+  &:hover {
+    transform: $item-card-hover-translate;
+    box-shadow: $item-card-hover-box-shadow;
   }
 }

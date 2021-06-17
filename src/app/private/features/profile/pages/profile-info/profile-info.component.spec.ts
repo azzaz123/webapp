@@ -27,6 +27,8 @@ import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro
 import { ANALYTICS_FIELDS, BAD_USERNAME_ERROR_CODE, competitorLinks, ProfileInfoComponent } from './profile-info.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { VisibleDirectiveModule } from '@shared/directives/visible/visible.directive.module';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -37,14 +39,16 @@ describe('ProfileInfoComponent', () => {
   let router: Router;
   let subscriptionsService: SubscriptionsService;
   let analyticsService: AnalyticsService;
+  let permissionsService: NgxPermissionsService;
 
   const locationBoxSelector = 'tsl-location-box';
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule, VisibleDirectiveModule],
+        imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule, VisibleDirectiveModule, NgxPermissionsModule.forRoot()],
         providers: [
+          NgxPermissionsService,
           {
             provide: UserService,
             useValue: {
@@ -120,6 +124,7 @@ describe('ProfileInfoComponent', () => {
     router = TestBed.inject(Router);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     component.formComponent = TestBed.inject(ProfileFormComponent);
+    permissionsService = TestBed.inject(NgxPermissionsService);
     spyOn(userService, 'getUserCover').and.returnValue(of(IMAGE));
     fixture.detectChanges();
   });
@@ -249,7 +254,11 @@ describe('ProfileInfoComponent', () => {
         });
 
         describe('and when the server notifies username is incorrect', () => {
+          beforeEach(() => {
+            permissionsService.addPermission(PERMISSIONS.subscriptions);
+          });
           it('should mark username fields as invalid', () => {
+            fixture.detectChanges();
             const backendError = {
               error: {
                 code: BAD_USERNAME_ERROR_CODE,
