@@ -6,15 +6,14 @@ import { Observable } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { PaymentsCreateCreditCardApi, PaymentsUpdateCreditCardApi, PaymentsSyncCreditCardApi } from '../dtos/requests';
 import { PaymentsCreditCardApi, TokenizerInformationApi } from '../dtos/responses';
-import { mapPaymentsCreditCardToCreditCard } from '../mappers/payments-credit-card.mapper';
 import { PAYMENTS_CREDIT_CARDS_ENDPOINT, PAYMENTS_CREDIT_CARDS_TOKENIZER_ENDPOINT } from './endpoints';
 
 @Injectable()
 export class PaymentsCreditCardHttpService {
   constructor(private http: HttpClient, private uuidService: UuidService) {}
 
-  public get(): Observable<CreditCard> {
-    return this.http.get<PaymentsCreditCardApi>(PAYMENTS_CREDIT_CARDS_ENDPOINT).pipe(map(mapPaymentsCreditCardToCreditCard));
+  public get(): Observable<PaymentsCreditCardApi> {
+    return this.http.get<PaymentsCreditCardApi>(PAYMENTS_CREDIT_CARDS_ENDPOINT);
   }
 
   public create(request: PaymentsCreateCreditCardApi): Observable<null> {
