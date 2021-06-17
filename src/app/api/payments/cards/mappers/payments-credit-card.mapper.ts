@@ -1,10 +1,37 @@
-import { CreditCard } from '@api/core/model/credit-card.interface';
-import { ApiMapper } from '@api/core/utils/api-mapper';
+import { CreditCard, CreditCardBrand } from '@api/core/model/cards/credit-card.interface';
+import { ToDomainMapper } from '@api/core/types/to-domain-mapper.type';
+import { PaymentsCreditCardApi } from '../dtos/responses';
 
-export class PaymentsCreditCardApiMapper extends ApiMapper {
-  public map<PaymentsCreditCardApi, CreditCard>(response: PaymentsCreditCardApi): CreditCard {
-    return {
-      id: response.id,
-    };
-  }
+export const mapPaymentsCreditCardToCreditCard: ToDomainMapper<PaymentsCreditCardApi, CreditCard> = (
+  input: PaymentsCreditCardApi
+): CreditCard => {
+  const { card_holder_name: ownerFullName, id, number_alias, expiration_date } = input;
+
+  const brand = getCardBrandFromAlias(number_alias);
+  const lastFourDigits = getLastFourDigitsFromCardAlias(number_alias);
+  const expirationDate = new Date(expiration_date);
+
+  return {
+    id,
+    brand,
+    lastFourDigits,
+    ownerFullName,
+    expirationDate,
+    provider: 'mangopay',
+  };
+};
+
+function getLastFourDigitsFromCardAlias(cardAlias: string): string {
+  let lastFourDigits = '0000';
+
+  try {
+    lastFourDigits = cardAlias.slice(cardAlias.length - 4, cardAlias.length);
+  } catch {}
+
+  return lastFourDigits;
+}
+
+function getCardBrandFromAlias(cardAlias: string): CreditCardBrand {
+  const isVisa = cardAlias.startsWith('4');
+  return isVisa ? 'visa' : 'mastercard';
 }
