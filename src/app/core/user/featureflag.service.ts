@@ -109,10 +109,11 @@ export class FeatureflagService {
     return isDevMode() || this.isExperimentalFeaturesEnabled();
   }
 
-  private checkPermission(featureFlagName: FEATURE_FLAGS_ENUM, isActive: boolean): void {
-    const permission = featurePermissionConfig[featureFlagName];
-    if (permission) {
-      isActive ? this.addPermissions(permission) : this.removePermissions(permission);
+  private checkPermission(featureFlagName: FEATURE_FLAGS_ENUM, isFlagActive: boolean): void {
+    const permissionConfig = featurePermissionConfig[featureFlagName];
+    if (permissionConfig) {
+      const { permission, statusMapper } = permissionConfig;
+      statusMapper(isFlagActive) ? this.addPermissions(permission) : this.removePermissions(permission);
     }
   }
 
