@@ -40,6 +40,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   public formErrorMessages: BankAccountFormErrorMessages = {
     iban: '',
     first_name: '',
+    last_name: '',
   };
 
   private isNewForm = true;
