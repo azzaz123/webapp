@@ -1,12 +1,13 @@
 @import '~style/common';
 
 .BankDetails {
-  &__title,
-  &__subtitle {
+  &__title {
     font-size: $font-size-s;
   }
 
   &__subtitle {
-    font-weight: $font-weight-chunky;
+    font-size: $font-size-m;
+    color: $blue-grey-3;
+    font-weight: initial;
   }
 }
