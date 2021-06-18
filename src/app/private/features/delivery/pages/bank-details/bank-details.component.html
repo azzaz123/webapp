@@ -1,14 +1,14 @@
 <div class="BankDetails container">
     <div class="row mb-2">
         <div class="col col-md-11 offset-md-1">
-            <h3 class="BankDetails__title">Bank details</h3>
+            <h3 class="BankDetails__title" i18n="@@bank_data">Bank details</h3>
         </div>
     </div>
     <div class="row offset-md-2">
         <div class="col-sm-12 col-md-5 mb-3 mb-md-0">
             <div class="row">
                 <div class="col">
-                    <h4 class="BankDetails__subtitle">Tarjeta de crédito o débito</h4>
+                    <h4 class="BankDetails__subtitle" i18n="@@delivery_credit_card">Credit or debit card</h4>
                 </div>
             </div>
             <div class="row">
@@ -18,15 +18,15 @@
                     class="col"
                 >
                 </tsl-credit-card-info>
-                <tsl-add-credit-card *ngIf="true" class="col">
-                    <a [href]="ADD_CREDIT_CARD_LINK">Añadir tarjeta de crédito o débito</a>
+                <tsl-add-credit-card *ngIf="true" class="col" (click)="redirect(CREDIT_CARD_FORM_LINK)">
+                    <span i18n="@@banking_data_menu_add_credit_card">Add credit or debit card</span>
                 </tsl-add-credit-card>
             </div>
         </div>
         <div class="col-sm-12 col-md-5">
             <div class="row">
                 <div class="col">
-                    <h4 class="BankDetails__subtitle">Cuenta bancaria</h4>
+                    <h4 class="BankDetails__subtitle" i18n="@@delivery_bank_account">Bank account</h4>
                 </div>
             </div>
             <div class="row">
@@ -34,12 +34,12 @@
                     [ownerName]="bankAccount.first_name + ' ' + bankAccount.last_name"
                     [numberCard]="bankAccount.iban"
                     [isBankAccount]="true"
-                    (changeCardClick)="editBankAccount()"
+                    (changeCardClick)="redirect(BANK_ACCOUNT_FORM_LINK)"
                     (deleteCardClick)="openDeleteBankAccountModal()"
                     class="col">
                 </tsl-credit-card-info>
-                <tsl-add-credit-card *ngIf="!(bankAccount$ | async)" class="col">
-                    <a [href]="ADD_BANK_ACCOUNT_LINK">Añadir cuenta bancaria</a>
+                <tsl-add-credit-card *ngIf="!(bankAccount$ | async)" (click)="redirect(BANK_ACCOUNT_FORM_LINK)" class="col">
+                    <span i18n="@@banking_data_menu_add_bank_account">Add bank account</span>
                 </tsl-add-credit-card>
             </div>
         </div>

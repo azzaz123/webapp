@@ -20,8 +20,8 @@ import { Router } from '@angular/router';
 })
 export class BankDetailsComponent implements OnInit {
   public bankAccount$: Observable<BankAccount>;
-  public ADD_CREDIT_CARD_LINK = '';
-  public ADD_BANK_ACCOUNT_LINK = '';
+  public CREDIT_CARD_FORM_LINK = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.CREDIT_CARD}`;
+  public BANK_ACCOUNT_FORM_LINK = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_ACCOUNT}`;
 
   constructor(
     private router: Router,
@@ -34,8 +34,8 @@ export class BankDetailsComponent implements OnInit {
     this.bankAccount$ = this.bankAccountService.get();
   }
 
-  public editBankAccount(): void {
-    this.router.navigate([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SHIPMENT_TRACKING}`]);
+  public redirect(URL: string): void {
+    this.router.navigate([URL]);
   }
 
   public openDeleteBankAccountModal(): void {
