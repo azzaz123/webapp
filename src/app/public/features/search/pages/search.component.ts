@@ -125,7 +125,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
-    this.device = this.deviceService.getDeviceType();
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(
       this.newSearch$.pipe(skip(1)).subscribe((searchId: string) => {
