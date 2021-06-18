@@ -1,7 +1,6 @@
 import { Inject, Pipe, PipeTransform } from '@angular/core';
 import { environment } from '@environments/environment';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
-import { APP_PATHS } from 'app/app-routing-constants';
 
 @Pipe({
   name: 'itemDetailRoute',
