@@ -10,6 +10,7 @@ import {
   ViewOwnSaleItems,
   AnalyticsEvent,
   ANALYTIC_EVENT_TYPES,
+  ViewProExpiredItemsPopup,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { COLORS } from '@core/colors/colors-constants';
@@ -459,20 +460,32 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private openSuggestProModal(reactivatedItem: Item, index: number): void {
+    const isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(this.subscriptions, reactivatedItem.categoryId);
+    this.trackViewProExpiredItemsPopup(isFreeTrial);
+
     const modalRef = this.modalService.open(SuggestProModalComponent, {
       windowClass: 'modal-standard',
     });
 
     modalRef.componentInstance.title = $localize`:@@web_suggest_pro_modal_title:If you were PRO your items wouldn’t become inactive. Sounds good, right?`;
-    modalRef.componentInstance.isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(
-      this.subscriptions,
-      reactivatedItem.categoryId
-    );
+    modalRef.componentInstance.isFreeTrial = isFreeTrial;
 
     modalRef.result.then(
       () => this.router.navigate(['profile/subscriptions']),
       () => this.reloadItem(reactivatedItem.id, index)
     );
+  }
+
+  private trackViewProExpiredItemsPopup(freeTrial: boolean): void {
+    const event: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+      name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+      attributes: {
+        screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+        freeTrial,
+      },
+    };
+
+    this.analyticsService.trackPageView(event);
   }
 
   private reloadItem(id: string, index: number): void {

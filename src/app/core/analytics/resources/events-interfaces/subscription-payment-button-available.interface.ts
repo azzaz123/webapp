@@ -12,7 +12,7 @@ export interface SubscriptionPaymentButtonAvailable {
   /**
    * Subscription category type
    */
-  subscription: 0 | 100 | 14000 | 12800;
+  subscription: 0 | 100 | 200 | 14000 | 12800;
   /**
    * Tier of the subscription
    */
