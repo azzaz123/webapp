@@ -1,6 +1,7 @@
 import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-request.interface';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
-import { PaymentsCreditCardApi } from '@api/payments/cards/dtos/responses';
+import { PaymentsSyncCreditCardApi } from '@api/payments/cards/dtos/requests';
+import { PaymentsCreditCardApi, TokenizerInformationApi } from '@api/payments/cards/dtos/responses';
 
 export const mockPaymentsCreditCard: PaymentsCreditCardApi = {
   card_holder_name: 'Lolaso Fino Bruh - 17:38',
@@ -26,4 +27,31 @@ export const mockCreditCardSyncRequest: CreditCardSyncRequest = {
   cardNumber: '4972485830400049',
   cardExpirationDate: '1221',
   cardCvx: '242',
+};
+
+export const mockTokenizerInformationResponse: TokenizerInformationApi = {
+  access_key: '1X0m87dmM2LiwFgxPLBJ',
+  card_registration_url: 'https://homologation-webpayment.payline.com/webpayment/getToken',
+  id: '111497720',
+  pre_registration_data: 'YkgVxL1yNY4ZOfKtqEew_XMUy9O3AZGFEHTgKBwYW1ym50soCMtmIkbPx_6tICui2ddFLVXdicolcUIkv_kKEA',
+};
+
+export const mockCardRegistrationUrlFormData: string =
+  'data=YkgVxL1yNY4ZOfKtqEew_XMUy9O3AZGFEHTgKBwYW1ym50soCMtmIkbPx_6tICui2ddFLVXdicolcUIkv_kKEA&accessKeyRef=1X0m87dmM2LiwFgxPLBJ&cardNumber=4972485830400049&cardExpirationDate=1221&cardCvx=242';
+
+export const mockCardTokenizedResponse: string =
+  'data=QOHfBI142JBIpqQJOQyJcwsjr25wTBu8_9tvZWbUlh2Fm53uPWzGoAyuLy8vAqIPRIQMyPqKXxk9X59DUVsGhdx9Kicx6FsPjwxmBfoe3MlvvmS4bJZX_ejoGzljiTdf0ftIYwFxOdfmDQ5GtM_cIg';
+
+export const mockPaymentsCreateSyncCreditCardRequest: PaymentsSyncCreditCardApi = {
+  holder_name: mockCreditCardSyncRequest.fullname,
+  id: '12345',
+  registration_id: mockTokenizerInformationResponse.id,
+  token: mockCardTokenizedResponse,
+};
+
+export const mockPaymentsUpdateSyncCreditCardRequest: PaymentsSyncCreditCardApi = {
+  holder_name: mockCreditCardSyncRequest.fullname,
+  id: mockCreditCardSyncRequest.id,
+  registration_id: mockTokenizerInformationResponse.id,
+  token: mockCardTokenizedResponse,
 };
