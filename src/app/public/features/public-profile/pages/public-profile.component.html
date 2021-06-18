@@ -1,4 +1,5 @@
 <div *ngIf="userId && userInfo && userStats && !loading" class="PublicProfile container mb-5">
+  <tsl-sky-wrapper>
     <tsl-user-profile-header [userInfo]="userInfo" [userStats]="userStats"></tsl-user-profile-header>
     <div class="PublicProfile__section--second row flex-wrap-reverse">
         <div class="col-12 col-md-6">
@@ -10,5 +11,6 @@
     </div>
     <router-outlet></router-outlet>
     <tsl-sky *ngIf="isMobile" [adSlot]="adSlot"></tsl-sky>
+  </tsl-sky-wrapper>
 </div>
 <tsl-spinner [hidden]="!loading"></tsl-spinner>

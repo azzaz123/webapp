@@ -1,5 +1,7 @@
 <div class="container ItemDetail__container">
 
+  <tsl-sky-wrapper>
+
     <tsl-sky *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET" [adSlot]="adsSlotsItemDetail.item1">
     </tsl-sky>
 
@@ -113,5 +115,7 @@
             <tsl-sky [adSlot]="adsSlotsItemDetail.item3r"></tsl-sky>
         </div>
     </div>
+
+  </tsl-sky-wrapper>
 </div>
 <tsl-item-fullscreen-carousel (favouritedItemChange)="toggleFavouriteItem()"></tsl-item-fullscreen-carousel>
