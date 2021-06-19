@@ -3,25 +3,25 @@
 </div>
 
 <div *ngIf="hasContentPlaceholder && !isPlaceholderOpen">
-  <tsl-select-parent-option [label]="placeholderLabel" [sublabel]="placeholderSublabel" [icon]="placeholderIcon" [isClearable]="isClearable"
-                            (clear)="handleClear()" (click)="togglePlaceholderOpen()">
+  <tsl-select-parent-option [label]="placeholderLabel" [sublabel]="placeholderSublabel" [icon]="placeholderIcon"
+    [isClearable]="isClearable" (clear)="handleClear()" (click)="togglePlaceholderOpen()">
   </tsl-select-parent-option>
 </div>
 
-<div *ngIf="hasContentPlaceholder && isPlaceholderOpen" class="SelectFilterTemplate--open">
-  <div class="d-flex justify-content-center align-items-center SelectFilterTemplate__toolbar">
+<div *ngIf="hasContentPlaceholder && isPlaceholderOpen" class="SelectFilterTemplate">
+  <div class="SelectFilterTemplate__toolbar d-flex justify-content-center align-items-center">
     <span *ngIf="contentTitle" class="SelectFilterTemplate__title">{{contentTitle}}</span>
     <tsl-svg-icon src="/assets/icons/arrow-back.svg" class="SelectFilterTemplate__back_icon p-3"
-                  (click)="togglePlaceholderOpen()">
+      (click)="togglePlaceholderOpen()">
     </tsl-svg-icon>
   </div>
-  <div class="SelectFilterTemplate__content--open">
-    <ng-template [ngTemplateOutlet]="content"></ng-template>
-  </div>
 
-  <div *ngIf="hasApplyButtonInDrawer" class="d-flex justify-content-end mt-4 mx-3">
-    <tsl-button i18n="@@web_apply" className="btn-primary btn-filter"
-      (click)="handleApply()">Apply</tsl-button>
+  <ng-template [ngTemplateOutlet]="content"></ng-template>
+
+  <div *ngIf="hasApplyButtonInDrawer" class="SelectFilterTemplate__bottombar w-100 d-flex align-items-center px-2">
+    <tsl-button class="w-100" i18n="@@web_apply" className="btn-primary btn-filter btn--width" (click)="handleApply()">
+      Apply
+    </tsl-button>
   </div>
 </div>
 
@@ -29,5 +29,7 @@
   <div #extendedContent>
     <ng-content></ng-content>
   </div>
-  <span *ngIf="extendedContent.children.length === 0" class="SelectFilterTemplate--warning">Please, avoid using abstract select filter directly, use one of the extensions or create your own</span>
+  <span *ngIf="extendedContent.children.length === 0" class="SelectFilterTemplate--warning">
+    Please, avoid using abstract select filter directly, use one of the extensions or create your own
+  </span>
 </ng-template>
