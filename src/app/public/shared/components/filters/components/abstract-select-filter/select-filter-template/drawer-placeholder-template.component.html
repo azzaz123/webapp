@@ -1,12 +1,12 @@
-<div *ngIf="!hasContentPlaceholder">
+<ng-container *ngIf="!hasContentPlaceholder">
   <ng-template [ngTemplateOutlet]="content"></ng-template>
-</div>
+</ng-container>
 
-<div *ngIf="hasContentPlaceholder && !isPlaceholderOpen">
+<ng-container *ngIf="hasContentPlaceholder && !isPlaceholderOpen">
   <tsl-select-parent-option [label]="placeholderLabel" [sublabel]="placeholderSublabel" [icon]="placeholderIcon"
     [isClearable]="isClearable" (clear)="handleClear()" (click)="togglePlaceholderOpen()">
   </tsl-select-parent-option>
-</div>
+</ng-container>
 
 <div *ngIf="hasContentPlaceholder && isPlaceholderOpen" class="SelectFilterTemplate">
   <div class="SelectFilterTemplate__toolbar d-flex justify-content-center align-items-center">
