@@ -1,9 +1,11 @@
 import { translations } from '@core/i18n/translations/constants/translations';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { SearchResponse } from '../api/search-response.interface';
 import { SearchItemImageMapper } from '../models/search-item-image-mapper.response';
 import { SearchCarResponse, SearchItemCarResponse } from './search-car-response';
+
+export const HORSEPOWER_UNIT = 'cv';
+export const MILEAGE_UNIT = 'km';
 
 export function SearchItemCarResponseMapper({ search_objects }: SearchResponse<SearchCarResponse>): ItemCard[] {
   return search_objects.map(({ id, content }: SearchCarResponse) => ({
@@ -34,11 +36,11 @@ export function SearchItemCarResponseMapper({ search_objects }: SearchResponse<S
     },
     categoryId: content.category_id,
     saleConditions: null,
-    specs: SearchItemCarSpecsMapper(content)
+    specs: ItemCarSpecsMapper(content)
   }));
 }
 
-export function SearchItemCarSpecsMapper(content: SearchItemCarResponse): string[] {
+export function ItemCarSpecsMapper(content: SearchItemCarResponse): string[] {
   const specs: string[] = [];
   const { engine, gearbox, horsepower, year, km } = content;
 
@@ -51,13 +53,13 @@ export function SearchItemCarSpecsMapper(content: SearchItemCarResponse): string
     specs.push(getCarsSpecTranslation(gearbox));
   }
   if (horsepower) {
-    specs.push(`${horsepower} cv`);
+    specs.push(`${horsepower} ${HORSEPOWER_UNIT}`);
   }
   if (year) {
     specs.push(`${year}`);
   }
   if (km) {
-    specs.push(`${km} km`);
+    specs.push(`${km} ${MILEAGE_UNIT}`);
   }
   return specs;
 }
