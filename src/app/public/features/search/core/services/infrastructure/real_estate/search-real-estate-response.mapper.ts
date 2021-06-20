@@ -3,6 +3,7 @@ import { SearchResponse } from '../api/search-response.interface';
 import { SearchItemImageMapper } from '../models/search-item-image-mapper.response';
 import { SearchItemRealStateResponse, SearchRealEstateResponse } from './search-item-real-state-response';
 
+export const SURFACE_UNIT = 'm2';
 
 export function searchItemRealEstateResponseMapper({ search_objects }: SearchResponse<SearchRealEstateResponse>): ItemCard[] {
   return search_objects.map(({ id, content }: SearchRealEstateResponse) => ({
@@ -52,7 +53,7 @@ export function SearchItemRealEstateSpecsMapper(content: SearchItemRealStateResp
     specs.push(`${bathrooms} ${label}`);
   }
   if (surface) {
-    specs.push(`${surface} m2`)
+    specs.push(`${surface} ${SURFACE_UNIT}`)
   }
   return specs;
 }
