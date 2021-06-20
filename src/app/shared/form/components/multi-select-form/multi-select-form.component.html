@@ -1,14 +1,10 @@
-<div *ngFor="let option of options" class="SelectForm__option px-3" ngDefaultControl>
-    <div>
-        <div class="d-flex">
-          <span class="SelectOption__label">{{option.text}}</span>
-        
-        <button [disabled]="isDisabled">
-            <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
-          </button>
-        </div>
-      </div>
+<div *ngFor="let option of options" class="SelectForm__option px-3" >
+  <div class="SelectOption d-flex flex-column justify-content-center">
+    <div class="d-flex">
+      <span class="SelectOption__label">#{{option.text}}</span>
+      <button type="button" [disabled]="isDisabled" (click)="handleOptionClick(option.text)">
+        <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
+      </button>
+    </div>
   </div>
-
-
-  
+</div>

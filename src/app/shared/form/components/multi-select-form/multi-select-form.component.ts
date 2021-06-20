@@ -1,8 +1,6 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
-import { SelectFormOption } from '../select/interfaces/select-form-option.interface';
-import { SelectFormComponent } from '../select/select-form.component';
 import { ComplexSelectValue } from '../select/types/complex-select-value';
 
 @Component({
@@ -21,8 +19,8 @@ export class MultiSelectFormComponent extends AbstractFormComponent<ComplexSelec
   @Input() options: string[];
   @Input() isDisabled: boolean = false;
 
-  /* constructor() {
-    super()
-    console.log('options', this.options);
-  } */
+  public handleOptionClick(value: string): void {
+    this.writeValue(value);
+    this.onChange(value);
+  }
 }
