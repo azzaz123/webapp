@@ -9,6 +9,9 @@ Parameters:
   BucketNameEN:
     Description: 'Name of the bucket EN'
     Type: String
+  BucketNameIT:
+    Description: 'Name of the bucket EN'
+    Type: String
 
 Resources:
   HostingBucketES:
@@ -23,3 +26,9 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       BucketName: !Sub "${BucketNameEN}"
+  HostingBucketIT:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !Sub "${BucketNameIT}"
