@@ -22,10 +22,12 @@ export class CreditCardInfoComponent implements OnChanges {
 
   public creditCardBrandSrc: string;
   public isCardWithIcon: boolean;
+  public stars: string;
 
   constructor() {}
 
   ngOnChanges() {
+    this.stars = this.isBankAccount ? '****' : '**** **** ****';
     this.isCardWithIcon = BRAND_CARDS_WITH_SVG.includes(this.brand as BRAND_CARDS);
     this.checkCreditCardBrandSrc();
   }

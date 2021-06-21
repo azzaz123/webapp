@@ -10,6 +10,7 @@ describe('CreditCardInfoComponent', () => {
   const changeCardButtonSelector = '.CreditCardInfo__actions--change';
   const deleteCardButtonSelector = '.CreditCardInfo__actions--delete';
   const errorStyleSelector = '.CreditCardInfo--error';
+  const numberCardSelector = '.CreditCardInfo__number';
 
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
@@ -142,6 +143,32 @@ describe('CreditCardInfoComponent', () => {
       component.ngOnChanges();
 
       expect(component.creditCardBrandSrc).toStrictEqual(GENERIC_CARD_SRC_PATH);
+    });
+  });
+
+  describe('when the entity is a bank account...', () => {
+    it('should show only 4 stars before the number', () => {
+      const fourStars = '****';
+      component.isBankAccount = true;
+      component.numberCard = '1234';
+
+      component.ngOnChanges();
+      fixture.detectChanges();
+
+      expect(el.querySelector(numberCardSelector).innerHTML).toContain(`${fourStars} ${component.numberCard}`);
+    });
+  });
+
+  describe('when the entity is NOT a bank account...', () => {
+    it('should show 12 stars before the number', () => {
+      const twelveStars = '**** **** ****';
+      component.isBankAccount = false;
+      component.numberCard = '1234';
+
+      component.ngOnChanges();
+      fixture.detectChanges();
+
+      expect(el.querySelector(numberCardSelector).innerHTML).toBe(`${twelveStars} ${component.numberCard}`);
     });
   });
 });
