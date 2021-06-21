@@ -21,6 +21,7 @@ export class ItemCardComponent {
   constructor() {}
 
   public toggleItemFavorite(event: Event): void {
+    event.preventDefault();
     event.stopPropagation();
     this.toggleFavourite.emit();
   }
