@@ -8,6 +8,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 export class MultiSelectOptionComponent implements OnInit {
   @Input() option: string;
   @Input() isChecked: boolean;
+  @Input() isDisabled: boolean;
   @Output() toggleOnChange: EventEmitter<{ option: string; isChecked: boolean }> = new EventEmitter<{
     option: string;
     isChecked: boolean;

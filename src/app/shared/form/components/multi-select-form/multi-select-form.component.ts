@@ -17,7 +17,7 @@ import { ComplexSelectValue } from '../select/types/complex-select-value';
 })
 export class MultiSelectFormComponent extends AbstractFormComponent<ComplexSelectValue> {
   @Input() options: string[];
-  @Input() isDisabled: boolean = false;
+  @Input() isDisabled: boolean = true;
   public selectedOptions: string[] = [];
 
   public handleOptionClick(value: string): void {

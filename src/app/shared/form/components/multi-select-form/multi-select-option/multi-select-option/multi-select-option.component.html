@@ -1,2 +1,2 @@
 <span class="SelectOption__label" >#{{option}}</span>
-<input type="checkbox" [(ngModel)]="checked" (change)="toggleCheckbox($event)"/>
+<input type="checkbox" [disabled]="isDisabled" [(ngModel)]="checked" (change)="toggleCheckbox($event)"/>
