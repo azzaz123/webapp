@@ -10,7 +10,7 @@ import { FinancialCard } from './financial-card';
 export class CreditCardInfoComponent implements OnChanges {
   @Input() brand: string;
   @Input() numberCard: string;
-  @Input() expireDate: Date;
+  @Input() expireDate: string;
   @Input() ownerName: string;
   @Input() error: boolean;
   @Input() hideEdit: boolean;

@@ -13,6 +13,7 @@ import { COLORS } from '@core/colors/colors-constants';
 import { Router } from '@angular/router';
 import { PaymentsCreditCardService } from '@api/payments/cards';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
+import * as moment from 'moment';
 
 @Component({
   selector: 'tsl-bank-details-overview',
@@ -42,6 +43,18 @@ export class BankDetailsOverviewComponent implements OnInit {
 
   public redirect(URL: string): void {
     this.router.navigate([URL]);
+  }
+
+  public formattedDateCreditCard(expirationDateCard: Date): string {
+    return moment(expirationDateCard).format('MM/YYYY');
+  }
+
+  public formattedIBANBankAccount(IBANBankAccount: string): string {
+    return IBANBankAccount.slice(IBANBankAccount.length - 4, IBANBankAccount.length);
+  }
+
+  public formattedNameBankAccount(bankAccount: BankAccount): string {
+    return `${bankAccount.first_name} ${bankAccount.last_name}`;
   }
 
   public openDeleteBankAccountModal(): void {
