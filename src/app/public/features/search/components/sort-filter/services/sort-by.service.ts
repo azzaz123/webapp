@@ -16,15 +16,19 @@ export class SortByService {
   public options$ = this.optionsSubject.asObservable();
 
   constructor(@Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService) {
-    this.filterParameterStore.parameters$.subscribe((parameters) => {
-      this.optionsSubject.next(this.getOptionsByParameters(parameters));
+    this.filterParameterStore.parameters$.subscribe(() => {
+      this.optionsSubject.next(this.getOptionsByParameters());
     });
   }
 
-  private getOptionsByParameters(parameters: FilterParameter[]): SelectFormOption<SORT_BY>[] {
-    const categoryIds = parameters.find((parameter) => parameter.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
-    const keyword = parameters.find((parameter) => parameter.key === FILTER_QUERY_PARAM_KEY.keywords)?.value;
-    const relevanceActive = SORT_BY_RELEVANCE_CATEGORY_IDS.includes(parseInt(categoryIds)) && keyword;
-    return relevanceActive ? SORT_BY_RELEVANCE_OPTIONS : SORT_BY_DEFAULT_OPTIONS;
+  private getOptionsByParameters(): SelectFormOption<SORT_BY>[] {
+    return this.relevanceOptionActive() ? SORT_BY_RELEVANCE_OPTIONS : SORT_BY_DEFAULT_OPTIONS;
+  }
+
+  public relevanceOptionActive(): boolean {
+    const categoryIds = this.filterParameterStore.getParametersByKeys([FILTER_QUERY_PARAM_KEY.categoryId])[0]?.value;
+    const keyword = this.filterParameterStore.getParametersByKeys([FILTER_QUERY_PARAM_KEY.keywords])[0]?.value;
+
+    return SORT_BY_RELEVANCE_CATEGORY_IDS.includes(parseInt(categoryIds)) && !!keyword;
   }
 }
