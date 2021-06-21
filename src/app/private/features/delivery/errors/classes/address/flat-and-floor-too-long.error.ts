@@ -3,6 +3,6 @@ import { DeliveryAddressError } from './delivery-address.error';
 
 export class FlatAndFloorTooLongError extends DeliveryAddressError {
   constructor() {
-    super(DeliveryAddressErrorTranslations.TOO_LONG_HINT);
+    super(DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT);
   }
 }

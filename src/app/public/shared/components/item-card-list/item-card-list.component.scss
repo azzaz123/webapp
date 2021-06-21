@@ -28,6 +28,10 @@ $numCols: 1, 2, 3, 4, 5;
   opacity: $loaded-opacity;
   transition: opacity 150ms ease-in-out;
 
+  &__item {
+    text-decoration: none !important;
+  }
+
   &__slot {
     background-color: $blue-grey-5;
     border-radius: $border-radius;

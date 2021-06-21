@@ -60,6 +60,11 @@
     }
   }
 
+  &__price,
+  &__title {
+    color: $blue-grey-1;
+  }
+
   &__favourite {
     cursor: pointer;
     ::ng-deep svg {
@@ -84,7 +89,7 @@
     }
 
     &--contryBumped {
-      background: $skyblue-dark;
+      background: $payblue-main;
     }
 
     &--left {

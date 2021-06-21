@@ -31,7 +31,7 @@ export class DeliveryAddressErrorMapper extends ErrorMapper<DeliveryAddressError
       }
 
       if (error.error_code === DELIVERY_ADDRESS_ERROR_CODES.POSTAL_CODE_IS_NOT_ALLOWED) {
-        mappedErrors.push(new PostalCodeIsNotAllowedError());
+        mappedErrors.push(new PostalCodeIsNotAllowedError(error.message));
       }
 
       if (error.error_code === DELIVERY_ADDRESS_ERROR_CODES.POSTAL_CODE_DOES_NOT_EXIST) {
