@@ -1,18 +1,18 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
-import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
+import { DELIVERY_INPUTS_MAX_LENGTH } from '../../../../enums/delivery-inputs-length.enum';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { EventService } from '@core/event/event.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { I18nService } from '@core/i18n/i18n.service';
-import { BankAccountService } from '../../services/bank-account/bank-account.service';
+import { BankAccountService } from '../../../../services/bank-account/bank-account.service';
 import { finalize } from 'rxjs/operators';
-import { BankAccount } from '../../interfaces/bank-account/bank-account-api.interface';
-import { DELIVERY_PATHS } from '../../delivery-routing-constants';
+import { BankAccount } from '../../../../interfaces/bank-account/bank-account-api.interface';
+import { DELIVERY_PATHS } from '../../../../delivery-routing-constants';
 import { Router } from '@angular/router';
-import { BankAccountFormErrorMessages } from '../../interfaces/bank-account/bank-account-form-error-messages.interface';
+import { BankAccountFormErrorMessages } from '../../../../interfaces/bank-account/bank-account-form-error-messages.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 export const IBAN_LENGTH = 40;

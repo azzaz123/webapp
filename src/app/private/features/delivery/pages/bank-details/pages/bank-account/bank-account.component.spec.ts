@@ -18,10 +18,10 @@ import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numb
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { of, throwError } from 'rxjs';
-import { DELIVERY_PATHS } from '../../delivery-routing-constants';
-import { BankAccountApiService } from '../../services/api/bank-account-api/bank-account-api.service';
-import { BankAccountService } from '../../services/bank-account/bank-account.service';
-import { MapBankAccountService } from '../../services/bank-account/map-bank-account/map-bank-account.service';
+import { DELIVERY_PATHS } from '../../../../delivery-routing-constants';
+import { BankAccountApiService } from '../../../../services/api/bank-account-api/bank-account-api.service';
+import { BankAccountService } from '../../../../services/bank-account/bank-account.service';
+import { MapBankAccountService } from '../../../../services/bank-account/map-bank-account/map-bank-account.service';
 
 import { BankAccountComponent } from './bank-account.component';
 
