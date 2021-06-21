@@ -42,7 +42,7 @@
           >
           <ng-container *ngIf="searchWithKeyword$ | async">
             <ng-template #slotTemplate let-index>
-              <tsl-sky-shopping [adSlotContainer]="adSlotShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index" [cardType]="listCardType$ | async"></tsl-sky-shopping>
+              <tsl-sky-shopping *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlotContainer]="adSlotShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index" [cardType]="listCardType$ | async"></tsl-sky-shopping>
             </ng-template>
           </ng-container>
           <ng-container *ngIf="device === DevicesType.MOBILE">
