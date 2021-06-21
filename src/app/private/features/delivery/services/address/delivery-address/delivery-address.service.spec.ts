@@ -85,7 +85,7 @@ describe('DeliveryAddressService', () => {
       beforeEach(() => {
         spyOn(deliveryAddressApiService, 'create').and.returnValue(of(null));
 
-        service.updateOrCreate(MOCK_DELIVERY_ADDRESS, true).subscribe();
+        service.create(MOCK_DELIVERY_ADDRESS).subscribe();
       });
 
       it('should call the api service', () => {
@@ -102,7 +102,7 @@ describe('DeliveryAddressService', () => {
         let response: DeliveryAddressError[];
         spyOn(deliveryAddressApiService, 'create').and.returnValue(throwError(MOCK_DELIVERY_ADDRESS_ERRORS));
 
-        service.updateOrCreate(MOCK_DELIVERY_ADDRESS, true).subscribe({
+        service.create(MOCK_DELIVERY_ADDRESS).subscribe({
           error: (deliveryAddressErrors: DeliveryAddressError[]) => {
             response = deliveryAddressErrors;
           },
@@ -120,7 +120,7 @@ describe('DeliveryAddressService', () => {
       beforeEach(() => {
         spyOn(deliveryAddressApiService, 'update').and.returnValue(of(null));
 
-        service.updateOrCreate(MOCK_DELIVERY_ADDRESS, false).subscribe();
+        service.update(MOCK_DELIVERY_ADDRESS).subscribe();
       });
 
       describe('and the petition succeed...', () => {
@@ -139,7 +139,7 @@ describe('DeliveryAddressService', () => {
         let response: DeliveryAddressError[];
         spyOn(deliveryAddressApiService, 'update').and.returnValue(throwError(MOCK_DELIVERY_ADDRESS_ERRORS));
 
-        service.updateOrCreate(MOCK_DELIVERY_ADDRESS, false).subscribe({
+        service.update(MOCK_DELIVERY_ADDRESS).subscribe({
           error: (deliveryAddressErrors: DeliveryAddressError[]) => {
             response = deliveryAddressErrors;
           },
