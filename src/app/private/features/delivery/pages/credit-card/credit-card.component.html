@@ -3,7 +3,8 @@
         <form class="col" *ngIf="!loading; else loadingState" [formGroup]="cardForm" (submit)="onSubmit()">
             <div class="row">
                 <div class="col-md-11 offset-md-1">
-                    <h3 i18n="@@delivery_add_credit_card_title">Add credit card</h3>
+                    <h3 *ngIf="isNewForm" i18n="@@delivery_add_credit_card_title">Add credit card</h3>
+                    <h3 *ngIf="!isNewForm" i18n="@@delivery_edit_credit_card_title">Edit credit card</h3>
                 </div>
             </div>
             <div class="form-group row align-items-center">
