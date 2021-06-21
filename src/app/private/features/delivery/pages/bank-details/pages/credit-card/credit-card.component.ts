@@ -22,7 +22,7 @@ export class CreditCardComponent implements OnInit {
   public comeFromBankDetails = true;
   public formErrorMessages;
 
-  public readonly BANK_DETAILS_URL = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
+  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
 
   constructor(private fb: FormBuilder, private uuidService: UuidService, private router: Router) {}
 

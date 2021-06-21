@@ -37,7 +37,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   };
 
   private readonly formSubmittedEventKey = 'formSubmitted';
-  public readonly BANK_DETAILS_URL = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
+  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
 
   constructor(
     private fb: FormBuilder,

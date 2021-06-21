@@ -13,12 +13,10 @@ import {
   MOCK_BANK_ACCOUNT_INVALID,
 } from '@fixtures/private/delivery/bank-account/bank-account.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numbers-only.directive.module';
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { of, throwError } from 'rxjs';
-import { DELIVERY_PATHS } from '../../../../delivery-routing-constants';
 import { BankAccountApiService } from '../../../../services/api/bank-account-api/bank-account-api.service';
 import { BankAccountService } from '../../../../services/bank-account/bank-account.service';
 import { MapBankAccountService } from '../../../../services/bank-account/map-bank-account/map-bank-account.service';
@@ -177,7 +175,7 @@ describe('BankAccountComponent', () => {
           });
 
           it('should redirect to the bank details page', () => {
-            expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`]);
+            expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
           });
         });
 
@@ -233,7 +231,7 @@ describe('BankAccountComponent', () => {
           });
 
           it('should redirect to the bank details page', () => {
-            expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`]);
+            expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
           });
         });
 

@@ -11,4 +11,15 @@
       color: $blue-grey-3;
     }
   }
+
+  &__back {
+    color: $blue-grey-1;
+    &:hover {
+      text-decoration: none;
+      &,
+      tsl-svg-icon {
+        opacity: 0.8;
+      }
+    }
+  }
 }
