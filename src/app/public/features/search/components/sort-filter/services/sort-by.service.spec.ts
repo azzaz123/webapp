@@ -11,6 +11,10 @@ import { SortByService } from './sort-by.service';
 describe('SortByService', () => {
   let sortByService: SortByService;
   const parametersSubject: ReplaySubject<FilterParameter[]> = new ReplaySubject<FilterParameter[]>();
+  let parameters = [];
+  let getParametersByKeys = (keys: FILTER_QUERY_PARAM_KEY[]) => {
+    return parameters.filter((parameter) => keys.includes(parameter.key));
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,6 +24,7 @@ describe('SortByService', () => {
           provide: FILTER_PARAMETER_STORE_TOKEN,
           useValue: {
             parameters$: parametersSubject.asObservable(),
+            getParametersByKeys: getParametersByKeys,
           },
         },
       ],
@@ -30,8 +35,8 @@ describe('SortByService', () => {
   describe('when filterParameterStore parameters changes', () => {
     describe('and has no parameters', () => {
       it('should update options with sort by default options', () => {
-        const parameters: FilterParameter[] = [];
         spyOn(sortByService['optionsSubject'], 'next');
+
         parametersSubject.next(parameters);
 
         expect(sortByService['optionsSubject'].next).toHaveBeenCalledWith(SORT_BY_DEFAULT_OPTIONS);
@@ -39,8 +44,6 @@ describe('SortByService', () => {
     });
 
     describe('and has parameters', () => {
-      let parameters: FilterParameter[];
-
       describe('and category id matches relevance option availability', () => {
         beforeEach(() => {
           parameters = [
