@@ -104,16 +104,14 @@
     </div>
   </div>
 
-  <div id="conversation-meta" class="conversation-meta d-none d-xl-block">
-    <tsl-sky-wrapper>
-      <div class="card">
-        <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item"
-          [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
-      </div>
-      <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']" [user]="currentConversation.user">
-      </tsl-inbox-item-for-sell>
-      <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
-      <tsl-sky [adSlot]="chatRightAdSlot"></tsl-sky>
-    </tsl-sky-wrapper>
+  <div tslAdSlotGroup id="conversation-meta" class="conversation-meta d-none d-xl-block">
+    <div class="card">
+      <tsl-inbox-user-detail [user]="currentConversation.user" [item]="currentConversation.item"
+        [phoneNumber]="currentConversation.phoneNumber"></tsl-inbox-user-detail>
+    </div>
+    <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']" [user]="currentConversation.user">
+    </tsl-inbox-item-for-sell>
+    <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
+    <tsl-sky [adSlot]="chatRightAdSlot"></tsl-sky>
   </div>
 </div>

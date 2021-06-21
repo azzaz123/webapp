@@ -1,9 +1,9 @@
 <div class="Search"
+  tslAdSlotGroup
   tslInfiniteScroll
   [infiniteScrollDisabled]="(infiniteScrollDisabled$ | async) || (isLoadingPaginationResults$ | async)"
   (scrolled)="scrolled()">
 
-  <tsl-sky-wrapper>
     <div class="Search__filters w-100" [class.Search__filters--opened]="filterOpened">
       <tsl-filters-wrapper (filterOpened)="handleFilterOpened($event)"></tsl-filters-wrapper>
       <tsl-sort-filter></tsl-sort-filter>
@@ -69,6 +69,5 @@
         </ng-container>
       </ng-container>
     </tsl-search-layout>
-  </tsl-sky-wrapper>
 
 </div>

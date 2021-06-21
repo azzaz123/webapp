@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { AdSlotComponent } from './ad-slot.component';
-import { AdSlotWrapperComponent } from './ad-slot-wrapper/ad-slot-wrapper.component';
+import { AdSlotGroupDirective } from './ad-slot-group.directive';
 
 @NgModule({
-  declarations: [AdSlotComponent, AdSlotWrapperComponent],
-  exports: [AdSlotComponent, AdSlotWrapperComponent],
+  declarations: [AdSlotComponent, AdSlotGroupDirective],
+  exports: [AdSlotComponent, AdSlotGroupDirective],
 })
 export class AdSlotModule {}

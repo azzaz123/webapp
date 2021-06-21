@@ -1,14 +1,13 @@
-import { AfterContentInit, AfterViewInit, Component, ContentChildren, QueryList } from '@angular/core';
+import { Directive } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ContentChildren, QueryList } from '@angular/core';
 import { AdsService } from '@core/ads/services';
 import { AdSlotComponent } from '@shared/ads/ad-slot/ad-slot.component';
 import { AdSlotConfiguration } from '@core/ads/models';
 
-@Component({
-  selector: 'tsl-sky-wrapper',
-  templateUrl: './ad-slot-wrapper.component.html',
-  styleUrls: ['./ad-slot-wrapper.component.scss'],
+@Directive({
+  selector: '[tslAdSlotGroup]',
 })
-export class AdSlotWrapperComponent implements AfterContentInit, AfterViewInit {
+export class AdSlotGroupDirective implements AfterContentInit, AfterViewInit {
   @ContentChildren(AdSlotComponent, { descendants: true }) slotsQuery!: QueryList<AdSlotComponent>;
 
   private slotConfigurations: AdSlotConfiguration[];
@@ -25,7 +24,7 @@ export class AdSlotWrapperComponent implements AfterContentInit, AfterViewInit {
 
   public ngAfterViewInit(): void {
     if (this.slotConfigurations.length) {
-      // When handling ads with SRA, we only need to call display once per group.
+      // When handling ads with SRA, we only need to call display once per group, using any of the slots in the group.
       // Check https://developers.google.com/publisher-tag/guides/ad-best-practices for more information
       this.adsService.displayAdBySlotId(this.slotConfigurations[0].id);
     }
