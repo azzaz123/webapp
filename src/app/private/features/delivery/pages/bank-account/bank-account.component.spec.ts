@@ -13,6 +13,7 @@ import {
   MOCK_BANK_ACCOUNT_INVALID,
 } from '@fixtures/private/delivery/bank-account/bank-account.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numbers-only.directive.module';
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
@@ -176,7 +177,7 @@ describe('BankAccountComponent', () => {
           });
 
           it('should redirect to the bank details page', () => {
-            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.BANK_DETAILS]);
+            expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`]);
           });
         });
 
@@ -232,7 +233,7 @@ describe('BankAccountComponent', () => {
           });
 
           it('should redirect to the bank details page', () => {
-            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.BANK_DETAILS]);
+            expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`]);
           });
         });
 

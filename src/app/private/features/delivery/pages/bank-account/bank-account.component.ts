@@ -13,6 +13,7 @@ import { BankAccount } from '../../interfaces/bank-account/bank-account-api.inte
 import { DELIVERY_PATHS } from '../../delivery-routing-constants';
 import { Router } from '@angular/router';
 import { BankAccountFormErrorMessages } from '../../interfaces/bank-account/bank-account-form-error-messages.interface';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 export const IBAN_LENGTH = 40;
 @Component({
@@ -117,7 +118,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
 
           this.showToast(translationKey, 'success');
           this.isNewForm = false;
-          this.router.navigate([DELIVERY_PATHS.BANK_DETAILS]);
+          this.router.navigate([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`]);
         },
         (errors: any) => {
           // TODO: map + handle our custom errors		Date: 2021/06/07
