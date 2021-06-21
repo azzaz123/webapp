@@ -9,7 +9,6 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { SortFilterComponent } from './sort-filter.component';
-import { SELECT_FORM_OPTIONS_CONFIG, SORT_BY } from './sort-filter.config';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
@@ -20,6 +19,8 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ButtonModule } from '@shared/button/button.module';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { SORT_BY, SORT_BY_DEFAULT_OPTIONS } from './services/constants/sort-by-options-constants';
+import { SortByService } from './services/sort-by.service';
 
 @Component({
   selector: 'tsl-select-form',
@@ -67,6 +68,7 @@ describe('SortFilterComponent', () => {
           provide: CookieService,
           useValue: MockCookieService,
         },
+        SortByService,
       ],
     }).compileComponents();
   });
@@ -86,7 +88,7 @@ describe('SortFilterComponent', () => {
     it('should set sort by distance', () => {
       const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
 
-      expect(value.textContent).toBe(SELECT_FORM_OPTIONS_CONFIG[0].label);
+      expect(value.textContent).toBe(component.options[0].label);
     });
 
     it('should buble be closed', () => {
@@ -103,7 +105,7 @@ describe('SortFilterComponent', () => {
 
       beforeEach(() => {
         component.value = validSortByValue;
-        validSortByOption = component.selectFormOptionsConfig.find((option) => option.value === validSortByValue);
+        validSortByOption = component.options.find((option) => option.value === validSortByValue);
         fixture.detectChanges();
       });
 
@@ -123,7 +125,7 @@ describe('SortFilterComponent', () => {
       beforeEach(() => {
         component.value = 'invalid' as SORT_BY;
         fixture.detectChanges();
-        defaultSortByOption = component.selectFormOptionsConfig.find((option) => option.value === defaultSortByValue);
+        defaultSortByOption = component.options.find((option) => option.value === defaultSortByValue);
       });
 
       it('should set sort by the default value', () => {
@@ -145,7 +147,7 @@ describe('SortFilterComponent', () => {
     });
 
     it('should change the value on topbar', () => {
-      const lastOption: SelectFormOption<string> = SELECT_FORM_OPTIONS_CONFIG[SELECT_FORM_OPTIONS_CONFIG.length - 1];
+      const lastOption: SelectFormOption<string> = SORT_BY_DEFAULT_OPTIONS[SORT_BY_DEFAULT_OPTIONS.length - 1];
       selectFilterStub.mockClickOption(lastOption);
 
       fixture.detectChanges();
@@ -156,7 +158,7 @@ describe('SortFilterComponent', () => {
 
     it('should emit the new value to filter parameter store', () => {
       spyOn(navigator, 'navigate');
-      const lastOption: SelectFormOption<string> = SELECT_FORM_OPTIONS_CONFIG[SELECT_FORM_OPTIONS_CONFIG.length - 1];
+      const lastOption: SelectFormOption<string> = SORT_BY_DEFAULT_OPTIONS[SORT_BY_DEFAULT_OPTIONS.length - 1];
       selectFilterStub.mockClickOption(lastOption);
 
       fixture.detectChanges();
@@ -167,7 +169,7 @@ describe('SortFilterComponent', () => {
 
     it('should send default value (null) if it is the first option', () => {
       spyOn(navigator, 'navigate');
-      const lastOption: SelectFormOption<string> = SELECT_FORM_OPTIONS_CONFIG[0];
+      const lastOption: SelectFormOption<string> = SORT_BY_DEFAULT_OPTIONS[0];
       selectFilterStub.mockClickOption(lastOption);
 
       fixture.detectChanges();
