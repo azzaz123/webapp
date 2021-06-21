@@ -313,7 +313,7 @@ describe('BankAccountComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
 
-      expect(el.querySelectorAll(backAnchorSelector).length).toBe(1);
+      expect(el.querySelector(backAnchorSelector)).toBeTruthy();
     });
   });
 
@@ -324,7 +324,7 @@ describe('BankAccountComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
 
-      expect(el.querySelectorAll(backAnchorSelector).length).not.toBe(1);
+      expect(el.querySelector(backAnchorSelector)).toBeFalsy();
     });
   });
 

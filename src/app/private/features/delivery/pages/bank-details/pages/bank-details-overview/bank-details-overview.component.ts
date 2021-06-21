@@ -11,6 +11,8 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { Observable } from 'rxjs';
 import { COLORS } from '@core/colors/colors-constants';
 import { Router } from '@angular/router';
+import { PaymentsCreditCardService } from '@api/payments/cards';
+import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 
 @Component({
   selector: 'tsl-bank-details-overview',
@@ -20,18 +22,22 @@ import { Router } from '@angular/router';
 })
 export class BankDetailsOverviewComponent implements OnInit {
   public bankAccount$: Observable<BankAccount>;
+  public creditCard$: Observable<CreditCard>;
+
   public CREDIT_CARD_FORM_LINK = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}/${DELIVERY_PATHS.CREDIT_CARD}`;
   public BANK_ACCOUNT_FORM_LINK = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}/${DELIVERY_PATHS.BANK_ACCOUNT}`;
 
   constructor(
     private router: Router,
     private bankAccountService: BankAccountService,
+    private paymentsCreditCardService: PaymentsCreditCardService,
     private i18nService: I18nService,
     private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
     this.bankAccount$ = this.bankAccountService.get();
+    this.creditCard$ = this.paymentsCreditCardService.get();
   }
 
   public redirect(URL: string): void {
@@ -62,7 +68,12 @@ export class BankDetailsOverviewComponent implements OnInit {
     });
   }
 
-  private deleteCard(): void {}
+  private deleteCard(): void {
+    this.paymentsCreditCardService.delete().subscribe(
+      () => {},
+      () => {}
+    );
+  }
 
   private deleteBankAccount(): void {
     this.bankAccountService.delete().subscribe(
