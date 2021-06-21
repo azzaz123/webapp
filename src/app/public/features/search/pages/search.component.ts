@@ -40,6 +40,7 @@ import { SearchTrackingEventsService } from '@public/core/services/search-tracki
 import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { debounce } from '@core/helpers/debounce/debounce';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -98,6 +99,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   );
   public isWall$: Observable<boolean> = this.searchService.isWall$;
   public slotsConfig: SlotsConfig;
+  readonly PERMISSIONS = PERMISSIONS;
 
   private resetSearchId = true;
 

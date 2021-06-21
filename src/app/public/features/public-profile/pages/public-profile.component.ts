@@ -16,6 +16,7 @@ import { PublicProfileTrackingEventsService } from '../core/services/public-prof
 import { PublicProfileService } from '../core/services/public-profile.service';
 import { PUBLIC_PROFILE_PATHS } from '../public-profile-routing-constants';
 import { UserService } from '@core/user/user.service';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-public-profile',
@@ -34,6 +35,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   isMobile: boolean;
 
   readonly adSlot: AdSlotConfiguration = PUBLIC_PROFILE_AD;
+  readonly PERMISSIONS = PERMISSIONS;
 
   constructor(
     private route: ActivatedRoute,

@@ -39,6 +39,7 @@ import { of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';
 import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -70,6 +71,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public isConversationChanged: boolean;
   public isTopBarExpanded = false;
   public chatRightAdSlot: AdSlotConfiguration = CHAT_AD_SLOTS;
+
+  readonly PERMISSIONS = PERMISSIONS;
 
   constructor(
     private eventService: EventService,

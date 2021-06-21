@@ -36,7 +36,6 @@ import { ReviewModalComponent } from './modals/review-modal/review-modal.compone
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
 import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
-import { NavLinksComponent } from './nav-links/nav-links.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
 import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';

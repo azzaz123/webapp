@@ -13,18 +13,18 @@
 
     <tsl-search-layout *ngIf="!(searchWithoutResults$ | async)">
       <div top class="d-block h-100 position-relative">
-        <tsl-sky [adSlot]="adSlots.search1"></tsl-sky>
+        <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search1"></tsl-sky>
       </div>
       <div right class="d-flex flex-column h-100">
         <ng-container *ngIf="device === DevicesType.DESKTOP">
           <div class="Search__sky w-100 mb-3">
             <div class="Search__sky-wrapper position-sticky">
-              <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
+              <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search2r"></tsl-sky>
             </div>
           </div>
           <div class="Search__sky w-100">
             <div class="Search__sky-wrapper position-sticky">
-              <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
+              <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search3r"></tsl-sky>
             </div>
           </div>
         </ng-container>
@@ -47,7 +47,7 @@
           </ng-container>
           <ng-container *ngIf="device === DevicesType.MOBILE">
             <ng-template #inlineSlotTemplate>
-              <tsl-sky [adSlot]="adSlots.search2r"></tsl-sky>
+              <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search2r"></tsl-sky>
             </ng-template>
           </ng-container>
         </tsl-public-item-card-list>
@@ -64,7 +64,7 @@
             <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
           </div>
           <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
-            <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
+            <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search3r"></tsl-sky>
           </div>
         </ng-container>
       </ng-container>

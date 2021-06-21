@@ -27,6 +27,7 @@ import { ItemDetailTrackEventsService } from '../core/services/item-detail-track
 import { ItemSocialShareService } from '../core/services/item-social-share/item-social-share.service';
 import { ItemDetail } from '../interfaces/item-detail.interface';
 import { RecommendedItemsInitEventEmitter } from '../interfaces/recommended-items-init-event-emitter.interface';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-item-detail',
@@ -46,6 +47,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   public renderMap = false;
   private subscriptions: Subscription = new Subscription();
   private itemDetail: ItemDetail;
+
+  readonly PERMISSIONS = PERMISSIONS;
 
   constructor(
     private itemDetailStoreService: ItemDetailStoreService,

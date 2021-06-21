@@ -112,6 +112,6 @@
     <tsl-inbox-item-for-sell *ngxPermissionsOnly="['isProfessional']" [user]="currentConversation.user">
     </tsl-inbox-item-for-sell>
     <tsl-inbox-item-detail [item]="currentConversation.item"></tsl-inbox-item-detail>
-    <tsl-sky [adSlot]="chatRightAdSlot"></tsl-sky>
+    <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="chatRightAdSlot"></tsl-sky>
   </div>
 </div>
