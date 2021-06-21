@@ -8,10 +8,10 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { I18nService } from '@core/i18n/i18n.service';
 import { BankAccountService } from '../../../../services/bank-account/bank-account.service';
-import { filter, finalize, pairwise } from 'rxjs/operators';
+import { filter, finalize } from 'rxjs/operators';
 import { BankAccount } from '../../../../interfaces/bank-account/bank-account-api.interface';
 import { DELIVERY_PATHS } from '../../../../delivery-routing-constants';
-import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { BankAccountFormErrorMessages } from '../../../../interfaces/bank-account/bank-account-form-error-messages.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
@@ -29,7 +29,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   public loading = false;
   public isNewForm = true;
   public loadingButton = false;
-  public comeFromBankDetails = true;
+  public showBackArrow = false;
   public maxLengthIBAN: number;
   public formErrorMessages: BankAccountFormErrorMessages = {
     iban: '',
@@ -183,7 +183,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
 
   private checkIfPreviousURLIsBankDetails(): void {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-      this.comeFromBankDetails = event.url === this.BANK_DETAILS_URL;
+      this.showBackArrow = event.url === this.BANK_DETAILS_URL;
     });
   }
 }

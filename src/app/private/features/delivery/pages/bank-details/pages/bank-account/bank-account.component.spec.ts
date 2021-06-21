@@ -1,10 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { NavigationEnd, Router } from '@angular/router';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import {
@@ -16,7 +15,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numbers-only.directive.module';
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { BankAccountApiService } from '../../../../services/api/bank-account-api/bank-account-api.service';
 import { BankAccountService } from '../../../../services/bank-account/bank-account.service';
 import { MapBankAccountService } from '../../../../services/bank-account/map-bank-account/map-bank-account.service';
@@ -25,6 +24,9 @@ import { BankAccountComponent } from './bank-account.component';
 
 describe('BankAccountComponent', () => {
   const messageErrorSelector = '.BankAccount__message--error';
+  const backAnchorSelector = '.BankAccount__back';
+  const routerEvents: Subject<any> = new Subject();
+
   let component: BankAccountComponent;
   let fixture: ComponentFixture<BankAccountComponent>;
   let bankAccountService: BankAccountService;
@@ -34,7 +36,7 @@ describe('BankAccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NumbersOnlyDirectiveModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [ReactiveFormsModule, NumbersOnlyDirectiveModule, HttpClientTestingModule],
       declarations: [BankAccountComponent, ProfileFormComponent, SeparateWordByCharacterPipe],
       providers: [
         FormBuilder,
@@ -57,8 +59,15 @@ describe('BankAccountComponent', () => {
             },
           },
         },
+        {
+          provide: Router,
+          useValue: {
+            navigate() {},
+            events: routerEvents,
+          },
+        },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
@@ -294,6 +303,28 @@ describe('BankAccountComponent', () => {
       it('should show errors in the template', () => {
         expect(el.querySelectorAll(messageErrorSelector).length).toBe(1);
       });
+    });
+  });
+
+  describe('when the user come from bank details...', () => {
+    it('should show the back anchor', () => {
+      routerEvents.next(new NavigationEnd(1, component.BANK_DETAILS_URL, 'url2'));
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(el.querySelectorAll(backAnchorSelector).length).toBe(1);
+    });
+  });
+
+  describe(`when the user don't come from bank details...`, () => {
+    it('should NOT show the back anchor', () => {
+      routerEvents.next(new NavigationEnd(1, '', 'url2'));
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(el.querySelectorAll(backAnchorSelector).length).not.toBe(1);
     });
   });
 
