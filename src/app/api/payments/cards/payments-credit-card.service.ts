@@ -4,7 +4,7 @@ import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PaymentsCreditCardHttpService } from './http/payments-credit-card-http.service';
-import { mapPaymentsCreditCardToCreditCard } from './mappers/payments-credit-card.mapper';
+import { mapPaymentsCreditCardToCreditCard } from './mappers/responses/payments-credit-card.mapper';
 
 @Injectable()
 export class PaymentsCreditCardService {
