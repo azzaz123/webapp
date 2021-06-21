@@ -1462,7 +1462,7 @@ describe('ListComponent', () => {
           }));
         });
       });
-      describe('and has subscription permissions', () => {
+      describe('and has not subscription permissions', () => {
         beforeEach(() => {
           permissionService.removePermission(PERMISSIONS.subscriptions);
         });
