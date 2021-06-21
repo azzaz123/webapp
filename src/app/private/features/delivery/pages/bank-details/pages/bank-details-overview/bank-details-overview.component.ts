@@ -40,9 +40,10 @@ export class BankDetailsOverviewComponent implements OnInit {
 
   public openDeleteBankAccountModal(): void {
     this.generateConfirmationModalRef({
-      description: this.i18nService.translate(TRANSLATION_KEY.ACTIVE),
-      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.ACTIVE),
-      cancelMessage: this.i18nService.translate(TRANSLATION_KEY.ACTIVE),
+      title: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_POPUP_TITLE_DELETE),
+      description: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_POPUP_DESCRIPTION_DELETE),
+      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_POPUP_ACCEPT_BUTTON_DELETE),
+      cancelMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_POPUP_CANCEL_BUTTON_DELETE),
       confirmColor: COLORS.NEGATIVE_MAIN,
     }).result.then(() => {
       this.deleteBankAccount();
@@ -51,9 +52,10 @@ export class BankDetailsOverviewComponent implements OnInit {
 
   public openDeleteCardModal(): void {
     this.generateConfirmationModalRef({
-      description: this.i18nService.translate(TRANSLATION_KEY.ACTIVE),
-      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.ACTIVE),
-      cancelMessage: this.i18nService.translate(TRANSLATION_KEY.ACTIVE),
+      title: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_TITLE_DELETE),
+      description: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_DESCRIPTION_DELETE),
+      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_ACCEPT_BUTTON_DELETE),
+      cancelMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_CANCEL_BUTTON_DELETE),
       confirmColor: COLORS.NEGATIVE_MAIN,
     }).result.then(() => {
       this.deleteCard();

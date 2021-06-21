@@ -139,6 +139,14 @@ export enum TRANSLATION_KEY {
   DELIVERY_ADDRESS_MISSING_INFO_ERROR,
   DELIVERY_ADDRESS_COUNTRY_SELECTION_CANCEL_BUTTON,
   CANCEL_BUTTON,
+  DELIVERY_BANK_ACCOUNT_POPUP_TITLE_DELETE,
+  DELIVERY_BANK_ACCOUNT_POPUP_DESCRIPTION_DELETE,
+  DELIVERY_BANK_ACCOUNT_POPUP_ACCEPT_BUTTON_DELETE,
+  DELIVERY_BANK_ACCOUNT_POPUP_CANCEL_BUTTON_DELETE,
+  DELIVERY_CREDIT_CARD_POPUP_TITLE_DELETE,
+  DELIVERY_CREDIT_CARD_POPUP_DESCRIPTION_DELETE,
+  DELIVERY_CREDIT_CARD_POPUP_ACCEPT_BUTTON_DELETE,
+  DELIVERY_CREDIT_CARD_POPUP_CANCEL_BUTTON_DELETE,
   // TODO: Remaining keys with no explicit usage. Some of them might come from the backend so we need to keep it's string value
   //       We leave cleaning this keys after Italy release, as some of them come from some legacy parts (chat, calls..)
   //       and it is really difficult to follow the keys as this part needs a refactor
