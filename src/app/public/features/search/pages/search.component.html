@@ -61,7 +61,7 @@
             <tsl-button id="btn-load-more" (click)="loadMoreProducts()" i18n="@@web_search_view_more_products">View more products</tsl-button>
           </div>
           <div *ngIf="device === DevicesType.DESKTOP && (searchWithKeyword$ | async)" class="row justify-content-center my-4">
-            <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
+            <tsl-sky-slot-group-shopping *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
           </div>
           <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
             <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search3r"></tsl-sky>
