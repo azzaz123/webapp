@@ -138,6 +138,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
       .pipe(filter((itemDetail: ItemDetail) => !!itemDetail))
       .subscribe((itemDetail: ItemDetail) => {
         if (!this.itemDetail) {
+          this.adsService.setAdKeywords({ category: itemDetail.item.categoryId.toString() });
           this.initializeItemRecommendations(itemId, itemDetail.item.categoryId);
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
           this.trackViewEvents(itemDetail);
