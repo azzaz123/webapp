@@ -32,7 +32,7 @@
             <div class="row">
                 <tsl-credit-card-info  *ngIf="bankAccount$ | async as bankAccount" 
                     [ownerName]="bankAccount.first_name + ' ' + bankAccount.last_name"
-                    [numberCard]="bankAccount.iban"
+                    [numberCard]="bankAccount.iban.slice(bankAccount.iban.length - 4, bankAccount.iban.length)"
                     [isBankAccount]="true"
                     (changeCardClick)="redirect(BANK_ACCOUNT_FORM_LINK)"
                     (deleteCardClick)="openDeleteBankAccountModal()"

@@ -27,7 +27,6 @@ export class CreditCardInfoComponent implements OnChanges {
 
   ngOnChanges() {
     this.isCardWithIcon = BRAND_CARDS_WITH_SVG.includes(this.brand as BRAND_CARDS);
-    this.numberCard = this.numberCard.substr(-5) || null;
     this.checkCreditCardBrandSrc();
   }
 
