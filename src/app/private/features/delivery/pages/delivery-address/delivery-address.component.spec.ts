@@ -334,7 +334,7 @@ describe('DeliveryAddressComponent', () => {
 
           it('should show error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
+              text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
               type: 'error',
             });
           });
@@ -366,9 +366,9 @@ describe('DeliveryAddressComponent', () => {
             expect(component.deliveryAddressForm.pending).toBe(true);
           });
 
-          it('should show error toast with generic error', () => {
+          it('should show error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR),
+              text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
               type: 'error',
             });
           });

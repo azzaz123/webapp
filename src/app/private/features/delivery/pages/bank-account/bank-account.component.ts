@@ -27,6 +27,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public bankAccountForm: FormGroup;
   public loading = false;
+  public isNewForm = true;
   public loadingButton = false;
   public maxLengthIBAN: number;
   public formErrorMessages: BankAccountFormErrorMessages = {
@@ -34,7 +35,6 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     first_name: '',
   };
 
-  private isNewForm = true;
   private readonly formSubmittedEventKey = 'formSubmitted';
 
   constructor(
