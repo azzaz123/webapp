@@ -45,15 +45,15 @@ export class BankDetailsOverviewComponent implements OnInit {
     this.router.navigate([URL]);
   }
 
-  public formattedDateCreditCard(expirationDateCard: Date): string {
+  public formattedCreditCardDate(expirationDateCard: Date): string {
     return moment(expirationDateCard).format('MM/YYYY');
   }
 
-  public formattedIBANBankAccount(IBANBankAccount: string): string {
+  public formattedBankAccountIBAN(IBANBankAccount: string): string {
     return IBANBankAccount.slice(IBANBankAccount.length - 4, IBANBankAccount.length);
   }
 
-  public formattedNameBankAccount(bankAccount: BankAccount): string {
+  public formattedBankAccountName(bankAccount: BankAccount): string {
     return `${bankAccount.first_name} ${bankAccount.last_name}`;
   }
 

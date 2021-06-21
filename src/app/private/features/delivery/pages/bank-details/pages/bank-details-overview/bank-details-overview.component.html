@@ -15,7 +15,7 @@
                 <tsl-credit-card-info *ngIf="creditCard$ | async as creditCard" 
                     [brand]="creditCard.brand"
                     [numberCard]="creditCard.lastFourDigits"
-                    [expireDate]="formattedDateCreditCard(creditCard.expirationDate)"
+                    [expireDate]="formattedCreditCardDate(creditCard.expirationDate)"
                     [ownerName]="creditCard.ownerFullName"
                     [hideEdit]="true"
                     (deleteCardClick)="openDeleteCardModal()"
@@ -36,8 +36,8 @@
             </div>
             <div class="row">
                 <tsl-credit-card-info  *ngIf="bankAccount$ | async as bankAccount" 
-                    [ownerName]="formattedNameBankAccount(bankAccount)"
-                    [numberCard]="formattedIBANBankAccount(bankAccount.iban)"
+                    [ownerName]="formattedBankAccountName(bankAccount)"
+                    [numberCard]="formattedBankAccountIBAN(bankAccount.iban)"
                     [isBankAccount]="true"
                     (changeCardClick)="redirect(BANK_ACCOUNT_FORM_LINK)"
                     (deleteCardClick)="openDeleteBankAccountModal()"

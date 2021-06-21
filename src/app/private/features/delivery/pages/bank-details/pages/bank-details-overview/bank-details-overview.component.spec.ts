@@ -85,6 +85,16 @@ describe('BankDetailsOverviewComponent', () => {
     it('should NOT should the add credit card', () => {
       expect(de.query(By.css(addCreditCardSelector))).toBeFalsy();
     });
+
+    describe('when clicking into the delete credit card button...', () => {
+      describe('and we accept the confirmation modal', () => {
+        it('should delete the credit card', () => {});
+      });
+
+      describe(`and we don't accept the confirmation modal`, () => {
+        it('should NOT delete the credit card', () => {});
+      });
+    });
   });
 
   describe(`when we don't have credit card...`, () => {
@@ -100,6 +110,10 @@ describe('BankDetailsOverviewComponent', () => {
 
     it('should should the add credit card', () => {
       expect(de.query(By.css(addCreditCardSelector))).toBeTruthy();
+    });
+
+    describe('when clicking to the add credit card button...', () => {
+      it('should redirect to the credit card form', () => {});
     });
   });
 
@@ -117,6 +131,20 @@ describe('BankDetailsOverviewComponent', () => {
     it('should NOT should the add bank account card', () => {
       expect(de.query(By.css(addBankAccountSelector))).toBeFalsy();
     });
+
+    describe('when clicking to the edit/change bank account button...', () => {
+      it('should redirect to the bank account form', () => {});
+    });
+
+    describe('when clicking into the delete bank account button...', () => {
+      describe('and we accept the confirmation modal', () => {
+        it('should delete the bank account', () => {});
+      });
+
+      describe(`and we don't accept the confirmation modal`, () => {
+        it('should NOT delete the bank account', () => {});
+      });
+    });
   });
 
   describe(`when we don't have bank account...`, () => {
@@ -133,5 +161,25 @@ describe('BankDetailsOverviewComponent', () => {
     it('should should the add bank account card', () => {
       expect(de.query(By.css(addBankAccountSelector))).toBeTruthy();
     });
+
+    describe('when clicking to the add bank account button...', () => {
+      it('should redirect to the bank account form', () => {});
+    });
+  });
+
+  describe('when redirecting the user...', () => {
+    it('should navigate to the correct URL', () => {});
+  });
+
+  describe('when formatting the credit card date', () => {
+    it('should return the date formatted by MM/YYYY', () => {});
+  });
+
+  describe('when formatting the bank account owner name and surname', () => {
+    it('should return the name and the surname together', () => {});
+  });
+
+  describe('when formatting the bank account IBAN', () => {
+    it('should return the last four digits', () => {});
   });
 });
