@@ -16,20 +16,22 @@ import { ComplexSelectValue } from '../select/types/complex-select-value';
   ],
 })
 export class MultiSelectFormComponent extends AbstractFormComponent<ComplexSelectValue> {
-  @Input() options: [{ text: string; isChecked: boolean }];
+  @Input() options: string[];
   @Input() isDisabled: boolean = false;
-  public selectedOptions: [] = [];
-  /* public selected: boolean = true;
-  public selectedOptions: [{ text: string; isChecked: boolean }] = [{text:null, isChecked:null}]; */
+  public selectedOptions: string[] = [];
 
   public handleOptionClick(value: string): void {
-    this.filterSelectedOptions(value);
     this.writeValue(value);
-    this.onChange(this.selectedOptions);
   }
 
-  private filterSelectedOptions(value: string): void {
-    if (this.selectedOptions.includes(value)) return;
-    this.selectedOptions.push(value);
+  public handleSelectedOption(event) {
+    const { option, isChecked } = event;
+    if (isChecked) {
+      this.selectedOptions.push(option);
+      this.onChange(this.selectedOptions);
+    } else {
+      const index = this.selectedOptions.indexOf(option);
+      this.selectedOptions.splice(index, 1);
+    }
   }
 }

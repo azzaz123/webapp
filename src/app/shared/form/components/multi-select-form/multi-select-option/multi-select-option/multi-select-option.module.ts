@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { FormsModule } from '@angular/forms';
 import { MultiSelectOptionComponent } from './multi-select-option.component';
 
 @NgModule({
-  imports: [SvgIconModule, CommonModule],
+  imports: [FormsModule],
   declarations: [MultiSelectOptionComponent],
   exports: [MultiSelectOptionComponent],
 })

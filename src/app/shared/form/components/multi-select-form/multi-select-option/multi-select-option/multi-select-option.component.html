@@ -1,4 +1,2 @@
-<span class="SelectOption__label" [ngClass]="{'selected': isChecked}">#{{option}}</span>
-<button type="button" >
-  <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
-</button>
+<span class="SelectOption__label" >#{{option}}</span>
+<input type="checkbox" [(ngModel)]="checked" (change)="toggleCheckbox($event)"/>

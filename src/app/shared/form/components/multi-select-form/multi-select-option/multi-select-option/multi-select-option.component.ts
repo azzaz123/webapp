@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'tsl-multi-select-option',
@@ -8,8 +8,19 @@ import { Component, Input, OnInit } from '@angular/core';
 export class MultiSelectOptionComponent implements OnInit {
   @Input() option: string;
   @Input() isChecked: boolean;
+  @Output() toggleOnChange: EventEmitter<{ option: string; isChecked: boolean }> = new EventEmitter<{
+    option: string;
+    isChecked: boolean;
+  }>();
+
+  public checked = false;
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  toggleCheckbox($event) {
+    const isChecked = $event.target.checked;
+    this.toggleOnChange.emit({ option: this.option, isChecked });
+  }
 }
