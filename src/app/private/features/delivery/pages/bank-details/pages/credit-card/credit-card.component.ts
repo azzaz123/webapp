@@ -1,7 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NavigationEnd, Router } from '@angular/router';
 import { UuidService } from '@core/uuid/uuid.service';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-credit-card',
@@ -15,17 +19,27 @@ export class CreditCardComponent implements OnInit {
   public loading = false;
   public isNewForm = true;
   public loadingButton = false;
+  public comeFromBankDetails = true;
   public formErrorMessages;
 
-  constructor(private fb: FormBuilder, private uuidService: UuidService) {}
+  public readonly BANK_DETAILS_URL = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
+
+  constructor(private fb: FormBuilder, private uuidService: UuidService, private router: Router) {}
 
   ngOnInit(): void {
+    this.checkIfPreviousURLIsBankDetails();
     this.buildForm();
   }
 
   public initForm(): void {}
 
   public onSubmit(): void {}
+
+  private checkIfPreviousURLIsBankDetails(): void {
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+      this.comeFromBankDetails = event.url === this.BANK_DETAILS_URL;
+    });
+  }
 
   private buildForm(): void {
     this.cardForm = this.fb.group({
