@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'tsl-multi-select-option',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./multi-select-option.component.scss'],
 })
 export class MultiSelectOptionComponent implements OnInit {
+  @Input() option: string;
+  @Input() isChecked: boolean;
+
   constructor() {}
 
   ngOnInit(): void {}
