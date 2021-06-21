@@ -39,7 +39,14 @@ import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-m
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
 import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
-import { DateCalendarPipe, DateUntilDayPipe, LinkTransformPipe, WebSlugConverterPipe, UserProfileRoutePipe } from './pipes';
+import {
+  DateCalendarPipe,
+  DateUntilDayPipe,
+  LinkTransformPipe,
+  WebSlugConverterPipe,
+  UserProfileRoutePipe,
+  ItemDetailRoutePipe,
+} from './pipes';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
@@ -154,6 +161,7 @@ import { CreditCardInfoModule } from './credit-card-info/credit-card-info.module
     LinkTransformPipe,
     WebSlugConverterPipe,
     UserProfileRoutePipe,
+    ItemDetailRoutePipe,
     PreventDoubleClickDirective,
     ProBadgeModule,
     DateUntilDayPipe,
@@ -218,6 +226,7 @@ import { CreditCardInfoModule } from './credit-card-info/credit-card-info.module
     LinkTransformPipe,
     WebSlugConverterPipe,
     UserProfileRoutePipe,
+    ItemDetailRoutePipe,
     PreventDoubleClickDirective,
     DateUntilDayPipe,
     DateCalendarPipe,

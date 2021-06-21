@@ -23,6 +23,7 @@ export class ItemCardWideComponent {
   constructor(public typeCheckService: TypeCheckService, public deviceDetectorService: DeviceDetectorService) {}
 
   public toggleItemFavorite(event: Event): void {
+    event.preventDefault();
     event.stopPropagation();
     this.toggleFavourite.emit();
   }
