@@ -31,9 +31,9 @@
             <div class="d-flex flex-column">
                 <span class="ItemCardWide__title d-inline-block text-truncate w-100" >{{item.title}}</span>
                 <tsl-item-extra-info
-                    *ngIf="itemExtraInfo?.length > 0"
+                    *ngIf="item.specs?.length > 0"
                     class="ItemCardWide__extraInfo d-block mt-1"
-                    [extraInfo]="itemExtraInfo">
+                    [extraInfo]="item.specs">
                 </tsl-item-extra-info>
                 <span *ngIf="item.description" class="ItemCardWide__description mt-2">{{item.description}}</span>
             </div>
