@@ -8,7 +8,6 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AD_PUBLIC_SEARCH } from './search-ads.config';
 
 @Injectable()
 export class SearchAdsService {
@@ -21,10 +20,6 @@ export class SearchAdsService {
 
   public init(): void {
     this.subscription.add(this.setAdKeywordsObservable());
-  }
-
-  public setSlots(): void {
-    this.adsService.setSlots([AD_PUBLIC_SEARCH.search1, AD_PUBLIC_SEARCH.search2r, AD_PUBLIC_SEARCH.search3r]);
   }
 
   public close(): void {

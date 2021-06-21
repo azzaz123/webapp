@@ -11,7 +11,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AdSlotConfiguration } from '@core/ads/models';
-import { AdsService } from '@core/ads/services';
 import { EventService } from '@core/event/event.service';
 import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 import { RealTimeService } from '@core/message/real-time.service';
@@ -80,7 +79,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     private modalService: NgbModal,
     private userService: UserService,
     private analyticsService: AnalyticsService,
-    private adsService: AdsService,
     private momentCalendarSpecService: MomentCalendarSpecService
   ) {}
 
@@ -89,7 +87,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   ngOnInit() {
-    this.adsService.setSlots([this.chatRightAdSlot]);
     this.isEndOfConversation = true;
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: InboxMessage) => {
       this.isConversationChanged = true;

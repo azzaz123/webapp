@@ -18,7 +18,7 @@ import { ClickedItemCard } from '@public/shared/components/item-card-list/interf
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
 import { combineLatest, Observable, Subscription } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { ADS_ITEM_DETAIL, FactoryAdAffiliationSlotConfiguration, ItemDetailAdSlotsConfiguration } from '../core/ads/item-detail-ads.config';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
@@ -135,7 +135,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
       .pipe(filter((itemDetail: ItemDetail) => !!itemDetail))
       .subscribe((itemDetail: ItemDetail) => {
         if (!this.itemDetail) {
-          this.setAdSlot(itemDetail);
           this.initializeItemRecommendations(itemId, itemDetail.item.categoryId);
           this.itemSocialShareService.initializeItemMetaTags(itemDetail.item);
           this.trackViewEvents(itemDetail);
@@ -174,16 +173,6 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
         this.itemDetailTrackEventsService.trackViewOthersCGDetailEvent(item, user);
       }
     }
-  }
-
-  private setAdSlot({ item }: ItemDetail): void {
-    this.adsService.setAdKeywords({ category: item.categoryId.toString() });
-    this.adsService.setSlots([
-      this.adsSlotsItemDetail.item1,
-      this.adsSlotsItemDetail.item2l,
-      this.adsSlotsItemDetail.item3r,
-      ...this.adsAffiliationSlotConfiguration,
-    ]);
   }
 
   get itemDetail$(): Observable<ItemDetail> {

@@ -45,11 +45,6 @@ export class AdsService {
     this.setSlotsSubject.next(adSlots);
   }
 
-  public addSlots(adSlots: AdSlotConfiguration[]): void {
-    const actualSlots: AdSlotConfiguration[] = this.setSlotsSubject.getValue();
-    this.setSlotsSubject.next([...actualSlots, ...adSlots]);
-  }
-
   public setAdKeywords(adKeywords: AdKeyWords): void {
     this.googlePublisherTagService.setAdKeywords(adKeywords);
   }

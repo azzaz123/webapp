@@ -144,7 +144,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
     this.searchService.init();
     this.searchAdsService.init();
-    this.searchAdsService.setSlots();
 
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
