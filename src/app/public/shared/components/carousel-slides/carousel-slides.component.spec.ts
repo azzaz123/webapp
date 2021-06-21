@@ -240,10 +240,12 @@ describe('SlidesCarouselComponent', () => {
 
       controlElements.forEach((e: HTMLInputElement) => {
         const event = new Event('click');
+        spyOn(event, 'preventDefault');
         spyOn(event, 'stopPropagation');
 
         e.dispatchEvent(event);
 
+        expect(event.preventDefault).toHaveBeenCalledTimes(1);
         expect(event.stopPropagation).toHaveBeenCalledTimes(1);
       });
     });

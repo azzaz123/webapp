@@ -1,26 +1,35 @@
 @import '~style/common';
 
-$toolbar-height: 70px;
+$bars-height: 70px;
+$content-z-index: 11;
+$bars-z-index: $content-z-index + 1;
 
 .SelectFilterTemplate {
-  &__toolbar {
-    height: $toolbar-height;
-  }
+  position: absolute;
+  background: $white;
+  overflow: auto;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
 
-  &--open {
-    position: absolute;
-    background: $white;
-    top: 0;
+  &__toolbar,
+  &__bottombar {
+    position: sticky;
+    height: $bars-height;
+    z-index: $bars-z-index;
+    background-color: $white;
     right: 0;
     left: 0;
-    bottom: 0;
-    overflow: hidden;
-    z-index: 10;
   }
 
-  &__content--open {
-    max-height: calc(100% - #{$toolbar-height});
-    overflow-y: scroll;
+  &__toolbar {
+    top: 0;
+  }
+
+  &__bottombar {
+    bottom: 0;
   }
 
   &__title {

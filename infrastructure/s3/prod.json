@@ -1,7 +1,8 @@
 {
   "Parameters": {
     "BucketNameES": "web-es.wallapop.com",
-    "BucketNameEN": "web-en.wallapop.com"
+    "BucketNameEN": "web-en.wallapop.com",
+    "BucketNameIT": "web-it.wallapop.com"
   },
   "Tags": {
     "Project": "webapp",
