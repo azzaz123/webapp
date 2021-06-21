@@ -1,0 +1,1 @@
+export enum PAYMENTS_CARDS_ERROR_CODES {}
