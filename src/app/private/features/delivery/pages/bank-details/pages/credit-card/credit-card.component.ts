@@ -19,7 +19,7 @@ export class CreditCardComponent implements OnInit {
   public loading = false;
   public isNewForm = true;
   public loadingButton = false;
-  public comeFromBankDetails = true;
+  public showBackArrow = false;
   public formErrorMessages;
 
   public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
@@ -37,7 +37,7 @@ export class CreditCardComponent implements OnInit {
 
   private checkIfPreviousURLIsBankDetails(): void {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-      this.comeFromBankDetails = event.url === this.BANK_DETAILS_URL;
+      this.showBackArrow = event.url === this.BANK_DETAILS_URL;
     });
   }
 
