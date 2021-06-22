@@ -164,11 +164,13 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   }
 
   public onAttach(): void {
+    this.searchAdsService.refreshSlots();
     this.componentAttached = true;
     this.resetSearchId = true;
   }
 
   public onDetach(): void {
+    this.searchAdsService.clearSlots();
     this.componentAttached = false;
   }
 
