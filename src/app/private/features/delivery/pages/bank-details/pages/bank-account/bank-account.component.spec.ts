@@ -17,9 +17,9 @@ import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numb
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { of, Subject, throwError } from 'rxjs';
-import { BankAccountApiService } from '../../../../services/api/bank-account-api/bank-account-api.service';
-import { BankAccountService } from '../../../../services/bank-account/bank-account.service';
-import { MapBankAccountService } from '../../../../services/bank-account/map-bank-account/map-bank-account.service';
+import { BankAccountApiService } from '@private/features/delivery/services/api/bank-account-api/bank-account-api.service';
+import { BankAccountService } from '@private/features/delivery/services/bank-account/bank-account.service';
+import { MapBankAccountService } from '@private/features/delivery/services/bank-account/map-bank-account/map-bank-account.service';
 import { Location } from '@angular/common';
 import {
   FirstNameIsInvalidError,
@@ -27,7 +27,7 @@ import {
   LastNameIsInvalidError,
   PlatformResponseIsInvalidError,
   UniqueBankAccountByUserError,
-} from '../../../../errors/classes/bank-account';
+} from '@private/features/delivery/errors/classes/bank-account';
 
 import { BankAccountComponent } from './bank-account.component';
 
