@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -51,8 +51,11 @@ describe('BankDetailsOverviewComponent', () => {
           provide: BankAccountService,
           useValue: {
             delete() {},
-            get() {
+            get bankAccount$() {
               return bankAccountSubjectMock;
+            },
+            get() {
+              return of(MOCK_BANK_ACCOUNT);
             },
           },
         },
@@ -60,8 +63,11 @@ describe('BankDetailsOverviewComponent', () => {
           provide: PaymentsCreditCardService,
           useValue: {
             delete() {},
-            get() {
+            get creditCard$() {
               return creditCardSubjectMock;
+            },
+            get() {
+              return of(mockCreditCard);
             },
           },
         },
@@ -88,6 +94,23 @@ describe('BankDetailsOverviewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('ngOnInit', () => {
+    beforeEach(() => {
+      spyOn(paymentsCreditCardService, 'get').and.returnValue(of(mockCreditCard));
+      spyOn(bankAccountService, 'get').and.returnValue(of(MOCK_BANK_ACCOUNT));
+
+      component.ngOnInit();
+    });
+
+    it('should get the credit card', () => {
+      expect(paymentsCreditCardService.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should get the bank account', () => {
+      expect(bankAccountService.get).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('when we have credit card...', () => {
@@ -124,11 +147,9 @@ describe('BankDetailsOverviewComponent', () => {
             expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
           });
 
-          it('should call the delete credit card service', fakeAsync(() => {
-            tick();
-
+          it('should call the delete credit card service', () => {
             expect(paymentsCreditCardService.delete).toHaveBeenCalled();
-          }));
+          });
 
           it('should show a succeed toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
@@ -150,11 +171,9 @@ describe('BankDetailsOverviewComponent', () => {
             expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
           });
 
-          it('should call the delete credit card service', fakeAsync(() => {
-            tick();
-
+          it('should call the delete credit card service', () => {
             expect(paymentsCreditCardService.delete).toHaveBeenCalled();
-          }));
+          });
 
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
@@ -178,11 +197,9 @@ describe('BankDetailsOverviewComponent', () => {
           expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
         });
 
-        it('should NOT call the delete credit card service', fakeAsync(() => {
-          tick();
-
+        it('should NOT call the delete credit card service', () => {
           expect(bankAccountService.delete).not.toHaveBeenCalled();
-        }));
+        });
       });
     });
   });
@@ -263,11 +280,9 @@ describe('BankDetailsOverviewComponent', () => {
             expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
           });
 
-          it('should call the delete bank account service', fakeAsync(() => {
-            tick();
-
+          it('should call the delete bank account service', () => {
             expect(bankAccountService.delete).toHaveBeenCalled();
-          }));
+          });
 
           it('should show a succeed toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
@@ -289,11 +304,9 @@ describe('BankDetailsOverviewComponent', () => {
             expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
           });
 
-          it('should call the delete bank account service', fakeAsync(() => {
-            tick();
-
+          it('should call the delete bank account service', () => {
             expect(bankAccountService.delete).toHaveBeenCalled();
-          }));
+          });
 
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
@@ -317,11 +330,9 @@ describe('BankDetailsOverviewComponent', () => {
           expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
         });
 
-        it('should NOT call the delete bank account service', fakeAsync(() => {
-          tick();
-
+        it('should NOT call the delete bank account service', () => {
           expect(bankAccountService.delete).not.toHaveBeenCalled();
-        }));
+        });
       });
     });
   });

@@ -39,8 +39,10 @@ export class BankDetailsOverviewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.bankAccount$ = this.bankAccountService.get();
-    this.creditCard$ = this.paymentsCreditCardService.get();
+    this.getBankAccountAndCreditCard();
+
+    this.bankAccount$ = this.bankAccountService.bankAccount$;
+    this.creditCard$ = this.paymentsCreditCardService.creditCard$;
   }
 
   public redirect(URL: string): void {
@@ -87,6 +89,11 @@ export class BankDetailsOverviewComponent implements OnInit {
       },
       () => {}
     );
+  }
+
+  private getBankAccountAndCreditCard(): void {
+    this.bankAccountService.get().subscribe();
+    this.paymentsCreditCardService.get().subscribe();
   }
 
   private deleteCard(): void {
