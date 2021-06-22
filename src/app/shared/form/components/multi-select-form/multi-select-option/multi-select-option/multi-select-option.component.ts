@@ -1,27 +1,20 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { MultiSelectFormOption } from '../../multi-select-form.component';
 
 @Component({
   selector: 'tsl-multi-select-option',
   templateUrl: './multi-select-option.component.html',
   styleUrls: ['./multi-select-option.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MultiSelectOptionComponent implements OnInit {
-  @Input() option: string;
-  @Input() isChecked: boolean;
+export class MultiSelectOptionComponent {
+  @Input() option: MultiSelectFormOption;
   @Input() isDisabled: boolean;
-  @Output() toggleOnChange: EventEmitter<{ option: string; isChecked: boolean }> = new EventEmitter<{
-    option: string;
-    isChecked: boolean;
-  }>();
-
-  public checked = false;
+  @Output() toggleOnChange: EventEmitter<MultiSelectFormOption> = new EventEmitter<MultiSelectFormOption>();
 
   constructor() {}
 
-  ngOnInit(): void {}
-
   toggleCheckbox($event) {
-    const isChecked = $event.target.checked;
-    this.toggleOnChange.emit({ option: this.option, isChecked });
+    this.toggleOnChange.emit(this.option);
   }
 }

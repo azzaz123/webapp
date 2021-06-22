@@ -38,8 +38,8 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, take, tap } from 'rxjs/operators';
+import { fromEvent, Observable, of, Subject } from 'rxjs';
+import { debounceTime, flatMap, map, mergeMap, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -116,7 +116,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
-
+  public options$ = of([
+    { label: 'aa', sublabel: 1, value: 'aa' },
+    { label: 'bb', sublabel: 2, value: 'bb' },
+    { label: 'cc', sublabel: 1, value: 'cc' },
+    { label: 'dd', sublabel: 2, value: 'dd' },
+    { label: 'ee', sublabel: 1, value: 'ee' },
+    { label: 'ff', sublabel: 2, value: 'ff' },
+  ]);
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -200,6 +207,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         gender: [{ value: null, disabled: true }, [Validators.required]],
         condition: [null],
       }),
+      hashtagSuggestors: ['aa'],
     });
   }
 
@@ -381,6 +389,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onSubmit(): void {
+    console.log('form', this.uploadForm);
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {

@@ -1,5 +1,3 @@
-<div *ngFor="let option of options" class="SelectForm__option px-3 w-100 h-30" >
-  
-    <tsl-multi-select-option [option]="option.text" [isDisabled]="isDisabled" (toggleOnChange)="handleSelectedOption($event)" (click)="handleOptionClick(option.text, $event)"></tsl-multi-select-option>
-  
+<div *ngFor="let option of extendedOptions" class="SelectForm__option px-3 w-100 h-30" >
+    <tsl-multi-select-option [option]="option" [isDisabled]="isDisabled" (toggleOnChange)="handleSelectedOption($event)"></tsl-multi-select-option>
 </div>
