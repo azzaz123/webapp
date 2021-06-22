@@ -1,19 +1,27 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import { mockCreditCard } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import { PaymentsCreditCardService } from '@api/payments/cards';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { I18nService } from '@core/i18n/i18n.service';
 import { MOCK_BANK_ACCOUNT } from '@fixtures/private/delivery/bank-account/bank-account.fixtures.spec';
 import { BankAccount } from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
 import { BankAccountService } from '@private/features/delivery/services/bank-account/bank-account.service';
 import { AddCreditCardComponent } from '@shared/add-credit-card/add-credit-card.component';
 import { CreditCardInfoComponent } from '@shared/credit-card-info/credit-card-info.component';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
+
+import * as moment from 'moment';
 
 import { BankDetailsOverviewComponent } from './bank-details-overview.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('BankDetailsOverviewComponent', () => {
   const creditCardInfoSelector = '#creditCard';
@@ -28,6 +36,10 @@ describe('BankDetailsOverviewComponent', () => {
   let fixture: ComponentFixture<BankDetailsOverviewComponent>;
   let bankAccountService: BankAccountService;
   let paymentsCreditCardService: PaymentsCreditCardService;
+  let toastService: ToastService;
+  let i18nService: I18nService;
+  let modalService: NgbModal;
+  let router: Router;
   let de: DebugElement;
 
   beforeEach(async () => {
@@ -38,6 +50,7 @@ describe('BankDetailsOverviewComponent', () => {
         {
           provide: BankAccountService,
           useValue: {
+            delete() {},
             get() {
               return bankAccountSubjectMock;
             },
@@ -46,12 +59,14 @@ describe('BankDetailsOverviewComponent', () => {
         {
           provide: PaymentsCreditCardService,
           useValue: {
+            delete() {},
             get() {
               return creditCardSubjectMock;
             },
           },
         },
         I18nService,
+        { provide: ToastService, useClass: MockToastService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -62,6 +77,10 @@ describe('BankDetailsOverviewComponent', () => {
     component = fixture.componentInstance;
     bankAccountService = TestBed.inject(BankAccountService);
     paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
+    toastService = TestBed.inject(ToastService);
+    i18nService = TestBed.inject(I18nService);
+    router = TestBed.inject(Router);
+    modalService = TestBed.inject(NgbModal);
     de = fixture.debugElement;
 
     fixture.detectChanges();
@@ -87,12 +106,83 @@ describe('BankDetailsOverviewComponent', () => {
     });
 
     describe('when clicking into the delete credit card button...', () => {
-      describe('and we accept the confirmation modal', () => {
-        it('should delete the credit card', () => {});
+      describe('and we accept the action', () => {
+        beforeEach(() => {
+          spyOn(toastService, 'show');
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
+        });
+
+        describe('and the action succeed', () => {
+          beforeEach(() => {
+            spyOn(paymentsCreditCardService, 'delete').and.returnValue(of(null));
+            const bankAccountCard = fixture.debugElement.query(By.css(creditCardInfoSelector));
+
+            bankAccountCard.triggerEventHandler('deleteCardClick', {});
+          });
+
+          it('should open the delete confirmation modal', () => {
+            expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+          });
+
+          it('should call the delete credit card service', fakeAsync(() => {
+            tick();
+
+            expect(paymentsCreditCardService.delete).toHaveBeenCalled();
+          }));
+
+          it('should show a succeed toast', () => {
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS),
+              type: 'success',
+            });
+          });
+        });
+
+        describe('and the action fails...', () => {
+          beforeEach(() => {
+            spyOn(paymentsCreditCardService, 'delete').and.returnValue(throwError('network error'));
+            const bankAccountCard = fixture.debugElement.query(By.css(creditCardInfoSelector));
+
+            bankAccountCard.triggerEventHandler('deleteCardClick', {});
+          });
+
+          it('should open the delete confirmation modal', () => {
+            expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+          });
+
+          it('should call the delete credit card service', fakeAsync(() => {
+            tick();
+
+            expect(paymentsCreditCardService.delete).toHaveBeenCalled();
+          }));
+
+          it('should show an error toast', () => {
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR),
+              type: 'error',
+            });
+          });
+        });
       });
 
-      describe(`and we don't accept the confirmation modal`, () => {
-        it('should NOT delete the credit card', () => {});
+      describe(`and we don't accept the action`, () => {
+        beforeEach(() => {
+          spyOn(bankAccountService, 'delete');
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.reject(), componentInstance: { ConfirmationModalComponent } });
+          const bankAccountCard = fixture.debugElement.query(By.css(bankAccountInfoSelector));
+
+          bankAccountCard.triggerEventHandler('deleteCardClick', {});
+        });
+
+        it('should open the delete confirmation modal', () => {
+          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+        });
+
+        it('should NOT call the delete credit card service', fakeAsync(() => {
+          tick();
+
+          expect(bankAccountService.delete).not.toHaveBeenCalled();
+        }));
       });
     });
   });
@@ -113,7 +203,16 @@ describe('BankDetailsOverviewComponent', () => {
     });
 
     describe('when clicking to the add credit card button...', () => {
-      it('should redirect to the credit card form', () => {});
+      beforeEach(() => {
+        spyOn(router, 'navigate');
+        const addCreditCard = de.query(By.css(addCreditCardSelector)).nativeNode;
+
+        addCreditCard.click();
+      });
+
+      it('should redirect to the credit card form', () => {
+        expect(router.navigate).toHaveBeenCalledWith([component.CREDIT_CARD_FORM_LINK]);
+      });
     });
   });
 
@@ -133,16 +232,96 @@ describe('BankDetailsOverviewComponent', () => {
     });
 
     describe('when clicking to the edit/change bank account button...', () => {
-      it('should redirect to the bank account form', () => {});
+      beforeEach(() => {
+        spyOn(router, 'navigate');
+        const bankAccountCard = fixture.debugElement.query(By.css(bankAccountInfoSelector));
+
+        bankAccountCard.triggerEventHandler('changeCardClick', {});
+      });
+
+      it('should redirect to the bank account form', () => {
+        expect(router.navigate).toHaveBeenCalledWith([component.BANK_ACCOUNT_FORM_LINK]);
+      });
     });
 
     describe('when clicking into the delete bank account button...', () => {
-      describe('and we accept the confirmation modal', () => {
-        it('should delete the bank account', () => {});
+      describe('and we accept the action', () => {
+        beforeEach(() => {
+          spyOn(toastService, 'show');
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
+        });
+
+        describe('and the action succeed', () => {
+          beforeEach(() => {
+            spyOn(bankAccountService, 'delete').and.returnValue(of(null));
+            const bankAccountCard = fixture.debugElement.query(By.css(bankAccountInfoSelector));
+
+            bankAccountCard.triggerEventHandler('deleteCardClick', {});
+          });
+
+          it('should open the delete confirmation modal', () => {
+            expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+          });
+
+          it('should call the delete bank account service', fakeAsync(() => {
+            tick();
+
+            expect(bankAccountService.delete).toHaveBeenCalled();
+          }));
+
+          it('should show a succeed toast', () => {
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_SUCCESS),
+              type: 'success',
+            });
+          });
+        });
+
+        describe('and the action fails...', () => {
+          beforeEach(() => {
+            spyOn(bankAccountService, 'delete').and.returnValue(throwError('network error'));
+            const bankAccountCard = fixture.debugElement.query(By.css(bankAccountInfoSelector));
+
+            bankAccountCard.triggerEventHandler('deleteCardClick', {});
+          });
+
+          it('should open the delete confirmation modal', () => {
+            expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+          });
+
+          it('should call the delete bank account service', fakeAsync(() => {
+            tick();
+
+            expect(bankAccountService.delete).toHaveBeenCalled();
+          }));
+
+          it('should show an error toast', () => {
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR),
+              type: 'error',
+            });
+          });
+        });
       });
 
-      describe(`and we don't accept the confirmation modal`, () => {
-        it('should NOT delete the bank account', () => {});
+      describe(`and we don't accept the action`, () => {
+        beforeEach(() => {
+          spyOn(bankAccountService, 'delete');
+          spyOn(modalService, 'open').and.returnValue({ result: Promise.reject(), componentInstance: { ConfirmationModalComponent } });
+          const bankAccountCard = fixture.debugElement.query(By.css(bankAccountInfoSelector));
+
+          bankAccountCard.triggerEventHandler('deleteCardClick', {});
+        });
+
+        it('should open the delete confirmation modal', () => {
+          expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+        });
+
+        it('should NOT call the delete bank account service', fakeAsync(() => {
+          tick();
+
+          expect(bankAccountService.delete).not.toHaveBeenCalled();
+        }));
       });
     });
   });
@@ -163,23 +342,48 @@ describe('BankDetailsOverviewComponent', () => {
     });
 
     describe('when clicking to the add bank account button...', () => {
-      it('should redirect to the bank account form', () => {});
+      beforeEach(() => {
+        spyOn(router, 'navigate');
+        const addBankAccountCard = de.query(By.css(addBankAccountSelector)).nativeNode;
+
+        addBankAccountCard.click();
+      });
+
+      it('should redirect to the bank account form', () => {
+        expect(router.navigate).toHaveBeenCalledWith([component.BANK_ACCOUNT_FORM_LINK]);
+      });
     });
   });
 
   describe('when redirecting the user...', () => {
-    it('should navigate to the correct URL', () => {});
+    it('should navigate to the specified URL', () => {
+      spyOn(router, 'navigate');
+
+      component.redirect(component.CREDIT_CARD_FORM_LINK);
+
+      expect(router.navigate).toHaveBeenCalledWith([component.CREDIT_CARD_FORM_LINK]);
+    });
   });
 
   describe('when formatting the credit card date', () => {
-    it('should return the date formatted by MM/YYYY', () => {});
+    it('should return the date formatted by MM/YYYY', () => {
+      const formattedDate = moment(mockCreditCard.expirationDate).format('MM/YYYY');
+
+      expect(component.formattedCreditCardDate(mockCreditCard.expirationDate)).toBe(formattedDate);
+    });
   });
 
   describe('when formatting the bank account owner name and surname', () => {
-    it('should return the name and the surname together', () => {});
+    it('should return the name and the surname together', () => {
+      const formattedName = `${MOCK_BANK_ACCOUNT.first_name} ${MOCK_BANK_ACCOUNT.last_name}`;
+
+      expect(component.formattedBankAccountName(MOCK_BANK_ACCOUNT)).toBe(formattedName);
+    });
   });
 
   describe('when formatting the bank account IBAN', () => {
-    it('should return the last four digits', () => {});
+    it('should return the last four digits', () => {
+      expect(component.formattedBankAccountIBAN(MOCK_BANK_ACCOUNT.iban)).toBe('8273');
+    });
   });
 });
