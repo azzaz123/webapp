@@ -11,7 +11,7 @@ describe('HashtagSuggesterApiService', () => {
   let httpMock: HttpTestingController;
   const nextPageHeaderName = 'x-nextpage';
   const category_id = '100';
-  const start = '0';
+  const start = '10';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,32 +35,51 @@ describe('HashtagSuggesterApiService', () => {
 
   describe('when we load hashtags...', () => {
     it('should load hashtags and call getHashtagsByPrefix endpint if we load hashtags through textarea typing', () => {
-      const expectedUrl = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}?category_id=${category_id}&prefix=${MOCK_PREFIX_HASHTAG}&start=${start}`;
       let response;
+      const paramUrl = `category_id=${category_id}&prefix=${MOCK_PREFIX_HASHTAG}&start=${start}`;
+      const expectedUrl = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}?${paramUrl}`;
+      const HttpHeader = {};
+      HttpHeader[nextPageHeaderName] = paramUrl;
 
       service.getHashtagsByPrefix(category_id, start, MOCK_PREFIX_HASHTAG).subscribe((r) => {
         response = r;
       });
       const request = httpMock.expectOne(expectedUrl);
-      request.flush({
-        hashtags: MOCK_HASHTAGS,
-        headers: new HttpHeaders().set(nextPageHeaderName, X_NEXT_PAGE_HEADER(category_id)).set(SEARCH_ID, MOCK_SEARCH_ID),
-      });
+      request.flush(
+        {
+          hashtags: MOCK_HASHTAGS,
+        },
+        { headers: new HttpHeaders(HttpHeader) }
+      );
 
       expect(request.request.urlWithParams).toEqual(expectedUrl);
       expect(request.request.method).toBe('GET');
-      expect(response).toBe('');
+      expect(response.init).toBe(+start);
+      expect(response.results).toBe(MOCK_HASHTAGS);
     });
 
     it('should load hashtags and call getHashtags endpint if we load hashtags when we initiate hashtag section', () => {
-      const expectedUrl = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}?category_id=${category_id}&start=${start}`;
+      let response;
+      const paramUrl = `category_id=${category_id}&start=${start}`;
+      const expectedUrl = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}?${paramUrl}`;
+      const HttpHeader = {};
+      HttpHeader[nextPageHeaderName] = paramUrl;
 
-      service.getHashtags(category_id, start).subscribe();
+      service.getHashtags(category_id, start).subscribe((r) => {
+        response = r;
+      });
       const request = httpMock.expectOne(expectedUrl);
-      request.flush({ MOCK_HASHTAGS, headers: new HttpHeaders().set(nextPageHeaderName, `category_id=${category_id}&start=${start}`) });
+      request.flush(
+        {
+          hashtags: MOCK_HASHTAGS,
+        },
+        { headers: new HttpHeaders(HttpHeader) }
+      );
 
       expect(request.request.urlWithParams).toEqual(expectedUrl);
       expect(request.request.method).toBe('GET');
+      expect(response.init).toBe(+start);
+      expect(response.results).toBe(MOCK_HASHTAGS);
     });
   });
 });
