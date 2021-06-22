@@ -23,7 +23,7 @@ export const mockCreditCard: CreditCard = {
 
 export const mockCreditCardSyncRequest: CreditCardSyncRequest = {
   id: 'ui-ui-uiiii-id',
-  fullname: 'Ot el Bruixot',
+  fullName: 'Ot el Bruixot',
   cardNumber: '4972485830400049',
   cardExpirationDate: '1221',
   cardCvx: '242',
@@ -43,14 +43,14 @@ export const mockCardTokenizedResponse: string =
   'data=QOHfBI142JBIpqQJOQyJcwsjr25wTBu8_9tvZWbUlh2Fm53uPWzGoAyuLy8vAqIPRIQMyPqKXxk9X59DUVsGhdx9Kicx6FsPjwxmBfoe3MlvvmS4bJZX_ejoGzljiTdf0ftIYwFxOdfmDQ5GtM_cIg';
 
 export const mockPaymentsCreateSyncCreditCardRequest: PaymentsSyncCreditCardApi = {
-  holder_name: mockCreditCardSyncRequest.fullname,
+  holder_name: mockCreditCardSyncRequest.fullName,
   id: '12345',
   registration_id: mockTokenizerInformationResponse.id,
   token: mockCardTokenizedResponse,
 };
 
 export const mockPaymentsUpdateSyncCreditCardRequest: PaymentsSyncCreditCardApi = {
-  holder_name: mockCreditCardSyncRequest.fullname,
+  holder_name: mockCreditCardSyncRequest.fullName,
   id: mockCreditCardSyncRequest.id,
   registration_id: mockTokenizerInformationResponse.id,
   token: mockCardTokenizedResponse,
