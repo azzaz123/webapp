@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { MOCK_ERROR_RESPONSE } from '@api/fixtures/error-response-api.fixtures.spec';
 import {
   DeliveryAddressError,
   PhoneNumberIsInvalidError,
@@ -9,18 +9,6 @@ import { DeliveryAddressErrorResponse } from '@private/features/delivery/errors/
 import { DELIVERY_ADDRESS_ERROR_CODES } from '@private/features/delivery/errors/mappers/address/delivery-address-error.enum';
 import { DELIVERY_POSTAL_CODES_ERROR_CODES } from '@private/features/delivery/errors/mappers/postal-codes/delivery-postal-codes-error.enum';
 import { DeliveryPostalCodesErrorResponse } from '@private/features/delivery/errors/mappers/postal-codes/delivery-postal-codes.error-mapper';
-
-export const MOCK_ERROR_RESPONSE: HttpErrorResponse = {
-  message: 'Http failure response',
-  name: 'HttpErrorResponse',
-  ok: false,
-  status: 409,
-  statusText: 'Conflict',
-  url: 'url',
-  error: null,
-  type: HttpEventType.Response,
-  headers: new HttpHeaders(),
-};
 
 export const MOCK_DELIVERY_BASE_ERROR_RESPONSE: DeliveryErrorResponseApi = {
   ...MOCK_ERROR_RESPONSE,

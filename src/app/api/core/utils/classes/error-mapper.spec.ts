@@ -1,6 +1,6 @@
-import { HttpErrorResponse, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { fakeAsync, tick } from '@angular/core/testing';
-import { MOCK_ERROR_RESPONSE } from '@fixtures/private/delivery/errors/delivery-errors.fixtures.spec';
+import { MOCK_ERROR_RESPONSE } from '@api/fixtures/error-response-api.fixtures.spec';
 import { ErrorMapper } from './error-mapper';
 
 class TestWrapperErrorMapper extends ErrorMapper<HttpErrorResponse> {}
