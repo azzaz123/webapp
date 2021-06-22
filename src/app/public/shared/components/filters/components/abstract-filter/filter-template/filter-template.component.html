@@ -36,10 +36,10 @@
   </div>
 </div>
 
-<div *ngIf="!isBubble">
+<ng-container *ngIf="!isBubble">
   <p class="FilterTemplate__title">{{title}}</p>
   <ng-template [ngTemplateOutlet]="contentWrapper"></ng-template>
-</div>
+</ng-container>
 
 <ng-template #contentWrapper>
   <div #extendedContent>

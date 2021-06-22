@@ -1,39 +1,27 @@
 @import '~style/common';
 
-$actions-height: 60px;
+$actions-height: 70px;
 
 .Drawer {
-  &__content {
-    background-color: $white;
-    z-index: $zindex-modal;
-    width: 100%;
-    bottom: 0;
-    max-width: 500px;
-    overflow-y: auto;
-    padding-bottom: $actions-height;
+  top: $topbar-height;
+  max-width: 500px;
+  background-color: $white;
+  height: calc(100% - #{$topbar-height});
+  z-index: $zindex-modal-backdrop + 1;
 
-    &--unset-overflow {
-      overflow-y: unset;
+  &__content {
+    overflow: scroll;
+    &--overflow-hidden {
+      overflow: hidden;
     }
   }
 
   &__actions {
-    position: fixed;
-    height: $actions-height;
+    position: sticky;
     bottom: 0;
-    width: 100%;
-    max-width: 484px;
-    left: 8px;
+    height: $actions-height;
     background-color: $white;
     border-top: 1px solid $blue-grey-5;
-    z-index: 8;
-
-    @include media-breakpoint-down(md) {
-      right: 8px;
-      left: 8px;
-      max-width: unset;
-      width: unset;
-    }
   }
 
   &__backdrop {

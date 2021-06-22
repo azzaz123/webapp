@@ -1,3 +1,4 @@
+import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { ITEM_DATA } from '@fixtures/item.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
@@ -10,6 +11,11 @@ export const MOCK_ITEM_CARD_WIDE: ItemCard = {
   webSlug: ITEM_DATA.web_slug,
   currencyCode: ITEM_DATA.currency_code,
   ownerId: ITEM_DATA.owner,
+};
+
+export const MOCK_ITEM_CARD_WIDE_WITH_SPECS: ItemCard = {
+  ...MOCK_ITEM_CARD_WIDE,
+  specs: [MOCK_CAR.engine, MOCK_CAR.bodyType],
 };
 
 export const MOCK_ITEM_CARD_WIDE_GBP: ItemCard = {

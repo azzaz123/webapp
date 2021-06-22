@@ -3,7 +3,8 @@
         <form class="col" *ngIf="!loading; else loadingState" [formGroup]="bankAccountForm" (submit)="onSubmit()">
             <div class="row mb-2">
                 <div class="col-md-11 offset-md-1">
-                    <h3 i18n="@@delivery_add_bank_account_title">Add bank account</h3>
+                    <h3 *ngIf="isNewForm" i18n="@@delivery_add_bank_account_title">Add bank account</h3>
+                    <h3 *ngIf="!isNewForm" i18n="@@delivery_edit_bank_account_title">Edit bank account</h3>
                 </div>
             </div>
             <div class="form-group row align-items-center">

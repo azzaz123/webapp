@@ -4,7 +4,8 @@
     "ImageTag": "stable",
     "ProjectName": "webapp",
     "BucketESName": "web-es.wallapop.com",
-    "BucketENName": "web-en.wallapop.com"
+    "BucketENName": "web-en.wallapop.com",
+    "BucketITName": "web-it.wallapop.com"
   },
   "Tags": {
     "Project": "webapp",

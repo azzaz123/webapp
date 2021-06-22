@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AD_PUBLIC_SEARCH } from './search-ads.config';
 
+export const SEARCH_SLOTS = [AD_PUBLIC_SEARCH.search1, AD_PUBLIC_SEARCH.search2r, AD_PUBLIC_SEARCH.search3r];
+
 @Injectable()
 export class SearchAdsService {
   private subscription: Subscription = new Subscription();
@@ -24,7 +26,19 @@ export class SearchAdsService {
   }
 
   public setSlots(): void {
-    this.adsService.setSlots([AD_PUBLIC_SEARCH.search1, AD_PUBLIC_SEARCH.search2r, AD_PUBLIC_SEARCH.search3r]);
+    this.adsService.setSlots(SEARCH_SLOTS);
+  }
+
+  public clearSlots(): void {
+    this.adsService.clearSlots(SEARCH_SLOTS);
+  }
+
+  public refreshSlots(): void {
+    this.adsService.refreshSlots(SEARCH_SLOTS);
+  }
+
+  public destroySlots(): void {
+    this.adsService.destroySlots(SEARCH_SLOTS);
   }
 
   public close(): void {

@@ -25,13 +25,13 @@ export class DeliveryAddressApiService {
     return this.http.get<DeliveryAddressApi>(DELIVERY_ADDRESS_API_URL, { headers: ADDRESS_ACCEPT_HEADER('get') });
   }
 
-  public create(address: DeliveryAddressApi): Observable<null> | Observable<never> {
+  public create(address: DeliveryAddressApi): Observable<null> {
     return this.http
       .post<null>(DELIVERY_ADDRESS_API_URL, address, { headers: ADDRESS_ACCEPT_HEADER('create') })
       .pipe(catchError((error: DeliveryAddressErrorResponse) => this.errorMapper.map(error)));
   }
 
-  public update(address: DeliveryAddressApi): Observable<null> | Observable<never> {
+  public update(address: DeliveryAddressApi): Observable<null> {
     return this.http
       .put<null>(DELIVERY_ADDRESS_API_URL, address, { headers: ADDRESS_ACCEPT_HEADER('update') })
       .pipe(catchError((error: DeliveryAddressErrorResponse) => this.errorMapper.map(error)));
