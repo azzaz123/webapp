@@ -6,7 +6,7 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 import { FILTER_PARAMETER_STORE_TOKEN } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { Subject } from 'rxjs';
 import { AD_PUBLIC_SEARCH } from './search-ads.config';
-import { SearchAdsService } from './search-ads.service';
+import { SearchAdsService, SEARCH_SLOTS } from './search-ads.service';
 
 describe('SearchAdsService', () => {
   let service: SearchAdsService;
@@ -80,6 +80,36 @@ describe('SearchAdsService', () => {
         AD_PUBLIC_SEARCH.search2r,
         AD_PUBLIC_SEARCH.search3r,
       ]);
+    });
+  });
+
+  describe('when the page goes from foreground to background', () => {
+    it('should clear search ad slots', () => {
+      spyOn(adsServiceMock, 'clearSlots');
+
+      service.clearSlots();
+
+      expect(adsServiceMock.clearSlots).toHaveBeenCalledWith(SEARCH_SLOTS);
+    });
+  });
+
+  describe('when the page goes from background to foreground', () => {
+    it('should refresh search ad slots', () => {
+      spyOn(adsServiceMock, 'refreshSlots');
+
+      service.refreshSlots();
+
+      expect(adsServiceMock.refreshSlots).toHaveBeenCalledWith(SEARCH_SLOTS);
+    });
+  });
+
+  describe('when the component is destroyed', () => {
+    it('should destroy search ad slots', () => {
+      spyOn(adsServiceMock, 'destroySlots');
+
+      service.destroySlots();
+
+      expect(adsServiceMock.destroySlots).toHaveBeenCalledWith(SEARCH_SLOTS);
     });
   });
 });
