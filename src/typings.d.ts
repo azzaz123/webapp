@@ -4,7 +4,6 @@ interface NodeModule {
   id: string;
 }
 declare let System: any;
-declare let XMPP: any;
 declare let analytics: any;
 declare let appboy: any;
 declare let ga: Function;

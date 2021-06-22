@@ -221,7 +221,7 @@ describe('GooglePublisherTagService', () => {
       it('show refresh on google', () => {
         spyOn(MOCK_GOOGLE_PUBABDS, 'refresh').and.callThrough();
 
-        service.refreshAds();
+        service.refreshAllSlots();
 
         expect(MOCK_GOOGLE_PUBABDS.refresh).toHaveBeenCalledTimes(1);
       });
@@ -296,6 +296,39 @@ describe('GooglePublisherTagService', () => {
         { ...MockAdShoppingPageOptions, query: MockAdsKeywords.content },
         MockAdSlotShopping
       );
+    });
+  });
+
+  describe('when destroying slots', () => {
+    it('should clear and remove the selected slot from memory', () => {
+      spyOn(windowMock.googletag, 'destroySlots').and.callThrough();
+
+      service.destroySlots([]);
+
+      expect(windowMock.googletag.destroySlots).toHaveBeenCalledWith([]);
+      expect(windowMock.googletag.destroySlots).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('when clearing slots', () => {
+    it('should clear the selected slots', () => {
+      spyOn(windowMock.googletag.pubads(), 'clear').and.callThrough();
+
+      service.clearSlots([]);
+
+      expect(windowMock.googletag.pubads().clear).toHaveBeenCalledWith([]);
+      expect(windowMock.googletag.pubads().clear).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('when clearing slots', () => {
+    it('should clear the selected slots', () => {
+      spyOn(windowMock.googletag.pubads(), 'clear').and.callThrough();
+
+      service.clearSlots([]);
+
+      expect(windowMock.googletag.pubads().clear).toHaveBeenCalledWith([]);
+      expect(windowMock.googletag.pubads().clear).toHaveBeenCalledTimes(1);
     });
   });
 });
