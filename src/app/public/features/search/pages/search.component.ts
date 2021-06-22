@@ -40,6 +40,7 @@ import { SearchTrackingEventsService } from '@public/core/services/search-tracki
 import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { debounce } from '@core/helpers/debounce/debounce';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -206,7 +207,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   private queryParamsChange(): Observable<FilterParameter[]> {
     return this.route.queryParams.pipe(
-      filter(() => this.componentAttached),
+      filter(() => window.location.pathname === `/${PUBLIC_PATHS.SEARCH}`),
       distinctUntilChanged((prevParams, nextParams) => isEqual(prevParams, nextParams)),
       map((params: Params) => this.queryStringService.mapQueryToFilterParams(params))
     );

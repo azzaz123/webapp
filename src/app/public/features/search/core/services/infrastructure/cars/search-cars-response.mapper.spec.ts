@@ -7,10 +7,9 @@ describe('SearchItemCarResponseMapper', () => {
 
     describe('when the car has an engine specified', () => {
         it('should include the translation for the type of engine', () => {
-            const engine = SEARCH_ITEM_CAR_RESPONSE_CONTENT_MOCK.engine.toLowerCase();
-            const expectedTranslation = translations[engine];
+            const engine = SEARCH_ITEM_CAR_RESPONSE_CONTENT_MOCK.engine;
 
-            expect(result.includes(expectedTranslation)).toBe(true);
+            expect(result.includes(engine)).toBe(true);
         });
     });
 

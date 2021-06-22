@@ -26,7 +26,6 @@ const routes: Route[] = [
       },
       {
         path: PUBLIC_PATHS.SEARCH,
-        canLoad: [DevelopmentGuard],
         loadChildren: () => import('./features/search/search.module').then((m) => m.SearchModule),
       },
       {
