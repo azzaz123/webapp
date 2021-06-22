@@ -1,7 +1,9 @@
-export const MOCK_EMPTY_CREDIT_CARD = {
+import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-request.interface';
+
+export const MOCK_EMPTY_CREDIT_CARD_FORM: CreditCardSyncRequest = {
   id: 'FAKE_UUID',
-  holder_name: '',
-  card_number: '',
-  expiration_date: '',
-  cvv: '',
+  fullName: '',
+  cardNumber: '',
+  cardExpirationDate: '',
+  cardCvx: '',
 };
