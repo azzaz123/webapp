@@ -15,19 +15,16 @@ export class SubscriptionListComponent {
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
 
-  readonly firstRowOrder = [
+  private readonly rowOrder = [
     CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE,
     CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES,
     CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
+    CATEGORY_SUBSCRIPTIONS_IDS.CAR,
+    CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE,
   ];
-  readonly secondRowOrder = [CATEGORY_SUBSCRIPTIONS_IDS.CAR, CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE];
 
-  get firstSubscriptionsRow() {
-    return this.orderByCategory(this.firstRowOrder);
-  }
-
-  get secondSubscriptionsRow() {
-    return this.orderByCategory(this.secondRowOrder);
+  get subscriptionsOrdered(): SubscriptionsResponse[] {
+    return this.orderByCategory(this.rowOrder);
   }
 
   public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;

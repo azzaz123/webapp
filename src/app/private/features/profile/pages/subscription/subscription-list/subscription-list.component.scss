@@ -5,6 +5,11 @@
     margin-top: $spacing-ms;
     color: $walla-main;
   }
+  &__subscription {
+    flex: 1;
+    max-width: 286px;
+    min-width: 250px;
+  }
 }
 
 .box-content {
