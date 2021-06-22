@@ -13,6 +13,7 @@ export class CreditCardComponent implements OnInit {
 
   public cardForm: FormGroup;
   public loading = false;
+  public isNewForm = true;
   public loadingButton = false;
   public formErrorMessages;
 

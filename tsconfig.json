@@ -9,6 +9,9 @@
       "@shared/*": [
         "app/shared/*"
       ],
+      "@api/*": [
+        "app/api/*"
+      ],
       "@assets/*": [
         "assets/*"
       ],

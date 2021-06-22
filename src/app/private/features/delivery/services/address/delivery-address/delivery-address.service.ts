@@ -24,24 +24,16 @@ export class DeliveryAddressService {
     );
   }
 
-  public updateOrCreate(newDeliveryAddress: DeliveryAddressApi, isNewAddress: boolean): Observable<null> {
-    const observable = isNewAddress
-      ? this.deliveryAddressApiService.create(newDeliveryAddress)
-      : this.deliveryAddressApiService.update(newDeliveryAddress);
+  public create(deliveryAddress: DeliveryAddressApi): Observable<null> {
+    return this.deliveryAddressApiService.create(deliveryAddress).pipe(tap(() => this.updateDeliveryAddressStore(deliveryAddress)));
+  }
 
-    return observable.pipe(
-      tap(() => {
-        this.updateDeliveryAddressStore(newDeliveryAddress);
-      })
-    );
+  public update(deliveryAddress: DeliveryAddressApi): Observable<null> {
+    return this.deliveryAddressApiService.update(deliveryAddress).pipe(tap(() => this.updateDeliveryAddressStore(deliveryAddress)));
   }
 
   public delete(addressId: string): Observable<null> {
-    return this.deliveryAddressApiService.delete(addressId).pipe(
-      tap(() => {
-        this.cleanDeliveryAddressStore();
-      })
-    );
+    return this.deliveryAddressApiService.delete(addressId).pipe(tap(() => this.cleanDeliveryAddressStore()));
   }
 
   private cleanDeliveryAddressStore(): void {
