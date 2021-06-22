@@ -14,6 +14,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   public coordinates: Coordinate;
   public user: User;
   public userValidations: UserValidations;
+  public userResponseRate: string;
 
   constructor(private publicProfileService: PublicProfileService) {}
 
@@ -30,6 +31,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
 
     this.publicProfileService.getExtraInfo(this.user.id).subscribe((userExtraInfo: UserExtrainfo) => {
       this.userValidations = userExtraInfo.validations;
+      this.userResponseRate = userExtraInfo.response_rate;
     });
 
     if (this.userHaveLocation()) {
