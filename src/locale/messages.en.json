@@ -628,6 +628,7 @@
     "credit_card_number_error": "Invalid card number",
     "card_date_hint": "MM/YY",
     "credit_card_date_error": "Invalid date",
+    "card_cvv_hint": "CVV",
     "credit_card_cvv_error": "Invalid CCV number",
     "delivery_add_credit_card_text_info": "0,10 € will be charged in order to validate credit or debit card. The amount will be returned in 7 working days.",
     "delivery_add_credit_card_save_button": "Save",

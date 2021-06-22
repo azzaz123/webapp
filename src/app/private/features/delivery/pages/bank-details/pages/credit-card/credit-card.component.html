@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="form-group row align-items-center">
-                <label for="cvv" class="col-sm-12 col-md-5">CVV</label>
+                <label for="cvv" class="col-sm-12 col-md-5" i18n="@@card_cvv_hint">CVV</label>
                 <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="cvv" formControlName="cvv" maxlength="4" pattern="[0-9]*" tslNumbersOnly/>
                     <div *ngIf="cardForm.controls.cvv.invalid && cardForm.pending" class="CreditCard__message CreditCard__message--error">

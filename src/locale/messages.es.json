@@ -628,6 +628,7 @@
     "credit_card_number_error": "Número de tarjeta no válido",
     "card_date_hint": "MM/AA",
     "credit_card_date_error": "Fecha inválida",
+    "card_cvv_hint": "CVV",
     "credit_card_cvv_error": "CVV no válido",
     "delivery_add_credit_card_text_info": "Se cobrarán 0,10 € para validar la tarjeta de crédito o débito, que serán devueltos en 7 días laborables.",
     "delivery_add_credit_card_save_button": "Guardar",
