@@ -155,7 +155,7 @@ describe('CreditCardInfoComponent', () => {
       component.ngOnChanges();
       fixture.detectChanges();
 
-      expect(el.querySelector(numberCardSelector).innerHTML).toContain(`${fourStars} ${component.numberCard}`);
+      expect(el.querySelector(numberCardSelector).innerHTML).toBe(`${fourStars} ${component.numberCard}`);
     });
   });
 
