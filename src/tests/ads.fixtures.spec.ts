@@ -19,6 +19,9 @@ export const MockAdsService = {
   setAdKeywords: (adKeywords: AdKeyWords) => {},
   displayAdShopping: (adSlotShopping: AdSlotGroupShoppingConfiguration) => {},
   adSlotLoaded$: () => of(true),
+  clearSlots: () => {},
+  refreshSlots: () => {},
+  destroySlots: () => {},
 };
 
 export const MockAmazonPublisherService = {
