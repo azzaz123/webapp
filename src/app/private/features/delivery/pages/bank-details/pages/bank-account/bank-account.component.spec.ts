@@ -3,7 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import {
@@ -19,6 +19,7 @@ import { of, Subject, throwError } from 'rxjs';
 import { BankAccountApiService } from '../../../../services/api/bank-account-api/bank-account-api.service';
 import { BankAccountService } from '../../../../services/bank-account/bank-account.service';
 import { MapBankAccountService } from '../../../../services/bank-account/map-bank-account/map-bank-account.service';
+import { Location } from '@angular/common';
 
 import { BankAccountComponent } from './bank-account.component';
 
@@ -31,6 +32,7 @@ describe('BankAccountComponent', () => {
   let fixture: ComponentFixture<BankAccountComponent>;
   let bankAccountService: BankAccountService;
   let toastService: ToastService;
+  let location: Location;
   let router: Router;
   let el: HTMLElement;
 
@@ -43,6 +45,7 @@ describe('BankAccountComponent', () => {
         BankAccountService,
         BankAccountApiService,
         MapBankAccountService,
+        Location,
         {
           provide: UuidService,
           useValue: {
@@ -76,6 +79,7 @@ describe('BankAccountComponent', () => {
     component = fixture.componentInstance;
     el = fixture.debugElement.nativeElement;
     bankAccountService = TestBed.inject(BankAccountService);
+    location = TestBed.inject(Location);
     toastService = TestBed.inject(ToastService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
@@ -306,25 +310,14 @@ describe('BankAccountComponent', () => {
     });
   });
 
-  describe('when the user come from bank details...', () => {
-    it('should show the back anchor', () => {
-      routerEvents.next(new NavigationEnd(1, component.BANK_DETAILS_URL, 'url2'));
+  describe('when the user clicks on the back button...', () => {
+    it('should go to the previous page', () => {
+      spyOn(location, 'back');
+      const backButton = fixture.debugElement.query(By.css(backAnchorSelector)).nativeNode;
 
-      component.ngOnInit();
-      fixture.detectChanges();
+      backButton.click();
 
-      expect(el.querySelector(backAnchorSelector)).toBeTruthy();
-    });
-  });
-
-  describe(`when the user don't come from bank details...`, () => {
-    it('should NOT show the back anchor', () => {
-      routerEvents.next(new NavigationEnd(1, '', 'url2'));
-
-      component.ngOnInit();
-      fixture.detectChanges();
-
-      expect(el.querySelector(backAnchorSelector)).toBeFalsy();
+      expect(location.back).toHaveBeenCalled();
     });
   });
 

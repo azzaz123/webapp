@@ -1,5 +1,5 @@
 <div class="BankAccount container">
-    <a class="BankAccount__back d-flex pb-2" [routerLink]="[BANK_DETAILS_URL]" *ngIf="showBackArrow">
+    <a class="BankAccount__back d-flex pb-2" (click)="goBack()">
         <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
         <span i18n="@@web_catalog_pro_pages_checkout_638" class="ml-3">Back</span>
     </a>

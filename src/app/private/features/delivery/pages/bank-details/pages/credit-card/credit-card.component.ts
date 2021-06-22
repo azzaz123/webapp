@@ -6,6 +6,7 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { filter } from 'rxjs/operators';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'tsl-credit-card',
@@ -19,15 +20,11 @@ export class CreditCardComponent implements OnInit {
   public loading = false;
   public isNewForm = true;
   public loadingButton = false;
-  public showBackArrow = false;
   public formErrorMessages;
 
-  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
-
-  constructor(private fb: FormBuilder, private uuidService: UuidService, private router: Router) {}
+  constructor(private fb: FormBuilder, private uuidService: UuidService, private location: Location) {}
 
   ngOnInit(): void {
-    this.checkIfPreviousURLIsBankDetails();
     this.buildForm();
   }
 
@@ -35,10 +32,8 @@ export class CreditCardComponent implements OnInit {
 
   public onSubmit(): void {}
 
-  private checkIfPreviousURLIsBankDetails(): void {
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-      this.showBackArrow = event.url === this.BANK_DETAILS_URL;
-    });
+  public goBack(): void {
+    this.location.back();
   }
 
   private buildForm(): void {

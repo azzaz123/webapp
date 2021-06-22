@@ -1,13 +1,15 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { UuidService } from '@core/uuid/uuid.service';
 import { MOCK_EMPTY_CREDIT_CARD } from '@fixtures/private/delivery/credit-card/credit-card.fixtures.spec';
 import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-only.directive';
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
+import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
+import { Location } from '@angular/common';
 
 import { CreditCardComponent } from './credit-card.component';
 
@@ -17,7 +19,7 @@ describe('CreditCreditCardComponent', () => {
 
   let component: CreditCardComponent;
   let fixture: ComponentFixture<CreditCardComponent>;
-  let el: HTMLElement;
+  let location: Location;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,6 +27,7 @@ describe('CreditCreditCardComponent', () => {
       declarations: [CreditCardComponent, ProfileFormComponent, NumbersOnlyDirective, SeparateWordByCharacterPipe],
       providers: [
         FormBuilder,
+        Location,
         {
           provide: UuidService,
           useValue: {
@@ -48,7 +51,7 @@ describe('CreditCreditCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreditCardComponent);
     component = fixture.componentInstance;
-    el = fixture.debugElement.nativeElement;
+    location = TestBed.inject(Location);
     fixture.detectChanges();
   });
 
@@ -66,25 +69,14 @@ describe('CreditCreditCardComponent', () => {
     });
   });
 
-  describe('when the user come from bank details...', () => {
-    it('should show the back anchor', () => {
-      routerEvents.next(new NavigationEnd(1, component.BANK_DETAILS_URL, 'url2'));
+  describe('when the user clicks on the back button...', () => {
+    it('should go to the previous page', () => {
+      spyOn(location, 'back');
+      const backButton = fixture.debugElement.query(By.css(backAnchorSelector)).nativeNode;
 
-      component.ngOnInit();
-      fixture.detectChanges();
+      backButton.click();
 
-      expect(el.querySelector(backAnchorSelector)).toBeTruthy();
-    });
-  });
-
-  describe(`when the user don't come from bank details...`, () => {
-    it('should NOT show the back anchor', () => {
-      routerEvents.next(new NavigationEnd(1, '', 'url2'));
-
-      component.ngOnInit();
-      fixture.detectChanges();
-
-      expect(el.querySelector(backAnchorSelector)).toBeFalsy();
+      expect(location.back).toHaveBeenCalled();
     });
   });
 });

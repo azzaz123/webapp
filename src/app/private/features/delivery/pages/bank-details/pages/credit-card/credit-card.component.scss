@@ -13,6 +13,7 @@
   }
 
   &__back {
+    cursor: pointer;
     color: $blue-grey-1;
     &:hover {
       text-decoration: none;
