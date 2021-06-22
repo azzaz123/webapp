@@ -70,7 +70,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
   public isLoadingPaginationResults$: Observable<boolean> = this.searchService.isLoadingPaginationResults$;
   public currentCategoryId$: Observable<string> = this.searchService.currentCategoryId$;
-  public newSearch$: Observable<string> = this.searchService.newSearch$;
+  public newSearch$: Observable<SearchResponseExtraData> = this.searchService.newSearch$;
   public items$: Observable<ItemCard[]> = this.searchService.items$;
   public hasMoreItems$: Observable<boolean> = this.searchService.hasMore$;
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
@@ -130,9 +130,9 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.device = this.deviceService.getDeviceType();
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(
-      this.newSearch$.pipe(skip(1)).subscribe((searchId: string) => {
+      this.newSearch$.pipe(skip(1)).subscribe((searchResponseExtraData: SearchResponseExtraData) => {
         if (this.resetSearchId) {
-          this.searchId = searchId;
+          this.searchId = searchResponseExtraData.searchId;
           this.resetSearchId = false;
         }
 
