@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { PaymentsCreditCardService } from '@api/payments/cards';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import * as moment from 'moment';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 @Component({
   selector: 'tsl-bank-details-overview',
@@ -33,7 +34,8 @@ export class BankDetailsOverviewComponent implements OnInit {
     private bankAccountService: BankAccountService,
     private paymentsCreditCardService: PaymentsCreditCardService,
     private i18nService: I18nService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -64,9 +66,12 @@ export class BankDetailsOverviewComponent implements OnInit {
       confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_POPUP_ACCEPT_BUTTON_DELETE),
       cancelMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_POPUP_CANCEL_BUTTON_DELETE),
       confirmColor: COLORS.NEGATIVE_MAIN,
-    }).result.then(() => {
-      this.deleteBankAccount();
-    });
+    }).result.then(
+      () => {
+        this.deleteBankAccount();
+      },
+      () => {}
+    );
   }
 
   public openDeleteCardModal(): void {
@@ -76,23 +81,41 @@ export class BankDetailsOverviewComponent implements OnInit {
       confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_ACCEPT_BUTTON_DELETE),
       cancelMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_CANCEL_BUTTON_DELETE),
       confirmColor: COLORS.NEGATIVE_MAIN,
-    }).result.then(() => {
-      this.deleteCard();
-    });
+    }).result.then(
+      () => {
+        this.deleteCard();
+      },
+      () => {}
+    );
   }
 
   private deleteCard(): void {
     this.paymentsCreditCardService.delete().subscribe(
-      () => {},
-      () => {}
+      () => {
+        this.showToast(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS, 'success');
+      },
+      () => {
+        this.showToast(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR, 'error');
+      }
     );
   }
 
   private deleteBankAccount(): void {
     this.bankAccountService.delete().subscribe(
-      () => {},
-      () => {}
+      () => {
+        this.showToast(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_SUCCESS, 'success');
+      },
+      () => {
+        this.showToast(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR, 'error');
+      }
     );
+  }
+
+  private showToast(key: TRANSLATION_KEY, type: 'error' | 'success'): void {
+    this.toastService.show({
+      text: `${this.i18nService.translate(key)}`,
+      type,
+    });
   }
 
   private generateConfirmationModalRef(properties: ConfirmationModalProperties): NgbModalRef {

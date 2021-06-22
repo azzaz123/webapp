@@ -188,4 +188,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_DESCRIPTION_DELETE]: $localize`:@@delivery_delete_credit_card_confirmation_popup_message:This action can't be undone. Are you sure you want to delete the bank card?`,
   [TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_ACCEPT_BUTTON_DELETE]: $localize`:@@delivery_delete_credit_card_confirmation_popup_accept:Delete`,
   [TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_CANCEL_BUTTON_DELETE]: $localize`:@@delivery_delete_credit_card_confirmation_popup_cancel:Cancel`,
+  [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_SUCCESS]: $localize`:@@delivery_delete_bank_account_success:The bank account has been removed successfully`,
+  [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR]: $localize`:@@delivery_delete_bank_account_error:Sorry, something went wrong. Try again.`,
+  [TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS]: $localize`:@@delivery_delete_credit_card_success:The credit card has been removed successfully`,
+  [TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR]: $localize`:@@delivery_delete_credit_card_error:Sorry, something went wrong. Try again.`,
 };
