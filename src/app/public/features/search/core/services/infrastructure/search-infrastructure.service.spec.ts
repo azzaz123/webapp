@@ -130,7 +130,7 @@ describe('SearchInfrastructureService', () => {
       spyOn(searchApiServiceMock, 'loadMore').and.returnValue(of(searchResponse));
 
       service.loadMore().subscribe((response) => {
-        expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites, searchId: ''});
+        expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites, searchId: '', sortBy: SORT_BY.DISTANCE});
         done();
       });
 
