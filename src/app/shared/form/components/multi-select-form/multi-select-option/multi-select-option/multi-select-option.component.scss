@@ -1,3 +1,26 @@
-.selected {
-  color: red;
+@import 'src/style/common';
+
+.SelectOption {
+  border: 1px solid orange;
+  cursor: pointer;
+  user-select: none;
+  height: 56px;
+  &__label {
+    font-size: $font-size-m;
+    margin-right: 40px;
+    &:before {
+      content: '#';
+    }
+  }
+
+  &--active {
+    color: $walla-main;
+  }
+
+  &__icon--active {
+    ::ng-deep g g,
+    ::ng-deep path {
+      fill: $walla-main;
+    }
+  }
 }
