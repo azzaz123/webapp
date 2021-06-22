@@ -21,7 +21,6 @@ import { BankAccountApiService } from '../../../../services/api/bank-account-api
 import { BankAccountService } from '../../../../services/bank-account/bank-account.service';
 import { MapBankAccountService } from '../../../../services/bank-account/map-bank-account/map-bank-account.service';
 import { Location } from '@angular/common';
-import { DELIVERY_PATHS } from '../../../../delivery-routing-constants';
 import {
   FirstNameIsInvalidError,
   IbanCountryIsInvalidError,
@@ -298,7 +297,7 @@ describe('BankAccountComponent', () => {
         });
 
         it('should redirect to the bank details page', () => {
-          expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.BANK_DETAILS]);
+          expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
         });
       });
 
