@@ -39,11 +39,15 @@ export const MockGooglePublisherTagService = {
   setAdsSegmentation: () => {},
   displayAdBySlotId: (id: AdSlotId) => {},
   setSlots: (slots: AdSlotConfiguration) => {},
-  refreshAds: () => {},
   setAdKeywords: (adKeywords: AdKeyWords) => {},
   displayShopping: (pageOption, adSlotShopping: AdSlotGroupShoppingConfiguration) => {},
   isAdSlotLoaded$: () => of(true),
   reset: () => {},
+  getSlots: (adSlots: AdSlotConfiguration[]) => {},
+  refreshSlots: (adSots: googletag.Slot[]) => {},
+  clearSlots: (adSots: googletag.Slot[]) => {},
+  destroySlots: (adSots: googletag.Slot[]) => {},
+  refreshAllSlots: () => {},
 };
 
 export const MockLoadAdsService = {
