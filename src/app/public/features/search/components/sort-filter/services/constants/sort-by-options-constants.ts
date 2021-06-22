@@ -2,7 +2,7 @@ import { SelectFormOption } from '@shared/form/components/select/interfaces/sele
 
 export enum SORT_BY {
   RELEVANCE = 'most_relevance',
-  DEFAULT = 'default',
+  DISTANCE = 'closest',
   PRICE_LOW_TO_HIGH = 'price_low_to_high',
   PRICE_HIGH_TO_LOW = 'price_high_to_low',
   NEWEST = 'newest',
@@ -17,7 +17,7 @@ export const SORT_BY_RELEVANCE_OPTION: SelectFormOption<SORT_BY> = {
 export const SORT_BY_DISTANCE_OPTION: SelectFormOption<SORT_BY> = {
   label: $localize`:@@web_filter_sort_by_distance:Distance`,
   icon: '/assets/icons/filters/location.svg',
-  value: SORT_BY.DEFAULT,
+  value: SORT_BY.DISTANCE,
 };
 
 export const SORT_BY_PRICE_LOW_TO_HIGH_OPTION: SelectFormOption<SORT_BY> = {
