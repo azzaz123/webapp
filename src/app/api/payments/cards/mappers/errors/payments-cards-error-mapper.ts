@@ -23,47 +23,47 @@ export class PaymentsCardsErrorMapper extends ErrorMapper<PaymentsCardsErrorResp
 
     backendDeliveryErrors.forEach((error) => {
       if (error.error_code === PAYMENTS_CARDS_ERROR_CODES.CARD_NOT_FOUND) {
-        return new CardNotFoundError();
+        return mappedErrors.push(new CardNotFoundError());
       }
 
       if (error.error_code === PAYMENTS_CARDS_ERROR_CODES.CARD_COUNTRY_IS_INVALID) {
-        return new CardCountryIsInvalidError();
+        return mappedErrors.push(new CardCountryIsInvalidError());
       }
 
       if (error.error_code === PAYMENTS_CARDS_ERROR_CODES.CARD_IS_NOT_AUTHORIZED) {
-        return new CardIsNotAuthorizedError();
+        return mappedErrors.push(new CardIsNotAuthorizedError());
       }
 
       if (error.error_code === PAYMENTS_CARDS_ERROR_CODES.CARD_OWNER_IS_INVALID) {
-        return new CardOwnerIsInvalidError();
+        return mappedErrors.push(new CardOwnerIsInvalidError());
       }
 
       if (error.error_code === PAYMENTS_CARDS_ERROR_CODES.CARD_OWNER_NAME_IS_INVALID) {
-        return new CardOwnerNameIsInvalidError();
+        return mappedErrors.push(new CardOwnerNameIsInvalidError());
       }
 
       if (error.error_code === PAYMENTS_CARDS_ERROR_CODES.CARD_REGISTRATION_FAILED) {
-        return new CardRegistrationFailedError();
+        return mappedErrors.push(new CardRegistrationFailedError());
       }
 
       if (error.error_code === PAYMENTS_CARDS_ERROR_CODES.CARD_REGISTRATION_IS_INVALID) {
-        return new CardRegistrationIsInvalidError();
+        return mappedErrors.push(new CardRegistrationIsInvalidError());
       }
 
       if (error.error_code === PAYMENTS_CARDS_ERROR_CODES.CARD_TOKENIZATION_FAILED) {
-        return new CardTokenizationFailedError();
+        return mappedErrors.push(new CardTokenizationFailedError());
       }
 
       if (error.error_code === PAYMENTS_CARDS_ERROR_CODES.COUNTRY_ISO_CODE_IS_INVALID) {
-        return new CountryIsoCodeIsInvalidError();
+        return mappedErrors.push(new CountryIsoCodeIsInvalidError());
       }
 
       if (error.error_code === PAYMENTS_CARDS_ERROR_CODES.PLATFORM_RESPONSE_IS_INVALID) {
-        return new PlatformResponseIsInvalidError();
+        return mappedErrors.push(new PlatformResponseIsInvalidError());
       }
 
       if (error.error_code === PAYMENTS_CARDS_ERROR_CODES.UNIQUE_CARD_FOR_USER) {
-        return new UniqueCardForUserError();
+        return mappedErrors.push(new UniqueCardForUserError());
       }
     });
 
