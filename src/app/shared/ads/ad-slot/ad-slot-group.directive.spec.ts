@@ -29,7 +29,7 @@ describe('AdSlotGroupDirective', () => {
     spyOn(adsServiceMock, 'displayAdBySlotId');
 
     const directive = new AdSlotGroupDirective(adsServiceMock);
-    directive.slotsQuery = ({ changes: of([adSlot1, adSlot2]) } as unknown) as QueryList<AdSlotComponent>;
+    directive.slotsQuery = ({ changes: of([{ adSlot: adSlot1 }, { adSlot: adSlot2 }]) } as unknown) as QueryList<AdSlotComponent>;
 
     directive.ngAfterContentInit();
 
