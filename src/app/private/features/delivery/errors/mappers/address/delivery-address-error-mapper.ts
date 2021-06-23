@@ -7,7 +7,7 @@ import {
 import { UniqueAddressByUserError } from '../../classes/address/unique-address.error';
 import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
 import { PostalCodeIsInvalidError, PostalCodeDoesNotExistError, PostalCodeIsNotAllowedError } from '../../classes/postal-codes';
-import { ErrorMapper } from '../error-mapper';
+import { ErrorMapper } from '@api/core/utils/classes';
 import { DELIVERY_ADDRESS_ERROR_CODES } from './delivery-address-error.enum';
 
 export type DeliveryAddressErrorResponse = DeliveryErrorResponseApi<DELIVERY_ADDRESS_ERROR_CODES>;

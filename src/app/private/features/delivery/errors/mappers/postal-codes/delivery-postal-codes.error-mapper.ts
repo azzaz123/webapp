@@ -1,6 +1,6 @@
 import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
 import { PostalCodeIsInvalidError, PostalCodeDoesNotExistError, PostalCodeIsNotAllowedError } from '../../classes/postal-codes';
-import { ErrorMapper } from '../error-mapper';
+import { ErrorMapper } from '@api/core/utils/classes';
 import { DELIVERY_POSTAL_CODES_ERROR_CODES } from './delivery-postal-codes-error.enum';
 
 export type DeliveryPostalCodesErrorResponse = DeliveryErrorResponseApi<DELIVERY_POSTAL_CODES_ERROR_CODES>;
