@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
+import { ShipmentTrakingComponent } from './shipment-traking.component';
 
-// TODO: Add ShipmentTrackingComponent when created		Date: 2021/04/22
 const routes: Route[] = [
   {
     path: '',
+    component: ShipmentTrakingComponent,
   },
 ];
 
@@ -14,4 +15,4 @@ const routes: Route[] = [
 })
 export class ShipmentTrackingRoutingModule {}
 
-export const shipmentTrackingRoutedComponents = [];
+export const shipmentTrackingRoutedComponents = [ShipmentTrakingComponent];
