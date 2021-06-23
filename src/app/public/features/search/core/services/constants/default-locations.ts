@@ -16,6 +16,6 @@ export const DEFAULT_LOCATIONS: Record<APP_LOCALE, LabeledSearchLocation> = {
   it: {
     [FILTER_QUERY_PARAM_KEY.latitude]: '41.8905',
     [FILTER_QUERY_PARAM_KEY.longitude]: '12.4942',
-    label: $localize`:@@web_default_location_roma:Italia, Roma`,
+    label: $localize`:@@web_default_location_roma:Italy, Rome`,
   },
 };
