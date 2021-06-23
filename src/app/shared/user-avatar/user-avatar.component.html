@@ -10,5 +10,7 @@
        [src]="uploadedAvatar"
        class="avatar-rounded"
        [ngClass]="'avatar-' + size" />
-  <tsl-svg-icon *ngIf="showProBadge" class="position-absolute bottom-0 end-0" src="/assets/icons/pro-seal.svg" [width]="badgeSize" [height]="badgeSize" [ngStyle]="badgeStyles"></tsl-svg-icon>
+       <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+         <tsl-svg-icon *ngIf="showProBadge" class="position-absolute bottom-0 end-0" src="/assets/icons/pro-seal.svg" [width]="badgeSize" [height]="badgeSize" [ngStyle]="badgeStyles"></tsl-svg-icon>
+       </ng-container>
 </div>
