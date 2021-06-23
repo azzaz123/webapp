@@ -12,6 +12,10 @@ const routes: Route[] = [
     component: BankDetailsComponent,
     children: [
       {
+        path: '',
+        loadChildren: () => BankDetailsOverviewModule,
+      },
+      {
         path: DELIVERY_PATHS.CREDIT_CARD,
         loadChildren: () => CreditCardModule,
       },
@@ -21,7 +25,7 @@ const routes: Route[] = [
       },
       {
         path: '**',
-        loadChildren: () => BankDetailsOverviewModule,
+        redirectTo: '',
       },
     ],
   },

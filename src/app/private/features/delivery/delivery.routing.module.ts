@@ -49,6 +49,10 @@ const routes: Route[] = [
         path: DELIVERY_PATHS.BANK_DETAILS,
         loadChildren: () => BankDetailsModule,
       },
+      {
+        path: '**',
+        redirectTo: DELIVERY_PATHS.TIMELINE,
+      },
     ],
   },
 ];

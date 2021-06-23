@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { DELIVERY_PATHS } from '../delivery-routing-constants';
@@ -9,32 +9,33 @@ import { DELIVERY_PATHS } from '../delivery-routing-constants';
   templateUrl: './delivery.component.html',
   styleUrls: ['./delivery.component.scss'],
 })
-export class DeliveryComponent implements OnInit {
+export class DeliveryComponent {
   public navLinks: NavLink[] = [
     {
-      id: `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SHIPMENT_TRACKING}`,
+      id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SHIPMENT_TRACKING}`,
       display: $localize`:@@web_delivery_shipment_tracking:Tracking`,
     },
     {
-      id: `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`,
+      id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`,
       display: $localize`:@@web_delivery_bank_details:Bank details`,
     },
     {
-      id: `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
+      id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
       display: $localize`:@@web_delivery_shipping_address:Address`,
     },
   ];
 
-  public selectedNavLinkId: string = this.navLinks[0].id;
+  public selectedNavLinkId: string;
 
-  constructor(private router: Router) {}
-
-  public ngOnInit() {
-    this.onNavLinkClicked(this.selectedNavLinkId);
+  constructor(private router: Router) {
+    router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        this.selectedNavLinkId = this.navLinks.find((link) => e.url.startsWith(link.id))?.id;
+      }
+    });
   }
 
   public onNavLinkClicked(navLinkId: string): void {
-    this.selectedNavLinkId = navLinkId;
-    this.router.navigate([this.selectedNavLinkId]);
+    this.router.navigate([navLinkId]);
   }
 }
