@@ -174,7 +174,6 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       error instanceof CardTokenizationFailedError ||
       error instanceof CardRegistrationIsInvalidError ||
       error instanceof CardRegistrationFailedError ||
-      error instanceof CardOwnerNameIsInvalidError ||
       error instanceof CardOwnerIsInvalidError ||
       error instanceof CardCountryIsInvalidError ||
       error instanceof CardNotFoundError
