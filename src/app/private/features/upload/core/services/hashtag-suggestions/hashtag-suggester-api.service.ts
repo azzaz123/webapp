@@ -1,0 +1,46 @@
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
+import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { HashtagResponse, Hashtag } from '../../models/hashtag.interface';
+
+export const HASHTAG_SUGGESTERS_API = `api/v3/suggesters/hashtags`;
+export const GENERAL_HASHTAG_SUGGESTERS_API = `${HASHTAG_SUGGESTERS_API}/general`;
+
+@Injectable()
+export class HashtagSuggesterApiService {
+  private readonly nextPageHeaderName = 'x-nextpage';
+  private readonly nextPageParameterName = 'start';
+
+  constructor(private http: HttpClient) {}
+
+  public getHashtagsByPrefix(category_id: string, start: string, prefix: string): Observable<PaginationResponse<Hashtag>> {
+    const url = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}`;
+    const httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix, start } });
+    return this.getResults(
+      this.http.get<HttpResponse<HashtagResponse>>(url, { params: httpParams, observe: 'response' as 'body' })
+    );
+  }
+
+  public getHashtags(category_id: string, start: string): Observable<PaginationResponse<Hashtag>> {
+    const url = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}`;
+    let httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix: null, start } });
+    return this.getResults(
+      this.http.get<HttpResponse<HashtagResponse>>(url, { params: httpParams, observe: 'response' as 'body' })
+    );
+  }
+
+  private getResults(endpointSubscribable: Observable<HttpResponse<HashtagResponse>>): Observable<PaginationResponse<Hashtag>> {
+    return endpointSubscribable.pipe(
+      map((r: HttpResponse<HashtagResponse>) => {
+        const nextPage: string = r.headers.get(this.nextPageHeaderName);
+        return {
+          results: r.body.hashtags,
+          init: parseInt(new URLSearchParams(nextPage).get(this.nextPageParameterName), 10) || null,
+        };
+      })
+    );
+  }
+}
