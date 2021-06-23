@@ -15,14 +15,14 @@ export class BankAccountService {
     return this.bankAccountSubject.asObservable();
   }
 
-  private set currentBankAccount(bankAccount: BankAccount) {
+  private set bankAccount(bankAccount: BankAccount) {
     this.bankAccountSubject.next(bankAccount);
   }
 
   public get(): Observable<BankAccount> {
     return this.bankAccountApiService.get().pipe(
       map((bankAccountApi: BankAccountApiWithCountry) => this.mapBankAccountService.mapBankAccountApiToForm(bankAccountApi)),
-      tap((bankAccount: BankAccount) => (this.currentBankAccount = bankAccount))
+      tap((bankAccount: BankAccount) => (this.bankAccount = bankAccount))
     );
   }
 
@@ -39,6 +39,6 @@ export class BankAccountService {
   }
 
   public delete(): Observable<null> {
-    return this.bankAccountApiService.delete().pipe(tap(() => (this.currentBankAccount = null)));
+    return this.bankAccountApiService.delete().pipe(tap(() => (this.bankAccount = null)));
   }
 }

@@ -16,14 +16,14 @@ export class PaymentsCreditCardService {
     return this.creditCardSubject.asObservable();
   }
 
-  private set currentCreditCard(creditCard: CreditCard) {
+  private set creditCard(creditCard: CreditCard) {
     this.creditCardSubject.next(creditCard);
   }
 
   public get(): Observable<CreditCard> {
     return this.paymentsCreditCardHttpService.get().pipe(
       map(mapPaymentsCreditCardToCreditCard),
-      tap((creditCard) => (this.currentCreditCard = creditCard))
+      tap((creditCard) => (this.creditCard = creditCard))
     );
   }
 
@@ -36,6 +36,6 @@ export class PaymentsCreditCardService {
   }
 
   public delete(): Observable<null> {
-    return this.paymentsCreditCardHttpService.delete().pipe(tap(() => (this.currentCreditCard = null)));
+    return this.paymentsCreditCardHttpService.delete().pipe(tap(() => (this.creditCard = null)));
   }
 }
