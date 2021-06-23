@@ -9,6 +9,9 @@ import { DebugElement, LOCALE_ID } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickProInfo, SCREEN_IDS } from '@core/analytics/analytics-constants';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { MockPermissionsService, MOCK_PERMISSIONS } from '@fixtures/permissions.fixtures';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 const MOCK_LOCALE = 'en';
 
@@ -18,6 +21,7 @@ describe('FooterComponent', () => {
   let de: DebugElement;
   let el: HTMLElement;
   let analyticsService: AnalyticsService;
+  let permissionService: NgxPermissionsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -25,8 +29,9 @@ describe('FooterComponent', () => {
         imports: [SvgIconModule, HttpClientTestingModule],
         declarations: [FooterComponent],
         providers: [
-          { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: LOCALE_ID, useValue: MOCK_LOCALE },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+          { provide: NgxPermissionsService, useClass: MockPermissionsService },
         ],
       }).compileComponents();
     })
@@ -38,6 +43,7 @@ describe('FooterComponent', () => {
     de = fixture.debugElement;
     el = de.nativeElement;
     analyticsService = TestBed.inject(AnalyticsService);
+    permissionService = TestBed.inject(NgxPermissionsService);
     fixture.detectChanges();
   });
 
@@ -65,6 +71,48 @@ describe('FooterComponent', () => {
     excluded.forEach((footerLinkSection: FooterLinkSection) => {
       footerLinkSection.links.forEach((sectionLink: FooterLink) => {
         expect(el.querySelector(`[href="${sectionLink.href}"]`)).toBeTruthy();
+      });
+    });
+  });
+
+  describe('and has links with permissions', () => {
+    describe('and has valid permission', () => {
+      it('should show link', () => {
+        const included = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+          return MOCK_PERMISSIONS[footerLinkSection.permission];
+        });
+
+        included.forEach((footerLinkSection: FooterLinkSection) => {
+          expect(component.FOOTER_LINKS).toContain(footerLinkSection);
+        });
+      });
+    });
+
+    describe('and has invalid permission', () => {
+      const MOCK_LINKS: FooterLinkSection[] = [FOOTER_LINKS[0]];
+      beforeEach(() => {
+        MOCK_LINKS[0].permission = PERMISSIONS.professional;
+      });
+      it('should not show link', () => {
+        const included = MOCK_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+          return MOCK_PERMISSIONS[footerLinkSection.permission];
+        });
+
+        included.forEach((footerLinkSection: FooterLinkSection) => {
+          expect(component.FOOTER_LINKS).not.toContain(footerLinkSection);
+        });
+      });
+    });
+
+    describe('and has not permission set', () => {
+      it('should show link', () => {
+        const included = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+          return !footerLinkSection.permission && !footerLinkSection.excludedLanguages;
+        });
+
+        included.forEach((footerLinkSection: FooterLinkSection) => {
+          expect(component.FOOTER_LINKS).toContain(footerLinkSection);
+        });
       });
     });
   });
