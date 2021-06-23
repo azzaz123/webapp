@@ -103,6 +103,7 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
     super.handleClear();
     this.cleanForm();
     this.valueChange.emit([]);
+    this.applyChanges();
   }
 
   private setValue(min: number, max: number) {
