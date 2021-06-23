@@ -144,7 +144,7 @@ describe('PaymentsCardsErrorMapper', () => {
     });
 
     describe('and server notifies platform response is invalid', () => {
-      it('should notify country is invalid', () => {
+      it('should notify platform response is invalid', () => {
         let result: PaymentsCardsError;
 
         paymentsCardsErrorMapper.map(MOCK_PAYMENTS_CARDS_ERROR_PLATFORM_RESPONSE_IS_INVALID_RESPONSE).subscribe({
