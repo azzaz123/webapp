@@ -113,6 +113,8 @@ describe('SearchComponent', () => {
       init: () => {},
       setSlots: () => {},
       close: () => {},
+      clearSlots: () => {},
+      refreshSlots: () => {},
     };
     await TestBed.configureTestingModule({
       declarations: [
@@ -634,6 +636,26 @@ describe('SearchComponent', () => {
       const shoppingSlotGroup = fixture.debugElement.query(By.css('tsl-sky-slot-group-shopping'));
 
       expect(shoppingSlotGroup).toBeTruthy();
+    });
+  });
+
+  describe('when the page goes from foreground to background', () => {
+    it('should clear ad slots', () => {
+      spyOn(searchAdsServiceMock, 'clearSlots');
+
+      component.onDetach();
+
+      expect(searchAdsServiceMock.clearSlots).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('when the page goes from background to foreground', () => {
+    it('should refresh ad slots', () => {
+      spyOn(searchAdsServiceMock, 'refreshSlots');
+
+      component.onAttach();
+
+      expect(searchAdsServiceMock.refreshSlots).toHaveBeenCalledTimes(1);
     });
   });
 

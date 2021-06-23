@@ -13,6 +13,7 @@ import { EventService } from '../event/event.service';
 import { RemoteConsoleService } from '../remote-console';
 import { XmppBodyMessage } from './xmpp.interface';
 import { XmppService } from './xmpp.service';
+import { StanzaIO } from './xmpp.provider';
 
 const mamFirstIndex = '1899';
 const mamCount = 1900;
@@ -75,7 +76,7 @@ const MOCKED_SERVER_MESSAGE: any = {
   thread: 'thread',
   body: 'body',
   requestReceipt: true,
-  from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
+  from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
   fromSelf: false,
   id: 'id',
 };
@@ -83,8 +84,8 @@ const MOCKED_SERVER_RECEIVED_RECEIPT: XmppBodyMessage = {
   body: '',
   thread: 'thread',
   receipt: 'receipt',
-  to: new XMPP.JID(USER_ID, environment.xmppDomain),
-  from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
+  to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
+  from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
   timestamp: { body: '2017-03-23T12:24:19.844620Z' },
   id: 'id',
 };
@@ -115,7 +116,7 @@ describe('Service: Xmpp', () => {
     });
     service = TestBed.inject(XmppService);
     eventService = TestBed.inject(EventService);
-    spyOn(XMPP, 'createClient').and.returnValue(MOCKED_CLIENT);
+    spyOn(StanzaIO, 'createClient').and.returnValue(MOCKED_CLIENT);
     spyOn(MOCKED_CLIENT, 'on').and.callFake((event, callback) => {
       eventService.subscribe(event, callback);
     });
@@ -140,9 +141,9 @@ describe('Service: Xmpp', () => {
 
   it('should create the client', () => {
     service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-    const selfJid = new XMPP.JID(MOCKED_LOGIN_USER, environment.xmppDomain, service['resource']);
+    const selfJid = new StanzaIO.JID(MOCKED_LOGIN_USER, environment.xmppDomain, service['resource']);
 
-    expect(XMPP.createClient).toHaveBeenCalledWith({
+    expect(StanzaIO.createClient).toHaveBeenCalledWith({
       jid: selfJid,
       resource: service['resource'],
       password: MOCKED_LOGIN_PASSWORD,
@@ -365,7 +366,7 @@ describe('Service: Xmpp', () => {
 
       eventService.emit('message', {
         thread: 'thread',
-        from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
+        from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
         id: 'id',
       });
 
@@ -381,7 +382,7 @@ describe('Service: Xmpp', () => {
 
       eventService.emit('message', {
         thread: 'thread',
-        from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
+        from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
         id: 'id',
         payload: MOCK_PAYLOAD_KO,
       });
@@ -511,7 +512,7 @@ describe('Service: Xmpp', () => {
     it('should send the read message', () => {
       service.connect$(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       service.sendConversationStatus(USER_ID, MESSAGE_ID);
-      const jid = new XMPP.JID(USER_ID, environment.xmppDomain);
+      const jid = new StanzaIO.JID(USER_ID, environment.xmppDomain);
 
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
         to: jid,
@@ -662,7 +663,7 @@ describe('Service: Xmpp', () => {
       service.sendMessage(CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE(CONVERSATION_ID, USER_ID), MESSAGE_BODY);
       const message: any = {
         id: queryId,
-        to: new XMPP.JID(USER_ID, environment.xmppDomain),
+        to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
         from: service['self'],
         thread: CONVERSATION_ID,
         type: 'chat',
@@ -740,13 +741,13 @@ describe('Service: Xmpp', () => {
       );
 
       spyOn<any>(service, 'createJid').and.returnValues(
-        new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
-        new XMPP.JID(USER_ID, environment.xmppDomain)
+        new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
+        new StanzaIO.JID(USER_ID, environment.xmppDomain)
       );
       const expectedXmppMsg: XmppBodyMessage = {
         id: MOCK_MESSAGE_FROM_OTHER.id,
-        to: new XMPP.JID(USER_ID, environment.xmppDomain),
-        from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
+        to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
+        from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
         thread: conversation.id,
         type: 'chat',
         request: {
@@ -789,11 +790,11 @@ describe('Service: Xmpp', () => {
       spyOn(eventService, 'emit');
 
       const message: XmppBodyMessage = {
-        from: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
+        from: new StanzaIO.JID(USER_ID, environment.xmppDomain, service['resource']),
         body: 'bla',
         timestamp: { body: 'timestamp' },
         thread: 'thread',
-        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
+        to: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
         id: 'someId',
         receipt: 'receipt',
       };
@@ -808,11 +809,11 @@ describe('Service: Xmpp', () => {
     it('should emit a CHAT_SIGNAL event if the message has a sentReceipt', () => {
       spyOn(eventService, 'emit');
       const message: XmppBodyMessage = {
-        from: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
+        from: new StanzaIO.JID(USER_ID, environment.xmppDomain, service['resource']),
         body: 'bla',
         timestamp: { body: 'timestamp' },
         thread: 'thread',
-        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
+        to: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
         id: 'someId',
         sentReceipt: { id: 'someId' },
       };
@@ -826,10 +827,10 @@ describe('Service: Xmpp', () => {
 
     it('should emit a CHAT_SIGNAL event if the message is a readReceipt from the other user to self', () => {
       spyOn(eventService, 'emit');
-      const self = new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']);
+      const self = new StanzaIO.JID(USER_ID, environment.xmppDomain, service['resource']);
       service['self'] = self;
       const message: XmppBodyMessage = {
-        from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
+        from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
         body: 'bla',
         timestamp: { body: 'timestamp' },
         thread: 'thread',
@@ -847,14 +848,14 @@ describe('Service: Xmpp', () => {
 
     it('should emit a CHAT_SIGNAL event if the message is a readReceipt from self to the other user', () => {
       spyOn(eventService, 'emit');
-      const self = new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']);
+      const self = new StanzaIO.JID(USER_ID, environment.xmppDomain, service['resource']);
       service['self'] = self;
       const message: XmppBodyMessage = {
         from: self,
         body: 'bla',
         timestamp: { body: 'timestamp' },
         thread: 'thread',
-        to: new XMPP.JID(USER_ID, environment.xmppDomain),
+        to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
         id: 'someId',
         readReceipt: { id: 'someId' },
       };
@@ -886,7 +887,7 @@ describe('Service: Xmpp', () => {
       service.sendMessageDeliveryReceipt(MOCK_MESSAGE.from, MOCK_MESSAGE.id, MOCK_MESSAGE.thread);
 
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
-        to: new XMPP.JID(MOCK_MESSAGE.from, environment.xmppDomain),
+        to: new StanzaIO.JID(MOCK_MESSAGE.from, environment.xmppDomain),
         type: 'chat',
         thread: MOCK_MESSAGE.thread,
         received: {
