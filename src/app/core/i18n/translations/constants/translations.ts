@@ -183,4 +183,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.CANCEL_BUTTON]: $localize`:@@web_cancel_button:Cancel`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_CONFIRM]: $localize`:@@pre_address_view_all_users_address_added_remove_confirmation_modal_confirm_button:Confirm`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_CANCEL]: $localize`:@@pre_address_view_all_users_address_added_remove_confirmation_modal_back_button:Back`,
+  [TRANSLATION_KEY.GENERIC_CREDIT_CARD_ERROR]: $localize`:@@payment_error_card:Ouch, there is an error with the bank card`,
+  [TRANSLATION_KEY.CREDIT_CARD_MISSING_INFO_ERROR]: $localize`:@@credit_card_snackbar_missing_info_error:The missing data is necessary to save.`,
+  [TRANSLATION_KEY.CREDIT_CARD_CREATE_SUCCESS]: $localize`:@@delivery_create_credit_card_succeed:Credit card added successfully!`,
 };

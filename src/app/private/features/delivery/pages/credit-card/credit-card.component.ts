@@ -10,9 +10,24 @@ import { UuidService } from '@core/uuid/uuid.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { finalize } from 'rxjs/operators';
-import { DELIVERY_PATHS } from '../../delivery-routing-constants';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-request.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import {
+  CardCountryIsInvalidError,
+  CardIsNotAuthorizedError,
+  CardNotFoundError,
+  CardOwnerIsInvalidError,
+  CardOwnerNameIsInvalidError,
+  CardRegistrationFailedError,
+  CardRegistrationIsInvalidError,
+  CardTokenizationFailedError,
+  CountryIsoCodeIsInvalidError,
+  PaymentsCardsError,
+  PlatformResponseIsInvalidError,
+  UniqueCardForUserError,
+} from '@api/core/errors/payments/cards';
+import { CreditCardFormErrorMessages } from '@private/features/delivery/interfaces/credit-card/credit-card-form-error-messages.interface';
 
 @Component({
   selector: 'tsl-credit-card',
@@ -26,7 +41,10 @@ export class CreditCardComponent implements OnInit, OnDestroy {
   public loading = false;
   public isNewForm = true;
   public loadingButton = false;
-  public formErrorMessages;
+  public formErrorMessages: CreditCardFormErrorMessages = {
+    fullName: '',
+    cardNumber: '',
+  };
 
   private readonly formSubmittedEventKey = 'formSubmitted';
   public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
@@ -79,7 +97,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       this.submitValidForm();
     } else {
       this.creditCardForm.markAsPending();
-      this.showToast(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR, 'error');
+      this.showToast(TRANSLATION_KEY.CREDIT_CARD_MISSING_INFO_ERROR, 'error');
       for (const control in this.creditCardForm.controls) {
         if (this.creditCardForm.controls.hasOwnProperty(control) && !this.creditCardForm.controls[control].valid) {
           this.creditCardForm.controls[control].markAsDirty();
@@ -102,11 +120,11 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         () => {
-          this.showToast(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS, 'success');
+          this.showToast(TRANSLATION_KEY.CREDIT_CARD_CREATE_SUCCESS, 'success');
           this.isNewForm = false;
           this.router.navigate([this.BANK_DETAILS_URL]);
         },
-        (errors: any[]) => {
+        (errors: PaymentsCardsError[]) => {
           this.handleCreditCardErrors(errors);
         }
       );
@@ -126,10 +144,41 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     };
   }
 
-  private handleCreditCardErrors(errors: any[]): void {
-    let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR;
+  private handleCreditCardErrors(errors: PaymentsCardsError[]): void {
+    let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.FORM_FIELD_ERROR;
+
+    errors.forEach((error: PaymentsCardsError) => {
+      if (error instanceof CardIsNotAuthorizedError) {
+        this.setIncorrectControlAndShowError('fullName', error.message);
+      }
+
+      if (error instanceof CardOwnerNameIsInvalidError) {
+        this.setIncorrectControlAndShowError('cardNumber', error.message);
+      }
+
+      if (this.isGenericCreditCardError(error)) {
+        translationKey = TRANSLATION_KEY.GENERIC_CREDIT_CARD_ERROR;
+      } else {
+        this.creditCardForm.markAsPending();
+      }
+    });
 
     this.showToast(translationKey, 'error');
+  }
+
+  private isGenericCreditCardError(error: PaymentsCardsError): boolean {
+    return (
+      error instanceof UniqueCardForUserError ||
+      error instanceof PlatformResponseIsInvalidError ||
+      error instanceof CountryIsoCodeIsInvalidError ||
+      error instanceof CardTokenizationFailedError ||
+      error instanceof CardRegistrationIsInvalidError ||
+      error instanceof CardRegistrationFailedError ||
+      error instanceof CardOwnerNameIsInvalidError ||
+      error instanceof CardOwnerIsInvalidError ||
+      error instanceof CardCountryIsInvalidError ||
+      error instanceof CardNotFoundError
+    );
   }
 
   private setIncorrectControlAndShowError(formControl: string, message: string): void {

@@ -136,7 +136,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   }
 
   private handleBankAccountErrors(errors: BankAccountError[]): void {
-    let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR;
+    let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.FORM_FIELD_ERROR;
 
     errors.forEach((error: BankAccountError) => {
       if (error instanceof IbanCountryIsInvalidError || error instanceof IbanIsInvalidError) {
