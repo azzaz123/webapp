@@ -41,6 +41,8 @@ import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-para
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { debounce } from '@core/helpers/debounce/debounce';
 import { SORT_BY } from '../components/sort-filter/services/constants/sort-by-options-constants';
+import { SearchResponseExtraData } from '../core/services/interfaces/search-response-extra-data.interface';
+import { SearchService } from '../core/services/search.service';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
