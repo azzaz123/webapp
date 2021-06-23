@@ -40,6 +40,7 @@ describe('SortFilterComponent', () => {
   let fixture: ComponentFixture<SortFilterComponent>;
   let component: SortFilterComponent;
   let navigator: SearchNavigatorService;
+  const sortFilterValueLabelSelector = '.SortFilter__value';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -86,7 +87,7 @@ describe('SortFilterComponent', () => {
 
   describe('by default', () => {
     it('should set sort by distance', () => {
-      const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
+      const value: HTMLElement = fixture.debugElement.query(By.css(sortFilterValueLabelSelector)).nativeElement;
 
       expect(value.textContent).toBe(component.options[0].label);
     });
@@ -106,15 +107,16 @@ describe('SortFilterComponent', () => {
       beforeEach(() => {
         component.value = validSortByValue;
         validSortByOption = component.options.find((option) => option.value === validSortByValue);
-        fixture.detectChanges();
       });
 
       it('should set sort by the given value', () => {
-        const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
+        const value: HTMLElement = fixture.debugElement.query(By.css(sortFilterValueLabelSelector)).nativeElement;
 
-        expect(value.textContent).toBe(validSortByOption.label);
-        expect(component.selected).toBe(validSortByOption);
-        expect(component.formControl.value).toBe(validSortByOption.value);
+        fixture.whenStable().then(() => {
+          expect(value.textContent).toBe(validSortByOption.label);
+          expect(component.selected).toBe(validSortByOption);
+          expect(component.formControl.value).toBe(validSortByOption.value);
+        });
       });
     });
 
@@ -129,7 +131,7 @@ describe('SortFilterComponent', () => {
       });
 
       it('should set sort by the default value', () => {
-        const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
+        const value: HTMLElement = fixture.debugElement.query(By.css(sortFilterValueLabelSelector)).nativeElement;
 
         expect(value.textContent).toBe(defaultSortByOption?.label);
       });
@@ -152,7 +154,7 @@ describe('SortFilterComponent', () => {
 
       fixture.detectChanges();
 
-      const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
+      const value: HTMLElement = fixture.debugElement.query(By.css(sortFilterValueLabelSelector)).nativeElement;
       expect(value.textContent).toBe(lastOption.label);
     });
 
