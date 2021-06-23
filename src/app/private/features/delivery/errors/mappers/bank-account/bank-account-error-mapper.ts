@@ -1,4 +1,5 @@
 import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
+import { ErrorMapper } from '@api/core/utils/classes/';
 import { BANK_ACCOUNT_ERROR_CODES } from './bank-account-error.enum';
 import {
   IbanCountryIsInvalidError,
@@ -8,7 +9,6 @@ import {
   PlatformResponseIsInvalidError,
   UniqueBankAccountByUserError,
 } from '../../classes/bank-account';
-import { ErrorMapper } from '@api/core/utils/classes';
 
 export type BankAccountErrorResponse = DeliveryErrorResponseApi<BANK_ACCOUNT_ERROR_CODES>;
 
