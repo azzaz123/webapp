@@ -119,7 +119,7 @@ describe('SortFilterComponent', () => {
     });
 
     describe('and invalid value', () => {
-      const defaultSortByValue = SORT_BY.DEFAULT;
+      const defaultSortByValue = SORT_BY.DISTANCE;
       let defaultSortByOption: SelectFormOption<SORT_BY>;
 
       beforeEach(() => {
