@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HelpComponent } from './help.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { LOCALE_ID, NO_ERRORS_SCHEMA } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -45,12 +45,7 @@ describe('HelpComponent', () => {
               fragment: of('Perfil-6'),
             },
           },
-          {
-            provide: I18nService,
-            useValue: {
-              locale: 'es',
-            },
-          },
+          { provide: LOCALE_ID, useValue: 'es' },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();

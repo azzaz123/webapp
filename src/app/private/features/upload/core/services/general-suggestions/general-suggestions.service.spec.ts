@@ -1,4 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -28,7 +29,7 @@ describe('GeneralSuggestionsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GeneralSuggestionsService, I18nService],
+      providers: [GeneralSuggestionsService, { provide: LOCALE_ID, useValue: 'en' }],
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(GeneralSuggestionsService);

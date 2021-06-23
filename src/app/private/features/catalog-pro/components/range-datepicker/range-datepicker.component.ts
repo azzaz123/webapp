@@ -1,8 +1,9 @@
 import { CalendarDates } from '../../core/calendar-dates';
-import { Component, OnInit, Input, EventEmitter, Output, Injectable } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, Injectable, LOCALE_ID, Inject } from '@angular/core';
 import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { style, animate, transition, trigger } from '@angular/animations';
 import { I18nService } from '@core/i18n/i18n.service';
+import { APP_LOCALE } from 'configs/subdomains.config';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
   one && two && two.year === one.year && two.month === one.month && two.day === one.day;
@@ -41,15 +42,15 @@ const I18N_VALUES = {
 };
 @Injectable()
 export class CustomDatepickerI18n extends NgbDatepickerI18n {
-  constructor(private i18nService: I18nService) {
+  constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE) {
     super();
   }
 
   getWeekdayShortName(weekday: number): string {
-    return I18N_VALUES[this.i18nService.locale].weekdays[weekday - 1];
+    return I18N_VALUES[this.locale].weekdays[weekday - 1];
   }
   getMonthShortName(month: number): string {
-    return I18N_VALUES[this.i18nService.locale].months[month - 1];
+    return I18N_VALUES[this.locale].months[month - 1];
   }
   getMonthFullName(month: number): string {
     return this.getMonthShortName(month);

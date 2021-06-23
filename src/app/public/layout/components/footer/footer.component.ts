@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject, LOCALE_ID } from '@angular/core';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickProInfo, SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { I18nService } from '@core/i18n/i18n.service';
+import { APP_LOCALE } from 'configs/subdomains.config';
 import { FOOTER_APPS, FOOTER_LINKS, FOOTER_SOCIAL } from './constants/footer-constants';
 import { FooterIcon, FooterLink, FooterLinkSection } from './interfaces/footer.interface';
 
@@ -19,9 +19,9 @@ export class FooterComponent {
     [ANALYTICS_EVENT_NAMES.ClickProInfo]: () => this.trackClickProInfo(),
   };
 
-  constructor(private i18nService: I18nService, private analyticsService: AnalyticsService) {
+  constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private analyticsService: AnalyticsService) {
     this.FOOTER_LINKS = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
-      return !(footerLinkSection.excludedLanguages || []).includes(this.i18nService.locale);
+      return !(footerLinkSection.excludedLanguages || []).includes(this.locale);
     });
   }
 
