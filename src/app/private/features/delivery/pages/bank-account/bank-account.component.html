@@ -13,9 +13,12 @@
                     <input type="text" class="form-control" id="first_name" formControlName="first_name"/>
                     <div *ngIf="bankAccountForm.controls.first_name.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                         <ng-container *ngIf="bankAccountForm.controls.first_name.errors as firstNameError">
-                        <span *ngIf="firstNameError.required" i18n="@@saving_bank_account_error_incomplete_first_name">
-                            Without your name, we are stuck
-                        </span>
+                            <span *ngIf="firstNameError.required" i18n="@@saving_bank_account_error_incomplete_first_name">
+                                Without your name, we are stuck
+                            </span>
+                            <span *ngIf="!firstNameError.required">
+                                {{formErrorMessages.first_name}}
+                            </span>
                         </ng-container>
                     </div>
                 </div>
@@ -29,6 +32,9 @@
                             <span *ngIf="lastNameError.required" i18n="@@saving_bank_account_error_incomplete_last_name">
                                 Hey! We also need your surname
                             </span>
+                            <span *ngIf="!lastNameError.required">
+                                {{formErrorMessages.last_name}}
+                            </span>
                         </ng-container>
                     </div>
                 </div>
@@ -41,6 +47,9 @@
                         <ng-container *ngIf="bankAccountForm.controls.iban.errors as IBANError">
                             <span *ngIf="IBANError.required" i18n="@@saving_bank_account_error_incomplete_iban">
                                 "IBAN" field must be filled
+                            </span>
+                            <span *ngIf="!IBANError.required">
+                                {{formErrorMessages.iban}}
                             </span>
                         </ng-container>
                     </div>
@@ -63,9 +72,6 @@
                 <label for="flat_and_floor" class="col-sm-12 col-md-5" i18n="@@shipping_flat_and_door_section_hint">Floor and door number</label>
                 <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="flat_and_floor" formControlName="flat_and_floor" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.FLAT_AND_FLOOR"/>
-                    <div *ngIf="bankAccountForm.controls.flat_and_floor.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
-                        <span>{{formErrorMessages.flat_and_floor}}</span>
-                    </div>
                 </div>
             </div>
             <div class="form-group row align-items-center">

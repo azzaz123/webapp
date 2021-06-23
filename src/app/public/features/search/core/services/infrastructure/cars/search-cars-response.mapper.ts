@@ -45,9 +45,7 @@ export function ItemCarSpecsMapper(content: SearchItemCarResponse): string[] {
   const { engine, gearbox, horsepower, year, km } = content;
 
   if (engine) {
-    const translationKey = engine.toLowerCase();
-
-    specs.push(getCarsSpecTranslation(translationKey));
+    specs.push(engine);
   }
   if (gearbox) {
     specs.push(getCarsSpecTranslation(gearbox));

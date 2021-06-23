@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { UuidService } from '@core/uuid/uuid.service';
 import {
   MOCK_EMPTY_BANK_ACCOUNT,
@@ -18,6 +19,13 @@ import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-char
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { of, throwError } from 'rxjs';
 import { DELIVERY_PATHS } from '../../delivery-routing-constants';
+import {
+  FirstNameIsInvalidError,
+  IbanCountryIsInvalidError,
+  LastNameIsInvalidError,
+  PlatformResponseIsInvalidError,
+  UniqueBankAccountByUserError,
+} from '../../errors/classes/bank-account';
 import { BankAccountApiService } from '../../services/api/bank-account-api/bank-account-api.service';
 import { BankAccountService } from '../../services/bank-account/bank-account.service';
 import { MapBankAccountService } from '../../services/bank-account/map-bank-account/map-bank-account.service';
@@ -30,6 +38,7 @@ describe('BankAccountComponent', () => {
   let fixture: ComponentFixture<BankAccountComponent>;
   let bankAccountService: BankAccountService;
   let toastService: ToastService;
+  let i18nService: I18nService;
   let router: Router;
   let el: HTMLElement;
 
@@ -42,19 +51,12 @@ describe('BankAccountComponent', () => {
         BankAccountService,
         BankAccountApiService,
         MapBankAccountService,
+        I18nService,
         {
           provide: UuidService,
           useValue: {
             getUUID() {
               return 'FAKE_UUID';
-            },
-          },
-        },
-        {
-          provide: I18nService,
-          useValue: {
-            translate() {
-              return '';
             },
           },
         },
@@ -69,6 +71,7 @@ describe('BankAccountComponent', () => {
     el = fixture.debugElement.nativeElement;
     bankAccountService = TestBed.inject(BankAccountService);
     toastService = TestBed.inject(ToastService);
+    i18nService = TestBed.inject(I18nService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
@@ -170,7 +173,7 @@ describe('BankAccountComponent', () => {
 
           it('should show a succeed message', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: '',
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS),
               type: 'success',
             });
           });
@@ -181,64 +184,108 @@ describe('BankAccountComponent', () => {
         });
 
         describe('and the petition fails...', () => {
-          beforeEach(() => {
-            spyOn(bankAccountService, 'create').and.returnValue(throwError('network error'));
+          describe('and when the fail is because server notifies first name and last name are invalids', () => {
+            beforeEach(() => {
+              spyOn(bankAccountService, 'create').and.returnValue(
+                throwError([new FirstNameIsInvalidError(), new LastNameIsInvalidError()])
+              );
 
-            triggerFormSubmit();
-          });
+              triggerFormSubmit();
+            });
 
-          it('should call the create endpoint', () => {
-            expect(bankAccountService.create).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
-          });
+            it('should call the create endpoint', () => {
+              expect(bankAccountService.create).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
+            });
 
-          it('should show an error toast', () => {
-            expect(toastService.show).toHaveBeenCalledWith({
-              text: '',
-              type: 'error',
+            it('should show an error toast', () => {
+              expect(toastService.show).toHaveBeenCalledWith({
+                text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
+                type: 'error',
+              });
+            });
+
+            it('should set errors if the backend return an invalid field', () => {
+              expect(component.bankAccountForm.get('first_name').getError('invalid')).toBeTruthy();
+              expect(component.bankAccountForm.get('last_name').getError('invalid')).toBeTruthy();
+            });
+
+            it('should mark form as pending', () => {
+              expect(component.bankAccountForm.pending).toBe(true);
+            });
+
+            it('should NOT redirect to the bank details page', () => {
+              expect(router.navigate).not.toHaveBeenCalled();
             });
           });
 
-          it('should NOT redirect to the bank details page', () => {
-            expect(router.navigate).not.toHaveBeenCalled();
+          describe('and when the fail is because server notifies platform response is invalid', () => {
+            beforeEach(() => {
+              spyOn(bankAccountService, 'create').and.returnValue(throwError([new PlatformResponseIsInvalidError('')]));
+
+              triggerFormSubmit();
+            });
+
+            it('should call the create endpoint', () => {
+              expect(bankAccountService.create).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
+            });
+
+            it('should show an error toast', () => {
+              expect(toastService.show).toHaveBeenCalledWith({
+                text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR),
+                type: 'error',
+              });
+            });
+
+            it('should not mark form as pending', () => {
+              component.onSubmit();
+
+              expect(component.bankAccountForm.pending).toBe(false);
+            });
+
+            it('should NOT redirect to the bank details page', () => {
+              expect(router.navigate).not.toHaveBeenCalled();
+            });
           });
         });
       });
+    });
 
-      describe('and the bank account is an existing one...', () => {
+    describe('and the bank account is an existing one...', () => {
+      beforeEach(() => {
+        spyOn(bankAccountService, 'get').and.returnValue(of(MOCK_BANK_ACCOUNT));
+        spyOn(toastService, 'show');
+        spyOn(router, 'navigate');
+
+        component.initForm();
+      });
+
+      describe('and the petition succeed...', () => {
         beforeEach(() => {
-          spyOn(bankAccountService, 'get').and.returnValue(of(MOCK_BANK_ACCOUNT));
-          spyOn(toastService, 'show');
-          spyOn(router, 'navigate');
+          spyOn(bankAccountService, 'update').and.returnValue(of(null));
 
-          component.initForm();
+          triggerFormSubmit();
         });
 
-        describe('and the petition succeed...', () => {
-          beforeEach(() => {
-            spyOn(bankAccountService, 'update').and.returnValue(of(null));
+        it('should call the edit endpoint', () => {
+          expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
+        });
 
-            triggerFormSubmit();
-          });
-
-          it('should call the edit endpoint', () => {
-            expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
-          });
-
-          it('should show a succeed message', () => {
-            expect(toastService.show).toHaveBeenCalledWith({
-              text: '',
-              type: 'success',
-            });
-          });
-
-          it('should redirect to the bank details page', () => {
-            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.BANK_DETAILS]);
+        it('should show a succeed message', () => {
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS),
+            type: 'success',
           });
         });
 
-        describe('and the petition fails...', () => {
+        it('should redirect to the bank details page', () => {
+          expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.BANK_DETAILS]);
+        });
+      });
+
+      describe('and the petition fails...', () => {
+        describe('and when the fail is because server notifies iban country is invalid', () => {
           beforeEach(() => {
-            spyOn(bankAccountService, 'update').and.returnValue(throwError('network'));
+            spyOn(bankAccountService, 'update').and.returnValue(throwError([new IbanCountryIsInvalidError()]));
 
             triggerFormSubmit();
           });
@@ -253,48 +300,77 @@ describe('BankAccountComponent', () => {
 
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: '',
+              text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
               type: 'error',
             });
           });
         });
+
+        describe('and when the fail is because server notifies unique bank account response', () => {
+          beforeEach(() => {
+            spyOn(bankAccountService, 'update').and.returnValue(throwError([new UniqueBankAccountByUserError('')]));
+
+            triggerFormSubmit();
+          });
+
+          it('should call the update endpoint', () => {
+            expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
+          });
+
+          it('should show an error toast', () => {
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR),
+              type: 'error',
+            });
+          });
+
+          it('should not mark form as pending', () => {
+            component.onSubmit();
+
+            expect(component.bankAccountForm.pending).toBe(false);
+          });
+
+          it('should NOT redirect to the bank details page', () => {
+            expect(router.navigate).not.toHaveBeenCalled();
+          });
+        });
+      });
+    });
+  });
+
+  describe('when the form is not valid...', () => {
+    beforeEach(() => {
+      spyOn(bankAccountService, 'create');
+      spyOn(bankAccountService, 'update');
+      spyOn(toastService, 'show');
+      component.bankAccountForm.setValue(MOCK_BANK_ACCOUNT_INVALID);
+
+      triggerFormSubmit();
+      fixture.detectChanges();
+    });
+
+    it('should not call the api service', () => {
+      expect(bankAccountService.create).not.toHaveBeenCalled();
+      expect(bankAccountService.update).not.toHaveBeenCalled();
+    });
+
+    it('should set the form as pending', () => {
+      expect(component.bankAccountForm.pending).toBe(true);
+    });
+
+    it('should show an error toast', () => {
+      expect(toastService.show).toHaveBeenCalledWith({
+        text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
+        type: 'error',
       });
     });
 
-    describe('when the form is not valid...', () => {
-      beforeEach(() => {
-        spyOn(bankAccountService, 'create');
-        spyOn(bankAccountService, 'update');
-        spyOn(toastService, 'show');
-        component.bankAccountForm.setValue(MOCK_BANK_ACCOUNT_INVALID);
+    it('should mark the incorrect controls as dirty', () => {
+      expect(component.bankAccountForm.get('postal_code').dirty).toBe(true);
+    });
 
-        triggerFormSubmit();
-        fixture.detectChanges();
-      });
-
-      it('should not call the api service', () => {
-        expect(bankAccountService.create).not.toHaveBeenCalled();
-        expect(bankAccountService.update).not.toHaveBeenCalled();
-      });
-
-      it('should set the form as pending', () => {
-        expect(component.bankAccountForm.pending).toBe(true);
-      });
-
-      it('should show an error toast', () => {
-        expect(toastService.show).toHaveBeenCalledWith({
-          text: '',
-          type: 'error',
-        });
-      });
-
-      it('should mark the incorrect controls as dirty', () => {
-        expect(component.bankAccountForm.get('postal_code').dirty).toBe(true);
-      });
-
-      it('should show errors in the template', () => {
-        expect(el.querySelectorAll(messageErrorSelector).length).toBe(1);
-      });
+    it('should show errors in the template', () => {
+      expect(el.querySelectorAll(messageErrorSelector).length).toBe(1);
     });
   });
 

@@ -17,6 +17,7 @@ import { EventService } from '../event/event.service';
 import { RemoteConsoleService } from '../remote-console';
 import { User } from '../user/user';
 import { JID, XmppBodyMessage, XMPPClient } from './xmpp.interface';
+import { StanzaIO } from './xmpp.provider';
 
 @Injectable()
 export class XmppService {
@@ -120,7 +121,7 @@ export class XmppService {
   }
 
   private createClient(accessToken: string): void {
-    this.client = XMPP.createClient({
+    this.client = StanzaIO.createClient({
       jid: this.self,
       resource: this.resource,
       password: accessToken,
