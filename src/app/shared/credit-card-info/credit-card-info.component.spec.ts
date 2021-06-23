@@ -2,6 +2,7 @@ import { ComponentFixture, fakeAsync, tick, TestBed, waitForAsync } from '@angul
 import { CreditCardInfoComponent } from './credit-card-info.component';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { BRAND_CARDS } from './credit-card-info.enum';
+import { By } from '@angular/platform-browser';
 
 describe('CreditCardInfoComponent', () => {
   const VISA_SRC_PATH = '/assets/icons/card-visa.svg';
@@ -11,6 +12,7 @@ describe('CreditCardInfoComponent', () => {
   const deleteCardButtonSelector = '.CreditCardInfo__actions--delete';
   const errorStyleSelector = '.CreditCardInfo--error';
   const numberCardSelector = '.CreditCardInfo__number';
+  const svgSelector = 'tsl-svg-icon';
 
   let component: CreditCardInfoComponent;
   let fixture: ComponentFixture<CreditCardInfoComponent>;
@@ -124,6 +126,10 @@ describe('CreditCardInfoComponent', () => {
 
       expect(component.creditCardBrandSrc).toStrictEqual(MASTERCARD_SRC_PATH);
     });
+
+    it('should show the svg', () => {
+      expect(fixture.debugElement.query(By.css(svgSelector))).toBeTruthy();
+    });
   });
 
   describe('when the credit card brand is visa...', () => {
@@ -133,6 +139,10 @@ describe('CreditCardInfoComponent', () => {
       component.ngOnChanges();
 
       expect(component.creditCardBrandSrc).toStrictEqual(VISA_SRC_PATH);
+    });
+
+    it('should show the svg', () => {
+      expect(fixture.debugElement.query(By.css(svgSelector))).toBeTruthy();
     });
   });
 
@@ -144,18 +154,29 @@ describe('CreditCardInfoComponent', () => {
 
       expect(component.creditCardBrandSrc).toStrictEqual(GENERIC_CARD_SRC_PATH);
     });
+
+    it('should show the svg', () => {
+      expect(fixture.debugElement.query(By.css(svgSelector))).toBeTruthy();
+    });
   });
 
   describe('when the entity is a bank account...', () => {
-    it('should show only 4 stars before the number', () => {
-      const fourStars = '****';
+    beforeEach(() => {
       component.isBankAccount = true;
       component.numberCard = '1234';
 
       component.ngOnChanges();
       fixture.detectChanges();
+    });
+
+    it('should show only 4 stars before the number', () => {
+      const fourStars = '****';
 
       expect(el.querySelector(numberCardSelector).innerHTML).toBe(`${fourStars} ${component.numberCard}`);
+    });
+
+    it('should not show the svg', () => {
+      expect(fixture.debugElement.query(By.css(svgSelector))).toBeFalsy();
     });
   });
 
