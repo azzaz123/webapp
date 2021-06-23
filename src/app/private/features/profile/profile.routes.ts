@@ -49,8 +49,12 @@ const routes: Route[] = [
           isMyZone: true,
           isProfile: true,
           permissions: {
+            only: PERMISSIONS.subscriptions,
             except: PERMISSIONS.professional,
-            redirectTo: '/profile',
+            redirectTo: {
+              [PERMISSIONS.professional]: '/profile',
+              default: '/profile',
+            },
           },
         },
       },
@@ -61,6 +65,10 @@ const routes: Route[] = [
         data: {
           isMyZone: true,
           isProfile: true,
+          permissions: {
+            only: PERMISSIONS.subscriptions,
+            redirectTo: '/profile',
+          },
         },
       },
       {

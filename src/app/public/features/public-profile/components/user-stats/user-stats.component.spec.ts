@@ -8,6 +8,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 describe('UserStatsComponent', () => {
   const profileUserClass = '.ProfileUser';
@@ -18,12 +20,14 @@ describe('UserStatsComponent', () => {
   let deviceDetectorService: DeviceDetectorService;
   let router: Router;
   let scrollIntoViewService: ScrollIntoViewService;
+  let permissionService: NgxPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, PublicPipesModule],
+      imports: [RouterTestingModule, PublicPipesModule, NgxPermissionsModule.forRoot()],
       declarations: [UserStatsComponent],
       providers: [
+        NgxPermissionsService,
         {
           provide: DeviceDetectorService,
           useValue: {
@@ -51,6 +55,7 @@ describe('UserStatsComponent', () => {
     component.userStats = MOCK_USER_STATS;
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
+    permissionService = TestBed.inject(NgxPermissionsService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
@@ -98,29 +103,49 @@ describe('UserStatsComponent', () => {
     });
 
     describe('when the user is pro...', () => {
-      describe('when have the extra info...', () => {
-        it('should show three anchors if it have the extra info', () => {
-          const errorMessages = fixture.debugElement.queryAll(By.css('a'));
-
-          expect(errorMessages.length).toBe(3);
+      describe('and has subscriptions permission', () => {
+        beforeEach(() => {
+          permissionService.addPermission(PERMISSIONS.subscriptions);
         });
+        describe('when have the extra info...', () => {
+          it('should show three anchors if it have the extra info', () => {
+            fixture.detectChanges();
+            const errorMessages = fixture.debugElement.queryAll(By.css('a'));
 
-        it('should toggle the phone when click on the anchor...', () => {
-          spyOn(component, 'togglePhone').and.callThrough();
-          const phoneAnchor = fixture.debugElement
-            .queryAll(By.css('a'))
-            .find((anchors) => anchors.nativeElement.innerHTML === 'Show phone number').nativeElement;
+            expect(errorMessages.length).toBe(3);
+          });
 
-          phoneAnchor.click();
+          it('should toggle the phone when click on the anchor...', () => {
+            fixture.detectChanges();
+            spyOn(component, 'togglePhone').and.callThrough();
+            const phoneAnchor = fixture.debugElement
+              .queryAll(By.css('a'))
+              .find((anchors) => anchors.nativeElement.innerHTML === 'Show phone number').nativeElement;
 
-          expect(component.togglePhone).toHaveBeenCalledTimes(1);
-          expect(component.showPhone).toBe(true);
+            phoneAnchor.click();
+
+            expect(component.togglePhone).toHaveBeenCalledTimes(1);
+            expect(component.showPhone).toBe(true);
+          });
+        });
+        describe('when NOT have the extra info', () => {
+          it('should show one anchor if it have NOT the extra info', () => {
+            component.userInfo.extraInfo.phone_number = null;
+            component.userInfo.extraInfo.link = null;
+
+            fixture.detectChanges();
+            const errorMessages = fixture.debugElement.queryAll(By.css('a'));
+
+            expect(errorMessages.length).toBe(1);
+          });
         });
       });
-      describe('when NOT have the extra info', () => {
-        it('should show one anchor if it have NOT the extra info', () => {
-          component.userInfo.extraInfo.phone_number = null;
-          component.userInfo.extraInfo.link = null;
+      describe('and has not subscriptions permission', () => {
+        beforeEach(() => {
+          permissionService.removePermission(PERMISSIONS.subscriptions);
+        });
+        it('should show only one anchor', () => {
+          component.userInfo.featured = false;
 
           fixture.detectChanges();
           const errorMessages = fixture.debugElement.queryAll(By.css('a'));

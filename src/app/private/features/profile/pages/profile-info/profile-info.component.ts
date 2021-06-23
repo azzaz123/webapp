@@ -11,7 +11,6 @@ import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.
 import { metadata } from 'assets/js/metadata-phonenumber';
 import { isValidNumber } from 'libphonenumber-js/custom';
 import * as moment from 'moment';
-import { forkJoin } from 'rxjs';
 import { finalize, take } from 'rxjs/operators';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -27,6 +26,7 @@ import {
   ViewProBenefitsPopup,
 } from '@core/analytics/analytics-constants';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
@@ -57,6 +57,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public hasTrialAvailable: boolean;
   public ANALYTICS_FIELDS = ANALYTICS_FIELDS;
   public renderMap = false;
+  public readonly PERMISSIONS = PERMISSIONS;
 
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
