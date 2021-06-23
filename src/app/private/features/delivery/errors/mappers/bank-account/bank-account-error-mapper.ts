@@ -1,5 +1,5 @@
 import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
-import { ErrorMapper } from '../error-mapper';
+import { ErrorMapper } from '@api/core/utils/classes/';
 import { BANK_ACCOUNT_ERROR_CODES } from './bank-account-error.enum';
 import {
   IbanCountryIsInvalidError,
