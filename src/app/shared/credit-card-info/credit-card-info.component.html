@@ -5,7 +5,7 @@
       <div *ngIf="isCardWithIcon" class="CreditCardInfo__brand">{{brand | titlecase}}</div>
     </div>
     <div class="d-flex w-100">
-      <div class="CreditCardInfo__number CreditCardInfo--grey">{{starsAndNumber}}</div>
+      <div class="CreditCardInfo__number CreditCardInfo--grey">{{aliasNumber}}</div>
       <div class="CreditCardInfo__date CreditCardInfo--grey">{{expireDate}}</div>
     </div>
     <div *ngIf="ownerName" class="CreditCardInfo--grey mt-1">{{ownerName}}</div>

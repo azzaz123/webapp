@@ -22,7 +22,7 @@ export class CreditCardInfoComponent implements OnChanges {
 
   public creditCardBrandSrc: string;
   public isCardWithIcon: boolean;
-  public starsAndNumber: string;
+  public aliasNumber: string;
 
   constructor() {}
 
@@ -34,7 +34,7 @@ export class CreditCardInfoComponent implements OnChanges {
 
   private updateAlias(): void {
     const stars = this.isBankAccount ? '****' : '**** **** ****';
-    this.starsAndNumber = `${stars} ${this.numberCard}`;
+    this.aliasNumber = `${stars} ${this.numberCard}`;
   }
 
   private checkCreditCardBrandSrc(): void {
