@@ -1,12 +1,18 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { CardIsNotAuthorizedError, CardOwnerNameIsInvalidError, PaymentsCardsError } from '@api/core/errors/payments/cards';
 import { MOCK_ERROR_RESPONSE } from '@api/fixtures/error-response-api.fixtures.spec';
 import { PaymentsCardsErrorResponseApi } from '@api/payments/cards/dtos/errors/payments-cards-error-response-api.interface';
 import { PAYMENTS_CARDS_ERROR_CODES } from '@api/payments/cards/mappers/errors/payments-cards-error-codes.enum';
-import { PaymentsErrorApi } from '@api/payments/dtos/errors';
+import { PaymentsErrorApi, PaymentsErrorResponseApi } from '@api/payments/dtos/errors';
 
 export const MOCK_PAYMENTS_CARDS_BASE_ERROR_RESPONSE: PaymentsCardsErrorResponseApi = {
   ...MOCK_ERROR_RESPONSE,
   error: [],
+};
+
+export const MOCK_PAYMENTS_CARDS_UNKNWON_ERROR_RESPONSE: PaymentsErrorResponseApi<unknown> = {
+  ...MOCK_ERROR_RESPONSE,
+  error: [{ error_code: 'unknown', message: 'rip' }],
 };
 
 export const MOCK_PAYMENTS_CARDS_ERRORS: PaymentsCardsError[] = [new CardOwnerNameIsInvalidError(), new CardIsNotAuthorizedError()];
