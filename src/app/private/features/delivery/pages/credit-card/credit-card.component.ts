@@ -11,7 +11,8 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { finalize } from 'rxjs/operators';
 import { DELIVERY_PATHS } from '../../delivery-routing-constants';
-import * as moment from 'moment';
+import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-request.interface';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 @Component({
   selector: 'tsl-credit-card',
@@ -28,6 +29,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
   public formErrorMessages;
 
   private readonly formSubmittedEventKey = 'formSubmitted';
+  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
 
   constructor(
     private fb: FormBuilder,
@@ -61,9 +63,6 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       .subscribe(
         (creditCard: CreditCard) => {
           this.isNewForm = !creditCard;
-          if (creditCard) {
-            this.patchCurrentForm(creditCard);
-          }
           this.initializeAndPatchForm();
         },
         () => {
@@ -76,12 +75,24 @@ export class CreditCardComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    if (this.creditCardForm.valid) {
+      this.submitValidForm();
+    } else {
+      this.creditCardForm.markAsPending();
+      this.showToast(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR, 'error');
+      for (const control in this.creditCardForm.controls) {
+        if (this.creditCardForm.controls.hasOwnProperty(control) && !this.creditCardForm.controls[control].valid) {
+          this.creditCardForm.controls[control].markAsDirty();
+        }
+      }
+    }
+  }
+
+  private submitValidForm(): void {
     this.loadingButton = true;
     const subscription = this.isNewForm
-      ? this.paymentsCreditCardService.create(this.creditCardForm.getRawValue())
-      : this.paymentsCreditCardService.update(this.creditCardForm.getRawValue());
-
-    // the date need to be mapped
+      ? this.paymentsCreditCardService.create(this.getCreditCardSyncRequest())
+      : this.paymentsCreditCardService.update(this.getCreditCardSyncRequest());
 
     subscription
       .pipe(
@@ -91,18 +102,28 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         () => {
-          const translationKey = this.isNewForm
-            ? TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS
-            : TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS;
-
-          this.showToast(translationKey, 'success');
+          this.showToast(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS, 'success');
           this.isNewForm = false;
-          this.router.navigate([DELIVERY_PATHS.BANK_DETAILS]);
+          this.router.navigate([this.BANK_DETAILS_URL]);
         },
         (errors: any[]) => {
           this.handleCreditCardErrors(errors);
         }
       );
+  }
+
+  private getCreditCardSyncRequest(): CreditCardSyncRequest {
+    this.creditCardForm.getRawValue();
+    const cardNumberFormatted = this.creditCardForm.get('cardNumber').value.trim();
+    const cardExpirationDateFormatted = this.creditCardForm.get('cardExpirationDate').value.replace('/', '');
+
+    return {
+      id: this.creditCardForm.get('id').value,
+      fullName: this.creditCardForm.get('fullName').value,
+      cardNumber: cardNumberFormatted,
+      cardExpirationDate: cardExpirationDateFormatted,
+      cardCvx: this.creditCardForm.get('cardCvx').value,
+    };
   }
 
   private handleCreditCardErrors(errors: any[]): void {
@@ -120,25 +141,6 @@ export class CreditCardComponent implements OnInit, OnDestroy {
 
   private initializeAndPatchForm(): void {
     this.formComponent.initFormControl();
-    this.patchFormValues();
-  }
-
-  private patchFormValues(): void {
-    for (const control in this.creditCardForm.controls) {
-      if (this.creditCardForm.controls.hasOwnProperty(control)) {
-        this.creditCardForm.controls[control].markAsPristine();
-      }
-    }
-  }
-
-  private patchCurrentForm(creditCard: CreditCard): void {
-    this.creditCardForm.patchValue({
-      id: creditCard.id,
-      fullName: creditCard.ownerFullName,
-      cardNumber: creditCard.lastFourDigits,
-      cardExpirationDate: moment(creditCard.expirationDate).format('MM/YYYY'),
-      cardCvx: null,
-    });
   }
 
   private buildForm(): void {

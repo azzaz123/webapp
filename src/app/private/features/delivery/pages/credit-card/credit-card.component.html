@@ -21,7 +21,7 @@
             <div class="form-group row align-items-center">
                 <label for="card_number" class="col-sm-12 col-md-5" i18n="@@card_number_hint">Card number</label>
                 <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="cardNumber" formControlName="cardNumber" maxlength="24" pattern="[0-9]*" [value]="creditCardForm.get('cardNumber').value | separateWordByCharacter:4:' '" tslNumbersOnly/>
+                    <input type="text" class="form-control" id="cardNumber" formControlName="cardNumber" maxlength="24" [value]="creditCardForm.get('cardNumber').value | separateWordByCharacter:4:' '" tslNumbersOnly/>
                     <div *ngIf="creditCardForm.controls.cardNumber.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
                         <ng-container *ngIf="creditCardForm.controls.cardNumber.errors as cardNumberError">
                             <span *ngIf="cardNumberError.required" i18n="@@credit_card_number_error">Invalid card number</span>
@@ -32,7 +32,7 @@
             <div class="form-group row align-items-center">
                 <label for="cardExpirationDate" class="col-sm-12 col-md-5" i18n="@@card_date_hint">MM/YY</label>
                 <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="cardExpirationDate"  formControlName="cardExpirationDate" pattern="[0-9]*" maxlength="5" [value]="creditCardForm.get('cardExpirationDate').value | separateWordByCharacter:2:'/'" tslNumbersOnly/>
+                    <input type="text" class="form-control" id="cardExpirationDate"  formControlName="cardExpirationDate" maxlength="5" [value]="creditCardForm.get('cardExpirationDate').value | separateWordByCharacter:2:'/'" tslNumbersOnly/>
                     <div *ngIf="creditCardForm.controls.cardExpirationDate.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
                         <ng-container *ngIf="creditCardForm.controls.cardExpirationDate.errors as expirationDateError">
                             <span *ngIf="expirationDateError.required" i18n="@@credit_card_date_error">Invalid date</span>
