@@ -1,11 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavigationEnd, Router } from '@angular/router';
 import { UuidService } from '@core/uuid/uuid.service';
-import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
-import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
 
 @Component({
