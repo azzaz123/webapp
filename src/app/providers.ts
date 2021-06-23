@@ -1,5 +1,4 @@
 import { Provider, APP_INITIALIZER } from '@angular/core';
-import { CookieService } from 'ngx-cookie';
 import { UserService } from './core/user/user.service';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { RouteReuseStrategy } from '@angular/router';
@@ -7,12 +6,14 @@ import { CustomRouteReuseStrategy } from './core/custom-route-reuse-strategy/cus
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { DEFAULT_PERMISSIONS } from '@core/user/user-constants';
 import { FeatureFlag, INIT_FEATURE_FLAGS } from '@core/user/featureflag-constants';
+import { I18nService } from '@core/i18n/i18n.service';
+import { APP_LOCALE, SUBDOMAINS } from 'configs/subdomains.config';
 
 export const PROVIDERS: Provider[] = [
   {
     provide: 'SUBDOMAIN',
     useFactory: subdomainFactory,
-    deps: [CookieService],
+    deps: [I18nService],
   },
   {
     provide: APP_INITIALIZER,
@@ -32,9 +33,10 @@ export const PROVIDERS: Provider[] = [
   },
 ];
 
-export function subdomainFactory(cookieService: CookieService) {
-  const subdomain: string = cookieService.get('subdomain');
-  return subdomain ? subdomain : 'www';
+export function subdomainFactory(i18nService: I18nService) {
+  const buildLocale: APP_LOCALE = i18nService.locale;
+
+  return SUBDOMAINS[buildLocale] || 'www';
 }
 
 export function userPermissionsFactory(userService: UserService): () => Promise<boolean> {
