@@ -11,23 +11,27 @@ import { By } from '@angular/platform-browser';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 describe('Component: UserAvatar', () => {
   let fixture: ComponentFixture<UserAvatarComponent>;
   let component: UserAvatarComponent;
   let proBadgeElement: DebugElement;
+  let permissionService: NgxPermissionsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SvgIconModule, HttpClientTestingModule],
+      imports: [SvgIconModule, HttpClientTestingModule, NgxPermissionsModule.forRoot()],
       declarations: [UserAvatarComponent, SanitizedBackgroundDirective, StatusIconComponent],
-      providers: [UserAvatarComponent],
+      providers: [UserAvatarComponent, NgxPermissionsService],
     });
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserAvatarComponent);
     component = fixture.componentInstance;
+    permissionService = TestBed.inject(NgxPermissionsService);
     fixture.detectChanges();
   });
 
@@ -72,27 +76,60 @@ describe('Component: UserAvatar', () => {
   });
 
   describe('when component initializes', () => {
-    describe('and when PRO badge should be shown', () => {
+    describe('and has subscriptions permission', () => {
       beforeEach(() => {
-        component.showProBadge = true;
-        fixture.detectChanges();
-        proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        permissionService.addPermission(PERMISSIONS.subscriptions);
+      });
+      describe('and when PRO badge should be shown', () => {
+        beforeEach(() => {
+          component.showProBadge = true;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
+
+        it('should show PRO badge', () => {
+          expect(proBadgeElement).toBeTruthy();
+        });
       });
 
-      it('should show PRO badge', () => {
-        expect(proBadgeElement).toBeTruthy();
+      describe('and when PRO badge should NOT be shown', () => {
+        beforeEach(() => {
+          component.showProBadge = false;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
+
+        it('should NOT show PRO badge', () => {
+          expect(proBadgeElement).toBeFalsy();
+        });
       });
     });
-
-    describe('and when PRO badge should NOT be shown', () => {
+    describe('and has not subscriptions permission', () => {
       beforeEach(() => {
-        component.showProBadge = false;
-        fixture.detectChanges();
-        proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        permissionService.removePermission(PERMISSIONS.subscriptions);
+      });
+      describe('and when PRO badge should be shown', () => {
+        beforeEach(() => {
+          component.showProBadge = true;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
+
+        it('should not show PRO badge', () => {
+          expect(proBadgeElement).toBeFalsy();
+        });
       });
 
-      it('should NOT show PRO badge', () => {
-        expect(proBadgeElement).toBeFalsy();
+      describe('and when PRO badge should NOT be shown', () => {
+        beforeEach(() => {
+          component.showProBadge = false;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
+
+        it('should NOT show PRO badge', () => {
+          expect(proBadgeElement).toBeFalsy();
+        });
       });
     });
   });
