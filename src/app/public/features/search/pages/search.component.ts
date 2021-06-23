@@ -22,7 +22,6 @@ import {
   AdShoppingPageOptionPublicSearchFactory,
 } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchAdsService } from './../core/ads/search-ads.service';
-import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
 import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 import {
