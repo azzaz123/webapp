@@ -22,11 +22,19 @@ export const mockCreditCard: CreditCard = {
 };
 
 export const mockCreditCardSyncRequest: CreditCardSyncRequest = {
-  id: 'ui-ui-uiiii-id',
+  id: 'FAKE_UUID',
   fullName: 'Ot el Bruixot',
   cardNumber: '4972485830400049',
   cardExpirationDate: '1221',
   cardCvx: '242',
+};
+
+export const mockCreditCardSyncRequestEmpty: CreditCardSyncRequest = {
+  id: 'FAKE_UUID',
+  fullName: '',
+  cardNumber: '',
+  cardExpirationDate: '',
+  cardCvx: '',
 };
 
 export const mockTokenizerInformationResponse: TokenizerInformationApi = {

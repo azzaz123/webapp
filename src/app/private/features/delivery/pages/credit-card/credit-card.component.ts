@@ -48,7 +48,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.eventService.unsubscribeAll(this.formSubmittedEventKey);
   }
 
