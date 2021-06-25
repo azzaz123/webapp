@@ -19,7 +19,12 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ButtonModule } from '@shared/button/button.module';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
-import { SORT_BY, SORT_BY_DEFAULT_OPTIONS } from './services/constants/sort-by-options-constants';
+import {
+  SORT_BY,
+  SORT_BY_DEFAULT_OPTIONS,
+  SORT_BY_DISTANCE_OPTION,
+  SORT_BY_RELEVANCE_OPTION,
+} from './services/constants/sort-by-options-constants';
 import { SortByService } from './services/sort-by.service';
 
 @Component({
@@ -40,6 +45,7 @@ describe('SortFilterComponent', () => {
   let fixture: ComponentFixture<SortFilterComponent>;
   let component: SortFilterComponent;
   let navigator: SearchNavigatorService;
+  let sortByService: SortByService;
   const sortFilterValueLabelSelector = '.SortFilter__value';
 
   beforeEach(async () => {
@@ -77,6 +83,7 @@ describe('SortFilterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SortFilterComponent);
     navigator = TestBed.inject(SearchNavigatorService);
+    sortByService = TestBed.inject(SortByService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -99,6 +106,40 @@ describe('SortFilterComponent', () => {
     });
   });
 
+  describe('on relevanceOptionActive change', () => {
+    const distanceSortByOption = SORT_BY_DISTANCE_OPTION;
+
+    describe('and relevanceOptionActive is false and option relevance is selected', () => {
+      beforeEach(() => {
+        component.selected = SORT_BY_RELEVANCE_OPTION;
+        sortByService['relevanceOptionActiveSubject'].next(false);
+      });
+
+      it('should set sort by distance', () => {
+        const value: HTMLElement = fixture.debugElement.query(By.css(sortFilterValueLabelSelector)).nativeElement;
+
+        expect(value.textContent).toBe(distanceSortByOption.label);
+        expect(component.selected).toBe(distanceSortByOption);
+        expect(component.formControl.value).toBe(distanceSortByOption.value);
+      });
+    });
+
+    describe('and relevanceOptionActive is false and option relevance is selected', () => {
+      beforeEach(() => {
+        component.selected = SORT_BY_DISTANCE_OPTION;
+        sortByService['relevanceOptionActiveSubject'].next(false);
+      });
+
+      it('should not modify sort by distance', () => {
+        const value: HTMLElement = fixture.debugElement.query(By.css(sortFilterValueLabelSelector)).nativeElement;
+
+        expect(value.textContent).toBe(component.selected.label);
+        expect(component.selected).toBe(component.selected);
+        expect(component.formControl.value).toBe(component.selected.value);
+      });
+    });
+  });
+
   describe('on value input', () => {
     describe('and valid value', () => {
       const validSortByValue = SORT_BY.NEWEST;
@@ -107,6 +148,7 @@ describe('SortFilterComponent', () => {
       beforeEach(() => {
         component.value = validSortByValue;
         validSortByOption = component.options.find((option) => option.value === validSortByValue);
+        fixture.detectChanges();
       });
 
       it('should set sort by the given value', () => {

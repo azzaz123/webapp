@@ -13,7 +13,7 @@ import { SORT_BY, SORT_BY_DEFAULT_OPTIONS, SORT_BY_RELEVANCE_OPTIONS } from './c
 export class SortByService {
   private optionsSubject = new BehaviorSubject<SelectFormOption<SORT_BY>[]>(SORT_BY_DEFAULT_OPTIONS);
   public options$ = this.optionsSubject.asObservable();
-  public relevanceOptionActiveSubject = new BehaviorSubject<boolean>(false);
+  private relevanceOptionActiveSubject = new BehaviorSubject<boolean>(false);
   public relevanceOptionActive$ = this.relevanceOptionActiveSubject.asObservable();
 
   constructor(@Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService) {
