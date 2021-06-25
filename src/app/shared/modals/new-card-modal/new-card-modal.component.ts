@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentMethodResponse } from '../../../core/payments/payment.interface';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { FinancialCard } from '@shared/credit-card-info/financial-card';
+import { FinancialCard } from '@shared/payments-card-info/financial-card';
 
 @Component({
   selector: 'tsl-new-card-modal',

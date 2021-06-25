@@ -15,14 +15,14 @@
           </div>
           <div class="row">
             <div class="StripeCards__card col-12 col-md-6 mb-4" *ngFor="let subscriptionStripeCard of subscriptionStripeCards">
-              <tsl-credit-card-info
+              <tsl-payments-card-info
                 [brand]="subscriptionStripeCard.stripeCard?.brand"
                 [numberCard]="subscriptionStripeCard.number"
                 [expireDate]="subscriptionStripeCard.expire_date"
                 [hideEdit]="!subscriptionStripeCard.invoices_default"
                 (changeCardClick)="addNewSubscriptionCard()"
                 (deleteCardClick)="openDeleteCardModal(subscriptionStripeCard)">
-              </tsl-credit-card-info>
+              </tsl-payments-card-info>
             </div>
             <div class="col-12 col-md-6"> 
               <div class="StripeCards__addNew  mb-4" *ngIf="subscriptionStripeCards?.length <= 0">
@@ -38,14 +38,14 @@
         </div>
         <div class="row">
           <div class="col-12 col-md-6 mb-4" *ngFor="let stripeCard of stripeCards">
-            <tsl-credit-card-info
+            <tsl-payments-card-info
             [brand]="stripeCard.stripeCard?.brand"
               [numberCard]="stripeCard.number"
               [expireDate]="stripeCard.expire_date"
               [hideEdit]="!stripeCard.invoices_default"
               (deleteCardClick)="openDeleteCardModal(stripeCard)"
               >
-            </tsl-credit-card-info>
+            </tsl-payments-card-info>
           </div>
           <div class="col-12 col-md-6">
             <div (click)="addNewCard()" class="StripeCards__addNew" *ngIf="stripeCards?.length < 10">
