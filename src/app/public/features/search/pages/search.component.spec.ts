@@ -626,6 +626,17 @@ describe('SearchComponent', () => {
         expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(oldSearchId, filterParameterStoreService.getParameters());
       });
     });
+
+    describe('and searchResponseExtraData sortBy has value', () => {
+      beforeEach(() => {
+        spyOn(component['sortBySubject'], 'next');
+        searchResponseExtraDataSubject.next({ searchId: '', sortBy: SORT_BY.DISTANCE });
+      });
+
+      it('should update the value', () => {
+        expect(component['sortBySubject'].next).toHaveBeenCalledWith(SORT_BY.DISTANCE);
+      });
+    });
   });
 
   describe('when the search has a keyword applied', () => {

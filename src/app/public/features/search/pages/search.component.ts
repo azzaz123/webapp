@@ -13,7 +13,7 @@ import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
-import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { delay, distinctUntilChanged, filter, skip, map, tap } from 'rxjs/operators';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -65,6 +65,7 @@ export const WIDE_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   // TODO: TechDebt: changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit, OnAttach, OnDetach {
+  private sortBySubject: BehaviorSubject<SORT_BY> = new BehaviorSubject<SORT_BY>(SORT_BY.DISTANCE);
   private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscription: Subscription = new Subscription();
   private searchId: string;
@@ -85,7 +86,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public showPlaceholder$: Observable<boolean> = this.buildShowPlaceholderObservable();
   public searchWithoutResults$: Observable<boolean> = this.buildSearchWithoutResultsObservable();
   public searchWithKeyword$: Observable<boolean> = this.buildSearchWithKeywordObservable();
-  public sortBy$: Observable<SORT_BY> = this.buildSortByObservable();
+  public sortBy$: Observable<SORT_BY> = this.sortBySubject.asObservable();
   public columnsConfig: ColumnsConfig = {
     xl: 4,
     lg: 4,
@@ -137,6 +138,10 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           this.resetSearchId = false;
         }
 
+        if (searchResponseExtraData.sortBy) {
+          this.sortBySubject.next(searchResponseExtraData.sortBy);
+        }
+
         this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
       })
     );
@@ -163,6 +168,14 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           this.filterParameterStore.setParameters(params);
         }
       })
+    );
+
+    this.subscription.add(
+      this.filterParameterStore.parameters$
+        .pipe(map((params) => params.find((param) => param.key === FILTER_QUERY_PARAM_KEY.orderBy)?.value as SORT_BY))
+        .subscribe((sortBy) => {
+          this.sortBySubject.next(sortBy);
+        })
     );
   }
 
@@ -243,12 +256,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   private buildSearchWithKeywordObservable(): Observable<boolean> {
     return this.filterParameterStore.parameters$.pipe(
       map((params) => !!params.find((param) => param.key === FILTER_QUERY_PARAM_KEY.keywords))
-    );
-  }
-
-  private buildSortByObservable(): Observable<SORT_BY> {
-    return this.filterParameterStore.parameters$.pipe(
-      map((params) => params.find((param) => param.key === FILTER_QUERY_PARAM_KEY.orderBy).value as SORT_BY)
     );
   }
 
