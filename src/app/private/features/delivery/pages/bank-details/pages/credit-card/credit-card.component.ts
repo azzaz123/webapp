@@ -82,6 +82,9 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (creditCard: CreditCard) => {
+          if (creditCard?.id) {
+            this.creditCardForm.get('id').setValue(creditCard.id);
+          }
           this.isNewForm = !creditCard;
           this.initializeAndPatchForm();
         },
