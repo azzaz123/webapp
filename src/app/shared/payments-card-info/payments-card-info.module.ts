@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { CreditCardInfoComponent } from './credit-card-info.component';
+import { PaymentsCardInfoComponent } from './payments-card-info.component';
 
 @NgModule({
-  exports: [CreditCardInfoComponent],
+  exports: [PaymentsCardInfoComponent],
   imports: [CommonModule, SvgIconModule],
-  declarations: [CreditCardInfoComponent],
+  declarations: [PaymentsCardInfoComponent],
 })
-export class CreditCardInfoModule {}
+export class PaymentsCardInfoModule {}

@@ -3,7 +3,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { NewCardModalComponent } from '../../modals/new-card-modal/new-card-modal.component';
-import { FinancialCard } from '@shared/credit-card-info/financial-card';
+import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { finalize } from 'rxjs/operators';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse } from 'app/core/subscriptions/subscriptions.interface';
