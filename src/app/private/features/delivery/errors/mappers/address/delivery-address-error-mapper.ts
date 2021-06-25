@@ -7,7 +7,7 @@ import {
 import { UniqueAddressByUserError } from '../../classes/address/unique-address.error';
 import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
 import { PostalCodeIsInvalidError, PostalCodeDoesNotExistError, PostalCodeIsNotAllowedError } from '../../classes/postal-codes';
-import { ErrorMapper } from '../error-mapper';
+import { ErrorMapper } from '@api/core/utils/classes';
 import { DELIVERY_ADDRESS_ERROR_CODES } from './delivery-address-error.enum';
 
 export type DeliveryAddressErrorResponse = DeliveryErrorResponseApi<DELIVERY_ADDRESS_ERROR_CODES>;
@@ -31,7 +31,7 @@ export class DeliveryAddressErrorMapper extends ErrorMapper<DeliveryAddressError
       }
 
       if (error.error_code === DELIVERY_ADDRESS_ERROR_CODES.POSTAL_CODE_IS_NOT_ALLOWED) {
-        mappedErrors.push(new PostalCodeIsNotAllowedError());
+        mappedErrors.push(new PostalCodeIsNotAllowedError(error.message));
       }
 
       if (error.error_code === DELIVERY_ADDRESS_ERROR_CODES.POSTAL_CODE_DOES_NOT_EXIST) {

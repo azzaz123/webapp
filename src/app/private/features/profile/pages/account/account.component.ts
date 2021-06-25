@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
 import { UnsubscribeModalComponent } from '../../modal/unsubscribe-modal/unsubscribe-modal.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-account',
@@ -22,6 +23,7 @@ export class AccountComponent implements CanComponentDeactivate {
   public loading = false;
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
+  public readonly PERMISSIONS = PERMISSIONS;
 
   constructor(
     private modalService: NgbModal,

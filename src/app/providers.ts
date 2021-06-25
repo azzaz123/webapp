@@ -6,7 +6,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './core/custom-route-reuse-strategy/custom-route-reuse-strategy';
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { DEFAULT_PERMISSIONS } from '@core/user/user-constants';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { FeatureFlag, INIT_FEATURE_FLAGS } from '@core/user/featureflag-constants';
 
 export const PROVIDERS: Provider[] = [
   {
@@ -44,11 +44,11 @@ export function userPermissionsFactory(userService: UserService): () => Promise<
 export function defaultPermissionsFactory(
   featureFlagService: FeatureflagService,
   permissionService: NgxPermissionsService
-): () => Promise<boolean> {
+): () => Promise<FeatureFlag[]> {
   permissionService.addPermission(DEFAULT_PERMISSIONS);
   return () =>
     featureFlagService
-      .getFlag(FEATURE_FLAGS_ENUM.BUMPS)
+      .getFlags(INIT_FEATURE_FLAGS)
       .toPromise()
-      .catch(() => true);
+      .catch(() => []);
 }

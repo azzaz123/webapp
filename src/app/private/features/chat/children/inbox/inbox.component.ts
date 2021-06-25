@@ -4,6 +4,7 @@ import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewChatScreen } 
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { EventService } from '@core/event/event.service';
 import { RemoteConsoleService } from '@core/remote-console';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { UserService } from '@core/user/user.service';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
 import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
@@ -68,7 +69,7 @@ export class InboxComponent implements OnInit, OnDestroy {
   @Output() public loadingEvent = new EventEmitter<any>();
   @Output() public loadingError = new EventEmitter<any>();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
-
+  public readonly PERMISSIONS = PERMISSIONS;
   public conversations: InboxConversation[] = [];
   public archivedConversations: InboxConversation[] = [];
   public showNewMessagesToast = false;

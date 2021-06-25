@@ -3,7 +3,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { NewCardModalComponent } from '../../modals/new-card-modal/new-card-modal.component';
-import { FinancialCard } from '../credit-card-info/financial-card';
+import { FinancialCard } from '@shared/credit-card-info/financial-card';
 import { finalize } from 'rxjs/operators';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse } from 'app/core/subscriptions/subscriptions.interface';
@@ -11,6 +11,9 @@ import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/ch
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { NoCardModalComponent } from '@shared/modals/no-card-modal/no-card-modal.component';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { COLORS } from '@core/colors/colors-constants';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -37,13 +40,12 @@ export class StripeCardsComponent implements OnInit {
     this.getAllCards();
   }
 
-  public onDeleteCard(): void {
-    this.toastService.show({
-      title: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
-      text: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED),
-      type: 'success',
-    });
-    this.getAllCards();
+  public openDeleteCardModal(financialCard: FinancialCard): void {
+    if (financialCard.invoices_default) {
+      this.openInvoicesDefaultModalAndDeleteCard(financialCard.id);
+    } else {
+      this.openStripeCardModalAndDeleteCard(financialCard.id);
+    }
   }
 
   public addNewCard(): void {
@@ -94,8 +96,55 @@ export class StripeCardsComponent implements OnInit {
       });
   }
 
-  public onSetChangeCard(event: any): void {
-    this.addNewSubscriptionCard();
+  private openInvoicesDefaultModalAndDeleteCard(financialCardID: string): void {
+    const modalRef: NgbModalRef = this.modalService.open(NoCardModalComponent, {
+      windowClass: 'review',
+    });
+
+    modalRef.result.then((action: string) => {
+      if (action === 'deleteCardModal') {
+        this.deleteCard(financialCardID);
+      }
+    });
+  }
+
+  private openStripeCardModalAndDeleteCard(financialCardID: string): void {
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
+
+    modalRef.componentInstance.properties = {
+      title: this.i18n.translate(TRANSLATION_KEY.DELETE_CARD_TITLE),
+      description: this.i18n.translate(TRANSLATION_KEY.DELETE_CARD_DESCRIPTION),
+      confirmMessage: this.i18n.translate(TRANSLATION_KEY.DELETE_BUTTON),
+      confirmColor: COLORS.NEGATIVE_MAIN,
+    };
+
+    modalRef.result.then(() => {
+      this.deleteCard(financialCardID);
+    });
+  }
+
+  private deleteCard(financialCardID: string): void {
+    this.loading = true;
+    this.stripeService
+      .deleteCard(financialCardID)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(
+        () => {
+          this.handleOnDeleteCardSucceed();
+        },
+        () => {
+          this.errorService.i18nError(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED_ERROR);
+        }
+      );
+  }
+
+  private handleOnDeleteCardSucceed(): void {
+    this.toastService.show({
+      title: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
+      text: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED),
+      type: 'success',
+    });
+    this.getAllCards();
   }
 
   private getSubscriptions(): void {

@@ -91,4 +91,5 @@ export interface UserExtrainfo {
   longitude?: number;
   opening_hours?: string;
   validations?: UserValidations;
+  response_rate?: string;
 }

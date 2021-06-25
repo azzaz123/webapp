@@ -1,7 +1,5 @@
 @import '~style/common';
 
-$card-width: 300px;
-
 .StripeCards {
   h3 {
     position: absolute;
@@ -18,35 +16,23 @@ $card-width: 300px;
   margin-left: 0;
 }
 
-.StripeCards__card {
-  width: $card-width;
-  margin: 0 0 $spacing-ml;
-}
-
 .StripeCards__newCard {
   color: $walla-main;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  width: $card-width;
-  height: 88px;
 }
-
-$card-width: 300px;
-$card-height: 88px;
 
 .StripeCards__addNew {
   border: solid 1px $blue-grey-5;
   color: $walla-main;
   cursor: pointer;
-  height: $card-height;
+  min-height: $credit-card-height;
   padding: 0 $spacing-ml;
   flex-direction: column;
   border-radius: 6px;
   align-items: center;
   font-size: $font-size-s;
-  width: $card-width;
   display: flex;
   justify-content: center;
 }

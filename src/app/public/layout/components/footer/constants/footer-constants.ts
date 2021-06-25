@@ -1,4 +1,5 @@
 import { ANALYTICS_EVENT_NAMES } from '@core/analytics/analytics-constants';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { FooterLinkSection, FooterIcon } from '../interfaces/footer.interface';
 
 export const FOOTER_LINKS: FooterLinkSection[] = [
@@ -73,6 +74,7 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
   },
   {
     title: $localize`:@@web_footer_links_wallapop_pro_title:Wallapop Pro`,
+    permission: PERMISSIONS.subscriptions,
     links: [
       {
         label: $localize`:@@web_footer_links_landing_pro_label:Boost your business`,

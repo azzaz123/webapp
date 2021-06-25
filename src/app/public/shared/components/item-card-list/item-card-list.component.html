@@ -3,21 +3,24 @@
     <ng-container *ngFor="let item of items; let i = index">
         <ng-container *ngIf="slotTemplate">
             <div *ngIf="slotsConfig && (i | showSlot: slotsConfig)"
-                class="ItemCardList__slot d-flex justify-content-center align-items-center">
+                class="ItemCardList__slot d-flex justify-content-center align-items-center"
+                [class.ItemCardList__slot--wide]="cardType === cardTypes.WIDE">
                 <ng-container *ngTemplateOutlet="slotTemplate;context: {$implicit: i}"></ng-container>
             </div>
         </ng-container>
         <div class="ItemCardList__inline-slot d-sm-none" *ngIf="inlineSlotTemplate && i === INLINE_SLOT_POSITION">
             <ng-container *ngTemplateOutlet="inlineSlotTemplate;"></ng-container>
         </div>
-        <tsl-public-item-card *ngIf="cardType === cardTypes.REGULAR" [item]="item" [showDescription]="showDescription"
-            [showFavourite]="!(item.ownerId | isCurrentUser)" (toggleFavourite)="toggleFavourite(item)"
-            (click)="openItemDetailPage({itemCard: item, index: i})">
-        </tsl-public-item-card>
-        <tsl-item-card-wide *ngIf="cardType === cardTypes.WIDE" [item]="item"
-            [showFavourite]="!(item.ownerId | isCurrentUser)" (toggleFavourite)="toggleFavourite(item)"
-            (click)="openItemDetailPage({itemCard: item, index: i})">
-        </tsl-item-card-wide>
+        <a [href]="item.webSlug | itemDetailRoute" [title]="item.title" target="_blank" class="ItemCardList__item">
+            <tsl-public-item-card *ngIf="cardType === cardTypes.REGULAR" [item]="item"
+                [showDescription]="showDescription" [showFavourite]="!(item.ownerId | isCurrentUser)"
+                (toggleFavourite)="toggleFavourite(item)" (click)="trackItemCardClick({itemCard: item, index: i})">
+            </tsl-public-item-card>
+            <tsl-item-card-wide *ngIf="cardType === cardTypes.WIDE" [item]="item"
+                [showFavourite]="!(item.ownerId | isCurrentUser)" (toggleFavourite)="toggleFavourite(item)"
+                (click)="trackItemCardClick({itemCard: item, index: i})">
+            </tsl-item-card-wide>
+        </a>
     </ng-container>
 
     <ng-container *ngIf="showPlaceholder && (cardType === cardTypes.REGULAR)">

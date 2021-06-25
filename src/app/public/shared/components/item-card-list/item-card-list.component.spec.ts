@@ -16,10 +16,9 @@ import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
-import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
-import { APP_PATHS } from 'app/app-routing-constants';
+import { SharedModule } from '@shared/shared.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CARD_TYPES } from './enums/card-types.enum';
@@ -50,6 +49,8 @@ export class ItemCardListWrapperComponent {
   placeholderCards = ItemCardListWrapperComponent.DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS;
 }
 
+const SUBDOMAIN = 'it';
+
 describe('ItemCardListComponent', () => {
   const cardSelector = 'tsl-public-item-card';
   let component: ItemCardListComponent;
@@ -65,7 +66,7 @@ describe('ItemCardListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardListComponent, IsCurrentUserStub, ShowSlotPipe, ItemCardListWrapperComponent],
-      imports: [CommonModule, ItemCardModule, ItemApiModule, HttpClientTestingModule, NgxPermissionsModule.forRoot()],
+      imports: [SharedModule, CommonModule, ItemCardModule, ItemApiModule, HttpClientTestingModule, NgxPermissionsModule.forRoot()],
       providers: [
         ItemCardService,
         CheckSessionService,
@@ -99,7 +100,7 @@ describe('ItemCardListComponent', () => {
             navigate() {},
           },
         },
-        { provide: 'SUBDOMAIN', useValue: 'www' },
+        { provide: 'SUBDOMAIN', useValue: SUBDOMAIN },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -120,8 +121,28 @@ describe('ItemCardListComponent', () => {
   });
 
   describe('when component inits', () => {
+    let itemCard: DebugElement;
+
+    beforeEach(() => {
+      itemCard = fixture.debugElement.query(By.css('.ItemCardList__item'));
+    });
+
     it('should show as many cards as given', () => {
       expect(el.querySelectorAll(cardSelector).length).toEqual(component.items.length);
+    });
+
+    it('should render item cards with valid URLs', () => {
+      const expectedEnvironmentURL = environment.siteUrl.replace('es', SUBDOMAIN);
+
+      expect(itemCard.attributes.href).toEqual(`${expectedEnvironmentURL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_CARD.webSlug}`);
+    });
+
+    it('should render item cards with valid titles', () => {
+      expect(itemCard.attributes.title).toEqual(MOCK_ITEM.title);
+    });
+
+    it('should open items in a new tab', () => {
+      expect(itemCard.attributes.target).toEqual('_blank');
     });
   });
 
@@ -165,37 +186,6 @@ describe('ItemCardListComponent', () => {
       });
     });
   });
-  describe('when we click on a item card...', () => {
-    describe('and the experimental features flag is enabled', () => {
-      it('should redirect to the item view ', () => {
-        spyOn(router, 'navigate');
-        spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
-        spyOn(component.clickedItemAndIndex, 'emit');
-        const itemCard: HTMLElement = de.queryAll(By.css(cardSelector))[MOCK_ITEM_INDEX].nativeElement;
-
-        itemCard.click();
-        fixture.detectChanges();
-
-        expect(router.navigate).toHaveBeenCalledWith([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`]);
-      });
-    });
-
-    describe('and the experimental features flag is not enabled', () => {
-      it('should redirect to the item view ', () => {
-        spyOn(window, 'open');
-        spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
-        spyOn(component.clickedItemAndIndex, 'emit');
-        const expectedURL = `${environment.siteUrl.replace('es', 'www')}item/${MOCK_ITEM_CARD.webSlug}`;
-        const itemCard: HTMLElement = de.queryAll(By.css(cardSelector))[MOCK_ITEM_INDEX].nativeElement;
-
-        itemCard.click();
-        fixture.detectChanges();
-
-        expect(window.open).toHaveBeenCalledWith(expectedURL);
-        expect(component.clickedItemAndIndex.emit).toHaveBeenCalledWith({ itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
-      });
-    });
-  });
 
   describe('when we have ads slots', () => {
     let componentWrapper: ItemCardListWrapperComponent;
@@ -223,9 +213,20 @@ describe('ItemCardListComponent', () => {
         expect(adSlot.nativeElement.textContent).toBe('ad-' + (slotConfig.start + index * slotConfig.offset));
       });
     });
+
+    describe('and showing wide cards', () => {
+      it('should show shopping ads with wide card styles', () => {
+        componentWrapper.cardType = CARD_TYPES.WIDE;
+
+        fixtureWrapper.detectChanges();
+        const wideShippingSlot = fixtureWrapper.debugElement.query(By.css('.ItemCardList__slot')).nativeElement;
+
+        expect(wideShippingSlot.classList).toContain('ItemCardList__slot--wide');
+      });
+    });
   });
 
-  describe('when having a wide acards configuration', () => {
+  describe('when having a wide cards configuration', () => {
     let component: ItemCardListWrapperComponent;
     let fixture: ComponentFixture<ItemCardListWrapperComponent>;
 

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { FinancialCard } from '../../profile/credit-card-info/financial-card';
+import { FinancialCard } from '@shared/credit-card-info/financial-card';
 import { FinancialCardOption } from '../../../core/payments/payment.interface';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -14,6 +14,7 @@ export class StripeCardSelectionComponent implements OnInit {
   private _model: boolean = false;
   public financialCards: FinancialCardOption[];
   public card: string = '';
+
   private notFoundMsg = '';
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onSelectExistingCard: EventEmitter<FinancialCardOption> = new EventEmitter<FinancialCardOption>();

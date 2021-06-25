@@ -16,6 +16,9 @@ Parameters:
   BucketENName:
     Description: 'Name of the S3 bucket where the app in EN is hosted'
     Type: String
+  BucketITName:
+    Description: 'Name of the S3 bucket where the app in IT is hosted'
+    Type: String
   ArtifactBucket:
     Description: Bucket where pipeline store its artifacts
     Type: String
@@ -42,16 +45,12 @@ Resources:
           phases:
               build:
                   commands:
-                    - >
-                      if [ -d "en/" ] && [ -d "es/" ]; then
-                        aws s3 sync es/ s3://$HOSTING_BUCKET_ES --delete
-                        aws s3 cp es/index.html s3://$HOSTING_BUCKET_ES/index.html --cache-control max-age=0
-                        aws s3 sync en/ s3://$HOSTING_BUCKET_EN --delete
-                        aws s3 cp en/index.html s3://$HOSTING_BUCKET_EN/index.html --cache-control max-age=0
-                      else
-                        aws s3 sync dist/es s3://$HOSTING_BUCKET_ES --delete
-                        aws s3 cp dist/es/index.html s3://$HOSTING_BUCKET_ES/index.html --cache-control max-age=0
-                      fi
+                    - aws s3 sync es/ s3://$HOSTING_BUCKET_ES --delete
+                    - aws s3 cp es/index.html s3://$HOSTING_BUCKET_ES/index.html --cache-control max-age=0
+                    - aws s3 sync en/ s3://$HOSTING_BUCKET_EN --delete
+                    - aws s3 cp en/index.html s3://$HOSTING_BUCKET_EN/index.html --cache-control max-age=0
+                    - aws s3 sync it/ s3://$HOSTING_BUCKET_IT --delete
+                    - aws s3 cp it/index.html s3://$HOSTING_BUCKET_IT/index.html --cache-control max-age=0
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: "aws/codebuild/docker:17.09.0"
@@ -61,6 +60,8 @@ Resources:
             Value: !Ref BucketESName
           - Name: HOSTING_BUCKET_EN
             Value: !Ref BucketENName
+          - Name: HOSTING_BUCKET_IT
+            Value: !Ref BucketITName
       VpcConfig:
         SecurityGroupIds:
           - Fn::ImportValue:
@@ -101,6 +102,7 @@ Resources:
                   commands:
                     - aws cloudfront create-invalidation --distribution-id $EN_DISTRIBUTION --paths "/index.html" "/ngsw.json"
                     - aws cloudfront create-invalidation --distribution-id $ES_DISTRIBUTION --paths "/index.html" "/ngsw.json"
+                    - aws cloudfront create-invalidation --distribution-id $IT_DISTRIBUTION --paths "/index.html" "/ngsw.json"
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: "aws/codebuild/docker:17.09.0"
@@ -112,6 +114,9 @@ Resources:
           - Name: ES_DISTRIBUTION
             Value:
               Fn::ImportValue: !Sub webapp-es-cloudfront-distribution-id-${EnvName}
+          - Name: IT_DISTRIBUTION
+            Value:
+              Fn::ImportValue: !Sub webapp-it-cloudfront-distribution-id-${EnvName}
       VpcConfig:
         SecurityGroupIds:
           - Fn::ImportValue:

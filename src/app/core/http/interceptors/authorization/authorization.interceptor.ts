@@ -16,7 +16,13 @@ export class AuthorizationInterceptor implements HttpInterceptor {
     const isWallapopRequest = request.url.startsWith(environment.baseUrl);
     const isHeaderNotPresent = !request.headers.has(AUTHORIZATION_HEADER_NAME);
     const hasAccessToken = !!this.accessTokenService.accessToken;
+    const validAccessToken = this.accessTokenService.accessToken === this.accessTokenService.accessTokenFromCookies;
     const canAddAuthorizationHeader = isWallapopRequest && hasAccessToken && isHeaderNotPresent;
+
+    if (!validAccessToken) {
+      window.location.reload();
+    }
+
     if (canAddAuthorizationHeader) {
       setHeaders[AUTHORIZATION_HEADER_NAME] = `Bearer ${this.accessTokenService.accessToken}`;
     }

@@ -1,5 +1,5 @@
-import { NgStyle } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { InboxUser } from '@private/features/chat/core/model';
 import { environment } from '../../../environments/environment';
 import { PLACEHOLDER_AVATAR, User } from '../../core/user/user';
@@ -15,6 +15,7 @@ export class UserAvatarComponent implements OnInit, OnChanges {
   public fallback: string;
   public badgeSize = 22;
   public badgeStyles = {};
+  public readonly PERMISSIONS = PERMISSIONS;
   @Input() user: User | InboxUser;
   @Input() size = 40;
   @Input() imageUrl: string;

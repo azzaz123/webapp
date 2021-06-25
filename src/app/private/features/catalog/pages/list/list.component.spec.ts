@@ -12,6 +12,7 @@ import {
   RemoveProSubscriptionBanner,
   SCREEN_IDS,
   ViewOwnSaleItems,
+  ViewProExpiredItemsPopup,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CategoryService } from '@core/category/category.service';
@@ -64,8 +65,9 @@ import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-mod
 import { ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { Counters } from '@core/user/user-stats.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { NgxPermissionsService } from 'ngx-permissions';
-import { MockPermissionsService, MOCK_PERMISSIONS } from '@fixtures/permissions.fixtures';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -101,18 +103,20 @@ describe('ListComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpModule],
+        imports: [HttpModule, NgxPermissionsModule.forRoot()],
         declarations: [
           ListComponent,
           ItemSoldDirective,
           SubscriptionsSlotsListComponent,
           SubscriptionsSlotItemComponent,
           TryProSlotComponent,
+          ProBadgeComponent,
         ],
         providers: [
           I18nService,
           EventService,
           ToastService,
+          NgxPermissionsService,
           { provide: SubscriptionsService, useClass: MockSubscriptionService },
           { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
           {
@@ -227,10 +231,6 @@ describe('ListComponent', () => {
           {
             provide: DeviceDetectorService,
             useClass: DeviceDetectorServiceMock,
-          },
-          {
-            provide: NgxPermissionsService,
-            useClass: MockPermissionsService,
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
@@ -371,7 +371,7 @@ describe('ListComponent', () => {
 
       describe('and has visibility permissions', () => {
         beforeEach(() => {
-          jest.spyOn(permissionService, 'permissions$', 'get').mockReturnValue(of(MOCK_PERMISSIONS));
+          permissionService.addPermission(PERMISSIONS.bumps);
         });
         it('should open bump suggestion modal if item is created', fakeAsync(() => {
           component.ngOnInit();
@@ -409,7 +409,7 @@ describe('ListComponent', () => {
       });
       describe('and has not visibility permissions', () => {
         beforeEach(() => {
-          jest.spyOn(permissionService, 'permissions$', 'get').mockReturnValue(of({}));
+          permissionService.removePermission(PERMISSIONS.bumps);
         });
         it('should not open suggestion bump modal', fakeAsync(() => {
           component.ngOnInit();
@@ -573,17 +573,39 @@ describe('ListComponent', () => {
       expect(component.userScore).toEqual(USER_INFO_RESPONSE.scoring_stars);
     });
 
-    it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
-      spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
+    describe('catalog management cards', () => {
+      describe('and has subscriptions permission', () => {
+        beforeEach(() => {
+          permissionService.addPermission(PERMISSIONS.subscriptions);
+        });
+        it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
+          spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
 
-      component.ngOnInit();
-      tick();
-      fixture.detectChanges();
+          component.ngOnInit();
+          tick();
+          fixture.detectChanges();
 
-      const slotsCards = fixture.debugElement.queryAll(By.directive(SubscriptionsSlotItemComponent));
-      expect(slotsCards).toBeTruthy();
-      expect(slotsCards.length).toEqual(MOCK_SUBSCRIPTION_SLOTS.length);
-    }));
+          const slotsCards = fixture.debugElement.queryAll(By.directive(SubscriptionsSlotItemComponent));
+          expect(slotsCards).toBeTruthy();
+          expect(slotsCards.length).toEqual(MOCK_SUBSCRIPTION_SLOTS.length);
+        }));
+      });
+      describe('and has not subscriptions permission', () => {
+        beforeEach(() => {
+          permissionService.removePermission(PERMISSIONS.subscriptions);
+        });
+        it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
+          spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
+
+          component.ngOnInit();
+          tick();
+          fixture.detectChanges();
+
+          const slotsCards = fixture.debugElement.queryAll(By.directive(SubscriptionsSlotItemComponent));
+          expect(slotsCards.length).toEqual(0);
+        }));
+      });
+    });
   });
 
   describe('logout', () => {
@@ -1201,99 +1223,116 @@ describe('ListComponent', () => {
   });
 
   describe('Try Pro banner', () => {
-    describe('when has not to show banner', () => {
-      it('should banner not visible', () => {
-        spyOn(userService, 'suggestPro').and.returnValue(false);
+    describe('and has subscriptions permission', () => {
+      beforeEach(() => {
+        permissionService.addPermission(PERMISSIONS.subscriptions);
+      });
+      describe('when has not to show banner', () => {
+        it('should banner not visible', () => {
+          spyOn(userService, 'suggestPro').and.returnValue(false);
 
-        component.ngOnInit();
-        fixture.detectChanges();
+          component.ngOnInit();
+          fixture.detectChanges();
 
-        const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
-        expect(tryProBanner).toBeFalsy();
+          const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
+          expect(tryProBanner).toBeFalsy();
+        });
+      });
+      describe('when has to show banner', () => {
+        it('should banner be visible', () => {
+          spyOn(userService, 'suggestPro').and.returnValue(true);
+
+          component.ngOnInit();
+          fixture.detectChanges();
+
+          const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
+          expect(tryProBanner).toBeTruthy();
+        });
+      });
+      describe('when close banner', () => {
+        it('should save data in local storage', () => {
+          spyOn(localStorage, 'setItem');
+
+          component.onCloseTryProSlot();
+          fixture.detectChanges();
+
+          expect(localStorage.setItem).toBeCalledTimes(1);
+          expect(localStorage.setItem).toHaveBeenCalledWith(`${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`, 'true');
+        });
+
+        it('should disappear banner', () => {
+          component.showTryProSlot = true;
+
+          component.onCloseTryProSlot();
+          fixture.detectChanges();
+
+          const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
+
+          expect(tryProBanner).toBeFalsy();
+        });
+
+        it('should track RemoveProSubscriptionBanner event', () => {
+          const event: AnalyticsEvent<RemoveProSubscriptionBanner> = {
+            name: ANALYTICS_EVENT_NAMES.RemoveProSubscriptionBanner,
+            eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              freeTrial: component.hasTrialAvailable,
+            },
+          };
+
+          component.onCloseTryProSlot();
+          fixture.detectChanges();
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
+        });
+      });
+      describe('when click CTA button', () => {
+        it('should redirect to subscriptions', () => {
+          spyOn(router, 'navigate');
+
+          component.onClickTryProSlot();
+
+          expect(router.navigate).toBeCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+        });
+
+        it('should track ClickProSubscription event', () => {
+          component.hasTrialAvailable = true;
+          const event: AnalyticsEvent<ClickProSubscription> = {
+            name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
+            attributes: {
+              screenId: SCREEN_IDS.MyCatalog,
+              freeTrial: component.hasTrialAvailable,
+            },
+          };
+
+          component.onClickTryProSlot();
+          fixture.detectChanges();
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
+        });
       });
     });
-
-    describe('when has to show banner', () => {
-      it('should banner be visible', () => {
+    describe('and has not subscriptions permission', () => {
+      beforeEach(() => {
+        permissionService.removePermission(PERMISSIONS.subscriptions);
+      });
+      it('should not show banner', () => {
         spyOn(userService, 'suggestPro').and.returnValue(true);
 
         component.ngOnInit();
         fixture.detectChanges();
 
         const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
-        expect(tryProBanner).toBeTruthy();
-      });
-    });
-
-    describe('when close banner', () => {
-      it('should save data in local storage', () => {
-        spyOn(localStorage, 'setItem');
-
-        component.onCloseTryProSlot();
-        fixture.detectChanges();
-
-        expect(localStorage.setItem).toBeCalledTimes(1);
-        expect(localStorage.setItem).toHaveBeenCalledWith(`${USER_ID}-${LOCAL_STORAGE_TRY_PRO_SLOT}`, 'true');
-      });
-
-      it('should disappear banner', () => {
-        component.showTryProSlot = true;
-
-        component.onCloseTryProSlot();
-        fixture.detectChanges();
-
-        const tryProBanner = fixture.debugElement.query(By.directive(TryProSlotComponent));
-
         expect(tryProBanner).toBeFalsy();
-      });
-
-      it('should track RemoveProSubscriptionBanner event', () => {
-        const event: AnalyticsEvent<RemoveProSubscriptionBanner> = {
-          name: ANALYTICS_EVENT_NAMES.RemoveProSubscriptionBanner,
-          eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-          attributes: {
-            screenId: SCREEN_IDS.MyCatalog,
-            freeTrial: component.hasTrialAvailable,
-          },
-        };
-
-        component.onCloseTryProSlot();
-        fixture.detectChanges();
-
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
-      });
-    });
-
-    describe('when click CTA button', () => {
-      it('should redirect to subscriptions', () => {
-        spyOn(router, 'navigate');
-
-        component.onClickTryProSlot();
-
-        expect(router.navigate).toBeCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
-      });
-
-      it('should track ClickProSubscription event', () => {
-        component.hasTrialAvailable = true;
-        const event: AnalyticsEvent<ClickProSubscription> = {
-          name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
-          eventType: ANALYTIC_EVENT_TYPES.Navigation,
-          attributes: {
-            screenId: SCREEN_IDS.MyCatalog,
-            freeTrial: component.hasTrialAvailable,
-          },
-        };
-
-        component.onClickTryProSlot();
-        fixture.detectChanges();
-
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
       });
     });
   });
   describe('reactivation', () => {
     beforeEach(() => {
+      permissionService.addPermission(PERMISSIONS.subscriptions);
       spyOn(itemService, 'get').and.callThrough();
       component.items = createItemsArray(5);
     });
@@ -1314,74 +1353,127 @@ describe('ListComponent', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
       });
-      it('should show modal', () => {
-        const item = cloneDeep(component.items[3]);
-
-        component.itemChanged({
-          item: item,
-          action: ITEM_CHANGE_ACTION.REACTIVATED,
+      describe('and has subscription permissions', () => {
+        beforeEach(() => {
+          permissionService.addPermission(PERMISSIONS.subscriptions);
         });
+        describe('and open modal', () => {
+          describe('and has free trial category', () => {
+            beforeEach(() => {
+              spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(true);
+            });
+            it('should track modal', () => {
+              const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+                name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+                attributes: {
+                  screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+                  freeTrial: true,
+                },
+              };
+              const item = cloneDeep(component.items[3]);
 
-        expect(modalService.open).toHaveBeenCalledTimes(1);
-        expect(modalService.open).toHaveBeenCalledWith(SuggestProModalComponent, {
-          windowClass: 'modal-standard',
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+              expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+            });
+          });
+          describe('and has not free trial category', () => {
+            beforeEach(() => {
+              spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(false);
+            });
+            it('should track modal', () => {
+              const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+                name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+                attributes: {
+                  screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+                  freeTrial: false,
+                },
+              };
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+              expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+            });
+          });
+        });
+        describe('and click cta button', () => {
+          it('should redirect to subscriptions', fakeAsync(() => {
+            modalSpy.and.returnValue({
+              result: Promise.resolve(true),
+              componentInstance: componentInstance,
+            });
+            const item = cloneDeep(component.items[3]);
+
+            component.itemChanged({
+              item: item,
+              action: ITEM_CHANGE_ACTION.REACTIVATED,
+            });
+            tick();
+
+            expect(router.navigate).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+          }));
+        });
+        describe('and click secondary button', () => {
+          it('should refresh item', fakeAsync(() => {
+            modalSpy.and.returnValue({
+              result: Promise.reject(),
+              componentInstance: componentInstance,
+            });
+            const item = cloneDeep(component.items[3]);
+
+            component.itemChanged({
+              item,
+              action: ITEM_CHANGE_ACTION.REACTIVATED,
+            });
+            tick();
+
+            expect(itemService.get).toHaveBeenCalledWith(item.id);
+            expect(component.items[3]).toEqual(MOCK_ITEM_V3);
+            expect(router.navigate).not.toHaveBeenCalled();
+          }));
+        });
+        describe('and click close button', () => {
+          it('should refresh item', fakeAsync(() => {
+            modalSpy.and.returnValue({
+              result: Promise.reject(),
+              componentInstance: componentInstance,
+            });
+            const item = cloneDeep(component.items[3]);
+
+            component.itemChanged({
+              item,
+              action: ITEM_CHANGE_ACTION.REACTIVATED,
+            });
+            tick();
+
+            expect(itemService.get).toHaveBeenCalledWith(item.id);
+            expect(component.items[3]).toEqual(MOCK_ITEM_V3);
+            expect(router.navigate).not.toHaveBeenCalled();
+          }));
         });
       });
-      describe('and click cta button', () => {
-        it('should redirect to subscriptions', fakeAsync(() => {
-          modalSpy.and.returnValue({
-            result: Promise.resolve(true),
-            componentInstance: componentInstance,
-          });
-          const item = cloneDeep(component.items[3]);
-
+      describe('and has not subscription permissions', () => {
+        beforeEach(() => {
+          permissionService.removePermission(PERMISSIONS.subscriptions);
+        });
+        it('should not show modal', () => {
           component.itemChanged({
-            item: item,
+            item: component.items[3],
             action: ITEM_CHANGE_ACTION.REACTIVATED,
           });
-          tick();
 
-          expect(router.navigate).toHaveBeenCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
-        }));
-      });
-      describe('and click secondary button', () => {
-        it('should refresh item', fakeAsync(() => {
-          modalSpy.and.returnValue({
-            result: Promise.reject(),
-            componentInstance: componentInstance,
-          });
-          const item = cloneDeep(component.items[3]);
-
-          component.itemChanged({
-            item,
-            action: ITEM_CHANGE_ACTION.REACTIVATED,
-          });
-          tick();
-
-          expect(itemService.get).toHaveBeenCalledWith(item.id);
-          expect(component.items[3]).toEqual(MOCK_ITEM_V3);
-          expect(router.navigate).not.toHaveBeenCalled();
-        }));
-      });
-      describe('and click close button', () => {
-        it('should refresh item', fakeAsync(() => {
-          modalSpy.and.returnValue({
-            result: Promise.reject(),
-            componentInstance: componentInstance,
-          });
-          const item = cloneDeep(component.items[3]);
-
-          component.itemChanged({
-            item,
-            action: ITEM_CHANGE_ACTION.REACTIVATED,
-          });
-          tick();
-
-          expect(itemService.get).toHaveBeenCalledWith(item.id);
-          expect(component.items[3]).toEqual(MOCK_ITEM_V3);
-          expect(router.navigate).not.toHaveBeenCalled();
-        }));
+          expect(modalService.open).not.toHaveBeenCalled();
+        });
       });
     });
     describe('is pro user', () => {
