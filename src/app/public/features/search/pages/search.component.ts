@@ -104,6 +104,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public slotsConfig: SlotsConfig;
 
   private resetSearchId = true;
+  public readonly SORT_BY_RELEVANCE = SORT_BY.RELEVANCE;
 
   @HostListener('window:scroll', ['$event'])
   @debounce(500)

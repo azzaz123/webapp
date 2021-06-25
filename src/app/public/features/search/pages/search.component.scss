@@ -11,6 +11,16 @@ $search-sidebar-ads-top: $topbar-height + $filters-offset-top;
     &--opened {
       z-index: #{$filters-bar-z-index + 1};
     }
+
+    &__bubble {
+      bottom: $spacer * -5;
+      left: 0;
+      right: 0;
+
+      @include media-breakpoint-up(xl) {
+        margin-right: 330px;
+      }
+    }
   }
 
   &__sky {

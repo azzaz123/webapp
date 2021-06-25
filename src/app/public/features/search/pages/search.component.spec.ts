@@ -64,6 +64,7 @@ class InfiniteScrollStubDirective {
 
 describe('SearchComponent', () => {
   const itemCardListTag = 'tsl-public-item-card-list';
+  const infoBubbleSelector = '.Search__filters__bubble';
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let deviceServiceMock;
@@ -660,6 +661,28 @@ describe('SearchComponent', () => {
       const bottomAdSlot = fixture.debugElement.query(By.css('.ItemCardList__sky-bottom'));
 
       expect(bottomAdSlot).toBeTruthy();
+    });
+  });
+
+  describe('when sort by relevance is applied', () => {
+    beforeEach(() => {
+      component['sortBySubject'].next(SORT_BY.RELEVANCE);
+    });
+
+    it('should show info bubble', () => {
+      const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
+
+      component.sortBy$.subscribe((pepe) => {
+        expect(infoBubbleElement).toBeTruthy();
+      });
+    });
+  });
+
+  describe('when sort by relevance is NOT applied', () => {
+    it('should hide info bubble', () => {
+      const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
+
+      expect(infoBubbleElement).toBeFalsy();
     });
   });
 });
