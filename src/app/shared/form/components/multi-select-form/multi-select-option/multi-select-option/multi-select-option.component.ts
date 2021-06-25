@@ -10,11 +10,11 @@ import { MultiSelectFormOption } from '../../multi-select-form.component';
 export class MultiSelectOptionComponent {
   @Input() option: MultiSelectFormOption;
   @Input() isDisabled: boolean;
-  @Output() toggleOnChange: EventEmitter<MultiSelectFormOption> = new EventEmitter<MultiSelectFormOption>();
+  @Output() toggleOnChange = new EventEmitter();
 
   constructor() {}
 
   toggleCheckbox() {
-    this.toggleOnChange.emit(this.option);
+    this.toggleOnChange.emit();
   }
 }
