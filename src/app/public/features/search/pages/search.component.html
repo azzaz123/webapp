@@ -7,10 +7,11 @@
   <div class="Search__filters w-100" [class.Search__filters--opened]="filterOpened">
     <tsl-filters-wrapper (filterOpened)="handleFilterOpened($event)"></tsl-filters-wrapper>
     <tsl-sort-filter [value]="sortBy$ | async"></tsl-sort-filter>
-    <div class="Search__filters__bubble d-flex position-absolute justify-content-center" *ngIf="(sortBy$ | async) === SORT_BY_RELEVANCE">
-      <tsl-info-bubble>
-        <span i18n="@@TO BE DEFINED">In all Spain</span>
-      </tsl-info-bubble>
+    <div
+      class="Search__filters__bubble d-flex position-absolute justify-content-center"
+      *ngIf="(sortBy$ | async) === SORT_BY_RELEVANCE && infoBubbleText"
+    >
+      <tsl-info-bubble>{{ infoBubbleText }}</tsl-info-bubble>
     </div>
   </div>
 

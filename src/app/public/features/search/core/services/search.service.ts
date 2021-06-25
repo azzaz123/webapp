@@ -110,10 +110,10 @@ export class SearchService {
           })
         )
       ),
-      tap(({ items, hasMore, categoryId, searchId, sortBy }: SearchPaginationWithCategory) => {
+      tap(({ items, hasMore, categoryId, searchId, sortBy, bubble }: SearchPaginationWithCategory) => {
         this.isLoadingResults = false;
         this.currentCategoryId = categoryId;
-        this.searchResponseExtraData = { searchId, sortBy };
+        this.searchResponseExtraData = { searchId, sortBy, bubble };
         this.searchStoreService.setItems(items);
         this.searchStoreService.setHasMore(hasMore);
       })
@@ -133,13 +133,14 @@ export class SearchService {
   }
 
   private mapSearchResponse(pagination: SearchPagination, filterParameters: FilterParameter[]): SearchPaginationWithCategory {
-    const { items, hasMore, searchId, sortBy } = pagination;
+    const { items, hasMore, searchId, sortBy, bubble } = pagination;
     return {
       items,
       hasMore,
       searchId,
       categoryId: this.getCategoryIdFromParams(filterParameters),
       sortBy,
+      bubble,
     };
   }
 

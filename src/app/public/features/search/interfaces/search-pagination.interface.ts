@@ -6,6 +6,7 @@ export interface SearchPagination {
   hasMore: boolean;
   searchId: string;
   sortBy: SORT_BY;
+  bubble?: string;
 }
 
 export interface SearchPaginationWithCategory extends SearchPagination {
