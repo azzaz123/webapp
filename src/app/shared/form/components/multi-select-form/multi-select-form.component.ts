@@ -37,7 +37,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
     this.value = value;
   }
 
-  public handleSelectedOption() {
+  public handleSelectedOption(): void {
     this.value = this.extendedOptions
       .filter((option) => {
         return option.checked;
