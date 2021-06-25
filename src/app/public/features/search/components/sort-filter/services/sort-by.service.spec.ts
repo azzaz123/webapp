@@ -12,7 +12,9 @@ describe('SortByService', () => {
   let sortByService: SortByService;
   const parametersSubject: ReplaySubject<FilterParameter[]> = new ReplaySubject<FilterParameter[]>();
   let parameters = [];
-  let getParametersByKeys = (keys: FILTER_QUERY_PARAM_KEY[]) => {
+  const optionsSubjectName = 'optionsSubject';
+  const relevanceOptionActiveSubjectName = 'relevanceOptionActiveSubject';
+  const getParametersByKeys = (keys: FILTER_QUERY_PARAM_KEY[]) => {
     return parameters.filter((parameter) => keys.includes(parameter.key));
   };
 
@@ -35,11 +37,19 @@ describe('SortByService', () => {
   describe('when filterParameterStore parameters changes', () => {
     describe('and has no parameters', () => {
       it('should update options with sort by default options', () => {
-        spyOn(sortByService['optionsSubject'], 'next');
+        spyOn(sortByService[optionsSubjectName], 'next');
 
         parametersSubject.next(parameters);
 
-        expect(sortByService['optionsSubject'].next).toHaveBeenCalledWith(SORT_BY_DEFAULT_OPTIONS);
+        expect(sortByService[optionsSubjectName].next).toHaveBeenCalledWith(SORT_BY_DEFAULT_OPTIONS);
+      });
+
+      it('should update elevanceOptionActive with false', () => {
+        spyOn(sortByService[relevanceOptionActiveSubjectName], 'next');
+
+        parametersSubject.next(parameters);
+
+        expect(sortByService[relevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(false);
       });
     });
 
@@ -62,19 +72,35 @@ describe('SortByService', () => {
           });
 
           it('should update options with sort by relevance options', () => {
-            spyOn(sortByService['optionsSubject'], 'next');
+            spyOn(sortByService[optionsSubjectName], 'next');
             parametersSubject.next(parameters);
 
-            expect(sortByService['optionsSubject'].next).toHaveBeenCalledWith(SORT_BY_RELEVANCE_OPTIONS);
+            expect(sortByService[optionsSubjectName].next).toHaveBeenCalledWith(SORT_BY_RELEVANCE_OPTIONS);
+          });
+
+          it('should update elevanceOptionActive with true', () => {
+            spyOn(sortByService[relevanceOptionActiveSubjectName], 'next');
+
+            parametersSubject.next(parameters);
+
+            expect(sortByService[relevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(true);
           });
         });
 
         describe('and has NOT keyword', () => {
           it('should update options with sort by default options', () => {
-            spyOn(sortByService['optionsSubject'], 'next');
+            spyOn(sortByService[optionsSubjectName], 'next');
             parametersSubject.next(parameters);
 
-            expect(sortByService['optionsSubject'].next).toHaveBeenCalledWith(SORT_BY_DEFAULT_OPTIONS);
+            expect(sortByService[optionsSubjectName].next).toHaveBeenCalledWith(SORT_BY_DEFAULT_OPTIONS);
+          });
+
+          it('should update elevanceOptionActive with false', () => {
+            spyOn(sortByService[relevanceOptionActiveSubjectName], 'next');
+
+            parametersSubject.next(parameters);
+
+            expect(sortByService[relevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(false);
           });
         });
       });
@@ -90,11 +116,18 @@ describe('SortByService', () => {
         });
 
         it('should update options with sort by default options', () => {
-          const parameters: FilterParameter[] = [];
-          spyOn(sortByService['optionsSubject'], 'next');
+          spyOn(sortByService[optionsSubjectName], 'next');
           parametersSubject.next(parameters);
 
-          expect(sortByService['optionsSubject'].next).toHaveBeenCalledWith(SORT_BY_DEFAULT_OPTIONS);
+          expect(sortByService[optionsSubjectName].next).toHaveBeenCalledWith(SORT_BY_DEFAULT_OPTIONS);
+        });
+
+        it('should update elevanceOptionActive with false', () => {
+          spyOn(sortByService[relevanceOptionActiveSubjectName], 'next');
+
+          parametersSubject.next(parameters);
+
+          expect(sortByService[relevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(false);
         });
       });
     });

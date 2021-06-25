@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import {
   FilterParameterStoreService,
   FILTER_PARAMETER_STORE_TOKEN,
@@ -14,10 +13,13 @@ import { SORT_BY, SORT_BY_DEFAULT_OPTIONS, SORT_BY_RELEVANCE_OPTIONS } from './c
 export class SortByService {
   private optionsSubject = new BehaviorSubject<SelectFormOption<SORT_BY>[]>(SORT_BY_DEFAULT_OPTIONS);
   public options$ = this.optionsSubject.asObservable();
+  public relevanceOptionActiveSubject = new BehaviorSubject<boolean>(false);
+  public relevanceOptionActive$ = this.relevanceOptionActiveSubject.asObservable();
 
   constructor(@Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService) {
     this.filterParameterStore.parameters$.subscribe(() => {
       this.optionsSubject.next(this.getOptionsByParameters());
+      this.relevanceOptionActiveSubject.next(this.relevanceOptionActive());
     });
   }
 
@@ -25,10 +27,10 @@ export class SortByService {
     return this.relevanceOptionActive() ? SORT_BY_RELEVANCE_OPTIONS : SORT_BY_DEFAULT_OPTIONS;
   }
 
-  public relevanceOptionActive(): boolean {
+  private relevanceOptionActive(): boolean {
     const categoryIds = this.filterParameterStore.getParametersByKeys([FILTER_QUERY_PARAM_KEY.categoryId])[0]?.value;
     const keyword = this.filterParameterStore.getParametersByKeys([FILTER_QUERY_PARAM_KEY.keywords])[0]?.value;
 
-    return SORT_BY_RELEVANCE_CATEGORY_IDS.includes(parseInt(categoryIds)) && !!keyword;
+    return SORT_BY_RELEVANCE_CATEGORY_IDS.includes(parseInt(categoryIds, 10)) && !!keyword;
   }
 }
