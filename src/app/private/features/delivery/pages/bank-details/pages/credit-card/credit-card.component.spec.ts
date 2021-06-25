@@ -201,7 +201,7 @@ describe('CreditCreditCardComponent', () => {
         describe('and the petition fails...', () => {
           describe('and when the fail is because server notifies card number is invalid', () => {
             beforeEach(() => {
-              spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardOwnerNameIsInvalidError()]));
+              spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardIsNotAuthorizedError()]));
 
               triggerFormSubmit();
             });
@@ -296,7 +296,7 @@ describe('CreditCreditCardComponent', () => {
       describe('and the petition fails...', () => {
         describe('and when the fail is because server notifies owner name is invalid', () => {
           beforeEach(() => {
-            spyOn(paymentsCreditCardService, 'update').and.returnValue(throwError([new CardIsNotAuthorizedError()]));
+            spyOn(paymentsCreditCardService, 'update').and.returnValue(throwError([new CardOwnerNameIsInvalidError()]));
 
             triggerFormSubmit();
           });

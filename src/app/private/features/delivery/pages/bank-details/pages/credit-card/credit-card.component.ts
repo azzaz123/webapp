@@ -151,11 +151,11 @@ export class CreditCardComponent implements OnInit, OnDestroy {
 
     errors.forEach((error: PaymentsCardsError) => {
       if (error instanceof CardIsNotAuthorizedError) {
-        this.setIncorrectControlAndShowError('fullName', error.message);
+        this.setIncorrectControlAndShowError('cardNumber', error.message);
       }
 
       if (error instanceof CardOwnerNameIsInvalidError) {
-        this.setIncorrectControlAndShowError('cardNumber', error.message);
+        this.setIncorrectControlAndShowError('fullName', error.message);
       }
 
       if (this.isGenericCreditCardError(error)) {
