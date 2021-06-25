@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center w-100">
     <span class="SelectOption__label" >{{option.label}}</span>
-    <input type="checkbox" [disabled]="isDisabled" [(ngModel)]="option.checked" (change)="toggleCheckbox($event)"/>
+    <input type="checkbox" [disabled]="isDisabled" [(ngModel)]="option.checked" (change)="toggleCheckbox()"/>
     {{option.checked}}
 </div>

@@ -35,27 +35,16 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
-    console.log('writeValue', value);
-
-    this.extendedOptions.map((option) => {
-      option.checked = this.value.includes(option.value);
-      return option;
-    });
   }
 
-  public handleSelectedOption(option: MultiSelectFormOption) {
-    console.log(this.extendedOptions, option);
-
-    // manage the value array depedning on this option.checked
+  public handleSelectedOption() {
+    this.value = this.extendedOptions
+      .filter((option) => {
+        return option.checked;
+      })
+      .map((option) => {
+        return option.value;
+      });
     this.onChange(this.value);
-
-    /*  // const { option, isChecked } = event;
-    // if (isChecked) {
-    //   this.selectedOptions.push(option);
-    //   this.onChange(this.selectedOptions);
-    // } else {
-    //   const index = this.selectedOptions.indexOf(option);
-    //   this.selectedOptions.splice(index, 1);
-    } */
   }
 }

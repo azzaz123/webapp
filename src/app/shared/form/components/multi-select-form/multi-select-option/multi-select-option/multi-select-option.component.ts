@@ -14,7 +14,7 @@ export class MultiSelectOptionComponent {
 
   constructor() {}
 
-  toggleCheckbox($event) {
+  toggleCheckbox() {
     this.toggleOnChange.emit(this.option);
   }
 }
