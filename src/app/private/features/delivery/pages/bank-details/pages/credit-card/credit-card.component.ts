@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'tsl-credit-card',
@@ -17,7 +18,7 @@ export class CreditCardComponent implements OnInit {
   public loadingButton = false;
   public formErrorMessages;
 
-  constructor(private fb: FormBuilder, private uuidService: UuidService) {}
+  constructor(private fb: FormBuilder, private uuidService: UuidService, private location: Location) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -26,6 +27,10 @@ export class CreditCardComponent implements OnInit {
   public initForm(): void {}
 
   public onSubmit(): void {}
+
+  public goBack(): void {
+    this.location.back();
+  }
 
   private buildForm(): void {
     this.cardForm = this.fb.group({

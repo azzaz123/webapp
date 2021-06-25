@@ -1,10 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { UuidService } from '@core/uuid/uuid.service';
@@ -17,41 +16,45 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numbers-only.directive.module';
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
-import { of, throwError } from 'rxjs';
-import { DELIVERY_PATHS } from '../../delivery-routing-constants';
+import { of, Subject, throwError } from 'rxjs';
+import { BankAccountApiService } from '@private/features/delivery/services/api/bank-account-api/bank-account-api.service';
+import { BankAccountService } from '@private/features/delivery/services/bank-account/bank-account.service';
+import { MapBankAccountService } from '@private/features/delivery/services/bank-account/map-bank-account/map-bank-account.service';
+import { Location } from '@angular/common';
 import {
   FirstNameIsInvalidError,
   IbanCountryIsInvalidError,
   LastNameIsInvalidError,
   PlatformResponseIsInvalidError,
   UniqueBankAccountByUserError,
-} from '../../errors/classes/bank-account';
-import { BankAccountApiService } from '../../services/api/bank-account-api/bank-account-api.service';
-import { BankAccountService } from '../../services/bank-account/bank-account.service';
-import { MapBankAccountService } from '../../services/bank-account/map-bank-account/map-bank-account.service';
+} from '@private/features/delivery/errors/classes/bank-account';
 
 import { BankAccountComponent } from './bank-account.component';
 
 describe('BankAccountComponent', () => {
   const messageErrorSelector = '.BankAccount__message--error';
+  const backAnchorSelector = '.BankAccount__back';
+  const routerEvents: Subject<any> = new Subject();
+
   let component: BankAccountComponent;
   let fixture: ComponentFixture<BankAccountComponent>;
   let bankAccountService: BankAccountService;
   let toastService: ToastService;
+  let location: Location;
   let i18nService: I18nService;
   let router: Router;
   let el: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NumbersOnlyDirectiveModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [ReactiveFormsModule, NumbersOnlyDirectiveModule, HttpClientTestingModule],
       declarations: [BankAccountComponent, ProfileFormComponent, SeparateWordByCharacterPipe],
       providers: [
         FormBuilder,
         BankAccountService,
         BankAccountApiService,
         MapBankAccountService,
-        I18nService,
+        Location,
         {
           provide: UuidService,
           useValue: {
@@ -60,8 +63,23 @@ describe('BankAccountComponent', () => {
             },
           },
         },
+        {
+          provide: I18nService,
+          useValue: {
+            translate() {
+              return '';
+            },
+          },
+        },
+        {
+          provide: Router,
+          useValue: {
+            navigate() {},
+            events: routerEvents,
+          },
+        },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
@@ -70,6 +88,7 @@ describe('BankAccountComponent', () => {
     component = fixture.componentInstance;
     el = fixture.debugElement.nativeElement;
     bankAccountService = TestBed.inject(BankAccountService);
+    location = TestBed.inject(Location);
     toastService = TestBed.inject(ToastService);
     i18nService = TestBed.inject(I18nService);
     router = TestBed.inject(Router);
@@ -179,7 +198,7 @@ describe('BankAccountComponent', () => {
           });
 
           it('should redirect to the bank details page', () => {
-            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.BANK_DETAILS]);
+            expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
           });
         });
 
@@ -278,7 +297,7 @@ describe('BankAccountComponent', () => {
         });
 
         it('should redirect to the bank details page', () => {
-          expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.BANK_DETAILS]);
+          expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
         });
       });
 
@@ -371,6 +390,17 @@ describe('BankAccountComponent', () => {
 
     it('should show errors in the template', () => {
       expect(el.querySelectorAll(messageErrorSelector).length).toBe(1);
+    });
+  });
+
+  describe('when the user clicks on the back button...', () => {
+    it('should go to the previous page', () => {
+      spyOn(location, 'back');
+      const backButton = fixture.debugElement.query(By.css(backAnchorSelector)).nativeNode;
+
+      backButton.click();
+
+      expect(location.back).toHaveBeenCalled();
     });
   });
 
