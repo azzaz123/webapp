@@ -6,6 +6,7 @@ import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numb
 import { SeparateWordByCharacterModule } from '@shared/pipes/separate-word-by-character/separate-word-by-character.module';
 import { ProfileFormModule } from '@shared/profile/profile-form/profile-form.module';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { creditCardRoutedComponents, CreditCardRoutingModule } from './credit-card.routing.module';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { creditCardRoutedComponents, CreditCardRoutingModule } from './credit-ca
     ButtonModule,
     SeparateWordByCharacterModule,
     NumbersOnlyDirectiveModule,
+    SvgIconModule,
   ],
   declarations: [creditCardRoutedComponents],
 })

@@ -28,6 +28,7 @@ import {
   UniqueCardForUserError,
 } from '@api/core/errors/payments/cards';
 import { CreditCardFormErrorMessages } from '@private/features/delivery/interfaces/credit-card/credit-card-form-error-messages.interface';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'tsl-credit-card',
@@ -56,7 +57,8 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     private toastService: ToastService,
     private i18nService: I18nService,
     private paymentsCreditCardService: PaymentsCreditCardService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -189,6 +191,10 @@ export class CreditCardComponent implements OnInit, OnDestroy {
 
   private initializeAndPatchForm(): void {
     this.formComponent.initFormControl();
+  }
+
+  public goBack(): void {
+    this.location.back();
   }
 
   private buildForm(): void {

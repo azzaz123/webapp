@@ -1,18 +1,20 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
-import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
+import { DELIVERY_INPUTS_MAX_LENGTH } from '@private/features/delivery/enums/delivery-inputs-length.enum';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { EventService } from '@core/event/event.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { I18nService } from '@core/i18n/i18n.service';
-import { BankAccountService } from '../../services/bank-account/bank-account.service';
+import { BankAccountService } from '@private/features/delivery/services/bank-account/bank-account.service';
 import { finalize } from 'rxjs/operators';
-import { BankAccount } from '../../interfaces/bank-account/bank-account-api.interface';
-import { DELIVERY_PATHS } from '../../delivery-routing-constants';
+import { BankAccount } from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { Router } from '@angular/router';
-import { BankAccountFormErrorMessages } from '../../interfaces/bank-account/bank-account-form-error-messages.interface';
+import { BankAccountFormErrorMessages } from '@private/features/delivery/interfaces/bank-account/bank-account-form-error-messages.interface';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { Location } from '@angular/common';
 import {
   BankAccountError,
   IbanCountryIsInvalidError,
@@ -21,7 +23,7 @@ import {
   PlatformResponseIsInvalidError,
   UniqueBankAccountByUserError,
   LastNameIsInvalidError,
-} from '../../errors/classes/bank-account';
+} from '@private/features/delivery/errors/classes/bank-account';
 
 export const IBAN_LENGTH = 40;
 @Component({
@@ -45,6 +47,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   };
 
   private readonly formSubmittedEventKey = 'formSubmitted';
+  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
 
   constructor(
     private fb: FormBuilder,
@@ -53,7 +56,8 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     private toastService: ToastService,
     private i18nService: I18nService,
     private router: Router,
-    private bankAccountService: BankAccountService
+    private bankAccountService: BankAccountService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -107,6 +111,10 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     }
   }
 
+  public goBack(): void {
+    this.location.back();
+  }
+
   private submitValidForm(): void {
     this.loadingButton = true;
     const subscription = this.isNewForm
@@ -127,7 +135,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
 
           this.showToast(translationKey, 'success');
           this.isNewForm = false;
-          this.router.navigate([DELIVERY_PATHS.BANK_DETAILS]);
+          this.router.navigate([this.BANK_DETAILS_URL]);
         },
         (errors: BankAccountError[]) => {
           this.handleBankAccountErrors(errors);

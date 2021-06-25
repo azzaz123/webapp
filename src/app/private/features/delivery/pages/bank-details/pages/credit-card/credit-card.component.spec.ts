@@ -1,8 +1,7 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
   CardIsNotAuthorizedError,
@@ -14,6 +13,7 @@ import { mockCreditCardSyncRequest, mockCreditCardSyncRequestEmpty } from '@api/
 import { PaymentsCreditCardService } from '@api/payments/cards';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { Router } from '@angular/router';
 import { UuidService } from '@core/uuid/uuid.service';
 import { MOCK_EMPTY_CREDIT_CARD_FORM } from '@fixtures/private/delivery/credit-card/credit-card.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -21,6 +21,8 @@ import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-on
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { of, throwError } from 'rxjs';
+import { Subject } from 'rxjs';
+import { Location } from '@angular/common';
 
 import { CreditCardComponent } from './credit-card.component';
 
@@ -31,8 +33,12 @@ describe('CreditCreditCardComponent', () => {
   let paymentsCreditCardService: PaymentsCreditCardService;
   let toastService: ToastService;
   let i18nService: I18nService;
+  let location: Location;
   let el: HTMLElement;
   let router: Router;
+
+  const backAnchorSelector = '.CreditCard__back';
+  const routerEvents: Subject<any> = new Subject();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -56,6 +62,7 @@ describe('CreditCreditCardComponent', () => {
             },
           },
         },
+        Location,
         {
           provide: UuidService,
           useValue: {
@@ -64,8 +71,15 @@ describe('CreditCreditCardComponent', () => {
             },
           },
         },
+        {
+          provide: Router,
+          useValue: {
+            navigate() {},
+            events: routerEvents,
+          },
+        },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
@@ -77,6 +91,7 @@ describe('CreditCreditCardComponent', () => {
     toastService = TestBed.inject(ToastService);
     i18nService = TestBed.inject(I18nService);
     router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
     fixture.detectChanges();
   });
 
@@ -376,6 +391,17 @@ describe('CreditCreditCardComponent', () => {
 
     it('should show errors in the template', () => {
       expect(el.querySelectorAll(messageErrorSelector).length).toBe(4);
+    });
+  });
+
+  describe('when the user clicks on the back button...', () => {
+    it('should go to the previous page', () => {
+      spyOn(location, 'back');
+      const backButton = fixture.debugElement.query(By.css(backAnchorSelector)).nativeNode;
+
+      backButton.click();
+
+      expect(location.back).toHaveBeenCalled();
     });
   });
 

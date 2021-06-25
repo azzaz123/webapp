@@ -23,13 +23,11 @@
   align-items: center;
 }
 
-$card-height: 151px;
-
 .StripeCards__addNew {
   border: solid 1px $blue-grey-5;
   color: $walla-main;
   cursor: pointer;
-  min-height: $card-height;
+  min-height: $credit-card-height;
   padding: 0 $spacing-ml;
   flex-direction: column;
   border-radius: 6px;

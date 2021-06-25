@@ -47,18 +47,34 @@ describe('PaymentsCreditCardService', () => {
 
       expect(response).toEqual(mockCreditCard);
     });
+
+    it('should update the credit card subject', () => {
+      let creditCardResult: CreditCard;
+      let creditCardSubject: CreditCard;
+
+      service.get().subscribe((creditCard: CreditCard) => (creditCardResult = creditCard));
+      service.creditCard$.subscribe((creditCard: CreditCard) => (creditCardSubject = creditCard));
+
+      expect(creditCardResult).toStrictEqual(mockCreditCard);
+      expect(creditCardSubject).toStrictEqual(creditCardResult);
+    });
   });
 
   describe('when asking to create a card', () => {
     describe('and when there are no errors in server', () => {
       beforeEach(() => {
+        spyOn(service, 'get');
         spyOn(paymentsHttpService, 'create').and.returnValue(of({}));
+
+        service.create(mockCreditCardSyncRequest).subscribe();
       });
 
       it('should ask to create a card', () => {
-        service.create(mockCreditCardSyncRequest).subscribe();
-
         expect(paymentsHttpService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+      });
+
+      it('should get the credit card', () => {
+        expect(service.get).toHaveBeenCalled();
       });
     });
 
@@ -100,13 +116,18 @@ describe('PaymentsCreditCardService', () => {
   describe('when asking to update a card', () => {
     describe('and when there are no errors in server', () => {
       beforeEach(() => {
+        spyOn(service, 'get');
         spyOn(paymentsHttpService, 'update').and.returnValue(of({}));
+
+        service.update(mockCreditCardSyncRequest).subscribe();
       });
 
       it('should ask to update a card', () => {
-        service.update(mockCreditCardSyncRequest).subscribe();
-
         expect(paymentsHttpService.update).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+      });
+
+      it('should get the credit card', () => {
+        expect(service.get).toHaveBeenCalled();
       });
     });
 
@@ -149,12 +170,20 @@ describe('PaymentsCreditCardService', () => {
     describe('and when there are no errors in server', () => {
       beforeEach(() => {
         spyOn(paymentsHttpService, 'delete').and.returnValue(of({}));
+
+        service.delete().subscribe();
       });
 
       it('should ask to delete the card', () => {
-        service.delete().subscribe();
-
         expect(paymentsHttpService.delete).toHaveBeenCalled();
+      });
+
+      it('should update the credit card subject', () => {
+        let result: CreditCard;
+
+        service.creditCard$.subscribe((creditCard: CreditCard) => (result = creditCard));
+
+        expect(result).toBe(null);
       });
     });
 

@@ -10,24 +10,31 @@ import { FinancialCard } from './financial-card';
 export class CreditCardInfoComponent implements OnChanges {
   @Input() brand: string;
   @Input() numberCard: string;
-  @Input() expireDate: Date;
+  @Input() expireDate: string;
   @Input() ownerName: string;
   @Input() error: boolean;
   @Input() hideEdit: boolean;
   @Input() hideDelete: boolean;
+  @Input() isBankAccount: boolean;
 
   @Output() changeCardClick: EventEmitter<Event> = new EventEmitter();
   @Output() deleteCardClick: EventEmitter<FinancialCard> = new EventEmitter();
 
   public creditCardBrandSrc: string;
   public isCardWithIcon: boolean;
+  public aliasNumber: string;
 
   constructor() {}
 
   ngOnChanges() {
+    this.updateAlias();
     this.isCardWithIcon = BRAND_CARDS_WITH_SVG.includes(this.brand as BRAND_CARDS);
-
     this.checkCreditCardBrandSrc();
+  }
+
+  private updateAlias(): void {
+    const stars = this.isBankAccount ? '****' : '**** **** ****';
+    this.aliasNumber = `${stars} ${this.numberCard}`;
   }
 
   private checkCreditCardBrandSrc(): void {
