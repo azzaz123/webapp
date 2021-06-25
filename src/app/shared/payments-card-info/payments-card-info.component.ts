@@ -1,13 +1,13 @@
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { BRAND_CARDS, BRAND_CARDS_WITH_SVG } from './credit-card-info.enum';
+import { BRAND_CARDS, BRAND_CARDS_WITH_SVG } from './payments-card-info.enum';
 import { FinancialCard } from './financial-card';
 
 @Component({
-  selector: 'tsl-credit-card-info',
-  templateUrl: './credit-card-info.component.html',
-  styleUrls: ['./credit-card-info.component.scss'],
+  selector: 'tsl-payments-card-info',
+  templateUrl: './payments-card-info.component.html',
+  styleUrls: ['./payments-card-info.component.scss'],
 })
-export class CreditCardInfoComponent implements OnChanges {
+export class PaymentsCardInfoComponent implements OnChanges {
   @Input() brand: string;
   @Input() numberCard: string;
   @Input() expireDate: string;

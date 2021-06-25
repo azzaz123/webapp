@@ -12,7 +12,7 @@ import { MOCK_BANK_ACCOUNT } from '@fixtures/private/delivery/bank-account/bank-
 import { BankAccount } from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
 import { BankAccountService } from '@private/features/delivery/services/bank-account/bank-account.service';
 import { AddCreditCardComponent } from '@shared/add-credit-card/add-credit-card.component';
-import { CreditCardInfoComponent } from '@shared/credit-card-info/credit-card-info.component';
+import { PaymentsCardInfoComponent } from '@shared/payments-card-info/payments-card-info.component';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 
 import * as moment from 'moment';
@@ -44,7 +44,7 @@ describe('BankDetailsOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BankDetailsOverviewComponent, AddCreditCardComponent, CreditCardInfoComponent],
+      declarations: [BankDetailsOverviewComponent, AddCreditCardComponent, PaymentsCardInfoComponent],
       imports: [RouterTestingModule],
       providers: [
         {
