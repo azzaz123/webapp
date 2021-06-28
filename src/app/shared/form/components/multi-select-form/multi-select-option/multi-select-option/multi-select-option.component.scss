@@ -3,33 +3,6 @@
 .MultiSelectOption {
   position: relative;
   cursor: pointer;
-  input {
-    display: none;
-  }
-  label {
-    width: 16px;
-    height: 16px;
-    border-color: transparent;
-    background-color: white;
-    //border: 1px solid $blue-grey-5;
-    align-self: center;
-    border-radius: 4px;
-  }
-  tsl-svg-icon {
-    display: none;
-    height: 80%;
-    width: 81%;
-  }
-  .active {
-    background: $walla-main;
-    tsl-svg-icon {
-      display: flex;
-      align-items: center;
-      ::ng-deep path {
-        fill: $white;
-      }
-    }
-  }
   &::after {
     content: '';
     background-color: white;
@@ -45,15 +18,4 @@
       content: '#';
     }
   }
-
-  /*  &--active {
-    color: $walla-main;
-  }
-
-  &__icon--active {
-    ::ng-deep g g,
-    ::ng-deep path {
-      fill: $walla-main;
-    }
-  } */
 }

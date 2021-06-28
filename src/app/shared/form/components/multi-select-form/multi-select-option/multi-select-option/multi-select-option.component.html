@@ -3,9 +3,10 @@
         <span class="MultiSelectOption__optionLabel" >{{option.label}}</span>
         <span *ngIf="!!option.sublable" class="MultiSelectOption__label" >{{option.sublabel}}</span>
     </div>
-    <label [class.active]="option.checked">
-        <input type="checkbox" [disabled]="isDisabled" [(ngModel)]="option.checked" (change)="toggleCheckbox()"/>
-        <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
-       <!--  <span class="MultiSelectOption__checkboxSpan"></span> -->
+    <label class="checkbox checkbox-corporate">
+        <div class="select" [class.selected]="option.checked">
+            <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
+            <input type="checkbox" [disabled]="isDisabled" [(ngModel)]="option.checked" (change)="toggleCheckbox()"/>
+        </div>
     </label>
 </div>
