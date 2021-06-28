@@ -31,7 +31,7 @@ export class SortFilterComponent implements OnInit {
   constructor(private searchNavigatorService: SearchNavigatorService, private activatedRoute: ActivatedRoute) {}
 
   public ngOnInit(): void {
-    this.formControl = new FormControl(this.selectFormOptionsConfig[0].value);
+    this.formControl = new FormControl(this.initialValue);
     this.selected = SortFilterComponent.getSelectedValue(this.initialValue);
   }
 
