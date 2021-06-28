@@ -7,12 +7,6 @@
   <div class="Search__filters w-100" [class.Search__filters--opened]="filterOpened">
     <tsl-filters-wrapper (filterOpened)="handleFilterOpened($event)"></tsl-filters-wrapper>
     <tsl-sort-filter [value]="sortBy$ | async"></tsl-sort-filter>
-    <div
-      class="Search__filters__bubble d-flex position-absolute justify-content-center"
-      *ngIf="(sortBy$ | async) === SORT_BY_RELEVANCE && infoBubbleText"
-    >
-      <tsl-info-bubble>{{ infoBubbleText }}</tsl-info-bubble>
-    </div>
   </div>
 
   <tsl-search-error-layout *ngIf="searchWithoutResults$ | async"></tsl-search-error-layout>
@@ -36,6 +30,12 @@
       </ng-container>
     </div>
     <ng-container main>
+      <div
+        class="Search__filters__bubble d-flex position-sticky justify-content-center"
+        *ngIf="(sortBy$ | async) === SORT_BY_RELEVANCE && infoBubbleText"
+      >
+        <tsl-info-bubble class="position-relative mt-2">{{ infoBubbleText }}</tsl-info-bubble>
+      </div>
       <tsl-public-item-card-list
         [items]="items$ | async"
         [isLoading]="isLoadingResults$ | async"

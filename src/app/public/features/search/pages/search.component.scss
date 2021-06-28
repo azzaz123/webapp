@@ -1,6 +1,7 @@
 @import '~style/common';
 
 $filters-offset-top: 120px;
+$bubble-offset-top: 200px;
 $search-sidebar-ads-top: $topbar-height + $filters-offset-top;
 
 .Search {
@@ -13,12 +14,12 @@ $search-sidebar-ads-top: $topbar-height + $filters-offset-top;
     }
 
     &__bubble {
-      bottom: $spacer * -5;
-      left: 0;
-      right: 0;
+      top: $bubble-offset-top;
+      z-index: 2;
+      margin-bottom: $spacer * -2.15;
 
-      @include media-breakpoint-up(xl) {
-        margin-right: 330px;
+      tsl-info-bubble {
+        top: $spacer * 0.75;
       }
     }
   }
