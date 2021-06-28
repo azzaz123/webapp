@@ -1,19 +1,52 @@
 @import 'src/style/common';
 
-.SelectOption {
-  border: 1px solid orange;
+.MultiSelectOption {
+  position: relative;
   cursor: pointer;
-  user-select: none;
-  height: 56px;
-  &__label {
+  input {
+    display: none;
+  }
+  label {
+    width: 16px;
+    height: 16px;
+    border-color: transparent;
+    background-color: white;
+    //border: 1px solid $blue-grey-5;
+    align-self: center;
+    border-radius: 4px;
+  }
+  tsl-svg-icon {
+    display: none;
+    height: 80%;
+    width: 81%;
+  }
+  .active {
+    background: $walla-main;
+    tsl-svg-icon {
+      display: flex;
+      align-items: center;
+      ::ng-deep path {
+        fill: $white;
+      }
+    }
+  }
+  &::after {
+    content: '';
+    background-color: white;
+    height: 3px;
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    bottom: 0px;
+  }
+  &__optionLabel {
     font-size: $font-size-m;
-    margin-right: 40px;
     &:before {
       content: '#';
     }
   }
 
-  &--active {
+  /*  &--active {
     color: $walla-main;
   }
 
@@ -22,5 +55,5 @@
     ::ng-deep path {
       fill: $walla-main;
     }
-  }
+  } */
 }
