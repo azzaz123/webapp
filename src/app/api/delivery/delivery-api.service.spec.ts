@@ -1,10 +1,10 @@
 import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { mappedShippingRulesFixture, shippingRulesResponseFixture } from '@api/fixtures/delivery/shipping-rules.fixtures';
-import { FavouritesApiService, CHECK_FAVOURITES_ENDPOINT } from '@public/core/services/api/favourites/favourites-api.service';
+import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';
 import { DeliveryApiService } from './delivery-api.service';
 import { SHIPPING_RULES_ENDPOINT } from './endpoints';
-import { ShippingRules } from './interfaces/shipping-rules.interface';
+import { ShippingRules } from './dtos/shipping-rules';
 
 describe('DeliveryApiService', () => {
   let service: DeliveryApiService;

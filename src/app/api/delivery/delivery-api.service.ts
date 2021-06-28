@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SHIPPING_RULES_ENDPOINT } from './endpoints';
-import { ShippingRulesResponse } from './interfaces/shipping-rules-response.interface';
-import { ShippingRules } from './interfaces/shipping-rules.interface';
+import { ShippingRulesResponse } from './dtos/shipping-rules-response';
+import { ShippingRules } from './dtos/shipping-rules';
 import { mapShippingRulesResponseToShippingRules } from './mappers/shipping-rules-mapper';
 
 @Injectable()

@@ -1,5 +1,5 @@
-import { ShippingRulesResponse } from '../interfaces/shipping-rules-response.interface';
-import { ShippingRules } from '../interfaces/shipping-rules.interface';
+import { ShippingRulesResponse } from '../dtos/shipping-rules-response';
+import { ShippingRules } from '../dtos/shipping-rules';
 
 export function mapShippingRulesResponseToShippingRules(shippingRulesResponse: ShippingRulesResponse): ShippingRules {
   return {

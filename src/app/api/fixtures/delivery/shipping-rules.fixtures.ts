@@ -1,5 +1,5 @@
-import { ShippingRulesResponse } from '@api/delivery/interfaces/shipping-rules-response.interface';
-import { ShippingRules } from '@api/delivery/interfaces/shipping-rules.interface';
+import { ShippingRulesResponse } from '@api/delivery/dtos/shipping-rules-response';
+import { ShippingRules } from '@api/delivery/dtos/shipping-rules';
 
 const categories = [1, 2, 3];
 const subcategories = [4, 5, 6];
