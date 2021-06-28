@@ -42,6 +42,7 @@ import { debounce } from '@core/helpers/debounce/debounce';
 import { SORT_BY } from '../components/sort-filter/services/constants/sort-by-options-constants';
 import { SearchResponseExtraData } from '../core/services/interfaces/search-response-extra-data.interface';
 import { SearchService } from '../core/services/search.service';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -180,11 +181,13 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   }
 
   public onAttach(): void {
+    this.searchAdsService.refreshSlots();
     this.componentAttached = true;
     this.resetSearchId = true;
   }
 
   public onDetach(): void {
+    this.searchAdsService.clearSlots();
     this.componentAttached = false;
   }
 
@@ -220,7 +223,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   private queryParamsChange(): Observable<FilterParameter[]> {
     return this.route.queryParams.pipe(
-      filter(() => this.componentAttached),
+      filter(() => window.location.pathname === `/${PUBLIC_PATHS.SEARCH}`),
       distinctUntilChanged((prevParams, nextParams) => isEqual(prevParams, nextParams)),
       map((params: Params) => this.queryStringService.mapQueryToFilterParams(params))
     );

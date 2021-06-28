@@ -66,16 +66,17 @@ phases:
           zip -r webapp-${IMAGE_TAG}.zip es/*
           mv dist/en ./
           zip -r webapp-${IMAGE_TAG}.zip en/*
+          mv dist/it ./
+          zip -r webapp-${IMAGE_TAG}.zip it/*
           rm -rf dist
-        fi
-
-      - >
-        if [ "`echo $ENV | grep beta`" != "" ]; then
+        else
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name ${NODE_IMAGE} $ECR/${NODE_IMAGE}:stable yarn buildbeta
           mv dist/es ./
           zip -r webapp-${IMAGE_TAG}.zip es/*
           mv dist/en ./
           zip -r webapp-${IMAGE_TAG}.zip en/*
+          mv dist/it ./
+          zip -r webapp-${IMAGE_TAG}.zip it/*
           rm -rf dist
         fi
 
@@ -84,9 +85,15 @@ phases:
       - docker build -f docker/Dockerfile -t $ECR_REPO:$IMAGE_TAG .
       - docker push "$ECR_REPO:$IMAGE_TAG"
 
+      # OBTAIN COMMIT ID
+      - COMMIT=$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo $COMMIT
+
       # TRIGGER BETA/PROD INFRASTRUCTURE PIPELINES
       - zip -r webapp-${IMAGE_TAG}.zip infrastructure/* dist/*
-      - aws s3 cp webapp-${IMAGE_TAG}.zip s3://wallapop-trigger-link-cicd/webapp/
+      - |
+        aws s3 cp webapp-${IMAGE_TAG}.zip s3://wallapop-trigger-link-cicd/webapp/ \
+          --metadata commit=$COMMIT,codepipeline-artifact-revision-summary="$COMMIT"
 
       # SEND RELEASE EMAIL
       - >

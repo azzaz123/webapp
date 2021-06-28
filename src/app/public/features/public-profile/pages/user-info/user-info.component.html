@@ -45,13 +45,15 @@
                 </div>
                 <div class="col-12 col-md-6 order-lg-1 order-3 mb-3">
                     <p class="UserInfo__title--bold mb-1" i18n="@@web_profile_info_ratio">Response rate</p>
-                    <tsl-user-response-rate [responseRate]="user.responseRate" [showIcon]="false">
+                    <tsl-user-response-rate [responseRate]="userResponseRate" [showIcon]="false">
                     </tsl-user-response-rate>
                 </div>
-                <div class="col-12 col-md-6 order-lg-3 order-1 mb-3 mb-lg-0" *ngIf="user.extraInfo?.opening_hours">
-                    <p class="UserInfo__title--bold mb-1" i18n="@@web_profile_info_schedule">Opening hours</p>
-                    {{user.extraInfo?.opening_hours}}
-                </div>
+                <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+                    <div class="col-12 col-md-6 order-lg-3 order-1 mb-3 mb-lg-0" *ngIf="user.extraInfo?.opening_hours">
+                        <p class="UserInfo__title--bold mb-1" i18n="@@web_profile_info_schedule">Opening hours</p>
+                        {{user.extraInfo?.opening_hours}}
+                    </div>
+                </ng-container>
             </div>
         </div>
         <div class="col-12 col-lg-6" #map>

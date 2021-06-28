@@ -15,7 +15,12 @@ import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
 import { ItemExtraInfoModule } from '../item-extra-info/item-extra-info.module';
 
 import { ItemCardWideComponent } from './item-card-wide.component';
-import { MOCK_ITEM_CARD_WIDE_BUMPED, MOCK_ITEM_CARD_WIDE_GBP } from './item-card-wide.mock.stories';
+import {
+  MOCK_ITEM_CARD_WIDE,
+  MOCK_ITEM_CARD_WIDE_BUMPED,
+  MOCK_ITEM_CARD_WIDE_GBP,
+  MOCK_ITEM_CARD_WIDE_WITH_SPECS,
+} from './item-card-wide.mock.stories';
 import { DeviceService } from '@core/device/device.service';
 import { MockDeviceService } from '@fixtures/device.fixtures.spec';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
@@ -113,7 +118,7 @@ describe('ItemCardWideComponent', () => {
 
     describe('and we recieve the extra info...', () => {
       beforeEach(() => {
-        component.itemExtraInfo = ['100cv', 'Diesel'];
+        component.item = MOCK_ITEM_CARD_WIDE_WITH_SPECS;
 
         fixture.detectChanges();
       });
@@ -124,7 +129,7 @@ describe('ItemCardWideComponent', () => {
 
     describe(`and we DON'T recieve the extra info...`, () => {
       beforeEach(() => {
-        component.itemExtraInfo = [];
+        component.item = MOCK_ITEM_CARD_WIDE;
 
         fixture.detectChanges();
       });

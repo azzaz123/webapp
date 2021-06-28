@@ -8,6 +8,8 @@ import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { UserStatsModule } from '../user-stats/user-stats.module';
 import { UserBasicInfoModule } from '@public/shared/components/user-basic-info/user-basic-info.module';
 import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
+import { NgxPermission } from 'ngx-permissions/lib/model/permission.model';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   declarations: [UserProfileHeaderComponent],
@@ -20,6 +22,7 @@ import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
     UserStatsModule,
     UserBasicInfoModule,
     ProBadgeModule,
+    NgxPermissionsModule.forChild(),
   ],
   exports: [UserProfileHeaderComponent],
 })

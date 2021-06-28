@@ -83,9 +83,10 @@ export function SearchCustomerGoodsItemListResponseFactory(count: number = SEARC
 export function SearchCarItemListResponseFactory(count: number = SEARCH_ITEMS_MINIMAL_LENGTH): SearchCarResponse[] {
   return new Array(count).fill('').map(() => ({
     id: '32532',
-    title: 'titleItem',
+    type: 'cars_search_cars',
     content: {
       ...SearchBaseItemResponseFactory(),
+      title: 'titleItem',
       brand: 'brand-value',
       model: 'model-value',
       year: 2010,
@@ -102,9 +103,10 @@ export function SearchCarItemListResponseFactory(count: number = SEARCH_ITEMS_MI
 export function SearchRealEstateItemlistResponseFactory(count: number = SEARCH_ITEMS_MINIMAL_LENGTH): SearchRealEstateResponse[] {
   return new Array(count).fill('').map(() => ({
     id: '32532',
-    title: 'titleItem',
+    type: 'cars_search_cars',
     content: {
       ...SearchBaseItemResponseFactory(),
+      title: 'titleItem',
       operation: 'operation',
       type: 'type',
       surface: 2,

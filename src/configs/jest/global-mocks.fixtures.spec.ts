@@ -34,7 +34,8 @@ export const MOCK_GOOGLE_PUBABDS = {
   collapseEmptyDivs() {},
   setPublisherProvidedId() {},
   setTargeting() {},
-  refresh() {},
+  refresh(adSlot?: googletag.Slot[]) {},
+  clear(adSlot: googletag.Slot[]) {},
   setRequestNonPersonalizedAds(num: number) {},
   addEventListener: (nameEvent: string, fn: (event) => void) => {},
 };
@@ -56,6 +57,7 @@ export const MOCK_GOOGLE_TAG = {
   defineSlot() {
     return MOCK_GOOGLE_DEFINE_SLOT;
   },
+  destroySlots(adSlots: googletag.Slot[]) {},
   pubads() {
     return MOCK_GOOGLE_PUBABDS;
   },
