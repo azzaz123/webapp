@@ -14,6 +14,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { ModalStatuses } from '../../core/modal.statuses.enum';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({
   selector: 'tsl-cancel-subscription-modal',
@@ -40,7 +41,7 @@ export class CancelSubscriptionModalComponent {
         this.toastService.show({
           title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUCCESS_TITLE)}`,
           text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUCCESS_BODY)}`,
-          type: 'success',
+          type: TOAST_TYPES.SUCCESS,
         });
         this.loading = false;
         this.activeModal.close(ModalStatuses.SUCCESS);
@@ -49,7 +50,7 @@ export class CancelSubscriptionModalComponent {
         this.toastService.show({
           title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_TITLE)}`,
           text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_BODY)}`,
-          type: 'error',
+          type: TOAST_TYPES.ERROR,
         });
         this.activeModal.close(ModalStatuses.FAIL);
       }

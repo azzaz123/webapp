@@ -29,6 +29,7 @@ import {
 } from '@api/core/errors/payments/cards';
 import { CreditCardFormErrorMessages } from '@private/features/delivery/interfaces/credit-card/credit-card-form-error-messages.interface';
 import { Location } from '@angular/common';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({
   selector: 'tsl-credit-card',
@@ -102,11 +103,15 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       this.submitValidForm();
     } else {
       this.creditCardForm.markAsPending();
-      this.showToast(TRANSLATION_KEY.CREDIT_CARD_MISSING_INFO_ERROR, 'error');
-      for (const control in this.creditCardForm.controls) {
-        if (this.creditCardForm.controls.hasOwnProperty(control) && !this.creditCardForm.controls[control].valid) {
-          this.creditCardForm.controls[control].markAsDirty();
-        }
+      this.showToast(TRANSLATION_KEY.CREDIT_CARD_MISSING_INFO_ERROR, TOAST_TYPES.ERROR);
+      this.markInvalidFields();
+    }
+  }
+
+  private markInvalidFields(): void {
+    for (const control in this.creditCardForm.controls) {
+      if (this.creditCardForm.controls.hasOwnProperty(control) && !this.creditCardForm.controls[control].valid) {
+        this.creditCardForm.controls[control].markAsDirty();
       }
     }
   }
@@ -125,7 +130,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         () => {
-          this.showToast(TRANSLATION_KEY.CREDIT_CARD_CREATE_SUCCESS, 'success');
+          this.showToast(TRANSLATION_KEY.CREDIT_CARD_CREATE_SUCCESS, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;
           this.router.navigate([this.BANK_DETAILS_URL]);
         },
@@ -168,7 +173,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.showToast(translationKey, 'error');
+    this.showToast(translationKey, TOAST_TYPES.ERROR);
   }
 
   private isGenericCreditCardError(error: PaymentsCardsError): boolean {
@@ -210,7 +215,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  private showToast(key: TRANSLATION_KEY, type: 'error' | 'success'): void {
+  private showToast(key: TRANSLATION_KEY, type: TOAST_TYPES): void {
     this.toastService.show({
       text: `${this.i18nService.translate(key)}`,
       type,

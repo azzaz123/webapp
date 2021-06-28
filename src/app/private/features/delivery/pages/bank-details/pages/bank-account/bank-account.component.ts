@@ -24,6 +24,7 @@ import {
   UniqueBankAccountByUserError,
   LastNameIsInvalidError,
 } from '@private/features/delivery/errors/classes/bank-account';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 export const IBAN_LENGTH = 40;
 @Component({
@@ -102,7 +103,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       this.submitValidForm();
     } else {
       this.bankAccountForm.markAsPending();
-      this.showToast(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR, 'error');
+      this.showToast(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR, TOAST_TYPES.ERROR);
       for (const control in this.bankAccountForm.controls) {
         if (this.bankAccountForm.controls.hasOwnProperty(control) && !this.bankAccountForm.controls[control].valid) {
           this.bankAccountForm.controls[control].markAsDirty();
@@ -133,7 +134,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
             ? TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS
             : TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS;
 
-          this.showToast(translationKey, 'success');
+          this.showToast(translationKey, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;
           this.router.navigate([this.BANK_DETAILS_URL]);
         },
@@ -168,7 +169,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.showToast(translationKey, 'error');
+    this.showToast(translationKey, TOAST_TYPES.ERROR);
   }
 
   private setIncorrectControlAndShowError(formControl: string, message: string): void {
@@ -222,7 +223,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     });
   }
 
-  private showToast(key: TRANSLATION_KEY, type: 'error' | 'success'): void {
+  private showToast(key: TRANSLATION_KEY, type: TOAST_TYPES): void {
     this.toastService.show({
       text: `${this.i18nService.translate(key)}`,
       type,

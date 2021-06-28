@@ -25,6 +25,7 @@ import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 
 import { CreditCardComponent } from './credit-card.component';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 describe('CreditCreditCardComponent', () => {
   const messageErrorSelector = '.CreditCard__message--error';
@@ -189,7 +190,7 @@ describe('CreditCreditCardComponent', () => {
           it('should show a succeed message', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.CREDIT_CARD_CREATE_SUCCESS),
-              type: 'success',
+              type: TOAST_TYPES.SUCCESS,
             });
           });
 
@@ -213,7 +214,7 @@ describe('CreditCreditCardComponent', () => {
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
                 text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
-                type: 'error',
+                type: TOAST_TYPES.ERROR,
               });
             });
 
@@ -244,7 +245,7 @@ describe('CreditCreditCardComponent', () => {
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
                 text: i18nService.translate(TRANSLATION_KEY.GENERIC_CREDIT_CARD_ERROR),
-                type: 'error',
+                type: TOAST_TYPES.ERROR,
               });
             });
 
@@ -284,7 +285,7 @@ describe('CreditCreditCardComponent', () => {
         it('should show a succeed CREATE message', () => {
           expect(toastService.show).toHaveBeenCalledWith({
             text: i18nService.translate(TRANSLATION_KEY.CREDIT_CARD_CREATE_SUCCESS),
-            type: 'success',
+            type: TOAST_TYPES.SUCCESS,
           });
         });
 
@@ -320,7 +321,7 @@ describe('CreditCreditCardComponent', () => {
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
-              type: 'error',
+              type: TOAST_TYPES.ERROR,
             });
           });
         });
@@ -339,7 +340,7 @@ describe('CreditCreditCardComponent', () => {
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.GENERIC_CREDIT_CARD_ERROR),
-              type: 'error',
+              type: TOAST_TYPES.ERROR,
             });
           });
 
@@ -378,7 +379,7 @@ describe('CreditCreditCardComponent', () => {
     it('should show an error toast', () => {
       expect(toastService.show).toHaveBeenCalledWith({
         text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
-        type: 'error',
+        type: TOAST_TYPES.ERROR,
       });
     });
 
