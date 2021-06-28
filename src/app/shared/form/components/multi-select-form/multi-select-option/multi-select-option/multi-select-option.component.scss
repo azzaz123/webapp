@@ -21,5 +21,8 @@
     &:before {
       content: '#';
     }
+    &.disabled {
+      color: $blue-grey-2;
+    }
   }
 }
