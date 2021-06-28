@@ -15,6 +15,9 @@
     left: 0px;
     bottom: 0px;
   }
+  &__labelContainer {
+    margin: 0 10px;
+  }
   &__optionLabel {
     font-weight: bold;
     display: block;
@@ -23,6 +26,9 @@
     }
     &.disabled {
       color: $blue-grey-2;
+    }
+    &__sub {
+      color: #828282;
     }
   }
 }
