@@ -1,7 +1,9 @@
 <div *ngIf="userInfo && userStats" class="mb-3">
-  <div class="HeaderPro" *ngIf="userInfo.featured">
-    <tsl-user-cover [user]="userInfo"></tsl-user-cover>
-  </div>
+  <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+    <div class="HeaderPro" *ngIf="userInfo.featured">
+      <tsl-user-cover [user]="userInfo"></tsl-user-cover>
+    </div>
+  </ng-container>
   <div class="container align-middle ProfileUser__container d-flex flex-column py-4">
     <div class="row px-2 px-md-4">
       <div class="col-12 col-sm-6">
@@ -9,7 +11,9 @@
           <div class="w-100">
             <tsl-user-basic-info [userStats]="userStats" [userInfo]="userInfo" [styleSize]="USER_INFO_SIZE.BIG">
             </tsl-user-basic-info>
-            <tsl-pro-badge *ngIf="userInfo.featured" class="d-flex align-items-center"></tsl-pro-badge>
+            <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+              <tsl-pro-badge *ngIf="userInfo.featured" class="d-flex align-items-center"></tsl-pro-badge>
+            </ng-container>
           </div>
         </div>
       </div>
@@ -17,19 +21,21 @@
         <tsl-user-stats [userStats]="userStats" [userInfo]="userInfo"></tsl-user-stats>
       </div>
     </div>
-    <div class="row px-2 px-md-4 mt-3 mt-sm-0" *ngIf="isProAndHasDescription">
-      <div class="col-12">
-        <div class="row mb-1">
-          <div class="col-12">
-            <div class="w-100 ProfileUser__container__title--bold" i18n="@@web_about">About</div>
+    <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+      <div class="row px-2 px-md-4 mt-3 mt-sm-0" *ngIf="isProAndHasDescription">
+        <div class="col-12">
+          <div class="row mb-1">
+            <div class="col-12">
+              <div class="w-100 ProfileUser__container__title--bold" i18n="@@web_about">About</div>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            {{userInfo.extraInfo.description}}
+          <div class="row">
+            <div class="col-12">
+              {{userInfo.extraInfo.description}}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ng-container>
   </div>
 </div>

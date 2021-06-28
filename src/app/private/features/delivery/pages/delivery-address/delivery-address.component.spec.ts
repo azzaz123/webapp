@@ -84,7 +84,6 @@ describe('DeliveryAddressComponent', () => {
             },
           },
         },
-        ToastService,
         DeliveryLocationsService,
         {
           provide: ProfileFormComponent,

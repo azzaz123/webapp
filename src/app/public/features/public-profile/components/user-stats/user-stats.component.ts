@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { User } from '@core/user/user';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { UserStats } from '@core/user/user-stats.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
@@ -14,6 +15,7 @@ import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
 export class UserStatsComponent {
   @Input() userStats: UserStats;
   @Input() userInfo: User;
+  public readonly PERMISSIONS = PERMISSIONS;
   public showPhone = false;
 
   constructor(private deviceService: DeviceDetectorService, private router: Router, private scrollIntoViewService: ScrollIntoViewService) {}

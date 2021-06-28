@@ -1,13 +1,11 @@
 @import '~style/common';
 
-$card-height: 151px;
-
 .SubscriptionCardSelector {
   &__newCard {
     border: solid 1px $blue-grey-5;
     color: $walla-main;
     cursor: pointer;
-    min-height: $card-height;
+    min-height: $credit-card-height;
     padding: 0 $spacing-ml;
     border-radius: 6px;
     font-size: $font-size-s;
