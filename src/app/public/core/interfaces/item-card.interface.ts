@@ -16,6 +16,7 @@ export interface ItemCard {
   bumpFlags?: ItemVisibilityFlags;
   categoryId?: number;
   saleConditions?: ItemSaleConditions;
+  specs?: string[];
 }
 
 export interface ItemCardsWithRecommenedType {

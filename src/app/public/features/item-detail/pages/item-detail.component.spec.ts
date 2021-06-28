@@ -76,6 +76,7 @@ import { ItemDetailComponent } from './item-detail.component';
 import { VisibleDirectiveModule } from '@shared/directives/visible/visible.directive.module';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { IsCurrentUserPipeMock } from '@fixtures/is-current-user.fixtures.spec';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -137,6 +138,7 @@ describe('ItemDetailComponent', () => {
         ItemDetailHeaderModule,
         ItemFavouritesModule,
         VisibleDirectiveModule,
+        NgxPermissionsModule.forRoot(),
       ],
       providers: [
         CheckSessionService,
@@ -151,6 +153,7 @@ describe('ItemDetailComponent', () => {
         PublicUserApiService,
         RecommenderApiService,
         MapItemService,
+        NgxPermissionsService,
         {
           provide: ItemDetailTrackEventsService,
           useClass: MockItemdDetailTrackEventService,

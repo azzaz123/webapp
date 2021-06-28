@@ -73,11 +73,11 @@ describe('AdsService', () => {
     });
 
     it('it should refresh ads', () => {
-      spyOn(MockGooglePublisherTagService, 'refreshAds').and.callThrough();
+      spyOn(MockGooglePublisherTagService, 'refreshAllSlots').and.callThrough();
 
       service.setSlots(MockAdSlots);
 
-      expect(MockGooglePublisherTagService.refreshAds).toHaveBeenCalledTimes(1);
+      expect(MockGooglePublisherTagService.refreshAllSlots).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -144,11 +144,11 @@ describe('AdsService', () => {
     }));
 
     it('should refresh ads on google', () => {
-      spyOn(MockGooglePublisherTagService, 'refreshAds').and.callThrough();
+      spyOn(MockGooglePublisherTagService, 'refreshAllSlots').and.callThrough();
 
       service.refresh();
 
-      expect(MockGooglePublisherTagService.refreshAds).toHaveBeenCalledTimes(1);
+      expect(MockGooglePublisherTagService.refreshAllSlots).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -194,6 +194,36 @@ describe('AdsService', () => {
       service.adSlotLoaded$(MockAdSlots[0]).subscribe((loaded) => (expectedLoaded = loaded));
 
       expect(expectedLoaded).toEqual(false);
+    });
+  });
+
+  describe('when destroying slots', () => {
+    it('should ask Google to destroy the selected slots', () => {
+      spyOn(MockGooglePublisherTagService, 'destroySlots').and.callThrough();
+
+      service.destroySlots([MockAdSlots[0]]);
+
+      expect(MockGooglePublisherTagService.destroySlots).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('when clearing slots', () => {
+    it('should ask Google to clear the selected slots', () => {
+      spyOn(MockGooglePublisherTagService, 'clearSlots').and.callThrough();
+
+      service.clearSlots([MockAdSlots[0]]);
+
+      expect(MockGooglePublisherTagService.clearSlots).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('when refreshing slots', () => {
+    it('should ask Google to refresh the selected slots', () => {
+      spyOn(MockGooglePublisherTagService, 'refreshSlots').and.callThrough();
+
+      service.refreshSlots([MockAdSlots[0]]);
+
+      expect(MockGooglePublisherTagService.refreshSlots).toHaveBeenCalledTimes(1);
     });
   });
 });

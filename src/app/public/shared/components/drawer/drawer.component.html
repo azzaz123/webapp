@@ -1,18 +1,15 @@
-<div *ngIf="isOpen" class="Drawer">
-  <div class="Drawer__backdrop position-fixed"
-       (click)="handleClickBackdrop()"
-       [style.top.px]="offsetTop"></div>
-  <div [class.Drawer__content--unset-overflow]="noScroll" class="Drawer__content p-2 p-md-4 position-fixed d-flex flex-column justify-content-between align-items-end"
-       [style.top.px]="offsetTop">
-    <div class="w-100">
-      <ng-content></ng-content>
-    </div>
-
-    <div class="Drawer__actions p-2 d-flex justify-content-end mt-auto">
-      <tsl-button className="basic basic-dark btn-filter" class="mx-1" i18n="@@web_cancel_button"
-                  (click)="handleCancel()">Cancel</tsl-button>
-      <tsl-button *ngIf="hasApply" i18n="@@web_apply" className="btn-primary btn-filter" class="mx-1"
-                  (click)="handleApply()">Apply</tsl-button>
-    </div>
+<div *ngIf="isOpen" class="Drawer position-fixed d-flex flex-column w-100">
+  <div class="Drawer__content h-100 p-3" [class.Drawer__content--overflow-hidden]="noScroll">
+    <ng-content></ng-content>
   </div>
+
+  <div class="Drawer__actions w-100 p-2 d-flex align-items-center justify-content-end">
+    <tsl-button className="basic basic-dark btn-filter" class="mx-1" i18n="@@web_cancel_button"
+      (click)="handleCancel()">Cancel</tsl-button>
+    <tsl-button *ngIf="hasApply" i18n="@@web_apply" className="btn-primary btn-filter" class="mx-1"
+      (click)="handleApply()">Apply</tsl-button>
+  </div>
+</div>
+
+<div *ngIf="isOpen" class="Drawer__backdrop position-fixed" (click)="handleClickBackdrop()" [style.top.px]="offsetTop">
 </div>

@@ -12,7 +12,9 @@
             <div class="d-md-none flex-column">
               <div class="mb-2 d-flex align-items-center">
                 <div class="List__title">{{user?.microName}}</div>
-                <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
+                <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+                  <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
+                </ng-container>
               </div>
               <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
               <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n="@@web_catalog_pages_list_147">Edit</button>
@@ -21,7 +23,9 @@
             </div>
             <div class="d-none d-md-flex align-items-center">
               <div class="List__title" i18n="@@web_catalog_pages_list_149">Your products</div>
-              <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
+              <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+                <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
+              </ng-container>
             </div>
           </h1>
         </div>
@@ -51,21 +55,23 @@
         </a>
       </div>
     </tsl-header>
-    <tsl-try-pro-slot *ngIf="showTryProSlot"
-      class="d-md-block"
-      [hasTrialAvailable]="hasTrialAvailable"
-      (clickCTA)="onClickTryProSlot()"
-      (close)="onCloseTryProSlot()"
-    >
-    </tsl-try-pro-slot>
-    <tsl-subscriptions-slots-list
-      class="d-md-block"
-      [subscriptionsSlots]="subscriptionSlots"
-      [selectedSubscriptionSlot]="selectedSubscriptionSlot"
-      (subscriptionSlotSelected)="onSelectSubscriptionSlot($event)"
-    >
-    </tsl-subscriptions-slots-list>
-
+    <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+      <tsl-try-pro-slot *ngIf="showTryProSlot"
+        class="d-md-block"
+        [hasTrialAvailable]="hasTrialAvailable"
+        (clickCTA)="onClickTryProSlot()"
+        (close)="onCloseTryProSlot()"
+        >
+      </tsl-try-pro-slot>
+      <tsl-subscriptions-slots-list
+        class="d-md-block"
+        [subscriptionsSlots]="subscriptionSlots"
+        [selectedSubscriptionSlot]="selectedSubscriptionSlot"
+        (subscriptionSlotSelected)="onSelectSubscriptionSlot($event)"
+        >
+      </tsl-subscriptions-slots-list>
+  </ng-container>
+  
     <tsl-nav-links
       [searchPlaceholder]="searchPlaceholder"
       [showSearchInput]="selectedSubscriptionSlot"

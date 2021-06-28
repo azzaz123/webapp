@@ -50,6 +50,25 @@ export class AdsService {
     this.setSlotsSubject.next([...actualSlots, ...adSlots]);
   }
 
+  public destroySlots(adSlots: AdSlotConfiguration[]): void {
+    const slots = this.googlePublisherTagService.getSlots(adSlots);
+    this.googlePublisherTagService.destroySlots(slots);
+  }
+
+  public refreshSlots(adSlots: AdSlotConfiguration[]): void {
+    const slots = this.googlePublisherTagService.getSlots(adSlots);
+    this.googlePublisherTagService.refreshSlots(slots);
+  }
+
+  public refreshAllSlots(): void {
+    this.googlePublisherTagService.refreshAllSlots();
+  }
+
+  public clearSlots(adSlots: AdSlotConfiguration[]): void {
+    const slots = this.googlePublisherTagService.getSlots(adSlots);
+    this.googlePublisherTagService.clearSlots(slots);
+  }
+
   public setAdKeywords(adKeywords: AdKeyWords): void {
     this.googlePublisherTagService.setAdKeywords(adKeywords);
   }
@@ -101,7 +120,7 @@ export class AdsService {
         tap((allowSegmentation: boolean) => {
           this.googlePublisherTagService.setAdsSegmentation(allowSegmentation);
           this.googlePublisherTagService.setTargetingByAdsKeywords(allowSegmentation);
-          this.googlePublisherTagService.refreshAds();
+          this.googlePublisherTagService.refreshAllSlots();
         }),
         switchMap(() => this.fetchHeaderBids())
       )

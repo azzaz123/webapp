@@ -1,0 +1,26 @@
+@import '~style/common';
+
+.CreditCard {
+  &__message {
+    font-size: $font-size-s;
+
+    &--error {
+      color: $negative-main;
+    }
+    &--info {
+      color: $blue-grey-3;
+    }
+  }
+
+  &__back {
+    cursor: pointer;
+    color: $blue-grey-1;
+    &:hover {
+      text-decoration: none;
+      &,
+      tsl-svg-icon {
+        opacity: 0.8;
+      }
+    }
+  }
+}

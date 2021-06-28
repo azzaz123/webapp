@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -10,9 +10,18 @@ import { of } from 'rxjs';
 import { UnsubscribeModalComponent } from '../../modal/unsubscribe-modal/unsubscribe-modal.component';
 import { AccountComponent } from './account.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
+import { By } from '@angular/platform-browser';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
+
+@Component({
+  selector: 'tsl-stripe-cards',
+  template: '',
+})
+class MockStripeComponent {}
 
 describe('AccountComponent', () => {
   let component: AccountComponent;
@@ -20,6 +29,7 @@ describe('AccountComponent', () => {
   let modalService: NgbModal;
   let userService: UserService;
   let errorsService: ErrorsService;
+  let permissionsService: NgxPermissionsService;
 
   const componentInstance: any = {
     init: jasmine.createSpy('init'),
@@ -28,7 +38,7 @@ describe('AccountComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule],
+        imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule, NgxPermissionsModule.forRoot()],
         providers: [
           {
             provide: UserService,
@@ -65,7 +75,7 @@ describe('AccountComponent', () => {
             },
           },
         ],
-        declarations: [AccountComponent],
+        declarations: [AccountComponent, MockStripeComponent],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
@@ -79,6 +89,7 @@ describe('AccountComponent', () => {
     fixture.detectChanges();
     errorsService = TestBed.inject(ErrorsService);
     modalService = TestBed.inject(NgbModal);
+    permissionsService = TestBed.inject(NgxPermissionsService);
   });
 
   describe('initForm', () => {
@@ -166,6 +177,29 @@ describe('AccountComponent', () => {
       component.canExit();
 
       expect(component.formComponent.canExit).toHaveBeenCalled();
+    });
+  });
+
+  describe('subscription permission', () => {
+    describe('and has permissions', () => {
+      beforeEach(() => {
+        permissionsService.addPermission(PERMISSIONS.subscriptions);
+        fixture.detectChanges();
+      });
+
+      it('should show credit cards', () => {
+        expect(fixture.debugElement.query(By.directive(MockStripeComponent))).toBeTruthy();
+      });
+    });
+    describe('and has not permissions', () => {
+      beforeEach(() => {
+        permissionsService.removePermission(PERMISSIONS.subscriptions);
+        fixture.detectChanges();
+      });
+
+      it('should not show credit cards', () => {
+        expect(fixture.debugElement.query(By.directive(MockStripeComponent))).toBeFalsy();
+      });
     });
   });
 });

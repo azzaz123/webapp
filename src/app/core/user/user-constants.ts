@@ -6,4 +6,4 @@ export enum PERMISSIONS {
   subscriptions = 'subscriptions',
 }
 
-export const DEFAULT_PERMISSIONS: PERMISSIONS[] = [PERMISSIONS.bumps];
+export const DEFAULT_PERMISSIONS: PERMISSIONS[] = [PERMISSIONS.bumps, PERMISSIONS.subscriptions];

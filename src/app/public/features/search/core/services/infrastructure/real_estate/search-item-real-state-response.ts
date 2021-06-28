@@ -17,7 +17,7 @@ export interface SearchItemRealStateResponse extends SearchBaseItemResponse {
 
 export interface SearchRealEstateResponse {
   id: string;
-  title: string;
+  type: string;
   content: SearchItemRealStateResponse;
 }
 

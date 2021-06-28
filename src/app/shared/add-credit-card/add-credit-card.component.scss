@@ -1,0 +1,14 @@
+@import '~style/common';
+
+.AddCreditCard {
+  border: solid 1px $blue-grey-5;
+  border-radius: 6px;
+  padding: $spacing-ml;
+  font-size: $font-size-s;
+  min-height: $credit-card-height;
+  color: $walla-main;
+}
+
+.AddCreditCard:hover {
+  cursor: pointer;
+}

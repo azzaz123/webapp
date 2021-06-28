@@ -39,7 +39,9 @@
       </div>
     </div>
 
-    <tsl-stripe-cards></tsl-stripe-cards>
+    <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+      <tsl-stripe-cards></tsl-stripe-cards>
+    </ng-container>
 
     <div class="row box profile-box">
       <div class="col-12 col-md-11 offset-md-1">

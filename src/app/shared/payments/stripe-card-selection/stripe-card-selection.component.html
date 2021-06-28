@@ -5,11 +5,11 @@
     <ng-template #optionTemplate let-option="option" let-index="index">
         <div class="card-body">
             <tsl-svg-icon src="/assets/icons/card-{{option?.stripeCard?.brand}}.svg"
-            *ngIf="option?.stripeCard?.brand === BRAND_CARDS_WITH_SVG.VISA || option?.stripeCard?.brand === BRAND_CARDS_WITH_SVG.MASTERCARD"
+            *ngIf="option?.stripeCard?.brand === 'visa' || option?.stripeCard?.brand === 'mastercard'"
             class="card-icon">
           </tsl-svg-icon>
             <tsl-svg-icon src="/assets/icons/card.svg"
-            *ngIf="option?.stripeCard?.brand !== BRAND_CARDS_WITH_SVG.VISA && option?.stripeCard?.brand !== BRAND_CARDS_WITH_SVG.MASTERCARD"
+            *ngIf="option?.stripeCard?.brand !== 'visa' && option?.stripeCard?.brand !== 'mastercard'"
             class="card-icon">
             </tsl-svg-icon>
           <span class="card-number">**** **** **** {{option.value}}</span>

@@ -1,10 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { FinancialCard } from '@shared/credit-card-info/financial-card';
+import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { FinancialCardOption } from '../../../core/payments/payment.interface';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { BRAND_CARDS_WITH_SVG } from '@shared/credit-card-info/credit-card-info.enum';
 
 @Component({
   selector: 'tsl-stripe-card-selection',
@@ -15,7 +14,6 @@ export class StripeCardSelectionComponent implements OnInit {
   private _model: boolean = false;
   public financialCards: FinancialCardOption[];
   public card: string = '';
-  public readonly BRAND_CARDS_WITH_SVG = BRAND_CARDS_WITH_SVG;
 
   private notFoundMsg = '';
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();

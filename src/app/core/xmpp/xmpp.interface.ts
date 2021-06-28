@@ -1,5 +1,7 @@
 import { MessagePayload, MessageStatus } from '@private/features/chat/core/model';
 
+import { StanzaIO } from './xmpp.provider';
+
 export interface XMPPClient {
   on(event: string, handler: Function): void;
   connect(options?: any): void;
@@ -55,7 +57,7 @@ export interface XmppError {
 
 export class JID {
   constructor(private _userId: string, private _domain: string, private _resource: string) {
-    return new XMPP.JID(this._userId, this._domain, this._resource);
+    return new StanzaIO.JID(this._userId, this._domain, this._resource);
   }
 
   get bare(): string {
