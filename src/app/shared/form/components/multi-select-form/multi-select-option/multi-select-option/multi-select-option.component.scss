@@ -3,9 +3,12 @@
 .MultiSelectOption {
   position: relative;
   cursor: pointer;
+  label {
+    margin: 1rem 0;
+  }
   &::after {
     content: '';
-    background-color: white;
+    background-color: $blue-grey-5;
     height: 3px;
     position: absolute;
     width: 100%;
@@ -13,7 +16,8 @@
     bottom: 0px;
   }
   &__optionLabel {
-    font-size: $font-size-m;
+    font-weight: bold;
+    display: block;
     &:before {
       content: '#';
     }
