@@ -2,6 +2,19 @@ import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-re
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import { PaymentsSyncCreditCardApi } from '@api/payments/cards/dtos/requests';
 import { PaymentsCreditCardApi, TokenizerInformationApi } from '@api/payments/cards/dtos/responses';
+import { of } from 'rxjs';
+
+export const MockPaymentsCreditCardService = {
+  get() {
+    return of(null);
+  },
+  create() {
+    return of(null);
+  },
+  update() {
+    return of(null);
+  },
+};
 
 export const mockPaymentsCreditCard: PaymentsCreditCardApi = {
   card_holder_name: 'Lolaso Fino Bruh - 17:38',

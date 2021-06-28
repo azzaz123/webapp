@@ -9,7 +9,11 @@ import {
   CountryIsoCodeIsInvalidError,
   PlatformResponseIsInvalidError,
 } from '@api/core/errors/payments/cards';
-import { mockCreditCardSyncRequest, mockCreditCardSyncRequestEmpty } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
+import {
+  mockCreditCardSyncRequest,
+  mockCreditCardSyncRequestEmpty,
+  MockPaymentsCreditCardService,
+} from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import { PaymentsCreditCardService } from '@api/payments/cards';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -51,17 +55,7 @@ describe('CreditCreditCardComponent', () => {
         I18nService,
         {
           provide: PaymentsCreditCardService,
-          useValue: {
-            get() {
-              return of(null);
-            },
-            create() {
-              return of(null);
-            },
-            update() {
-              return of(null);
-            },
-          },
+          useValue: MockPaymentsCreditCardService,
         },
         Location,
         {
