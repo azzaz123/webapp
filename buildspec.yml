@@ -85,6 +85,10 @@ phases:
       - docker build -f docker/Dockerfile -t $ECR_REPO:$IMAGE_TAG .
       - docker push "$ECR_REPO:$IMAGE_TAG"
 
+      # OBTAIN COMMIT ID
+      - COMMIT=$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo $COMMIT
+
       # TRIGGER BETA/PROD INFRASTRUCTURE PIPELINES
       - zip -r webapp-${IMAGE_TAG}.zip infrastructure/* dist/*
       - |
