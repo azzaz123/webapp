@@ -25,7 +25,7 @@ export class SortFilterComponent implements OnInit {
   @Output() toggleBubble: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   private static getSelectedValue(actualValue: string): SelectFormOption<string> {
-    return SELECT_FORM_OPTIONS_CONFIG.find(({ value }: SelectFormOption<string>) => value === actualValue);
+    return SELECT_FORM_OPTIONS_CONFIG.find(({ value }: SelectFormOption<string>) => value === actualValue) || SELECT_FORM_OPTIONS_CONFIG[0];
   }
 
   constructor(private searchNavigatorService: SearchNavigatorService, private activatedRoute: ActivatedRoute) {}
