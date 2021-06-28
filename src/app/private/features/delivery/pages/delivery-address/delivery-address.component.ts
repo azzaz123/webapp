@@ -74,7 +74,6 @@ export class DeliveryAddressComponent implements OnInit {
   };
   public comesFromPayView: boolean;
   private subscriptions: Subscription = new Subscription();
-  private readonly formSubmittedEventKey = 'formSubmitted';
 
   constructor(
     private fb: FormBuilder,
@@ -95,7 +94,7 @@ export class DeliveryAddressComponent implements OnInit {
       this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS ||
       this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
     this.buildForm();
-    this.eventService.subscribe(this.formSubmittedEventKey, () => {
+    this.eventService.subscribe(EventService.FORM_SUBMITTED, () => {
       this.onSubmit();
     });
     this.clearFormAndResetLocationsWhenCountryChange();
@@ -104,7 +103,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.eventService.unsubscribeAll(this.formSubmittedEventKey);
+    this.eventService.unsubscribeAll(EventService.FORM_SUBMITTED);
     this.subscriptions.unsubscribe();
   }
 

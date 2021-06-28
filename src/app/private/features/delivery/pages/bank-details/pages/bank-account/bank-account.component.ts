@@ -47,7 +47,6 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     last_name: '',
   };
 
-  private readonly formSubmittedEventKey = 'formSubmitted';
   public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
 
   constructor(
@@ -64,13 +63,13 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.generateIBANMaxLength();
     this.buildForm();
-    this.eventService.subscribe(this.formSubmittedEventKey, () => {
+    this.eventService.subscribe(EventService.FORM_SUBMITTED, () => {
       this.onSubmit();
     });
   }
 
   ngOnDestroy() {
-    this.eventService.unsubscribeAll(this.formSubmittedEventKey);
+    this.eventService.unsubscribeAll(EventService.FORM_SUBMITTED);
   }
 
   public initForm(): void {
