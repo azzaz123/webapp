@@ -59,6 +59,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   public bubbleActive = false;
   public loadingGeolocation = false;
   private readonly geolocationCoordinatesSubject: Subject<SearchLocation> = new Subject<SearchLocation>();
+  private readonly selectedSuggestionSubject: Subject<string> = new Subject<string>();
 
   constructor(
     private geolocationService: GeolocationService,
@@ -167,6 +168,10 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     return this.geolocationCoordinatesSubject.asObservable();
   }
 
+  get selectedSuggestion$(): Observable<string> {
+    return this.selectedSuggestionSubject.asObservable();
+  }
+
   public onValueChange(_: FilterParameter[], currentValue: FilterParameter[]): void {
     const latitude = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.latitude).value;
     const longitude = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.longitude).value;
@@ -191,8 +196,12 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     return this.componentLocationForm.get('distance').valueChanges.pipe(distinctUntilChanged());
   }
 
+  public selectSuggestion(locationName: string) {
+    this.selectedSuggestionSubject.next(locationName);
+  }
+
   public onSelectLocationSuggestion(): Observable<LabeledSearchLocation> {
-    return this.componentLocationForm.get('locationName').valueChanges.pipe(
+    return this.selectedSuggestion$.pipe(
       filter((locationName) => !!locationName),
       distinctUntilChanged(),
       switchMap((locationName: string) => this.getLatitudeAndLongitudeFromLocationName(locationName))
