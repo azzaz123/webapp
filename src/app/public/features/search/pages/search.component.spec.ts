@@ -672,9 +672,17 @@ describe('SearchComponent', () => {
     it('should show info bubble', () => {
       const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
 
-      component.sortBy$.subscribe((pepe) => {
+      component.sortBy$.subscribe(() => {
         expect(infoBubbleElement).toBeTruthy();
       });
+    });
+
+    it('info bubble should have the correct text ', () => {
+      const infoBubbleText = 'infoBubbleText';
+
+      searchResponseExtraDataSubject.next({ searchId: '', bubble: infoBubbleText, sortBy: SORT_BY.DISTANCE });
+
+      expect(component.infoBubbleText).toEqual(infoBubbleText);
     });
   });
 
