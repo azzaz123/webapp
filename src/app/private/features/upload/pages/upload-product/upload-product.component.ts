@@ -116,14 +116,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
-  public options$ = of([
-    { label: 'aa', sublabel: 1, value: 'aa' },
-    { label: 'bb', sublabel: 2, value: 'bb' },
-    { label: 'cc', sublabel: 1, value: 'cc' },
-    { label: 'dd', sublabel: 2, value: 'dd' },
-    { label: 'ee', sublabel: 1, value: 'ee' },
-    { label: 'ff', sublabel: 2, value: 'ff' },
-  ]);
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -207,7 +199,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         gender: [{ value: null, disabled: true }, [Validators.required]],
         condition: [null],
       }),
-      hashtagSuggestors: ['aa'],
     });
   }
 

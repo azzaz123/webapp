@@ -314,9 +314,6 @@
       </div>
     </ng-template>
   </div>
-  <div class="hashtag-container">
-    HELLO!! {{uploadForm.get('hashtagSuggestors').value}}
-    <tsl-multi-select-form class="d-flex flex-column flex-wrap" [options]="options$ | async"  formControlName="hashtagSuggestors"></tsl-multi-select-form></div>
   <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"> </tsl-location-box>
   <div class="row" id="prueba">
     <div class="col-12 col-md-5">
