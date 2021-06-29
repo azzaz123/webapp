@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { SORT_BY } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
-import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -16,7 +15,6 @@ import { SearchResponse } from './search-response.interface';
 
 export const NEXT_HEADER_PAGE = 'X-NextPage';
 export const SEARCH_ID = 'x-wallapop-search-id';
-export const ORDER = 'order';
 
 @Injectable()
 export class SearchAPIService {
