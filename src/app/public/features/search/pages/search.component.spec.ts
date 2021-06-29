@@ -680,7 +680,7 @@ describe('SearchComponent', () => {
     it('info bubble should have the correct text ', () => {
       const infoBubbleText = 'infoBubbleText';
 
-      searchResponseExtraDataSubject.next({ searchId: '', bubble: infoBubbleText, sortBy: SORT_BY.DISTANCE });
+      searchResponseExtraDataSubject.next({ searchId: '', bubble: infoBubbleText, sortBy: SORT_BY.RELEVANCE });
 
       expect(component.infoBubbleText).toEqual(infoBubbleText);
     });
