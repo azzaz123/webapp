@@ -39,6 +39,25 @@ export class GooglePublisherTagService {
     });
   }
 
+  public getSlots(adSlots: AdSlotConfiguration[]): googletag.Slot[] {
+    const slots: googletag.Slot[] = [];
+
+    adSlots.forEach((slotConfig) => {
+      const slot = this.googletag
+        .pubads()
+        .getSlots()
+        .find((slot) => slot.getAdUnitPath() === slotConfig.name);
+
+      slots.push(slot);
+    });
+
+    return slots;
+  }
+
+  public destroySlots(adSlots: googletag.Slot[]): void {
+    this.googletag.destroySlots(adSlots);
+  }
+
   public reset(): void {
     this.adSlotsNamesDefinedSubject.next([]);
     this.adSlotsLoadedSubject.next([]);
@@ -72,9 +91,21 @@ export class GooglePublisherTagService {
     });
   }
 
-  public refreshAds(): void {
+  public refreshSlots(adSlots: googletag.Slot[]): void {
+    this.googletag.cmd.push(() => {
+      this.googletag.pubads().refresh(adSlots);
+    });
+  }
+
+  public refreshAllSlots(): void {
     this.googletag.cmd.push(() => {
       this.googletag.pubads().refresh();
+    });
+  }
+
+  public clearSlots(adSlots: googletag.Slot[]): void {
+    googletag.cmd.push(() => {
+      googletag.pubads().clear(adSlots);
     });
   }
 

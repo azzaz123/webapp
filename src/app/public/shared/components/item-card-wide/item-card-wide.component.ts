@@ -12,7 +12,6 @@ import { CAROUSEL_CONTROL_SIZE } from '../carousel-slides/carousel-slides.compon
 })
 export class ItemCardWideComponent {
   @Input() item: ItemCard;
-  @Input() itemExtraInfo: string[];
   @Input() showFavourite = true;
 
   @Output() toggleFavourite: EventEmitter<void> = new EventEmitter<void>();

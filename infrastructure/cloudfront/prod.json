@@ -4,8 +4,10 @@
     "ProjectName": "webapp",
     "BucketES": "web-es.wallapop.com",
     "BucketEN": "web-en.wallapop.com",
+    "BucketIT": "web-it.wallapop.com",
     "HostES": "web.wallapop.com",
     "HostEN": "web-en.wallapop.com",
+    "HostIT": "web-it.wallapop.com",
     "HostedZoneName": "wallapop.com.",
     "Certificate": "arn:aws:acm:us-east-1:745640521341:certificate/f7eb823b-c9de-49b3-8ac0-0d3f6cceeaec"
   },

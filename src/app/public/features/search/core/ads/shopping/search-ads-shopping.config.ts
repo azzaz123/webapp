@@ -5,7 +5,7 @@ import { AdShoppingChannel } from './ad-shopping-channel';
 export const AD_SHOPPING_PUBLIC_SEARCH: AdSlotGroupShoppingConfiguration = {
   slotId: 'afshcontainer',
   container: 'afshcontainer',
-  width: 500,
+  width: 790,
   height: 400,
 };
 

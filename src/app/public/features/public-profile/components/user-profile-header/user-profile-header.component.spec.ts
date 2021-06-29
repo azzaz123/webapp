@@ -1,11 +1,17 @@
+import { Component } from '@angular/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
-
 import { UserProfileHeaderComponent } from './user-profile-header.component';
+
+@Component({
+  selector: 'tsl-user-cover',
+  template: '',
+})
+class MockCoverUpload {}
 
 describe('UserProfileHeaderComponent', () => {
   const profileContainerClass = '.ProfileUser__container';
@@ -18,7 +24,7 @@ describe('UserProfileHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserProfileHeaderComponent],
+      declarations: [UserProfileHeaderComponent, MockCoverUpload],
       imports: [NgxPermissionsModule.forRoot()],
       providers: [NgxPermissionsService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -80,12 +86,19 @@ describe('UserProfileHeaderComponent', () => {
             expect(aboutSection.length).toBe(1);
           });
         });
+
+        it('should show cover', () => {
+          fixture.detectChanges();
+          expect(fixture.debugElement.query(By.directive(MockCoverUpload))).toBeTruthy();
+        });
       });
       describe('and has not subscriptions permission', () => {
         beforeEach(() => {
           permissionService.removePermission(PERMISSIONS.subscriptions);
         });
         it('should NOT show the pro elements', () => {
+          fixture.detectChanges();
+
           const headerPro = fixture.debugElement.query(By.css(userCoverTag));
           const proBadge = fixture.debugElement.query(By.css(proBadgeSelector));
           const aboutSection = fixture.debugElement.queryAll(By.css(boldTitleClass));
@@ -93,6 +106,11 @@ describe('UserProfileHeaderComponent', () => {
           expect(headerPro).toBeFalsy();
           expect(proBadge).toBeFalsy();
           expect(aboutSection.length).toBe(0);
+        });
+        it('should not show not cover', () => {
+          fixture.detectChanges();
+
+          expect(fixture.debugElement.query(By.directive(MockCoverUpload))).toBeFalsy();
         });
       });
     });

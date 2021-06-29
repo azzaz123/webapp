@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -29,6 +29,12 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { VisibleDirectiveModule } from '@shared/directives/visible/visible.directive.module';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
+
+@Component({
+  selector: 'tsl-cover-upload',
+  template: '',
+})
+class MockCoverUpload {}
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -109,7 +115,7 @@ describe('ProfileInfoComponent', () => {
           { provide: SubscriptionsService, useClass: MockSubscriptionService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
-        declarations: [ProfileInfoComponent, ProfileFormComponent, SwitchComponent],
+        declarations: [ProfileInfoComponent, ProfileFormComponent, SwitchComponent, MockCoverUpload],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
@@ -254,11 +260,7 @@ describe('ProfileInfoComponent', () => {
         });
 
         describe('and when the server notifies username is incorrect', () => {
-          beforeEach(() => {
-            permissionsService.addPermission(PERMISSIONS.subscriptions);
-          });
           it('should mark username fields as invalid', () => {
-            fixture.detectChanges();
             const backendError = {
               error: {
                 code: BAD_USERNAME_ERROR_CODE,
@@ -517,6 +519,71 @@ describe('ProfileInfoComponent', () => {
         const mapElement = fixture.debugElement.query(By.css(locationBoxSelector));
 
         expect(mapElement).toBeTruthy();
+      });
+    });
+
+    describe('subscription permission', () => {
+      describe('and has permissions', () => {
+        beforeEach(() => {
+          permissionsService.addPermission(PERMISSIONS.subscriptions);
+          fixture.detectChanges();
+        });
+
+        it('should show cover field', () => {
+          expect(fixture.debugElement.query(By.directive(MockCoverUpload))).toBeTruthy();
+        });
+
+        it('should show first name and last name', () => {
+          expect(fixture.debugElement.query(By.css('input[formControlname="first_name"]'))).toBeTruthy();
+          expect(fixture.debugElement.query(By.css('input[formControlname="last_name"]'))).toBeTruthy();
+        });
+
+        it('should show description', () => {
+          expect(fixture.debugElement.query(By.css('textarea[formControlname="description"]'))).toBeTruthy();
+        });
+
+        it('should show opening hours', () => {
+          expect(fixture.debugElement.query(By.css('textarea[formControlname="opening_hours"]'))).toBeTruthy();
+        });
+
+        it('should show phone number', () => {
+          expect(fixture.debugElement.query(By.css('input[formControlname="phone_number"]'))).toBeTruthy();
+        });
+
+        it('should show web', () => {
+          expect(fixture.debugElement.query(By.css('input[formControlname="link"]'))).toBeTruthy();
+        });
+      });
+      describe('and has not permissions', () => {
+        beforeEach(() => {
+          permissionsService.removePermission(PERMISSIONS.subscriptions);
+          fixture.detectChanges();
+        });
+
+        it('should not show cover field', () => {
+          expect(fixture.debugElement.query(By.directive(MockCoverUpload))).toBeFalsy();
+        });
+
+        it('should show first name and last name', () => {
+          expect(fixture.debugElement.query(By.css('input[formControlname="first_name"]'))).toBeTruthy();
+          expect(fixture.debugElement.query(By.css('input[formControlname="last_name"]'))).toBeTruthy();
+        });
+
+        it('should not show description', () => {
+          expect(fixture.debugElement.query(By.css('textarea[formControlname="description"]'))).toBeFalsy();
+        });
+
+        it('should not show opening hours', () => {
+          expect(fixture.debugElement.query(By.css('textarea[formControlname="opening_hours"]'))).toBeFalsy();
+        });
+
+        it('should not show phone number', () => {
+          expect(fixture.debugElement.query(By.css('input[formControlname="phone_number"]'))).toBeFalsy();
+        });
+
+        it('should not show web', () => {
+          expect(fixture.debugElement.query(By.css('input[formControlname="link"]'))).toBeFalsy();
+        });
       });
     });
   });

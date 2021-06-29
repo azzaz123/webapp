@@ -63,9 +63,6 @@
             "styles": [
               "src/style/styles.scss"
             ],
-            "scripts": [
-              "node_modules/stanza.io/build/stanzaio.bundle.js"
-            ],
             "allowedCommonJsDependencies": [
               "crypto-js",
               "echarts",

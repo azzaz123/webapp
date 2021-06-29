@@ -44,6 +44,12 @@ describe('NumbersOnlyDirective', () => {
       });
     });
 
+    describe('and the new key is the tab one ...', () => {
+      it('should let us to use it', () => {
+        expect(keyPress('Tab').defaultPrevented).toBe(false);
+      });
+    });
+
     describe('and the new character is an space...', () => {
       it('should revert the character', () => {
         expect(keyPress(' ').defaultPrevented).toBe(true);

@@ -53,7 +53,6 @@ import { ProBadgeModule } from './pro-badge/pro-badge.module';
 import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
 import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
 import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
-import { CreditCardInfoComponent } from './credit-card-info/credit-card-info.component';
 import { EditEmailComponent } from './profile/edit-email/edit-email.component';
 import { EmailModalComponent } from './profile/edit-email/email-modal/email-modal.component';
 import { EditPasswordComponent } from './profile/edit-password/edit-password.component';
@@ -83,6 +82,7 @@ import { HeaderModule } from './header/header.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
 import { LocationSelectorModal } from './modals/location-selector-modal/location-selector-modal.component';
+import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.module';
 
 @NgModule({
   imports: [
@@ -110,6 +110,7 @@ import { LocationSelectorModal } from './modals/location-selector-modal/location
     DateCountDownModule,
     ProfileFormModule,
     HeaderModule,
+    PaymentsCardInfoModule,
   ],
   exports: [
     SpinnerModule,
@@ -142,7 +143,6 @@ import { LocationSelectorModal } from './modals/location-selector-modal/location
     EditPasswordComponent,
     PasswordModalComponent,
     PictureUploadComponent,
-    CreditCardInfoComponent,
     CatalogCardComponent,
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
@@ -179,6 +179,7 @@ import { LocationSelectorModal } from './modals/location-selector-modal/location
     ProfileFormModule,
     InfiniteScrollDirective,
     VisibleDirectiveModule,
+    PaymentsCardInfoModule,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -206,7 +207,6 @@ import { LocationSelectorModal } from './modals/location-selector-modal/location
     EditPasswordComponent,
     PasswordModalComponent,
     PictureUploadComponent,
-    CreditCardInfoComponent,
     CatalogCardComponent,
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
