@@ -163,7 +163,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     this.componentLocationForm.patchValue({ mapURL });
   }
 
-  get geolocationCoordinates(): Observable<SearchLocation> {
+  get geolocationCoordinates$(): Observable<SearchLocation> {
     return this.geolocationCoordinatesSubject.asObservable();
   }
 
@@ -200,7 +200,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   }
 
   public onGeolocationChange(): Observable<LabeledSearchLocation> {
-    return this.geolocationCoordinates.pipe(
+    return this.geolocationCoordinates$.pipe(
       switchMap((location: SearchLocation) =>
         this.getLocationLabelFromLatitudeAndLongitude(location).pipe(
           map((label: string) => {
