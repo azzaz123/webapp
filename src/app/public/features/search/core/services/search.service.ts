@@ -20,7 +20,7 @@ export class SearchService {
   private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_LOADING_STATE);
   private readonly isLoadingPaginationResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_PAGINATION_LOADING_STATE);
   private readonly currentCategoryIdSubject = new BehaviorSubject<string>(undefined);
-  private readonly searchResponseExtraDataSubject = new BehaviorSubject<SearchResponseExtraData>(undefined);
+  private readonly searchResponseExtraDataSubject = new BehaviorSubject<SearchResponseExtraData>(null);
 
   private subscription: Subscription = new Subscription();
 
