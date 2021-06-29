@@ -47,7 +47,7 @@ describe('AdsResolver', () => {
     });
 
     describe('and user has no permission to see ads', () => {
-      it('should init ads', () => {
+      it('should NOT init ads', () => {
         spyOn(adsService, 'init');
         spyOn(permissionService, 'getPermission').and.returnValue(false);
 
