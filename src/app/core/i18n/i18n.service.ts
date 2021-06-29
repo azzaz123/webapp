@@ -6,8 +6,6 @@ import { TRANSLATION_KEY } from './translations/enum/translation-keys.enum';
   providedIn: 'root',
 })
 export class I18nService {
-  constructor() {}
-
   public translate(translationKey: TRANSLATION_KEY): string {
     return translations[translationKey] || '';
   }
