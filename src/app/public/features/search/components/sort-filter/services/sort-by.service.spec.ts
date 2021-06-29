@@ -34,7 +34,7 @@ describe('SortByService', () => {
     sortByService = TestBed.inject(SortByService);
   });
 
-  describe('when filterParameterStore parameters changes', () => {
+  describe('when search filters changes', () => {
     describe('and has no parameters', () => {
       it('should update options with sort by default options', () => {
         spyOn(sortByService[optionsSubjectName], 'next');
@@ -44,7 +44,7 @@ describe('SortByService', () => {
         expect(sortByService[optionsSubjectName].next).toHaveBeenCalledWith(SORT_BY_DEFAULT_OPTIONS);
       });
 
-      it('should update elevanceOptionActive with false', () => {
+      it('should update isRelevanceOptionActive with false', () => {
         spyOn(sortByService[isRelevanceOptionActiveSubjectName], 'next');
 
         parametersSubject.next(parameters);
@@ -78,7 +78,7 @@ describe('SortByService', () => {
             expect(sortByService[optionsSubjectName].next).toHaveBeenCalledWith(SORT_BY_RELEVANCE_OPTIONS);
           });
 
-          it('should update elevanceOptionActive with true', () => {
+          it('should update isRelevanceOptionActive with true', () => {
             spyOn(sortByService[isRelevanceOptionActiveSubjectName], 'next');
 
             parametersSubject.next(parameters);
@@ -95,7 +95,7 @@ describe('SortByService', () => {
             expect(sortByService[optionsSubjectName].next).toHaveBeenCalledWith(SORT_BY_DEFAULT_OPTIONS);
           });
 
-          it('should update elevanceOptionActive with false', () => {
+          it('should update isRelevanceOptionActive with false', () => {
             spyOn(sortByService[isRelevanceOptionActiveSubjectName], 'next');
 
             parametersSubject.next(parameters);
@@ -122,7 +122,7 @@ describe('SortByService', () => {
           expect(sortByService[optionsSubjectName].next).toHaveBeenCalledWith(SORT_BY_DEFAULT_OPTIONS);
         });
 
-        it('should update elevanceOptionActive with false', () => {
+        it('should update isRelevanceOptionActive with false', () => {
           spyOn(sortByService[isRelevanceOptionActiveSubjectName], 'next');
 
           parametersSubject.next(parameters);
