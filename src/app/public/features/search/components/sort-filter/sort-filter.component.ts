@@ -41,8 +41,8 @@ export class SortFilterComponent implements OnInit {
       this.options = options;
     });
 
-    this.sortByService.relevanceOptionActive$.subscribe((relevanceOptionActive) => {
-      if (!relevanceOptionActive && this.selected?.value === SORT_BY_RELEVANCE_OPTION.value) {
+    this.sortByService.isRelevanceOptionActive$.subscribe((isRelevanceOptionActive) => {
+      if (!isRelevanceOptionActive && this.selected?.value === SORT_BY_RELEVANCE_OPTION.value) {
         this.onChangeValue(this.defaultValue);
         this.formControl.setValue(this.defaultValue);
       }

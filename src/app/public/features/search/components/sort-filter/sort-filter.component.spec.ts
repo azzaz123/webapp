@@ -106,13 +106,13 @@ describe('SortFilterComponent', () => {
     });
   });
 
-  describe('on relevanceOptionActive change', () => {
+  describe('on isRelevanceOptionActive change', () => {
     const distanceSortByOption = SORT_BY_DISTANCE_OPTION;
 
-    describe('and relevanceOptionActive is false and option relevance is selected', () => {
+    describe('and isRelevanceOptionActive is false and option relevance is selected', () => {
       beforeEach(() => {
         component.selected = SORT_BY_RELEVANCE_OPTION;
-        sortByService['relevanceOptionActiveSubject'].next(false);
+        sortByService['isRelevanceOptionActiveSubject'].next(false);
       });
 
       it('should set sort by distance', () => {
@@ -124,10 +124,10 @@ describe('SortFilterComponent', () => {
       });
     });
 
-    describe('and relevanceOptionActive is false and option relevance is selected', () => {
+    describe('and isRelevanceOptionActive is false and option relevance is selected', () => {
       beforeEach(() => {
         component.selected = SORT_BY_DISTANCE_OPTION;
-        sortByService['relevanceOptionActiveSubject'].next(false);
+        sortByService['isRelevanceOptionActiveSubject'].next(false);
       });
 
       it('should not modify sort by distance', () => {

@@ -13,7 +13,7 @@ describe('SortByService', () => {
   const parametersSubject: ReplaySubject<FilterParameter[]> = new ReplaySubject<FilterParameter[]>();
   let parameters = [];
   const optionsSubjectName = 'optionsSubject';
-  const relevanceOptionActiveSubjectName = 'relevanceOptionActiveSubject';
+  const isRelevanceOptionActiveSubjectName = 'isRelevanceOptionActiveSubject';
   const getParametersByKeys = (keys: FILTER_QUERY_PARAM_KEY[]) => {
     return parameters.filter((parameter) => keys.includes(parameter.key));
   };
@@ -45,11 +45,11 @@ describe('SortByService', () => {
       });
 
       it('should update elevanceOptionActive with false', () => {
-        spyOn(sortByService[relevanceOptionActiveSubjectName], 'next');
+        spyOn(sortByService[isRelevanceOptionActiveSubjectName], 'next');
 
         parametersSubject.next(parameters);
 
-        expect(sortByService[relevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(false);
+        expect(sortByService[isRelevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(false);
       });
     });
 
@@ -79,11 +79,11 @@ describe('SortByService', () => {
           });
 
           it('should update elevanceOptionActive with true', () => {
-            spyOn(sortByService[relevanceOptionActiveSubjectName], 'next');
+            spyOn(sortByService[isRelevanceOptionActiveSubjectName], 'next');
 
             parametersSubject.next(parameters);
 
-            expect(sortByService[relevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(true);
+            expect(sortByService[isRelevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(true);
           });
         });
 
@@ -96,11 +96,11 @@ describe('SortByService', () => {
           });
 
           it('should update elevanceOptionActive with false', () => {
-            spyOn(sortByService[relevanceOptionActiveSubjectName], 'next');
+            spyOn(sortByService[isRelevanceOptionActiveSubjectName], 'next');
 
             parametersSubject.next(parameters);
 
-            expect(sortByService[relevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(false);
+            expect(sortByService[isRelevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(false);
           });
         });
       });
@@ -123,11 +123,11 @@ describe('SortByService', () => {
         });
 
         it('should update elevanceOptionActive with false', () => {
-          spyOn(sortByService[relevanceOptionActiveSubjectName], 'next');
+          spyOn(sortByService[isRelevanceOptionActiveSubjectName], 'next');
 
           parametersSubject.next(parameters);
 
-          expect(sortByService[relevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(false);
+          expect(sortByService[isRelevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(false);
         });
       });
     });
