@@ -1,4 +1,4 @@
-import { mappedShippingRulesFixture, shippingRulesResponseFixture } from '@api/fixtures/delivery/shipping-rules.fixtures';
+import { mappedShippingRulesFixture, shippingRulesResponseFixture } from '@api/fixtures/delivery-rules/shipping-rules.fixtures';
 import { mapShippingRulesResponseToShippingRules } from './shipping-rules-mapper';
 
 describe('ShippingRulesMapper', () => {

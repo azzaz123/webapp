@@ -8,7 +8,7 @@ import { ShippingRules } from './dtos/shipping-rules';
 import { mapShippingRulesResponseToShippingRules } from './mappers/shipping-rules-mapper';
 
 @Injectable()
-export class DeliveryApiService {
+export class DeliveryRulesApiService {
   constructor(private httpClient: HttpClient) {}
 
   public getRules(): Observable<ShippingRules> {

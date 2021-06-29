@@ -1,21 +1,21 @@
 import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { mappedShippingRulesFixture, shippingRulesResponseFixture } from '@api/fixtures/delivery/shipping-rules.fixtures';
+import { mappedShippingRulesFixture, shippingRulesResponseFixture } from '@api/fixtures/bff/delivery/rules/shipping-rules.fixtures';
 import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';
-import { DeliveryApiService } from './delivery-api.service';
+import { DeliveryRulesApiService } from './delivery-rules-api.service';
 import { SHIPPING_RULES_ENDPOINT } from './endpoints';
 import { ShippingRules } from './dtos/shipping-rules';
 
-describe('DeliveryApiService', () => {
-  let service: DeliveryApiService;
+describe('DeliveryRulesApiService', () => {
+  let service: DeliveryRulesApiService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DeliveryApiService, FavouritesApiService],
+      providers: [DeliveryRulesApiService, FavouritesApiService],
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(DeliveryApiService);
+    service = TestBed.inject(DeliveryRulesApiService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -23,7 +23,7 @@ describe('DeliveryApiService', () => {
     httpMock.verify();
   });
 
-  describe('when asked to retrieve delivery rules', () => {
+  describe('when asked to retrieve delivery-rules rules', () => {
     it('should return domain formatted shipping rules', () => {
       let response: ShippingRules;
 
