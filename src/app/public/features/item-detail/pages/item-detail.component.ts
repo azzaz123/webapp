@@ -48,7 +48,7 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private itemDetail: ItemDetail;
 
-  readonly PERMISSIONS = PERMISSIONS;
+  public readonly PERMISSIONS = PERMISSIONS;
 
   constructor(
     private itemDetailStoreService: ItemDetailStoreService,

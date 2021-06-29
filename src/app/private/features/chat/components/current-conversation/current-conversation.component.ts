@@ -72,7 +72,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public isTopBarExpanded = false;
   public chatRightAdSlot: AdSlotConfiguration = CHAT_AD_SLOTS;
 
-  readonly PERMISSIONS = PERMISSIONS;
+  public readonly PERMISSIONS = PERMISSIONS;
 
   constructor(
     private eventService: EventService,
