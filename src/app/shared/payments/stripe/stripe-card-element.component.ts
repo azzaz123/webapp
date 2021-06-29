@@ -16,7 +16,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CartBase } from '../../catalog/cart/cart-base';
 import { I18nService } from '@core/i18n/i18n.service';
 import { StripeService } from '@core/stripe/stripe.service';
-import { FinancialCard } from '@shared/credit-card-info/financial-card';
+import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { PaymentMethodResponse, SetupIntent } from '@core/payments/payment.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { Tier } from '@core/subscriptions/subscriptions.interface';
