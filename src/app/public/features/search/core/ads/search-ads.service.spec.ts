@@ -5,7 +5,6 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_PARAMETER_STORE_TOKEN } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { Subject } from 'rxjs';
-import { AD_PUBLIC_SEARCH } from './search-ads.config';
 import { SearchAdsService, SEARCH_SLOTS } from './search-ads.service';
 
 describe('SearchAdsService', () => {
@@ -66,20 +65,6 @@ describe('SearchAdsService', () => {
       expect(adsServiceMock.setAdKeywords).toHaveBeenCalledWith({ content: keywordValue });
       expect(adsServiceMock.refresh).toHaveBeenCalledTimes(1);
       expect(adsServiceMock.refresh).toHaveBeenCalledWith();
-    });
-  });
-
-  describe('when set slots', () => {
-    it('should configure ads', () => {
-      spyOn(adsServiceMock, 'setSlots').and.callThrough();
-
-      service.setSlots();
-
-      expect(adsServiceMock.setSlots).toHaveBeenCalledWith([
-        AD_PUBLIC_SEARCH.search1,
-        AD_PUBLIC_SEARCH.search2r,
-        AD_PUBLIC_SEARCH.search3r,
-      ]);
     });
   });
 
