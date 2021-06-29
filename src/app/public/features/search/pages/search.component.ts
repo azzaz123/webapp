@@ -103,8 +103,9 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   );
   public isWall$: Observable<boolean> = this.searchService.isWall$;
   public slotsConfig: SlotsConfig;
-  public readonly SORT_BY_RELEVANCE = SORT_BY.RELEVANCE;
+
   public infoBubbleText: string;
+  public showInfoBubble = false;
 
   @HostListener('window:scroll', ['$event'])
   @debounce(500)
@@ -139,10 +140,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           this.resetSearchId = false;
         }
 
-        if (searchResponseExtraData.sortBy) {
-          this.sortBySubject.next(searchResponseExtraData.sortBy);
-          this.infoBubbleText = searchResponseExtraData.bubble;
-        }
+        this.handleSearchResponseExtraData(searchResponseExtraData);
 
         this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
       })
@@ -218,6 +216,16 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   public handleFilterOpened(opened: boolean) {
     this.filterOpened = opened;
+  }
+
+  private handleSearchResponseExtraData(searchResponseExtraData: SearchResponseExtraData): void {
+    if (searchResponseExtraData.sortBy) {
+      this.sortBySubject.next(searchResponseExtraData.sortBy);
+
+      const isSortByRelevance = searchResponseExtraData.sortBy === SORT_BY.RELEVANCE;
+      this.infoBubbleText = isSortByRelevance ? searchResponseExtraData.bubble : '';
+      this.showInfoBubble = isSortByRelevance;
+    }
   }
 
   private queryParamsChange(): Observable<FilterParameter[]> {
