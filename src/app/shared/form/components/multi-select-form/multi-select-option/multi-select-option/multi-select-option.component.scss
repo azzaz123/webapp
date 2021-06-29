@@ -15,18 +15,15 @@
     left: 0px;
     bottom: 0px;
   }
+  &--disabled {
+    color: $blue-grey-2;
+  }
   &__labelContainer {
     margin: 0 10px;
   }
-  &__optionLabel {
-    font-weight: bold;
+  &__label {
     display: block;
-    &:before {
-      content: '#';
-    }
-    &.disabled {
-      color: $blue-grey-2;
-    }
+
     &__sub {
       color: #828282;
     }
