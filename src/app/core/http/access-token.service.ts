@@ -23,7 +23,6 @@ export class AccessTokenService {
     const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.remove(cookieName, cookieOptions);
     this.cookieService.remove('device' + cookieName.charAt(0).toUpperCase() + cookieName.slice(1), cookieOptions);
-    this.cookieService.remove('subdomain');
     this._accessToken = null;
     this.deleteAccessTokenLocalhost();
   }

@@ -4,6 +4,7 @@ import { CountdownComponent } from './countdown.component';
 import { interval } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
 import * as moment from 'moment';
+import { LOCALE_ID } from '@angular/core';
 
 describe('CountdownComponent', () => {
   let component: CountdownComponent;
@@ -13,7 +14,7 @@ describe('CountdownComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [CountdownComponent],
-        providers: [I18nService],
+        providers: [I18nService, { provide: LOCALE_ID, useValue: 'en' }],
       }).compileComponents();
     })
   );

@@ -60,6 +60,7 @@ import {
 } from './user.service';
 import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
+import { LOCALE_ID } from '@angular/core';
 
 jest.mock('@mparticle/web-sdk', () => ({
   __esModule: true,
@@ -125,6 +126,7 @@ describe('Service: User', () => {
             hasPermission() {},
           },
         },
+        { provide: LOCALE_ID, useValue: 'en' },
       ],
     });
     service = TestBed.inject(UserService);

@@ -1,11 +1,12 @@
 import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { CategoryResponse, SuggestedCategory } from './category-response.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { environment } from '../../../environments/environment';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { APP_LOCALE } from 'configs/subdomains.config';
 
 export const CATEGORIES_ENDPOINT = 'api/v3/categories/keys/';
 export const SUGGESTED_CATEGORIES_ENDPOINT = 'api/v3/classifier/upload-blackbox';
@@ -13,9 +14,9 @@ export const SUGGESTED_CATEGORIES_ENDPOINT = 'api/v3/classifier/upload-blackbox'
 @Injectable()
 export class CategoryService {
   private categories: CategoryResponse[];
-  private lang = this.i18n.locale === 'es' ? this.i18n.locale + '_ES' : this.i18n.locale;
+  private lang = this.locale === 'es' ? this.locale + '_ES' : this.locale;
 
-  constructor(private http: HttpClient, private i18n: I18nService) {}
+  constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private http: HttpClient, private i18n: I18nService) {}
 
   public getCategoryById(id: number): Observable<CategoryResponse> {
     return this.getCategories().pipe(map((categories) => categories.find((category) => category.category_id === id)));

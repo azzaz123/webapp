@@ -1,5 +1,6 @@
 import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { DeviceService } from '@core/device/device.service';
 import { environment } from '@environments/environment';
@@ -28,6 +29,7 @@ describe('LanguageInterceptor', () => {
           provide: CookieService,
           useValue: MockCookieService,
         },
+        { provide: LOCALE_ID, useValue: 'en' },
       ],
     });
 

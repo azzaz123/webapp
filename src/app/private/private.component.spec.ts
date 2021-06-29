@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, LOCALE_ID } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Title } from '@angular/platform-browser';
@@ -18,7 +18,6 @@ import { CallsService } from '@core/conversation/calls.service';
 import { DesktopNotificationsService } from '@core/desktop-notifications/desktop-notifications.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
-import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { PaymentService } from '@core/payments/payment.service';
 import { StripeService } from '@core/stripe/stripe.service';
@@ -123,7 +122,7 @@ describe('PrivateComponent', () => {
             },
           },
         },
-        I18nService,
+        { provide: LOCALE_ID, useValue: 'en' },
         DesktopNotificationsService,
         {
           provide: CallsService,
