@@ -18,11 +18,7 @@ import { CategoryService } from '@core/category/category.service';
 import { EventService } from '@core/event/event.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { CancelSubscriptionModalComponent } from '@private/features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
-import { CheckSubscriptionInAppModalComponent } from '@private/features/profile/modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
-import { ContinueSubscriptionModalComponent } from '@private/features/profile/modal/continue-subscription/continue-subscription-modal.component';
-import { EditSubscriptionModalComponent } from '@private/features/profile/modal/edit-subscription/edit-subscription-modal.component';
-import { UnsubscribeInAppFirstModal } from '@private/features/profile/modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import {
@@ -40,6 +36,11 @@ import { UserService } from 'app/core/user/user.service';
 import { of } from 'rxjs';
 import { SubscriptionsComponent } from './subscription.component';
 import { By } from '@angular/platform-browser';
+import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
+import { CheckSubscriptionInAppModalComponent } from '../../modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
+import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
+import { EditSubscriptionModalComponent } from '../../modal/edit-subscription/edit-subscription-modal.component';
+import { UnsubscribeInAppFirstModal } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 
 @Component({
   selector: 'tsl-subscription-purchase',

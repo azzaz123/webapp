@@ -17,7 +17,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { ContinueSubscriptionModalComponent } from './continue-subscription-modal.component';
-import { ModalStatuses } from '@private/features/profile/core/modal.statuses.enum';
+import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 
 describe('ContinueSubscriptionModalComponent', () => {
   let component: ContinueSubscriptionModalComponent;

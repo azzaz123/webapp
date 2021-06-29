@@ -14,7 +14,7 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { ModalStatuses } from '@private/features/profile/core/modal.statuses.enum';
+import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MAPPED_SUBSCRIPTIONS, TIER } from '@fixtures/subscriptions.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';

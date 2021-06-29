@@ -7,7 +7,7 @@
   <h2 i18n="@@web_components_sidebar_611">Profile</h2>
 </a>
 
-<a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-dashboard" class="sidebar-section" [routerLink]="['/pro/dashboard']" routerLinkActive="active">
+<a *ngxPermissionsOnly="PERMISSIONS.professional" id="qa-sidebar-dashboard" class="sidebar-section" [routerLink]="['/pro/dashboard']" routerLinkActive="active">
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_dashboard.svg"></tsl-svg-icon>
   </div>
@@ -18,8 +18,8 @@
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_catalog.svg"></tsl-svg-icon>
   </div>
-  <h2 *ngxPermissionsExcept="['isProfessional']" i18n="@@web_components_sidebar_612">Products</h2>
-  <h2 *ngxPermissionsOnly="['isProfessional']" i18n="@@web_components_sidebar_448">Catalog</h2>
+  <h2 *ngxPermissionsExcept="PERMISSIONS.professional" i18n="@@web_components_sidebar_612">Products</h2>
+  <h2 *ngxPermissionsOnly="PERMISSIONS.professional" i18n="@@web_components_sidebar_448">Catalog</h2>
 </a>
 
 <a class="sidebar-section" id="qa-sidebar-messages" [routerLink]="['/chat']" routerLinkActive="active">
@@ -30,35 +30,35 @@
   <h2 i18n="@@web_components_sidebar_679">Messages</h2>
 </a>
 
-<a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-favorites" class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active">
+<a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-favorites" class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active">
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_favorites.svg"></tsl-svg-icon>
   </div>
   <h2 i18n="@@web_components_sidebar_680">Favorites</h2>
 </a>
 
-<a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-reviews" class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active">
+<a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-reviews" class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active">
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_reviews.svg"></tsl-svg-icon>
   </div>
   <h2 i18n="@@web_components_sidebar_449">Reviews</h2>
 </a>
 
-<a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-phones" class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active">
+<a *ngxPermissionsOnly="PERMISSIONS.professional" id="qa-sidebar-phones" class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active">
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_phones.svg" class="svg-icon-size"></tsl-svg-icon>
   </div>
   <h2 i18n="@@web_components_sidebar_613">Phones</h2>
 </a>
 
-<a *ngxPermissionsOnly="['isProfessional']" id="qa-sidebar-help" class="sidebar-section" [routerLink]="['/pro/help']" routerLinkActive="active">
+<a *ngxPermissionsOnly="PERMISSIONS.professional" id="qa-sidebar-help" class="sidebar-section" [routerLink]="['/pro/help']" routerLinkActive="active">
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_help.svg"></tsl-svg-icon>
   </div>
   <h2 i18n="@@web_components_sidebar_450">Help</h2>
 </a>
 
-<a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-stats" class="sidebar-section" [routerLink]="['/stats']" routerLinkActive="active">
+<a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-stats" class="sidebar-section" [routerLink]="['/stats']" routerLinkActive="active">
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_dashboard.svg"></tsl-svg-icon>
   </div>
@@ -66,10 +66,17 @@
 </a>
 
 <span *tslDeliveryDevelopment>
-  <a *ngxPermissionsExcept="['isProfessional']" id="qa-sidebar-delivery" class="sidebar-section" [routerLink]="['/delivery']" routerLinkActive="active">
+  <a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-delivery" class="sidebar-section" [routerLink]="['/delivery']" routerLinkActive="active">
     <div class="sidebar-section-circle">
       <tsl-svg-icon src="/assets/icons/navigation_delivery.svg"></tsl-svg-icon>
     </div>
     <h2 i18n="@@web_sidebar_delivery">Delivery</h2>
   </a>
 </span>
+
+<a *ngxPermissionsOnly="PERMISSIONS.subscriptions" id="qa-sidebar-stats" class="sidebar-section" [routerLink]="['/pro']" routerLinkActive="active">
+  <div class="sidebar-section-circle">
+    <tsl-svg-icon src="/assets/icons/Frame1.svg"></tsl-svg-icon>
+  </div>
+  <h2>{{proText}}</h2>
+</a>

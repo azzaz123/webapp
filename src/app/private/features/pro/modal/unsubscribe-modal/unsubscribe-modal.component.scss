@@ -1,0 +1,73 @@
+@import '~style/common';
+
+$modal-border-radius: 5px;
+
+.header {
+  background: $walla-main url(/assets/images/unsubscribe.svg) no-repeat center;
+  height: 220px;
+  border-top-left-radius: $modal-border-radius;
+  border-top-right-radius: $modal-border-radius;
+}
+
+.modal-body {
+  text-align: center;
+  padding: $spacing-xl;
+  h1 {
+    font-size: $font-size-l;
+    font-weight: $font-weight-chunky;
+    margin-bottom: $spacing-xl;
+  }
+  p {
+    margin: 0;
+    margin-bottom: $spacing-l;
+    color: $blue-grey-2;
+    font-size: $font-size-m;
+  }
+  .btn {
+    padding: $spacing-ms $spacing-ml;
+    border-radius: 21px;
+    &.btn-secondary {
+      border: 0;
+      background-color: $blue-grey-5;
+      color: $blue-grey-2;
+      margin: 0 $spacing-xs;
+      margin-bottom: $spacing-ms;
+      &:hover,
+      &.selected {
+        background-color: $blue-grey-4;
+      }
+      &.btn-reason {
+        margin: 0;
+        margin-bottom: $spacing-ml;
+      }
+    }
+    &.btn-primary {
+      padding: $spacing-ms $spacing-xl;
+    }
+  }
+  &.step-1 {
+    padding-bottom: $spacing-ml;
+    .btn {
+      margin-bottom: $spacing-ms;
+      width: 400px;
+    }
+  }
+
+  .custom-reason {
+    font-size: $font-size-s;
+    margin-bottom: $spacing-ms;
+    overflow: hidden;
+    margin-top: $spacing-xl;
+  }
+  .counter {
+    font-size: $font-size-xs;
+  }
+  textarea {
+    border-radius: $border-radius;
+    height: 160px;
+    margin-bottom: $spacing-ml;
+  }
+  .title {
+    margin-right: $spacing-ml;
+  }
+}

@@ -5,6 +5,7 @@ import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-cha
 import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOwnSaleItems } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserStats } from '@core/user/user-stats.interface';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -16,6 +17,8 @@ export class SidebarComponent implements OnInit {
   @Input() isProducts: boolean;
   @Input() isProfile: boolean;
   public isProfessional: boolean;
+  public readonly PERMISSIONS = PERMISSIONS;
+  public proText: string;
 
   constructor(
     private userService: UserService,
@@ -28,6 +31,7 @@ export class SidebarComponent implements OnInit {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
+    this.proText = this.user.featured ? $localize`:@@web_wallapop_pro:Wallapop PRO` : $localize`:@@web_become_pro:Become a PRO`;
   }
 
   public trackClickToCatalog(): void {

@@ -1,0 +1,45 @@
+<div class="header" [hidden]="step === 2">
+  <div class="modal-close light" (click)="activeModal.dismiss()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  </div>
+</div>
+
+<div class="modal-body step-1" [hidden]="step === 2">
+
+  <div *ngIf="!hasSubscription">
+    <h1 i18n="@@web_profile_modal_unsubscribe_263">Are you sure you want to close your account?</h1>
+    <p i18n="@@web_profile_modal_unsubscribe_264">It's never too late to change your mind, you know?<br />The team will be sad to see you go :(</p>
+    <button class="btn btn-primary" (click)="step = 2" i18n="@@web_profile_modal_unsubscribe_265">Yes, I do want to close my account</button><br />
+    <button class="btn btn-secondary" (click)="activeModal.dismiss()" i18n="@@web_profile_modal_unsubscribe_266">No, I want to stay</button>
+  </div>
+
+  <div *ngIf="hasSubscription">
+    <h1 i18n="@@web_profile_modal_unsubscribe_267">Are you sure you want to unsubscribe?</h1>
+    <p i18n="@@web_profile_modal_unsubscribe_268">You are unsubscribing but you have an active subscription in Wallapop. To cancel it, visit the Play Store o the App Store.</p>
+    <button class="btn btn-primary" (click)="step = 2" i18n="@@web_profile_modal_unsubscribe_269">Unsuscribe me, I will cancel my subscription</button>
+    <button class="btn btn-secondary" (click)="activeModal.dismiss()" i18n="@@web_profile_modal_unsubscribe_270">Ok, I changed my mind</button>
+  </div>
+
+</div>
+
+<div class="modal-body" [hidden]="step === 1">
+  <div class="modal-close" (click)="activeModal.dismiss()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  </div>
+  <h1 class="title" i18n="@@web_profile_modal_unsubscribe_271">Can you tell us why you want to close your account? We won't tell anyone.</h1>
+  <button class="btn btn-secondary btn-block btn-reason"
+          *ngFor="let reason of reasons"
+          [ngClass]="{selected: selectedReason === reason.reason_id}"
+          (click)="selectedReason = reason.reason_id">{{reason.name}}</button>
+
+  <p class="custom-reason" [hidden]="selectedReason !== 6">
+    <span class="float-right counter">{{customReason?.length || 0}}/300</span>
+  </p>
+  <textarea [hidden]="selectedReason !== 6" i18n-placeholder="@@web_profile_modal_unsubscribe_272" placeholder="Tell us what happened..."
+            class="form-control"
+            [(ngModel)]="customReason"
+            maxlength="300"></textarea>
+  <div class="text-right">
+    <button class="btn btn-primary" [disabled]="!selectedReason || selectedReason === 6 && !customReason" (click)="send()" i18n="@@web_profile_modal_unsubscribe_273">Send</button>
+  </div>
+</div>

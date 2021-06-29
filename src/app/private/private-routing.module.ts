@@ -12,52 +12,19 @@ const routes: Routes = [
     component: PrivateComponent,
     children: [
       {
-        path: 'pro',
-        children: [
-          { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
-          {
-            path: 'help',
-            loadChildren: () => import('@private/features/help/help.module').then((m) => m.HelpModule),
-          },
-          {
-            path: 'dashboard',
-            loadChildren: () => import('@private/features/dashboard/dashboard.module').then((m) => m.DashboardModule),
-          },
-          {
-            path: 'calls',
-            loadChildren: () => import('@private/features/calls/calls.module').then((m) => m.CallsModule),
-          },
-          {
-            path: 'catalog',
-            children: [
-              {
-                path: '',
-                loadChildren: () => import('@private/features/catalog-pro/catalog-pro.module').then((m) => m.CatalogProModule),
-              },
-              {
-                path: 'upload',
-                loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
-                canLoad: [NgxPermissionsGuard],
-                data: {
-                  isMyZone: true,
-                  isProducts: true,
-                  permissions: {
-                    only: PERMISSIONS.professional,
-                    redirectTo: '/catalog/upload',
-                  },
-                },
-              },
-              {
-                path: 'edit',
-                loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
-              },
-            ],
-          },
-        ],
-      },
-      {
         path: 'profile',
         loadChildren: () => import('@private/features/profile/profile.module').then((m) => m.ProfileModule),
+      },
+      {
+        path: 'pro',
+        loadChildren: () => import('@private/features/pro/pro.module').then((m) => m.ProModule),
+        canLoad: [NgxPermissionsGuard],
+        data: {
+          permissions: {
+            only: PERMISSIONS.subscriptions,
+            redirectTo: 'profile',
+          },
+        },
       },
       {
         path: 'chat',

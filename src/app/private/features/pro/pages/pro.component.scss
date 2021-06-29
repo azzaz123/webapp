@@ -1,0 +1,16 @@
+@import '~style/common';
+
+.btn-wrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.nav-link:last-child {
+  margin-right: 0px;
+}
+
+.Profile__title {
+  margin-right: $spacing-ms;
+}

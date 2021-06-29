@@ -13,7 +13,7 @@ import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscripti
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalStatuses } from '../../core/modal.statuses.enum';
+import { ModalStatuses } from '../modal.statuses.enum';
 
 @Component({
   selector: 'tsl-continue-subscription-modal',
