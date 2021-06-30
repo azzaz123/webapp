@@ -10,4 +10,5 @@ export interface SearchResponse<T = any> {
     longitude: number;
   };
   order: SORT_BY;
+  bubble?: string;
 }

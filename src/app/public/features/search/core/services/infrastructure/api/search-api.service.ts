@@ -23,6 +23,7 @@ export class SearchAPIService {
   private categoryId: string | null = null;
   private searchId: string | null = null;
   private order: SORT_BY | null = null;
+  private bubble: string | null = null;
 
   protected static buildNextPageUrl(url: string, nextPage: string): string {
     return nextPage && url.split('?')[0] + '?' + nextPage;
@@ -57,6 +58,7 @@ export class SearchAPIService {
           const nextPage: string = headers.get(NEXT_HEADER_PAGE);
           this.searchId = headers.get(SEARCH_ID);
           this.order = body.order;
+          this.bubble = body.bubble;
           this.nextPageUrl = SearchAPIService.buildNextPageUrl(url, nextPage);
         }),
         map(({ body }: HttpResponse<SearchResponse<T>>) => {
@@ -68,6 +70,7 @@ export class SearchAPIService {
           hasMore: !!this.nextPageUrl,
           searchId: this.searchId,
           sortBy: this.order,
+          bubble: this.bubble,
         })),
         switchMap((search: SearchPagination) =>
           SearchAPIService.hasToLoadMoreItems(search) ? this.makeSearchApi(this.nextPageUrl, search.items) : of(search)
