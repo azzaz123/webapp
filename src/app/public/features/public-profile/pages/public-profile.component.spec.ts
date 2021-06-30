@@ -21,6 +21,8 @@ import { PublicProfileTrackingEventsService } from '../core/services/public-prof
 import { PublicProfileService } from '../core/services/public-profile.service';
 import { PUBLIC_PROFILE_PATHS } from '../public-profile-routing-constants';
 import { PublicProfileComponent } from './public-profile.component';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 describe('PublicProfileComponent', () => {
   const containerSelector = '.PublicProfile';
@@ -33,6 +35,7 @@ describe('PublicProfileComponent', () => {
   let mockDeviceService;
   let isCurrentUserPipe: IsCurrentUserPipe;
   let publicProfileTrackingEventsService: PublicProfileTrackingEventsService;
+  let permissionsService: NgxPermissionsService;
 
   const routerEvents: Subject<any> = new Subject();
 
@@ -41,7 +44,7 @@ describe('PublicProfileComponent', () => {
       isMobile: () => true,
     };
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, NgxPermissionsModule.forRoot()],
       declarations: [PublicProfileComponent, IsCurrentUserStub, AdComponentStub],
       providers: [
         {
@@ -97,6 +100,7 @@ describe('PublicProfileComponent', () => {
         { provide: UserService, useClass: MockedUserService },
         { provide: IsCurrentUserPipe, useClass: IsCurrentUserPipeMock },
         SlugsUtilService,
+        NgxPermissionsService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -111,6 +115,7 @@ describe('PublicProfileComponent', () => {
     isCurrentUserPipe = TestBed.inject(IsCurrentUserPipe);
     publicProfileService = TestBed.inject(PublicProfileService);
     publicProfileTrackingEventsService = TestBed.inject(PublicProfileTrackingEventsService);
+    permissionsService = TestBed.inject(NgxPermissionsService);
   });
 
   it('should create', () => {
@@ -331,38 +336,58 @@ describe('PublicProfileComponent', () => {
     });
 
     describe('when init the component', () => {
-      it('should add an ad only on mobile devices', () => {
-        spyOn(mockDeviceService, 'isMobile').and.returnValue(true);
+      describe('if user has ads permission', () => {
+        beforeEach(() => {
+          permissionsService.addPermission(PERMISSIONS.showAds);
+        });
+        it('should add an ad only on mobile devices', () => {
+          spyOn(mockDeviceService, 'isMobile').and.returnValue(true);
+          spyOn(permissionsService, 'getPermission').and.returnValue({ name: PERMISSIONS.showAds });
 
-        component.ngOnInit();
-        fixture.detectChanges();
-        const adComponent: DebugElement = fixture.debugElement.query(By.directive(AdComponentStub));
+          component.ngOnInit();
+          fixture.detectChanges();
+          const adComponent: DebugElement = fixture.debugElement.query(By.directive(AdComponentStub));
 
-        expect(adComponent).toBeTruthy();
-        expect((<AdComponentStub>adComponent.componentInstance).adSlot).toEqual(PUBLIC_PROFILE_AD);
+          expect(adComponent).toBeTruthy();
+          expect((<AdComponentStub>adComponent.componentInstance).adSlot).toEqual(PUBLIC_PROFILE_AD);
+        });
+
+        it('should not add an ad when is different of mobile devices', () => {
+          spyOn(mockDeviceService, 'isMobile').and.returnValue(false);
+
+          component.ngOnInit();
+          fixture.detectChanges();
+          const adComponent = fixture.debugElement.query(By.directive(AdComponentStub));
+
+          expect(adComponent).toBeFalsy();
+        });
       });
 
-      it('should not an ad when is diferent of mobile devices', () => {
-        spyOn(mockDeviceService, 'isMobile').and.returnValue(false);
+      describe('if user has no ads permission', () => {
+        it('should not add an ad only on mobile devices', () => {
+          spyOn(mockDeviceService, 'isMobile').and.returnValue(true);
+          spyOn(permissionsService, 'hasPermission').and.returnValue(false);
 
-        component.ngOnInit();
-        fixture.detectChanges();
-        const adComponent = fixture.debugElement.query(By.directive(AdComponentStub));
+          component.ngOnInit();
+          fixture.detectChanges();
+          const adComponent: DebugElement = fixture.debugElement.query(By.directive(AdComponentStub));
 
-        expect(adComponent).toBeFalsy();
+          expect(adComponent).toBeFalsy();
+        });
+
+        it('should not add an ad when is different of mobile devices', () => {
+          spyOn(mockDeviceService, 'isMobile').and.returnValue(false);
+
+          component.ngOnInit();
+          fixture.detectChanges();
+          const adComponent = fixture.debugElement.query(By.directive(AdComponentStub));
+
+          expect(adComponent).toBeFalsy();
+        });
       });
 
       it('should have adSlot public profile', () => {
         expect(component.adSlot).toEqual(PUBLIC_PROFILE_AD);
-      });
-
-      it('should set slots on adServices', () => {
-        spyOn(MockAdsService, 'setSlots').and.callThrough();
-
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        expect(MockAdsService.setSlots).toHaveBeenCalledWith([PUBLIC_PROFILE_AD]);
       });
     });
   });
