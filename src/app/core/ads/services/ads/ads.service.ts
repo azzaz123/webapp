@@ -52,23 +52,20 @@ export class AdsService {
     this.setSlotsSubject.next([...actualSlots, ...adSlots]);
   }
 
-  public destroySlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.destroySlots(slots);
+  public async destroySlots(adSlots: AdSlotConfiguration[]): Promise<void> {
+    this.googlePublisherTagService.destroySlots(adSlots);
   }
 
-  public refreshSlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.refreshSlots(slots);
+  public async refreshSlots(adSlots: AdSlotConfiguration[]): Promise<void> {
+    this.googlePublisherTagService.refreshSlots(adSlots);
   }
 
   public refreshAllSlots(): void {
     this.googlePublisherTagService.refreshAllSlots();
   }
 
-  public clearSlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.clearSlots(slots);
+  public async clearSlots(adSlots: AdSlotConfiguration[]): Promise<void> {
+    this.googlePublisherTagService.clearSlots(adSlots);
   }
 
   public setAdKeywords(adKeywords: AdKeyWords): void {
