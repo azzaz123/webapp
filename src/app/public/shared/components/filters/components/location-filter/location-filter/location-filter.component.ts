@@ -182,6 +182,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     this.componentDistance = +distance / DISTANCE_FACTOR;
     this.currentLocation = { latitude, longitude };
     this.componentLocation = { latitude, longitude };
+    this.updateLocationMap(this.currentLocation, this.componentDistance);
   }
 
   public onApplyLocation(): Observable<string> {
