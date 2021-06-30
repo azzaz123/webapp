@@ -29,6 +29,7 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
 import { SearchListTrackingEventsService } from './core/services/search-list-tracking-events/search-list-tracking-events.service';
 import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import { SortByService } from './components/sort-filter/services/sort-by.service';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { SearchTrackingEventsService } from '@public/core/services/search-tracki
     SearchFavouritesService,
     SearchStoreService,
     SearchTrackingEventsService,
+    SortByService,
     {
       provide: FILTER_PARAMETER_STORE_TOKEN,
       useClass: FilterParameterStoreService,

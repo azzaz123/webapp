@@ -11,6 +11,7 @@ import {
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { SearchResponseExtraData } from './interfaces/search-response-extra-data.interface';
 
 @Injectable()
 export class SearchService {
@@ -19,7 +20,7 @@ export class SearchService {
   private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_LOADING_STATE);
   private readonly isLoadingPaginationResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_PAGINATION_LOADING_STATE);
   private readonly currentCategoryIdSubject = new BehaviorSubject<string>(undefined);
-  private readonly searchIdSubject = new BehaviorSubject<string>(undefined);
+  private readonly searchResponseExtraDataSubject = new BehaviorSubject<SearchResponseExtraData>(null);
 
   private subscription: Subscription = new Subscription();
 
@@ -68,12 +69,12 @@ export class SearchService {
     this.currentCategoryIdSubject.next(categoryId);
   }
 
-  get newSearch$(): Observable<string> {
-    return this.searchIdSubject.asObservable();
+  get newSearch$(): Observable<SearchResponseExtraData> {
+    return this.searchResponseExtraDataSubject.asObservable();
   }
 
-  private set searchId(searchId: string) {
-    this.searchIdSubject.next(searchId);
+  private set searchResponseExtraData(searchResponseExtraData: SearchResponseExtraData) {
+    this.searchResponseExtraDataSubject.next(searchResponseExtraData);
   }
 
   constructor(
@@ -109,10 +110,10 @@ export class SearchService {
           })
         )
       ),
-      tap(({ items, hasMore, categoryId, searchId }: SearchPaginationWithCategory) => {
+      tap(({ items, hasMore, categoryId, searchId, sortBy }: SearchPaginationWithCategory) => {
         this.isLoadingResults = false;
         this.currentCategoryId = categoryId;
-        this.searchId = searchId;
+        this.searchResponseExtraData = { searchId, sortBy };
         this.searchStoreService.setItems(items);
         this.searchStoreService.setHasMore(hasMore);
       })
@@ -132,12 +133,13 @@ export class SearchService {
   }
 
   private mapSearchResponse(pagination: SearchPagination, filterParameters: FilterParameter[]): SearchPaginationWithCategory {
-    const { items, hasMore, searchId } = pagination;
+    const { items, hasMore, searchId, sortBy } = pagination;
     return {
       items,
       hasMore,
       searchId,
       categoryId: this.getCategoryIdFromParams(filterParameters),
+      sortBy,
     };
   }
 

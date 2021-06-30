@@ -50,6 +50,9 @@ import { SearchListTrackingEventsService } from '../core/services/search-list-tr
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { AdSlotShoppingComponentStub } from '@fixtures/shared/components/ad-shopping.component.stub';
+import { SortByService } from '../components/sort-filter/services/sort-by.service';
+import { SearchResponseExtraData } from '../core/services/interfaces/search-response-extra-data.interface';
+import { SORT_BY } from '../components/sort-filter/services/constants/sort-by-options-constants';
 
 @Directive({
   selector: '[tslInfiniteScroll]',
@@ -76,7 +79,7 @@ describe('SearchComponent', () => {
   const isLoadingResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const isLoadingPaginationResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const currentCategoryIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
-  const searchIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  const searchResponseExtraDataSubject: BehaviorSubject<SearchResponseExtraData> = new BehaviorSubject<SearchResponseExtraData>(null);
   const hasMoreSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const parametersSubject: ReplaySubject<FilterParameter[]> = new ReplaySubject<FilterParameter[]>();
 
@@ -95,7 +98,7 @@ describe('SearchComponent', () => {
       isLoadingResults$: isLoadingResultsSubject.asObservable(),
       isLoadingPaginationResults$: isLoadingPaginationResultsSubject.asObservable(),
       currentCategoryId$: currentCategoryIdSubject.asObservable(),
-      newSearch$: searchIdSubject.asObservable(),
+      newSearch$: searchResponseExtraDataSubject.asObservable(),
 
       init: () => {},
       loadMore: () => {},
@@ -169,6 +172,7 @@ describe('SearchComponent', () => {
           provide: SearchTrackingEventsService,
           useClass: MockSearchTrackingEventsService,
         },
+        SortByService,
       ],
     }).compileComponents();
   });
@@ -193,9 +197,9 @@ describe('SearchComponent', () => {
         expect(component.items$).toBeTruthy();
       });
 
-      it('should initialise items observable', () => {
+      it('should initialise sortBy observable', () => {
         fixture.detectChanges();
-        expect(component.items$).toBeTruthy();
+        expect(component.sortBy$).toBeTruthy();
       });
 
       it('should initialize ads slots', () => {
@@ -515,7 +519,7 @@ describe('SearchComponent', () => {
   describe('when click on item card', () => {
     it('should send track click item card event', () => {
       spyOn(searchListTrackingEventsService, 'trackClickItemCardEvent');
-      searchIdSubject.next(MOCK_SEARCH_ID);
+      searchResponseExtraDataSubject.next({ searchId: MOCK_SEARCH_ID, sortBy: SORT_BY.DISTANCE });
       itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
       fixture.detectChanges();
       const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
@@ -530,7 +534,7 @@ describe('SearchComponent', () => {
     describe('and item is not favourite', () => {
       beforeEach(() => {
         spyOn(searchListTrackingEventsService, 'trackFavouriteItemEvent');
-        searchIdSubject.next(MOCK_SEARCH_ID);
+        searchResponseExtraDataSubject.next({ searchId: MOCK_SEARCH_ID, sortBy: SORT_BY.DISTANCE });
         itemsSubject.next([MOCK_ITEM_CARD]);
         fixture.detectChanges();
       });
@@ -548,7 +552,7 @@ describe('SearchComponent', () => {
     describe('and item is already favourite', () => {
       beforeEach(() => {
         spyOn(searchListTrackingEventsService, 'trackUnfavouriteItemEvent');
-        searchIdSubject.next(MOCK_SEARCH_ID);
+        searchResponseExtraDataSubject.next({ searchId: MOCK_SEARCH_ID, sortBy: SORT_BY.DISTANCE });
         itemsSubject.next([MOCK_ITEM_CARD]);
         fixture.detectChanges();
       });
@@ -600,9 +604,9 @@ describe('SearchComponent', () => {
       });
 
       it('should send search event', () => {
-        searchIdSubject.next(oldSearchId);
+        searchResponseExtraDataSubject.next({ searchId: oldSearchId, sortBy: SORT_BY.DISTANCE });
         component['resetSearchId'] = true;
-        searchIdSubject.next(newSearchId);
+        searchResponseExtraDataSubject.next({ searchId: newSearchId, sortBy: SORT_BY.DISTANCE });
 
         expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(newSearchId, filterParameterStoreService.getParameters());
       });
@@ -617,11 +621,22 @@ describe('SearchComponent', () => {
       });
 
       it('should send search event', () => {
-        searchIdSubject.next(oldSearchId);
+        searchResponseExtraDataSubject.next({ searchId: oldSearchId, sortBy: SORT_BY.DISTANCE });
         component['resetSearchId'] = false;
-        searchIdSubject.next(newSearchId);
+        searchResponseExtraDataSubject.next({ searchId: newSearchId, sortBy: SORT_BY.DISTANCE });
 
         expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(oldSearchId, filterParameterStoreService.getParameters());
+      });
+    });
+
+    describe('and searchResponseExtraData sortBy has value', () => {
+      beforeEach(() => {
+        spyOn(component['sortBySubject'], 'next');
+        searchResponseExtraDataSubject.next({ searchId: '', sortBy: SORT_BY.DISTANCE });
+      });
+
+      it('should update the value', () => {
+        expect(component['sortBySubject'].next).toHaveBeenCalledWith(SORT_BY.DISTANCE);
       });
     });
   });

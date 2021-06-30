@@ -9,7 +9,6 @@ import { SearchFavouritesService } from './favorites/search-favourites.service';
 
 @Injectable()
 export class SearchInfrastructureService {
-
   constructor(private searchApiService: SearchAPIService, private searchFavouritesService: SearchFavouritesService) {}
 
   public search(params: FilterParameter[]): Observable<SearchPagination> {
@@ -19,15 +18,12 @@ export class SearchInfrastructureService {
   }
 
   public loadMore(): Observable<SearchPagination> {
-    return this.searchApiService.loadMore()
-      .pipe(switchMap((searchPagination: SearchPagination) => this.setFavourites(searchPagination)));
+    return this.searchApiService.loadMore().pipe(switchMap((searchPagination: SearchPagination) => this.setFavourites(searchPagination)));
   }
 
-  private setFavourites({items, hasMore, searchId}: SearchPagination): Observable<SearchPagination> {
+  private setFavourites({ items, hasMore, searchId, sortBy }: SearchPagination): Observable<SearchPagination> {
     return this.searchFavouritesService
       .getFavouritesByItems(items)
-      .pipe(
-        map((favItems: ItemCard[]) => ({ items: favItems, hasMore, searchId }))
-      );
+      .pipe(map((favItems: ItemCard[]) => ({ items: favItems, hasMore, searchId, sortBy })));
   }
 }
