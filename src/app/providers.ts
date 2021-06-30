@@ -7,6 +7,7 @@ import { CustomRouteReuseStrategy } from './core/custom-route-reuse-strategy/cus
 import { FeatureflagService } from '@core/user/featureflag.service';
 import { DEFAULT_PERMISSIONS } from '@core/user/user-constants';
 import { FeatureFlag, INIT_FEATURE_FLAGS } from '@core/user/featureflag-constants';
+import { MonitoringService } from '@core/monitoring/services/monitoring.service';
 
 export const PROVIDERS: Provider[] = [
   {
@@ -24,6 +25,12 @@ export const PROVIDERS: Provider[] = [
     provide: APP_INITIALIZER,
     useFactory: defaultPermissionsFactory,
     deps: [FeatureflagService, NgxPermissionsService],
+    multi: true,
+  },
+  {
+    provide: APP_INITIALIZER,
+    useFactory: initializeMonitoring,
+    deps: [MonitoringService],
     multi: true,
   },
   {
@@ -51,4 +58,8 @@ export function defaultPermissionsFactory(
       .getFlags(INIT_FEATURE_FLAGS)
       .toPromise()
       .catch(() => []);
+}
+
+export function initializeMonitoring(monitoringService: MonitoringService): () => void {
+  return () => monitoringService.initialize();
 }
