@@ -3,7 +3,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { CAROUSEL_CONTROL_SIZE } from '../carousel-slides/carousel-slides.component';
+import { CAROUSEL_CONTROL_SIZE } from '@shared/components/carousel-slides/carousel-slides.component';
 
 @Component({
   selector: 'tsl-item-card-wide',
