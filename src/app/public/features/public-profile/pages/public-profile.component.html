@@ -1,4 +1,4 @@
-<div *ngIf="userId && userInfo && userStats && !loading" class="PublicProfile container mb-5">
+<div tslAdSlotGroup *ngIf="userId && userInfo && userStats && !loading" class="PublicProfile container mb-5">
     <tsl-user-profile-header [userInfo]="userInfo" [userStats]="userStats"></tsl-user-profile-header>
     <div class="PublicProfile__section--second row flex-wrap-reverse">
         <div class="col-12 col-md-6">
@@ -9,6 +9,8 @@
         </div>
     </div>
     <router-outlet></router-outlet>
-    <tsl-sky *ngIf="isMobile" [adSlot]="adSlot"></tsl-sky>
+    <ng-container *ngIf="isMobile">
+      <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlot"></tsl-sky>
+    </ng-container>
 </div>
 <tsl-spinner [hidden]="!loading"></tsl-spinner>

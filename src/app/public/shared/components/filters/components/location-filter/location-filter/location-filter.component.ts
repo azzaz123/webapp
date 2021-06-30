@@ -7,7 +7,7 @@ import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interfac
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { LabeledSearchLocation, SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { GEO_APP_CODE, GEO_APP_ID } from '@shared/geolocation/here-maps/here-maps.service';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { FILTER_QUERY_PARAM_KEY } from '../../../enums/filter-query-param-key.enum';
 import { FilterParameter } from '../../../interfaces/filter-parameter.interface';
@@ -58,6 +58,8 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   public bubbleActive = false;
   public loadingGeolocation = false;
+  private readonly geolocationCoordinatesSubject: Subject<SearchLocation> = new Subject<SearchLocation>();
+  private readonly selectedSuggestionSubject: Subject<string> = new Subject<string>();
 
   constructor(
     private geolocationService: GeolocationService,
@@ -83,6 +85,14 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     this.subscriptions.add(
       this.onSelectLocationSuggestion().subscribe((location: SearchLocation) => {
         this.componentLocation = location;
+        this.updateLocationMap(this.componentLocation, this.componentDistance);
+      })
+    );
+
+    this.subscriptions.add(
+      this.onGeolocationChange().subscribe((location: LabeledSearchLocation) => {
+        this.componentLocation = { latitude: location.latitude, longitude: location.longitude };
+        this.locationName = location.label;
         this.updateLocationMap(this.componentLocation, this.componentDistance);
       })
     );
@@ -154,6 +164,14 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     this.componentLocationForm.patchValue({ mapURL });
   }
 
+  get geolocationCoordinates$(): Observable<SearchLocation> {
+    return this.geolocationCoordinatesSubject.asObservable();
+  }
+
+  get selectedSuggestion$(): Observable<string> {
+    return this.selectedSuggestionSubject.asObservable();
+  }
+
   public onValueChange(_: FilterParameter[], currentValue: FilterParameter[]): void {
     const latitude = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.latitude).value;
     const longitude = currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.longitude).value;
@@ -178,11 +196,30 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     return this.componentLocationForm.get('distance').valueChanges.pipe(distinctUntilChanged());
   }
 
+  public selectSuggestion(locationName: string) {
+    this.selectedSuggestionSubject.next(locationName);
+  }
+
   public onSelectLocationSuggestion(): Observable<LabeledSearchLocation> {
-    return this.componentLocationForm.get('locationName').valueChanges.pipe(
+    return this.selectedSuggestion$.pipe(
       filter((locationName) => !!locationName),
       distinctUntilChanged(),
       switchMap((locationName: string) => this.getLatitudeAndLongitudeFromLocationName(locationName))
+    );
+  }
+
+  public onGeolocationChange(): Observable<LabeledSearchLocation> {
+    return this.geolocationCoordinates$.pipe(
+      switchMap((location: SearchLocation) =>
+        this.getLocationLabelFromLatitudeAndLongitude(location).pipe(
+          map((label: string) => {
+            return {
+              ...location,
+              label,
+            };
+          })
+        )
+      )
     );
   }
 
@@ -215,8 +252,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
       .getLocationFromBrowserAPI()
       .then(
         (searchLocation: SearchLocation) => {
-          this.componentLocation = searchLocation;
-          this.updateLocationMap(this.componentLocation, this.componentDistance);
+          this.geolocationCoordinatesSubject.next(searchLocation);
         },
         (error: PositionError | GeolocationNotAvailableError) => {
           const toast: Toast = {

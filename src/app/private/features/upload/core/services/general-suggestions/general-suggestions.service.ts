@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { I18nService } from '@core/i18n/i18n.service';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { environment } from '@environments/environment';
 import { ACCEPT_HEADERS } from '@public/core/constants/header-constants';
 import { IOption } from '@shared/dropdown/utils/option.interface';
+import { APP_LOCALE } from 'configs/subdomains.config';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Brand, BrandModel, Model, ObjectType, Size, SizesResponse } from '../../models/brand-model.interface';
@@ -15,10 +15,10 @@ export const CONDITION_KEYS_API_URL = 'api/v3/consumergoods/keys/condition';
 
 @Injectable()
 export class GeneralSuggestionsService {
-  constructor(private http: HttpClient, private i18n: I18nService) {}
+  constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private http: HttpClient) {}
 
   getObjectTypes(category_id: number): Observable<ObjectType[]> {
-    const headers = new HttpHeaders().set('Accept', ACCEPT_HEADERS.SUGGESTERS_V3).set('Accept-Language', this.i18n.locale);
+    const headers = new HttpHeaders().set('Accept', ACCEPT_HEADERS.SUGGESTERS_V3).set('Accept-Language', this.locale);
 
     return this.http.get<ObjectType[]>(`${environment.baseUrl}${SUGGESTERS_API_URL}/object-type`, {
       params: {
@@ -64,7 +64,7 @@ export class GeneralSuggestionsService {
       .get(`${environment.baseUrl}${FASHION_KEYS_API_URL}/size`, {
         params: {
           object_type_id: objectTypeId,
-          language: this.i18n.locale,
+          language: this.locale,
         } as any,
       })
       .pipe(
@@ -81,7 +81,7 @@ export class GeneralSuggestionsService {
     return this.http
       .get<ConditionsResponse[]>(`${environment.baseUrl}${CONDITION_KEYS_API_URL}`, {
         params: {
-          language: this.i18n.locale,
+          language: this.locale,
         },
       })
       .pipe(

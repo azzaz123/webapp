@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { KycComponent } from './kyc.component';
+import { WalletComponent } from './wallet.component';
 
 const routes: Route[] = [
   {
     path: '',
-    component: KycComponent,
+    component: WalletComponent,
   },
 ];
 
@@ -13,6 +13,6 @@ const routes: Route[] = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class KYCRoutingModule {}
+export class WalletRoutingModule {}
 
-export const KYCRoutedComponents = [KycComponent];
+export const WalletRoutedComponents = [WalletComponent];

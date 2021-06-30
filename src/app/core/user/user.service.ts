@@ -1,12 +1,11 @@
 import { from, Observable, of } from 'rxjs';
 
 import { catchError, tap, map, take, finalize } from 'rxjs/operators';
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { User } from './user';
 import { EventService } from '../event/event.service';
 import { Item } from '../item/item';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
-import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '@environments/environment';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
@@ -25,6 +24,7 @@ import { ReleaseVersionService } from '@core/release-version/release-version.ser
 
 import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
+import { APP_LOCALE } from 'configs/subdomains.config';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
@@ -66,12 +66,12 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private event: EventService,
-    private i18n: I18nService,
     private accessTokenService: AccessTokenService,
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
     private releaseVersionService: ReleaseVersionService,
-    @Inject('SUBDOMAIN') private subdomain: string
+    @Inject('SUBDOMAIN') private subdomain: string,
+    @Inject(LOCALE_ID) private locale: APP_LOCALE
   ) {}
 
   get user(): User {
@@ -285,7 +285,7 @@ export class UserService {
   }
 
   public getUnsubscribeReasons(): Observable<UnsubscribeReason[]> {
-    const params = { language: this.i18n.locale };
+    const params = { language: this.locale };
     return this.http.get<UnsubscribeReason[]>(`${environment.baseUrl}${USER_UNSUBSCRIBE_REASONS_ENDPOINT}`, { params });
   }
 

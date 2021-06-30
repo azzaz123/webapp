@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
@@ -6,13 +6,11 @@ import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import * as moment from 'moment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import { concatMap, distinctUntilChanged, filter, finalize, map, mergeMap, take } from 'rxjs/operators';
-import { environment } from '@environments/environment';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ConnectionService } from '@core/connection/connection.service';
 import { CallsService } from '@core/conversation/calls.service';
 import { DesktopNotificationsService } from '@core/desktop-notifications/desktop-notifications.service';
 import { EventService } from '@core/event/event.service';
-import { I18nService } from '@core/i18n/i18n.service';
 import { Item } from '@core/item/item';
 import { RealTimeService } from '@core/message/real-time.service';
 import { PaymentService } from '@core/payments/payment.service';
@@ -26,6 +24,7 @@ import { ExternalCommsService } from '@core/external-comms.service';
 import { OpenWallapop } from '@core/analytics/resources/events-interfaces';
 import { ANALYTICS_EVENT_NAMES } from '@core/analytics/resources/analytics-event-names';
 import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
+import { APP_LOCALE } from 'configs/subdomains.config';
 
 @Component({
   selector: 'tsl-private',
@@ -47,7 +46,6 @@ export class PrivateComponent implements OnInit {
     public userService: UserService,
     private desktopNotificationsService: DesktopNotificationsService,
     private titleService: Title,
-    private i18n: I18nService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private renderer: Renderer2,
@@ -61,7 +59,8 @@ export class PrivateComponent implements OnInit {
     private uuidService: UuidService,
     private serviceWorker: SwUpdate,
     private deviceService: DeviceService,
-    private externalCommsService: ExternalCommsService
+    private externalCommsService: ExternalCommsService,
+    @Inject(LOCALE_ID) private locale: APP_LOCALE
   ) {}
 
   ngOnInit() {
@@ -88,7 +87,7 @@ export class PrivateComponent implements OnInit {
   }
 
   private setMomentLocale(): void {
-    moment.locale(this.i18n.locale);
+    moment.locale(this.locale);
   }
 
   private initializeServices(): void {

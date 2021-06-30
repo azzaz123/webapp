@@ -9,6 +9,8 @@ import {
   AfterViewInit,
   OnChanges,
   OnDestroy,
+  Inject,
+  LOCALE_ID,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CartBase } from '../../catalog/cart/cart-base';
@@ -22,6 +24,7 @@ import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '@core/constants';
 import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { APP_LOCALE } from 'configs/subdomains.config';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -76,7 +79,8 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
     private cd: ChangeDetectorRef,
     private i18n: I18nService,
     private stripeService: StripeService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    @Inject(LOCALE_ID) private locale: APP_LOCALE
   ) {}
 
   ngAfterViewInit() {
@@ -120,7 +124,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
 
   private initStripe() {
     const elements = this.stripeService.lib.elements({
-      locale: this.i18n.locale,
+      locale: this.locale,
     });
 
     const style = {
