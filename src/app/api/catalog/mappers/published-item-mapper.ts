@@ -39,7 +39,7 @@ export function mapCatalogItemsToItemCards(catalogItems: CatalogItem[], userId: 
 }
 
 function mapCatalogItemToItemCard(item: CatalogItem, userId: string, favoriteIds: string[]): ItemCard {
-  const { id, category_id, title, description, price, images = [], attributes = [], slug } = item;
+  const { id, category_id, title, description, price, images = [], attributes = [], slug, reserved, bump } = item;
 
   return {
     id,
@@ -56,7 +56,8 @@ function mapCatalogItemToItemCard(item: CatalogItem, userId: string, favoriteIds
       sold: false,
       expired: false,
       banned: false,
-      reserved: false,
+      reserved: !!reserved,
+      bumped: !!bump,
       favorite: favoriteIds.includes(id),
     },
   };

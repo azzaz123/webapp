@@ -1,9 +1,10 @@
 import { map, startWith } from 'rxjs/operators';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { Observable, interval, Subscription } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { APP_LOCALE } from 'configs/subdomains.config';
 
 @Component({
   selector: 'tsl-countdown',
@@ -18,7 +19,7 @@ export class CountdownComponent implements OnInit, OnDestroy {
   private counter$: Observable<number>;
   private counterSubscription: Subscription;
 
-  constructor(private i18n: I18nService) {}
+  constructor(private i18n: I18nService, @Inject(LOCALE_ID) private locale: APP_LOCALE) {}
 
   ngOnInit() {
     const lastTime = moment(this.value);
@@ -69,7 +70,7 @@ export class CountdownComponent implements OnInit, OnDestroy {
       return '';
     }
 
-    const locale = this.i18n.locale;
+    const locale = this.locale;
     const duration = moment.duration(diffTime);
     let timeText = '';
     const durationDays = Math.floor(duration.asDays());

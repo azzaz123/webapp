@@ -1,32 +1,35 @@
 import { ComponentFixture, fakeAsync, tick, TestBed, waitForAsync } from '@angular/core/testing';
-import { CreditCardInfoComponent } from './credit-card-info.component';
+import { PaymentsCardInfoComponent } from './payments-card-info.component';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { BRAND_CARDS } from './credit-card-info.enum';
+import { BRAND_CARDS } from './payments-card-info.enum';
+import { By } from '@angular/platform-browser';
 
-describe('CreditCardInfoComponent', () => {
+describe('PaymentsCardInfoComponent', () => {
   const VISA_SRC_PATH = '/assets/icons/card-visa.svg';
   const MASTERCARD_SRC_PATH = '/assets/icons/card-mastercard.svg';
   const GENERIC_CARD_SRC_PATH = '/assets/icons/card.svg';
-  const changeCardButtonSelector = '.CreditCardInfo__actions--change';
-  const deleteCardButtonSelector = '.CreditCardInfo__actions--delete';
-  const errorStyleSelector = '.CreditCardInfo--error';
+  const changeCardButtonSelector = '.PaymentsCardInfo__actions--change';
+  const deleteCardButtonSelector = '.PaymentsCardInfo__actions--delete';
+  const errorStyleSelector = '.PaymentsCardInfo--error';
+  const numberCardSelector = '.PaymentsCardInfo__number';
+  const svgSelector = 'tsl-svg-icon';
 
-  let component: CreditCardInfoComponent;
-  let fixture: ComponentFixture<CreditCardInfoComponent>;
+  let component: PaymentsCardInfoComponent;
+  let fixture: ComponentFixture<PaymentsCardInfoComponent>;
   let de: DebugElement;
   let el: HTMLElement;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CreditCardInfoComponent],
+        declarations: [PaymentsCardInfoComponent],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreditCardInfoComponent);
+    fixture = TestBed.createComponent(PaymentsCardInfoComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
@@ -123,6 +126,10 @@ describe('CreditCardInfoComponent', () => {
 
       expect(component.creditCardBrandSrc).toStrictEqual(MASTERCARD_SRC_PATH);
     });
+
+    it('should show the svg', () => {
+      expect(fixture.debugElement.query(By.css(svgSelector))).toBeTruthy();
+    });
   });
 
   describe('when the credit card brand is visa...', () => {
@@ -133,6 +140,10 @@ describe('CreditCardInfoComponent', () => {
 
       expect(component.creditCardBrandSrc).toStrictEqual(VISA_SRC_PATH);
     });
+
+    it('should show the svg', () => {
+      expect(fixture.debugElement.query(By.css(svgSelector))).toBeTruthy();
+    });
   });
 
   describe('when the credit card brand is not mastercard or visa...', () => {
@@ -142,6 +153,43 @@ describe('CreditCardInfoComponent', () => {
       component.ngOnChanges();
 
       expect(component.creditCardBrandSrc).toStrictEqual(GENERIC_CARD_SRC_PATH);
+    });
+
+    it('should show the svg', () => {
+      expect(fixture.debugElement.query(By.css(svgSelector))).toBeTruthy();
+    });
+  });
+
+  describe('when the entity is a bank account...', () => {
+    beforeEach(() => {
+      component.isBankAccount = true;
+      component.numberCard = '1234';
+
+      component.ngOnChanges();
+      fixture.detectChanges();
+    });
+
+    it('should show only 4 stars before the number', () => {
+      const fourStars = '****';
+
+      expect(el.querySelector(numberCardSelector).innerHTML).toBe(`${fourStars} ${component.numberCard}`);
+    });
+
+    it('should not show the svg', () => {
+      expect(fixture.debugElement.query(By.css(svgSelector))).toBeFalsy();
+    });
+  });
+
+  describe('when the entity is NOT a bank account...', () => {
+    it('should show 12 stars before the number', () => {
+      const twelveStars = '**** **** ****';
+      component.isBankAccount = false;
+      component.numberCard = '1234';
+
+      component.ngOnChanges();
+      fixture.detectChanges();
+
+      expect(el.querySelector(numberCardSelector).innerHTML).toBe(`${twelveStars} ${component.numberCard}`);
     });
   });
 });

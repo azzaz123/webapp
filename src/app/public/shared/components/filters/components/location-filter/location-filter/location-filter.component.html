@@ -13,7 +13,7 @@
           </tsl-svg-icon>
           <input [attr.disabled]="loadingGeolocation || null" class="LocationFilter__input py-0 px-5 w-100 form-control"
             type="text" formControlName="locationName" [editable]="false" [ngbTypeahead]="search"
-            [resultTemplate]="locationTemplate" />
+            [resultTemplate]="locationTemplate" (selectItem)="selectSuggestion($event.item)" />
         </div>
 
         <div class="LocationFilter__map">

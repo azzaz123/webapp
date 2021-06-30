@@ -9,7 +9,7 @@ import { NewCardModalComponent } from '@shared/modals/new-card-modal/new-card-mo
 import { SubscriptionCardSelectorComponent } from './subscription-card-selector.component';
 
 @Component({
-  selector: 'tsl-credit-card-info',
+  selector: 'tsl-payments-card-info',
   template: '',
 })
 class MockCreditCardInfo {}
