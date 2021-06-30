@@ -1,14 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { CATEGORY_IDS } from '@core/category/category-ids';
+import { FeatureflagService } from '@core/user/featureflag.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_PARAMETER_STORE_TOKEN } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
-import { ReplaySubject } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { SORT_BY_RELEVANCE_CATEGORY_IDS } from './constants/sort-by-config-constants';
 import { SORT_BY_DEFAULT_OPTIONS, SORT_BY_RELEVANCE_OPTIONS } from './constants/sort-by-options-constants';
 import { SortByService } from './sort-by.service';
 
 describe('SortByService', () => {
+  let featureFlagService: FeatureflagService;
   let sortByService: SortByService;
   const parametersSubject: ReplaySubject<FilterParameter[]> = new ReplaySubject<FilterParameter[]>();
   let parameters = [];
@@ -29,9 +31,18 @@ describe('SortByService', () => {
             getParametersByKeys: getParametersByKeys,
           },
         },
+        {
+          provide: FeatureflagService,
+          useValue: {
+            getFlag() {
+              return of();
+            },
+          },
+        },
       ],
     });
     sortByService = TestBed.inject(SortByService);
+    featureFlagService = TestBed.inject(FeatureflagService);
   });
 
   describe('when search filters changes', () => {
@@ -71,19 +82,47 @@ describe('SortByService', () => {
             });
           });
 
-          it('should update options with sort by relevance options', () => {
-            spyOn(sortByService[optionsSubjectName], 'next');
-            parametersSubject.next(parameters);
+          describe('and feature flag is active', () => {
+            beforeEach(() => {
+              sortByService['isRelevanceFeatureFlagActive'] = true;
+            });
 
-            expect(sortByService[optionsSubjectName].next).toHaveBeenCalledWith(SORT_BY_RELEVANCE_OPTIONS);
+            it('should update options with sort by relevance options', () => {
+              spyOn(sortByService[optionsSubjectName], 'next');
+              parametersSubject.next(parameters);
+
+              expect(sortByService[optionsSubjectName].next).toHaveBeenCalledWith(SORT_BY_RELEVANCE_OPTIONS);
+            });
+
+            it('should update isRelevanceOptionActive with true', () => {
+              spyOn(sortByService[isRelevanceOptionActiveSubjectName], 'next');
+
+              parametersSubject.next(parameters);
+
+              expect(sortByService[isRelevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(true);
+            });
           });
 
-          it('should update isRelevanceOptionActive with true', () => {
-            spyOn(sortByService[isRelevanceOptionActiveSubjectName], 'next');
+          describe('and feature flag is NOT active', () => {
+            beforeEach(() => {
+              sortByService['isRelevanceFeatureFlagActive'] = false;
+            });
 
-            parametersSubject.next(parameters);
+            it('should update options with sort by default options', () => {
+              spyOn(sortByService[optionsSubjectName], 'next');
 
-            expect(sortByService[isRelevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(true);
+              parametersSubject.next(parameters);
+
+              expect(sortByService[optionsSubjectName].next).toHaveBeenCalledWith(SORT_BY_DEFAULT_OPTIONS);
+            });
+
+            it('should update isRelevanceOptionActive with false', () => {
+              spyOn(sortByService[isRelevanceOptionActiveSubjectName], 'next');
+
+              parametersSubject.next(parameters);
+
+              expect(sortByService[isRelevanceOptionActiveSubjectName].next).toHaveBeenCalledWith(false);
+            });
           });
         });
 
