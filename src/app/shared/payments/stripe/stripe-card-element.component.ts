@@ -23,6 +23,7 @@ import { Tier } from '@core/subscriptions/subscriptions.interface';
 import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '@core/constants';
 import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { APP_LOCALE } from 'configs/subdomains.config';
 
 @Component({
@@ -154,7 +155,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
     const { token, error } = await this.stripeService.createToken(this.card);
 
     if (error) {
-      this.toastService.show({ text: error.message, type: 'error' });
+      this.toastService.show({ text: error.message, type: TOAST_TYPES.ERROR });
     } else {
       this.stripeCardToken.emit(token.id);
     }

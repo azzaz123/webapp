@@ -15,7 +15,7 @@ import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
-import { Toast } from '@layout/toast/core/interfaces/toast.interface';
+import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { uniq } from 'lodash-es';
 import * as moment from 'moment';
@@ -725,7 +725,7 @@ describe('InboxConversationService', () => {
         const expectedToast: Toast = {
           title: i18nService.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE),
           text: i18nService.translate(TRANSLATION_KEY.CHAT_TOO_MANY_CONVERSATIONS),
-          type: 'error',
+          type: TOAST_TYPES.ERROR,
         };
 
         service.openConversationByItemId$('1337').subscribe();

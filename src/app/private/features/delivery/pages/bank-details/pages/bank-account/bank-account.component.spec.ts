@@ -30,6 +30,7 @@ import {
 } from '@private/features/delivery/errors/classes/bank-account';
 
 import { BankAccountComponent } from './bank-account.component';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 describe('BankAccountComponent', () => {
   const messageErrorSelector = '.BankAccount__message--error';
@@ -193,7 +194,7 @@ describe('BankAccountComponent', () => {
           it('should show a succeed message', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS),
-              type: 'success',
+              type: TOAST_TYPES.SUCCESS,
             });
           });
 
@@ -219,7 +220,7 @@ describe('BankAccountComponent', () => {
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
                 text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
-                type: 'error',
+                type: TOAST_TYPES.ERROR,
               });
             });
 
@@ -251,7 +252,7 @@ describe('BankAccountComponent', () => {
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
                 text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR),
-                type: 'error',
+                type: TOAST_TYPES.ERROR,
               });
             });
 
@@ -292,7 +293,7 @@ describe('BankAccountComponent', () => {
         it('should show a succeed message', () => {
           expect(toastService.show).toHaveBeenCalledWith({
             text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS),
-            type: 'success',
+            type: TOAST_TYPES.SUCCESS,
           });
         });
 
@@ -320,7 +321,7 @@ describe('BankAccountComponent', () => {
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
-              type: 'error',
+              type: TOAST_TYPES.ERROR,
             });
           });
         });
@@ -339,7 +340,7 @@ describe('BankAccountComponent', () => {
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR),
-              type: 'error',
+              type: TOAST_TYPES.ERROR,
             });
           });
 
@@ -380,7 +381,7 @@ describe('BankAccountComponent', () => {
     it('should show an error toast', () => {
       expect(toastService.show).toHaveBeenCalledWith({
         text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
-        type: 'error',
+        type: TOAST_TYPES.ERROR,
       });
     });
 
