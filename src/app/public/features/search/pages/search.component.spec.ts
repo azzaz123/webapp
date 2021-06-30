@@ -50,9 +50,10 @@ import { SearchListTrackingEventsService } from '../core/services/search-list-tr
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { AdSlotShoppingComponentStub } from '@fixtures/shared/components/ad-shopping.component.stub';
-import { SortByService } from '../components/sort-filter/services/sort-by.service';
 import { SearchResponseExtraData } from '../core/services/interfaces/search-response-extra-data.interface';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { SORT_BY } from '../components/sort-filter/services/constants/sort-by-options-constants';
+import { SortByService } from '../components/sort-filter/services/sort-by.service';
 
 @Directive({
   selector: '[tslInfiniteScroll]',
@@ -174,6 +175,14 @@ describe('SearchComponent', () => {
           useClass: MockSearchTrackingEventsService,
         },
         SortByService,
+        {
+          provide: FeatureFlagService,
+          useValue: {
+            getFlag() {
+              return of();
+            },
+          },
+        },
       ],
     }).compileComponents();
   });
