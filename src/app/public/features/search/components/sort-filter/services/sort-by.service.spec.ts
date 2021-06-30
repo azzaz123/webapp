@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CATEGORY_IDS } from '@core/category/category-ids';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_PARAMETER_STORE_TOKEN } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
@@ -10,7 +10,7 @@ import { SORT_BY_DEFAULT_OPTIONS, SORT_BY_RELEVANCE_OPTIONS } from './constants/
 import { SortByService } from './sort-by.service';
 
 describe('SortByService', () => {
-  let featureFlagService: FeatureflagService;
+  let featureFlagService: FeatureFlagService;
   let sortByService: SortByService;
   const parametersSubject: ReplaySubject<FilterParameter[]> = new ReplaySubject<FilterParameter[]>();
   let parameters = [];
@@ -32,7 +32,7 @@ describe('SortByService', () => {
           },
         },
         {
-          provide: FeatureflagService,
+          provide: FeatureFlagService,
           useValue: {
             getFlag() {
               return of();
@@ -42,7 +42,7 @@ describe('SortByService', () => {
       ],
     });
     sortByService = TestBed.inject(SortByService);
-    featureFlagService = TestBed.inject(FeatureflagService);
+    featureFlagService = TestBed.inject(FeatureFlagService);
   });
 
   describe('when search filters changes', () => {

@@ -13,7 +13,7 @@ import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
 import { Subscription } from 'rxjs';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
@@ -46,7 +46,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private cookieService: CookieService,
     private modalService: NgbModal,
-    private featureFlagService: FeatureflagService,
+    private featureFlagService: FeatureFlagService,
     private searchNavigator: SearchNavigatorService,
     private topbarTrackingEventsService: TopbarTrackingEventsService,
     @Inject('SUBDOMAIN') private subdomain: string

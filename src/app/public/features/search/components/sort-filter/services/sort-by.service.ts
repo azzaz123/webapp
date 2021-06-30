@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import {
   FilterParameterStoreService,
@@ -21,7 +21,7 @@ export class SortByService {
 
   constructor(
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService,
-    private featureFlagService: FeatureflagService
+    private featureFlagService: FeatureFlagService
   ) {
     this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SORT_BY_RELEVANCE).subscribe(
       (isEnabled) => {
