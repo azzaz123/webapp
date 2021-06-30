@@ -173,7 +173,7 @@ export class GooglePublisherTagService {
   }
 
   get googletag(): googletag.Googletag {
-    return this.window['googletag'];
+    return this.window['googletag'] || { cmd: [] };
   }
 
   private get googCsa(): GoogCsa {
