@@ -1,25 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { moduleMetadata, Story } from '@storybook/angular';
 import { SelectFormOption } from '../select/interfaces/select-form-option.interface';
-import { SelectFormModule } from '../select/select-form.module';
+import { MultiSelectFormModule } from './multi-select-form.module';
 import { MultiSelectOptionModule } from './multi-select-option/multi-select-option/multi-select-option.module';
 
 @Component({
   selector: 'tsl-story-multi-select-form',
   template: `
+    <h4 class="mt-4">MultiSelect FormGroup: {{ formGroup.value.select }}</h4>
     <div style="background: white; border: 1px dashed black;">
-      <h4>MultiSelect</h4>
-      <tsl-multi-select-form formControlName="hashtagSuggestors" [options]="options"></tsl-multi-select-form>
+      {{ options[0].value }}
+      <form [formGroup]="formGroup">
+        <tsl-multi-select-form formControlName="select" [options]="options"></tsl-multi-select-form>
+      </form>
     </div>
   `,
 })
 class StoryMultiSelectFormFormComponent {
   @Input() options: SelectFormOption<string>[];
+  @Input() isDisabled: boolean = false;
   public formGroup = new FormGroup({
-    hashtagSuggestors: new FormControl('ww'),
+    select: new FormControl(['default']),
   });
+  public select = ['default'];
 }
 
 export default {
@@ -28,7 +33,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StoryMultiSelectFormFormComponent],
-      imports: [CommonModule, FormsModule, SelectFormModule, MultiSelectOptionModule],
+      imports: [CommonModule, FormsModule, ReactiveFormsModule, MultiSelectFormModule, MultiSelectOptionModule],
     }),
   ],
 };
@@ -36,20 +41,18 @@ export default {
 const Template: Story<StoryMultiSelectFormFormComponent> = (args) => ({
   props: args,
   template: `
-        <h3>test</h3>
-        <tsl-story-multi-select-form [options]="options"></tsl-story-multi-select-form>
+        <tsl-story-multi-select-form [isDisabled]="false" [options]="options"></tsl-story-multi-select-form>
       `,
 });
 
 export const Default = Template.bind({});
 Default.args = {
-  options: ['1', '2'],
-  /*  options: [
+  options: [
     { label: 'aa', value: 'aa' },
     { label: 'bb', value: 'bb' },
     { label: 'cc', value: 'cc' },
     { label: 'dd', value: 'dd' },
-  ], */
+  ],
 };
 
 export const OptionsWithOccurrencies = Template.bind({});
