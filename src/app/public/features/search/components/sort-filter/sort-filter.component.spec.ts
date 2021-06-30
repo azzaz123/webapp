@@ -26,6 +26,8 @@ import {
   SORT_BY_RELEVANCE_OPTION,
 } from './services/constants/sort-by-options-constants';
 import { SortByService } from './services/sort-by.service';
+import { FeatureflagService } from '@core/user/featureflag.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'tsl-select-form',
@@ -76,6 +78,14 @@ describe('SortFilterComponent', () => {
           useValue: MockCookieService,
         },
         SortByService,
+        {
+          provide: FeatureflagService,
+          useValue: {
+            getFlag() {
+              return of();
+            },
+          },
+        },
       ],
     }).compileComponents();
   });
