@@ -66,6 +66,7 @@ export const WIDE_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   // TODO: TechDebt: changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit, OnAttach, OnDetach {
+  private resetSearchId = true;
   private sortBySubject: BehaviorSubject<SORT_BY> = new BehaviorSubject<SORT_BY>(SORT_BY.DISTANCE);
   private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscription: Subscription = new Subscription();
@@ -104,7 +105,8 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public isWall$: Observable<boolean> = this.searchService.isWall$;
   public slotsConfig: SlotsConfig;
 
-  private resetSearchId = true;
+  public infoBubbleText: string;
+  public showInfoBubble = false;
 
   @HostListener('window:scroll', ['$event'])
   @debounce(500)
@@ -139,9 +141,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           this.resetSearchId = false;
         }
 
-        if (searchResponseExtraData.sortBy) {
-          this.sortBySubject.next(searchResponseExtraData.sortBy);
-        }
+        this.handleSearchResponseExtraData(searchResponseExtraData);
 
         this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
       })
@@ -219,6 +219,16 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   public handleFilterOpened(opened: boolean) {
     this.filterOpened = opened;
+  }
+
+  private handleSearchResponseExtraData(searchResponseExtraData: SearchResponseExtraData): void {
+    if (searchResponseExtraData.sortBy) {
+      this.sortBySubject.next(searchResponseExtraData.sortBy);
+
+      const isSortByRelevance = searchResponseExtraData.sortBy === SORT_BY.RELEVANCE;
+      this.infoBubbleText = isSortByRelevance ? searchResponseExtraData.bubble : '';
+      this.showInfoBubble = isSortByRelevance;
+    }
   }
 
   private queryParamsChange(): Observable<FilterParameter[]> {

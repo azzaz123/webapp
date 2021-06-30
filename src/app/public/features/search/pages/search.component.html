@@ -30,6 +30,9 @@
       </ng-container>
     </div>
     <ng-container main>
+      <div class="Search__filters__bubble d-flex position-sticky justify-content-center" *ngIf="showInfoBubble">
+        <tsl-info-bubble class="position-relative mt-2">{{ infoBubbleText }}</tsl-info-bubble>
+      </div>
       <tsl-public-item-card-list
         [items]="items$ | async"
         [isLoading]="isLoadingResults$ | async"

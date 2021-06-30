@@ -21,9 +21,9 @@ export class SearchInfrastructureService {
     return this.searchApiService.loadMore().pipe(switchMap((searchPagination: SearchPagination) => this.setFavourites(searchPagination)));
   }
 
-  private setFavourites({ items, hasMore, searchId, sortBy }: SearchPagination): Observable<SearchPagination> {
+  private setFavourites({ items, hasMore, searchId, sortBy, bubble }: SearchPagination): Observable<SearchPagination> {
     return this.searchFavouritesService
       .getFavouritesByItems(items)
-      .pipe(map((favItems: ItemCard[]) => ({ items: favItems, hasMore, searchId, sortBy })));
+      .pipe(map((favItems: ItemCard[]) => ({ items: favItems, hasMore, searchId, sortBy, bubble })));
   }
 }
