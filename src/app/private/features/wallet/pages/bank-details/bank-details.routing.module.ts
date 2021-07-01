@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { DELIVERY_PATHS } from '../../../delivery/delivery-routing-constants';
 import { BankAccountModule } from './pages/bank-account/bank-account.module';
 import { CreditCardModule } from './pages/credit-card/credit-card.module';
 import { BankDetailsComponent } from './bank-details.component';
 import { BankDetailsOverviewModule } from './pages/bank-details-overview/bank-details-overview.module';
+import { WALLET_PATHS } from '../../wallet-routing-constants';
 
 const routes: Route[] = [
   {
@@ -16,11 +16,11 @@ const routes: Route[] = [
         loadChildren: () => BankDetailsOverviewModule,
       },
       {
-        path: DELIVERY_PATHS.CREDIT_CARD,
+        path: WALLET_PATHS.CREDIT_CARD,
         loadChildren: () => CreditCardModule,
       },
       {
-        path: DELIVERY_PATHS.BANK_ACCOUNT,
+        path: WALLET_PATHS.BANK_ACCOUNT,
         loadChildren: () => BankAccountModule,
       },
       {

@@ -25,6 +25,7 @@ import {
   LastNameIsInvalidError,
 } from '@private/features/wallet/errors/classes/bank-account';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { WALLET_PATHS } from '@private/features/wallet/wallet-routing-constants';
 
 export const IBAN_LENGTH = 40;
 @Component({
@@ -47,7 +48,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     last_name: '',
   };
 
-  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/`;
+  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
 
   constructor(
     private fb: FormBuilder,
