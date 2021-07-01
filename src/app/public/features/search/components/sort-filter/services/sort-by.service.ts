@@ -8,6 +8,7 @@ import {
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { BehaviorSubject } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { SORT_BY_RELEVANCE_CATEGORY_IDS } from './constants/sort-by-config-constants';
 import { SORT_BY, SORT_BY_DEFAULT_OPTIONS, SORT_BY_RELEVANCE_OPTIONS } from './constants/sort-by-options-constants';
 
@@ -23,14 +24,17 @@ export class SortByService {
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService,
     private featureFlagService: FeatureFlagService
   ) {
-    this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SORT_BY_RELEVANCE).subscribe(
-      (isEnabled) => {
-        this.isRelevanceFeatureFlagActive = isEnabled;
-      },
-      () => {
-        this.isRelevanceFeatureFlagActive = true;
-      }
-    );
+    this.featureFlagService
+      .getFlag(FEATURE_FLAGS_ENUM.SORT_BY_RELEVANCE)
+      .pipe(take(1))
+      .subscribe(
+        (isEnabled) => {
+          this.isRelevanceFeatureFlagActive = isEnabled;
+        },
+        () => {
+          this.isRelevanceFeatureFlagActive = true;
+        }
+      );
 
     this.filterParameterStore.parameters$.subscribe(() => {
       this.optionsSubject.next(this.getOptionsByParameters());
