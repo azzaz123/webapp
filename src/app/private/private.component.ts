@@ -71,6 +71,11 @@ export class PrivateComponent implements OnInit {
     this.subscribeSWChanges();
   }
 
+  public onViewIsBlocked(): void {
+    this.renderer.addClass(document.body, 'blocked-page');
+    this.renderer.addClass(document.body.parentElement, 'blocked-page');
+  }
+
   private subscribeSWChanges() {
     this.serviceWorker.available.subscribe((event) => {
       console.warn('current version is', event.current);
@@ -145,11 +150,6 @@ export class PrivateComponent implements OnInit {
     }
 
     return window.location.reload();
-  }
-
-  public onViewIsBlocked(): void {
-    this.renderer.addClass(document.body, 'blocked-page');
-    this.renderer.addClass(document.body.parentElement, 'blocked-page');
   }
 
   private updateUrlAndSendAnalytics(): void {
