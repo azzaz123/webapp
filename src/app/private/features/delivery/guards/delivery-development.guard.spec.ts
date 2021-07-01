@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { of } from 'rxjs';
 
@@ -9,7 +9,7 @@ import { DeliveryDevelopmentGuard } from './delivery-development.guard';
 
 describe('DeliveryDevelopmentGuard', () => {
   let guard: DeliveryDevelopmentGuard;
-  let featureFlagService: FeatureflagService;
+  let featureFlagService: FeatureFlagService;
   let router: Router;
 
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe('DeliveryDevelopmentGuard', () => {
       providers: [
         DeliveryDevelopmentGuard,
         {
-          provide: FeatureflagService,
+          provide: FeatureFlagService,
           useClass: FeatureFlagServiceMock,
         },
         {
@@ -31,7 +31,7 @@ describe('DeliveryDevelopmentGuard', () => {
     });
 
     guard = TestBed.inject(DeliveryDevelopmentGuard);
-    featureFlagService = TestBed.inject(FeatureflagService);
+    featureFlagService = TestBed.inject(FeatureFlagService);
     router = TestBed.inject(Router);
   });
 

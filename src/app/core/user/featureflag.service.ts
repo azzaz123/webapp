@@ -13,7 +13,7 @@ export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
 @Injectable({
   providedIn: 'root',
 })
-export class FeatureflagService {
+export class FeatureFlagService {
   private storedFeatureFlags: FeatureFlag[] = [];
 
   constructor(private http: HttpClient, private permissionService: NgxPermissionsService) {}

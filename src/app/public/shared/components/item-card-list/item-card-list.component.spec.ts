@@ -5,7 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccessTokenService } from '@core/http/access-token.service';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
@@ -91,7 +91,7 @@ describe('ItemCardListComponent', () => {
           },
         },
         {
-          provide: FeatureflagService,
+          provide: FeatureFlagService,
           useClass: FeatureFlagServiceMock,
         },
         {
@@ -116,7 +116,7 @@ describe('ItemCardListComponent', () => {
     checkSessionService = TestBed.inject(CheckSessionService);
     itemCardService = TestBed.inject(ItemCardService);
     router = TestBed.inject(Router);
-    featureFlagService = TestBed.inject(FeatureflagService);
+    featureFlagService = TestBed.inject(FeatureFlagService);
     fixture.detectChanges();
   });
 
