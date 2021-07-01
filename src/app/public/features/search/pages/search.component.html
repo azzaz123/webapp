@@ -60,14 +60,12 @@
           <div class="row justify-content-center mt-4" *ngIf="hasMoreItems$ | async">
             <tsl-button id="btn-load-more" (click)="loadMoreProducts()" i18n="@@web_search_view_more_products">View more products</tsl-button>
           </div>
-          <ng-container *ngxPermissionsOnly="PERMISSIONS.showAds" >
-            <div *ngIf="device === DevicesType.DESKTOP && (searchWithKeyword$ | async)" class="row justify-content-center my-4">
-              <tsl-sky-slot-group-shopping [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
-            </div>
-            <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
-              <tsl-sky [adSlot]="adSlots.search3r"></tsl-sky>
-            </div>
-          </ng-container>
+          <div *ngIf="device === DevicesType.DESKTOP && (searchWithKeyword$ | async)" class="row justify-content-center my-4">
+            <tsl-sky-slot-group-shopping *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
+          </div>
+          <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
+            <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search3r"></tsl-sky>
+          </div>
         </ng-container>
       </ng-container>
     </tsl-search-layout>
