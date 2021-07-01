@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { SelectFormOption } from '../select/interfaces/select-form-option.interface';
-import { ComplexSelectValue } from '../select/types/complex-select-value';
 
 export type MultiSelectValue = string[];
 
