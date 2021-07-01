@@ -2,11 +2,10 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { BankAccountService } from '@private/features/delivery/services/bank-account/bank-account.service';
+import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { BankAccount } from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
+import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Observable } from 'rxjs';
 import { COLORS } from '@core/colors/colors-constants';
@@ -27,8 +26,8 @@ export class BankDetailsOverviewComponent implements OnInit {
   public bankAccount$: Observable<BankAccount>;
   public creditCard$: Observable<CreditCard>;
 
-  public CREDIT_CARD_FORM_LINK = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}/${DELIVERY_PATHS.CREDIT_CARD}`;
-  public BANK_ACCOUNT_FORM_LINK = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}/${DELIVERY_PATHS.BANK_ACCOUNT}`;
+  public CREDIT_CARD_FORM_LINK = `${PRIVATE_PATHS.DELIVERY}/${true}/${true}`;
+  public BANK_ACCOUNT_FORM_LINK = `${PRIVATE_PATHS.DELIVERY}/${true}/${true}`;
 
   constructor(
     private router: Router,

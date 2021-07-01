@@ -8,9 +8,9 @@ import { mockCreditCard } from '@api/fixtures/payments/cards/credit-card.fixture
 import { PaymentsCreditCardService } from '@api/payments/cards';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { I18nService } from '@core/i18n/i18n.service';
-import { MOCK_BANK_ACCOUNT } from '@fixtures/private/delivery/bank-account/bank-account.fixtures.spec';
-import { BankAccount } from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
-import { BankAccountService } from '@private/features/delivery/services/bank-account/bank-account.service';
+import { MOCK_BANK_ACCOUNT } from '@fixtures/private/wallet/bank-account/bank-account.fixtures.spec';
+import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
+import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
 import { AddCreditCardComponent } from '@shared/add-credit-card/add-credit-card.component';
 import { PaymentsCardInfoComponent } from '@shared/payments-card-info/payments-card-info.component';
 import { BehaviorSubject, of, throwError } from 'rxjs';
