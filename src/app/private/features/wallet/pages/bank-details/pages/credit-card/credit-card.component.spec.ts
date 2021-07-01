@@ -19,7 +19,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { Router } from '@angular/router';
 import { UuidService } from '@core/uuid/uuid.service';
-import { MOCK_EMPTY_CREDIT_CARD_FORM } from '@fixtures/private/delivery/credit-card/credit-card.fixtures.spec';
+import { MOCK_EMPTY_CREDIT_CARD_FORM } from '@fixtures/private/wallet/credit-card/credit-card.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-only.directive';
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';

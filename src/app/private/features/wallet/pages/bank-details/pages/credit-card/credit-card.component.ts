@@ -10,7 +10,6 @@ import { UuidService } from '@core/uuid/uuid.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { finalize } from 'rxjs/operators';
-import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-request.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import {
@@ -27,7 +26,7 @@ import {
   PlatformResponseIsInvalidError,
   UniqueCardForUserError,
 } from '@api/core/errors/payments/cards';
-import { CreditCardFormErrorMessages } from '@private/features/delivery/interfaces/credit-card/credit-card-form-error-messages.interface';
+import { CreditCardFormErrorMessages } from '@private/features/wallet/interfaces/credit-card/credit-card-form-error-messages.interface';
 import { Location } from '@angular/common';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
@@ -48,7 +47,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     cardNumber: '',
   };
 
-  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
+  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/`;
 
   constructor(
     private fb: FormBuilder,
