@@ -76,15 +76,13 @@ describe('MultiSelectFormComponent', () => {
       spyOn(component, 'handleSelectedOption');
       spyOn(component, 'onChange');
 
-      const option1 = debugElement.queryAll(By.directive(MultiSelectOptionComponent))[0].componentInstance;
-      const option2 = debugElement.queryAll(By.directive(MultiSelectOptionComponent))[1].componentInstance;
-      option1.toggleOnChange.emit();
-      option2.toggleOnChange.emit();
+      const hostChildElement: HTMLElement = debugElement.queryAll(By.directive(MultiSelectOptionComponent))[1].nativeElement;
+      const option1: HTMLInputElement = hostChildElement.querySelector('input');
+      option1.dispatchEvent(new Event('change'));
 
       expect(component.handleSelectedOption).toHaveBeenCalled();
+      expect(component.onChange).toHaveBeenCalled();
       expect(component.extendedOptions).toBe('');
-      //expect(component.onChange).toHaveBeenCalledWith('');
-      // expect(component.value).toBe('');
     });
   });
 });
