@@ -178,6 +178,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       sale_conditions: this.fb.group({
         fix_price: false,
         exchange_allowed: false,
+        supports_shipping: false,
       }),
       delivery_info: [null],
       location: this.fb.group({

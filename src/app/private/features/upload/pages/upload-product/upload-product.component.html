@@ -296,6 +296,10 @@
       </div>
       <div class="row">
         <div class="col">
+          <div class="d-flex mb-3" formGroupName="sale_conditions">
+            <tsl-checkbox-form formControlName="supports_shipping"></tsl-checkbox-form>
+            <span class="ml-2 mb-0" i18n="@@finding_listing_shipping_toggle_title">Shipping</span>
+          </div>
           <div class="selector-container" ngbRadioGroup name="radioBasic" formControlName="delivery_info">
             <label ngbButtonLabel class="selector shipping-selector" *ngFor="let delivery of deliveryInfo">
               <div class="selector-icon btn">
@@ -324,7 +328,9 @@
           <span *ngIf="!isReactivation" i18n="@@web_upload_product_submit_update">Update</span>
           <span *ngIf="isReactivation" i18n="@@web_upload_seller_reactivation_button">Reactivate item</span>
         </ng-container>
-        <span *ngIf="loading && !pendingFiles" i18n="@@web_upload_product_submit_loading">Uploading... {{ uploadCompletedPercentage }}%</span>
+        <span *ngIf="loading && !pendingFiles" i18n="@@web_upload_product_submit_loading"
+          >Uploading... {{ uploadCompletedPercentage }}%</span
+        >
         <span *ngIf="loading && pendingFiles" i18n="@@web_upload_images_submit_loading"
           >Uploading image... {{ pendingFiles.currentUploading }}/{{ pendingFiles.totalFiles }}</span
         >
