@@ -2,6 +2,19 @@ import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-re
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import { PaymentsSyncCreditCardApi } from '@api/payments/cards/dtos/requests';
 import { PaymentsCreditCardApi, TokenizerInformationApi } from '@api/payments/cards/dtos/responses';
+import { of } from 'rxjs';
+
+export const MockPaymentsCreditCardService = {
+  get() {
+    return of(null);
+  },
+  create() {
+    return of(null);
+  },
+  update() {
+    return of(null);
+  },
+};
 
 export const mockPaymentsCreditCard: PaymentsCreditCardApi = {
   card_holder_name: 'Lolaso Fino Bruh - 17:38',
@@ -22,11 +35,19 @@ export const mockCreditCard: CreditCard = {
 };
 
 export const mockCreditCardSyncRequest: CreditCardSyncRequest = {
-  id: 'ui-ui-uiiii-id',
-  fullname: 'Ot el Bruixot',
+  id: 'FAKE_UUID',
+  fullName: 'Ot el Bruixot',
   cardNumber: '4972485830400049',
   cardExpirationDate: '1221',
   cardCvx: '242',
+};
+
+export const mockCreditCardSyncRequestEmpty: CreditCardSyncRequest = {
+  id: 'FAKE_UUID',
+  fullName: '',
+  cardNumber: '',
+  cardExpirationDate: '',
+  cardCvx: '',
 };
 
 export const mockTokenizerInformationResponse: TokenizerInformationApi = {
@@ -43,14 +64,14 @@ export const mockCardTokenizedResponse: string =
   'data=QOHfBI142JBIpqQJOQyJcwsjr25wTBu8_9tvZWbUlh2Fm53uPWzGoAyuLy8vAqIPRIQMyPqKXxk9X59DUVsGhdx9Kicx6FsPjwxmBfoe3MlvvmS4bJZX_ejoGzljiTdf0ftIYwFxOdfmDQ5GtM_cIg';
 
 export const mockPaymentsCreateSyncCreditCardRequest: PaymentsSyncCreditCardApi = {
-  holder_name: mockCreditCardSyncRequest.fullname,
+  holder_name: mockCreditCardSyncRequest.fullName,
   id: '12345',
   registration_id: mockTokenizerInformationResponse.id,
   token: mockCardTokenizedResponse,
 };
 
 export const mockPaymentsUpdateSyncCreditCardRequest: PaymentsSyncCreditCardApi = {
-  holder_name: mockCreditCardSyncRequest.fullname,
+  holder_name: mockCreditCardSyncRequest.fullName,
   id: mockCreditCardSyncRequest.id,
   registration_id: mockTokenizerInformationResponse.id,
   token: mockCardTokenizedResponse,

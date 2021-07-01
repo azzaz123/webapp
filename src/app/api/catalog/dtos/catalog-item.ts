@@ -11,4 +11,6 @@ export interface CatalogItem {
   price: CatalogItemPrice;
   attributes: CatalogItemAttribute[];
   slug: string;
+  reserved?: { flag: boolean };
+  bump?: { type: string };
 }

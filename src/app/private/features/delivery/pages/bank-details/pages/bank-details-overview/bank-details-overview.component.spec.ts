@@ -22,6 +22,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 describe('BankDetailsOverviewComponent', () => {
   const creditCardInfoSelector = '#creditCard';
@@ -154,7 +155,7 @@ describe('BankDetailsOverviewComponent', () => {
           it('should show a succeed toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS),
-              type: 'success',
+              type: TOAST_TYPES.SUCCESS,
             });
           });
         });
@@ -178,7 +179,7 @@ describe('BankDetailsOverviewComponent', () => {
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR),
-              type: 'error',
+              type: TOAST_TYPES.ERROR,
             });
           });
         });
@@ -287,7 +288,7 @@ describe('BankDetailsOverviewComponent', () => {
           it('should show a succeed toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_SUCCESS),
-              type: 'success',
+              type: TOAST_TYPES.SUCCESS,
             });
           });
         });
@@ -311,7 +312,7 @@ describe('BankDetailsOverviewComponent', () => {
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR),
-              type: 'error',
+              type: TOAST_TYPES.ERROR,
             });
           });
         });

@@ -11,6 +11,7 @@ import { ProfileTabsComponent } from './components/profile-tabs/profile-tabs.com
 import { UserProfileHeaderModule } from './components/user-profile-header/user-profile-header.module';
 import { PublicProfileService } from './core/services/public-profile.service';
 import { publicProfileRoutedComponents, publicProfileRoutedModules, PublicProfileRoutingModule } from './public-profile-routing.module';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   declarations: [publicProfileRoutedComponents, ProfileTabsComponent],
@@ -25,6 +26,7 @@ import { publicProfileRoutedComponents, publicProfileRoutedModules, PublicProfil
     PublicPipesModule,
     PublicUserApiModule,
     ItemFavouritesModule,
+    NgxPermissionsModule.forChild(),
   ],
   providers: [PublicProfileService, IsCurrentUserPipe],
 })

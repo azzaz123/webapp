@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { ItemPlace } from '@core/geolocation/geolocation-response.interface';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
-import { Toast } from '@layout/toast/core/interfaces/toast.interface';
+import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { LabeledSearchLocation, SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { GEO_APP_CODE, GEO_APP_ID } from '@shared/geolocation/here-maps/here-maps.service';
@@ -182,6 +182,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     this.componentDistance = +distance / DISTANCE_FACTOR;
     this.currentLocation = { latitude, longitude };
     this.componentLocation = { latitude, longitude };
+    this.updateLocationMap(this.currentLocation, this.componentDistance);
   }
 
   public onApplyLocation(): Observable<string> {
@@ -257,7 +258,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
         (error: PositionError | GeolocationNotAvailableError) => {
           const toast: Toast = {
             text: error.message,
-            type: 'error',
+            type: TOAST_TYPES.ERROR,
           };
           this.toastService.show(toast);
         }

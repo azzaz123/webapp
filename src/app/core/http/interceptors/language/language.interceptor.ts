@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { I18nService } from '@core/i18n/i18n.service';
 import { DeviceService } from '@core/device/device.service';
 import { environment } from '@environments/environment';
+import { APP_LOCALE } from 'configs/subdomains.config';
 
 export const LANGUAGE_HEADER_NAME = 'Accept-Language';
 export const MIN_QUALITY_VALUE = 0.1;
 
 @Injectable()
 export class LanguageInterceptor implements HttpInterceptor {
-  constructor(private i18nService: I18nService, private deviceService: DeviceService) {}
+  constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private deviceService: DeviceService) {}
 
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const isMonolithRequest = request.url.startsWith(environment.baseUrl);
@@ -32,7 +32,7 @@ export class LanguageInterceptor implements HttpInterceptor {
     const browserLanguages = this.getBrowserLanguagesWithoutCurrentLocale();
     const browserLanguagesWithQualityValue = browserLanguages.map(this.formatLanguageWithQuality);
 
-    const allLanguagesWithQualityValues = [`${this.i18nService.locale}`, ...browserLanguagesWithQualityValue];
+    const allLanguagesWithQualityValues = [`${this.locale}`, ...browserLanguagesWithQualityValue];
     return `${allLanguagesWithQualityValues.join(',')}`;
   }
 
@@ -48,6 +48,6 @@ export class LanguageInterceptor implements HttpInterceptor {
   }
 
   private getBrowserLanguagesWithoutCurrentLocale(): string[] {
-    return this.deviceService.getDeviceLanguages().filter((language) => language !== this.i18nService.locale);
+    return this.deviceService.getDeviceLanguages().filter((language) => language !== this.locale);
   }
 }

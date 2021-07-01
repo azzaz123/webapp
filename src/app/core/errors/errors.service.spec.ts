@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
 import { I18nService } from '../i18n/i18n.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({
   template: '<router-outlet></router-outlet>',
@@ -52,7 +53,7 @@ describe('Service: Errors', () => {
       expect(toastService.show).toHaveBeenCalledWith({
         text: ERROR_MESSAGE,
         title: 'Oops!',
-        type: 'error',
+        type: TOAST_TYPES.ERROR,
       });
     });
 
@@ -64,7 +65,7 @@ describe('Service: Errors', () => {
       expect(toastService.show).toHaveBeenCalledWith({
         text: ERROR_MESSAGE,
         title: 'Oops!',
-        type: 'error',
+        type: TOAST_TYPES.ERROR,
       });
     });
 
@@ -76,7 +77,7 @@ describe('Service: Errors', () => {
       expect(toastService.show).toHaveBeenCalledWith({
         text: i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE),
         title: 'Oops!',
-        type: 'error',
+        type: TOAST_TYPES.ERROR,
       });
     });
   });
@@ -90,7 +91,7 @@ describe('Service: Errors', () => {
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'message',
         title: 'title',
-        type: 'error',
+        type: TOAST_TYPES.ERROR,
       });
     });
 
@@ -102,7 +103,7 @@ describe('Service: Errors', () => {
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'message text',
         title: 'title',
-        type: 'error',
+        type: TOAST_TYPES.ERROR,
       });
     });
   });
@@ -116,7 +117,7 @@ describe('Service: Errors', () => {
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'message',
         title: 'title',
-        type: 'success',
+        type: TOAST_TYPES.SUCCESS,
       });
     });
     it('should call toastService.show method for type success with i18n message, concatenating text', () => {
@@ -127,7 +128,7 @@ describe('Service: Errors', () => {
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'message text',
         title: 'title',
-        type: 'success',
+        type: TOAST_TYPES.SUCCESS,
       });
     });
   });
