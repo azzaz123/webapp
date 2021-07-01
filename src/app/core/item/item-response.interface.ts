@@ -251,6 +251,7 @@ export interface ItemUploadForm {
     fix_price: boolean;
     exchange_allowed: boolean;
     shipping_allowed?: boolean;
+    supports_shipping?: boolean;
   };
   delivery_info?: any;
   location?: {
