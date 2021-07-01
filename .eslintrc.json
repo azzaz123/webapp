@@ -40,7 +40,6 @@
         "@typescript-eslint/no-duplicate-imports": "warn",
         "@typescript-eslint/semi": "warn",
         "@typescript-eslint/default-param-last": "warn",
-        "no-useless-constructor": "warn",
         "eqeqeq": "error"
       }
     },

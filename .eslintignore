@@ -1,0 +1,44 @@
+
+# Please remove the directories from here once all the linting errors of the directory have been fixed
+
+# PROs
+/src/app/private/features/calls
+/src/app/private/features/catalog
+/src/app/private/features/catalog-pro
+/src/app/private/features/dashboard
+/src/app/private/features/help
+/src/app/private/features/upload
+/src/app/private/features/wallacoins
+
+# WALLET-CHAT
+/src/app/private/features/chat
+
+# DELIVERY
+/src/app/private/features/delivery
+
+# ENGAGEMENT
+/src/app/private/features/favorites
+/src/app/private/features/profile
+/src/app/private/features/reviews
+/src/app/private/features/stats
+/src/app/public/features/item-detail
+/src/app/public/features/public-profile
+
+# FINDING
+/src/app/public/features/search
+
+# T&S
+/src/app/public/features/register
+
+# TRANSVERSAL 
+/src/app/api
+/src/app/core
+/src/app/public/core
+/src/app/private/core
+/src/app/shared
+/src/app/public/shared
+/src/app/layout
+/src/app/public/layout
+/src/app/private/layout
+/src/app/public/features/error
+/src/tests
