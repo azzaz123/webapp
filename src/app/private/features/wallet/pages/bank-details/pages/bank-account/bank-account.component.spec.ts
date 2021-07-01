@@ -11,15 +11,15 @@ import {
   MOCK_EMPTY_BANK_ACCOUNT,
   MOCK_BANK_ACCOUNT,
   MOCK_BANK_ACCOUNT_INVALID,
-} from '@fixtures/private/delivery/bank-account/bank-account.fixtures.spec';
+} from '@fixtures/private/wallet/bank-account/bank-account.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numbers-only.directive.module';
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { of, Subject, throwError } from 'rxjs';
-import { BankAccountApiService } from '@private/features/delivery/services/api/bank-account-api/bank-account-api.service';
-import { BankAccountService } from '@private/features/delivery/services/bank-account/bank-account.service';
-import { MapBankAccountService } from '@private/features/delivery/services/bank-account/map-bank-account/map-bank-account.service';
+import { BankAccountApiService } from '@private/features/wallet/services/api/bank-account-api/bank-account-api.service';
+import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
+import { MapBankAccountService } from '@private/features/wallet/services/bank-account/map-bank-account/map-bank-account.service';
 import { Location } from '@angular/common';
 import {
   FirstNameIsInvalidError,
@@ -27,7 +27,7 @@ import {
   LastNameIsInvalidError,
   PlatformResponseIsInvalidError,
   UniqueBankAccountByUserError,
-} from '@private/features/delivery/errors/classes/bank-account';
+} from '@private/features/wallet/errors/classes/bank-account';
 
 import { BankAccountComponent } from './bank-account.component';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';

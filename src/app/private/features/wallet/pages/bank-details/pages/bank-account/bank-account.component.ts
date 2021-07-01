@@ -7,12 +7,12 @@ import { EventService } from '@core/event/event.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { I18nService } from '@core/i18n/i18n.service';
-import { BankAccountService } from '@private/features/delivery/services/bank-account/bank-account.service';
+import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
 import { finalize } from 'rxjs/operators';
-import { BankAccount } from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
+import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { Router } from '@angular/router';
-import { BankAccountFormErrorMessages } from '@private/features/delivery/interfaces/bank-account/bank-account-form-error-messages.interface';
+import { BankAccountFormErrorMessages } from '@private/features/wallet/interfaces/bank-account/bank-account-form-error-messages.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { Location } from '@angular/common';
 import {
@@ -23,7 +23,7 @@ import {
   PlatformResponseIsInvalidError,
   UniqueBankAccountByUserError,
   LastNameIsInvalidError,
-} from '@private/features/delivery/errors/classes/bank-account';
+} from '@private/features/wallet/errors/classes/bank-account';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 export const IBAN_LENGTH = 40;
@@ -47,7 +47,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     last_name: '',
   };
 
-  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BANK_DETAILS}`;
+  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.DELIVERY}/`;
 
   constructor(
     private fb: FormBuilder,

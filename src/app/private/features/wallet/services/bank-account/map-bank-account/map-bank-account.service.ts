@@ -3,7 +3,7 @@ import {
   BankAccount,
   BankAccountApi,
   BankAccountApiWithCountry,
-} from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
+} from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
 
 @Injectable()
 export class MapBankAccountService {

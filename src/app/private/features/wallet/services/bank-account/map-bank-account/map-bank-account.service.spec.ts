@@ -2,7 +2,7 @@ import {
   MOCK_API_BANK_ACCOUNT,
   MOCK_API_BANK_ACCOUNT_WITH_COUNTRY,
   MOCK_BANK_ACCOUNT,
-} from '@fixtures/private/delivery/bank-account/bank-account.fixtures.spec';
+} from '@fixtures/private/wallet/bank-account/bank-account.fixtures.spec';
 import { TestBed } from '@angular/core/testing';
 import { MapBankAccountService } from './map-bank-account.service';
 

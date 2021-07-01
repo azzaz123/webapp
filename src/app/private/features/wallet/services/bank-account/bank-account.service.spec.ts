@@ -6,7 +6,7 @@ import {
   MOCK_BANK_ACCOUNT,
   MOCK_API_BANK_ACCOUNT_WITH_COUNTRY,
   MOCK_API_BANK_ACCOUNT,
-} from '@fixtures/private/delivery/bank-account/bank-account.fixtures.spec';
+} from '@fixtures/private/wallet/bank-account/bank-account.fixtures.spec';
 import { BankAccount } from '../../interfaces/bank-account/bank-account-api.interface';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';

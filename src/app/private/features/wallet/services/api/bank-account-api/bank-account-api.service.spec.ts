@@ -3,10 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import {
   MOCK_API_BANK_ACCOUNT,
   MOCK_API_BANK_ACCOUNT_WITH_COUNTRY,
-} from '@fixtures/private/delivery/bank-account/bank-account.fixtures.spec';
-import { BankAccountError, IbanCountryIsInvalidError, IbanIsInvalidError } from '@private/features/delivery/errors/classes/bank-account';
-import { BANK_ACCOUNT_ERROR_CODES } from '@private/features/delivery/errors/mappers/bank-account/bank-account-error.enum';
-import { BankAccountApiWithCountry } from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
+} from '@fixtures/private/wallet/bank-account/bank-account.fixtures.spec';
+import { BankAccountError, IbanCountryIsInvalidError, IbanIsInvalidError } from '@private/features/wallet/errors/classes/bank-account';
+import { BANK_ACCOUNT_ERROR_CODES } from '@private/features/wallet/errors/mappers/bank-account/bank-account-error.enum';
+import { BankAccountApiWithCountry } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
 import { BankAccountApiService, MAIN_BANK_ACCOUNT_URL } from './bank-account-api.service';
 
 describe('BankAccountApiService', () => {

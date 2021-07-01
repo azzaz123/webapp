@@ -2,11 +2,11 @@ import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BankAccountApi, BankAccountApiWithCountry } from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
+import { BankAccountApi, BankAccountApiWithCountry } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
 import {
   BankAccountErrorMapper,
   BankAccountErrorResponse,
-} from '@private/features/delivery/errors/mappers/bank-account/bank-account-error-mapper';
+} from '@private/features/wallet/errors/mappers/bank-account/bank-account-error-mapper';
 import { catchError } from 'rxjs/operators';
 
 export const MAIN_BANK_ACCOUNT_URL = `${environment.baseUrl}/api/v3/payments/bank_accounts/main`;

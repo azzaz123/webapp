@@ -2,7 +2,7 @@ import {
   BankAccount,
   BankAccountApi,
   BankAccountApiWithCountry,
-} from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
+} from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
 
 export const MOCK_EMPTY_BANK_ACCOUNT: BankAccount = {
   id: 'FAKE_UUID',
