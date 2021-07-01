@@ -1,10 +1,10 @@
 import {
-  MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_IBAN_COUNTRY_RESPONSE,
-  MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_IBAN_RESPONSE,
-  MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_OWNER_NAME_RESPONSE,
-  MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_PLATFORM_RESPONSE,
-  MOCK_DELIVERY_BANK_ACCOUNT_ERROR_UNIQUE_BANK_ACCOUNT_RESPONSE,
-} from '@fixtures/private/delivery/errors/delivery-errors.fixtures.spec';
+  MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_IBAN_COUNTRY_RESPONSE,
+  MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_IBAN_RESPONSE,
+  MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_OWNER_NAME_RESPONSE,
+  MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_PLATFORM_RESPONSE,
+  MOCK_WALLET_BANK_ACCOUNT_ERROR_UNIQUE_BANK_ACCOUNT_RESPONSE,
+} from '@fixtures/private/wallet/errors/wallet-errors.fixtures.spec';
 import {
   BankAccountError,
   FirstNameIsInvalidError,
@@ -23,7 +23,7 @@ describe('when mapping an error from bank account backend', () => {
     it('should notify first name and last name error', () => {
       let results: BankAccountError[];
 
-      bankAccountErrorMapper.map(MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_OWNER_NAME_RESPONSE).subscribe({
+      bankAccountErrorMapper.map(MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_OWNER_NAME_RESPONSE).subscribe({
         error: (errors) => (results = errors),
       });
 
@@ -36,7 +36,7 @@ describe('when mapping an error from bank account backend', () => {
     it('should notify invalid iban country error', () => {
       let result: BankAccountError;
 
-      bankAccountErrorMapper.map(MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_IBAN_COUNTRY_RESPONSE).subscribe({
+      bankAccountErrorMapper.map(MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_IBAN_COUNTRY_RESPONSE).subscribe({
         error: (errors) => (result = errors[0]),
       });
 
@@ -48,7 +48,7 @@ describe('when mapping an error from bank account backend', () => {
     it('should notify invalid iban error', () => {
       let result: BankAccountError;
 
-      bankAccountErrorMapper.map(MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_IBAN_RESPONSE).subscribe({
+      bankAccountErrorMapper.map(MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_IBAN_RESPONSE).subscribe({
         error: (errors) => (result = errors[0]),
       });
 
@@ -60,7 +60,7 @@ describe('when mapping an error from bank account backend', () => {
     it('should notify invalid platform response error', () => {
       let result: BankAccountError;
 
-      bankAccountErrorMapper.map(MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_PLATFORM_RESPONSE).subscribe({
+      bankAccountErrorMapper.map(MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_PLATFORM_RESPONSE).subscribe({
         error: (errors) => (result = errors[0]),
       });
 
@@ -72,7 +72,7 @@ describe('when mapping an error from bank account backend', () => {
     it('should notify unique bank account response error', () => {
       let result: BankAccountError;
 
-      bankAccountErrorMapper.map(MOCK_DELIVERY_BANK_ACCOUNT_ERROR_UNIQUE_BANK_ACCOUNT_RESPONSE).subscribe({
+      bankAccountErrorMapper.map(MOCK_WALLET_BANK_ACCOUNT_ERROR_UNIQUE_BANK_ACCOUNT_RESPONSE).subscribe({
         error: (errors) => (result = errors[0]),
       });
 

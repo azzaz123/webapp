@@ -1,4 +1,3 @@
-import { DeliveryErrorResponseApi } from '../../classes/delivery-error-response-api';
 import { ErrorMapper } from '@api/core/utils/classes/';
 import { BANK_ACCOUNT_ERROR_CODES } from './bank-account-error.enum';
 import {
@@ -9,15 +8,16 @@ import {
   PlatformResponseIsInvalidError,
   UniqueBankAccountByUserError,
 } from '../../classes/bank-account';
+import { WalletErrorResponseApi } from '../../classes/wallet-error-response-api';
 
-export type BankAccountErrorResponse = DeliveryErrorResponseApi<BANK_ACCOUNT_ERROR_CODES>;
+export type BankAccountErrorResponse = WalletErrorResponseApi<BANK_ACCOUNT_ERROR_CODES>;
 
 export class BankAccountErrorMapper extends ErrorMapper<BankAccountErrorResponse> {
   protected generateErrorByRequest(networkError: BankAccountErrorResponse): Error[] {
     const mappedErrors: Error[] = [];
-    const { error: backendDeliveryErrors } = networkError;
+    const { error: backendWalletErrors } = networkError;
 
-    backendDeliveryErrors.forEach((error) => {
+    backendWalletErrors.forEach((error) => {
       if (error.error_code === BANK_ACCOUNT_ERROR_CODES.INVALID_OWNER_NAME) {
         mappedErrors.push(new FirstNameIsInvalidError());
         mappedErrors.push(new LastNameIsInvalidError());
