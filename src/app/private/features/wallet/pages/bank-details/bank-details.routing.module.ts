@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { DELIVERY_PATHS } from '../../delivery-routing-constants';
+import { DELIVERY_PATHS } from '../../../delivery/delivery-routing-constants';
 import { BankAccountModule } from './pages/bank-account/bank-account.module';
 import { CreditCardModule } from './pages/credit-card/credit-card.module';
 import { BankDetailsComponent } from './bank-details.component';
