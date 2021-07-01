@@ -8,7 +8,7 @@ import { FilterHostDirective } from '../directives/filter-host.directive';
   selector: 'tsl-filter-group',
   template: '',
 })
-// tslint:disable-next-line: component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 export class FilterGroupComponentStub {
   @ViewChildren(FilterHostDirective) query: QueryList<FilterHostDirective>;
   @Input() values: FilterParameter[];

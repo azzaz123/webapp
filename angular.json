@@ -71,7 +71,7 @@
               "libphonenumber-js",
               "moment",
               "hammerjs/hammer"
-           ]
+            ]
           },
           "configurations": {
             "docker": {
@@ -150,7 +150,9 @@
               "localize": true
             },
             "es": {
-              "localize": ["es"],
+              "localize": [
+                "es"
+              ],
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -180,13 +182,12 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": []
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
@@ -201,5 +202,8 @@
     "@schematics/angular:directive": {
       "prefix": "tsl"
     }
+  },
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }

@@ -19,7 +19,7 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'story-abstract-select-filter',
   template: `
     <tsl-filter-template
