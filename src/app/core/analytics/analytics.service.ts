@@ -10,7 +10,7 @@ import { DeviceService } from '@core/device/device.service';
 // TODO: This should not be exported. Anything that uses this should start using the getDeviceId method
 export const DEVICE_ID_COOKIE_NAME = 'device_id';
 export const DATA_PLAN_NAME = 'dataplan';
-export const DATA_PLAN_VERSION = 1;
+export const DATA_PLAN_VERSION = 5;
 export const COMMON_MPARTICLE_CONFIG = {
   isDevelopmentMode: !environment.production,
   dataPlan: {

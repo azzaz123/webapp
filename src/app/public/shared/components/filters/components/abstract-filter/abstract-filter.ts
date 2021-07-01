@@ -40,7 +40,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, FILTER_QUERY_PARA
   public hasValue$ = this.hasValueSubject.asObservable();
 
   protected _hasValue(): boolean {
-    return this._value?.length > 0;
+    return this._value.some((parameter) => !!parameter.value);
   }
 
   public ngOnInit(): void {

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { I18nService } from '@core/i18n/i18n.service';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { environment } from '@environments/environment';
 import { IOption } from '@shared/dropdown/utils/option.interface';
+import { APP_LOCALE } from 'configs/subdomains.config';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Key } from '../../models/key.interface';
@@ -11,11 +11,11 @@ export const REAL_ESTATE_KEYS_ENDPOINT = 'api/v3/real_estate/keys';
 
 @Injectable()
 export class RealestateKeysService {
-  constructor(private http: HttpClient, private i18n: I18nService) {}
+  constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private http: HttpClient) {}
 
   getOperations(): Observable<Key[]> {
     const params = {
-      language: this.i18n.locale,
+      language: this.locale,
       filter: 'false',
     };
 
@@ -23,13 +23,13 @@ export class RealestateKeysService {
   }
 
   getTypes(operation: string): Observable<Key[]> {
-    const params = { language: this.i18n.locale, operation };
+    const params = { language: this.locale, operation };
 
     return this.http.get<Key[]>(`${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/type`, { params });
   }
 
   getConditions(): Observable<IOption[]> {
-    const params = { language: this.i18n.locale };
+    const params = { language: this.locale };
 
     return this.http
       .get(`${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/condition`, {
@@ -47,7 +47,7 @@ export class RealestateKeysService {
   }
 
   getExtras(type: string): Observable<Key[]> {
-    const params = { language: this.i18n.locale, type };
+    const params = { language: this.locale, type };
 
     return type ? this.http.get<Key[]>(`${environment.baseUrl}${REAL_ESTATE_KEYS_ENDPOINT}/extra`, { params }) : of([]);
   }

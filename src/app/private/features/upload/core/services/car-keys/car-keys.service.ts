@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { I18nService } from '@core/i18n/i18n.service';
 import { environment } from '@environments/environment';
 import { IOption } from '@shared/dropdown/utils/option.interface';
+import { APP_LOCALE } from 'configs/subdomains.config';
 import { filter } from 'lodash-es';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -13,7 +14,7 @@ export const CARS_KEYS_ENDPOINT = 'api/v3/cars/keys';
 export class CarKeysService {
   private cache: any[];
 
-  constructor(private http: HttpClient, private i18n: I18nService) {}
+  constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private http: HttpClient) {}
 
   getTypes(): Observable<IOption[]> {
     return this.getTypesData().pipe(
@@ -35,7 +36,7 @@ export class CarKeysService {
       return of(this.cache);
     }
 
-    const params = { language: this.i18n.locale };
+    const params = { language: this.locale };
 
     return this.http.get<any[]>(`${environment.baseUrl}${CARS_KEYS_ENDPOINT}/bodytype`, { params });
   }

@@ -13,7 +13,7 @@
 
   <div class="FilterTemplate__dropdown" 
     tslFilterDropdown 
-    *ngIf="isDropdownOpen"
+    [hidden]="!isDropdownOpen"
     [dropdownOpened]="isDropdownOpen"
     [class.FilterTemplate__dropdown--opened]="isDropdownOpen"
     (openChange)="handleOpenChange($event)"

@@ -8,7 +8,9 @@
                 <ng-container *ngTemplateOutlet="slotTemplate;context: {$implicit: i}"></ng-container>
             </div>
         </ng-container>
-        <div class="ItemCardList__inline-slot d-sm-none" *ngIf="inlineSlotTemplate && i === INLINE_SLOT_POSITION">
+        <div class="ItemCardList__inline-slot d-sm-none"
+            [class.ItemCardList__inline-slot--wide]="cardType === cardTypes.WIDE"
+            *ngIf="inlineSlotTemplate && i === INLINE_SLOT_POSITION">
             <ng-container *ngTemplateOutlet="inlineSlotTemplate;"></ng-container>
         </div>
         <a [href]="item.webSlug | itemDetailRoute" [title]="item.title" target="_blank" class="ItemCardList__item">

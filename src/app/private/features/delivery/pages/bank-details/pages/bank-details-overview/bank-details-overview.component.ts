@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { BankAccountService } from '../../../../services/bank-account/bank-account.service';
+import { BankAccountService } from '@private/features/delivery/services/bank-account/bank-account.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { DELIVERY_PATHS } from '../../../../delivery-routing-constants';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { BankAccount } from '../../../../interfaces/bank-account/bank-account-api.interface';
+import { BankAccount } from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Observable } from 'rxjs';
 import { COLORS } from '@core/colors/colors-constants';
@@ -15,6 +15,7 @@ import { PaymentsCreditCardService } from '@api/payments/cards';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import * as moment from 'moment';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({
   selector: 'tsl-bank-details-overview',
@@ -99,10 +100,10 @@ export class BankDetailsOverviewComponent implements OnInit {
   private deleteCard(): void {
     this.paymentsCreditCardService.delete().subscribe(
       () => {
-        this.showToast(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS, 'success');
+        this.showToast(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS, TOAST_TYPES.SUCCESS);
       },
       () => {
-        this.showToast(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR, 'error');
+        this.showToast(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR, TOAST_TYPES.ERROR);
       }
     );
   }
@@ -110,15 +111,15 @@ export class BankDetailsOverviewComponent implements OnInit {
   private deleteBankAccount(): void {
     this.bankAccountService.delete().subscribe(
       () => {
-        this.showToast(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_SUCCESS, 'success');
+        this.showToast(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_SUCCESS, TOAST_TYPES.SUCCESS);
       },
       () => {
-        this.showToast(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR, 'error');
+        this.showToast(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR, TOAST_TYPES.ERROR);
       }
     );
   }
 
-  private showToast(key: TRANSLATION_KEY, type: 'error' | 'success'): void {
+  private showToast(key: TRANSLATION_KEY, type: TOAST_TYPES): void {
     this.toastService.show({
       text: `${this.i18nService.translate(key)}`,
       type,

@@ -12,7 +12,7 @@ import { MOCK_BANK_ACCOUNT } from '@fixtures/private/delivery/bank-account/bank-
 import { BankAccount } from '@private/features/delivery/interfaces/bank-account/bank-account-api.interface';
 import { BankAccountService } from '@private/features/delivery/services/bank-account/bank-account.service';
 import { AddCreditCardComponent } from '@shared/add-credit-card/add-credit-card.component';
-import { CreditCardInfoComponent } from '@shared/credit-card-info/credit-card-info.component';
+import { PaymentsCardInfoComponent } from '@shared/payments-card-info/payments-card-info.component';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 
 import * as moment from 'moment';
@@ -22,6 +22,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 describe('BankDetailsOverviewComponent', () => {
   const creditCardInfoSelector = '#creditCard';
@@ -44,7 +45,7 @@ describe('BankDetailsOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BankDetailsOverviewComponent, AddCreditCardComponent, CreditCardInfoComponent],
+      declarations: [BankDetailsOverviewComponent, AddCreditCardComponent, PaymentsCardInfoComponent],
       imports: [RouterTestingModule],
       providers: [
         {
@@ -154,7 +155,7 @@ describe('BankDetailsOverviewComponent', () => {
           it('should show a succeed toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS),
-              type: 'success',
+              type: TOAST_TYPES.SUCCESS,
             });
           });
         });
@@ -178,7 +179,7 @@ describe('BankDetailsOverviewComponent', () => {
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR),
-              type: 'error',
+              type: TOAST_TYPES.ERROR,
             });
           });
         });
@@ -287,7 +288,7 @@ describe('BankDetailsOverviewComponent', () => {
           it('should show a succeed toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_SUCCESS),
-              type: 'success',
+              type: TOAST_TYPES.SUCCESS,
             });
           });
         });
@@ -311,7 +312,7 @@ describe('BankDetailsOverviewComponent', () => {
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR),
-              type: 'error',
+              type: TOAST_TYPES.ERROR,
             });
           });
         });

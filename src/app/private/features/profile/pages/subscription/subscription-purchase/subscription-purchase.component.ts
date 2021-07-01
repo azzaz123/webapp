@@ -26,7 +26,7 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { User } from '@core/user/user';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentSuccessModalComponent } from '@private/features/profile/modal/payment-success/payment-success-modal.component';
-import { FinancialCard } from '@shared/credit-card-info/financial-card';
+import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { filter, mergeMap } from 'rxjs/operators';
 
@@ -163,7 +163,7 @@ export class SubscriptionPurchaseComponent implements OnInit {
 
   public onPurchaseButtonClick(): void {
     if (this.isInvoiceRequired) {
-      this.eventService.emit(EventService.BILLING_INFO_FORM_SUBMITTED);
+      this.eventService.emit(EventService.FORM_SUBMITTED);
     } else {
       this.purchaseSubscription();
     }

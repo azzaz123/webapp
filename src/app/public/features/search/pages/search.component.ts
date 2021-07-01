@@ -41,6 +41,7 @@ import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-para
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { debounce } from '@core/helpers/debounce/debounce';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -99,6 +100,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   );
   public isWall$: Observable<boolean> = this.searchService.isWall$;
   public slotsConfig: SlotsConfig;
+  readonly PERMISSIONS = PERMISSIONS;
 
   private resetSearchId = true;
 
@@ -126,7 +128,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
-    this.device = this.deviceService.getDeviceType();
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(
       this.newSearch$.pipe(skip(1)).subscribe((searchId: string) => {
@@ -146,7 +147,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
     this.searchService.init();
     this.searchAdsService.init();
-    this.searchAdsService.setSlots();
 
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
@@ -159,6 +159,13 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           );
         } else {
           this.filterParameterStore.setParameters(params);
+        }
+
+        //TODO: Remove this after tests
+        const shouldEnableExperimental =
+          params.some((p) => p.key === ('experimental' as FILTER_QUERY_PARAM_KEY)) && !localStorage.getItem('experimentalFeatures');
+        if (shouldEnableExperimental) {
+          localStorage.setItem('experimentalFeatures', 'true');
         }
       })
     );

@@ -25,10 +25,6 @@ export class SearchAdsService {
     this.subscription.add(this.setAdKeywordsObservable());
   }
 
-  public setSlots(): void {
-    this.adsService.setSlots(SEARCH_SLOTS);
-  }
-
   public clearSlots(): void {
     this.adsService.clearSlots(SEARCH_SLOTS);
   }

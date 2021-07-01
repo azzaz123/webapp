@@ -1,6 +1,6 @@
 export interface CreditCardSyncRequest {
   id: string;
-  fullname: string;
+  fullName: string;
   cardNumber: string;
   cardExpirationDate: string;
   cardCvx: string;

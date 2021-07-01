@@ -6,7 +6,7 @@ import { AdShoppingPageOptions, AdSlotGroupShoppingConfiguration } from '@core/a
   template: '{{adShoppingPageOptions}}, {{adSlotShoppingConfiguration}}',
 })
 // tslint:disable-next-line:component-class-suffix
-export class AdSlotGroupShoppingComponentSub {
+export class AdSlotGroupShoppingComponentStub {
   @Input() adShoppingPageOptions: AdShoppingPageOptions;
   @Input() adSlotShoppingConfiguration: AdSlotGroupShoppingConfiguration;
 }

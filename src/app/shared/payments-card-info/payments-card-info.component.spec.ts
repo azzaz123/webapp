@@ -1,35 +1,35 @@
 import { ComponentFixture, fakeAsync, tick, TestBed, waitForAsync } from '@angular/core/testing';
-import { CreditCardInfoComponent } from './credit-card-info.component';
+import { PaymentsCardInfoComponent } from './payments-card-info.component';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { BRAND_CARDS } from './credit-card-info.enum';
+import { BRAND_CARDS } from './payments-card-info.enum';
 import { By } from '@angular/platform-browser';
 
-describe('CreditCardInfoComponent', () => {
+describe('PaymentsCardInfoComponent', () => {
   const VISA_SRC_PATH = '/assets/icons/card-visa.svg';
   const MASTERCARD_SRC_PATH = '/assets/icons/card-mastercard.svg';
   const GENERIC_CARD_SRC_PATH = '/assets/icons/card.svg';
-  const changeCardButtonSelector = '.CreditCardInfo__actions--change';
-  const deleteCardButtonSelector = '.CreditCardInfo__actions--delete';
-  const errorStyleSelector = '.CreditCardInfo--error';
-  const numberCardSelector = '.CreditCardInfo__number';
+  const changeCardButtonSelector = '.PaymentsCardInfo__actions--change';
+  const deleteCardButtonSelector = '.PaymentsCardInfo__actions--delete';
+  const errorStyleSelector = '.PaymentsCardInfo--error';
+  const numberCardSelector = '.PaymentsCardInfo__number';
   const svgSelector = 'tsl-svg-icon';
 
-  let component: CreditCardInfoComponent;
-  let fixture: ComponentFixture<CreditCardInfoComponent>;
+  let component: PaymentsCardInfoComponent;
+  let fixture: ComponentFixture<PaymentsCardInfoComponent>;
   let de: DebugElement;
   let el: HTMLElement;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CreditCardInfoComponent],
+        declarations: [PaymentsCardInfoComponent],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreditCardInfoComponent);
+    fixture = TestBed.createComponent(PaymentsCardInfoComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;

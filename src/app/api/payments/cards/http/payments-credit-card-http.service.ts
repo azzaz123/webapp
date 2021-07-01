@@ -79,7 +79,7 @@ export class PaymentsCreditCardHttpService {
       id: isUpdate ? data.request.id : this.uuidService.getUUID(),
       token: data.tokenizedCard,
       registration_id: data.tokenizerInfo.id,
-      holder_name: data.request.fullname,
+      holder_name: data.request.fullName,
     };
 
     return body;

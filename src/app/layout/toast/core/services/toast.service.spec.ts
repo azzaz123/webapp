@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ToastService } from './toast.service';
-import { Toast } from '../interfaces/toast.interface';
+import { Toast, TOAST_TYPES } from '../interfaces/toast.interface';
 
 describe('ToastService', () => {
   let service: ToastService;
@@ -19,7 +19,7 @@ describe('ToastService', () => {
 
   describe('show', () => {
     it('show add toast into toast array', () => {
-      let MOCK_TOAST: Toast = { text: 'mocked toast created', type: 'success' };
+      let MOCK_TOAST: Toast = { text: 'mocked toast created', type: TOAST_TYPES.SUCCESS };
 
       service.show(MOCK_TOAST);
 
@@ -30,7 +30,7 @@ describe('ToastService', () => {
       it('remove toast from toast array', () => {
         let MOCK_TOAST: Toast = {
           text: 'mocked toast removed',
-          type: 'success',
+          type: TOAST_TYPES.SUCCESS,
         };
 
         service.remove(MOCK_TOAST);

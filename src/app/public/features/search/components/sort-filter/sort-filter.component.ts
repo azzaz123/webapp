@@ -6,6 +6,7 @@ import { SelectFormOption } from '@shared/form/components/select/interfaces/sele
 import { SELECT_FORM_OPTIONS_CONFIG } from './sort-filter.config';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tsl-sort-filter',
@@ -24,14 +25,14 @@ export class SortFilterComponent implements OnInit {
   @Output() toggleBubble: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   private static getSelectedValue(actualValue: string): SelectFormOption<string> {
-    return SELECT_FORM_OPTIONS_CONFIG.find(({ value }: SelectFormOption<string>) => value === actualValue);
+    return SELECT_FORM_OPTIONS_CONFIG.find(({ value }: SelectFormOption<string>) => value === actualValue) || SELECT_FORM_OPTIONS_CONFIG[0];
   }
 
-  constructor(private searchNavigatorService: SearchNavigatorService) {}
+  constructor(private searchNavigatorService: SearchNavigatorService, private activatedRoute: ActivatedRoute) {}
 
   public ngOnInit(): void {
-    this.formControl = new FormControl(this.selectFormOptionsConfig[0].value);
-    this.selected = SortFilterComponent.getSelectedValue(this.formControl.value);
+    this.formControl = new FormControl(this.initialValue);
+    this.selected = SortFilterComponent.getSelectedValue(this.initialValue);
   }
 
   public openChange(event: boolean): void {
@@ -55,5 +56,9 @@ export class SortFilterComponent implements OnInit {
 
   private closeDropdown(): void {
     this.dropdown.close();
+  }
+
+  get initialValue(): string {
+    return this.activatedRoute.snapshot.queryParams[FILTER_QUERY_PARAM_KEY.orderBy] || this.selectFormOptionsConfig[0].value;
   }
 }

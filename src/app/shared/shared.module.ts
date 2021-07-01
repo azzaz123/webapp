@@ -82,7 +82,7 @@ import { HeaderModule } from './header/header.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
 import { LocationSelectorModal } from './modals/location-selector-modal/location-selector-modal.component';
-import { CreditCardInfoModule } from './credit-card-info/credit-card-info.module';
+import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.module';
 
 @NgModule({
   imports: [
@@ -110,7 +110,7 @@ import { CreditCardInfoModule } from './credit-card-info/credit-card-info.module
     DateCountDownModule,
     ProfileFormModule,
     HeaderModule,
-    CreditCardInfoModule,
+    PaymentsCardInfoModule,
   ],
   exports: [
     SpinnerModule,
@@ -179,7 +179,7 @@ import { CreditCardInfoModule } from './credit-card-info/credit-card-info.module
     ProfileFormModule,
     InfiniteScrollDirective,
     VisibleDirectiveModule,
-    CreditCardInfoModule,
+    PaymentsCardInfoModule,
   ],
   declarations: [
     ConfirmationModalComponent,
