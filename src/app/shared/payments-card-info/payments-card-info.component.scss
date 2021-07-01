@@ -27,6 +27,11 @@ $card-height: 151px;
     flex: 1;
   }
 
+  &__owner {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   &--grey {
     color: $blue-grey-3;
   }

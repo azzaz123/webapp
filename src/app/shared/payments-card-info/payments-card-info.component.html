@@ -8,7 +8,7 @@
       <div class="PaymentsCardInfo__number PaymentsCardInfo--grey">{{aliasNumber}}</div>
       <div class="PaymentsCardInfo__date PaymentsCardInfo--grey">{{expireDate}}</div>
     </div>
-    <div *ngIf="ownerName" class="PaymentsCardInfo--grey mt-1">{{ownerName}}</div>
+    <div *ngIf="ownerName" class="PaymentsCardInfo__owner PaymentsCardInfo--grey mt-1">{{ownerName}}</div>
   </div>
   <div class="PaymentsCardInfo__actions d-flex w-100">
     <div class="PaymentsCardInfo__actions--change mr-3" *ngIf="!hideEdit" (click)="changeCardClick.emit($event)" i18n="@@web_change">Change</div>
