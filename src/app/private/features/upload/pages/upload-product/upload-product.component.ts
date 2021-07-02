@@ -39,7 +39,7 @@ import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } fr
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, take, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -151,6 +151,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
       this.detectCategoryChanges();
       this.detectObjectTypeChanges();
+      this.detectShippabilityChanges();
       if (this.item) {
         this.initializeEditForm();
 
@@ -178,7 +179,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       sale_conditions: this.fb.group({
         fix_price: false,
         exchange_allowed: false,
-        supports_shipping: false,
+        supports_shipping: true,
       }),
       delivery_info: [null],
       location: this.fb.group({
@@ -332,6 +333,16 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.getSizes();
       }
     });
+  }
+
+  private detectShippabilityChanges() {
+    this.uploadForm
+      .get('sale_conditions')
+      .get('supports_shipping')
+      .valueChanges.pipe(filter((supportsShipping) => !supportsShipping))
+      .subscribe(() => {
+        this.uploadForm.get('delivery_info').setValue(null);
+      });
   }
 
   private handleUploadFormExtraFields(): void {
