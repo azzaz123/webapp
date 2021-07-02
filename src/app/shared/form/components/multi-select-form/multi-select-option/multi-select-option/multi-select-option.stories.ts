@@ -11,23 +11,20 @@ export default {
   title: 'Webapp/Shared/Form/Components/MultiSelectForm/MultiSelectOption',
   decorators: [
     moduleMetadata({
-      imports: [MultiSelectOptionModule, CommonModule, FormsModule, CoreModule, HttpClientModule, SvgIconModule],
+      imports: [MultiSelectOptionModule, CommonModule, FormsModule, SvgIconModule],
     }),
   ],
-  argTypes: {
-    onChange: { action: 'Option clicked' },
-  },
 };
 
 const Template: Story<MultiSelectOptionComponent> = (args) => ({
   props: args,
   component: MultiSelectOptionComponent,
   template: `
+  ttt
     <div style="background: white; border: 1px dashed black;">
-    <div *ngIf="isDisabled">heys</div>
-        <tsl-multi-select-option [isDisabled]="isDisabled" (change)="onChange()"></tsl-multi-select-option>
+    {{isDisabled}}
+        <tsl-multi-select-option [option]="option" [isDisabled]="isDisabled"></tsl-multi-select-option>
     </div>
-
     `,
 });
 
@@ -38,13 +35,11 @@ Default.args = {
     value: 'aa',
     checked: false,
   },
-  isDisabled: true,
+  isDisabled: false,
 };
 
 export const WithSublabel = Template.bind({});
-Default.args = {
-  label: 'aa',
-  value: 'aa',
-  sublabel: '1',
-  checked: false,
+WithSublabel.args = {
+  option: { label: 'aa', value: 'aa', sublabel: '1', checked: false },
+  isDisabled: false,
 };
