@@ -7,7 +7,7 @@ import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'test-select-option',
   template: ` <tsl-select-option [label]="label" [icon]="icon" [sublabel]="sublabel" [isActive]="isActive"></tsl-select-option> `,
 })

@@ -1,5 +1,5 @@
+import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { I18nService } from '../i18n.service';
 import {
   daysCalendarConfig as daysEnglishCalendarSpec,
   defaultCalendarSpec as defaultEnglishCalendarSpec,
@@ -15,18 +15,16 @@ import { MomentCalendarSpecService } from './moment-calendar-spec.service';
 
 describe('MomentCalendarSpecService', () => {
   let service: MomentCalendarSpecService;
-  let i18nService: I18nService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [I18nService],
-    });
-    service = TestBed.inject(MomentCalendarSpecService);
-    i18nService = TestBed.inject(I18nService);
+    TestBed.configureTestingModule({});
   });
 
   describe('when the webapp is in Spanish', () => {
-    beforeEach(() => jest.spyOn(i18nService, 'locale', 'get').mockReturnValue('es'));
+    beforeEach(() => {
+      TestBed.overrideProvider(LOCALE_ID, { useValue: 'es' });
+      service = TestBed.inject(MomentCalendarSpecService);
+    });
 
     describe('and when asking for default date format', () => {
       it('should get the Spanish localized date format', () => {
@@ -54,7 +52,10 @@ describe('MomentCalendarSpecService', () => {
   });
 
   describe('when the webapp is in English', () => {
-    beforeEach(() => jest.spyOn(i18nService, 'locale', 'get').mockReturnValue('en'));
+    beforeEach(() => {
+      TestBed.overrideProvider(LOCALE_ID, { useValue: 'en' });
+      service = TestBed.inject(MomentCalendarSpecService);
+    });
 
     describe('and when asking for default date format', () => {
       it('should get the English localized date format', () => {
@@ -82,7 +83,10 @@ describe('MomentCalendarSpecService', () => {
   });
 
   describe('when the webapp is in a language that is not supported by this service', () => {
-    beforeEach(() => jest.spyOn(i18nService, 'locale', 'get').mockReturnValue('jp'));
+    beforeEach(() => {
+      TestBed.overrideProvider(LOCALE_ID, { useValue: 'jp' });
+      service = TestBed.inject(MomentCalendarSpecService);
+    });
 
     describe('and when asking for default date format', () => {
       it('should get the default English localized date format', () => {

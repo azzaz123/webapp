@@ -1,0 +1,22 @@
+@import '~style/common';
+
+.BankAccount {
+  &__message {
+    &--error {
+      font-size: $font-size-s;
+      color: $negative-main;
+    }
+  }
+
+  &__back {
+    cursor: pointer;
+    color: $blue-grey-1;
+    &:hover {
+      text-decoration: none;
+      &,
+      tsl-svg-icon {
+        opacity: 0.8;
+      }
+    }
+  }
+}

@@ -34,6 +34,7 @@ import { RecommenderItemCardFavouriteCheckedService } from './core/services/reco
 import { ItemDetailPlaceholderComponent } from './components/item-detail-placeholder/item-detail-placeholder.component';
 import { VisibleDirectiveModule } from '@shared/directives/visible/visible.directive.module';
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   declarations: [itemDetailRoutedComponents, ItemDetailPlaceholderComponent],
@@ -57,6 +58,7 @@ import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current
     ItemExtraInfoModule,
     ItemFavouritesModule,
     VisibleDirectiveModule,
+    NgxPermissionsModule.forChild(),
   ],
   providers: [
     ItemDetailService,

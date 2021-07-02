@@ -18,6 +18,7 @@ export const PHONE_N_ACCESSORIES_FILTERS: AvailableFilterConfig[] = [
     hasOptionsOnInit: true,
     isClearable: true,
     hasContentPlaceholder: true,
+    isLabelInValue: true,
   },
   {
     id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
