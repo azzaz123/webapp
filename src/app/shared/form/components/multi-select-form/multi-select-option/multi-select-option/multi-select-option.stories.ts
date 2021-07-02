@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { moduleMetadata, Story } from '@storybook/angular';
@@ -9,7 +10,7 @@ export default {
   title: 'Webapp/Shared/Form/Components/MultiSelectForm/MultiSelectOption',
   decorators: [
     moduleMetadata({
-      imports: [MultiSelectOptionModule, CommonModule, FormsModule, SvgIconModule],
+      imports: [MultiSelectOptionModule, HttpClientModule],
     }),
   ],
 };

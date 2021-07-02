@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { moduleMetadata, Story } from '@storybook/angular';
 import { MultiSelectFormModule } from './multi-select-form.module';
-import { MultiSelectOptionModule } from './multi-select-option/multi-select-option/multi-select-option.module';
 
 @Component({
   selector: 'tsl-story-multi-select-form',
@@ -11,7 +10,7 @@ import { MultiSelectOptionModule } from './multi-select-option/multi-select-opti
     <h4 class="mt-4">MultiSelect FormGroup: {{ formGroup.value.select }}</h4>
     <div style="background: white; border: 1px dashed black;">
       <form [formGroup]="formGroup">
-        <tsl-multi-select-form formControlName="select" [options]="options"></tsl-multi-select-form>
+        <tsl-multi-select-form formControlName="select" [options]="options" [isDisabled]="isDisabled"></tsl-multi-select-form>
       </form>
     </div>
   `,
@@ -31,7 +30,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StoryMultiSelectFormFormComponent],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, MultiSelectFormModule, MultiSelectOptionModule],
+      imports: [ReactiveFormsModule, MultiSelectFormModule, HttpClientModule],
     }),
   ],
 };
@@ -52,6 +51,17 @@ Default.args = {
     { label: 'dd', value: 'dd' },
   ],
   isDisabled: 'false',
+};
+
+export const DisableMultiSelect = Template.bind({});
+DisableMultiSelect.args = {
+  options: [
+    { label: 'aa', value: 'aa' },
+    { label: 'bb', value: 'bb' },
+    { label: 'cc', value: 'cc' },
+    { label: 'dd', value: 'dd' },
+  ],
+  isDisabled: 'true',
 };
 
 export const OptionsWithOccurrencies = Template.bind({});
