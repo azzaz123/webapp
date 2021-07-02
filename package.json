@@ -100,6 +100,7 @@
     "babel-loader": "^8.2.2",
     "canvas": "^2.6.1",
     "eslint": "^7.6.0",
+    "eslint-config-prettier": "^8.3.0",
     "glob": "^7.1.4",
     "husky": "^5.0.4",
     "jest": "^25.5.4",
