@@ -151,7 +151,7 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     }
 
     if (typeof value === 'string') {
-      return this.labelSubject.next(value);
+      return this.labelSubject.next(value.replace(/\|/g, ', '));
     }
 
     return this.labelSubject.next(this.calculateComplexLabel(value));

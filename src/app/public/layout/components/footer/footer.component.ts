@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickProInfo, SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { I18nService } from '@core/i18n/i18n.service';
-import { PERMISSIONS } from '@core/user/user-constants';
+import { APP_LOCALE } from 'configs/subdomains.config';
 import { NgxPermissionsObject, NgxPermissionsService } from 'ngx-permissions';
 import { take } from 'rxjs/operators';
 import { FOOTER_APPS, FOOTER_LINKS, FOOTER_SOCIAL } from './constants/footer-constants';
@@ -23,15 +22,15 @@ export class FooterComponent implements OnInit {
   };
 
   constructor(
-    private i18nService: I18nService,
     private analyticsService: AnalyticsService,
-    private permissionService: NgxPermissionsService
+    private permissionService: NgxPermissionsService,
+    @Inject(LOCALE_ID) private locale: APP_LOCALE
   ) {}
 
   ngOnInit() {
     this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
       let links = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
-        return !(footerLinkSection.excludedLanguages || []).includes(this.i18nService.locale);
+        return !(footerLinkSection.excludedLanguages || []).includes(this.locale);
       });
       links = this.filterByPermissions(permissions, links);
       this.FOOTER_LINKS = links;

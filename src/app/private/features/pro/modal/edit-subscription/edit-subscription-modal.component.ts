@@ -17,6 +17,7 @@ import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { CancelSubscriptionModalComponent } from '../cancel-subscription/cancel-subscription-modal.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { ModalStatuses } from '../modal.statuses.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({
   selector: 'tsl-edit-subscription-modal',
@@ -72,7 +73,7 @@ export class EditSubscriptionModalComponent implements OnInit {
         this.toastService.show({
           title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_TITLE)}`,
           text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_BODY)}`,
-          type: 'success',
+          type: TOAST_TYPES.SUCCESS,
         });
         this.loading = false;
       } else {
@@ -80,7 +81,7 @@ export class EditSubscriptionModalComponent implements OnInit {
         this.toastService.show({
           title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_TITLE)}`,
           text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_BODY)}`,
-          type: 'error',
+          type: TOAST_TYPES.ERROR,
         });
       }
       this.close(ModalStatuses.UPDATE);

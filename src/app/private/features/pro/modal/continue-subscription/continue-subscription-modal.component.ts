@@ -11,6 +11,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalStatuses } from '../modal.statuses.enum';
@@ -46,7 +47,7 @@ export class ContinueSubscriptionModalComponent {
         this.toastService.show({
           title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE)}`,
           text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_BODY)}`,
-          type: 'success',
+          type: TOAST_TYPES.SUCCESS,
         });
       },
       () => {
@@ -55,7 +56,7 @@ export class ContinueSubscriptionModalComponent {
         this.toastService.show({
           title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_ERROR_TITLE)}`,
           text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_ERROR_BODY)}`,
-          type: 'error',
+          type: TOAST_TYPES.ERROR,
         });
       }
     );

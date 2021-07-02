@@ -163,7 +163,7 @@ export class SubscriptionPurchaseComponent implements OnInit {
 
   public onPurchaseButtonClick(): void {
     if (this.isInvoiceRequired) {
-      this.eventService.emit(EventService.BILLING_INFO_FORM_SUBMITTED);
+      this.eventService.emit(EventService.FORM_SUBMITTED);
     } else {
       this.purchaseSubscription();
     }

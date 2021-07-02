@@ -13,15 +13,6 @@ describe('I18nService', () => {
     service = TestBed.inject(I18nService);
   });
 
-  it('should get the en locale', () => {
-    expect(service.locale).toBe('en');
-  });
-
-  it('should get the es locale', () => {
-    service['_locale'] = 'es';
-    expect(service.locale).toBe('es');
-  });
-
   describe('when asked for a translation', () => {
     describe('and the translation key exists', () => {
       it('should get the translation', () => {

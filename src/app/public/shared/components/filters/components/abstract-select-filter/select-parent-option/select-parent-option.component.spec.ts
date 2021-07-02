@@ -8,7 +8,7 @@ import { By } from '@angular/platform-browser';
 import { SelectOptionComponent } from '@shared/form/components/select/select-option/select-option.component';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'test-select-option',
   template: ` <tsl-select-parent-option
     [label]="label"

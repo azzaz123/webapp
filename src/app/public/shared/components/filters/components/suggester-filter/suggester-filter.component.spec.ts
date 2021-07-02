@@ -261,6 +261,28 @@ describe('SuggesterFilterComponent', () => {
       });
     });
 
+    describe('and the value contains a pipe', () => {
+      it('should update the label removing the pipe', () => {
+        const MOCK_BRAND_MODEL = 'Apple|iPhone 12 Pro';
+        const expectedValue = MOCK_BRAND_MODEL.replace(/\|/g, ', ');
+        testComponent.config = {
+          ...basicConfig,
+          mapKey: {
+            parameterKey: FILTER_QUERY_PARAM_KEY.brandModel,
+          },
+        };
+        testComponent.value = [
+          {
+            key: FILTER_QUERY_PARAM_KEY.brandModel,
+            value: 'Apple|iPhone 12 Pro',
+          },
+        ];
+        fixture.detectChanges();
+
+        expect(debugElement.query(filterPredicate).componentInstance.label).toEqual(expectedValue);
+      });
+    });
+
     describe('and is complex value', () => {
       const complexFilterValue = [
         { key: FILTER_QUERY_PARAM_KEY.brand, value: 'Audi' },
