@@ -54,6 +54,7 @@ export enum USER_TYPE {
 }
 
 export const LOCAL_STORAGE_TRY_PRO_SLOT = 'try-pro-slot';
+export const LOCAL_STORAGE_CLICK_PRO_SECTION = 'click-pro-section';
 
 @Injectable({
   providedIn: 'root',
@@ -380,5 +381,9 @@ export class UserService {
 
   public suggestPro(): boolean {
     return !this.isPro && !localStorage.getItem(`${this.user.id}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
+  }
+
+  public isClickedProSection(): boolean {
+    return !!localStorage.getItem(`${this.user.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
   }
 }
