@@ -9,7 +9,7 @@ import {
   mockTokenizerInformationResponse,
   mockPaymentsUpdateSyncCreditCardRequest,
 } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
-import { mockInvalidCardNumberCardTokenizerErrorResponse } from '@api/fixtures/payments/cards/payments-cards-errors.fixtures.spec';
+import { MOCK_INVALID_CARD_NUMBER_CARD_TOKENIZER_ERROR_RESPONSE } from '@api/fixtures/payments/cards/mangopay-card-tokenizer-errors.fixtures.spec';
 import { UuidService } from '@core/uuid/uuid.service';
 import { PaymentsCreditCardApi } from '../dtos/responses';
 import { PAYMENTS_CREDIT_CARDS_ENDPOINT, PAYMENTS_CREDIT_CARDS_TOKENIZER_ENDPOINT } from './endpoints';
@@ -67,13 +67,13 @@ describe('PaymentsCreditCardApiService', () => {
         const tokenizerInfoRequest: TestRequest = httpMock.expectOne(PAYMENTS_CREDIT_CARDS_TOKENIZER_ENDPOINT);
         tokenizerInfoRequest.flush(mockTokenizerInformationResponse);
         const cardTokenizerRequest: TestRequest = httpMock.expectOne(expectedCardTokenizerUrl);
-        cardTokenizerRequest.flush(mockInvalidCardNumberCardTokenizerErrorResponse);
+        cardTokenizerRequest.flush(MOCK_INVALID_CARD_NUMBER_CARD_TOKENIZER_ERROR_RESPONSE);
         httpMock.expectNone(PAYMENTS_CREDIT_CARDS_ENDPOINT);
         expect(tokenizerInfoRequest.request.method).toEqual('GET');
         expect(cardTokenizerRequest.request.method).toEqual('POST');
         expect(cardTokenizerRequest.request.body).toEqual(mockCardRegistrationUrlFormData);
         expect(cardTokenizerRequest.request.headers.get('Content-Type')).toEqual('application/x-www-form-urlencoded');
-        expect(expectedErrorResponse).toEqual(mockInvalidCardNumberCardTokenizerErrorResponse);
+        expect(expectedErrorResponse).toEqual(MOCK_INVALID_CARD_NUMBER_CARD_TOKENIZER_ERROR_RESPONSE);
       });
     });
 
@@ -110,13 +110,13 @@ describe('PaymentsCreditCardApiService', () => {
         const tokenizerInfoRequest: TestRequest = httpMock.expectOne(PAYMENTS_CREDIT_CARDS_TOKENIZER_ENDPOINT);
         tokenizerInfoRequest.flush(mockTokenizerInformationResponse);
         const cardTokenizerRequest: TestRequest = httpMock.expectOne(expectedCardTokenizerUrl);
-        cardTokenizerRequest.flush(mockInvalidCardNumberCardTokenizerErrorResponse);
+        cardTokenizerRequest.flush(MOCK_INVALID_CARD_NUMBER_CARD_TOKENIZER_ERROR_RESPONSE);
         httpMock.expectNone(PAYMENTS_CREDIT_CARDS_ENDPOINT);
         expect(tokenizerInfoRequest.request.method).toEqual('GET');
         expect(cardTokenizerRequest.request.method).toEqual('POST');
         expect(cardTokenizerRequest.request.body).toEqual(mockCardRegistrationUrlFormData);
         expect(cardTokenizerRequest.request.headers.get('Content-Type')).toEqual('application/x-www-form-urlencoded');
-        expect(expectedErrorResponse).toEqual(mockInvalidCardNumberCardTokenizerErrorResponse);
+        expect(expectedErrorResponse).toEqual(MOCK_INVALID_CARD_NUMBER_CARD_TOKENIZER_ERROR_RESPONSE);
       });
     });
 
