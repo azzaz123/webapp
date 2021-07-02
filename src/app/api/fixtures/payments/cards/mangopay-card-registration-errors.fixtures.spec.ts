@@ -1,7 +1,35 @@
 import {
   MangopayCardRegistrationErrorResponseApi,
+  MangopayCardRegistrationErrorResponseMapped,
   MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX,
 } from '@api/payments/cards/dtos/errors/mangopay-card-registration-error-response-api';
 import { MANGOPAY_CARD_REGISTRATION_ERROR_CODES_ENUM } from '@api/payments/cards/mappers/errors/mangopay-card-registration-error-codes.enum';
 
-export const MOCK_INVALID_CARD_NUMBER_CARD_TOKENIZER_ERROR_RESPONSE: MangopayCardRegistrationErrorResponseApi = `${MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX}=${MANGOPAY_CARD_REGISTRATION_ERROR_CODES_ENUM.INVALID_CARD_NUMBER}`;
+export const MOCK_CARD_EXPIRED_CARD_REGISTRATION_ERROR_RESPONSE: MangopayCardRegistrationErrorResponseApi = `${MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX}=${MANGOPAY_CARD_REGISTRATION_ERROR_CODES_ENUM.CARD_EXPIRED}`;
+export const MOCK_CARD_NOT_ACTIVE_CARD_REGISTRATION_ERROR_RESPONSE: MangopayCardRegistrationErrorResponseApi = `${MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX}=${MANGOPAY_CARD_REGISTRATION_ERROR_CODES_ENUM.CARD_NOT_ACTIVE}`;
+export const MOCK_INVALID_CARD_NUMBER_CARD_REGISTRATION_ERROR_RESPONSE: MangopayCardRegistrationErrorResponseApi = `${MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX}=${MANGOPAY_CARD_REGISTRATION_ERROR_CODES_ENUM.INVALID_CARD_NUMBER}`;
+export const MOCK_INVALID_CVV_CARD_REGISTRATION_ERROR_RESPONSE: MangopayCardRegistrationErrorResponseApi = `${MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX}=${MANGOPAY_CARD_REGISTRATION_ERROR_CODES_ENUM.INVALID_CVV}`;
+export const MOCK_INVALID_DATE_CARD_REGISTRATION_ERROR_RESPONSE: MangopayCardRegistrationErrorResponseApi = `${MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX}=${MANGOPAY_CARD_REGISTRATION_ERROR_CODES_ENUM.INVALID_DATE}`;
+export const MOCK_CARD_TOKENIZATION_FAILED_CARD_REGISTRATION_ERROR_RESPONSE: MangopayCardRegistrationErrorResponseApi = `${MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX}=unknownorunmapped`;
+
+const commonMangopayCardRegistrationErrorResponseMappedAttriubtes = {
+  status: 400,
+};
+export const MOCK_CARD_EXPIRED_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED: MangopayCardRegistrationErrorResponseMapped = new MangopayCardRegistrationErrorResponseMapped(
+  { ...commonMangopayCardRegistrationErrorResponseMappedAttriubtes, error: MOCK_CARD_EXPIRED_CARD_REGISTRATION_ERROR_RESPONSE }
+);
+export const MOCK_CARD_NOT_ACTIVE_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED: MangopayCardRegistrationErrorResponseMapped = new MangopayCardRegistrationErrorResponseMapped(
+  { ...commonMangopayCardRegistrationErrorResponseMappedAttriubtes, error: MOCK_CARD_NOT_ACTIVE_CARD_REGISTRATION_ERROR_RESPONSE }
+);
+export const MOCK_INVALID_CARD_NUMBER_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED: MangopayCardRegistrationErrorResponseMapped = new MangopayCardRegistrationErrorResponseMapped(
+  { ...commonMangopayCardRegistrationErrorResponseMappedAttriubtes, error: MOCK_INVALID_CARD_NUMBER_CARD_REGISTRATION_ERROR_RESPONSE }
+);
+export const MOCK_INVALID_CVV_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED: MangopayCardRegistrationErrorResponseMapped = new MangopayCardRegistrationErrorResponseMapped(
+  { ...commonMangopayCardRegistrationErrorResponseMappedAttriubtes, error: MOCK_INVALID_CVV_CARD_REGISTRATION_ERROR_RESPONSE }
+);
+export const MOCK_INVALID_DATE_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED: MangopayCardRegistrationErrorResponseMapped = new MangopayCardRegistrationErrorResponseMapped(
+  { ...commonMangopayCardRegistrationErrorResponseMappedAttriubtes, error: MOCK_INVALID_DATE_CARD_REGISTRATION_ERROR_RESPONSE }
+);
+export const MOCK_CARD_TOKENIZATION_FAILED_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED: MangopayCardRegistrationErrorResponseMapped = new MangopayCardRegistrationErrorResponseMapped(
+  { ...commonMangopayCardRegistrationErrorResponseMappedAttriubtes, error: MOCK_CARD_TOKENIZATION_FAILED_CARD_REGISTRATION_ERROR_RESPONSE }
+);
