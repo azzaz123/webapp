@@ -1,7 +1,10 @@
 import {
   CardCountryIsInvalidError,
+  CardCvvIsInvalidError,
+  CardExpirationDateIsInvalidError,
   CardIsNotAuthorizedError,
   CardNotFoundError,
+  CardNumberIsInvalidError,
   CardOwnerIsInvalidError,
   CardOwnerNameIsInvalidError,
   CardRegistrationFailedError,
@@ -12,6 +15,16 @@ import {
   PlatformResponseIsInvalidError,
   UniqueCardForUserError,
 } from '@api/core/errors/payments/cards';
+import {
+  MOCK_CARD_EXPIRED_CARD_REGISTRATION_ERROR_RESPONSE,
+  MOCK_CARD_EXPIRED_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED,
+  MOCK_CARD_NOT_ACTIVE_CARD_REGISTRATION_ERROR_RESPONSE,
+  MOCK_CARD_NOT_ACTIVE_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED,
+  MOCK_INVALID_CARD_NUMBER_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED,
+  MOCK_INVALID_CVV_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED,
+  MOCK_INVALID_DATE_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED,
+  MOCK_UNKNOWN_OR_UNMAPPED_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED,
+} from '@api/fixtures/payments/cards/mangopay-card-registration-errors.fixtures.spec';
 import {
   MOCK_PAYMENTS_CARDS_ERROR_CARD_COUNTRY_IS_INVALID_RESPONSE,
   MOCK_PAYMENTS_CARDS_ERROR_CARD_IS_NOT_AUTHORIZED_RESPONSE,
@@ -164,6 +177,80 @@ describe('PaymentsCardsErrorMapper', () => {
         });
 
         expect(result instanceof UniqueCardForUserError).toBe(true);
+      });
+    });
+  });
+
+  describe('when mapping an error from Mangopay card registration server', () => {
+    describe('and server notifies card expired', () => {
+      it('should notify card expiration date is invalid', () => {
+        let result: PaymentsCardsError;
+
+        paymentsCardsErrorMapper.map(MOCK_CARD_EXPIRED_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED).subscribe({
+          error: (errors) => (result = errors[0]),
+        });
+
+        expect(result instanceof CardExpirationDateIsInvalidError).toBe(true);
+      });
+    });
+
+    describe('and server notifies card is not active', () => {
+      it('should notify card registration is invalid', () => {
+        let result: PaymentsCardsError;
+
+        paymentsCardsErrorMapper.map(MOCK_CARD_NOT_ACTIVE_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED).subscribe({
+          error: (errors) => (result = errors[0]),
+        });
+
+        expect(result instanceof CardRegistrationIsInvalidError).toBe(true);
+      });
+    });
+
+    describe('and server notifies invalid card number', () => {
+      it('should notify card number is invalid', () => {
+        let result: PaymentsCardsError;
+
+        paymentsCardsErrorMapper.map(MOCK_INVALID_CARD_NUMBER_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED).subscribe({
+          error: (errors) => (result = errors[0]),
+        });
+
+        expect(result instanceof CardNumberIsInvalidError).toBe(true);
+      });
+    });
+
+    describe('and server notifies invalid card CVV', () => {
+      it('should notify card CVV is invalid', () => {
+        let result: PaymentsCardsError;
+
+        paymentsCardsErrorMapper.map(MOCK_INVALID_CVV_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED).subscribe({
+          error: (errors) => (result = errors[0]),
+        });
+
+        expect(result instanceof CardCvvIsInvalidError).toBe(true);
+      });
+    });
+
+    describe('and server notifies invalid date', () => {
+      it('should notify card expiration date is invalid', () => {
+        let result: PaymentsCardsError;
+
+        paymentsCardsErrorMapper.map(MOCK_INVALID_DATE_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED).subscribe({
+          error: (errors) => (result = errors[0]),
+        });
+
+        expect(result instanceof CardExpirationDateIsInvalidError).toBe(true);
+      });
+    });
+
+    describe('and server notifies an unknown or unmapped error', () => {
+      it('should notify card tokenization failed', () => {
+        let result: PaymentsCardsError;
+
+        paymentsCardsErrorMapper.map(MOCK_UNKNOWN_OR_UNMAPPED_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED).subscribe({
+          error: (errors) => (result = errors[0]),
+        });
+
+        expect(result instanceof CardTokenizationFailedError).toBe(true);
       });
     });
   });
