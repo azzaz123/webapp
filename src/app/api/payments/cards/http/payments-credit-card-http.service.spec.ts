@@ -9,7 +9,7 @@ import {
   mockTokenizerInformationResponse,
   mockPaymentsUpdateSyncCreditCardRequest,
 } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
-import { MOCK_INVALID_CARD_NUMBER_CARD_TOKENIZER_ERROR_RESPONSE } from '@api/fixtures/payments/cards/mangopay-card-tokenizer-errors.fixtures.spec';
+import { MOCK_INVALID_CARD_NUMBER_CARD_TOKENIZER_ERROR_RESPONSE } from '@api/fixtures/payments/cards/mangopay-card-registration-errors.fixtures.spec';
 import { UuidService } from '@core/uuid/uuid.service';
 import { PaymentsCreditCardApi } from '../dtos/responses';
 import { PAYMENTS_CREDIT_CARDS_ENDPOINT, PAYMENTS_CREDIT_CARDS_TOKENIZER_ENDPOINT } from './endpoints';
