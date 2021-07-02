@@ -300,7 +300,13 @@
             <tsl-checkbox-form formControlName="supports_shipping"></tsl-checkbox-form>
             <span class="ml-2 mb-0" i18n="@@finding_listing_shipping_toggle_title">Shipping</span>
           </div>
-          <div class="selector-container" ngbRadioGroup name="radioBasic" formControlName="delivery_info">
+          <div
+            *ngIf="uploadForm.value.sale_conditions.supports_shipping"
+            class="selector-container"
+            ngbRadioGroup
+            name="radioBasic"
+            formControlName="delivery_info"
+          >
             <label ngbButtonLabel class="selector shipping-selector" *ngFor="let delivery of deliveryInfo">
               <div class="selector-icon btn">
                 <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value)" />
