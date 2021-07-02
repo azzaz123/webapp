@@ -29,7 +29,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { Item, ITEM_TYPES } from '@core/item/item';
-import { DeliveryInfo, ItemContent, ItemResponse } from '@core/item/item-response.interface';
+import { DeliveryInfo, ItemContent, ItemResponse, ItemSaleConditions } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -228,7 +228,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       sale_price: this.item.salePrice,
       currency_code: this.item.currencyCode,
       description: this.item.description,
-      sale_conditions: this.item.saleConditions ? this.item.saleConditions : {},
+      sale_conditions: this.getSaleConditions(),
       category_id: this.item.categoryId.toString(),
       delivery_info: this.getDeliveryInfo(),
       extra_info: this.getExtraInfo(),
@@ -372,6 +372,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return this.deliveryInfo.find((deliveryInfo) => {
       return deliveryInfo.value.max_weight_kg === this.item.deliveryInfo.max_weight_kg;
     }).value;
+  }
+
+  private getSaleConditions(): ItemSaleConditions {
+    this.item.saleConditions.supports_shipping = !!this.item.deliveryInfo;
+    return this.item.saleConditions ? this.item.saleConditions : null;
   }
 
   ngAfterContentInit() {
