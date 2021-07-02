@@ -1,0 +1,21 @@
+@import '~web-styleguide/scss/colors';
+
+ngb-alert {
+  .success,
+  .warning,
+  .danger {
+    color: $white;
+  }
+
+  .success {
+    background-color: $walla-main;
+  }
+
+  .warning {
+    background-color: $orange-main;
+  }
+
+  .danger {
+    background-color: $negative-main;
+  }
+}
