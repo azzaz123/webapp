@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
-import { KYCBannerInterface } from '../../interfaces/kyc/kyc-banner.interface';
+import { KYCBannerSpecifications } from '../../interfaces/kyc/kyc-banner.interface';
 
 @Component({
   selector: 'tsl-kyc-banner',
@@ -9,12 +9,12 @@ import { KYCBannerInterface } from '../../interfaces/kyc/kyc-banner.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KycBannerComponent {
-  @Input() KYCBannerSpecifications: KYCBannerInterface;
+  @Input() specifications: KYCBannerSpecifications;
 
   get bannerSpecifications(): NgbAlertConfig {
     return {
-      dismissible: this.KYCBannerSpecifications.dismissible,
-      type: this.KYCBannerSpecifications.type,
+      dismissible: this.specifications.dismissible,
+      type: this.specifications.type,
     };
   }
 }

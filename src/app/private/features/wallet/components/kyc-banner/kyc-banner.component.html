@@ -1,7 +1,7 @@
-<tsl-banner class="d-flex content-between" [bannerSpecifications]="bannerSpecifications">
+<tsl-banner class="d-flex content-between" [specifications]="bannerSpecifications">
     <div>
-        <tsl-svg-icon [src]="KYCBannerSpecifications.svgPath"></tsl-svg-icon>
-        <span>{{KYCBannerSpecifications.description}}</span>
+        <tsl-svg-icon [src]="specifications.svgPath"></tsl-svg-icon>
+        <span>{{specifications.description}}</span>
     </div>
-    <tsl-button [className]="'btn-banner btn-banner--' + KYCBannerSpecifications.type">{{KYCBannerSpecifications.buttonText}}</tsl-button>
+    <tsl-button [className]="'btn-banner btn-banner--' + specifications.type">{{specifications.buttonText}}</tsl-button>
 </tsl-banner>
