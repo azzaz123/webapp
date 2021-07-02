@@ -7,6 +7,6 @@ import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./banner.component.scss'],
 })
 export class BannerComponent {
-  @Input() bannerSpecifications: NgbAlertConfig;
+  @Input() specifications: NgbAlertConfig;
   @Output() closeClick: EventEmitter<void> = new EventEmitter();
 }
