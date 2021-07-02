@@ -25,7 +25,7 @@ To do a clean installation after downloading the repo, follow this steps:
 You must install and enable [ESLint](https://eslint.org/) in your preferred IDE before continuing:
 
 - In case you are using **VS Code**, install and enable the [ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
-- In case you are using **WebStorm**, follow [this](https://www.jetbrains.com/help/webstorm/eslint.html#ws_js_eslint_activate) guide to activate ESLint.
+- In case you are using **WebStorm** or other IDEs from JetBrains, follow [this](https://www.jetbrains.com/help/webstorm/eslint.html#ws_js_eslint_activate) guide to activate ESLint.
 
 After installation, reload your IDE. You should be able to see the errors and warnings directly in your IDE.
 
