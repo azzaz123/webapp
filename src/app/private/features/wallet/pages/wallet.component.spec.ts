@@ -1,15 +1,18 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { Subject } from 'rxjs';
 import { WALLET_PATHS } from '../wallet-routing-constants';
 
 import { WalletComponent } from './wallet.component';
 
 describe('WalletComponent', () => {
-  const URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
+  const BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
+  const CREDIT_CARD_FORM_LINK = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}/${WALLET_PATHS.CREDIT_CARD}`;
+  const routerEvents: Subject<any> = new Subject();
 
   let component: WalletComponent;
   let fixture: ComponentFixture<WalletComponent>;
@@ -20,6 +23,15 @@ describe('WalletComponent', () => {
       imports: [RouterTestingModule],
       declarations: [WalletComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [
+        {
+          provide: Router,
+          useValue: {
+            navigate() {},
+            events: routerEvents,
+          },
+        },
+      ],
     }).compileComponents();
   });
 
@@ -39,9 +51,27 @@ describe('WalletComponent', () => {
       const navLinksElement = fixture.debugElement.query(By.css('tsl-nav-links'));
       spyOn(router, 'navigate');
 
-      navLinksElement.triggerEventHandler('clickedLink', URL);
+      navLinksElement.triggerEventHandler('clickedLink', BANK_DETAILS_URL);
 
-      expect(router.navigate).toHaveBeenCalledWith([URL]);
+      expect(router.navigate).toHaveBeenCalledWith([BANK_DETAILS_URL]);
+    });
+
+    describe('and the URL is a child of the nav links', () => {
+      beforeEach(() => {
+        const navLinksElement = fixture.debugElement.query(By.css('tsl-nav-links'));
+        spyOn(router, 'navigate');
+
+        navLinksElement.triggerEventHandler('clickedLink', CREDIT_CARD_FORM_LINK);
+        routerEvents.next(new NavigationEnd(1, CREDIT_CARD_FORM_LINK, ''));
+      });
+
+      it('should navigate to the child indicated URL', () => {
+        expect(router.navigate).toHaveBeenCalledWith([CREDIT_CARD_FORM_LINK]);
+      });
+
+      it('should mark as selected the parent tab', () => {
+        expect(component.selectedNavLinkId).toBe(component.navLinks.find((link) => link.id === BANK_DETAILS_URL).id);
+      });
     });
   });
 });

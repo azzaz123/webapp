@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { BankDetailsOverviewModule } from './pages/bank-details/pages/bank-details-overview/bank-details-overview.module';
 import { WalletComponent } from './pages/wallet.component';
 import { WalletOverviewModule } from './pages/wallet-overview/wallet-overview.module';
 import { WALLET_PATHS } from './wallet-routing-constants';
+import { BankDetailsModule } from './pages/bank-details/bank-details.module';
 
 const routes: Route[] = [
   {
@@ -16,7 +16,7 @@ const routes: Route[] = [
       },
       {
         path: WALLET_PATHS.BANK_DETAILS,
-        loadChildren: () => BankDetailsOverviewModule,
+        loadChildren: () => BankDetailsModule,
       },
       {
         path: '**',

@@ -26,12 +26,19 @@ export class WalletComponent {
   constructor(private router: Router) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
-        this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id;
+        this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id || this.getLastLocationIdThatMatch(e);
       }
     });
   }
 
   public onNavLinkClicked(navLinkId: string): void {
     this.router.navigate([navLinkId]);
+  }
+
+  private getLastLocationIdThatMatch(e: NavigationEnd): string {
+    return this.navLinks
+      .filter((link) => e.url.startsWith(link.id))
+      ?.slice(-1)
+      .pop()?.id;
   }
 }
