@@ -1,10 +1,14 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-request.interface';
 import { UuidService } from '@core/uuid/uuid.service';
 import { Observable, throwError } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
-import { MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX } from '../dtos/errors/payments-cards-error-response-api.interface';
+import {
+  MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX,
+  MangopayCardRegistrationErrorResponseApi,
+} from '../dtos/errors/mangopay-card-registration-error-response-api';
+import { mapMangopayCardRegistrationErrorResponse } from '../mappers/errors/mangopay-card-registration-error-response.mapper';
 import { TokenizeCardRegistrationRequest, PreSyncCreditCardData, PreCardRegistrationBody } from '../dtos/other';
 import { PaymentsSyncCreditCardApi } from '../dtos/requests';
 import { PaymentsCreditCardApi, TokenizerInformationApi } from '../dtos/responses';
@@ -97,7 +101,7 @@ export class PaymentsCreditCardHttpService {
         return this.getTokenizedCard({ tokenizerInfo, request }).pipe(
           concatMap((tokenizedCard) =>
             this.isInvalidTokenizedCardResponse(tokenizedCard)
-              ? throwError(tokenizedCard)
+              ? throwError(mapMangopayCardRegistrationErrorResponse(tokenizedCard))
               : this.getCreditCardRequest({ tokenizerInfo, request, tokenizedCard }, isUpdate)
           )
         );
