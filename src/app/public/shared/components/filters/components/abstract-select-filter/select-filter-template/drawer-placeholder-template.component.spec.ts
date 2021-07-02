@@ -9,7 +9,7 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'test-select-filter-template',
   template: `
     <tsl-drawer-placeholder-template

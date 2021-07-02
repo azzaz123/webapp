@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { StarsRateComponent } from './stars-rate.component';
