@@ -2,7 +2,7 @@ import { Component, DoCheck, Input } from '@angular/core';
 import { NgStyle } from '@angular/common';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'stories-styled-box',
   templateUrl: './styled-box.component.html',
 })

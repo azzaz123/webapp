@@ -4,7 +4,7 @@ import { AbstractSelectFilterConfig } from './interfaces/abstract-select-filter-
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class AbstractSelectFilter<T extends Partial<Record<keyof T, FILTER_QUERY_PARAM_KEY>>> extends AbstractFilter<T> {
   @Input() config: AbstractSelectFilterConfig<T>;
 
