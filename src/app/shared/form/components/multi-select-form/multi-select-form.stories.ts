@@ -53,17 +53,6 @@ Default.args = {
   isDisabled: 'false',
 };
 
-export const DisableMultiSelect = Template.bind({});
-DisableMultiSelect.args = {
-  options: [
-    { label: 'aa', value: 'aa' },
-    { label: 'bb', value: 'bb' },
-    { label: 'cc', value: 'cc' },
-    { label: 'dd', value: 'dd' },
-  ],
-  isDisabled: 'true',
-};
-
 export const OptionsWithOccurrencies = Template.bind({});
 OptionsWithOccurrencies.args = {
   options: [
