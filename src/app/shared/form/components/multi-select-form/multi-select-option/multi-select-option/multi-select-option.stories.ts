@@ -40,3 +40,9 @@ WithSublabel.args = {
   option: { label: 'aa', value: 'aa', sublabel: '1', checked: false },
   isDisabled: false,
 };
+
+export const DisabledOption = Template.bind({});
+DisabledOption.args = {
+  ...Default.args,
+  isDisabled: true,
+};
