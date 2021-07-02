@@ -7,8 +7,6 @@ import {
 import { DeliveryErrorApi, DeliveryErrorResponseApi } from '@private/features/delivery/errors/classes/delivery-error-response-api';
 import { DeliveryAddressErrorResponse } from '@private/features/delivery/errors/mappers/address/delivery-address-error-mapper';
 import { DELIVERY_ADDRESS_ERROR_CODES } from '@private/features/delivery/errors/mappers/address/delivery-address-error.enum';
-import { BankAccountErrorResponse } from '@private/features/delivery/errors/mappers/bank-account/bank-account-error-mapper';
-import { BANK_ACCOUNT_ERROR_CODES } from '@private/features/delivery/errors/mappers/bank-account/bank-account-error.enum';
 import { DELIVERY_POSTAL_CODES_ERROR_CODES } from '@private/features/delivery/errors/mappers/postal-codes/delivery-postal-codes-error.enum';
 import { DeliveryPostalCodesErrorResponse } from '@private/features/delivery/errors/mappers/postal-codes/delivery-postal-codes.error-mapper';
 
@@ -77,31 +75,6 @@ export const MOCK_DELIVERY_POSTAL_CODE_ERROR_POSTAL_CODE_IS_NOT_ALLOWED: Deliver
   message: 'Postal code XXX not allowed',
 };
 
-export const MOCK_DELIVERY_BANK_ACCOUNT_ERROR_OWNER_NAME_INVALID: DeliveryErrorApi<BANK_ACCOUNT_ERROR_CODES> = {
-  error_code: BANK_ACCOUNT_ERROR_CODES.INVALID_OWNER_NAME,
-  message: 'Invalid owner name ʕ•́ᴥ•̀ʔっ♡',
-};
-
-export const MOCK_DELIVERY_BANK_ACCOUNT_ERROR_IBAN_COUNTRY_INVALID: DeliveryErrorApi<BANK_ACCOUNT_ERROR_CODES> = {
-  error_code: BANK_ACCOUNT_ERROR_CODES.INVALID_IBAN_COUNTRY,
-  message: 'Invalid IBAN country (ɔ◔‿◔)ɔ ♥',
-};
-
-export const MOCK_DELIVERY_BANK_ACCOUNT_ERROR_IBAN_INVALID: DeliveryErrorApi<BANK_ACCOUNT_ERROR_CODES> = {
-  error_code: BANK_ACCOUNT_ERROR_CODES.INVALID_IBAN,
-  message: 'Invalid IBAN (✿◠‿◠)',
-};
-
-export const MOCK_DELIVERY_BANK_ACCOUNT_ERROR_PLATFORM_RESPONSE_INVALID: DeliveryErrorApi<BANK_ACCOUNT_ERROR_CODES> = {
-  error_code: BANK_ACCOUNT_ERROR_CODES.INVALID_PLATFORM_RESPONSE,
-  message: 'Invalid platform response ٩(˘◡˘)۶',
-};
-
-export const MOCK_DELIVERY_BANK_ACCOUNT_ERROR_UNIQUE_BANK_ACCOUNT: DeliveryErrorApi<BANK_ACCOUNT_ERROR_CODES> = {
-  error_code: BANK_ACCOUNT_ERROR_CODES.UNIQUE_BANK_ACCOUNT,
-  message: 'rip （っ＾▿＾）',
-};
-
 export const MOCK_DELIVERY_ADDRESS_ERROR_FLAT_AND_FLOOR_TOO_LONG_RESPONSE: DeliveryAddressErrorResponse = {
   ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
   error: [MOCK_DELIVERY_ADDRESS_ERROR_FLAT_AND_FLOOR_TOO_LONG],
@@ -155,29 +128,4 @@ export const MOCK_DELIVERY_POSTAL_CODE_ERROR_POSTAL_CODE_IS_NOT_ALLOWED_RESPONSE
 export const MOCK_DELIVERY_POSTAL_CODE_ERROR_POSTAL_CODE_IS_INVALID_RESPONSE: DeliveryPostalCodesErrorResponse = {
   ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
   error: [MOCK_DELIVERY_POSTAL_CODE_ERROR_POSTAL_CODE_IS_INVALID],
-};
-
-export const MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_OWNER_NAME_RESPONSE: BankAccountErrorResponse = {
-  ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
-  error: [MOCK_DELIVERY_BANK_ACCOUNT_ERROR_OWNER_NAME_INVALID],
-};
-
-export const MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_IBAN_COUNTRY_RESPONSE: BankAccountErrorResponse = {
-  ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
-  error: [MOCK_DELIVERY_BANK_ACCOUNT_ERROR_IBAN_COUNTRY_INVALID],
-};
-
-export const MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_IBAN_RESPONSE: BankAccountErrorResponse = {
-  ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
-  error: [MOCK_DELIVERY_BANK_ACCOUNT_ERROR_IBAN_INVALID],
-};
-
-export const MOCK_DELIVERY_BANK_ACCOUNT_ERROR_INVALID_PLATFORM_RESPONSE: BankAccountErrorResponse = {
-  ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
-  error: [MOCK_DELIVERY_BANK_ACCOUNT_ERROR_PLATFORM_RESPONSE_INVALID],
-};
-
-export const MOCK_DELIVERY_BANK_ACCOUNT_ERROR_UNIQUE_BANK_ACCOUNT_RESPONSE: BankAccountErrorResponse = {
-  ...MOCK_DELIVERY_BASE_ERROR_RESPONSE,
-  error: [MOCK_DELIVERY_BANK_ACCOUNT_ERROR_UNIQUE_BANK_ACCOUNT],
 };
