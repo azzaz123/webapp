@@ -31,6 +31,7 @@ import { PaymentSuccessModalComponent } from './modal/payment-success/payment-su
 import { UnsubscribeInAppFirstModal } from './modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { VisibilityProductsModalComponent } from './modal/visibility-products-modal/visibility-products-modal.component';
 import { SubscriptionIconPipe } from '../profile/pipes/subscription-icon.pipe';
+import { ProfileProBillingModule } from '@shared/profile-pro-billing/profile-pro-billing.module';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { SubscriptionIconPipe } from '../profile/pipes/subscription-icon.pipe';
     ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
+    ProfileProBillingModule,
   ],
 })
 export class ProModule {}
