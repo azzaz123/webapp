@@ -14,7 +14,7 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 // TODO: Investigate how to implement filter template though a directive
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'stories-abstract-filter',
   template: `
     <tsl-filter-template
