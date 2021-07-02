@@ -1,13 +1,16 @@
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 
-export interface KYCBannerInterface extends NgbAlertConfig {
-  status: STATUS_KYC_BANNER_TYPES;
+export interface KYCBanner {
+  status: KYC_BANNER_STATUS;
+}
+
+export interface KYCBannerSpecifications extends NgbAlertConfig, KYCBanner {
   svgPath: string;
   description: string;
   buttonText: string;
 }
 
-export enum STATUS_KYC_BANNER_TYPES {
+export enum KYC_BANNER_STATUS {
   PENDING = 'pending',
   PENDING_VERIFICATION = 'pending verification',
   VERIFIED = 'verified',
