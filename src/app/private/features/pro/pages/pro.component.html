@@ -3,14 +3,14 @@
     <div class="row mb-3">
       <div class="col-12 col-md-9">
         <nav class="nav filters-nav d-flex d-md-inline-block">
-            <a class="nav-link d-none d-md-inline-block" [routerLink]="['billing']" routerLinkActive="active" i18n="@@web_profile_pages_320">Billing
+          <a class="nav-link" [routerLink]="['subscriptions']" routerLinkActive="active"
+            *ngxPermissionsExcept="[PERMISSIONS.professional]" (click)="trackClickSubscriptionTab()">{{getSubscriptionTabName()}}</a>
+          <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active"
+            *ngxPermissionsOnly="[PERMISSIONS.professional]" i18n="@@web_wallapop_pro">Wallapop PRO</a>
+          <a class="nav-link d-none d-md-inline-block" [routerLink]="['billing']" routerLinkActive="active" i18n="@@web_profile_pages_320">Billing
               information</a>
-            <a class="nav-link d-inline-block d-md-none" [routerLink]="['billing']" routerLinkActive="active"
+          <a class="nav-link d-inline-block d-md-none" [routerLink]="['billing']" routerLinkActive="active"
               i18n="@@web_profile_pages_321">Billing</a>
-              <a class="nav-link" [routerLink]="['subscriptions']" routerLinkActive="active"
-              *ngxPermissionsExcept="[PERMISSIONS.professional]" (click)="trackClickSubscriptionTab()">{{getSubscriptionTabName()}}</a>
-              <a class="nav-link" [routerLink]="['subscription-pro']" routerLinkActive="active"
-              *ngxPermissionsOnly="[PERMISSIONS.professional]" i18n="@@web_wallapop_pro">Wallapop PRO</a>
           </nav>
       </div>
     </div>
