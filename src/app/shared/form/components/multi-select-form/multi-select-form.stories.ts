@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { moduleMetadata, Story } from '@storybook/angular';
-import { SelectFormOption } from '../select/interfaces/select-form-option.interface';
 import { MultiSelectFormModule } from './multi-select-form.module';
 import { MultiSelectOptionModule } from './multi-select-option/multi-select-option/multi-select-option.module';
 
@@ -11,7 +10,6 @@ import { MultiSelectOptionModule } from './multi-select-option/multi-select-opti
   template: `
     <h4 class="mt-4">MultiSelect FormGroup: {{ formGroup.value.select }}</h4>
     <div style="background: white; border: 1px dashed black;">
-      {{ options[0].value }}
       <form [formGroup]="formGroup">
         <tsl-multi-select-form formControlName="select" [options]="options"></tsl-multi-select-form>
       </form>
@@ -19,7 +17,7 @@ import { MultiSelectOptionModule } from './multi-select-option/multi-select-opti
   `,
 })
 class StoryMultiSelectFormFormComponent {
-  @Input() options: SelectFormOption<string>[];
+  @Input() options;
   @Input() isDisabled: boolean = false;
   public formGroup = new FormGroup({
     select: new FormControl(['default']),
@@ -41,7 +39,7 @@ export default {
 const Template: Story<StoryMultiSelectFormFormComponent> = (args) => ({
   props: args,
   template: `
-        <tsl-story-multi-select-form [isDisabled]="false" [options]="options"></tsl-story-multi-select-form>
+        <tsl-story-multi-select-form [isDisabled]="isDisabled" [options]="options"></tsl-story-multi-select-form>
       `,
 });
 
@@ -53,6 +51,7 @@ Default.args = {
     { label: 'cc', value: 'cc' },
     { label: 'dd', value: 'dd' },
   ],
+  isDisabled: 'false',
 };
 
 export const OptionsWithOccurrencies = Template.bind({});
@@ -63,4 +62,5 @@ OptionsWithOccurrencies.args = {
     { label: 'cc', sublabel: 3, value: 'cc' },
     { label: 'dd', sublabel: 4, value: 'dd' },
   ],
+  isDisabled: 'false',
 };
