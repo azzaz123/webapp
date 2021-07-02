@@ -469,7 +469,7 @@ describe('ProfileInfoComponent', () => {
           fixture.detectChanges();
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+          expect(router.navigate).toHaveBeenCalledWith(['pro/subscriptions']);
         }));
       });
     });

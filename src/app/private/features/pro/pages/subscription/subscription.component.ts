@@ -168,7 +168,7 @@ export class SubscriptionsComponent implements OnInit {
         ),
         take(30),
         finalize(() => {
-          this.router.navigate(['profile/subscriptions']), (this.loading = false);
+          this.router.navigate(['pro/subscriptions']), (this.loading = false);
         })
       )
       .subscribe((updatedSubscriptions) => {

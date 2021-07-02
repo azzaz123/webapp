@@ -265,7 +265,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     });
     modalRef.componentInstance.hasTrialAvailable = this.hasTrialAvailable;
     modalRef.result.then(
-      () => this.router.navigate(['profile/subscriptions']),
+      () => this.router.navigate(['pro/subscriptions']),
       () => null
     );
     this.trackViewProBenefitsPopup();

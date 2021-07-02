@@ -481,7 +481,7 @@ export class ListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.isFreeTrial = isFreeTrial;
 
     modalRef.result.then(
-      () => this.router.navigate(['profile/subscriptions']),
+      () => this.router.navigate(['pro/subscriptions']),
       () => this.reloadItem(reactivatedItem.id, index)
     );
   }
@@ -920,6 +920,6 @@ export class ListComponent implements OnInit, OnDestroy {
       },
     };
     this.analyticsService.trackEvent(event);
-    this.router.navigate(['profile/subscriptions']);
+    this.router.navigate(['pro/subscriptions']);
   }
 }

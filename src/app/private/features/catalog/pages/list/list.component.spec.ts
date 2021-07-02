@@ -1294,7 +1294,7 @@ describe('ListComponent', () => {
           component.onClickTryProSlot();
 
           expect(router.navigate).toBeCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+          expect(router.navigate).toHaveBeenCalledWith(['pro/subscriptions']);
         });
 
         it('should track ClickProSubscription event', () => {
@@ -1420,7 +1420,7 @@ describe('ListComponent', () => {
             tick();
 
             expect(router.navigate).toHaveBeenCalledTimes(1);
-            expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+            expect(router.navigate).toHaveBeenCalledWith(['pro/subscriptions']);
           }));
         });
         describe('and click secondary button', () => {

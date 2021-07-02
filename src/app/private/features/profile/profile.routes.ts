@@ -40,15 +40,15 @@ const routes: Route[] = [
       },
       {
         path: 'subscriptions',
-        redirectTo: 'pro/subscriptions',
+        redirectTo: '/pro/subscriptions',
       },
       {
         path: 'billing',
-        redirectTo: 'pro/billing',
+        redirectTo: '/pro/billing',
       },
       {
         path: 'subscription-pro',
-        redirectTo: 'pro/subscription-pro',
+        redirectTo: '/pro/subscription-pro',
       },
     ],
   },

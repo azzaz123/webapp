@@ -363,7 +363,7 @@ describe('SubscriptionComponent', () => {
     component.manageSubscription(MAPPED_SUBSCRIPTIONS[1]);
     tick(1000);
 
-    expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+    expect(router.navigate).toHaveBeenCalledWith(['pro/subscriptions']);
   }));
 
   it('should redirect to profile if action is present and subscription changed and user is not featured', fakeAsync(() => {
@@ -394,7 +394,7 @@ describe('SubscriptionComponent', () => {
     component.subscriptionChangeSuccessful();
     tick(1000);
 
-    expect(router.navigate).toHaveBeenCalledWith(['profile/subscriptions']);
+    expect(router.navigate).toHaveBeenCalledWith(['pro/subscriptions']);
   }));
 
   it('should redirect to profile if action is present and subscription changed and user is not featured', fakeAsync(() => {
