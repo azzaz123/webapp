@@ -2,23 +2,14 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterLinkWithHref } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EventService } from '@core/event/event.service';
-import { AccessTokenService } from '@core/http/access-token.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { FeatureflagService } from '@core/user/featureflag.service';
-import { PERMISSIONS } from '@core/user/user-constants';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
-import { MockedUserService, MOCK_USER_STATS_RESPONSE, USER_DATA, USER_WEB_SLUG } from '@fixtures/user.fixtures.spec';
-import { PUBLIC_PATHS } from '@public/public-routing-constants';
-import { UserProfileRoutePipe } from '@shared/pipes';
-import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
-import { StarsComponent } from '@shared/stars/stars.component';
-import { APP_PATHS } from 'app/app-routing-constants';
+import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -30,18 +21,17 @@ import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
-import { ProfileComponent } from './profile.component';
+import { ProComponent } from './pro.component';
 import { SubscriptionsComponent } from './subscription/subscription.component';
 
-describe('ProfileComponent', () => {
-  let component: ProfileComponent;
-  let fixture: ComponentFixture<ProfileComponent>;
+describe('ProComponent', () => {
+  let component: ProComponent;
+  let fixture: ComponentFixture<ProComponent>;
   let userService: UserService;
   let httpMock: HttpTestingController;
   let analyticsService: AnalyticsService;
   let subscriptionsService: SubscriptionsService;
   let i18n: I18nService;
-  let permissionService: NgxPermissionsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -51,9 +41,8 @@ describe('ProfileComponent', () => {
           HttpClientTestingModule,
           RouterTestingModule.withRoutes([{ path: 'subscriptions', component: SubscriptionsComponent }]),
         ],
-        declarations: [ProfileComponent, StarsComponent, ProBadgeComponent, UserProfileRoutePipe],
+        declarations: [ProComponent],
         providers: [
-          EventService,
           NgxPermissionsService,
           {
             provide: I18nService,
@@ -61,7 +50,6 @@ describe('ProfileComponent', () => {
               translate() {},
             },
           },
-          AccessTokenService,
           {
             provide: CookieService,
             useValue: {
@@ -92,250 +80,117 @@ describe('ProfileComponent', () => {
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
-      fixture = TestBed.createComponent(ProfileComponent);
+      fixture = TestBed.createComponent(ProComponent);
       component = fixture.componentInstance;
       userService = TestBed.inject(UserService);
       httpMock = TestBed.inject(HttpTestingController);
       analyticsService = TestBed.inject(AnalyticsService);
       subscriptionsService = TestBed.inject(SubscriptionsService);
-      permissionService = TestBed.inject(NgxPermissionsService);
       i18n = TestBed.inject(I18nService);
       fixture.detectChanges();
     })
   );
 
-  afterAll(() => httpMock.verify());
-
-  const mockBeforeEachInit = () => {
-    component.ngOnInit();
-
-    fixture.detectChanges();
-  };
-
-  describe('when the component loads', () => {
-    it('should set correctly the public url link', () => {
-      component.user.webSlug = USER_WEB_SLUG;
-      const expectedPublicProfileRoute = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.USER_DETAIL}/${USER_DATA.web_slug}`;
-
-      fixture.detectChanges();
-      const publicProfileUrlHTML = fixture.debugElement.query(By.css('.header-row > .header-link'));
-      const routerLinkInstance = publicProfileUrlHTML.injector.get(RouterLinkWithHref);
-
-      expect(routerLinkInstance['href']).toEqual(expectedPublicProfileRoute);
-    });
-
-    it('should show user review numbers and stars', () => {
-      component.userStats.counters.reviews = 2;
-
-      fixture.detectChanges();
-      const expectedUserReviewsText = MOCK_USER_STATS_RESPONSE.counters.find((r) => r.type === 'reviews').value.toString();
-      const userReviewsText: string = fixture.debugElement.query(By.css('.reviews-rating-value')).nativeElement.innerHTML;
-      const userStars: number = fixture.debugElement.query(By.directive(StarsComponent)).componentInstance.stars;
-      const userStarsCondition = userStars >= 0 && userStars <= 5;
-
-      expect(userReviewsText).toEqual(expectedUserReviewsText);
-      expect(userStarsCondition).toBe(true);
-    });
-
-    describe('and the user is not a pro user', () => {
-      it('should not show a PRO badge', () => {
-        jest.spyOn(userService, 'isPro', 'get').mockReturnValue(false);
+  describe('when user is not a cardealer', () => {
+    describe('and the user is not a PRO', () => {
+      let subscriptionTabElement;
+      beforeEach(() => {
+        fixture.detectChanges();
+      });
+      it('should should show tab title Become a PRO', () => {
+        const expectedText = 'Become a PRO';
+        spyOn(i18n, 'translate').and.returnValue(expectedText);
 
         fixture.detectChanges();
 
-        const proBadgeComponentElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
-        expect(proBadgeComponentElement).toBeFalsy();
+        subscriptionTabElement = fixture.debugElement
+          .queryAll(By.css('a'))
+          .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
+
+        expect(i18n.translate).toHaveBeenCalledWith(TRANSLATION_KEY.BECOME_PRO);
+        expect(subscriptionTabElement).toBeTruthy();
       });
     });
 
-    describe('and the user is a pro user', () => {
+    describe('and the user is PRO', () => {
+      let subscriptionTabElement;
       beforeEach(() => {
+        fixture.detectChanges();
+      });
+      it('should should show tab title Wallapop PRO', () => {
+        const expectedText = 'Wallapop PRO';
+        spyOn(i18n, 'translate').and.returnValue(expectedText);
         jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
-      });
-      describe('and has subscriptions permission', () => {
-        beforeEach(() => {
-          permissionService.addPermission(PERMISSIONS.subscriptions);
-        });
-        it('should show a PRO badge', () => {
-          fixture.detectChanges();
 
-          const proBadgeComponentElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
-          expect(proBadgeComponentElement).toBeTruthy();
-        });
-      });
-      describe('and has not subscriptions permission', () => {
-        beforeEach(() => {
-          permissionService.removePermission(PERMISSIONS.subscriptions);
-        });
-        it('should show a PRO badge', () => {
-          fixture.detectChanges();
+        fixture.detectChanges();
 
-          const proBadgeComponentElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
-          expect(proBadgeComponentElement).toBeFalsy();
-        });
+        subscriptionTabElement = fixture.debugElement
+          .queryAll(By.css('a'))
+          .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
+
+        expect(i18n.translate).toHaveBeenCalledWith(TRANSLATION_KEY.WALLAPOP_PRO);
+        expect(subscriptionTabElement).toBeTruthy();
       });
     });
-  });
 
-  describe('when clicking on logout button', () => {
-    it('should perform logout logic', () => {
-      mockBeforeEachInit();
-      spyOn(userService, 'logout').and.callThrough();
-      const logoutButton: HTMLElement = fixture.debugElement.query(By.css('.btn-logout')).nativeElement;
-
-      logoutButton.click();
-
-      expect(userService.logout).toHaveBeenCalled();
-    });
-  });
-
-  describe('when user is not a cardealer', () => {
-    describe('and has subscriptions permission', () => {
+    describe("and when user clicks in 'Subscriptions' tab", () => {
+      let subscriptionTabElement;
+      const expectedText = 'Become a PRO';
       beforeEach(() => {
-        permissionService.addPermission(PERMISSIONS.subscriptions);
+        spyOn(analyticsService, 'trackEvent');
+        spyOn(i18n, 'translate').and.returnValue(expectedText);
+
+        fixture.detectChanges();
       });
-      describe('and the user is not a PRO', () => {
-        let subscriptionTabElement;
+
+      describe('and there is no free trial', () => {
         beforeEach(() => {
+          spyOn(subscriptionsService, 'hasOneTrialSubscription').and.returnValue(false);
           fixture.detectChanges();
         });
-        it('should should show tab title Become a PRO', () => {
-          const expectedText = 'Become a PRO';
-          spyOn(i18n, 'translate').and.returnValue(expectedText);
 
-          fixture.detectChanges();
-
+        it('should track the event', () => {
+          const expectedEvent: AnalyticsEvent<ClickProSubscription> = {
+            name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
+            attributes: {
+              screenId: SCREEN_IDS.MyProfile,
+              freeTrial: false,
+            },
+          };
           subscriptionTabElement = fixture.debugElement
             .queryAll(By.css('a'))
             .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
 
-          expect(i18n.translate).toHaveBeenCalledWith(TRANSLATION_KEY.BECOME_PRO);
-          expect(subscriptionTabElement).toBeTruthy();
+          subscriptionTabElement.click();
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
 
-      describe('and the user is PRO', () => {
-        let subscriptionTabElement;
+      describe('and there is free trial', () => {
         beforeEach(() => {
+          spyOn(subscriptionsService, 'hasOneTrialSubscription').and.returnValue(true);
+          component.ngOnInit();
           fixture.detectChanges();
         });
-        it('should should show tab title Wallapop PRO', () => {
-          const expectedText = 'Wallapop PRO';
-          spyOn(i18n, 'translate').and.returnValue(expectedText);
-          jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
 
-          fixture.detectChanges();
-
+        it('should track the event', () => {
+          const expectedEvent: AnalyticsEvent<ClickProSubscription> = {
+            name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
+            attributes: {
+              screenId: SCREEN_IDS.MyProfile,
+              freeTrial: true,
+            },
+          };
           subscriptionTabElement = fixture.debugElement
             .queryAll(By.css('a'))
             .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
 
-          expect(i18n.translate).toHaveBeenCalledWith(TRANSLATION_KEY.WALLAPOP_PRO);
-          expect(subscriptionTabElement).toBeTruthy();
-        });
-      });
+          subscriptionTabElement.click();
 
-      describe("and when user clicks in 'Subscriptions' tab", () => {
-        let subscriptionTabElement;
-        const expectedText = 'Become a PRO';
-        beforeEach(() => {
-          spyOn(analyticsService, 'trackEvent');
-          spyOn(i18n, 'translate').and.returnValue(expectedText);
-
-          fixture.detectChanges();
-        });
-
-        describe('and there is no free trial', () => {
-          beforeEach(() => {
-            spyOn(subscriptionsService, 'hasOneTrialSubscription').and.returnValue(false);
-            fixture.detectChanges();
-          });
-
-          it('should track the event', () => {
-            const expectedEvent: AnalyticsEvent<ClickProSubscription> = {
-              name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
-              eventType: ANALYTIC_EVENT_TYPES.Navigation,
-              attributes: {
-                screenId: SCREEN_IDS.MyProfile,
-                freeTrial: false,
-              },
-            };
-            subscriptionTabElement = fixture.debugElement
-              .queryAll(By.css('a'))
-              .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
-
-            subscriptionTabElement.click();
-
-            expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-          });
-        });
-
-        describe('and there is free trial', () => {
-          beforeEach(() => {
-            spyOn(subscriptionsService, 'hasOneTrialSubscription').and.returnValue(true);
-            component.ngOnInit();
-            fixture.detectChanges();
-          });
-
-          it('should track the event', () => {
-            const expectedEvent: AnalyticsEvent<ClickProSubscription> = {
-              name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
-              eventType: ANALYTIC_EVENT_TYPES.Navigation,
-              attributes: {
-                screenId: SCREEN_IDS.MyProfile,
-                freeTrial: true,
-              },
-            };
-            subscriptionTabElement = fixture.debugElement
-              .queryAll(By.css('a'))
-              .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
-
-            subscriptionTabElement.click();
-
-            expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-          });
-        });
-      });
-    });
-    describe('and has not subscriptions permission', () => {
-      beforeEach(() => {
-        permissionService.removePermission(PERMISSIONS.subscriptions);
-      });
-      describe('and the user is not a PRO', () => {
-        let subscriptionTabElement;
-        it('should should not show tab title Become a PRO', () => {
-          beforeEach(() => {
-            fixture.detectChanges();
-          });
-          const expectedText = 'Become a PRO';
-          spyOn(i18n, 'translate').and.returnValue(expectedText);
-
-          fixture.detectChanges();
-
-          subscriptionTabElement = fixture.debugElement
-            .queryAll(By.css('a'))
-            .find((anchors) => anchors.nativeElement.innerHTML === expectedText);
-
-          expect(i18n.translate).not.toHaveBeenCalledWith(TRANSLATION_KEY.BECOME_PRO);
-          expect(subscriptionTabElement).toBeFalsy();
-        });
-      });
-
-      describe('and the user is PRO', () => {
-        let subscriptionTabElement;
-        it('should should not show tab title Wallapop PRO', () => {
-          const expectedText = 'Wallapop PRO';
-          spyOn(i18n, 'translate').and.returnValue(expectedText);
-          jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
-
-          fixture.detectChanges();
-
-          subscriptionTabElement = fixture.debugElement
-            .queryAll(By.css('a'))
-            .find((anchors) => anchors.nativeElement.innerHTML === expectedText);
-
-          expect(i18n.translate).not.toHaveBeenCalledWith(TRANSLATION_KEY.WALLAPOP_PRO);
-          expect(subscriptionTabElement).toBeFalsy();
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         });
       });
     });

@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { User } from '@core/user/user';
 import { PERMISSIONS } from '@core/user/user-constants';
-import { UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
 import {
   AnalyticsEvent,
@@ -21,8 +19,6 @@ import { AnalyticsService } from 'app/core/analytics/analytics.service';
   styleUrls: ['./pro.component.scss'],
 })
 export class ProComponent implements OnInit {
-  public user: User;
-  public userStats: UserStats;
   private hasOneTrialSubscription: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
 
@@ -34,19 +30,11 @@ export class ProComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.user = this.userService.user;
     this.subscriptionService.getSubscriptions().subscribe((subscriptions) => {
       if (!!subscriptions) {
         this.hasOneTrialSubscription = this.subscriptionService.hasOneTrialSubscription(subscriptions);
       }
     });
-
-    this.userService.getStats().subscribe((userStats) => (this.userStats = userStats));
-  }
-
-  public logout($event: any) {
-    $event.preventDefault();
-    this.userService.logout().subscribe();
   }
 
   public trackClickSubscriptionTab(): void {
