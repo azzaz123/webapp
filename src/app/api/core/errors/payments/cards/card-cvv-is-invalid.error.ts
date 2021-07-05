@@ -3,6 +3,6 @@ import { PAYMENTS_CARDS_ERROR_TRANSLATIONS } from './payments-cards-error-transl
 
 export class CardCvvIsInvalidError extends PaymentsCardsError {
   constructor() {
-    super(PAYMENTS_CARDS_ERROR_TRANSLATIONS.CARD_ERROR);
+    super(PAYMENTS_CARDS_ERROR_TRANSLATIONS.CARD_CVX_IS_INVALID);
   }
 }
