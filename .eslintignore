@@ -7,7 +7,6 @@
 /src/app/private/features/catalog-pro
 /src/app/private/features/dashboard
 /src/app/private/features/help
-/src/app/private/features/upload
 /src/app/private/features/wallacoins
 
 # WALLET-CHAT
@@ -26,6 +25,7 @@
 
 # FINDING
 /src/app/public/features/search
+/src/app/private/features/upload
 
 # T&S
 /src/app/public/features/register
