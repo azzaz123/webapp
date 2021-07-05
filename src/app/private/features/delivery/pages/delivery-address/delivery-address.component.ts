@@ -43,6 +43,7 @@ import { DeliveryAddressFormErrorMessages } from '../../interfaces/delivery-addr
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { DELIVERY_ADDRESS_LINKS } from '../../enums/delivery-address-links.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -73,7 +74,6 @@ export class DeliveryAddressComponent implements OnInit {
   };
   public comesFromPayView: boolean;
   private subscriptions: Subscription = new Subscription();
-  private readonly formSubmittedEventKey = 'formSubmitted';
 
   constructor(
     private fb: FormBuilder,
@@ -94,7 +94,7 @@ export class DeliveryAddressComponent implements OnInit {
       this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS ||
       this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
     this.buildForm();
-    this.eventService.subscribe(this.formSubmittedEventKey, () => {
+    this.eventService.subscribe(EventService.FORM_SUBMITTED, () => {
       this.onSubmit();
     });
     this.clearFormAndResetLocationsWhenCountryChange();
@@ -103,7 +103,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.eventService.unsubscribeAll(this.formSubmittedEventKey);
+    this.eventService.unsubscribeAll(EventService.FORM_SUBMITTED);
     this.subscriptions.unsubscribe();
   }
 
@@ -134,7 +134,7 @@ export class DeliveryAddressComponent implements OnInit {
       this.submitValidForm();
     } else {
       this.deliveryAddressForm.markAsPending();
-      this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR, 'error');
+      this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR, TOAST_TYPES.ERROR);
       for (const control in this.deliveryAddressForm.controls) {
         if (this.deliveryAddressForm.controls.hasOwnProperty(control) && !this.deliveryAddressForm.controls[control].valid) {
           this.deliveryAddressForm.controls[control].markAsDirty();
@@ -180,12 +180,12 @@ export class DeliveryAddressComponent implements OnInit {
     }).result.then(() => {
       this.deliveryAddressService.delete(this.deliveryAddressForm.get('id').value).subscribe(
         () => {
-          this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS, 'success');
+          this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS, TOAST_TYPES.SUCCESS);
           this.clearForm(true);
           this.prepareFormAndInitializeCountries(true);
         },
         () => {
-          this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR, 'error');
+          this.showToast(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR, TOAST_TYPES.ERROR);
         }
       );
     });
@@ -290,7 +290,7 @@ export class DeliveryAddressComponent implements OnInit {
             : TRANSLATION_KEY.DELIVERY_ADDRESS_EDIT_SUCCESS;
 
           this.isNewForm = false;
-          this.showToast(successKey, 'success');
+          this.showToast(successKey, TOAST_TYPES.SUCCESS);
           this.redirect();
         },
         (errors: DeliveryAddressError[]) => this.handleAddressErrors(errors)
@@ -339,7 +339,7 @@ export class DeliveryAddressComponent implements OnInit {
     const key: TRANSLATION_KEY =
       !errors.length || hasUniqueAddressError ? TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR : TRANSLATION_KEY.FORM_FIELD_ERROR;
 
-    this.showToast(key, 'error');
+    this.showToast(key, TOAST_TYPES.ERROR);
   }
 
   private handleMultiplePostalCodeErrors(): void {
@@ -349,7 +349,7 @@ export class DeliveryAddressComponent implements OnInit {
     );
 
     this.deliveryAddressForm.markAsPending();
-    this.showToast(TRANSLATION_KEY.FORM_FIELD_ERROR, 'error');
+    this.showToast(TRANSLATION_KEY.FORM_FIELD_ERROR, TOAST_TYPES.ERROR);
   }
 
   private postalCodeIsInvalidAndNotExist(errors: DeliveryAddressError[]): boolean {
@@ -478,7 +478,7 @@ export class DeliveryAddressComponent implements OnInit {
     });
   }
 
-  private showToast(key: TRANSLATION_KEY, type: 'error' | 'success'): void {
+  private showToast(key: TRANSLATION_KEY, type: TOAST_TYPES): void {
     this.toastService.show({
       text: this.i18nService.translate(key),
       type,

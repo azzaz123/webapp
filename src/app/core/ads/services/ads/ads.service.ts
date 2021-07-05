@@ -53,13 +53,11 @@ export class AdsService {
   }
 
   public destroySlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.destroySlots(slots);
+    this.googlePublisherTagService.destroySlots(adSlots);
   }
 
   public refreshSlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.refreshSlots(slots);
+    this.googlePublisherTagService.refreshSlots(adSlots);
   }
 
   public refreshAllSlots(): void {
@@ -67,8 +65,7 @@ export class AdsService {
   }
 
   public clearSlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.clearSlots(slots);
+    this.googlePublisherTagService.clearSlots(adSlots);
   }
 
   public setAdKeywords(adKeywords: AdKeyWords): void {

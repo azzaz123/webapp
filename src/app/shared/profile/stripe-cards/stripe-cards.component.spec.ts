@@ -17,6 +17,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { NoCardModalComponent } from '@shared/modals/no-card-modal/no-card-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 describe('StripeCardsComponent', () => {
   let component: StripeCardsComponent;
@@ -162,7 +163,7 @@ describe('StripeCardsComponent', () => {
         expect(toastService.show).toHaveBeenCalledWith({
           title: i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
           text: i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED),
-          type: 'success',
+          type: TOAST_TYPES.SUCCESS,
         });
       }));
 
@@ -234,7 +235,7 @@ describe('StripeCardsComponent', () => {
         expect(toastService.show).toHaveBeenCalledWith({
           title: i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
           text: i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED),
-          type: 'success',
+          type: TOAST_TYPES.SUCCESS,
         });
       }));
 

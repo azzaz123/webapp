@@ -34,7 +34,7 @@ export class EventService {
   public static PRIVACY_LIST_UPDATED = 'privacyListUpdated';
   public static INBOX_READY = 'inboxReady';
   public static ARCHIVED_INBOX_READY = 'archivedInboxReady';
-  public static BILLING_INFO_FORM_SUBMITTED = 'formSubmitted';
+  public static FORM_SUBMITTED = 'formSubmitted';
 
   private subjects: any = {};
 
