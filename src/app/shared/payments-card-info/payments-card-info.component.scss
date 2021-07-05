@@ -7,7 +7,7 @@ $card-height: 151px;
   border-radius: 6px;
   padding: $spacing-ml;
   font-size: $font-size-s;
-  min-height: $card-height;
+  height: $card-height;
 
   &--error {
     border: solid 1px $warn;
@@ -30,6 +30,8 @@ $card-height: 151px;
   &__owner {
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: $spacing-m;
+    white-space: nowrap;
   }
 
   &--grey {
