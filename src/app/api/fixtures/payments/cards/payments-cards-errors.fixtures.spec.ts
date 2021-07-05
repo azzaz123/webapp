@@ -1,10 +1,6 @@
 import { CardIsNotAuthorizedError, CardOwnerNameIsInvalidError, PaymentsCardsError } from '@api/core/errors/payments/cards';
 import { MOCK_ERROR_RESPONSE } from '@api/fixtures/error-response-api.fixtures.spec';
-import {
-  MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX,
-  PaymentsCardsErrorResponseApi,
-} from '@api/payments/cards/dtos/errors/payments-cards-error-response-api.interface';
-import { MANGOPAY_CARD_REGISTRATION_ERROR_CODES_ENUM } from '@api/payments/cards/mappers/errors/mangopay-card-registration-error-codes.enum';
+import { PaymentsCardsErrorResponseApi } from '@api/payments/cards/dtos/errors/payments-cards-error-response-api.interface';
 import { PAYMENTS_CARDS_ERROR_CODES } from '@api/payments/cards/mappers/errors/payments-cards-error-codes.enum';
 import { PaymentsErrorApi, PaymentsErrorResponseApi } from '@api/payments/dtos/errors';
 
