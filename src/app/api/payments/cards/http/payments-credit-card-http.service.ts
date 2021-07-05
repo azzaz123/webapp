@@ -109,7 +109,7 @@ export class PaymentsCreditCardHttpService {
     );
   }
 
-  private isInvalidTokenizedCardResponse(tokenizedCardResponse: string): boolean {
+  private isInvalidTokenizedCardResponse(tokenizedCardResponse: MangopayCardRegistrationErrorResponseApi): boolean {
     return tokenizedCardResponse.startsWith(MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX);
   }
 }
