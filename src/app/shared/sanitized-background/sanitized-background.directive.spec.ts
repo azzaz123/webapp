@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 import { SanitizedBackgroundDirective } from './sanitized-background.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';

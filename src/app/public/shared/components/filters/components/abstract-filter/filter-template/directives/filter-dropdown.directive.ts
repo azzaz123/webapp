@@ -20,11 +20,13 @@ export class FilterDropdownDirective implements OnChanges, OnDestroy {
 
     if (dropdownOpened) {
       this.setDropdownPosition();
+    } else {
+      this.removeEventListener();
     }
   }
 
   ngOnDestroy() {
-    document.removeEventListener('mousedown', this.closeDropdownListener, true);
+    this.removeEventListener();
   }
 
   private closeAndRemoveListener(event: MouseEvent) {
@@ -35,6 +37,10 @@ export class FilterDropdownDirective implements OnChanges, OnDestroy {
       return;
     }
     this.openChange.emit(false);
+  }
+
+  private removeEventListener(): void {
+    document.removeEventListener('mousedown', this.closeDropdownListener, true);
   }
 
   private setDropdownPosition() {
