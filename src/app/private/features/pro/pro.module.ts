@@ -35,6 +35,7 @@ import { ProfileProBillingModule } from '@shared/profile-pro-billing/profile-pro
 import { PaymentsCardInfoModule } from '@shared/payments-card-info/payments-card-info.module';
 import { SubscriptionBenefitsComponent } from './components/subscription-benefits/subscription-benefits.component';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
+import { HeaderModule } from '@shared/header/header.module';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { SpinnerModule } from '@shared/spinner/spinner.module';
     ProfileProBillingModule,
     PaymentsCardInfoModule,
     SpinnerModule,
+    HeaderModule,
   ],
 })
 export class ProModule {}
