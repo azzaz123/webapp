@@ -380,7 +380,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onSubmit(): void {
-    console.log('form', this.uploadForm);
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
