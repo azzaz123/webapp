@@ -1,9 +1,11 @@
 <div class="w-100 h-100">
     <tsl-carousel-slides [hideControllers]="true" [hideIndicators]="false">
         <ng-template carousel-slider *ngFor="let step of KYC_SLIDER_INFO_STEPS">
-           <div>{{step.image}}</div>
-           <div>{{step.title}}</div>
-           <div>{{step.description}}</div>
+           <tsl-svg [src]="step.svgSrc"></tsl-svg>
+           <span>{{step.title}}</span>
+           <span>{{step.description}}</span>
+           <a *ngIf="step.additionalInfoText">{{step.additionalInfoText}}</a>
+           <tsl-button *ngIf="step.buttonText">{{step.buttonText}}</tsl-button>
         </ng-template>
     </tsl-carousel-slides>
 </div>
