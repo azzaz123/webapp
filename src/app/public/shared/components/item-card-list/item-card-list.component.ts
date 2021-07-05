@@ -6,6 +6,7 @@ import { CARD_TYPES } from './enums/card-types.enum';
 import { ClickedItemCard } from './interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from './interfaces/cols-config.interface';
 import { SlotsConfig } from './interfaces/slots-config.interface';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-public-item-card-list',
@@ -36,6 +37,7 @@ export class ItemCardListComponent {
 
   public cardTypes = CARD_TYPES;
   public readonly INLINE_SLOT_POSITION = 6;
+  public readonly PERMISSIONS = PERMISSIONS;
   private static DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS = 15;
 
   constructor(private itemCardService: ItemCardService, private checkSessionService: CheckSessionService) {}
