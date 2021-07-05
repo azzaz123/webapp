@@ -3,7 +3,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { StripeService } from '../../../core/stripe/stripe.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { NewCardModalComponent } from '../../modals/new-card-modal/new-card-modal.component';
-import { FinancialCard } from '@shared/credit-card-info/financial-card';
+import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { finalize } from 'rxjs/operators';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse } from 'app/core/subscriptions/subscriptions.interface';
@@ -14,6 +14,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { NoCardModalComponent } from '@shared/modals/no-card-modal/no-card-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -85,7 +86,7 @@ export class StripeCardsComponent implements OnInit {
           this.toastService.show({
             title: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
             text: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_SET),
-            type: 'success',
+            type: TOAST_TYPES.SUCCESS,
           });
         },
         () => (this.loading = false)
@@ -142,7 +143,7 @@ export class StripeCardsComponent implements OnInit {
     this.toastService.show({
       title: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
       text: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED),
-      type: 'success',
+      type: TOAST_TYPES.SUCCESS,
     });
     this.getAllCards();
   }

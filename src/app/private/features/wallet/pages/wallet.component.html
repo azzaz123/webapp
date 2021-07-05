@@ -1,0 +1,27 @@
+<div class="page-content">
+    <div class="container">
+      <tsl-header>
+        <div class="col">
+          <div class="header-row">
+            <h1 class="header-title" i18n="@@wallet_view_top_bar_title">Wallet</h1>
+          </div>
+        </div>
+      </tsl-header>
+      <div class="row">
+        <div class="col">
+          <tsl-nav-links
+            [navLinks]="navLinks"
+            [selectedLinkId]="selectedNavLinkId"
+            [marginless]="true"
+            (clickedLink)="onNavLinkClicked($event)"
+          >
+          </tsl-nav-links>
+        </div>
+      </div>
+      <div class="row box profile-box mt-3">
+        <div class="col">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>

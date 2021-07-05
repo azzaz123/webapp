@@ -1,7 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, DebugElement, Renderer2 } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdsService } from '@core/ads/services';
@@ -9,7 +9,6 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.service';
-import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -40,7 +39,7 @@ import { IsCurrentUserStub } from '@fixtures/public/core';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
-import { MockedUserService, MOCK_OTHER_USER, MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
@@ -59,7 +58,6 @@ import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-c
 import { ItemSpecificationsComponent } from '../components/item-specifications/item-specifications.component';
 import { ItemSpecificationsModule } from '../components/item-specifications/item-specifications.module';
 import { ItemTaxonomiesComponent } from '../components/item-taxonomies/item-taxonomies.component';
-import { ADS_ITEM_DETAIL, FactoryAdAffiliationSlotConfiguration } from '../core/ads/item-detail-ads.config';
 import { EllapsedTimeModule } from '../core/directives/ellapsed-time.module';
 import { ItemDetailFlagsStoreService } from '../core/services/item-detail-flags-store/item-detail-flags-store.service';
 import { ItemDetailStoreService } from '../core/services/item-detail-store/item-detail-store.service';
@@ -77,6 +75,7 @@ import { VisibleDirectiveModule } from '@shared/directives/visible/visible.direc
 import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current-user.pipe';
 import { IsCurrentUserPipeMock } from '@fixtures/is-current-user.fixtures.spec';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -119,6 +118,7 @@ describe('ItemDetailComponent', () => {
   let testAdsService;
   let analyticsService;
   let isCurrentUserPipe: IsCurrentUserPipe;
+  let permissionService: NgxPermissionsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -243,6 +243,7 @@ describe('ItemDetailComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     testAdsService = TestBed.inject(AdsService);
     isCurrentUserPipe = TestBed.inject(IsCurrentUserPipe);
+    permissionService = TestBed.inject(NgxPermissionsService);
   });
 
   it('should create', () => {
@@ -253,28 +254,40 @@ describe('ItemDetailComponent', () => {
     beforeEach(() => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.MOBILE);
     });
-    it('should only show AD on description', () => {
-      fixture.detectChanges();
 
-      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+    describe('and user has permission to see ads', () => {
+      beforeEach(() => {
+        permissionService.addPermission(PERMISSIONS.showAds);
+      });
+      it('should only show AD on description', fakeAsync(() => {
+        fixture.detectChanges();
+        tick();
 
-      expect(ads.length).toBe(5);
+        const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+
+        expect(ads.length).toBe(5);
+      }));
+
+      it('should set ads configuration of mobile', fakeAsync(() => {
+        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
+        spyOn(testAdsService, 'setAdKeywords').and.callThrough();
+
+        fixture.detectChanges();
+        tick();
+
+        expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
+      }));
     });
 
-    it('should set ads configuration of mobile', () => {
-      itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
-      spyOn(testAdsService, 'setAdKeywords').and.callThrough();
-      spyOn(testAdsService, 'setSlots').and.callThrough();
+    describe('and user does not have permission to see ads', () => {
+      it('should not show ads', fakeAsync(() => {
+        fixture.detectChanges();
+        tick();
 
-      fixture.detectChanges();
+        const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
-      expect(testAdsService.setSlots).toHaveBeenCalledWith([
-        ADS_ITEM_DETAIL.item1,
-        ADS_ITEM_DETAIL.item2l,
-        ADS_ITEM_DETAIL.item3r,
-        ...FactoryAdAffiliationSlotConfiguration(DeviceType.MOBILE),
-      ]);
+        expect(ads.length).toBe(0);
+      }));
     });
   });
 
@@ -283,28 +296,40 @@ describe('ItemDetailComponent', () => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.TABLET);
     });
 
-    it('should show only the top AD', () => {
-      component.ngOnInit();
-      fixture.detectChanges();
-      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+    describe('and user has permission to see ads', () => {
+      beforeEach(() => {
+        permissionService.addPermission(PERMISSIONS.showAds);
+      });
 
-      expect(ads.length).toBe(5);
+      it('should show only the top AD', fakeAsync(() => {
+        component.ngOnInit();
+        fixture.detectChanges();
+        tick();
+        const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+
+        expect(ads.length).toBe(5);
+      }));
+      it('should set ads configuration of tablet', fakeAsync(() => {
+        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
+        spyOn(testAdsService, 'setAdKeywords').and.callThrough();
+
+        component.ngOnInit();
+        fixture.detectChanges();
+        tick();
+
+        expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
+      }));
     });
-    it('should set ads configuration of tablet', () => {
-      itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
-      spyOn(testAdsService, 'setAdKeywords').and.callThrough();
-      spyOn(testAdsService, 'setSlots').and.callThrough();
 
-      component.ngOnInit();
-      fixture.detectChanges();
+    describe('and user does not have permission to see ads', () => {
+      it('should not show ads', fakeAsync(() => {
+        component.ngOnInit();
+        fixture.detectChanges();
+        tick();
+        const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
-      expect(testAdsService.setSlots).toHaveBeenCalledWith([
-        ADS_ITEM_DETAIL.item1,
-        ADS_ITEM_DETAIL.item2l,
-        ADS_ITEM_DETAIL.item3r,
-        ...FactoryAdAffiliationSlotConfiguration(DeviceType.TABLET),
-      ]);
+        expect(ads.length).toBe(0);
+      }));
     });
   });
 
@@ -313,28 +338,39 @@ describe('ItemDetailComponent', () => {
       spyOn(deviceService, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
     });
 
-    it('should show six ADS', () => {
-      component.ngOnInit();
-      fixture.detectChanges();
-      const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+    describe('and user has permission to see ads', () => {
+      beforeEach(() => {
+        permissionService.addPermission(PERMISSIONS.showAds);
+      });
+      it('should show six ADS', fakeAsync(() => {
+        component.ngOnInit();
+        fixture.detectChanges();
+        tick();
+        const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(ads.length).toBe(6);
+        expect(ads.length).toBe(6);
+      }));
+      it('should set ads configuration of desktop', fakeAsync(() => {
+        itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
+        spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
+
+        component.ngOnInit();
+        fixture.detectChanges();
+        tick();
+
+        expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
+      }));
     });
-    it('should set ads configuration of desktop', () => {
-      itemDetailSubjectMock.next(MOCK_ITEM_DETAIL_GBP);
-      spyOn(MockAdsService, 'setAdKeywords').and.callThrough();
-      spyOn(MockAdsService, 'setSlots').and.callThrough();
 
-      component.ngOnInit();
-      fixture.detectChanges();
+    describe('and user does not have permission to see ads', () => {
+      it('should not show ads', fakeAsync(() => {
+        component.ngOnInit();
+        fixture.detectChanges();
+        tick();
+        const ads = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-      expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
-      expect(MockAdsService.setSlots).toHaveBeenCalledWith([
-        ADS_ITEM_DETAIL.item1,
-        ADS_ITEM_DETAIL.item2l,
-        ADS_ITEM_DETAIL.item3r,
-        ...FactoryAdAffiliationSlotConfiguration(DeviceType.DESKTOP),
-      ]);
+        expect(ads.length).toBe(0);
+      }));
     });
   });
 

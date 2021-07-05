@@ -11,6 +11,7 @@ import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
+import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
 
 @Component({
   selector: 'tsl-blank',
@@ -290,8 +291,8 @@ describe('SearchNavigatorService', () => {
               expect(router.navigate).toHaveBeenCalledWith(['/search'], {
                 queryParams: {
                   [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
-                  [FILTER_QUERY_PARAM_KEY.latitude]: '40.4893538',
-                  [FILTER_QUERY_PARAM_KEY.longitude]: '-3.6827461',
+                  [FILTER_QUERY_PARAM_KEY.latitude]: DEFAULT_LOCATIONS.en.latitude,
+                  [FILTER_QUERY_PARAM_KEY.longitude]: DEFAULT_LOCATIONS.en.longitude,
                   [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
                 },
               });

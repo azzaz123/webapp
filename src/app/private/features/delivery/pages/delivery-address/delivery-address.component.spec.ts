@@ -41,6 +41,7 @@ import { FlatAndFloorTooLongError, MobilePhoneNumberIsInvalidError, UniqueAddres
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
 import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-only.directive';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -283,7 +284,7 @@ describe('DeliveryAddressComponent', () => {
 
           expect(toastService.show).toHaveBeenCalledWith({
             text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_EDIT_SUCCESS),
-            type: 'success',
+            type: TOAST_TYPES.SUCCESS,
           });
         });
 
@@ -334,7 +335,7 @@ describe('DeliveryAddressComponent', () => {
           it('should show error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
-              type: 'error',
+              type: TOAST_TYPES.ERROR,
             });
           });
 
@@ -368,7 +369,7 @@ describe('DeliveryAddressComponent', () => {
           it('should show error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
-              type: 'error',
+              type: TOAST_TYPES.ERROR,
             });
           });
 
@@ -392,7 +393,7 @@ describe('DeliveryAddressComponent', () => {
           it('should show toast with generic error', () => {
             expect(toastService.show).toHaveBeenCalledWith({
               text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR),
-              type: 'error',
+              type: TOAST_TYPES.ERROR,
             });
           });
         });
@@ -416,7 +417,7 @@ describe('DeliveryAddressComponent', () => {
       it('should show a toast with a form field error message', () => {
         expect(toastService.show).toHaveBeenCalledWith({
           text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
-          type: 'error',
+          type: TOAST_TYPES.ERROR,
         });
       });
 
@@ -784,7 +785,7 @@ describe('DeliveryAddressComponent', () => {
 
           expect(toastService.show).toHaveBeenCalledWith({
             text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_SUCCESS),
-            type: 'success',
+            type: TOAST_TYPES.SUCCESS,
           });
         }));
 
@@ -825,7 +826,7 @@ describe('DeliveryAddressComponent', () => {
 
           expect(toastService.show).toHaveBeenCalledWith({
             text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_SAVE_ERROR),
-            type: 'error',
+            type: TOAST_TYPES.ERROR,
           });
         }));
       });

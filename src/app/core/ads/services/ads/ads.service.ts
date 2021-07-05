@@ -4,7 +4,7 @@ import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
 import { AdSlotId } from '@core/ads/models/ad-slot-id';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
-import { filter, finalize, map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '../../vendors';
 import { LoadAdsService } from '../load-ads/load-ads.service';
 
@@ -35,8 +35,10 @@ export class AdsService {
     if (!this._adsReady$.getValue()) {
       this.loadAdsService
         .loadAds()
-        .pipe(finalize(() => this._adsReady$.next(true)))
-        .subscribe();
+        .pipe(take(1))
+        .subscribe(() => {
+          this._adsReady$.next(true);
+        });
     }
   }
 
@@ -51,13 +53,11 @@ export class AdsService {
   }
 
   public destroySlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.destroySlots(slots);
+    this.googlePublisherTagService.destroySlots(adSlots);
   }
 
   public refreshSlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.refreshSlots(slots);
+    this.googlePublisherTagService.refreshSlots(adSlots);
   }
 
   public refreshAllSlots(): void {
@@ -65,8 +65,7 @@ export class AdsService {
   }
 
   public clearSlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.clearSlots(slots);
+    this.googlePublisherTagService.clearSlots(adSlots);
   }
 
   public setAdKeywords(adKeywords: AdKeyWords): void {

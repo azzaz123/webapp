@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 import { share } from 'rxjs/operators';
 import { TestBed } from '@angular/core/testing';

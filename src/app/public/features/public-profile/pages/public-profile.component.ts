@@ -3,7 +3,6 @@ import { Subscription, forkJoin } from 'rxjs';
 import { filter, finalize } from 'rxjs/operators';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AdSlotConfiguration } from '@core/ads/models';
-import { AdsService } from '@core/ads/services/ads/ads.service';
 import { DeviceService } from '@core/device/device.service';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
 import { User } from '@core/user/user';
@@ -17,6 +16,7 @@ import { PublicProfileTrackingEventsService } from '../core/services/public-prof
 import { PublicProfileService } from '../core/services/public-profile.service';
 import { PUBLIC_PROFILE_PATHS } from '../public-profile-routing-constants';
 import { UserService } from '@core/user/user.service';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-public-profile',
@@ -35,13 +35,13 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   isMobile: boolean;
 
   readonly adSlot: AdSlotConfiguration = PUBLIC_PROFILE_AD;
+  readonly PERMISSIONS = PERMISSIONS;
 
   constructor(
     private route: ActivatedRoute,
     private publicProfileService: PublicProfileService,
     private router: Router,
     private deviceService: DeviceService,
-    private adsService: AdsService,
     private isCurrentUserPipe: IsCurrentUserPipe,
     private slugsUtilService: SlugsUtilService,
     private publicProfileTrackingEventsService: PublicProfileTrackingEventsService,
@@ -66,7 +66,6 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     return this.route.params.subscribe((params) => {
       const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
       const userUUID = this.slugsUtilService.getUUIDfromSlug(webSlug);
-      this.adsService.setSlots([this.adSlot]);
       this.getUser(userUUID);
     });
   }
