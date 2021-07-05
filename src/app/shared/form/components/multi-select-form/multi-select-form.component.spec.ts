@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { SelectFormOption } from '../select/interfaces/select-form-option.interface';
-import { SelectOptionComponent } from '../select/select-option/select-option.component';
 import { MultiSelectFormComponent, MultiSelectFormOption } from './multi-select-form.component';
 import { MultiSelectOptionComponent } from './multi-select-option/multi-select-option/multi-select-option.component';
 import { MultiSelectOptionModule } from './multi-select-option/multi-select-option/multi-select-option.module';
