@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ProcessAllButtonComponent } from './process-all-button.component';
 import { of } from 'rxjs';

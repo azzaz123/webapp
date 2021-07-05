@@ -92,7 +92,7 @@ class I18nHelper {
 
   private projectId = '00bf7dee267ad3d87db0f7f4da989e43';
   private bearerToken = '67f5e5862f1ac8f3fed7bce2cc8653fd5d41911f80848f490e1464f3aa507100';
-  private phraseTags = ['multiplatform', 'legacy_web'];
+  private phraseTags = ['multiplatform', 'legacy_web', 'specific_web'];
 
   private phraseHtmlRegexFormatters: RegexFormatter[] = [{
     regex: /<b(?: .*?>|>)(.+?)<\/b>/,
