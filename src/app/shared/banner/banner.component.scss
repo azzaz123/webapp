@@ -1,21 +1,24 @@
 @import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/spacing';
 
-ngb-alert {
-  .success,
-  .warning,
-  .danger {
+.alert {
+  border-radius: $spacing-ms;
+
+  &-success,
+  &-warning,
+  &-danger {
     color: $white;
   }
 
-  .success {
+  &-success {
     background-color: $walla-main;
   }
 
-  .warning {
+  &-warning {
     background-color: $orange-main;
   }
 
-  .danger {
+  &-danger {
     background-color: $negative-main;
   }
 }

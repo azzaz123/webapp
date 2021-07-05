@@ -20,7 +20,7 @@ describe('KycBannerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(KycBannerComponent);
     component = fixture.componentInstance;
-    component.KYCBannerSpecifications = KYC_BANNER_TYPES[0];
+    component.specifications = KYC_BANNER_TYPES[0];
 
     fixture.detectChanges();
   });

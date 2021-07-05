@@ -5,7 +5,6 @@ import { KYCBannerSpecifications } from '../../interfaces/kyc/kyc-banner.interfa
 @Component({
   selector: 'tsl-kyc-banner',
   templateUrl: './kyc-banner.component.html',
-  styleUrls: ['./kyc-banner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KycBannerComponent {

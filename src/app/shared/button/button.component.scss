@@ -173,8 +173,12 @@ $vertical-padding: $spacing-ms;
     border: 0;
     font-weight: bold;
     font-size: $font-size-s;
-    width: 170px;
     height: 40px;
+
+    @include media-breakpoint-up(md) {
+      width: 170px;
+    }
+
     &--danger {
       color: $negative-main;
     }
