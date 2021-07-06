@@ -130,13 +130,13 @@ describe('SortFilterComponent', () => {
     describe('when a value is already provided in the URL', () => {
       describe('and the provided value is a valid option', () => {
         it('should show the label for the provided option', () => {
-          route.snapshot.queryParams = { [FILTER_QUERY_PARAM_KEY.orderBy]: SELECT_FORM_OPTIONS_CONFIG[1].value };
+          route.snapshot.queryParams = { [FILTER_QUERY_PARAM_KEY.orderBy]: SORT_BY_DEFAULT_OPTIONS[0].value };
           component.ngOnInit();
           fixture.detectChanges();
 
           const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
 
-          expect(value.textContent).toEqual(SELECT_FORM_OPTIONS_CONFIG[1].label);
+          expect(value.textContent).toEqual(SORT_BY_DEFAULT_OPTIONS[0].label);
         });
       });
 
@@ -148,7 +148,7 @@ describe('SortFilterComponent', () => {
 
           const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
 
-          expect(value.textContent).toEqual(SELECT_FORM_OPTIONS_CONFIG[0].label);
+          expect(value.textContent).toEqual(SORT_BY_DEFAULT_OPTIONS[0].label);
         });
       });
     });
