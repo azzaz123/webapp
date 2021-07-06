@@ -12,7 +12,7 @@ import { WALLET_PATHS } from '../wallet-routing-constants';
 export class WalletComponent {
   public navLinks: NavLink[] = [
     {
-      id: `/${PRIVATE_PATHS.WALLET}`,
+      id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}`,
       display: $localize`:@@profile_menu_wallet:Wallet`,
     },
     {
