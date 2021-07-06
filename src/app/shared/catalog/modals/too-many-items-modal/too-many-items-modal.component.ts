@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, forkJoin } from 'rxjs';
 
@@ -6,14 +6,20 @@ import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions
 import { ItemService } from '../../../../core/item/item.service';
 import { SubscriptionsService } from '../../../../core/subscriptions/subscriptions.service';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '../../../../core/subscriptions/subscriptions.interface';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { AnalyticsPageView, ViewProSubscriptionPopup, ANALYTICS_EVENT_NAMES, SCREEN_IDS } from 'app/core/analytics/analytics-constants';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
+import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+
+export const CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE = [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE];
 
 @Component({
   selector: 'tsl-too-many-items-modal',
   templateUrl: './too-many-items-modal.component.html',
   styleUrls: ['./too-many-items-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TooManyItemsModalComponent implements OnInit {
   public type = SUBSCRIPTION_TYPES.notSubscribed;
@@ -22,24 +28,34 @@ export class TooManyItemsModalComponent implements OnInit {
   public carDealerType = SUBSCRIPTION_TYPES.carDealer;
   public stripeType = SUBSCRIPTION_TYPES.stripe;
   public isFreeTrial: boolean;
+  public isHighestLimit: boolean;
   public categorySubscription: SubscriptionsResponse;
   @Input() itemId: string;
 
   public categoryName: string;
   public categoryIconName: string;
 
+  isHighestLimitConfig = {
+    [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE]: {
+      zendesk: TRANSLATION_KEY.ZENDESK_REAL_ESTATE_LIMIT_URL,
+      descriptionText: TRANSLATION_KEY.REAL_ESTATE_HIGHEST_LIMIT_REACHED_DESCRIPTION,
+    },
+  };
+
   constructor(
     public activeModal: NgbActiveModal,
     private itemService: ItemService,
     private subscriptionsService: SubscriptionsService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private translateService: I18nService
   ) {}
 
   ngOnInit() {
-    this.hasFreeOption(this.itemId).subscribe((result) => {
-      this.isFreeTrial = result;
-      this.trackPageView();
-    });
+    this.getSubscriptionInfo(this.itemId)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.trackPageView();
+      });
   }
 
   private trackPageView(): void {
@@ -56,19 +72,40 @@ export class TooManyItemsModalComponent implements OnInit {
     this.analyticsService.trackPageView(event);
   }
 
-  private hasFreeOption(itemId: string): Observable<boolean> {
+  private getSubscriptionInfo(itemId: string): Observable<void> {
     return forkJoin([this.itemService.get(itemId), this.subscriptionsService.getSubscriptions(false)]).pipe(
       map((values) => {
         const item = values[0];
         const subscriptions = values[1];
         this.categorySubscription = subscriptions.find((subscription) => item.categoryId === subscription.category_id);
-
-        if (!this.categorySubscription || !!this.categorySubscription.subscribed_from) {
-          return false;
-        }
-
-        return this.subscriptionsService.hasTrial(this.categorySubscription);
+        this.isHighestLimit = this.hasHighestLimitReached();
+        this.isFreeTrial = this.hasFreeOption();
       })
     );
+  }
+
+  private hasFreeOption(): boolean {
+    if (!this.categorySubscription || !!this.categorySubscription.subscribed_from) {
+      return false;
+    }
+    return this.subscriptionsService.hasTrial(this.categorySubscription);
+  }
+
+  private hasHighestLimitReached(): boolean {
+    return (
+      this.subscriptionsService.hasHighestLimit(this.categorySubscription) &&
+      CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE.includes(this.categorySubscription.category_id)
+    );
+  }
+
+  get highestLimitText(): string {
+    return this.translateService.translate(this.isHighestLimitConfig[this.categorySubscription.category_id].descriptionText);
+  }
+
+  get zenDeskUrl(): string {
+    return this.translateService.translate(this.isHighestLimitConfig[this.categorySubscription.category_id].zendesk);
+    // https://ayuda.wallapop.com/hc/es-es/articles/4403261623185-Wallapop-PRO-Inmuebles
+
+    //  https://ayuda.wallapop.com/hc/en-us/articles/4403261623185-Wallapop-PRO-Real-estate
   }
 }
