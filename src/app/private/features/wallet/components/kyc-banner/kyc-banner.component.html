@@ -1,9 +1,9 @@
-<tsl-banner *ngIf="specifications && bannerSpecifications" [specifications]="bannerSpecifications">
+<tsl-banner *ngIf="KYCBannerSpecifications" [specifications]="ngbAlertConfiguration">
     <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
-            <tsl-svg-icon [src]="specifications.svgPath"></tsl-svg-icon>
-            <span>{{specifications.description}}</span>
+            <tsl-svg-icon [src]="KYCBannerSpecifications.svgPath"></tsl-svg-icon>
+            <span>{{KYCBannerSpecifications.description}}</span>
         </div>
-        <tsl-button [className]="'btn-white btn-white--' + specifications.type">{{specifications.buttonText}}</tsl-button>
+        <tsl-button [className]="buttonClassName">{{KYCBannerSpecifications.buttonText}}</tsl-button>
     </div>
 </tsl-banner>

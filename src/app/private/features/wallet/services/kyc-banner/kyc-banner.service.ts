@@ -12,11 +12,9 @@ export class KycBannerService {
   public getSpecifications(): Observable<KYCBannerSpecifications | null> {
     return this.kycBannerApiService.getKYCBanner().pipe(
       map((KYCBanner: KYCBanner) => {
-        if (KYCBanner.status === KYC_BANNER_STATUS.NO_NEED) {
-          return null;
-        } else {
-          return KYC_BANNER_TYPES.find((specification) => specification.status === KYCBanner.status);
-        }
+        return KYCBanner.status === KYC_BANNER_STATUS.NO_NEED
+          ? null
+          : KYC_BANNER_TYPES.find((specification) => specification.status === KYCBanner.status);
       })
     );
   }

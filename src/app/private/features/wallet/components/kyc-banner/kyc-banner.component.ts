@@ -8,12 +8,16 @@ import { KYCBannerSpecifications } from '../../interfaces/kyc/kyc-banner.interfa
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KycBannerComponent {
-  @Input() specifications: KYCBannerSpecifications;
+  @Input() KYCBannerSpecifications: KYCBannerSpecifications;
 
-  get bannerSpecifications(): NgbAlertConfig {
+  get buttonClassName(): string {
+    return `btn-white btn-white--${this.KYCBannerSpecifications.type}`;
+  }
+
+  get ngbAlertConfiguration(): NgbAlertConfig {
     return {
-      dismissible: this.specifications.dismissible,
-      type: this.specifications.type,
+      dismissible: this.KYCBannerSpecifications.dismissible,
+      type: this.KYCBannerSpecifications.type,
     };
   }
 }

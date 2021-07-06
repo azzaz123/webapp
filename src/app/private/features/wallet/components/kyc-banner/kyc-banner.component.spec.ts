@@ -38,7 +38,7 @@ describe('KycBannerComponent', () => {
 
   describe('when we do not specify the banner specifications...', () => {
     beforeEach(() => {
-      component.specifications = null;
+      component.KYCBannerSpecifications = null;
 
       fixture.detectChanges();
     });
@@ -52,7 +52,7 @@ describe('KycBannerComponent', () => {
 
   describe('when we specify the KYC banner specifications', () => {
     beforeEach(() => {
-      component.specifications = MOCK_KYC_BANNER_SPECIFICATIONS;
+      component.KYCBannerSpecifications = MOCK_KYC_BANNER_SPECIFICATIONS;
 
       fixture.detectChanges();
     });
@@ -63,8 +63,8 @@ describe('KycBannerComponent', () => {
       expect(banner).toBeTruthy();
     });
 
-    it('should get the correct banner specifications', () => {
-      expect(component.bannerSpecifications).toStrictEqual({
+    it('should get the correct alert specifications', () => {
+      expect(component.ngbAlertConfiguration).toStrictEqual({
         dismissible: MOCK_KYC_BANNER_SPECIFICATIONS.dismissible,
         type: MOCK_KYC_BANNER_SPECIFICATIONS.type,
       });
@@ -79,7 +79,7 @@ describe('KycBannerComponent', () => {
     it('should show the specified button text', () => {
       const button: HTMLElement = debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
-      expect(button.textContent).toEqual(component.specifications.buttonText);
+      expect(button.textContent).toEqual(component.KYCBannerSpecifications.buttonText);
     });
   });
 });

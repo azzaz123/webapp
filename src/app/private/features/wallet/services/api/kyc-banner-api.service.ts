@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import { KYCBanner } from '../../interfaces/kyc/kyc-banner.interface';
 export const KYC_BANNER_STATUS_API_URL = `${environment.baseUrl}api/v3/delivery/kyc/banner`;
