@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, forkJoin } from 'rxjs';
 
@@ -19,7 +19,6 @@ export const CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE = [CATEGORY_SUBSCRIPTIONS_IDS.
   selector: 'tsl-too-many-items-modal',
   templateUrl: './too-many-items-modal.component.html',
   styleUrls: ['./too-many-items-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TooManyItemsModalComponent implements OnInit {
   public type = SUBSCRIPTION_TYPES.notSubscribed;
@@ -104,8 +103,5 @@ export class TooManyItemsModalComponent implements OnInit {
 
   get zenDeskUrl(): string {
     return this.translateService.translate(this.isHighestLimitConfig[this.categorySubscription.category_id].zendesk);
-    // https://ayuda.wallapop.com/hc/es-es/articles/4403261623185-Wallapop-PRO-Inmuebles
-
-    //  https://ayuda.wallapop.com/hc/en-us/articles/4403261623185-Wallapop-PRO-Real-estate
   }
 }
