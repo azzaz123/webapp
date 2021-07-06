@@ -71,7 +71,11 @@ export class DesktopNotificationsService {
   }
 
   private createFromInboxMessage(message: InboxMessage, conversation: InboxConversation): Notification {
-    return new Notification(this.buildTitleFromConversation(conversation), this.buildOptionsFromConversation(message, conversation));
+    try {
+      return new Notification(this.buildTitleFromConversation(conversation), this.buildOptionsFromConversation(message, conversation));
+    } catch (error) {
+      return;
+    }
   }
 
   private buildTitleFromConversation(conversation: InboxConversation): string {
