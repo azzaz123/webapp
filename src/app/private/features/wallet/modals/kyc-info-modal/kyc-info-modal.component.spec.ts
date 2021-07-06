@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KycInfoSliderComponent } from './kyc-info-slider.component';
+import { KycInfoModalComponent } from './kyc-info-modal.component';
 
-describe('KycInfoSliderComponent', () => {
-  let component: KycInfoSliderComponent;
-  let fixture: ComponentFixture<KycInfoSliderComponent>;
+describe('KycInfoModalComponent', () => {
+  let component: KycInfoModalComponent;
+  let fixture: ComponentFixture<KycInfoModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [KycInfoSliderComponent],
+      declarations: [KycInfoModalComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KycInfoSliderComponent);
+    fixture = TestBed.createComponent(KycInfoModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
