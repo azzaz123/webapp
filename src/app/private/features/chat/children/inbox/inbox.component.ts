@@ -155,7 +155,9 @@ export class InboxComponent implements OnInit, OnDestroy {
       this.eventService.subscribe(EventService.CURRENT_CONVERSATION_SET, (conversation) => {
         if (this.conversation !== conversation) {
           this.conversation = conversation;
-          this.trackViewConversation(conversation);
+          if (conversation) {
+            this.trackViewConversation(conversation);
+          }
         }
         if (this.archivedConversations.find((c) => c === conversation) && this.componentState === InboxState.Inbox) {
           this.componentState = InboxState.Archived;
