@@ -16,6 +16,7 @@ import {
   UniqueCardForUserError,
 } from '@api/core/errors/payments/cards';
 import {
+  MOCK_BAD_FORMAT_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED,
   MOCK_CARD_EXPIRED_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED,
   MOCK_CARD_NOT_ACTIVE_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED,
   MOCK_INVALID_CARD_NUMBER_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED,
@@ -180,6 +181,18 @@ describe('PaymentsCardsErrorMapper', () => {
   });
 
   describe('when mapping an error from Mangopay card registration server', () => {
+    describe('and the received error is not in the expected format', () => {
+      it('should notify a payments cards error', () => {
+        let result: PaymentsCardsError;
+
+        paymentsCardsErrorMapper.map(MOCK_BAD_FORMAT_CARD_REGISTRATION_ERROR_RESPONSE_MAPPED).subscribe({
+          error: (errors) => (result = errors[0]),
+        });
+
+        expect(result instanceof PaymentsCardsError).toBe(true);
+      });
+    });
+
     describe('and server notifies card expired', () => {
       it('should notify card expiration date is invalid', () => {
         let result: PaymentsCardsError;

@@ -97,7 +97,7 @@ export class PaymentsCardsErrorMapper extends ErrorMapper<PaymentsCardsErrorResp
     const { error: mangopayErrorResponse } = networkError;
 
     if (!mangopayErrorResponse.startsWith(MANGOPAY_CARD_REGISTRATION_ERROR_RESPONSE_PREFIX)) {
-      return new Error();
+      return new PaymentsCardsError(`Bad format: ${mangopayErrorResponse}`);
     }
 
     const errorCode = mangopayErrorResponse.split('=')[1];
