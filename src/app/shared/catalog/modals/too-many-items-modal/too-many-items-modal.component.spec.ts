@@ -16,6 +16,7 @@ import { MockAnalyticsService } from '../../../../../tests/analytics.fixtures.sp
 import { AnalyticsPageView, ViewProSubscriptionPopup, ANALYTICS_EVENT_NAMES, SCREEN_IDS } from 'app/core/analytics/analytics-constants';
 import { SUBSCRIPTION_CATEGORIES } from 'app/core/subscriptions/subscriptions.interface';
 import { MOCK_CAR } from '../../../../../tests/car.fixtures.spec';
+import { I18nService } from '@core/i18n/i18n.service';
 
 describe('TooManyItemsModalComponent', () => {
   let component: TooManyItemsModalComponent;
@@ -23,6 +24,7 @@ describe('TooManyItemsModalComponent', () => {
   let itemService: ItemService;
   let subscriptionsService: SubscriptionsService;
   let analyticsService: AnalyticsService;
+  let i18nService: I18nService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -30,6 +32,7 @@ describe('TooManyItemsModalComponent', () => {
       declarations: [TooManyItemsModalComponent, ButtonComponent],
       providers: [
         NgbActiveModal,
+        I18nService,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         {
           provide: ItemService,
@@ -53,6 +56,7 @@ describe('TooManyItemsModalComponent', () => {
     itemService = TestBed.inject(ItemService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     analyticsService = TestBed.inject(AnalyticsService);
+    i18nService = TestBed.inject(I18nService);
     component = fixture.componentInstance;
     component.type = SUBSCRIPTION_TYPES.stripe;
     fixture.detectChanges();

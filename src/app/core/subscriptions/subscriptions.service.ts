@@ -312,11 +312,12 @@ export class SubscriptionsService {
   }
 
   public hasHighestLimit(subscription: SubscriptionsResponse): boolean {
-    const selectedLimit = subscription.selected_tier.limit;
+    const selectedLimit = subscription.selected_tier?.limit;
+
     if (!selectedLimit) {
       return false;
     }
-    const maxLimit = subscription.tiers.reduce((a, b) => (a.limit > b.limit ? a : b)).limit;
+    const maxLimit = subscription.tiers.reduce((a, b) => (!b.limit || a.limit > b.limit ? a : b)).limit;
     return selectedLimit === maxLimit;
   }
 }
