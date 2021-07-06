@@ -1,11 +1,19 @@
-<tsl-carousel-slides [hideControllers]="true" [hideIndicators]="false">
-    <ng-template carousel-slider *ngFor="let step of KYC_SLIDER_INFO_STEPS">
-        <div class="modal-body d-flex flex-column align-items-center mb-4">
-            <tsl-svg-icon [src]="step.svgSrc" class="mb-4"></tsl-svg-icon>
-            <span>{{step.title}}</span>
-            <span>{{step.description}}</span>
-            <a *ngIf="step.additionalInfoText">{{step.additionalInfoText}}</a>
-            <tsl-button *ngIf="step.buttonText">{{step.buttonText}}</tsl-button>
-        </div>
-    </ng-template>
-</tsl-carousel-slides>
+<div class="KYCInfoModal">
+    <tsl-svg-icon class="KYCInfoModal__cross position-absolute m-4" src="/assets/icons/cross.svg" (click)="activeModal.close()"></tsl-svg-icon>
+    <tsl-carousel-slides [hideControllers]="true" [hideIndicators]="false">
+        <ng-template carousel-slider *ngFor="let step of KYC_SLIDER_INFO_STEPS; let i = index">
+            <div class="KYCInfoModal__content d-flex flex-column align-items-center text-center modal-body">
+                <div class="KYCInfoModal__img my-4">
+                    <img class="w-100 h-100 px-3" [src]="step.imageSrc" [alt]="step.imageAlt"/>
+                </div>
+                <div class="KYCInfoModal__textContainer d-flex flex-column">
+                    <span class="KYCInfoModal__title mb-2">{{step.title}}</span>
+                    <span class="KYCInfoModal__description mb-4">{{step.description}}</span>
+                    <a class="KYCInfoModal__link mb-2" *ngIf="step.additionalInfoText">{{step.additionalInfoText}}</a>
+                    <tsl-button *ngIf="step.buttonText" className="btn-primary btn-big" class="m-2">{{step.buttonText}}</tsl-button>
+                </div>
+                <a class="KYCInfoModal__link" *ngIf="i !== KYC_SLIDER_INFO_STEPS.length - 1" (click)="swipeToRight()">Continue</a>
+            </div>
+        </ng-template>
+    </tsl-carousel-slides>
+</div>

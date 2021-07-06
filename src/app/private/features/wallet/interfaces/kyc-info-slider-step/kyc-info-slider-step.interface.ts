@@ -1,5 +1,6 @@
 export interface KycInfoSliderStep {
-  svgSrc: string;
+  imageSrc: string;
+  imageAlt: string;
   title: string;
   description: string;
   additionalInfoText?: string;
