@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { I18nService } from '@core/i18n/i18n.service';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { ItemCounters, ItemResponse, ItemVisibilityFlags, Purchase } from '@core/item/item-response.interface';
 import { environment } from '@environments/environment';
+import { APP_LOCALE } from 'configs/subdomains.config';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { DeleteItemBodyResponse, MarkAsFavouriteBodyResponse, ReserveItemBodyResponse } from './interfaces/item-response.interface';
@@ -17,10 +17,10 @@ export const GET_ITEM_REMAINING_TIME = (itemId: string) => `${environment.baseUr
 
 @Injectable()
 export class ItemApiService {
-  constructor(private http: HttpClient, private i18n: I18nService) {}
+  constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private http: HttpClient) {}
 
   public getItem(id: string): Observable<ItemResponse> {
-    const params = { language: this.i18n.locale };
+    const params = { language: this.locale };
     return this.http.get<ItemResponse>(GET_ITEM_ENDPOINT(id), { params });
   }
 

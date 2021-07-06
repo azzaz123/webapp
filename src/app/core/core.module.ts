@@ -35,9 +35,17 @@ import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { MonitoringModule } from './monitoring/monitoring.module';
 
 @NgModule({
-  imports: [CookieModule.forRoot(), NgxPermissionsModule.forRoot(), DeviceDetectorModule.forRoot(), AdsModule, HammerModule],
+  imports: [
+    CookieModule.forRoot(),
+    NgxPermissionsModule.forRoot(),
+    DeviceDetectorModule.forRoot(),
+    AdsModule,
+    MonitoringModule,
+    HammerModule,
+  ],
   providers: [
     LoggedGuard,
     DevelopmentGuard,

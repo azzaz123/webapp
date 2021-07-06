@@ -3,7 +3,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureFlag, FEATURE_FLAGS_ENUM, featurePermissionConfig } from './featureflag-constants';
 import { PERMISSIONS } from './user-constants';
@@ -109,18 +109,19 @@ export class FeatureFlagService {
     return isDevMode() || this.isExperimentalFeaturesEnabled();
   }
 
-  private checkPermission(featureFlagName: FEATURE_FLAGS_ENUM, isActive: boolean): void {
-    const permission = featurePermissionConfig[featureFlagName];
-    if (permission) {
-      isActive ? this.addPermisions(permission) : this.removePermisions(permission);
+  private checkPermission(featureFlagName: FEATURE_FLAGS_ENUM, isFlagActive: boolean): void {
+    const permissionConfig = featurePermissionConfig[featureFlagName];
+    if (permissionConfig) {
+      const { permission, statusMapper } = permissionConfig;
+      statusMapper(isFlagActive) ? this.addPermissions(permission) : this.removePermissions(permission);
     }
   }
 
-  private addPermisions(permission: PERMISSIONS): void {
+  private addPermissions(permission: PERMISSIONS): void {
     this.permissionService.addPermission(permission);
   }
 
-  private removePermisions(permission: PERMISSIONS): void {
+  private removePermissions(permission: PERMISSIONS): void {
     this.permissionService.removePermission(permission);
   }
 }

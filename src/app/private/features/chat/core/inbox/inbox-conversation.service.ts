@@ -17,6 +17,7 @@ import { InboxConversation, InboxMessage, MessageStatus, MessageType, statusOrde
 import { InboxConversationApi, InboxMessagesApi } from '../model/api';
 import { ChatSignal, ChatSignalType } from '../model/chat-signal';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 export const ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS = 100;
 
@@ -350,7 +351,7 @@ export class InboxConversationService {
     if (code === ERROR_CODE_TOO_MANY_NEW_CONVERSATIONS) {
       const title = this.i18nService.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE);
       const text = this.i18nService.translate(TRANSLATION_KEY.CHAT_TOO_MANY_CONVERSATIONS);
-      this.toastService.show({ title, text, type: 'error' });
+      this.toastService.show({ title, text, type: TOAST_TYPES.ERROR });
     }
 
     return throwError(errorResponse);

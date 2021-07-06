@@ -73,7 +73,6 @@ export class SuggesterComponent implements OnInit, OnDestroy {
     return this.route.queryParams.pipe(
       distinctUntilChanged(),
       map((params: Params) => params[FILTER_QUERY_PARAM_KEY.keywords]),
-      filter((keyword: string) => !!keyword),
       map((keyword: string) => this.mapSearchBoxValue(keyword)),
       tap((searchBoxValue: SearchBoxValue) => (this.searchBoxValue = searchBoxValue))
     );

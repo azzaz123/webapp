@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { CallStatusLabelPipe } from './call-status-label.pipe';

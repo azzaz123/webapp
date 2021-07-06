@@ -25,9 +25,11 @@ import {
   SORT_BY_DISTANCE_OPTION,
   SORT_BY_RELEVANCE_OPTION,
 } from './services/constants/sort-by-options-constants';
-import { SortByService } from './services/sort-by.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { SortByService } from './services/sort-by.service';
 
 @Component({
   selector: 'tsl-select-form',
@@ -49,6 +51,7 @@ describe('SortFilterComponent', () => {
   let navigator: SearchNavigatorService;
   let sortByService: SortByService;
   const sortFilterValueLabelSelector = '.SortFilter__value';
+  let route: ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -72,6 +75,14 @@ describe('SortFilterComponent', () => {
         },
         SearchQueryStringService,
         QueryStringLocationService,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              queryParams: {},
+            },
+          },
+        },
         { provide: 'SUBDOMAIN', useValue: 'es' },
         {
           provide: CookieService,
@@ -94,6 +105,7 @@ describe('SortFilterComponent', () => {
     fixture = TestBed.createComponent(SortFilterComponent);
     navigator = TestBed.inject(SearchNavigatorService);
     sortByService = TestBed.inject(SortByService);
+    route = TestBed.inject(ActivatedRoute);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -113,6 +125,32 @@ describe('SortFilterComponent', () => {
       const dropdown: NgbDropdown = component.dropdown;
 
       expect(dropdown.isOpen()).toBe(false);
+    });
+
+    describe('when a value is already provided in the URL', () => {
+      describe('and the provided value is a valid option', () => {
+        it('should show the label for the provided option', () => {
+          route.snapshot.queryParams = { [FILTER_QUERY_PARAM_KEY.orderBy]: SELECT_FORM_OPTIONS_CONFIG[1].value };
+          component.ngOnInit();
+          fixture.detectChanges();
+
+          const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
+
+          expect(value.textContent).toEqual(SELECT_FORM_OPTIONS_CONFIG[1].label);
+        });
+      });
+
+      describe('and the provided value is not a valid option', () => {
+        it('should select the default option', () => {
+          route.snapshot.queryParams = { [FILTER_QUERY_PARAM_KEY.orderBy]: 'invalid-sort-value' };
+          component.ngOnInit();
+          fixture.detectChanges();
+
+          const value: HTMLElement = fixture.debugElement.query(By.css('.SortFilter__value')).nativeElement;
+
+          expect(value.textContent).toEqual(SELECT_FORM_OPTIONS_CONFIG[0].label);
+        });
+      });
     });
   });
 

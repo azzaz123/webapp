@@ -5,8 +5,8 @@ import { AdShoppingPageOptions, AdSlotGroupShoppingConfiguration } from '@core/a
   selector: 'tsl-sky-slot-group-shopping',
   template: '{{adShoppingPageOptions}}, {{adSlotShoppingConfiguration}}',
 })
-// tslint:disable-next-line:component-class-suffix
-export class AdSlotGroupShoppingComponentSub {
+// eslint-disable-next-line @angular-eslint/component-class-suffix
+export class AdSlotGroupShoppingComponentStub {
   @Input() adShoppingPageOptions: AdShoppingPageOptions;
   @Input() adSlotShoppingConfiguration: AdSlotGroupShoppingConfiguration;
 }

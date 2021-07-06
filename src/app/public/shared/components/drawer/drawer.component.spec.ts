@@ -7,7 +7,7 @@ import { DrawerModule } from '@public/shared/components/drawer/drawer.module';
 import { ScrollLockService } from '@public/shared/services/scroll-lock.service';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'component-wrapper',
   template: `<tsl-drawer [isOpen]="isOpen" [hasApply]="hasApply" [offsetTop]="offsetTop"></tsl-drawer>`,
 })

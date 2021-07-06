@@ -9,7 +9,7 @@ import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces
   selector: 'tsl-public-item-card-list',
   template: '',
 })
-// tslint:disable-next-line: component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 export class ItemCardListComponentStub {
   @Input() items: Item[];
   @Input() showDescription = true;
