@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BannerComponent } from '@shared/banner/banner.component';
@@ -21,22 +21,18 @@ describe('KycBannerComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [KycBannerComponent, BannerComponent, SvgIconComponent],
       imports: [SvgIconModule, ButtonModule, HttpClientTestingModule, BannerModule],
-    })
-      .overrideComponent(KycBannerComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
-      })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(KycBannerComponent);
-    component = fixture.componentInstance;
     debugElement = fixture.debugElement;
-
-    fixture.detectChanges();
+    component = fixture.componentInstance;
   });
 
   it('should create', () => {
+    fixture.detectChanges();
+
     expect(component).toBeTruthy();
   });
 

@@ -83,7 +83,6 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
 import { LocationSelectorModal } from './modals/location-selector-modal/location-selector-modal.component';
 import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.module';
-import { BannerModule } from './banner/banner.module';
 
 @NgModule({
   imports: [
@@ -112,7 +111,6 @@ import { BannerModule } from './banner/banner.module';
     ProfileFormModule,
     HeaderModule,
     PaymentsCardInfoModule,
-    BannerModule,
   ],
   exports: [
     SpinnerModule,
