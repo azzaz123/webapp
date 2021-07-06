@@ -32,7 +32,7 @@ export class SortByService {
           this.isRelevanceFeatureFlagActive = isEnabled;
         },
         () => {
-          this.isRelevanceFeatureFlagActive = true;
+          this.isRelevanceFeatureFlagActive = false;
         }
       );
 
