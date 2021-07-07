@@ -1,5 +1,7 @@
+export type PaymentsWalletsCurrencyApi = 'EUR';
+
 export interface PaymentsWalletsApi {
   amount: number;
-  currency: string;
+  currency: PaymentsWalletsCurrencyApi;
   id: string;
 }
