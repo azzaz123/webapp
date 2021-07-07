@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 import { KYCBannerSpecifications } from '../interfaces/kyc/kyc-banner.interface';
 import { KycBannerService } from '../services/kyc-banner/kyc-banner.service';
 import { WALLET_PATHS } from '../wallet-routing-constants';
-import { KycInfoModalComponent } from '../modals/kyc-info-modal/kyc-info-modal.component';
 
 @Component({
   selector: 'tsl-wallet',
@@ -28,7 +27,7 @@ export class WalletComponent implements OnInit {
     },
   ];
 
-  constructor(private router: Router, private modalService: NgbModal, private kycBannerService: KycBannerService) {
+  constructor(private router: Router, private kycBannerService: KycBannerService) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id || this.getLastLocationIdThatMatch(e);
@@ -38,10 +37,6 @@ export class WalletComponent implements OnInit {
 
   ngOnInit() {
     this.kycBannerSpecifications$ = this.kycBannerService.getSpecifications();
-  }
-
-  public openKYCSlider(): void {
-    this.modalService.open(KycInfoModalComponent).result.then(() => {});
   }
 
   public onNavLinkClicked(navLinkId: string): void {

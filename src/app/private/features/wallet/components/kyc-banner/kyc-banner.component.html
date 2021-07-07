@@ -4,6 +4,6 @@
             <tsl-svg-icon [src]="KYCBannerSpecifications.svgPath"></tsl-svg-icon>
             <span>{{KYCBannerSpecifications.description}}</span>
         </div>
-        <tsl-button [className]="buttonClassName">{{KYCBannerSpecifications.buttonText}}</tsl-button>
+        <tsl-button [className]="buttonClassName" (click)="openKYCSlider()">{{KYCBannerSpecifications.buttonText}}</tsl-button>
     </div>
 </tsl-banner>

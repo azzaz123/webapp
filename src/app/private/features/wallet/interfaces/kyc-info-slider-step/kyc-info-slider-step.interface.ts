@@ -3,5 +3,5 @@ export interface KycInfoSliderStep {
   imageAlt: string;
   title: string;
   description: string;
-  additionalInfoText?: string;
+  extraLink?: string;
 }
