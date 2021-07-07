@@ -1,7 +1,7 @@
 @import 'src/style/common';
+@import 'src/style/components/upload';
 
 .MultiSelectOption {
-  position: relative;
   cursor: pointer;
   label {
     margin: 1rem 0;
