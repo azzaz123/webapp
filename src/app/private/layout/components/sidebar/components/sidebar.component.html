@@ -66,18 +66,18 @@
 </a>
 
 <span *tslDeliveryDevelopment>
-  <a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-delivery" class="sidebar-section" [routerLink]="['/delivery']" routerLinkActive="active">
+  <a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-delivery" class="sidebar-section" [routerLink]="[PRIVATE_PATHS.DELIVERY]" routerLinkActive="active">
     <div class="sidebar-section-circle">
       <tsl-svg-icon src="/assets/icons/navigation_delivery.svg"></tsl-svg-icon>
     </div>
     <h2 i18n="@@web_sidebar_delivery">Delivery</h2>
   </a>
 </span>
-
-<a *ngxPermissionsOnly="PERMISSIONS.subscriptions" id="qa-sidebar-stats" class="sidebar-section" (click)="onSaveProSectionClick()" [routerLink]="['/pro']" routerLinkActive="active">
-  <div class="chat-notification-pending" *ngIf="!userService.isClickedProSection()"></div>
-  <div class="sidebar-section-circle">
-    <tsl-svg-icon src="/assets/icons/navigation_pro.svg"></tsl-svg-icon>
-  </div>
-  <h2 i18n="@@web_wallapop_pro">Wallapop PRO</h2>
-</a>
+<span *tslDeliveryDevelopment>
+  <a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-wallet" class="sidebar-section" [routerLink]="[PRIVATE_PATHS.WALLET]" routerLinkActive="active">
+    <div class="sidebar-section-circle">
+      <tsl-svg-icon src="/assets/icons/wallet.svg"></tsl-svg-icon>
+    </div>
+    <h2 i18n="@@wallet_view_top_bar_title">Wallet</h2>
+  </a>
+</span>

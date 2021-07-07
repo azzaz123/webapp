@@ -56,7 +56,7 @@ function mapCatalogItemToItemCard(item: CatalogItem, userId: string, favoriteIds
       sold: false,
       expired: false,
       banned: false,
-      reserved: !!reserved,
+      reserved: !!reserved?.flag,
       bumped: !!bump,
       favorite: favoriteIds.includes(id),
     },

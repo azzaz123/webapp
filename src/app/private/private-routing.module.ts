@@ -85,6 +85,12 @@ const routes: Routes = [
         loadChildren: () => import('@private/features/delivery/delivery.module').then((m) => m.DeliveryModule),
       },
       {
+        // TODO: Change the guard to the wallet one when created		Date: 2021/07/01
+        path: PRIVATE_PATHS.WALLET,
+        canLoad: [DeliveryDevelopmentGuard],
+        loadChildren: () => import('@private/features/wallet/wallet.module').then((m) => m.WalletModule),
+      },
+      {
         path: '**',
         redirectTo: 'chat',
       },

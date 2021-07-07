@@ -3,8 +3,8 @@ import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } fr
 import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
 import { AdSlotId } from '@core/ads/models/ad-slot-id';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
-import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, merge, Observable, of, Subject } from 'rxjs';
+import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '../../vendors';
 import { LoadAdsService } from '../load-ads/load-ads.service';
 
@@ -35,7 +35,11 @@ export class AdsService {
     if (!this._adsReady$.getValue()) {
       this.loadAdsService
         .loadAds()
-        .pipe(take(1))
+        .pipe(
+          take(1),
+          // TODO: Decide what we should do when Ads scripts are blocked (usually by Adblockers)
+          catchError(() => of({}))
+        )
         .subscribe(() => {
           this._adsReady$.next(true);
         });
@@ -53,13 +57,11 @@ export class AdsService {
   }
 
   public destroySlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.destroySlots(slots);
+    this.googlePublisherTagService.destroySlots(adSlots);
   }
 
   public refreshSlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.refreshSlots(slots);
+    this.googlePublisherTagService.refreshSlots(adSlots);
   }
 
   public refreshAllSlots(): void {
@@ -67,8 +69,7 @@ export class AdsService {
   }
 
   public clearSlots(adSlots: AdSlotConfiguration[]): void {
-    const slots = this.googlePublisherTagService.getSlots(adSlots);
-    this.googlePublisherTagService.clearSlots(slots);
+    this.googlePublisherTagService.clearSlots(adSlots);
   }
 
   public setAdKeywords(adKeywords: AdKeyWords): void {
