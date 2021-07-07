@@ -77,7 +77,7 @@
 <a *ngxPermissionsOnly="PERMISSIONS.subscriptions" id="qa-sidebar-stats" class="sidebar-section" (click)="onSaveProSectionClick()" [routerLink]="['/pro']" routerLinkActive="active">
   <div class="chat-notification-pending" *ngIf="!userService.isClickedProSection()"></div>
   <div class="sidebar-section-circle">
-    <tsl-svg-icon src="/assets/icons/Frame1.svg"></tsl-svg-icon>
+    <tsl-svg-icon src="/assets/icons/navigation_pro.svg"></tsl-svg-icon>
   </div>
   <h2>{{proText}}</h2>
 </a>
