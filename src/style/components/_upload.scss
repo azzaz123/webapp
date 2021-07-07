@@ -257,6 +257,12 @@ form {
     .input-radio.ng-invalid input {
       border: 1px solid $negative-main !important;
     }
+
+    .ng-invalid {
+      .error {
+        color: $negative-main;
+      }
+    }
   }
 
   &.disabled {
