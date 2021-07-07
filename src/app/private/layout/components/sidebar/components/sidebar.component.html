@@ -81,3 +81,11 @@
     <h2 i18n="@@wallet_view_top_bar_title">Wallet</h2>
   </a>
 </span>
+
+<a *ngxPermissionsOnly="PERMISSIONS.subscriptions" id="qa-sidebar-pro" class="sidebar-section" (click)="onSaveProSectionClick()" [routerLink]="['/pro']" routerLinkActive="active">
+  <div class="chat-notification-pending" *ngIf="!userService.isClickedProSection()"></div>
+  <div class="sidebar-section-circle">
+    <tsl-svg-icon src="/assets/icons/navigation_pro.svg"></tsl-svg-icon>
+  </div>
+  <h2 i18n="@@web_wallapop_pro">Wallapop PRO</h2>
+</a>
