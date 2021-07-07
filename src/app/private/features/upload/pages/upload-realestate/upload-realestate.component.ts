@@ -274,7 +274,7 @@ export class UploadRealestateComponent implements OnInit {
           this.pendingFiles = response.pendingFiles;
         }
         if (response.type === OUTPUT_TYPE.done) {
-          this.onUploaded(response.file.response, UPLOAD_ACTION.created);
+          this.onUploaded(response.file.response.content, UPLOAD_ACTION.created);
         }
       },
       (error: HttpErrorResponse) => {
@@ -296,6 +296,10 @@ export class UploadRealestateComponent implements OnInit {
 
   onUploaded(response: RealestateContent, action: UPLOAD_ACTION) {
     this.onFormChanged.emit(false);
+    if (response.flags.onhold) {
+      action = UPLOAD_ACTION.createdOnHold;
+    }
+
     const params: any = {
       [action]: true,
       itemId: response.id,
