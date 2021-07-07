@@ -879,6 +879,7 @@ describe('UploadProductComponent', () => {
       });
     });
   });
+
   describe('when selecting a category', () => {
     it('should get the object types for the selected category', () => {
       component.uploadForm.patchValue({
@@ -1622,6 +1623,14 @@ describe('UploadProductComponent', () => {
 
         expect(submitButtonTextElement.innerHTML).toEqual('Reactivate item');
       });
+    });
+  });
+
+  describe('when toggling shipping', () => {
+    it('should reset weight if disabled', () => {
+      component.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
+
+      expect(component.uploadForm.value.delivery_info).toBeNull();
     });
   });
 });
