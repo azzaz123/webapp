@@ -7,6 +7,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { PLACEHOLDER_AVATAR } from '../user/user';
 
 export const ASK_PERMISSIONS_TIMEOUT_MS = 5000;
+type NotificationsPermissionStatus = 'granted' | 'denied' | 'default';
 
 @Injectable()
 export class DesktopNotificationsService {
@@ -45,14 +46,36 @@ export class DesktopNotificationsService {
     of({})
       .pipe(delay(ASK_PERMISSIONS_TIMEOUT_MS))
       .subscribe(() => {
-        Notification.requestPermission().then((permission) => {
-          this.showNotifications = permission === 'granted';
-        });
+        this.requestBrowserNotificationsPermission();
       });
   }
 
+  private requestBrowserNotificationsPermission(): void {
+    try {
+      Notification.requestPermission().then((permission) => {
+        this.setShowNotifications(permission);
+      });
+    } catch (error) {
+      if (error instanceof TypeError) {
+        Notification.requestPermission((permission) => {
+          this.setShowNotifications(permission);
+        });
+      }
+    }
+  }
+
+  private setShowNotifications(permission: NotificationsPermissionStatus) {
+    if (permission === 'granted') {
+      this.showNotifications = true;
+    }
+  }
+
   private createFromInboxMessage(message: InboxMessage, conversation: InboxConversation): Notification {
-    return new Notification(this.buildTitleFromConversation(conversation), this.buildOptionsFromConversation(message, conversation));
+    try {
+      return new Notification(this.buildTitleFromConversation(conversation), this.buildOptionsFromConversation(message, conversation));
+    } catch (error) {
+      return;
+    }
   }
 
   private buildTitleFromConversation(conversation: InboxConversation): string {

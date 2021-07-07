@@ -14,8 +14,11 @@ import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-re
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import {
   CardCountryIsInvalidError,
+  CardCvvIsInvalidError,
+  CardExpirationDateIsInvalidError,
   CardIsNotAuthorizedError,
   CardNotFoundError,
+  CardNumberIsInvalidError,
   CardOwnerIsInvalidError,
   CardOwnerNameIsInvalidError,
   CardRegistrationFailedError,
@@ -46,6 +49,8 @@ export class CreditCardComponent implements OnInit, OnDestroy {
   public formErrorMessages: CreditCardFormErrorMessages = {
     fullName: '',
     cardNumber: '',
+    cardExpirationDate: '',
+    cardCvx: '',
   };
 
   public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
@@ -157,12 +162,20 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.FORM_FIELD_ERROR;
 
     errors.forEach((error: PaymentsCardsError) => {
-      if (error instanceof CardIsNotAuthorizedError) {
+      if (error instanceof CardIsNotAuthorizedError || error instanceof CardNumberIsInvalidError) {
         this.setIncorrectControlAndShowError('cardNumber', error.message);
       }
 
       if (error instanceof CardOwnerNameIsInvalidError) {
         this.setIncorrectControlAndShowError('fullName', error.message);
+      }
+
+      if (error instanceof CardExpirationDateIsInvalidError) {
+        this.setIncorrectControlAndShowError('cardExpirationDate', error.message);
+      }
+
+      if (error instanceof CardCvvIsInvalidError) {
+        this.setIncorrectControlAndShowError('cardCvx', error.message);
       }
 
       if (this.isGenericCreditCardError(error)) {
