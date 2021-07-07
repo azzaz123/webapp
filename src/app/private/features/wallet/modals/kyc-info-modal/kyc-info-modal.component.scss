@@ -1,26 +1,36 @@
 @import '~style/common';
 
-$modal-height: 600px;
+$modal-width: 600px;
 $img-height: 220px;
 $img-width: 375px;
 $text-container-height: 215px;
 $text-container-width: 310px;
 
 .KYCInfoModal {
-  height: $modal-height;
+  @include media-breakpoint-up(sm) {
+    width: $modal-width;
+  }
+  background-color: $white;
+  border-radius: $border-radius;
 
   &__cross {
-    right: 0;
     z-index: 1;
+    right: 0;
   }
 
-  &__content {
-    padding-bottom: 70px;
+  &__button {
+    width: 230px;
+  }
+
+  &__slides {
+    height: 520px;
   }
 
   &__img {
     height: $img-height;
-    width: $img-width;
+    @include media-breakpoint-up(sm) {
+      width: $img-width;
+    }
     img {
       object-fit: contain;
     }
@@ -32,7 +42,6 @@ $text-container-width: 310px;
 
   &__textContainer {
     width: $text-container-width;
-    height: $text-container-height;
   }
 
   &__title {

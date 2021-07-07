@@ -19,6 +19,5 @@ export const KYC_SLIDER_INFO_STEPS: KycInfoSliderStep[] = [
     title: $localize`:@@kyc_request_modal_slide_3_title:Step 2: Take a picture of your ID`,
     description: $localize`:@@kyc_request_modal_slide_3_description:So we can confirm that you are the bank account holder.`,
     additionalInfoText: $localize`:@@kyc_request_modal_slide_3_more_info_link:More info`,
-    buttonText: $localize`:@@kyc_request_modal_slide_3_start_button:Verify identity`,
   },
 ];

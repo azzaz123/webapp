@@ -4,5 +4,4 @@ export interface KycInfoSliderStep {
   title: string;
   description: string;
   additionalInfoText?: string;
-  buttonText?: string;
 }
