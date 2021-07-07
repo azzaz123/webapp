@@ -18,7 +18,6 @@ export class SidebarComponent implements OnInit {
   @Input() isProfile: boolean;
   public isProfessional: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
-  public proText: string;
 
   constructor(
     public userService: UserService,
@@ -31,7 +30,6 @@ export class SidebarComponent implements OnInit {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
-    this.proText = this.user.featured ? $localize`:@@web_wallapop_pro:Wallapop PRO` : $localize`:@@web_become_pro:Become a PRO`;
   }
 
   public trackClickToCatalog(): void {
