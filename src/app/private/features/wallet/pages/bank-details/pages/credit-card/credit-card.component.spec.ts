@@ -4,7 +4,10 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
+  CardCvvIsInvalidError,
+  CardExpirationDateIsInvalidError,
   CardIsNotAuthorizedError,
+  CardNumberIsInvalidError,
   CardOwnerNameIsInvalidError,
   CountryIsoCodeIsInvalidError,
   PlatformResponseIsInvalidError,
@@ -131,7 +134,7 @@ describe('CreditCreditCardComponent', () => {
       });
     });
 
-    describe('when we already have the credit card created yet...', () => {
+    describe('when we already have the credit card created...', () => {
       beforeEach(() => {
         spyOn(paymentsCreditCardService, 'get').and.returnValue(of(mockCreditCardSyncRequest));
         spyOn(component.formComponent, 'initFormControl');
@@ -194,9 +197,40 @@ describe('CreditCreditCardComponent', () => {
         });
 
         describe('and the petition fails...', () => {
-          describe('and when the fail is because server notifies card number is invalid', () => {
+          describe('and when the failure is because server notifies card is not authorized', () => {
             beforeEach(() => {
               spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardIsNotAuthorizedError()]));
+
+              triggerFormSubmit();
+            });
+
+            it('should call the create endpoint', () => {
+              expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+            });
+
+            it('should show an error toast', () => {
+              expect(toastService.show).toHaveBeenCalledWith({
+                text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
+                type: TOAST_TYPES.ERROR,
+              });
+            });
+
+            it('should mark errors in form', () => {
+              expect(component.creditCardForm.get('cardNumber').getError('invalid')).toBeTruthy();
+            });
+
+            it('should set the form as pending', () => {
+              expect(component.creditCardForm.pending).toBe(true);
+            });
+
+            it('should NOT redirect to the bank details page', () => {
+              expect(router.navigate).not.toHaveBeenCalled();
+            });
+          });
+
+          describe('and when the failure is because server notifies card number is not valid', () => {
+            beforeEach(() => {
+              spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardNumberIsInvalidError()]));
 
               triggerFormSubmit();
             });
@@ -225,7 +259,69 @@ describe('CreditCreditCardComponent', () => {
             });
           });
 
-          describe('and when the fail is because server notifies country iso code is invalid', () => {
+          describe('and when the failure is because server notifies card expiration date is not valid', () => {
+            beforeEach(() => {
+              spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardExpirationDateIsInvalidError()]));
+
+              triggerFormSubmit();
+            });
+
+            it('should call the create endpoint', () => {
+              expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+            });
+
+            it('should show an error toast', () => {
+              expect(toastService.show).toHaveBeenCalledWith({
+                text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
+                type: TOAST_TYPES.ERROR,
+              });
+            });
+
+            it('should set errors if the backend return an invalid field', () => {
+              expect(component.creditCardForm.get('cardExpirationDate').getError('invalid')).toBeTruthy();
+            });
+
+            it('should set the form as pending', () => {
+              expect(component.creditCardForm.pending).toBe(true);
+            });
+
+            it('should NOT redirect to the bank details page', () => {
+              expect(router.navigate).not.toHaveBeenCalled();
+            });
+          });
+
+          describe('and when the failure is because server notifies card CVX is not valid', () => {
+            beforeEach(() => {
+              spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardCvvIsInvalidError()]));
+
+              triggerFormSubmit();
+            });
+
+            it('should call the create endpoint', () => {
+              expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+            });
+
+            it('should show an error toast', () => {
+              expect(toastService.show).toHaveBeenCalledWith({
+                text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
+                type: TOAST_TYPES.ERROR,
+              });
+            });
+
+            it('should set errors if the backend return an invalid field', () => {
+              expect(component.creditCardForm.get('cardCvx').getError('invalid')).toBeTruthy();
+            });
+
+            it('should set the form as pending', () => {
+              expect(component.creditCardForm.pending).toBe(true);
+            });
+
+            it('should NOT redirect to the bank details page', () => {
+              expect(router.navigate).not.toHaveBeenCalled();
+            });
+          });
+
+          describe('and when the failure is because server notifies a non matching error', () => {
             beforeEach(() => {
               spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CountryIsoCodeIsInvalidError()]));
 
@@ -245,6 +341,13 @@ describe('CreditCreditCardComponent', () => {
 
             it('should not mark form as pending', () => {
               expect(component.creditCardForm.pending).toBe(false);
+            });
+
+            it('should not mark any field as error', () => {
+              expect(component.creditCardForm.get('fullName').getError('invalid')).toBeFalsy();
+              expect(component.creditCardForm.get('cardNumber').getError('invalid')).toBeFalsy();
+              expect(component.creditCardForm.get('cardExpirationDate').getError('invalid')).toBeFalsy();
+              expect(component.creditCardForm.get('cardCvx').getError('invalid')).toBeFalsy();
             });
 
             it('should NOT redirect to the bank details page', () => {
