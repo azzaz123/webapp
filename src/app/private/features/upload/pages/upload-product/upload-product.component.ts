@@ -63,7 +63,6 @@ function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   }
   return null;
 }
-
 @Component({
   selector: 'tsl-upload-product',
   templateUrl: './upload-product.component.html',
@@ -119,6 +118,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
+  public shippingToggleFeatureFlag = true;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -151,7 +152,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
       this.detectCategoryChanges();
       this.detectObjectTypeChanges();
-      this.detectShippabilityChanges();
+
+      if (this.shippingToggleFeatureFlag) {
+        this.detectShippabilityChanges();
+      }
+
       if (this.item) {
         this.initializeEditForm();
 
@@ -339,9 +344,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.uploadForm
       .get('sale_conditions')
       .get('supports_shipping')
-      .valueChanges.pipe(filter((supportsShipping) => !supportsShipping))
-      .subscribe(() => {
-        this.uploadForm.get('delivery_info').setValue(null);
+      .valueChanges.subscribe((supportsShipping) => {
+        const deliveryInfo = this.uploadForm.get('delivery_info');
+        if (supportsShipping) {
+          deliveryInfo.setValidators([Validators.required]);
+        } else {
+          deliveryInfo.setValue(null);
+          deliveryInfo.setValidators([]);
+        }
       });
   }
 
