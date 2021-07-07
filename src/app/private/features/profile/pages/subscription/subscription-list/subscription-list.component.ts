@@ -14,6 +14,7 @@ export class SubscriptionListComponent {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
+  MAX_NARROW_CARDS = 4;
 
   private readonly rowOrder = [
     CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE,
