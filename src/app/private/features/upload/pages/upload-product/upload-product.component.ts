@@ -118,7 +118,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
-  public shippingToggleFeatureFlag = true;
+  public isShippingToggleActive = true;
 
   constructor(
     private fb: FormBuilder,
@@ -153,7 +153,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.detectCategoryChanges();
       this.detectObjectTypeChanges();
 
-      if (this.shippingToggleFeatureFlag) {
+      if (this.isShippingToggleActive) {
         this.detectShippabilityChanges();
       }
 

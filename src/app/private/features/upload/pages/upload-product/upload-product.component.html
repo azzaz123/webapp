@@ -276,54 +276,112 @@
     </ng-template>
   </div>
 
-  <div
-    class="box"
-    *ngIf="categoryId === '-1' || (item && item.itemType === itemTypes.CONSUMER_GOODS)"
-    [ngbPopover]="coachmarkShipping"
-    [autoClose]="false"
-    triggers="mouseenter:mouseleave"
-  >
-    <div data-toggle="buttons">
-      <div class="row">
-        <div class="col">
-          <h2 i18n="@@web_upload_product_shipping">Shipping</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <p i18n="@@web_upload_product_shipping_description">You can send (almost) anything through Wallapop. And it's free for you!</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="d-flex mb-3" formGroupName="sale_conditions">
-            <tsl-checkbox-form formControlName="supports_shipping"></tsl-checkbox-form>
-            <span class="ml-2 mb-0" i18n="@@finding_listing_shipping_toggle_title">Shipping</span>
-          </div>
-          <div
-            *ngIf="uploadForm.value.sale_conditions.supports_shipping"
-            class="selector-container"
-            ngbRadioGroup
-            name="radioBasic"
-            formControlName="delivery_info"
-          >
-            <label ngbButtonLabel class="selector shipping-selector" *ngFor="let delivery of deliveryInfo">
-              <div class="selector-icon btn">
-                <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value)" />
-                <tsl-svg-icon src="/assets/icons/shipping-{{ delivery.value.max_weight_kg }}.svg"></tsl-svg-icon>
-              </div>
-              <span class="selector-text">{{ delivery.value.max_weight_kg }}kg max</span>
-            </label>
+  <ng-container *ngIf="isShippingToggleActive">
+    <div
+      class="box"
+      *ngIf="categoryId === '-1' || (item && item.itemType === itemTypes.CONSUMER_GOODS)"
+      [ngbPopover]="coachmarkShippingWithToggle"
+      [autoClose]="false"
+      #p="ngbPopover"
+      trigger="manual"
+    >
+      <div data-toggle="buttons">
+        <div class="row">
+          <div class="col">
+            <h2 i18n="@@web_upload_product_shipping">Shipping</h2>
           </div>
         </div>
+        <div class="row">
+          <div class="col">
+            <p>
+              <span i18n="@@finding_listing_shipping_toggle_subtitle_default"
+                >Shipping is free and lets you sell more. You also have a home pick up service.</span
+              >
+
+              <a href="">+info</a>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="d-flex mb-3" formGroupName="sale_conditions">
+              <tsl-checkbox-form
+                formControlName="supports_shipping"
+                (change)="!uploadForm.value.sale_conditions.supports_shipping ? p.open() : p.close()"
+              ></tsl-checkbox-form>
+              <span class="ml-2 mb-0" i18n="@@finding_listing_shipping_toggle_title">Shipping</span>
+            </div>
+
+            <div
+              *ngIf="uploadForm.value.sale_conditions.supports_shipping"
+              class="selector-container"
+              ngbRadioGroup
+              name="radioBasic"
+              formControlName="delivery_info"
+            >
+              <p i18n="@@finding_listing_shipping_selector_title" class="error">Indicate weight range</p>
+
+              <label ngbButtonLabel class="selector shipping-selector" *ngFor="let delivery of deliveryInfo">
+                <div class="selector-icon btn">
+                  <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value)" />
+                  <tsl-svg-icon src="/assets/icons/shipping-{{ delivery.value.max_weight_kg }}.svg"></tsl-svg-icon>
+                </div>
+                <span class="selector-text">{{ delivery.value.max_weight_kg }}kg max</span>
+              </label>
+
+              <p class="error mt-4" i18n="@@web_upload_product_coachmark_shipping">
+                Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
+      <ng-template #coachmarkShippingWithToggle>
+        <div i18n="@@finding_listing_shipping_toggle_subtitle_disabled">Are you sure? By shipping it you could sell it everywhere.</div>
+      </ng-template>
     </div>
-    <ng-template #coachmarkShipping>
-      <div i18n="@@web_upload_product_coachmark_shipping">
-        Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.
+  </ng-container>
+
+  <ng-container *ngIf="!isShippingToggleActive">
+    <div
+      class="box"
+      *ngIf="categoryId === '-1' || (item && item.itemType === itemTypes.CONSUMER_GOODS)"
+      [ngbPopover]="coachmarkShipping"
+      [autoClose]="false"
+      triggers="mouseenter:mouseleave"
+    >
+      <div data-toggle="buttons">
+        <div class="row">
+          <div class="col">
+            <h2 i18n="@@web_upload_product_shipping">Shipping</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p i18n="@@web_upload_product_shipping_description">You can send (almost) anything through Wallapop. And it's free for you!</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="selector-container" ngbRadioGroup name="radioBasic" formControlName="delivery_info">
+              <label ngbButtonLabel class="selector shipping-selector" *ngFor="let delivery of deliveryInfo">
+                <div class="selector-icon btn">
+                  <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value)" />
+                  <tsl-svg-icon src="/assets/icons/shipping-{{ delivery.value.max_weight_kg }}.svg"></tsl-svg-icon>
+                </div>
+                <span class="selector-text">{{ delivery.value.max_weight_kg }}kg max</span>
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
-    </ng-template>
-  </div>
+      <ng-template #coachmarkShipping>
+        <div i18n="@@web_upload_product_coachmark_shipping">
+          Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.
+        </div>
+      </ng-template>
+    </div>
+  </ng-container>
 
   <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"> </tsl-location-box>
   <div class="row" id="prueba">
