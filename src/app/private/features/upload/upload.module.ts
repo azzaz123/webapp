@@ -25,7 +25,6 @@ import { UploadProductComponent } from './pages/upload-product/upload-product.co
 import { UploadRealestateComponent } from './pages/upload-realestate/upload-realestate.component';
 import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
-import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 
 @NgModule({
