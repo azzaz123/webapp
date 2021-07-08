@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { check } from 'prettier';
 import { MultiSelectFormOption } from '../../multi-select-form.component';
 import { MultiSelectOptionComponent } from './multi-select-option.component';
 
