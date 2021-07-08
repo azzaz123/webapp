@@ -1030,6 +1030,7 @@
     "saving_bank_account_invalid_iban": "The IBAN is not correct",
     "saving_bank_account_invalid_first_name_error": "Enter name as it appears in your ID",
     "saving_bank_account_invalid_last_name_error": "The surname has to be valid too",
+    "kyc_bank_account_view_info_matching_description": "The name of the account holder must match the name on the ID you provide. In addition, the person must be over 18 years old.",
     "delivery_add_bank_account_title": "Add bank account",
     "delivery_edit_bank_account_title": "Edit bank account",
     "saving_bank_account_first_name_hint": "Full legal name",
