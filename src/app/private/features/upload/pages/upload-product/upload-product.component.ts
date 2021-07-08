@@ -26,6 +26,8 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 import { CategoryOption, CategoryResponse, SuggestedCategory } from '@core/category/category-response.interface';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { Item, ITEM_TYPES } from '@core/item/item';
@@ -119,6 +121,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
   public isShippingToggleActive = true;
+  public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
 
   constructor(
     private fb: FormBuilder,
@@ -134,7 +137,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private i18n: I18nService,
     private uploadService: UploadService,
     private subscriptionService: SubscriptionsService,
-    private itemReactivationService: ItemReactivationService
+    private itemReactivationService: ItemReactivationService,
+    private customerHelpService: CustomerHelpService
   ) {
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
