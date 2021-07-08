@@ -1,7 +1,4 @@
-import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { moduleMetadata, Story } from '@storybook/angular';
 import { MultiSelectOptionComponent } from './multi-select-option.component';
 import { MultiSelectOptionModule } from './multi-select-option.module';
