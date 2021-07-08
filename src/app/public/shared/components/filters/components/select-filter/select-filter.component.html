@@ -19,7 +19,7 @@
                                    (clear)="handleClear()">
 
     <div [class.SelectFilter--bubble]="variant | isBubble">
-      <form [formGroup]="formGroup">
+      <form [formGroup]="formGroup" class="SelectFilter__form">
         <tsl-select-form
           formControlName="select"
           [options]="options">

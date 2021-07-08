@@ -297,7 +297,7 @@ describe('UploadRealestateComponent', () => {
         expect(uploadService.createItem).toHaveBeenCalledTimes(1);
         expect(uploadService.createItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.REAL_ESTATE);
         expect(component.onUploaded).toHaveBeenCalledTimes(1);
-        expect(component.onUploaded).toHaveBeenCalledWith(MOCK_UPLOAD_OUTPUT_DONE.file.response, UPLOAD_ACTION.created);
+        expect(component.onUploaded).toHaveBeenCalledWith(MOCK_UPLOAD_OUTPUT_DONE.file.response.content, UPLOAD_ACTION.created);
       });
 
       it('should do nothing if the service not return done', () => {
@@ -408,7 +408,7 @@ describe('UploadRealestateComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith([
         '/catalog/list',
         {
-          [action]: true,
+          [UPLOAD_ACTION.createdOnHold]: true,
           itemId: response.id,
           onHold: true,
         },

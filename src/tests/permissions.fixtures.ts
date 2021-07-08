@@ -8,6 +8,7 @@ export class MockPermissionsService {
   removePermission() {}
   flushPermissions() {}
   hasPermission() {}
+  getPermission() {}
   get permissions$(): Observable<NgxPermissionsObject> {
     return of(MOCK_PERMISSIONS);
   }

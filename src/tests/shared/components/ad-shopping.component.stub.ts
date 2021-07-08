@@ -6,7 +6,7 @@ import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-
   selector: 'tsl-sky-shopping',
   template: '{{adSlotContainer}}',
 })
-// tslint:disable-next-line: component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 export class AdSlotShoppingComponentStub {
   @Input() adShoppingPageOptions: AdShoppingPageOptions;
   @Input() adSlotContainer: string;

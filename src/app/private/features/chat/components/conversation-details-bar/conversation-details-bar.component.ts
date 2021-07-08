@@ -18,8 +18,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReportService } from '@core/trust-and-safety/report/report.service';
 import { UserReportRequest } from '@core/trust-and-safety/report/interfaces/user/user-report-request.interface';
 import { ErrorsService } from '@core/errors/errors.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({
   selector: 'tsl-conversation-details-bar',
@@ -67,7 +67,7 @@ export class ConversationDetailsBarComponent implements OnInit {
       this.inboxConversationService.archive$(this.currentConversation).subscribe(() => {
         this.toastService.show({
           text: this.i18n.translate(TRANSLATION_KEY.CHAT_ARCHIVE_CONVERSATION_SUCCESS),
-          type: 'success',
+          type: TOAST_TYPES.SUCCESS,
         });
         this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
       });
@@ -79,7 +79,7 @@ export class ConversationDetailsBarComponent implements OnInit {
       this.inboxConversationService.unarchive(this.currentConversation).subscribe(() => {
         this.toastService.show({
           text: this.i18n.translate(TRANSLATION_KEY.CHAT_UNARCHIVE_CONVERSATION_SUCCESS),
-          type: 'success',
+          type: TOAST_TYPES.SUCCESS,
         });
         this.eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
       });
@@ -99,7 +99,7 @@ export class ConversationDetailsBarComponent implements OnInit {
       this.reportService.reportUser(userReportRequest).subscribe(() => {
         this.toastService.show({
           text: this.i18n.translate(TRANSLATION_KEY.CHAT_REPORT_USER_SUCCESS),
-          type: 'success',
+          type: TOAST_TYPES.SUCCESS,
         });
       });
     });
@@ -111,7 +111,7 @@ export class ConversationDetailsBarComponent implements OnInit {
         () => {
           this.toastService.show({
             text: this.i18n.translate(TRANSLATION_KEY.CHAT_REPORT_LISTING_SUCCESS),
-            type: 'success',
+            type: TOAST_TYPES.SUCCESS,
           });
         },
         (error) => this.errorService.show(error)
@@ -127,7 +127,7 @@ export class ConversationDetailsBarComponent implements OnInit {
             this.blockUserEvent.emit();
             this.toastService.show({
               text: this.i18n.translate(TRANSLATION_KEY.CHAT_BLOCK_USER_SUCCESS),
-              type: 'success',
+              type: TOAST_TYPES.SUCCESS,
             });
           });
         },
@@ -143,7 +143,7 @@ export class ConversationDetailsBarComponent implements OnInit {
           this.blockUserXmppService.unblockUser(this.currentConversation.user).subscribe(() => {
             this.toastService.show({
               text: this.i18n.translate(TRANSLATION_KEY.CHAT_UNBLOCK_USER_SUCCESS),
-              type: 'success',
+              type: TOAST_TYPES.SUCCESS,
             });
           });
         },

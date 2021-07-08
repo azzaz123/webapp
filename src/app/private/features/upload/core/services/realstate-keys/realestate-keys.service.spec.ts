@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { I18nService } from '@core/i18n/i18n.service';
 import { environment } from '@environments/environment';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Key } from '../../models/key.interface';
@@ -13,7 +13,7 @@ describe('RealestateKeysService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RealestateKeysService, I18nService],
+      providers: [RealestateKeysService, { provide: LOCALE_ID, useValue: 'en' }],
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(RealestateKeysService);

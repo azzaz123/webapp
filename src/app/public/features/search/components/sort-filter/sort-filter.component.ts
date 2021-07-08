@@ -1,37 +1,61 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
-import { SELECT_FORM_OPTIONS_CONFIG } from './sort-filter.config';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { SortByService } from './services/sort-by.service';
+import { SORT_BY, SORT_BY_DISTANCE_OPTION, SORT_BY_RELEVANCE_OPTION } from './services/constants/sort-by-options-constants';
 
 @Component({
   selector: 'tsl-sort-filter',
   templateUrl: 'sort-filter.component.html',
   styleUrls: ['./sort-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SortFilterComponent implements OnInit {
   private static KEY_PARAMETER: FILTER_QUERY_PARAM_KEY = FILTER_QUERY_PARAM_KEY.orderBy;
-  public selectFormOptionsConfig: SelectFormOption<string>[] = SELECT_FORM_OPTIONS_CONFIG;
-  public formControl: FormControl;
-
-  public selected: SelectFormOption<string>;
+  private defaultValue: SORT_BY = SORT_BY_DISTANCE_OPTION.value;
+  public options: SelectFormOption<SORT_BY>[] = [];
+  public formControl: FormControl = new FormControl(this.defaultValue);
+  public selected: SelectFormOption<SORT_BY>;
 
   @ViewChild(NgbDropdown, { static: false }) public dropdown: NgbDropdown;
-
   @Output() toggleBubble: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  private static getSelectedValue(actualValue: string): SelectFormOption<string> {
-    return SELECT_FORM_OPTIONS_CONFIG.find(({ value }: SelectFormOption<string>) => value === actualValue);
+  @Input() set value(value: SORT_BY) {
+    const selected = this.getSelectedValue(value);
+    if (selected) {
+      this.selected = selected;
+      this.formControl.setValue(value);
+    }
   }
 
-  constructor(private searchNavigatorService: SearchNavigatorService) {}
+  private getSelectedValue(actualValue: string): SelectFormOption<SORT_BY> {
+    return this.options.find(({ value }) => value === actualValue);
+  }
 
-  public ngOnInit(): void {
-    this.formControl = new FormControl(this.selectFormOptionsConfig[0].value);
-    this.selected = SortFilterComponent.getSelectedValue(this.formControl.value);
+  constructor(private searchNavigatorService: SearchNavigatorService, private sortByService: SortByService) {
+    this.sortByService.options$.subscribe((options) => {
+      this.options = options;
+    });
+
+    this.sortByService.isRelevanceOptionActive$.subscribe((isRelevanceOptionActive) => {
+      if (!isRelevanceOptionActive && this.selected?.value === SORT_BY_RELEVANCE_OPTION.value) {
+        this.onChangeValue(this.defaultValue);
+        this.formControl.setValue(this.defaultValue);
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.initData();
+  }
+
+  private initData() {
+    this.formControl = new FormControl(this.selected?.value || this.options[0]?.value);
+    this.selected = this.getSelectedValue(this.formControl.value);
   }
 
   public openChange(event: boolean): void {
@@ -39,8 +63,8 @@ export class SortFilterComponent implements OnInit {
   }
 
   public onChangeValue(newValue: string): void {
-    this.selected = SortFilterComponent.getSelectedValue(newValue);
-    if (newValue === SELECT_FORM_OPTIONS_CONFIG[0].value) {
+    this.selected = this.getSelectedValue(newValue);
+    if (newValue === this.options[0].value) {
       newValue = null;
     }
 
@@ -54,6 +78,6 @@ export class SortFilterComponent implements OnInit {
   }
 
   private closeDropdown(): void {
-    this.dropdown.close();
+    this.dropdown?.close();
   }
 }

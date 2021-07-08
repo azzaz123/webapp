@@ -13,7 +13,7 @@ import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
-import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { delay, distinctUntilChanged, filter, skip, map, tap } from 'rxjs/operators';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -22,7 +22,6 @@ import {
   AdShoppingPageOptionPublicSearchFactory,
 } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchAdsService } from './../core/ads/search-ads.service';
-import { SearchService } from './../core/services/search.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
 import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 import {
@@ -40,7 +39,11 @@ import { SearchTrackingEventsService } from '@public/core/services/search-tracki
 import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { debounce } from '@core/helpers/debounce/debounce';
+import { SORT_BY } from '../components/sort-filter/services/constants/sort-by-options-constants';
+import { SearchResponseExtraData } from '../core/services/interfaces/search-response-extra-data.interface';
+import { SearchService } from '../core/services/search.service';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -64,13 +67,15 @@ export const WIDE_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   // TODO: TechDebt: changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit, OnAttach, OnDetach {
+  private resetSearchId = true;
+  private sortBySubject: BehaviorSubject<SORT_BY> = new BehaviorSubject<SORT_BY>(SORT_BY.DISTANCE);
   private loadMoreProductsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscription: Subscription = new Subscription();
   private searchId: string;
   public isLoadingResults$: Observable<boolean> = this.searchService.isLoadingResults$;
   public isLoadingPaginationResults$: Observable<boolean> = this.searchService.isLoadingPaginationResults$;
   public currentCategoryId$: Observable<string> = this.searchService.currentCategoryId$;
-  public newSearch$: Observable<string> = this.searchService.newSearch$;
+  public newSearch$: Observable<SearchResponseExtraData> = this.searchService.newSearch$;
   public items$: Observable<ItemCard[]> = this.searchService.items$;
   public hasMoreItems$: Observable<boolean> = this.searchService.hasMore$;
   public adSlots: AdSlotSearch = AD_PUBLIC_SEARCH;
@@ -84,6 +89,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public showPlaceholder$: Observable<boolean> = this.buildShowPlaceholderObservable();
   public searchWithoutResults$: Observable<boolean> = this.buildSearchWithoutResultsObservable();
   public searchWithKeyword$: Observable<boolean> = this.buildSearchWithKeywordObservable();
+  public sortBy$: Observable<SORT_BY> = this.sortBySubject.asObservable();
   public columnsConfig: ColumnsConfig = {
     xl: 4,
     lg: 4,
@@ -99,8 +105,10 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   );
   public isWall$: Observable<boolean> = this.searchService.isWall$;
   public slotsConfig: SlotsConfig;
+  readonly PERMISSIONS = PERMISSIONS;
 
-  private resetSearchId = true;
+  public infoBubbleText: string;
+  public showInfoBubble = false;
 
   @HostListener('window:scroll', ['$event'])
   @debounce(500)
@@ -126,14 +134,15 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
-    this.device = this.deviceService.getDeviceType();
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(
-      this.newSearch$.pipe(skip(1)).subscribe((searchId: string) => {
+      this.newSearch$.pipe(skip(1)).subscribe((searchResponseExtraData: SearchResponseExtraData) => {
         if (this.resetSearchId) {
-          this.searchId = searchId;
+          this.searchId = searchResponseExtraData.searchId;
           this.resetSearchId = false;
         }
+
+        this.handleSearchResponseExtraData(searchResponseExtraData);
 
         this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
       })
@@ -146,7 +155,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
     this.searchService.init();
     this.searchAdsService.init();
-    this.searchAdsService.setSlots();
 
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
@@ -160,7 +168,22 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
         } else {
           this.filterParameterStore.setParameters(params);
         }
+
+        //TODO: Remove this after tests
+        const shouldEnableExperimental =
+          params.some((p) => p.key === ('experimental' as FILTER_QUERY_PARAM_KEY)) && !localStorage.getItem('experimentalFeatures');
+        if (shouldEnableExperimental) {
+          localStorage.setItem('experimentalFeatures', 'true');
+        }
       })
+    );
+
+    this.subscription.add(
+      this.filterParameterStore.parameters$
+        .pipe(map((params) => params.find((param) => param.key === FILTER_QUERY_PARAM_KEY.orderBy)?.value as SORT_BY))
+        .subscribe((sortBy) => {
+          this.sortBySubject.next(sortBy);
+        })
     );
   }
 
@@ -203,6 +226,16 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   public handleFilterOpened(opened: boolean) {
     this.filterOpened = opened;
+  }
+
+  private handleSearchResponseExtraData(searchResponseExtraData: SearchResponseExtraData): void {
+    if (searchResponseExtraData.sortBy) {
+      this.sortBySubject.next(searchResponseExtraData.sortBy);
+
+      const isSortByRelevance = searchResponseExtraData.sortBy === SORT_BY.RELEVANCE;
+      this.infoBubbleText = isSortByRelevance ? searchResponseExtraData.bubble : '';
+      this.showInfoBubble = isSortByRelevance;
+    }
   }
 
   private queryParamsChange(): Observable<FilterParameter[]> {

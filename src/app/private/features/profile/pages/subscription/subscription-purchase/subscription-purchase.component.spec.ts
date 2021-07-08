@@ -264,7 +264,7 @@ describe('SubscriptionPurchaseComponent', () => {
         component.onPurchaseButtonClick();
 
         expect(eventService.emit).toBeCalledTimes(1);
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.BILLING_INFO_FORM_SUBMITTED);
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.FORM_SUBMITTED);
       });
     });
     describe('is not invoice required', () => {

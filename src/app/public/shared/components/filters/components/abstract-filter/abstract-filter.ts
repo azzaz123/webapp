@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Directive()
-// tslint:disable-next-line: directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class AbstractFilter<T extends Record<keyof T, FILTER_QUERY_PARAM_KEY>> implements Filter<T>, OnInit {
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
   @Input() config: FilterConfig<T>;
@@ -40,7 +40,7 @@ export abstract class AbstractFilter<T extends Record<keyof T, FILTER_QUERY_PARA
   public hasValue$ = this.hasValueSubject.asObservable();
 
   protected _hasValue(): boolean {
-    return this._value?.length > 0;
+    return this._value.some((parameter) => !!parameter.value);
   }
 
   public ngOnInit(): void {

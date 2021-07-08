@@ -21,6 +21,7 @@ import { ReportService } from '@core/trust-and-safety/report/report.service';
 import { ITEM_REPORT_REASONS } from '@core/trust-and-safety/report/constants/item-report-reasons';
 import { UserReportRequest } from '@core/trust-and-safety/report/interfaces/user/user-report-request.interface';
 import { ErrorsService } from '@core/errors/errors.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 class MockConversationService {
   public loadMoreMessages() {}
@@ -129,7 +130,7 @@ describe('ConversationDetailsBarComponent', () => {
       expect(reportService.reportUser).toHaveBeenCalledWith(expectedUserReportRequest);
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'The user has been reported correctly',
-        type: 'success',
+        type: TOAST_TYPES.SUCCESS,
       });
     }));
   });
@@ -158,7 +159,7 @@ describe('ConversationDetailsBarComponent', () => {
         expect(reportService.reportItem).toHaveBeenCalledWith(ITEM_ID, 'Report Listing Reason', SELECTED_ITEM_REPORT_REASON);
         expect(toastService.show).toHaveBeenCalledWith({
           text: 'The listing has been reported correctly',
-          type: 'success',
+          type: TOAST_TYPES.SUCCESS,
         });
       }));
     });
@@ -202,7 +203,7 @@ describe('ConversationDetailsBarComponent', () => {
       expect(blockUserXmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'The user has been blocked',
-        type: 'success',
+        type: TOAST_TYPES.SUCCESS,
       });
     }));
   });
@@ -249,7 +250,7 @@ describe('ConversationDetailsBarComponent', () => {
       expect(blockUserXmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastService.show).toHaveBeenCalledWith({
         text: 'The user has been unblocked',
-        type: 'success',
+        type: TOAST_TYPES.SUCCESS,
       });
     }));
   });

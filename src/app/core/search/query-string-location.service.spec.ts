@@ -6,6 +6,7 @@ import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constan
 import { CookieService } from 'ngx-cookie';
 import { SEO_COOKIE_LOCATION_KEY } from '@public/features/search/core/services/enums/seo-cookie-location-key.enum';
 import { SEARCH_LOCATION_KEY } from '@public/features/search/core/services/enums/local-storage-location-key.enum';
+import { LOCALE_ID } from '@angular/core';
 
 describe('QueryStringLocationService', () => {
   let service: QueryStringLocationService;
@@ -16,7 +17,7 @@ describe('QueryStringLocationService', () => {
       providers: [
         QueryStringLocationService,
         {
-          provide: 'SUBDOMAIN',
+          provide: LOCALE_ID,
           useValue: 'es',
         },
         {

@@ -14,6 +14,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { NoCardModalComponent } from '@shared/modals/no-card-modal/no-card-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -85,7 +86,7 @@ export class StripeCardsComponent implements OnInit {
           this.toastService.show({
             title: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
             text: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_SET),
-            type: 'success',
+            type: TOAST_TYPES.SUCCESS,
           });
         },
         () => (this.loading = false)
@@ -142,7 +143,7 @@ export class StripeCardsComponent implements OnInit {
     this.toastService.show({
       title: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CONTINUE_SUCCESS_TITLE),
       text: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CARD_DELETED),
-      type: 'success',
+      type: TOAST_TYPES.SUCCESS,
     });
     this.getAllCards();
   }
