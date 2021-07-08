@@ -5,9 +5,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { SelectFormOption } from '../select/interfaces/select-form-option.interface';
-import { MultiSelectFormComponent, MultiSelectFormOption } from './multi-select-form.component';
+import { MultiSelectFormComponent, MultiSelectFormOption, MultiSelectValue } from './multi-select-form.component';
 import { MultiSelectOptionComponent } from './multi-select-option/multi-select-option/multi-select-option.component';
 import { MultiSelectOptionModule } from './multi-select-option/multi-select-option/multi-select-option.module';
+
+export const checkedValue: MultiSelectValue = ['aa', 'cc'];
 
 export const multiSelectedOptionsFixture: SelectFormOption<string>[] = [
   { label: 'aa', value: 'aa' },
@@ -47,16 +49,31 @@ describe('MultiSelectFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show load the options mapped with checked value', () => {
-    const expectedOptions = multiSelectedOptionsFixture.map((option) => {
-      return { ...option, checked: false };
+  describe('when we already have the checked value', () => {
+    it('should load the options with checkboxes checked accordingly', () => {
+      component.writeValue(checkedValue);
+      fixture.detectChanges();
+
+      const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
+
+      expect(options[0].componentInstance.option.checked).toBeTruthy();
+      expect(options[2].componentInstance.option.checked).toBeTruthy();
+      expect(options[1].componentInstance.option.checked).toBeFalsy();
     });
-    fixture.detectChanges();
+  });
 
-    const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
+  describe('when we dont have checked value', () => {
+    it('should load the options with unchecked checkbox', () => {
+      const expectedOptions = multiSelectedOptionsFixture.map((option) => {
+        return { ...option, checked: false };
+      });
+      fixture.detectChanges();
 
-    expect(options.length).toBe(multiSelectedOptionsFixture.length);
-    expect(component.extendedOptions).toEqual(expectedOptions);
+      const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
+
+      expect(options.length).toBe(multiSelectedOptionsFixture.length);
+      expect(component.extendedOptions).toEqual(expectedOptions);
+    });
   });
 
   describe('Multi select behavior', () => {
