@@ -1,11 +1,11 @@
 <div class="KYCInfoModal">
-    <tsl-svg-icon class="KYCInfoModal__cross position-fixed mt-4 mr-4" src="/assets/icons/cross.svg" (click)="activeModal.close()"></tsl-svg-icon>
+    <tsl-svg-icon class="KYCInfoModal__cross position-absolute mt-4 mr-4" src="/assets/icons/cross.svg" (click)="activeModal.close()"></tsl-svg-icon>
     <div class="KYCInfoModal__slides p-4">
         <tsl-carousel-slides [hideControllers]="true" [noBackgroundIndicators]="true" [activeIndicatorWallaMain]="true">
             <ng-template carousel-slider *ngFor="let step of KYC_SLIDER_INFO_STEPS; let i = index">
                 <div class="h-100 d-flex flex-column align-items-center justify-content-center text-center">
-                    <div class="KYCInfoModal__img mb-4">
-                        <img class="w-100 h-100 px-3" [src]="step.imageSrc" [alt]="step.imageAlt"/>
+                    <div class="KYCInfoModal__img mb-4 w-100">
+                        <img class="px-3" [src]="step.imageSrc" [alt]="step.imageAlt"/>
                     </div>
                     <div class="KYCInfoModal__textContainer d-flex flex-column pb-4">
                         <span class="KYCInfoModal__title mb-2">{{step.title}}</span>
