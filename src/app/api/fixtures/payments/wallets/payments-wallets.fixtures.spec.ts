@@ -13,6 +13,18 @@ export const MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_RESPONSE: PaymentsWalletsApi = 
   id: '92020cb7-f320-47f3-8bbe-d1cbf0d6a205',
 };
 
+export const MOCK_PAYMENTS_WALLETS_MAPPED_MONEY: Money = {
+  amount: {
+    integer: 3,
+    decimals: 0,
+    total: 3,
+  },
+  currency: {
+    code: 'EUR',
+    symbol: '€',
+  },
+};
+
 export const MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_MAPPED_MONEY: Money = {
   amount: {
     integer: 1722,

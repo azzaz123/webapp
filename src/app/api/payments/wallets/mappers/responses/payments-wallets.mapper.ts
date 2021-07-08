@@ -34,6 +34,10 @@ function getDecimalPartFromNumber(number: number): number {
 
   try {
     const rawDecimals = number % 1;
+    if (rawDecimals === 0) {
+      return result;
+    }
+
     const stringDecimals = rawDecimals.toString();
     const startDecimalPosition = 2;
     const truncatedDecimals = stringDecimals.substring(startDecimalPosition, startDecimalPosition + numberOfParsedDecimals);
