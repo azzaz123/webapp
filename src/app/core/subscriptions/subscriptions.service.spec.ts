@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { SubscriptionsService, SUBSCRIPTIONS_URL, SUBSCRIPTIONS_SLOTS_ENDPOINT, SUBSCRIPTION_TYPES } from './subscriptions.service';
 import { of } from 'rxjs';
 import { UserService } from '../user/user.service';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureFlagService } from '../user/featureflag.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
@@ -66,7 +66,7 @@ describe('SubscriptionsService', () => {
           },
         },
         {
-          provide: FeatureflagService,
+          provide: FeatureFlagService,
           useValue: {
             getFlag() {
               return of(false);

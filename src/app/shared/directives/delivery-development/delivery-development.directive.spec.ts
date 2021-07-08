@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, TemplateRef, ViewContainerRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DeliveryDevelopmentDirective } from './delivery-development.directive';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { of } from 'rxjs';
@@ -17,14 +17,14 @@ class TestComponent {
 describe('DeliveryDevelopmentDirective', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
-  let featureflagService: FeatureflagService;
+  let featureflagService: FeatureFlagService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         declarations: [DeliveryDevelopmentDirective, TestComponent],
-        providers: [{ provide: FeatureflagService, useClass: FeatureFlagServiceMock }, TemplateRef, ViewContainerRef],
+        providers: [{ provide: FeatureFlagService, useClass: FeatureFlagServiceMock }, TemplateRef, ViewContainerRef],
       }).compileComponents();
     })
   );
@@ -32,7 +32,7 @@ describe('DeliveryDevelopmentDirective', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
-    featureflagService = TestBed.inject(FeatureflagService);
+    featureflagService = TestBed.inject(FeatureFlagService);
   });
 
   it('should create an instance', () => {
