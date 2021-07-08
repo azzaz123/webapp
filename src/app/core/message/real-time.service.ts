@@ -10,7 +10,6 @@ import {ConnectionType} from '../remote-console/connection-type';
 import {I18nService} from '../i18n/i18n.service';
 import {ChatSignal, ChatSignalType, InboxConversation, InboxMessage} from '@private/features/chat/core/model';
 import {TRANSLATION_KEY} from '@core/i18n/translations/enum/translation-keys.enum';
-import {AnalyticsMarketService} from '@core/analytics/analytics-market.service';
 
 export const SEARCHID_STORAGE_NAME = 'searchId';
 
@@ -23,7 +22,6 @@ export class RealTimeService {
     private analyticsService: AnalyticsService,
     private i18n: I18nService,
     private connectionService: ConnectionService,
-    private analyticsMarketService: AnalyticsMarketService
   ) {
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
@@ -149,8 +147,8 @@ export class RealTimeService {
         conversationId: conversation.id,
         screenId: SCREEN_IDS.Chat,
         categoryId: conversation.item.categoryId,
-        country: this.analyticsMarketService.market,
-        language: this.analyticsMarketService.localeId
+        country: this.analyticsService.market,
+        language: this.analyticsService.appLocale
       },
     };
 
