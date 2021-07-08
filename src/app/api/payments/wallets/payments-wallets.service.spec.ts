@@ -32,7 +32,7 @@ describe('PaymentsWalletsService', () => {
     });
 
     it('should get the Wallet balance', () => {
-      service.get().subscribe();
+      service.walletBalance$.subscribe();
 
       expect(paymentsWalletsHttpService.get).toHaveBeenCalled();
     });
@@ -40,7 +40,7 @@ describe('PaymentsWalletsService', () => {
     it('should map server response to web context', () => {
       let response: Money;
 
-      service.get().subscribe((data) => (response = data));
+      service.walletBalance$.subscribe((data) => (response = data));
 
       expect(response).toEqual(MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_MAPPED_MONEY);
     });
