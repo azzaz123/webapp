@@ -33,7 +33,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { of } from 'rxjs';
 import { EventService } from '../event/event.service';
-import { FeatureflagService } from './featureflag.service';
+import { FeatureFlagService } from './featureflag.service';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { User } from './user';
 import { Image, UserLocation } from './user-response.interface';

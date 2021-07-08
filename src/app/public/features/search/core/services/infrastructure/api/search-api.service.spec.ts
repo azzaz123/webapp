@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { environment } from '@environments/environment';
+import { SORT_BY } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { MOCK_SEARCH_ID } from '../../search-list-tracking-events/search-list-tracking-events.fixtures.spec';
 import { SearchCarResponse } from '../cars/search-car-response';
@@ -64,7 +65,8 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: true, searchId:MOCK_SEARCH_ID});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: true, searchId:MOCK_SEARCH_ID,
+            sortBy: SORT_BY.DISTANCE});
           done();
         });
 
@@ -79,7 +81,8 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/general/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: false, searchId: MOCK_SEARCH_ID});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: false, searchId: MOCK_SEARCH_ID,
+            sortBy: SORT_BY.DISTANCE});
           done();
         });
 
@@ -111,7 +114,8 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCarResponseMapper(searchResponse), hasMore: true, searchId:MOCK_SEARCH_ID});
+          expect(response).toEqual({items: SearchItemCarResponseMapper(searchResponse), hasMore: true, searchId:MOCK_SEARCH_ID,
+            sortBy: SORT_BY.DISTANCE});
           done();
         });
 
@@ -126,7 +130,8 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/cars/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCarResponseMapper(searchResponse), hasMore: false, searchId:MOCK_SEARCH_ID});
+          expect(response).toEqual({items: SearchItemCarResponseMapper(searchResponse), hasMore: false, searchId:MOCK_SEARCH_ID,
+            sortBy: SORT_BY.DISTANCE});
           done();
         });
 
@@ -160,7 +165,8 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: searchItemRealEstateResponseMapper(searchResponse), hasMore: true, searchId: MOCK_SEARCH_ID});
+          expect(response).toEqual({items: searchItemRealEstateResponseMapper(searchResponse), hasMore: true, searchId: MOCK_SEARCH_ID,
+            sortBy: SORT_BY.DISTANCE});
           done();
         });
 
@@ -175,7 +181,8 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/real_estate/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: searchItemRealEstateResponseMapper(searchResponse), hasMore: false, searchId: MOCK_SEARCH_ID});
+          expect(response).toEqual({items: searchItemRealEstateResponseMapper(searchResponse), hasMore: false, searchId: MOCK_SEARCH_ID,
+            sortBy: SORT_BY.DISTANCE});
           done();
         });
 
@@ -208,7 +215,8 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: true, searchId: MOCK_SEARCH_ID});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: true, searchId: MOCK_SEARCH_ID,
+            sortBy: SORT_BY.DISTANCE});
           done();
         });
 
@@ -223,7 +231,8 @@ describe('SearchApiService', () => {
         const expectedUrl = `${environment.baseUrl}api/v3/fashion/wall?category_ids=${category_id}&latitude=latitude-value&longitude=longitude-value&filters_source=filters_source-value`;
 
         service.search(filters).subscribe((response) => {
-          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: false, searchId: MOCK_SEARCH_ID});
+          expect(response).toEqual({items: SearchItemCustomerGoodsResponseMapper(searchResponse), hasMore: false, searchId: MOCK_SEARCH_ID,
+            sortBy: SORT_BY.DISTANCE});
           done();
         });
 
@@ -299,7 +308,8 @@ describe('SearchApiService', () => {
         expect(response).toEqual({
           items: [...SearchItemCustomerGoodsResponseMapper(searchResponse), ...SearchItemCustomerGoodsResponseMapper(searchResponse)],
           hasMore: false,
-          searchId: MOCK_SEARCH_ID
+          searchId: MOCK_SEARCH_ID,
+          sortBy: SORT_BY.DISTANCE
         });
         done();
       });

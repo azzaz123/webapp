@@ -16,7 +16,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 import { TopbarComponent } from './topbar.component';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { By } from '@angular/platform-browser';
 import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
@@ -132,7 +132,7 @@ describe('TopbarComponent', () => {
             },
           },
           {
-            provide: FeatureflagService,
+            provide: FeatureFlagService,
             useClass: FeatureFlagServiceMock,
           },
           {
@@ -169,7 +169,7 @@ describe('TopbarComponent', () => {
     paymentService = TestBed.inject(PaymentService);
     cookieService = TestBed.inject(CookieService);
     modalService = TestBed.inject(NgbModal);
-    featureFlagService = TestBed.inject(FeatureflagService);
+    featureFlagService = TestBed.inject(FeatureFlagService);
     navigator = TestBed.inject(SearchNavigatorService);
     router = TestBed.inject(Router);
     topbarTrackingEventsService = TestBed.inject(TopbarTrackingEventsService);
