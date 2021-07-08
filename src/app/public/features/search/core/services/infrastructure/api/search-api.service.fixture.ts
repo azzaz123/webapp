@@ -11,6 +11,7 @@ import { wallParameters } from './search-api-url.factory';
 import { SearchResponse } from './search-response.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { MOCK_SEARCH_ID } from '../../search-list-tracking-events/search-list-tracking-events.fixtures.spec';
+import { SORT_BY } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
 
 export function FilterParametersWallFactory(categoryId: string): FilterParameter[] {
   return wallParameters.map((key: FILTER_QUERY_PARAM_KEY) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));
@@ -131,7 +132,8 @@ export function SearchResponseFactory<T>(partial: Partial<SearchResponse<T>> = {
       latitude: 40,
       longitude: 20,
     },
-    search_objects: partial.search_objects || []
+    search_objects: partial.search_objects || [],
+    order: partial.order || SORT_BY.DISTANCE
   };
 }
 

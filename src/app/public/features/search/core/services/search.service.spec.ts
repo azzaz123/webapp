@@ -107,8 +107,8 @@ describe('SearchService', () => {
 
         filterParametersSubject.next(filterParametersMock);
 
-        service.newSearch$.subscribe((searchId: string) => {
-          expect(searchId).toEqual(MOCK_SEARCH_ID);
+        service.newSearch$.subscribe((searchResponseExtraData) => {
+          expect(searchResponseExtraData.searchId).toEqual(MOCK_SEARCH_ID);
         });
         expect(searchInfrastructureServiceMock.search).toHaveBeenCalledTimes(1);
         expect(searchInfrastructureServiceMock.search).toHaveBeenCalledWith(filterParametersMock);

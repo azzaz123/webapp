@@ -953,6 +953,48 @@ export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
   },
 ];
 
+export const MAPPED_SUBSCRIPTIONS_WITH_RE: SubscriptionsResponse[] = [
+  {
+    category_id: 200,
+    current_limit: 2,
+    selected_tier_id: 'realestate_10',
+    default_tier_id: 'realestate_10',
+    market: null,
+    trial_available: true,
+    trial_days: 30,
+    tiers: [
+      {
+        id: 'realestate_10',
+        limit: 10,
+        price: 19.0,
+        currency: 'EUR',
+        discount_available: null,
+      },
+      {
+        id: 'realestate_25',
+        limit: 25,
+        price: 33.0,
+        currency: 'EUR',
+        discount_available: null,
+      },
+      {
+        id: 'realestate_100',
+        limit: 100,
+        price: 46.0,
+        currency: 'EUR',
+        discount_available: null,
+      },
+    ],
+    selected_tier: {
+      id: 'realestate_10',
+      limit: 10,
+      price: 19.0,
+      currency: 'EUR',
+      discount_available: null,
+    },
+  },
+];
+
 export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] = [
   {
     id: 'abcd-1234-efgh-5678',

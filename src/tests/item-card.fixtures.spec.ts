@@ -13,6 +13,7 @@ import {
 } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';
 import { PaginatedList } from '../app/api/core/model/paginated-list.interface';
+import { SORT_BY } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
 
 export const MOCK_ITEM_CARD: ItemCard = {
   id: ITEM_DATA.id,
@@ -144,10 +145,15 @@ export function SearchItemListFactory(count: number = 20): ItemCard[] {
   return new Array(count).fill('').map((_, index) => ({ ...MOCK_ITEM_CARD, id: '235325' + index }));
 }
 
-export function SearchPaginationFactory(hasMore: boolean = false, searchId: string = ''): SearchPagination {
+export function SearchPaginationFactory(
+  hasMore: boolean = false,
+  searchId: string = '',
+  sortBy: SORT_BY = SORT_BY.DISTANCE
+): SearchPagination {
   return {
     items: SearchItemListFactory(40),
     hasMore,
     searchId,
+    sortBy,
   };
 }

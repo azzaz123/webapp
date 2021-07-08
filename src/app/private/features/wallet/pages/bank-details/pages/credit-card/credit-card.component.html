@@ -18,6 +18,9 @@
                     <div *ngIf="creditCardForm.controls.fullName.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
                         <ng-container *ngIf="creditCardForm.controls.fullName.errors as holderNameError">
                         <span *ngIf="holderNameError.required" i18n="@@credit_card_owner_name_error">Invalid owner name</span>
+                        <span *ngIf="!holderNameError.required">
+                            {{formErrorMessages.fullName}}
+                        </span>
                         </ng-container>
                     </div>
                 </div>
@@ -29,6 +32,9 @@
                     <div *ngIf="creditCardForm.controls.cardNumber.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
                         <ng-container *ngIf="creditCardForm.controls.cardNumber.errors as cardNumberError">
                             <span *ngIf="cardNumberError.required" i18n="@@credit_card_number_error">Invalid card number</span>
+                            <span *ngIf="!cardNumberError.required">
+                                {{formErrorMessages.cardNumber}}
+                            </span>
                         </ng-container>
                     </div>
                 </div>
@@ -40,6 +46,9 @@
                     <div *ngIf="creditCardForm.controls.cardExpirationDate.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
                         <ng-container *ngIf="creditCardForm.controls.cardExpirationDate.errors as expirationDateError">
                             <span *ngIf="expirationDateError.required" i18n="@@credit_card_date_error">Invalid date</span>
+                            <span *ngIf="!expirationDateError.required">
+                                {{formErrorMessages.cardExpirationDate}}
+                            </span>                  
                         </ng-container>
                     </div>
                 </div>
@@ -51,6 +60,9 @@
                     <div *ngIf="creditCardForm.controls.cardCvx.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
                         <ng-container *ngIf="creditCardForm.controls.cardCvx.errors as CVVError">
                             <span *ngIf="CVVError.required" i18n="@@credit_card_cvv_error">Invalid CCV number</span>
+                            <span *ngIf="!CVVError.required">
+                                {{formErrorMessages.cardCvx}}
+                            </span>  
                         </ng-container>
                     </div>
                 </div>

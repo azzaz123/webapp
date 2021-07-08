@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { DevelopmentGuard } from './development.guard';
-import { FeatureflagService } from './featureflag.service';
+import { FeatureFlagService } from './featureflag.service';
 import * as coreLibrary from '@angular/core';
 
 const isDevMode = jasmine.createSpy().and.returnValue(true);
@@ -14,7 +14,7 @@ Object.defineProperty(coreLibrary, 'isDevMode', {
 
 describe('DevelopmentGuard', (): void => {
   let developmentGuard: DevelopmentGuard;
-  let featureFlagService: FeatureflagService;
+  let featureFlagService: FeatureFlagService;
   let router: Router;
 
   beforeEach(() => {
@@ -27,12 +27,12 @@ describe('DevelopmentGuard', (): void => {
             navigate() {},
           },
         },
-        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
       ],
     });
 
     developmentGuard = TestBed.inject(DevelopmentGuard);
-    featureFlagService = TestBed.inject(FeatureflagService);
+    featureFlagService = TestBed.inject(FeatureFlagService);
     router = TestBed.inject(Router);
   });
 

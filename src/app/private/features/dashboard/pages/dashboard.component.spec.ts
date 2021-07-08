@@ -8,7 +8,7 @@ import { CallsService } from '@core/conversation/calls.service';
 import { Lead } from '@core/conversation/lead';
 import { EventService } from '@core/event/event.service';
 import { RealTimeService } from '@core/message/real-time.service';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { ChatComponent } from '@private/features/chat/chat.component';
 import { ChatModule } from '@private/features/chat/chat.module';
@@ -51,7 +51,7 @@ describe('DashboardComponent', () => {
         declarations: [DashboardComponent],
         providers: [
           EventService,
-          { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+          { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
           { provide: InboxService, useClass: InboxServiceMock },
           {
             provide: InboxConversationService,
