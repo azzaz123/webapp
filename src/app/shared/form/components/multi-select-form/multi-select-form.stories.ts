@@ -21,7 +21,6 @@ class StoryMultiSelectFormFormComponent {
   public formGroup = new FormGroup({
     select: new FormControl(['aa']),
   });
-  public select = ['aa'];
 }
 
 export default {
