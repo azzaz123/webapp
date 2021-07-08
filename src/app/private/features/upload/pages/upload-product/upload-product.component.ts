@@ -33,6 +33,8 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { Item, ITEM_TYPES } from '@core/item/item';
 import { DeliveryInfo, ItemContent, ItemResponse, ItemSaleConditions } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -40,8 +42,8 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, take, tap } from 'rxjs/operators';
+import { fromEvent, Observable, of, Subject } from 'rxjs';
+import { catchError, debounceTime, map, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -120,7 +122,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
-  public isShippingToggleActive = true;
+  public isShippingToggleActive = false;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
 
   constructor(
@@ -138,8 +140,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private uploadService: UploadService,
     private subscriptionService: SubscriptionsService,
     private itemReactivationService: ItemReactivationService,
-    private customerHelpService: CustomerHelpService
+    private customerHelpService: CustomerHelpService,
+    private featureFlagService: FeatureflagService
   ) {
+    this.featureFlagsInit();
+
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
       { value: 'female', label: this.i18n.translate(TRANSLATION_KEY.FEMALE) },
@@ -263,7 +268,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getExtraInfo(): any {
-    if (!this.item.extraInfo) return {};
     const objectTypeId = this.item.extraInfo.object_type?.id;
     if (objectTypeId) {
       if (!this.objectTypes.find((objectType) => objectType.id === objectTypeId)) {
@@ -349,6 +353,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       .get('sale_conditions')
       .get('supports_shipping')
       .valueChanges.subscribe((supportsShipping) => {
+        console.log('eoi', supportsShipping);
         const deliveryInfo = this.uploadForm.get('delivery_info');
         if (supportsShipping) {
           deliveryInfo.setValidators([Validators.required]);
@@ -882,5 +887,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private objectTypeHasChildren(objectTypeId: string): boolean {
     return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
+  }
+
+  private featureFlagsInit(): void {
+    this.featureFlagService
+      .getFlag(FEATURE_FLAGS_ENUM.SHIPPING_TOGGLE)
+      .pipe(catchError(() => of(false)))
+      .subscribe((isShippingToggleActive) => (this.isShippingToggleActive = isShippingToggleActive));
   }
 }
