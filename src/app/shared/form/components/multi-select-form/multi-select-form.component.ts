@@ -34,7 +34,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
-    this.mapCheckedValue(this.value);
+    this.mapCheckedValue();
   }
 
   public handleSelectedOption(): void {
@@ -48,8 +48,8 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
     this.onChange(this.value);
   }
 
-  private mapCheckedValue(checkedValue: MultiSelectValue): void {
-    checkedValue.map((checkedValue: string) => {
+  private mapCheckedValue(): void {
+    this.value.map((checkedValue: string) => {
       this.extendedOptions.forEach((option: MultiSelectFormOption) => {
         if (option.value === checkedValue) {
           option.checked = true;
