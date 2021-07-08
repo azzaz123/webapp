@@ -12,7 +12,7 @@ export const mapReviewElementsToReviews: ToDomainMapper<ReviewsElementDto[], Rev
     const reviewItem: ReviewItem = mapItem(item);
     const reviewUser: User = mapUser(user);
 
-    return new Review(review.date, review.scoring, type, review.comments, reviewItem, reviewUser);
+    return new Review(review.date, review.scoring, type, review.comments, reviewItem, reviewUser, review.id, review.canTranslate);
   });
 };
 
