@@ -283,7 +283,6 @@
       [ngbPopover]="coachmarkShippingWithToggle"
       [autoClose]="false"
       #p="ngbPopover"
-      trigger="manual"
     >
       <div data-toggle="buttons">
         <div class="row">
@@ -304,7 +303,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <div class="d-flex mb-3" formGroupName="sale_conditions">
+            <div class="d-flex" [class.mb-3]="uploadForm.value.sale_conditions.supports_shipping" formGroupName="sale_conditions">
               <tsl-checkbox-form
                 formControlName="supports_shipping"
                 (change)="!uploadForm.value.sale_conditions.supports_shipping ? p.open() : p.close()"
@@ -323,7 +322,7 @@
 
               <label ngbButtonLabel class="selector shipping-selector" *ngFor="let delivery of deliveryInfo">
                 <div class="selector-icon btn">
-                  <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value)" />
+                  <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value); p.close()" />
                   <tsl-svg-icon src="/assets/icons/shipping-{{ delivery.value.max_weight_kg }}.svg"></tsl-svg-icon>
                 </div>
                 <span class="selector-text">{{ delivery.value.max_weight_kg }}kg max</span>
