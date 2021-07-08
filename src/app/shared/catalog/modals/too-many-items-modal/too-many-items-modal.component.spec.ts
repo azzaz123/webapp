@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ItemService } from '../../../../core/item/item.service';
 import { SubscriptionsService } from '../../../../core/subscriptions/subscriptions.service';
 import { MOCK_ITEM_V3_3 } from '../../../../../tests/item.fixtures.spec';
-import { MockSubscriptionService, MAPPED_SUBSCRIPTIONS_ADDED } from '../../../../../tests/subscriptions.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS_ADDED, MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions.service';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../../tests/analytics.fixtures.spec';
