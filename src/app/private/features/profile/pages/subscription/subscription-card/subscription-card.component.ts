@@ -20,6 +20,7 @@ export class SubscriptionCardComponent {
     [CATEGORY_SUBSCRIPTIONS_IDS.CAR]: $localize`:@@web_profile_pages_subscription_cars_desc:List all your cars`,
     [CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE]: $localize`:@@web_profile_pages_subscription_motorbike_desc:List all your motorbikes`,
     [CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES]: $localize`:@@web_profile_pages_subscription_motor_acc_desc:List all your Motor and Accessories items`,
+    [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE]: $localize`:@@web_profile_pages_subscription_real_estate_desc:List all your real estate`,
     [CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE]: $localize`:@@web_profile_pages_subscription_other_desc:Your best plan to sell all kinds of items`,
   };
 
@@ -29,8 +30,14 @@ export class SubscriptionCardComponent {
 
   get subscriptionBodyText(): string {
     return this.subscription.selected_tier.limit
-      ? $localize`:@@web_profile_pages_subscription_325:List up to ${this.subscription.selected_tier.limit} items`
+      ? this.getTextWithLimit(this.subscription.selected_tier.limit)
       : $localize`:@@web_profile_pages_subscription_586:List without limits`;
+  }
+
+  private getTextWithLimit(limit: number): string {
+    return this.subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE
+      ? $localize`:@@web_profile_pages_subscription_332:List up to ${limit} real estate`
+      : $localize`:@@web_profile_pages_subscription_325:List up to ${limit} items`;
   }
 
   get iconSrc(): string {

@@ -167,6 +167,29 @@ $vertical-padding: $spacing-ms;
     height: 40px;
   }
 
+  &.btn-white {
+    background-color: $white;
+    padding: 0 $spacing-l;
+    border: 0;
+    font-weight: bold;
+    font-size: $font-size-s;
+    height: 40px;
+
+    @include media-breakpoint-up(md) {
+      width: 170px;
+    }
+
+    &--danger {
+      color: $negative-main;
+    }
+    &--warning {
+      color: $orange-main;
+    }
+    &--success {
+      color: $walla-main;
+    }
+  }
+
   &.btn-activation {
     width: 170px;
     height: 40px;
