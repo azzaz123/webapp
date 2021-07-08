@@ -129,7 +129,6 @@ export * from './subscription-pay-confirmation.interface';
 export * from './subscription-payment-failed.interface';
 export * from './transaction-payment-error.interface';
 export * from './transaction-payment-seller.interface';
-export * from './transaction-payment-success.interface';
 export * from './change-email.interface';
 export * from './click-add-home-address-transaction-pay.interface';
 export * from './click-add-office-transaction-pay.interface';
