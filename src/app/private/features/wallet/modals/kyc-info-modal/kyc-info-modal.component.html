@@ -18,8 +18,8 @@
     </div>
     <div class="KYCInfoModal__bottomContainer d-flex justify-content-center pb-4 px-2 position-sticky">
         <div class="KYCInfoModal__bottomContainer__button">
-            <tsl-button class="w-100" className="btn-primary btn--width" *ngIf="currentSlide !== LAST_SLIDE" (click)="swipeToRight()" i18n="continue" id="continueButton">Continue</tsl-button>
-            <tsl-button class="w-100" className="btn-primary btn--width" *ngIf="currentSlide === LAST_SLIDE" (click)="redirectToKYC()" i18n="kyc_request_modal_slide_3_start_button" id="verifyButton">Verify identity</tsl-button>
+            <tsl-button class="w-100" className="btn-primary btn--width" *ngIf="currentSlide !== LAST_SLIDE" (click)="swipeToRight()" i18n="@@kyc_request_modal_continue_button" id="continueButton">Continue</tsl-button>
+            <tsl-button class="w-100" className="btn-primary btn--width" *ngIf="currentSlide === LAST_SLIDE" (click)="redirectToKYC()" i18n="@@kyc_request_modal_start_button" id="verifyButton">Verify identity</tsl-button>
         </div>
     </div>
 </div>
