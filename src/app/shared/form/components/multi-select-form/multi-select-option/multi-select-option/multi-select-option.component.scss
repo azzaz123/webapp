@@ -1,6 +1,8 @@
 @import 'src/style/common';
 @import 'src/style/components/upload';
 
+$sub-label-light-gray: #828282;
+
 .MultiSelectOption {
   cursor: pointer;
   label {
@@ -25,7 +27,7 @@
     display: block;
 
     &__sub {
-      color: #828282;
+      color: $sub-label-light-gray;
     }
   }
 }

@@ -97,7 +97,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
   public pendingFiles: PendingFiles;
-
+  public options = [
+    { label: 'aa', value: 'aa' },
+    { label: 'bb', value: 'bb' },
+    { label: 'cc', value: 'cc' },
+    { label: 'dd', value: 'dd' },
+  ];
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     { value: 'EUR', label: '€' },
@@ -167,6 +172,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private fillForm(): void {
     this.uploadForm = this.fb.group({
+      hashtag: [['aa', 'bb']],
       id: '',
       category_id: ['', [Validators.required]],
       images: [[], [Validators.required]],
@@ -380,6 +386,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onSubmit(): void {
+    console.log('uploadForm', this.uploadForm);
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
