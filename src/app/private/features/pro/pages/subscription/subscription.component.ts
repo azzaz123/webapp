@@ -27,6 +27,7 @@ import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscri
 import { EditSubscriptionModalComponent } from '../../modal/edit-subscription/edit-subscription-modal.component';
 import { DiscountAvailableUnsubscribeInAppModalComponent } from '../../modal/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { UnsubscribeInAppFirstModal } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { PRO_PATHS } from '../../pro-routing-constants';
 
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
@@ -168,7 +169,7 @@ export class SubscriptionsComponent implements OnInit {
         ),
         take(30),
         finalize(() => {
-          this.router.navigate(['pro/subscriptions']), (this.loading = false);
+          this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]), (this.loading = false);
         })
       )
       .subscribe((updatedSubscriptions) => {

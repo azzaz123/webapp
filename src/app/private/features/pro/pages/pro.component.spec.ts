@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
@@ -60,7 +60,7 @@ describe('ProComponent', () => {
               },
             },
           },
-          FeatureflagService,
+          FeatureFlagService,
           {
             provide: UserService,
             useClass: MockedUserService,

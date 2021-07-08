@@ -31,7 +31,9 @@ const routes: Route[] = [
           isProfile: true,
           permissions: {
             except: PERMISSIONS.professional,
-            redirectTo: '/profile',
+            redirectTo: {
+              [PERMISSIONS.professional]: `${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS_PRO}`,
+            },
           },
         },
       },
@@ -52,47 +54,9 @@ const routes: Route[] = [
           isProfile: true,
           permissions: {
             only: PERMISSIONS.professional,
-            redirectTo: '/profile',
+            redirectTo: `${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
           },
         },
-      },
-      {
-        path: 'help',
-        loadChildren: () => import('@private/features/help/help.module').then((m) => m.HelpModule),
-      },
-      {
-        path: 'dashboard',
-        loadChildren: () => import('@private/features/dashboard/dashboard.module').then((m) => m.DashboardModule),
-      },
-      {
-        path: 'calls',
-        loadChildren: () => import('@private/features/calls/calls.module').then((m) => m.CallsModule),
-      },
-      {
-        path: 'catalog',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('@private/features/catalog-pro/catalog-pro.module').then((m) => m.CatalogProModule),
-          },
-          {
-            path: 'upload',
-            loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
-            canLoad: [NgxPermissionsGuard],
-            data: {
-              isMyZone: true,
-              isProducts: true,
-              permissions: {
-                only: PERMISSIONS.professional,
-                redirectTo: '/catalog/upload',
-              },
-            },
-          },
-          {
-            path: 'edit',
-            loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
-          },
-        ],
       },
     ],
   },

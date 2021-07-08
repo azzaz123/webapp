@@ -65,7 +65,7 @@
   <h2 i18n="@@web_components_sidebar_614">Stats</h2>
 </a>
 
-<a *ngxPermissionsOnly="PERMISSIONS.subscriptions" id="qa-sidebar-pro" class="sidebar-section" (click)="userService.setClickedProSection()" [routerLink]="['/pro']" routerLinkActive="active">
+<a *ngxPermissionsOnly="PERMISSIONS.subscriptions" id="qa-sidebar-pro" class="sidebar-section" (click)="userService.setClickedProSection()" [routerLink]="['/pro-manager']" routerLinkActive="active">
   <div class="chat-notification-pending" *ngIf="!userService.isClickedProSection"></div>
   <div class="sidebar-section-circle">
     <tsl-svg-icon src="/assets/icons/navigation_pro.svg"></tsl-svg-icon>

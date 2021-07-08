@@ -68,6 +68,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -1294,7 +1295,7 @@ describe('ListComponent', () => {
           component.onClickTryProSlot();
 
           expect(router.navigate).toBeCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith(['pro/subscriptions']);
+          expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
         });
 
         it('should track ClickProSubscription event', () => {
@@ -1420,7 +1421,7 @@ describe('ListComponent', () => {
             tick();
 
             expect(router.navigate).toHaveBeenCalledTimes(1);
-            expect(router.navigate).toHaveBeenCalledWith(['pro/subscriptions']);
+            expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
           }));
         });
         describe('and click secondary button', () => {

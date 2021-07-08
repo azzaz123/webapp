@@ -41,6 +41,7 @@ import { CheckSubscriptionInAppModalComponent } from '../../modal/check-subscrip
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
 import { EditSubscriptionModalComponent } from '../../modal/edit-subscription/edit-subscription-modal.component';
 import { UnsubscribeInAppFirstModal } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { PRO_PATHS } from '../../pro-routing-constants';
 
 @Component({
   selector: 'tsl-subscription-purchase',
@@ -363,7 +364,7 @@ describe('SubscriptionComponent', () => {
     component.manageSubscription(MAPPED_SUBSCRIPTIONS[1]);
     tick(1000);
 
-    expect(router.navigate).toHaveBeenCalledWith(['pro/subscriptions']);
+    expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
   }));
 
   it('should redirect to profile if action is present and subscription changed and user is not featured', fakeAsync(() => {
@@ -394,7 +395,7 @@ describe('SubscriptionComponent', () => {
     component.subscriptionChangeSuccessful();
     tick(1000);
 
-    expect(router.navigate).toHaveBeenCalledWith(['pro/subscriptions']);
+    expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
   }));
 
   it('should redirect to profile if action is present and subscription changed and user is not featured', fakeAsync(() => {

@@ -6,6 +6,7 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { AccountComponent } from './pages/account/account.component';
 import { ProfileInfoComponent } from './pages/profile-info/profile-info.component';
 import { ProfileComponent } from './pages/profile.component';
+import { PRO_PATHS } from '../pro/pro-routing-constants';
 
 const routes: Route[] = [
   {
@@ -39,16 +40,16 @@ const routes: Route[] = [
         },
       },
       {
-        path: 'subscriptions',
-        redirectTo: '/pro/subscriptions',
+        path: PRO_PATHS.SUBSCRIPTIONS,
+        redirectTo: `${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
       },
       {
-        path: 'billing',
-        redirectTo: '/pro/billing',
+        path: PRO_PATHS.BILLING,
+        redirectTo: `${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.BILLING}`,
       },
       {
-        path: 'subscription-pro',
-        redirectTo: '/pro/subscription-pro',
+        path: PRO_PATHS.SUBSCRIPTIONS_PRO,
+        redirectTo: `${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS_PRO}`,
       },
     ],
   },

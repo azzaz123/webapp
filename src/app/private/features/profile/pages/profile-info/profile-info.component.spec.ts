@@ -29,6 +29,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { VisibleDirectiveModule } from '@shared/directives/visible/visible.directive.module';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 
 @Component({
   selector: 'tsl-cover-upload',
@@ -469,7 +470,7 @@ describe('ProfileInfoComponent', () => {
           fixture.detectChanges();
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith(['pro/subscriptions']);
+          expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
         }));
       });
     });
