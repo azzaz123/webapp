@@ -1,3 +1,4 @@
+import { Options } from '@angular-slider/ngx-slider';
 import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
@@ -34,6 +35,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
+    this.mapCheckedValue(this.value);
   }
 
   public handleSelectedOption(): void {
@@ -45,5 +47,15 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
         return option.value;
       });
     this.onChange(this.value);
+  }
+
+  private mapCheckedValue(checkedValue: MultiSelectValue): void {
+    checkedValue.map((checkedValue: string) => {
+      this.extendedOptions.forEach((option: MultiSelectFormOption) => {
+        if (option.value === checkedValue) {
+          option.checked = true;
+        }
+      });
+    });
   }
 }

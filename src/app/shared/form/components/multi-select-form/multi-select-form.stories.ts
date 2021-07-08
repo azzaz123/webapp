@@ -19,9 +19,9 @@ class StoryMultiSelectFormFormComponent {
   @Input() options;
   @Input() isDisabled: boolean = false;
   public formGroup = new FormGroup({
-    select: new FormControl(['default']),
+    select: new FormControl(['aa']),
   });
-  public select = ['default'];
+  public select = ['aa'];
 }
 
 export default {
