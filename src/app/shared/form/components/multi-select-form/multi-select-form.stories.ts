@@ -69,11 +69,5 @@ DisableMultiSelect.args = {
 export const OptionsWithOccurrencies = Template.bind({});
 OptionsWithOccurrencies.args = {
   options: optionsWithSublabel,
-  /*  options: [
-    { label: 'aa', sublabel: 1, value: 'aa' },
-    { label: 'bb', sublabel: 2, value: 'bb' },
-    { label: 'cc', sublabel: 3, value: 'cc' },
-    { label: 'dd', sublabel: 4, value: 'dd' },
-  ], */
   isDisabled: 'false',
 };
