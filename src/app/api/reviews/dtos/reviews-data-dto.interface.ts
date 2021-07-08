@@ -1,6 +1,6 @@
 export interface ReviewsDataDto {
   id: string;
-  canTranslate: string;
+  canTranslate: boolean;
   comments: string;
   date: number;
   scoring: number;
