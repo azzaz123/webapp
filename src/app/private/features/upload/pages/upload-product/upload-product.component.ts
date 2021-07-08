@@ -34,7 +34,7 @@ import { Item, ITEM_TYPES } from '@core/item/item';
 import { DeliveryInfo, ItemContent, ItemResponse, ItemSaleConditions } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -141,7 +141,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private subscriptionService: SubscriptionsService,
     private itemReactivationService: ItemReactivationService,
     private customerHelpService: CustomerHelpService,
-    private featureFlagService: FeatureflagService
+    private featureFlagService: FeatureFlagService
   ) {
     this.featureFlagsInit();
 
