@@ -4,7 +4,8 @@ import { ReviewsHttpService } from './reviews-http.service';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from '@environments/environment';
 import { reviewsElementDtoFixture } from '@api/fixtures/reviews/reviews-element-dto.fixture';
-import { ReviewsResponseDtoInterface } from '@api/reviews/dtos/reviews-response-dto.interface';
+import { PaginatedList } from '@api/core/model/paginated-list.interface';
+import { ReviewsElementDto } from '@api/reviews/dtos/reviews-element-dto.interface';
 
 describe('ReviewsHttpService', () => {
   let service: ReviewsHttpService;
@@ -25,15 +26,15 @@ describe('ReviewsHttpService', () => {
 
   describe('when asked to retrieve user reviews', () => {
     it('should get reviews', () => {
-      let response: ReviewsResponseDtoInterface;
+      let response: PaginatedList<ReviewsElementDto>;
       const userId = 'id';
 
-      service.getUserReviews(userId).subscribe((res: ReviewsResponseDtoInterface) => (response = res));
+      service.getUserReviews(userId, '0').subscribe((res: PaginatedList<ReviewsElementDto>) => (response = res));
 
-      const req: TestRequest = httpMock.expectOne(`${environment.baseUrl}api/v3/users/${userId}/reviews`);
+      const req: TestRequest = httpMock.expectOne(`${environment.baseUrl}api/v3/users/${userId}/reviews?init=0`);
       req.flush([reviewsElementDtoFixture]);
 
-      expect(response).toEqual([reviewsElementDtoFixture]);
+      expect(response).toEqual({ list: [reviewsElementDtoFixture], paginationParameter: null });
     });
   });
 });

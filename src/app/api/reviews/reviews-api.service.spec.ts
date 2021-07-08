@@ -7,6 +7,7 @@ import { Review } from '@private/features/reviews/core/review';
 import { of } from 'rxjs';
 import { reviewsElementDtoFixture } from '@api/fixtures/reviews/reviews-element-dto.fixture';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { PaginatedList } from '@api/core/model/paginated-list.interface';
 
 describe('ReviewsApiService', () => {
   let service: ReviewsApiService;
@@ -27,14 +28,14 @@ describe('ReviewsApiService', () => {
 
   describe('when asked to retrieve reviews', () => {
     it('should retrieve reviews', () => {
-      spyOn(httpService, 'getUserReviews').and.returnValue(of([reviewsElementDtoFixture]));
-      let reviews: Review[];
+      spyOn(httpService, 'getUserReviews').and.returnValue(of({ list: [reviewsElementDtoFixture], paginationParameter: null }));
+      let reviews: PaginatedList<Review>;
 
-      service.getUserReviews(reviewUserFixture.id).subscribe((revs) => (reviews = revs));
+      service.getUserReviews(reviewUserFixture.id, '0').subscribe((revs) => (reviews = revs));
 
-      expect(reviews).toEqual([reviewFixture]);
+      expect(reviews).toEqual({ list: [reviewFixture], paginationParameter: null });
 
-      reviews.forEach((review) => {
+      reviews.list.forEach((review) => {
         expect(review).toBeInstanceOf(Review);
       });
     });

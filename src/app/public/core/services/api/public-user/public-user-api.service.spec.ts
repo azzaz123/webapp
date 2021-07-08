@@ -1,6 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { ReviewResponse } from '@private/features/reviews/core/review-response.interface';
 import { environment } from 'environments/environment';
 
 import {
@@ -9,14 +8,11 @@ import {
   MARK_AS_FAVOURITE_ENDPOINT,
   PROFILE_API_URL,
   PublicUserApiService,
-  PUBLISHED_ITEMS_ENDPOINT,
-  REVIEWS_ENDPOINT,
   SHIPPING_COUNTER_ENDPOINT,
   STATS_ENDPOINT,
   USER_COVER_IMAGE_ENDPOINT,
 } from './public-user-api.service';
 import { MarkAsFavouriteBodyRequest } from '@public/features/public-profile/core/interfaces/public-profile-request.interface';
-import { PaginationResponse } from '../../pagination/pagination.interface';
 
 describe('PublicUserApiService', () => {
   let publicUserApiService: PublicUserApiService;
@@ -67,58 +63,6 @@ describe('PublicUserApiService', () => {
 
       publicUserApiService.getShippingCounter(userId).subscribe();
       const req = httpMock.expectOne(expectedUrl);
-
-      expect(req.request.url).toEqual(expectedUrl);
-      expect(req.request.method).toBe('GET');
-    });
-  });
-
-  describe('when getting reviews...', () => {
-    it('should get user reviews', () => {
-      const expectedUrl = `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`;
-      let urlParams = '?init=0';
-      let response: PaginationResponse<ReviewResponse>;
-
-      publicUserApiService.getReviews(userId).subscribe((r) => (response = r));
-      const req = httpMock.expectOne(expectedUrl + urlParams);
-
-      expect(req.request.url).toEqual(expectedUrl);
-      expect(req.request.method).toBe('GET');
-    });
-
-    it('should get user reviews with correct pagination', () => {
-      const expectedUrl = `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`;
-      const itemsFrom = 40;
-      let urlParams = '?init=' + itemsFrom;
-      let response: PaginationResponse<ReviewResponse>;
-
-      publicUserApiService.getReviews(userId, itemsFrom).subscribe((r) => (response = r));
-      const req = httpMock.expectOne(expectedUrl + urlParams);
-
-      expect(req.request.url).toEqual(expectedUrl);
-      expect(req.request.method).toBe('GET');
-    });
-  });
-
-  describe('when getting published items...', () => {
-    it('should get user published items', () => {
-      const expectedUrl = `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`;
-      let urlParams = '?init=0';
-
-      publicUserApiService.getPublishedItems(userId).subscribe();
-      const req = httpMock.expectOne(expectedUrl + urlParams);
-
-      expect(req.request.url).toEqual(expectedUrl);
-      expect(req.request.method).toBe('GET');
-    });
-
-    it('should get user published items with correct pagination', () => {
-      const expectedUrl = `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(userId)}`;
-      const itemsFrom = 40;
-      let urlParams = '?init=' + itemsFrom;
-
-      publicUserApiService.getPublishedItems(userId, itemsFrom).subscribe();
-      const req = httpMock.expectOne(expectedUrl + urlParams);
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.method).toBe('GET');

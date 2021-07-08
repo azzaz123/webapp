@@ -1,2 +1,2 @@
 export * from './reviews-api.module';
-export * from './reviews.service';
+export * from './reviews-api.service';
