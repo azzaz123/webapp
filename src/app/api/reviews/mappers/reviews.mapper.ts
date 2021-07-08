@@ -6,7 +6,7 @@ import { ReviewsItemDto } from '@api/reviews/dtos/reviews-item-dto.interface';
 import { ReviewsUserDto } from '@api/reviews/dtos/reviews-user-dto.interface';
 import { ReviewItem } from '@private/features/reviews/core/review-item';
 
-export const mapReviewsDtoToReview: ToDomainMapper<ReviewsElementDto[], Review[]> = (reviewElements: ReviewsElementDto[]) => {
+export const mapReviewElementsToReviews: ToDomainMapper<ReviewsElementDto[], Review[]> = (reviewElements: ReviewsElementDto[]) => {
   return reviewElements.map((dto: ReviewsElementDto) => {
     const { item, user, review, type } = dto;
     const reviewItem: ReviewItem = mapItem(item);
