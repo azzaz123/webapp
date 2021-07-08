@@ -97,12 +97,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
   public pendingFiles: PendingFiles;
-  public options = [
-    { label: 'aa', value: 'aa' },
-    { label: 'bb', value: 'bb' },
-    { label: 'cc', value: 'cc' },
-    { label: 'dd', value: 'dd' },
-  ];
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     { value: 'EUR', label: '€' },
