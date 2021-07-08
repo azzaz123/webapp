@@ -3,15 +3,18 @@ import { Observable, ReplaySubject } from 'rxjs';
 import {Market} from '../configs/market.config';
 import {APP_LOCALE} from '../configs/subdomains.config';
 
+export const MARKET_MOCK = 'ES'
+export const APP_LOCALE_MOCK = 'es'
+
 export class MockAnalyticsService {
   private _mParticleReady$: ReplaySubject<void> = new ReplaySubject<void>();
 
   get market(): Market {
-    return 'ES'
+    return MARKET_MOCK
   }
 
   get appLocale(): APP_LOCALE {
-    return 'es'
+    return APP_LOCALE_MOCK
   }
 
 
