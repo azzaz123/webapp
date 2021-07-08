@@ -8,6 +8,7 @@ import { SubscriptionsComponent } from './pages/subscription/subscription.compon
 import { InvoiceComponent } from './pages/invoice/invoice.component';
 import { ProfileProSubscriptionComponent } from './pages/profile-pro-subscription/profile-pro-subscription.component';
 import { ProComponent } from './pages/pro.component';
+import { PRO_PATHS } from './pro-routing-constants';
 
 const routes: Route[] = [
   {
@@ -21,9 +22,9 @@ const routes: Route[] = [
       isProfile: true,
     },
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'subscriptions' },
+      { path: '', pathMatch: 'full', redirectTo: PRO_PATHS.SUBSCRIPTIONS },
       {
-        path: 'subscriptions',
+        path: PRO_PATHS.SUBSCRIPTIONS,
         component: SubscriptionsComponent,
         data: {
           isMyZone: true,
@@ -35,7 +36,7 @@ const routes: Route[] = [
         },
       },
       {
-        path: 'billing',
+        path: PRO_PATHS.BILLING,
         component: InvoiceComponent,
         canDeactivate: [ExitConfirmGuard],
         data: {
@@ -44,7 +45,7 @@ const routes: Route[] = [
         },
       },
       {
-        path: 'subscription-pro',
+        path: PRO_PATHS.SUBSCRIPTIONS_PRO,
         component: ProfileProSubscriptionComponent,
         data: {
           isMyZone: true,
