@@ -64,6 +64,7 @@ describe('MultiSelectOptionComponent', () => {
         component.option = optionWithSublabelFixture;
         fixture.detectChanges();
       });
+
       it('should show option with label and sublabel', () => {
         const label = debugElement.query(By.css(queryLabelNode)).nativeElement;
         const sublabel = debugElement.query(By.css(querySublabel)).nativeElement;
@@ -72,14 +73,18 @@ describe('MultiSelectOptionComponent', () => {
         expect(sublabel.innerHTML).toBe(optionWithSublabelFixture.sublabel);
       });
     });
-    it('should toggle checkbox if user toggle the checkbox', () => {
-      spyOn(component.toggleOnChange, 'emit');
-      const checkbox = debugElement.nativeElement.querySelector('input[type=checkbox]');
 
-      checkbox.click();
+    describe('...is toggled by the user', () => {
+      it('should toggle checkbox ', () => {
+        spyOn(component.toggleOnChange, 'emit');
+        const checkbox = debugElement.nativeElement.querySelector('input[type=checkbox]');
 
-      expect(component.toggleOnChange.emit).toHaveBeenCalledTimes(1);
+        checkbox.click();
+
+        expect(component.toggleOnChange.emit).toHaveBeenCalledTimes(1);
+      });
     });
+
     describe('...disabled checking behavior', () => {
       beforeEach(() => {
         component.option = optionFixture;
