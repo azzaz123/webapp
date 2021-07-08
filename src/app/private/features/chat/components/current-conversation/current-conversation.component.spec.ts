@@ -399,20 +399,21 @@ describe('CurrentConversationComponent', () => {
   });
 
   describe('clickSendMessage', () => {
+    const MESSAGE_ID = 'MESSAGE_ID';
+    const message = new InboxMessage(
+      MESSAGE_ID,
+      'message_thread',
+      'text',
+      'user_id',
+      true,
+      new Date(),
+      MessageStatus.PENDING,
+      MessageType.TEXT
+    );
+
     beforeEach(() => spyOn(remoteConsoleService, 'sendMessageAckFailed'));
 
     it('should send message is not send for pending messages', fakeAsync(() => {
-      const MESSAGE_ID = 'MESSAGE_ID';
-      const message = new InboxMessage(
-        MESSAGE_ID,
-        'message_thread',
-        'text',
-        'user_id',
-        true,
-        new Date(),
-        MessageStatus.PENDING,
-        MessageType.TEXT
-      );
       component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
       component.currentConversation.messages = [message];
 
@@ -422,6 +423,17 @@ describe('CurrentConversationComponent', () => {
 
       expect(remoteConsoleService.sendMessageAckFailed).toHaveBeenCalledWith(MESSAGE_ID, 'message is not send after 5000ms');
     }));
+
+    describe('if there is no conversation selected', () => {
+      it('should not send message', fakeAsync(() => {
+        component.currentConversation = null;
+
+        component.clickSendMessage(MESSAGE_ID);
+        tick(component.MESSAGE_METRIC_DELAY);
+
+        expect(remoteConsoleService.sendMessageAckFailed).not.toHaveBeenCalledWith();
+      }));
+    });
   });
 
   describe('restoreConnection', () => {

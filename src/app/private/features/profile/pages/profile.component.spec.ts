@@ -8,7 +8,7 @@ import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -72,7 +72,7 @@ describe('ProfileComponent', () => {
               },
             },
           },
-          FeatureflagService,
+          FeatureFlagService,
           {
             provide: UserService,
             useClass: MockedUserService,

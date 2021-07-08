@@ -1,6 +1,7 @@
 import { Item, ITEM_TYPES } from './item';
 import { ItemFlags } from './item-response.interface';
 import { Image } from '../user/user-response.interface';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 export class Realestate extends Item {
   constructor(
@@ -36,7 +37,7 @@ export class Realestate extends Item {
       sellerId,
       title,
       storytelling,
-      13000,
+      CATEGORY_IDS.REAL_ESTATE,
       location,
       salePrice,
       currencyCode,

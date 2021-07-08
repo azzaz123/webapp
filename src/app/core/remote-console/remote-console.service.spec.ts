@@ -4,7 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { RemoteConsoleService } from './remote-console.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BROWSER, BROWSER_VERSION, DeviceDetectorServiceMock, FeatureFlagServiceMock } from '../../../tests';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureFlagService } from '../user/featureflag.service';
 import { MetricTypeEnum } from './metric-type.enum';
 import { APP_VERSION } from '../../../environments/version';
 import { UserService } from '../user/user.service';
@@ -34,7 +34,7 @@ describe('RemoteConsoleService', () => {
         RemoteConsoleService,
         RemoteConsoleClientService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
-        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         { provide: UserService, useClass: MockedUserService },
         {
           provide: CookieService,

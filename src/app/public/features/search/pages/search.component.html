@@ -6,7 +6,7 @@
 
     <div class="Search__filters w-100" [class.Search__filters--opened]="filterOpened">
       <tsl-filters-wrapper (filterOpened)="handleFilterOpened($event)"></tsl-filters-wrapper>
-      <tsl-sort-filter></tsl-sort-filter>
+      <tsl-sort-filter [value]="sortBy$ | async"></tsl-sort-filter>
     </div>
 
     <tsl-search-error-layout *ngIf="searchWithoutResults$ | async"></tsl-search-error-layout>

@@ -9,7 +9,7 @@ import * as coreLibrary from '@angular/core';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { MockPermissionsService } from '@fixtures/permissions.fixtures';
 import { FeatureFlag, FEATURE_FLAGS_ENUM } from './featureflag-constants';
-import { FeatureflagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
+import { FeatureFlagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { PERMISSIONS } from './user-constants';
 
 const isDevMode = jasmine.createSpy().and.returnValue(true);
@@ -18,9 +18,9 @@ Object.defineProperty(coreLibrary, 'isDevMode', {
   value: isDevMode,
 });
 
-describe('FeatureflagService', () => {
+describe('FeatureFlagService', () => {
   let injector: TestBed;
-  let service: FeatureflagService;
+  let service: FeatureFlagService;
   let httpMock: HttpTestingController;
   let permissionService: NgxPermissionsService;
   const TIMESTAMP = 123456789;
@@ -30,7 +30,7 @@ describe('FeatureflagService', () => {
     injector.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        FeatureflagService,
+        FeatureFlagService,
         {
           provide: AccessTokenService,
           useValue: {
@@ -44,7 +44,7 @@ describe('FeatureflagService', () => {
       ],
     });
     httpMock = TestBed.inject(HttpTestingController);
-    service = TestBed.inject(FeatureflagService);
+    service = TestBed.inject(FeatureFlagService);
     permissionService = TestBed.inject(NgxPermissionsService);
     isDevMode.and.returnValue(false);
     spyOn<any>(window, 'Date').and.returnValue({ getTime: () => TIMESTAMP });
