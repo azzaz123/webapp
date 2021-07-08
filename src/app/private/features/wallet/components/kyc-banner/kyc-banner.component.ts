@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { KYCBannerSpecifications } from '../../interfaces/kyc/kyc-banner.interface';
+import { KycInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
 
 @Component({
   selector: 'tsl-kyc-banner',
@@ -9,6 +10,11 @@ import { KYCBannerSpecifications } from '../../interfaces/kyc/kyc-banner.interfa
 })
 export class KycBannerComponent {
   @Input() KYCBannerSpecifications: KYCBannerSpecifications;
+  constructor(private modalService: NgbModal) {}
+
+  public openKYCSlider(): void {
+    this.modalService.open(KycInfoModalComponent).result.then(() => {});
+  }
 
   get buttonClassName(): string {
     return `btn-white btn-white--${this.KYCBannerSpecifications.type}`;

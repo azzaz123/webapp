@@ -32,6 +32,18 @@ $item-flag-height: 38px;
     }
   }
 
+  &--wallaMainActiveIndicator {
+    ::ng-deep {
+      .carousel-indicators {
+        li {
+          &.active {
+            background-color: $walla-main;
+          }
+        }
+      }
+    }
+  }
+
   &__fallbackImage {
     object-fit: cover;
     border-radius: $border-radius;

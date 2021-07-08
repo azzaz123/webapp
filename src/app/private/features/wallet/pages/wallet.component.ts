@@ -14,6 +14,7 @@ import { WALLET_PATHS } from '../wallet-routing-constants';
 })
 export class WalletComponent implements OnInit {
   public kycBannerSpecifications$: Observable<KYCBannerSpecifications>;
+  public selectedNavLinkId: string;
   public navLinks: NavLink[] = [
     {
       id: `/${PRIVATE_PATHS.WALLET}`,
@@ -24,8 +25,6 @@ export class WalletComponent implements OnInit {
       display: $localize`:@@web_delivery_bank_details:Bank details`,
     },
   ];
-
-  public selectedNavLinkId: string;
 
   constructor(private router: Router, private kycBannerService: KycBannerService) {
     router.events.subscribe((e) => {
