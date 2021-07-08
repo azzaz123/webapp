@@ -1,0 +1,33 @@
+@import 'src/style/common';
+@import 'src/style/components/upload';
+
+$sub-label-light-gray: #828282;
+
+.MultiSelectOption {
+  cursor: pointer;
+  label {
+    margin: 1rem 0;
+  }
+  &::after {
+    content: '';
+    background-color: $blue-grey-5;
+    height: 3px;
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    bottom: 0px;
+  }
+  &--disabled {
+    color: $blue-grey-2;
+  }
+  &__labelContainer {
+    margin: 0 10px;
+  }
+  &__label {
+    display: block;
+
+    &__sub {
+      color: $sub-label-light-gray;
+    }
+  }
+}
