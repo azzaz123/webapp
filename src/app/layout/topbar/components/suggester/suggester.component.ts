@@ -16,6 +16,7 @@ export class SuggesterComponent implements OnInit, OnDestroy {
   private static SEARCH_BOX_INITIAL_VALUE = '';
   private readonly searchBoxValueSubject = new BehaviorSubject<SearchBoxValue>({ keywords: SuggesterComponent.SEARCH_BOX_INITIAL_VALUE });
   private queryParamsSubscription: Subscription;
+  private searching = false;
 
   @Output() public searchSubmit = new EventEmitter<SearchBoxValue>();
   @Output() public searchCancel = new EventEmitter<SearchBoxValue>();
@@ -45,8 +46,11 @@ export class SuggesterComponent implements OnInit, OnDestroy {
   public suggest = (text$: Observable<string>) =>
     text$.pipe(
       distinctUntilChanged(),
+      tap(() => (this.searching = true)),
       debounceTime(500),
-      switchMap((keyword) => this.getSuggestionsByKeyword(keyword))
+      filter(() => this.searching),
+      switchMap((keyword) => this.getSuggestionsByKeyword(keyword)),
+      tap(() => (this.searching = false))
     );
 
   public inputFormatter = (value: SearchBoxValue) => value.keywords;
@@ -66,6 +70,7 @@ export class SuggesterComponent implements OnInit, OnDestroy {
   }
 
   public submitSearch(): void {
+    this.searching = false;
     this.searchSubmit.emit(this.searchBoxValue);
   }
 
