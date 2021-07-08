@@ -9,8 +9,6 @@ import { MultiSelectFormComponent, MultiSelectFormOption, MultiSelectValue } fro
 import { MultiSelectOptionComponent } from './multi-select-option/multi-select-option/multi-select-option.component';
 import { MultiSelectOptionModule } from './multi-select-option/multi-select-option/multi-select-option.module';
 
-export const checkedValue: MultiSelectValue = ['aa', 'cc'];
-
 export const multiSelectedOptionsFixture: SelectFormOption<string>[] = [
   { label: 'aa', value: 'aa' },
   { label: 'bb', value: 'bb' },
@@ -51,7 +49,7 @@ describe('MultiSelectFormComponent', () => {
 
   describe('when we already have the checked value', () => {
     it('should load the options with checkboxes checked accordingly', () => {
-      component.writeValue(checkedValue);
+      component.writeValue(['aa', 'cc']);
       fixture.detectChanges();
 
       const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
@@ -64,35 +62,27 @@ describe('MultiSelectFormComponent', () => {
 
   describe('when we dont have checked value', () => {
     it('should load the options with unchecked checkbox', () => {
-      const expectedOptions = multiSelectedOptionsFixture.map((option) => {
-        return { ...option, checked: false };
-      });
+      component.writeValue([]);
       fixture.detectChanges();
 
       const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
+      const checkedCheckBox = options.find((option) => {
+        return option.componentInstance.option.checked === true;
+      });
 
-      expect(options.length).toBe(multiSelectedOptionsFixture.length);
-      expect(component.extendedOptions).toEqual(expectedOptions);
+      expect(checkedCheckBox).toBeUndefined();
     });
   });
 
   describe('Multi select behavior', () => {
     it('should have multiple values when multiple options are checked', () => {
-      spyOn(component, 'handleSelectedOption').and.callThrough();
       spyOn(component, 'onChange');
-      const selectedValue = toggledExtendedOptions
-        .filter((option) => {
-          return option.checked === true;
-        })
-        .map((option) => {
-          return option.value;
-        });
 
-      component.extendedOptions = toggledExtendedOptions;
-      component.handleSelectedOption();
-      fixture.detectChanges();
+      const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
+      options[1].componentInstance.toggleOnChange.emit();
+      options[2].componentInstance.toggleOnChange.emit();
 
-      expect(component.onChange).toHaveBeenCalledWith(selectedValue);
+      expect(component.onChange).toHaveBeenCalledTimes(2);
     });
   });
 });
