@@ -687,6 +687,43 @@ describe('UploadProductComponent', () => {
       expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
     });
 
+    describe('and supports shipping', () => {
+      function fillValidForm() {
+        component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.SERVICES,
+          title: 'title',
+          description: 'title',
+          sale_price: 1000000,
+          currency_code: 'EUR',
+          images: [{ image: true }],
+          location: {
+            address: USER_LOCATION.full_address,
+            latitude: USER_LOCATION.approximated_latitude,
+            longitude: USER_LOCATION.approximated_longitude,
+          },
+        });
+      }
+      beforeEach(() => {
+        component.isShippingToggleActive = true;
+        component.ngOnInit();
+        fillValidForm();
+        component.uploadForm.patchValue({
+          sale_conditions: {
+            supports_shipping: true,
+          },
+          delivery_info: null,
+        });
+      });
+
+      it('should show weight error', () => {
+        spyOn(errorService, 'i18nError');
+
+        component.onSubmit();
+
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR);
+      });
+    });
+
     it('should not accept sale_price < 0', () => {
       component.uploadForm.get('sale_price').patchValue(-1);
 
