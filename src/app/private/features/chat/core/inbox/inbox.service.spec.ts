@@ -5,7 +5,7 @@ import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
@@ -32,7 +32,7 @@ describe('InboxService', () => {
   let realTime: RealTimeService;
   let unreadChatMessagesService: UnreadChatMessagesService;
   let inboxConversationService: InboxConversationService;
-  let featureflagService: FeatureflagService;
+  let featureflagService: FeatureFlagService;
   let eventService: EventService;
   let userService: UserService;
   let remoteConsoleService: RemoteConsoleService;
@@ -50,7 +50,7 @@ describe('InboxService', () => {
           useClass: MockUnreadChatMessagesService,
         },
         { provide: UserService, useClass: MockedUserService },
-        { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+        { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         {
@@ -78,7 +78,7 @@ describe('InboxService', () => {
     realTime = TestBed.inject(RealTimeService);
     unreadChatMessagesService = TestBed.inject(UnreadChatMessagesService);
     inboxConversationService = TestBed.inject(InboxConversationService);
-    featureflagService = TestBed.inject(FeatureflagService);
+    featureflagService = TestBed.inject(FeatureFlagService);
     eventService = TestBed.inject(EventService);
     userService = TestBed.inject(UserService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);

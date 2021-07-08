@@ -1,6 +1,7 @@
 @import '~style/common';
 
 $filters-offset-top: 120px;
+$bubble-offset-top: 200px;
 $search-sidebar-ads-top: $topbar-height + $filters-offset-top;
 
 .Search {
@@ -10,6 +11,16 @@ $search-sidebar-ads-top: $topbar-height + $filters-offset-top;
     z-index: $filters-bar-z-index;
     &--opened {
       z-index: #{$filters-bar-z-index + 1};
+    }
+
+    &__bubble {
+      top: $bubble-offset-top;
+      z-index: 2;
+      margin-bottom: $spacer * -2.15;
+
+      tsl-info-bubble {
+        top: $spacer * 0.75;
+      }
     }
   }
 

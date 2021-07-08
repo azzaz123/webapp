@@ -15,7 +15,7 @@ import { AnalyticsService } from './analytics/analytics.service';
 import { DeviceService } from './device/device.service';
 import { DidomiService } from './ads/vendors/didomi/didomi.service';
 import { LoadExternalLibsService } from './load-external-libs/load-external-libs.service';
-import { FeatureflagService } from './user/featureflag.service';
+import { FeatureFlagService } from './user/featureflag.service';
 import { SessionService } from './session/session.service';
 import { UuidService } from './uuid/uuid.service';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
@@ -62,7 +62,7 @@ import { MonitoringModule } from './monitoring/monitoring.module';
     DidomiService,
     LoadExternalLibsService,
     SvgService,
-    FeatureflagService,
+    FeatureFlagService,
     SessionService,
     UuidService,
     UserService,

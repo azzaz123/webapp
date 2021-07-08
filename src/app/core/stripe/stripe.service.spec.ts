@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { PAYMENT_METHOD_CARD_RESPONSE, PAYMENT_METHOD_DATA } from '../../../tests/payments.fixtures.spec';
 import { createFinancialCardFixture } from '../../../tests/stripe.fixtures.spec';
-import { FeatureflagService } from '../user/featureflag.service';
+import { FeatureFlagService } from '../user/featureflag.service';
 import { environment } from '../../../environments/environment';
 import { TestRequest, HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ErrorsService } from '../errors/errors.service';
@@ -64,7 +64,7 @@ describe('StripeService', () => {
           },
         },
         {
-          provide: FeatureflagService,
+          provide: FeatureFlagService,
           useValue: {
             getFlag() {
               return of(false);
