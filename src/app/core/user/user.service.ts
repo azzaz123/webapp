@@ -63,6 +63,7 @@ export class UserService {
   private _user: User;
   private _users: User[] = [];
   private presenceInterval: any;
+  private _isClickedProSection: boolean;
 
   constructor(
     private http: HttpClient,
@@ -328,6 +329,7 @@ export class UserService {
     return this.getLoggedUserInformation().pipe(
       tap((user) => (this._user = user)),
       tap((user) => this.setPermission(user)),
+      tap((user) => this.getStoragedIsClickedProSection(user)),
       catchError((error) => {
         this.logout(null);
         return of(error);
@@ -383,7 +385,16 @@ export class UserService {
     return !this.isPro && !localStorage.getItem(`${this.user.id}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
   }
 
-  public isClickedProSection(): boolean {
-    return !!localStorage.getItem(`${this.user.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
+  get isClickedProSection(): boolean {
+    return this._isClickedProSection;
+  }
+
+  public setClickedProSection(): void {
+    localStorage.setItem(`${this.user.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`, 'true');
+    this._isClickedProSection = true;
+  }
+
+  private getStoragedIsClickedProSection(user: User): void {
+    this._isClickedProSection = !!localStorage.getItem(`${user.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
   }
 }

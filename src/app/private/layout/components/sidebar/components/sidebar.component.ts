@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { LOCAL_STORAGE_CLICK_PRO_SECTION, UserService } from '@core/user/user.service';
+import { UserService } from '@core/user/user.service';
 import { User } from '@core/user/user';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOwnSaleItems } from '@core/analytics/analytics-constants';
@@ -49,9 +49,5 @@ export class SidebarComponent implements OnInit {
       };
       this.analyticsService.trackPageView(event);
     });
-  }
-
-  public onSaveProSectionClick(): void {
-    localStorage.setItem(`${this.user.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`, 'true');
   }
 }
