@@ -41,35 +41,39 @@ const Template: Story<StoryMultiSelectFormFormComponent> = (args) => ({
       `,
 });
 
+const optionsWithLabels = [
+  { label: 'aa', value: 'aa' },
+  { label: 'bb', value: 'bb' },
+  { label: 'cc', value: 'cc' },
+  { label: 'dd', value: 'dd' },
+];
+
+const optionsWithSublabel = optionsWithLabels.map((option, index) => {
+  index++;
+  option['sublabel'] = index;
+  return option;
+});
+
 export const Default = Template.bind({});
 Default.args = {
-  options: [
-    { label: 'aa', value: 'aa' },
-    { label: 'bb', value: 'bb' },
-    { label: 'cc', value: 'cc' },
-    { label: 'dd', value: 'dd' },
-  ],
+  options: optionsWithLabels,
   isDisabled: 'false',
 };
 
 export const DisableMultiSelect = Template.bind({});
 DisableMultiSelect.args = {
-  options: [
-    { label: 'aa', value: 'aa' },
-    { label: 'bb', value: 'bb' },
-    { label: 'cc', value: 'cc' },
-    { label: 'dd', value: 'dd' },
-  ],
+  options: optionsWithLabels,
   isDisabled: 'true',
 };
 
 export const OptionsWithOccurrencies = Template.bind({});
 OptionsWithOccurrencies.args = {
-  options: [
+  options: optionsWithSublabel,
+  /*  options: [
     { label: 'aa', sublabel: 1, value: 'aa' },
     { label: 'bb', sublabel: 2, value: 'bb' },
     { label: 'cc', sublabel: 3, value: 'cc' },
     { label: 'dd', sublabel: 4, value: 'dd' },
-  ],
+  ], */
   isDisabled: 'false',
 };
