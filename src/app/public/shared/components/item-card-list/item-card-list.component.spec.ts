@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccessTokenService } from '@core/http/access-token.service';
-import { FeatureflagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
@@ -20,11 +18,12 @@ import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
 import { SharedModule } from '@shared/shared.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { NgxPermissionsModule } from 'ngx-permissions';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { CARD_TYPES } from './enums/card-types.enum';
 import { SlotsConfig } from './interfaces/slots-config.interface';
 import { ItemCardListComponent } from './item-card-list.component';
 import { ShowSlotPipe } from './pipes/show-slot.pipe';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-item-card-list-wrapper',
@@ -53,21 +52,23 @@ const SUBDOMAIN = 'it';
 
 describe('ItemCardListComponent', () => {
   const cardSelector = 'tsl-public-item-card';
+  let componentWrapper: ItemCardListWrapperComponent;
   let component: ItemCardListComponent;
-  let fixture: ComponentFixture<ItemCardListComponent>;
+  let fixture: ComponentFixture<ItemCardListWrapperComponent>;
   let de: DebugElement;
   let el: HTMLElement;
   let deviceDetectorService: DeviceDetectorService;
   let router: Router;
   let checkSessionService: CheckSessionService;
   let itemCardService: ItemCardService;
-  let featureFlagService: FeatureFlagServiceMock;
+  let permissionService: NgxPermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardListComponent, IsCurrentUserStub, ShowSlotPipe, ItemCardListWrapperComponent],
       imports: [SharedModule, CommonModule, ItemCardModule, ItemApiModule, HttpClientTestingModule, NgxPermissionsModule.forRoot()],
       providers: [
+        NgxPermissionsService,
         ItemCardService,
         CheckSessionService,
         {
@@ -91,10 +92,6 @@ describe('ItemCardListComponent', () => {
           },
         },
         {
-          provide: FeatureflagService,
-          useClass: FeatureFlagServiceMock,
-        },
-        {
           provide: Router,
           useValue: {
             navigate() {},
@@ -107,16 +104,17 @@ describe('ItemCardListComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ItemCardListComponent);
-    component = fixture.componentInstance;
+    fixture = TestBed.createComponent(ItemCardListWrapperComponent);
     de = fixture.debugElement;
     el = de.nativeElement;
+    componentWrapper = fixture.componentInstance;
+    component = de.query(By.directive(ItemCardListComponent)).componentInstance;
     component.items = [MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD, MOCK_ITEM_CARD];
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     checkSessionService = TestBed.inject(CheckSessionService);
     itemCardService = TestBed.inject(ItemCardService);
     router = TestBed.inject(Router);
-    featureFlagService = TestBed.inject(FeatureflagService);
+    permissionService = TestBed.inject(NgxPermissionsService);
     fixture.detectChanges();
   });
 
@@ -187,41 +185,55 @@ describe('ItemCardListComponent', () => {
     });
   });
 
-  describe('when we have ads slots', () => {
-    let componentWrapper: ItemCardListWrapperComponent;
-    let fixtureWrapper: ComponentFixture<ItemCardListWrapperComponent>;
+  describe('when user has permission for seeing ads', () => {
     beforeEach(() => {
-      fixtureWrapper = TestBed.createComponent(ItemCardListWrapperComponent);
-      componentWrapper = fixtureWrapper.componentInstance;
+      permissionService.addPermission(PERMISSIONS.showAds);
     });
+    describe('when we have ads slots', () => {
+      it('should project the template', fakeAsync(() => {
+        fixture.detectChanges();
+        tick();
 
-    it('should project the template', () => {
-      fixtureWrapper.detectChanges();
+        const adSlotList = fixture.debugElement.queryAll(By.css('.adSlot'));
 
-      const adSlotList = fixtureWrapper.debugElement.queryAll(By.css('.adSlot'));
+        expect(adSlotList.length).toBe(2);
+      }));
 
-      expect(adSlotList.length).toBe(2);
-    });
+      it('should project the template with index', fakeAsync(() => {
+        const slotConfig: SlotsConfig = componentWrapper.slotConfig;
+        fixture.detectChanges();
+        tick();
 
-    it('should project the template with index', () => {
-      const slotConfig: SlotsConfig = componentWrapper.slotConfig;
-      fixtureWrapper.detectChanges();
+        const adSlotList = fixture.debugElement.queryAll(By.css('.adSlot'));
 
-      const adSlotList = fixtureWrapper.debugElement.queryAll(By.css('.adSlot'));
+        adSlotList.forEach((adSlot, index) => {
+          expect(adSlot.nativeElement.textContent).toBe('ad-' + (slotConfig.start + index * slotConfig.offset));
+        });
+      }));
 
-      adSlotList.forEach((adSlot, index) => {
-        expect(adSlot.nativeElement.textContent).toBe('ad-' + (slotConfig.start + index * slotConfig.offset));
+      describe('and showing wide cards', () => {
+        it('should show shopping ads with wide card styles', fakeAsync(() => {
+          componentWrapper.cardType = CARD_TYPES.WIDE;
+
+          fixture.detectChanges();
+          tick();
+
+          const wideShippingSlot = fixture.debugElement.query(By.css('.ItemCardList__slot')).nativeElement;
+
+          expect(wideShippingSlot.classList).toContain('ItemCardList__slot--wide');
+        }));
       });
     });
+  });
 
-    describe('and showing wide cards', () => {
-      it('should show shopping ads with wide card styles', () => {
-        componentWrapper.cardType = CARD_TYPES.WIDE;
+  describe('when user has NO permission for seeing ads', () => {
+    describe('when we have ads slots', () => {
+      it('should NOT project the template', () => {
+        fixture.detectChanges();
 
-        fixtureWrapper.detectChanges();
-        const wideShippingSlot = fixtureWrapper.debugElement.query(By.css('.ItemCardList__slot')).nativeElement;
+        const adSlotList = fixture.debugElement.queryAll(By.css('.adSlot'));
 
-        expect(wideShippingSlot.classList).toContain('ItemCardList__slot--wide');
+        expect(adSlotList.length).toBe(0);
       });
     });
   });

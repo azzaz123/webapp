@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/co
 import { ToastComponent } from './toast.component';
 import { ToastService } from '../core/services/toast.service';
 import { By } from '@angular/platform-browser';
-import { Toast } from '../core/interfaces/toast.interface';
+import { Toast, TOAST_TYPES } from '../core/interfaces/toast.interface';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('ToastComponent', () => {
@@ -37,7 +37,7 @@ describe('ToastComponent', () => {
   describe('success toast', () => {
     describe('when toast is triggered', () => {
       let toastHTML;
-      const MOCKED_TOAST: Toast = { text: 'success toast', type: 'success' };
+      const MOCKED_TOAST: Toast = { text: 'success toast', type: TOAST_TYPES.SUCCESS };
 
       beforeEach(() => {
         toastService.show(MOCKED_TOAST);
@@ -82,7 +82,7 @@ describe('ToastComponent', () => {
   describe('error toast', () => {
     describe('when toast is triggered', () => {
       let toastHTML;
-      const MOCKED_TOAST: Toast = { text: 'success toast', type: 'error' };
+      const MOCKED_TOAST: Toast = { text: 'success toast', type: TOAST_TYPES.ERROR };
 
       beforeEach(() => {
         toastService.show(MOCKED_TOAST);

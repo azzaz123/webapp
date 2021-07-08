@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { CardIsNotAuthorizedError, CardOwnerNameIsInvalidError, PaymentsCardsError } from '@api/core/errors/payments/cards';
 import { MOCK_ERROR_RESPONSE } from '@api/fixtures/error-response-api.fixtures.spec';
 import { PaymentsCardsErrorResponseApi } from '@api/payments/cards/dtos/errors/payments-cards-error-response-api.interface';

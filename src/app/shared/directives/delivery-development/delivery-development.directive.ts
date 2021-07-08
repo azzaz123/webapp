@@ -1,13 +1,13 @@
 import { Directive, TemplateRef, ViewContainerRef, OnInit } from '@angular/core';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 
 @Directive({
   selector: '[tslDeliveryDevelopment]',
 })
 export class DeliveryDevelopmentDirective implements OnInit {
   constructor(
-    private featureflagService: FeatureflagService,
+    private featureflagService: FeatureFlagService,
     private templateRef: TemplateRef<HTMLElement>,
     private viewContainer: ViewContainerRef
   ) {}

@@ -3,6 +3,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { I18nService } from '../i18n/i18n.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Injectable()
 export class ErrorsService {
@@ -18,21 +19,21 @@ export class ErrorsService {
       } else {
         message = error.message ? error.message : this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
       }
-      this.toastService.show({ text: message, title: this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE), type: 'error' });
+      this.toastService.show({ text: message, title: this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE), type: TOAST_TYPES.ERROR });
     }
   }
 
   public i18nError(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY): void {
     const title = titleKey ? this.i18n.translate(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_ERROR_TITLE);
-    this.showToast('error', key, concatText, title);
+    this.showToast(TOAST_TYPES.ERROR, key, concatText, title);
   }
 
   public i18nSuccess(key: TRANSLATION_KEY, concatText: string = '', titleKey?: TRANSLATION_KEY): void {
     const title = titleKey ? this.i18n.translate(titleKey) : this.i18n.translate(TRANSLATION_KEY.TOAST_DEFAULT_SUCCESS_TITLE);
-    this.showToast('success', key, concatText, title);
+    this.showToast(TOAST_TYPES.SUCCESS, key, concatText, title);
   }
 
-  private showToast(type: 'error' | 'success', key: TRANSLATION_KEY, concatText: string, title: string): void {
+  private showToast(type: TOAST_TYPES, key: TRANSLATION_KEY, concatText: string, title: string): void {
     const translatedText = this.i18n.translate(key) || this.i18n.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
     const spacedConcatText = concatText ? ` ${concatText}` : '';
 

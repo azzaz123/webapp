@@ -81,6 +81,7 @@ export const mappedCatalogItemFixture: ItemCard = {
     banned: false,
     reserved: false,
     favorite: false,
+    bumped: false,
   },
 };
 

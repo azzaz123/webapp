@@ -1,11 +1,11 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { finalize, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { SELLBYTEL_PHONE, CARDEALER_COMMERCIAL_CONTACT_MAIL } from '@core/constants';
-import { I18nService } from '@core/i18n/i18n.service';
 import { HelpService } from '../core/services/help.service';
+import { APP_LOCALE } from 'configs/subdomains.config';
 
 @Component({
   selector: 'tsl-help',
@@ -23,21 +23,21 @@ export class HelpComponent implements OnInit, OnDestroy {
   private routeFragmentsSubscription: Subscription;
 
   constructor(
-    private i18n: I18nService,
     private helpService: HelpService,
     private route: ActivatedRoute,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(LOCALE_ID) private locale: APP_LOCALE
   ) {}
 
   ngOnInit() {
     this.helpService
-      .getFaqs(this.i18n.locale)
+      .getFaqs(this.locale)
       .pipe(take(1))
       .subscribe((faqs: any[]) => {
         this.faqs = faqs;
       });
     this.helpService
-      .getFeatures(this.i18n.locale)
+      .getFeatures(this.locale)
       .pipe(
         take(1),
         finalize(() => this.subscribeToRouteAnchors())

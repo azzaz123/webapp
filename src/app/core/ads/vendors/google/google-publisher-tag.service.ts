@@ -25,7 +25,7 @@ export class GooglePublisherTagService {
   ) {}
 
   public isLibraryRefDefined(): boolean {
-    return !!this.googletag && this.googletag.apiReady;
+    return this.googletag.apiReady;
   }
 
   public setSlots(adSlots: AdSlotConfiguration[]): void {
@@ -39,7 +39,7 @@ export class GooglePublisherTagService {
     });
   }
 
-  public getSlots(adSlots: AdSlotConfiguration[]): googletag.Slot[] {
+  private getSlots(adSlots: AdSlotConfiguration[]): googletag.Slot[] {
     const slots: googletag.Slot[] = [];
 
     adSlots.forEach((slotConfig) => {
@@ -54,8 +54,10 @@ export class GooglePublisherTagService {
     return slots;
   }
 
-  public destroySlots(adSlots: googletag.Slot[]): void {
-    this.googletag.destroySlots(adSlots);
+  public destroySlots(adSlotConfigurations: AdSlotConfiguration[]): void {
+    this.googletag.cmd.push(() => {
+      this.googletag.destroySlots(this.getSlots(adSlotConfigurations));
+    });
   }
 
   public reset(): void {
@@ -91,9 +93,9 @@ export class GooglePublisherTagService {
     });
   }
 
-  public refreshSlots(adSlots: googletag.Slot[]): void {
+  public refreshSlots(adSlotConfigurations: AdSlotConfiguration[]): void {
     this.googletag.cmd.push(() => {
-      this.googletag.pubads().refresh(adSlots);
+      this.googletag.pubads().refresh(this.getSlots(adSlotConfigurations));
     });
   }
 
@@ -103,9 +105,9 @@ export class GooglePublisherTagService {
     });
   }
 
-  public clearSlots(adSlots: googletag.Slot[]): void {
-    googletag.cmd.push(() => {
-      googletag.pubads().clear(adSlots);
+  public clearSlots(adSlotConfigurations: AdSlotConfiguration[]): void {
+    this.googletag.cmd.push(() => {
+      this.googletag.pubads().clear(this.getSlots(adSlotConfigurations));
     });
   }
 
@@ -173,7 +175,7 @@ export class GooglePublisherTagService {
   }
 
   get googletag(): googletag.Googletag {
-    return this.window['googletag'];
+    return this.window['googletag'] || { cmd: [], apiReady: false };
   }
 
   private get googCsa(): GoogCsa {

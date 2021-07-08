@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
+import { KycComponent } from './kyc.component';
 
-// TODO: Add KYCComponent when created		Date: 2021/04/22
 const routes: Route[] = [
   {
     path: '',
+    component: KycComponent,
   },
 ];
 
@@ -14,4 +15,4 @@ const routes: Route[] = [
 })
 export class KYCRoutingModule {}
 
-export const KYCRoutedComponents = [];
+export const KYCRoutedComponents = [KycComponent];

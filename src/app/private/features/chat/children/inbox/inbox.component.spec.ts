@@ -216,6 +216,17 @@ describe('Component: InboxComponent', () => {
 
           expect(analyticsService.trackPageView).not.toHaveBeenCalled();
         });
+
+        describe('and the conversation is deselected', () => {
+          it('should not send the View Chat Screen event', () => {
+            spyOn(analyticsService, 'trackPageView');
+
+            component.ngOnInit();
+            eventService.emit(EventService.CURRENT_CONVERSATION_SET, null);
+
+            expect(analyticsService.trackPageView).not.toHaveBeenCalled();
+          });
+        });
       });
     });
   });

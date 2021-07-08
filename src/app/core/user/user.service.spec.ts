@@ -33,7 +33,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { of } from 'rxjs';
 import { EventService } from '../event/event.service';
-import { FeatureflagService } from './featureflag.service';
+import { FeatureFlagService } from './featureflag.service';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { User } from './user';
 import { Image, UserLocation } from './user-response.interface';
@@ -60,6 +60,7 @@ import {
 } from './user.service';
 import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
+import { LOCALE_ID } from '@angular/core';
 
 jest.mock('@mparticle/web-sdk', () => ({
   __esModule: true,
@@ -125,6 +126,7 @@ describe('Service: User', () => {
             hasPermission() {},
           },
         },
+        { provide: LOCALE_ID, useValue: 'en' },
       ],
     });
     service = TestBed.inject(UserService);

@@ -11,7 +11,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AdSlotConfiguration } from '@core/ads/models';
-import { AdsService } from '@core/ads/services';
 import { EventService } from '@core/event/event.service';
 import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 import { RealTimeService } from '@core/message/real-time.service';
@@ -40,6 +39,7 @@ import { of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';
 import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -72,6 +72,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public isTopBarExpanded = false;
   public chatRightAdSlot: AdSlotConfiguration = CHAT_AD_SLOTS;
 
+  public readonly PERMISSIONS = PERMISSIONS;
+
   constructor(
     private eventService: EventService,
     private realTime: RealTimeService,
@@ -80,7 +82,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     private modalService: NgbModal,
     private userService: UserService,
     private analyticsService: AnalyticsService,
-    private adsService: AdsService,
     private momentCalendarSpecService: MomentCalendarSpecService
   ) {}
 
@@ -89,7 +90,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   ngOnInit() {
-    this.adsService.setSlots([this.chatRightAdSlot]);
     this.isEndOfConversation = true;
     this.newMessageSubscription = this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: InboxMessage) => {
       this.isConversationChanged = true;
@@ -237,6 +237,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
+    if (!this.currentConversation) {
+      return;
+    }
+
     this.currentConversation.messages
       .filter((message) => message.id === messageId && message.status === MessageStatus.PENDING)
       .forEach((message) => this.remoteConsoleService.sendMessageAckFailed(message.id, description));

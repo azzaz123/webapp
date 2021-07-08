@@ -13,6 +13,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
 import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -91,7 +92,7 @@ export class CatalogItemComponent implements OnInit {
               action: ITEM_CHANGE_ACTION.REACTIVATED,
             });
           },
-          () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: 'error' })
+          () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: TOAST_TYPES.ERROR })
         );
       }
     });

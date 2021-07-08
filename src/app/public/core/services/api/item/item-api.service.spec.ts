@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { I18nService } from '@core/i18n/i18n.service';
 import { ItemCounters, ItemVisibilityFlags } from '@core/item/item-response.interface';
 import {
   GET_ITEM_BUMP_FLAGS,
@@ -22,7 +22,7 @@ describe('ItemApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ItemApiService, I18nService],
+      providers: [ItemApiService, { provide: LOCALE_ID, useValue: 'en' }],
     });
 
     itemApiService = TestBed.inject(ItemApiService);

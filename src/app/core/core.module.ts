@@ -15,7 +15,7 @@ import { AnalyticsService } from './analytics/analytics.service';
 import { DeviceService } from './device/device.service';
 import { DidomiService } from './ads/vendors/didomi/didomi.service';
 import { LoadExternalLibsService } from './load-external-libs/load-external-libs.service';
-import { FeatureflagService } from './user/featureflag.service';
+import { FeatureFlagService } from './user/featureflag.service';
 import { SessionService } from './session/session.service';
 import { UuidService } from './uuid/uuid.service';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
@@ -35,9 +35,17 @@ import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { MonitoringModule } from './monitoring/monitoring.module';
 
 @NgModule({
-  imports: [CookieModule.forRoot(), NgxPermissionsModule.forRoot(), DeviceDetectorModule.forRoot(), AdsModule, HammerModule],
+  imports: [
+    CookieModule.forRoot(),
+    NgxPermissionsModule.forRoot(),
+    DeviceDetectorModule.forRoot(),
+    AdsModule,
+    MonitoringModule,
+    HammerModule,
+  ],
   providers: [
     LoggedGuard,
     DevelopmentGuard,
@@ -54,7 +62,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
     DidomiService,
     LoadExternalLibsService,
     SvgService,
-    FeatureflagService,
+    FeatureFlagService,
     SessionService,
     UuidService,
     UserService,

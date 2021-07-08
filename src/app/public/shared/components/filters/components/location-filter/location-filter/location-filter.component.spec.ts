@@ -7,7 +7,7 @@ import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { CoordinateMother, LatitudeMother, LongitudeMother } from '@fixtures/core';
 import { MockGeolocationService, MOCK_LOCATION_SUGGESTIONS } from '@fixtures/core/geolocation/geolocation-service.fixtures.spec';
 import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
-import { Toast } from '@layout/toast/core/interfaces/toast.interface';
+import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
@@ -23,6 +23,7 @@ import { FILTER_QUERY_PARAM_KEY } from '../../../enums/filter-query-param-key.en
 import { FilterParameter } from '../../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../../abstract-filter/abstract-filter.enum';
 import { AbstractFilterModule } from '../../abstract-filter/abstract-filter.module';
+import { DrawerPlaceholderTemplateComponent } from '../../abstract-select-filter/select-filter-template/drawer-placeholder-template.component';
 import { GeolocationNotAvailableError } from '../errors/geolocation-not-available.error';
 import { LocationFilterService } from '../services/location-filter.service';
 import {
@@ -95,7 +96,7 @@ describe('LocationFilterComponent', () => {
         FormsModule,
         ReactiveFormsModule,
       ],
-      declarations: [LocationFilterComponent, LocationFilterTestComponent],
+      declarations: [LocationFilterComponent, LocationFilterTestComponent, DrawerPlaceholderTemplateComponent],
       providers: [
         {
           provide: ToastService,
@@ -312,19 +313,24 @@ describe('LocationFilterComponent', () => {
     describe('and the location from the browser can be retrieved', () => {
       it('should set the retrieved location', async () => {
         spyOn(locationFilterService, 'getLocationFromBrowserAPI').and.returnValue(Promise.resolve(MOCK_SEARCH_LOCATION));
+        spyOn(locationFilterService, 'getLocationLabel').and.returnValue(MOCK_CITY_NAME);
         const geolocationRequestBtn = fixture.debugElement.query(By.css('.LocationFilter__geolocation'));
 
-        await geolocationRequestBtn.nativeNode.click();
+        component.onGeolocationChange().subscribe(() => {
+          expect(locationFilterService.getLocationFromBrowserAPI).toHaveBeenCalled();
+          expect(locationFilterService.getLocationLabel).toHaveBeenCalledWith(MOCK_SEARCH_LOCATION);
+          expect(component.locationName).toEqual(MOCK_CITY_NAME);
+          expect(component.componentLocation).toEqual(MOCK_SEARCH_LOCATION);
+        });
 
-        expect(locationFilterService.getLocationFromBrowserAPI).toHaveBeenCalled();
-        expect(component.componentLocation).toEqual(MOCK_SEARCH_LOCATION);
+        await geolocationRequestBtn.nativeNode.click();
       });
     });
 
     describe('and the location from the browser can`t be retreived', () => {
       it('should show a toast indicating the error', async () => {
         const errorMessage = `Can't retrieve geolocation`;
-        const toast: Toast = { text: errorMessage, type: 'error' };
+        const toast: Toast = { text: errorMessage, type: TOAST_TYPES.ERROR };
         const geolocationRequestBtn = fixture.debugElement.query(By.css('.LocationFilter__geolocation'));
         spyOn(locationFilterService, 'getLocationFromBrowserAPI').and.returnValue(
           Promise.reject(new GeolocationNotAvailableError(errorMessage))
