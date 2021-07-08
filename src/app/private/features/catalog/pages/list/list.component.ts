@@ -923,4 +923,8 @@ export class ListComponent implements OnInit, OnDestroy {
     this.analyticsService.trackEvent(event);
     this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
   }
+
+  get subscriptionButtonName(): string {
+    return this.userService.isPro ? this.i18n.translate(TRANSLATION_KEY.WALLAPOP_PRO) : this.i18n.translate(TRANSLATION_KEY.BECOME_PRO);
+  }
 }
