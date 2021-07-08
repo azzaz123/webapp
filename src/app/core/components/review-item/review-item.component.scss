@@ -98,6 +98,10 @@
       }
     }
   }
+
+  .actions {
+  }
+
   @include media-breakpoint-down(sm) {
     padding: $spacing-ms;
     .images-container {

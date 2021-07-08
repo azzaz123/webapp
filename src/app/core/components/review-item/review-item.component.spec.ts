@@ -1,4 +1,4 @@
-import { MOCK_REVIEWS, REVIEWS_RESPONSE } from '@fixtures/review.fixtures.spec';
+import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReviewItemComponent } from './review-item.component';
@@ -59,11 +59,11 @@ describe('ReviewItemComponent', () => {
       component.ngOnInit();
     });
     it('should return the correct sold copy', () => {
-      expect(component.reviewItemCopys.soldCopy).toBe($localize`:@@OwnReview_Sold:Sold`);
+      expect(component.reviewItemCopies.soldCopy).toBe($localize`:@@OwnReview_Sold:Sold`);
     });
 
     it('should return the correct bought copy', () => {
-      expect(component.reviewItemCopys.boughtCopy).toBe($localize`:@@OwnReview_Bought:Bought`);
+      expect(component.reviewItemCopies.boughtCopy).toBe($localize`:@@OwnReview_Bought:Bought`);
     });
   });
 
@@ -74,11 +74,11 @@ describe('ReviewItemComponent', () => {
       component.ngOnInit();
     });
     it('should return the correct sold copy', () => {
-      expect(component.reviewItemCopys.soldCopy).toBe($localize`:@@Review_Sold:Sold`);
+      expect(component.reviewItemCopies.soldCopy).toBe($localize`:@@Review_Sold:Sold`);
     });
 
     it('should return the correct bought copy', () => {
-      expect(component.reviewItemCopys.boughtCopy).toBe($localize`:@@Review_Bought:Bought`);
+      expect(component.reviewItemCopies.boughtCopy).toBe($localize`:@@Review_Bought:Bought`);
     });
   });
 });
