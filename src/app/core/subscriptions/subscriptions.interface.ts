@@ -33,10 +33,10 @@ export type SUBSCRIPTION_CATEGORIES = 0 | 100 | 14000 | 12800;
 export type SUBSCRIPTION_SOURCE = 'landing_banner' | 'landing_details';
 
 export interface SubscriptionsResponse {
-  id: string;
+  id?: string;
   category_id: number;
   current_limit?: number;
-  subscribed_from: number;
+  subscribed_from?: number;
   selected_tier_id: string;
   default_tier_id: string;
   trial_available: boolean;

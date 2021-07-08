@@ -5,6 +5,7 @@
           <div class="header-row">
             <h1 class="header-title" i18n="@@wallet_view_top_bar_title">Wallet</h1>
           </div>
+          <tsl-kyc-banner *ngIf="kycBannerSpecifications$ | async" [KYCBannerSpecifications]="kycBannerSpecifications$ | async"></tsl-kyc-banner>
         </div>
       </tsl-header>
       <div class="row">
