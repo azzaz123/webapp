@@ -69,6 +69,8 @@ import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { By } from '@angular/platform-browser';
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -102,7 +104,7 @@ describe('UploadProductComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NgbPopoverModule],
+        imports: [NgbPopoverModule, HttpClientTestingModule],
         providers: [
           FormBuilder,
           NgbPopoverConfig,
@@ -196,6 +198,14 @@ describe('UploadProductComponent', () => {
             useClass: MockSubscriptionService,
           },
           I18nService,
+          {
+            provide: FeatureFlagService,
+            useValue: {
+              getFlag() {
+                return of(false);
+              },
+            },
+          },
         ],
         declarations: [UploadProductComponent],
         schemas: [NO_ERRORS_SCHEMA],
@@ -1664,7 +1674,11 @@ describe('UploadProductComponent', () => {
   });
 
   describe('when toggling shipping', () => {
+    beforeEach(() => {});
+
     it('should reset weight if disabled', () => {
+      component.isShippingToggleActive = true;
+      component.ngOnInit();
       component.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
 
       expect(component.uploadForm.value.delivery_info).toBeNull();

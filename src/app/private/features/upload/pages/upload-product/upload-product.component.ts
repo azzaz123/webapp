@@ -268,7 +268,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getExtraInfo(): any {
-    const objectTypeId = this.item.extraInfo.object_type?.id;
+    const objectTypeId = this.item.extraInfo?.object_type?.id;
     if (objectTypeId) {
       if (!this.objectTypes.find((objectType) => objectType.id === objectTypeId)) {
         const objectTypeTree = this.findChildrenObjectTypeById(objectTypeId);
@@ -353,7 +353,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       .get('sale_conditions')
       .get('supports_shipping')
       .valueChanges.subscribe((supportsShipping) => {
-        console.log('eoi', supportsShipping);
         const deliveryInfo = this.uploadForm.get('delivery_info');
         if (supportsShipping) {
           deliveryInfo.setValidators([Validators.required]);
