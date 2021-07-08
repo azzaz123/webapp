@@ -371,6 +371,8 @@ export class UploadRealestateComponent implements OnInit {
         attributes: {
           ...baseEventAttrs,
           screenId: SCREEN_IDS.Upload,
+          country: this.analyticsService.market,
+          language: this.analyticsService.appLocale
         },
       };
       this.analyticsService.trackEvent(listItemREEvent);
