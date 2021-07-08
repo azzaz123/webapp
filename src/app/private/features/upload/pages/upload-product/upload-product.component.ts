@@ -41,7 +41,7 @@ import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } fr
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, filter, map, take, tap } from 'rxjs/operators';
+import { debounceTime, map, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -430,6 +430,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
     if (!this.uploadForm.get('images').valid) {
       this.errorsService.i18nError(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
+    } else if (!this.uploadForm.get('delivery_info').valid && this.isShippingToggleActive) {
+      this.errorsService.i18nError(TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR);
     } else {
       this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
       this.onValidationError.emit();
