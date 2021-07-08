@@ -314,7 +314,7 @@ export class SubscriptionPurchaseComponent implements OnInit {
   public trackSubscriptionPaymentButtonAvailable(): void {
     const event: AnalyticsEvent<SubscriptionPaymentButtonAvailable> = {
       name: ANALYTICS_EVENT_NAMES.SubscriptionPaymentButtonAvailable,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes: {
         screenId: SCREEN_IDS.ProfileSubscription,
         freeTrial: this.subscriptionsService.hasTrial(this.subscription),
@@ -323,7 +323,7 @@ export class SubscriptionPurchaseComponent implements OnInit {
         invoiceNeeded: this.isInvoiceRequired,
       },
     };
-    this.analyticsService.trackPageView(event);
+    this.analyticsService.trackEvent(event);
   }
 
   private trackSubscriptionPayConfirmation(): void {

@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { filterParametersMock } from '@fixtures/filter-parameter.fixtures';
 import { SearchPaginationFactory } from '@fixtures/item-card.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { SORT_BY } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
 import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { of } from 'rxjs';
@@ -82,7 +83,7 @@ describe('SearchInfrastructureService', () => {
       spyOn(searchApiServiceMock, 'search').and.returnValue(of(searchResponse));
 
       service.search(filters).subscribe((response) => {
-        expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites, searchId: ''});
+        expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites, searchId: '', sortBy: SORT_BY.DISTANCE});
         done();
       });
 
@@ -129,7 +130,7 @@ describe('SearchInfrastructureService', () => {
       spyOn(searchApiServiceMock, 'loadMore').and.returnValue(of(searchResponse));
 
       service.loadMore().subscribe((response) => {
-        expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites, searchId: ''});
+        expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites, searchId: '', sortBy: SORT_BY.DISTANCE});
         done();
       });
 

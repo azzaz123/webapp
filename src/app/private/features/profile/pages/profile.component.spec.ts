@@ -43,7 +43,7 @@ describe('ProfileComponent', () => {
               },
             },
           },
-          FeatureflagService,
+          FeatureFlagService,
           {
             provide: UserService,
             useClass: MockedUserService,

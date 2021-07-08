@@ -25,7 +25,7 @@ import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { TryProSlotComponent } from '@private/features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
@@ -118,7 +118,7 @@ describe('ListComponent', () => {
           ToastService,
           NgxPermissionsService,
           { provide: SubscriptionsService, useClass: MockSubscriptionService },
-          { provide: FeatureflagService, useClass: FeatureFlagServiceMock },
+          { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
           {
             provide: DeviceDetectorService,
             useClass: DeviceDetectorServiceMock,
