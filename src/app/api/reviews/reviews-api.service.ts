@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { ReviewsElementDto } from '@api/reviews/dtos/reviews-element-dto.interface';
 import { mapReviewElementsToReviews } from '@api/reviews/mappers/reviews.mapper';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
+import { ReviewTranslationDto } from '@api/reviews/dtos/review-translation-dto.interface';
 
 @Injectable()
 export class ReviewsApiService {
@@ -20,5 +21,11 @@ export class ReviewsApiService {
         };
       })
     );
+  }
+
+  public getReviewTranslation(reviewId: string): Observable<string> {
+    return this.httpService
+      .getReviewTranslation(reviewId)
+      .pipe(map((reviewTranslation: ReviewTranslationDto) => reviewTranslation.comments));
   }
 }

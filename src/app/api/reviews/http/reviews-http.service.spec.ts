@@ -6,6 +6,8 @@ import { environment } from '@environments/environment';
 import { reviewsElementDtoFixture } from '@api/fixtures/reviews/reviews-element-dto.fixture';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { ReviewsElementDto } from '@api/reviews/dtos/reviews-element-dto.interface';
+import { reviewTranslationDtoFixture } from '@api/fixtures/reviews/review-translation-dto.fixture';
+import { ReviewTranslationDto } from '@api/reviews/dtos/review-translation-dto.interface';
 
 describe('ReviewsHttpService', () => {
   let service: ReviewsHttpService;
@@ -35,6 +37,20 @@ describe('ReviewsHttpService', () => {
       req.flush([reviewsElementDtoFixture]);
 
       expect(response).toEqual({ list: [reviewsElementDtoFixture], paginationParameter: null });
+    });
+  });
+
+  describe('when asked to retrive review translation', () => {
+    it('should get the review translation', () => {
+      let response: ReviewTranslationDto;
+      const reviewId = 'id';
+
+      service.getReviewTranslation(reviewId).subscribe((res: ReviewTranslationDto) => (response = res));
+
+      const req: TestRequest = httpMock.expectOne(`${environment.baseUrl}api/v3/reviews/${reviewId}/translate`);
+      req.flush(reviewTranslationDtoFixture);
+
+      expect(response).toEqual(reviewTranslationDtoFixture);
     });
   });
 });

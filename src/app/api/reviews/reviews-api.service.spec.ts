@@ -8,6 +8,8 @@ import { of } from 'rxjs';
 import { reviewsElementDtoFixture } from '@api/fixtures/reviews/reviews-element-dto.fixture';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
+import { reviewTranslationFixture } from '@api/fixtures/reviews/review-translation.fixture';
+import { reviewTranslationDtoFixture } from '@api/fixtures/reviews/review-translation-dto.fixture';
 
 describe('ReviewsApiService', () => {
   let service: ReviewsApiService;
@@ -38,6 +40,17 @@ describe('ReviewsApiService', () => {
       reviews.list.forEach((review) => {
         expect(review).toBeInstanceOf(Review);
       });
+    });
+  });
+
+  describe('when asked to retrieve review translation', () => {
+    it('should retrieve review translation', () => {
+      spyOn(httpService, 'getReviewTranslation').and.returnValue(of(reviewTranslationDtoFixture));
+      let translation: string;
+
+      service.getReviewTranslation('id').subscribe((tr) => (translation = tr));
+
+      expect(translation).toEqual(reviewTranslationFixture);
     });
   });
 });
