@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { PaymentsWalletsModule } from '@api/payments/wallets/payments-wallets.module';
-import { ButtonModule } from '@shared/button/button.module';
-import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { WalletBalanceRoutedComponents, WalletBalanceRoutingModule } from './wallet-balance.routing.module';
+import { WalletBalanceInfoModule } from './modules/wallet-balance-info/wallet-balance-info.module';
+import { walletBalanceRoutedComponents, WalletBalanceRoutingModule } from './wallet-balance.routing.module';
 
 @NgModule({
-  declarations: [WalletBalanceRoutedComponents],
-  imports: [WalletBalanceRoutingModule, PaymentsWalletsModule, CommonModule, ButtonModule, SvgIconModule],
+  imports: [CommonModule, WalletBalanceInfoModule, WalletBalanceRoutingModule],
+  declarations: [walletBalanceRoutedComponents],
 })
 export class WalletBalanceModule {}

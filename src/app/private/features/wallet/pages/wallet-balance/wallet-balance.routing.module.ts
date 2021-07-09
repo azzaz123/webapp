@@ -15,4 +15,4 @@ const routes: Route[] = [
 })
 export class WalletBalanceRoutingModule {}
 
-export const WalletBalanceRoutedComponents = [WalletBalanceComponent];
+export const walletBalanceRoutedComponents = [WalletBalanceComponent];

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { Observable } from 'rxjs';
-import { KYCBannerSpecifications } from '../interfaces/kyc/kyc-banner.interface';
-import { KycBannerService } from '../services/kyc-banner/kyc-banner.service';
-import { WALLET_PATHS } from '../wallet-routing-constants';
+import { KYCBannerSpecifications } from './interfaces/kyc/kyc-banner.interface';
+import { KycBannerService } from './services/kyc-banner/kyc-banner.service';
+import { WALLET_PATHS } from './wallet.routing.constants';
 
 @Component({
   selector: 'tsl-wallet',

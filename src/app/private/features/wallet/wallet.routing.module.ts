@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { WalletComponent } from './pages/wallet.component';
 import { WalletBalanceModule } from './pages/wallet-balance/wallet-balance.module';
-import { WALLET_PATHS } from './wallet-routing-constants';
+import { WALLET_PATHS } from './wallet.routing.constants';
 import { BankDetailsModule } from './pages/bank-details/bank-details.module';
+import { WalletComponent } from './wallet.component';
 
 const routes: Route[] = [
   {
