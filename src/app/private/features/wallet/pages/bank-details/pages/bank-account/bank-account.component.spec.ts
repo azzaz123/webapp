@@ -35,6 +35,8 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 describe('BankAccountComponent', () => {
   const messageErrorSelector = '.BankAccount__message--error';
   const backAnchorSelector = '.BankAccount__back';
+  const KYCInfoMessageSelector = '.BankAccount__KYCMessage';
+
   const routerEvents: Subject<any> = new Subject();
 
   let component: BankAccountComponent;
@@ -402,6 +404,34 @@ describe('BankAccountComponent', () => {
       backButton.click();
 
       expect(location.back).toHaveBeenCalled();
+    });
+  });
+
+  describe('when the component is NOT on the kyc page...', () => {
+    beforeEach(() => {
+      component.isKyc = false;
+
+      fixture.detectChanges();
+    });
+
+    it('should NOT show the informative message', () => {
+      const KYCMessage = fixture.debugElement.query(By.css(KYCInfoMessageSelector));
+
+      expect(KYCMessage).toBeFalsy();
+    });
+  });
+
+  describe('when the component is on the kyc page...', () => {
+    beforeEach(() => {
+      component.isKyc = true;
+
+      fixture.detectChanges();
+    });
+
+    it('should show the informative message', () => {
+      const KYCMessage = fixture.debugElement.query(By.css(KYCInfoMessageSelector));
+
+      expect(KYCMessage).toBeTruthy();
     });
   });
 
