@@ -65,13 +65,15 @@
   <h2 i18n="@@web_components_sidebar_614">Stats</h2>
 </a>
 
-<a *ngxPermissionsOnly="PERMISSIONS.subscriptions" id="qa-sidebar-pro" class="sidebar-section" (click)="userService.setClickedProSection()" [routerLink]="['/pro-manager']" routerLinkActive="active">
-  <div class="chat-notification-pending" *ngIf="!userService.isClickedProSection"></div>
-  <div class="sidebar-section-circle">
-    <tsl-svg-icon src="/assets/icons/navigation_pro.svg"></tsl-svg-icon>
-  </div>
-  <h2 i18n="@@web_sidebar_wallapop_pro_label">Wallapop PRO</h2>
-</a>
+<ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+  <a id="qa-sidebar-pro" class="sidebar-section" (click)="userService.setClickedProSection()" [routerLink]="['/pro-manager']" routerLinkActive="active">
+    <div class="chat-notification-pending" *ngIf="!userService.isClickedProSection"></div>
+    <div class="sidebar-section-circle">
+      <tsl-svg-icon src="/assets/icons/navigation_pro.svg"></tsl-svg-icon>
+    </div>
+    <h2 i18n="@@web_sidebar_wallapop_pro_label">Wallapop PRO</h2>
+  </a>
+</ng-container>
 
 <span *tslDeliveryDevelopment>
   <a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-delivery" class="sidebar-section" [routerLink]="[PRIVATE_PATHS.DELIVERY]" routerLinkActive="active">
