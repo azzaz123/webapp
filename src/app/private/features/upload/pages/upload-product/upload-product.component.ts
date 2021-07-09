@@ -47,7 +47,6 @@ import { GeneralSuggestionsService } from '../../core/services/general-suggestio
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
-
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
   if (!objectTypeControl) {
