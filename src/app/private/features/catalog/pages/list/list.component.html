@@ -18,8 +18,9 @@
               </div>
               <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
               <div *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-                <tsl-button class="w-100 mt-2" className="btn btn-dark btn--width"
-                [routerLink]="['/pro-manager/subscriptions']">{{subscriptionButtonName}}</tsl-button>
+                <tsl-button id="qa-list-pro-button" class="w-100 mt-2" className="btn btn-dark btn--width" [routerLink]="['/pro-manager']">
+                  {{subscriptionButtonName}}
+                </tsl-button>
               </div>
               <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n="@@web_catalog_pages_list_147">Edit</button>
               <button *tslDeliveryDevelopment [routerLink]="['/delivery']" class="edit-profile-btn mr-1" i18n="@@web_catalog_delivery">Delivery</button>

@@ -92,6 +92,7 @@ describe('ListComponent', () => {
   let deviceService: DeviceDetectorService;
   let analyticsService: AnalyticsService;
   let permissionService: NgxPermissionsService;
+  let i18nService: I18nService;
   const routerEvents: Subject<any> = new Subject();
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -213,6 +214,9 @@ describe('ListComponent', () => {
             provide: UserService,
             useValue: {
               user: MOCK_USER,
+              get isPro() {
+                return false;
+              },
               logout() {
                 return of(null);
               },
@@ -256,6 +260,7 @@ describe('ListComponent', () => {
     deviceService = TestBed.inject(DeviceDetectorService);
     analyticsService = TestBed.inject(AnalyticsService);
     permissionService = TestBed.inject(NgxPermissionsService);
+    i18nService = TestBed.inject(I18nService);
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     spyOn(errorService, 'i18nError');
@@ -1502,6 +1507,63 @@ describe('ListComponent', () => {
         expect(itemService.get).toHaveBeenCalledWith(item.id);
         expect(component.items[3]).toEqual(MOCK_ITEM_V3);
       }));
+    });
+  });
+  describe('Pro button', () => {
+    describe('and has subscriptions permission', () => {
+      beforeEach(() => {
+        permissionService.addPermission(PERMISSIONS.subscriptions);
+        fixture.detectChanges();
+      });
+
+      it('should show button', () => {
+        const proButton = fixture.debugElement.nativeElement.querySelector('#qa-list-pro-button');
+
+        expect(proButton).toBeTruthy();
+      });
+
+      it('should redirect to pro section', () => {
+        const proButton = fixture.debugElement.nativeElement.querySelector('#qa-list-pro-button');
+        fixture.detectChanges();
+
+        expect(proButton.routerLink).toEqual([`/${PRO_PATHS.PRO_MANAGER}`]);
+      });
+
+      describe('and is not pro user', () => {
+        beforeEach(() => {
+          jest.spyOn(userService, 'isPro', 'get').mockReturnValue(false);
+          spyOn(i18nService, 'translate').and.callThrough();
+          fixture.detectChanges();
+        });
+
+        it('should show become pro label', () => {
+          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.BECOME_PRO);
+        });
+      });
+
+      describe('and is pro user', () => {
+        beforeEach(() => {
+          jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
+          spyOn(i18nService, 'translate').and.callThrough();
+          fixture.detectChanges();
+        });
+
+        it('should show pro label', () => {
+          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.WALLAPOP_PRO);
+        });
+      });
+    });
+    describe('and has not subscriptions permission', () => {
+      beforeEach(() => {
+        permissionService.removePermission(PERMISSIONS.subscriptions);
+        fixture.detectChanges();
+      });
+
+      it('should not show button', () => {
+        const proButton = fixture.debugElement.nativeElement.querySelector('#qa-list-pro-button');
+
+        expect(proButton).toBeFalsy();
+      });
     });
   });
 });
