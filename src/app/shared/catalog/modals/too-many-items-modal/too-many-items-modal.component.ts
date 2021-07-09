@@ -34,7 +34,7 @@ export class TooManyItemsModalComponent implements OnInit {
   public categoryName: string;
   public categoryIconName: string;
 
-  isHighestLimitConfig = {
+  private isHighestLimitConfig: { [key: string]: { zendesk: TRANSLATION_KEY; descriptionText: TRANSLATION_KEY } } = {
     [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE]: {
       zendesk: TRANSLATION_KEY.ZENDESK_REAL_ESTATE_LIMIT_URL,
       descriptionText: TRANSLATION_KEY.REAL_ESTATE_HIGHEST_LIMIT_REACHED_DESCRIPTION,

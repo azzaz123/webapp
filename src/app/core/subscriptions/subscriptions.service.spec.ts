@@ -508,7 +508,7 @@ describe('SubscriptionsService', () => {
       });
     });
 
-    describe('when is selected tier without limit', () => {
+    describe('when is selected tier with highest limit', () => {
       it('should return true', () => {
         const selectedSubscription: SubscriptionsResponse = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED[0]);
         selectedSubscription.selected_tier = MAPPED_SUBSCRIPTIONS_ADDED[0].tiers[2];
