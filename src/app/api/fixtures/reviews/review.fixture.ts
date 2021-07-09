@@ -38,5 +38,5 @@ export const reviewFixture = new Review(
   reviewItemFixture,
   reviewUserFixture,
   reviewsElementDtoFixture.review.id,
-  reviewsElementDtoFixture.review.canTranslate
+  reviewsElementDtoFixture.review.can_translate
 );
