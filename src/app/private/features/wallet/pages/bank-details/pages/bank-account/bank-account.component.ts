@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
 import { DELIVERY_INPUTS_MAX_LENGTH } from '@private/features/delivery/enums/delivery-inputs-length.enum';
@@ -35,6 +35,9 @@ export const IBAN_LENGTH = 40;
 export class BankAccountComponent implements OnInit, OnDestroy {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @Input() isKyc = false;
+
+  @Output() bankAccountSaved: EventEmitter<void> = new EventEmitter();
+  @Output() goBackClick: EventEmitter<void> = new EventEmitter();
 
   public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public bankAccountForm: FormGroup;
@@ -113,7 +116,11 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   }
 
   public goBack(): void {
-    this.location.back();
+    if (this.isKyc) {
+      this.goBackClick.emit();
+    } else {
+      this.location.back();
+    }
   }
 
   private submitValidForm(): void {
@@ -136,7 +143,12 @@ export class BankAccountComponent implements OnInit, OnDestroy {
 
           this.showToast(translationKey, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;
-          this.router.navigate([this.BANK_DETAILS_URL]);
+
+          if (this.isKyc) {
+            this.bankAccountSaved.emit();
+          } else {
+            this.router.navigate([this.BANK_DETAILS_URL]);
+          }
         },
         (errors: BankAccountError[]) => {
           this.handleBankAccountErrors(errors);

@@ -1,0 +1,8 @@
+<tsl-stepper>
+    <ng-template step>
+        <tsl-bank-account isKyc="true" (bankAccountSaved)="goNextStep()" (goBackClick)="goPreviousStep()"></tsl-bank-account>
+    </ng-template>
+    <ng-template step>
+        IN STEP 2!!!! :P
+    </ng-template>
+</tsl-stepper>
