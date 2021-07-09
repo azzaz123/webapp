@@ -2,8 +2,7 @@
     <input
         class="SearchBox__input"
         type="search"
-        i18n-placeholder="@@web_components_suggester_7" 
-        placeholder="Search in All categories" 
+        [placeholder]="searchBoxPlaceholder$ | async" 
         maxlength="150"
         [ngModel]="searchBoxValue$ | async" 
         [inputFormatter]="inputFormatter"
