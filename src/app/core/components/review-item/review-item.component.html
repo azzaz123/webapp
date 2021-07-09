@@ -46,8 +46,8 @@
       <span *ngIf="!reviewUser" i18n="@@web_wallapop_user">a Wallapop user</span>
       <span i18n="@@web_review_item_2">on</span><span> {{ review.date | date:'longDate' }}</span>
     </div>
-  </div>
-  <div *ngIf="review.canTranslate" class="actions">
-    <tsl-translate-button [isTranslated]="isTranslated" (click)="toggleTranslation()"></tsl-translate-button>
+    <div *ngIf="review.canTranslate" class="actions">
+      <tsl-translate-button [isTranslated]="isTranslated" (click)="toggleTranslation()"></tsl-translate-button>
+    </div>
   </div>
 </div>
