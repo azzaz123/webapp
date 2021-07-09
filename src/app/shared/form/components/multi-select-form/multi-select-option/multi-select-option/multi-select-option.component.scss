@@ -1,7 +1,8 @@
 @import 'src/style/common';
-@import 'src/style/components/upload';
 
 $sub-label-light-gray: #828282;
+$transition: all 0.5s ease;
+$checkbox-width: 24px;
 
 .MultiSelectOption {
   cursor: pointer;
@@ -28,6 +29,57 @@ $sub-label-light-gray: #828282;
 
     &__sub {
       color: $sub-label-light-gray;
+    }
+  }
+
+  //TODO: Refactor the repeating code by having shared checkbox component
+  .checkbox {
+    transition: $transition;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    .select {
+      @include square($checkbox-width);
+      border: 2px solid $blue-grey-4;
+      border-radius: 6px;
+      padding: 0;
+      background: transparent;
+      margin-right: $spacing-ms;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      tsl-svg-icon {
+        display: none;
+      }
+      &.selected {
+        background: $yellow-dark;
+        border-color: transparent;
+        tsl-svg-icon {
+          display: flex;
+          ::ng-deep path {
+            fill: $white;
+          }
+        }
+      }
+      &:hover {
+        border-color: $yellow-dark;
+      }
+    }
+    &.checkbox-corporate {
+      .select {
+        &.selected {
+          background: $walla-main;
+        }
+        &:hover {
+          border-color: $walla-main;
+        }
+      }
+    }
+    input[type='checkbox'] {
+      position: absolute;
+      clip: rect(0, 0, 0, 0);
+      pointer-events: none;
     }
   }
 }
