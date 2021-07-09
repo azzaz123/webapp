@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { RouterLinkWithHref } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
-import { FeatureflagService } from '@core/user/featureflag.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { UserService } from '@core/user/user.service';
 import { MockedUserService, MOCK_USER_STATS_RESPONSE, USER_DATA, USER_WEB_SLUG } from '@fixtures/user.fixtures.spec';
