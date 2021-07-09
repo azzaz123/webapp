@@ -2,8 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
-import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_WITH_RE } from '@fixtures/subscriptions.fixtures.spec';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SubscriptionCardComponent } from './subscription-card.component';
 
@@ -64,12 +63,28 @@ describe('SubscriptionCardComponent', () => {
     });
 
     describe('and has tier limit', () => {
-      it('should show tier limit', () => {
-        const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+      describe('and is real estate', () => {
+        beforeEach(() => {
+          component.subscription = MAPPED_SUBSCRIPTIONS_WITH_RE[0];
+          component.isSubscribed = true;
+          fixture.detectChanges();
+        });
+        it('should show tier limit', () => {
+          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
 
-        expect(info.textContent).toContain(
-          $localize`:@@web_profile_pages_subscription_325:List up to ${component.subscription.selected_tier.limit} items`
-        );
+          expect(info.textContent).toContain(
+            $localize`:@@web_profile_pages_subscription_332:List up to ${component.subscription.selected_tier.limit} real estate`
+          );
+        });
+      });
+      describe('and is not Real estate', () => {
+        it('should show tier limit', () => {
+          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+
+          expect(info.textContent).toContain(
+            $localize`:@@web_profile_pages_subscription_325:List up to ${component.subscription.selected_tier.limit} items`
+          );
+        });
       });
     });
 

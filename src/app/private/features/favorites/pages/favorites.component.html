@@ -32,7 +32,7 @@
     <div class="mt-3">
       <div class="favorites-empty-state"
         *ngIf="!items.length && !loading && selectedStatus === 'products' || !profiles.length && !loading && selectedStatus === 'profiles'">
-        <img src="/assets/images/placeholders/favorites-empty-state.svg" width="938" height="851" class="d-none d-md-block">
+        <img src="/assets/images/placeholders/favorites-empty-state.svg" class="d-none d-md-block w-100 h-100">
         <img src="/assets/images/placeholders/favorites-empty-state-mobile.svg" width="304" height="547" class="d-block d-md-none">
         <div class="d-none d-md-block message" *ngIf="selectedStatus === 'products'" i18n="@@web_favorites_pages_206">In this list you can see all
           the products you

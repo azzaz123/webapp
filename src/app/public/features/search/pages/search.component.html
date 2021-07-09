@@ -6,7 +6,7 @@
 
     <div class="Search__filters w-100" [class.Search__filters--opened]="filterOpened">
       <tsl-filters-wrapper (filterOpened)="handleFilterOpened($event)"></tsl-filters-wrapper>
-      <tsl-sort-filter></tsl-sort-filter>
+      <tsl-sort-filter [value]="sortBy$ | async"></tsl-sort-filter>
     </div>
 
     <tsl-search-error-layout *ngIf="searchWithoutResults$ | async"></tsl-search-error-layout>
@@ -45,9 +45,9 @@
               <tsl-sky-shopping *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlotContainer]="adSlotShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index" [cardType]="listCardType$ | async"></tsl-sky-shopping>
             </ng-template>
           </ng-container>
-          <ng-container *ngIf="device === DevicesType.MOBILE">
+          <ng-container *ngxPermissionsOnly="PERMISSIONS.showAds">
             <ng-template #inlineSlotTemplate>
-              <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search2r"></tsl-sky>
+              <tsl-sky *ngIf="device === DevicesType.MOBILE" [adSlot]="adSlots.search2r"></tsl-sky>
             </ng-template>
           </ng-container>
         </tsl-public-item-card-list>

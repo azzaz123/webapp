@@ -1,7 +1,11 @@
 import { ChangeDetectionStrategy } from '@angular/compiler/src/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FREE_TRIAL_AVAILABLE_SUBSCRIPTION, MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  FREE_TRIAL_AVAILABLE_SUBSCRIPTION,
+  MAPPED_SUBSCRIPTIONS,
+  MAPPED_SUBSCRIPTIONS_WITH_RE,
+} from '@fixtures/subscriptions.fixtures.spec';
 
 import { SubscriptionTierSelectorComponent } from './subscription-tier-selector.component';
 
@@ -58,12 +62,28 @@ describe('SubscriptionTierSelectorComponent', () => {
 
   describe('Title', () => {
     describe('has limits', () => {
-      it('should show title', () => {
-        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__title')).nativeElement;
+      describe('and is real estate', () => {
+        beforeEach(() => {
+          component.subscription = MAPPED_SUBSCRIPTIONS_WITH_RE[0];
+          fixture.detectChanges();
+        });
+        it('should show title', () => {
+          const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__title')).nativeElement;
 
-        expect(tierTitle.textContent).toContain(
-          $localize`:@@web_profile_pages_subscription_325:List up to ${component.subscription.tiers[0].limit} items`
-        );
+          expect(tierTitle.textContent).toContain(
+            $localize`:@@web_profile_pages_subscription_332:List up to ${component.subscription.selected_tier.limit} real estate`
+          );
+        });
+      });
+
+      describe('and is not real estate', () => {
+        it('should show title', () => {
+          const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__title')).nativeElement;
+
+          expect(tierTitle.textContent).toContain(
+            $localize`:@@web_profile_pages_subscription_325:List up to ${component.subscription.tiers[0].limit} items`
+          );
+        });
       });
     });
 

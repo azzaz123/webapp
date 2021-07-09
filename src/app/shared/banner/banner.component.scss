@@ -1,0 +1,24 @@
+@import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/spacing';
+
+.alert {
+  border-radius: $spacing-ms;
+
+  &-success,
+  &-warning,
+  &-danger {
+    color: $white;
+  }
+
+  &-success {
+    background-color: $walla-main;
+  }
+
+  &-warning {
+    background-color: $orange-main;
+  }
+
+  &-danger {
+    background-color: $negative-main;
+  }
+}

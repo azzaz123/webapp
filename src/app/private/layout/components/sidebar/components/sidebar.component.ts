@@ -5,6 +5,7 @@ import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-cha
 import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOwnSaleItems } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserStats } from '@core/user/user-stats.interface';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -12,6 +13,7 @@ import { UserStats } from '@core/user/user-stats.interface';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit {
+  public readonly PRIVATE_PATHS = PRIVATE_PATHS;
   public user: User;
   @Input() isProducts: boolean;
   @Input() isProfile: boolean;

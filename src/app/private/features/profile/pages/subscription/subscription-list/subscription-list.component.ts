@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -13,6 +14,19 @@ export class SubscriptionListComponent {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
+  MAX_NARROW_CARDS = 4;
+
+  private readonly rowOrder = [
+    CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE,
+    CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES,
+    CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
+    CATEGORY_SUBSCRIPTIONS_IDS.CAR,
+    CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE,
+  ];
+
+  get subscriptionsOrdered(): SubscriptionsResponse[] {
+    return this.orderByCategory(this.rowOrder);
+  }
 
   public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
 
@@ -75,5 +89,11 @@ export class SubscriptionListComponent {
 
   public getBenefits(subscription: SubscriptionsResponse): string[] {
     return this.benefitsService.getBenefitsByCategory(subscription.category_id);
+  }
+
+  private orderByCategory(order: number[]): SubscriptionsResponse[] {
+    return order.map((categoryId) => {
+      return this.subscriptions.find((subscription) => subscription.category_id === categoryId);
+    });
   }
 }
