@@ -3,6 +3,9 @@
         <tsl-bank-account isKyc="true" (bankAccountSaved)="goNextStep()" (goBackClick)="goPreviousStep()"></tsl-bank-account>
     </ng-template>
     <ng-template step>
-        IN STEP 2!!!! :P
+        <tsl-kyc-nationality></tsl-kyc-nationality>
+    </ng-template>
+    <ng-template step>
+        <tsl-kyc-images></tsl-kyc-images>
     </ng-template>
 </tsl-stepper>
