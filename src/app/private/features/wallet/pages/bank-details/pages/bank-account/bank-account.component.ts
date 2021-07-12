@@ -37,7 +37,6 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   @Input() isKyc = false;
 
   @Output() bankAccountSaved: EventEmitter<void> = new EventEmitter();
-  @Output() goBackClick: EventEmitter<void> = new EventEmitter();
 
   public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public bankAccountForm: FormGroup;
@@ -116,11 +115,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   }
 
   public goBack(): void {
-    if (this.isKyc) {
-      this.goBackClick.emit();
-    } else {
-      this.location.back();
-    }
+    this.location.back();
   }
 
   private submitValidForm(): void {
