@@ -10,7 +10,7 @@
  */
 export interface ViewKYCTutorialScreen {
   /**
-   * Identifier of the user viewing KYC tutorial screen
+   * Identifier of the KYC tutorial screen
    */
   userId?: string;
   /**
