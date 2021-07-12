@@ -114,6 +114,10 @@ export class MockSubscriptionService {
   public hasFreeTrialByCategoryId(): boolean {
     return true;
   }
+
+  public hasHighestLimit(): boolean {
+    return false;
+  }
 }
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [
