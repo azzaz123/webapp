@@ -47,7 +47,7 @@ describe('ReviewsHttpService', () => {
 
       service.getReviewTranslation(reviewId).subscribe((res: ReviewTranslationDto) => (response = res));
 
-      const req: TestRequest = httpMock.expectOne(`${environment.baseUrl}api/v3/reviews/${reviewId}/translate`);
+      const req: TestRequest = httpMock.expectOne(`${environment.baseUrl}api/v3/reviews/${reviewId}/translation`);
       req.flush(reviewTranslationDtoFixture);
 
       expect(response).toEqual(reviewTranslationDtoFixture);
