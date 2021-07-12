@@ -13,8 +13,10 @@ import { WALLET_PATHS } from '../wallet-routing-constants';
   styleUrls: ['./wallet.component.scss'],
 })
 export class WalletComponent implements OnInit {
+  public readonly KYC_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.KYC}`;
   public kycBannerSpecifications$: Observable<KYCBannerSpecifications>;
   public selectedNavLinkId: string;
+  public isNotInKYC: boolean;
   public navLinks: NavLink[] = [
     {
       id: `/${PRIVATE_PATHS.WALLET}`,
@@ -29,6 +31,7 @@ export class WalletComponent implements OnInit {
   constructor(private router: Router, private kycBannerService: KycBannerService) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
+        this.isNotInKYC = e.url !== this.KYC_URL;
         this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id || this.getLastLocationIdThatMatch(e);
       }
     });
