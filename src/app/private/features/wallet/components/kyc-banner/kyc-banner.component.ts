@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbAlertConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { KYCBannerSpecifications } from '../../interfaces/kyc/kyc-banner.interface';
-import { KycInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
+import { KYCInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
 
 @Component({
   selector: 'tsl-kyc-banner',
   templateUrl: './kyc-banner.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KycBannerComponent {
+export class KYCBannerComponent {
   @Input() KYCBannerSpecifications: KYCBannerSpecifications;
   constructor(private modalService: NgbModal) {}
 
   public openKYCSlider(): void {
-    this.modalService.open(KycInfoModalComponent).result.then(() => {});
+    this.modalService.open(KYCInfoModalComponent).result.then(() => {});
   }
 
   get buttonClassName(): string {

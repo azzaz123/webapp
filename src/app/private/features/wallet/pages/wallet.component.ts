@@ -4,7 +4,7 @@ import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { Observable } from 'rxjs';
 import { KYCBannerSpecifications } from '../interfaces/kyc/kyc-banner.interface';
-import { KycBannerService } from '../services/kyc-banner/kyc-banner.service';
+import { KYCBannerService } from '../services/kyc-banner/kyc-banner.service';
 import { WALLET_PATHS } from '../wallet-routing-constants';
 
 @Component({
@@ -26,7 +26,7 @@ export class WalletComponent implements OnInit {
     },
   ];
 
-  constructor(private router: Router, private kycBannerService: KycBannerService) {
+  constructor(private router: Router, private kycBannerService: KYCBannerService) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id || this.getLastLocationIdThatMatch(e);

@@ -8,15 +8,15 @@ import { ButtonComponent } from '@shared/button/button.component';
 import { SlidesCarouselModule } from '@shared/components/carousel-slides/carousel-slides.module';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
-import { KycInfoModalComponent } from './kyc-info-modal.component';
+import { KYCInfoModalComponent } from './kyc-info-modal.component';
 
-describe('KycInfoModalComponent', () => {
+describe('KYCInfoModalComponent', () => {
   const FIRST_SLIDE = 'ngb-slide-0';
   const continueButtonSelector = '#continueButton';
   const verifyButtonSelector = '#verifyButton';
 
-  let component: KycInfoModalComponent;
-  let fixture: ComponentFixture<KycInfoModalComponent>;
+  let component: KYCInfoModalComponent;
+  let fixture: ComponentFixture<KYCInfoModalComponent>;
   let de: DebugElement;
   let activeModal: NgbActiveModal;
   let router: Router;
@@ -24,7 +24,7 @@ describe('KycInfoModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SlidesCarouselModule],
-      declarations: [KycInfoModalComponent, SvgIconComponent, ButtonComponent],
+      declarations: [KYCInfoModalComponent, SvgIconComponent, ButtonComponent],
       providers: [
         NgbActiveModal,
         {
@@ -38,7 +38,7 @@ describe('KycInfoModalComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KycInfoModalComponent);
+    fixture = TestBed.createComponent(KYCInfoModalComponent);
     de = fixture.debugElement;
     activeModal = TestBed.inject(NgbActiveModal);
     router = TestBed.inject(Router);
