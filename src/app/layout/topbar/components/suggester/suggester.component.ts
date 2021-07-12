@@ -108,8 +108,7 @@ export class SuggesterComponent implements OnInit, OnDestroy {
 
   private setCategoryPlaceholder(categoryName: string | undefined): void {
     if (categoryName) {
-      //TODO: Add translation
-      this.searchBoxPlaceholder = `Search in ${categoryName}`;
+      this.searchBoxPlaceholder = $localize`:@@web_search_box_specific_category_placeholder:Search in ${categoryName}:INTERPOLATION:`;
     } else {
       this.searchBoxPlaceholder = SuggesterComponent.DEFAULT_PLACEHOLDER_VALUE;
     }
