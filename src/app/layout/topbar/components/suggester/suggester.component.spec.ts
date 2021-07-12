@@ -11,6 +11,8 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CATEGORY_IDS } from '@core/category/category-ids';
+import { CategoryService } from '@core/category/category.service';
+import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 
 const MOCK_SEARCH_KEYWORD: SearchBoxValue = { [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone' };
 const MOCK_SEARCH_SUGGESTION: SearchBoxValue = {
@@ -44,6 +46,14 @@ describe('SuggesterComponent', () => {
             provide: ActivatedRoute,
             useValue: {
               queryParams: of(MOCK_SEARCH_KEYWORD),
+            },
+          },
+          {
+            provide: CategoryService,
+            useValue: {
+              getCategoryById() {
+                return of(CATEGORY_DATA_WEB);
+              },
             },
           },
           EventService,
