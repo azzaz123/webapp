@@ -10,21 +10,21 @@ import {
 import { of } from 'rxjs';
 import { KYC_BANNER_TYPES } from '../../components/kyc-banner/kyc-banner-constants';
 import { KYCBanner, KYCBannerSpecifications } from '../../interfaces/kyc/kyc-banner.interface';
-import { KycBannerApiService } from '../api/kyc-banner-api.service';
+import { KYCBannerApiService } from '../api/kyc-banner-api.service';
 
-import { KycBannerService } from './kyc-banner.service';
+import { KYCBannerService } from './kyc-banner.service';
 
-describe('KycBannerService', () => {
-  let service: KycBannerService;
-  let kycBannerApiService: KycBannerApiService;
+describe('KYCBannerService', () => {
+  let service: KYCBannerService;
+  let kycBannerApiService: KYCBannerApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        KycBannerService,
+        KYCBannerService,
         {
-          provide: KycBannerApiService,
+          provide: KYCBannerApiService,
           useValue: {
             getKYCBanner() {
               return of(MOCK_KYC_BANNER_PENDING_VERIFICATION);
@@ -34,8 +34,8 @@ describe('KycBannerService', () => {
       ],
     });
 
-    service = TestBed.inject(KycBannerService);
-    kycBannerApiService = TestBed.inject(KycBannerApiService);
+    service = TestBed.inject(KYCBannerService);
+    kycBannerApiService = TestBed.inject(KYCBannerApiService);
   });
 
   it('should be created', () => {

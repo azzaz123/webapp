@@ -6,7 +6,7 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
   templateUrl: './kyc.component.html',
   styleUrls: ['./kyc.component.scss'],
 })
-export class KycComponent {
+export class KYCComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
   public goNextStep(): void {

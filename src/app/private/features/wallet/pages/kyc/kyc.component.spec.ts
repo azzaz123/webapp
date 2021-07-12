@@ -3,22 +3,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';
+import { KYCComponent } from './kyc.component';
 
-import { KycComponent } from './kyc.component';
-
-describe('KycComponent', () => {
-  let component: KycComponent;
-  let fixture: ComponentFixture<KycComponent>;
+describe('KYCComponent', () => {
+  let component: KYCComponent;
+  let fixture: ComponentFixture<KYCComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [KycComponent, StepperComponent, StepDirective],
+      declarations: [KYCComponent, StepperComponent, StepDirective],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KycComponent);
+    fixture = TestBed.createComponent(KYCComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

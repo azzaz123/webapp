@@ -6,7 +6,7 @@ import { KYCBanner } from '../../interfaces/kyc/kyc-banner.interface';
 export const KYC_BANNER_STATUS_API_URL = `${environment.baseUrl}api/v3/delivery/kyc/banner`;
 
 @Injectable()
-export class KycBannerApiService {
+export class KYCBannerApiService {
   constructor(private http: HttpClient) {}
 
   public getKYCBanner(): Observable<KYCBanner> {

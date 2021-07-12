@@ -12,7 +12,7 @@ import { KYC_SLIDER_INFO_STEPS } from './kyc-info-modal-constants';
   styleUrls: ['./kyc-info-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KycInfoModalComponent {
+export class KYCInfoModalComponent {
   @ViewChild(SlidesCarouselComponent, { static: true }) slidesCarousel: SlidesCarouselComponent;
   public readonly KYC_LINK = `${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.KYC}`;
   public readonly KYC_SLIDER_INFO_STEPS = KYC_SLIDER_INFO_STEPS;

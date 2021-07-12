@@ -9,20 +9,20 @@ import { ButtonComponent } from '@shared/button/button.component';
 import { ButtonModule } from '@shared/button/button.module';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { KycInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
+import { KYCInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
 import { KYC_BANNER_TYPES } from './kyc-banner-constants';
-import { KycBannerComponent } from './kyc-banner.component';
+import { KYCBannerComponent } from './kyc-banner.component';
 
-describe('KycBannerComponent', () => {
+describe('KYCBannerComponent', () => {
   const MOCK_KYC_BANNER_SPECIFICATIONS = KYC_BANNER_TYPES[0];
-  let fixture: ComponentFixture<KycBannerComponent>;
-  let component: KycBannerComponent;
+  let fixture: ComponentFixture<KYCBannerComponent>;
+  let component: KYCBannerComponent;
   let debugElement: DebugElement;
   let modalService: NgbModal;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [KycBannerComponent, BannerComponent, SvgIconComponent],
+      declarations: [KYCBannerComponent, BannerComponent, SvgIconComponent],
       imports: [SvgIconModule, ButtonModule, HttpClientTestingModule, BannerModule],
       providers: [
         {
@@ -40,7 +40,7 @@ describe('KycBannerComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KycBannerComponent);
+    fixture = TestBed.createComponent(KYCBannerComponent);
     modalService = TestBed.inject(NgbModal);
     debugElement = fixture.debugElement;
     component = fixture.componentInstance;
@@ -105,7 +105,7 @@ describe('KycBannerComponent', () => {
         debugElement.query(By.directive(ButtonComponent)).nativeElement.click();
         tick();
 
-        expect(modalService.open).toHaveBeenCalledWith(KycInfoModalComponent);
+        expect(modalService.open).toHaveBeenCalledWith(KYCInfoModalComponent);
       }));
     });
   });
