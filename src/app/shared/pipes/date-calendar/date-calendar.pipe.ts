@@ -1,4 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { APP_LOCALE } from 'configs/subdomains.config';
+import { Inject, Pipe, PipeTransform, LOCALE_ID } from '@angular/core';
 import * as moment from 'moment';
 
 @Pipe({ name: 'dateCalendar' })

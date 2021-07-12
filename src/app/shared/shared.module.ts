@@ -46,6 +46,7 @@ import {
   WebSlugConverterPipe,
   UserProfileRoutePipe,
   ItemDetailRoutePipe,
+  DateLocalizePipe
 } from './pipes';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
@@ -162,6 +163,7 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     WebSlugConverterPipe,
     UserProfileRoutePipe,
     ItemDetailRoutePipe,
+    DateLocalizePipe,
     PreventDoubleClickDirective,
     ProBadgeModule,
     DateUntilDayPipe,
@@ -230,6 +232,7 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     PreventDoubleClickDirective,
     DateUntilDayPipe,
     DateCalendarPipe,
+    DateLocalizePipe,
     ProfileProBillingComponent,
     FullScreenModalComponent,
     DisableControlDirective,
