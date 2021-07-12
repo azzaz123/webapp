@@ -41,15 +41,15 @@ const routes: Route[] = [
       },
       {
         path: PRO_PATHS.SUBSCRIPTIONS,
-        redirectTo: `${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
+        redirectTo: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
       },
       {
         path: PRO_PATHS.BILLING,
-        redirectTo: `${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.BILLING}`,
+        redirectTo: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.BILLING}`,
       },
       {
         path: PRO_PATHS.SUBSCRIPTIONS_PRO,
-        redirectTo: `${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS_PRO}`,
+        redirectTo: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS_PRO}`,
       },
     ],
   },
