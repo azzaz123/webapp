@@ -10,14 +10,14 @@ import { MultiSelectFormModule } from './multi-select-form.module';
     <h4 class="mt-4">MultiSelect FormGroup: {{ formGroup.value.select }}</h4>
     <div style="background: white; border: 1px dashed black;">
       <form [formGroup]="formGroup">
-        <tsl-multi-select-form formControlName="select" [options]="options" [isDisabled]="isDisabled"></tsl-multi-select-form>
+        <tsl-multi-select-form formControlName="select" [options]="options" [disabled]="disabled"></tsl-multi-select-form>
       </form>
     </div>
   `,
 })
 class StoryMultiSelectFormFormComponent {
   @Input() options;
-  @Input() isDisabled: boolean = false;
+  @Input() disabled: boolean = false;
   public formGroup = new FormGroup({
     select: new FormControl(['aa']),
   });
@@ -37,7 +37,7 @@ export default {
 const Template: Story<StoryMultiSelectFormFormComponent> = (args) => ({
   props: args,
   template: `
-        <tsl-story-multi-select-form [isDisabled]="isDisabled" [options]="options"></tsl-story-multi-select-form>
+        <tsl-story-multi-select-form [disabled]="disabled" [options]="options"></tsl-story-multi-select-form>
       `,
 });
 
@@ -57,17 +57,17 @@ const optionsWithSublabel = optionsWithLabels.map((option, index) => {
 export const Default = Template.bind({});
 Default.args = {
   options: optionsWithLabels,
-  isDisabled: 'false',
+  disabled: 'false',
 };
 
 export const DisableMultiSelect = Template.bind({});
 DisableMultiSelect.args = {
   options: optionsWithLabels,
-  isDisabled: 'true',
+  disabled: 'true',
 };
 
 export const OptionsWithOccurrencies = Template.bind({});
 OptionsWithOccurrencies.args = {
   options: optionsWithSublabel,
-  isDisabled: 'false',
+  disabled: 'false',
 };

@@ -28,7 +28,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
       return { ...option, checked: false };
     });
   }
-  @Input() isDisabled: boolean = false;
+  @Input() disabled: boolean = false;
 
   public extendedOptions: MultiSelectFormOption[] = [];
 

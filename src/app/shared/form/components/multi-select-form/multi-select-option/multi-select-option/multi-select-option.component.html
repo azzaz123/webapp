@@ -6,7 +6,7 @@
     <label class="checkbox checkbox-corporate">
         <div class="select" [class.selected]="option.checked">
             <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
-            <input type="checkbox" [disabled]="isDisabled" [(ngModel)]="option.checked" (change)="toggleCheckbox()"/>
+            <input type="checkbox" [disabled]="disabled" [(ngModel)]="option.checked" (change)="toggleCheckbox()"/>
         </div>
     </label>
 </div>
