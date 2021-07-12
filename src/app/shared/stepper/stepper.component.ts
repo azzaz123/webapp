@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, QueryList } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChildren,
+  Input,
+  Output,
+  QueryList,
+  EventEmitter,
+  AfterContentInit,
+} from '@angular/core';
 import { StepDirective } from './step.directive';
 
 @Component({
@@ -7,19 +17,19 @@ import { StepDirective } from './step.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./stepper.component.scss'],
 })
-export class StepperComponent {
+export class StepperComponent implements AfterContentInit {
   @ContentChildren(StepDirective) sections: QueryList<StepDirective>;
-  @Input() initialIndex = 0;
+  @Input() activeId = 0;
+  @Output() isInLastStep: EventEmitter<void> = new EventEmitter();
 
   public steps: StepDirective[];
-  public activeId: number;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterContentInit() {
     this.steps = this.sections.toArray();
-    this.activeId = this.initialIndex;
     this.cdr.detectChanges();
+    this.emitLastStep();
   }
 
   public goBack(): void {
@@ -31,6 +41,14 @@ export class StepperComponent {
   public goNext(): void {
     if (this.haveNextSlide()) {
       this.activeId = ++this.activeId;
+    }
+
+    this.emitLastStep();
+  }
+
+  private emitLastStep(): void {
+    if (!this.haveNextSlide()) {
+      this.isInLastStep.emit();
     }
   }
 

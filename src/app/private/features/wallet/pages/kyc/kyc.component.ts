@@ -9,8 +9,6 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 export class KycComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
-  constructor() {}
-
   public goNextStep(): void {
     this.stepper.goNext();
   }
