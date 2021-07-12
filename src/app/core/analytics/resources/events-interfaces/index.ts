@@ -130,6 +130,7 @@ export * from './transaction-delivery-returned-seller.interface';
 export * from './transaction-payment-error.interface';
 export * from './transaction-payment-failed-seller.interface';
 export * from './transaction-payment-seller.interface';
+export * from './transaction-payment-success.interface';
 export * from './transaction-return-delivery-failed-buyer.interface';
 export * from './transaction-return-delivery-failed-seller.interface';
 export * from './change-email.interface';

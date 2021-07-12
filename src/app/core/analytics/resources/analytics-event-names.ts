@@ -131,6 +131,7 @@ export enum ANALYTICS_EVENT_NAMES {
   TransactionPaymentError = 'Transaction Payment Error',
   TransactionPaymentFailedSeller = 'Transaction Payment Failed Seller',
   TransactionPaymentSeller = 'Transaction Payment Seller',
+  TransactionPaymentSuccess = 'Transaction Payment Success',
   TransactionReturnDeliveryFailedBuyer = 'Transaction Return Delivery Failed Buyer',
   TransactionReturnDeliveryFailedSeller = 'Transaction Return Delivery Failed Seller',
   ChangeEmail = 'Change Email',
