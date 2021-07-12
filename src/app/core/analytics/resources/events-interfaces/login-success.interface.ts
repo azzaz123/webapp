@@ -6,15 +6,11 @@
  */
 
 /**
- * User clicks start verification button on KYC tutorial screen
+ * User successfully logs in
  */
-export interface ClickKYCStartVerification {
+export interface LoginSuccess {
   /**
-   * Identifier of the user closing KYC tutorial screen
+   * Identifier of the login method used
    */
-  userId?: string;
-  /**
-   * Identifier of the KYC tutorial screen
-   */
-  screenId: 196;
+  loginMethod: 'apple' | 'google' | 'facebook' | 'email';
 }

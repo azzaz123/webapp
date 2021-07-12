@@ -1,13 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  AnalyticsEvent,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  ClickCancelCloseSubscription,
-  SCREEN_IDS,
-} from '@core/analytics/analytics-constants';
-import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -103,23 +95,6 @@ describe('ContinueSubscriptionModalComponent', () => {
 
       expect(component.subscriptionsService.continueSubscription).toHaveBeenCalledWith(tier.id);
       expect(component.loading).toBe(false);
-    });
-
-    it('should send event to analytics', () => {
-      const expectedEvent: AnalyticsEvent<ClickCancelCloseSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ClickCancelCloseSubscription,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-          tier: component.subscription.selected_tier_id,
-          screenId: SCREEN_IDS.ProfileSubscription,
-        },
-      };
-
-      component.continueSubscription();
-
-      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 });

@@ -6,19 +6,19 @@
  */
 
 /**
- * User uploads a RealEstate product
+ * System event triggered for the buyer when the transaction is cancelled by Wallapop
  */
-export interface ListItemRELocation {
+export interface TransactionCancelledWallapopBuyer {
   /**
    * The unique identifier for an item
    */
   itemId: string;
   /**
-   * Item region
+   * Identifier of the shipping request
    */
-  region: string;
+  requestId: string;
   /**
-   * Real State Operation
+   * Identifier of the transaction
    */
-  operation: string;
+  transactionId: string;
 }

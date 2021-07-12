@@ -5,7 +5,6 @@ import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  ClickKeepCurrentSubscription,
   ClickProfileEditCurrentSubscription,
   ClickProSubscription,
   ClickSubscriptionManagementPlus,
@@ -220,20 +219,6 @@ export class SubscriptionsComponent implements OnInit {
     if (modalType === EditSubscriptionModalComponent) {
       const event: AnalyticsEvent<ClickProfileEditCurrentSubscription> = {
         name: ANALYTICS_EVENT_NAMES.ClickProfileEditCurrentSubscription,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
-          tier: subscription.selected_tier_id,
-          screenId: SCREEN_IDS.ProfileSubscription,
-        },
-      };
-
-      return this.analyticsService.trackEvent(event);
-    }
-
-    if (modalType === ContinueSubscriptionModalComponent) {
-      const event: AnalyticsEvent<ClickKeepCurrentSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ClickKeepCurrentSubscription,
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
