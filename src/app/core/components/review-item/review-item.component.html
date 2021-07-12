@@ -35,7 +35,7 @@
       <span *ngIf="!review.item?.id && !category?.name" i18n="@@web_wallapop_item">A Wallapop item</span>
     </div>
     <tsl-stars class="review-rating" [stars]="review.scoring" [normalized]="false"></tsl-stars>
-    <p class="review-comment">{{ review.comments }}</p>
+    <p class="review-comment">{{ reviewComment }}</p>
     <div class="review-credits">
       <span i18n="@@web_review_item_1">Posted by</span>
       <span *ngIf="reviewUser">

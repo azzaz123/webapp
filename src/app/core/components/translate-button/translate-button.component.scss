@@ -6,6 +6,8 @@
     align-items: center;
     padding: 5px 0;
     cursor: pointer;
+    user-select: none;
+    width: fit-content;
   }
 
   &__text {
