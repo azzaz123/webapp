@@ -15,7 +15,6 @@ import { StepDirective } from './step.directive';
   selector: 'tsl-stepper',
   templateUrl: './stepper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./stepper.component.scss'],
 })
 export class StepperComponent implements AfterContentInit {
   @ContentChildren(StepDirective) sections: QueryList<StepDirective>;
