@@ -5,6 +5,7 @@ import { WalletOverviewModule } from './pages/wallet-overview/wallet-overview.mo
 import { WALLET_PATHS } from './wallet-routing-constants';
 import { BankDetailsModule } from './pages/bank-details/bank-details.module';
 import { KYCModule } from './pages/kyc/kyc.module';
+import { KycGuard } from './guards/kyc/kyc.guard';
 
 const routes: Route[] = [
   {
@@ -22,6 +23,7 @@ const routes: Route[] = [
       {
         path: WALLET_PATHS.KYC,
         loadChildren: () => KYCModule,
+        canActivate: [KycGuard],
       },
       {
         path: '**',
