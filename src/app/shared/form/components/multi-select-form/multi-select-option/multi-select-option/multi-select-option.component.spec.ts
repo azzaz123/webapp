@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { MultiSelectFormOption } from '../../multi-select-form.component';
+import { MultiSelectFormOption } from '../../interfaces/multi-select-form-option.interface';
 import { MultiSelectOptionComponent } from './multi-select-option.component';
 
 export const optionFixture: MultiSelectFormOption = {
@@ -88,7 +88,7 @@ describe('MultiSelectOptionComponent', () => {
     describe('...disabled checking behavior', () => {
       beforeEach(() => {
         component.option = optionFixture;
-        component.isDisabled = true;
+        component.disabled = true;
         fixture.detectChanges();
       });
       it('should disable checking behavior if we stop user checking the option', () => {

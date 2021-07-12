@@ -2,13 +2,8 @@ import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { SelectFormOption } from '../select/interfaces/select-form-option.interface';
-
-export type MultiSelectValue = string[];
-
-export interface MultiSelectFormOption extends SelectFormOption<string> {
-  checked: boolean;
-}
-
+import { MultiSelectFormOption } from './interfaces/multi-select-form-option.interface';
+import { MultiSelectValue } from './interfaces/multi-select-value.type';
 @Component({
   selector: 'tsl-multi-select-form',
   templateUrl: './multi-select-form.component.html',

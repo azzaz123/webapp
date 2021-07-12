@@ -5,7 +5,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { SelectFormOption } from '../select/interfaces/select-form-option.interface';
-import { MultiSelectFormComponent, MultiSelectFormOption, MultiSelectValue } from './multi-select-form.component';
+import { MultiSelectFormOption } from './interfaces/multi-select-form-option.interface';
+import { MultiSelectFormComponent } from './multi-select-form.component';
 import { MultiSelectOptionComponent } from './multi-select-option/multi-select-option/multi-select-option.component';
 import { MultiSelectOptionModule } from './multi-select-option/multi-select-option/multi-select-option.module';
 
