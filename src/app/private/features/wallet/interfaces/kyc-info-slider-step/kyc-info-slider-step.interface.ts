@@ -1,6 +1,8 @@
-export interface KycInfoSliderStep {
-  imageSrc: string;
-  imageAlt: string;
+export interface KYCInfoSliderStep {
+  image: {
+    src: string;
+    alt: string;
+  };
   title: string;
   description: string;
   extraLink?: string;
