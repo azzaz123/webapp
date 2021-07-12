@@ -61,4 +61,12 @@ export interface ListItemRE {
    * Hashtags
    */
   hashtags?: string;
+  /**
+   * Country of the user (seller) that lists the item (e.g.: ES, IT, etc.)
+   */
+  country?: string;
+  /**
+   * Language of the user (seller) that lists the item (e.g.: ES, IT, etc.)
+   */
+  language?: string;
 }
