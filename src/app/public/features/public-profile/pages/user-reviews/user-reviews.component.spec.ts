@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 
 import { UserReviewsComponent } from './user-reviews.component';
+import { ReviewsApiService } from '@api/reviews';
 
 describe('UserReviewsComponent', () => {
   let component: UserReviewsComponent;
@@ -25,6 +26,14 @@ describe('UserReviewsComponent', () => {
           useValue: {
             user: of(MOCK_FULL_USER_FEATURED),
             getReviews() {
+              return of(MOCK_REVIEWS);
+            },
+          },
+        },
+        {
+          provide: ReviewsApiService,
+          useValue: {
+            getUserReviews() {
               return of(MOCK_REVIEWS);
             },
           },
