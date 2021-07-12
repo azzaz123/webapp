@@ -22,18 +22,23 @@
           </span>
         </ng-container>
         <ng-template #noCarDealerDescription>
-          <ng-container *ngIf="isFreeTrial; else noFreeTrial">
-            <span i18n="@@web_too_many_items_modal_try_trial">To list more {{categorySubscription?.category_name}}, <b>try Wallapop PRO with a {{categorySubscription?.trial_days}}-day free trial.</b> Professionalise your online sales, and sell more!
-              <br><br>
-              If you decide Wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
-          </ng-container>
-          <ng-template #noFreeTrial>
-            <span i18n="@@web_too_many_items_modal_description_in_app" *ngIf="type === inAppType">You must upgrade your subscription <b>through the Wallapop app</b> if you want to publish more {{categorySubscription?.category_name}}</span>
-            <span i18n="@@web_too_many_items_modal_description" *ngIf="type !== inAppType">Want to list more<ng-container *ngIf="categorySubscription"> {{categorySubscription.category_name}}</ng-container>?
-              You might be interested in signing up for Wallapop PRO. Professionalise your online sales, and sell more!
-              <br><br>
-              If you decide Wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
-          </ng-template>
+          <ng-container *ngIf="!isHighestLimit; else isHighestLimitReached">
+            <ng-container *ngIf="isFreeTrial; else noFreeTrial">
+              <span i18n="@@web_too_many_items_modal_try_trial">To list more {{categorySubscription?.category_name}}, <b>try Wallapop PRO with a {{categorySubscription?.trial_days}}-day free trial.</b> Professionalise your online sales, and sell more!
+                <br><br>
+                If you decide Wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
+              </ng-container>
+              <ng-template #noFreeTrial>
+                <span i18n="@@web_too_many_items_modal_description_in_app" *ngIf="type === inAppType">You must upgrade your subscription <b>through the Wallapop app</b> if you want to publish more {{categorySubscription?.category_name}}</span>
+                <span i18n="@@web_too_many_items_modal_description" *ngIf="type !== inAppType">Want to list more<ng-container *ngIf="categorySubscription"> {{categorySubscription.category_name}}</ng-container>?
+                  You might be interested in signing up for Wallapop PRO. Professionalise your online sales, and sell more!
+                  <br><br>
+                  If you decide Wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
+              </ng-template>
+            </ng-container>
+            <ng-template #isHighestLimitReached>
+              <span>{{highestLimitText}}</span>
+            </ng-template>
         </ng-template>
       </div>
     </div>
@@ -41,11 +46,15 @@
 
   <div class="TooManyItemsModal__actions">
     <tsl-button *ngIf="type === inAppType || type === carDealerType" (click)="activeModal.close()" i18n="@@web_understood">Understood</tsl-button>
-    <tsl-button *ngIf="type === notSubscribedType || type === stripeType" (click)="activeModal.close()"
+    <tsl-button *ngIf="type === notSubscribedType || (type === stripeType && !isHighestLimit)" (click)="activeModal.close()"
     [routerLink]="'/profile/subscriptions'">
       <span *ngIf="!isFreeTrial" i18n="@@web_too_many_items_modal_button_go_to_subscriptions">See plans</span>
       <span *ngIf="isFreeTrial" i18n="@@web_too_many_items_modal_button_go_to_trial">Start free trial</span>
     </tsl-button>
+    <a *ngIf="type === stripeType && isHighestLimit" [href]="zenDeskUrl" target="_blank">
+      <tsl-button (click)="activeModal.close()" i18n="@@listing_limit_pro_user_real_estate_subscription_modal_more_info_button">More info
+      </tsl-button>
+    </a>
     <div class="TooManyItemsModal__actions-optional"
       *ngIf="type === notSubscribedType || type === stripeType"
       (click)="activeModal.close()" i18n="@@web_too_many_items_modal_button_cancel"
