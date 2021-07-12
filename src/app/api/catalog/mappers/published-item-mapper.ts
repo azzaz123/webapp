@@ -1,6 +1,6 @@
 import { ATTRIBUTE_TYPE, CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../dtos/catalog-item-attribute';
 import { CATEGORY_IDS } from '@core/category/category-ids';
-import { CatalogItem } from '../dtos/catalog-item';
+import { PublishedItem } from '@api/catalog/dtos';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { capitalizeString } from '@core/helpers/capitalize-string/capitalize-string';
 import { mapCatalogImagesToImages } from './image-mapper';
@@ -34,11 +34,11 @@ const STORY_TELLING_LOW_ORDERED_BOOLEAN_ATTRS: ATTRIBUTE_TYPE[] = [
   REAL_ESTATE_ATTRIBUTE_TYPE.TERRACE,
 ];
 
-export function mapCatalogItemsToItemCards(catalogItems: CatalogItem[], userId: string, favouriteIds: string[]): ItemCard[] {
+export function mapCatalogItemsToItemCards(catalogItems: PublishedItem[], userId: string, favouriteIds: string[]): ItemCard[] {
   return catalogItems.map((item) => mapCatalogItemToItemCard(item, userId, favouriteIds));
 }
 
-function mapCatalogItemToItemCard(item: CatalogItem, userId: string, favoriteIds: string[]): ItemCard {
+function mapCatalogItemToItemCard(item: PublishedItem, userId: string, favoriteIds: string[]): ItemCard {
   const { id, category_id, title, description, price, images = [], attributes = [], slug, reserved, bump } = item;
 
   return {

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CatalogHttpService } from './catalog-http.service';
-import { CatalogPublicProfileItemsResponse } from '@api/catalog/dtos/catalog-public-profile-items-response';
+import { PublishedResponse } from '@api/catalog/dtos/published/published-response';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from '@environments/environment';
 import { catalogResponseFixture } from '@api/fixtures/catalog/catalog-response.fixtures';
@@ -25,10 +25,10 @@ describe('CatalogHttpService', () => {
 
   describe('when asked to retrieve user published items', () => {
     it('should retrieve user published items', () => {
-      let response: CatalogPublicProfileItemsResponse;
+      let response: PublishedResponse;
       const userId = 'id';
 
-      service.getUserPublishedItems(userId).subscribe((res: CatalogPublicProfileItemsResponse) => (response = res));
+      service.getUserPublishedItems(userId).subscribe((res: PublishedResponse) => (response = res));
 
       const req: TestRequest = httpMock.expectOne(`${environment.baseUrl}api/v3/users/${userId}/items`);
       req.flush(catalogResponseFixture);

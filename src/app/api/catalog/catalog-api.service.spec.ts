@@ -13,7 +13,7 @@ import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { CatalogHttpService } from '@api/catalog/http/catalog-http.service';
 import { of } from 'rxjs/internal/observable/of';
 import { catalogResponseFixture } from '@api/fixtures/catalog/catalog-response.fixtures';
-import { CATALOG_PARAMETERS } from '@api/catalog/http/parameters.enum';
+import { PUBLISHED_QUERY_PARAMS } from '@api/catalog/dtos/published/published-query-params.enum';
 
 describe('CatalogApiService', () => {
   let service: CatalogApiService;
@@ -74,7 +74,9 @@ describe('CatalogApiService', () => {
         });
 
         expect(httpService.getUserPublishedItems).toHaveBeenCalledTimes(1);
-        expect(httpService.getUserPublishedItems).toHaveBeenCalledWith(userIdFixture, { [CATALOG_PARAMETERS.SINCE]: 'oldNextParameter' });
+        expect(httpService.getUserPublishedItems).toHaveBeenCalledWith(userIdFixture, {
+          [PUBLISHED_QUERY_PARAMS.SINCE]: 'oldNextParameter',
+        });
         expect(response).toEqual({ list: [mappedCatalogItemFixture], paginationParameter: 'nextParameter' });
       });
     });

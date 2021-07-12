@@ -1,7 +1,7 @@
-import { CatalogPublicProfileItemsResponse } from '@api/catalog/dtos/catalog-public-profile-items-response';
+import { PublishedResponse } from '@api/catalog/dtos/published/published-response';
 import { catalogItemFixture } from '@api/fixtures/catalog/catalog-item.fixtures';
 
-export const catalogResponseFixture: CatalogPublicProfileItemsResponse = {
+export const catalogResponseFixture: PublishedResponse = {
   data: [catalogItemFixture],
   meta: {
     next: 'nextParameter',

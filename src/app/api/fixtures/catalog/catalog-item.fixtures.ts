@@ -1,6 +1,5 @@
-import { CatalogItem } from '../../catalog/dtos/catalog-item';
+import { CatalogItemPrice, PublishedItem } from '@api/catalog/dtos';
 import { catalogItemImageFixture, mappedCatalogItemImageFixture } from './catalog-image.fixtures';
-import { CatalogItemPrice } from '../../catalog/dtos/catalog-item-price';
 import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../catalog/dtos/catalog-item-attribute';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
@@ -48,7 +47,7 @@ const price: CatalogItemPrice = {
 export const userIdFixture = 'my-user-id';
 export const favouriteIdsFixture = ['my-item-id'];
 
-export const catalogItemFixture: CatalogItem = {
+export const catalogItemFixture: PublishedItem = {
   id,
   images: [catalogItemImageFixture],
   slug,
@@ -59,7 +58,7 @@ export const catalogItemFixture: CatalogItem = {
   price,
 };
 
-export const storytellingCatalogItemFixture: CatalogItem = {
+export const storytellingCatalogItemFixture: PublishedItem = {
   ...catalogItemFixture,
   category_id: storytellingCategoryId,
 };

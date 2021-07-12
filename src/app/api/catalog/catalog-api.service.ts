@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable, of } from 'rxjs';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { CatalogPublicProfileItemsResponse } from './dtos/catalog-public-profile-items-response';
+import { PUBLISHED_QUERY_PARAMS, PublishedItem, PublishedResponse } from '@api/catalog/dtos';
 import { map, switchMap } from 'rxjs/operators';
 import { PaginatedList } from '../core/model/paginated-list.interface';
-import { CATALOG_PARAMETERS } from './http/parameters.enum';
 import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';
-import { CatalogItem } from './dtos/catalog-item';
 import { mapCatalogItemsToItemCards } from './mappers/published-item-mapper';
 import { CatalogHttpService } from '@api/catalog/http/catalog-http.service';
 import { QueryParams } from '@api/core/utils/types';
@@ -20,22 +18,22 @@ export class CatalogApiService {
     checkFavourites: boolean,
     paginationParameter?: string
   ): Observable<PaginatedList<ItemCard>> {
-    let params: QueryParams<CATALOG_PARAMETERS>;
+    let params: QueryParams<PUBLISHED_QUERY_PARAMS>;
     if (paginationParameter) {
-      params = { [CATALOG_PARAMETERS.SINCE]: paginationParameter };
+      params = { [PUBLISHED_QUERY_PARAMS.SINCE]: paginationParameter };
     }
 
     return this.catalogHttpService.getUserPublishedItems(userId, params).pipe(
-      switchMap((response: CatalogPublicProfileItemsResponse) => {
+      switchMap((response: PublishedResponse) => {
         let favouriteIds$ = of([]);
 
         if (checkFavourites) {
-          const itemIds = response.data.map((item: CatalogItem) => item.id);
+          const itemIds = response.data.map((item: PublishedItem) => item.id);
           favouriteIds$ = this.favouriteService.getFavouriteItemsId(itemIds);
         }
 
         return forkJoin(of(response), favouriteIds$).pipe(
-          map(([res, favouritedIds]: [CatalogPublicProfileItemsResponse, string[]]) => {
+          map(([res, favouritedIds]: [PublishedResponse, string[]]) => {
             return {
               list: mapCatalogItemsToItemCards(res.data, userId, favouritedIds),
               paginationParameter: res.meta.next,
