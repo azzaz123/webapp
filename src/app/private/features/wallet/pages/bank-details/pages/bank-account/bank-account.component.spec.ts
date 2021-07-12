@@ -407,9 +407,9 @@ describe('BankAccountComponent', () => {
     });
   });
 
-  describe('when the component is NOT on the kyc page...', () => {
+  describe('when the component is NOT on the KYC page...', () => {
     beforeEach(() => {
-      component.isKyc = false;
+      component.isKYC = false;
 
       fixture.detectChanges();
     });
@@ -421,9 +421,9 @@ describe('BankAccountComponent', () => {
     });
   });
 
-  describe('when the component is on the kyc page...', () => {
+  describe('when the component is on the KYC page...', () => {
     beforeEach(() => {
-      component.isKyc = true;
+      component.isKYC = true;
 
       fixture.detectChanges();
     });

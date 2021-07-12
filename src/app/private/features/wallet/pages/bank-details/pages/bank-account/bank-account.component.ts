@@ -34,7 +34,7 @@ export const IBAN_LENGTH = 40;
 })
 export class BankAccountComponent implements OnInit, OnDestroy {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
-  @Input() isKyc = false;
+  @Input() isKYC = false;
 
   @Output() bankAccountSaved: EventEmitter<void> = new EventEmitter();
 
@@ -139,7 +139,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
           this.showToast(translationKey, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;
 
-          if (this.isKyc) {
+          if (this.isKYC) {
             this.bankAccountSaved.emit();
           } else {
             this.router.navigate([this.BANK_DETAILS_URL]);
