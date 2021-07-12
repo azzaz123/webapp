@@ -10,7 +10,7 @@
  */
 export interface ViewKYCBankAccountInfoScreen {
   /**
-   * Identifier of the user viewing KYC bank account info screen
+   * Identifier of the user closing KYC tutorial screen
    */
   userId?: string;
   /**

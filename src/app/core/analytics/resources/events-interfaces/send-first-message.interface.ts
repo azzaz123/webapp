@@ -44,9 +44,9 @@ export interface SendFirstMessage {
   /**
    * Country of the user (buyer) that sends the first message (e.g.: ES, IT, etc.)
    */
-  country: string;
+  country?: string;
   /**
    * Language of the user (buyer) that sends the first message (e.g.: ES, IT, etc.)
    */
-  language: string;
+  language?: string;
 }

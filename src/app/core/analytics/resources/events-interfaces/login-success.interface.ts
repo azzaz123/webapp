@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks the subscribe button on the Subscription Benefits screen
+ * User successfully logs in
  */
-export interface ClickSubscriptionBenefits {
+export interface LoginSuccess {
   /**
-   * Identifier of the Subscription Benefits Screen
+   * Identifier of the login method used
    */
-  screenId: 192;
+  loginMethod: 'apple' | 'google' | 'facebook' | 'email';
 }

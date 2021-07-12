@@ -77,4 +77,8 @@ export interface ClickItemCard {
    * If the item clicked is inside the bump slider
    */
   isBumpSlider?: boolean;
+  /**
+   * If the item clicked is inside the pros slider
+   */
+  isProSlider?: boolean;
 }

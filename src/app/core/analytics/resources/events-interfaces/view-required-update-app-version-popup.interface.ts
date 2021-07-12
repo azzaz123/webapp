@@ -6,11 +6,11 @@
  */
 
 /**
- * User views transactional buyer tutorial
+ * User views the popup that requires updating the app version
  */
-export interface ViewTransactionalTutorialBuyer {
+export interface ViewRequiredUpdateAppVersionPopup {
   /**
-   * Identifier of the screen in which the user has clicked to see the transactional buyer tutorial
+   * Identifier of the required update app version popup screen
    */
-  screenId: 115 | 209;
+  screenId: 266;
 }

@@ -6,11 +6,15 @@
  */
 
 /**
- * User clicks subscription button on the limit reached screen
+ * User clicks edit password in verifications and security screen
  */
-export interface ClickSubscriptionLimitReached {
+export interface ClickEditPassword {
   /**
-   * Identifier of the My Catalog screen
+   * If the user has email verified
    */
-  screenId: 219;
+  emailVerified?: boolean;
+  /**
+   * Identifier of verifications and security screen
+   */
+  screenId: 248;
 }

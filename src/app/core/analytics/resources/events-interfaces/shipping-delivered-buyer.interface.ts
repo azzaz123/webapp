@@ -22,6 +22,10 @@ export interface ShippingDeliveredBuyer {
    */
   requestId: string;
   /**
+   * Identifier of the transaction
+   */
+  transactionId?: string;
+  /**
    * Identifier of the category that the item belongs to
    */
   categoryId: number;

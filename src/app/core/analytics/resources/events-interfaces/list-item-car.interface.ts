@@ -88,9 +88,9 @@ export interface ListItemCar {
   /**
    * Country of the user (seller) that lists the item (e.g.: ES, IT, etc.)
    */
-  country: string;
+  country?: string;
   /**
    * Language of the user (seller) that lists the item (e.g.: ES, IT, etc.)
    */
-  language: string;
+  language?: string;
 }

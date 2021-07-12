@@ -6,9 +6,9 @@
  */
 
 /**
- * User uploads a RealEstate product
+ * User uploads or edits a RealEstate product location
  */
-export interface ListItemRELocation {
+export interface ItemRELocation {
   /**
    * The unique identifier for an item
    */

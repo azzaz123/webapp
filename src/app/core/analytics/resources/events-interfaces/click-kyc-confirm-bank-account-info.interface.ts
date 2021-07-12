@@ -10,7 +10,7 @@
  */
 export interface ClickKYCConfirmBankAccountInfo {
   /**
-   * Identifier of the user clicking confirm button on KYC bank account info screen
+   * Identifier of the user closing KYC tutorial screen
    */
   userId?: string;
   /**

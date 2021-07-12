@@ -6,13 +6,13 @@
  */
 
 /**
- * User clicks a help or information button on a transactional screen
+ * User clicks a help or information button to find transactional info on any screen
  */
 export interface ClickHelpTransactional {
   /**
    * The unique identifier for an item
    */
-  itemId: string;
+  itemId?: string;
   /**
    * Identifier of the category that the item belongs to
    */
@@ -24,11 +24,11 @@ export interface ClickHelpTransactional {
   /**
    * If the transacion is Buy Now or not
    */
-  isBuyNow: boolean;
+  isBuyNow?: boolean;
   /**
    * Item price without fees
    */
-  itemPrice: number;
+  itemPrice?: number;
   /**
    * Identifier of the user that the item belongs to
    */
@@ -36,9 +36,9 @@ export interface ClickHelpTransactional {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 209 | 210 | 238;
+  screenId: 209 | 210 | 238 | 41;
   /**
    * Name of the tutorial/help that the user is clicking on
    */
-  helpName: "Help Top Pay Screen" | "Help Top Accept Screen";
+  helpName: 'Help Top Pay Screen' | 'Help Top Accept Screen' | 'Help Shipping Upload Screen';
 }
