@@ -128,6 +128,15 @@ describe('KycInfoModalComponent', () => {
         expect(router.navigate).toHaveBeenCalledTimes(1);
         expect(router.navigate).toHaveBeenCalledWith([component.KYC_LINK]);
       });
+
+      it('should close the modal', () => {
+        spyOn(activeModal, 'close');
+        const verifyButton = de.query(By.css(verifyButtonSelector)).nativeElement;
+
+        verifyButton.click();
+
+        expect(activeModal.close).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

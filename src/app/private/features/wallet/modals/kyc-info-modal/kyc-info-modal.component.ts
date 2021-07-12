@@ -24,8 +24,13 @@ export class KycInfoModalComponent {
     this.slidesCarousel.carousel.next();
   }
 
+  public closeModal(): void {
+    this.activeModal.close();
+  }
+
   public redirectToKYC(): void {
     this.router.navigate([this.KYC_LINK]);
+    this.closeModal();
   }
 
   get currentSlide(): string {
