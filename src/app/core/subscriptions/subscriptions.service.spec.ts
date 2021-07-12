@@ -485,6 +485,41 @@ describe('SubscriptionsService', () => {
     });
   });
 
+  describe('hasHighestLimit', () => {
+    describe('when is selected tier without highest limit', () => {
+      it('should return false', () => {
+        const selectedSubscription: SubscriptionsResponse = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED[0]);
+        selectedSubscription.selected_tier = MAPPED_SUBSCRIPTIONS_ADDED[0].tiers[0];
+
+        const result = service.hasHighestLimit(selectedSubscription);
+
+        expect(result).toEqual(false);
+      });
+    });
+
+    describe('when is selected tier without limit', () => {
+      it('should return false', () => {
+        const selectedSubscription: SubscriptionsResponse = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED[0]);
+        selectedSubscription.selected_tier = MAPPED_SUBSCRIPTIONS_ADDED[0].tiers[3];
+
+        const result = service.hasHighestLimit(selectedSubscription);
+
+        expect(result).toEqual(false);
+      });
+    });
+
+    describe('when is selected tier with highest limit', () => {
+      it('should return true', () => {
+        const selectedSubscription: SubscriptionsResponse = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED[0]);
+        selectedSubscription.selected_tier = MAPPED_SUBSCRIPTIONS_ADDED[0].tiers[2];
+
+        const result = service.hasHighestLimit(selectedSubscription);
+
+        expect(result).toEqual(true);
+      });
+    });
+  });
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });
