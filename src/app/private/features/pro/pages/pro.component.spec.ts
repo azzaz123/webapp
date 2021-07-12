@@ -45,12 +45,6 @@ describe('ProComponent', () => {
         providers: [
           NgxPermissionsService,
           {
-            provide: I18nService,
-            useValue: {
-              translate() {},
-            },
-          },
-          {
             provide: CookieService,
             useValue: {
               value: null,
@@ -92,55 +86,11 @@ describe('ProComponent', () => {
   );
 
   describe('when user is not a cardealer', () => {
-    describe('and the user is not a PRO', () => {
-      let subscriptionTabElement;
-      beforeEach(() => {
-        fixture.detectChanges();
-      });
-      it('should should show tab title Become a PRO', () => {
-        const expectedText = 'Become a PRO';
-        spyOn(i18n, 'translate').and.returnValue(expectedText);
-
-        fixture.detectChanges();
-
-        subscriptionTabElement = fixture.debugElement
-          .queryAll(By.css('a'))
-          .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
-
-        expect(i18n.translate).toHaveBeenCalledWith(TRANSLATION_KEY.BECOME_PRO);
-        expect(subscriptionTabElement).toBeTruthy();
-      });
-    });
-
-    describe('and the user is PRO', () => {
-      let subscriptionTabElement;
-      beforeEach(() => {
-        fixture.detectChanges();
-      });
-      it('should should show tab title Wallapop PRO', () => {
-        const expectedText = 'Wallapop PRO';
-        spyOn(i18n, 'translate').and.returnValue(expectedText);
-        jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
-
-        fixture.detectChanges();
-
-        subscriptionTabElement = fixture.debugElement
-          .queryAll(By.css('a'))
-          .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
-
-        expect(i18n.translate).toHaveBeenCalledWith(TRANSLATION_KEY.WALLAPOP_PRO);
-        expect(subscriptionTabElement).toBeTruthy();
-      });
-    });
-
     describe("and when user clicks in 'Subscriptions' tab", () => {
       let subscriptionTabElement;
-      const expectedText = 'Become a PRO';
+      const expectedText = 'Subscriptions';
       beforeEach(() => {
         spyOn(analyticsService, 'trackEvent');
-        spyOn(i18n, 'translate').and.returnValue(expectedText);
-
-        fixture.detectChanges();
       });
 
       describe('and there is no free trial', () => {

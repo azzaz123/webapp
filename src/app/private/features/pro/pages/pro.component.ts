@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { I18nService } from '@core/i18n/i18n.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { UserService } from '@core/user/user.service';
@@ -25,8 +23,7 @@ export class ProComponent implements OnInit {
   constructor(
     public userService: UserService,
     private analyticsService: AnalyticsService,
-    private subscriptionService: SubscriptionsService,
-    private i18n: I18nService
+    private subscriptionService: SubscriptionsService
   ) {}
 
   ngOnInit() {
@@ -48,9 +45,5 @@ export class ProComponent implements OnInit {
     };
 
     this.analyticsService.trackEvent(event);
-  }
-
-  public getSubscriptionTabName(): string {
-    return this.userService.isPro ? this.i18n.translate(TRANSLATION_KEY.WALLAPOP_PRO) : this.i18n.translate(TRANSLATION_KEY.BECOME_PRO);
   }
 }
