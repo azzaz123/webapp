@@ -6,9 +6,9 @@
  */
 
 /**
- * The transaction is successful and the seller receives the money in the wallet
+ * System event triggered for the buyer when an item has been returned and the return delivery fails
  */
-export interface TransactionPaymentSeller {
+export interface TransactionReturnDeliveryFailedBuyer {
   /**
    * The unique identifier for an item
    */
@@ -21,8 +21,4 @@ export interface TransactionPaymentSeller {
    * Identifier of the transaction
    */
   transactionId: string;
-  /**
-   * Amount of the payment received in the wallet
-   */
-  paymentAmount: number;
 }

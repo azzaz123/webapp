@@ -6,15 +6,11 @@
  */
 
 /**
- * User clicks on promocard banner
+ * Users accepts updating the app version from the popup
  */
-export interface ClickPromocardBanner {
+export interface ClickUpdateAppVersion {
   /**
-   * Identifier of the campaign that the ad belongs to
+   * Identifier of the popup screen where the has clicked to accept updating the app version
    */
-  lineitem_id: string;
-  /**
-   * Identifier of the category where the ad is shown
-   */
-  category_id?: string;
+  screenId: 265 | 266;
 }

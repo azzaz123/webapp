@@ -6,15 +6,15 @@
  */
 
 /**
- * User clicks start verification button on KYC tutorial screen
+ * User clicks edit password in verifications and security screen
  */
-export interface ClickKYCStartVerification {
+export interface ClickEditPassword {
   /**
-   * Identifier of the user closing KYC tutorial screen
+   * If the user has email verified
    */
-  userId?: string;
+  emailVerified?: boolean;
   /**
-   * Identifier of the KYC tutorial screen
+   * Identifier of verifications and security screen
    */
-  screenId: 196;
+  screenId: 248;
 }

@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks the subscribe button on the Subscription Benefits screen
+ * User views the popup that requires updating the app version
  */
-export interface ClickSubscriptionBenefits {
+export interface ViewRequiredUpdateAppVersionPopup {
   /**
-   * Identifier of the Subscription Benefits Screen
+   * Identifier of the required update app version popup screen
    */
-  screenId: 192;
+  screenId: 266;
 }

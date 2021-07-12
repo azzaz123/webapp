@@ -6,9 +6,9 @@
  */
 
 /**
- * The transaction is successful and the seller receives the money in the wallet
+ * Event triggered for the seller when seller cancels transaction
  */
-export interface TransactionPaymentSeller {
+export interface TransactionCancelledBySellerSeller {
   /**
    * The unique identifier for an item
    */
@@ -21,8 +21,4 @@ export interface TransactionPaymentSeller {
    * Identifier of the transaction
    */
   transactionId: string;
-  /**
-   * Amount of the payment received in the wallet
-   */
-  paymentAmount: number;
 }
