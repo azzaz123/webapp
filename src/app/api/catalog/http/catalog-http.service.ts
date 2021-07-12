@@ -17,7 +17,7 @@ export class CatalogHttpService {
     });
   }
 
-  public getWall(location: Location, params?: QueryParams<WALL_QUERY_PARAMS>): Observable<WallResponse> {
+  public getWallItems(location: Location, params?: QueryParams<WALL_QUERY_PARAMS>): Observable<WallResponse> {
     return this.httpClient.get<WallResponse>(WALL_ENDPOINT, {
       params,
       headers: {

@@ -1,4 +1,4 @@
-import { CatalogItemImage } from '../../catalog/dtos/catalog-item-image';
+import { CatalogItemImage } from '@api/catalog/dtos';
 import { Image } from '@core/user/user-response.interface';
 
 const bigImage = 'https://big-image.com';
@@ -6,7 +6,7 @@ const mediumImage = 'https://medium-image.com';
 const smallImage = 'https://small-image.com';
 const averageColor = '#000000';
 
-export const catalogItemImageFixture: CatalogItemImage = {
+export const publishedItemImageFixture: CatalogItemImage = {
   urls: {
     big: bigImage,
     medium: mediumImage,
@@ -15,7 +15,7 @@ export const catalogItemImageFixture: CatalogItemImage = {
   average_color: averageColor,
 };
 
-export const mappedCatalogItemImageFixture: Image = {
+export const mappedPublishedItemImageFixture: Image = {
   id: '',
   original_height: 0,
   original_width: 0,

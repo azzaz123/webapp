@@ -1,6 +1,6 @@
 import { CatalogItemPrice, PublishedItem } from '@api/catalog/dtos';
-import { catalogItemImageFixture, mappedCatalogItemImageFixture } from './catalog-image.fixtures';
-import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../catalog/dtos/catalog-item-attribute';
+import { publishedItemImageFixture, mappedPublishedItemImageFixture } from './catalog-image.fixtures';
+import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 const id = 'my-item-id';
@@ -47,9 +47,9 @@ const price: CatalogItemPrice = {
 export const userIdFixture = 'my-user-id';
 export const favouriteIdsFixture = ['my-item-id'];
 
-export const catalogItemFixture: PublishedItem = {
+export const publishedItemFixture: PublishedItem = {
   id,
-  images: [catalogItemImageFixture],
+  images: [publishedItemImageFixture],
   slug,
   category_id: noStorytellingCategoryId,
   attributes,
@@ -58,12 +58,12 @@ export const catalogItemFixture: PublishedItem = {
   price,
 };
 
-export const storytellingCatalogItemFixture: PublishedItem = {
-  ...catalogItemFixture,
+export const storytellingPublishedItemFixture: PublishedItem = {
+  ...publishedItemFixture,
   category_id: storytellingCategoryId,
 };
 
-export const mappedCatalogItemFixture: ItemCard = {
+export const mappedPublishedItemFixture: ItemCard = {
   id,
   title,
   categoryId: Number.parseInt(noStorytellingCategoryId, 0),
@@ -71,7 +71,7 @@ export const mappedCatalogItemFixture: ItemCard = {
   salePrice: price.amount,
   currencyCode: price.currency,
   webSlug: slug,
-  images: [mappedCatalogItemImageFixture],
+  images: [mappedPublishedItemImageFixture],
   ownerId: userIdFixture,
   flags: {
     pending: false,
@@ -84,16 +84,16 @@ export const mappedCatalogItemFixture: ItemCard = {
   },
 };
 
-export const mappedFavouritedCatalogItemFixture: ItemCard = {
-  ...mappedCatalogItemFixture,
+export const mappedFavouritedPublishedItemFixture: ItemCard = {
+  ...mappedPublishedItemFixture,
   flags: {
-    ...mappedCatalogItemFixture.flags,
+    ...mappedPublishedItemFixture.flags,
     favorite: true,
   },
 };
 
-export const mappedStorytellingCatalogItemFixture: ItemCard = {
-  ...mappedCatalogItemFixture,
+export const mappedStorytellingPublishedItemFixture: ItemCard = {
+  ...mappedPublishedItemFixture,
   categoryId: Number.parseInt(storytellingCategoryId, 0),
   description: storytelling,
 };
