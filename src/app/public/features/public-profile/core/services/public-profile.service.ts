@@ -20,6 +20,14 @@ export class PublicProfileService {
     return this._user;
   }
 
+  get hasStoreLocation(): boolean {
+    return (
+      this._user?.extraInfo &&
+      this._user.extraInfo.address?.length > 0 &&
+      (!!this._user.extraInfo.latitude || !!this._user.extraInfo.latitude)
+    );
+  }
+
   public getStats(userId: string): Observable<UserStats> {
     return this.publicUserApiService.getStats(userId).pipe(
       map((response) => {

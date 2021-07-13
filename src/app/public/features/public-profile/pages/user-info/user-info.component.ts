@@ -17,6 +17,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   public userValidations: UserValidations;
   public userResponseRate: string;
   public readonly PERMISSIONS = PERMISSIONS;
+  public storeLocation: Coordinate;
 
   constructor(private publicProfileService: PublicProfileService) {}
 
@@ -34,12 +35,22 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     this.publicProfileService.getExtraInfo(this.user.id).subscribe((userExtraInfo: UserExtrainfo) => {
       this.userValidations = userExtraInfo.validations;
       this.userResponseRate = userExtraInfo.response_rate;
+      this.getStoreLocation();
     });
 
     if (this.userHaveLocation()) {
       this.coordinates = {
         latitude: this.user.location.approximated_latitude,
         longitude: this.user.location.approximated_longitude,
+      };
+    }
+  }
+
+  private getStoreLocation(): void {
+    if (this.publicProfileService.hasStoreLocation) {
+      this.storeLocation = {
+        latitude: this.user.extraInfo.latitude,
+        longitude: this.user.extraInfo.longitude,
       };
     }
   }
