@@ -5,7 +5,7 @@ import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from 'app/core/item/item';
 import { Review } from '@private/features/reviews/core/review';
 import { User } from '@core/user/user';
 import { ReviewsApiService } from '@api/reviews';
-import { finalize, take, tap } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 
 export interface ReviewItemCopies {
   soldCopy: string;
@@ -72,15 +72,14 @@ export class ReviewItemComponent implements OnInit {
       .getReviewTranslation(this.review.id)
       .pipe(
         take(1),
-        tap((translation) => {
-          this.translation = translation;
-          this.translateReviewText(true);
-        }),
         finalize(() => {
           this.loadingTranslation = false;
         })
       )
-      .subscribe();
+      .subscribe((translation) => {
+        this.translation = translation;
+        this.translateReviewText(true);
+      });
   }
 
   private initializeCopies(): void {
