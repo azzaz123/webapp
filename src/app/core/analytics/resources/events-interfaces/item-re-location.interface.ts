@@ -6,11 +6,19 @@
  */
 
 /**
- * User clicks subscription button on the limit reached screen
+ * User uploads or edits a RealEstate product location
  */
-export interface ClickSubscriptionLimitReached {
+export interface ItemRELocation {
   /**
-   * Identifier of the My Catalog screen
+   * The unique identifier for an item
    */
-  screenId: 219;
+  itemId: string;
+  /**
+   * Item region
+   */
+  region: string;
+  /**
+   * Real State Operation
+   */
+  operation: string;
 }

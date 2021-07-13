@@ -6,9 +6,9 @@
  */
 
 /**
- * The transaction is successful and the seller receives the money in the wallet
+ * System event triggered for the buyer when the period to hand over the item to the carrier has expired
  */
-export interface TransactionPaymentSeller {
+export interface TransactionDeliveryExpiredBuyer {
   /**
    * The unique identifier for an item
    */
@@ -21,8 +21,4 @@ export interface TransactionPaymentSeller {
    * Identifier of the transaction
    */
   transactionId: string;
-  /**
-   * Amount of the payment received in the wallet
-   */
-  paymentAmount: number;
 }

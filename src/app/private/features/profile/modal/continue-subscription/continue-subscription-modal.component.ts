@@ -1,15 +1,8 @@
 import { Component } from '@angular/core';
-import {
-  AnalyticsEvent,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  ClickCancelCloseSubscription,
-  SCREEN_IDS,
-} from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -39,7 +32,6 @@ export class ContinueSubscriptionModalComponent {
 
   public continueSubscription() {
     this.loading = true;
-    this.trackContinueSubscription();
     this.subscriptionsService.continueSubscription(this.subscription.selected_tier_id).subscribe(
       () => {
         this.loading = false;
@@ -60,19 +52,5 @@ export class ContinueSubscriptionModalComponent {
         });
       }
     );
-  }
-
-  private trackContinueSubscription() {
-    const event: AnalyticsEvent<ClickCancelCloseSubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ClickCancelCloseSubscription,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
-      attributes: {
-        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-        tier: this.subscription.selected_tier_id,
-        screenId: SCREEN_IDS.ProfileSubscription,
-      },
-    };
-
-    this.analyticsService.trackEvent(event);
   }
 }
