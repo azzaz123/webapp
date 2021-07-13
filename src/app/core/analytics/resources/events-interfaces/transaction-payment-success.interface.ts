@@ -25,4 +25,16 @@ export interface TransactionPaymentSuccess {
    * Identifier of the checkout screen
    */
   screenId: 238;
+  /**
+   * Country of the user (buyer) that sends the transaction payment success (e.g.: ES, IT, etc.)
+   */
+  country?: string;
+  /**
+   * Language of the user (buyer) that sends the transaction payment success(e.g.: ES, IT, etc.)
+   */
+  language?: string;
+  /**
+   * ISO currency code of the price of the item
+   */
+  currency?: 'EUR';
 }

@@ -6,7 +6,6 @@ import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  ClickKeepCurrentSubscription,
   ClickProfileEditCurrentSubscription,
   ClickProSubscription,
   ClickSubscriptionManagementPlus,
@@ -465,25 +464,6 @@ describe('SubscriptionComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(ContinueSubscriptionModalComponent, {
         windowClass: 'review',
       });
-    });
-
-    it('should send event to analytics', () => {
-      spyOn(analyticsService, 'trackEvent');
-      spyOn(modalService, 'open').and.callThrough();
-      const expectedEvent: AnalyticsEvent<ClickKeepCurrentSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ClickKeepCurrentSubscription,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          subscription: MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED.category_id as SUBSCRIPTION_CATEGORIES,
-          tier: MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED.selected_tier_id,
-          screenId: SCREEN_IDS.ProfileSubscription,
-        },
-      };
-
-      component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
-
-      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 

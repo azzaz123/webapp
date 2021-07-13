@@ -18,6 +18,10 @@ export interface TransactionPaymentSeller {
    */
   requestId: string;
   /**
+   * Identifier of the transaction
+   */
+  transactionId: string;
+  /**
    * Amount of the payment received in the wallet
    */
   paymentAmount: number;

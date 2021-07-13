@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { PERMISSIONS } from '@core/user/user-constants';
-import { CarouselSlide } from '../carousel-slides/carousel-slide.interface';
+import { CarouselSlide } from '@shared/components/carousel-slides/carousel-slide.interface';
 import { STATUS_ITEM_FLAG_TYPES, BUMPED_ITEM_FLAG_TYPES } from '../item-flag/item-flag-constants';
 
 @Component({
