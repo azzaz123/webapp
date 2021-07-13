@@ -224,4 +224,3 @@ export enum ANALYTICS_EVENT_NAMES {
   ViewWalletMovementsHistory = 'View Wallet Movements History',
   ViewWallet = 'View Wallet',
 }
-
