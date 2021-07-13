@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CatalogHttpService } from './catalog-http.service';
-import { PublishedResponse } from '@api/catalog/dtos/published/published-response';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from '@environments/environment';
 import { publishedResponseFixture } from '@api/fixtures/catalog/published/published-response.fixtures';
-import { WallResponse } from '@api/catalog/dtos';
+import { WallResponse, PublishedResponse } from '@api/catalog/dtos';
 import { Location } from '@api/core/model/location/location';
 import { wallResponseFixture } from '@api/fixtures/catalog/wall/wall-response.fixtures';
 
