@@ -40,6 +40,7 @@ export class SlidesCarouselComponent implements AfterContentInit {
   @Input() noBackgroundIndicators: boolean;
   @Input() hideControllers = false;
   @Input() hideIndicators = false;
+  @Input() activeIndicatorWallaMain = false;
   @Input() initialIndex = 0;
   @Input() controlsSize = CAROUSEL_CONTROL_SIZE.REGULAR;
 

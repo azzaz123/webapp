@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { KycComponent } from './kyc.component';
+import { KYCComponent } from './kyc.component';
 
 const routes: Route[] = [
   {
     path: '',
-    component: KycComponent,
+    component: KYCComponent,
   },
 ];
 
@@ -15,4 +15,4 @@ const routes: Route[] = [
 })
 export class KYCRoutingModule {}
 
-export const KYCRoutedComponents = [KycComponent];
+export const KYCRoutedComponents = [KYCComponent];

@@ -32,8 +32,8 @@ describe('SlidesCarouselComponent', () => {
   const fallbackImageClass = '.SlidesCarousel__fallbackImage';
   const hideControllerClass = '.SlidesCarousel--hideControllers';
   const hideIndicatorsClass = '.SlidesCarousel--hideIndicators';
+  const activeIndicatorWallaMainClass = '.SlidesCarousel--wallaMainActiveIndicator';
   const noBackgroundIndicatorsClass = '.SlidesCarousel--noBackgroundIndicators';
-  const manyImagesClass = '.SlidesCarousel--manyImages';
 
   let component: SlidesCarouselComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
@@ -139,6 +139,16 @@ describe('SlidesCarouselComponent', () => {
         fixture.detectChanges();
 
         expect(fixture.debugElement.query(By.css(hideControllerClass))).toBeTruthy();
+      });
+    });
+
+    describe('when the activeIndicatorWallaMain input is true...', () => {
+      it('should set the active bullet in walla main color', () => {
+        component.activeIndicatorWallaMain = true;
+
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.query(By.css(activeIndicatorWallaMainClass))).toBeTruthy();
       });
     });
 
