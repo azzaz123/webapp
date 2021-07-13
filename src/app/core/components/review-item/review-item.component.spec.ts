@@ -165,18 +165,20 @@ describe('ReviewItemComponent', () => {
       });
 
       describe('when showing translation', () => {
-        beforeEach(() => {
-          component['translation'] = translatedComment;
-          debugElement.query(By.directive(TranslateButtonComponent)).nativeElement.click();
-          fixture.detectChanges();
-        });
+        describe('and button is clicked again', () => {
+          beforeEach(() => {
+            component['translation'] = translatedComment;
+            debugElement.query(By.directive(TranslateButtonComponent)).nativeElement.click();
+            fixture.detectChanges();
+          });
 
-        it('should show original', () => {
-          debugElement.query(By.directive(TranslateButtonComponent)).nativeElement.click();
-          fixture.detectChanges();
-          const comment = debugElement.query(commentPredicate).nativeElement.innerHTML;
+          it('should show original', () => {
+            debugElement.query(By.directive(TranslateButtonComponent)).nativeElement.click();
+            fixture.detectChanges();
+            const comment = debugElement.query(commentPredicate).nativeElement.innerHTML;
 
-          expect(comment).toEqual(MOCK_TRANSLATABLE_REVIEW.comments);
+            expect(comment).toEqual(MOCK_TRANSLATABLE_REVIEW.comments);
+          });
         });
       });
     });
