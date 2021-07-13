@@ -174,7 +174,7 @@ describe('CreditCreditCardComponent', () => {
           component.creditCardForm.setValue(mockFormCreditCardSyncRequest);
         });
 
-        describe('and server notifices a success...', () => {
+        describe('and server notifies a success...', () => {
           beforeEach(() => {
             spyOn(paymentsCreditCardService, 'create').and.returnValue(of(null));
 
