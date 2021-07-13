@@ -83,6 +83,7 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
 import { LocationSelectorModal } from './modals/location-selector-modal/location-selector-modal.component';
 import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.module';
+import { SuggesterInputComponent } from './suggester-input/suggester-input.component';
 
 @NgModule({
   imports: [
@@ -240,6 +241,7 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     DeliveryDevelopmentDirective,
     InfiniteScrollDirective,
     LocationSelectorModal,
+    SuggesterInputComponent,
   ],
   providers: [DecimalPipe, LinkTransformPipe],
   entryComponents: [
