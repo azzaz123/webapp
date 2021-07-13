@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Money } from '@api/core/model/money.interface';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
+import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-wallet-balance-info',
@@ -13,19 +16,17 @@ export class WalletBalanceInfoComponent implements OnInit {
   public hasPositiveBalance = false;
   public isError = false;
 
-  constructor(private paymentsWalletsService: PaymentsWalletsService) {}
+  constructor(private paymentsWalletsService: PaymentsWalletsService, private toastService: ToastService) {}
 
   ngOnInit() {
-    this.paymentsWalletsService.walletBalance$.subscribe({
+    this.paymentsWalletsService.walletBalance$.pipe(finalize(() => (this.loading = false))).subscribe({
       next: (walletBalance) => {
         this.walletBalance = walletBalance;
         this.hasPositiveBalance = this.isNumberPositive(walletBalance.amount.total);
       },
       error: () => {
         this.isError = true;
-      },
-      complete: () => {
-        this.loading = false;
+        this.toastService.show(DEFAULT_ERROR_TOAST);
       },
     });
   }
