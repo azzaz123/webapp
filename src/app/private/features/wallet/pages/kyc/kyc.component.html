@@ -3,7 +3,7 @@
         <tsl-bank-account isKYC="true" (bankAccountSaved)="goNextStep()"></tsl-bank-account>
     </ng-template>
     <ng-template step>
-        <tsl-kyc-nationality></tsl-kyc-nationality>
+        <tsl-kyc-nationality (nationalityFinished)="goNextStep()" (selectedDocument)="true"></tsl-kyc-nationality>
     </ng-template>
     <ng-template step>
         <tsl-kyc-images></tsl-kyc-images>
