@@ -1,6 +1,4 @@
 import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Location } from '@angular/common';
-
 import { KYC_NATIONALITIES } from './kyc-nationalities-constants';
 import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -14,11 +12,12 @@ import { IOption } from '@shared/dropdown/utils/option.interface';
 export class KycNationalityComponent {
   @Output() nationalityFinished: EventEmitter<void> = new EventEmitter();
   @Output() selectedDocument: EventEmitter<string> = new EventEmitter();
+  @Output() goBack: EventEmitter<void> = new EventEmitter();
 
   public selectedNationality: KYCNationality;
   public readonly KYC_NATIONALITIES = KYC_NATIONALITIES;
 
-  constructor(private location: Location) {}
+  constructor() {}
 
   public selectNationality(selectedNationality: KYCNationality): void {
     this.selectedNationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
@@ -27,10 +26,6 @@ export class KycNationalityComponent {
   public selectAcreditationDocument(selectedDocument: IOption): void {
     this.selectedDocument.emit(selectedDocument.value);
     this.nationalityFinished.emit();
-  }
-
-  public goBack(): void {
-    this.location.back();
   }
 
   get svgPath(): string {
