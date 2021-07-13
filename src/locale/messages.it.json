@@ -1502,6 +1502,7 @@
     "web_add_new_subscription_card": "Collega una carta ai tuoi abbonamenti",
     "web_current_cards": "Carte salvate",
     "web_spinner_536": "Caricamento...",
-    "web_spinner_537": "Stiamo caricando tutti i tuoi messaggi per la prima volta. Saranno disponibili prima che i lavori della Sagrada Familia siano terminati."
+    "web_spinner_537": "Stiamo caricando tutti i tuoi messaggi per la prima volta. Saranno disponibili prima che i lavori della Sagrada Familia siano terminati.",
+    "web_search_box_specific_category_placeholder": "Cerca in {$INTERPOLATION}"
   }
 }

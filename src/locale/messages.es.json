@@ -1502,6 +1502,7 @@
     "web_add_new_subscription_card": "Añadir nueva tarjeta de suscripción",
     "web_current_cards": "Tarjetas guardadas",
     "web_spinner_536": "Cargando...",
-    "web_spinner_537": "Estamos cargando todos tus mensajes por primera vez. Estarán disponibles antes de que acaben las obras de la Sagrada Família, un abrazo."
+    "web_spinner_537": "Estamos cargando todos tus mensajes por primera vez. Estarán disponibles antes de que acaben las obras de la Sagrada Família, un abrazo.",
+    "web_search_box_specific_category_placeholder": "Buscar en {$INTERPOLATION}"
   }
 }
