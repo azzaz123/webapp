@@ -32,7 +32,7 @@ describe('ReviewsHttpService', () => {
       const userId = 'id';
 
       service.getUserReviews(userId, '0').subscribe((res: PaginatedList<ReviewsElementDto>) => (response = res));
-      const req: TestRequest = httpMock.expectOne(USER_REVIEWS_ENDPOINT(userId));
+      const req: TestRequest = httpMock.expectOne(`${USER_REVIEWS_ENDPOINT(userId)}?init=0`);
       req.flush([reviewsElementDtoFixture]);
 
       expect(response).toEqual({ list: [reviewsElementDtoFixture], paginationParameter: null });
