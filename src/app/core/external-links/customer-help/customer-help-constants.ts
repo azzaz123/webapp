@@ -1,3 +1,5 @@
+export type HelpLocaleId = 'es' | 'en' | 'it';
+
 export enum HELP_LOCALE {
   es = 'es-es',
   en = 'en-us',
