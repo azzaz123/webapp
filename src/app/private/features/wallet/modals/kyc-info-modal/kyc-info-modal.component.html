@@ -10,7 +10,7 @@
                     <div class="KYCInfoModal__textContainer d-flex flex-column pb-4">
                         <span class="KYCInfoModal__title mb-2">{{step.title}}</span>
                         <span class="KYCInfoModal__description mb-4">{{step.description}}</span>
-                        <a class="KYCInfoModal__link pb-4" *ngIf="step.extraLink">{{step.extraLink}}</a>
+                        <a class="KYCInfoModal__link pb-4" *ngIf="step.extraLink" [href]="zendeskURL" target="_blank" >{{step.extraLink}}</a>
                     </div>
                 </div>
             </ng-template>
