@@ -15,6 +15,7 @@ import {
 import {
   mockCreditCardSyncRequest,
   mockCreditCardSyncRequestEmpty,
+  mockFormCreditCardSyncRequest,
   MockPaymentsCreditCardService,
 } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import { PaymentsCreditCardService } from '@api/payments/cards';
@@ -170,17 +171,17 @@ describe('CreditCreditCardComponent', () => {
           spyOn(router, 'navigate');
 
           component.initForm();
-          component.creditCardForm.setValue(mockCreditCardSyncRequest);
+          component.creditCardForm.setValue(mockFormCreditCardSyncRequest);
         });
 
-        describe('and the petition succeed...', () => {
+        describe('and server notifices a success...', () => {
           beforeEach(() => {
             spyOn(paymentsCreditCardService, 'create').and.returnValue(of(null));
 
             triggerFormSubmit();
           });
 
-          it('should call the create endpoint', () => {
+          it('should call the create endpoint with valid data', () => {
             expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
           });
 
@@ -196,7 +197,7 @@ describe('CreditCreditCardComponent', () => {
           });
         });
 
-        describe('and the petition fails...', () => {
+        describe('and server notifies an error...', () => {
           describe('and when the failure is because server notifies card is not authorized', () => {
             beforeEach(() => {
               spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardIsNotAuthorizedError()]));

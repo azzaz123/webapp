@@ -146,7 +146,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
 
   private getCreditCardSyncRequest(): CreditCardSyncRequest {
     this.creditCardForm.getRawValue();
-    const cardNumberFormatted = this.creditCardForm.get('cardNumber').value.trim();
+    const cardNumberFormatted = this.creditCardForm.get('cardNumber').value.replace(/ /g, '');
     const cardExpirationDateFormatted = this.creditCardForm.get('cardExpirationDate').value.replace('/', '');
 
     return {
