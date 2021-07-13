@@ -61,4 +61,12 @@ export interface ListItemCG {
    * If the item has the weight informed
    */
   shippingWeight?: number;
+  /**
+   * Country of the user (seller) that lists the item (e.g.: ES, IT, etc.)
+   */
+  country?: string;
+  /**
+   * Language of the user (seller) that lists the item (e.g.: ES, IT, etc.)
+   */
+  language?: string;
 }
