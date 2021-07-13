@@ -1,5 +1,5 @@
 import { CatalogItemPrice, PublishedItem } from '@api/catalog/dtos';
-import { publishedItemImageFixture, mappedPublishedItemImageFixture } from './catalog-image.fixtures';
+import { catalogItemImageFixture, mappedCatalogItemImageFixture } from '../catalog-image.fixtures';
 import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
@@ -49,7 +49,7 @@ export const favouriteIdsFixture = ['my-item-id'];
 
 export const publishedItemFixture: PublishedItem = {
   id,
-  images: [publishedItemImageFixture],
+  images: [catalogItemImageFixture],
   slug,
   category_id: noStorytellingCategoryId,
   attributes,
@@ -71,7 +71,7 @@ export const mappedPublishedItemFixture: ItemCard = {
   salePrice: price.amount,
   currencyCode: price.currency,
   webSlug: slug,
-  images: [mappedPublishedItemImageFixture],
+  images: [mappedCatalogItemImageFixture],
   ownerId: userIdFixture,
   flags: {
     pending: false,

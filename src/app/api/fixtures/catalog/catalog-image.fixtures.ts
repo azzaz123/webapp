@@ -6,7 +6,7 @@ const mediumImage = 'https://medium-image.com';
 const smallImage = 'https://small-image.com';
 const averageColor = '#000000';
 
-export const publishedItemImageFixture: CatalogItemImage = {
+export const catalogItemImageFixture: CatalogItemImage = {
   urls: {
     big: bigImage,
     medium: mediumImage,
@@ -15,7 +15,7 @@ export const publishedItemImageFixture: CatalogItemImage = {
   average_color: averageColor,
 };
 
-export const mappedPublishedItemImageFixture: Image = {
+export const mappedCatalogItemImageFixture: Image = {
   id: '',
   original_height: 0,
   original_width: 0,

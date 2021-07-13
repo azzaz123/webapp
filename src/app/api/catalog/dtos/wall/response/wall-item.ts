@@ -1,8 +1,9 @@
 import { CatalogItemAttribute, CatalogItemImage, CatalogItemPrice } from '@api/catalog/dtos';
+import { ItemType } from '@api/core/model/item';
 
 export interface WallItem {
   id: string;
-  type: 'consumer_goods' | 'real_estate' | 'cars';
+  type: ItemType;
   title: string;
   description: string;
   slug: string;

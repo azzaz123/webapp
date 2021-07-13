@@ -5,7 +5,7 @@ import { PUBLISHED_QUERY_PARAMS, PublishedItem, PublishedResponse } from '@api/c
 import { map, switchMap } from 'rxjs/operators';
 import { PaginatedList } from '../core/model/paginated-list.interface';
 import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';
-import { mapCatalogItemsToItemCards } from './mappers/published-item-mapper';
+import { mapPublishedItemsToItemCards } from './mappers/published-item-mapper';
 import { CatalogHttpService } from '@api/catalog/http/catalog-http.service';
 import { QueryParams } from '@api/core/utils/types';
 
@@ -35,7 +35,7 @@ export class CatalogApiService {
         return forkJoin(of(response), favouriteIds$).pipe(
           map(([res, favouritedIds]: [PublishedResponse, string[]]) => {
             return {
-              list: mapCatalogItemsToItemCards(res.data, userId, favouritedIds),
+              list: mapPublishedItemsToItemCards(res.data, userId, favouritedIds),
               paginationParameter: res.meta.next,
             };
           })
