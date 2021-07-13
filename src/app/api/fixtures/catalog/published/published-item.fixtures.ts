@@ -7,8 +7,6 @@ const id = 'my-item-id';
 const title = 'Title';
 const description = 'Description';
 const slug = 'my-slug';
-const noStorytellingCategoryId = '222';
-const storytellingCategoryId = '100';
 
 const attributes: CatalogItemAttribute[] = [
   {
@@ -51,7 +49,6 @@ export const publishedItemFixture: PublishedItem = {
   id,
   images: [catalogItemImageFixture],
   slug,
-  category_id: noStorytellingCategoryId,
   attributes,
   title,
   description,
@@ -60,13 +57,11 @@ export const publishedItemFixture: PublishedItem = {
 
 export const storytellingPublishedItemFixture: PublishedItem = {
   ...publishedItemFixture,
-  category_id: storytellingCategoryId,
 };
 
 export const mappedPublishedItemFixture: ItemCard = {
   id,
   title,
-  categoryId: Number.parseInt(noStorytellingCategoryId, 0),
   description,
   salePrice: price.amount,
   currencyCode: price.currency,
@@ -94,6 +89,5 @@ export const mappedFavouritedPublishedItemFixture: ItemCard = {
 
 export const mappedStorytellingPublishedItemFixture: ItemCard = {
   ...mappedPublishedItemFixture,
-  categoryId: Number.parseInt(storytellingCategoryId, 0),
   description: storytelling,
 };

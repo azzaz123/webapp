@@ -2,13 +2,12 @@ import { CatalogItemPrice, WallItem } from '@api/catalog/dtos';
 import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { catalogItemImageFixture, mappedCatalogItemImageFixture } from '@api/fixtures/catalog/catalog-image.fixtures';
+import { ItemType } from '@api/core/model';
 
 const id = 'my-item-id';
 const title = 'Title';
 const description = 'Description';
 const slug = 'my-slug';
-const noStorytellingCategoryId = '222';
-const storytellingCategoryId = '100';
 
 const attributes: CatalogItemAttribute[] = [
   {
@@ -50,29 +49,28 @@ export const favouriteIdsFixture = ['my-item-id'];
 export const wallItemFixture: WallItem = {
   id,
   images: [catalogItemImageFixture],
+  type: ItemType.CONSUMER_GOODS,
   slug,
-  category_id: noStorytellingCategoryId,
   attributes,
   title,
   description,
   price,
+  distance: 0,
 };
 
 export const storytellingWallItemFixture: WallItem = {
   ...wallItemFixture,
-  category_id: storytellingCategoryId,
+  type: ItemType.CARS,
 };
 
 export const mappedWallItemFixture: ItemCard = {
   id,
   title,
-  categoryId: Number.parseInt(noStorytellingCategoryId, 0),
   description,
   salePrice: price.amount,
   currencyCode: price.currency,
   webSlug: slug,
   images: [mappedCatalogItemImageFixture],
-  ownerId: userIdFixture,
   flags: {
     pending: false,
     sold: false,
@@ -94,6 +92,5 @@ export const mappedFavouritedWallItemFixture: ItemCard = {
 
 export const mappedStorytellingWallItemFixture: ItemCard = {
   ...mappedWallItemFixture,
-  categoryId: Number.parseInt(storytellingCategoryId, 0),
   description: storytelling,
 };

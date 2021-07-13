@@ -8,7 +8,7 @@ export interface ItemCard {
   description?: string;
   salePrice: number;
   currencyCode: string;
-  ownerId: string;
+  ownerId?: string;
   webSlug: string;
   images: Image[];
   distance?: number;
