@@ -18,7 +18,7 @@
               </div>
               <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
               <div *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-                <tsl-button id="qa-list-pro-button" class="w-100 mt-2" className="btn btn-dark btn--width" [routerLink]="['/pro-manager']">
+                <tsl-button id="qa-list-pro-button" class="w-100 mt-2" className="btn btn-dark w-100" routerLink="/{{PRO_PATHS.PRO_MANAGER}}">
                   {{subscriptionButtonName}}
                 </tsl-button>
               </div>

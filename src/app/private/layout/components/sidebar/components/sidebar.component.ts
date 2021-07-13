@@ -7,6 +7,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserStats } from '@core/user/user-stats.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -20,6 +21,7 @@ export class SidebarComponent implements OnInit {
   @Input() isProfile: boolean;
   public isProfessional: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
+  public readonly PRO_PATHS = PRO_PATHS;
 
   constructor(
     public userService: UserService,

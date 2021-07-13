@@ -10,6 +10,7 @@ import {
   SCREEN_IDS,
 } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
+import { PRO_PATHS } from '../pro-routing-constants';
 
 @Component({
   selector: 'tsl-pro',
@@ -19,6 +20,7 @@ import { AnalyticsService } from 'app/core/analytics/analytics.service';
 export class ProComponent implements OnInit {
   private hasOneTrialSubscription: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
+  public readonly PRO_PATHS = PRO_PATHS;
 
   constructor(
     public userService: UserService,

@@ -100,6 +100,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private subscriptions: SubscriptionsResponse[];
   private componentSubscriptions: Subscription[] = [];
   public readonly PERMISSIONS = PERMISSIONS;
+  public readonly PRO_PATHS = PRO_PATHS;
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true })
