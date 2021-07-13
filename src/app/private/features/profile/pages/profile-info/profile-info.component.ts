@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
-import { Coordinate } from '@core/geolocation/address-response.interface';
+import { Coordinate, StoreLocation } from '@core/geolocation/address-response.interface';
 import { User } from '@core/user/user';
 import { UserProInfo } from '@core/user/user-info.interface';
 import { UserService } from '@core/user/user.service';
@@ -11,7 +11,7 @@ import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.
 import { metadata } from 'assets/js/metadata-phonenumber';
 import { isValidNumber } from 'libphonenumber-js/custom';
 import * as moment from 'moment';
-import { finalize, take } from 'rxjs/operators';
+import { finalize, map, mergeMap, take, tap } from 'rxjs/operators';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { Router } from '@angular/router';
@@ -27,6 +27,8 @@ import {
 } from '@core/analytics/analytics-constants';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { isEqual } from 'lodash-es';
+import { Observable, of } from 'rxjs';
 
 export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
@@ -83,6 +85,11 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
         longitude: ['', [Validators.required]],
       }),
       link: '',
+      storeLocation: this.fb.group({
+        address: ['', [Validators.required]],
+        latitude: ['', [Validators.required]],
+        longitude: ['', [Validators.required]],
+      }),
     });
   }
 
@@ -142,6 +149,11 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
         description: this.userInfo.description,
         opening_hours: this.userInfo.opening_hours,
         link: this.userInfo.link,
+        storeLocation: {
+          latitude: this.user.extraInfo.latitude,
+          longitude: this.user.extraInfo.longitude,
+          address: this.user.extraInfo.address,
+        },
       };
     }
 
@@ -197,6 +209,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
             gender: this.user.gender ? this.user.gender.toUpperCase().substr(0, 1) : null,
           })
           .pipe(
+            mergeMap(() => this.checkAndSaveStoreLocation(profileFormValue)),
             finalize(() => {
               this.loading = false;
               this.formComponent.initFormControl();
@@ -253,6 +266,25 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       }
       this.manageModal();
     }
+  }
+
+  private checkAndSaveStoreLocation(profileFormValue: any): Observable<boolean> {
+    const storeLocation: StoreLocation = profileFormValue.storeLocation;
+    const savedStoreLocation: StoreLocation = {
+      latitude: this.user.extraInfo.latitude,
+      longitude: this.user.extraInfo.longitude,
+      address: this.user.extraInfo.address,
+    };
+    if (isEqual(storeLocation, savedStoreLocation)) {
+      return of(false);
+    }
+
+    return this.userService.updateStoreLocation(storeLocation).pipe(
+      tap((value) => {
+        console.log('show modal', value);
+      }),
+      map(() => true)
+    );
   }
 
   public onMapContainerVisible(): void {
