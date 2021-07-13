@@ -53,11 +53,11 @@ export class ReviewItemComponent implements OnInit {
       return;
     }
 
-    const willTranslate = !this.isTranslated;
-    if (willTranslate && !this.translation) {
+    const needsToRetrieveTranslation = !this.isTranslated && !this.translation;
+    if (needsToRetrieveTranslation) {
       this.retrieveTranslation();
     } else {
-      this.translateReviewText(willTranslate);
+      this.translateReviewText(!this.isTranslated);
     }
   }
 

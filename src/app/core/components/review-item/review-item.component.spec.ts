@@ -16,7 +16,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Review } from '@private/features/reviews/core/review';
 
 @Component({
-  selector: 'ts-test',
+  selector: 'tsl-test',
   template: '<tsl-review-item [isOwner]="isOwner" [review]="review"></tsl-review-item>',
 })
 class TestComponent {
