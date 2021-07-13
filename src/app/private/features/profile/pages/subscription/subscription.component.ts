@@ -7,7 +7,6 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickProfileEditCurrentSubscription,
   ClickProSubscription,
-  ClickSubscriptionManagementPlus,
   SCREEN_IDS,
   ViewSubscription,
 } from '@core/analytics/analytics-constants';
@@ -95,7 +94,6 @@ export class SubscriptionsComponent implements OnInit {
     const modal = this.getModalTypeDependingOnSubscription(subscription);
     if (!modal) {
       this.setNewSubscription(subscription);
-      this.trackClickSubscriptionManagementPlus(subscription);
     } else {
       this.openSubscriptionModal(subscription, modal);
     }
@@ -198,20 +196,6 @@ export class SubscriptionsComponent implements OnInit {
       },
     };
     this.analyticsService.trackPageView(pageView);
-  }
-
-  private trackClickSubscriptionManagementPlus(subscription: SubscriptionsResponse): void {
-    const event: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
-      name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes: {
-        screenId: SCREEN_IDS.SubscriptionManagement,
-        subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
-        isNewSubscriber: !this.subscriptionsService.hasOneStripeSubscription(this.subscriptions),
-        freeTrial: this.subscriptionsService.hasTrial(subscription),
-      },
-    };
-    return this.analyticsService.trackEvent(event);
   }
 
   private trackOpenModalEvent(subscription: SubscriptionsResponse, modalType: SubscriptionModal): void {
