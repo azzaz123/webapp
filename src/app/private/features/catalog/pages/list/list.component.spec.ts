@@ -1526,7 +1526,7 @@ describe('ListComponent', () => {
         const proButton = fixture.debugElement.nativeElement.querySelector('#qa-list-pro-button');
         fixture.detectChanges();
 
-        expect(proButton.routerLink).toEqual([`/${PRO_PATHS.PRO_MANAGER}`]);
+        expect(proButton.routerLink).toEqual(`/${PRO_PATHS.PRO_MANAGER}`);
       });
 
       describe('and is not pro user', () => {
