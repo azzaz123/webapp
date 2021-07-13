@@ -47,7 +47,7 @@ describe('KycGuard', () => {
         spyOn(kycBannerService, 'getSpecifications').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_BANNER_STATUS.PENDING)));
       });
 
-      it('should can activate the KYC page', () => {
+      it('should be able to activate the KYC page', () => {
         let result: boolean;
 
         guard.canActivate().subscribe((isVerificationNeed: boolean) => {
@@ -71,7 +71,7 @@ describe('KycGuard', () => {
         spyOn(kycBannerService, 'getSpecifications').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_BANNER_STATUS.REJECTED)));
       });
 
-      it('should can activate the KYC page', () => {
+      it('should be able to activate the KYC page', () => {
         let result: boolean;
 
         guard.canActivate().subscribe((isVerificationNeed: boolean) => {
@@ -94,7 +94,7 @@ describe('KycGuard', () => {
         spyOn(kycBannerService, 'getSpecifications').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_BANNER_STATUS.PENDING_VERIFICATION)));
       });
 
-      it(`should can't activate the KYC page`, () => {
+      it(`should NOT be able to activate the KYC page`, () => {
         let result: boolean;
 
         guard.canActivate().subscribe((isVerificationNeed: boolean) => {
@@ -117,7 +117,7 @@ describe('KycGuard', () => {
         spyOn(kycBannerService, 'getSpecifications').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_BANNER_STATUS.VERIFIED)));
       });
 
-      it(`should can't activate the KYC page`, () => {
+      it(`should NOT be able to activate the KYC page`, () => {
         let result: boolean;
 
         guard.canActivate().subscribe((isVerificationNeed: boolean) => {
@@ -140,7 +140,7 @@ describe('KycGuard', () => {
         spyOn(kycBannerService, 'getSpecifications').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_BANNER_STATUS.NO_NEED)));
       });
 
-      it(`should can't activate the KYC page`, () => {
+      it(`should NOT be able to activate the KYC page`, () => {
         let result: boolean;
 
         guard.canActivate().subscribe((isVerificationNeed: boolean) => {
