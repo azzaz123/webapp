@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { ItemFullScreenCarouselComponent } from './item-fullscreen-carousel.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { SlidesCarouselModule } from '@public/shared/components/carousel-slides/carousel-slides.module';
+import { SlidesCarouselModule } from '@shared/components/carousel-slides/carousel-slides.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from '@shared/button/button.module';
 import { CommonModule } from '@angular/common';

@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './kyc.component.html',
   styleUrls: ['./kyc.component.scss'],
 })
-export class KycComponent implements OnInit {
+export class KYCComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
