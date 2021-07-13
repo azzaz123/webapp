@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HammerModule } from '@angular/platform-browser';
 import { HAMMER_PROVIDER } from '@core/hammerjs/hammerjs-provider';
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { SlidesCarouselModule } from '../carousel-slides/carousel-slides.module';
+import { SlidesCarouselModule } from '@shared/components/carousel-slides/carousel-slides.module';
 import { ItemFlagModule } from '../item-flag/item-flag.module';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
 import { DeviceDetectorService } from 'ngx-device-detector';

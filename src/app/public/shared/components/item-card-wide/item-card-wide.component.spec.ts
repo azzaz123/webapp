@@ -8,8 +8,8 @@ import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spe
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { SlidesCarouselComponent } from '../carousel-slides/carousel-slides.component';
-import { SlidesCarouselModule } from '../carousel-slides/carousel-slides.module';
+import { SlidesCarouselComponent } from '@shared/components/carousel-slides/carousel-slides.component';
+import { SlidesCarouselModule } from '@shared/components/carousel-slides/carousel-slides.module';
 import { FavouriteIconComponent } from '../favourite-icon/favourite-icon.component';
 import { FavouriteIconModule } from '../favourite-icon/favourite-icon.module';
 import { ItemExtraInfoModule } from '../item-extra-info/item-extra-info.module';
