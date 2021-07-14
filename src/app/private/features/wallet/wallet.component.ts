@@ -26,12 +26,9 @@ export class WalletComponent implements OnInit {
     },
   ];
 
-  //FIXME: This will be moved into a service
-  private zendeskWalletHelpArticleId: number = 360017172677;
-
-  public get zendeskWalletHelpURL(): string {
-    return `https://ayuda.wallapop.com/hc/es-es/articles/${this.zendeskWalletHelpArticleId}`;
-  }
+  //FIXME: These will be moved into a service
+  public zendeskWalletHelpArticleId: number = 360017172677;
+  public zendeskWalletHelpURL = `https://ayuda.wallapop.com/hc/es-es/articles/${this.zendeskWalletHelpArticleId}`;
 
   constructor(private router: Router, private kycBannerService: KYCBannerService) {
     router.events.subscribe((e) => {
