@@ -8,10 +8,11 @@ import { SharedModule } from '@shared/shared.module';
 import { StarsModule } from '@shared/stars/stars.module';
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { ReviewItemComponent } from './review-item.component';
+import { TranslateButtonComponent } from '@core/components/translate-button/translate-button.component';
 
 @NgModule({
   imports: [CommonModule, SvgIconModule, StarsModule, UserAvatarModule, SanitizedBackgroundModule, RouterModule, SharedModule],
-  declarations: [ReviewItemComponent],
+  declarations: [ReviewItemComponent, TranslateButtonComponent],
   providers: [UserReviewService],
   exports: [ReviewItemComponent],
 })

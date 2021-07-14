@@ -1,13 +1,9 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ItemResponse } from '@core/item/item-response.interface';
 import { ShippingCounterResponse, UserStatsResponse } from '@core/user/user-stats.interface';
 import { Image, UserExtrainfo, UserFavourited, UserResponse } from '@core/user/user-response.interface';
 import { environment } from '@environments/environment';
-import { ReviewResponse, ReviewsData } from '@private/features/reviews/core/review-response.interface';
 import { Observable } from 'rxjs';
-import { PaginationResponse } from '../../pagination/pagination.interface';
-import { PaginationService } from '../../pagination/pagination.service';
 import { MarkAsFavouriteBodyResponse } from './interfaces/public-user-response.interface';
 
 export const PROFILE_API_URL = (userId: string) => `api/v3/users/${userId}`;
@@ -15,8 +11,6 @@ export const DELIVERY_API_URL = (userId: string) => `api/v3/delivery/users/${use
 export const USER_COVER_IMAGE_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/cover-image`;
 export const STATS_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/stats`;
 export const SHIPPING_COUNTER_ENDPOINT = (userId: string) => `${DELIVERY_API_URL(userId)}/transaction/statistics`;
-export const REVIEWS_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/reviews`;
-export const PUBLISHED_ITEMS_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/items/published`;
 export const SOLDS_ITEMS_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/items/solds`;
 export const TRANSACTIONS_BUYS_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/transactions/buys`;
 export const TRANSACTIONS_SOLDS_ENDPOINT = (userId: string) => `${PROFILE_API_URL(userId)}/transactions/solds`;
@@ -28,7 +22,7 @@ export const MARK_AS_FAVOURITE_ENDPOINT = (userId: string) => `${PROFILE_API_URL
 
 @Injectable()
 export class PublicUserApiService {
-  constructor(private http: HttpClient, private paginationService: PaginationService) {}
+  constructor(private http: HttpClient) {}
 
   public getStats(userId: string): Observable<UserStatsResponse> {
     return this.http.get<UserStatsResponse>(`${environment.baseUrl}${STATS_ENDPOINT(userId)}`);
@@ -40,24 +34,6 @@ export class PublicUserApiService {
 
   public isFavourite(userId: string): Observable<UserFavourited> {
     return this.http.get<UserFavourited>(`${environment.baseUrl}${IS_FAVOURITE_ENDPOINT(userId)}`);
-  }
-
-  public getReviews(userId: string, init: number = 0): Observable<PaginationResponse<ReviewResponse>> {
-    return this.paginationService.getItems(
-      this.http.get<HttpResponse<ReviewsData[]>>(
-        `${environment.baseUrl}${REVIEWS_ENDPOINT(userId)}`,
-        this.paginationService.getPaginationRequestOptions(init)
-      )
-    );
-  }
-
-  public getPublishedItems(id: string, init: number = 0): Observable<PaginationResponse<ItemResponse>> {
-    return this.paginationService.getItems(
-      this.http.get<HttpResponse<ItemResponse[]>>(
-        `${environment.baseUrl}${PUBLISHED_ITEMS_ENDPOINT(id)}`,
-        this.paginationService.getPaginationRequestOptions(init)
-      )
-    );
   }
 
   public getSoldItems(userId: string): Observable<any> {
