@@ -29,6 +29,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
+
     this.mapCheckedValue();
   }
 
@@ -48,7 +49,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
       this.extendedOptions.forEach((option: MultiSelectFormOption) => {
         if (option.value === checkedValue) {
           option.checked = true;
-        }
+        } else option.checked = false;
       });
     });
   }
