@@ -88,9 +88,9 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       }),
       link: '',
       storeLocation: this.fb.group({
-        address: ['', [Validators.required]],
-        latitude: ['', [Validators.required]],
-        longitude: ['', [Validators.required]],
+        address: [''],
+        latitude: [''],
+        longitude: [''],
       }),
     });
   }
