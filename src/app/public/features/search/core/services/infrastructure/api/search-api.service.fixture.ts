@@ -1,4 +1,3 @@
-import { IMAGE } from '@fixtures/user.fixtures.spec';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_PARAMETERS_SEARCH } from '../../constants/filter-parameters';
 import { SEARCH_ITEMS_MINIMAL_LENGTH } from '../../constants/search-item-max';
@@ -11,7 +10,7 @@ import { wallParameters } from './search-api-url.factory';
 import { SearchResponse } from './search-response.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { MOCK_SEARCH_ID } from '../../search-list-tracking-events/search-list-tracking-events.fixtures.spec';
-import { SORT_BY } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
+import { SORT_BY } from '@api/core/model/lists/sort.enum';
 
 export function FilterParametersWallFactory(categoryId: string): FilterParameter[] {
   return wallParameters.map((key: FILTER_QUERY_PARAM_KEY) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));

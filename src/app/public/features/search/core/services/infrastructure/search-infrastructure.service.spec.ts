@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { filterParametersMock } from '@fixtures/filter-parameter.fixtures';
 import { SearchPaginationFactory } from '@fixtures/item-card.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { SORT_BY } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
 import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { of } from 'rxjs';
@@ -10,6 +9,7 @@ import { MOCK_SEARCH_ID } from '../search-list-tracking-events/search-list-track
 import { SearchAPIService } from './api/search-api.service';
 import { SearchFavouritesService } from './favorites/search-favourites.service';
 import { SearchInfrastructureService } from './search-infrastructure.service';
+import { SORT_BY } from '@api/core/model/lists/sort.enum';
 
 
 describe('SearchInfrastructureService', () => {

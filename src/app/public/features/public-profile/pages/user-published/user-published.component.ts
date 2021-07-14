@@ -6,12 +6,12 @@ import { EmptyStateProperties } from '@public/shared/components/empty-state/empt
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { finalize, take } from 'rxjs/operators';
 import { PublicProfileTrackingEventsService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
-import { CatalogApiService } from '../../../../../api/catalog/catalog-api.service';
+import { CatalogApiService } from '@api/catalog/catalog-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { Subscription } from 'rxjs';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
-import { PaginatedList } from '../../../../../api/core/model/paginated-list.interface';
+import { PaginatedList } from '@api/core/model';
 
 @Component({
   selector: 'tsl-user-published',

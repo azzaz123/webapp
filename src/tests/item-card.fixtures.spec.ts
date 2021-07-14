@@ -12,8 +12,7 @@ import {
   MOCK_ITEM_RESPONSE_FAVOURITED,
 } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';
-import { PaginatedList } from '../app/api/core/model/paginated-list.interface';
-import { SORT_BY } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
+import { SORT_BY, PaginatedList } from '@api/core/model';
 
 export const MOCK_ITEM_CARD: ItemCard = {
   id: ITEM_DATA.id,

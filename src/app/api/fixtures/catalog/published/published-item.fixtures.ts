@@ -7,6 +7,8 @@ const id = 'my-item-id';
 const title = 'Title';
 const description = 'Description';
 const slug = 'my-slug';
+const noStorytellingCategoryId = '222';
+const storytellingCategoryId = '100';
 
 const attributes: CatalogItemAttribute[] = [
   {
@@ -48,6 +50,7 @@ export const favouriteIdsFixture = ['my-item-id'];
 export const publishedItemFixture: PublishedItem = {
   id,
   images: [catalogItemImageFixture],
+  category_id: noStorytellingCategoryId,
   slug,
   attributes,
   title,
@@ -57,6 +60,7 @@ export const publishedItemFixture: PublishedItem = {
 
 export const storytellingPublishedItemFixture: PublishedItem = {
   ...publishedItemFixture,
+  category_id: storytellingCategoryId,
 };
 
 export const mappedPublishedItemFixture: ItemCard = {

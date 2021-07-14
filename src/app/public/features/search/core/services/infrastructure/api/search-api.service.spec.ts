@@ -3,7 +3,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { environment } from '@environments/environment';
-import { SORT_BY } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { MOCK_SEARCH_ID } from '../../search-list-tracking-events/search-list-tracking-events.fixtures.spec';
 import { SearchCarResponse } from '../cars/search-car-response';
@@ -22,6 +21,7 @@ import {
   X_NEXT_PAGE_HEADER
 } from './search-api.service.fixture';
 import { SearchResponse } from './search-response.interface';
+import { SORT_BY } from '@api/core/model/lists/sort.enum';
 
 
 describe('SearchApiService', () => {
@@ -45,7 +45,6 @@ describe('SearchApiService', () => {
 
     describe('generic category', () => {
       const category_id = '1';
-      const search_id = MOCK_SEARCH_ID;
       const filters: FilterParameter[] = FilterParametersWallFactory(category_id);
       const searchResponse: SearchResponse<SearchCustomerGoodsResponse> = SearchResponseFactory<SearchCustomerGoodsResponse>({
         search_objects: SearchCustomerGoodsItemListResponseFactory()
