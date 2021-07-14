@@ -19,6 +19,7 @@ export class LocationBoxComponent implements OnInit {
   @Input() disableTitle: boolean;
   @Input() disableFooter: boolean;
   @Input() disablePopover: boolean;
+  @Input() disableInput: boolean;
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   public coordinates: Coordinate;
 
