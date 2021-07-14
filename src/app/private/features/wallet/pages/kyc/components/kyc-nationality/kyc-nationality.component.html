@@ -1,37 +1,46 @@
-<div class="KYCNationality">
-    <a class="KYCNationality__back d-flex pb-4 pb-md-2" (click)="goBack.emit()">
-        <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
-        <span i18n="@@web_catalog_pro_pages_checkout_638" class="ml-3">Back</span>
-    </a>
-    <span i18n="@@kyc_select_nationality_view_top_bar_title my-3" class="KYCNationality__header d-block">Nationality</span>
-    <div class="d-flex justify-content-center">
-        <div class="KYCNationality__content">
-            <div class="KYCNationality__drawing mb-4 w-100">
-                <tsl-svg-icon [src]="svgPath"></tsl-svg-icon>
+<div class="KYCNationality container">
+    <div class="row">
+        <div class="col">
+            <a class="KYCNationality__back d-flex pb-4 pb-md-2" (click)="handleBack()">
+                <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
+                <span i18n="@@web_catalog_pro_pages_checkout_638" class="ml-3">Back</span>
+            </a>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col col-md-11 offset-md-1">
+            <h3 class="KYCNationality__header" i18n="@@kyc_select_nationality_view_top_bar_title">Nationality</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <div class="KYCNationality__content">
+                <div class="KYCNationality__drawing mb-4 w-100">
+                    <tsl-svg-icon [src]="svgPath"></tsl-svg-icon>
+                </div>
+                <span i18n="@@kyc_select_nationality_view_title" class="KYCNationality__title d-block my-2">Tell us where you're from...</span>
+                <span i18n="@@kyc_select_nationality_view_description" class="KYCNationality__subtitle d-block mb-4">And we'll tell you what kind of document you can use to verify your identity</span>
+                <tsl-dropdown
+                    *ngIf="!selectedNationality"
+                    placeholder="I'm from..."
+                    i18n-placeholder="@@kyc_select_nationality_view_list_title_placeholder" 
+                    [options]="KYC_NATIONALITIES"
+                    bindLabel="string"
+                    bindValue="string"
+                    class="form-control" 
+                    (selected)="selectNationality($event)" name="nationality" ngDefaultControl>
+                </tsl-dropdown>
+                <tsl-dropdown
+                    *ngIf="selectedNationality"
+                    placeholder="Select document"
+                    i18n-placeholder="@@kyc_select_document_view_header_placeholder" 
+                    [options]="selectedNationality.availableDocuments"
+                    bindLabel="string"
+                    bindValue="string"
+                    class="form-control" 
+                    (selected)="selectAcreditationDocument($event)" name="nationality" ngDefaultControl>
+                </tsl-dropdown>
             </div>
-            <span i18n="@@kyc_select_nationality_view_title my-2" class="KYCNationality__title d-block">Tell us where you're from...</span>
-            <span i18n="@@kyc_select_nationality_view_description" class="KYCNationality__subtitle d-block mb-3">And we'll tell you what kind of document you can use to verify your identity</span>
-            
-            <tsl-dropdown
-                *ngIf="!selectedNationality"
-                placeholder="I'm from..."
-                i18n-placeholder="@@kyc_select_nationality_view_list_title_placeholder" 
-                [options]="KYC_NATIONALITIES"
-                bindLabel="string"
-                bindValue="string"
-                class="form-control" 
-                (selected)="selectNationality($event)" name="nationality" ngDefaultControl>
-            </tsl-dropdown>
-            <tsl-dropdown
-                *ngIf="selectedNationality"
-                placeholder="Select document"
-                i18n-placeholder="@@kyc_select_document_view_header_placeholder" 
-                [options]="selectedNationality.availableDocuments"
-                bindLabel="string"
-                bindValue="string"
-                class="form-control" 
-                (selected)="selectAcreditationDocument($event)" name="nationality" ngDefaultControl>
-            </tsl-dropdown>
         </div>
     </div>
 </div>
