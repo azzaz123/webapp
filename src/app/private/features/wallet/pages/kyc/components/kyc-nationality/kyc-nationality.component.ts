@@ -28,6 +28,14 @@ export class KycNationalityComponent {
     this.nationalityFinished.emit();
   }
 
+  public handleBack(): void {
+    if (this.selectedNationality) {
+      this.selectedNationality = null;
+    } else {
+      this.goBack.emit();
+    }
+  }
+
   get svgPath(): string {
     if (!this.selectedNationality) {
       return '/assets/icons/wallet/kyc/stepper/kyc_nationality.svg';
