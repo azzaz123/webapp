@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UserService } from '../../../core/user/user.service';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
+import { UserLocation } from '@core/user/user-response.interface';
 
 @Component({
   selector: 'tsl-location-box',
@@ -13,7 +14,7 @@ export class LocationBoxComponent implements OnInit {
   @Input() name: string;
   @Input() title: string;
   @Input() updateLocation = true;
-  @Input() location;
+  @Input() location: Partial<UserLocation>;
   @Input() isIncorrectAddress = false;
   @Input() disableFocus: boolean;
   @Input() disableTitle: boolean;

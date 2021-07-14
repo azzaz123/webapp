@@ -29,6 +29,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { PERMISSIONS } from '@core/user/user-constants';
 import { isEqual } from 'lodash-es';
 import { Observable, of } from 'rxjs';
+import { UserLocation } from '@core/user/user-response.interface';
 
 export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
@@ -60,6 +61,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public ANALYTICS_FIELDS = ANALYTICS_FIELDS;
   public renderMap = false;
   public readonly PERMISSIONS = PERMISSIONS;
+  public storeLocation: Partial<UserLocation>;
 
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
@@ -143,18 +145,23 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     }
 
     if (this.userInfo && this.isPro) {
-      userData = {
-        ...userData,
-        phone_number: this.userInfo.phone_number,
-        description: this.userInfo.description,
-        opening_hours: this.userInfo.opening_hours,
-        link: this.userInfo.link,
-        storeLocation: {
-          latitude: this.user.extraInfo.latitude,
-          longitude: this.user.extraInfo.longitude,
-          address: this.user.extraInfo.address,
-        },
-      };
+      (this.storeLocation = {
+        approximated_latitude: this.user.extraInfo.latitude,
+        approximated_longitude: this.user.extraInfo.longitude,
+        address: this.user.extraInfo.address,
+      }),
+        (userData = {
+          ...userData,
+          phone_number: this.userInfo.phone_number,
+          description: this.userInfo.description,
+          opening_hours: this.userInfo.opening_hours,
+          link: this.userInfo.link,
+          storeLocation: {
+            latitude: this.user.extraInfo.latitude,
+            longitude: this.user.extraInfo.longitude,
+            address: this.user.extraInfo.address,
+          },
+        });
     }
 
     this.profileForm.patchValue(userData);

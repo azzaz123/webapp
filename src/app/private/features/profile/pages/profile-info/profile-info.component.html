@@ -80,7 +80,7 @@
           <div class="form-group row">
             <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_294">Shop address</label>
             <div class="col-12 col-md-6 offset-md-1" tslVisible (visible)="onMapContainerVisible()">
-              <tsl-location-box *ngIf="renderMap" [location]="user.extraInfo" [form]="profileForm" name="storeLocation" 
+              <tsl-location-box *ngIf="renderMap" [location]="storeLocation" [form]="profileForm" name="storeLocation" 
                 disableFooter="true" [disablePopover]="true" [disableInput]="false" (click)="openBecomeProModal(null)"
                 [updateLocation]="updateLocationWhenSearching" [isIncorrectAddress]="isIncorrectAddress"></tsl-location-box>
             </div>
