@@ -1,17 +1,21 @@
 @import '~style/common';
 
+$wallet-balance-info-container-height: 208px;
+$wallet-balance-info-ammount-container-height: 105px;
+$wallet-balance-info-ammount-text-size: 74px;
+
 .WalletBalanceInfo {
-  height: 208px;
+  height: $wallet-balance-info-container-height;
 
   &__amount {
-    height: 103px;
+    height: $wallet-balance-info-ammount-container-height;
     padding: $spacing-m $spacing-m;
     color: $blue-grey-1;
     font-weight: $font-weight-chunky;
 
     &__integer {
-      font-size: 74px;
-      line-height: 74px;
+      font-size: $wallet-balance-info-ammount-text-size;
+      line-height: $wallet-balance-info-ammount-text-size;
     }
 
     &__decimal {
