@@ -41,4 +41,12 @@ export interface SendFirstMessage {
    * If the item is from a professional user
    */
   isPro?: boolean;
+  /**
+   * Country of the user (buyer) that sends the first message (e.g.: ES, IT, etc.)
+   */
+  country?: string;
+  /**
+   * Language of the user (buyer) that sends the first message (e.g.: ES, IT, etc.)
+   */
+  language?: string;
 }

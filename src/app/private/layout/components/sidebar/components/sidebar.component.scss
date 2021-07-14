@@ -74,6 +74,7 @@ h2 {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 0;
+  padding: 0 $spacing-xs;
   .active & {
     color: $white;
   }
@@ -111,7 +112,7 @@ h2 {
   }
 }
 
-@media screen and (max-height: 778px) {
+@media screen and (max-height: 900px) {
   .sidebar-section-circle {
     width: $sidebar-section-circle-size-small;
     height: $sidebar-section-circle-size-small;

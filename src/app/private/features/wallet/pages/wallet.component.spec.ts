@@ -7,9 +7,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
 import { KYC_BANNER_TYPES } from '../components/kyc-banner/kyc-banner-constants';
-import { KycBannerComponent } from '../components/kyc-banner/kyc-banner.component';
-import { KycBannerApiService } from '../services/api/kyc-banner-api.service';
-import { KycBannerService } from '../services/kyc-banner/kyc-banner.service';
+import { KYCBannerComponent } from '../components/kyc-banner/kyc-banner.component';
+import { KYCBannerApiService } from '../services/api/kyc-banner-api.service';
+import { KYCBannerService } from '../services/kyc-banner/kyc-banner.service';
 import { WALLET_PATHS } from '../wallet-routing-constants';
 
 import { WalletComponent } from './wallet.component';
@@ -21,12 +21,12 @@ describe('WalletComponent', () => {
   let component: WalletComponent;
   let fixture: ComponentFixture<WalletComponent>;
   let router: Router;
-  let kycBannerService: KycBannerService;
+  let kycBannerService: KYCBannerService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
-      declarations: [WalletComponent, KycBannerComponent],
+      declarations: [WalletComponent, KYCBannerComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
@@ -36,8 +36,8 @@ describe('WalletComponent', () => {
             events: of(new NavigationEnd(1, CREDIT_CARD_FORM_LINK, '')),
           },
         },
-        KycBannerService,
-        KycBannerApiService,
+        KYCBannerService,
+        KYCBannerApiService,
       ],
     }).compileComponents();
   });
@@ -46,7 +46,7 @@ describe('WalletComponent', () => {
     fixture = TestBed.createComponent(WalletComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
-    kycBannerService = TestBed.inject(KycBannerService);
+    kycBannerService = TestBed.inject(KYCBannerService);
     fixture.detectChanges();
   });
 
@@ -91,7 +91,7 @@ describe('WalletComponent', () => {
     });
 
     it('should not show the kyc banner', () => {
-      const banner = fixture.debugElement.query(By.directive(KycBannerComponent));
+      const banner = fixture.debugElement.query(By.directive(KYCBannerComponent));
 
       expect(banner).toBeFalsy();
     });
@@ -106,7 +106,7 @@ describe('WalletComponent', () => {
     });
 
     it('should show the kyc banner', () => {
-      const banner = fixture.debugElement.query(By.directive(KycBannerComponent));
+      const banner = fixture.debugElement.query(By.directive(KYCBannerComponent));
 
       expect(banner).toBeTruthy();
     });

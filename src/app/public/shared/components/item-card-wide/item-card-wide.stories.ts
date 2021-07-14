@@ -9,7 +9,7 @@ import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/style
 import { CUSTOM_VIEWPORT_NAME } from '@storybook-config/viewports/custom-viewports';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { SlidesCarouselModule } from '../carousel-slides/carousel-slides.module';
+import { SlidesCarouselModule } from '@shared/components/carousel-slides/carousel-slides.module';
 import { ItemExtraInfoModule } from '../item-extra-info/item-extra-info.module';
 import { ItemCardWideComponent } from './item-card-wide.component';
 import {
