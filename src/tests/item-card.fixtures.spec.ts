@@ -140,7 +140,7 @@ export const MOCK_EMPTY_ITEM_CARDS_WITH_RECOMMENDED_TYPE: ItemCardsWithRecommene
   recommendedItems: [],
 };
 
-export function SearchItemListFactory(count: number = 20): ItemCard[] {
+export function ItemCardListFactory(count: number = 20): ItemCard[] {
   return new Array(count).fill('').map((_, index) => ({ ...MOCK_ITEM_CARD, id: '235325' + index }));
 }
 
@@ -150,7 +150,7 @@ export function SearchPaginationFactory(
   sortBy: SORT_BY = SORT_BY.DISTANCE
 ): SearchPagination {
   return {
-    items: SearchItemListFactory(40),
+    items: ItemCardListFactory(40),
     hasMore,
     searchId,
     sortBy,

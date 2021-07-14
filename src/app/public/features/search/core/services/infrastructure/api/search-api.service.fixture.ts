@@ -6,11 +6,16 @@ import { SearchCustomerGoodsResponse } from '../customer-goods/search-costumer-g
 import { SearchBaseItemResponse } from '../models/search-base-item.response';
 import { SearchItemImageResponse } from '../models/search-item-image.response';
 import { SearchRealEstateResponse } from '../real_estate/search-item-real-state-response';
-import { wallParameters } from './search-api-url.factory';
 import { SearchResponse } from './search-response.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { MOCK_SEARCH_ID } from '../../search-list-tracking-events/search-list-tracking-events.fixtures.spec';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
+
+const wallParameters: string[] = [
+  FILTER_PARAMETERS_SEARCH.LATITUDE,
+  FILTER_PARAMETERS_SEARCH.LONGITUDE,
+  FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE
+];
 
 export function FilterParametersWallFactory(categoryId: string): FilterParameter[] {
   return wallParameters.map((key: FILTER_QUERY_PARAM_KEY) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));

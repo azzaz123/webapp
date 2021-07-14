@@ -13,7 +13,7 @@ export const filterParametersMock: FilterParameter[] = [
   },
 ];
 
-export const filterParametersMockWithCategory: FilterParameter[] = [
+export const categoryFilterParametersMock: FilterParameter[] = [
   {
     key: FILTER_QUERY_PARAM_KEY.warranty,
     value: 'filterValue1',
@@ -22,4 +22,23 @@ export const filterParametersMockWithCategory: FilterParameter[] = [
     key: FILTER_QUERY_PARAM_KEY.categoryId,
     value: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
   },
+];
+
+export const locationFilterParametersMock: FilterParameter[] = [
+  {
+    key: FILTER_QUERY_PARAM_KEY.latitude,
+    value: '0',
+  },
+  {
+    key: FILTER_QUERY_PARAM_KEY.longitude,
+    value: '0',
+  },
+];
+
+export const locationCategoryFilterParametersMock: FilterParameter[] = [
+  {
+    key: FILTER_QUERY_PARAM_KEY.categoryId,
+    value: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
+  },
+  ...locationFilterParametersMock,
 ];
