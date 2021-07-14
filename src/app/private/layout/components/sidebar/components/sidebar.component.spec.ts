@@ -255,6 +255,7 @@ describe('SidebarComponent', () => {
           describe('and icon has to be shown', () => {
             beforeEach(() => {
               jest.spyOn(userService, 'isClickedProSection', 'get').mockReturnValue(false);
+              component.ngOnInit();
               fixture.detectChanges();
             });
             it('should show icon', () => {
@@ -267,6 +268,7 @@ describe('SidebarComponent', () => {
           describe('and icon has not to be shown', () => {
             beforeEach(() => {
               jest.spyOn(userService, 'isClickedProSection', 'get').mockReturnValue(true);
+              component.ngOnInit();
               fixture.detectChanges();
             });
             it('should save click', () => {

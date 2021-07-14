@@ -22,9 +22,10 @@ export class SidebarComponent implements OnInit {
   public isProfessional: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly PRO_PATHS = PRO_PATHS;
+  public isClickedProSection: boolean;
 
   constructor(
-    public userService: UserService,
+    private userService: UserService,
     public unreadChatMessagesService: UnreadChatMessagesService,
     private analyticsService: AnalyticsService
   ) {}
@@ -34,6 +35,12 @@ export class SidebarComponent implements OnInit {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
+    this.isClickedProSection = this.userService.isClickedProSection;
+  }
+
+  public onClickedProSection(): void {
+    this.userService.setClickedProSection();
+    this.isClickedProSection = true;
   }
 
   public trackClickToCatalog(): void {
