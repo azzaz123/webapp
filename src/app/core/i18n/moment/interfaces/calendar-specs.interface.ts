@@ -10,4 +10,5 @@ export interface CalendarSpecsConfigs {
 export interface AllCalendarSpecsConfig {
   en: CalendarSpecsConfigs;
   es: CalendarSpecsConfigs;
+  it: CalendarSpecsConfigs;
 }

@@ -6,7 +6,7 @@ import { Route, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { RouterLinkDirectiveStub } from 'app/shared/router-link-directive-stub';
-import { NgxPermissionsModule } from 'ngx-permissions';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { User } from '@core/user/user';
@@ -15,6 +15,8 @@ import { SidebarComponent } from './sidebar.component';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOwnSaleItems } from '@core/analytics/analytics-constants';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   template: '',
@@ -45,6 +47,7 @@ describe('SidebarComponent', () => {
   let userService: UserService;
   let router: Router;
   let analyticsService: AnalyticsService;
+  let permissionService: NgxPermissionsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -67,6 +70,10 @@ describe('SidebarComponent', () => {
               suggestPro() {
                 return false;
               },
+              setClickedProSection() {},
+              get isClickedProSection() {
+                return false;
+              },
             },
           },
           {
@@ -76,6 +83,7 @@ describe('SidebarComponent', () => {
             },
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
+          NgxPermissionsService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -87,6 +95,7 @@ describe('SidebarComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.inject(UserService);
     analyticsService = TestBed.inject(AnalyticsService);
+    permissionService = TestBed.inject(NgxPermissionsService);
     spyOn(analyticsService, 'trackPageView');
     router = TestBed.get(Router);
     fixture.detectChanges();
@@ -210,6 +219,77 @@ describe('SidebarComponent', () => {
           element.click();
 
           expect(analyticsService.trackPageView).not.toHaveBeenCalled();
+        });
+      });
+    });
+    describe('Pro icon', () => {
+      describe('and has subscriptions permission', () => {
+        beforeEach(() => {
+          permissionService.addPermission(PERMISSIONS.subscriptions);
+          fixture.detectChanges();
+        });
+        it('should show button', () => {
+          const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
+
+          expect(proButton).toBeTruthy();
+        });
+        it('should redirect to pro section', () => {
+          const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
+          fixture.detectChanges();
+
+          expect(proButton.href).toContain([`/${PRO_PATHS.PRO_MANAGER}`]);
+        });
+        describe('and click icon', () => {
+          beforeEach(() => {
+            spyOn(userService, 'setClickedProSection').and.callThrough();
+          });
+          it('should save click', () => {
+            const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
+            proButton.click();
+
+            expect(userService.setClickedProSection).toHaveBeenCalledTimes(1);
+            expect(userService.setClickedProSection).toHaveBeenCalledWith();
+          });
+        });
+        describe('Notification Icon', () => {
+          describe('and icon has to be shown', () => {
+            beforeEach(() => {
+              jest.spyOn(userService, 'isClickedProSection', 'get').mockReturnValue(false);
+              component.ngOnInit();
+              fixture.detectChanges();
+            });
+            it('should show icon', () => {
+              const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
+              const notification = proButton.querySelector('.chat-notification-pending');
+
+              expect(notification).toBeTruthy();
+            });
+          });
+          describe('and icon has not to be shown', () => {
+            beforeEach(() => {
+              jest.spyOn(userService, 'isClickedProSection', 'get').mockReturnValue(true);
+              component.ngOnInit();
+              fixture.detectChanges();
+            });
+            it('should save click', () => {
+              const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
+              const notification = proButton.querySelector('.chat-notification-pending');
+
+              expect(notification).toBeFalsy();
+            });
+          });
+        });
+      });
+      describe('and has not subscriptions permission', () => {
+        beforeEach(() => {
+          permissionService.removePermission(PERMISSIONS.subscriptions);
+          fixture.detectChanges();
+        });
+        it('should not show button', () => {
+          fixture.detectChanges();
+          const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
+
+          expect(proButton).toBeFalsy();
         });
       });
     });

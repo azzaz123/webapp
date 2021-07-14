@@ -470,11 +470,19 @@ describe('SuggesterFilterComponent', () => {
       testComponent.config = optionsOnInitConfig;
       fixture.detectChanges();
     });
+
     describe('... is open', () => {
       beforeEach(() => {
         debugElement.query(By.directive(BubbleComponent)).nativeElement.click();
         fixture.detectChanges();
       });
+
+      it('should have a max-height defined', () => {
+        const formElement: HTMLElement = debugElement.query(By.css('.SuggesterFilter__form')).nativeElement;
+
+        expect(formElement.classList).toContain('SuggesterFilter__form--bubble');
+      });
+
       describe('and value changes', () => {
         it('should close the bubble', () => {
           const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
@@ -587,6 +595,13 @@ describe('SuggesterFilterComponent', () => {
         debugElement.query(By.directive(SelectParentOptionComponent)).nativeElement.click();
         fixture.detectChanges();
       });
+
+      it('should fill all the available space', () => {
+        const formElement: HTMLElement = debugElement.query(By.css('.SuggesterFilter__form')).nativeElement;
+
+        expect(formElement.classList).not.toContain('SuggesterFilter__form--bubble');
+      });
+
       describe('and value changes', () => {
         it('should close the placeholder', () => {
           const formInstance: SelectFormComponent = debugElement.query(selectFormPredicate).componentInstance;

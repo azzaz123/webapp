@@ -12,6 +12,7 @@ import { AnalyticsPageView, ViewProSubscriptionPopup, ANALYTICS_EVENT_NAMES, SCR
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 
 export const CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE = [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE];
 
@@ -33,6 +34,7 @@ export class TooManyItemsModalComponent implements OnInit {
 
   public categoryName: string;
   public categoryIconName: string;
+  public readonly PRO_PATHS = PRO_PATHS;
 
   private isHighestLimitConfig: { [key: string]: { zendesk: TRANSLATION_KEY; descriptionText: TRANSLATION_KEY } } = {
     [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE]: {
