@@ -17,12 +17,12 @@ const wallParameters: string[] = [
   FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE
 ];
 
-export function FilterParametersWallFactory(categoryId: string): FilterParameter[] {
-  return wallParameters.map((key: FILTER_QUERY_PARAM_KEY) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));
+export function FilterParametersWallFactory(): FilterParameter[] {
+  return wallParameters.map((key: FILTER_QUERY_PARAM_KEY) => ({ key, value: `${key}-value` }));
 }
 
-export function FilterParametersSearchFactory(categoryId: string, search: string): FilterParameter[] {
-  return [...wallParameters, 'keywords']
+export function FilterParametersSearchFactory(categoryId: string): FilterParameter[] {
+  return ['category_ids', ...wallParameters]
     .map((key: FILTER_QUERY_PARAM_KEY) => ({ key, value: key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID ? categoryId : `${key}-value` }));
 }
 
@@ -141,6 +141,5 @@ export function SearchResponseFactory<T>(partial: Partial<SearchResponse<T>> = {
   };
 }
 
-export const X_NEXT_PAGE_HEADER = (category_id) =>
-  'density_type=30&latitude=41.38804&start=40&step=0&num_results=40&search_id=' + MOCK_SEARCH_ID + '&longitude=2.17001&filters_source=seo_landing&language=es_ES&category_ids=' +
-  category_id;
+export const X_NEXT_PAGE_HEADER = () =>
+  'density_type=30&latitude=41.38804&start=40&step=0&num_results=40&search_id=' + MOCK_SEARCH_ID + '&longitude=2.17001&filters_source=seo_landing&language=es_ES';
