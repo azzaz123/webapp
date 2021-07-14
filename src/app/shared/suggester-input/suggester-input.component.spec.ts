@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SuggesterInputComponent } from './suggester-input.component';
 
-describe('DynamicInputComponent', () => {
+describe('SuggesterInputComponent', () => {
   let component: SuggesterInputComponent;
   let fixture: ComponentFixture<SuggesterInputComponent>;
 
