@@ -33,8 +33,6 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { Item, ITEM_TYPES } from '@core/item/item';
 import { DeliveryInfo, ItemContent, ItemResponse, ItemSaleConditions } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -43,7 +41,7 @@ import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } fr
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { fromEvent, Observable, of, Subject } from 'rxjs';
-import { catchError, debounceTime, map, take, tap } from 'rxjs/operators';
+import { debounceTime, map, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -51,6 +49,7 @@ import { GeneralSuggestionsService } from '../../core/services/general-suggestio
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
+import { ShippingToggleService } from './services/shipping-toggle/shipping-toggle.service';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
@@ -141,9 +140,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private subscriptionService: SubscriptionsService,
     private itemReactivationService: ItemReactivationService,
     private customerHelpService: CustomerHelpService,
-    private featureFlagService: FeatureFlagService
+    private shippingToggleService: ShippingToggleService
   ) {
-    this.featureFlagsInit();
+    this.handleShippingToggle();
 
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
@@ -161,10 +160,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
       this.detectCategoryChanges();
       this.detectObjectTypeChanges();
-
-      if (this.isShippingToggleActive) {
-        this.detectShippabilityChanges();
-      }
 
       if (this.item) {
         this.initializeEditForm();
@@ -888,10 +883,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
   }
 
-  private featureFlagsInit(): void {
-    this.featureFlagService
-      .getFlag(FEATURE_FLAGS_ENUM.SHIPPING_TOGGLE)
-      .pipe(catchError(() => of(false)))
-      .subscribe((isShippingToggleActive) => (this.isShippingToggleActive = isShippingToggleActive));
+  private handleShippingToggle(): void {
+    this.shippingToggleService.isActive().subscribe((isShippingToggleActive) => {
+      this.isShippingToggleActive = isShippingToggleActive;
+      if (this.isShippingToggleActive) {
+        this.detectShippabilityChanges();
+      }
+    });
   }
 }

@@ -71,6 +71,7 @@ import { ItemReactivationService } from '../../core/services/item-reactivation/i
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FeatureFlagService } from '@core/user/featureflag.service';
+import { ShippingToggleService } from './services/shipping-toggle/shipping-toggle.service';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -199,9 +200,9 @@ describe('UploadProductComponent', () => {
           },
           I18nService,
           {
-            provide: FeatureFlagService,
+            provide: ShippingToggleService,
             useValue: {
-              getFlag() {
+              isActive() {
                 return of(false);
               },
             },
