@@ -5,6 +5,7 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PRIVATE_PATHS } from './private-routing-constants';
 import { PrivateComponent } from './private.component';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { PRO_PATHS } from './features/pro/pro-routing-constants';
 
 const routes: Routes = [
   {
@@ -58,6 +59,17 @@ const routes: Routes = [
       {
         path: 'profile',
         loadChildren: () => import('@private/features/profile/profile.module').then((m) => m.ProfileModule),
+      },
+      {
+        path: PRO_PATHS.PRO_MANAGER,
+        loadChildren: () => import('@private/features/pro/pro.module').then((m) => m.ProModule),
+        canLoad: [NgxPermissionsGuard],
+        data: {
+          permissions: {
+            only: PERMISSIONS.subscriptions,
+            redirectTo: 'profile',
+          },
+        },
       },
       {
         path: 'chat',

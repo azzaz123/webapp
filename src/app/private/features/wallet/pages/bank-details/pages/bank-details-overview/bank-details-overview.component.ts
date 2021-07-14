@@ -15,7 +15,7 @@ import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import * as moment from 'moment';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
-import { WALLET_PATHS } from '@private/features/wallet/wallet-routing-constants';
+import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
 
 @Component({
   selector: 'tsl-bank-details-overview',

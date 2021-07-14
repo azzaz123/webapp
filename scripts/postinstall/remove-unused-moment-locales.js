@@ -5,7 +5,7 @@ const Path = require('path');
 const momentLocalesPattern = 'node_modules/moment/locale/*.js';
 
 // Note: Moment built in locale is "en"
-const allowedLocales = ['es'];
+const allowedLocales = ['es', 'it'];
 
 const getLocaleNameFromFilePath = localeFilePath => {
   return Path.parse(localeFilePath).name.replace('.js', '');

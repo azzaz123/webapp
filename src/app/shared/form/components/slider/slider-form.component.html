@@ -1,6 +1,6 @@
 <form [formGroup]="form">
-    <ngx-slider 
-        class="Slider"
-        [class.Slider-range]="variant === SLIDER_VARIANT.RANGE"
-        formControlName="control" [options]="options"></ngx-slider>
+    <ngx-slider class="Slider"
+        [ngClass]="{'Slider--range': variant === SLIDER_VARIANT.RANGE, 'Slider--with-tooltip': valueTooltip}"
+        formControlName="control" [options]="options">
+    </ngx-slider>
 </form>
