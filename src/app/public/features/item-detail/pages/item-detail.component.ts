@@ -13,7 +13,7 @@ import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { RecommenderItemCardFavouriteCheckedService } from '@public/features/item-detail/core/services/recommender-item-card-favourite-checked/recommender-item-card-favourite-checked.service';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { CarouselSlide } from '@public/shared/components/carousel-slides/carousel-slide.interface';
+import { CarouselSlide } from '@shared/components/carousel-slides/carousel-slide.interface';
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';

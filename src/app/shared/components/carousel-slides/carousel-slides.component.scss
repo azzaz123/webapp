@@ -1,0 +1,98 @@
+@import '~style/common';
+
+$item-flag-height: 38px;
+
+.SlidesCarousel {
+  ngb-carousel {
+    width: 100%;
+    height: 100%;
+    // Allow vertical scroll when capturing swipe events with HammerJS
+    touch-action: pan-y !important;
+    ::ng-deep {
+      .SlidesCarousel__slide,
+      .carousel-inner,
+      .carousel-item {
+        width: 100%;
+        height: 100%;
+      }
+      .carousel-control-prev,
+      .carousel-control-next {
+        cursor: pointer;
+        transition: opacity 0.15s ease;
+      }
+      .carousel-indicators {
+        background: linear-gradient(to top, rgba($black, 0.25), rgba($black, 0));
+        border-radius: $border-radius;
+        height: 54px;
+        bottom: 0;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: auto;
+      }
+    }
+  }
+
+  &--wallaMainActiveIndicator {
+    ::ng-deep {
+      .carousel-indicators {
+        li {
+          &.active {
+            background-color: $walla-main;
+          }
+        }
+      }
+    }
+  }
+
+  &__fallbackImage {
+    object-fit: cover;
+    border-radius: $border-radius;
+  }
+
+  &--noBackgroundIndicators {
+    ngb-carousel {
+      ::ng-deep {
+        .carousel-indicators {
+          background: transparent;
+          border-radius: 0;
+        }
+      }
+    }
+  }
+
+  &--hideControllers {
+    ::ng-deep .carousel-control-prev,
+    ::ng-deep .carousel-control-next {
+      display: none;
+    }
+  }
+
+  &--hideIndicators {
+    ::ng-deep .carousel-indicators li {
+      display: none;
+    }
+  }
+
+  &--smallControls {
+    ::ng-deep {
+      .carousel-control-next-icon,
+      .carousel-control-prev-icon {
+        width: 24px;
+        height: 24px;
+        background-size: 13px;
+        background-position: center;
+      }
+      .carousel-indicators {
+        li {
+          width: 4px;
+          height: 4px;
+          &.active {
+            width: 6px;
+            height: 6px;
+          }
+          margin: 0px 4px;
+        }
+      }
+    }
+  }
+}

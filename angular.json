@@ -161,6 +161,19 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "ngsw-config.json"
+            },
+            "it": {
+              "localize": [
+                "it"
+              ],
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "8kb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
             }
           }
         },
@@ -172,6 +185,9 @@
           "configurations": {
             "es": {
               "browserTarget": "webapp:build:es"
+            },
+            "it": {
+              "browserTarget": "webapp:build:it"
             }
           }
         },

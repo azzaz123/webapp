@@ -4,6 +4,7 @@ import { WalletComponent } from './pages/wallet.component';
 import { WalletOverviewModule } from './pages/wallet-overview/wallet-overview.module';
 import { WALLET_PATHS } from './wallet-routing-constants';
 import { BankDetailsModule } from './pages/bank-details/bank-details.module';
+import { KYCModule } from './pages/kyc/kyc.module';
 
 const routes: Route[] = [
   {
@@ -17,6 +18,10 @@ const routes: Route[] = [
       {
         path: WALLET_PATHS.BANK_DETAILS,
         loadChildren: () => BankDetailsModule,
+      },
+      {
+        path: WALLET_PATHS.KYC,
+        loadChildren: () => KYCModule,
       },
       {
         path: '**',

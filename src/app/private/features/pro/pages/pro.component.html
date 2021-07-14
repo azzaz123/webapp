@@ -1,0 +1,27 @@
+<div class="page-content">
+  <div class="container">   
+    <tsl-header>
+      <div class="col">
+        <div class="header-row">
+          <h1 class="header-title" i18n="@@web_wallapop_pro_title">Wallapop PRO</h1>
+        </div>
+        <div class="header-row">
+          <h4 class="header-subtitle" i18n="@@web_wallapop_pro_subtitle">Here you can find solutions to turn your sales into a real business.</h4>
+        </div>
+      </div>
+    </tsl-header>
+    <div class="row mb-3">
+      <div class="col-12 col-md-9">
+        <nav class="nav filters-nav d-flex d-md-inline-block">
+          <a class="nav-link" [routerLink]="PRO_PATHS.SUBSCRIPTIONS" routerLinkActive="active"
+            *ngxPermissionsExcept="[PERMISSIONS.professional]" (click)="trackClickSubscriptionTab()" i18n="@@web_wallapop_pro_tab_bar_subscriptions_label">Subscriptions</a>
+          <a class="nav-link" [routerLink]="PRO_PATHS.SUBSCRIPTIONS_PRO" routerLinkActive="active"
+            *ngxPermissionsOnly="[PERMISSIONS.professional]" i18n="@@web_wallapop_pro_tab_bar_subscriptions_label">Subscriptions</a>
+          <a class="nav-link mr-0" [routerLink]="PRO_PATHS.BILLING" routerLinkActive="active" i18n="@@web_wallapop_pro_tab_bar_invoicing_label">Invoicing
+              information</a>
+          </nav>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>
