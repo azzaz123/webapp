@@ -36,10 +36,23 @@ export class KycNationalityComponent {
     }
   }
 
+  get title(): string {
+    return this.selectedNationality
+      ? $localize`:@@kyc_select_document_view_title:Select a document type`
+      : $localize`:@@kyc_select_nationality_view_title:Tell us where you're from...`;
+  }
+
+  get description(): string {
+    return this.selectedNationality
+      ? $localize`:@@kyc_select_document_view_description:Make sure the document you provide is valid for at least 3 months.`
+      : $localize`:@@kyc_select_nationality_view_description:And we'll tell you what kind of document you can use to verify your identity`;
+  }
+
+  get nationalityHeader(): string {
+    return this.selectedNationality?.title || $localize`:@@kyc_select_nationality_view_top_bar_title:Nationality`;
+  }
+
   get svgPath(): string {
-    if (!this.selectedNationality) {
-      return '/assets/icons/wallet/kyc/stepper/kyc_nationality.svg';
-    }
-    return this.selectedNationality.svgPath;
+    return this.selectedNationality?.svgPath || '/assets/icons/wallet/kyc/stepper/kyc_nationality.svg';
   }
 }

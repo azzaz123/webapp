@@ -11,14 +11,19 @@
     }
   }
 
-  &__header {
+  &__header,
+  &__infoMessage {
     font-size: $font-size-s;
+  }
+
+  &__infoMessage {
+    color: $blue-grey-4;
   }
 
   &__content {
     width: 100%;
     @include media-breakpoint-up(sm) {
-      width: 75%;
+      width: 70%;
     }
   }
 

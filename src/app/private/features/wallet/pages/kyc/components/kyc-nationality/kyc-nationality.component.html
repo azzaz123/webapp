@@ -9,7 +9,7 @@
     </div>
     <div class="row mb-2">
         <div class="col col-md-11 offset-md-1">
-            <h3 class="KYCNationality__header" i18n="@@kyc_select_nationality_view_top_bar_title">Nationality</h3>
+            <h3 class="KYCNationality__header">{{nationalityHeader}}</h3>
         </div>
     </div>
     <div class="row">
@@ -18,8 +18,8 @@
                 <div class="KYCNationality__drawing mb-4 w-100">
                     <tsl-svg-icon [src]="svgPath"></tsl-svg-icon>
                 </div>
-                <span i18n="@@kyc_select_nationality_view_title" class="KYCNationality__title d-block my-2">Tell us where you're from...</span>
-                <span i18n="@@kyc_select_nationality_view_description" class="KYCNationality__subtitle d-block mb-4">And we'll tell you what kind of document you can use to verify your identity</span>
+                <span class="KYCNationality__title d-block my-2 text-center">{{title}}</span>
+                <span class="KYCNationality__subtitle d-block mb-4 text-center">{{description}}</span>
                 <tsl-dropdown
                     *ngIf="!selectedNationality"
                     placeholder="I'm from..."
@@ -27,7 +27,7 @@
                     [options]="KYC_NATIONALITIES"
                     bindLabel="string"
                     bindValue="string"
-                    class="form-control" 
+                    class="form-control mb-2" 
                     (selected)="selectNationality($event)" name="nationality" ngDefaultControl>
                 </tsl-dropdown>
                 <tsl-dropdown
@@ -37,9 +37,10 @@
                     [options]="selectedNationality.availableDocuments"
                     bindLabel="string"
                     bindValue="string"
-                    class="form-control" 
+                    class="form-control mb-2" 
                     (selected)="selectAcreditationDocument($event)" name="nationality" ngDefaultControl>
                 </tsl-dropdown>
+                <span i18n="@@kyc_select_nationality_view_data_privacy_description" class="KYCNationality__infoMessage d-blocktext-center">Your information is confidential. It will be used only for the explained purposes.</span>
             </div>
         </div>
     </div>
