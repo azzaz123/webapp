@@ -12,6 +12,7 @@ import { MultiSelectFormModule } from './multi-select-form.module';
       <form [formGroup]="formGroup">
         <tsl-multi-select-form formControlName="select" [options]="options" [disabled]="disabled"></tsl-multi-select-form>
       </form>
+      <button (click)="onClick()">Set value to cc</button>
     </div>
   `,
 })
@@ -21,6 +22,9 @@ class StoryMultiSelectFormFormComponent {
   public formGroup = new FormGroup({
     select: new FormControl(['aa']),
   });
+  public onClick() {
+    this.formGroup.get('select').setValue(['cc']);
+  }
 }
 
 export default {
@@ -38,6 +42,7 @@ const Template: Story<StoryMultiSelectFormFormComponent> = (args) => ({
   props: args,
   template: `
         <tsl-story-multi-select-form [disabled]="disabled" [options]="options"></tsl-story-multi-select-form>
+        
       `,
 });
 

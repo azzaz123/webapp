@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/core';
+import { AfterViewChecked, ChangeDetectionStrategy, Component, DoCheck, forwardRef, Input, OnChanges, Output } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { SelectFormOption } from '../select/interfaces/select-form-option.interface';
@@ -29,7 +29,6 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
-
     this.mapCheckedValue();
   }
 
@@ -46,10 +45,12 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   private mapCheckedValue(): void {
     this.value.map((checkedValue: string) => {
-      this.extendedOptions.forEach((option: MultiSelectFormOption) => {
+      // Try not to mutate extendedOptions
+      this.extendedOptions = this.extendedOptions.map((option: MultiSelectFormOption) => {
         if (option.value === checkedValue) {
           option.checked = true;
         } else option.checked = false;
+        return option;
       });
     });
   }
