@@ -1,0 +1,15 @@
+:host {
+  ::ng-deep > div:last-child {
+    .MultiSelectOption {
+      &::after {
+        content: '';
+        background-color: transparent !important;
+        height: 3px;
+        position: absolute;
+        width: 100%;
+        left: 0px;
+        bottom: 0px;
+      }
+    }
+  }
+}
