@@ -1505,6 +1505,7 @@
     "web_add_new_subscription_card": "Link a card to your subscriptions",
     "web_current_cards": "Saved cards",
     "web_spinner_536": "Loading...",
-    "web_spinner_537": "We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished."
+    "web_spinner_537": "We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.",
+    "web_search_box_specific_category_placeholder": "Search in {$INTERPOLATION}"
   }
 }

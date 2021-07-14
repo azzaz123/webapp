@@ -8,7 +8,6 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickProfileEditCurrentSubscription,
   ClickProSubscription,
-  ClickSubscriptionManagementPlus,
   SCREEN_IDS,
   ViewSubscription,
 } from '@core/analytics/analytics-constants';
@@ -469,25 +468,6 @@ describe('SubscriptionComponent', () => {
   });
 
   describe('when the user is NOT subscribed to the selected category and has another subscription', () => {
-    it('should send event to analytics', () => {
-      spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
-        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
-        eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagement,
-          subscription: SUBSCRIPTIONS_NOT_SUB[0].category_id as SUBSCRIPTION_CATEGORIES,
-          isNewSubscriber: false,
-          freeTrial: SUBSCRIPTIONS_NOT_SUB[0].trial_available,
-        },
-      };
-
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS[0]);
-
-      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-    });
-
     it('should open a unsubscribe inapp first modal if one subscription is inapp and selected sub is not active', () => {
       spyOn(subscriptionsService, 'isOneSubscriptionInApp').and.returnValue(true);
       spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
@@ -500,51 +480,6 @@ describe('SubscriptionComponent', () => {
       });
     });
   });
-
-  describe('when the user is NOT subscribed to the selected category and no other category', () => {
-    it('should send event to analytics', () => {
-      spyOn(analyticsService, 'trackEvent');
-      spyOn(subscriptionsService, 'hasOneStripeSubscription').and.returnValue(false);
-      const expectedEvent: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
-        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
-        eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagement,
-          subscription: MAPPED_SUBSCRIPTIONS[0].category_id as SUBSCRIPTION_CATEGORIES,
-          isNewSubscriber: true,
-          freeTrial: SUBSCRIPTIONS_NOT_SUB[0].trial_available,
-        },
-      };
-
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS[0]);
-
-      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-    });
-  });
-
-  describe('when the user click subscription without free trial', () => {
-    it('should send event to analytics', () => {
-      spyOn(analyticsService, 'trackEvent');
-      spyOn(subscriptionsService, 'hasOneStripeSubscription').and.returnValue(false);
-      const expectedEvent: AnalyticsEvent<ClickSubscriptionManagementPlus> = {
-        name: ANALYTICS_EVENT_NAMES.ClickSubscriptionManagementPlus,
-        eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: {
-          screenId: SCREEN_IDS.SubscriptionManagement,
-          subscription: MAPPED_SUBSCRIPTIONS[0].category_id as SUBSCRIPTION_CATEGORIES,
-          isNewSubscriber: true,
-          freeTrial: MAPPED_SUBSCRIPTIONS[0].trial_available,
-        },
-      };
-
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS[0]);
-
-      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-    });
-  });
-
   afterEach(() => {
     TestBed.resetTestingModule();
   });
