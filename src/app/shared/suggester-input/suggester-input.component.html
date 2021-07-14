@@ -1,3 +1,10 @@
 <input
+type="text" 
+placeholder="Suggesters..." 
+[(ngModel)]="model" [ngbTypeahead]="search"
+(keydown)
 
+(keydown.enter)="submitSearch()"
 />
+
+<tsl-select-form></tsl-select-form>

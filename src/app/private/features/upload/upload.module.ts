@@ -25,6 +25,7 @@ import { UploadProductComponent } from './pages/upload-product/upload-product.co
 import { UploadRealestateComponent } from './pages/upload-realestate/upload-realestate.component';
 import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
+import { SuggesterInputModule } from '@shared/suggester-input/suggester-input.module';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.mo
     NgbButtonsModule,
     DropdownModule,
     CustomCurrencyModule,
+    SuggesterInputModule,
   ],
   declarations: [
     uploadRoutedComponents,

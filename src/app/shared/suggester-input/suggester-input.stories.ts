@@ -2,6 +2,10 @@ import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { SuggesterInputComponent } from './suggester-input.component';
 import { CommonModule } from '@angular/common';
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
+import { SelectFormModule } from '@shared/form/components/select/select-form.module';
+import { FormsModule } from '@angular/forms';
 
 export default {
   title: 'Webapp/Shared/SuggesterInput',
@@ -9,7 +13,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [SuggesterInputComponent],
-      imports: [CommonModule],
+      imports: [CommonModule, NgbTypeaheadModule, HttpClientModule, SelectFormModule, FormsModule],
     }),
   ],
 };
