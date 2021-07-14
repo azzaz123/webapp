@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { WalletOverviewComponent } from './wallet-overview.component';
+import { WalletBalanceComponent } from './wallet-balance.component';
 
 const routes: Route[] = [
   {
     path: '',
-    component: WalletOverviewComponent,
+    component: WalletBalanceComponent,
   },
 ];
 
@@ -13,6 +13,6 @@ const routes: Route[] = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class WalletOverviewRoutingModule {}
+export class WalletBalanceRoutingModule {}
 
-export const WalletOverviewRoutedComponents = [WalletOverviewComponent];
+export const walletBalanceRoutedComponents = [WalletBalanceComponent];
