@@ -15,8 +15,8 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from '../cancel-subscription/cancel-subscription-modal.component';
-import { ModalStatuses } from '../../core/modal.statuses.enum';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { ModalStatuses } from '../modal.statuses.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({

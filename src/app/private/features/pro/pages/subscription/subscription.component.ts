@@ -13,18 +13,19 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, SUBSCRIPTION_SOURCE } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { CancelSubscriptionModalComponent } from '@private/features/profile/modal/cancel-subscription/cancel-subscription-modal.component';
-import { CheckSubscriptionInAppModalComponent } from '@private/features/profile/modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
-import { ContinueSubscriptionModalComponent } from '@private/features/profile/modal/continue-subscription/continue-subscription-modal.component';
-import { DiscountAvailableUnsubscribeInAppModalComponent } from '@private/features/profile/modal/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
-import { EditSubscriptionModalComponent } from '@private/features/profile/modal/edit-subscription/edit-subscription-modal.component';
-import { ModalStatuses } from '@private/features/profile/core/modal.statuses.enum';
-import { UnsubscribeInAppFirstModal } from '@private/features/profile/modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'app/core/user/user';
 import { UserService } from 'app/core/user/user.service';
 import { isEqual } from 'lodash-es';
 import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
+import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
+import { CheckSubscriptionInAppModalComponent } from '../../modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
+import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
+import { EditSubscriptionModalComponent } from '../../modal/edit-subscription/edit-subscription-modal.component';
+import { DiscountAvailableUnsubscribeInAppModalComponent } from '../../modal/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
+import { UnsubscribeInAppFirstModal } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { PRO_PATHS } from '../../pro-routing-constants';
 
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
@@ -165,7 +166,7 @@ export class SubscriptionsComponent implements OnInit {
         ),
         take(30),
         finalize(() => {
-          this.router.navigate(['profile/subscriptions']), (this.loading = false);
+          this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]), (this.loading = false);
         })
       )
       .subscribe((updatedSubscriptions) => {

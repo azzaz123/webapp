@@ -6,8 +6,8 @@ import { PerksModel } from '@core/payments/payment.model';
 import { PaymentService } from '@core/payments/payment.service';
 import { createPacksFixture } from '@fixtures/payments.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SubscriptionIconPipe } from '@private/features/profile/pipes/subscription-icon.pipe';
 import { of } from 'rxjs';
-import { SubscriptionIconPipe } from '../../pipes/subscription-icon.pipe';
 import { ProfileProSubscriptionComponent } from './profile-pro-subscription.component';
 
 describe('ProfileProSubscriptionComponent', () => {

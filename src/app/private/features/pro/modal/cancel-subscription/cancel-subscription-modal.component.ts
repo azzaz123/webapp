@@ -12,9 +12,9 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickConfirmCloseSubscription,
 } from '@core/analytics/analytics-constants';
-import { ModalStatuses } from '../../core/modal.statuses.enum';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ModalStatuses } from '../modal.statuses.enum';
 
 @Component({
   selector: 'tsl-cancel-subscription-modal',
