@@ -142,25 +142,6 @@ describe('PublicProfileService', () => {
     });
   });
 
-  describe('when getting reviews...', () => {
-    it('should get user reviews', () => {
-      spyOn(publicUserApiService, 'getReviews');
-
-      publicProfileService.getReviews(userId);
-
-      expect(publicUserApiService.getReviews).toHaveBeenCalledWith(userId, 0);
-    });
-
-    it('should get user reviews with correct pagination', () => {
-      const itemsFrom = 40;
-      spyOn(publicUserApiService, 'getReviews');
-
-      publicProfileService.getReviews(userId, itemsFrom);
-
-      expect(publicUserApiService.getReviews).toHaveBeenCalledWith(userId, itemsFrom);
-    });
-  });
-
   describe('when getting user...', () => {
     it('should get user', () => {
       let expectedResponse = {};

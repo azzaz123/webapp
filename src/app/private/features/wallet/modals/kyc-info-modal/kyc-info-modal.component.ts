@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { SlidesCarouselComponent } from '@shared/components/carousel-slides/carousel-slides.component';
-import { WALLET_PATHS } from '../../wallet-routing-constants';
+import { WALLET_PATHS } from '../../wallet.routing.constants';
 import { KYC_SLIDER_INFO_STEPS } from './kyc-info-modal-constants';
 
 @Component({
