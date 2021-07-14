@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { MultiSelectFormOption } from '../../multi-select-form.component';
+import { MultiSelectFormOption } from '../../interfaces/multi-select-form-option.interface';
 
 @Component({
   selector: 'tsl-multi-select-option',
@@ -11,8 +11,6 @@ export class MultiSelectOptionComponent {
   @Input() option: MultiSelectFormOption;
   @Input() disabled: boolean;
   @Output() toggleOnChange = new EventEmitter();
-
-  constructor() {}
 
   public toggleCheckbox(): void {
     this.toggleOnChange.emit();
