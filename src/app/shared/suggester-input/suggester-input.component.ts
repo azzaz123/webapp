@@ -1,12 +1,76 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { searchItemRealEstateResponseMapper } from '@public/features/search/core/services/infrastructure/real_estate/search-real-estate-response.mapper';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+
+export const states = [
+  'Alabama',
+  'Alaska',
+  'American Samoa',
+  'Arizona',
+  'Arkansas',
+  'California',
+  'Colorado',
+  'Connecticut',
+  'Delaware',
+  'District Of Columbia',
+  'Federated States Of Micronesia',
+  'Florida',
+  'Georgia',
+  'Guam',
+  'Hawaii',
+  'Idaho',
+  'Illinois',
+  'Indiana',
+  'Iowa',
+  'Kansas',
+  'Kentucky',
+  'Louisiana',
+  'Maine',
+  'Marshall Islands',
+  'Maryland',
+  'Massachusetts',
+  'Michigan',
+  'Minnesota',
+  'Mississippi',
+  'Missouri',
+  'Montana',
+  'Nebraska',
+  'Nevada',
+  'New Hampshire',
+  'New Jersey',
+  'New Mexico',
+  'New York',
+  'North Carolina',
+  'North Dakota',
+  'Northern Mariana Islands',
+  'Ohio',
+  'Oklahoma',
+  'Oregon',
+  'Palau',
+  'Pennsylvania',
+  'Puerto Rico',
+  'Rhode Island',
+  'South Carolina',
+  'South Dakota',
+  'Tennessee',
+  'Texas',
+  'Utah',
+  'Vermont',
+  'Virgin Islands',
+  'Virginia',
+  'Washington',
+  'West Virginia',
+  'Wisconsin',
+  'Wyoming',
+];
 
 @Component({
   selector: 'tsl-suggester-input',
   templateUrl: './suggester-input.component.html',
   styleUrls: ['./suggester-input.component.scss'],
 })
-export class SuggesterInputComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
+export class SuggesterInputComponent {
+  public model: any;
+  public options = ['test', 'aa'];
 }
