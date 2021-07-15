@@ -1,0 +1,22 @@
+@import '~style/common';
+
+.TranslateButton {
+  &__wrapper {
+    padding: 5px 0;
+    cursor: pointer;
+    user-select: none;
+    width: fit-content;
+  }
+
+  &__text {
+    color: $walla-main;
+    font-size: $font-size-m;
+    margin-left: 4px;
+  }
+
+  &__icon {
+    ::ng-deep svg path {
+      fill: $walla-main;
+    }
+  }
+}

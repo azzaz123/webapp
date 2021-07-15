@@ -10,6 +10,11 @@ import {
   daysCalendarConfig as daysSpanishCalendarSpec,
   shortCalendarConfig as shortSpanishCalendarSpec,
 } from './constants/calendar-specs.es';
+import {
+  defaultCalendarSpec as defaultItalianCalendarSpec,
+  daysCalendarConfig as daysItalianCalendarSpec,
+  shortCalendarConfig as shorItalianCalendarSpec,
+} from './constants/calendar-specs.it';
 import { CALENDAR_SPEC_TYPE } from './enums/calendar-spec-type.enum';
 import { MomentCalendarSpecService } from './moment-calendar-spec.service';
 
@@ -66,7 +71,7 @@ describe('MomentCalendarSpecService', () => {
     });
 
     describe('and when asking for days date format', () => {
-      it('should get the Spanish localized date format', () => {
+      it('should get the English localized date format', () => {
         const result = service.getCalendarSpec(CALENDAR_SPEC_TYPE.DAYS);
 
         expect(result).toBe(daysEnglishCalendarSpec);
@@ -74,10 +79,41 @@ describe('MomentCalendarSpecService', () => {
     });
 
     describe('and when asking for short date format', () => {
-      it('should get the Spanish localized date format', () => {
+      it('should get the English localized date format', () => {
         const result = service.getCalendarSpec(CALENDAR_SPEC_TYPE.SHORT);
 
         expect(result).toBe(shortEnglishCalendarSpec);
+      });
+    });
+  });
+
+  describe('when the webapp is in Italian', () => {
+    beforeEach(() => {
+      TestBed.overrideProvider(LOCALE_ID, { useValue: 'it' });
+      service = TestBed.inject(MomentCalendarSpecService);
+    });
+
+    describe('and when asking for default date format', () => {
+      it('should get the Italian localized date format', () => {
+        const result = service.getCalendarSpec();
+
+        expect(result).toBe(defaultItalianCalendarSpec);
+      });
+    });
+
+    describe('and when asking for days date format', () => {
+      it('should get the Italian localized date format', () => {
+        const result = service.getCalendarSpec(CALENDAR_SPEC_TYPE.DAYS);
+
+        expect(result).toBe(daysItalianCalendarSpec);
+      });
+    });
+
+    describe('and when asking for short date format', () => {
+      it('should get the Italian localized date format', () => {
+        const result = service.getCalendarSpec(CALENDAR_SPEC_TYPE.SHORT);
+
+        expect(result).toBe(shorItalianCalendarSpec);
       });
     });
   });

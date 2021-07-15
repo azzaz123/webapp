@@ -27,6 +27,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { isEqual } from 'lodash-es';
 import { Observable, of } from 'rxjs';
 
@@ -302,7 +303,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     });
     modalRef.componentInstance.hasTrialAvailable = this.hasTrialAvailable;
     modalRef.result.then(
-      () => this.router.navigate(['profile/subscriptions']),
+      () => this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]),
       () => null
     );
     this.trackViewProBenefitsPopup();

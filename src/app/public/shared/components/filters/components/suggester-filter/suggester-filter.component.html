@@ -28,14 +28,12 @@
       </tsl-svg-icon>
     </div>
 
-    <div [class.SuggesterFilter--bubble]="variant | isBubble">
-      <form [formGroup]="formGroup" class="SuggesterFilter__form" [class.SuggesterFilter__form--drawer]="!(variant | isBubble)">
-        <tsl-select-form
-          formControlName="select"
-          [options]="options$ | async">
-        </tsl-select-form>
-      </form>
-    </div>
+    <form [formGroup]="formGroup" class="SuggesterFilter__form" [class.SuggesterFilter__form--bubble]="(variant | isBubble)">
+      <tsl-select-form
+        formControlName="select"
+        [options]="options$ | async">
+      </tsl-select-form>
+    </form>
 
   </tsl-drawer-placeholder-template>
 

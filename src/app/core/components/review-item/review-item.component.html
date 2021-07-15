@@ -2,9 +2,9 @@
   <div class="images-container">
     <div class="review-image">
       <ng-container *ngIf="review.item?.image; else categoryIcon">
-        <a 
-          href="{{ itemWebLink }}" 
-          target="_blank" 
+        <a
+          href="{{ itemWebLink }}"
+          target="_blank"
           tslsanitizedBackground="{{ review.item?.image.small }}"
           [fallback]="fallback" class="image"
         ></a>
@@ -24,8 +24,8 @@
   </div>
   <div class="info">
     <div class="review-type">
-      <span *ngIf="review.isSold">{{ reviewItemCopys.soldCopy }}:</span>
-      <span *ngIf="review.isBought">{{ reviewItemCopys.boughtCopy }}:</span>
+      <span *ngIf="review.isSold">{{ reviewItemCopies.soldCopy }}:</span>
+      <span *ngIf="review.isBought">{{ reviewItemCopies.boughtCopy }}:</span>
     </div>
     <div class="review-title">
       <a *ngIf="review.item?.id" href="{{ itemWebLink }}" target="_blank"> {{ review.item.title }} </a>
@@ -35,7 +35,7 @@
       <span *ngIf="!review.item?.id && !category?.name" i18n="@@web_wallapop_item">A Wallapop item</span>
     </div>
     <tsl-stars class="review-rating" [stars]="review.scoring" [normalized]="false"></tsl-stars>
-    <p class="review-comment">{{ review.comments }}</p>
+    <p class="review-comment">{{ reviewComment }}</p>
     <div class="review-credits">
       <span i18n="@@web_review_item_1">Posted by</span>
       <span *ngIf="reviewUser">
@@ -45,6 +45,9 @@
       </span>
       <span *ngIf="!reviewUser" i18n="@@web_wallapop_user">a Wallapop user</span>
       <span i18n="@@web_review_item_2">on</span><span> {{ review.date | date:'longDate' }}</span>
+    </div>
+    <div *ngIf="review.canTranslate" class="actions">
+      <tsl-translate-button [isTranslated]="isTranslated" (click)="toggleTranslation()"></tsl-translate-button>
     </div>
   </div>
 </div>

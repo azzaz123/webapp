@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { SLIDER_VARIANT } from './enums/slider-variant.enum';
 import { SliderFormComponent } from './slider-form.component';
 
@@ -17,6 +18,7 @@ describe('SliderFormComponent', () => {
 
   const limitLabelSelector = '.ngx-slider-limit';
   const valueLabelSelector = '.ngx-slider-model-value';
+  const sliderElementSelector = 'ngx-slider';
   const hiddenVisibilityValue = 'hidden';
 
   beforeEach(async () => {
@@ -81,6 +83,17 @@ describe('SliderFormComponent', () => {
       const valueLabel = el.querySelector(valueLabelSelector);
 
       expect((valueLabel as HTMLElement).style.visibility).toEqual(hiddenVisibilityValue);
+    });
+  });
+
+  describe('when the slider has a tooltip', () => {
+    it('should increase the margin of the content to include the tooltip', () => {
+      component.valueTooltip = true;
+
+      fixture.detectChanges();
+      const sliderElement: HTMLElement = fixture.debugElement.query(By.css(sliderElementSelector)).nativeElement;
+
+      expect(sliderElement.classList).toContain('Slider--with-tooltip');
     });
   });
 
