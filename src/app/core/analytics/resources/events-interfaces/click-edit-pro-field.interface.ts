@@ -12,7 +12,7 @@ export interface ClickEditProField {
   /**
    * The field the user is trying to edit
    */
-  field: 'header photo' | 'description' | 'opening hours' | 'phone' | 'web';
+  field: 'header photo' | 'description' | 'opening hours' | 'phone' | 'web' | 'shop address';
   /**
    * Identifier of the screen
    */
