@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -26,6 +26,8 @@ describe('WalletComponent', () => {
   let fixture: ComponentFixture<WalletComponent>;
   let router: Router;
   let kycBannerService: KYCBannerService;
+
+  const walletHelpButtonSelector = 'a';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -154,6 +156,14 @@ describe('WalletComponent', () => {
       const banner = fixture.debugElement.query(By.directive(KYCBannerComponent));
 
       expect(banner).toBeTruthy();
+    });
+  });
+
+  describe('when the user clicks the help button', () => {
+    it('should open the Wallet help page', () => {
+      const helpButtonRef = fixture.debugElement.query(By.css(walletHelpButtonSelector));
+
+      expect(helpButtonRef.attributes['href']).toEqual(component.zendeskWalletHelpURL);
     });
   });
 });
