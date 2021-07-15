@@ -56,8 +56,20 @@ describe('MultiSelectFormComponent', () => {
       const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
 
       expect(options[0].componentInstance.option.checked).toBeTruthy();
-      expect(options[2].componentInstance.option.checked).toBeTruthy();
       expect(options[1].componentInstance.option.checked).toBeFalsy();
+      expect(options[2].componentInstance.option.checked).toBeTruthy();
+    });
+    describe('and we reassign again the checked value...', () => {
+      it('should load the options accordingly', () => {
+        component.writeValue(['aa', 'cc']);
+        component.writeValue(['bb']);
+        fixture.detectChanges();
+
+        const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
+        expect(options[0].componentInstance.option.checked).toBeFalsy();
+        expect(options[1].componentInstance.option.checked).toBeTruthy();
+        expect(options[2].componentInstance.option.checked).toBeFalsy();
+      });
     });
   });
 
