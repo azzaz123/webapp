@@ -47,7 +47,7 @@
   <div class="TooManyItemsModal__actions">
     <tsl-button *ngIf="type === inAppType || type === carDealerType" (click)="activeModal.close()" i18n="@@web_understood">Understood</tsl-button>
     <tsl-button *ngIf="type === notSubscribedType || (type === stripeType && !isHighestLimit)" (click)="activeModal.close()"
-    [routerLink]="'/profile/subscriptions'">
+    routerLink="/{{PRO_PATHS.PRO_MANAGER}}/{{PRO_PATHS.SUBSCRIPTIONS}}">
       <span *ngIf="!isFreeTrial" i18n="@@web_too_many_items_modal_button_go_to_subscriptions">See plans</span>
       <span *ngIf="isFreeTrial" i18n="@@web_too_many_items_modal_button_go_to_trial">Start free trial</span>
     </tsl-button>

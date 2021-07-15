@@ -33,8 +33,8 @@ import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/
 import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { SuggesterComponent } from '../suggester/suggester.component';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
+import { SuggesterComponentStub } from '@fixtures/shared/components/suggester.component.stub';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -152,7 +152,7 @@ describe('TopbarComponent', () => {
             useValue: {},
           },
         ],
-        declarations: [SuggesterComponent, TopbarComponent, CustomCurrencyPipe],
+        declarations: [SuggesterComponentStub, TopbarComponent, CustomCurrencyPipe],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
       userService = TestBed.inject(UserService);
@@ -323,7 +323,7 @@ describe('TopbarComponent', () => {
         };
 
         it('should send click keyboard search button event', () => {
-          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
           spyOn(topbarTrackingEventsService, 'trackClickKeyboardSearchButtonEvent');
 
           searchBox.triggerEventHandler('searchSubmit', MOCK_SEARCH_BOX_ONLY_TEXT_VALUE);
@@ -336,7 +336,7 @@ describe('TopbarComponent', () => {
 
       describe('and the experimental features flag is enabled', () => {
         it('should navigate to the new search page', () => {
-          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
           spyOn(navigator, 'navigate');
 
@@ -355,7 +355,7 @@ describe('TopbarComponent', () => {
 
       describe('and the experimental features flag is not enabled', () => {
         it('should redirect to the old search page', () => {
-          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
           const { category_ids, keywords } = MOCK_SEARCH_BOX_VALUE;
           const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.categoryId}=${category_ids}&${FILTER_QUERY_PARAM_KEY.keywords}=${keywords}&${FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE}=${FILTERS_SOURCE.SEARCH_BOX}`;
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
@@ -377,7 +377,7 @@ describe('TopbarComponent', () => {
 
       describe('and the experimental features flag is enabled', () => {
         beforeEach(() => {
-          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
           spyOn(navigator, 'navigate');
           spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
@@ -400,7 +400,7 @@ describe('TopbarComponent', () => {
 
       describe('and the experimental features flag is not enabled', () => {
         beforeEach(() => {
-          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponent));
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
           spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
           spyOn(router, 'navigate');
           spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');

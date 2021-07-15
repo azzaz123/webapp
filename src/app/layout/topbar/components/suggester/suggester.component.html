@@ -1,9 +1,8 @@
 <div class="SearchBox" [class.SearchBox--active]="(searchBoxValue$ | async).keywords">
     <input
         class="SearchBox__input"
-        type="text"
-        i18n-placeholder="@@web_components_suggester_7" 
-        placeholder="Search in All categories" 
+        type="search"
+        [placeholder]="searchBoxPlaceholder$ | async" 
         maxlength="150"
         [ngModel]="searchBoxValue$ | async" 
         [inputFormatter]="inputFormatter"

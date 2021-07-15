@@ -1,5 +1,5 @@
 <div class="KYCInfoModal">
-    <tsl-svg-icon class="KYCInfoModal__cross position-absolute mt-4 mr-4" src="/assets/icons/cross.svg" (click)="activeModal.close()"></tsl-svg-icon>
+    <tsl-svg-icon class="KYCInfoModal__cross position-absolute mt-4 mr-4" src="/assets/icons/cross.svg" (click)="closeModal()"></tsl-svg-icon>
     <div class="KYCInfoModal__slides p-4">
         <tsl-carousel-slides [hideControllers]="true" [noBackgroundIndicators]="true" [activeIndicatorWallaMain]="true">
             <ng-template carousel-slider *ngFor="let step of KYC_SLIDER_INFO_STEPS; let i = index">

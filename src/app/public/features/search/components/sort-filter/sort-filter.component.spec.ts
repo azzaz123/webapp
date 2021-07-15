@@ -38,10 +38,9 @@ import { SortByService } from './services/sort-by.service';
 class SelectFormStubComponent {
   @Input() options: SelectFormOption<string>;
   @Input() formControl: FormControl;
-  @Output() ngModelChange: EventEmitter<string> = new EventEmitter<string>();
 
   mockClickOption(option: SelectFormOption<string>): void {
-    this.ngModelChange.emit(option.value);
+    this.formControl.setValue(option.value);
   }
 }
 
@@ -242,10 +241,10 @@ describe('SortFilterComponent', () => {
       const lastOption: SelectFormOption<string> = SORT_BY_DEFAULT_OPTIONS[SORT_BY_DEFAULT_OPTIONS.length - 1];
       selectFilterStub.mockClickOption(lastOption);
 
-      fixture.detectChanges();
-
-      const value: HTMLElement = fixture.debugElement.query(By.css(sortFilterValueLabelSelector)).nativeElement;
-      expect(value.textContent).toBe(lastOption.label);
+      fixture.whenStable().then(() => {
+        const value: HTMLElement = fixture.debugElement.query(By.css(sortFilterValueLabelSelector)).nativeElement;
+        expect(value.textContent).toBe(lastOption.label);
+      });
     });
 
     it('should emit the new value to filter parameter store', () => {
