@@ -2,7 +2,6 @@
 type="text" 
 placeholder="Suggesters..." 
 [(ngModel)]="model" [ngbTypeahead]="search"
-(keydown)="searchSuggester($event)"
+(keydown)="keyDown($event)"
+(keyUp)="keyUp($event)"
 />
-
-<tsl-select-form [options]=""></tsl-select-form>

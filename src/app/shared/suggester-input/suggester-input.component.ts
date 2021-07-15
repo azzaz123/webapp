@@ -17,7 +17,7 @@ export class SuggesterInputComponent {
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {}
   public model: any;
   public options = ['test', 'aa'];
-  public searchSuggester(event) {
+  public keyDown(event) {
     //listen to the key event and debounce
     this.hashtagSuggesterApiService.getHashtagsByPrefix();
   }
@@ -26,3 +26,4 @@ export class SuggesterInputComponent {
 
   //key down enter
 }
+// managemge space key (whether we want to put space in prefix) - AC8
