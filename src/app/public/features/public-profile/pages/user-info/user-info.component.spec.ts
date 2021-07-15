@@ -2,7 +2,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { UserService } from '@core/user/user.service';
+import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { of } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 
@@ -32,6 +33,7 @@ describe('UserInfoComponent', () => {
             },
           },
         },
+        { provide: UserService, useClass: MockedUserService },
       ],
     }).compileComponents();
   });

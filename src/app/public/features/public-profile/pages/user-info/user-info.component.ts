@@ -3,6 +3,7 @@ import { Coordinate } from '@core/geolocation/address-response.interface';
 import { User } from '@core/user/user';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { UserExtrainfo, UserValidations } from '@core/user/user-response.interface';
+import { UserService } from '@core/user/user.service';
 import { Subscription } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 @Component({
@@ -19,7 +20,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   public readonly PERMISSIONS = PERMISSIONS;
   public storeLocation: Coordinate;
 
-  constructor(private publicProfileService: PublicProfileService) {}
+  constructor(private publicProfileService: PublicProfileService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.getUser();
@@ -47,7 +48,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   }
 
   private getStoreLocation(): void {
-    if (this.publicProfileService.hasStoreLocation) {
+    if (this.userService.hasStoreLocation(this.user)) {
       this.storeLocation = {
         latitude: this.user.extraInfo.latitude,
         longitude: this.user.extraInfo.longitude,
