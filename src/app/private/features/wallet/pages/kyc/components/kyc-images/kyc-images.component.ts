@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./kyc-images.component.scss'],
 })
 export class KycImagesComponent {
-  @Input() photosToTake: number;
+  @Input() photosToRequest: number;
 
   constructor() {}
 }

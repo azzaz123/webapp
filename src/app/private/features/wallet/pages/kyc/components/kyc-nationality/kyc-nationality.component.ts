@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angul
 import { KYC_NATIONALITIES } from '../../constants/kyc-nationalities-constants';
 import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
 import { IOption } from '@shared/dropdown/utils/option.interface';
+import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
 
 @Component({
   selector: 'tsl-kyc-nationality',
@@ -10,7 +11,7 @@ import { IOption } from '@shared/dropdown/utils/option.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KycNationalityComponent {
-  @Output() selectedDocument: EventEmitter<string> = new EventEmitter();
+  @Output() photosToRequestSelect: EventEmitter<number> = new EventEmitter();
   @Output() goBack: EventEmitter<void> = new EventEmitter();
 
   public selectedNationality: KYCNationality;
@@ -22,8 +23,9 @@ export class KycNationalityComponent {
     this.selectedNationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
   }
 
-  public selectAcreditationDocument(selectedDocument: IOption): void {
-    this.selectedDocument.emit(selectedDocument.value);
+  public emitPhotosToRequest(selectedDocument: IOption): void {
+    const photosNeeded = KYC_DOCUMENTATION.find((document) => document.value === selectedDocument.value).photosNeeded;
+    this.photosToRequestSelect.emit(photosNeeded);
   }
 
   public handleBack(): void {

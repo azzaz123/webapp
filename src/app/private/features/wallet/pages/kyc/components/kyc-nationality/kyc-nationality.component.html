@@ -28,7 +28,9 @@
                     bindLabel="string"
                     bindValue="string"
                     class="form-control mb-2" 
-                    (selected)="selectNationality($event)" name="nationality" ngDefaultControl>
+                    (selected)="selectNationality($event)"
+                    name="nationality"
+                    ngDefaultControl>
                 </tsl-dropdown>
                 <tsl-dropdown
                     *ngIf="selectedNationality"
@@ -38,7 +40,9 @@
                     bindLabel="string"
                     bindValue="string"
                     class="form-control mb-2" 
-                    (selected)="selectAcreditationDocument($event)" name="nationality" ngDefaultControl>
+                    (selected)="emitPhotosToRequest($event)"
+                    name="document"
+                    ngDefaultControl>
                 </tsl-dropdown>
                 <span i18n="@@kyc_select_nationality_view_data_privacy_description" class="KYCNationality__infoMessage d-block text-center">Your information is confidential. It will be used only for the explained purposes.</span>
             </div>

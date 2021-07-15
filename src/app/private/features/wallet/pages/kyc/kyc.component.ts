@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { StepperComponent } from '@shared/stepper/stepper.component';
-import { KYC_DOCUMENTATION } from './constants/kyc-documentation-constants';
 
 @Component({
   selector: 'tsl-kyc',
@@ -9,10 +8,10 @@ import { KYC_DOCUMENTATION } from './constants/kyc-documentation-constants';
 })
 export class KYCComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
-  public photosToTake: number;
+  public photosToRequest: number;
 
-  public definePhotosAndGoNext($event: string): void {
-    this.photosToTake = KYC_DOCUMENTATION.find((document) => document.value === $event)?.photosNeeded;
+  public definePhotosAndGoNext(photosToRequest: number): void {
+    this.photosToRequest = photosToRequest;
     this.goNextStep();
   }
 
