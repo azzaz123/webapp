@@ -54,8 +54,8 @@ describe('HashtagSuggesterApiService', () => {
 
       expect(request.request.urlWithParams).toEqual(expectedUrl);
       expect(request.request.method).toBe('GET');
-      expect(response.init).toBe(+start);
-      expect(response.results).toBe(MOCK_HASHTAGS);
+      expect(response.paginationParameter).toBe(start);
+      expect(response.list).toBe(MOCK_HASHTAGS);
     });
 
     it('should load hashtags and call getHashtags endpint if we load hashtags when we initiate hashtag section', () => {
@@ -78,8 +78,8 @@ describe('HashtagSuggesterApiService', () => {
 
       expect(request.request.urlWithParams).toEqual(expectedUrl);
       expect(request.request.method).toBe('GET');
-      expect(response.init).toBe(+start);
-      expect(response.results).toBe(MOCK_HASHTAGS);
+      expect(response.paginationParameter).toBe(start);
+      expect(response.list).toBe(MOCK_HASHTAGS);
     });
   });
 });
