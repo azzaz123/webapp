@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserStatsComponent } from './user-stats.component';
@@ -116,17 +116,22 @@ describe('UserStatsComponent', () => {
             spyOn(userService, 'hasStoreLocation').and.returnValue(true);
             component.ngOnInit();
           });
-          it('should shoud store location', () => {
+          it('should show store address', fakeAsync(() => {
+            tick();
+
             expect(component.showStoreAdress).toBe(true);
-          });
+          }));
         }),
           describe('when it has not store address', () => {
             beforeEach(() => {
               spyOn(userService, 'hasStoreLocation').and.returnValue(false);
+              component.ngOnInit();
             });
-            it('should shoud store location', () => {
+            it('should not show store address', fakeAsync(() => {
+              tick();
+
               expect(component.showStoreAdress).toBe(false);
-            });
+            }));
           }),
           describe('when have the extra info...', () => {
             it('should show three anchors if it have the extra info', () => {
@@ -165,6 +170,12 @@ describe('UserStatsComponent', () => {
         beforeEach(() => {
           permissionService.removePermission(PERMISSIONS.subscriptions);
         });
+        it('should not show store address', fakeAsync(() => {
+          component.ngOnInit();
+          tick();
+
+          expect(component.showStoreAdress).toBe(false);
+        }));
         it('should show only one anchor', () => {
           component.userInfo.featured = false;
 
@@ -189,11 +200,14 @@ describe('UserStatsComponent', () => {
       describe('should not show store address', () => {
         beforeEach(() => {
           spyOn(userService, 'hasStoreLocation').and.callThrough();
+          component.ngOnInit();
         });
-        it('should shoud store location', () => {
+        it('should not show store location', fakeAsync(() => {
+          tick();
+
           expect(component.showStoreAdress).toBe(false);
           expect(userService.hasStoreLocation).not.toHaveBeenCalled();
-        });
+        }));
       });
     });
 
