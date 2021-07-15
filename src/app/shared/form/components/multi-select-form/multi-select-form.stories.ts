@@ -20,7 +20,7 @@ class StoryMultiSelectFormFormComponent {
   @Input() options;
   @Input() disabled: boolean = false;
   public formGroup = new FormGroup({
-    select: new FormControl(['aa']),
+    select: new FormControl(['aa', 'bb']),
   });
   public onClick() {
     this.formGroup.get('select').setValue(['cc']);
