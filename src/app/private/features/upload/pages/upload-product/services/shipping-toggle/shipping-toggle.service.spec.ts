@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { FALLBACK_SHIPPING_RULES_RESPONSE } from '@api/bff/delivery/rules/constants/fallback-shipping-rules-response';
+import { DeliveryRulesApiService } from '@api/bff/delivery/rules/delivery-rules-api.service';
+import { mapShippingRulesResponseToShippingRules } from '@api/bff/delivery/rules/mappers/shipping-rules-mapper';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { of } from 'rxjs';
 import { ShippingToggleService } from './shipping-toggle.service';
@@ -7,6 +9,7 @@ import { ShippingToggleService } from './shipping-toggle.service';
 describe('ShippingToggleService', () => {
   let service: ShippingToggleService;
   let featureFlagService: FeatureFlagService;
+  const featureFlagValue = false;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -16,7 +19,15 @@ describe('ShippingToggleService', () => {
           provide: FeatureFlagService,
           useValue: {
             getFlag() {
-              return of(false);
+              return of(featureFlagValue);
+            },
+          },
+        },
+        {
+          provide: DeliveryRulesApiService,
+          useValue: {
+            getRules() {
+              return of(mapShippingRulesResponseToShippingRules(FALLBACK_SHIPPING_RULES_RESPONSE));
             },
           },
         },
@@ -32,8 +43,56 @@ describe('ShippingToggleService', () => {
 
   describe('when asking for shipping toggle state', () => {
     it('should return same state as feature flag', () => {
-      featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SHIPPING_TOGGLE).subscribe((isActive) => {
-        expect(isActive).toBeTruthy();
+      service.isActive().subscribe((isActive) => {
+        expect(isActive).toEqual(featureFlagValue);
+      });
+    });
+  });
+
+  describe('when asking for shipping toggle allowance', () => {
+    describe('and all the data allows it', () => {
+      const allowedCategoryId = '1';
+      const allowedSubategoryId = '1';
+      const allowedPrice = 2;
+
+      it('should return allowance to true', (done) => {
+        service.isAllowed(allowedCategoryId, allowedSubategoryId, allowedPrice).subscribe((isAllowed) => {
+          expect(isAllowed).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    describe('and NOT all the data allows it', () => {
+      const allowedCategoryId = '1';
+      const allowedSubategoryId = '1';
+      const allowedPrice = 2;
+
+      it('should return allowance to false if category is not allowed', (done) => {
+        const notAllowedCategoryId = FALLBACK_SHIPPING_RULES_RESPONSE.categories_with_shipping_not_allowed[0].toString();
+
+        service.isAllowed(notAllowedCategoryId, allowedSubategoryId, allowedPrice).subscribe((isAllowed) => {
+          expect(isAllowed).toBeFalsy();
+          done();
+        });
+      });
+
+      it('should return allowance to false if subcategory is not allowed', (done) => {
+        const notAllowedSubategoryId = FALLBACK_SHIPPING_RULES_RESPONSE.subcategories_with_shipping_not_allowed[0].toString();
+
+        service.isAllowed(allowedCategoryId, notAllowedSubategoryId, allowedPrice).subscribe((isAllowed) => {
+          expect(isAllowed).toBeFalsy();
+          done();
+        });
+      });
+
+      it('should return allowance to false if price is not allowed', (done) => {
+        const notAllowedPrice = 0;
+
+        service.isAllowed(allowedCategoryId, allowedSubategoryId, notAllowedPrice).subscribe((isAllowed) => {
+          expect(isAllowed).toBeFalsy();
+          done();
+        });
       });
     });
   });
