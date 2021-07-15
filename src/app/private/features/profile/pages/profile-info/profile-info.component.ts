@@ -41,6 +41,7 @@ export enum ANALYTICS_FIELDS {
   OPENING_HOURS = 'opening hours',
   PHONE = 'phone',
   WEB = 'web',
+  SHOP_ADDRESS = 'shop address',
 }
 
 @Component({
