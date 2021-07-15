@@ -28,7 +28,6 @@ export class LocationBoxComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    console.log('location', this.location, this.defaultUserLocation);
     if (this.location) {
       this.setLocation({
         latitude: this.location.approximated_latitude,
@@ -36,10 +35,7 @@ export class LocationBoxComponent implements OnInit {
       });
     } else {
       const user = this.userService.user;
-      console.log('AAAA', this.defaultUserLocation);
       if (this.defaultUserLocation && user && user.location) {
-        console.log('BBB', this.defaultUserLocation);
-
         this.form.get(this.name).patchValue({
           address: user.location.title,
           latitude: user.location.approximated_latitude,
@@ -58,7 +54,6 @@ export class LocationBoxComponent implements OnInit {
   }
 
   private setLocation(coordinates: Coordinate) {
-    console.log('location', coordinates);
     this.coordinates = coordinates;
   }
 
