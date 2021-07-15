@@ -152,7 +152,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
         opening_hours: this.userInfo.opening_hours,
         link: this.userInfo.link,
       };
-      if (this.user.extraInfo.latitude !== 0 || this.user.extraInfo.longitude !== 0 || this.user.extraInfo.address !== '') {
+      if (this.userService.hasStoreLocation(this.user)) {
         userData = {
           ...userData,
           storeLocation: {

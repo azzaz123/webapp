@@ -62,6 +62,8 @@ import {
 import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
 import { LOCALE_ID } from '@angular/core';
+import { StoreLocation, StoreLocationResponse } from '@core/geolocation/address-response.interface';
+import { cloneDeep } from 'lodash-es';
 
 jest.mock('@mparticle/web-sdk', () => ({
   __esModule: true,
@@ -496,19 +498,25 @@ describe('Service: User', () => {
 
   describe('updateStoreLocation', () => {
     it('should call endpoint and return response', () => {
-      let response: UserLocation;
+      let response: StoreLocationResponse;
 
-      service.updateStoreLocation(USER_LOCATION_COORDINATES).subscribe((r) => (response = r));
+      const expectedResponse: StoreLocationResponse = {
+        check_change_location: true,
+      };
+
+      const storeLocationRequest: StoreLocation = {
+        latitude: 0,
+        longitude: 0,
+        address: 'aaaa',
+      };
+
+      service.updateStoreLocation(storeLocationRequest).subscribe((r) => (response = r));
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`);
       req.flush(USER_LOCATION);
 
       expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual({
-        latitude: USER_LOCATION_COORDINATES.latitude,
-        longitude: USER_LOCATION_COORDINATES.longitude,
-        address: USER_LOCATION_COORDINATES.name,
-      });
-      expect(response).toEqual(USER_LOCATION);
+      expect(req.request.body).toEqual(storeLocationRequest);
+      expect(response).toEqual(expectedResponse);
     });
   });
 
@@ -785,6 +793,57 @@ describe('Service: User', () => {
         expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
         expect(service.isClickedProSection).toEqual(false);
       }));
+    });
+  });
+
+  describe('has store location', () => {
+    describe('when user has not extra info', () => {
+      it('should return false', () => {
+        const response = service.hasStoreLocation(MOCK_USER);
+        expect(response).toBe(false);
+      });
+    });
+
+    describe('when user has not store address', () => {
+      it('should return false', () => {
+        const user: User = cloneDeep(MOCK_FULL_USER);
+        user.extraInfo.address = '';
+        const response = service.hasStoreLocation(user);
+        expect(response).toBe(false);
+      });
+    });
+
+    describe('when user has not lat and long set', () => {
+      it('should return false', () => {
+        const user: User = cloneDeep(MOCK_FULL_USER);
+        user.extraInfo.address = 'test';
+        user.extraInfo.latitude = 0;
+        user.extraInfo.longitude = 0;
+        const response = service.hasStoreLocation(user);
+        expect(response).toBe(false);
+      });
+    });
+
+    describe('when user has address and lat', () => {
+      it('should return false', () => {
+        const user: User = cloneDeep(MOCK_FULL_USER);
+        user.extraInfo.address = 'test';
+        user.extraInfo.latitude = 1.214;
+        user.extraInfo.longitude = 0;
+        const response = service.hasStoreLocation(user);
+        expect(response).toBe(true);
+      });
+    });
+
+    describe('when user has address and long', () => {
+      it('should return false', () => {
+        const user: User = cloneDeep(MOCK_FULL_USER);
+        user.extraInfo.address = 'test';
+        user.extraInfo.latitude = 0;
+        user.extraInfo.longitude = 2.484;
+        const response = service.hasStoreLocation(user);
+        expect(response).toBe(true);
+      });
     });
   });
 });

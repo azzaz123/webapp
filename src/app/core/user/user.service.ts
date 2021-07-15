@@ -392,4 +392,10 @@ export class UserService {
   private getStoredIsClickedProSection(user: User): void {
     this._isProSectionClicked = !!localStorage.getItem(`${user.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
   }
+
+  public hasStoreLocation(user: User): boolean {
+    return (
+      user.extraInfo && this._user.extraInfo.address?.length > 0 && (!!this._user.extraInfo.latitude || !!this._user.extraInfo.latitude)
+    );
+  }
 }

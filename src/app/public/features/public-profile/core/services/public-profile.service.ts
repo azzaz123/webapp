@@ -7,23 +7,20 @@ import { Image, UserExtrainfo, UserFavourited, UserResponse } from '@core/user/u
 import { MarkAsFavouriteBodyResponse } from '../interfaces/public-profile-request.interface';
 import { EMPTY_STATS } from './constants/stats-constants';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
+import { UserService } from '@core/user/user.service';
 
 @Injectable()
 export class PublicProfileService {
   private _user: User;
 
-  constructor(private publicUserApiService: PublicUserApiService) {}
+  constructor(private publicUserApiService: PublicUserApiService, private userService: UserService) {}
 
   get user(): User {
     return this._user;
   }
 
   get hasStoreLocation(): boolean {
-    return (
-      this._user?.extraInfo &&
-      this._user.extraInfo.address?.length > 0 &&
-      (!!this._user.extraInfo.latitude || !!this._user.extraInfo.latitude)
-    );
+    return this.userService.hasStoreLocation(this.user);
   }
 
   public getStats(userId: string): Observable<UserStats> {
