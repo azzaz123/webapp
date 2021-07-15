@@ -11,7 +11,7 @@ export const KYC_NATIONALITIES: KYCNationality[] = [
     availableDocuments: getKYCAvailableDocuments(KYC_NATIONALITY_TYPE.EUROPEAN_UNION),
   },
   {
-    label: $localize`:@@kyc_select_nationality_view_list_uk_usa_can_placeholdera:UK, USA or Canada`,
+    label: $localize`:@@kyc_select_nationality_view_list_uk_usa_can_placeholder:UK, USA or Canada`,
     headerText: $localize`:@@kyc_select_document_view_if_usa_uk_can_top bar_title:UK, USA or Canada`,
     value: KYC_NATIONALITY_TYPE.UK_USA_CANADA,
     svgPath: '/assets/icons/wallet/kyc/stepper/ukusaca_nationality.svg',
