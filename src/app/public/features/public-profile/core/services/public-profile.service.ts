@@ -7,7 +7,6 @@ import { Image, UserExtrainfo, UserFavourited, UserResponse } from '@core/user/u
 import { MarkAsFavouriteBodyResponse } from '../interfaces/public-profile-request.interface';
 import { EMPTY_STATS } from './constants/stats-constants';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
-import { UserService } from '@core/user/user.service';
 
 @Injectable()
 export class PublicProfileService {
