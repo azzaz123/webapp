@@ -78,7 +78,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_294">Shop address</label>
+            <label class="col-12 col-md-3 text-md-right" i18n="@@edit_profile_professional_info_shop_address_hint">Shop address</label>
             <div class="col-12 col-md-6 offset-md-1" tslVisible (visible)="onMapContainerVisible()">
               <tsl-location-box *ngIf="renderMap" [form]="profileForm" name="storeLocation" 
                 [disableFooter]="true" [disablePopover]="true" [disableInput]="!isPro" (click)="openBecomeProModal(ANALYTICS_FIELDS.SHOP_ADDRESS)" [defaultUserLocation]="false"
