@@ -21,12 +21,14 @@ export class LocationBoxComponent implements OnInit {
   @Input() disableFooter: boolean;
   @Input() disablePopover: boolean;
   @Input() disableInput: boolean;
+  @Input() defaultUserLocation = true;
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   public coordinates: Coordinate;
 
   constructor(private userService: UserService) {}
 
   ngOnInit() {
+    console.log('location', this.location, this.defaultUserLocation);
     if (this.location) {
       this.setLocation({
         latitude: this.location.approximated_latitude,
@@ -34,8 +36,10 @@ export class LocationBoxComponent implements OnInit {
       });
     } else {
       const user = this.userService.user;
+      console.log('AAAA', this.defaultUserLocation);
+      if (this.defaultUserLocation && user && user.location) {
+        console.log('BBB', this.defaultUserLocation);
 
-      if (user && user.location) {
         this.form.get(this.name).patchValue({
           address: user.location.title,
           latitude: user.location.approximated_latitude,
@@ -54,6 +58,7 @@ export class LocationBoxComponent implements OnInit {
   }
 
   private setLocation(coordinates: Coordinate) {
+    console.log('location', coordinates);
     this.coordinates = coordinates;
   }
 

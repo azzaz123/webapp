@@ -89,8 +89,8 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       link: '',
       storeLocation: this.fb.group({
         address: [''],
-        latitude: [''],
-        longitude: [''],
+        latitude: [0],
+        longitude: [0],
       }),
     });
   }
@@ -145,23 +145,28 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     }
 
     if (this.userInfo && this.isPro) {
-      (this.storeLocation = {
-        approximated_latitude: this.user.extraInfo.latitude,
-        approximated_longitude: this.user.extraInfo.longitude,
-        address: this.user.extraInfo.address,
-      }),
-        (userData = {
+      /*       this.storeLocation = {
+        approximated_latitude: this.user.extraInfo?.latitude,
+        approximated_longitude: this.user.extraInfo?.longitude,
+        address: this.user.extraInfo?.address,
+      }; */
+      userData = {
+        ...userData,
+        phone_number: this.userInfo.phone_number,
+        description: this.userInfo.description,
+        opening_hours: this.userInfo.opening_hours,
+        link: this.userInfo.link,
+      };
+      if (this.user.extraInfo.latitude !== 0 || this.user.extraInfo.longitude !== 0 || this.user.extraInfo.address !== '') {
+        userData = {
           ...userData,
-          phone_number: this.userInfo.phone_number,
-          description: this.userInfo.description,
-          opening_hours: this.userInfo.opening_hours,
-          link: this.userInfo.link,
           storeLocation: {
             latitude: this.user.extraInfo.latitude,
             longitude: this.user.extraInfo.longitude,
             address: this.user.extraInfo.address,
           },
-        });
+        };
+      }
     }
 
     this.profileForm.patchValue(userData);
@@ -278,9 +283,9 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   private checkAndSaveStoreLocation(profileFormValue: any): Observable<boolean> {
     const storeLocation: StoreLocation = profileFormValue.storeLocation;
     const savedStoreLocation: StoreLocation = {
-      latitude: this.user.extraInfo.latitude,
-      longitude: this.user.extraInfo.longitude,
-      address: this.user.extraInfo.address,
+      latitude: this.user.extraInfo?.latitude || 0,
+      longitude: this.user.extraInfo?.longitude || 0,
+      address: this.user.extraInfo?.address || '',
     };
     if (isEqual(storeLocation, savedStoreLocation)) {
       return of(false);
