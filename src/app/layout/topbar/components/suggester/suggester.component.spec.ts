@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SuggesterComponent } from './suggester.component';
 import { SUGGESTER_DATA_WEB } from '@fixtures/suggester.fixtures.spec';
@@ -10,14 +10,15 @@ import { ActivatedRoute } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CATEGORY_IDS } from '@core/category/category-ids';
+import { CategoryService } from '@core/category/category.service';
+import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 
 const MOCK_SEARCH_KEYWORD: SearchBoxValue = { [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone' };
-const MOCK_SEARCH_SUGGESTION: SearchBoxValue = {
-  [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone',
-  [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.COMPUTERS_ELECTRONICS}`,
-};
 const MOCK_SUGGESTER_RESPONSE = SUGGESTER_DATA_WEB[0];
+const MOCK_CATEGORY = CATEGORY_DATA_WEB[1];
+
+const searchParamsMockSubject = new BehaviorSubject(MOCK_SEARCH_KEYWORD);
+const searchParamsMock = searchParamsMockSubject.asObservable();
 
 describe('SuggesterComponent', () => {
   let component: SuggesterComponent;
@@ -43,7 +44,15 @@ describe('SuggesterComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
-              queryParams: of(MOCK_SEARCH_KEYWORD),
+              queryParams: searchParamsMock,
+            },
+          },
+          {
+            provide: CategoryService,
+            useValue: {
+              getCategoryById() {
+                return of(CATEGORY_DATA_WEB[1]);
+              },
             },
           },
           EventService,
@@ -151,6 +160,20 @@ describe('SuggesterComponent', () => {
       resetElement.triggerEventHandler('click', {});
 
       expect(component.searchCancel.emit).toHaveBeenCalledWith(previousSearchBoxValue);
+    });
+  });
+
+  describe('when the search has a category selected', () => {
+    it('should show the category name as the placeholder for the input', () => {
+      searchParamsMockSubject.next({
+        ...MOCK_SEARCH_KEYWORD,
+        [FILTER_QUERY_PARAM_KEY.categoryId]: `${MOCK_CATEGORY.category_id}`,
+      });
+
+      fixture.detectChanges();
+      const inputElement = fixture.debugElement.query(By.css('.SearchBox__input')).nativeElement;
+
+      expect(inputElement.placeholder).toBe(`Search in ${MOCK_CATEGORY.name}`);
     });
   });
 });

@@ -15,6 +15,7 @@ import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { ProfileProBillingModule } from '@shared/profile-pro-billing/profile-pro-billing.module';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
     NgbDatepickerModule,
     ItemAvatarModule,
     CustomCurrencyModule,
+    ProfileProBillingModule,
   ],
   declarations: [
     catalogProRoutedComponents,

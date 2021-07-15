@@ -310,4 +310,14 @@ export class SubscriptionsService {
 
     return this.hasTrial(selectedsubscription) && !selectedsubscription.subscribed_from;
   }
+
+  public hasHighestLimit(subscription: SubscriptionsResponse): boolean {
+    const selectedLimit = subscription.selected_tier?.limit;
+
+    if (!selectedLimit) {
+      return false;
+    }
+    const maxLimit = subscription.tiers.reduce((a, b) => (!b.limit || a.limit > b.limit ? a : b)).limit;
+    return selectedLimit === maxLimit;
+  }
 }

@@ -1,31 +1,47 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BannerComponent } from '@shared/banner/banner.component';
 import { BannerModule } from '@shared/banner/banner.module';
 import { ButtonComponent } from '@shared/button/button.component';
 import { ButtonModule } from '@shared/button/button.module';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { KYCInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
 import { KYC_BANNER_TYPES } from './kyc-banner-constants';
-import { KycBannerComponent } from './kyc-banner.component';
+import { KYCBannerComponent } from './kyc-banner.component';
 
-describe('KycBannerComponent', () => {
+describe('KYCBannerComponent', () => {
   const MOCK_KYC_BANNER_SPECIFICATIONS = KYC_BANNER_TYPES[0];
-  let component: KycBannerComponent;
+  let fixture: ComponentFixture<KYCBannerComponent>;
+  let component: KYCBannerComponent;
   let debugElement: DebugElement;
-  let fixture: ComponentFixture<KycBannerComponent>;
+  let modalService: NgbModal;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [KycBannerComponent, BannerComponent, SvgIconComponent],
+      declarations: [KYCBannerComponent, BannerComponent, SvgIconComponent],
       imports: [SvgIconModule, ButtonModule, HttpClientTestingModule, BannerModule],
+      providers: [
+        {
+          provide: NgbModal,
+          useValue: {
+            open() {
+              return {
+                result: Promise.resolve(),
+              };
+            },
+          },
+        },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KycBannerComponent);
+    fixture = TestBed.createComponent(KYCBannerComponent);
+    modalService = TestBed.inject(NgbModal);
     debugElement = fixture.debugElement;
     component = fixture.componentInstance;
   });
@@ -80,6 +96,17 @@ describe('KycBannerComponent', () => {
       const button: HTMLElement = debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
       expect(button.textContent).toEqual(component.KYCBannerSpecifications.buttonText);
+    });
+
+    describe('and we click on the button...', () => {
+      it('should open the KYC slider modal', fakeAsync(() => {
+        spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve() });
+
+        debugElement.query(By.directive(ButtonComponent)).nativeElement.click();
+        tick();
+
+        expect(modalService.open).toHaveBeenCalledWith(KYCInfoModalComponent);
+      }));
     });
   });
 });

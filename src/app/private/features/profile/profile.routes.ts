@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { LoggedGuard } from '@core/user/logged.guard';
-import { PERMISSIONS } from '@core/user/user-constants';
 import { ExitConfirmGuard } from '@core/guards/exit-confirm.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { AccountComponent } from './pages/account/account.component';
-import { InvoiceComponent } from './pages/invoice/invoice.component';
 import { ProfileInfoComponent } from './pages/profile-info/profile-info.component';
-import { ProfileProSubscriptionComponent } from './pages/profile-pro-subscription/profile-pro-subscription.component';
 import { ProfileComponent } from './pages/profile.component';
-import { SubscriptionsComponent } from './pages/subscription/subscription.component';
+import { PRO_PATHS } from '../pro/pro-routing-constants';
 
 const routes: Route[] = [
   {
@@ -43,45 +40,16 @@ const routes: Route[] = [
         },
       },
       {
-        path: 'subscriptions',
-        component: SubscriptionsComponent,
-        data: {
-          isMyZone: true,
-          isProfile: true,
-          permissions: {
-            only: PERMISSIONS.subscriptions,
-            except: PERMISSIONS.professional,
-            redirectTo: {
-              [PERMISSIONS.professional]: '/profile',
-              default: '/profile',
-            },
-          },
-        },
+        path: PRO_PATHS.SUBSCRIPTIONS,
+        redirectTo: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
       },
       {
-        path: 'billing',
-        component: InvoiceComponent,
-        canDeactivate: [ExitConfirmGuard],
-        data: {
-          isMyZone: true,
-          isProfile: true,
-          permissions: {
-            only: PERMISSIONS.subscriptions,
-            redirectTo: '/profile',
-          },
-        },
+        path: PRO_PATHS.BILLING,
+        redirectTo: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.BILLING}`,
       },
       {
-        path: 'subscription-pro',
-        component: ProfileProSubscriptionComponent,
-        data: {
-          isMyZone: true,
-          isProfile: true,
-          permissions: {
-            only: PERMISSIONS.professional,
-            redirectTo: '/profile',
-          },
-        },
+        path: PRO_PATHS.SUBSCRIPTIONS_PRO,
+        redirectTo: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS_PRO}`,
       },
     ],
   },
@@ -93,11 +61,4 @@ const routes: Route[] = [
 })
 export class ProfileRoutingModule {}
 
-export const profileRoutedComponents = [
-  ProfileComponent,
-  ProfileInfoComponent,
-  AccountComponent,
-  SubscriptionsComponent,
-  ProfileProSubscriptionComponent,
-  InvoiceComponent,
-];
+export const profileRoutedComponents = [ProfileComponent, ProfileInfoComponent, AccountComponent];

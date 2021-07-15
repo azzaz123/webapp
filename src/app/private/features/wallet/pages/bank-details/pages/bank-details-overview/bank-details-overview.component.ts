@@ -15,7 +15,7 @@ import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import * as moment from 'moment';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
-import { WALLET_PATHS } from '@private/features/wallet/wallet-routing-constants';
+import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
 
 @Component({
   selector: 'tsl-bank-details-overview',
@@ -24,11 +24,11 @@ import { WALLET_PATHS } from '@private/features/wallet/wallet-routing-constants'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BankDetailsOverviewComponent implements OnInit {
+  public readonly CREDIT_CARD_FORM_LINK = `${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}/${WALLET_PATHS.CREDIT_CARD}`;
+  public readonly BANK_ACCOUNT_FORM_LINK = `${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}/${WALLET_PATHS.BANK_ACCOUNT}`;
+
   public bankAccount$: Observable<BankAccount>;
   public creditCard$: Observable<CreditCard>;
-
-  public CREDIT_CARD_FORM_LINK = `${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}/${WALLET_PATHS.CREDIT_CARD}`;
-  public BANK_ACCOUNT_FORM_LINK = `${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}/${WALLET_PATHS.BANK_ACCOUNT}`;
 
   constructor(
     private router: Router,

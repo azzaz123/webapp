@@ -7,7 +7,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { MockDeviceService } from '@fixtures/device.fixtures.spec';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
-import { SlidesCarouselComponent } from '../carousel-slides/carousel-slides.component';
+import { SlidesCarouselComponent } from '@shared/components/carousel-slides/carousel-slides.component';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '../item-flag/item-flag-constants';
 import { ItemFlagComponent } from '../item-flag/item-flag.component';
 import { ItemImagesCarouselComponent } from './item-images-carousel.component';
