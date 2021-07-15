@@ -45,7 +45,7 @@ import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 })
 class MockCoverUpload {}
 
-fdescribe('ProfileInfoComponent', () => {
+describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
   let fixture: ComponentFixture<ProfileInfoComponent>;
   let userService: UserService;
