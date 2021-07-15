@@ -290,6 +290,7 @@
     "web_tab_bar_button_my_zone": "La mia area",
     "web_tab_bar_button_login": "Accesso",
     "web_components_suggester_7": "Cercare in Tutte le categorie",
+    "web_search_box_specific_category_placeholder": "Cerca in {$INTERPOLATION}",
     "web_components_topbar_8": "Credito",
     "web_components_topbar_538": "Messaggi",
     "web_components_topbar_9": "La mia area",
@@ -1081,6 +1082,7 @@
     "delivery_add_credit_card_save_button": "Save",
     "wallet_view_transfer_button": "Trasferire al mio conto bancario",
     "wallet_view_top_bar_title": "Portafoglio",
+    "wallet_view_top_bar_help_link": "Aiuto",
     "profile_menu_wallet": "Wallet",
     "web_delivery_bank_details": "Dati",
     "web_mobile_blocker_title": "Bello scherzo ma poca risoluzione ",
@@ -1509,7 +1511,6 @@
     "web_add_new_subscription_card": "Collega una carta ai tuoi abbonamenti",
     "web_current_cards": "Carte salvate",
     "web_spinner_536": "Caricamento...",
-    "web_spinner_537": "Stiamo caricando tutti i tuoi messaggi per la prima volta. Saranno disponibili prima che i lavori della Sagrada Familia siano terminati.",
-    "web_search_box_specific_category_placeholder": "Cerca in {$INTERPOLATION}"
+    "web_spinner_537": "Stiamo caricando tutti i tuoi messaggi per la prima volta. Saranno disponibili prima che i lavori della Sagrada Familia siano terminati."
   }
 }
