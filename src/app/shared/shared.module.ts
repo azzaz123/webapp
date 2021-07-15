@@ -51,7 +51,6 @@ import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.mo
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
 import { ProBadgeModule } from './pro-badge/pro-badge.module';
 import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
-import { ProfileProBillingComponent } from './profile-pro-billing/profile-pro-billing.component';
 import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
 import { EditEmailComponent } from './profile/edit-email/edit-email.component';
 import { EmailModalComponent } from './profile/edit-email/email-modal/email-modal.component';
@@ -166,7 +165,6 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     ProBadgeModule,
     DateUntilDayPipe,
     DateCalendarPipe,
-    ProfileProBillingComponent,
     FullScreenModalComponent,
     DisableControlDirective,
     SvgIconModule,
@@ -230,7 +228,6 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     PreventDoubleClickDirective,
     DateUntilDayPipe,
     DateCalendarPipe,
-    ProfileProBillingComponent,
     FullScreenModalComponent,
     DisableControlDirective,
     RouterLinkDirectiveStub,

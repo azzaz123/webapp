@@ -22,6 +22,7 @@ import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive
 import { findIndex } from 'lodash-es';
 import { takeWhile } from 'rxjs/operators';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 
 export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
 export const SORTS_TRANSLATION_KEYS: TRANSLATION_KEY[] = [
@@ -53,6 +54,7 @@ export class CatalogProListComponent implements OnInit {
   public numberOfProducts: number;
   public _subscriptionPlan: number;
   private bumpSuggestionModalRef: NgbModalRef;
+  public readonly PRO_PATHS = PRO_PATHS;
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
 

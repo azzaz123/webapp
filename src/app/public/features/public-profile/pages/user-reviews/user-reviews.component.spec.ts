@@ -7,9 +7,9 @@ import { MOCK_FULL_USER_FEATURED } from '@fixtures/user.fixtures.spec';
 import { EmptyStateComponent } from '@public/shared/components/empty-state/empty-state.component';
 import { of } from 'rxjs';
 import { PublicProfileService } from '../../core/services/public-profile.service';
-import { MapReviewService } from './services/map-review/map-review.service';
 
 import { UserReviewsComponent } from './user-reviews.component';
+import { ReviewsApiService } from '@api/reviews';
 
 describe('UserReviewsComponent', () => {
   let component: UserReviewsComponent;
@@ -30,7 +30,14 @@ describe('UserReviewsComponent', () => {
             },
           },
         },
-        MapReviewService,
+        {
+          provide: ReviewsApiService,
+          useValue: {
+            getUserReviews() {
+              return of(MOCK_REVIEWS);
+            },
+          },
+        },
       ],
       declarations: [UserReviewsComponent, EmptyStateComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -7,6 +7,7 @@
     "postinstall": "./scripts/postinstall/postinstall.sh",
     "start": "./scripts/docknum/start.sh",
     "start-beta": "ng serve -c=beta",
+    "start-italian": "yarn start -c=it",
     "builddev": "ng build --no-progress",
     "builddocker": "ng build -c=docker --no-progress",
     "buildbeta": "ng build -c=beta --no-progress",

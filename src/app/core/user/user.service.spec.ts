@@ -39,6 +39,7 @@ import { User } from './user';
 import { Image, UserLocation } from './user-response.interface';
 import { UserStats } from './user-stats.interface';
 import {
+  LOCAL_STORAGE_CLICK_PRO_SECTION,
   LOCAL_STORAGE_TRY_PRO_SLOT,
   LOGOUT_ENDPOINT,
   PROTOOL_EXTRA_INFO_ENDPOINT,
@@ -736,6 +737,54 @@ describe('Service: User', () => {
           expect(result).toEqual(false);
         });
       });
+    });
+  });
+
+  describe('Click PRO section', () => {
+    beforeEach(() => {
+      jest.spyOn(service, 'user', 'get').mockReturnValue(MOCK_USER);
+    });
+    describe('when user click pro section', () => {
+      it('should save data', () => {
+        spyOn(localStorage, 'setItem').and.callThrough();
+
+        service.setClickedProSection();
+
+        expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+        expect(localStorage.setItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`, 'true');
+        expect(service.isClickedProSection).toEqual(true);
+      });
+      it('should return true', () => {
+        service.setClickedProSection();
+
+        expect(service.isClickedProSection).toEqual(true);
+      });
+    });
+
+    describe('and has info saved ', () => {
+      it('should return true', fakeAsync(() => {
+        spyOn(localStorage, 'getItem').and.returnValue(true);
+        spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_USER));
+
+        service.initializeUserWithPermissions().subscribe();
+
+        expect(localStorage.getItem).toHaveBeenCalledTimes(1);
+        expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
+        expect(service.isClickedProSection).toEqual(true);
+      }));
+    });
+
+    describe('and has no info saved ', () => {
+      it('should return true', fakeAsync(() => {
+        spyOn(localStorage, 'getItem').and.returnValue(null);
+        spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_USER));
+
+        service.initializeUserWithPermissions().subscribe();
+
+        expect(localStorage.getItem).toHaveBeenCalledTimes(1);
+        expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
+        expect(service.isClickedProSection).toEqual(false);
+      }));
     });
   });
 });

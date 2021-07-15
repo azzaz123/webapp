@@ -1,8 +1,7 @@
 @import '~style/common';
 
 .Slider {
-  margin: 15px 0 35px;
-
+  margin: 15px 0;
   ::ng-deep {
     .ngx-slider {
       &-bar {
@@ -53,7 +52,11 @@
     }
   }
 
-  &-range {
+  &--with-tooltip {
+    margin: 15px 0 45px;
+  }
+
+  &--range {
     ::ng-deep {
       .ngx-slider-pointer {
         background-size: 5px;
