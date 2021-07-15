@@ -229,12 +229,18 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   }
 
   private handleSearchResponseExtraData(searchResponseExtraData: SearchResponseExtraData): void {
-    if (searchResponseExtraData.sortBy) {
+    const categoryId = this.filterParameterStore.getParametersByKeys([FILTER_QUERY_PARAM_KEY.categoryId])[0]?.value;
+    const categoryWithSortByRelevanceEnabled =
+      categoryId !== CATEGORY_IDS.CAR.toString() && categoryId !== CATEGORY_IDS.REAL_ESTATE.toString(); // temporal until we open cars and real estate relevance for web
+
+    if (searchResponseExtraData.sortBy && categoryWithSortByRelevanceEnabled) {
       this.sortBySubject.next(searchResponseExtraData.sortBy);
 
       const isSortByRelevance = searchResponseExtraData.sortBy === SORT_BY.RELEVANCE;
       this.infoBubbleText = isSortByRelevance ? searchResponseExtraData.bubble : '';
       this.showInfoBubble = isSortByRelevance;
+    } else {
+      this.showInfoBubble = false;
     }
   }
 

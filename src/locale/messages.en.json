@@ -1046,6 +1046,7 @@
     "kyc_request_modal_slide_3_more_info_link": "More info",
     "kyc_request_modal_continue_button": "Continue",
     "kyc_request_modal_start_button": "Verify identity",
+    "kyc_bank_account_view_info_matching_description": "The name of the account holder must match the name on the ID you provide. In addition, the person must be over 18 years old.",
     "delivery_add_bank_account_title": "Add bank account",
     "delivery_edit_bank_account_title": "Edit bank account",
     "saving_bank_account_first_name_hint": "Full legal name",

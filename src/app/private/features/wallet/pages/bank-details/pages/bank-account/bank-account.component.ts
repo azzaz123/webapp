@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
 import { DELIVERY_INPUTS_MAX_LENGTH } from '@private/features/delivery/enums/delivery-inputs-length.enum';
@@ -10,7 +10,6 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
 import { finalize } from 'rxjs/operators';
 import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
-import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { Router } from '@angular/router';
 import { BankAccountFormErrorMessages } from '@private/features/wallet/interfaces/bank-account/bank-account-form-error-messages.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
@@ -35,6 +34,9 @@ export const IBAN_LENGTH = 40;
 })
 export class BankAccountComponent implements OnInit, OnDestroy {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
+  @Input() isKYC = false;
+
+  @Output() bankAccountSaved: EventEmitter<void> = new EventEmitter();
 
   public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public bankAccountForm: FormGroup;
@@ -136,7 +138,12 @@ export class BankAccountComponent implements OnInit, OnDestroy {
 
           this.showToast(translationKey, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;
-          this.router.navigate([this.BANK_DETAILS_URL]);
+
+          if (this.isKYC) {
+            this.bankAccountSaved.emit();
+          } else {
+            this.router.navigate([this.BANK_DETAILS_URL]);
+          }
         },
         (errors: BankAccountError[]) => {
           this.handleBankAccountErrors(errors);
