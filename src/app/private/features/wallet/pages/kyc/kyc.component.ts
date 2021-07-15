@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { StepperComponent } from '@shared/stepper/stepper.component';
-import { KYC_DOCUMENTATION } from './components/kyc-nationality/kyc-nationalities-constants';
+import { KYC_DOCUMENTATION } from './constants/kyc-documentation-constants';
 
 @Component({
   selector: 'tsl-kyc',

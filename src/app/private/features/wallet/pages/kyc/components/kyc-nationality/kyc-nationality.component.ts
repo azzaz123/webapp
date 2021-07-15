@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { KYC_NATIONALITIES } from './kyc-nationalities-constants';
+import { KYC_NATIONALITIES } from '../../constants/kyc-nationalities-constants';
 import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 
