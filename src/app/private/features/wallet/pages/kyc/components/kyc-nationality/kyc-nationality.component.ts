@@ -17,12 +17,6 @@ export class KycNationalityComponent {
   public selectedNationality: KYCNationality;
   public readonly KYC_NATIONALITIES = KYC_NATIONALITIES;
 
-  constructor() {}
-
-  public selectNationality(selectedNationality: KYCNationality): void {
-    this.selectedNationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
-  }
-
   public emitPhotosToRequest(selectedDocument: IOption): void {
     const photosNeeded = KYC_DOCUMENTATION.find((document) => document.value === selectedDocument.value).photosNeeded;
     this.photosToRequestSelect.emit(photosNeeded);
@@ -54,5 +48,9 @@ export class KycNationalityComponent {
 
   get svgPath(): string {
     return this.selectedNationality?.svgPath || '/assets/icons/wallet/kyc/stepper/kyc_nationality.svg';
+  }
+
+  set selectNationality(selectedNationality: IOption) {
+    this.selectedNationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
   }
 }

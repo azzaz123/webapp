@@ -4,11 +4,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
+import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
 import { KYC_NATIONALITIES, KYC_NATIONALITY_TYPE } from '../../constants/kyc-nationalities-constants';
 
 import { KycNationalityComponent } from './kyc-nationality.component';
 
 describe('KycNationalityComponent', () => {
+  const EUROPEAN_UNION_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.EUROPEAN_UNION);
+  const UK_USA_CA_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.UK_USA_CANADA);
+  const OTHER_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.OTHER);
+
   const titleSelector = '.KYCNationality__title';
   const descriptionSelector = '.KYCNationality__description';
   const headerSelector = '.KYCNationality__header';
@@ -58,8 +63,6 @@ describe('KycNationalityComponent', () => {
     });
 
     describe('and the selected nationality is europa...', () => {
-      const EUROPEAN_UNION_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.EUROPEAN_UNION);
-
       beforeEach(() => {
         component.selectedNationality = EUROPEAN_UNION_NATIONALITY;
 
@@ -85,8 +88,6 @@ describe('KycNationalityComponent', () => {
     });
 
     describe('and the selected nationality is uk, usa or ca...', () => {
-      const UK_USA_CA_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.UK_USA_CANADA);
-
       beforeEach(() => {
         component.selectedNationality = UK_USA_CA_NATIONALITY;
 
@@ -112,8 +113,6 @@ describe('KycNationalityComponent', () => {
     });
 
     describe('and the selected nationality is another one...', () => {
-      const OTHER_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.OTHER);
-
       beforeEach(() => {
         component.selectedNationality = OTHER_NATIONALITY;
 
@@ -197,6 +196,43 @@ describe('KycNationalityComponent', () => {
 
         expect(component.goBack.emit).toHaveBeenCalledTimes(1);
       });
+    });
+  });
+
+  describe('when we select a nationality...', () => {
+    beforeEach(() => {
+      component.selectedNationality = null;
+
+      fixture.detectChanges();
+    });
+
+    it('should define the selected nationality', () => {
+      de.query(By.directive(DropdownComponent)).triggerEventHandler('selected', {
+        label: EUROPEAN_UNION_NATIONALITY.label,
+        value: EUROPEAN_UNION_NATIONALITY.value,
+      });
+
+      expect(component.selectedNationality).toBe(EUROPEAN_UNION_NATIONALITY);
+    });
+  });
+
+  describe('when we select a document...', () => {
+    const selectedDocument = KYC_DOCUMENTATION[0];
+
+    beforeEach(() => {
+      spyOn(component.photosToRequestSelect, 'emit');
+      component.selectedNationality = EUROPEAN_UNION_NATIONALITY;
+
+      fixture.detectChanges();
+    });
+
+    it('should emit the needed photos', () => {
+      de.query(By.directive(DropdownComponent)).triggerEventHandler('selected', {
+        label: selectedDocument.label,
+        value: selectedDocument.value,
+      });
+
+      expect(component.photosToRequestSelect.emit).toHaveBeenCalledWith(selectedDocument.photosNeeded);
     });
   });
 });
