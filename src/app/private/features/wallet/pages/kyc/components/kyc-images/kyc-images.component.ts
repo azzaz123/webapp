@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'tsl-kyc-images',
   templateUrl: './kyc-images.component.html',
   styleUrls: ['./kyc-images.component.scss'],
 })
-export class KycImagesComponent implements OnInit {
-  constructor() {}
+export class KycImagesComponent {
+  @Input() photosToTake: number;
 
-  ngOnInit(): void {}
+  constructor() {}
 }

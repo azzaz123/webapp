@@ -6,7 +6,7 @@ import {
 } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 
-const KYC_DOCUMENTATION: KYCDocumentation[] = [
+export const KYC_DOCUMENTATION: KYCDocumentation[] = [
   {
     value: KYC_DOCUMENTATION_TYPE.ID,
     label: $localize`:@@kyc_select_document_view_list_id_placeholder:National Identification Document`,

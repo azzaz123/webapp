@@ -10,7 +10,6 @@ import { IOption } from '@shared/dropdown/utils/option.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KycNationalityComponent {
-  @Output() nationalityFinished: EventEmitter<void> = new EventEmitter();
   @Output() selectedDocument: EventEmitter<string> = new EventEmitter();
   @Output() goBack: EventEmitter<void> = new EventEmitter();
 
@@ -25,7 +24,6 @@ export class KycNationalityComponent {
 
   public selectAcreditationDocument(selectedDocument: IOption): void {
     this.selectedDocument.emit(selectedDocument.value);
-    this.nationalityFinished.emit();
   }
 
   public handleBack(): void {
