@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { ChangeCardModalComponent } from '@shared/modals/change-card-modal/change-card-modal.component';
@@ -21,12 +21,6 @@ export class SubscriptionCardSelectorComponent implements OnChanges {
 
   ngOnChanges() {
     this.setShowChangeLink();
-  }
-
-  private setShowChangeLink(): void {
-    this.showChangeLink =
-      this.stripeCards?.length > 1 ||
-      (this.stripeCards?.length === 1 && !this.stripeCards.find((card) => card.id === this.selectedCard.id));
   }
 
   public onAddCard(): void {
@@ -55,5 +49,11 @@ export class SubscriptionCardSelectorComponent implements OnChanges {
         () => {}
       )
       .catch(() => {});
+  }
+
+  private setShowChangeLink(): void {
+    this.showChangeLink =
+      this.stripeCards?.length > 1 ||
+      (this.stripeCards?.length === 1 && !this.stripeCards.find((card) => card.id === this.selectedCard.id));
   }
 }

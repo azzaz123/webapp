@@ -28,7 +28,7 @@ import { ContinueSubscriptionModalComponent } from './modal/continue-subscriptio
 import { DiscountAvailableUnsubscribeInAppModalComponent } from './modal/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { EditSubscriptionModalComponent } from './modal/edit-subscription/edit-subscription-modal.component';
 import { PaymentSuccessModalComponent } from './modal/payment-success/payment-success-modal.component';
-import { UnsubscribeInAppFirstModal } from './modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { UnsubscribeInAppFirstModalComponent } from './modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { VisibilityProductsModalComponent } from './modal/visibility-products-modal/visibility-products-modal.component';
 import { SubscriptionIconPipe } from '../profile/pipes/subscription-icon.pipe';
 import { ProfileProBillingModule } from '@shared/profile-pro-billing/profile-pro-billing.module';
@@ -61,7 +61,7 @@ import { HeaderModule } from '@shared/header/header.module';
     CancelSubscriptionModalComponent,
     ContinueSubscriptionModalComponent,
     CheckSubscriptionInAppModalComponent,
-    UnsubscribeInAppFirstModal,
+    UnsubscribeInAppFirstModalComponent,
     DiscountAvailableUnsubscribeInAppModalComponent,
     SubscriptionIconPipe,
     SubscriptionBenefitsComponent,

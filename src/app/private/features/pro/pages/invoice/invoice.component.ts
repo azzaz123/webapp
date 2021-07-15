@@ -11,25 +11,13 @@ import { take } from 'rxjs/operators';
 })
 export class InvoiceComponent implements OnInit {
   public canDownloadInvoice: boolean;
-  private isCardealer: boolean;
   public activeIds: string[] = ['custom-panel-1'];
+  private isCardealer: boolean;
 
   constructor(private paymentService: PaymentService, private userService: UserService) {}
 
   ngOnInit() {
     this.handleIsCardealerUser();
-  }
-
-  private handleIsCardealerUser(): void {
-    this.userService
-      .isProfessional()
-      .pipe(take(1))
-      .subscribe((isCardealer: boolean) => {
-        this.isCardealer = isCardealer;
-        if (!this.isCardealer) {
-          this.handleModalAndInvoicePermission();
-        }
-      });
   }
 
   public handleModalAndInvoicePermission(): void {
@@ -47,6 +35,18 @@ export class InvoiceComponent implements OnInit {
           }
         );
     }
+  }
+
+  private handleIsCardealerUser(): void {
+    this.userService
+      .isProfessional()
+      .pipe(take(1))
+      .subscribe((isCardealer: boolean) => {
+        this.isCardealer = isCardealer;
+        if (!this.isCardealer) {
+          this.handleModalAndInvoicePermission();
+        }
+      });
   }
 
   set handleModal(formIsFull: boolean) {
