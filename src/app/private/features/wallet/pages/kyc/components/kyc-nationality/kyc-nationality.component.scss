@@ -1,8 +1,10 @@
 @import '~style/common';
 
+$drawing-height: 173px;
+
 .KYCNationality {
   &__drawing {
-    height: 173px;
+    height: $drawing-height;
     tsl-svg-icon {
       ::ng-deep svg {
         width: 100%;
@@ -28,7 +30,8 @@
   }
 
   &__title,
-  &__description {
+  &__description,
+  &__back {
     color: $blue-grey-1;
   }
 
@@ -43,7 +46,6 @@
 
   &__back {
     cursor: pointer;
-    color: $blue-grey-1;
     &:hover {
       text-decoration: none;
       &,

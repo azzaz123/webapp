@@ -9,6 +9,7 @@ import { KYCComponent } from './kyc.component';
 import { KYCModule } from './kyc.module';
 
 describe('KYCComponent', () => {
+  const bankAccountSelector = 'tsl-bank-account';
   const KYCNationalitySelector = 'tsl-kyc-nationality';
 
   let component: KYCComponent;
@@ -42,7 +43,7 @@ describe('KYCComponent', () => {
       describe('and the bank account save succeed', () => {
         beforeEach(() => {
           spyOn(component.stepper, 'goNext');
-          const bankAccountComponent = fixture.debugElement.query(By.css('tsl-bank-account'));
+          const bankAccountComponent = fixture.debugElement.query(By.css(bankAccountSelector));
 
           bankAccountComponent.triggerEventHandler('bankAccountSaved', {});
         });
@@ -63,7 +64,7 @@ describe('KYCComponent', () => {
       describe('and we click to go back button...', () => {
         beforeEach(() => {
           spyOn(component.stepper, 'goBack');
-          const KYCNationalityComponent = fixture.debugElement.query(By.css('tsl-kyc-nationality'));
+          const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
 
           KYCNationalityComponent.triggerEventHandler('goBack', {});
         });

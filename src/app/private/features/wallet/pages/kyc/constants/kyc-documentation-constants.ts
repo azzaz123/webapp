@@ -1,11 +1,5 @@
 import { KYCDocumentation } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
-
-export enum KYC_DOCUMENTATION_TYPE {
-  ID = 'ID',
-  DRIVING_LICENSE = 'DRIVING_LICENSE',
-  PASSPORT = 'PASSPORT',
-  RESIDENCE_PERMIT = 'RESIDENCE_PERMIT',
-}
+import { KYC_DOCUMENTATION_TYPE } from '../enums/kyc-documentation-type-enum';
 
 export const KYC_DOCUMENTATION: KYCDocumentation[] = [
   {

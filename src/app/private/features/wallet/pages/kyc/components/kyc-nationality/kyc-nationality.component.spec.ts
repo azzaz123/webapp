@@ -5,7 +5,8 @@ import { By } from '@angular/platform-browser';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
-import { KYC_NATIONALITIES, KYC_NATIONALITY_TYPE } from '../../constants/kyc-nationalities-constants';
+import { KYC_NATIONALITIES } from '../../constants/kyc-nationalities-constants';
+import { KYC_NATIONALITY_TYPE } from '../../enums/kyc-nationality-type-enum';
 
 import { KycNationalityComponent } from './kyc-nationality.component';
 

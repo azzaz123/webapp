@@ -1,11 +1,6 @@
 import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
+import { KYC_NATIONALITY_TYPE } from '../enums/kyc-nationality-type-enum';
 import { getKYCAvailableDocuments } from '../mappers/kyc-documents/kyc-documents.mapper';
-
-export enum KYC_NATIONALITY_TYPE {
-  EUROPEAN_UNION = 'EUROPEAN_UNION',
-  UK_USA_CANADA = 'UK_USA_CANADA',
-  OTHER = 'OTHER',
-}
 
 export const KYC_NATIONALITIES: KYCNationality[] = [
   {
