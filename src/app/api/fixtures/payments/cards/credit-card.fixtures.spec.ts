@@ -34,6 +34,14 @@ export const mockCreditCard: CreditCard = {
   provider: 'mangopay',
 };
 
+export const mockFormCreditCardSyncRequest: CreditCardSyncRequest = {
+  id: 'FAKE_UUID',
+  fullName: 'Ot el Bruixot',
+  cardNumber: '4972 4858 3040 0049',
+  cardExpirationDate: '1221',
+  cardCvx: '242',
+};
+
 export const mockCreditCardSyncRequest: CreditCardSyncRequest = {
   id: 'FAKE_UUID',
   fullName: 'Ot el Bruixot',

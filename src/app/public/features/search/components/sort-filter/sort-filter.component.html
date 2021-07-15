@@ -9,7 +9,7 @@
       <p class="SortFilter__title--bubble m-0" i18n="@@web_filter_sort_bubble_title">Sort by</p>
     </div>
     <div>
-      <tsl-select-form [options]="options" [formControl]="formControl" (ngModelChange)="onChangeValue($event)"> </tsl-select-form>
+      <tsl-select-form [options]="options" [formControl]="formControl"> </tsl-select-form>
     </div>
     <div class="SortFilter__actions px-4 d-flex align-items-center justify-content-end">
       <tsl-button i18n="@@web_filter_sort_cancel" className="basic basic-dark" (click)="cancel()">Cancel</tsl-button>

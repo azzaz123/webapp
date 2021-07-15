@@ -6,13 +6,13 @@ import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
-import { KYC_BANNER_TYPES } from '../components/kyc-banner/kyc-banner-constants';
-import { KYCBannerComponent } from '../components/kyc-banner/kyc-banner.component';
-import { KYCBannerApiService } from '../services/api/kyc-banner-api.service';
-import { KYCBannerService } from '../services/kyc-banner/kyc-banner.service';
-import { WALLET_PATHS } from '../wallet-routing-constants';
+import { KYC_BANNER_TYPES } from './components/kyc-banner/kyc-banner-constants';
+import { KYCBannerComponent } from './components/kyc-banner/kyc-banner.component';
+import { KYCBannerApiService } from './services/api/kyc-banner-api.service';
+import { KYCBannerService } from './services/kyc-banner/kyc-banner.service';
 
 import { WalletComponent } from './wallet.component';
+import { WALLET_PATHS } from './wallet.routing.constants';
 
 describe('WalletComponent', () => {
   const BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;

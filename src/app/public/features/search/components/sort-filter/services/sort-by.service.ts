@@ -49,7 +49,7 @@ export class SortByService {
   private isRelevanceOptionActive(): boolean {
     const categoryIds = this.filterParameterStore.getParametersByKeys([FILTER_QUERY_PARAM_KEY.categoryId])[0]?.value;
     const keyword = this.filterParameterStore.getParametersByKeys([FILTER_QUERY_PARAM_KEY.keywords])[0]?.value;
-
-    return SORT_BY_RELEVANCE_CATEGORY_IDS.includes(parseInt(categoryIds, 10)) && !!keyword && this.isRelevanceFeatureFlagActive;
+    const categoryWithSortByRelevanceEnabled = SORT_BY_RELEVANCE_CATEGORY_IDS.includes(parseInt(categoryIds, 10)) || !categoryIds;
+    return categoryWithSortByRelevanceEnabled && !!keyword && this.isRelevanceFeatureFlagActive;
   }
 }
