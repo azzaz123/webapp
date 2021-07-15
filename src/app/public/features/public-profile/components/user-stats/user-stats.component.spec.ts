@@ -21,6 +21,7 @@ describe('UserStatsComponent', () => {
   let deviceDetectorService: DeviceDetectorService;
   let router: Router;
   let scrollIntoViewService: ScrollIntoViewService;
+  let userService: UserService;
   let permissionService: NgxPermissionsService;
 
   beforeEach(async () => {
@@ -59,6 +60,7 @@ describe('UserStatsComponent', () => {
     scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
     permissionService = TestBed.inject(NgxPermissionsService);
     router = TestBed.inject(Router);
+    userService = TestBed.inject(UserService);
     fixture.detectChanges();
   });
 
@@ -109,27 +111,44 @@ describe('UserStatsComponent', () => {
         beforeEach(() => {
           permissionService.addPermission(PERMISSIONS.subscriptions);
         });
-        describe('when have the extra info...', () => {
-          it('should show three anchors if it have the extra info', () => {
-            fixture.detectChanges();
-            const errorMessages = fixture.debugElement.queryAll(By.css('a'));
-
-            expect(errorMessages.length).toBe(3);
+        describe('when it has store address', () => {
+          beforeEach(() => {
+            spyOn(userService, 'hasStoreLocation').and.returnValue(true);
+            component.ngOnInit();
           });
-
-          it('should toggle the phone when click on the anchor...', () => {
-            fixture.detectChanges();
-            spyOn(component, 'togglePhone').and.callThrough();
-            const phoneAnchor = fixture.debugElement
-              .queryAll(By.css('a'))
-              .find((anchors) => anchors.nativeElement.innerHTML === 'Show phone number').nativeElement;
-
-            phoneAnchor.click();
-
-            expect(component.togglePhone).toHaveBeenCalledTimes(1);
-            expect(component.showPhone).toBe(true);
+          it('should shoud store location', () => {
+            expect(component.showStoreAdress).toBe(true);
           });
-        });
+        }),
+          describe('when it has not store address', () => {
+            beforeEach(() => {
+              spyOn(userService, 'hasStoreLocation').and.returnValue(false);
+            });
+            it('should shoud store location', () => {
+              expect(component.showStoreAdress).toBe(false);
+            });
+          }),
+          describe('when have the extra info...', () => {
+            it('should show three anchors if it have the extra info', () => {
+              fixture.detectChanges();
+              const errorMessages = fixture.debugElement.queryAll(By.css('a'));
+
+              expect(errorMessages.length).toBe(3);
+            });
+
+            it('should toggle the phone when click on the anchor...', () => {
+              fixture.detectChanges();
+              spyOn(component, 'togglePhone').and.callThrough();
+              const phoneAnchor = fixture.debugElement
+                .queryAll(By.css('a'))
+                .find((anchors) => anchors.nativeElement.innerHTML === 'Show phone number').nativeElement;
+
+              phoneAnchor.click();
+
+              expect(component.togglePhone).toHaveBeenCalledTimes(1);
+              expect(component.showPhone).toBe(true);
+            });
+          });
         describe('when NOT have the extra info', () => {
           it('should show one anchor if it have NOT the extra info', () => {
             component.userInfo.extraInfo.phone_number = null;
@@ -158,13 +177,23 @@ describe('UserStatsComponent', () => {
     });
 
     describe('when the user is NOT pro...', () => {
-      it('should show only one anchor', () => {
+      beforeEach(() => {
         component.userInfo.featured = false;
-
         fixture.detectChanges();
+      });
+      it('should show only one anchor', () => {
         const errorMessages = fixture.debugElement.queryAll(By.css('a'));
-
         expect(errorMessages.length).toBe(1);
+      });
+
+      describe('should not show store address', () => {
+        beforeEach(() => {
+          spyOn(userService, 'hasStoreLocation').and.callThrough();
+        });
+        it('should shoud store location', () => {
+          expect(component.showStoreAdress).toBe(false);
+          expect(userService.hasStoreLocation).not.toHaveBeenCalled();
+        });
       });
     });
 

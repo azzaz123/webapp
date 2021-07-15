@@ -28,7 +28,11 @@ export class UserStatsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.showStoreAdress = this.userService.hasStoreLocation(this.userInfo);
+    this.checkStoreAddress();
+  }
+
+  checkStoreAddress(): void {
+    this.showStoreAdress = this.userInfo.featured && this.userService.hasStoreLocation(this.userInfo);
   }
 
   togglePhone(): void {
