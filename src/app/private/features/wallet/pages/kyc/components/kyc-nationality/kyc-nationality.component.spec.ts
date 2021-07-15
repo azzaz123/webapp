@@ -2,8 +2,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DropdownModule } from '@shared/dropdown/dropdown.module';
+import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
+import { KYC_NATIONALITIES, KYC_NATIONALITY_TYPE } from '../../constants/kyc-nationalities-constants';
 
 import { KycNationalityComponent } from './kyc-nationality.component';
 
@@ -21,8 +22,8 @@ describe('KycNationalityComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DropdownModule, HttpClientTestingModule],
-      declarations: [KycNationalityComponent, SvgIconComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [KycNationalityComponent, SvgIconComponent, DropdownComponent],
     }).compileComponents();
   });
 
@@ -38,30 +39,114 @@ describe('KycNationalityComponent', () => {
   });
 
   describe('when the nationality has been selected...', () => {
-    it('should show the select document title', () => {});
+    it('should show the select document title', () => {
+      const documentTitleTranslation = $localize`:@@kyc_select_document_view_title:Select a document type`;
+      component.selectedNationality = KYC_NATIONALITIES[0];
 
-    it('should show the select document description', () => {});
+      fixture.detectChanges();
+
+      expect(el.querySelector(titleSelector).innerHTML).toEqual(documentTitleTranslation);
+    });
+
+    it('should show the select document description', () => {
+      const documentDescriptionTranslation = $localize`:@@kyc_select_document_view_description:Make sure the document you provide is valid for at least 3 months.`;
+      component.selectedNationality = KYC_NATIONALITIES[0];
+
+      fixture.detectChanges();
+
+      expect(el.querySelector(descriptionSelector).innerHTML).toEqual(documentDescriptionTranslation);
+    });
 
     describe('and the selected nationality is europa...', () => {
-      it('should show the european title as header', () => {});
-      it('should show the european drawing', () => {});
-      it('should show the available european documents as options in the dropdown', () => {});
+      const EUROPEAN_UNION_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.EUROPEAN_UNION);
+
+      beforeEach(() => {
+        component.selectedNationality = EUROPEAN_UNION_NATIONALITY;
+
+        fixture.detectChanges();
+      });
+
+      it('should show the european title as header', () => {
+        expect(el.querySelector(headerSelector).innerHTML).toEqual(EUROPEAN_UNION_NATIONALITY.headerText);
+      });
+
+      it('should show the european drawing', () => {
+        const element = de.query(By.css(drawingSelector)).query(By.directive(SvgIconComponent));
+        const child: SvgIconComponent = element.componentInstance;
+
+        expect(child.src).toBe(EUROPEAN_UNION_NATIONALITY.svgPath);
+      });
+
+      it('should show the available european documents as options in the dropdown', () => {
+        const dropdown: DropdownComponent = de.query(By.directive(DropdownComponent)).componentInstance;
+
+        expect(dropdown.options).toBe(EUROPEAN_UNION_NATIONALITY.availableDocuments);
+      });
     });
 
     describe('and the selected nationality is uk, usa or ca...', () => {
-      it('should show the uk, usa or ca title as header', () => {});
-      it('should show the uk, usa or ca drawing', () => {});
-      it('should show the available uk, usa or ca documents as options in the dropdown', () => {});
+      const UK_USA_CA_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.UK_USA_CANADA);
+
+      beforeEach(() => {
+        component.selectedNationality = UK_USA_CA_NATIONALITY;
+
+        fixture.detectChanges();
+      });
+
+      it('should show the uk, usa or ca title as header', () => {
+        expect(el.querySelector(headerSelector).innerHTML).toEqual(UK_USA_CA_NATIONALITY.headerText);
+      });
+
+      it('should show the uk, usa or ca drawing', () => {
+        const element = de.query(By.css(drawingSelector)).query(By.directive(SvgIconComponent));
+        const child: SvgIconComponent = element.componentInstance;
+
+        expect(child.src).toBe(UK_USA_CA_NATIONALITY.svgPath);
+      });
+
+      it('should show the available uk, usa or ca documents as options in the dropdown', () => {
+        const dropdown: DropdownComponent = de.query(By.directive(DropdownComponent)).componentInstance;
+
+        expect(dropdown.options).toBe(UK_USA_CA_NATIONALITY.availableDocuments);
+      });
     });
 
     describe('and the selected nationality is another one...', () => {
-      it('should show the other nationality title as header', () => {});
-      it('should show the other nationality drawing', () => {});
-      it('should show the passaport document as option in the dropdown', () => {});
+      const OTHER_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.OTHER);
+
+      beforeEach(() => {
+        component.selectedNationality = OTHER_NATIONALITY;
+
+        fixture.detectChanges();
+      });
+
+      it('should show the other nationality title as header', () => {
+        expect(el.querySelector(headerSelector).innerHTML).toEqual(OTHER_NATIONALITY.headerText);
+      });
+
+      it('should show the other nationality drawing', () => {
+        const element = de.query(By.css(drawingSelector)).query(By.directive(SvgIconComponent));
+        const child: SvgIconComponent = element.componentInstance;
+
+        expect(child.src).toBe(OTHER_NATIONALITY.svgPath);
+      });
+
+      it('should show the passaport document as option in the dropdown', () => {
+        const dropdown: DropdownComponent = de.query(By.directive(DropdownComponent)).componentInstance;
+
+        expect(dropdown.options).toBe(OTHER_NATIONALITY.availableDocuments);
+      });
     });
 
     describe('and the user clicks on back button', () => {
-      it('should reset the selected nationality', () => {});
+      it('should reset the selected nationality', () => {
+        component.selectedNationality = KYC_NATIONALITIES[0];
+
+        fixture.detectChanges();
+        de.query(By.css(backButtonSelector)).nativeElement.click();
+
+        expect(component.selectedNationality).toBe(null);
+      });
     });
   });
 
@@ -95,11 +180,14 @@ describe('KycNationalityComponent', () => {
       const element = de.query(By.css(drawingSelector)).query(By.directive(SvgIconComponent));
       const child: SvgIconComponent = element.componentInstance;
 
-      expect(element).toBeTruthy();
       expect(child.src).toBe(nationalityDrawing);
     });
 
-    it('should show the available nationalities in the dropdown', () => {});
+    it('should show the available nationalities in the dropdown', () => {
+      const dropdown: DropdownComponent = de.query(By.directive(DropdownComponent)).componentInstance;
+
+      expect(dropdown.options).toBe(KYC_NATIONALITIES);
+    });
 
     describe('and the user clicks on back button', () => {
       it('should emit the go back event to go to the previous step', () => {

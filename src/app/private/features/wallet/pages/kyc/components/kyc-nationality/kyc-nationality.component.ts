@@ -47,7 +47,7 @@ export class KycNationalityComponent {
   }
 
   get nationalityHeader(): string {
-    return this.selectedNationality?.title || $localize`:@@kyc_select_nationality_view_top_bar_title:Nationality`;
+    return this.selectedNationality?.headerText || $localize`:@@kyc_select_nationality_view_top_bar_title:Nationality`;
   }
 
   get svgPath(): string {
