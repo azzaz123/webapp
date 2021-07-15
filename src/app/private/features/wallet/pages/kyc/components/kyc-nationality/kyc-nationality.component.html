@@ -18,8 +18,8 @@
                 <div class="KYCNationality__drawing mb-4 w-100">
                     <tsl-svg-icon [src]="svgPath"></tsl-svg-icon>
                 </div>
-                <span class="KYCNationality__title d-block my-2 text-center">{{title}}</span>
-                <span class="KYCNationality__description d-block mb-4 text-center">{{description}}</span>
+                <span class="KYCNationality__title d-block mt-4 mb-3 text-center">{{title}}</span>
+                <span class="KYCNationality__description d-block mb-3 text-center">{{description}}</span>
                 <tsl-dropdown
                     *ngIf="!selectedNationality"
                     placeholder="I'm from..."
@@ -27,7 +27,7 @@
                     [options]="KYC_NATIONALITIES"
                     bindLabel="string"
                     bindValue="string"
-                    class="form-control mb-2" 
+                    class="form-control mb-4" 
                     (selected)="selectNationality = $event"
                     name="nationality"
                     ngDefaultControl>
@@ -39,7 +39,7 @@
                     [options]="selectedNationality.availableDocuments"
                     bindLabel="string"
                     bindValue="string"
-                    class="form-control mb-2" 
+                    class="form-control mb-4" 
                     (selected)="emitPhotosToRequest($event)"
                     name="document"
                     ngDefaultControl>
