@@ -11,7 +11,6 @@
 
 # WALLET-CHAT
 /src/app/private/features/chat
-/src/app/private/features/wallet
 
 # DELIVERY
 /src/app/private/features/delivery

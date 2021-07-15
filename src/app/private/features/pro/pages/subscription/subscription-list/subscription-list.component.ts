@@ -68,6 +68,7 @@ export class SubscriptionListComponent {
   public getBenefits(subscription: SubscriptionsResponse): string[] {
     return this.benefitsService.getBenefitsByCategory(subscription.category_id);
   }
+
   private showEdit(subscription: SubscriptionsResponse): boolean {
     return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
   }
