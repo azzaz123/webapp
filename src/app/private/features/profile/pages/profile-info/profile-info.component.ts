@@ -203,8 +203,11 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     if (this.profileForm.valid) {
       const profileFormValue = { ...this.profileForm.value };
       const profileFormLocation = profileFormValue.location;
+      const profileFormStoreLocation = profileFormValue.storeLocation;
 
       delete profileFormValue.location;
+      delete profileFormValue.storeLocation;
+
       this.loading = true;
 
       this.userService.updateProInfo(profileFormValue).subscribe(() => {
@@ -216,7 +219,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
             gender: this.user.gender ? this.user.gender.toUpperCase().substr(0, 1) : null,
           })
           .pipe(
-            mergeMap(() => this.checkAndSaveStoreLocation(profileFormValue)),
+            mergeMap(() => this.checkAndSaveStoreLocation(profileFormStoreLocation)),
             finalize(() => {
               this.loading = false;
               this.formComponent.initFormControl();
@@ -275,19 +278,18 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     }
   }
 
-  private checkAndSaveStoreLocation(profileFormValue: any): Observable<boolean> {
-    const storeLocation: StoreLocation = profileFormValue.storeLocation;
+  private checkAndSaveStoreLocation(storeLocationValue: StoreLocation): Observable<boolean> {
     const savedStoreLocation: StoreLocation = {
       latitude: this.user.extraInfo?.latitude || 0,
       longitude: this.user.extraInfo?.longitude || 0,
       address: this.user.extraInfo?.address || '',
     };
-    if (isEqual(storeLocation, savedStoreLocation)) {
+    if (isEqual(storeLocationValue, savedStoreLocation)) {
       return of(false);
     }
 
-    return this.userService.updateStoreLocation(storeLocation).pipe(
-      tap((value) => {
+    return this.userService.updateStoreLocation(storeLocationValue).pipe(
+      tap((response) => {
         // TODO ADD MODAl
       }),
       map(() => true)

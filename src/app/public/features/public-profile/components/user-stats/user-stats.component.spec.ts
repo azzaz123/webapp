@@ -3,13 +3,14 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserStatsComponent } from './user-stats.component';
 import { By } from '@angular/platform-browser';
-import { MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { UserService } from '@core/user/user.service';
 
 describe('UserStatsComponent', () => {
   const profileUserClass = '.ProfileUser';
@@ -43,6 +44,7 @@ describe('UserStatsComponent', () => {
             url: 'environment/public/user/1234/published',
           },
         },
+        { provide: UserService, useClass: MockedUserService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

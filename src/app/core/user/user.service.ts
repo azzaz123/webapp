@@ -394,8 +394,6 @@ export class UserService {
   }
 
   public hasStoreLocation(user: User): boolean {
-    return (
-      user.extraInfo && this._user.extraInfo.address?.length > 0 && (!!this._user.extraInfo.latitude || !!this._user.extraInfo.latitude)
-    );
+    return !!(user.extraInfo && user.extraInfo.address?.length > 0 && (user.extraInfo.latitude || user.extraInfo.longitude));
   }
 }

@@ -13,14 +13,10 @@ import { UserService } from '@core/user/user.service';
 export class PublicProfileService {
   private _user: User;
 
-  constructor(private publicUserApiService: PublicUserApiService, private userService: UserService) {}
+  constructor(private publicUserApiService: PublicUserApiService) {}
 
   get user(): User {
     return this._user;
-  }
-
-  get hasStoreLocation(): boolean {
-    return this.userService.hasStoreLocation(this.user);
   }
 
   public getStats(userId: string): Observable<UserStats> {

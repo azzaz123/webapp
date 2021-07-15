@@ -368,6 +368,10 @@ export class MockedUserService {
   public logout(): Observable<any> {
     return of(null);
   }
+
+  public hasStoreLocation(): boolean {
+    return false;
+  }
 }
 
 export const USER_INFO_RESPONSE: UserInfoResponse = {

@@ -512,7 +512,7 @@ describe('Service: User', () => {
 
       service.updateStoreLocation(storeLocationRequest).subscribe((r) => (response = r));
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`);
-      req.flush(USER_LOCATION);
+      req.flush(expectedResponse);
 
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(storeLocationRequest);

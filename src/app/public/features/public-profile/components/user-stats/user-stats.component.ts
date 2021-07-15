@@ -5,7 +5,7 @@ import { User } from '@core/user/user';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { UserStats } from '@core/user/user-stats.interface';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { PublicProfileService } from '../../core/services/public-profile.service';
+import { UserService } from '@core/user/user.service';
 import { PUBLIC_PROFILE_PATHS } from '../../public-profile-routing-constants';
 
 @Component({
@@ -24,11 +24,11 @@ export class UserStatsComponent implements OnInit {
     private deviceService: DeviceDetectorService,
     private router: Router,
     private scrollIntoViewService: ScrollIntoViewService,
-    private publicProfileService: PublicProfileService
+    private userService: UserService
   ) {}
 
   ngOnInit() {
-    this.showStoreAdress = this.publicProfileService.hasStoreLocation;
+    this.showStoreAdress = this.userService.hasStoreLocation(this.userInfo);
   }
 
   togglePhone(): void {

@@ -79,6 +79,12 @@ describe('ProfileInfoComponent', () => {
                 return of({});
               },
               updateSearchLocationCookies() {},
+              hasStoreLocation() {
+                return false;
+              },
+              updateStoreLocation() {
+                return of({});
+              },
             },
           },
           {
