@@ -40,7 +40,7 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, of, Subject } from 'rxjs';
+import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { debounceTime, map, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
@@ -121,7 +121,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
-  public isShippingToggleActive = false;
+  public isShippabilityActive = false;
+  public isShippabilityAllowed = false;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
 
   constructor(
@@ -142,13 +143,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private customerHelpService: CustomerHelpService,
     private shippingToggleService: ShippingToggleService
   ) {
-    this.handleShippingToggle();
-
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
       { value: 'female', label: this.i18n.translate(TRANSLATION_KEY.FEMALE) },
     ];
+
     this.fillForm();
+    this.initShippabilityFeatureFlag();
+
     config.placement = 'right';
     config.triggers = 'focus:blur';
     config.container = 'body';
@@ -174,6 +176,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.handleUploadFormExtraFields();
     });
     this.detectTitleKeyboardChanges();
+
+    this.updateShippingToggleStatus();
   }
 
   private fillForm(): void {
@@ -343,21 +347,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
-  private detectShippabilityChanges() {
-    this.uploadForm
-      .get('sale_conditions')
-      .get('supports_shipping')
-      .valueChanges.subscribe((supportsShipping) => {
-        const deliveryInfo = this.uploadForm.get('delivery_info');
-        if (supportsShipping) {
-          deliveryInfo.setValidators([Validators.required]);
-        } else {
-          deliveryInfo.setValue(null);
-          deliveryInfo.setValidators([]);
-        }
-      });
-  }
-
   private handleUploadFormExtraFields(): void {
     const formCategoryId = this.uploadForm.get('category_id').value;
     const rawCategory = this.rawCategories.find((category) => category.category_id === +formCategoryId);
@@ -429,7 +418,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
     if (!this.uploadForm.get('images').valid) {
       this.errorsService.i18nError(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
-    } else if (!this.uploadForm.get('delivery_info').valid && this.isShippingToggleActive) {
+    } else if (!this.uploadForm.get('delivery_info').valid && this.isShippabilityActive) {
       this.errorsService.i18nError(TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR);
     } else {
       this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
@@ -883,12 +872,76 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
   }
 
-  private handleShippingToggle(): void {
-    this.shippingToggleService.isActive().subscribe((isShippingToggleActive) => {
-      this.isShippingToggleActive = isShippingToggleActive;
-      if (this.isShippingToggleActive) {
+  private initShippabilityFeatureFlag(): void {
+    this.shippingToggleService.isActive().subscribe((isActive) => {
+      this.isShippabilityActive = isActive;
+      if (isActive) {
+        this.detectShippabilityAllowanceChanges();
         this.detectShippabilityChanges();
       }
+    });
+  }
+
+  private updateShippingToggleStatus(): void {
+    if (this.isShippabilityActive) {
+      console.log('updateShippingToggleStatus --- ITEM', this.item);
+      console.log('updateShippingToggleStatus --- FORM', this.uploadForm.get('sale_price').value);
+      const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
+      const subcategoryId =
+        this.uploadForm.get('extra_info')?.get('object_type')?.get('id')?.value || this.item?.extraInfo?.object_type?.id;
+      const price = this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
+
+      this.shippingToggleService.isAllowed(categoryId, subcategoryId, price).subscribe((isAllowed) => {
+        this.isShippabilityAllowed = isAllowed;
+
+        if (this.isShippabilityAllowed) {
+        } else {
+          // TODO VACIAR COSAS DE SHIPPING Y PONER QUE NO
+          this.clearShippingToggleFormData();
+        }
+      });
+    }
+  }
+
+  private clearShippingToggleFormData(): void {
+    console.log('clearShippingToggleFormData');
+    this.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
+    this.uploadForm.get('delivery_info').setValue(null);
+  }
+
+  private detectShippabilityChanges() {
+    console.log('detectShippabilityChanges');
+    this.uploadForm
+      .get('sale_conditions')
+      .get('supports_shipping')
+      .valueChanges.subscribe((supportsShipping) => {
+        console.log('detectShippabilityChanges subs');
+
+        const deliveryInfo = this.uploadForm.get('delivery_info');
+        if (supportsShipping) {
+          deliveryInfo.setValidators([Validators.required]);
+        } else {
+          deliveryInfo.setValue(null);
+          deliveryInfo.setValidators([]);
+        }
+      });
+  }
+
+  private detectShippabilityAllowanceChanges(): void {
+    // todo mirar de juntar todos, parece que puedo encolarlos de forma paralela o algo así :D
+    this.uploadForm.get('category_id').valueChanges.subscribe(() => {
+      this.updateShippingToggleStatus();
+    });
+    this.uploadForm
+      .get('extra_info')
+      .get('object_type')
+      .get('id')
+      .valueChanges.subscribe(() => {
+        this.updateShippingToggleStatus();
+      });
+    this.uploadForm.get('sale_price').valueChanges.subscribe((price) => {
+      console.log('EPAPEPA', price);
+      this.updateShippingToggleStatus();
     });
   }
 }

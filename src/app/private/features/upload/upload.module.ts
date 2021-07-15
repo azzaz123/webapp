@@ -27,6 +27,7 @@ import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
 import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-form.module';
 import { ShippingToggleService } from './pages/upload-product/services/shipping-toggle/shipping-toggle.service';
+import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-api.module';
 
 @NgModule({
   imports: [
@@ -43,6 +44,7 @@ import { ShippingToggleService } from './pages/upload-product/services/shipping-
     DropdownModule,
     CustomCurrencyModule,
     CheckboxFormModule,
+    DeliveryRulesApiModule, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
   ],
   declarations: [
     uploadRoutedComponents,

@@ -715,7 +715,7 @@ describe('UploadProductComponent', () => {
         });
       }
       beforeEach(() => {
-        component.isShippingToggleActive = true;
+        component.isShippabilityActive = true;
         component.ngOnInit();
         fillValidForm();
         component.uploadForm.patchValue({
@@ -1678,7 +1678,7 @@ describe('UploadProductComponent', () => {
     beforeEach(() => {});
 
     it('should reset weight if disabled', () => {
-      component.isShippingToggleActive = true;
+      component.isShippabilityActive = true;
       component.ngOnInit();
       component.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
 
