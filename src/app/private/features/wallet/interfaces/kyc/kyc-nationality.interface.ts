@@ -5,20 +5,3 @@ export interface KYCNationality extends IOption {
   svgPath: string;
   availableDocuments: IOption[];
 }
-
-export interface KYCDocumentation extends IOption {
-  photosNeeded: 1 | 2;
-}
-
-export enum KYC_NATIONALITY_TYPE {
-  EUROPEAN_UNION = 'EUROPEAN_UNION',
-  UK_USA_CANADA = 'UK_USA_CANADA',
-  OTHER = 'OTHER',
-}
-
-export enum KYC_DOCUMENTATION_TYPE {
-  ID = 'ID',
-  DRIVING_LICENSE = 'DRIVING_LICENSE',
-  PASSPORT = 'PASSPORT',
-  RESIDENCE_PERMIT = 'RESIDENCE_PERMIT',
-}
