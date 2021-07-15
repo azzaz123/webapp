@@ -1,68 +1,11 @@
 import { Component } from '@angular/core';
-import { searchItemRealEstateResponseMapper } from '@public/features/search/core/services/infrastructure/real_estate/search-real-estate-response.mapper';
-import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 
 export const states = [
-  'Alabama',
-  'Alaska',
-  'American Samoa',
-  'Arizona',
-  'Arkansas',
-  'California',
-  'Colorado',
-  'Connecticut',
-  'Delaware',
-  'District Of Columbia',
-  'Federated States Of Micronesia',
-  'Florida',
-  'Georgia',
-  'Guam',
-  'Hawaii',
-  'Idaho',
-  'Illinois',
-  'Indiana',
-  'Iowa',
-  'Kansas',
-  'Kentucky',
-  'Louisiana',
-  'Maine',
-  'Marshall Islands',
-  'Maryland',
-  'Massachusetts',
-  'Michigan',
-  'Minnesota',
-  'Mississippi',
-  'Missouri',
-  'Montana',
-  'Nebraska',
-  'Nevada',
-  'New Hampshire',
-  'New Jersey',
-  'New Mexico',
-  'New York',
-  'North Carolina',
-  'North Dakota',
-  'Northern Mariana Islands',
-  'Ohio',
-  'Oklahoma',
-  'Oregon',
-  'Palau',
-  'Pennsylvania',
-  'Puerto Rico',
-  'Rhode Island',
-  'South Carolina',
-  'South Dakota',
-  'Tennessee',
-  'Texas',
-  'Utah',
-  'Vermont',
-  'Virgin Islands',
-  'Virginia',
-  'Washington',
-  'West Virginia',
-  'Wisconsin',
-  'Wyoming',
+  { label: 'abc', value: 'abc' },
+  { label: 'abcdd', value: 'abcdd' },
+  { label: 'accbc', value: 'accbc' },
+  { label: 'bsbc', value: 'bsbc' },
 ];
 
 @Component({
@@ -71,6 +14,15 @@ export const states = [
   styleUrls: ['./suggester-input.component.scss'],
 })
 export class SuggesterInputComponent {
+  constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {}
   public model: any;
   public options = ['test', 'aa'];
+  public searchSuggester(event) {
+    //listen to the key event and debounce
+    this.hashtagSuggesterApiService.getHashtagsByPrefix();
+  }
+
+  //Filter down non use key
+
+  //key down enter
 }
