@@ -37,17 +37,17 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
     }
   }
 
+  public onClickButton(): void {
+    if (!this.buttonDisable && !this.isLoading) {
+      this.buttonPurchaseClick.emit();
+    }
+  }
+
   private setButtonText(): void {
     this.buttonText = this.subscription.trial_available ? $localize`:@@web_start_free_trial:Start free trial` : $localize`:@@web_pay:Pay`;
   }
 
   private setPriceText(): void {
     this.priceText = `${this.subscription.trial_available ? '0,00' : this.selectedTier.price}`;
-  }
-
-  public onClickButton(): void {
-    if (!this.buttonDisable && !this.isLoading) {
-      this.buttonPurchaseClick.emit();
-    }
   }
 }

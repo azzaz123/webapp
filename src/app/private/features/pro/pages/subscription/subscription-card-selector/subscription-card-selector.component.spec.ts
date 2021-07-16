@@ -12,7 +12,7 @@ import { SubscriptionCardSelectorComponent } from './subscription-card-selector.
   selector: 'tsl-payments-card-info',
   template: '',
 })
-class MockCreditCardInfo {}
+class MockCreditCardInfoComponent {}
 
 describe('SubscriptionCardSelectorComponent', () => {
   let component: SubscriptionCardSelectorComponent;
@@ -21,7 +21,7 @@ describe('SubscriptionCardSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionCardSelectorComponent, MockCreditCardInfo],
+      declarations: [SubscriptionCardSelectorComponent, MockCreditCardInfoComponent],
       providers: [
         {
           provide: NgbModal,
@@ -110,7 +110,7 @@ describe('SubscriptionCardSelectorComponent', () => {
           component.stripeCards = null;
 
           fixture.detectChanges();
-          const cardSelector = fixture.debugElement.query(By.directive(MockCreditCardInfo));
+          const cardSelector = fixture.debugElement.query(By.directive(MockCreditCardInfoComponent));
 
           expect(cardSelector).toBeTruthy();
         });
@@ -120,7 +120,7 @@ describe('SubscriptionCardSelectorComponent', () => {
             component.stripeCards = null;
 
             fixture.detectChanges();
-            const cardSelector = fixture.debugElement.query(By.directive(MockCreditCardInfo));
+            const cardSelector = fixture.debugElement.query(By.directive(MockCreditCardInfoComponent));
 
             expect(cardSelector).toBeFalsy();
           });
