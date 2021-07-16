@@ -69,6 +69,8 @@ import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { By } from '@angular/platform-browser';
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -102,7 +104,7 @@ describe('UploadProductComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NgbPopoverModule],
+        imports: [NgbPopoverModule, HttpClientTestingModule],
         providers: [
           FormBuilder,
           NgbPopoverConfig,
@@ -196,6 +198,14 @@ describe('UploadProductComponent', () => {
             useClass: MockSubscriptionService,
           },
           I18nService,
+          {
+            provide: FeatureFlagService,
+            useValue: {
+              getFlag() {
+                return of(false);
+              },
+            },
+          },
         ],
         declarations: [UploadProductComponent],
         schemas: [NO_ERRORS_SCHEMA],
@@ -687,6 +697,43 @@ describe('UploadProductComponent', () => {
       expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
     });
 
+    describe('and supports shipping', () => {
+      function fillValidForm() {
+        component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.SERVICES,
+          title: 'title',
+          description: 'title',
+          sale_price: 1000000,
+          currency_code: 'EUR',
+          images: [{ image: true }],
+          location: {
+            address: USER_LOCATION.full_address,
+            latitude: USER_LOCATION.approximated_latitude,
+            longitude: USER_LOCATION.approximated_longitude,
+          },
+        });
+      }
+      beforeEach(() => {
+        component.isShippingToggleActive = true;
+        component.ngOnInit();
+        fillValidForm();
+        component.uploadForm.patchValue({
+          sale_conditions: {
+            supports_shipping: true,
+          },
+          delivery_info: null,
+        });
+      });
+
+      it('should show weight error', () => {
+        spyOn(errorService, 'i18nError');
+
+        component.onSubmit();
+
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR);
+      });
+    });
+
     it('should not accept sale_price < 0', () => {
       component.uploadForm.get('sale_price').patchValue(-1);
 
@@ -741,7 +788,7 @@ describe('UploadProductComponent', () => {
           latitude: 41.399132621722174,
           longitude: 2.17585484411869,
         },
-        sale_conditions: { exchange_allowed: false, fix_price: false },
+        sale_conditions: MOCK_ITEM_FASHION.saleConditions,
         sale_price: 1000000,
         title: 'test',
       };
@@ -790,7 +837,7 @@ describe('UploadProductComponent', () => {
           latitude: 41.399132621722174,
           longitude: 2.17585484411869,
         },
-        sale_conditions: { exchange_allowed: false, fix_price: false },
+        sale_conditions: MOCK_ITEM_FASHION.saleConditions,
         sale_price: 1000000,
         title: 'test',
       };
@@ -879,6 +926,7 @@ describe('UploadProductComponent', () => {
       });
     });
   });
+
   describe('when selecting a category', () => {
     it('should get the object types for the selected category', () => {
       component.uploadForm.patchValue({
@@ -1227,10 +1275,7 @@ describe('UploadProductComponent', () => {
         sale_price: 1000000,
         currency_code: 'EUR',
         images: [{ image: true }],
-        sale_conditions: {
-          fix_price: false,
-          exchange_allowed: false,
-        },
+        sale_conditions: MOCK_ITEM.saleConditions,
         delivery_info: null,
         location: {
           address: USER_LOCATION.full_address,
@@ -1625,6 +1670,18 @@ describe('UploadProductComponent', () => {
 
         expect(submitButtonTextElement.innerHTML).toEqual('Reactivate item');
       });
+    });
+  });
+
+  describe('when toggling shipping', () => {
+    beforeEach(() => {});
+
+    it('should reset weight if disabled', () => {
+      component.isShippingToggleActive = true;
+      component.ngOnInit();
+      component.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
+
+      expect(component.uploadForm.value.delivery_info).toBeNull();
     });
   });
 });

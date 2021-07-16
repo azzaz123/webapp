@@ -26,11 +26,15 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 import { CategoryOption, CategoryResponse, SuggestedCategory } from '@core/category/category-response.interface';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { Item, ITEM_TYPES } from '@core/item/item';
-import { DeliveryInfo, ItemContent, ItemResponse } from '@core/item/item-response.interface';
+import { DeliveryInfo, ItemContent, ItemResponse, ItemSaleConditions } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -38,8 +42,8 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, take, tap } from 'rxjs/operators';
+import { fromEvent, Observable, of, Subject } from 'rxjs';
+import { catchError, debounceTime, map, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -63,7 +67,6 @@ function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   }
   return null;
 }
-
 @Component({
   selector: 'tsl-upload-product',
   templateUrl: './upload-product.component.html',
@@ -119,6 +122,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
+  public isShippingToggleActive = false;
+  public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -133,8 +139,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private i18n: I18nService,
     private uploadService: UploadService,
     private subscriptionService: SubscriptionsService,
-    private itemReactivationService: ItemReactivationService
+    private itemReactivationService: ItemReactivationService,
+    private customerHelpService: CustomerHelpService,
+    private featureFlagService: FeatureFlagService
   ) {
+    this.featureFlagsInit();
+
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
       { value: 'female', label: this.i18n.translate(TRANSLATION_KEY.FEMALE) },
@@ -151,6 +161,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
       this.detectCategoryChanges();
       this.detectObjectTypeChanges();
+
+      if (this.isShippingToggleActive) {
+        this.detectShippabilityChanges();
+      }
+
       if (this.item) {
         this.initializeEditForm();
 
@@ -178,6 +193,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       sale_conditions: this.fb.group({
         fix_price: false,
         exchange_allowed: false,
+        supports_shipping: true,
       }),
       delivery_info: [null],
       location: this.fb.group({
@@ -227,7 +243,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       sale_price: this.item.salePrice,
       currency_code: this.item.currencyCode,
       description: this.item.description,
-      sale_conditions: this.item.saleConditions ? this.item.saleConditions : {},
+      sale_conditions: this.getSaleConditions(),
       category_id: this.item.categoryId.toString(),
       delivery_info: this.getDeliveryInfo(),
       extra_info: this.getExtraInfo(),
@@ -252,8 +268,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public getExtraInfo(): any {
-    if (!this.item.extraInfo) return {};
-    const objectTypeId = this.item.extraInfo.object_type?.id;
+    const objectTypeId = this.item.extraInfo?.object_type?.id;
     if (objectTypeId) {
       if (!this.objectTypes.find((objectType) => objectType.id === objectTypeId)) {
         const objectTypeTree = this.findChildrenObjectTypeById(objectTypeId);
@@ -333,6 +348,21 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
+  private detectShippabilityChanges(): void {
+    this.uploadForm
+      .get('sale_conditions')
+      .get('supports_shipping')
+      .valueChanges.subscribe((supportsShipping) => {
+        const deliveryInfo = this.uploadForm.get('delivery_info');
+        if (supportsShipping) {
+          deliveryInfo.setValidators([Validators.required]);
+        } else {
+          deliveryInfo.setValue(null);
+          deliveryInfo.setValidators([]);
+        }
+      });
+  }
+
   private handleUploadFormExtraFields(): void {
     const formCategoryId = this.uploadForm.get('category_id').value;
     const rawCategory = this.rawCategories.find((category) => category.category_id === +formCategoryId);
@@ -373,6 +403,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }).value;
   }
 
+  private getSaleConditions(): ItemSaleConditions {
+    this.item.saleConditions.supports_shipping = !!this.item.deliveryInfo;
+    return this.item.saleConditions ? this.item.saleConditions : null;
+  }
+
   ngAfterContentInit() {
     if (!this.item && this.titleField && !this.focused && !this.deviceService.isMobile()) {
       this.titleField.nativeElement.focus();
@@ -399,6 +434,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
     if (!this.uploadForm.get('images').valid) {
       this.errorsService.i18nError(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
+    } else if (!this.uploadForm.get('delivery_info').valid && this.isShippingToggleActive) {
+      this.errorsService.i18nError(TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR);
     } else {
       this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
       this.onValidationError.emit();
@@ -849,5 +886,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private objectTypeHasChildren(objectTypeId: string): boolean {
     return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
+  }
+
+  private featureFlagsInit(): void {
+    this.featureFlagService
+      .getFlag(FEATURE_FLAGS_ENUM.SHIPPING_TOGGLE)
+      .pipe(catchError(() => of(false)))
+      .subscribe((isShippingToggleActive) => (this.isShippingToggleActive = isShippingToggleActive));
   }
 }

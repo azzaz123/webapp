@@ -198,4 +198,5 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR]: $localize`:@@delivery_delete_bank_account_error:Sorry, something went wrong. Try again.`,
   [TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS]: $localize`:@@delivery_delete_credit_card_success:The credit card has been removed successfully`,
   [TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR]: $localize`:@@delivery_delete_credit_card_error:Sorry, something went wrong. Try again.`,
+  [TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR]: $localize`:@@finding_listing_shipping_toggle_check:To enable this item to be sent, select its weight range.`,
 };
