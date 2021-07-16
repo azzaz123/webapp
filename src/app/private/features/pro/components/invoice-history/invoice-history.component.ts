@@ -14,16 +14,14 @@ export enum TRANSACTIONS_FILTERS {
   CREDIT = 'credit',
 }
 
+export const START_LIMIT = 5;
+
 @Component({
   selector: 'tsl-invoice-history',
   templateUrl: './invoice-history.component.html',
   styleUrls: ['./invoice-history.component.scss'],
 })
 export class InvoiceHistoryComponent implements OnInit {
-  private currencies = {
-    EUR: '€',
-    GBP: '£',
-  };
   @Input() active: boolean;
   public loading = false;
   public invoiceTransactions: InvoiceTransaction[];
@@ -32,53 +30,30 @@ export class InvoiceHistoryComponent implements OnInit {
   public filterInvoices = TRANSACTIONS_FILTERS;
   public selectedFilter = TRANSACTIONS_FILTERS.ALL;
   public invoiceRequestStatus = InvoiceRequestStatus;
-  private LOAD_MORE_QUANTITY = 5;
-  private START_LIMIT = 5;
-
-  constructor(private invoiceService: InvoiceService) {}
-
-  filterConfig = {
+  public filterConfig = {
     [this.filterInvoices.ALL]: {
       filterInvoices: () => (this.filteredTransactions = this.invoiceTransactions),
-      limit: this.START_LIMIT,
+      limit: START_LIMIT,
     },
     [this.filterInvoices.INVOICES]: {
       filterInvoices: () => (this.filteredTransactions = this.invoiceTransactions.filter((invoice) => invoice.price >= 0)),
-      limit: this.START_LIMIT,
+      limit: START_LIMIT,
     },
     [this.filterInvoices.CREDIT]: {
       filterInvoices: () => (this.filteredTransactions = this.invoiceTransactions.filter((invoice) => invoice.price < 0)),
-      limit: this.START_LIMIT,
+      limit: START_LIMIT,
     },
   };
+  private LOAD_MORE_QUANTITY = 5;
+  private currencies = {
+    EUR: '€',
+    GBP: '£',
+  };
+
+  constructor(private invoiceService: InvoiceService) {}
 
   ngOnInit() {
     this.getInvoiceTransactions();
-  }
-
-  private getInvoiceTransactions(): void {
-    this.loading = true;
-    this.invoiceService
-      .getInvoiceTransactions()
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-        })
-      )
-      .subscribe(
-        (invoiceTransactions: InvoiceTransaction[]) => {
-          invoiceTransactions.forEach((transaction) => (transaction.currencySymbol = this.currencies[transaction.currency]));
-          this.invoiceTransactions =
-            invoiceTransactions &&
-            invoiceTransactions.sort((a, b) => {
-              return b.date - a.date;
-            });
-          this.onChangeFilter(TRANSACTIONS_FILTERS.ALL);
-        },
-        () => {
-          this.isErrorLoading = true;
-        }
-      );
   }
 
   public loadMore(): void {
@@ -118,5 +93,30 @@ export class InvoiceHistoryComponent implements OnInit {
       case InvoiceRequestStatus.NOT_OLD_INVOICES:
         return !this.active && conditions;
     }
+  }
+
+  private getInvoiceTransactions(): void {
+    this.loading = true;
+    this.invoiceService
+      .getInvoiceTransactions()
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe(
+        (invoiceTransactions: InvoiceTransaction[]) => {
+          invoiceTransactions.forEach((transaction) => (transaction.currencySymbol = this.currencies[transaction.currency]));
+          this.invoiceTransactions =
+            invoiceTransactions &&
+            invoiceTransactions.sort((a, b) => {
+              return b.date - a.date;
+            });
+          this.onChangeFilter(TRANSACTIONS_FILTERS.ALL);
+        },
+        () => {
+          this.isErrorLoading = true;
+        }
+      );
   }
 }

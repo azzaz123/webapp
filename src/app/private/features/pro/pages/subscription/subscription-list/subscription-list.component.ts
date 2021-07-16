@@ -14,7 +14,8 @@ export class SubscriptionListComponent {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
-
+  MAX_NARROW_CARDS = 4;
+  public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
   private readonly rowOrder = [
     CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE,
     CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES,
@@ -27,25 +28,7 @@ export class SubscriptionListComponent {
     return this.orderByCategory(this.rowOrder);
   }
 
-  public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
-
   constructor(private subscriptionsService: SubscriptionsService, private benefitsService: SubscriptionBenefitsService) {}
-
-  private showEdit(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
-  }
-
-  private showCancel(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length === 1;
-  }
-
-  private showManageInApp(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription) && !this.subscriptionsService.hasOneFreeTier(subscription);
-  }
-
-  private showUnsubscribeFirst(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneFreeTier(subscription);
-  }
 
   public hasOneFreeSubscription(subscription: SubscriptionsResponse): boolean {
     return this.subscriptionsService.hasTrial(subscription);
@@ -78,16 +61,32 @@ export class SubscriptionListComponent {
     }
   }
 
-  private getNotFreeTrialText(subscription: SubscriptionsResponse): string {
-    return subscription.tiers.length > 1 ? $localize`:@@web_see_plans:See plans` : $localize`:@@web_start:Start`;
-  }
-
   public onClickButton(subscription: SubscriptionsResponse): void {
     this.clickButton.emit(subscription);
   }
 
   public getBenefits(subscription: SubscriptionsResponse): string[] {
     return this.benefitsService.getBenefitsByCategory(subscription.category_id);
+  }
+
+  private showEdit(subscription: SubscriptionsResponse): boolean {
+    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
+  }
+
+  private showCancel(subscription: SubscriptionsResponse): boolean {
+    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length === 1;
+  }
+
+  private showManageInApp(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.isSubscriptionInApp(subscription) && !this.subscriptionsService.hasOneFreeTier(subscription);
+  }
+
+  private showUnsubscribeFirst(subscription: SubscriptionsResponse): boolean {
+    return this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneFreeTier(subscription);
+  }
+
+  private getNotFreeTrialText(subscription: SubscriptionsResponse): string {
+    return subscription.tiers.length > 1 ? $localize`:@@web_see_plans:See plans` : $localize`:@@web_start:Start`;
   }
 
   private orderByCategory(order: number[]): SubscriptionsResponse[] {
