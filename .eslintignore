@@ -8,7 +8,6 @@
 /src/app/private/features/dashboard
 /src/app/private/features/help
 /src/app/private/features/wallacoins
-/src/app/private/features/pro
 
 # WALLET-CHAT
 /src/app/private/features/chat

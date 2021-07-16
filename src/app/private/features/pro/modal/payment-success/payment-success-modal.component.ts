@@ -22,6 +22,10 @@ export class PaymentSuccessModalComponent implements OnInit {
     this.trackPageView();
   }
 
+  public close() {
+    this.activeModal.close();
+  }
+
   private trackPageView() {
     const pageView: AnalyticsPageView<ViewSuccessSubscriptionPayment> = {
       name: ANALYTICS_EVENT_NAMES.ViewSuccessSubscriptionPayment,
@@ -34,9 +38,5 @@ export class PaymentSuccessModalComponent implements OnInit {
       },
     };
     this.analyticsService.trackPageView(pageView);
-  }
-
-  public close() {
-    this.activeModal.close();
   }
 }
