@@ -1,16 +1,16 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UnsubscribeInAppFirstModal } from './unsubscribe-in-app-first-modal.component';
+import { UnsubscribeInAppFirstModalComponent } from './unsubscribe-in-app-first-modal.component';
 
 describe('UnsubscribeInAppFirstModal', () => {
-  let component: UnsubscribeInAppFirstModal;
-  let fixture: ComponentFixture<UnsubscribeInAppFirstModal>;
+  let component: UnsubscribeInAppFirstModalComponent;
+  let fixture: ComponentFixture<UnsubscribeInAppFirstModalComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [UnsubscribeInAppFirstModal],
+        declarations: [UnsubscribeInAppFirstModalComponent],
         providers: [NgbActiveModal],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -18,7 +18,7 @@ describe('UnsubscribeInAppFirstModal', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UnsubscribeInAppFirstModal);
+    fixture = TestBed.createComponent(UnsubscribeInAppFirstModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
