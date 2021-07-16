@@ -121,39 +121,39 @@ describe('UserStatsComponent', () => {
 
             expect(component.showStoreAdress).toBe(true);
           }));
-        }),
-          describe('when it has not store address', () => {
-            beforeEach(() => {
-              spyOn(userService, 'hasStoreLocation').and.returnValue(false);
-              component.ngOnInit();
-            });
-            it('should not show store address', fakeAsync(() => {
-              tick();
-
-              expect(component.showStoreAdress).toBe(false);
-            }));
-          }),
-          describe('when have the extra info...', () => {
-            it('should show three anchors if it have the extra info', () => {
-              fixture.detectChanges();
-              const errorMessages = fixture.debugElement.queryAll(By.css('a'));
-
-              expect(errorMessages.length).toBe(3);
-            });
-
-            it('should toggle the phone when click on the anchor...', () => {
-              fixture.detectChanges();
-              spyOn(component, 'togglePhone').and.callThrough();
-              const phoneAnchor = fixture.debugElement
-                .queryAll(By.css('a'))
-                .find((anchors) => anchors.nativeElement.innerHTML === 'Show phone number').nativeElement;
-
-              phoneAnchor.click();
-
-              expect(component.togglePhone).toHaveBeenCalledTimes(1);
-              expect(component.showPhone).toBe(true);
-            });
+        });
+        describe('when it has not store address', () => {
+          beforeEach(() => {
+            spyOn(userService, 'hasStoreLocation').and.returnValue(false);
+            component.ngOnInit();
           });
+          it('should not show store address', fakeAsync(() => {
+            tick();
+
+            expect(component.showStoreAdress).toBe(false);
+          }));
+        });
+        describe('when have the extra info...', () => {
+          it('should show three anchors if it have the extra info', () => {
+            fixture.detectChanges();
+            const errorMessages = fixture.debugElement.queryAll(By.css('a'));
+
+            expect(errorMessages.length).toBe(3);
+          });
+
+          it('should toggle the phone when click on the anchor...', () => {
+            fixture.detectChanges();
+            spyOn(component, 'togglePhone').and.callThrough();
+            const phoneAnchor = fixture.debugElement
+              .queryAll(By.css('a'))
+              .find((anchors) => anchors.nativeElement.innerHTML === 'Show phone number').nativeElement;
+
+            phoneAnchor.click();
+
+            expect(component.togglePhone).toHaveBeenCalledTimes(1);
+            expect(component.showPhone).toBe(true);
+          });
+        });
         describe('when NOT have the extra info', () => {
           it('should show one anchor if it have NOT the extra info', () => {
             component.userInfo.extraInfo.phone_number = null;
