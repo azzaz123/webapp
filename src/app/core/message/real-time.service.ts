@@ -1,21 +1,15 @@
 import * as retry from 'retry';
-import { Injectable } from '@angular/core';
-import { XmppService } from '../xmpp/xmpp.service';
-import { EventService } from '../event/event.service';
-import { RemoteConsoleService } from '../remote-console';
-import { AnalyticsService } from '../analytics/analytics.service';
-import {
-  ANALYTIC_EVENT_TYPES,
-  ANALYTICS_EVENT_NAMES,
-  AnalyticsEvent,
-  SCREEN_IDS,
-  SendFirstMessage,
-} from '../analytics/analytics-constants';
-import { ConnectionService } from '../connection/connection.service';
-import { ConnectionType } from '../remote-console/connection-type';
-import { I18nService } from '../i18n/i18n.service';
-import { InboxConversation, InboxMessage, ChatSignal, ChatSignalType } from '@private/features/chat/core/model';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import {Injectable} from '@angular/core';
+import {XmppService} from '../xmpp/xmpp.service';
+import {EventService} from '../event/event.service';
+import {RemoteConsoleService} from '../remote-console';
+import {AnalyticsService} from '../analytics/analytics.service';
+import {ANALYTIC_EVENT_TYPES, ANALYTICS_EVENT_NAMES, AnalyticsEvent, SCREEN_IDS, SendFirstMessage,} from '../analytics/analytics-constants';
+import {ConnectionService} from '../connection/connection.service';
+import {ConnectionType} from '../remote-console/connection-type';
+import {I18nService} from '../i18n/i18n.service';
+import {ChatSignal, ChatSignalType, InboxConversation, InboxMessage} from '@private/features/chat/core/model';
+import {TRANSLATION_KEY} from '@core/i18n/translations/enum/translation-keys.enum';
 
 export const SEARCHID_STORAGE_NAME = 'searchId';
 
@@ -27,7 +21,7 @@ export class RealTimeService {
     private remoteConsoleService: RemoteConsoleService,
     private analyticsService: AnalyticsService,
     private i18n: I18nService,
-    private connectionService: ConnectionService
+    private connectionService: ConnectionService,
   ) {
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
@@ -153,6 +147,8 @@ export class RealTimeService {
         conversationId: conversation.id,
         screenId: SCREEN_IDS.Chat,
         categoryId: conversation.item.categoryId,
+        country: this.analyticsService.market,
+        language: this.analyticsService.appLocale
       },
     };
 

@@ -133,7 +133,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private i18n: I18nService,
     private uploadService: UploadService,
     private subscriptionService: SubscriptionsService,
-    private itemReactivationService: ItemReactivationService
+    private itemReactivationService: ItemReactivationService,
   ) {
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
@@ -780,6 +780,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         attributes: {
           ...baseEventAttrs,
           screenId: SCREEN_IDS.Upload,
+          country: this.analyticsService.market,
+          language: this.analyticsService.appLocale
         },
       };
       this.analyticsService.trackEvent(listItemCGEvent);
