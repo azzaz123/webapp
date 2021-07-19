@@ -1,10 +1,14 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { HeaderComponent } from '@shared/header/header.component';
+import { NavLinksComponent } from '@shared/nav-links/nav-links.component';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
 import { KYC_BANNER_TYPES } from './components/kyc-banner/kyc-banner-constants';
 import { KYCBannerComponent } from './components/kyc-banner/kyc-banner.component';
@@ -23,10 +27,12 @@ describe('WalletComponent', () => {
   let router: Router;
   let kycBannerService: KYCBannerService;
 
+  const walletHelpButtonSelector = 'a';
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
-      declarations: [WalletComponent, KYCBannerComponent],
+      declarations: [WalletComponent, KYCBannerComponent, NavLinksComponent, HeaderComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
@@ -36,6 +42,7 @@ describe('WalletComponent', () => {
             events: of(new NavigationEnd(1, CREDIT_CARD_FORM_LINK, '')),
           },
         },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         KYCBannerService,
         KYCBannerApiService,
       ],
@@ -52,6 +59,46 @@ describe('WalletComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('when we are on KYC', () => {
+    beforeEach(() => {
+      component.isInKYC = true;
+
+      fixture.detectChanges();
+    });
+
+    it('should NOT appear the nav links', () => {
+      const navLinks = fixture.debugElement.query(By.directive(NavLinksComponent));
+
+      expect(navLinks).toBeFalsy();
+    });
+
+    it('should NOT appear the header', () => {
+      const header = fixture.debugElement.query(By.directive(HeaderComponent));
+
+      expect(header).toBeFalsy();
+    });
+  });
+
+  describe('when we are NOT on KYC', () => {
+    beforeEach(() => {
+      component.isInKYC = false;
+
+      fixture.detectChanges();
+    });
+
+    it('should appear the nav links', () => {
+      const navLinks = fixture.debugElement.query(By.directive(NavLinksComponent));
+
+      expect(navLinks).toBeTruthy();
+    });
+
+    it('should appear the header', () => {
+      const header = fixture.debugElement.query(By.directive(HeaderComponent));
+
+      expect(header).toBeTruthy();
+    });
   });
 
   describe('when the user navigates through the nav links...', () => {
@@ -109,6 +156,14 @@ describe('WalletComponent', () => {
       const banner = fixture.debugElement.query(By.directive(KYCBannerComponent));
 
       expect(banner).toBeTruthy();
+    });
+  });
+
+  describe('when the user clicks the help button', () => {
+    it('should open the Wallet help page', () => {
+      const helpButtonRef = fixture.debugElement.query(By.css(walletHelpButtonSelector));
+
+      expect(helpButtonRef.attributes['href']).toEqual(component.zendeskWalletHelpURL);
     });
   });
 });

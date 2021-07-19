@@ -1,14 +1,18 @@
 <div class="page-content">
     <div class="container">
-      <tsl-header>
+      <tsl-header *ngIf="!isInKYC">
         <div class="col">
           <div class="header-row">
-            <h1 class="header-title" i18n="@@wallet_view_top_bar_title">Wallet</h1>
+            <h1 class="Wallet__title w-100 header-title">
+              <div class="w-100 d-flex justify-content-between">
+                <div i18n="@@wallet_view_top_bar_title">Wallet</div><div><a [href]="zendeskWalletHelpURL" target="_blank" i18n="@@wallet_view_top_bar_help_link">Help</a></div>
+              </div>
+            </h1>
           </div>
           <tsl-kyc-banner *ngIf="kycBannerSpecifications$ | async" [KYCBannerSpecifications]="kycBannerSpecifications$ | async"></tsl-kyc-banner>
         </div>
       </tsl-header>
-      <div class="row">
+      <div class="row" *ngIf="!isInKYC">
         <div class="col">
           <tsl-nav-links
             [navLinks]="navLinks"
@@ -19,7 +23,7 @@
           </tsl-nav-links>
         </div>
       </div>
-      <div class="row box profile-box mt-3">
+      <div class="py-3 row box mt-3 profile-box">
         <div class="col">
           <router-outlet></router-outlet>
         </div>

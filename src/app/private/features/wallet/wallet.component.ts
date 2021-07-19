@@ -13,8 +13,10 @@ import { WALLET_PATHS } from './wallet.routing.constants';
   styleUrls: ['./wallet.component.scss'],
 })
 export class WalletComponent implements OnInit {
+  public readonly KYC_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.KYC}`;
   public kycBannerSpecifications$: Observable<KYCBannerSpecifications>;
   public selectedNavLinkId: string;
+  public isInKYC: boolean;
   public navLinks: NavLink[] = [
     {
       id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}`,
@@ -26,9 +28,14 @@ export class WalletComponent implements OnInit {
     },
   ];
 
+  //FIXME: These will be moved into a service
+  public zendeskWalletHelpArticleId: number = 360017172677;
+  public zendeskWalletHelpURL = `https://ayuda.wallapop.com/hc/es-es/articles/${this.zendeskWalletHelpArticleId}`;
+
   constructor(private router: Router, private kycBannerService: KYCBannerService) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
+        this.isInKYC = e.url === this.KYC_URL;
         this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id || this.getLastLocationIdThatMatch(e);
       }
     });

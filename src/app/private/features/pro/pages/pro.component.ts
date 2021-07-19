@@ -18,9 +18,9 @@ import { PRO_PATHS } from '../pro-routing-constants';
   styleUrls: ['./pro.component.scss'],
 })
 export class ProComponent implements OnInit {
-  private hasOneTrialSubscription: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly PRO_PATHS = PRO_PATHS;
+  private hasOneTrialSubscription: boolean;
 
   constructor(
     public userService: UserService,
