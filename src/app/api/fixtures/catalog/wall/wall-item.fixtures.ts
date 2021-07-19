@@ -66,6 +66,7 @@ export const storytellingWallItemFixture: WallItem = {
 
 export const mappedWallItemFixture: ItemCard = {
   id,
+  categoryId: wallItemFixture.category_id,
   title,
   description,
   salePrice: price.amount,

@@ -7,8 +7,8 @@ const id = 'my-item-id';
 const title = 'Title';
 const description = 'Description';
 const slug = 'my-slug';
-const noStorytellingCategoryId = '222';
-const storytellingCategoryId = '100';
+const noStorytellingCategoryId = 222;
+const storytellingCategoryId = 100;
 
 const attributes: CatalogItemAttribute[] = [
   {
@@ -50,7 +50,7 @@ export const favouriteIdsFixture = ['my-item-id'];
 export const publishedItemFixture: PublishedItem = {
   id,
   images: [catalogItemImageFixture],
-  category_id: noStorytellingCategoryId,
+  category_id: noStorytellingCategoryId.toString(),
   slug,
   attributes,
   title,
@@ -60,11 +60,12 @@ export const publishedItemFixture: PublishedItem = {
 
 export const storytellingPublishedItemFixture: PublishedItem = {
   ...publishedItemFixture,
-  category_id: storytellingCategoryId,
+  category_id: storytellingCategoryId.toString(),
 };
 
 export const mappedPublishedItemFixture: ItemCard = {
   id,
+  categoryId: noStorytellingCategoryId,
   title,
   description,
   salePrice: price.amount,
@@ -94,4 +95,5 @@ export const mappedFavouritedPublishedItemFixture: ItemCard = {
 export const mappedStorytellingPublishedItemFixture: ItemCard = {
   ...mappedPublishedItemFixture,
   description: storytelling,
+  categoryId: storytellingCategoryId,
 };
