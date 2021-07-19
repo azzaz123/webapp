@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
-import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
+import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { fromEvent, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
@@ -27,9 +27,8 @@ export class SuggesterInputComponent implements OnInit {
   @ViewChild('hashtagSuggester', { static: true }) hashtagSuggester: ElementRef;
   public start: string = '0';
   public model: any;
-  public options = ['test', 'aa'];
-  public detectTitleKeyboardChanges() {
-    //listen to the key event and debounce
+  public options: SelectFormOption<string>[];
+  public detectTitleKeyboardChanges(): void {
     fromEvent(this.hashtagSuggester.nativeElement, 'keyup')
       .pipe(debounceTime(750))
       .subscribe(() => {
@@ -37,24 +36,25 @@ export class SuggesterInputComponent implements OnInit {
           return;
         } else
           this.getHashtags().subscribe((m) => {
-            console.log('mm'), m;
+            this.options = this.mapHashtagsToOptions(m);
           });
       });
-
-    // Send event to the service prefix
   }
 
   public isValidKey(): boolean {
-    // filter valid key
+    // filter valid key,  managemge space key (whether we want to put space in prefix) - AC8
     return true;
   }
 
-  public getHashtags(): Observable<PaginationResponse<Hashtag>> {
+  public getHashtags(): Observable<PaginatedList<Hashtag>> {
     return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
   }
 
-  //Filter down non use key
-
-  //key down enter
+  public mapHashtagsToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
+    let { list } = hashtagList;
+    let options = list.map((hashtag: Hashtag) => {
+      return { label: hashtag.text, sublabel: hashtag.occurrencies.toString(), value: hashtag.text };
+    });
+    return options;
+  }
 }
-// managemge space key (whether we want to put space in prefix) - AC8
