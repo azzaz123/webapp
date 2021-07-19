@@ -15,6 +15,7 @@ function mapPublishedItemToItemCard(item: PublishedItem, userId: string, favorit
   return {
     id,
     title,
+    categoryId: Number.parseInt(category_id),
     description: formatDescription(getItemType(category_id), description, attributes),
     salePrice: price.amount,
     currencyCode: price.currency,

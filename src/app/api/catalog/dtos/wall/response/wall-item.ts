@@ -3,6 +3,7 @@ import { ItemType } from '@api/core/model/item';
 
 export interface WallItem {
   id: string;
+  category_id: number;
   type: ItemType;
   title: string;
   description: string;

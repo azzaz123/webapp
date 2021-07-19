@@ -48,6 +48,7 @@ export const favouriteIdsFixture = ['my-item-id'];
 
 export const wallItemFixture: WallItem = {
   id,
+  category_id: 0,
   images: [catalogItemImageFixture],
   type: ItemType.CONSUMER_GOODS,
   slug,

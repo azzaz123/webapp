@@ -14,7 +14,7 @@ export interface ItemCard {
   distance?: number;
   flags?: ItemFlags;
   bumpFlags?: ItemVisibilityFlags;
-  categoryId?: number;
+  categoryId: number;
   saleConditions?: ItemSaleConditions;
   specs?: string[];
 }
