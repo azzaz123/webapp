@@ -1,0 +1,38 @@
+@import '~style/common';
+
+$wallet-balance-info-container-height: 208px;
+$wallet-balance-info-ammount-container-height: 105px;
+$wallet-balance-info-ammount-text-size: 74px;
+
+.WalletBalanceInfo {
+  height: $wallet-balance-info-container-height;
+
+  &__amount {
+    height: $wallet-balance-info-ammount-container-height;
+    padding: $spacing-m $spacing-m;
+    color: $blue-grey-1;
+    font-weight: $font-weight-chunky;
+
+    &__integer {
+      font-size: $wallet-balance-info-ammount-text-size;
+      line-height: $wallet-balance-info-ammount-text-size;
+    }
+
+    &__decimal {
+      font-size: $font-size-xl;
+    }
+
+    &__currency {
+      font-size: $font-size-xl;
+      color: $blue-grey-2;
+    }
+
+    &--hasPositiveBalance {
+      background-image: url('/assets/images/confetti.svg');
+    }
+  }
+
+  &__CTA {
+    margin-top: 28px;
+  }
+}

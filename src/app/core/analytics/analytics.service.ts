@@ -1,11 +1,13 @@
 import { Observable, ReplaySubject } from 'rxjs';
 import mParticle from '@mparticle/web-sdk';
 import { UserService } from './../user/user.service';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { environment } from '@environments/environment';
 import { User } from '../user/user';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import { DeviceService } from '@core/device/device.service';
+import { Market, MARKET_PROVIDER } from '../../../configs/market.config';
+import { APP_LOCALE } from '../../../configs/subdomains.config';
 
 // TODO: This should not be exported. Anything that uses this should start using the getDeviceId method
 export const DEVICE_ID_COOKIE_NAME = 'device_id';
@@ -23,7 +25,20 @@ export const COMMON_MPARTICLE_CONFIG = {
   providedIn: 'root',
 })
 export class AnalyticsService {
-  constructor(private userService: UserService, private deviceService: DeviceService) {}
+  constructor(
+    private userService: UserService,
+    private deviceService: DeviceService,
+    @Inject(MARKET_PROVIDER) private _market: Market,
+    @Inject(LOCALE_ID) private _localeId: APP_LOCALE
+  ) {}
+
+  get market(): Market {
+    return this._market;
+  }
+
+  get appLocale(): APP_LOCALE {
+    return this._localeId;
+  }
 
   private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<void>();
 

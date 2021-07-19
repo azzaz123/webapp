@@ -35,6 +35,8 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 describe('BankAccountComponent', () => {
   const messageErrorSelector = '.BankAccount__message--error';
   const backAnchorSelector = '.BankAccount__back';
+  const KYCInfoMessageSelector = '.BankAccount__KYCMessage';
+
   const routerEvents: Subject<any> = new Subject();
 
   let component: BankAccountComponent;
@@ -280,25 +282,57 @@ describe('BankAccountComponent', () => {
       });
 
       describe('and the petition succeed...', () => {
-        beforeEach(() => {
-          spyOn(bankAccountService, 'update').and.returnValue(of(null));
+        describe('and we are NOT on KYC mode', () => {
+          beforeEach(() => {
+            spyOn(bankAccountService, 'update').and.returnValue(of(null));
 
-          triggerFormSubmit();
-        });
+            triggerFormSubmit();
+          });
 
-        it('should call the edit endpoint', () => {
-          expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
-        });
+          it('should call the edit endpoint', () => {
+            expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
+          });
 
-        it('should show a succeed message', () => {
-          expect(toastService.show).toHaveBeenCalledWith({
-            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS),
-            type: TOAST_TYPES.SUCCESS,
+          it('should show a succeed message', () => {
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS),
+              type: TOAST_TYPES.SUCCESS,
+            });
+          });
+
+          it('should redirect to the bank details page', () => {
+            expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
           });
         });
 
-        it('should redirect to the bank details page', () => {
-          expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
+        describe('and we are on KYC mode', () => {
+          beforeEach(() => {
+            component.isKYC = true;
+            spyOn(component.bankAccountSaved, 'emit');
+            spyOn(bankAccountService, 'update').and.returnValue(of(null));
+
+            triggerFormSubmit();
+          });
+
+          it('should call the edit endpoint', () => {
+            expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
+          });
+
+          it('should show a succeed message', () => {
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS),
+              type: TOAST_TYPES.SUCCESS,
+            });
+          });
+
+          it('should NOT redirect to the bank details page', () => {
+            expect(router.navigate).not.toHaveBeenCalled();
+            expect(router.navigate).not.toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
+          });
+
+          it('should notify that the bank account have been saved', () => {
+            expect(component.bankAccountSaved.emit).toHaveBeenCalled();
+          });
         });
       });
 
@@ -402,6 +436,34 @@ describe('BankAccountComponent', () => {
       backButton.click();
 
       expect(location.back).toHaveBeenCalled();
+    });
+  });
+
+  describe('when the component is NOT on the KYC page...', () => {
+    beforeEach(() => {
+      component.isKYC = false;
+
+      fixture.detectChanges();
+    });
+
+    it('should NOT show the informative message', () => {
+      const KYCMessage = fixture.debugElement.query(By.css(KYCInfoMessageSelector));
+
+      expect(KYCMessage).toBeFalsy();
+    });
+  });
+
+  describe('when the component is on the KYC page...', () => {
+    beforeEach(() => {
+      component.isKYC = true;
+
+      fixture.detectChanges();
+    });
+
+    it('should show the informative message', () => {
+      const KYCMessage = fixture.debugElement.query(By.css(KYCInfoMessageSelector));
+
+      expect(KYCMessage).toBeTruthy();
     });
   });
 

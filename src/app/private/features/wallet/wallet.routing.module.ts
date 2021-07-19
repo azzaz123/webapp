@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { WalletComponent } from './pages/wallet.component';
-import { WalletOverviewModule } from './pages/wallet-overview/wallet-overview.module';
-import { WALLET_PATHS } from './wallet-routing-constants';
+import { WalletBalanceModule } from './pages/wallet-balance/wallet-balance.module';
+import { WALLET_PATHS } from './wallet.routing.constants';
 import { BankDetailsModule } from './pages/bank-details/bank-details.module';
+import { WalletComponent } from './wallet.component';
 import { KYCModule } from './pages/kyc/kyc.module';
+import { KYCGuard } from './guards/kyc/kyc.guard';
 
 const routes: Route[] = [
   {
@@ -13,7 +14,11 @@ const routes: Route[] = [
     children: [
       {
         path: '',
-        loadChildren: () => WalletOverviewModule,
+        redirectTo: WALLET_PATHS.BALANCE,
+      },
+      {
+        path: WALLET_PATHS.BALANCE,
+        loadChildren: () => WalletBalanceModule,
       },
       {
         path: WALLET_PATHS.BANK_DETAILS,
@@ -22,6 +27,7 @@ const routes: Route[] = [
       {
         path: WALLET_PATHS.KYC,
         loadChildren: () => KYCModule,
+        canActivate: [KYCGuard],
       },
       {
         path: '**',

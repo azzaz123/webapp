@@ -1,0 +1,34 @@
+@import '~style/common';
+
+.SubscriptionList {
+  &__link {
+    margin-top: $spacing-ms;
+    color: $walla-main;
+  }
+  &__subscription {
+    flex: 1;
+    max-width: 283px;
+    min-width: 250px;
+  }
+}
+
+.box-content {
+  color: $blue-grey-3;
+  padding: $spacing-ml (4 * $spacing-ml);
+  h4 {
+    color: $blue-grey-1;
+    font-size: $font-size-l;
+    font-weight: bold;
+  }
+}
+
+.loading-center {
+  display: block;
+  margin: 0 auto;
+}
+
+@include media-breakpoint-down(lg) {
+  .box-content {
+    padding: $spacing-m;
+  }
+}

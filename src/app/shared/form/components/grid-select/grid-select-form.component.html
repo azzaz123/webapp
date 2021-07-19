@@ -1,8 +1,10 @@
-<div class="GridSelectForm">
-  <div *ngFor="let option of options" [ngClass]="['GridSelectForm__flex_basis--' + columns, 'GridSelectForm__flex_basis_lg--' + (columnsLg || columns), 'GridSelectForm__flex_basis_md--' + (columnsMd || columns), 'GridSelectForm__flex_basis_sm--' + (columnsSm || columns)]">
-    <tsl-grid-select-option [icon]="option.icon" [label]="option.label" [isBig]="isBig" [isActive]="isValueActive(option.value)"
-                            [isHoverMainColor]="isHoverMainColor"
-                            (click)="handleOptionClick(option.value)">
-    </tsl-grid-select-option>
+<div class="container">
+  <div class="row">
+    <div *ngFor="let option of options" [ngClass]="gridClasses">
+      <tsl-grid-select-option [icon]="option.icon" [label]="option.label" [isBig]="isBig"
+        [isActive]="isValueActive(option.value)" [isHoverMainColor]="isHoverMainColor"
+        (click)="handleOptionClick(option.value)">
+      </tsl-grid-select-option>
+    </div>
   </div>
 </div>

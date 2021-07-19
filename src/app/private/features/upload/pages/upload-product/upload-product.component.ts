@@ -96,7 +96,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
   public pendingFiles: PendingFiles;
-
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     { value: 'EUR', label: '€' },
@@ -778,6 +777,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         attributes: {
           ...baseEventAttrs,
           screenId: SCREEN_IDS.Upload,
+          country: this.analyticsService.market,
+          language: this.analyticsService.appLocale,
         },
       };
       this.analyticsService.trackEvent(listItemCGEvent);

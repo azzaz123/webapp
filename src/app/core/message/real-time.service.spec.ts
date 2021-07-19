@@ -350,6 +350,8 @@ describe('RealTimeService', () => {
             conversationId: inboxConversation.id,
             screenId: SCREEN_IDS.Chat,
             categoryId: inboxConversation.item.categoryId,
+            country: analyticsService.market,
+            language: analyticsService.appLocale,
           },
         };
 
@@ -373,6 +375,8 @@ describe('RealTimeService', () => {
               screenId: SCREEN_IDS.Chat,
               categoryId: inboxConversation.item.categoryId,
               searchId,
+              country: analyticsService.market,
+              language: analyticsService.appLocale,
             },
           };
           spyOn(sessionStorage, 'getItem').and.returnValue(searchId);
@@ -428,6 +432,8 @@ describe('RealTimeService', () => {
             conversationId: inboxConversation.id,
             screenId: SCREEN_IDS.Chat,
             categoryId: inboxConversation.item.categoryId,
+            country: analyticsService.market,
+            language: analyticsService.appLocale,
           },
         };
 

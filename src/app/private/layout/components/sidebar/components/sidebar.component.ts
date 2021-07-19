@@ -6,6 +6,8 @@ import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOwnSaleItems 
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserStats } from '@core/user/user-stats.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { PERMISSIONS } from '@core/user/user-constants';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -18,6 +20,9 @@ export class SidebarComponent implements OnInit {
   @Input() isProducts: boolean;
   @Input() isProfile: boolean;
   public isProfessional: boolean;
+  public readonly PERMISSIONS = PERMISSIONS;
+  public readonly PRO_PATHS = PRO_PATHS;
+  public isClickedProSection: boolean;
 
   constructor(
     private userService: UserService,
@@ -30,6 +35,12 @@ export class SidebarComponent implements OnInit {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
+    this.isClickedProSection = this.userService.isClickedProSection;
+  }
+
+  public onClickedProSection(): void {
+    this.userService.setClickedProSection();
+    this.isClickedProSection = true;
   }
 
   public trackClickToCatalog(): void {

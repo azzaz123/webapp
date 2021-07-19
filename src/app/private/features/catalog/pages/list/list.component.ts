@@ -30,6 +30,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
@@ -99,6 +100,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private subscriptions: SubscriptionsResponse[];
   private componentSubscriptions: Subscription[] = [];
   public readonly PERMISSIONS = PERMISSIONS;
+  public readonly PRO_PATHS = PRO_PATHS;
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true })
@@ -481,7 +483,7 @@ export class ListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.isFreeTrial = isFreeTrial;
 
     modalRef.result.then(
-      () => this.router.navigate(['profile/subscriptions']),
+      () => this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]),
       () => this.reloadItem(reactivatedItem.id, index)
     );
   }
@@ -920,6 +922,10 @@ export class ListComponent implements OnInit, OnDestroy {
       },
     };
     this.analyticsService.trackEvent(event);
-    this.router.navigate(['profile/subscriptions']);
+    this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
+  }
+
+  get subscriptionButtonName(): string {
+    return this.userService.isPro ? this.i18n.translate(TRANSLATION_KEY.WALLAPOP_PRO) : this.i18n.translate(TRANSLATION_KEY.BECOME_PRO);
   }
 }

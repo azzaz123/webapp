@@ -465,6 +465,8 @@ describe('UploadRealestateComponent', () => {
             surface: MOCK_REALESTATE.surface,
             rooms: MOCK_REALESTATE.rooms,
             condition: MOCK_REALESTATE.condition,
+            country: analyticsService.market,
+            language: analyticsService.appLocale,
           },
         };
         spyOn(analyticsService, 'trackEvent');

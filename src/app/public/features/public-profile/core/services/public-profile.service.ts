@@ -5,8 +5,6 @@ import { Counters, Ratings, ShippingCounterResponse, UserStats } from '@core/use
 import { User } from '@core/user/user';
 import { Image, UserExtrainfo, UserFavourited, UserResponse } from '@core/user/user-response.interface';
 import { MarkAsFavouriteBodyResponse } from '../interfaces/public-profile-request.interface';
-import { ReviewResponse } from '@private/features/reviews/core/review-response.interface';
-import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { EMPTY_STATS } from './constants/stats-constants';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 
@@ -43,10 +41,6 @@ export class PublicProfileService {
 
   public isFavourite(userId: string): Observable<UserFavourited> {
     return this.publicUserApiService.isFavourite(userId);
-  }
-
-  public getReviews(userId: string, init: number = 0): Observable<PaginationResponse<ReviewResponse>> {
-    return this.publicUserApiService.getReviews(userId, init);
   }
 
   public getUser(userId: string, useCache = true): Observable<User> {
