@@ -8,9 +8,9 @@ import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
 import { KYC_NATIONALITIES } from '../../constants/kyc-nationalities-constants';
 import { KYC_NATIONALITY_TYPE } from '../../enums/kyc-nationality-type-enum';
 
-import { KycNationalityComponent } from './kyc-nationality.component';
+import { KYCNationalityComponent } from './kyc-nationality.component';
 
-describe('KycNationalityComponent', () => {
+describe('KYCNationalityComponent', () => {
   const EUROPEAN_UNION_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.EUROPEAN_UNION);
   const UK_USA_CA_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.UK_USA_CANADA);
   const OTHER_NATIONALITY = KYC_NATIONALITIES.find((nationality) => nationality.value === KYC_NATIONALITY_TYPE.OTHER);
@@ -21,20 +21,20 @@ describe('KycNationalityComponent', () => {
   const backButtonSelector = '.KYCNationality__back';
   const drawingSelector = '.KYCNationality__drawing';
 
-  let component: KycNationalityComponent;
-  let fixture: ComponentFixture<KycNationalityComponent>;
+  let component: KYCNationalityComponent;
+  let fixture: ComponentFixture<KYCNationalityComponent>;
   let de: DebugElement;
   let el: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [KycNationalityComponent, SvgIconComponent, DropdownComponent],
+      declarations: [KYCNationalityComponent, SvgIconComponent, DropdownComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KycNationalityComponent);
+    fixture = TestBed.createComponent(KYCNationalityComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;

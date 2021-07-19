@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   templateUrl: './kyc-images.component.html',
   styleUrls: ['./kyc-images.component.scss'],
 })
-export class KycImagesComponent {
+export class KYCImagesComponent {
   @Input() photosToRequest: number;
 
   constructor() {}

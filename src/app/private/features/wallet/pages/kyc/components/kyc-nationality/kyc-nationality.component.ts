@@ -10,7 +10,7 @@ import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
   styleUrls: ['./kyc-nationality.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KycNationalityComponent {
+export class KYCNationalityComponent {
   @Output() photosToRequestSelect: EventEmitter<number> = new EventEmitter();
   @Output() goBack: EventEmitter<void> = new EventEmitter();
 
