@@ -25,11 +25,6 @@ const routes: Route[] = [
         loadChildren: () => BankDetailsModule,
       },
       {
-        path: WALLET_PATHS.KYC,
-        loadChildren: () => KYCModule,
-        canActivate: [KYCGuard],
-      },
-      {
         path: '**',
         redirectTo: '',
       },

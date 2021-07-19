@@ -1,25 +1,16 @@
-import { Component, ViewChild } from '@angular/core';
-import { StepperComponent } from '@shared/stepper/stepper.component';
+import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { KycModalComponent } from './modals/kyc-modal/kyc-modal.component';
 
 @Component({
   selector: 'tsl-kyc',
   templateUrl: './kyc.component.html',
-  styleUrls: ['./kyc.component.scss'],
 })
-export class KYCComponent {
-  @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
-  public photosToRequest: number;
+export class KYCComponent implements OnInit {
+  constructor(private modalService: NgbModal) {}
 
-  public definePhotosAndGoNext(photosToRequest: number): void {
-    this.photosToRequest = photosToRequest;
-    this.goNextStep();
-  }
-
-  public goNextStep(): void {
-    this.stepper.goNext();
-  }
-
-  public goPreviousStep(): void {
-    this.stepper.goBack();
+  ngOnInit() {
+    // TODO: dismiss redirect		Date: 2021/07/19
+    this.modalService.open(KycModalComponent);
   }
 }
