@@ -79,7 +79,7 @@ describe('KYCComponent', () => {
           spyOn(component.stepper, 'goNext');
           const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
 
-          KYCNationalityComponent.triggerEventHandler('photosToRequestSelect', 2);
+          KYCNationalityComponent.triggerEventHandler('photosToRequestChange', 2);
         });
 
         it('should define the photos to request', () => {
