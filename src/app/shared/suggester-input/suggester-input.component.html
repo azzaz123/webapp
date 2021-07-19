@@ -1,7 +1,6 @@
 <input
 type="text" 
 placeholder="Suggesters..." 
-[(ngModel)]="model" [ngbTypeahead]="search"
-(keydown)="keyDown($event)"
-(keyUp)="keyUp($event)"
+[(ngModel)]="model"
+#hashtagSuggester
 />

@@ -6,6 +6,7 @@ import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { FormsModule } from '@angular/forms';
+import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 
 export default {
   title: 'Webapp/Shared/SuggesterInput',
@@ -14,6 +15,7 @@ export default {
     moduleMetadata({
       declarations: [SuggesterInputComponent],
       imports: [CommonModule, NgbTypeaheadModule, HttpClientModule, SelectFormModule, FormsModule],
+      providers: [HashtagSuggesterApiService],
     }),
   ],
 };
