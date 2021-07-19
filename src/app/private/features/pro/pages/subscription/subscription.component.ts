@@ -24,7 +24,7 @@ import { CheckSubscriptionInAppModalComponent } from '../../modal/check-subscrip
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
 import { EditSubscriptionModalComponent } from '../../modal/edit-subscription/edit-subscription-modal.component';
 import { DiscountAvailableUnsubscribeInAppModalComponent } from '../../modal/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
-import { UnsubscribeInAppFirstModal } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { UnsubscribeInAppFirstModalComponent } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { PRO_PATHS } from '../../pro-routing-constants';
 
 export type SubscriptionModal =
@@ -59,6 +59,33 @@ export class SubscriptionsComponent implements OnInit {
     this.trackParamEvents();
   }
 
+  public onUnselectSubcription(): void {
+    this.newSubscription = null;
+  }
+
+  public setNewSubscription(subscription: SubscriptionsResponse) {
+    this.newSubscription = subscription;
+  }
+
+  public manageSubscription(subscription: SubscriptionsResponse): void {
+    const modal = this.getModalTypeDependingOnSubscription(subscription);
+    if (!modal) {
+      this.setNewSubscription(subscription);
+    } else {
+      this.openSubscriptionModal(subscription, modal);
+    }
+  }
+
+  public subscriptionChangeSuccessful(): void {
+    this.newSubscription = null;
+    this.loading = true;
+    if (this.user.featured) {
+      this.isSubscriptionUpdated();
+      return;
+    }
+    this.isUserUpdated();
+  }
+
   private initData(): void {
     this.loading = true;
     const subscriptions$ = this.subscriptionsService.getSubscriptions(false);
@@ -87,19 +114,6 @@ export class SubscriptionsComponent implements OnInit {
     }
   }
 
-  public setNewSubscription(subscription: SubscriptionsResponse) {
-    this.newSubscription = subscription;
-  }
-
-  public manageSubscription(subscription: SubscriptionsResponse): void {
-    const modal = this.getModalTypeDependingOnSubscription(subscription);
-    if (!modal) {
-      this.setNewSubscription(subscription);
-    } else {
-      this.openSubscriptionModal(subscription, modal);
-    }
-  }
-
   private openSubscriptionModal(subscription: SubscriptionsResponse, modal: SubscriptionModal): void {
     let modalRef: NgbModalRef = this.modalService.open(modal, {
       windowClass: 'review',
@@ -119,16 +133,6 @@ export class SubscriptionsComponent implements OnInit {
     );
 
     this.trackOpenModalEvent(subscription, modal);
-  }
-
-  public subscriptionChangeSuccessful(): void {
-    this.newSubscription = null;
-    this.loading = true;
-    if (this.user.featured) {
-      this.isSubscriptionUpdated();
-      return;
-    }
-    this.isUserUpdated();
   }
 
   private isUserUpdated() {
@@ -248,7 +252,7 @@ export class SubscriptionsComponent implements OnInit {
 
     // User is trying to subscribe but there is an active inapp subscription
     if (this.subscriptionsService.isOneSubscriptionInApp(this.subscriptions)) {
-      return UnsubscribeInAppFirstModal;
+      return UnsubscribeInAppFirstModalComponent;
     }
   }
 
@@ -262,9 +266,5 @@ export class SubscriptionsComponent implements OnInit {
       },
     };
     return this.analyticsService.trackEvent(event);
-  }
-
-  public onUnselectSubcription(): void {
-    this.newSubscription = null;
   }
 }
