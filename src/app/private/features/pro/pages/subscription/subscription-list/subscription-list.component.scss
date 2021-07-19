@@ -9,22 +9,12 @@
     flex: 1;
     max-width: 283px;
     min-width: 250px;
-
-    &--narrow {
-      max-width: 245px;
-      min-width: 208px;
-    }
   }
 }
 
 .box-content {
   color: $blue-grey-3;
   padding: $spacing-ml (4 * $spacing-ml);
-
-  &--narrow {
-    padding: $spacing-ml (2 * $spacing-m);
-  }
-
   h4 {
     color: $blue-grey-1;
     font-size: $font-size-l;

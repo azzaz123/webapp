@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { environment } from '@environments/environment';
-import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HashtagResponse, Hashtag } from '../../models/hashtag.interface';
@@ -16,7 +16,7 @@ export class HashtagSuggesterApiService {
 
   constructor(private http: HttpClient) {}
 
-  public getHashtagsByPrefix(category_id: string, start: string, prefix: string): Observable<PaginationResponse<Hashtag>> {
+  public getHashtagsByPrefix(category_id: string, start: string, prefix: string): Observable<PaginatedList<Hashtag>> {
     const url = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}`;
     const httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix, start } });
     return this.getResults(
@@ -24,7 +24,7 @@ export class HashtagSuggesterApiService {
     );
   }
 
-  public getHashtags(category_id: string, start: string): Observable<PaginationResponse<Hashtag>> {
+  public getHashtags(category_id: string, start: string): Observable<PaginatedList<Hashtag>> {
     const url = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}`;
     let httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix: null, start } });
     return this.getResults(
@@ -32,13 +32,13 @@ export class HashtagSuggesterApiService {
     );
   }
 
-  private getResults(endpointSubscribable: Observable<HttpResponse<HashtagResponse>>): Observable<PaginationResponse<Hashtag>> {
+  private getResults(endpointSubscribable: Observable<HttpResponse<HashtagResponse>>): Observable<PaginatedList<Hashtag>> {
     return endpointSubscribable.pipe(
       map((r: HttpResponse<HashtagResponse>) => {
         const nextPage: string = r.headers.get(this.nextPageHeaderName);
         return {
-          results: r.body.hashtags,
-          init: parseInt(new URLSearchParams(nextPage).get(this.nextPageParameterName), 10) || null,
+          list: r.body.hashtags,
+          paginationParameter: new URLSearchParams(nextPage).get(this.nextPageParameterName),
         };
       })
     );
