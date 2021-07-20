@@ -6,5 +6,6 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 @NgModule({
   declarations: [CancelBubbleComponent],
   imports: [CommonModule, SvgIconModule],
+  exports: [CancelBubbleComponent],
 })
-export class BubbleWithCrossModule {}
+export class CancelBubbleModule {}

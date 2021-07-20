@@ -5,5 +5,7 @@ placeholder="Suggesters..."
 #hashtagSuggester
 />
 <div>
-    <tsl-multi-select-form [options]="options"></tsl-multi-select-form>
+    <form [formGroup]="formGroup">
+        <tsl-multi-select-form formControlName="select" [options]="options"></tsl-multi-select-form>
+    </form>
 </div>

@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
@@ -28,6 +29,9 @@ export class SuggesterInputComponent implements OnInit {
   public start: string = '0';
   public model: string;
   public options: SelectFormOption<string>[] = [];
+  /*   public formGroup = new FormGroup({
+    select: new FormControl([]),
+  }); */
   public detectTitleKeyboardChanges(): void {
     fromEvent(this.hashtagSuggester.nativeElement, 'keyup')
       .pipe(debounceTime(750))

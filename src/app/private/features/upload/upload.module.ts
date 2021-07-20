@@ -26,6 +26,7 @@ import { UploadRealestateComponent } from './pages/upload-realestate/upload-real
 import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
 import { SuggesterInputModule } from '@shared/suggester-input/suggester-input.module';
+import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/cancel-bubble.module';
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import { SuggesterInputModule } from '@shared/suggester-input/suggester-input.mo
     DropdownModule,
     CustomCurrencyModule,
     SuggesterInputModule,
+    CancelBubbleModule,
   ],
   declarations: [
     uploadRoutedComponents,
