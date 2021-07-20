@@ -221,7 +221,7 @@ describe('KYCNationalityComponent', () => {
     const selectedDocument = KYC_DOCUMENTATION[0];
 
     beforeEach(() => {
-      spyOn(component.photosToRequestChange, 'emit');
+      spyOn(component.imagesToRequestChange, 'emit');
       component.selectedNationality = EUROPEAN_UNION_NATIONALITY;
 
       fixture.detectChanges();
@@ -233,7 +233,7 @@ describe('KYCNationalityComponent', () => {
         value: selectedDocument.value,
       });
 
-      expect(component.photosToRequestChange.emit).toHaveBeenCalledWith(selectedDocument.photosNeeded);
+      expect(component.imagesToRequestChange.emit).toHaveBeenCalledWith(selectedDocument.photosNeeded);
     });
   });
 });

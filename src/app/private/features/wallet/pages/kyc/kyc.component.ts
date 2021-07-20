@@ -8,10 +8,10 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 })
 export class KYCComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
-  public photosToRequest: number;
+  public imagesToRequest: number;
 
-  public definePhotosAndGoNext(photosToRequest: number): void {
-    this.photosToRequest = photosToRequest;
+  public definePhotosAndGoNext(imagesToRequest: number): void {
+    this.imagesToRequest = imagesToRequest;
     this.goNextStep();
   }
 

@@ -79,11 +79,11 @@ describe('KYCComponent', () => {
           spyOn(component.stepper, 'goNext');
           const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
 
-          KYCNationalityComponent.triggerEventHandler('photosToRequestChange', 2);
+          KYCNationalityComponent.triggerEventHandler('imagesToRequestChange', 2);
         });
 
         it('should define the photos to request', () => {
-          expect(component.photosToRequest).toBe(2);
+          expect(component.imagesToRequest).toBe(2);
         });
 
         it('should go to the next step', () => {

@@ -3,9 +3,9 @@
         <tsl-bank-account isKYC="true" (bankAccountSaved)="goNextStep()"></tsl-bank-account>
     </ng-template>
     <ng-template step>
-        <tsl-kyc-nationality (goBack)="goPreviousStep()" (photosToRequestChange)="definePhotosAndGoNext($event)"></tsl-kyc-nationality>
+        <tsl-kyc-nationality (goBack)="goPreviousStep()" (imagesToRequestChange)="definePhotosAndGoNext($event)"></tsl-kyc-nationality>
     </ng-template>
     <ng-template step>
-        <tsl-kyc-images [photosToRequest]="photosToRequest"></tsl-kyc-images>
+        <tsl-kyc-images [imagesToRequest]="imagesToRequest"></tsl-kyc-images>
     </ng-template>
 </tsl-stepper>

@@ -1,0 +1,57 @@
+@import '~style/common';
+
+$card-height: 120px;
+
+.KycImages {
+  &__content {
+    width: 100%;
+    @include media-breakpoint-up(sm) {
+      width: 50%;
+    }
+
+    .Card {
+      height: $card-height;
+      border: solid 2px $blue-grey-5;
+
+      @include media-breakpoint-down(sm) {
+        margin-right: 0 !important;
+        margin-bottom: $spacing-s;
+      }
+      cursor: pointer;
+
+      &__title {
+        color: $blue-grey-2;
+      }
+
+      &__subtitle {
+        margin: 0;
+      }
+
+      &:hover {
+        transform: $item-card-hover-translate;
+        box-shadow: $item-card-hover-box-shadow;
+        .Card__title {
+          color: $blue-grey-1;
+        }
+      }
+
+      &--selected {
+        border: solid 2px $blue-grey-2;
+        .Card__title {
+          color: $blue-grey-1;
+        }
+      }
+    }
+  }
+
+  &__back {
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+      &,
+      tsl-svg-icon {
+        opacity: 0.8;
+      }
+    }
+  }
+}

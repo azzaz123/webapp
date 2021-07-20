@@ -7,9 +7,10 @@ import { KYCImagesComponent } from './components/kyc-images/kyc-images.component
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { KYCNationalityComponent } from './components/kyc-nationality/kyc-nationality.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule, KYCRoutingModule, StepperModule, BankAccountModule, SvgIconModule, DropdownModule],
+  imports: [CommonModule, KYCRoutingModule, StepperModule, BankAccountModule, SvgIconModule, DropdownModule, ReactiveFormsModule],
   declarations: [KYCRoutedComponents, KYCImagesComponent, KYCNationalityComponent],
 })
 export class KYCModule {}

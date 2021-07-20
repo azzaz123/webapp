@@ -11,15 +11,15 @@ import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KYCNationalityComponent {
-  @Output() photosToRequestChange: EventEmitter<number> = new EventEmitter();
+  @Output() imagesToRequestChange: EventEmitter<number> = new EventEmitter();
   @Output() goBack: EventEmitter<void> = new EventEmitter();
 
   public selectedNationality: KYCNationality;
   public readonly KYC_NATIONALITIES = KYC_NATIONALITIES;
 
-  public emitPhotosToRequest(selectedDocument: IOption): void {
+  public emitimagesToRequest(selectedDocument: IOption): void {
     const photosNeeded = KYC_DOCUMENTATION.find((document) => document.value === selectedDocument.value).photosNeeded;
-    this.photosToRequestChange.emit(photosNeeded);
+    this.imagesToRequestChange.emit(photosNeeded);
   }
 
   public handleBack(): void {
