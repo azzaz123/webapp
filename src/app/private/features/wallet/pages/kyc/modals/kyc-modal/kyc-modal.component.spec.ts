@@ -3,6 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { KYCModule } from '../../kyc.module';
@@ -19,6 +20,7 @@ describe('KycModalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [KYCModule, RouterTestingModule, HttpClientTestingModule],
       declarations: [KycModalComponent, StepperComponent, StepDirective],
+      providers: [NgbActiveModal],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -26,7 +28,6 @@ describe('KycModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(KycModalComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -34,6 +35,12 @@ describe('KycModalComponent', () => {
   });
 
   describe('when use the stepper...', () => {
+    it('should apply the content style ', () => {
+      const KYCContentStyle = fixture.debugElement.query(By.css('.KYCModal__content'));
+
+      expect(KYCContentStyle).toBeTruthy();
+    });
+
     describe('and we are on the first step...', () => {
       beforeEach(() => {
         component.stepper.activeId = 0;
