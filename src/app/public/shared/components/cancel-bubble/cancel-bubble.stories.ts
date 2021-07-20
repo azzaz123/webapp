@@ -3,11 +3,11 @@ import { HttpModule } from '@core/http/http.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { moduleMetadata, Story } from '@storybook/angular';
 import { BubbleComponent } from '../bubble/bubble.component';
-import { BubbleWithCrossComponent } from './bubble-with-cross.component';
+import { CancelBubbleComponent } from './cancel-bubble.component';
 
 export default {
   title: 'Webapp/Public/Shared/Components/BubbleWithCross',
-  component: BubbleWithCrossComponent,
+  component: CancelBubbleComponent,
   decorators: [
     moduleMetadata({
       declarations: [BubbleComponent],
@@ -16,13 +16,13 @@ export default {
   ],
 };
 
-const Template: Story<BubbleWithCrossComponent> = (args) => ({
+const Template: Story<CancelBubbleComponent> = (args) => ({
   props: args,
   template: `
   <div style="width:150px; margin-bottom:15px;">
-  <tsl-bubble-with-cross  [bubbleText]="bubbleText"></tsl-bubble-with-cross>
+  <tsl-cancel-bubble  [bubbleText]="bubbleText"></tsl-cancel-bubble>
   </div>
-  <tsl-bubble-with-cross [bubbleText]="bubbleText"></tsl-bubble-with-cross>`,
+  <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>`,
 });
 
 export const Default = Template.bind({});

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BubbleWithCrossComponent } from './bubble-with-cross.component';
+import { CancelBubbleComponent } from './cancel-bubble.component';
 
-describe('BubbleWithCrossComponent', () => {
-  let component: BubbleWithCrossComponent;
-  let fixture: ComponentFixture<BubbleWithCrossComponent>;
+describe('CancelBubbleComponent', () => {
+  let component: CancelBubbleComponent;
+  let fixture: ComponentFixture<CancelBubbleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BubbleWithCrossComponent],
+      declarations: [CancelBubbleComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BubbleWithCrossComponent);
+    fixture = TestBed.createComponent(CancelBubbleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

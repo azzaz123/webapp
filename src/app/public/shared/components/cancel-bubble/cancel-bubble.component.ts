@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'tsl-bubble-with-cross',
-  templateUrl: './bubble-with-cross.component.html',
-  styleUrls: ['./bubble-with-cross.component.scss'],
+  selector: 'tsl-cancel-bubble',
+  templateUrl: './cancel-bubble.component.html',
+  styleUrls: ['./cancel-bubble.component.scss'],
 })
-export class BubbleWithCrossComponent {
+export class CancelBubbleComponent {
   @Input() bubbleText: string;
   @Output() clear: EventEmitter<string> = new EventEmitter();
 
