@@ -11,7 +11,7 @@ const routes: Route[] = [
     children: [
       {
         path: WALLET_PATHS.KYC,
-        loadChildren: () => import('@private/features/wallet/pages/kyc/kyc.module').then((m) => m.KYCModule),
+        loadChildren: () => import('@private/features/wallet/modals/kyc/kyc.module').then((m) => m.KYCModule),
         canActivate: [KYCGuard],
       },
     ],

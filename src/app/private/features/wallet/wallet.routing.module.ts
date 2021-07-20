@@ -4,8 +4,6 @@ import { WalletBalanceModule } from './pages/wallet-balance/wallet-balance.modul
 import { WALLET_PATHS } from './wallet.routing.constants';
 import { BankDetailsModule } from './pages/bank-details/bank-details.module';
 import { WalletComponent } from './wallet.component';
-import { KYCModule } from './pages/kyc/kyc.module';
-import { KYCGuard } from './guards/kyc/kyc.guard';
 
 const routes: Route[] = [
   {
