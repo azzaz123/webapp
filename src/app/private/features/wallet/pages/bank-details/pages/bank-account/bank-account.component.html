@@ -110,7 +110,7 @@
                 </div>
             </div>
             <div class="row justify-content-center" [ngClass]="{'BankAccount__bottomContainer position-sticky': isKYC}">
-                <div class="col-12 col-md-2">
+                <div class="col-12 col-md-2" [ngClass]="{'col-md-7': isKYC}">
                     <tsl-button [type]="'submit'" [loading]="loadingButton" className="btn-primary btn-block" i18n="@@delivery_add_bank_account_action_button">Save</tsl-button>
                 </div>
             </div>
