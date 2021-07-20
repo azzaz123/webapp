@@ -15,7 +15,6 @@ import { WALLET_PATHS } from './wallet.routing.constants';
 export class WalletComponent implements OnInit {
   public kycBannerSpecifications$: Observable<KYCBannerSpecifications>;
   public selectedNavLinkId: string;
-  public isInKYC: boolean;
   public navLinks: NavLink[] = [
     {
       id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}`,
