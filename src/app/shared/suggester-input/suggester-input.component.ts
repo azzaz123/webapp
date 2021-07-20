@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
-import { fromEvent, Observable } from 'rxjs';
+import { fromEvent, Observable, of } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 
@@ -26,13 +26,14 @@ export class SuggesterInputComponent implements OnInit {
   @Input() categoryId: string = '1000'; // When PR: need to modify
   @ViewChild('hashtagSuggester', { static: true }) hashtagSuggester: ElementRef;
   public start: string = '0';
-  public model: any;
-  public options: SelectFormOption<string>[];
+  public model: string;
+  public options: SelectFormOption<string>[] = [];
   public detectTitleKeyboardChanges(): void {
     fromEvent(this.hashtagSuggester.nativeElement, 'keyup')
       .pipe(debounceTime(750))
       .subscribe(() => {
         if (!this.isValidKey()) {
+          console.log('not valid');
           return;
         } else
           this.getHashtags().subscribe((m) => {
@@ -43,18 +44,38 @@ export class SuggesterInputComponent implements OnInit {
 
   public isValidKey(): boolean {
     // filter valid key,  managemge space key (whether we want to put space in prefix) - AC8
+
+    /*  const pattern: RegExp = /#([\\p{L}]+[\\p{N}_]*)+/m;
+    //    const pattern: RegExp = /^(?=.{1,50}$)[\p{L}\p{M}\\p{N}\p{Me}€$\+]+(?:[-–_]?[\p{L}\p{M}\p{N}\p{Me}]+|[\p{L}\p{M}\p{N}\p{Me}]*)$/;
+    console.log('tt', this.model, pattern.test(this.model));
+    return pattern.test(this.model); */
     return true;
   }
 
   public getHashtags(): Observable<PaginatedList<Hashtag>> {
     return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
+    /* return of({
+      list: [
+        { text: 'dd', occurrencies: 3 },
+        { text: 'dddd', occurrencies: 3 },
+        { text: 'cc', occurrencies: 30 },
+      ],
+      paginationParameter: '0',
+    }); */
   }
 
   public mapHashtagsToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
     let { list } = hashtagList;
+    if (!list.length) {
+      return this.createHashtagOption();
+    }
     let options = list.map((hashtag: Hashtag) => {
       return { label: hashtag.text, sublabel: hashtag.occurrencies.toString(), value: hashtag.text };
     });
     return options;
+  }
+
+  public createHashtagOption(): SelectFormOption<string>[] {
+    return [{ label: this.model, value: this.model }];
   }
 }

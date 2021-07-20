@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { FormsModule } from '@angular/forms';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
+import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 
 export default {
   title: 'Webapp/Shared/SuggesterInput',
@@ -14,7 +15,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [SuggesterInputComponent],
-      imports: [CommonModule, NgbTypeaheadModule, HttpClientModule, SelectFormModule, FormsModule],
+      imports: [CommonModule, NgbTypeaheadModule, HttpClientModule, SelectFormModule, FormsModule, MultiSelectFormModule],
       providers: [HashtagSuggesterApiService],
     }),
   ],
