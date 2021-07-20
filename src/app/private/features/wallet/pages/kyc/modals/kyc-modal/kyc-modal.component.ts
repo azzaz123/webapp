@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 
 @Component({
@@ -9,6 +10,8 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 export class KycModalComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
   public photosToRequest: number;
+
+  constructor(public activeModal: NgbActiveModal) {}
 
   public definePhotosAndGoNext(photosToRequest: number): void {
     this.photosToRequest = photosToRequest;

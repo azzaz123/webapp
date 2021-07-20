@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { WALLET_PATHS } from '../../wallet.routing.constants';
 import { KycModalComponent } from './modals/kyc-modal/kyc-modal.component';
 
 @Component({
@@ -7,10 +10,26 @@ import { KycModalComponent } from './modals/kyc-modal/kyc-modal.component';
   templateUrl: './kyc.component.html',
 })
 export class KYCComponent implements OnInit {
-  constructor(private modalService: NgbModal) {}
+  public readonly WALLET_BALANCE_LINK = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}`;
+
+  constructor(private modalService: NgbModal, private router: Router) {}
 
   ngOnInit() {
-    // TODO: dismiss redirect		Date: 2021/07/19
-    this.modalService.open(KycModalComponent);
+    this.modalService
+      .open(KycModalComponent, {
+        windowClass: 'kyc',
+      })
+      .result.then(
+        () => {
+          this.navigateToWalletBalance();
+        },
+        () => {
+          this.navigateToWalletBalance();
+        }
+      );
+  }
+
+  private navigateToWalletBalance(): void {
+    this.router.navigate([this.WALLET_BALANCE_LINK]);
   }
 }

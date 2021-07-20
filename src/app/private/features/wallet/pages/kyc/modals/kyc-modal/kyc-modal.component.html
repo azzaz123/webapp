@@ -1,11 +1,16 @@
-<tsl-stepper (isInLastStep)="true">
-    <ng-template step>
-        <tsl-bank-account isKYC="true" (bankAccountSaved)="goNextStep()"></tsl-bank-account>
-    </ng-template>
-    <ng-template step>
-        <tsl-kyc-nationality (goBack)="goPreviousStep()" (photosToRequestChange)="definePhotosAndGoNext($event)"></tsl-kyc-nationality>
-    </ng-template>
-    <ng-template step>
-        <tsl-kyc-images [photosToRequest]="photosToRequest"></tsl-kyc-images>
-    </ng-template>
-</tsl-stepper>
+<div class="modal-close d-flex align-items-center justify-content-center" (click)="activeModal.close()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+</div>
+<div class="KYCModal__content modal-body profile-box">
+    <tsl-stepper (isInLastStep)="true">
+        <ng-template step>
+            <tsl-bank-account isKYC="true" (bankAccountSaved)="goNextStep()"></tsl-bank-account>
+        </ng-template>
+        <ng-template step>
+            <tsl-kyc-nationality (goBack)="goPreviousStep()" (photosToRequestChange)="definePhotosAndGoNext($event)"></tsl-kyc-nationality>
+        </ng-template>
+        <ng-template step>
+            <tsl-kyc-images [photosToRequest]="photosToRequest"></tsl-kyc-images>
+        </ng-template>
+    </tsl-stepper>
+</div>
