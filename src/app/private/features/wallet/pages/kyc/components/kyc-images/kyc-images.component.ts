@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
@@ -8,17 +7,13 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   styleUrls: ['./kyc-images.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KYCImagesComponent implements OnInit {
+export class KYCImagesComponent {
   @Input() imagesToRequest: number;
   @Output() goBack: EventEmitter<void> = new EventEmitter();
 
-  public KYCImagesForm: FormGroup;
+  public imageMethod: 'uploadImage' | 'takeImage';
 
-  constructor(private deviceDetectorService: DeviceDetectorService, private fb: FormBuilder) {}
-
-  ngOnInit() {
-    this.buildForm();
-  }
+  constructor(private deviceDetectorService: DeviceDetectorService) {}
 
   get takeImageMessage(): string {
     return this.isMobile
@@ -28,11 +23,5 @@ export class KYCImagesComponent implements OnInit {
 
   get isMobile(): boolean {
     return this.deviceDetectorService.isMobile();
-  }
-
-  private buildForm(): void {
-    this.KYCImagesForm = this.fb.group({
-      imageMethod: ['', [Validators.required]],
-    });
   }
 }
