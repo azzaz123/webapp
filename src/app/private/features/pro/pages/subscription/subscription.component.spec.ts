@@ -37,7 +37,7 @@ import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscriptio
 import { CheckSubscriptionInAppModalComponent } from '../../modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
 import { EditSubscriptionModalComponent } from '../../modal/edit-subscription/edit-subscription-modal.component';
-import { UnsubscribeInAppFirstModal } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
+import { UnsubscribeInAppFirstModalComponent } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { PRO_PATHS } from '../../pro-routing-constants';
 
 @Component({
@@ -475,7 +475,7 @@ describe('SubscriptionComponent', () => {
 
       component.manageSubscription(MAPPED_SUBSCRIPTIONS_WITH_INAPP[1]);
 
-      expect(modalService.open).toHaveBeenCalledWith(UnsubscribeInAppFirstModal, {
+      expect(modalService.open).toHaveBeenCalledWith(UnsubscribeInAppFirstModalComponent, {
         windowClass: 'review',
       });
     });

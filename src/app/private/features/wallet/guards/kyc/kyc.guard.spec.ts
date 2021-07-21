@@ -8,11 +8,11 @@ import { KYCBannerService } from '@private/features/wallet/services/kyc-banner/k
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
 
-import { KycGuard } from './kyc.guard';
+import { KYCGuard } from './kyc.guard';
 
-describe('KycGuard', () => {
+describe('KYCGuard', () => {
   const WALLET_URL = PRIVATE_PATHS.WALLET;
-  let guard: KycGuard;
+  let guard: KYCGuard;
   let kycBannerService: KYCBannerService;
   let router: Router;
 
@@ -20,7 +20,7 @@ describe('KycGuard', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        KycGuard,
+        KYCGuard,
         KYCBannerService,
         KYCBannerApiService,
         {
@@ -31,7 +31,7 @@ describe('KycGuard', () => {
         },
       ],
     });
-    guard = TestBed.inject(KycGuard);
+    guard = TestBed.inject(KYCGuard);
     kycBannerService = TestBed.inject(KYCBannerService);
     router = TestBed.inject(Router);
   });
