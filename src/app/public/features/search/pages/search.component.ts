@@ -39,11 +39,12 @@ import { SearchTrackingEventsService } from '@public/core/services/search-tracki
 import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { debounce } from '@core/helpers/debounce/debounce';
-import { SORT_BY } from '../components/sort-filter/services/constants/sort-by-options-constants';
+import { SORT_BY, SORT_BY_DISTANCE_OPTION } from '../components/sort-filter/services/constants/sort-by-options-constants';
 import { SearchResponseExtraData } from '../core/services/interfaces/search-response-extra-data.interface';
 import { SearchService } from '../core/services/search.service';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { SortByService } from '../components/sort-filter/services/sort-by.service';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -131,6 +132,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     private searchNavigatorService: SearchNavigatorService,
     private searchListTrackingEventsService: SearchListTrackingEventsService,
     private searchTrackingEventsService: SearchTrackingEventsService,
+    private sortByService: SortByService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
@@ -160,6 +162,12 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
     this.subscription.add(
       this.queryParamsChange().subscribe((params) => {
+        if (!this.paramsHaveSortBy(params)) {
+          if (!this.sortByService.isRelevanceFeatureFlagActive) {
+            params.push({ key: FILTER_QUERY_PARAM_KEY.orderBy, value: SORT_BY_DISTANCE_OPTION.value });
+          }
+        }
+
         if (!this.paramsHaveLocation(params)) {
           this.searchNavigatorService.navigate(
             params,
@@ -322,5 +330,9 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     return (
       params.filter((param) => param.key === FILTER_QUERY_PARAM_KEY.latitude || param.key === FILTER_QUERY_PARAM_KEY.longitude).length === 2
     );
+  }
+
+  private paramsHaveSortBy(params: FilterParameter[]): boolean {
+    return params.some((param) => param.key === FILTER_QUERY_PARAM_KEY.orderBy);
   }
 }
