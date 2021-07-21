@@ -5,7 +5,7 @@ import { Item } from '@core/item/item';
 import { map, take } from 'rxjs/operators';
 import { MeHttpService } from './http/me-http.service';
 import { FavouritesResponseDto } from './dtos/favourites/response/favourites-response-dto';
-import { mapFavouriteItemsToItemCards } from './mappers/favourite-item-mapper';
+import { mapFavouriteItemsToLegacyItem } from './mappers/favourite-item-mapper';
 
 @Injectable()
 export class MeApiService {
@@ -19,7 +19,7 @@ export class MeApiService {
       .pipe(
         take(1),
         map(({ data, meta }: FavouritesResponseDto) => ({
-          list: mapFavouriteItemsToItemCards(data),
+          list: mapFavouriteItemsToLegacyItem(data),
           paginationParameter: meta?.next,
         }))
       );

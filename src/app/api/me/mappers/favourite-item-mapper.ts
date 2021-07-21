@@ -2,7 +2,7 @@ import { FavouriteItemDto } from '@api/me/dtos/favourites/response/favourite-ite
 import { Item } from '@core/item/item';
 import { mapImageDtosToImages } from '@api/core/mappers';
 
-export function mapFavouriteItemsToItemCards(favouriteItems: FavouriteItemDto[]): Item[] {
+export function mapFavouriteItemsToLegacyItem(favouriteItems: FavouriteItemDto[]): Item[] {
   return favouriteItems.map(({ id, title, category_id, images, price, slug, sold, bump, reserved }: FavouriteItemDto) => {
     const mappedImages = mapImageDtosToImages(images);
     const item = new Item(
