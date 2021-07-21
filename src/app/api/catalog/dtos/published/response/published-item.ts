@@ -1,4 +1,5 @@
-import { CatalogItemAttribute, CatalogItemImage, CatalogItemPrice } from '@api/catalog/dtos';
+import { CatalogItemAttribute, CatalogItemImage } from '@api/catalog/dtos';
+import { PriceDto } from '@api/core/dtos';
 
 export interface PublishedItem {
   id: string;
@@ -6,7 +7,7 @@ export interface PublishedItem {
   title: string;
   description: string;
   images: CatalogItemImage[];
-  price: CatalogItemPrice;
+  price: PriceDto;
   attributes: CatalogItemAttribute[];
   slug: string;
   reserved?: { flag: boolean };

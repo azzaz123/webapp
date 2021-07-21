@@ -1,8 +1,9 @@
-import { CatalogItemPrice, WallItem } from '@api/catalog/dtos';
+import { WallItem } from '@api/catalog/dtos';
 import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { catalogItemImageFixture, mappedCatalogItemImageFixture } from '@api/fixtures/catalog/catalog-image.fixtures';
 import { ItemType } from '@api/core/model';
+import { PriceDto } from '@api/core/dtos';
 
 const id = 'my-item-id';
 const title = 'Title';
@@ -38,7 +39,7 @@ const attributes: CatalogItemAttribute[] = [
 
 const storytelling = 'Brand: Audi Surface: 200 Description Garage';
 
-const price: CatalogItemPrice = {
+const price: PriceDto = {
   currency: 'EUR',
   amount: 200,
 };
