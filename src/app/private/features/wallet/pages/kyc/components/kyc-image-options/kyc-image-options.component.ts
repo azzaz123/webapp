@@ -10,7 +10,7 @@ import { KYC_TAKE_IMAGE_OPTIONS } from './kyc-image-options.enum';
 })
 export class KYCImageOptionsComponent implements OnInit {
   @Output() goBack: EventEmitter<void> = new EventEmitter();
-  @Output() goNext: EventEmitter<void> = new EventEmitter();
+  @Output() takeImageOptionChange: EventEmitter<KYC_TAKE_IMAGE_OPTIONS> = new EventEmitter();
 
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
   public imageMethod: KYC_TAKE_IMAGE_OPTIONS;
