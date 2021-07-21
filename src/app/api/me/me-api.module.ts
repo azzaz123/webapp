@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { MeApiService } from '@api/me/me-api.service';
-import { FavouritesHttpService } from '@api/me/http/favourites-http.service';
+import { MeHttpService } from '@api/me/http/me-http.service';
 
 @NgModule({
-  providers: [MeApiService, FavouritesHttpService],
+  providers: [MeApiService, MeHttpService],
 })
 export class MeApiModule {}

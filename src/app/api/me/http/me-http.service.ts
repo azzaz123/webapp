@@ -7,10 +7,10 @@ import { QueryParams } from '@api/core/utils/types';
 import { FavouritesQueryParams } from '@api/me/dtos/favourites/request/favourites-query-params';
 
 @Injectable()
-export class FavouritesHttpService {
+export class MeHttpService {
   public constructor(private httpClient: HttpClient) {}
 
-  public getFavourites(params: QueryParams<FavouritesQueryParams>): Observable<FavouritesResponseDto> {
+  public getFavourites(params?: QueryParams<FavouritesQueryParams>): Observable<FavouritesResponseDto> {
     return this.httpClient.get<FavouritesResponseDto>(ME_FAVOURITES_ENDPOINT, { params });
   }
 }
