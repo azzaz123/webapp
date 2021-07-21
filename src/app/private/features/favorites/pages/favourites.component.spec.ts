@@ -2,16 +2,16 @@ import { of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { ItemService } from '@core/item/item.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FavoritesComponent } from './favorites.component';
+import { FavouritesComponent } from './favourites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ProfileService } from '@core/profile/profile.service';
 import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
 
-describe('FavoritesComponent', () => {
-  let component: FavoritesComponent;
-  let fixture: ComponentFixture<FavoritesComponent>;
+describe('FavouritesComponent', () => {
+  let component: FavouritesComponent;
+  let fixture: ComponentFixture<FavouritesComponent>;
   let itemService: ItemService;
   let itemServiceSpy: jasmine.Spy;
   let profileServiceSpy: jasmine.Spy;
@@ -21,7 +21,7 @@ describe('FavoritesComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [FavoritesComponent],
+        declarations: [FavouritesComponent],
         providers: [
           {
             provide: ItemService,
@@ -54,7 +54,7 @@ describe('FavoritesComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FavoritesComponent);
+    fixture = TestBed.createComponent(FavouritesComponent);
     component = fixture.componentInstance;
     itemService = TestBed.inject(ItemService);
     userService = TestBed.inject(UserService);

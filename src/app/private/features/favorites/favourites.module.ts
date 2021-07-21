@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { favoritesRoutedComponents, FavoritesRoutingModule } from './favorites.routing.module';
+import { favoritesRoutedComponents, FavouritesRoutingModule } from './favourites.routing.module';
 import { SharedModule } from '@shared/shared.module';
-import { ItemCartFavoriteComponent } from './components/item-cart-favorite/item-cart-favorite.component';
+import { ItemCardFavouriteComponent } from './components/item-card-favourite/item-card-favourite.component';
 import { ProfileCardFavoriteComponent } from './components/profile-card-favorite/profile-card-favorite.component';
 import { ProfileImagesComponent } from '@shared/profile-images/profile-images.component';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
@@ -10,7 +10,7 @@ import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitize
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
-  imports: [CommonModule, FavoritesRoutingModule, SharedModule, ItemAvatarModule, SanitizedBackgroundModule, CustomCurrencyModule],
-  declarations: [favoritesRoutedComponents, ItemCartFavoriteComponent, ProfileCardFavoriteComponent, ProfileImagesComponent],
+  imports: [CommonModule, FavouritesRoutingModule, SharedModule, ItemAvatarModule, SanitizedBackgroundModule, CustomCurrencyModule],
+  declarations: [favoritesRoutedComponents, ItemCardFavouriteComponent, ProfileCardFavoriteComponent, ProfileImagesComponent],
 })
-export class FavoritesModule {}
+export class FavouritesModule {}

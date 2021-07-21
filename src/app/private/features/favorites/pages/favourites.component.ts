@@ -9,11 +9,11 @@ import { ProfileService } from '@core/profile/profile.service';
 import { Profile } from '@core/profile/profile';
 
 @Component({
-  selector: 'tsl-favorites',
-  templateUrl: './favorites.component.html',
-  styleUrls: ['./favorites.component.scss'],
+  selector: 'tsl-favourites',
+  templateUrl: './favourites.component.html',
+  styleUrls: ['./favourites.component.scss'],
 })
-export class FavoritesComponent implements OnInit {
+export class FavouritesComponent implements OnInit {
   public items: Item[] = [];
   public profiles: Profile[] = [];
   public selectedStatus = 'products';
