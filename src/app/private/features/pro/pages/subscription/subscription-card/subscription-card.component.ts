@@ -24,6 +24,10 @@ export class SubscriptionCardComponent {
     [CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE]: $localize`:@@web_profile_pages_subscription_other_desc:Your best plan to sell all kinds of items`,
   };
 
+  public onButtonClick(): void {
+    this.buttonClick.emit();
+  }
+
   get descriptionText(): string {
     return this.titleConfig[this.subscription.category_id];
   }
@@ -43,9 +47,5 @@ export class SubscriptionCardComponent {
   get iconSrc(): string {
     const status = this.isSubscribed ? 'disabled' : 'normal';
     return `/assets/icons/categories/${status}/${this.subscription.category_icon}.svg`;
-  }
-
-  public onButtonClick(): void {
-    this.buttonClick.emit();
   }
 }

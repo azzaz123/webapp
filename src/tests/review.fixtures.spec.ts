@@ -1,8 +1,8 @@
 import { CONVERSATION_ID } from './conversation.fixtures.spec';
 import { MICRO_NAME, USER_ID, USER_WEB_SLUG } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
-import { User } from '../app/core/user/user';
-import { ReviewDataBuyer, ReviewDataSeller } from '../app/core/review/review.interface';
+import { User } from '@core/user/user';
+import { ReviewDataBuyer, ReviewDataSeller } from '@core/review/review.interface';
 import { Review } from '@private/features/reviews/core/review';
 import { ReviewItem } from '@private/features/reviews/core/review-item';
 import { ReviewResponse } from '@private/features/reviews/core/review-response.interface';
@@ -100,3 +100,35 @@ export const MOCK_REVIEWS: Review[] = [
     )
   ),
 ];
+
+export const MOCK_TRANSLATABLE_REVIEW: Review = new Review(
+  REVIEWS_RESPONSE[0].review.date,
+  REVIEWS_RESPONSE[0].review.scoring,
+  REVIEWS_RESPONSE[0].type,
+  REVIEWS_RESPONSE[0].review.comments,
+  new ReviewItem(
+    REVIEWS_RESPONSE[0].item.id,
+    REVIEWS_RESPONSE[0].item.category_id,
+    REVIEWS_RESPONSE[0].item.title,
+    REVIEWS_RESPONSE[0].item.image,
+    REVIEWS_RESPONSE[0].item.web_link
+  ),
+  new User(
+    REVIEWS_RESPONSE[0].user.id,
+    REVIEWS_RESPONSE[0].user.micro_name,
+    { urls_by_size: REVIEWS_RESPONSE[0].user.image },
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    REVIEWS_RESPONSE[0].user.web_slug
+  ),
+  'review_id',
+  true
+);

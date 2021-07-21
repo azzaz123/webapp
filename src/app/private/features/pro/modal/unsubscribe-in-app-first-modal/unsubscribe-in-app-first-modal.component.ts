@@ -7,7 +7,7 @@ import { SUPPORT_MAIL } from '@core/constants';
   templateUrl: './unsubscribe-in-app-first-modal.component.html',
   styleUrls: ['./unsubscribe-in-app-first-modal.component.scss'],
 })
-export class UnsubscribeInAppFirstModal {
+export class UnsubscribeInAppFirstModalComponent {
   public supportMail = SUPPORT_MAIL;
   constructor(public activeModal: NgbActiveModal) {}
 }

@@ -780,6 +780,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         attributes: {
           ...baseEventAttrs,
           screenId: SCREEN_IDS.Upload,
+          country: this.analyticsService.market,
+          language: this.analyticsService.appLocale,
         },
       };
       this.analyticsService.trackEvent(listItemCGEvent);
