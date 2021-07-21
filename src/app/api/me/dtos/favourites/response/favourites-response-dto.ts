@@ -2,5 +2,5 @@ import { FavouriteItemDto } from '@api/me/dtos/favourites/response/favourite-ite
 
 export interface FavouritesResponseDto {
   data: FavouriteItemDto[];
-  meta: { next: string };
+  meta: { next?: string };
 }

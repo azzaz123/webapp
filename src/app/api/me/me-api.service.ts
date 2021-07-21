@@ -6,22 +6,26 @@ import { map, take } from 'rxjs/operators';
 import { MeHttpService } from './http/me-http.service';
 import { FavouritesResponseDto } from './dtos/favourites/response/favourites-response-dto';
 import { mapFavouriteItemsToLegacyItem } from './mappers/favourite-item-mapper';
+import { QueryParams } from '@api/core/utils/types';
+import { FavouritesQueryParams } from '@api/me/dtos/favourites/request/favourites-query-params';
 
 @Injectable()
 export class MeApiService {
   public constructor(private httpService: MeHttpService) {}
 
-  public getFavourites(paginationParameter: string): Observable<PaginatedList<Item>> {
-    return this.httpService
-      .getFavourites({
+  public getFavourites(paginationParameter?: string): Observable<PaginatedList<Item>> {
+    let parameters: QueryParams<FavouritesQueryParams>;
+    if (paginationParameter) {
+      parameters = {
         since: paginationParameter,
-      })
-      .pipe(
-        take(1),
-        map(({ data, meta }: FavouritesResponseDto) => ({
-          list: mapFavouriteItemsToLegacyItem(data),
-          paginationParameter: meta?.next,
-        }))
-      );
+      };
+    }
+    return this.httpService.getFavourites(parameters).pipe(
+      take(1),
+      map(({ data, meta }: FavouritesResponseDto) => ({
+        list: mapFavouriteItemsToLegacyItem(data),
+        paginationParameter: meta?.next,
+      }))
+    );
   }
 }
