@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { KYC_TAKE_IMAGE_OPTIONS } from './kyc-image-options.enum';
 
 @Component({
   selector: 'tsl-kyc-image-options',
@@ -8,16 +9,16 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KYCImageOptionsComponent implements OnInit {
-  @Input() imagesToRequest: number;
   @Output() goBack: EventEmitter<void> = new EventEmitter();
   @Output() goNext: EventEmitter<void> = new EventEmitter();
 
-  public imageMethod: 'uploadImage' | 'takeImage';
+  public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
+  public imageMethod: KYC_TAKE_IMAGE_OPTIONS;
 
   constructor(private deviceDetectorService: DeviceDetectorService) {}
 
   ngOnInit() {
-    this.imageMethod = this.isMobile ? 'takeImage' : 'uploadImage';
+    this.imageMethod = this.isMobile ? KYC_TAKE_IMAGE_OPTIONS.SHOOT : KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
   }
 
   get takeImageMessage(): string {

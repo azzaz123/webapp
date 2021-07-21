@@ -17,7 +17,7 @@
         <div class="col col-md-11 offset-md-1">
              <form class="d-flex justify-content-center w-100">
                 <div class="KYCImageOptions__content mt-3" ngbRadioGroup name="imageMethod" [(ngModel)]="imageMethod">
-                    <div class="GenericCard Card row mb-3 align-content-center p-2" [ngClass]="{'Card--selected': imageMethod === 'uploadImage'}"> 
+                    <div class="GenericCard Card row mb-3 align-content-center p-2" [ngClass]="{'Card--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD}"> 
                         <div class="col-12 p-2">
                             <label ngbButtonLabel class="Card__label select w-100 d-flex justify-content-between align-items-center h-100">
                                 <div class="text-left">
@@ -25,12 +25,12 @@
                                     <span *ngIf="!isMobile" class="GenericCard__subtitle Card__subtitle mt-1" i18n="@@kyc_recommended_option">Recomendado</span>
                                 </div> 
                                 <div class="input-radio">
-                                    <input ngbButton type="radio" value="uploadImage">
+                                    <input ngbButton type="radio" [value]="KYC_TAKE_IMAGE_OPTIONS.UPLOAD">
                                 </div>
                             </label>
                         </div>
                     </div>
-                    <div class="GenericCard Card row align-content-center p-2" [ngClass]="{'Card--selected': imageMethod === 'takeImage'}">
+                    <div class="GenericCard Card row align-content-center p-2" [ngClass]="{'Card--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT}">
                         <div class="col-12 p-2">
                             <label ngbButtonLabel class="Card__label select w-100 d-flex justify-content-between align-items-center h-100">
                                 <div class="text-left">
@@ -38,7 +38,7 @@
                                     <span *ngIf="isMobile" class="GenericCard__subtitle Card__subtitle mt-1" i18n="@@kyc_recommended_option">Recomendado</span>
                                 </div>
                                 <div class="input-radio">
-                                    <input ngbButton type="radio" value="takeImage">
+                                    <input ngbButton type="radio" [value]="KYC_TAKE_IMAGE_OPTIONS.SHOOT">
                                 </div>
                             </label>
                         </div>
