@@ -16,6 +16,7 @@ export class SuggesterInputComponent implements OnInit {
   ngOnInit() {
     this.detectTitleKeyboardChanges();
     this.form.get('select').valueChanges.subscribe((val) => {
+      console.log('');
       this.onChangeHashtag.emit(val);
     });
   }
@@ -56,14 +57,6 @@ export class SuggesterInputComponent implements OnInit {
 
   public getHashtags(): Observable<PaginatedList<Hashtag>> {
     return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
-    /* return of({
-      list: [
-        { text: 'dd', occurrencies: 3 },
-        { text: 'dddd', occurrencies: 3 },
-        { text: 'cc', occurrencies: 30 },
-      ],
-      paginationParameter: '0',
-    }); */
   }
 
   public mapHashtagsToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {

@@ -316,8 +316,8 @@
   </div>
   <div>
     dynamic input
-    <div *ngFor="let option of options"><tsl-cancel-bubble [bubbleText]="option"></tsl-cancel-bubble></div>
-  <tsl-suggester-input (onChangeHashtag)="onChangeHashtag($event)"></tsl-suggester-input>
+    <div *ngFor="let option of options"><tsl-cancel-bubble [bubbleText]="option" (clear)="clear($event)"></tsl-cancel-bubble></div>
+  <tsl-suggester-input formControlName="hashtag" (onChangeHashtag)="onChangeHashtag($event)"></tsl-suggester-input>
 </div>
   <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"> </tsl-location-box>
   <div class="row" id="prueba">
