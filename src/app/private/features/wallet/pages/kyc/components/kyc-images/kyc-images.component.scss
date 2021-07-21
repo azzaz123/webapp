@@ -1,45 +1,40 @@
 @import '~style/common';
 
-$card-height: 120px;
+$card-height: 90px;
 
-.KycImages {
+.KYCImages {
   &__content {
     width: 100%;
     @include media-breakpoint-up(sm) {
-      width: 50%;
+      width: 40%;
+    }
+  }
+
+  .Card {
+    height: $card-height;
+    border: solid 2px $blue-grey-5;
+    cursor: pointer;
+
+    &__label {
+      box-shadow: none;
     }
 
-    .Card {
-      height: $card-height;
-      border: solid 2px $blue-grey-5;
+    &__title {
+      color: $blue-grey-2;
+    }
 
-      @include media-breakpoint-down(sm) {
-        margin-right: 0 !important;
-        margin-bottom: $spacing-s;
+    &:hover {
+      transform: $item-card-hover-translate;
+      box-shadow: $item-card-hover-box-shadow;
+      .Card__title {
+        color: $blue-grey-1;
       }
-      cursor: pointer;
+    }
 
-      &__title {
-        color: $blue-grey-2;
-      }
-
-      &__subtitle {
-        margin: 0;
-      }
-
-      &:hover {
-        transform: $item-card-hover-translate;
-        box-shadow: $item-card-hover-box-shadow;
-        .Card__title {
-          color: $blue-grey-1;
-        }
-      }
-
-      &--selected {
-        border: solid 2px $blue-grey-2;
-        .Card__title {
-          color: $blue-grey-1;
-        }
+    &--selected {
+      border: solid 2px $blue-grey-2;
+      .Card__title {
+        color: $blue-grey-1;
       }
     }
   }

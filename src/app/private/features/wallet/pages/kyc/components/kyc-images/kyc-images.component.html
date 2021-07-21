@@ -1,7 +1,7 @@
-<div class="KycImages container" >
+<div class="KYCImages container" >
     <div class="row">
         <div class="col">
-            <a class="KycImages__back d-flex pb-4 pb-md-2" (click)="goBack.emit()">
+            <a class="KYCImages__back d-flex pb-4 pb-md-2" (click)="goBack.emit()">
                 <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
                 <span i18n="@@web_catalog_pro_pages_checkout_638" class="ml-3">Back</span>
             </a>
@@ -14,28 +14,32 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
-            <form class="d-flex justify-content-center w-100">
-                <div class="KycImages__content mt-3" ngbRadioGroup name="imageMethod" [(ngModel)]="imageMethod">
-                    <div class="GenericCard Card row mb-3">
-                        <div class="col-12">
-                            <label ngbButtonLabel class="btn select w-100 d-flex justify-content-between align-items-center h-100">
+        <div class="col col-md-11 offset-md-1">
+             <form class="d-flex justify-content-center w-100">
+                <div class="KYCImages__content mt-3" ngbRadioGroup name="imageMethod" [(ngModel)]="imageMethod">
+                    <div class="GenericCard Card row mb-3 align-content-center p-2" [ngClass]="{'Card--selected': imageMethod === 'uploadImage'}"> 
+                        <div class="col-12 p-0">
+                            <label ngbButtonLabel class="Card__label select w-100 d-flex justify-content-between align-items-center h-100">
                                 <div class="text-left">
                                     <span class="GenericCard__title Card__title d-block">Sube una foto que ya tengas</span>
                                     <span *ngIf="!isMobile" class="GenericCard__subtitle Card__subtitle mt-1">Recomendado</span>
                                 </div> 
-                                <input ngbButton type="radio" value="uploadImage">
+                                <div class="input-radio">
+                                    <input ngbButton type="radio" value="uploadImage">
+                                </div>
                             </label>
                         </div>
                     </div>
-                    <div class="GenericCard Card row">
-                        <div class="col-12">
-                            <label ngbButtonLabel class="btn select w-100 d-flex justify-content-between align-items-center h-100">
+                    <div class="GenericCard Card row align-content-center p-2" [ngClass]="{'Card--selected': imageMethod === 'takeImage'}">
+                        <div class="col-12 p-0">
+                            <label ngbButtonLabel class="Card__label select w-100 d-flex justify-content-between align-items-center h-100">
                                 <div class="text-left">
                                     <span class="GenericCard__title Card__title d-block">{{takeImageMessage}}</span>
                                     <span *ngIf="isMobile" class="GenericCard__subtitle Card__subtitle mt-1">Recomendado</span>
                                 </div>
-                                <input ngbButton type="radio" value="takeImage">
+                                <div class="input-radio">
+                                    <input ngbButton type="radio" value="takeImage">
+                                </div>
                             </label>
                         </div>
                     </div>

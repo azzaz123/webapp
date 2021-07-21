@@ -8,9 +8,10 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { KYCNationalityComponent } from './components/kyc-nationality/kyc-nationality.component';
 import { FormsModule } from '@angular/forms';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  imports: [CommonModule, KYCRoutingModule, StepperModule, BankAccountModule, SvgIconModule, DropdownModule, FormsModule],
+  imports: [CommonModule, KYCRoutingModule, StepperModule, BankAccountModule, SvgIconModule, DropdownModule, FormsModule, NgbButtonsModule],
   declarations: [KYCRoutedComponents, KYCImagesComponent, KYCNationalityComponent],
 })
 export class KYCModule {}
