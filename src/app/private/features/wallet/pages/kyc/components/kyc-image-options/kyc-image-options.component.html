@@ -17,11 +17,11 @@
         <div class="col col-md-11 offset-md-1">
              <form class="d-flex justify-content-center w-100">
                 <div class="KYCImageOptions__content mt-3" ngbRadioGroup name="imageMethod" [(ngModel)]="imageMethod">
-                    <div class="GenericCard Card row mb-3 align-content-center p-2" [ngClass]="{'Card--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD}"> 
+                    <div class="GenericCard KYCImageOptions__option row mb-3 align-content-center p-2" [ngClass]="{'KYCImageOptions__option--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD}"> 
                         <div class="col-12 p-2">
-                            <label ngbButtonLabel class="Card__label select w-100 d-flex justify-content-between align-items-center h-100">
+                            <label ngbButtonLabel class="KYCImageOptions__option__label select w-100 d-flex justify-content-between align-items-center h-100">
                                 <div class="text-left">
-                                    <span class="GenericCard__title Card__title d-block" i18n="@@kyc_upload_image_option">Sube una foto que ya tengas</span>
+                                    <span class="GenericCard__title KYCImageOptions__option__title d-block" i18n="@@kyc_upload_image_option">Sube una foto que ya tengas</span>
                                     <span *ngIf="!isMobile" class="GenericCard__subtitle Card__subtitle mt-1" i18n="@@kyc_recommended_option">Recomendado</span>
                                 </div> 
                                 <div class="input-radio">
@@ -30,12 +30,12 @@
                             </label>
                         </div>
                     </div>
-                    <div class="GenericCard Card row align-content-center p-2" [ngClass]="{'Card--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT}">
+                    <div class="GenericCard KYCImageOptions__option row align-content-center p-2" [ngClass]="{'KYCImageOptions__option--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT}">
                         <div class="col-12 p-2">
-                            <label ngbButtonLabel class="Card__label select w-100 d-flex justify-content-between align-items-center h-100">
+                            <label ngbButtonLabel class="KYCImageOptions__option__label select w-100 d-flex justify-content-between align-items-center h-100">
                                 <div class="text-left">
-                                    <span class="GenericCard__title Card__title d-block">{{takeImageMessage}}</span>
-                                    <span *ngIf="isMobile" class="GenericCard__subtitle Card__subtitle mt-1" i18n="@@kyc_recommended_option">Recomendado</span>
+                                    <span class="GenericCard__title KYCImageOptions__option__title d-block">{{takeImageMessage}}</span>
+                                    <span *ngIf="isMobile" class="GenericCard__subtitle KYCImageOptions__option__subtitle mt-1" i18n="@@kyc_recommended_option">Recomendado</span>
                                 </div>
                                 <div class="input-radio">
                                     <input ngbButton type="radio" [value]="KYC_TAKE_IMAGE_OPTIONS.SHOOT">
@@ -49,7 +49,7 @@
     </div>
     <div class="row justify-content-center mt-4">
         <div class="col-12 col-md-3">
-            <tsl-button className="btn-primary btn-block" (click)="goNext.emit()">Continuar</tsl-button>
+            <tsl-button className="btn-primary btn-block" (click)="goNext.emit()" i18n="@@kyc_image_options_action_button">Continuar</tsl-button>
         </div>
     </div>
 </div>
