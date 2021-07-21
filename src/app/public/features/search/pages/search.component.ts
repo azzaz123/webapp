@@ -333,6 +333,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   }
 
   private paramsHaveSortBy(params: FilterParameter[]): boolean {
-    return params.filter((param) => param.key === FILTER_QUERY_PARAM_KEY.orderBy).length === 1;
+    return params.some((param) => param.key === FILTER_QUERY_PARAM_KEY.orderBy);
   }
 }
