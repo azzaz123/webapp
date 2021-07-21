@@ -1,7 +1,7 @@
 import { WallItem } from '@api/catalog/dtos';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { formatDescription } from '@api/catalog/mappers/utils';
-import { mapCatalogImagesToImages } from '@api/catalog/mappers/image-mapper';
+import { mapCatalogImagesToImages } from '@api/core/mappers';
 
 export function mapWallItemsToItemCards(wallItems: WallItem[], favouriteIds: string[]): ItemCard[] {
   return wallItems.map((item) => mapWallItemToItemCard(item, favouriteIds));

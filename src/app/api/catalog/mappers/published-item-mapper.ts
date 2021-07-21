@@ -1,6 +1,6 @@
 import { PublishedItem } from '@api/catalog/dtos';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { mapCatalogImagesToImages } from './image-mapper';
+import { mapCatalogImagesToImages } from '@api/core/mappers';
 import { formatDescription } from '@api/catalog/mappers/utils';
 import { ItemType } from '@api/core/model/item';
 import { CATEGORY_IDS } from '@core/category/category-ids';
