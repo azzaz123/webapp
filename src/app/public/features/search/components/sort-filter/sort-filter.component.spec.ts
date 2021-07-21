@@ -258,7 +258,7 @@ describe('SortFilterComponent', () => {
       expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: lastOption.value }], FILTERS_SOURCE.QUICK_FILTERS, true);
     });
 
-    it('should send default value (null) if it is the first option', () => {
+    it('should send default value if it is the first option', () => {
       spyOn(navigator, 'navigate');
       const lastOption: SelectFormOption<string> = SORT_BY_DEFAULT_OPTIONS[0];
       selectFilterStub.mockClickOption(lastOption);
@@ -266,7 +266,7 @@ describe('SortFilterComponent', () => {
       fixture.detectChanges();
 
       expect(navigator.navigate).toHaveBeenCalledTimes(1);
-      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: null }], FILTERS_SOURCE.QUICK_FILTERS, true);
+      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: lastOption.value }], FILTERS_SOURCE.QUICK_FILTERS, true);
     });
   });
 });

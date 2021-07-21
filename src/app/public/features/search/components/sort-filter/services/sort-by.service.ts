@@ -16,7 +16,7 @@ import { SORT_BY, SORT_BY_DEFAULT_OPTIONS, SORT_BY_RELEVANCE_OPTIONS } from './c
 export class SortByService {
   private optionsSubject = new BehaviorSubject<SelectFormOption<SORT_BY>[]>(SORT_BY_DEFAULT_OPTIONS);
   private isRelevanceOptionActiveSubject = new BehaviorSubject<boolean>(false);
-  private isRelevanceFeatureFlagActive = true;
+  public isRelevanceFeatureFlagActive = false;
   public options$ = this.optionsSubject.asObservable();
   public isRelevanceOptionActive$ = this.isRelevanceOptionActiveSubject.asObservable();
 
