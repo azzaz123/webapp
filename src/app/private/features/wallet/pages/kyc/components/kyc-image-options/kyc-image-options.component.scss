@@ -2,11 +2,11 @@
 
 $card-height: 90px;
 
-.KYCImages {
+.KYCImageOptions {
   &__content {
     width: 100%;
-    @include media-breakpoint-up(sm) {
-      width: 40%;
+    @include media-breakpoint-up(md) {
+      width: 50%;
     }
   }
 

@@ -6,6 +6,6 @@
         <tsl-kyc-nationality (goBack)="goPreviousStep()" (imagesToRequestChange)="definePhotosAndGoNext($event)"></tsl-kyc-nationality>
     </ng-template>
     <ng-template step>
-        <tsl-kyc-images  (goBack)="goPreviousStep()" [imagesToRequest]="imagesToRequest"></tsl-kyc-images>
+        <tsl-kyc-image-options  (goBack)="goPreviousStep()" [imagesToRequest]="imagesToRequest"></tsl-kyc-image-options>
     </ng-template>
 </tsl-stepper>

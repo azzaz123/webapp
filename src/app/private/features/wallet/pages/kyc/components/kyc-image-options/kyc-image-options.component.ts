@@ -2,14 +2,15 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
-  selector: 'tsl-kyc-images',
-  templateUrl: './kyc-images.component.html',
-  styleUrls: ['./kyc-images.component.scss'],
+  selector: 'tsl-kyc-image-options',
+  templateUrl: './kyc-image-options.component.html',
+  styleUrls: ['./kyc-image-options.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KYCImagesComponent implements OnInit {
+export class KYCImageOptionsComponent implements OnInit {
   @Input() imagesToRequest: number;
   @Output() goBack: EventEmitter<void> = new EventEmitter();
+  @Output() goNext: EventEmitter<void> = new EventEmitter();
 
   public imageMethod: 'uploadImage' | 'takeImage';
 

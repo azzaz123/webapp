@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KYCImagesComponent } from './kyc-images.component';
+import { KYCImageOptionsComponent } from './kyc-image-options.component';
 
-describe('KYCImagesComponent', () => {
-  let component: KYCImagesComponent;
-  let fixture: ComponentFixture<KYCImagesComponent>;
+describe('KYCImageOptionsComponent', () => {
+  let component: KYCImageOptionsComponent;
+  let fixture: ComponentFixture<KYCImageOptionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [KYCImagesComponent],
+      declarations: [KYCImageOptionsComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KYCImagesComponent);
+    fixture = TestBed.createComponent(KYCImageOptionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
