@@ -1,7 +1,7 @@
 import { ImageDto } from '@api/core/dtos';
 import { Image } from '@core/user/user-response.interface';
 
-export function mapCatalogImagesToImages(catalogImages: ImageDto[]): Image[] {
+export function mapImageDtosToImages(catalogImages: ImageDto[]): Image[] {
   return catalogImages.map((image: ImageDto) => mapCatalogImageToImage(image));
 }
 

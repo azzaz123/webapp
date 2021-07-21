@@ -1,6 +1,6 @@
 import { PublishedItem } from '@api/catalog/dtos';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { mapCatalogImagesToImages } from '@api/core/mappers';
+import { mapImageDtosToImages } from '@api/core/mappers';
 import { formatDescription } from '@api/catalog/mappers/utils';
 import { ItemType } from '@api/core/model/item';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -20,7 +20,7 @@ function mapPublishedItemToItemCard(item: PublishedItem, userId: string, favorit
     salePrice: price.amount,
     currencyCode: price.currency,
     webSlug: slug,
-    images: mapCatalogImagesToImages(images),
+    images: mapImageDtosToImages(images),
     ownerId: userId,
     flags: {
       pending: false,

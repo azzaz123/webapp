@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemService } from '@core/item/item.service';
-import { ItemsData } from '@core/item/item-response.interface';
 import { UserService } from '@core/user/user.service';
 import { UserStats, Counters } from '@core/user/user-stats.interface';
 import { Item } from '@core/item/item';
 import { ProfilesData } from '@core/profile/profile-response.interface';
 import { ProfileService } from '@core/profile/profile.service';
 import { Profile } from '@core/profile/profile';
+import { MeApiService } from '@api/me/me-api.service';
+import { finalize, take } from 'rxjs/operators';
+import { PaginatedList } from '@api/core/model';
 
 @Component({
   selector: 'tsl-favourites',
@@ -21,10 +22,11 @@ export class FavouritesComponent implements OnInit {
   public end = false;
   public numberOfFavorites: number;
   private counters: Counters;
+  private nextItemParameter: string;
 
-  constructor(public itemService: ItemService, private userService: UserService, private profileService: ProfileService) {}
+  public constructor(public meApiService: MeApiService, private userService: UserService, private profileService: ProfileService) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     this.getItems();
     this.getNumberOfFavorites();
   }
@@ -41,13 +43,21 @@ export class FavouritesComponent implements OnInit {
     this.loading = true;
     if (!append) {
       this.items = [];
+      this.nextItemParameter = undefined;
     }
-    this.itemService.myFavorites(this.items.length).subscribe((itemsData: ItemsData) => {
-      const items = itemsData.data;
-      this.items = this.items.concat(items);
-      this.loading = false;
-      this.end = !itemsData.init;
-    });
+    this.meApiService
+      .getFavourites(this.nextItemParameter)
+      .pipe(
+        take(1),
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe((itemList: PaginatedList<Item>) => {
+        this.items = this.items.concat(itemList.list);
+        this.nextItemParameter = itemList.paginationParameter;
+        this.end = !itemList.paginationParameter;
+      });
   }
 
   public getProfiles(append?: boolean) {
