@@ -1,12 +1,12 @@
-import { CatalogItemAttribute, CatalogItemImage } from '@api/catalog/dtos';
-import { PriceDto } from '@api/core/dtos';
+import { CatalogItemAttribute } from '@api/catalog/dtos';
+import { ImageDto, PriceDto } from '@api/core/dtos';
 
 export interface PublishedItem {
   id: string;
   category_id: string;
   title: string;
   description: string;
-  images: CatalogItemImage[];
+  images: ImageDto[];
   price: PriceDto;
   attributes: CatalogItemAttribute[];
   slug: string;

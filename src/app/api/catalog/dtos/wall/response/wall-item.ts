@@ -1,6 +1,6 @@
-import { CatalogItemAttribute, CatalogItemImage } from '@api/catalog/dtos';
+import { CatalogItemAttribute } from '@api/catalog/dtos';
 import { ItemType } from '@api/core/model/item';
-import { PriceDto } from '@api/core/dtos';
+import { ImageDto, PriceDto } from '@api/core/dtos';
 
 export interface WallItem {
   id: string;
@@ -10,7 +10,7 @@ export interface WallItem {
   description: string;
   slug: string;
   distance: number;
-  images: CatalogItemImage[];
+  images: ImageDto[];
   price: PriceDto;
   attributes: CatalogItemAttribute[];
   bump?: { type: string };

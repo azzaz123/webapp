@@ -1,12 +1,12 @@
-import { CatalogItemImage } from '@api/catalog/dtos';
 import { Image } from '@core/user/user-response.interface';
+import { ImageDto } from '@api/core/dtos';
 
 const bigImage = 'https://big-image.com';
 const mediumImage = 'https://medium-image.com';
 const smallImage = 'https://small-image.com';
 const averageColor = '#000000';
 
-export const catalogItemImageFixture: CatalogItemImage = {
+export const catalogItemImageFixture: ImageDto = {
   urls: {
     big: bigImage,
     medium: mediumImage,
