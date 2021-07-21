@@ -25,8 +25,6 @@ import { UploadProductComponent } from './pages/upload-product/upload-product.co
 import { UploadRealestateComponent } from './pages/upload-realestate/upload-realestate.component';
 import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
-import { SuggesterInputModule } from '@shared/suggester-input/suggester-input.module';
-import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/cancel-bubble.module';
 
 @NgModule({
   imports: [
@@ -42,8 +40,6 @@ import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/canc
     NgbButtonsModule,
     DropdownModule,
     CustomCurrencyModule,
-    SuggesterInputModule,
-    CancelBubbleModule,
   ],
   declarations: [
     uploadRoutedComponents,

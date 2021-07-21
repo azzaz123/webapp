@@ -115,7 +115,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
-  public options: SelectFormOption<string>[] = [];
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -167,7 +166,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private fillForm(): void {
     this.uploadForm = this.fb.group({
-      hashtag: [''],
       id: '',
       category_id: ['', [Validators.required]],
       images: [[], [Validators.required]],
@@ -249,15 +247,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.oldFormValue = value;
       }
     });
-  }
-
-  public onChangeHashtag(options: SelectFormOption<string>[]) {
-    this.options = [...this.options, ...options];
-    this.uploadForm.controls.hashtag.setValue(this.options);
-  }
-
-  public clear(bubbleText: string) {
-    console.log('bubbleText', bubbleText);
   }
 
   public getExtraInfo(): any {
@@ -390,7 +379,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onSubmit(): void {
-    console.log('form submit', this.uploadForm);
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
