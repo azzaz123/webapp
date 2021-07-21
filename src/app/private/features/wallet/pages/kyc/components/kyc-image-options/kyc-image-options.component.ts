@@ -22,9 +22,10 @@ export class KYCImageOptionsComponent implements OnInit {
   }
 
   get takeImageMessage(): string {
+    // TODO: We need to ask Miquel for the copys		Date: 2021/07/21
     return this.isMobile
-      ? $localize`:@@kyc_take_images_mobile:Saca una foto con tu cámara`
-      : $localize`:@@kyc_take_images_desktop:Haz una foto con tu webcam`;
+      ? $localize`:@@kyc_take_images_mobile:Take a picture with your camera`
+      : $localize`:@@kyc_take_images_desktop:Take a picture with your webcam`;
   }
 
   get isMobile(): boolean {
