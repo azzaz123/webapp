@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 @Injectable()
-export class KycGuard implements CanActivate {
+export class KYCGuard implements CanActivate {
   constructor(private kycBannerService: KYCBannerService, private router: Router) {}
 
   public canActivate(): Observable<boolean> {
