@@ -8,22 +8,11 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { KYCNationalityComponent } from './components/kyc-nationality/kyc-nationality.component';
 import { FormsModule } from '@angular/forms';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonModule } from '@shared/button/button.module';
 import { KYCStoreService } from './services/kyc-store.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    KYCRoutingModule,
-    StepperModule,
-    BankAccountModule,
-    SvgIconModule,
-    DropdownModule,
-    FormsModule,
-    NgbButtonsModule,
-    ButtonModule,
-  ],
+  imports: [CommonModule, KYCRoutingModule, StepperModule, BankAccountModule, SvgIconModule, DropdownModule, FormsModule, ButtonModule],
   declarations: [KYCRoutedComponents, KYCImageOptionsComponent, KYCNationalityComponent],
   providers: [KYCStoreService],
 })
