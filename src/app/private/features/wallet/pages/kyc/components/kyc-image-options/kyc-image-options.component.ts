@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { KYC_TAKE_IMAGE_OPTIONS } from './kyc-image-options.enum';
 

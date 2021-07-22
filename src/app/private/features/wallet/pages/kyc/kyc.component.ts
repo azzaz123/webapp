@@ -12,17 +12,16 @@ export class KYCComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
-  public takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
 
   constructor(private KYCStoreService: KYCStoreService) {}
 
   public defineImageMethodAndGoNext(takeImageMethod: KYC_TAKE_IMAGE_OPTIONS): void {
-    this.takeImageMethod = takeImageMethod;
+    this.KYCStoreService.specifications = { ...this.KYCStoreService.specifications, imageMethod: takeImageMethod };
     this.goNextStep();
   }
 
   public resetKYCDocumentationAndGoPreviousStep(): void {
-    this.KYCStoreService.documentation = null;
+    this.KYCStoreService.specifications = { ...this.KYCStoreService.specifications, documentation: null };
     this.goPreviousStep();
   }
 

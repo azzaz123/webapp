@@ -4,7 +4,7 @@ import { IOption } from '@shared/dropdown/utils/option.interface';
 import { KYCStoreService } from '../../services/kyc-store.service';
 import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
 import { Observable } from 'rxjs';
-import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
+import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
 
 @Component({
   selector: 'tsl-kyc-nationality',
@@ -16,22 +16,23 @@ export class KYCNationalityComponent {
   @Output() documentToRequestChange: EventEmitter<void> = new EventEmitter();
   @Output() goBack: EventEmitter<void> = new EventEmitter();
 
-  public KYCNationality$: Observable<KYCNationality>;
+  public KYCSpecifications$: Observable<KYCSpecifications>;
   public readonly KYC_NATIONALITIES = KYC_NATIONALITIES;
 
   constructor(private KYCStoreService: KYCStoreService) {
-    this.KYCNationality$ = KYCStoreService.nationality$;
+    this.KYCSpecifications$ = KYCStoreService.specifications$;
   }
 
   public setDocumentAndEmitDocumentChange(selectedDocument: IOption): void {
-    this.KYCStoreService.documentation = KYC_DOCUMENTATION.find((nationality) => nationality.value === selectedDocument.value);
+    const documentation = KYC_DOCUMENTATION.find((nationality) => nationality.value === selectedDocument.value);
+    this.KYCStoreService.specifications = { ...this.KYCStoreService.specifications, documentation };
+
     this.documentToRequestChange.emit();
   }
 
   public handleBack(): void {
-    if (this.KYCStoreService.nationality) {
-      this.KYCStoreService.nationality = null;
-      this.KYCStoreService.documentation = null;
+    if (this.KYCStoreService.specifications.nationality) {
+      this.KYCStoreService.specifications = { ...this.KYCStoreService.specifications, nationality: null, documentation: null };
     } else {
       this.goBack.emit();
     }
@@ -58,6 +59,7 @@ export class KYCNationalityComponent {
   }
 
   set selectNationality(selectedNationality: IOption) {
-    this.KYCStoreService.nationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
+    const nationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
+    this.KYCStoreService.specifications = { ...this.KYCStoreService.specifications, nationality };
   }
 }

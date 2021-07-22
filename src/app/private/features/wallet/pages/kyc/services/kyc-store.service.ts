@@ -1,34 +1,20 @@
 import { Injectable } from '@angular/core';
-import { KYCDocumentation } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
-import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { KYCSpecifications } from '../interfaces/kyc-specifications.interface';
 
 @Injectable()
 export class KYCStoreService {
-  private readonly _nationality = new BehaviorSubject<KYCNationality>(null);
-  private readonly _documentation = new BehaviorSubject<KYCDocumentation>(null);
+  private readonly _specifications = new BehaviorSubject<KYCSpecifications>(null);
 
-  get nationality(): KYCNationality {
-    return this._nationality.getValue();
+  get specifications(): KYCSpecifications {
+    return this._specifications.getValue();
   }
 
-  get nationality$(): Observable<KYCNationality> {
-    return this._nationality.asObservable();
+  get specifications$(): Observable<KYCSpecifications> {
+    return this._specifications.asObservable();
   }
 
-  set nationality(KYCNationality: KYCNationality) {
-    this._nationality.next(KYCNationality);
-  }
-
-  get documentation(): KYCDocumentation {
-    return this._documentation.getValue();
-  }
-
-  get documentation$(): Observable<KYCDocumentation> {
-    return this._documentation.asObservable();
-  }
-
-  set documentation(KYCDocumentation: KYCDocumentation) {
-    this._documentation.next(KYCDocumentation);
+  set specifications(specifications: KYCSpecifications) {
+    this._specifications.next(specifications);
   }
 }

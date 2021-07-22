@@ -9,19 +9,19 @@
     </div>
     <div class="row mb-2">
         <div class="col col-md-11 offset-md-1">
-            <h3 class="KYCNationality__header">{{getNationalityHeader((KYCNationality$ | async)?.headerText)}}</h3>
+            <h3 class="KYCNationality__header">{{getNationalityHeader((KYCSpecifications$ | async).nationality?.headerText)}}</h3>
         </div>
     </div>
     <div class="row">
         <div class="col d-flex justify-content-center">
             <div class="KYCNationality__content">
                 <div class="KYCNationality__drawing mb-4 w-100">
-                    <tsl-svg-icon [src]="getSvgPath((KYCNationality$|async)?.svgPath)"></tsl-svg-icon>
+                    <tsl-svg-icon [src]="getSvgPath((KYCSpecifications$ | async).nationality?.svgPath)"></tsl-svg-icon>
                 </div>
-                <span class="KYCNationality__title d-block mt-4 mb-3 text-center">{{getTitle((KYCNationality$ | async))}}</span>
-                <span class="KYCNationality__description d-block mb-3 text-center">{{getDescription((KYCNationality$ | async))}}</span>
+                <span class="KYCNationality__title d-block mt-4 mb-3 text-center">{{getTitle((KYCSpecifications$ | async).nationality)}}</span>
+                <span class="KYCNationality__description d-block mb-3 text-center">{{getDescription((KYCSpecifications$ | async).nationality)}}</span>
                 <tsl-dropdown
-                    *ngIf="KYCNationality$ | async as nationality; else selectNationalityDropdown"
+                    *ngIf="(KYCSpecifications$ | async).nationality as nationality; else selectNationalityDropdown"
                     placeholder="Select document"
                     i18n-placeholder="@@kyc_select_document_view_header_placeholder" 
                     [options]="nationality.availableDocuments"

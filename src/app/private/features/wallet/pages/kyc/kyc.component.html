@@ -6,7 +6,7 @@
         <tsl-kyc-nationality (goBack)="goPreviousStep()" (documentToRequestChange)="goNextStep()"></tsl-kyc-nationality>
     </ng-template>
     <ng-template step>
-        <tsl-kyc-image-options  (goBack)="resetKYCDocumentationAndGoPreviousStep()" (takeImageOptionChange)="defineImageMethodAndGoNext($event)"></tsl-kyc-image-options>
+        <tsl-kyc-image-options (goBack)="resetKYCDocumentationAndGoPreviousStep()" (takeImageOptionChange)="defineImageMethodAndGoNext($event)"></tsl-kyc-image-options>
     </ng-template>
     <ng-template step>
         <div *ngIf="takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT">Shoot image component >_></div>
