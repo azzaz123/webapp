@@ -20,18 +20,18 @@ export class KYCNationalityComponent {
   public readonly KYC_NATIONALITIES = KYC_NATIONALITIES;
 
   constructor(private KYCStoreService: KYCStoreService) {
-    this.KYCNationality$ = KYCStoreService.KYCNationality$;
+    this.KYCNationality$ = KYCStoreService.nationality$;
   }
 
   public setDocumentAndEmitDocumentChange(selectedDocument: IOption): void {
-    this.KYCStoreService.KYCDocumentation = KYC_DOCUMENTATION.find((nationality) => nationality.value === selectedDocument.value);
+    this.KYCStoreService.documentation = KYC_DOCUMENTATION.find((nationality) => nationality.value === selectedDocument.value);
     this.documentToRequestChange.emit();
   }
 
   public handleBack(): void {
-    if (this.KYCStoreService.KYCNationality) {
-      this.KYCStoreService.KYCNationality = null;
-      this.KYCStoreService.KYCDocumentation = null;
+    if (this.KYCStoreService.nationality) {
+      this.KYCStoreService.nationality = null;
+      this.KYCStoreService.documentation = null;
     } else {
       this.goBack.emit();
     }
@@ -58,6 +58,6 @@ export class KYCNationalityComponent {
   }
 
   set selectNationality(selectedNationality: IOption) {
-    this.KYCStoreService.KYCNationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
+    this.KYCStoreService.nationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
   }
 }

@@ -22,7 +22,7 @@ export class KYCComponent {
   }
 
   public resetKYCDocumentationAndGoPreviousStep(): void {
-    this.KYCStoreService.KYCDocumentation = null;
+    this.KYCStoreService.documentation = null;
     this.goPreviousStep();
   }
 

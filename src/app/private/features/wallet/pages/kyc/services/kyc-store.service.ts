@@ -5,30 +5,30 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class KYCStoreService {
-  private readonly _KYCNationality = new BehaviorSubject<KYCNationality>(null);
-  private readonly _KYCDocumentation = new BehaviorSubject<KYCDocumentation>(null);
+  private readonly _nationality = new BehaviorSubject<KYCNationality>(null);
+  private readonly _documentation = new BehaviorSubject<KYCDocumentation>(null);
 
-  get KYCNationality(): KYCNationality {
-    return this._KYCNationality.getValue();
+  get nationality(): KYCNationality {
+    return this._nationality.getValue();
   }
 
-  get KYCNationality$(): Observable<KYCNationality> {
-    return this._KYCNationality.asObservable();
+  get nationality$(): Observable<KYCNationality> {
+    return this._nationality.asObservable();
   }
 
-  set KYCNationality(KYCNationality: KYCNationality) {
-    this._KYCNationality.next(KYCNationality);
+  set nationality(KYCNationality: KYCNationality) {
+    this._nationality.next(KYCNationality);
   }
 
-  get KYCDocumentation(): KYCDocumentation {
-    return this._KYCDocumentation.getValue();
+  get documentation(): KYCDocumentation {
+    return this._documentation.getValue();
   }
 
-  get KYCDocumentation$(): Observable<KYCDocumentation> {
-    return this._KYCDocumentation.asObservable();
+  get documentation$(): Observable<KYCDocumentation> {
+    return this._documentation.asObservable();
   }
 
-  set KYCDocumentation(KYCDocumentation: KYCDocumentation) {
-    this._KYCDocumentation.next(KYCDocumentation);
+  set documentation(KYCDocumentation: KYCDocumentation) {
+    this._documentation.next(KYCDocumentation);
   }
 }
