@@ -1,6 +1,6 @@
 import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CheckboxFormModule } from './checkbox-form.module';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -13,6 +13,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
     <form [formGroup]="formGroup">
       <tsl-checkbox-form formControlName="checkbox"></tsl-checkbox-form>
     </form>
+    {{ checked }}
   `,
 })
 class StoryCheckboxFormComponent {
@@ -23,6 +24,11 @@ class StoryCheckboxFormComponent {
   });
 
   checkbox: boolean;
+
+  @Input() set checked(value: boolean) {
+    this.checkbox = value;
+    this.formGroup.get('checkbox').setValue(value);
+  }
 }
 
 export default {
@@ -42,4 +48,6 @@ const Template: Story<StoryCheckboxFormComponent> = (args) => ({
 });
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  checked: false,
+};

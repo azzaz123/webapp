@@ -25,6 +25,7 @@ import { bankAccountRoutedComponents, BankAccountRoutingModule } from './bank-ac
     SvgIconModule,
   ],
   declarations: [bankAccountRoutedComponents],
+  exports: [bankAccountRoutedComponents],
   providers: [BankAccountService, BankAccountApiService, MapBankAccountService],
 })
 export class BankAccountModule {}

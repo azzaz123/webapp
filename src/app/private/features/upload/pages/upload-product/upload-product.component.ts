@@ -347,6 +347,24 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
+  private detectShippabilityChanges() {
+    console.log('detectShippabilityChanges');
+    this.uploadForm
+      .get('sale_conditions')
+      .get('supports_shipping')
+      .valueChanges.subscribe((supportsShipping) => {
+        console.log('detectShippabilityChanges subs');
+
+        const deliveryInfo = this.uploadForm.get('delivery_info');
+        if (supportsShipping) {
+          deliveryInfo.setValidators([Validators.required]);
+        } else {
+          deliveryInfo.setValue(null);
+          deliveryInfo.setValidators([]);
+        }
+      });
+  }
+
   private handleUploadFormExtraFields(): void {
     const formCategoryId = this.uploadForm.get('category_id').value;
     const rawCategory = this.rawCategories.find((category) => category.category_id === +formCategoryId);
@@ -801,6 +819,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         attributes: {
           ...baseEventAttrs,
           screenId: SCREEN_IDS.Upload,
+          country: this.analyticsService.market,
+          language: this.analyticsService.appLocale,
         },
       };
       this.analyticsService.trackEvent(listItemCGEvent);
@@ -907,24 +927,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     console.log('clearShippingToggleFormData');
     this.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
     this.uploadForm.get('delivery_info').setValue(null);
-  }
-
-  private detectShippabilityChanges() {
-    console.log('detectShippabilityChanges');
-    this.uploadForm
-      .get('sale_conditions')
-      .get('supports_shipping')
-      .valueChanges.subscribe((supportsShipping) => {
-        console.log('detectShippabilityChanges subs');
-
-        const deliveryInfo = this.uploadForm.get('delivery_info');
-        if (supportsShipping) {
-          deliveryInfo.setValidators([Validators.required]);
-        } else {
-          deliveryInfo.setValue(null);
-          deliveryInfo.setValidators([]);
-        }
-      });
   }
 
   private detectShippabilityAllowanceChanges(): void {

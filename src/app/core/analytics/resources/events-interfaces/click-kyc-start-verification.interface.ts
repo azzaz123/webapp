@@ -10,7 +10,7 @@
  */
 export interface ClickKYCStartVerification {
   /**
-   * Identifier of the user clicking start verification button on KYC tutorial screen
+   * Identifier of the user closing KYC tutorial screen
    */
   userId?: string;
   /**

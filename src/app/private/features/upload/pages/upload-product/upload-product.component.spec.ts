@@ -1177,6 +1177,8 @@ describe('UploadProductComponent', () => {
             title: uploadResponse.title,
             isPro: false,
             screenId: SCREEN_IDS.Upload,
+            country: analyticsService.market,
+            language: analyticsService.appLocale,
           },
         };
         spyOn(analyticsService, 'trackEvent');

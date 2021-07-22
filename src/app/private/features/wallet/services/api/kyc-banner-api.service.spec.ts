@@ -3,18 +3,18 @@ import { TestBed } from '@angular/core/testing';
 import { MOCK_KYC_BANNER_PENDING_VERIFICATION } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { KYCBanner } from '../../interfaces/kyc/kyc-banner.interface';
 
-import { KycBannerApiService, KYC_BANNER_STATUS_API_URL } from './kyc-banner-api.service';
+import { KYCBannerApiService, KYC_BANNER_STATUS_API_URL } from './kyc-banner-api.service';
 
-describe('KycBannerApiService', () => {
-  let service: KycBannerApiService;
+describe('KYCBannerApiService', () => {
+  let service: KYCBannerApiService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [KycBannerApiService],
+      providers: [KYCBannerApiService],
     });
-    service = TestBed.inject(KycBannerApiService);
+    service = TestBed.inject(KYCBannerApiService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 

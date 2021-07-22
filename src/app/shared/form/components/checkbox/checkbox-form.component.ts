@@ -21,7 +21,7 @@ export class CheckboxFormComponent extends AbstractFormComponent<boolean> {
   }
   public id = this.uuidService.getUUID();
 
-  writeValue(value: any) {
+  public writeValue(value: boolean): void {
     super.writeValue(value);
     this.cdr.detectChanges();
   }

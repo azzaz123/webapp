@@ -1,0 +1,4 @@
+<div *ngFor="let step of steps; let i = index">
+    <ng-template *ngIf="i === activeId" [ngTemplateOutlet]="step.templateRef"></ng-template>
+</div>
+    

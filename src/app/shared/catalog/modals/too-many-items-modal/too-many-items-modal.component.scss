@@ -33,6 +33,11 @@
   background: url(/assets/images/too-many-items-background.svg) no-repeat;
   min-height: 150px;
   padding-left: 194px;
+
+  @include media-breakpoint-down(sm) {
+    background: none;
+    padding: 0;
+  }
 }
 
 .TooManyItemsModal__content-info-title {
