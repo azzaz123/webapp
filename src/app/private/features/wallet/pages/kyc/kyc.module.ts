@@ -10,7 +10,7 @@ import { KYCNationalityComponent } from './components/kyc-nationality/kyc-nation
 import { FormsModule } from '@angular/forms';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonModule } from '@shared/button/button.module';
-import { KYCNationalityStoreService } from './services/kyc-nationality-store.service';
+import { KYCStoreService } from './services/kyc-store.service';
 
 @NgModule({
   imports: [
@@ -25,6 +25,6 @@ import { KYCNationalityStoreService } from './services/kyc-nationality-store.ser
     ButtonModule,
   ],
   declarations: [KYCRoutedComponents, KYCImageOptionsComponent, KYCNationalityComponent],
-  providers: [KYCNationalityStoreService],
+  providers: [KYCStoreService],
 })
 export class KYCModule {}

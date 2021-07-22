@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { KYC_NATIONALITIES } from '../../constants/kyc-nationalities-constants';
 import { IOption } from '@shared/dropdown/utils/option.interface';
-import { KYCNationalityStoreService } from '../../services/kyc-nationality-store.service';
+import { KYCStoreService } from '../../services/kyc-store.service';
 import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
 import { Observable } from 'rxjs';
 import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
@@ -19,21 +19,19 @@ export class KYCNationalityComponent {
   public KYCNationality$: Observable<KYCNationality>;
   public readonly KYC_NATIONALITIES = KYC_NATIONALITIES;
 
-  constructor(private KYCNationalityStoreService: KYCNationalityStoreService) {
-    this.KYCNationality$ = KYCNationalityStoreService.KYCNationality$;
+  constructor(private KYCStoreService: KYCStoreService) {
+    this.KYCNationality$ = KYCStoreService.KYCNationality$;
   }
 
   public setDocumentAndEmitDocumentChange(selectedDocument: IOption): void {
-    this.KYCNationalityStoreService.KYCDocumentation = KYC_DOCUMENTATION.find(
-      (nationality) => nationality.value === selectedDocument.value
-    );
+    this.KYCStoreService.KYCDocumentation = KYC_DOCUMENTATION.find((nationality) => nationality.value === selectedDocument.value);
     this.documentToRequestChange.emit();
   }
 
   public handleBack(): void {
-    if (this.KYCNationalityStoreService.KYCNationality) {
-      this.KYCNationalityStoreService.KYCNationality = null;
-      this.KYCNationalityStoreService.KYCDocumentation = null;
+    if (this.KYCStoreService.KYCNationality) {
+      this.KYCStoreService.KYCNationality = null;
+      this.KYCStoreService.KYCDocumentation = null;
     } else {
       this.goBack.emit();
     }
@@ -60,8 +58,6 @@ export class KYCNationalityComponent {
   }
 
   set selectNationality(selectedNationality: IOption) {
-    this.KYCNationalityStoreService.KYCNationality = KYC_NATIONALITIES.find(
-      (nationality) => nationality.value === selectedNationality.value
-    );
+    this.KYCStoreService.KYCNationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
   }
 }

@@ -4,7 +4,7 @@ import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nati
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class KYCNationalityStoreService {
+export class KYCStoreService {
   private readonly _KYCNationality = new BehaviorSubject<KYCNationality>(null);
   private readonly _KYCDocumentation = new BehaviorSubject<KYCDocumentation>(null);
 
