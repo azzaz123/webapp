@@ -19,7 +19,6 @@ function mapWallItemToItemCard(item: WallItem, favoriteIds: string[]): ItemCard 
     currencyCode: price.currency,
     webSlug: slug,
     images: mapCatalogImagesToImages(images),
-    ownerId: undefined, // TODO: This is required by ItemCard, but it's not required in the related code. Need to check in detail
     flags: {
       pending: false,
       sold: false,
