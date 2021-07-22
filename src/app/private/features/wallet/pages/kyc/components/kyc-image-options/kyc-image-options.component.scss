@@ -1,17 +1,7 @@
 @import '~style/common';
 
-$card-height: 90px;
-
 .KYCImageOptions {
-  &__content {
-    width: 100%;
-    @include media-breakpoint-up(md) {
-      width: 50%;
-    }
-  }
-
   &__option {
-    height: $card-height;
     border: solid 2px $blue-grey-5;
     cursor: pointer;
 
