@@ -22,6 +22,7 @@ class StoryMultiSelectFormFormComponent {
   public formGroup = new FormGroup({
     select: new FormControl(['aa', 'bb']),
   });
+
   public onClick() {
     this.formGroup.get('select').setValue(['cc']);
   }
@@ -42,7 +43,6 @@ const Template: Story<StoryMultiSelectFormFormComponent> = (args) => ({
   props: args,
   template: `
         <tsl-story-multi-select-form [disabled]="disabled" [options]="options"></tsl-story-multi-select-form>
-        
       `,
 });
 

@@ -1,7 +1,9 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, SimpleChanges, ViewChild, OnChange } from '@angular/core';
+import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
+import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
+import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { fromEvent, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -10,27 +12,29 @@ import { HashtagSuggesterApiService } from '../../private/features/upload/core/s
   selector: 'tsl-suggester-input',
   templateUrl: './suggester-input.component.html',
   styleUrls: ['./suggester-input.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SuggesterInputComponent),
+      multi: true,
+    },
+  ],
 })
-export class SuggesterInputComponent implements OnInit {
-  constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {}
+export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit {
+  constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
+    super();
+  }
   ngOnInit() {
     this.detectTitleKeyboardChanges();
-    this.form.get('select').valueChanges.subscribe((val) => {
-      console.log('');
-      this.onChangeHashtag.emit(val);
-    });
   }
-
   @Input() categoryId: string = '1000'; // When PR: need to modify
   @ViewChild('hashtagSuggester', { static: true }) hashtagSuggester: ElementRef;
-  @Output() onChangeHashtag: EventEmitter<string[]> = new EventEmitter();
   public selected: string[];
   public start: string = '0';
   public model: string;
   public options: SelectFormOption<string>[] = [];
-  public form = new FormGroup({
-    select: new FormControl([]),
-  });
+  public suggestions: MultiSelectValue = [];
+
   public detectTitleKeyboardChanges(): void {
     fromEvent(this.hashtagSuggester.nativeElement, 'keyup')
       .pipe(debounceTime(750))
@@ -43,6 +47,17 @@ export class SuggesterInputComponent implements OnInit {
             this.options = this.mapHashtagsToOptions(m);
           });
       });
+  }
+
+  public writeValue(value): void {
+    this.value = value;
+    console.log('value', this.value);
+  }
+
+  public handleSelectedOption(): void {
+    console.log('handle option', this.value, this.suggestions);
+
+    this.onChange(this.value.concat(this.suggestions));
   }
 
   public isValidKey(): boolean {

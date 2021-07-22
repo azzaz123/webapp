@@ -5,16 +5,37 @@ import { CommonModule } from '@angular/common';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
-
+import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/cancel-bubble.module';
+import { Component } from '@angular/core';
+import { SuggesterInputModule } from './suggester-input.module';
+@Component({
+  selector: 'tsl-story-suggester-input',
+  template: `
+    <form [formGroup]="formGroup">
+      <h4 class="mt-4">Dynamic input: {{ formGroup.value.hashtag }}</h4>
+      <div *ngFor="let option of options">
+        <tsl-cancel-bubble [bubbleText]="option"></tsl-cancel-bubble>
+      </div>
+      dynamic input
+      <tsl-suggester-input formControlName="hashtag"></tsl-suggester-input>
+    </form>
+  `,
+})
+class StorySuggesterInputFormComponent {
+  public formGroup = new FormGroup({
+    hashtag: new FormControl(['aa', 'ss']),
+  });
+  public options = this.formGroup.controls.hashtag.value;
+}
 export default {
   title: 'Webapp/Shared/SuggesterInput',
-  component: SuggesterInputComponent,
+  component: StorySuggesterInputFormComponent,
   decorators: [
     moduleMetadata({
-      declarations: [SuggesterInputComponent],
+      declarations: [StorySuggesterInputFormComponent],
       imports: [
         CommonModule,
         NgbTypeaheadModule,
@@ -23,21 +44,18 @@ export default {
         SelectFormModule,
         FormsModule,
         MultiSelectFormModule,
+        CancelBubbleModule,
+        SuggesterInputModule,
       ],
       providers: [HashtagSuggesterApiService],
     }),
   ],
 };
 
-const Template: Story<SuggesterInputComponent> = (args) => ({
+const Template: Story<StorySuggesterInputFormComponent> = (args) => ({
   props: args,
   template: `
-  <div>
-    dynamic input
-    <div *ngFor="let option of options"><tsl-cancel-bubble [bubbleText]="option" (clear)="clear($event)"></tsl-cancel-bubble></div>
-  <tsl-suggester-input [form]="uploadForm" name="hashtag" (onChangeHashtag)="onChangeHashtag($event)"></tsl-suggester-input>
-</div>
-      
+  <tsl-story-suggester-input (onChangeHashtag)="onChangeHashtag($event)"></tsl-story-suggester-input>
     `,
 });
 

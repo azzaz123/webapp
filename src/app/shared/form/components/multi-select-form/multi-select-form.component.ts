@@ -20,9 +20,12 @@ import { MultiSelectValue } from './interfaces/multi-select-value.type';
 })
 export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectValue> {
   @Input() set options(value: SelectFormOption<string>[]) {
+    console.log('opt', value);
     this.extendedOptions = value.map((option) => {
       return { ...option, checked: false };
     });
+
+    this.mapCheckedValue();
 
     this.extendedOptionsSubject.next(this.extendedOptions);
   }
