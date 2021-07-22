@@ -30,8 +30,8 @@ export class KYCNationalityComponent {
     this.documentToRequestChange.emit();
   }
 
-  public handleBack(): void {
-    if (this.KYCStoreService.specifications.nationality) {
+  public handleBack(isNationalitySelected: boolean): void {
+    if (isNationalitySelected) {
       this.KYCStoreService.specifications = { ...this.KYCStoreService.specifications, nationality: null, documentation: null };
     } else {
       this.goBack.emit();
