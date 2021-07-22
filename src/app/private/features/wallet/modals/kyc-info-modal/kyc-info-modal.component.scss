@@ -1,0 +1,65 @@
+@import '~style/common';
+
+$modal-width: 500px;
+$img-width: 220px;
+$slides-height: 520px;
+
+.KYCInfoModal {
+  @include media-breakpoint-up(sm) {
+    width: 100%;
+    min-width: $modal-width;
+  }
+
+  &__cross {
+    z-index: 1;
+    right: 0;
+  }
+
+  &__bottomContainer {
+    bottom: 0;
+    z-index: 15;
+    background-color: transparentize($white, 0.5);
+
+    &__button {
+      width: 100%;
+      @include media-breakpoint-up(sm) {
+        width: 75%;
+      }
+    }
+  }
+
+  &__slides {
+    height: $slides-height;
+  }
+
+  &__img {
+    height: $img-width;
+    img {
+      object-fit: contain;
+    }
+  }
+
+  &__link {
+    color: $walla-main !important;
+  }
+
+  &__title {
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-l;
+  }
+
+  &__link,
+  &__description {
+    font-size: $font-size-m;
+  }
+
+  &__title,
+  &__description {
+    color: $blue-grey-1;
+  }
+
+  &__cross,
+  &__link {
+    cursor: pointer;
+  }
+}

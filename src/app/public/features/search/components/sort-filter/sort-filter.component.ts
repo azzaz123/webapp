@@ -28,7 +28,7 @@ export class SortFilterComponent implements OnInit {
     const selected = this.getSelectedValue(value);
     if (selected) {
       this.selected = selected;
-      this.formControl.setValue(value);
+      this.formControl.setValue(value, { emitEvent: false });
     }
   }
 
@@ -56,6 +56,9 @@ export class SortFilterComponent implements OnInit {
   private initData() {
     this.formControl = new FormControl(this.selected?.value || this.options[0]?.value);
     this.selected = this.getSelectedValue(this.formControl.value);
+    this.formControl.valueChanges.subscribe((value: SORT_BY) => {
+      this.onChangeValue(value);
+    });
   }
 
   public openChange(event: boolean): void {
@@ -64,10 +67,6 @@ export class SortFilterComponent implements OnInit {
 
   public onChangeValue(newValue: string): void {
     this.selected = this.getSelectedValue(newValue);
-    if (newValue === this.options[0].value) {
-      newValue = null;
-    }
-
     this.searchNavigatorService.navigate([{ key: SortFilterComponent.KEY_PARAMETER, value: newValue }], FILTERS_SOURCE.QUICK_FILTERS, true);
 
     this.closeDropdown();

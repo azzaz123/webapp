@@ -39,7 +39,6 @@ import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from './subscriptions.fixtures.spec';
 import { MOCK_USER, USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { MOCK_ITEM_VISIBILITY_FLAGS_BUMPED } from '@fixtures/item-detail-flags.fixtures.spec';
-import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { ItemCondition } from '@core/item/item-condition';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
@@ -774,11 +773,6 @@ export const MOCK_ITEM_RESPONSE: ItemResponse = {
     web_slug: 'raton-134690716',
     user: MOCK_USER,
   },
-};
-
-export const MOCK_PAGINATION_ITEM_RESPONSE: PaginationResponse<ItemResponse> = {
-  results: [MOCK_ITEM_RESPONSE],
-  init: 2,
 };
 
 export const MOCK_ITEM_RESPONSE_FAVOURITED: ItemResponse = {

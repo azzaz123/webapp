@@ -14,7 +14,7 @@ import {
 import { ConnectionService } from '../connection/connection.service';
 import { ConnectionType } from '../remote-console/connection-type';
 import { I18nService } from '../i18n/i18n.service';
-import { InboxConversation, InboxMessage, ChatSignal, ChatSignalType } from '@private/features/chat/core/model';
+import { ChatSignal, ChatSignalType, InboxConversation, InboxMessage } from '@private/features/chat/core/model';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 export const SEARCHID_STORAGE_NAME = 'searchId';
@@ -153,6 +153,8 @@ export class RealTimeService {
         conversationId: conversation.id,
         screenId: SCREEN_IDS.Chat,
         categoryId: conversation.item.categoryId,
+        country: this.analyticsService.market,
+        language: this.analyticsService.appLocale,
       },
     };
 

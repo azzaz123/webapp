@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MapReviewService } from '@public/features/public-profile/pages/user-reviews/services/map-review/map-review.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
-import { PaginationResponse } from '@public/core/services/pagination/pagination.interface';
 import { finalize, take } from 'rxjs/operators';
 import { Review } from '@private/features/reviews/core/review';
-import { ReviewResponse } from '@private/features/reviews/core/review-response.interface';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
+import { ReviewsApiService } from '@api/reviews/reviews-api.service';
+import { PaginatedList } from '@api/core/model/paginated-list.interface';
 
 @Component({
   selector: 'tsl-user-reviews',
@@ -19,10 +18,10 @@ export class UserReviewsComponent implements OnInit {
     illustrationSrc: '/assets/images/commons/balloon.svg',
   };
   public reviews: Review[] = [];
-  public nextPaginationItem = 0;
+  public nextPaginationItem = '';
   public loading = true;
 
-  constructor(private publicProfileService: PublicProfileService, private mapReviewService: MapReviewService) {}
+  constructor(private publicProfileService: PublicProfileService, private reviewsApiService: ReviewsApiService) {}
 
   public ngOnInit(): void {
     this.loadItems();
@@ -32,15 +31,15 @@ export class UserReviewsComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.publicProfileService
-        .getReviews(this.publicProfileService.user.id, this.nextPaginationItem)
+      this.reviewsApiService
+        .getUserReviews(this.publicProfileService.user.id, this.nextPaginationItem)
         .pipe(
           finalize(() => (this.loading = false)),
           take(1)
         )
-        .subscribe((response: PaginationResponse<ReviewResponse>) => {
-          this.reviews = this.reviews.concat(this.mapReviewService.mapItems(response.results));
-          this.nextPaginationItem = response.init;
+        .subscribe((paginatedList: PaginatedList<Review>) => {
+          this.reviews = this.reviews.concat(paginatedList.list);
+          this.nextPaginationItem = paginatedList.paginationParameter;
         }, this.onError);
     } catch (err: any) {
       this.onError();

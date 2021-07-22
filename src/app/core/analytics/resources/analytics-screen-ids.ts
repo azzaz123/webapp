@@ -91,4 +91,6 @@ export enum SCREEN_IDS {
   ReserveItemFeedback = 262,
   ChangeEmail = 263,
   ActualizationTermsCommunicationsConsent = 264,
+  SuggestedUpdateAppVersionPopup = 265,
+  RequiredUpdateAppVersionPopup = 266,
 }

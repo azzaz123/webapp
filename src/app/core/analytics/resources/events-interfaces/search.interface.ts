@@ -73,6 +73,14 @@ export interface Search {
    */
   distance?: number;
   /**
+   * Location of the search when it is initially performed. This attribute will only be sent when the distance filter is applied.
+   */
+  currentSearchLocation?: string;
+  /**
+   * New location of the search when the user changes the location in the distance filter. This attribute will only be sent when the distance filter is applied.
+   */
+  newSearchLocation?: string;
+  /**
    * Order criteria in which the results of the search are shown
    */
   orderBy: 'distance' | 'price_low_to_high' | 'price_high_to_low' | 'newest' | 'most_relevant';
