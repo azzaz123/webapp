@@ -1,8 +1,10 @@
 import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { KYC_NATIONALITIES } from '../../constants/kyc-nationalities-constants';
-import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
 import { IOption } from '@shared/dropdown/utils/option.interface';
+import { KYCNationalityStoreService } from '../../services/kyc-nationality-store.service';
 import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
+import { Observable } from 'rxjs';
+import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
 
 @Component({
   selector: 'tsl-kyc-nationality',
@@ -11,46 +13,55 @@ import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KYCNationalityComponent {
-  @Output() imagesToRequestChange: EventEmitter<number> = new EventEmitter();
+  @Output() documentToRequestChange: EventEmitter<void> = new EventEmitter();
   @Output() goBack: EventEmitter<void> = new EventEmitter();
 
-  public selectedNationality: KYCNationality;
+  public KYCNationality$: Observable<KYCNationality>;
   public readonly KYC_NATIONALITIES = KYC_NATIONALITIES;
 
-  public emitimagesToRequest(selectedDocument: IOption): void {
-    const photosNeeded = KYC_DOCUMENTATION.find((document) => document.value === selectedDocument.value).photosNeeded;
-    this.imagesToRequestChange.emit(photosNeeded);
+  constructor(private KYCNationalityStoreService: KYCNationalityStoreService) {
+    this.KYCNationality$ = KYCNationalityStoreService.KYCNationality$;
+  }
+
+  public setDocumentAndEmitDocumentChange(selectedDocument: IOption): void {
+    this.KYCNationalityStoreService.KYCDocumentation = KYC_DOCUMENTATION.find(
+      (nationality) => nationality.value === selectedDocument.value
+    );
+    this.documentToRequestChange.emit();
   }
 
   public handleBack(): void {
-    if (this.selectedNationality) {
-      this.selectedNationality = null;
+    if (this.KYCNationalityStoreService.KYCNationality) {
+      this.KYCNationalityStoreService.KYCNationality = null;
+      this.KYCNationalityStoreService.KYCDocumentation = null;
     } else {
       this.goBack.emit();
     }
   }
 
-  get title(): string {
-    return this.selectedNationality
+  public getTitle(isSelectedNationality: boolean): string {
+    return isSelectedNationality
       ? $localize`:@@kyc_select_document_view_title:Select a document type`
       : $localize`:@@kyc_select_nationality_view_title:Tell us where you're from...`;
   }
 
-  get description(): string {
-    return this.selectedNationality
+  public getDescription(isSelectedNationality: boolean): string {
+    return isSelectedNationality
       ? $localize`:@@kyc_select_document_view_description:Make sure the document you provide is valid for at least 3 months.`
       : $localize`:@@kyc_select_nationality_view_description:And we'll tell you what kind of document you can use to verify your identity`;
   }
 
-  get nationalityHeader(): string {
-    return this.selectedNationality?.headerText || $localize`:@@kyc_select_nationality_view_top_bar_title:Nationality`;
+  public getNationalityHeader(selectedNationalityHeaderText: string | null): string {
+    return selectedNationalityHeaderText || $localize`:@@kyc_select_nationality_view_top_bar_title:Nationality`;
   }
 
-  get svgPath(): string {
-    return this.selectedNationality?.svgPath || '/assets/icons/wallet/kyc/stepper/kyc_nationality.svg';
+  public getSvgPath(selectedNationalitySvgPath: string | null): string {
+    return selectedNationalitySvgPath || '/assets/icons/wallet/kyc/stepper/kyc_nationality.svg';
   }
 
   set selectNationality(selectedNationality: IOption) {
-    this.selectedNationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
+    this.KYCNationalityStoreService.KYCNationality = KYC_NATIONALITIES.find(
+      (nationality) => nationality.value === selectedNationality.value
+    );
   }
 }
