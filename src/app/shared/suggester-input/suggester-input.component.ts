@@ -1,9 +1,22 @@
-import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, SimpleChanges, ViewChild, OnChange } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  ContentChild,
+  AfterViewInit,
+} from '@angular/core';
 import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
+import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { fromEvent, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -20,20 +33,27 @@ import { HashtagSuggesterApiService } from '../../private/features/upload/core/s
     },
   ],
 })
-export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit {
+export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit {
+  @Input() categoryId: string = '1000'; // When PR: need to modify
+  @ViewChild('hashtagSuggester', { static: true }) hashtagSuggester: ElementRef;
+  @ViewChild(MultiSelectFormComponent) multiSelectFormComponent: MultiSelectFormComponent;
+
+  public selected: string[];
+  public start: string = '0';
+  public model: string;
+  public options: SelectFormOption<string>[] = [];
+  public suggestions: MultiSelectValue = [];
+
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
     super();
   }
   ngOnInit() {
     this.detectTitleKeyboardChanges();
   }
-  @Input() categoryId: string = '1000'; // When PR: need to modify
-  @ViewChild('hashtagSuggester', { static: true }) hashtagSuggester: ElementRef;
-  public selected: string[];
-  public start: string = '0';
-  public model: string;
-  public options: SelectFormOption<string>[] = [];
-  public suggestions: MultiSelectValue = [];
+
+  ngAfterViewInit() {
+    console.log('comp', this.multiSelectFormComponent);
+  }
 
   public detectTitleKeyboardChanges(): void {
     fromEvent(this.hashtagSuggester.nativeElement, 'keyup')
@@ -61,13 +81,8 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public isValidKey(): boolean {
-    // filter valid key,  managemge space key (whether we want to put space in prefix) - AC8
-
-    /*  const pattern: RegExp = /#([\\p{L}]+[\\p{N}_]*)+/m;
-    //    const pattern: RegExp = /^(?=.{1,50}$)[\p{L}\p{M}\\p{N}\p{Me}€$\+]+(?:[-–_]?[\p{L}\p{M}\p{N}\p{Me}]+|[\p{L}\p{M}\p{N}\p{Me}]*)$/;
-    console.log('tt', this.model, pattern.test(this.model));
-    return pattern.test(this.model); */
-    return true;
+    const pattern: RegExp = /^#?([\p{L}\p{Nd}_])+$/u;
+    return pattern.test(this.model);
   }
 
   public getHashtags(): Observable<PaginatedList<Hashtag>> {

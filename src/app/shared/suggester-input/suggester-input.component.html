@@ -3,11 +3,11 @@ type="text"
 placeholder="Suggesters..." 
 [(ngModel)]="model"
 #hashtagSuggester
-ngDefaultControl
 />
-<div>
+<ng-container *ngIf="isValidKey(); else notValidKeyMessage">
     <tsl-multi-select-form [(ngModel)]="suggestions" [options]="options"></tsl-multi-select-form>
-</div> 
+</ng-container> 
 
-
-SuggesterInput {{suggestions}}
+<ng-template #notValidKeyMessage>
+    Not valid
+</ng-template>
