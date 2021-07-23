@@ -3,13 +3,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { DeviceDetectorService } from 'ngx-device-detector';
-
 import { KYCImageOptionsComponent } from './kyc-image-options.component';
 import { KYC_TAKE_IMAGE_OPTIONS } from './kyc-image-options.enum';
 
 describe('KYCImageOptionsComponent', () => {
   const backButtonSelector = '.KYCImageOptions__back';
+  const selectedOptionSelector = 'KYCImageOptions__option--selected';
   const continueButtonSelector = '#continueButton';
+  const uploadImageOptionSelector = '#uploadOption';
+  const shootImageOptionSelector = '#shootOption';
+  const takeImageOptionSelector = '.KYCImageOptions__option';
+  const titleOptionCopySelector = '.GenericCard__title';
+  const subtitleOptionCopySelector = '.GenericCard__subtitle';
 
   let component: KYCImageOptionsComponent;
   let fixture: ComponentFixture<KYCImageOptionsComponent>;
@@ -30,7 +35,6 @@ describe('KYCImageOptionsComponent', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -58,39 +62,83 @@ describe('KYCImageOptionsComponent', () => {
     });
   });
 
-  describe('when the user selects the upload image option...', () => {
-    it('should mark the upload image option as selected', () => {
-      component.imageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
-    });
-  });
-
-  describe('when the user selects the take image option...', () => {
-    it('should mark the shoot image option as selected', () => {
-      component.imageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
-    });
-  });
-
   describe('when the user is using a mobile...', () => {
     beforeEach(() => {
       spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
-      component.ngOnInit();
+
+      fixture.detectChanges();
     });
 
-    it('should show two take images method options', () => {});
-    it('should mark the take picture option as default', () => {
-      expect(component.imageMethod).toStrictEqual(KYC_TAKE_IMAGE_OPTIONS.SHOOT);
+    it('should show two take images method options', () => {
+      const takeImageOptions = de.queryAll(By.css(takeImageOptionSelector)).length;
+
+      expect(takeImageOptions).toBe(2);
     });
-    it('should show the take picture with the camera copy option', () => {});
+
+    it('should mark the shoot image option as selected', () => {
+      const shootOption: HTMLElement = de.query(By.css(shootImageOptionSelector)).nativeElement;
+
+      expect(component.imageMethod).toStrictEqual(KYC_TAKE_IMAGE_OPTIONS.SHOOT);
+      expect(shootOption.classList).toContain(selectedOptionSelector);
+    });
+
+    it('should show the shoot image option as recommended', () => {
+      const shootOption: HTMLElement = de.query(By.css(shootImageOptionSelector)).nativeElement;
+      const shootOptionRecommended = shootOption.querySelector(subtitleOptionCopySelector);
+
+      expect(shootOptionRecommended).toBeTruthy();
+    });
+
+    it('should NOT mark the upload image option as selected', () => {
+      const uploadOption: HTMLElement = de.query(By.css(uploadImageOptionSelector)).nativeElement;
+      expect(uploadOption.classList).not.toContain(selectedOptionSelector);
+    });
+
+    it('hould show the shoot image message with the camera copy option', () => {
+      const uploadOption: HTMLElement = de.query(By.css(shootImageOptionSelector)).nativeElement;
+      const uploadOptionTitle = uploadOption.querySelector(titleOptionCopySelector).innerHTML;
+
+      expect(uploadOptionTitle).toStrictEqual($localize`:@@kyc_take_images_mobile:Take a picture with your camera`);
+    });
   });
 
   describe('when the user is NOT using a mobile...', () => {
     beforeEach(() => {
       spyOn(deviceDetectorService, 'isMobile').and.returnValue(false);
+
+      fixture.detectChanges();
     });
-    it('should show two take images method options', () => {});
-    it('should mark the upload picture option as default', () => {
+
+    it('should show two take images method options', () => {
+      const takeImageOptions = de.queryAll(By.css(takeImageOptionSelector)).length;
+
+      expect(takeImageOptions).toBe(2);
+    });
+
+    it('should mark the upload image option as selected', () => {
+      const uploadOption: HTMLElement = de.query(By.css(uploadImageOptionSelector)).nativeElement;
+
       expect(component.imageMethod).toStrictEqual(KYC_TAKE_IMAGE_OPTIONS.UPLOAD);
+      expect(uploadOption.classList).toContain(selectedOptionSelector);
     });
-    it('should show the take picture with the webcam copy option', () => {});
+
+    it('should NOT mark the shoot image option as selected', () => {
+      const shootOption: HTMLElement = de.query(By.css(shootImageOptionSelector)).nativeElement;
+      expect(shootOption.classList).not.toContain(selectedOptionSelector);
+    });
+
+    it('should show the upload image option as recommended', () => {
+      const uploadOption: HTMLElement = de.query(By.css(uploadImageOptionSelector)).nativeElement;
+      const uploadOptionRecommended = uploadOption.querySelector(subtitleOptionCopySelector);
+
+      expect(uploadOptionRecommended).toBeTruthy();
+    });
+
+    it('should show the shoot image message with the webcam copy option', () => {
+      const uploadOption: HTMLElement = de.query(By.css(shootImageOptionSelector)).nativeElement;
+      const uploadOptionTitle = uploadOption.querySelector(titleOptionCopySelector).innerHTML;
+
+      expect(uploadOptionTitle).toStrictEqual($localize`:@@kyc_take_images_desktop:Take a picture with your webcam`);
+    });
   });
 });
