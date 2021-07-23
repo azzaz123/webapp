@@ -1,7 +1,7 @@
-<div class="KYCNationality container" *ngIf="(KYCSpecifications$ | async) as KYCSpecifications">
+<div class="KYCNationality container">
     <div class="row">
         <div class="col">
-            <a class="KYCNationality__back d-flex pb-4 pb-md-2" (click)="handleBack(KYCSpecifications.nationality)">
+            <a class="KYCNationality__back d-flex pb-4 pb-md-2" (click)="handleBack()">
                 <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
                 <span i18n="@@web_catalog_pro_pages_checkout_638" class="ml-3">Back</span>
             </a>
@@ -9,26 +9,26 @@
     </div>
     <div class="row mb-2">
         <div class="col col-md-11 offset-md-1">
-            <h3 class="KYCNationality__header">{{getNationalityHeader(KYCSpecifications.nationality?.headerText)}}</h3>
+            <h3 class="KYCNationality__header">{{header}}</h3>
         </div>
     </div>
     <div class="row">
         <div class="col d-flex justify-content-center">
             <div class="KYCNationality__content">
                 <div class="KYCNationality__drawing mb-4 w-100">
-                    <tsl-svg-icon [src]="getSvgPath(KYCSpecifications.nationality?.svgPath)"></tsl-svg-icon>
+                    <tsl-svg-icon [src]="svgPath"></tsl-svg-icon>
                 </div>
-                <span class="KYCNationality__title d-block mt-4 mb-3 text-center">{{getTitle(KYCSpecifications.nationality)}}</span>
-                <span class="KYCNationality__description d-block mb-3 text-center">{{getDescription(KYCSpecifications.nationality)}}</span>
+                <span class="KYCNationality__title d-block mt-4 mb-3 text-center">{{title}}</span>
+                <span class="KYCNationality__description d-block mb-3 text-center">{{description}}</span>
                 <tsl-dropdown
-                    *ngIf="KYCSpecifications.nationality as nationality; else selectNationalityDropdown"
+                    *ngIf="KYCNationality as nationality; else selectNationalityDropdown"
                     placeholder="Select document"
                     i18n-placeholder="@@kyc_select_document_view_header_placeholder" 
                     [options]="nationality.availableDocuments"
                     bindLabel="string"
                     bindValue="string"
                     class="form-control mb-4" 
-                    (selected)="setDocumentAndEmitDocumentChange($event)"
+                    (selected)="emitDocumentChange($event)"
                     name="document"
                     ngDefaultControl>
                 </tsl-dropdown>
@@ -40,7 +40,7 @@
                         bindLabel="string"
                         bindValue="string"
                         class="form-control mb-4" 
-                        (selected)="selectNationality = $event"
+                        (selected)="emitNationalityChange($event)"
                         name="nationality"
                         ngDefaultControl>
                     </tsl-dropdown>

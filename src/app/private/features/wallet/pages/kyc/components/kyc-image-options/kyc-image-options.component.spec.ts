@@ -8,13 +8,14 @@ import { KYC_TAKE_IMAGE_OPTIONS } from './kyc-image-options.enum';
 
 describe('KYCImageOptionsComponent', () => {
   const backButtonSelector = '.KYCImageOptions__back';
+  const titleOptionCopySelector = '.GenericCard__title';
+  const subtitleOptionCopySelector = '.GenericCard__subtitle';
+  const takeImageOptionSelector = '.KYCImageOptions__option';
   const selectedOptionSelector = 'KYCImageOptions__option--selected';
+
   const continueButtonSelector = '#continueButton';
   const uploadImageOptionSelector = '#uploadOption';
   const shootImageOptionSelector = '#shootOption';
-  const takeImageOptionSelector = '.KYCImageOptions__option';
-  const titleOptionCopySelector = '.GenericCard__title';
-  const subtitleOptionCopySelector = '.GenericCard__subtitle';
 
   let component: KYCImageOptionsComponent;
   let fixture: ComponentFixture<KYCImageOptionsComponent>;
