@@ -19,7 +19,6 @@ function mapWallItemToItemCard(item: WallItem, favoriteIds: string[]): ItemCard 
     currencyCode: price.currency,
     webSlug: slug,
     images: mapImageDtosToImages(images),
-    ownerId: undefined, // FIXME: This is required by ItemCard
     flags: {
       pending: false,
       sold: false,
