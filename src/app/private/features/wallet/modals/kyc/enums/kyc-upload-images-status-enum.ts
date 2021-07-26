@@ -1,0 +1,5 @@
+export enum KYC_UPLOAD_IMAGES_STATUS {
+  SUCCEED,
+  DENIED,
+  CANNOT_ACCESS,
+}

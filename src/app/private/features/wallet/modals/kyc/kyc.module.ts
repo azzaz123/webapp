@@ -11,10 +11,11 @@ import { KYCStoreService } from './services/kyc-store.service';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from '@shared/button/button.module';
 import { KYCImageOptionsComponent } from './components/kyc-image-options/kyc-image-options.component';
+import { KYCUploadImagesComponent } from './components/kyc-upload-images/kyc-upload-images.component';
 
 @NgModule({
   imports: [CommonModule, KYCRoutingModule, StepperModule, BankAccountModule, SvgIconModule, DropdownModule, FormsModule, ButtonModule],
-  declarations: [KYCRoutedComponents, KYCImageOptionsComponent, KYCNationalityComponent, KYCModalComponent],
+  declarations: [KYCRoutedComponents, KYCImageOptionsComponent, KYCNationalityComponent, KYCModalComponent, KYCUploadImagesComponent],
   providers: [KYCStoreService],
 })
 export class KYCModule {}
