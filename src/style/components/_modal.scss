@@ -175,6 +175,24 @@ $modal-border-radius: 0.3rem;
   }
 }
 
+.modal.kyc {
+  .modal-dialog {
+    height: 630px;
+    width: 80%;
+    max-width: 720px;
+
+    @include media-breakpoint-down(md) {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+
+  .modal-content {
+    max-width: inherit;
+    height: inherit;
+  }
+}
+
 .modal.credit-card {
   $modal-width: 370px;
   .modal-dialog {

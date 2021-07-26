@@ -14,7 +14,7 @@ import { KYC_SLIDER_INFO_STEPS } from './kyc-info-modal-constants';
 })
 export class KYCInfoModalComponent {
   @ViewChild(SlidesCarouselComponent, { static: true }) slidesCarousel: SlidesCarouselComponent;
-  public readonly KYC_LINK = `${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.KYC}`;
+  public readonly KYC_LINK = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}/${WALLET_PATHS.KYC}`;
   public readonly KYC_SLIDER_INFO_STEPS = KYC_SLIDER_INFO_STEPS;
   public readonly LAST_SLIDE = 'ngb-slide-2';
   public readonly ZENDESK_ID = '360004532117';

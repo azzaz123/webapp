@@ -67,10 +67,6 @@ export class SortFilterComponent implements OnInit {
 
   public onChangeValue(newValue: string): void {
     this.selected = this.getSelectedValue(newValue);
-    if (newValue === this.options[0].value) {
-      newValue = null;
-    }
-
     this.searchNavigatorService.navigate([{ key: SortFilterComponent.KEY_PARAMETER, value: newValue }], FILTERS_SOURCE.QUICK_FILTERS, true);
 
     this.closeDropdown();

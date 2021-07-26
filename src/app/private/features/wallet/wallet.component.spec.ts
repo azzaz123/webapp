@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -59,46 +59,6 @@ describe('WalletComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('when we are on KYC', () => {
-    beforeEach(() => {
-      component.isInKYC = true;
-
-      fixture.detectChanges();
-    });
-
-    it('should NOT appear the nav links', () => {
-      const navLinks = fixture.debugElement.query(By.directive(NavLinksComponent));
-
-      expect(navLinks).toBeFalsy();
-    });
-
-    it('should NOT appear the header', () => {
-      const header = fixture.debugElement.query(By.directive(HeaderComponent));
-
-      expect(header).toBeFalsy();
-    });
-  });
-
-  describe('when we are NOT on KYC', () => {
-    beforeEach(() => {
-      component.isInKYC = false;
-
-      fixture.detectChanges();
-    });
-
-    it('should appear the nav links', () => {
-      const navLinks = fixture.debugElement.query(By.directive(NavLinksComponent));
-
-      expect(navLinks).toBeTruthy();
-    });
-
-    it('should appear the header', () => {
-      const header = fixture.debugElement.query(By.directive(HeaderComponent));
-
-      expect(header).toBeTruthy();
-    });
   });
 
   describe('when the user navigates through the nav links...', () => {
