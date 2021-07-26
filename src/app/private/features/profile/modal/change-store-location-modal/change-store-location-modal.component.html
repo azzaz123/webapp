@@ -1,0 +1,23 @@
+<div class="changeStoreLocationModal d-flex flex-column align-items-center">
+  <div class="changeStoreLocationModal__close" (click)="activeModal.close()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  </div>
+  <div class="changeStoreLocationModal__container">
+    <div class="changeStoreLocationModal__title">
+      <span i18n="@@web_bump_suggestion_modal_title">Tu tienda tiene una ubicación diferente a la tuya y a la de tus productos</span>
+    </div>
+    <div class="changeStoreLocationModal__subtitle">
+      <span i18n="@@web_profile_modal_unsubscribe_264">¿Quieres que tú y tus productos estéis localizados en tu tienda?</span>
+    </div>
+    <div>
+      <img width="380" src="/assets/images/use-shop-location.svg" alt="shop location">
+    </div>
+    <div class="changeStoreLocationModal__actions w-100">
+      <div class="changeStoreLocationModal__actions-optional mb-2" (click)="activeModal.close()"
+        i18n="@@web_too_many_items_modal_button_cancel">No, gracias
+      </div>
+      <tsl-button class="w-100" className="btn-primary btn-primary--bold w-100" (click)="activeModal.close()">Ubicarlos en mi tienda
+      </tsl-button>
+    </div>
+  </div>
+</div>
