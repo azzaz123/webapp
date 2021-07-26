@@ -1,14 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 
 @Component({
-  selector: 'tsl-kyc',
-  templateUrl: './kyc.component.html',
-  styleUrls: ['./kyc.component.scss'],
+  selector: 'tsl-kyc-modal',
+  templateUrl: './kyc-modal.component.html',
+  styleUrls: ['./kyc-modal.component.scss'],
 })
-export class KYCComponent {
+export class KycModalComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
   public photosToRequest: number;
+
+  constructor(public activeModal: NgbActiveModal) {}
 
   public definePhotosAndGoNext(photosToRequest: number): void {
     this.photosToRequest = photosToRequest;

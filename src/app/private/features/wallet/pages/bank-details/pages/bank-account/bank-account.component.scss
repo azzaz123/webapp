@@ -26,4 +26,9 @@
       }
     }
   }
+
+  &__bottomContainer {
+    bottom: 0;
+    background-color: transparentize($white, 0.5);
+  }
 }
