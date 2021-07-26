@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { KYCComponent } from './kyc.component';
-import { KycModalComponent } from './modals/kyc-modal/kyc-modal.component';
+import { KYCModalComponent } from './modals/kyc-modal/kyc-modal.component';
 
 describe('KYCComponent', () => {
   let component: KYCComponent;
@@ -45,7 +45,7 @@ describe('KYCComponent', () => {
       });
 
       it('should open the kyc modal', () => {
-        expect(modalService.open).toHaveBeenCalledWith(KycModalComponent, {
+        expect(modalService.open).toHaveBeenCalledWith(KYCModalComponent, {
           windowClass: 'kyc',
         });
       });
@@ -64,7 +64,7 @@ describe('KYCComponent', () => {
       });
 
       it('should open the kyc modal', () => {
-        expect(modalService.open).toHaveBeenCalledWith(KycModalComponent, {
+        expect(modalService.open).toHaveBeenCalledWith(KYCModalComponent, {
           windowClass: 'kyc',
         });
       });
