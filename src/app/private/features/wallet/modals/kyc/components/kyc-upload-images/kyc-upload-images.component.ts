@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { KYCPhotosNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYC_UPLOAD_IMAGES_STATUS } from '../../enums/kyc-upload-images-status-enum';
@@ -9,8 +9,8 @@ import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.e
   templateUrl: './kyc-upload-images.component.html',
   styleUrls: ['./kyc-upload-images.component.scss'],
 })
-export class KYCUploadImagesComponent implements OnInit {
-  @ViewChild('usersCamera') usersCamera: ElementRef;
+export class KYCUploadImagesComponent implements OnInit, OnDestroy {
+  @ViewChild('userCamera') userCamera: ElementRef;
   @Input() photosNeeded: KYCPhotosNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
 
@@ -29,13 +29,25 @@ export class KYCUploadImagesComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.endCameraStreamTracking();
+  }
+
+  public endCameraStreamTracking(): void {
+    this.userCamera.nativeElement.srcObject.getTracks().forEach((track) => {
+      track.stop();
+    });
+
+    this.userCamera.nativeElement.srcObject.srcObject = null;
+  }
+
   private requestCameraPermissions(): void {
     if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
       navigator.mediaDevices
         .getUserMedia({ video: true })
         .then((stream) => {
           this.userPermissions = KYC_UPLOAD_IMAGES_STATUS.SUCCEED;
-          this.usersCamera.nativeElement.srcObject = stream;
+          this.userCamera.nativeElement.srcObject = stream;
         })
         .catch((error: DOMException) => {
           const errorMessage = error + '';
@@ -56,7 +68,7 @@ export class KYCUploadImagesComponent implements OnInit {
 
   get cameraFailedCopy(): string {
     return this.userPermissions === KYC_UPLOAD_IMAGES_STATUS.DENIED
-      ? 'Debes aceptar los permisos para poder hacer las fotos.'
-      : 'Oops, ha ocurrido un error y no podemos acceder a tu cámara.';
+      ? $localize`:@@kyc_camera_access_refused:You must accept the permissions to be able to take photos`
+      : $localize`:@@kyc_camera_cannot_access:Oops, an error occurred and we cannot access your camera`;
   }
 }
