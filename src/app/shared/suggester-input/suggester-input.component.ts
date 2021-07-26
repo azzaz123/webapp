@@ -19,7 +19,7 @@ import { MultiSelectValue } from '@shared/form/components/multi-select-form/inte
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { fromEvent, Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
   selector: 'tsl-suggester-input',
@@ -52,7 +52,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   ngAfterViewInit() {
-    console.log('comp', this.multiSelectFormComponent);
+    console.log('comp', this.multiSelectFormComponent, this.suggestions);
   }
 
   public detectTitleKeyboardChanges(): void {
@@ -64,6 +64,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
           return;
         } else
           this.getHashtags().subscribe((m) => {
+            console.log('comp', this.multiSelectFormComponent);
             this.options = this.mapHashtagsToOptions(m);
           });
       });
@@ -71,17 +72,15 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   public writeValue(value): void {
     this.value = value;
-    console.log('value', this.value);
+    console.log('writevalue suggesterInput', this.value);
   }
 
   public handleSelectedOption(): void {
-    console.log('handle option', this.value, this.suggestions);
-
     this.onChange(this.value.concat(this.suggestions));
   }
 
   public isValidKey(): boolean {
-    const pattern: RegExp = /^#?([\p{L}\p{Nd}_])+$/u;
+    const pattern: RegExp = /^#?([\p{L}\p{Nd}])+$/u;
     return pattern.test(this.model);
   }
 
@@ -101,6 +100,12 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public createHashtagOption(): SelectFormOption<string>[] {
+    /* this.multiSelectFormComponent.extendedOptions$.pipe(
+      tap((option) => {
+        option[0].checked = true;
+      })
+    ); */
+    // this.multiSelectFormComponent.options = [{ label: this.model, value: this.model }];
     return [{ label: this.model, value: this.model }];
   }
 }
