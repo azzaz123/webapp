@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KYCUploadImageComponent } from './kyc-upload-image.component';
+import { KYCUploadImagesComponent } from './kyc-upload-imagess.component';
 
-describe('KYCUploadImageComponent', () => {
-  let component: KYCUploadImageComponent;
-  let fixture: ComponentFixture<KYCUploadImageComponent>;
+describe('KYCUploadImagesComponent', () => {
+  let component: KYCUploadImagesComponent;
+  let fixture: ComponentFixture<KYCUploadImagesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [KYCUploadImageComponent],
+      declarations: [KYCUploadImagesComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KYCUploadImageComponent);
+    fixture = TestBed.createComponent(KYCUploadImagesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
