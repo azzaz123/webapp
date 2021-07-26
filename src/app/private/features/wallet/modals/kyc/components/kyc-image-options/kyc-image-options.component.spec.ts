@@ -63,9 +63,9 @@ describe('KYCImageOptionsComponent', () => {
     });
   });
 
-  describe('when the user is using a mobile...', () => {
+  describe('when the user is NOT using a PC...', () => {
     beforeEach(() => {
-      spyOn(deviceDetectorService, 'isMobile').and.returnValue(true);
+      spyOn(deviceDetectorService, 'isDesktop').and.returnValue(false);
 
       fixture.detectChanges();
     });
@@ -103,9 +103,9 @@ describe('KYCImageOptionsComponent', () => {
     });
   });
 
-  describe('when the user is NOT using a mobile...', () => {
+  describe('when the user is using a PC...', () => {
     beforeEach(() => {
-      spyOn(deviceDetectorService, 'isMobile').and.returnValue(false);
+      spyOn(deviceDetectorService, 'isDesktop').and.returnValue(true);
 
       fixture.detectChanges();
     });

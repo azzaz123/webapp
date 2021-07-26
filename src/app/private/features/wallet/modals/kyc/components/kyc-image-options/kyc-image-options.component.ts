@@ -18,17 +18,17 @@ export class KYCImageOptionsComponent implements OnInit {
   constructor(private deviceDetectorService: DeviceDetectorService) {}
 
   ngOnInit() {
-    this.imageMethod = this.isMobile ? KYC_TAKE_IMAGE_OPTIONS.SHOOT : KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
+    this.imageMethod = this.isDesktop ? KYC_TAKE_IMAGE_OPTIONS.UPLOAD : KYC_TAKE_IMAGE_OPTIONS.SHOOT;
   }
 
   get takeImageMessage(): string {
     // TODO: We need to ask Miquel for the copys		Date: 2021/07/21
-    return this.isMobile
-      ? $localize`:@@kyc_take_images_mobile:Take a picture with your camera`
-      : $localize`:@@kyc_take_images_desktop:Take a picture with your webcam`;
+    return this.isDesktop
+      ? $localize`:@@kyc_take_images_desktop:Take a picture with your webcam`
+      : $localize`:@@kyc_take_images_mobile:Take a picture with your camera`;
   }
 
-  get isMobile(): boolean {
-    return this.deviceDetectorService.isMobile();
+  get isDesktop(): boolean {
+    return this.deviceDetectorService.isDesktop();
   }
 }
