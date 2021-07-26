@@ -1,6 +1,6 @@
 <div class="page-content">
     <div class="container">
-      <tsl-header *ngIf="!isInKYC">
+      <tsl-header>
         <div class="col">
           <div class="header-row">
             <h1 class="Wallet__title w-100 header-title">
@@ -12,7 +12,7 @@
           <tsl-kyc-banner *ngIf="kycBannerSpecifications$ | async" [KYCBannerSpecifications]="kycBannerSpecifications$ | async"></tsl-kyc-banner>
         </div>
       </tsl-header>
-      <div class="row" *ngIf="!isInKYC">
+      <div class="row">
         <div class="col">
           <tsl-nav-links
             [navLinks]="navLinks"

@@ -17,7 +17,7 @@ describe('KYCNationalityComponent', () => {
 
   const titleSelector = '.KYCNationality__title';
   const descriptionSelector = '.KYCNationality__description';
-  const headerSelector = '.KYCNationality__header';
+  const headerSelector = '#headerMessage';
   const backButtonSelector = '.KYCNationality__back';
   const drawingSelector = '.KYCNationality__drawing';
 

@@ -1,24 +1,25 @@
 import { Component, ViewChild } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { KYCDocumentation } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
+import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable } from 'rxjs';
-import { KYCDocumentation } from '../../interfaces/kyc/kyc-documentation.interface';
-import { KYCNationality } from '../../interfaces/kyc/kyc-nationality.interface';
-import { KYC_TAKE_IMAGE_OPTIONS } from './components/kyc-image-options/kyc-image-options.enum';
-import { KYCSpecifications } from './interfaces/kyc-specifications.interface';
-import { KYCStoreService } from './services/kyc-store.service';
+import { KYC_TAKE_IMAGE_OPTIONS } from '../../components/kyc-image-options/kyc-image-options.enum';
+import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
+import { KYCStoreService } from '../../services/kyc-store.service';
 
 @Component({
-  selector: 'tsl-kyc',
-  templateUrl: './kyc.component.html',
-  styleUrls: ['./kyc.component.scss'],
+  selector: 'tsl-kyc-modal',
+  templateUrl: './kyc-modal.component.html',
+  styleUrls: ['./kyc-modal.component.scss'],
 })
-export class KYCComponent {
+export class KycModalComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
   public KYCStoreSpecifications$: Observable<KYCSpecifications>;
 
-  constructor(private KYCStoreService: KYCStoreService) {
+  constructor(private KYCStoreService: KYCStoreService, public activeModal: NgbActiveModal) {
     this.KYCStoreSpecifications$ = KYCStoreService.specifications$;
   }
 

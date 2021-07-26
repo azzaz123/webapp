@@ -4,33 +4,35 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MOCK_KYC_DOCUMENTATION, MOCK_KYC_NATIONALITY } from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { KYCComponent } from './kyc.component';
-import { KYCModule } from './kyc.module';
-import { KYCStoreService } from './services/kyc-store.service';
+import { KYCModule } from '../../kyc.module';
 
-describe('KYCComponent', () => {
+import { KycModalComponent } from './kyc-modal.component';
+import { KYCStoreService } from '../../services/kyc-store.service';
+
+describe('KycModalComponent', () => {
   const bankAccountSelector = 'tsl-bank-account';
   const KYCNationalitySelector = 'tsl-kyc-nationality';
   const KYCImageOptionsSelector = 'tsl-kyc-image-options';
 
-  let component: KYCComponent;
+  let component: KycModalComponent;
   let kycStoreService: KYCStoreService;
-  let fixture: ComponentFixture<KYCComponent>;
+  let fixture: ComponentFixture<KycModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [KYCModule, RouterTestingModule, HttpClientTestingModule],
-      declarations: [KYCComponent, StepperComponent, StepDirective],
-      providers: [DeviceDetectorService],
+      declarations: [KycModalComponent, StepperComponent, StepDirective],
+      providers: [DeviceDetectorService, NgbActiveModal],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KYCComponent);
+    fixture = TestBed.createComponent(KycModalComponent);
     component = fixture.componentInstance;
     kycStoreService = TestBed.inject(KYCStoreService);
   });
@@ -40,6 +42,12 @@ describe('KYCComponent', () => {
   });
 
   describe('when use the stepper...', () => {
+    it('should apply the content style ', () => {
+      const KYCContentStyle = fixture.debugElement.query(By.css('.KYCModal__content'));
+
+      expect(KYCContentStyle).toBeTruthy();
+    });
+
     describe('and we are on the bank account step...', () => {
       beforeEach(() => {
         component.stepper.activeId = 0;

@@ -1,6 +1,6 @@
 @import '~style/common';
 
-$drawing-height: 173px;
+$drawing-height: 130px;
 
 .KYCNationality {
   &__drawing {
@@ -13,7 +13,6 @@ $drawing-height: 173px;
     }
   }
 
-  &__header,
   &__infoMessage {
     font-size: $font-size-s;
   }
