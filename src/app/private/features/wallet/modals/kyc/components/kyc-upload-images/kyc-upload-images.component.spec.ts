@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { KYCUploadImagesComponent } from './kyc-upload-imagess.component';
+import { KYCUploadImagesComponent } from './kyc-upload-images.component';
 
 describe('KYCUploadImagesComponent', () => {
   let component: KYCUploadImagesComponent;

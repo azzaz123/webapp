@@ -33,14 +33,6 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     this.endCameraStreamTracking();
   }
 
-  public endCameraStreamTracking(): void {
-    this.userCamera.nativeElement.srcObject.getTracks().forEach((track) => {
-      track.stop();
-    });
-
-    this.userCamera.nativeElement.srcObject.srcObject = null;
-  }
-
   private requestCameraPermissions(): void {
     if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
       navigator.mediaDevices
@@ -60,6 +52,14 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     } else {
       this.userPermissions = KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS;
     }
+  }
+
+  private endCameraStreamTracking(): void {
+    this.userCamera.nativeElement.srcObject.getTracks().forEach((track) => {
+      track.stop();
+    });
+
+    this.userCamera.nativeElement.srcObject.srcObject = null;
   }
 
   get requestCameraFailed(): boolean {
