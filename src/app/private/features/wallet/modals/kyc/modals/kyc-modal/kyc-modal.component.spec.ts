@@ -10,29 +10,29 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { KYCModule } from '../../kyc.module';
 
-import { KycModalComponent } from './kyc-modal.component';
+import { KYCModalComponent } from './kyc-modal.component';
 import { KYCStoreService } from '../../services/kyc-store.service';
 
-describe('KycModalComponent', () => {
+describe('KYCModalComponent', () => {
   const bankAccountSelector = 'tsl-bank-account';
   const KYCNationalitySelector = 'tsl-kyc-nationality';
   const KYCImageOptionsSelector = 'tsl-kyc-image-options';
 
-  let component: KycModalComponent;
+  let component: KYCModalComponent;
   let kycStoreService: KYCStoreService;
-  let fixture: ComponentFixture<KycModalComponent>;
+  let fixture: ComponentFixture<KYCModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [KYCModule, RouterTestingModule, HttpClientTestingModule],
-      declarations: [KycModalComponent, StepperComponent, StepDirective],
+      declarations: [KYCModalComponent, StepperComponent, StepDirective],
       providers: [DeviceDetectorService, NgbActiveModal],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KycModalComponent);
+    fixture = TestBed.createComponent(KYCModalComponent);
     component = fixture.componentInstance;
     kycStoreService = TestBed.inject(KYCStoreService);
   });

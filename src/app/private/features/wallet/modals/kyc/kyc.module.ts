@@ -6,7 +6,7 @@ import { BankAccountModule } from '../../pages/bank-details/pages/bank-account/b
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { KYCNationalityComponent } from './components/kyc-nationality/kyc-nationality.component';
-import { KycModalComponent } from './modals/kyc-modal/kyc-modal.component';
+import { KYCModalComponent } from './modals/kyc-modal/kyc-modal.component';
 import { KYCStoreService } from './services/kyc-store.service';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from '@shared/button/button.module';
@@ -14,7 +14,7 @@ import { KYCImageOptionsComponent } from './components/kyc-image-options/kyc-ima
 
 @NgModule({
   imports: [CommonModule, KYCRoutingModule, StepperModule, BankAccountModule, SvgIconModule, DropdownModule, FormsModule, ButtonModule],
-  declarations: [KYCRoutedComponents, KYCImageOptionsComponent, KYCNationalityComponent, KycModalComponent],
+  declarations: [KYCRoutedComponents, KYCImageOptionsComponent, KYCNationalityComponent, KYCModalComponent],
   providers: [KYCStoreService],
 })
 export class KYCModule {}

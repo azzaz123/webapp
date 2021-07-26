@@ -13,7 +13,7 @@ import { KYCStoreService } from '../../services/kyc-store.service';
   templateUrl: './kyc-modal.component.html',
   styleUrls: ['./kyc-modal.component.scss'],
 })
-export class KycModalComponent {
+export class KYCModalComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
