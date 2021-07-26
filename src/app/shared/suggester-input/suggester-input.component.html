@@ -5,7 +5,7 @@ placeholder="Suggesters..."
 #hashtagSuggester
 />
 <ng-container *ngIf="isValidKey(); else notValidKeyMessage">
-    <tsl-multi-select-form [(ngModel)]="suggestions" [options]="options" ></tsl-multi-select-form>
+    <tsl-multi-select-form [(ngModel)]="suggestions" [options]="options" (change)="handleSelectedOption()"></tsl-multi-select-form>
 </ng-container> 
 
 <ng-template #notValidKeyMessage>
