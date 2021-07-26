@@ -20,7 +20,6 @@ import { MultiSelectValue } from './interfaces/multi-select-value.type';
 })
 export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectValue> {
   @Input() set options(value: SelectFormOption<string>[]) {
-    console.log('opt', value);
     this.extendedOptions = value.map((option) => {
       return { ...option, checked: false };
     });
@@ -37,6 +36,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
+    console.log('writeValue multi', this.value);
     this.mapCheckedValue();
   }
 
@@ -48,6 +48,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
       .map((option) => {
         return option.value;
       });
+    console.log('handle option,', this.value);
     this.onChange(this.value);
   }
 
@@ -56,7 +57,6 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
       option.checked = this.value.includes(option.value);
       return { ...option };
     });
-
     this.extendedOptionsSubject.next(this.extendedOptions);
   }
 }
