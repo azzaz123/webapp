@@ -825,7 +825,7 @@ describe('Service: User', () => {
     });
 
     describe('when user has address and lat', () => {
-      it('should return false', () => {
+      it('should return true', () => {
         const user: User = cloneDeep(MOCK_FULL_USER);
         user.extraInfo.address = 'test';
         user.extraInfo.latitude = 1.214;
@@ -836,7 +836,7 @@ describe('Service: User', () => {
     });
 
     describe('when user has address and long', () => {
-      it('should return false', () => {
+      it('should return true', () => {
         const user: User = cloneDeep(MOCK_FULL_USER);
         user.extraInfo.address = 'test';
         user.extraInfo.latitude = 0;
