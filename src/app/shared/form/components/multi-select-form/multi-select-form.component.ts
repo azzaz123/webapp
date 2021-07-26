@@ -25,7 +25,6 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
     });
 
     this.mapCheckedValue();
-
     this.extendedOptionsSubject.next(this.extendedOptions);
   }
   @Input() disabled: boolean = false;
@@ -36,7 +35,6 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
-    console.log('writeValue multi', this.value);
     this.mapCheckedValue();
   }
 
@@ -48,7 +46,6 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
       .map((option) => {
         return option.value;
       });
-    console.log('handle option,', this.value);
     this.onChange(this.value);
   }
 

@@ -16,7 +16,7 @@ import { SuggesterInputModule } from './suggester-input.module';
   template: `
     <form [formGroup]="formGroup">
       <h4 class="mt-4">Dynamic input: {{ formGroup.value.hashtag }}</h4>
-      <div *ngFor="let option of options">
+      <div *ngFor="let option of formGroup.value.hashtag">
         <tsl-cancel-bubble [bubbleText]="option"></tsl-cancel-bubble>
       </div>
       dynamic input
@@ -28,7 +28,7 @@ class StorySuggesterInputFormComponent {
   public formGroup = new FormGroup({
     hashtag: new FormControl(['aa', 'ss']),
   });
-  public options = this.formGroup.controls.hashtag.value;
+  //public options = this.formGroup.controls.hashtag.value;
 }
 export default {
   title: 'Webapp/Shared/SuggesterInput',
@@ -55,7 +55,7 @@ export default {
 const Template: Story<StorySuggesterInputFormComponent> = (args) => ({
   props: args,
   template: `
-  <tsl-story-suggester-input (onChangeHashtag)="onChangeHashtag($event)"></tsl-story-suggester-input>
+  <tsl-story-suggester-input></tsl-story-suggester-input>
     `,
 });
 
