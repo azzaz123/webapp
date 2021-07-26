@@ -9,15 +9,17 @@
     </div>
     <div class="row mt-2">
         <div class="col">
-            <tsl-banner *ngIf="requestCameraFailed else takingPictureSection" [specifications]="errorBannerSpecifications">
-                <div class="d-flex align-items-center">
-                    <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy}}
-                </div>
-            </tsl-banner>
+            <div *ngIf="requestCameraFailed else takingPictureSection" class="mx-3">
+                <tsl-banner [specifications]="errorBannerSpecifications">
+                    <div class="d-flex align-items-center">
+                        <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy}}
+                    </div>
+                </tsl-banner>
+            </div>
             <ng-template #takingPictureSection>
                 <div class="text-center">
                     <video autoplay="true" #userCamera></video>
-                    <tsl-button *ngIf="userPermissions === KYC_UPLOAD_IMAGES_STATUS.SUCCEED">Hacer foto (1/2)</tsl-button>
+                    <tsl-button *ngIf="userPermissions === KYC_UPLOAD_IMAGES_STATUS.ACCEPTED">Hacer foto (1/2)</tsl-button>
                 </div>
             </ng-template>
         </div>

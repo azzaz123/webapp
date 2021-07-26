@@ -21,8 +21,6 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     dismissible: false,
   };
 
-  constructor() {}
-
   ngOnInit(): void {
     if (this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT) {
       this.requestCameraPermissions();
@@ -38,16 +36,14 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
       navigator.mediaDevices
         .getUserMedia({ video: true })
         .then((stream) => {
-          this.userPermissions = KYC_UPLOAD_IMAGES_STATUS.SUCCEED;
+          this.userPermissions = KYC_UPLOAD_IMAGES_STATUS.ACCEPTED;
           this.userCamera.nativeElement.srcObject = stream;
         })
         .catch((error: DOMException) => {
           const errorMessage = error + '';
-          if (errorMessage.includes('Permission denied')) {
-            this.userPermissions = KYC_UPLOAD_IMAGES_STATUS.DENIED;
-          } else {
-            this.userPermissions = KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS;
-          }
+          this.userPermissions = errorMessage.includes('Permission denied')
+            ? KYC_UPLOAD_IMAGES_STATUS.DENIED
+            : KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS;
         });
     } else {
       this.userPermissions = KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS;
@@ -55,11 +51,13 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   }
 
   private endCameraStreamTracking(): void {
-    this.userCamera.nativeElement.srcObject.getTracks().forEach((track) => {
-      track.stop();
-    });
+    if (this.userCamera) {
+      this.userCamera.nativeElement.srcObject.getTracks().forEach((track) => {
+        track.stop();
+      });
 
-    this.userCamera.nativeElement.srcObject.srcObject = null;
+      this.userCamera.nativeElement.srcObject.srcObject = null;
+    }
   }
 
   get requestCameraFailed(): boolean {
