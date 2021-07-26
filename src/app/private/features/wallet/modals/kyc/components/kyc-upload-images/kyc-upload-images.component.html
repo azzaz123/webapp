@@ -1,2 +1,6 @@
-<tsl-banner *ngIf="requestCameraFailed" [specifications]="errorBannerSpecifications">{{cameraFailedCopy}}</tsl-banner>
+<tsl-banner class="mt-4 p-2" *ngIf="requestCameraFailed" [specifications]="errorBannerSpecifications">
+    <div class="d-flex align-items-center">
+        <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy}}
+    </div>
+</tsl-banner>
 <video autoplay="true" #usersCamera></video>
