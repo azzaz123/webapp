@@ -1,17 +1,15 @@
 @import '~style/common';
 
 .changeStoreLocationModal {
-  padding: 48px 48px 32px 48px;
+  padding: $spacing-xxl $spacing-xxl $spacing-xl $spacing-xxl;
   width: 768px;
-  text-align: center;
 
   @include media-breakpoint-down(md) {
-    padding: 36px 16px 20px 16px;
+    padding: $spacing-xl $spacing-m $spacing-ml $spacing-m;
     width: auto;
 
     &__container {
       max-width: 306px;
-
       img {
         width: 200px;
       }
@@ -19,8 +17,8 @@
   }
 
   &__title {
-    font-size: 20px;
-    font-weight: bold;
+    font-size: $font-size-l;
+    font-weight: $font-weight-chunky;
   }
 
   &__container {
@@ -29,7 +27,7 @@
   }
 
   &__subtitle {
-    color: #607d8b;
+    color: $blue-grey-2;
   }
 
   &__actions {
