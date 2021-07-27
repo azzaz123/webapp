@@ -1,7 +1,10 @@
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { ButtonModule } from '@shared/button/button.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { KYCImageOptionsComponent } from './kyc-image-options.component';
 import { KYC_TAKE_IMAGE_OPTIONS } from './kyc-image-options.enum';
@@ -25,9 +28,8 @@ describe('KYCImageOptionsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [KYCImageOptionsComponent],
-      imports: [FormsModule],
+      imports: [FormsModule, ButtonModule, SvgIconModule, HttpClientTestingModule],
       providers: [DeviceDetectorService],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -95,7 +97,7 @@ describe('KYCImageOptionsComponent', () => {
       expect(uploadOption.classList).not.toContain(selectedOptionSelector);
     });
 
-    it('hould show the shoot image message with the camera copy option', () => {
+    it('should show the shoot image message with the camera copy option', () => {
       const uploadOption: HTMLElement = de.query(By.css(shootImageOptionSelector)).nativeElement;
       const uploadOptionTitle = uploadOption.querySelector(titleOptionCopySelector).innerHTML;
 

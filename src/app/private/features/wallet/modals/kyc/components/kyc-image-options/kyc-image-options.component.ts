@@ -21,6 +21,10 @@ export class KYCImageOptionsComponent implements OnInit {
     this.imageMethod = this.isDesktop ? KYC_TAKE_IMAGE_OPTIONS.UPLOAD : KYC_TAKE_IMAGE_OPTIONS.SHOOT;
   }
 
+  public changeImageMethod(imageMethod: KYC_TAKE_IMAGE_OPTIONS): void {
+    this.imageMethod = imageMethod;
+  }
+
   get takeImageMessage(): string {
     // TODO: We need to ask Miquel for the copys		Date: 2021/07/21
     return this.isDesktop

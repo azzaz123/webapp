@@ -16,7 +16,7 @@
     <div class="row justify-content-center mt-2">
         <div class="col col-md-10 offset-md-1">
             <div class="row">
-                <div class="col" (click)="imageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD">
+                <div class="col" (click)="changeImageMethod(KYC_TAKE_IMAGE_OPTIONS.UPLOAD)">
                     <div id="uploadOption" class="GenericCard KYCImageOptions__option d-flex justify-content-between mb-3 p-4" [ngClass]="{'KYCImageOptions__option--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD}"> 
                         <div class="d-flex flex-column text-left mr-4">
                             <span class="GenericCard__title KYCImageOptions__option__title mb-0" i18n="@@kyc_upload_image_option">Upload a photo of your document</span>
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col" (click)="imageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT">
+                <div class="col" (click)="changeImageMethod(KYC_TAKE_IMAGE_OPTIONS.SHOOT)">
                     <div id="shootOption" class="GenericCard KYCImageOptions__option d-flex justify-content-between p-4" [ngClass]="{'KYCImageOptions__option--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT}">
                         <div class="d-flex flex-column text-left mr-4">
                             <span class="GenericCard__title KYCImageOptions__option__title mb-0">{{takeImageMessage}}</span>
