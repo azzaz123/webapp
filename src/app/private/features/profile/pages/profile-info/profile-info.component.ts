@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
-import { Coordinate } from '@core/geolocation/address-response.interface';
+import { Coordinate, StoreLocation } from '@core/geolocation/address-response.interface';
 import { User } from '@core/user/user';
 import { UserProInfo } from '@core/user/user-info.interface';
 import { UserService } from '@core/user/user.service';
@@ -11,7 +11,7 @@ import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.
 import { metadata } from 'assets/js/metadata-phonenumber';
 import { isValidNumber } from 'libphonenumber-js/custom';
 import * as moment from 'moment';
-import { finalize, take } from 'rxjs/operators';
+import { finalize, map, mergeMap, take, tap } from 'rxjs/operators';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { Router } from '@angular/router';
@@ -28,6 +28,8 @@ import {
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
+import { isEqual } from 'lodash-es';
+import { Observable, of } from 'rxjs';
 
 export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
@@ -39,6 +41,7 @@ export enum ANALYTICS_FIELDS {
   OPENING_HOURS = 'opening hours',
   PHONE = 'phone',
   WEB = 'web',
+  SHOP_ADDRESS = 'shop address',
 }
 
 @Component({
@@ -84,6 +87,11 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
         longitude: ['', [Validators.required]],
       }),
       link: '',
+      storeLocation: this.fb.group({
+        address: [''],
+        latitude: [0],
+        longitude: [0],
+      }),
     });
   }
 
@@ -144,6 +152,16 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
         opening_hours: this.userInfo.opening_hours,
         link: this.userInfo.link,
       };
+      if (this.userService.hasStoreLocation(this.user)) {
+        userData = {
+          ...userData,
+          storeLocation: {
+            latitude: this.user.extraInfo.latitude,
+            longitude: this.user.extraInfo.longitude,
+            address: this.user.extraInfo.address,
+          },
+        };
+      }
     }
 
     this.profileForm.patchValue(userData);
@@ -185,8 +203,11 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     if (this.profileForm.valid) {
       const profileFormValue = { ...this.profileForm.value };
       const profileFormLocation = profileFormValue.location;
+      const profileFormStoreLocation = profileFormValue.storeLocation;
 
       delete profileFormValue.location;
+      delete profileFormValue.storeLocation;
+
       this.loading = true;
 
       this.userService.updateProInfo(profileFormValue).subscribe(() => {
@@ -198,6 +219,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
             gender: this.user.gender ? this.user.gender.toUpperCase().substr(0, 1) : null,
           })
           .pipe(
+            mergeMap(() => this.checkAndSaveStoreLocation(profileFormStoreLocation)),
             finalize(() => {
               this.loading = false;
               this.formComponent.initFormControl();
@@ -254,6 +276,24 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       }
       this.manageModal();
     }
+  }
+
+  private checkAndSaveStoreLocation(storeLocationValue: StoreLocation): Observable<boolean> {
+    const savedStoreLocation: StoreLocation = {
+      latitude: this.user.extraInfo?.latitude || 0,
+      longitude: this.user.extraInfo?.longitude || 0,
+      address: this.user.extraInfo?.address || '',
+    };
+    if (isEqual(storeLocationValue, savedStoreLocation)) {
+      return of(false);
+    }
+
+    return this.userService.updateStoreLocation(storeLocationValue).pipe(
+      tap((response) => {
+        // TODO ADD MODAl
+      }),
+      map(() => true)
+    );
   }
 
   public onMapContainerVisible(): void {
