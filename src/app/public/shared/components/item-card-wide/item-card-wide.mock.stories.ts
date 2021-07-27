@@ -1,10 +1,11 @@
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { ITEM_DATA } from '@fixtures/item.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 export const MOCK_ITEM_CARD_WIDE: ItemCard = {
   id: ITEM_DATA.id,
-  categoryId: 100,
+  categoryId: CATEGORY_IDS.CAR,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
@@ -21,7 +22,7 @@ export const MOCK_ITEM_CARD_WIDE_WITH_SPECS: ItemCard = {
 
 export const MOCK_ITEM_CARD_WIDE_GBP: ItemCard = {
   id: ITEM_DATA.id,
-  categoryId: 100,
+  categoryId: CATEGORY_IDS.CAR,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
@@ -33,7 +34,7 @@ export const MOCK_ITEM_CARD_WIDE_GBP: ItemCard = {
 
 export const MOCK_ITEM_CARD_WIDE_FAVOURITE: ItemCard = {
   id: ITEM_DATA.id,
-  categoryId: 100,
+  categoryId: CATEGORY_IDS.CAR,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
@@ -54,7 +55,7 @@ export const MOCK_ITEM_CARD_WIDE_FAVOURITE: ItemCard = {
 
 export const MOCK_ITEM_CARD_WIDE_RESERVED: ItemCard = {
   id: ITEM_DATA.id,
-  categoryId: 100,
+  categoryId: CATEGORY_IDS.CAR,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
@@ -75,7 +76,7 @@ export const MOCK_ITEM_CARD_WIDE_RESERVED: ItemCard = {
 
 export const MOCK_ITEM_CARD_WIDE_SOLD: ItemCard = {
   id: ITEM_DATA.id,
-  categoryId: 100,
+  categoryId: CATEGORY_IDS.CAR,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
@@ -96,7 +97,7 @@ export const MOCK_ITEM_CARD_WIDE_SOLD: ItemCard = {
 
 export const MOCK_ITEM_CARD_WIDE_BUMPED: ItemCard = {
   id: ITEM_DATA.id,
-  categoryId: 100,
+  categoryId: CATEGORY_IDS.CAR,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
@@ -116,7 +117,7 @@ export const MOCK_ITEM_CARD_WIDE_BUMPED: ItemCard = {
 
 export const MOCK_ITEM_CARD_WIDE_COUNTRY_BUMPED: ItemCard = {
   id: ITEM_DATA.id,
-  categoryId: 100,
+  categoryId: CATEGORY_IDS.CAR,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
@@ -136,7 +137,7 @@ export const MOCK_ITEM_CARD_WIDE_COUNTRY_BUMPED: ItemCard = {
 
 export const MOCK_ITEM_CARD_WIDE_WITHOUT_IMAGES: ItemCard = {
   id: ITEM_DATA.id,
-  categoryId: 100,
+  categoryId: CATEGORY_IDS.CAR,
   title: ITEM_DATA.title,
   description: ITEM_DATA.description,
   salePrice: ITEM_DATA.sale_price,
