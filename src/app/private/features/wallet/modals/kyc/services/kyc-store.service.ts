@@ -4,21 +4,21 @@ import { KYCSpecifications } from '../interfaces/kyc-specifications.interface';
 
 @Injectable()
 export class KYCStoreService {
-  private readonly _specifications = new BehaviorSubject<KYCSpecifications>({
+  private readonly specificationsSubject = new BehaviorSubject<KYCSpecifications>({
     nationality: null,
     documentation: null,
     imageMethod: null,
   });
 
   get specifications(): KYCSpecifications {
-    return this._specifications.getValue();
+    return this.specificationsSubject.getValue();
   }
 
   get specifications$(): Observable<KYCSpecifications> {
-    return this._specifications.asObservable();
+    return this.specificationsSubject.asObservable();
   }
 
   set specifications(specifications: KYCSpecifications) {
-    this._specifications.next(specifications);
+    this.specificationsSubject.next(specifications);
   }
 }
