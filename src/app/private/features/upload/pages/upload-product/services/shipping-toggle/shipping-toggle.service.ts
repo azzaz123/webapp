@@ -9,7 +9,7 @@ import { catchError, map } from 'rxjs/operators';
 @Injectable()
 export class ShippingToggleService {
   private shippingRulesSubject: ReplaySubject<ShippingRules> = new ReplaySubject<ShippingRules>();
-  private shippingRules: ShippingRules;
+  public shippingRules: ShippingRules;
 
   constructor(private featureFlagService: FeatureFlagService, private deliveryRulesApiService: DeliveryRulesApiService) {
     this.deliveryRulesApiService.getRules().subscribe((shippingRules) => {
