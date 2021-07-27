@@ -8,7 +8,7 @@ import { DEFAULT_PERMISSIONS } from '@core/user/user-constants';
 import { FeatureFlag, INIT_FEATURE_FLAGS } from '@core/user/featureflag-constants';
 import { MonitoringService } from '@core/monitoring/services/monitoring.service';
 import { APP_LOCALE, SUBDOMAIN, SUBDOMAINS } from 'configs/subdomains.config';
-import {MARKET_PROVIDER, MarketSiteByLocale} from '../configs/market.config';
+import { MARKET_PROVIDER, MarketSiteByLocale } from '../configs/market.config';
 
 export const PROVIDERS: Provider[] = [
   {
@@ -19,7 +19,7 @@ export const PROVIDERS: Provider[] = [
   {
     provide: MARKET_PROVIDER,
     useFactory: MarketSiteByLocale,
-    deps: [LOCALE_ID]
+    deps: [LOCALE_ID],
   },
   {
     provide: APP_INITIALIZER,

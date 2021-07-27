@@ -4,7 +4,7 @@ import { finalize, take } from 'rxjs/operators';
 import { Review } from '@private/features/reviews/core/review';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 import { ReviewsApiService } from '@api/reviews/reviews-api.service';
-import { PaginatedList } from '@api/core/model/paginated-list.interface';
+import { PaginatedList } from '@api/core/model';
 
 @Component({
   selector: 'tsl-user-reviews',

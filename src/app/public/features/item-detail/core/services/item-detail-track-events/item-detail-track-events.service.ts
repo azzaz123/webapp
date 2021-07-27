@@ -32,7 +32,7 @@ import { finalize, take } from 'rxjs/operators';
 export class ItemDetailTrackEventsService {
   constructor(private analyticsService: AnalyticsService, private userService: UserService, private typeCheckService: TypeCheckService) {}
 
-  public trackFavouriteOrUnfavouriteEvent(item: Item | ItemCard, isPro: boolean): void {
+  public trackFavouriteOrUnfavouriteEvent(item: Item | ItemCard, isPro?: boolean): void {
     const event: AnalyticsEvent<FavoriteItem | UnfavoriteItem> = {
       name: item.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
@@ -64,7 +64,7 @@ export class ItemDetailTrackEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickItemCardEvent(recommendedItemCard: ItemCard, sourceItem: Item, recommenedItemOwner: User, index: number): void {
+  public trackClickItemCardEvent(recommendedItemCard: ItemCard, sourceItem: Item, index: number, recommenedItemOwner?: User): void {
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -73,7 +73,7 @@ export class ItemDetailTrackEventsService {
         categoryId: recommendedItemCard.categoryId,
         position: index + 1,
         screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
-        isPro: recommenedItemOwner.featured,
+        isPro: recommenedItemOwner?.featured,
         salePrice: recommendedItemCard.salePrice,
         title: recommendedItemCard.title,
         itemSourceRecommendationId: sourceItem.id,
