@@ -1,16 +1,19 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ButtonComponent } from '@shared/button/button.component';
 import { ChangeStoreLocationModal } from './change-store-location-modal.component';
 
-describe('BecomeProModalComponent', () => {
+describe('ChangeStoreLocationModal', () => {
   let component: ChangeStoreLocationModal;
   let fixture: ComponentFixture<ChangeStoreLocationModal>;
+  let activeModal: NgbActiveModal;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ChangeStoreLocationModal],
+        declarations: [ChangeStoreLocationModal, ButtonComponent],
         providers: [NgbActiveModal],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -20,24 +23,41 @@ describe('BecomeProModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ChangeStoreLocationModal);
     component = fixture.componentInstance;
+    activeModal = TestBed.inject(NgbActiveModal);
+    spyOn(activeModal, 'close').and.callThrough();
+    spyOn(activeModal, 'dismiss').and.callThrough();
   });
 
-  describe('CTA text', () => {
-    beforeEach(() => {
-      spyOn(window as any, '$localize');
+  describe('CTA button', () => {
+    it('should close modal', () => {
+      const ctaButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+
+      ctaButton.click();
+
+      expect(activeModal.close).toHaveBeenCalledTimes(1);
+      expect(activeModal.close).toHaveBeenCalledWith();
     });
+  });
 
-    it('should show trial text', () => {
-      component.hasTrialAvailable = true;
-      fixture.detectChanges();
+  describe('secondary button', () => {
+    it('should dismiss modal', () => {
+      const secondaryButton: HTMLElement = fixture.debugElement.query(By.css('.changeStoreLocationModal__secondaryAction')).nativeElement;
 
-      expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@web_free_trial:')]);
+      secondaryButton.click();
+
+      expect(activeModal.dismiss).toHaveBeenCalledTimes(1);
+      expect(activeModal.dismiss).toHaveBeenCalledWith();
     });
+  });
 
-    it('should show default text', () => {
-      fixture.detectChanges();
+  describe('close button', () => {
+    it('should dismiss modal', () => {
+      const closeButton: HTMLElement = fixture.debugElement.query(By.css('.changeStoreLocationModal__close')).nativeElement;
 
-      expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@web_know_more:')]);
+      closeButton.click();
+
+      expect(activeModal.dismiss).toHaveBeenCalledTimes(1);
+      expect(activeModal.dismiss).toHaveBeenCalledWith();
     });
   });
 });

@@ -1,5 +1,5 @@
 <div class="changeStoreLocationModal d-flex flex-column align-items-center text-center">
-  <div class="changeStoreLocationModal__close" (click)="activeModal.close()">
+  <div class="changeStoreLocationModal__close" (click)="activeModal.dismiss()">
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
   <div class="changeStoreLocationModal__container">
@@ -14,7 +14,7 @@
     </div>
     <div class="changeStoreLocationModal__actions w-100">
       <div class="mb-2">
-        <span class="changeStoreLocationModal__actions-optional" (click)="activeModal.close()"
+        <span class="changeStoreLocationModal__secondaryAction" (click)="activeModal.dismiss()"
         i18n="@@upload_pro_user_modal_shop_item_location_missmatch_cancel_button">Not now, thanks</span>
       </div>
       <tsl-button class="w-100" className="btn-primary btn-primary--bold w-100"
