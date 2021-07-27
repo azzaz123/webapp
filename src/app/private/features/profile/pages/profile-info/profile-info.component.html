@@ -65,7 +65,7 @@
             <div class="col-12 col-md-6 offset-md-1">
               <input (click)="openBecomeProModal(ANALYTICS_FIELDS.PHONE)" type="text" class="form-control" id="phone_number"
                 formControlName="phone_number" [readonly]="!isPro" />
-              <span class="tracking-phone-info" *ngIf="isPro" i18n="@@web_profile_pages_info_298">This telephone number will never be public, we will
+              <span class="tracking-phone-info" *ngxPermissionsOnly="PERMISSIONS.professional" i18n="@@web_profile_pages_info_298">This telephone number will never be public, we will
                 assign you a tracking number and it will be what customers will see.</span>
             </div>
           </div>
