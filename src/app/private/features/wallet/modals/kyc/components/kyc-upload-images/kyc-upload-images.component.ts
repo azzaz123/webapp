@@ -15,7 +15,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
 
   public readonly KYC_UPLOAD_IMAGES_STATUS = KYC_UPLOAD_IMAGES_STATUS;
-  public userPermissions: KYC_UPLOAD_IMAGES_STATUS;
+  public userCameraPermissions: KYC_UPLOAD_IMAGES_STATUS;
   public errorBannerSpecifications: NgbAlertConfig = {
     type: 'danger',
     dismissible: false,
@@ -32,40 +32,43 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   }
 
   private requestCameraPermissions(): void {
-    if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
+    if (navigator.mediaDevices?.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia({ video: true })
-        .then((stream) => {
-          this.userPermissions = KYC_UPLOAD_IMAGES_STATUS.ACCEPTED;
+        .then((stream: MediaStream) => {
+          this.userCameraPermissions = KYC_UPLOAD_IMAGES_STATUS.ACCEPTED;
           this.userCamera.nativeElement.srcObject = stream;
         })
         .catch((error: DOMException) => {
           const errorMessage = error + '';
-          this.userPermissions = errorMessage.includes('Permission denied')
+          this.userCameraPermissions = errorMessage.includes('Permission denied')
             ? KYC_UPLOAD_IMAGES_STATUS.DENIED
             : KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS;
         });
     } else {
-      this.userPermissions = KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS;
+      this.userCameraPermissions = KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS;
     }
   }
 
   private endCameraStreamTracking(): void {
-    if (this.userCamera) {
+    if (this.userCamera?.nativeElement?.srcObject) {
       this.userCamera.nativeElement.srcObject.getTracks().forEach((track) => {
         track.stop();
       });
 
-      this.userCamera.nativeElement.srcObject.srcObject = null;
+      this.userCamera.nativeElement.srcObject = null;
     }
   }
 
   get requestCameraFailed(): boolean {
-    return this.userPermissions === KYC_UPLOAD_IMAGES_STATUS.DENIED || this.userPermissions === KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS;
+    return (
+      this.userCameraPermissions === KYC_UPLOAD_IMAGES_STATUS.DENIED ||
+      this.userCameraPermissions === KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS
+    );
   }
 
   get cameraFailedCopy(): string {
-    return this.userPermissions === KYC_UPLOAD_IMAGES_STATUS.DENIED
+    return this.userCameraPermissions === KYC_UPLOAD_IMAGES_STATUS.DENIED
       ? $localize`:@@kyc_camera_access_refused:You must accept the permissions to be able to take photos`
       : $localize`:@@kyc_camera_cannot_access:Oops, an error occurred and we cannot access your camera`;
   }
