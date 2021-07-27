@@ -4,7 +4,8 @@ import { DeliveryRulesApiService } from '@api/bff/delivery/rules/delivery-rules-
 import { mapShippingRulesResponseToShippingRules } from '@api/bff/delivery/rules/mappers/shipping-rules-mapper';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { of } from 'rxjs';
-import { ShippingToggleAllowance, ShippingToggleService } from './shipping-toggle.service';
+import { ShippingToggleAllowance } from './interfaces/shipping-toggle-allowance.interface';
+import { ShippingToggleService } from './shipping-toggle.service';
 
 describe('ShippingToggleService', () => {
   let service: ShippingToggleService;

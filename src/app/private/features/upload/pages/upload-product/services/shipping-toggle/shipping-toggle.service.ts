@@ -5,12 +5,7 @@ import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-
-export interface ShippingToggleAllowance {
-  category: boolean;
-  subcategory: boolean;
-  price: boolean;
-}
+import { ShippingToggleAllowance } from './interfaces/shipping-toggle-allowance.interface';
 
 @Injectable()
 export class ShippingToggleService {
