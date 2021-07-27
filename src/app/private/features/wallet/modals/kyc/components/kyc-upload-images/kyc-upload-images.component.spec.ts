@@ -12,6 +12,9 @@ import { KYCUploadImagesComponent } from './kyc-upload-images.component';
 
 describe('KYCUploadImagesComponent', () => {
   const mediaStreamConstraints = { video: true };
+  const MOCK_MEDIA_STREAM = {
+    getTracks: () => [],
+  };
 
   let component: KYCUploadImagesComponent;
   let fixture: ComponentFixture<KYCUploadImagesComponent>;
@@ -43,7 +46,7 @@ describe('KYCUploadImagesComponent', () => {
       describe('and the user accept the permission', () => {
         beforeEach(() => {
           allowCameraPermissions();
-          spyOn(navigator.mediaDevices, 'getUserMedia').and.callFake(() => Promise.resolve('stream'));
+          spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
 
           fixture.detectChanges();
         });
@@ -57,38 +60,38 @@ describe('KYCUploadImagesComponent', () => {
         });
 
         it('should define the webcam video stream', () => {
-          expect(component.userCamera.nativeElement.srcObject).toBe('stream');
+          expect(component.userCamera.nativeElement.srcObject).toStrictEqual(MOCK_MEDIA_STREAM);
         });
 
-        it('should show the video on the template', fakeAsync(() => {
-          tick();
+        it('should show the video on the template', async () => {
+          await fixture.whenStable();
           fixture.detectChanges();
 
           const usersCamera = de.query(By.css('video'));
           expect(usersCamera).toBeTruthy();
-        }));
+        });
 
-        it('should show the take image button ', fakeAsync(() => {
-          tick();
+        it('should show the take image button ', async () => {
+          await fixture.whenStable();
           fixture.detectChanges();
 
           const shootImageButton = de.query(By.css('#shootImageButton'));
           expect(shootImageButton).toBeTruthy();
-        }));
+        });
 
-        it('should NOT show an error banner', fakeAsync(() => {
-          tick();
+        it('should NOT show an error banner', async () => {
+          await fixture.whenStable();
           fixture.detectChanges();
 
           const banner = de.query(By.directive(BannerComponent));
           expect(banner).toBeFalsy();
-        }));
+        });
       });
 
       describe('and the user denied the permission', () => {
         beforeEach(() => {
           setCameraPermissionsError(true);
-          spyOn(navigator.mediaDevices, 'getUserMedia').and.callFake(() => Promise.reject('DOMException: Permission denied'));
+          spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
 
           fixture.detectChanges();
         });
@@ -101,19 +104,19 @@ describe('KYCUploadImagesComponent', () => {
           expect(component.userCameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.DENIED);
         });
 
-        it('should show an error banner', fakeAsync(() => {
-          tick();
+        it('should show an error banner', async () => {
+          await fixture.whenStable();
           fixture.detectChanges();
 
           const banner = de.query(By.directive(BannerComponent));
           expect(banner).toBeTruthy();
-        }));
+        });
       });
 
       describe('and a problem other than permit rejection occurs', () => {
         beforeEach(() => {
           setCameraPermissionsError(false);
-          spyOn(navigator.mediaDevices, 'getUserMedia').and.callFake(() => Promise.reject());
+          spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
 
           fixture.detectChanges();
         });
@@ -126,13 +129,13 @@ describe('KYCUploadImagesComponent', () => {
           expect(component.userCameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS);
         });
 
-        it('should show an error banner', fakeAsync(() => {
-          tick();
+        it('should show an error banner', async () => {
+          await fixture.whenStable();
           fixture.detectChanges();
 
           const banner = de.query(By.directive(BannerComponent));
           expect(banner).toBeTruthy();
-        }));
+        });
       });
     });
 
@@ -147,13 +150,13 @@ describe('KYCUploadImagesComponent', () => {
         expect(component.userCameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS);
       });
 
-      it('should show an error banner', fakeAsync(() => {
-        tick();
+      it('should show an error banner', async () => {
+        await fixture.whenStable();
         fixture.detectChanges();
 
         const banner = de.query(By.directive(BannerComponent));
         expect(banner).toBeTruthy();
-      }));
+      });
     });
   });
 
@@ -169,12 +172,12 @@ describe('KYCUploadImagesComponent', () => {
     });
   });
 
-  xdescribe('ngOnDestroy', () => {
+  describe('ngOnDestroy', () => {
     describe('and the user camera is active', () => {
       beforeEach(() => {
         component.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
         allowCameraPermissions();
-        spyOn(navigator.mediaDevices, 'getUserMedia').and.callFake(() => Promise.resolve('stream'));
+        spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
 
         fixture.detectChanges();
       });
@@ -189,7 +192,7 @@ describe('KYCUploadImagesComponent', () => {
 
   function setCameraPermissionsAsNotSupported(): void {
     Object.defineProperty(navigator, 'mediaDevices', {
-      value: null,
+      value: () => null,
     });
   }
 
@@ -198,7 +201,7 @@ describe('KYCUploadImagesComponent', () => {
 
     Object.defineProperty(navigator, 'mediaDevices', {
       value: {
-        getUserMedia: Promise.reject(error),
+        getUserMedia: () => Promise.reject(error),
       },
     });
   }
@@ -206,7 +209,7 @@ describe('KYCUploadImagesComponent', () => {
   function allowCameraPermissions(): void {
     Object.defineProperty(navigator, 'mediaDevices', {
       value: {
-        getUserMedia: Promise.resolve(),
+        getUserMedia: () => Promise.resolve(MOCK_MEDIA_STREAM),
       },
     });
   }
