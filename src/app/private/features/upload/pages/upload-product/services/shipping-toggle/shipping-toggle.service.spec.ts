@@ -4,7 +4,7 @@ import { DeliveryRulesApiService } from '@api/bff/delivery/rules/delivery-rules-
 import { mapShippingRulesResponseToShippingRules } from '@api/bff/delivery/rules/mappers/shipping-rules-mapper';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { of } from 'rxjs';
-import { ShippingToggleService } from './shipping-toggle.service';
+import { ShippingToggleAllowance, ShippingToggleService } from './shipping-toggle.service';
 
 describe('ShippingToggleService', () => {
   let service: ShippingToggleService;
@@ -56,8 +56,14 @@ describe('ShippingToggleService', () => {
       const allowedPrice = 2;
 
       it('should return allowance to true', (done) => {
-        service.isAllowed(allowedCategoryId, allowedSubategoryId, allowedPrice).subscribe((isAllowed) => {
-          expect(isAllowed).toBeTruthy();
+        const expected: ShippingToggleAllowance = {
+          category: true,
+          subcategory: true,
+          price: true,
+        };
+
+        service.isAllowed(allowedCategoryId, allowedSubategoryId, allowedPrice).subscribe((shippingToggleAllowance) => {
+          expect(shippingToggleAllowance).toEqual(expected);
           done();
         });
       });
@@ -70,27 +76,42 @@ describe('ShippingToggleService', () => {
 
       it('should return allowance to false if category is not allowed', (done) => {
         const notAllowedCategoryId = FALLBACK_SHIPPING_RULES_RESPONSE.categories_with_shipping_not_allowed[0].toString();
+        const expected: ShippingToggleAllowance = {
+          category: false,
+          subcategory: true,
+          price: true,
+        };
 
-        service.isAllowed(notAllowedCategoryId, allowedSubategoryId, allowedPrice).subscribe((isAllowed) => {
-          expect(isAllowed).toBeFalsy();
+        service.isAllowed(notAllowedCategoryId, allowedSubategoryId, allowedPrice).subscribe((shippingToggleAllowance) => {
+          expect(shippingToggleAllowance).toEqual(expected);
           done();
         });
       });
 
       it('should return allowance to false if subcategory is not allowed', (done) => {
         const notAllowedSubategoryId = FALLBACK_SHIPPING_RULES_RESPONSE.subcategories_with_shipping_not_allowed[0].toString();
+        const expected: ShippingToggleAllowance = {
+          category: true,
+          subcategory: false,
+          price: true,
+        };
 
-        service.isAllowed(allowedCategoryId, notAllowedSubategoryId, allowedPrice).subscribe((isAllowed) => {
-          expect(isAllowed).toBeFalsy();
+        service.isAllowed(allowedCategoryId, notAllowedSubategoryId, allowedPrice).subscribe((shippingToggleAllowance) => {
+          expect(shippingToggleAllowance).toEqual(expected);
           done();
         });
       });
 
       it('should return allowance to false if price is not allowed', (done) => {
         const notAllowedPrice = 0;
+        const expected: ShippingToggleAllowance = {
+          category: true,
+          subcategory: true,
+          price: false,
+        };
 
-        service.isAllowed(allowedCategoryId, allowedSubategoryId, notAllowedPrice).subscribe((isAllowed) => {
-          expect(isAllowed).toBeFalsy();
+        service.isAllowed(allowedCategoryId, allowedSubategoryId, notAllowedPrice).subscribe((shippingToggleAllowance) => {
+          expect(shippingToggleAllowance).toEqual(expected);
           done();
         });
       });

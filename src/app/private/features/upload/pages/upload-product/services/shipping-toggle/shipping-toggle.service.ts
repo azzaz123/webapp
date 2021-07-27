@@ -6,6 +6,12 @@ import { FeatureFlagService } from '@core/user/featureflag.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+export interface ShippingToggleAllowance {
+  category: boolean;
+  subcategory: boolean;
+  price: boolean;
+}
+
 @Injectable()
 export class ShippingToggleService {
   private shippingRulesSubject: ReplaySubject<ShippingRules> = new ReplaySubject<ShippingRules>();
@@ -24,23 +30,39 @@ export class ShippingToggleService {
     );
   }
 
-  isAllowed(categoryId: string, subcategoryId: string, price: number): Observable<boolean> {
+  isAllowed(categoryId: string, subcategoryId: string, price: number): Observable<ShippingToggleAllowance> {
     if (!this.shippingRules) {
       return this.shippingRulesSubject.asObservable().pipe(
         map((shippingRules) => {
           this.shippingRules = shippingRules;
-          return this.isActiveByShippingRules(categoryId, subcategoryId, price);
+          return {
+            category: this.isAllowedByCategoryShippingRules(categoryId),
+            subcategory: this.isAllowedBySubcategoryShippingRules(subcategoryId),
+            price: this.isAllowedByPriceShippingRules(price),
+          };
         })
       );
     } else {
-      return of(this.isActiveByShippingRules(categoryId, subcategoryId, price));
+      return of({
+        category: this.isAllowedByCategoryShippingRules(categoryId),
+        subcategory: this.isAllowedBySubcategoryShippingRules(subcategoryId),
+        price: this.isAllowedByPriceShippingRules(price),
+      });
     }
   }
 
-  private isActiveByShippingRules(categoryId: string, subcategoryId: string, price: number): boolean {
+  private isAllowedByCategoryShippingRules(categoryId: string): boolean {
     const categoryAllowed = !this.shippingRules.categoriesNotAllowed.includes(parseInt(categoryId));
+    return categoryAllowed;
+  }
+
+  private isAllowedBySubcategoryShippingRules(subcategoryId: string): boolean {
     const subcategoryAllowed = !this.shippingRules.subcategoriesNotAllowed.includes(parseInt(subcategoryId));
+    return subcategoryAllowed;
+  }
+
+  private isAllowedByPriceShippingRules(price: number): boolean {
     const priceAllowed = price >= this.shippingRules.priceRangeAllowed.minPrice && price <= this.shippingRules.priceRangeAllowed.maxPrice;
-    return categoryAllowed && subcategoryAllowed && priceAllowed;
+    return priceAllowed;
   }
 }
