@@ -7,8 +7,8 @@ import {
   SubscriptionSlotResponse,
   SubscriptionSlotGeneralResponse,
   SUBSCRIPTION_MARKETS,
+  TierDiscount,
 } from './subscriptions.interface';
-import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
@@ -248,6 +248,10 @@ export class SubscriptionsService {
 
   public hasOneTierDiscount(subscription: SubscriptionsResponse): boolean {
     return subscription.tiers.some((tier) => this.isDiscountedTier(tier));
+  }
+
+  public getDefaultDiscount(subscription: SubscriptionsResponse): TierDiscount {
+    return subscription.tiers.find((tier) => tier.discount_available)?.discount_available;
   }
 
   public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {

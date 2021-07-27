@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
-import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, TierDiscount } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 
 @Component({
@@ -10,20 +9,15 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 })
 export class SubscriptionPriceDiscountComponent {
   @Input() subscription: SubscriptionsResponse;
-  public loading = true;
-  public priceDiscount: SubscriptionBenefit[];
+  public discount: TierDiscount;
 
   constructor(private subscriptionsService: SubscriptionsService) {}
 
-  public hasTrial(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.hasTrial(subscription);
+  ngOnInit() {
+    this.getDiscount(this.subscription);
   }
 
-  public hasOneTierDiscount(subscription: SubscriptionsResponse) {
-    return this.subscriptionsService.hasOneTierDiscount(subscription);
-  }
-
-  public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.hasOneFreeTier(subscription);
+  public getDiscount(subscription: SubscriptionsResponse): void {
+    this.discount = this.subscriptionsService.getDefaultDiscount(subscription);
   }
 }

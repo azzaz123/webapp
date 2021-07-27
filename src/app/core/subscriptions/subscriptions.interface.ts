@@ -18,8 +18,9 @@ export interface Tier {
 }
 
 export interface TierDiscount {
-  months: number;
   discounted_price: number;
+  end_date: number;
+  percentage: number;
 }
 
 export enum SUBSCRIPTION_MARKETS {

@@ -6,8 +6,7 @@
   .Subscriptions__category-info {
     &--discounted {
       text-decoration: line-through;
-      justify-content: center;
-      display: flex;
+      color: $blue-grey-3;
     }
   }
 
