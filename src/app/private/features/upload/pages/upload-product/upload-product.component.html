@@ -78,7 +78,27 @@
         </div>
       </div>
       <ng-template #coachmarkPrice>
-        <div i18n="@@web_upload_product_coachmark_price">Add a fair price and the category that best suits your item.</div>
+        <div *ngIf="!isShippabilityActive" i18n="@@web_upload_product_coachmark_price">
+          Add a fair price and the category that best suits your item.
+        </div>
+        <ng-container *ngIf="isShippabilityActive">
+          <div
+            *ngIf="
+              uploadForm.controls.sale_price.value >= priceShippingRules.minPrice &&
+              uploadForm.controls.sale_price.value <= priceShippingRules.maxPrice
+            "
+            i18n="@@web_upload_product_coachmark_price"
+          >
+            Add a fair price and the category that best suits your item.
+          </div>
+
+          <div *ngIf="uploadForm.controls.sale_price.value < priceShippingRules.minPrice" i18n="">
+            Products priced at €1 euro or less can't be shipped.
+          </div>
+          <div *ngIf="uploadForm.controls.sale_price.value > priceShippingRules.maxPrice" i18n="">
+            Products priced at €1,000 or more can't be shipped.
+          </div>
+        </ng-container>
       </ng-template>
     </div>
 

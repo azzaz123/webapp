@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ShippingRulesPriceRangeAllowed } from '@api/bff/delivery/rules/dtos/shipping-rules';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -123,6 +124,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public isShippabilityActive = false;
   public isShippabilityAllowed = false;
+  public priceShippingRules: ShippingRulesPriceRangeAllowed;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
 
   constructor(
@@ -913,6 +915,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
       this.shippingToggleService.isAllowed(categoryId, subcategoryId, price).subscribe((isAllowed) => {
         this.isShippabilityAllowed = isAllowed;
+        this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
 
         if (this.isShippabilityAllowed) {
         } else {
