@@ -98,9 +98,6 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   }
 
   initForm() {
-    /*     this.modalService.open(ChangeStoreLocationModal, {
-      windowClass: 'become-pro',
-    }) */
     this.userService
       .getUserCover()
       .pipe(
@@ -132,7 +129,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     );
   }
 
-  private setLocation(userLocation: UserLocation): any {
+  private mapUserLocation(userLocation: UserLocation): Partial<UserLocation> {
     return {
       address: userLocation.title,
       latitude: userLocation.approximated_latitude,
@@ -149,7 +146,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     if (this.user.location) {
       userData = {
         ...userData,
-        location: this.setLocation(this.user.location),
+        location: this.mapUserLocation(this.user.location),
       };
     }
 
@@ -277,7 +274,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     return this.userService.updateLocation(newLocation).pipe(
       tap((newUserLocation) => {
         this.userService.user.location = newUserLocation;
-        this.profileForm.patchValue({ location: this.setLocation(newUserLocation) });
+        this.profileForm.patchValue({ location: this.mapUserLocation(newUserLocation) });
         this.userService.updateSearchLocationCookies(newLocation);
         this.formComponent.initFormControl();
       })
@@ -308,7 +305,6 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     return this.userService.updateStoreLocation(storeLocationValue).pipe(
       tap((response) => {
         if (response.check_change_location) {
-          console.log('test', response.check_change_location);
           this.openChangeStoreLocationModal();
         }
       }),
@@ -316,31 +312,29 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     );
   }
 
-  private openChangeStoreLocationModal() {
+  private openChangeStoreLocationModal(): void {
     const modalRef = this.modalService.open(ChangeStoreLocationModal, {
       windowClass: 'change-store-location',
     });
 
     modalRef.result.then(
-      () => {
-        const profileFormValue = { ...this.profileForm.value };
-        const profileFormStoreLocation = profileFormValue.storeLocation;
-        const newLocation: Coordinate = {
-          latitude: profileFormStoreLocation.latitude,
-          longitude: profileFormStoreLocation.longitude,
-          name: profileFormStoreLocation.address,
-        };
-        this.loading = true;
-        this.updateUserLocation(newLocation)
-          .pipe(
-            finalize(() => {
-              this.loading = false;
-            })
-          )
-          .subscribe();
-      },
-      () => null
+      () => this.changeUserLocationByShopLocation(),
+      () => {}
     );
+  }
+
+  private changeUserLocationByShopLocation(): void {
+    const profileFormValue = { ...this.profileForm.value };
+    const profileFormStoreLocation = profileFormValue.storeLocation;
+    const newLocation: Coordinate = {
+      latitude: profileFormStoreLocation.latitude,
+      longitude: profileFormStoreLocation.longitude,
+      name: profileFormStoreLocation.address,
+    };
+    this.loading = true;
+    this.updateUserLocation(newLocation)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe();
   }
 
   public onMapContainerVisible(): void {
