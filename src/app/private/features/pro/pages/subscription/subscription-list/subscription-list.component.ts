@@ -70,9 +70,6 @@ export class SubscriptionListComponent {
     if (this.showManageInApp(subscription)) {
       return $localize`:@@web_profile_pages_subscription_327:Manage in app`;
     }
-    if (this.showUnsubscribeFirst(subscription)) {
-      return $localize`:@@web_profile_pages_subscription_328:Unsubscribe first from app for your free month`;
-    }
   }
 
   public onClickButton(subscription: SubscriptionsResponse): void {
@@ -92,11 +89,7 @@ export class SubscriptionListComponent {
   }
 
   private showManageInApp(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription) && !this.subscriptionsService.hasOneFreeTier(subscription);
-  }
-
-  private showUnsubscribeFirst(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneFreeTier(subscription);
+    return this.subscriptionsService.isSubscriptionInApp(subscription);
   }
 
   private getNotFreeTrialText(subscription: SubscriptionsResponse): string {

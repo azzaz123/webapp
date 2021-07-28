@@ -331,7 +331,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   }
 
   private trackSubscriptionPayConfirmation(): void {
-    const discountPercent = this.subscriptionsService.getTierDiscountPercentatge(this.selectedTier);
+    const discountPercent = this.selectedTier.discount?.percentage;
     const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
       name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
       eventType: ANALYTIC_EVENT_TYPES.Transaction,

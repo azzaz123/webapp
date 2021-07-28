@@ -238,36 +238,8 @@ export class SubscriptionsService {
     return subscriptions.some((subscription) => this.isStripeSubscription(subscription));
   }
 
-  public hasOneFreeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
-    return subscriptions.some((subscription) => this.hasOneFreeTier(subscription));
-  }
-
-  public hasOneDiscountedSubscription(subscriptions: SubscriptionsResponse[]): boolean {
-    return subscriptions.some((subscription) => this.hasOneTierDiscount(subscription));
-  }
-
-  public hasOneTierDiscount(subscription: SubscriptionsResponse): boolean {
-    return subscription.tiers.some((tier) => this.isDiscountedTier(tier));
-  }
-
   public getDefaultDiscount(subscription: SubscriptionsResponse): TierDiscount {
-    return subscription.tiers.find((tier) => tier.discount_available)?.discount_available;
-  }
-
-  public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {
-    return subscription.tiers.some((tier) => this.isFreeTier(tier));
-  }
-
-  public isDiscountedTier(tier: Tier): boolean {
-    return !!tier.discount_available;
-  }
-
-  public isFreeTier(tier: Tier): boolean {
-    if (!this.isDiscountedTier(tier)) {
-      return false;
-    }
-
-    return tier.discount_available.discounted_price === 0;
+    return subscription.tiers.find((tier) => tier.discount)?.discount;
   }
 
   public hasTrial(subscription: SubscriptionsResponse): boolean {
@@ -285,24 +257,6 @@ export class SubscriptionsService {
     return subscriptions
       .filter((subscription) => this.hasTrial(subscription) && !subscription.subscribed_from)
       .map((subscription) => subscription.category_id);
-  }
-
-  public getTierDiscountPercentatge(tier: Tier): number {
-    let discountPercentatge = 0;
-
-    if (!tier.discount_available) {
-      return discountPercentatge;
-    }
-
-    try {
-      discountPercentatge = ((tier.price - tier.discount_available.discounted_price) / tier.price) * 100;
-    } catch {}
-
-    if (discountPercentatge > 100) {
-      discountPercentatge = 100;
-    }
-
-    return discountPercentatge;
   }
 
   public hasFreeTrialByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): boolean {

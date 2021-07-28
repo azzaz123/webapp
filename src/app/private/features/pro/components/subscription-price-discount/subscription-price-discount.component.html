@@ -3,6 +3,6 @@
     <span [ngClass]="{ 'Subscriptions__category-info--discounted': discount }">
       {{subscription?.tiers[0]?.price}}{{subscription?.tiers[0]?.currency}}</span>
     <ng-container *ngIf="discount">
-      {{discount.discounted_price}}{{subscription?.tiers[0]?.currency}}</ng-container>/month
+      {{discount.price}}{{subscription?.tiers[0]?.currency}}</ng-container>/month
   </div>
 </div>
