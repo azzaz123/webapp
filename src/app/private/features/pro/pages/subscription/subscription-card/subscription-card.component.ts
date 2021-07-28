@@ -49,4 +49,11 @@ export class SubscriptionCardComponent {
     const status = this.isSubscribed ? 'disabled' : 'normal';
     return `/assets/icons/categories/${status}/${this.subscription.category_icon}.svg`;
   }
+
+  get labelText(): string {
+    if (this.hasTrialAvailable || !this.discount) {
+      return $localize`:web_subscription_price_discount_days_trial_free:${this.subscription.trial_days}-day trial for free`;
+    }
+    return $localize`:web_subscription_price_discount_days_trial_free:${this.subscription.trial_days}-day trial for free`;
+  }
 }

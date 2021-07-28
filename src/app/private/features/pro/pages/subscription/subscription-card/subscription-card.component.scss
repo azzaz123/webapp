@@ -14,9 +14,18 @@
     box-shadow: 0 2px 10px 0 rgba($blue-grey-1, 0.1);
   }
 
-  &__trialBanner {
-    background-color: $walla-soft;
+  &__banner {
     border-radius: 2px;
+
+    &--trial {
+      background-color: $walla-soft;
+    }
+
+    &--discount {
+      background-color: $walla-soft;
+      color: white;
+    }
+
     &--hidden {
       visibility: hidden;
     }
