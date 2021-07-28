@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { KYCSpecifications } from '../interfaces/kyc-specifications.interface';
+import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
 
 @Injectable()
 export class KYCStoreService {

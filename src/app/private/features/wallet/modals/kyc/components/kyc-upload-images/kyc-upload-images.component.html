@@ -18,7 +18,7 @@
             </div>
             <ng-template #takingImageSection>
                 <div class="text-center">
-                    <video autoplay="true" #userCamera></video>
+                    <video autoplay="true" #userCamera class="w-100"></video>
                     <tsl-button id="shootImageButton" *ngIf="userCameraPermissions === KYC_UPLOAD_IMAGES_STATUS.ACCEPTED">Hacer foto (1/2)</tsl-button>
                 </div>
             </ng-template>
