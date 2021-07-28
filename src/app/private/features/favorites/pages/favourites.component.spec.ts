@@ -1,18 +1,18 @@
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
-import { ItemService } from '@core/item/item.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FavoritesComponent } from './favorites.component';
+import { FavouritesComponent } from './favourites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ProfileService } from '@core/profile/profile.service';
 import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
+import { MeApiService } from '@api/me/me-api.service';
 
-describe('FavoritesComponent', () => {
-  let component: FavoritesComponent;
-  let fixture: ComponentFixture<FavoritesComponent>;
-  let itemService: ItemService;
+describe('FavouritesComponent', () => {
+  let component: FavouritesComponent;
+  let fixture: ComponentFixture<FavouritesComponent>;
+  let meApiService: MeApiService;
   let itemServiceSpy: jasmine.Spy;
   let profileServiceSpy: jasmine.Spy;
   let userService: UserService;
@@ -21,13 +21,13 @@ describe('FavoritesComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [FavoritesComponent],
+        declarations: [FavouritesComponent],
         providers: [
           {
-            provide: ItemService,
+            provide: MeApiService,
             useValue: {
-              myFavorites() {
-                return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 2 });
+              getFavourites() {
+                return of({ list: [MOCK_ITEM, MOCK_ITEM], paginationParameter: '2' });
               },
             },
           },
@@ -54,9 +54,9 @@ describe('FavoritesComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FavoritesComponent);
+    fixture = TestBed.createComponent(FavouritesComponent);
     component = fixture.componentInstance;
-    itemService = TestBed.inject(ItemService);
+    meApiService = TestBed.inject(MeApiService);
     userService = TestBed.inject(UserService);
     profileService = TestBed.inject(ProfileService);
     fixture.detectChanges();
@@ -70,7 +70,7 @@ describe('FavoritesComponent', () => {
     beforeEach(fakeAsync(() => {
       spyOn(component, 'getItems').and.callThrough();
       spyOn(component, 'getProfiles').and.callThrough();
-      itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
+      itemServiceSpy = spyOn(meApiService, 'getFavourites').and.callThrough();
       profileServiceSpy = spyOn(profileService, 'myFavorites').and.callThrough();
     }));
 
@@ -98,7 +98,7 @@ describe('FavoritesComponent', () => {
       const init = component.items.length;
       component.getItems(true);
 
-      expect(itemService.myFavorites).toHaveBeenCalledWith(init);
+      expect(meApiService.getFavourites).toHaveBeenCalledWith(init.toString());
     });
 
     it('if append argument is true, current component.item should add ', () => {
@@ -126,7 +126,7 @@ describe('FavoritesComponent', () => {
   describe('filterByStatus', () => {
     beforeEach(() => {
       profileServiceSpy = spyOn(profileService, 'myFavorites').and.callThrough();
-      itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
+      itemServiceSpy = spyOn(meApiService, 'getFavourites').and.callThrough();
     });
 
     it('should call getItems if selected status is profiles', () => {
@@ -155,7 +155,7 @@ describe('FavoritesComponent', () => {
   describe('getProfiles', () => {
     beforeEach(() => {
       profileServiceSpy = spyOn(profileService, 'myFavorites').and.callThrough();
-      itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
+      itemServiceSpy = spyOn(meApiService, 'getFavourites').and.callThrough();
     });
 
     it('if append argument is false should clear the profile array', () => {

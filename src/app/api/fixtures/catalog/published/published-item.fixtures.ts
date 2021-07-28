@@ -1,7 +1,8 @@
-import { CatalogItemPrice, PublishedItem } from '@api/catalog/dtos';
-import { catalogItemImageFixture, mappedCatalogItemImageFixture } from '../catalog-image.fixtures';
+import { PublishedItem } from '@api/catalog/dtos';
+import { itemImageFixture, mappedItemImageFixture } from '../../core/image.fixtures';
 import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { PriceDto } from '@api/core/dtos';
 
 const id = 'my-item-id';
 const title = 'Title';
@@ -39,7 +40,7 @@ const attributes: CatalogItemAttribute[] = [
 
 const storytelling = 'Brand: Audi Surface: 200 Description Garage';
 
-const price: CatalogItemPrice = {
+const price: PriceDto = {
   currency: 'EUR',
   amount: 200,
 };
@@ -49,7 +50,7 @@ export const favouriteIdsFixture = ['my-item-id'];
 
 export const publishedItemFixture: PublishedItem = {
   id,
-  images: [catalogItemImageFixture],
+  images: [itemImageFixture],
   category_id: noStorytellingCategoryId.toString(),
   slug,
   attributes,
@@ -71,7 +72,7 @@ export const mappedPublishedItemFixture: ItemCard = {
   salePrice: price.amount,
   currencyCode: price.currency,
   webSlug: slug,
-  images: [mappedCatalogItemImageFixture],
+  images: [mappedItemImageFixture],
   ownerId: userIdFixture,
   flags: {
     pending: false,
