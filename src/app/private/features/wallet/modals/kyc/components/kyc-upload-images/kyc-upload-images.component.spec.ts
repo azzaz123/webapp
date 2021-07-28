@@ -56,7 +56,13 @@ describe('KYCUploadImagesComponent', () => {
         });
 
         it('should set the user permissions as accepted', () => {
-          expect(component.userCameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.ACCEPTED);
+          let cameraPermissions: KYC_UPLOAD_IMAGES_STATUS;
+
+          component.cameraPermissionsSubject.subscribe((res) => {
+            cameraPermissions = res;
+          });
+
+          expect(cameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.ACCEPTED);
         });
 
         it('should define the webcam video stream', () => {
@@ -101,7 +107,13 @@ describe('KYCUploadImagesComponent', () => {
         });
 
         it('should set the user permissions as denied', () => {
-          expect(component.userCameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.DENIED);
+          let cameraPermissions: KYC_UPLOAD_IMAGES_STATUS;
+
+          component.cameraPermissionsSubject.subscribe((res) => {
+            cameraPermissions = res;
+          });
+
+          expect(cameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.DENIED);
         });
 
         it('should show an error banner', async () => {
@@ -126,7 +138,13 @@ describe('KYCUploadImagesComponent', () => {
         });
 
         it('should set the user permissions as cannot access', () => {
-          expect(component.userCameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS);
+          let cameraPermissions: KYC_UPLOAD_IMAGES_STATUS;
+
+          component.cameraPermissionsSubject.subscribe((res) => {
+            cameraPermissions = res;
+          });
+
+          expect(cameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS);
         });
 
         it('should show an error banner', async () => {
@@ -147,7 +165,13 @@ describe('KYCUploadImagesComponent', () => {
       });
 
       it('should set the user permissions as cannot access', () => {
-        expect(component.userCameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS);
+        let cameraPermissions: KYC_UPLOAD_IMAGES_STATUS;
+
+        component.cameraPermissionsSubject.subscribe((res) => {
+          cameraPermissions = res;
+        });
+
+        expect(cameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS);
       });
 
       it('should show an error banner', async () => {
@@ -167,8 +191,14 @@ describe('KYCUploadImagesComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should have user camera permissions undefined', () => {
-      expect(component.userCameraPermissions).toBeUndefined();
+    it('should have user camera permissions not defined', () => {
+      let cameraPermissions: KYC_UPLOAD_IMAGES_STATUS;
+
+      component.cameraPermissionsSubject.subscribe((res) => {
+        cameraPermissions = res;
+      });
+
+      expect(cameraPermissions).toBeNull();
     });
   });
 
