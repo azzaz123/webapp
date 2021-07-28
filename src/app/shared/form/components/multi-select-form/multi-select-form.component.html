@@ -1,4 +1,3 @@
 <div *ngFor="let option of extendedOptions$ | async" class="px-3 w-100 h-30">
     <tsl-multi-select-option [option]="option" [disabled]="disabled" (toggleOnChange)="handleSelectedOption()"></tsl-multi-select-option>
 </div>
-multiForm {{value}}
