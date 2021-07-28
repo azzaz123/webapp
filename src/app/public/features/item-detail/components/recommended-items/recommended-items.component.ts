@@ -49,12 +49,16 @@ export class RecommendedItemsComponent implements AfterViewInit {
   }
 
   public trackFavouriteOrUnfavouriteEvent(item: ItemCard): void {
-    this.userService
-      .get(item.ownerId)
-      .pipe(take(1))
-      .subscribe((user: User) => {
-        this.itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent(item, user?.featured);
-      });
+    if (item.ownerId) {
+      this.userService
+        .get(item.ownerId)
+        .pipe(take(1))
+        .subscribe((user: User) => {
+          this.itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent(item, user?.featured);
+        });
+    } else {
+      this.itemDetailTrackEventsService.trackFavouriteOrUnfavouriteEvent(item);
+    }
   }
 
   private getRecommendedItemIds(items: ItemCard[]): string {

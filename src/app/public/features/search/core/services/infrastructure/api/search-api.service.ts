@@ -2,7 +2,6 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { SORT_BY } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -10,8 +9,9 @@ import { SearchPagination } from '../../../../interfaces/search-pagination.inter
 import { FILTER_PARAMETERS_SEARCH } from '../../constants/filter-parameters';
 import { SEARCH_ITEMS_MINIMAL_LENGTH } from '../../constants/search-item-max';
 import { ItemCardMapper, SearchApiItemMapperFactory } from './search-api-item-mapper.factory';
-import { SearchApiUrlFactory, SearchApiUrlSearchOrWall } from './search-api-url.factory';
+import { SearchApiUrlFactory} from './search-api-url.factory';
 import { SearchResponse } from './search-response.interface';
+import { SORT_BY } from '@api/core/model/lists/sort.enum';
 
 export const NEXT_HEADER_PAGE = 'X-NextPage';
 export const SEARCH_ID = 'x-wallapop-search-id';
@@ -43,7 +43,7 @@ export class SearchAPIService {
     this.nextPageUrl = null;
     const paramCategoryId: FilterParameter = params.find(({ key }: FilterParameter) => key === FILTER_PARAMETERS_SEARCH.CATEGORY_ID);
     this.categoryId = paramCategoryId?.value;
-    let url = `/${SearchApiUrlFactory(this.categoryId)}/${SearchApiUrlSearchOrWall(params)}`;
+    let url = `/${SearchApiUrlFactory(this.categoryId)}/search`;
     let httpParams: HttpParams = new HttpParams();
     params.forEach(({ key, value }: FilterParameter) => (httpParams = httpParams.set(key, value)));
     url += '?' + httpParams.toString();

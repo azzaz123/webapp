@@ -1,0 +1,43 @@
+@import '~style/common';
+
+.KYCImageOptions {
+  &__option {
+    border: solid 2px $blue-grey-5;
+    cursor: pointer;
+
+    &__title {
+      color: $blue-grey-2;
+    }
+
+    &:hover {
+      transform: $item-card-hover-translate;
+      box-shadow: $item-card-hover-box-shadow;
+      .KYCImageOptions__option__title {
+        color: $blue-grey-1;
+      }
+    }
+
+    &--selected {
+      border: solid 2px $blue-grey-2;
+      .KYCImageOptions__option__title {
+        color: $blue-grey-1;
+      }
+    }
+  }
+
+  &__back {
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+      &,
+      tsl-svg-icon {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &__bottomContainer {
+    bottom: 0;
+    background-color: transparentize($white, 0.5);
+  }
+}

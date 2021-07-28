@@ -509,7 +509,7 @@ export class UploadCarComponent implements OnInit {
               ...baseEventAttrs,
               screenId: SCREEN_IDS.Upload,
               country: this.analyticsService.market,
-              language: this.analyticsService.appLocale
+              language: this.analyticsService.appLocale,
             },
           };
           this.analyticsService.trackEvent(listItemCarEvent);
