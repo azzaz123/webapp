@@ -50,7 +50,10 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   private requestCameraPermissions(): void {
     if (navigator.mediaDevices?.getUserMedia) {
       navigator.mediaDevices
-        .getUserMedia({ video: true })
+        .getUserMedia({
+          audio: false,
+          video: { facingMode: 'environment' },
+        })
         .then((stream: MediaStream) => {
           this.cameraPermissionsSubject.next(KYC_UPLOAD_IMAGES_STATUS.ACCEPTED);
           this.userCamera.nativeElement.srcObject = stream;

@@ -11,7 +11,10 @@ import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.e
 import { KYCUploadImagesComponent } from './kyc-upload-images.component';
 
 describe('KYCUploadImagesComponent', () => {
-  const mediaStreamConstraints = { video: true };
+  const mediaStreamConstraints = {
+    audio: false,
+    video: { facingMode: 'environment' },
+  };
   const MOCK_MEDIA_STREAM = {
     getTracks: () => [],
   };
