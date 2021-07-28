@@ -70,8 +70,9 @@ import { By } from '@angular/platform-browser';
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { ShippingToggleService } from './services/shipping-toggle/shipping-toggle.service';
+import { FALLBACK_SHIPPING_RULES_RESPONSE } from '@api/bff/delivery/rules/constants/fallback-shipping-rules-response';
+import { mapShippingRulesResponseToShippingRules } from '@api/bff/delivery/rules/mappers/shipping-rules-mapper';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -205,6 +206,14 @@ describe('UploadProductComponent', () => {
               isActive() {
                 return of(false);
               },
+              isAllowed() {
+                return of({
+                  category: false,
+                  subcagegory: false,
+                  price: false,
+                });
+              },
+              shippingRules: mapShippingRulesResponseToShippingRules(FALLBACK_SHIPPING_RULES_RESPONSE),
             },
           },
         ],
@@ -712,18 +721,16 @@ describe('UploadProductComponent', () => {
             latitude: USER_LOCATION.approximated_latitude,
             longitude: USER_LOCATION.approximated_longitude,
           },
+          sale_conditions: {
+            supports_shipping: true,
+          },
+          delivery_info: null,
         });
       }
       beforeEach(() => {
         component.isShippabilityActive = true;
         component.ngOnInit();
         fillValidForm();
-        component.uploadForm.patchValue({
-          sale_conditions: {
-            supports_shipping: true,
-          },
-          delivery_info: null,
-        });
       });
 
       it('should show weight error', () => {
