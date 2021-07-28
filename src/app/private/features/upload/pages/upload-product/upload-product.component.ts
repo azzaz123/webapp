@@ -34,7 +34,6 @@ import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/su
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
-import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.interface';
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
