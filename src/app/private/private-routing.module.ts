@@ -77,7 +77,7 @@ const routes: Routes = [
       },
       {
         path: 'favorites',
-        loadChildren: () => import('@private/features/favorites/favorites.module').then((m) => m.FavoritesModule),
+        loadChildren: () => import('@private/features/favorites/favourites.module').then((m) => m.FavouritesModule),
       },
       {
         path: 'reviews',

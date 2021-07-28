@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
-import { FavoritesComponent } from './pages/favorites.component';
+import { FavouritesComponent } from './pages/favourites.component';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
@@ -8,7 +8,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 const routes: Route[] = [
   {
     path: '',
-    component: FavoritesComponent,
+    component: FavouritesComponent,
     canActivate: [LoggedGuard, NgxPermissionsGuard],
     data: {
       isMyZone: true,
@@ -24,6 +24,6 @@ const routes: Route[] = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class FavoritesRoutingModule {}
+export class FavouritesRoutingModule {}
 
-export const favoritesRoutedComponents = [FavoritesComponent];
+export const favoritesRoutedComponents = [FavouritesComponent];
