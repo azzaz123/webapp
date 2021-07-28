@@ -84,8 +84,9 @@
         <ng-container *ngIf="isShippabilityActive">
           <div
             *ngIf="
-              uploadForm.controls.sale_price.value >= priceShippingRules.minPrice &&
-              uploadForm.controls.sale_price.value <= priceShippingRules.maxPrice
+              !isShippabilityAllowedByCategory ||
+              (uploadForm.controls.sale_price.value >= priceShippingRules.minPrice &&
+                uploadForm.controls.sale_price.value <= priceShippingRules.maxPrice)
             "
             i18n="@@web_upload_product_coachmark_price"
           >
@@ -93,13 +94,13 @@
           </div>
 
           <div
-            *ngIf="uploadForm.controls.sale_price.value < priceShippingRules.minPrice"
+            *ngIf="isShippabilityAllowedByCategory && uploadForm.controls.sale_price.value < priceShippingRules.minPrice"
             i18n="@@upload_shipping_toggle_snackbar_min_price_description"
           >
             Products priced at €1 euro or less can't be shipped.
           </div>
           <div
-            *ngIf="uploadForm.controls.sale_price.value > priceShippingRules.maxPrice"
+            *ngIf="isShippabilityAllowedByCategory && uploadForm.controls.sale_price.value > priceShippingRules.maxPrice"
             i18n="@@upload_shipping_toggle_snackbar_max_price_description"
           >
             Products priced at €1,000 or more can't be shipped.

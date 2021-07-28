@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ShippingRulesPriceRangeAllowed } from '@api/bff/delivery/rules/dtos/shipping-rules';
+import { ShippingRulesPrice } from '@api/bff/delivery/rules/dtos/shipping-rules';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -50,6 +50,7 @@ import { GeneralSuggestionsService } from '../../core/services/general-suggestio
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
+import { ShippingToggleAllowance } from './services/shipping-toggle/interfaces/shipping-toggle-allowance.interface';
 import { ShippingToggleService } from './services/shipping-toggle/shipping-toggle.service';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
@@ -124,7 +125,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public isShippabilityActive = false;
   public isShippabilityAllowed = false;
-  public priceShippingRules: ShippingRulesPriceRangeAllowed;
+  public isShippabilityAllowedByCategory = false;
+  public priceShippingRules: ShippingRulesPrice;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
 
   constructor(
@@ -350,13 +352,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private detectShippabilityChanges() {
-    console.log('detectShippabilityChanges');
     this.uploadForm
       .get('sale_conditions')
       .get('supports_shipping')
       .valueChanges.subscribe((supportsShipping) => {
-        console.log('detectShippabilityChanges subs');
-
         const deliveryInfo = this.uploadForm.get('delivery_info');
         if (supportsShipping) {
           deliveryInfo.setValidators([Validators.required]);
@@ -906,28 +905,28 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private updateShippingToggleStatus(): void {
     if (this.isShippabilityActive) {
-      console.log('updateShippingToggleStatus --- ITEM', this.item);
-      console.log('updateShippingToggleStatus --- FORM', this.uploadForm.get('sale_price').value);
       const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
       const subcategoryId =
         this.uploadForm.get('extra_info')?.get('object_type')?.get('id')?.value || this.item?.extraInfo?.object_type?.id;
       const price = this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
 
-      this.shippingToggleService.isAllowed(categoryId, subcategoryId, price).subscribe((isAllowed) => {
-        this.isShippabilityAllowed = isAllowed;
-        this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
+      this.shippingToggleService
+        .isAllowed(categoryId, subcategoryId, price)
+        .subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
+          this.isShippabilityAllowed =
+            shippingToggleAllowance.category && shippingToggleAllowance.subcategory && shippingToggleAllowance.price;
+          this.isShippabilityAllowedByCategory = shippingToggleAllowance.category && shippingToggleAllowance.subcategory;
+          this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
 
-        if (this.isShippabilityAllowed) {
-        } else {
-          // TODO VACIAR COSAS DE SHIPPING Y PONER QUE NO
-          this.clearShippingToggleFormData();
-        }
-      });
+          if (this.isShippabilityAllowed) {
+          } else {
+            this.clearShippingToggleFormData();
+          }
+        });
     }
   }
 
   private clearShippingToggleFormData(): void {
-    console.log('clearShippingToggleFormData');
     this.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
     this.uploadForm.get('delivery_info').setValue(null);
   }
@@ -945,7 +944,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.updateShippingToggleStatus();
       });
     this.uploadForm.get('sale_price').valueChanges.subscribe((price) => {
-      console.log('EPAPEPA', price);
       this.updateShippingToggleStatus();
     });
   }
