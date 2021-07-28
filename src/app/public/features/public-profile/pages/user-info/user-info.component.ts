@@ -3,7 +3,10 @@ import { Coordinate } from '@core/geolocation/address-response.interface';
 import { User } from '@core/user/user';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { UserExtrainfo, UserValidations } from '@core/user/user-response.interface';
+import { UserService } from '@core/user/user.service';
+import { NgxPermissionsService } from 'ngx-permissions';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { PublicProfileService } from '../../core/services/public-profile.service';
 @Component({
   selector: 'tsl-user-info',
@@ -17,8 +20,13 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   public userValidations: UserValidations;
   public userResponseRate: string;
   public readonly PERMISSIONS = PERMISSIONS;
+  public storeLocation: Coordinate;
 
-  constructor(private publicProfileService: PublicProfileService) {}
+  constructor(
+    private publicProfileService: PublicProfileService,
+    private userService: UserService,
+    private permissionService: NgxPermissionsService
+  ) {}
 
   ngOnInit(): void {
     this.getUser();
@@ -34,6 +42,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     this.publicProfileService.getExtraInfo(this.user.id).subscribe((userExtraInfo: UserExtrainfo) => {
       this.userValidations = userExtraInfo.validations;
       this.userResponseRate = userExtraInfo.response_rate;
+      this.getStoreLocation();
     });
 
     if (this.userHaveLocation()) {
@@ -42,6 +51,17 @@ export class UserInfoComponent implements OnInit, OnDestroy {
         longitude: this.user.location.approximated_longitude,
       };
     }
+  }
+
+  private getStoreLocation(): void {
+    this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
+      if (permissions[PERMISSIONS.subscriptions] && this.userService.hasStoreLocation(this.user)) {
+        this.storeLocation = {
+          latitude: this.user.extraInfo.latitude,
+          longitude: this.user.extraInfo.longitude,
+        };
+      }
+    });
   }
 
   private userHaveLocation(): boolean {

@@ -7,9 +7,9 @@ import { Review } from '@private/features/reviews/core/review';
 import { of } from 'rxjs';
 import { reviewsElementDtoFixture } from '@api/fixtures/reviews/reviews-element-dto.fixture';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { reviewTranslationFixture } from '@api/fixtures/reviews/review-translation.fixture';
 import { reviewTranslationDtoFixture } from '@api/fixtures/reviews/review-translation-dto.fixture';
+import { PaginatedList } from '@api/core/model';
 
 describe('ReviewsApiService', () => {
   let service: ReviewsApiService;

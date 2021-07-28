@@ -1,4 +1,4 @@
-import { CatalogItemImage } from '../../catalog/dtos/catalog-item-image';
+import { CatalogItemImage } from '@api/catalog/dtos';
 import { Image } from '@core/user/user-response.interface';
 
 const bigImage = 'https://big-image.com';

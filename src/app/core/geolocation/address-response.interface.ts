@@ -40,6 +40,16 @@ export interface Coordinate {
   approximated_location?: boolean;
 }
 
+export interface StoreLocationResponse {
+  check_change_location: boolean;
+}
+
+export interface StoreLocation {
+  latitude: number;
+  longitude: number;
+  address: string;
+}
+
 export interface ItemLocation {
   latitude: number;
   longitude: number;

@@ -10,7 +10,8 @@ import { SelectFormOption } from '@shared/form/components/select/interfaces/sele
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { SORT_BY_RELEVANCE_CATEGORY_IDS } from './constants/sort-by-config-constants';
-import { SORT_BY, SORT_BY_DEFAULT_OPTIONS, SORT_BY_RELEVANCE_OPTIONS } from './constants/sort-by-options-constants';
+import { SORT_BY_DEFAULT_OPTIONS, SORT_BY_RELEVANCE_OPTIONS } from './constants/sort-by-options-constants';
+import { SORT_BY } from '@api/core/model';
 
 @Injectable()
 export class SortByService {

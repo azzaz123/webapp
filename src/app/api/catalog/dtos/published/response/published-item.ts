@@ -1,8 +1,6 @@
-import { CatalogItemImage } from './catalog-item-image';
-import { CatalogItemPrice } from './catalog-item-price';
-import { CatalogItemAttribute } from './catalog-item-attribute';
+import { CatalogItemAttribute, CatalogItemImage, CatalogItemPrice } from '@api/catalog/dtos';
 
-export interface CatalogItem {
+export interface PublishedItem {
   id: string;
   category_id: string;
   title: string;
