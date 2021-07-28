@@ -8,11 +8,11 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { COLORS } from '@core/colors/colors-constants';
 
 @Component({
-  selector: 'tsl-item-cart-favorite',
-  templateUrl: './item-cart-favorite.component.html',
-  styleUrls: ['./item-cart-favorite.component.scss'],
+  selector: 'tsl-item-card-favourite',
+  templateUrl: './item-card-favourite.component.html',
+  styleUrls: ['./item-card-favourite.component.scss'],
 })
-export class ItemCartFavoriteComponent implements OnInit {
+export class ItemCardFavouriteComponent implements OnInit {
   @Input() item: Item;
   @Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
 
