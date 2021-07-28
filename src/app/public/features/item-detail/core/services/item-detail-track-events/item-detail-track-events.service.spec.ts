@@ -150,7 +150,7 @@ describe('ItemDetailTrackEventsService', () => {
       spyOn(service, 'trackClickItemCardEvent').and.callThrough();
       spyOn(analyticsService, 'trackEvent');
 
-      service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_ITEM, MOCK_OTHER_USER, MOCK_ITEM_INDEX);
+      service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_ITEM, MOCK_ITEM_INDEX, MOCK_OTHER_USER);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT);
     });

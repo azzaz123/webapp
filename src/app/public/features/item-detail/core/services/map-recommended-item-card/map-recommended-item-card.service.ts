@@ -34,6 +34,7 @@ export class MapRecommendedItemCardService {
   private mapRecommendedItem(recommendedItem: RecommenderItem): ItemCard {
     return {
       id: recommendedItem.id,
+      categoryId: recommendedItem.category_id,
       ownerId: recommendedItem.seller_id,
       title: recommendedItem.title,
       salePrice: recommendedItem.price,

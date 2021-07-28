@@ -31,6 +31,7 @@ import { HostVisibilityService } from '@public/shared/components/filters/compone
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 import { SortByService } from './components/sort-filter/services/sort-by.service';
 import { InfoBubbleModule } from './components/info-bubble/info-bubble.module';
+import { CatalogApiModule } from '@api/catalog/catalog-api.module';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { InfoBubbleModule } from './components/info-bubble/info-bubble.module';
     ErrorBoxModule,
     SortFilterModule,
     InfoBubbleModule,
+    CatalogApiModule,
   ],
   providers: [
     ViewportService,

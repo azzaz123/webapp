@@ -1129,7 +1129,7 @@ describe('UploadProductComponent', () => {
             isPro: false,
             screenId: SCREEN_IDS.Upload,
             country: analyticsService.market,
-            language: analyticsService.appLocale
+            language: analyticsService.appLocale,
           },
         };
         spyOn(analyticsService, 'trackEvent');

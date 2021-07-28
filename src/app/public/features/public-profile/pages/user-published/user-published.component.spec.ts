@@ -21,10 +21,10 @@ import { of, throwError } from 'rxjs';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 import { PublicProfileTrackingEventsService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { MockUserProfileTrackEventService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.fixtures.spec';
-import { CatalogApiModule } from '../../../../../api/catalog/catalog-api.module';
+import { CatalogApiModule } from '@api/catalog/catalog-api.module';
+import { CatalogApiService } from '@api/catalog/catalog-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
-import { CatalogApiService } from '../../../../../api/catalog/catalog-api.service';
 
 @Component({
   selector: 'tsl-test-component',
@@ -196,7 +196,7 @@ describe('UserPublishedComponent', () => {
       publicItemCardList.triggerEventHandler('clickedItemAndIndex', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
       fixture.detectChanges();
 
-      expect(publicProfileTrackingEventsService.trackClickItemCardEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_USER, MOCK_ITEM_INDEX);
+      expect(publicProfileTrackingEventsService.trackClickItemCardEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_USER);
     });
   });
 });

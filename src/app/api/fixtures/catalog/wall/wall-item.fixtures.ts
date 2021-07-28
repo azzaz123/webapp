@@ -1,15 +1,13 @@
-import { CatalogItem } from '../../catalog/dtos/catalog-item';
-import { catalogItemImageFixture, mappedCatalogItemImageFixture } from './catalog-image.fixtures';
-import { CatalogItemPrice } from '../../catalog/dtos/catalog-item-price';
-import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../catalog/dtos/catalog-item-attribute';
+import { CatalogItemPrice, WallItem } from '@api/catalog/dtos';
+import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { catalogItemImageFixture, mappedCatalogItemImageFixture } from '@api/fixtures/catalog/catalog-image.fixtures';
+import { ItemType } from '@api/core/model';
 
 const id = 'my-item-id';
 const title = 'Title';
 const description = 'Description';
 const slug = 'my-slug';
-const noStorytellingCategoryId = '222';
-const storytellingCategoryId = '100';
 
 const attributes: CatalogItemAttribute[] = [
   {
@@ -48,32 +46,33 @@ const price: CatalogItemPrice = {
 export const userIdFixture = 'my-user-id';
 export const favouriteIdsFixture = ['my-item-id'];
 
-export const catalogItemFixture: CatalogItem = {
+export const wallItemFixture: WallItem = {
   id,
+  category_id: 0,
   images: [catalogItemImageFixture],
+  type: ItemType.CONSUMER_GOODS,
   slug,
-  category_id: noStorytellingCategoryId,
   attributes,
   title,
   description,
   price,
+  distance: 0,
 };
 
-export const storytellingCatalogItemFixture: CatalogItem = {
-  ...catalogItemFixture,
-  category_id: storytellingCategoryId,
+export const storytellingWallItemFixture: WallItem = {
+  ...wallItemFixture,
+  type: ItemType.CARS,
 };
 
-export const mappedCatalogItemFixture: ItemCard = {
+export const mappedWallItemFixture: ItemCard = {
   id,
+  categoryId: wallItemFixture.category_id,
   title,
-  categoryId: Number.parseInt(noStorytellingCategoryId, 0),
   description,
   salePrice: price.amount,
   currencyCode: price.currency,
   webSlug: slug,
   images: [mappedCatalogItemImageFixture],
-  ownerId: userIdFixture,
   flags: {
     pending: false,
     sold: false,
@@ -85,16 +84,15 @@ export const mappedCatalogItemFixture: ItemCard = {
   },
 };
 
-export const mappedFavouritedCatalogItemFixture: ItemCard = {
-  ...mappedCatalogItemFixture,
+export const mappedFavouritedWallItemFixture: ItemCard = {
+  ...mappedWallItemFixture,
   flags: {
-    ...mappedCatalogItemFixture.flags,
+    ...mappedWallItemFixture.flags,
     favorite: true,
   },
 };
 
-export const mappedStorytellingCatalogItemFixture: ItemCard = {
-  ...mappedCatalogItemFixture,
-  categoryId: Number.parseInt(storytellingCategoryId, 0),
+export const mappedStorytellingWallItemFixture: ItemCard = {
+  ...mappedWallItemFixture,
   description: storytelling,
 };

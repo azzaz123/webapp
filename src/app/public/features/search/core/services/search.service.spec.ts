@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { filterParametersMock, filterParametersMockWithCategory } from '@fixtures/filter-parameter.fixtures';
+import { filterParametersMock, categoryFilterParametersMock } from '@fixtures/filter-parameter.fixtures';
 import { SearchPaginationFactory } from '@fixtures/item-card.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
@@ -149,12 +149,11 @@ describe('SearchService', () => {
         });
 
         it('should set the state for the new category', (done) => {
-          const expectedCategoryId = filterParametersMockWithCategory.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)
-            ?.value;
+          const expectedCategoryId = categoryFilterParametersMock.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
 
           spyOn(searchInfrastructureServiceMock, 'search').and.callThrough();
 
-          filterParametersSubject.next(filterParametersMockWithCategory);
+          filterParametersSubject.next(categoryFilterParametersMock);
           service.currentCategoryId$.subscribe((categoryId: string) => {
             expect(categoryId).toEqual(expectedCategoryId);
             done();
