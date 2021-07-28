@@ -41,7 +41,7 @@ describe('ChangeStoreLocationModal', () => {
 
   describe('secondary button', () => {
     it('should dismiss modal', () => {
-      const secondaryButton: HTMLElement = fixture.debugElement.query(By.css('.changeStoreLocationModal__secondaryAction')).nativeElement;
+      const secondaryButton: HTMLElement = fixture.debugElement.query(By.css('.ChangeStoreLocationModal__secondaryAction')).nativeElement;
 
       secondaryButton.click();
 
@@ -52,7 +52,7 @@ describe('ChangeStoreLocationModal', () => {
 
   describe('close button', () => {
     it('should dismiss modal', () => {
-      const closeButton: HTMLElement = fixture.debugElement.query(By.css('.changeStoreLocationModal__close')).nativeElement;
+      const closeButton: HTMLElement = fixture.debugElement.query(By.css('.ChangeStoreLocationModal__close')).nativeElement;
 
       closeButton.click();
 
