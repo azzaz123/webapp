@@ -42,11 +42,21 @@ export class SubscriptionListComponent {
     return !!subscription.subscribed_from;
   }
 
+  private getSubscribedButtonText(subscription: SubscriptionsResponse): string {
+    if (this.hasOneFreeSubscription(subscription)) {
+      return $localize`:@@web_start_free_trial:Start free trial`;
+    }
+
+    if (this.hasDiscount(subscription)) {
+      return $localize`:@@pro_subscription_purchase_try_discount_button: Start with discount`;
+    }
+
+    return this.getNotFreeTrialText(subscription);
+  }
+
   public getTextButton(subscription: SubscriptionsResponse): string {
     if (!subscription.subscribed_from) {
-      return this.hasOneFreeSubscription(subscription)
-        ? $localize`:@@web_start_free_trial:Start free trial`
-        : this.getNotFreeTrialText(subscription);
+      return this.getSubscribedButtonText(subscription);
     }
     if (subscription.subscribed_until) {
       return $localize`:@@web_profile_pages_subscription_331:Stay subscribed`;
