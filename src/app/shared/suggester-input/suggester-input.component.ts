@@ -1,17 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  forwardRef,
-  Input,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild,
-  ContentChild,
-  AfterViewInit,
-} from '@angular/core';
-import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild, AfterViewInit, Renderer2 } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
@@ -37,14 +25,17 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   @Input() categoryId: string = '1000'; // When PR: need to modify
   @ViewChild('hashtagSuggester', { static: true }) hashtagSuggester: ElementRef;
   @ViewChild(MultiSelectFormComponent) multiSelectFormComponent: MultiSelectFormComponent;
+  @ViewChild('formMenu') formMenu: ElementRef;
 
   public selected: string[];
   public start: string = '0';
   public model: string;
   public options: SelectFormOption<string>[] = [];
   public suggestions: MultiSelectValue = [];
+  public isClickOutside: boolean = false;
+  private extendedOptions;
 
-  constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
+  constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService, private renderer: Renderer2) {
     super();
   }
   ngOnInit() {
@@ -52,34 +43,57 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   ngAfterViewInit() {
-    this.suggestions = this.value;
+    this.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions) => {
+      console.log('extendedOptions', this.extendedOptions, extendedOptions);
+      this.extendedOptions = extendedOptions;
+    });
+  }
+
+  public showMenu(): boolean {
+    return !!this.isValidKey() && !this.isClickOutside;
   }
 
   public detectTitleKeyboardChanges(): void {
     fromEvent(this.hashtagSuggester.nativeElement, 'keyup')
       .pipe(debounceTime(750))
-      .subscribe(() => {
+      .subscribe((e) => {
+        if (e['key'] === 'Escape') {
+          this.closeForm();
+        }
         if (!this.isValidKey()) {
-          console.log('invalid');
+          //this.showInvalidHashtagMessage = true;
           this.options = []; // When PR: To refactor
-        } else
+        } else {
+          this.suggestions = this.value;
+
           this.getHashtags().subscribe((m) => {
             this.options = this.mapHashtagsToOptions(m);
           });
+        }
       });
   }
 
   public writeValue(value): void {
     this.value = value;
+    // this.suggestions = this.value; // Maybe no need
   }
 
   public handleSelectedOption(): void {
-    console.log('onChange', this.value, this.suggestions, this.multiSelectFormComponent.extendedOptions$);
-    //Here to manage the suggestions?
-    this.onChange(this.value.concat(this.suggestions));
+    this.extendedOptions.forEach((extendedOption) => {
+      if (extendedOption.checked) {
+        this.value.push(extendedOption.value);
+      } else {
+        const index = this.value.indexOf(extendedOption.value);
+        if (index !== -1) {
+          this.value.splice(index, 1);
+        }
+      }
+    });
+    console.log('handle', this.value);
+    this.onChange(this.value);
   }
 
-  public isValidKey(): boolean {
+  private isValidKey(): boolean {
     const pattern: RegExp = /^#?([\p{L}\p{Nd}])+$/u;
     if (this.model) {
       return pattern.test(this.model);
@@ -87,9 +101,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public getHashtags(): Observable<PaginatedList<Hashtag>> {
-    return of({ list: [], paginationParameter: '0' });
-    // for the mean time
-    //return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
+    return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
   }
 
   public mapHashtagsToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
@@ -105,5 +117,17 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   public createHashtagOption(): SelectFormOption<string>[] {
     return [{ label: this.model, value: this.model }];
+  }
+
+  private closeForm() {
+    this.isClickOutside = true;
+  }
+
+  private onClickOutsideForm() {
+    this.renderer.listen('window', 'click', (e: Event) => {
+      if (e.target !== this.formMenu.nativeElement) {
+        this.isClickOutside = true;
+      }
+    });
   }
 }
