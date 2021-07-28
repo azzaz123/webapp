@@ -47,7 +47,7 @@ describe('KYCNationalityComponent', () => {
   describe('when the nationality has been selected...', () => {
     it('should show the select document title', () => {
       const documentTitleTranslation = $localize`:@@kyc_select_document_view_title:Select a document type`;
-      component.selectedNationality = KYC_NATIONALITIES[0];
+      component.KYCNationality = KYC_NATIONALITIES[0];
 
       fixture.detectChanges();
 
@@ -56,7 +56,7 @@ describe('KYCNationalityComponent', () => {
 
     it('should show the select document description', () => {
       const documentDescriptionTranslation = $localize`:@@kyc_select_document_view_description:Make sure the document you provide is valid for at least 3 months.`;
-      component.selectedNationality = KYC_NATIONALITIES[0];
+      component.KYCNationality = KYC_NATIONALITIES[0];
 
       fixture.detectChanges();
 
@@ -65,7 +65,7 @@ describe('KYCNationalityComponent', () => {
 
     describe('and the selected nationality is europa...', () => {
       beforeEach(() => {
-        component.selectedNationality = EUROPEAN_UNION_NATIONALITY;
+        component.KYCNationality = EUROPEAN_UNION_NATIONALITY;
 
         fixture.detectChanges();
       });
@@ -90,7 +90,7 @@ describe('KYCNationalityComponent', () => {
 
     describe('and the selected nationality is uk, usa or ca...', () => {
       beforeEach(() => {
-        component.selectedNationality = UK_USA_CA_NATIONALITY;
+        component.KYCNationality = UK_USA_CA_NATIONALITY;
 
         fixture.detectChanges();
       });
@@ -115,7 +115,7 @@ describe('KYCNationalityComponent', () => {
 
     describe('and the selected nationality is another one...', () => {
       beforeEach(() => {
-        component.selectedNationality = OTHER_NATIONALITY;
+        component.KYCNationality = OTHER_NATIONALITY;
 
         fixture.detectChanges();
       });
@@ -139,20 +139,49 @@ describe('KYCNationalityComponent', () => {
     });
 
     describe('and the user clicks on back button', () => {
-      it('should reset the selected nationality', () => {
-        component.selectedNationality = KYC_NATIONALITIES[0];
+      describe('and the nationality is defined...', () => {
+        beforeEach(() => {
+          spyOn(component.goBack, 'emit');
+          spyOn(component.nationalityChange, 'emit');
+          spyOn(component.documentToRequestChange, 'emit');
 
-        fixture.detectChanges();
-        de.query(By.css(backButtonSelector)).nativeElement.click();
+          component.KYCNationality = KYC_NATIONALITIES[0];
+          fixture.detectChanges();
+          de.query(By.css(backButtonSelector)).nativeElement.click();
+        });
 
-        expect(component.selectedNationality).toBe(null);
+        it('should reset the selected nationality', () => {
+          expect(component.nationalityChange.emit).toHaveBeenCalledWith(null);
+        });
+
+        it('should reset the selected documentation', () => {
+          expect(component.documentToRequestChange.emit).toHaveBeenCalledWith(null);
+        });
+
+        it('should NOT notify to go to the previous step', () => {
+          expect(component.goBack.emit).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('and the nationality is NOT defined...', () => {
+        beforeEach(() => {
+          spyOn(component.goBack, 'emit');
+
+          component.KYCNationality = null;
+          fixture.detectChanges();
+          de.query(By.css(backButtonSelector)).nativeElement.click();
+        });
+
+        it('should notify to go to the previous step', () => {
+          expect(component.goBack.emit).toHaveBeenCalled();
+        });
       });
     });
   });
 
   describe('when the nationality has not been selected yet...', () => {
     beforeEach(() => {
-      component.selectedNationality = null;
+      component.KYCNationality = null;
 
       fixture.detectChanges();
     });
@@ -202,18 +231,18 @@ describe('KYCNationalityComponent', () => {
 
   describe('when we select a nationality...', () => {
     beforeEach(() => {
-      component.selectedNationality = null;
+      spyOn(component.nationalityChange, 'emit');
 
       fixture.detectChanges();
     });
 
-    it('should define the selected nationality', () => {
+    it('should emit the selected nationality', () => {
       de.query(By.directive(DropdownComponent)).triggerEventHandler('selected', {
         label: EUROPEAN_UNION_NATIONALITY.label,
         value: EUROPEAN_UNION_NATIONALITY.value,
       });
 
-      expect(component.selectedNationality).toBe(EUROPEAN_UNION_NATIONALITY);
+      expect(component.nationalityChange.emit).toHaveBeenCalledWith(EUROPEAN_UNION_NATIONALITY);
     });
   });
 
@@ -221,19 +250,16 @@ describe('KYCNationalityComponent', () => {
     const selectedDocument = KYC_DOCUMENTATION[0];
 
     beforeEach(() => {
-      spyOn(component.photosToRequestChange, 'emit');
-      component.selectedNationality = EUROPEAN_UNION_NATIONALITY;
+      spyOn(component.documentToRequestChange, 'emit');
+      component.KYCNationality = EUROPEAN_UNION_NATIONALITY;
 
       fixture.detectChanges();
     });
 
-    it('should emit the needed photos', () => {
-      de.query(By.directive(DropdownComponent)).triggerEventHandler('selected', {
-        label: selectedDocument.label,
-        value: selectedDocument.value,
-      });
+    it('should emit the selected document', () => {
+      de.query(By.directive(DropdownComponent)).triggerEventHandler('selected', selectedDocument);
 
-      expect(component.photosToRequestChange.emit).toHaveBeenCalledWith(selectedDocument.photosNeeded);
+      expect(component.documentToRequestChange.emit).toHaveBeenCalledWith(selectedDocument);
     });
   });
 });

@@ -3,7 +3,7 @@
         <div class="col">
             <a class="KYCNationality__back d-flex pb-4 pb-md-2" (click)="handleBack()">
                 <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
-                <span class="ml-3" id="headerMessage">{{nationalityHeader}}</span>
+                <span class="ml-3" id="headerMessage">{{header}}</span>
             </a>
         </div>
     </div>
@@ -16,29 +16,30 @@
                 <span class="KYCNationality__title d-block mt-4 mb-3 text-center">{{title}}</span>
                 <span class="KYCNationality__description d-block mb-3 text-center">{{description}}</span>
                 <tsl-dropdown
-                    *ngIf="!selectedNationality"
-                    placeholder="I'm from..."
-                    i18n-placeholder="@@kyc_select_nationality_view_list_title_placeholder" 
-                    [options]="KYC_NATIONALITIES"
-                    bindLabel="string"
-                    bindValue="string"
-                    class="form-control mb-4" 
-                    (selected)="selectNationality = $event"
-                    name="nationality"
-                    ngDefaultControl>
-                </tsl-dropdown>
-                <tsl-dropdown
-                    *ngIf="selectedNationality"
+                    *ngIf="KYCNationality as nationality; else selectNationalityDropdown"
                     placeholder="Select document"
                     i18n-placeholder="@@kyc_select_document_view_header_placeholder" 
-                    [options]="selectedNationality.availableDocuments"
+                    [options]="nationality.availableDocuments"
                     bindLabel="string"
                     bindValue="string"
                     class="form-control mb-4" 
-                    (selected)="emitPhotosToRequest($event)"
+                    (selected)="emitDocumentChange($event)"
                     name="document"
                     ngDefaultControl>
                 </tsl-dropdown>
+                <ng-template #selectNationalityDropdown>
+                    <tsl-dropdown
+                        placeholder="I'm from..."
+                        i18n-placeholder="@@kyc_select_nationality_view_list_title_placeholder" 
+                        [options]="KYC_NATIONALITIES"
+                        bindLabel="string"
+                        bindValue="string"
+                        class="form-control mb-4" 
+                        (selected)="emitNationalityChange($event)"
+                        name="nationality"
+                        ngDefaultControl>
+                    </tsl-dropdown>
+                </ng-template>
                 <span i18n="@@kyc_select_nationality_view_data_privacy_description" class="KYCNationality__infoMessage d-block text-center">Your information is confidential. It will be used only for the explained purposes.</span>
             </div>
         </div>

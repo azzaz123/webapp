@@ -3,31 +3,38 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MOCK_KYC_DOCUMENTATION, MOCK_KYC_NATIONALITY } from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { KYCModule } from '../../kyc.module';
 
-import { KycModalComponent } from './kyc-modal.component';
+import { KYCModalComponent } from './kyc-modal.component';
+import { KYCStoreService } from '../../services/kyc-store.service';
 
-describe('KycModalComponent', () => {
+describe('KYCModalComponent', () => {
   const bankAccountSelector = 'tsl-bank-account';
   const KYCNationalitySelector = 'tsl-kyc-nationality';
-  let component: KycModalComponent;
-  let fixture: ComponentFixture<KycModalComponent>;
+  const KYCImageOptionsSelector = 'tsl-kyc-image-options';
+
+  let component: KYCModalComponent;
+  let kycStoreService: KYCStoreService;
+  let fixture: ComponentFixture<KYCModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [KYCModule, RouterTestingModule, HttpClientTestingModule],
-      declarations: [KycModalComponent, StepperComponent, StepDirective],
-      providers: [NgbActiveModal],
+      declarations: [KYCModalComponent, StepperComponent, StepDirective],
+      providers: [DeviceDetectorService, NgbActiveModal],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KycModalComponent);
+    fixture = TestBed.createComponent(KYCModalComponent);
     component = fixture.componentInstance;
+    kycStoreService = TestBed.inject(KYCStoreService);
   });
 
   it('should create', () => {
@@ -41,7 +48,7 @@ describe('KycModalComponent', () => {
       expect(KYCContentStyle).toBeTruthy();
     });
 
-    describe('and we are on the first step...', () => {
+    describe('and we are on the bank account step...', () => {
       beforeEach(() => {
         component.stepper.activeId = 0;
 
@@ -70,32 +77,79 @@ describe('KycModalComponent', () => {
       });
 
       describe('and we click to go back button...', () => {
-        beforeEach(() => {
-          spyOn(component.stepper, 'goBack');
-          const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
-
-          KYCNationalityComponent.triggerEventHandler('goBack', {});
-        });
-
         it('should go back to the previous step', () => {
+          spyOn(component.stepper, 'goBack');
+
+          const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
+          KYCNationalityComponent.triggerEventHandler('goBack', {});
+
           expect(component.stepper.goBack).toHaveBeenCalled();
         });
       });
 
-      describe('and we define the photos to request to the user...', () => {
-        beforeEach(() => {
-          spyOn(component.stepper, 'goNext');
+      describe('and the nationality change...', () => {
+        it('should update the nationality on the store specifications', () => {
           const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
+          KYCNationalityComponent.triggerEventHandler('nationalityChange', MOCK_KYC_NATIONALITY);
 
-          KYCNationalityComponent.triggerEventHandler('photosToRequestChange', 2);
+          expect(kycStoreService.specifications.nationality).toStrictEqual(MOCK_KYC_NATIONALITY);
+        });
+      });
+
+      describe('and the documentation change...', () => {
+        describe('and the documentation is defined...', () => {
+          beforeEach(() => {
+            spyOn(component.stepper, 'goNext');
+
+            const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
+            KYCNationalityComponent.triggerEventHandler('documentToRequestChange', MOCK_KYC_DOCUMENTATION);
+          });
+
+          it('should update the documentation on the store specifications', () => {
+            expect(kycStoreService.specifications.documentation).toStrictEqual(MOCK_KYC_DOCUMENTATION);
+          });
+
+          it('should go to the next step', () => {
+            expect(component.stepper.goNext).toHaveBeenCalled();
+          });
         });
 
-        it('should define the photos to request', () => {
-          expect(component.photosToRequest).toBe(2);
+        describe('and the documentation is NOT defined...', () => {
+          beforeEach(() => {
+            spyOn(component.stepper, 'goNext');
+
+            const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
+            KYCNationalityComponent.triggerEventHandler('documentToRequestChange', null);
+          });
+
+          it('should update the documentation on the store specifications', () => {
+            expect(kycStoreService.specifications.documentation).toStrictEqual(null);
+          });
+
+          it('should stay on the same step', () => {
+            expect(component.stepper.goNext).not.toHaveBeenCalled();
+          });
+        });
+      });
+    });
+
+    describe('and we are on the define image method step', () => {
+      beforeEach(() => {
+        component.stepper.activeId = 2;
+
+        fixture.detectChanges();
+      });
+
+      describe('and we click to go back button...', () => {
+        beforeEach(() => {
+          spyOn(component.stepper, 'goBack');
+          const KYCImageOptionsComponent = fixture.debugElement.query(By.css(KYCImageOptionsSelector));
+
+          KYCImageOptionsComponent.triggerEventHandler('goBack', {});
         });
 
-        it('should go to the next step', () => {
-          expect(component.stepper.goNext).toHaveBeenCalled();
+        it('should go back to the previous step', () => {
+          expect(component.stepper.goBack).toHaveBeenCalled();
         });
       });
     });

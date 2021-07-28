@@ -7,10 +7,22 @@
             <tsl-bank-account isKYC="true" (bankAccountSaved)="goNextStep()"></tsl-bank-account>
         </ng-template>
         <ng-template step>
-            <tsl-kyc-nationality (goBack)="goPreviousStep()" (photosToRequestChange)="definePhotosAndGoNext($event)"></tsl-kyc-nationality>
+            <tsl-kyc-nationality
+                *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications"
+                [KYCNationality]="KYCSpecifications.nationality"
+                [KYCDocumentation]="KYCSpecifications.documentation"
+                (goBack)="goPreviousStep()"
+                (nationalityChange)="defineNationality($event)"
+                (documentToRequestChange)="defineDocumentationAndGoNext($event)"></tsl-kyc-nationality>
         </ng-template>
         <ng-template step>
-            <tsl-kyc-images [photosToRequest]="photosToRequest"></tsl-kyc-images>
+            <tsl-kyc-image-options (goBack)="resetKYCDocumentationAndGoPreviousStep()" (takeImageOptionChange)="defineImageMethodAndGoNext($event)"></tsl-kyc-image-options>
+        </ng-template>
+        <ng-template step>
+            <div *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications">
+                <span *ngIf="KYCSpecifications.imageMethod  === KYC_TAKE_IMAGE_OPTIONS.SHOOT">Shoot image component >_></span>
+                <span *ngIf="KYCSpecifications.imageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD">Upload image component >_></span>
+            </div>
         </ng-template>
     </tsl-stepper>
 </div>

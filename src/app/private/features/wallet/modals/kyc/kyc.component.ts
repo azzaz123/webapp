@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WALLET_PATHS } from '../../wallet.routing.constants';
-import { KycModalComponent } from './modals/kyc-modal/kyc-modal.component';
+import { KYCModalComponent } from './modals/kyc-modal/kyc-modal.component';
 
 @Component({
   selector: 'tsl-kyc',
@@ -16,7 +16,7 @@ export class KYCComponent implements OnInit {
 
   ngOnInit() {
     this.modalService
-      .open(KycModalComponent, {
+      .open(KYCModalComponent, {
         windowClass: 'kyc',
       })
       .result.then(
