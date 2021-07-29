@@ -61,7 +61,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
         .catch((error: DOMException) => {
           const errorMessage = error + '';
           this.cameraPermissionsSubject.next(
-            errorMessage.includes('Permission denied') ? KYC_UPLOAD_IMAGES_STATUS.DENIED : KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS
+            errorMessage.includes('denied') ? KYC_UPLOAD_IMAGES_STATUS.DENIED : KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS
           );
         });
     } else {
