@@ -6,7 +6,8 @@ import { SelectFormOption } from '@shared/form/components/select/interfaces/sele
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { SortByService } from './services/sort-by.service';
-import { SORT_BY, SORT_BY_DISTANCE_OPTION, SORT_BY_RELEVANCE_OPTION } from './services/constants/sort-by-options-constants';
+import { SORT_BY_DISTANCE_OPTION, SORT_BY_RELEVANCE_OPTION } from './services/constants/sort-by-options-constants';
+import { SORT_BY } from '@api/core/model';
 
 @Component({
   selector: 'tsl-sort-filter',

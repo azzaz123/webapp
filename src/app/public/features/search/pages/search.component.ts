@@ -13,7 +13,7 @@ import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
-import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { delay, distinctUntilChanged, filter, skip, map, tap } from 'rxjs/operators';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import {
@@ -39,11 +39,12 @@ import { SearchTrackingEventsService } from '@public/core/services/search-tracki
 import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { debounce } from '@core/helpers/debounce/debounce';
-import { SORT_BY, SORT_BY_DISTANCE_OPTION } from '../components/sort-filter/services/constants/sort-by-options-constants';
+import { SORT_BY_DISTANCE_OPTION } from '../components/sort-filter/services/constants/sort-by-options-constants';
 import { SearchResponseExtraData } from '../core/services/interfaces/search-response-extra-data.interface';
 import { SearchService } from '../core/services/search.service';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { SortByService } from '../components/sort-filter/services/sort-by.service';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {

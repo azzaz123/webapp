@@ -18,7 +18,15 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
-import { IMAGE, MOCK_FULL_USER, USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES, USER_PRO_DATA } from '@fixtures/user.fixtures.spec';
+import {
+  IMAGE,
+  MOCK_FULL_USER,
+  STORE_LOCATION,
+  USER_DATA,
+  USER_EDIT_DATA,
+  USER_LOCATION_COORDINATES,
+  USER_PRO_DATA,
+} from '@fixtures/user.fixtures.spec';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from '@shared/switch/switch.component';
@@ -79,6 +87,12 @@ describe('ProfileInfoComponent', () => {
                 return of({});
               },
               updateSearchLocationCookies() {},
+              hasStoreLocation() {
+                return true;
+              },
+              updateStoreLocation() {
+                return of({});
+              },
             },
           },
           {
@@ -243,6 +257,31 @@ describe('ProfileInfoComponent', () => {
             latitude: USER_LOCATION_COORDINATES.latitude + 1,
             longitude: USER_LOCATION_COORDINATES.longitude + 1,
             name: USER_LOCATION_COORDINATES.name,
+          });
+        });
+      });
+
+      describe('edit store location', () => {
+        beforeEach(() => {
+          spyOn(userService, 'updateStoreLocation').and.callThrough();
+        });
+        describe('and data was not edited', () => {
+          it('should not call the service', () => {
+            component.onSubmit();
+
+            expect(userService.updateStoreLocation).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('and data was edited', () => {
+          it('should call the service', () => {
+            component.profileForm.get('storeLocation').patchValue(STORE_LOCATION);
+            fixture.detectChanges();
+
+            component.onSubmit();
+
+            expect(userService.updateStoreLocation).toHaveBeenCalledWith(STORE_LOCATION);
+            expect(userService.updateStoreLocation).toHaveBeenCalledTimes(1);
           });
         });
       });

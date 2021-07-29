@@ -8,13 +8,13 @@ export interface ItemCard {
   description?: string;
   salePrice: number;
   currencyCode: string;
-  ownerId: string;
+  ownerId?: string;
   webSlug: string;
   images: Image[];
   distance?: number;
   flags?: ItemFlags;
   bumpFlags?: ItemVisibilityFlags;
-  categoryId?: number;
+  categoryId: number;
   saleConditions?: ItemSaleConditions;
   specs?: string[];
 }

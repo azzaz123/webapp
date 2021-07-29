@@ -1,4 +1,4 @@
-import { SORT_BY } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
+import { SORT_BY } from '@api/core/model';
 
 export interface SearchResponseExtraData {
   searchId: string;
