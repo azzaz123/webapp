@@ -9,7 +9,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/cancel-bubble.module';
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { SuggesterInputModule } from './suggester-input.module';
 @Component({
   selector: 'tsl-story-suggester-input',
@@ -28,7 +28,7 @@ class StorySuggesterInputFormComponent {
   public formGroup = new FormGroup({
     hashtag: new FormControl(['aa', 'ss']),
   });
-  //public options = this.formGroup.controls.hashtag.value;
+  public options = this.formGroup.value.hashtag;
 }
 export default {
   title: 'Webapp/Shared/SuggesterInput',

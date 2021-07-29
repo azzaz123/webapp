@@ -3,11 +3,12 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
+import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { fromEvent, Observable, of } from 'rxjs';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
   selector: 'tsl-suggester-input',
@@ -33,7 +34,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public options: SelectFormOption<string>[] = [];
   public suggestions: MultiSelectValue = [];
   public isClickOutside: boolean = false;
-  private extendedOptions;
+  private extendedOptions: MultiSelectFormOption[];
 
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService, private renderer: Renderer2) {
     super();
@@ -44,7 +45,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   ngAfterViewInit() {
     this.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions) => {
-      console.log('extendedOptions', this.extendedOptions, extendedOptions);
       this.extendedOptions = extendedOptions;
     });
   }
@@ -65,9 +65,9 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
           this.options = []; // When PR: To refactor
         } else {
           this.suggestions = this.value;
-
           this.getHashtags().subscribe((m) => {
             this.options = this.mapHashtagsToOptions(m);
+            console.log('ext', this.extendedOptions);
           });
         }
       });
@@ -75,32 +75,22 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   public writeValue(value): void {
     this.value = value;
-    // this.suggestions = this.value; // Maybe no need
   }
 
   public handleSelectedOption(): void {
-    this.extendedOptions.forEach((extendedOption) => {
-      if (extendedOption.checked) {
-        this.value.push(extendedOption.value);
-      } else {
-        const index = this.value.indexOf(extendedOption.value);
-        if (index !== -1) {
-          this.value.splice(index, 1);
-        }
-      }
-    });
-    console.log('handle', this.value);
+    this.value = this.mapValue();
     this.onChange(this.value);
   }
 
-  private isValidKey(): boolean {
-    const pattern: RegExp = /^#?([\p{L}\p{Nd}])+$/u;
-    if (this.model) {
-      return pattern.test(this.model);
-    } else return true;
-  }
-
   public getHashtags(): Observable<PaginatedList<Hashtag>> {
+    /*     return of({
+      list: [
+        { text: 'aa', occurrencies: 40 },
+        { text: 'gg', occurrencies: 2 },
+        { text: 'ss', occurrencies: 10 },
+      ],
+      paginationParameter: '10',
+    }); */
     return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
   }
 
@@ -117,6 +107,29 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   public createHashtagOption(): SelectFormOption<string>[] {
     return [{ label: this.model, value: this.model }];
+  }
+
+  private mapValue(): string[] {
+    let newValue: string[];
+    console.log('mapi', this.value, this.extendedOptions);
+    this.extendedOptions.forEach((extendedOption: MultiSelectFormOption) => {
+      if (extendedOption.checked) {
+        newValue = this.value.concat(extendedOption.value);
+        console.log('nn', newValue, extendedOption.value, this.value);
+      } else {
+        newValue = this.value.filter((n) => {
+          return n !== extendedOption.value;
+        });
+      }
+    });
+    return newValue;
+  }
+
+  private isValidKey(): boolean {
+    const pattern: RegExp = /^#?([\p{L}\p{Nd}])+$/u;
+    if (this.model) {
+      return pattern.test(this.model);
+    } else return true;
   }
 
   private closeForm() {
