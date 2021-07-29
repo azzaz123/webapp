@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { UserPermissions, PERMISSIONS_STATUS } from './user-permissions.interface';
+import { UserDevicePermissions, DEVICE_PERMISSIONS_STATUS } from './user-device-permissions.interface';
 
 @Injectable()
 export class AskPermissionsService {
-  public userPermissionsSubject: BehaviorSubject<UserPermissions> = new BehaviorSubject({
+  public userDevicePermissionsSubject: BehaviorSubject<UserDevicePermissions> = new BehaviorSubject({
     video: null,
     audio: null,
   });
@@ -15,13 +15,13 @@ export class AskPermissionsService {
       video: { facingMode: 'environment' },
     }).pipe(
       tap(
-        () => this.updateUserPermissions({ video: PERMISSIONS_STATUS.ACCEPTED }),
+        () => this.updateUserDevicePermissions({ video: DEVICE_PERMISSIONS_STATUS.ACCEPTED }),
         (error: DOMException) => {
           const errorMessage = error + '';
-          const errorPermissionStatus: PERMISSIONS_STATUS = errorMessage.includes('denied')
-            ? PERMISSIONS_STATUS.DENIED
-            : PERMISSIONS_STATUS.CANNOT_ACCESS;
-          this.updateUserPermissions({ video: errorPermissionStatus });
+          const errorPermissionStatus: DEVICE_PERMISSIONS_STATUS = errorMessage.includes('denied')
+            ? DEVICE_PERMISSIONS_STATUS.DENIED
+            : DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS;
+          this.updateUserDevicePermissions({ video: errorPermissionStatus });
         }
       )
     );
@@ -39,8 +39,8 @@ export class AskPermissionsService {
     return !!navigator.mediaDevices?.getUserMedia;
   }
 
-  private updateUserPermissions(newUserPermissions: UserPermissions): void {
-    const updatedPermissions = { ...this.userPermissionsSubject.value, ...newUserPermissions };
-    this.userPermissionsSubject.next(updatedPermissions);
+  private updateUserDevicePermissions(newUserDevicePermissions: UserDevicePermissions): void {
+    const updatedPermissions = { ...this.userDevicePermissionsSubject.value, ...newUserDevicePermissions };
+    this.userDevicePermissionsSubject.next(updatedPermissions);
   }
 }

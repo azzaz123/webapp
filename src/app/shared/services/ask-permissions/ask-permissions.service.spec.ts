@@ -2,7 +2,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MOCK_MEDIA_STREAM } from '@fixtures/media-stream.fixtures.spec';
 
 import { AskPermissionsService } from './ask-permissions.service';
-import { PERMISSIONS_STATUS, UserPermissions } from './user-permissions.interface';
+import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from './user-device-permissions.interface';
 
 describe('AskPermissionsService', () => {
   let service: AskPermissionsService;
@@ -40,15 +40,15 @@ describe('AskPermissionsService', () => {
         });
 
         it('should define the video permission as accepted', fakeAsync(() => {
-          let cameraPermissions: PERMISSIONS_STATUS;
+          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
 
           service.askCameraPermissions().subscribe();
           tick();
-          service.userPermissionsSubject.subscribe((userPermissions: UserPermissions) => {
+          service.userDevicePermissionsSubject.subscribe((userPermissions: UserDevicePermissions) => {
             cameraPermissions = userPermissions.video;
           });
 
-          expect(cameraPermissions).toBe(PERMISSIONS_STATUS.ACCEPTED);
+          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.ACCEPTED);
         }));
 
         it('should return the stream', fakeAsync(() => {
@@ -76,15 +76,15 @@ describe('AskPermissionsService', () => {
         });
 
         it('should define the video permission as denied', fakeAsync(() => {
-          let cameraPermissions: PERMISSIONS_STATUS;
+          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
 
           service.askCameraPermissions().subscribe({ error: () => {} });
           tick();
-          service.userPermissionsSubject.subscribe((userPermissions: UserPermissions) => {
+          service.userDevicePermissionsSubject.subscribe((userPermissions: UserDevicePermissions) => {
             cameraPermissions = userPermissions.video;
           });
 
-          expect(cameraPermissions).toBe(PERMISSIONS_STATUS.DENIED);
+          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.DENIED);
         }));
 
         it('should return an error', fakeAsync(() => {
@@ -110,15 +110,15 @@ describe('AskPermissionsService', () => {
         });
 
         it('should define the video permission as cannot access', fakeAsync(() => {
-          let cameraPermissions: PERMISSIONS_STATUS;
+          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
 
           service.askCameraPermissions().subscribe({ error: () => {} });
           tick();
-          service.userPermissionsSubject.subscribe((userPermissions: UserPermissions) => {
+          service.userDevicePermissionsSubject.subscribe((userPermissions: UserDevicePermissions) => {
             cameraPermissions = userPermissions.video;
           });
 
-          expect(cameraPermissions).toBe(PERMISSIONS_STATUS.CANNOT_ACCESS);
+          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS);
         }));
 
         it('should return an error', fakeAsync(() => {
@@ -140,15 +140,15 @@ describe('AskPermissionsService', () => {
       });
 
       it('should define the video permission as cannot access', fakeAsync(() => {
-        let cameraPermissions: PERMISSIONS_STATUS;
+        let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
 
         service.askCameraPermissions().subscribe({ error: () => {} });
         tick();
-        service.userPermissionsSubject.subscribe((userPermissions: UserPermissions) => {
+        service.userDevicePermissionsSubject.subscribe((userPermissions: UserDevicePermissions) => {
           cameraPermissions = userPermissions.video;
         });
 
-        expect(cameraPermissions).toBe(PERMISSIONS_STATUS.CANNOT_ACCESS);
+        expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS);
       }));
 
       it('should return a not allowed error', fakeAsync(() => {
