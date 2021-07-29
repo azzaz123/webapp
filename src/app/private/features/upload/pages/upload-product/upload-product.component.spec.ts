@@ -1683,15 +1683,44 @@ describe('UploadProductComponent', () => {
     });
   });
 
-  describe('when toggling shipping', () => {
-    beforeEach(() => {});
+  describe('if shipping toggle is enabled', () => {
+    const shippabilitySectionSelector = '#shippabilitySection';
+
+    beforeEach(() => {
+      component.isShippabilityActive = true;
+    });
 
     it('should reset weight if disabled', () => {
-      component.isShippabilityActive = true;
       component.ngOnInit();
       component.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
 
       expect(component.uploadForm.value.delivery_info).toBeNull();
+    });
+
+    describe('and shippability is allowed', () => {
+      beforeEach(() => {
+        component.isShippabilityAllowed = true;
+        fixture.detectChanges();
+      });
+
+      it('should show shipping section', () => {
+        const shippingSection = fixture.debugElement.query(By.css(shippabilitySectionSelector));
+
+        expect(shippingSection).toBeTruthy();
+      });
+    });
+
+    describe('and shippability is NOT allowed', () => {
+      beforeEach(() => {
+        component.isShippabilityAllowed = false;
+        fixture.detectChanges();
+      });
+
+      it('should NOT show shipping section', () => {
+        const shippingSection = fixture.debugElement.query(By.css(shippabilitySectionSelector));
+
+        expect(shippingSection).toBeFalsy();
+      });
     });
   });
 });
