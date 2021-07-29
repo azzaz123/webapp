@@ -17,9 +17,14 @@
                 </tsl-banner>
             </div>
             <ng-template #takingImageSection>
-                <div class="text-center">
-                    <video autoplay playsInline muted #userCamera class="w-100"></video>
-                    <tsl-button *ngIf="requestCameraSucceed(cameraPermissionsSubject | async)" id="shootImageButton">Hacer foto (1/{{photosNeeded}})</tsl-button>
+                <div class="justify-content-center row">
+                    <div class="KYCUploadImages__cameraContainer my-2 col-12 col-sm-8">
+                        <video autoplay playsInline muted #userCamera class="KYCUploadImages__camera h-100 w-100"></video>
+                        <div class="cameraOverlay"></div>
+                    </div>
+                </div>
+                <div class="text-center row">
+                    <tsl-button class="col" *ngIf="requestCameraSucceed(cameraPermissionsSubject | async)" id="shootImageButton">Hacer foto (1/{{photosNeeded}})</tsl-button>
                 </div>
             </ng-template>
         </div>

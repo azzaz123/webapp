@@ -1,4 +1,4 @@
-@import '~web-styleguide/scss/colors';
+@import '~style/common';
 
 .KYCUploadImages {
   &__back {
@@ -13,4 +13,22 @@
       }
     }
   }
+
+  &__cameraContainer {
+    border-radius: $border-radius;
+  }
+
+  &__camera {
+    transform: scaleX(-1);
+  }
+}
+
+.cameraOverlay {
+  position: absolute !important;
+  top: 13%;
+  right: 12%;
+  border: 3px solid $white;
+  height: 75%;
+  width: 76%;
+  box-shadow: rgb(0 0 0 / 50%) 0px 0px 0px 40px;
 }
