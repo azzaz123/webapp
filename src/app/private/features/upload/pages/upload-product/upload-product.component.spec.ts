@@ -710,26 +710,16 @@ describe('UploadProductComponent', () => {
     describe('and supports shipping', () => {
       function fillValidForm() {
         component.uploadForm.patchValue({
-          category_id: CATEGORY_IDS.SERVICES,
-          title: 'title',
-          description: 'title',
-          sale_price: 1000000,
-          currency_code: 'EUR',
           images: [{ image: true }],
           location: {
             address: USER_LOCATION.full_address,
             latitude: USER_LOCATION.approximated_latitude,
             longitude: USER_LOCATION.approximated_longitude,
           },
-          sale_conditions: {
-            supports_shipping: true,
-          },
-          delivery_info: null,
         });
       }
       beforeEach(() => {
         component.isShippabilityActive = true;
-        component.ngOnInit();
         fillValidForm();
       });
 
