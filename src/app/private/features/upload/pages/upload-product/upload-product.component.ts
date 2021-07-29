@@ -41,7 +41,7 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
+import { fromEvent, Observable, Subject } from 'rxjs';
 import { debounceTime, map, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
