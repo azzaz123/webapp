@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
-import { SubscriptionsResponse, TierDiscount } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-subscription-card',
@@ -14,7 +14,7 @@ export class SubscriptionCardComponent {
   @Input() hasTrialAvailable: boolean;
   @Input() isSubscribed: boolean;
   @Input() subscriptionBenefits: string[];
-  @Input() discount: TierDiscount;
+  @Input() tierDiscount: Tier;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter();
 
   public readonly titleConfig = {

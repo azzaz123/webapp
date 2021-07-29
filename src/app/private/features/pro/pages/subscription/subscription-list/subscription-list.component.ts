@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
-import { SubscriptionsResponse, TierDiscount } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 
 @Component({
@@ -34,8 +34,8 @@ export class SubscriptionListComponent {
     return this.subscriptionsService.hasTrial(subscription);
   }
 
-  public hasDiscount(subscription: SubscriptionsResponse): TierDiscount {
-    return this.subscriptionsService.getDefaultDiscount(subscription);
+  public hasDiscount(subscription: SubscriptionsResponse): Tier {
+    return this.subscriptionsService.getDefaultTierDiscount(subscription);
   }
 
   public isSubscribed(subscription: SubscriptionsResponse): boolean {

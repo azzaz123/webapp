@@ -161,7 +161,7 @@ describe('SubscriptionCardComponent', () => {
     describe('and has not trial available', () => {
       beforeEach(() => {
         component.hasTrialAvailable = false;
-        component.discount = null;
+        component.tierDiscount = null;
         fixture.detectChanges();
       });
       it('should not show trial banner', () => {

@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SubscriptionsResponse, TierDiscount } from '@core/subscriptions/subscriptions.interface';
-import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-subscription-price-discount',
@@ -9,15 +8,7 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 })
 export class SubscriptionPriceDiscountComponent {
   @Input() subscription: SubscriptionsResponse;
-  public discount: TierDiscount;
+  @Input() tierDiscount: Tier;
 
-  constructor(private subscriptionsService: SubscriptionsService) {}
-
-  ngOnInit() {
-    this.getDiscount(this.subscription);
-  }
-
-  public getDiscount(subscription: SubscriptionsResponse): void {
-    this.discount = this.subscriptionsService.getDefaultDiscount(subscription);
-  }
+  constructor() {}
 }

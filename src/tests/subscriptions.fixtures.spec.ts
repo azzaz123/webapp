@@ -88,7 +88,7 @@ export class MockSubscriptionService {
     return false;
   }
 
-  public getDefaultDiscount(): TierDiscount {
+  public getDefaultTierDiscount(): TierDiscount {
     return null;
   }
 }
@@ -1261,4 +1261,12 @@ export const TIER_DISCOUNT: TierDiscount = {
   end_date: 1640908800000,
   percentage: 50,
   price: 9.5,
+};
+
+export const TIER_WITH_DISCOUNT: Tier = {
+  id: 'plan_FWuFVeTHEDyECa',
+  limit: 9,
+  price: 9.99,
+  currency: '€',
+  discount: TIER_DISCOUNT,
 };

@@ -3,13 +3,13 @@
   }">
     <div class="SubscriptionCard__banner text-center px-2 mb-3"
         [ngClass]="{
-            'SubscriptionCard__banner--hidden': isSubscribed || (!hasTrialAvailable && !discount),
+            'SubscriptionCard__banner--hidden': isSubscribed || (!hasTrialAvailable && !tierDiscount),
             'SubscriptionCard__banner--trial': hasTrialAvailable,
-            'SubscriptionCard__banner--discount': discount && !hasTrialAvailable 
+            'SubscriptionCard__banner--discount': tierDiscount && !hasTrialAvailable 
         }">
-        <span *ngIf="!discount; else discountLabel" i18n="@@web_subscription_price_discount_days_trial_free">{{subscription.trial_days}}-day trial for free</span>
+        <span *ngIf="!tierDiscount; else discountLabel" i18n="@@web_subscription_price_discount_days_trial_free">{{subscription.trial_days}}-day trial for free</span>
         <ng-template #discountLabel>
-            <span i18n="@@pro_subscription_purchase_tier_list_discount_label">{{discount.percentage}} off!</span>
+            <span i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tierDiscount.discount.percentage}} off!</span>
         </ng-template>
     </div>
     <div class="d-flex flex-column align-items-center w-100">
@@ -23,7 +23,7 @@
         </div>
         <div class="SubscriptionCard__price">
             <ng-container *ngIf="!isSubscribed; else subscriptionPrice">
-                <tsl-subscription-price-discount [subscription]="subscription">
+                <tsl-subscription-price-discount [subscription]="subscription" [tierDiscount]="tierDiscount">
                 </tsl-subscription-price-discount>
             </ng-container>
             <ng-template #subscriptionPrice>

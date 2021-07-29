@@ -238,8 +238,8 @@ export class SubscriptionsService {
     return subscriptions.some((subscription) => this.isStripeSubscription(subscription));
   }
 
-  public getDefaultDiscount(subscription: SubscriptionsResponse): TierDiscount {
-    return subscription.tiers.find((tier) => tier.discount)?.discount;
+  public getDefaultTierDiscount(subscription: SubscriptionsResponse): Tier {
+    return subscription.tiers.find((tier) => tier.discount);
   }
 
   public hasTrial(subscription: SubscriptionsResponse): boolean {
