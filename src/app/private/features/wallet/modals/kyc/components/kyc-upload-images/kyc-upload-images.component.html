@@ -9,17 +9,17 @@
     </div>
     <div class="row mt-2">
         <div class="col">
-            <div *ngIf="requestCameraFailed(cameraPermissionsSubject | async) else takingImageSection" class="mx-3">
+            <div *ngIf="requestCameraFailed((userPermissionsSubject | async).video) else takingImageSection" class="mx-3">
                 <tsl-banner [specifications]="errorBannerSpecifications">
                     <div class="d-flex align-items-center">
-                        <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy(cameraPermissionsSubject | async)}}
+                        <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy((userPermissionsSubject | async).video)}}
                     </div>
                 </tsl-banner>
             </div>
             <ng-template #takingImageSection>
                 <div class="text-center">
                     <video autoplay playsInline muted #userCamera class="w-100"></video>
-                    <tsl-button *ngIf="requestCameraSucceed(cameraPermissionsSubject | async)" id="shootImageButton">Hacer foto (1/{{photosNeeded}})</tsl-button>
+                    <tsl-button *ngIf="requestCameraSucceed((userPermissionsSubject | async).video)" id="shootImageButton">Hacer foto (1/{{photosNeeded}})</tsl-button>
                 </div>
             </ng-template>
         </div>
