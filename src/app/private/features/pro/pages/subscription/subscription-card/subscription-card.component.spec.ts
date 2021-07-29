@@ -40,7 +40,7 @@ describe('SubscriptionCardComponent', () => {
     });
 
     it('should not show trial banner', () => {
-      const trialBanner = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
+      const trialBanner = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
 
       expect(trialBanner).toBeTruthy();
     });
@@ -141,24 +141,31 @@ describe('SubscriptionCardComponent', () => {
         component.hasTrialAvailable = true;
         fixture.detectChanges();
       });
-      it('should show trial banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
+      it('should show banner', () => {
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
 
         expect(trialBannerHidden).toBeFalsy();
       });
       it('should show free days amount', () => {
-        const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner')).nativeElement;
+        const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__banner')).nativeElement;
+
         expect(trialBanner.textContent).toContain(component.subscription.trial_days);
+      });
+      it('should show trial banner', () => {
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--trial'));
+
+        expect(trialBannerHidden).toBeTruthy();
       });
     });
 
     describe('and has not trial available', () => {
       beforeEach(() => {
         component.hasTrialAvailable = false;
+        component.discount = null;
         fixture.detectChanges();
       });
       it('should not show trial banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
 
         expect(trialBannerHidden).toBeTruthy();
       });

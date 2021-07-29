@@ -14,7 +14,7 @@ export interface Tier {
   limit?: number;
   price: number;
   currency: string;
-  discount: TierDiscount;
+  discount?: TierDiscount;
 }
 
 export interface TierDiscount {

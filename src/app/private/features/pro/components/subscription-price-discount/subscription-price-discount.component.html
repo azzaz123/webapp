@@ -1,6 +1,6 @@
-<div class="SubscriptionPriceDiscount">
+<div class="SubscriptionPriceDiscount d-flex flex-column">
   <div i18n="@@web_subscription_price_discount_from_price" *ngIf="subscription.tiers.length">From:
-    <span [ngClass]="{ 'Subscriptions__category-info--discounted': discount }">
+    <span [ngClass]="{ 'SubscriptionPriceDiscount__price--discounted': discount }">
       {{subscription?.tiers[0]?.price}}{{subscription?.tiers[0]?.currency}}</span>
     <ng-container *ngIf="discount">
       {{discount.price}}{{subscription?.tiers[0]?.currency}}</ng-container>/month

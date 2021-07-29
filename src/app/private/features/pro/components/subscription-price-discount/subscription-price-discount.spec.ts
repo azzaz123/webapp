@@ -1,7 +1,13 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_ADDED, MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  MAPPED_SUBSCRIPTIONS,
+  MAPPED_SUBSCRIPTIONS_ADDED,
+  MockSubscriptionService,
+  TIER_DISCOUNT,
+} from '@fixtures/subscriptions.fixtures.spec';
 import { SubscriptionPriceDiscountComponent } from './subscription-price-discount.component';
 
 describe('SubscriptionPriceDiscountComponent', () => {
@@ -28,33 +34,33 @@ describe('SubscriptionPriceDiscountComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('hasTrial', () => {
-    it('should return if the subscription has a trial available', () => {
-      spyOn(subscriptionsService, 'hasTrial').and.returnValue(MAPPED_SUBSCRIPTIONS_ADDED[2].trial_available);
-
-      component.hasTrial(MAPPED_SUBSCRIPTIONS_ADDED[2]);
-
-      expect(subscriptionsService.hasTrial).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS_ADDED[2]);
+  describe('has discount', () => {
+    beforeEach(() => {
+      spyOn(subscriptionsService, 'getDefaultDiscount').and.returnValue(TIER_DISCOUNT);
+      component.ngOnInit();
+      fixture.detectChanges();
+    });
+    it('should show price discounted', () => {
+      const discountLabel: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPriceDiscount__price--discounted')).nativeElement;
+      expect(discountLabel).toBeTruthy();
+      expect(discountLabel.innerHTML).toContain(component.subscription?.tiers[0]?.price);
+    });
+    it('should show discount', () => {
+      const discountLabel: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPriceDiscount')).nativeElement;
+      expect(discountLabel).toBeTruthy();
+      expect(discountLabel.innerHTML).toContain(component.discount.price);
     });
   });
 
-  describe('hasOneTierDiscount', () => {
-    it('should return if the subscription has a hasOneTierDiscount', () => {
-      spyOn(subscriptionsService, 'hasOneTierDiscount').and.callThrough();
+  describe('has not discount', () => {
+    it('should not show discount', () => {
+      spyOn(subscriptionsService, 'getDefaultDiscount').and.callThrough();
 
-      component.hasOneTierDiscount(MAPPED_SUBSCRIPTIONS_ADDED[2]);
+      component.ngOnInit();
+      fixture.detectChanges();
 
-      expect(subscriptionsService.hasOneTierDiscount).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS_ADDED[2]);
-    });
-  });
-
-  describe('hasOneFreeTier', () => {
-    it('should return if the subscription has a freeTier', () => {
-      spyOn(subscriptionsService, 'hasOneFreeTier').and.callThrough();
-
-      component.hasOneFreeTier(MAPPED_SUBSCRIPTIONS_ADDED[2]);
-
-      expect(subscriptionsService.hasOneFreeTier).toHaveBeenCalledWith(MAPPED_SUBSCRIPTIONS_ADDED[2]);
+      const discountLabel = fixture.debugElement.query(By.css('.SubscriptionPriceDiscount__price--discounted'));
+      expect(discountLabel).toBeFalsy();
     });
   });
 

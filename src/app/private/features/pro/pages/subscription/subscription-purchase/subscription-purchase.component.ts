@@ -331,7 +331,6 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   }
 
   private trackSubscriptionPayConfirmation(): void {
-    const discountPercent = this.selectedTier.discount?.percentage;
     const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
       name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
       eventType: ANALYTIC_EVENT_TYPES.Transaction,
@@ -341,7 +340,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
         screenId: SCREEN_IDS.ProfileSubscription,
         isNewCard: !this.isSavedCard,
         isNewSubscriber: !this.user.featured,
-        discountPercent,
+        discountPercent: this.selectedTier.discount?.percentage | 0,
         invoiceNeeded: this.isInvoiceRequired,
         freeTrial: this.subscriptionsService.hasTrial(this.subscription),
       },

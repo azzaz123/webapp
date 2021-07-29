@@ -386,43 +386,6 @@ describe('SubscriptionsService', () => {
     });
   });
 
-  describe('getDiscountPercentatge', () => {
-    describe('when tier discounted price is 0', () => {
-      it('should return 100', () => {
-        const freeTier: Tier = {
-          id: 'abcd',
-          limit: 288,
-          price: 100,
-          currency: '€',
-          discount_available: {
-            months: 1,
-            discounted_price: 0,
-          },
-        };
-
-        const result = service.getTierDiscountPercentatge(freeTier);
-
-        expect(result).toBe(100);
-      });
-    });
-
-    describe('when tier has no discount', () => {
-      it('should return 0', () => {
-        const tierWithoutDiscount: Tier = {
-          id: 'abcd',
-          limit: 288,
-          price: 100,
-          currency: '€',
-          discount_available: null,
-        };
-
-        const result = service.getTierDiscountPercentatge(tierWithoutDiscount);
-
-        expect(result).toBe(0);
-      });
-    });
-  });
-
   describe('getTrialSubscriptionsIds', () => {
     describe('when has not any free trial', () => {
       it('should return no subscriptions', () => {
