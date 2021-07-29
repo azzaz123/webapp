@@ -1,5 +1,5 @@
 import { UserInfoResponse, UserProInfo } from '@core/user/user-info.interface';
-import { Coordinate } from '@core/geolocation/address-response.interface';
+import { Coordinate, StoreLocation } from '@core/geolocation/address-response.interface';
 import { Counters, Ratings, ShippingCounterResponse, UserStats } from '@core/user/user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from '@core/user/user-data.interface';
 import { UnsubscribeReason } from '@core/user/unsubscribe-reason.interface';
@@ -95,6 +95,8 @@ export const USER_EXTRA_INFO: UserExtrainfo = {
   phone_number: 'phone_number',
   link: 'link',
   address: USER_LOCATION.title,
+  latitude: USER_LOCATION.approximated_latitude,
+  longitude: USER_LOCATION.approximated_longitude,
 };
 
 export const USER_DATA: UserResponse = {
@@ -368,6 +370,10 @@ export class MockedUserService {
   public logout(): Observable<any> {
     return of(null);
   }
+
+  public hasStoreLocation(): boolean {
+    return false;
+  }
 }
 
 export const USER_INFO_RESPONSE: UserInfoResponse = {
@@ -379,6 +385,12 @@ export const USER_LOCATION_COORDINATES: Coordinate = {
   latitude: USER_LOCATION.approximated_latitude,
   longitude: USER_LOCATION.approximated_longitude,
   name: USER_LOCATION.title,
+};
+
+export const STORE_LOCATION: StoreLocation = {
+  latitude: 41.609,
+  longitude: 2.2873,
+  address: 'gran via 1',
 };
 
 export const RATINGS_RESPONSE: Ratings = {

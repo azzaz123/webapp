@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { PaginationService } from './pagination.service';
 import { of } from 'rxjs/internal/observable/of';
 import { HttpResponse } from '@angular/common/http';
-import { PaginatedList } from '@api/core/model/paginated-list.interface';
+import { PaginatedList } from '@api/core/model';
 
 describe('PaginationService', () => {
   let paginationService: PaginationService;

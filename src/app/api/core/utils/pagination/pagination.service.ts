@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PaginatedList } from '@api/core/model/paginated-list.interface';
+import { PaginatedList } from '@api/core/model';
 
 @Injectable({
   providedIn: 'root',

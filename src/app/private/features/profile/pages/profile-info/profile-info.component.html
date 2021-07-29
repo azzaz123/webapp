@@ -65,7 +65,7 @@
             <div class="col-12 col-md-6 offset-md-1">
               <input (click)="openBecomeProModal(ANALYTICS_FIELDS.PHONE)" type="text" class="form-control" id="phone_number"
                 formControlName="phone_number" [readonly]="!isPro" />
-              <span class="tracking-phone-info" *ngIf="isPro" i18n="@@web_profile_pages_info_298">This telephone number will never be public, we will
+              <span class="tracking-phone-info" *ngxPermissionsOnly="PERMISSIONS.professional" i18n="@@web_profile_pages_info_298">This telephone number will never be public, we will
                 assign you a tracking number and it will be what customers will see.</span>
             </div>
           </div>
@@ -77,11 +77,19 @@
                 [readonly]="!isPro" />
             </div>
           </div>
+          <div class="form-group row">
+            <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_299">Shop address</label>
+            <div class="col-12 col-md-6 offset-md-1" tslVisible (visible)="onMapContainerVisible()">
+              <tsl-location-box *ngIf="renderMap" [form]="profileForm" name="storeLocation" 
+                [disableFooter]="true" [disablePopover]="true" [disableInput]="!isPro" (click)="openBecomeProModal(ANALYTICS_FIELDS.SHOP_ADDRESS)" [defaultUserLocation]="false"
+                [updateLocation]="updateLocationWhenSearching" [isIncorrectAddress]="isIncorrectAddress"></tsl-location-box>
+            </div>
+          </div>
         </div>
       </ng-container>
         <div class="row">
           <div class="col-12 text-center">
-            <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big"
+            <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big btn--big"
               [disabled]="!formComponent.hasNotSavedChanges" i18n="@@web_profile_pages_info_580">Save</tsl-button>
           </div>
         </div>
