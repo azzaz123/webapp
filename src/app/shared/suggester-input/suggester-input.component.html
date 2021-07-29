@@ -4,7 +4,7 @@ placeholder="Suggesters..."
 [(ngModel)]="model"
 #hashtagSuggester
 />
-<div *ngIf="showMenu(); else notValidKeyMessage" #formMenu>
+<div *ngIf="showOptions(); else notValidKeyMessage" #formMenu>
     <tsl-multi-select-form [(ngModel)]="suggestions" [options]="options" (change)="handleSelectedOption()"></tsl-multi-select-form>
 </div> 
 

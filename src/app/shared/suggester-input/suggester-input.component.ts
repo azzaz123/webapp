@@ -50,8 +50,13 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     });
   }
 
-  public showMenu(): boolean {
-    return !!this.isValidKey() && !this.isClickOutside;
+  public writeValue(value): void {
+    this.value = value;
+  }
+
+  public handleSelectedOption(): void {
+    this.value = this.mapExtendedOptionsToValue();
+    this.onChange(this.value);
   }
 
   public detectTitleKeyboardChanges(): void {
@@ -66,38 +71,25 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
           this.options = []; // When PR: To refactor
         } else {
           this.suggestions = this.value;
-          this.getHashtags().subscribe((m) => {
-            this.options = this.mapHashtagsToOptions(m);
+          this.getHashtagSuggesters().subscribe((m) => {
+            this.options = this.mapHashtagSuggestersToOptions(m);
           });
         }
       });
   }
 
-  public writeValue(value): void {
-    this.value = value;
+  public showOptions(): boolean {
+    return !!this.isValidKey() && !this.isClickOutside;
   }
 
-  public handleSelectedOption(): void {
-    this.value = this.mapValue();
-    this.onChange(this.value);
+  private getHashtagSuggesters(): Observable<PaginatedList<Hashtag>> {
+    return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
   }
 
-  public getHashtags(): Observable<PaginatedList<Hashtag>> {
-    return of({
-      list: [
-        { text: 'aa', occurrencies: 10 },
-        { text: 'ss', occurrencies: 10 },
-        { text: 'gg', occurrencies: 30 },
-      ],
-      paginationParameter: '10',
-    });
-    // return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
-  }
-
-  public mapHashtagsToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
+  private mapHashtagSuggestersToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
     let { list } = hashtagList;
     if (!list.length && !!this.model) {
-      return this.createHashtagOption();
+      return this.createHashtagSuggesterOption();
     }
     let options = list.map((hashtag: Hashtag) => {
       return { label: hashtag.text, sublabel: hashtag.occurrencies.toString(), value: hashtag.text };
@@ -105,33 +97,28 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     return options;
   }
 
-  private createHashtagOption(): SelectFormOption<string>[] {
+  private createHashtagSuggesterOption(): SelectFormOption<string>[] {
     this.isOptionCreatedByUser = true;
     return [{ label: this.model, value: this.model }];
   }
 
-  private mapValue(): string[] {
-    let newValue: string[];
-    if (!this.isOptionCreatedByUser) {
-      newValue = [];
-      this.extendedOptions.forEach((n) => {
-        if (n.checked) {
-          newValue.push(n.value);
+  private mapExtendedOptionsToValue(): string[] {
+    let newValue: string[] = [];
+    this.extendedOptions.forEach((extendedOption: MultiSelectFormOption) => {
+      if (!this.isOptionCreatedByUser) {
+        if (extendedOption.checked) {
+          newValue.push(extendedOption.value);
         }
-      });
-    } else {
-      this.extendedOptions.forEach((extendedOption: MultiSelectFormOption) => {
+      } else {
         if (extendedOption.checked) {
           newValue = this.value.concat(extendedOption.value);
-          console.log('nn', newValue, extendedOption.value, this.value);
         } else {
-          newValue = this.value.filter((n) => {
-            return n !== extendedOption.value;
+          newValue = this.value.filter((value) => {
+            return value !== extendedOption.value;
           });
         }
-      });
-    }
-
+      }
+    });
     return newValue;
   }
 
