@@ -35,6 +35,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public suggestions: MultiSelectValue = [];
   public isClickOutside: boolean = false;
   private extendedOptions: MultiSelectFormOption[];
+  private isOptionCreatedByUser: boolean;
 
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService, private renderer: Renderer2) {
     super();
@@ -67,7 +68,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
           this.suggestions = this.value;
           this.getHashtags().subscribe((m) => {
             this.options = this.mapHashtagsToOptions(m);
-            console.log('ext', this.extendedOptions);
           });
         }
       });
@@ -83,7 +83,15 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public getHashtags(): Observable<PaginatedList<Hashtag>> {
-    return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
+    return of({
+      list: [
+        { text: 'aa', occurrencies: 10 },
+        { text: 'ss', occurrencies: 10 },
+        { text: 'gg', occurrencies: 30 },
+      ],
+      paginationParameter: '10',
+    });
+    // return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
   }
 
   public mapHashtagsToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
@@ -97,13 +105,14 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     return options;
   }
 
-  public createHashtagOption(): SelectFormOption<string>[] {
+  private createHashtagOption(): SelectFormOption<string>[] {
+    this.isOptionCreatedByUser = true;
     return [{ label: this.model, value: this.model }];
   }
 
   private mapValue(): string[] {
     let newValue: string[];
-    if (this.extendedOptions.length > 1) {
+    if (!this.isOptionCreatedByUser) {
       newValue = [];
       this.extendedOptions.forEach((n) => {
         if (n.checked) {
