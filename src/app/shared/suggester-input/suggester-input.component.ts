@@ -83,14 +83,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public getHashtags(): Observable<PaginatedList<Hashtag>> {
-    /*     return of({
-      list: [
-        { text: 'aa', occurrencies: 40 },
-        { text: 'gg', occurrencies: 2 },
-        { text: 'ss', occurrencies: 10 },
-      ],
-      paginationParameter: '10',
-    }); */
     return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
   }
 
@@ -111,17 +103,26 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   private mapValue(): string[] {
     let newValue: string[];
-    console.log('mapi', this.value, this.extendedOptions);
-    this.extendedOptions.forEach((extendedOption: MultiSelectFormOption) => {
-      if (extendedOption.checked) {
-        newValue = this.value.concat(extendedOption.value);
-        console.log('nn', newValue, extendedOption.value, this.value);
-      } else {
-        newValue = this.value.filter((n) => {
-          return n !== extendedOption.value;
-        });
-      }
-    });
+    if (this.extendedOptions.length > 1) {
+      newValue = [];
+      this.extendedOptions.forEach((n) => {
+        if (n.checked) {
+          newValue.push(n.value);
+        }
+      });
+    } else {
+      this.extendedOptions.forEach((extendedOption: MultiSelectFormOption) => {
+        if (extendedOption.checked) {
+          newValue = this.value.concat(extendedOption.value);
+          console.log('nn', newValue, extendedOption.value, this.value);
+        } else {
+          newValue = this.value.filter((n) => {
+            return n !== extendedOption.value;
+          });
+        }
+      });
+    }
+
     return newValue;
   }
 
