@@ -26,7 +26,7 @@ import { SuggesterInputModule } from './suggester-input.module';
 })
 class StorySuggesterInputFormComponent {
   public formGroup = new FormGroup({
-    hashtag: new FormControl(['aa', 'ss']),
+    hashtag: new FormControl(['aa', 'ss', 'design']),
   });
   public options = this.formGroup.value.hashtag;
 }

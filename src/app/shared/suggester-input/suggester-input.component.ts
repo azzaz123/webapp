@@ -35,7 +35,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public suggestions: MultiSelectValue = [];
   public isClickOutside: boolean = false;
   private extendedOptions: MultiSelectFormOption[];
-  private isOptionCreatedByUser: boolean;
 
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService, private renderer: Renderer2) {
     super();
@@ -67,7 +66,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
           this.closeForm();
         }
         if (!this.isValidKey()) {
-          //this.showInvalidHashtagMessage = true;
           this.options = []; // When PR: To refactor
         } else {
           this.suggestions = this.value;
@@ -92,31 +90,26 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
       return this.createHashtagSuggesterOption();
     }
     let options = list.map((hashtag: Hashtag) => {
-      return { label: hashtag.text, sublabel: hashtag.occurrencies.toString(), value: hashtag.text };
+      //return { label: hashtag.text, sublabel: hashtag.occurrencies.toString(), value: hashtag.text };
+      return { label: hashtag.text, value: hashtag.text };
     });
     return options;
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
-    this.isOptionCreatedByUser = true;
     return [{ label: this.model, value: this.model }];
   }
 
   private mapExtendedOptionsToValue(): string[] {
-    let newValue: string[] = [];
-    this.extendedOptions.forEach((extendedOption: MultiSelectFormOption) => {
-      if (!this.isOptionCreatedByUser) {
-        if (extendedOption.checked) {
-          newValue.push(extendedOption.value);
-        }
-      } else {
-        if (extendedOption.checked) {
-          newValue = this.value.concat(extendedOption.value);
-        } else {
-          newValue = this.value.filter((value) => {
-            return value !== extendedOption.value;
-          });
-        }
+    let newValue: string[] = this.value;
+    this.extendedOptions.forEach((option: MultiSelectFormOption) => {
+      if (option.checked && !this.value.includes(option.value)) {
+        newValue = newValue.concat(option.value);
+      }
+      if (!option.checked && this.value.includes(option.value)) {
+        newValue = newValue.filter((value) => {
+          return value !== option.value;
+        });
       }
     });
     return newValue;
@@ -126,7 +119,9 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     const pattern: RegExp = /^#?([\p{L}\p{Nd}])+$/u;
     if (this.model) {
       return pattern.test(this.model);
-    } else return true;
+    } else {
+      return true;
+    }
   }
 
   private closeForm() {
