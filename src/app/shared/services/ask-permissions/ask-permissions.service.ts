@@ -10,7 +10,7 @@ export class AskPermissionsService {
     audio: null,
   });
 
-  public askCameraPermissions(): Observable<MediaStream> {
+  public askCameraPermissions(): Observable<MediaStream | never> {
     return this.askPermissions({
       video: { facingMode: 'environment' },
     }).pipe(
@@ -27,11 +27,11 @@ export class AskPermissionsService {
     );
   }
 
-  public askPermissions(mediaToRequest: MediaStreamConstraints): Observable<MediaStream> {
+  public askPermissions(mediaToRequest: MediaStreamConstraints): Observable<MediaStream | never> {
     if (this.isAPIAllowed()) {
       return from(navigator.mediaDevices.getUserMedia(mediaToRequest));
     } else {
-      return throwError(null);
+      return throwError('Not Allowed');
     }
   }
 
@@ -40,7 +40,7 @@ export class AskPermissionsService {
   }
 
   private updateUserPermissions(newUserPermissions: UserPermissions): void {
-    const updatedPermissions = { ...this.userPermissionsSubject.value, newUserPermissions };
+    const updatedPermissions = { ...this.userPermissionsSubject.value, ...newUserPermissions };
     this.userPermissionsSubject.next(updatedPermissions);
   }
 }
