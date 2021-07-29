@@ -90,8 +90,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
       return this.createHashtagSuggesterOption();
     }
     let options = list.map((hashtag: Hashtag) => {
-      //return { label: hashtag.text, sublabel: hashtag.occurrencies.toString(), value: hashtag.text };
-      return { label: hashtag.text, value: hashtag.text };
+      return { label: hashtag.text, sublabel: hashtag.occurrences.toString(), value: hashtag.text };
     });
     return options;
   }

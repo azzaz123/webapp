@@ -71,8 +71,8 @@ DisableMultiSelect.args = {
   disabled: 'true',
 };
 
-export const OptionsWithOccurrencies = Template.bind({});
-OptionsWithOccurrencies.args = {
+export const OptionsWithOccurrences = Template.bind({});
+OptionsWithOccurrences.args = {
   options: optionsWithSublabel,
   disabled: 'false',
 };
