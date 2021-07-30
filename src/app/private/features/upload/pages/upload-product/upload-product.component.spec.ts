@@ -1139,6 +1139,85 @@ describe('UploadProductComponent', () => {
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
+
+      describe('and shipping flag is active', () => {
+        beforeEach(() => {
+          component.isShippabilityActive = true;
+          fixture.detectChanges();
+        });
+
+        describe('and item is shippable', () => {
+          it('should send the Edit Item CG tracking event', () => {
+            component.item = MOCK_ITEM;
+            const action = UPLOAD_ACTION.updated;
+            const editResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
+            const weight = 10;
+            editResponse.sale_conditions = {
+              supports_shipping: true,
+              fix_price: true,
+              exchange_allowed: false,
+            };
+            editResponse.delivery_info = {
+              min_weight_kg: weight,
+              max_weight_kg: weight,
+            };
+            const expectedEvent: AnalyticsEvent<EditItemCG> = {
+              name: ANALYTICS_EVENT_NAMES.EditItemCG,
+              eventType: ANALYTIC_EVENT_TYPES.Other,
+              attributes: {
+                itemId: editResponse.id,
+                categoryId: editResponse.category_id,
+                salePrice: editResponse.sale_price,
+                title: editResponse.title,
+                isPro: false,
+                screenId: SCREEN_IDS.EditItem,
+                shippingAllowed: true,
+                shippingWeight: weight,
+              },
+            };
+            spyOn(analyticsService, 'trackEvent');
+
+            component.ngOnInit();
+            component.onUploaded(editResponse, action);
+
+            expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          });
+        });
+
+        describe('and item is NOT shippable', () => {
+          it('should send the Edit Item CG tracking event', () => {
+            component.item = MOCK_ITEM;
+            const action = UPLOAD_ACTION.updated;
+            const editResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
+            editResponse.sale_conditions = {
+              supports_shipping: false,
+              fix_price: true,
+              exchange_allowed: false,
+            };
+            editResponse.delivery_info = null;
+
+            const expectedEvent: AnalyticsEvent<EditItemCG> = {
+              name: ANALYTICS_EVENT_NAMES.EditItemCG,
+              eventType: ANALYTIC_EVENT_TYPES.Other,
+              attributes: {
+                itemId: editResponse.id,
+                categoryId: editResponse.category_id,
+                salePrice: editResponse.sale_price,
+                title: editResponse.title,
+                isPro: false,
+                screenId: SCREEN_IDS.EditItem,
+                shippingAllowed: false,
+              },
+            };
+            spyOn(analyticsService, 'trackEvent');
+
+            component.ngOnInit();
+            component.onUploaded(editResponse, action);
+
+            expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          });
+        });
+      });
     });
 
     describe('if it`s a item upload', () => {
@@ -1165,6 +1244,85 @@ describe('UploadProductComponent', () => {
         component.onUploaded(uploadResponse, action);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+
+      describe('and shipping flag is active', () => {
+        beforeEach(() => {
+          component.isShippabilityActive = true;
+          fixture.detectChanges();
+        });
+
+        describe('and item is shippable', () => {
+          it('should send the Edit Item CG tracking event', () => {
+            component.item = MOCK_ITEM;
+            const action = UPLOAD_ACTION.updated;
+            const uploadResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
+            const weight = 10;
+            uploadResponse.sale_conditions = {
+              supports_shipping: true,
+              fix_price: true,
+              exchange_allowed: false,
+            };
+            uploadResponse.delivery_info = {
+              min_weight_kg: weight,
+              max_weight_kg: weight,
+            };
+            const expectedEvent: AnalyticsEvent<EditItemCG> = {
+              name: ANALYTICS_EVENT_NAMES.EditItemCG,
+              eventType: ANALYTIC_EVENT_TYPES.Other,
+              attributes: {
+                itemId: uploadResponse.id,
+                categoryId: uploadResponse.category_id,
+                salePrice: uploadResponse.sale_price,
+                title: uploadResponse.title,
+                isPro: false,
+                screenId: SCREEN_IDS.EditItem,
+                shippingAllowed: true,
+                shippingWeight: weight,
+              },
+            };
+            spyOn(analyticsService, 'trackEvent');
+
+            component.ngOnInit();
+            component.onUploaded(uploadResponse, action);
+
+            expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          });
+        });
+
+        describe('and item is NOT shippable', () => {
+          it('should send the Edit Item CG tracking event', () => {
+            component.item = MOCK_ITEM;
+            const action = UPLOAD_ACTION.updated;
+            const uploadResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
+            uploadResponse.sale_conditions = {
+              supports_shipping: false,
+              fix_price: true,
+              exchange_allowed: false,
+            };
+            uploadResponse.delivery_info = null;
+
+            const expectedEvent: AnalyticsEvent<EditItemCG> = {
+              name: ANALYTICS_EVENT_NAMES.EditItemCG,
+              eventType: ANALYTIC_EVENT_TYPES.Other,
+              attributes: {
+                itemId: uploadResponse.id,
+                categoryId: uploadResponse.category_id,
+                salePrice: uploadResponse.sale_price,
+                title: uploadResponse.title,
+                isPro: false,
+                screenId: SCREEN_IDS.EditItem,
+                shippingAllowed: false,
+              },
+            };
+            spyOn(analyticsService, 'trackEvent');
+
+            component.ngOnInit();
+            component.onUploaded(uploadResponse, action);
+
+            expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          });
+        });
       });
     });
   });

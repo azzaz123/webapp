@@ -804,13 +804,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
 
     if (item.delivery_info) {
-      baseEventAttrs.shippingWeight = item.delivery_info.min_weight_kg;
+      baseEventAttrs.shippingWeight = item.delivery_info?.min_weight_kg;
     }
 
     if (this.isShippabilityActive) {
-      baseEventAttrs.shippingAllowed = item.sale_conditions.supports_shipping;
+      baseEventAttrs.shippingAllowed = item.sale_conditions?.supports_shipping || false;
     }
-
     if (isEdit) {
       const editItemCGEvent: AnalyticsEvent<EditItemCG> = {
         name: ANALYTICS_EVENT_NAMES.EditItemCG,
