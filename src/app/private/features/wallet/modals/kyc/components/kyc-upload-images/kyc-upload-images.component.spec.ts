@@ -1,32 +1,47 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { MOCK_MEDIA_STREAM } from '@fixtures/media-stream.fixtures.spec';
+import { MOCK_DEVICE_PERMISSIONS } from '@fixtures/user-device-permissions.fixtures.spec';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { BannerComponent } from '@shared/banner/banner.component';
 import { ButtonComponent } from '@shared/button/button.component';
+import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
+import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
-import { KYC_UPLOAD_IMAGES_STATUS } from '../../enums/kyc-upload-images-status-enum';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
 import { KYCUploadImagesComponent } from './kyc-upload-images.component';
 
 describe('KYCUploadImagesComponent', () => {
-  const mediaStreamConstraints = {
-    audio: false,
-    video: { facingMode: 'environment' },
-  };
-  const MOCK_MEDIA_STREAM = {
-    getTracks: () => [],
-  };
-
   let component: KYCUploadImagesComponent;
   let fixture: ComponentFixture<KYCUploadImagesComponent>;
   let de: DebugElement;
+  let askPermissionsService: AskPermissionsService;
+
+  const devicePermissionsSubjectMock: BehaviorSubject<UserDevicePermissions> = new BehaviorSubject<UserDevicePermissions>(
+    MOCK_DEVICE_PERMISSIONS
+  );
+  const cameraResponseSubjectMock: BehaviorSubject<any> = new BehaviorSubject<any>(MOCK_MEDIA_STREAM);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgbAlertModule],
       declarations: [KYCUploadImagesComponent, BannerComponent, SvgIconComponent, ButtonComponent],
+      providers: [
+        {
+          provide: AskPermissionsService,
+          useValue: {
+            get userDevicePermissions$() {
+              return devicePermissionsSubjectMock.asObservable();
+            },
+            askCameraPermissions() {
+              return cameraResponseSubjectMock.asObservable();
+            },
+          },
+        },
+      ],
     }).compileComponents();
   });
 
@@ -34,6 +49,7 @@ describe('KYCUploadImagesComponent', () => {
     fixture = TestBed.createComponent(KYCUploadImagesComponent);
     de = fixture.debugElement;
     component = fixture.componentInstance;
+    askPermissionsService = TestBed.inject(AskPermissionsService);
   });
 
   it('should create', () => {
@@ -48,50 +64,37 @@ describe('KYCUploadImagesComponent', () => {
     describe(`and the user's browser supports the API`, () => {
       describe('and the user accept the permission', () => {
         beforeEach(() => {
-          allowCameraPermissions();
-          spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
+          cameraResponseSubjectMock.next(MOCK_MEDIA_STREAM);
+          devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.ACCEPTED });
 
           fixture.detectChanges();
         });
 
-        it('should ask the user for the camera permission', () => {
-          expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(mediaStreamConstraints);
-        });
-
         it('should set the user permissions as accepted', () => {
-          let cameraPermissions: KYC_UPLOAD_IMAGES_STATUS;
+          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
 
-          component.cameraPermissionsSubject.subscribe((res) => {
-            cameraPermissions = res;
+          component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
+            cameraPermissions = permissions.video;
           });
 
-          expect(cameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.ACCEPTED);
+          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.ACCEPTED);
         });
 
         it('should define the webcam video stream', () => {
           expect(component.userCamera.nativeElement.srcObject).toStrictEqual(MOCK_MEDIA_STREAM);
         });
 
-        it('should show the video on the template', async () => {
-          await fixture.whenStable();
-          fixture.detectChanges();
-
+        it('should show the video on the template', () => {
           const usersCamera = de.query(By.css('video'));
           expect(usersCamera).toBeTruthy();
         });
 
-        it('should show the take image button ', async () => {
-          await fixture.whenStable();
-          fixture.detectChanges();
-
+        it('should show the take image button ', () => {
           const shootImageButton = de.query(By.css('#shootImageButton'));
           expect(shootImageButton).toBeTruthy();
         });
 
-        it('should NOT show an error banner', async () => {
-          await fixture.whenStable();
-          fixture.detectChanges();
-
+        it('should NOT show an error banner', () => {
           const banner = de.query(By.directive(BannerComponent));
           expect(banner).toBeFalsy();
         });
@@ -99,30 +102,23 @@ describe('KYCUploadImagesComponent', () => {
 
       describe('and the user denied the permission', () => {
         beforeEach(() => {
-          setCameraPermissionsError(true);
-          spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
+          cameraResponseSubjectMock.next(throwError('denied'));
+          devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.DENIED });
 
           fixture.detectChanges();
-        });
-
-        it('should ask the user for the camera permission', () => {
-          expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(mediaStreamConstraints);
         });
 
         it('should set the user permissions as denied', () => {
-          let cameraPermissions: KYC_UPLOAD_IMAGES_STATUS;
+          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
 
-          component.cameraPermissionsSubject.subscribe((res) => {
-            cameraPermissions = res;
+          component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
+            cameraPermissions = permissions.video;
           });
 
-          expect(cameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.DENIED);
+          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.DENIED);
         });
 
-        it('should show an error banner', async () => {
-          await fixture.whenStable();
-          fixture.detectChanges();
-
+        it('should show an error banner', () => {
           const banner = de.query(By.directive(BannerComponent));
           expect(banner).toBeTruthy();
         });
@@ -130,30 +126,23 @@ describe('KYCUploadImagesComponent', () => {
 
       describe('and a problem other than permit rejection occurs', () => {
         beforeEach(() => {
-          setCameraPermissionsError(false);
-          spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
+          cameraResponseSubjectMock.next(throwError('Generic Error'));
+          devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS });
 
           fixture.detectChanges();
-        });
-
-        it('should ask the user for the camera permission', () => {
-          expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(mediaStreamConstraints);
         });
 
         it('should set the user permissions as cannot access', () => {
-          let cameraPermissions: KYC_UPLOAD_IMAGES_STATUS;
+          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
 
-          component.cameraPermissionsSubject.subscribe((res) => {
-            cameraPermissions = res;
+          component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
+            cameraPermissions = permissions.video;
           });
 
-          expect(cameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS);
+          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS);
         });
 
-        it('should show an error banner', async () => {
-          await fixture.whenStable();
-          fixture.detectChanges();
-
+        it('should show an error banner', () => {
           const banner = de.query(By.directive(BannerComponent));
           expect(banner).toBeTruthy();
         });
@@ -162,25 +151,23 @@ describe('KYCUploadImagesComponent', () => {
 
     describe(`and the user's browser DON'T supports the API`, () => {
       beforeEach(() => {
-        setCameraPermissionsAsNotSupported();
+        cameraResponseSubjectMock.next(throwError('Not Allowed'));
+        devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS });
 
         fixture.detectChanges();
       });
 
       it('should set the user permissions as cannot access', () => {
-        let cameraPermissions: KYC_UPLOAD_IMAGES_STATUS;
+        let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
 
-        component.cameraPermissionsSubject.subscribe((res) => {
-          cameraPermissions = res;
+        component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
+          cameraPermissions = permissions.video;
         });
 
-        expect(cameraPermissions).toBe(KYC_UPLOAD_IMAGES_STATUS.CANNOT_ACCESS);
+        expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS);
       });
 
-      it('should show an error banner', async () => {
-        await fixture.whenStable();
-        fixture.detectChanges();
-
+      it('should show an error banner', () => {
         const banner = de.query(By.directive(BannerComponent));
         expect(banner).toBeTruthy();
       });
@@ -189,19 +176,14 @@ describe('KYCUploadImagesComponent', () => {
 
   describe('when the user selects the upload image method', () => {
     beforeEach(() => {
+      spyOn(askPermissionsService, 'askCameraPermissions');
       component.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
 
       fixture.detectChanges();
     });
 
-    it('should have user camera permissions not defined', () => {
-      let cameraPermissions: KYC_UPLOAD_IMAGES_STATUS;
-
-      component.cameraPermissionsSubject.subscribe((res) => {
-        cameraPermissions = res;
-      });
-
-      expect(cameraPermissions).toBeNull();
+    it('should not request camera access', () => {
+      expect(askPermissionsService.askCameraPermissions).not.toHaveBeenCalled();
     });
   });
 
@@ -209,8 +191,8 @@ describe('KYCUploadImagesComponent', () => {
     describe('and the user camera is active', () => {
       beforeEach(() => {
         component.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
-        allowCameraPermissions();
-        spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
+        cameraResponseSubjectMock.next(MOCK_MEDIA_STREAM);
+        devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.ACCEPTED });
 
         fixture.detectChanges();
       });
@@ -222,28 +204,4 @@ describe('KYCUploadImagesComponent', () => {
       });
     });
   });
-
-  function setCameraPermissionsAsNotSupported(): void {
-    Object.defineProperty(navigator, 'mediaDevices', {
-      value: () => null,
-    });
-  }
-
-  function setCameraPermissionsError(isPermissionDenied: boolean): void {
-    const error = isPermissionDenied ? 'DOMException: Permission denied' : 'General Error';
-
-    Object.defineProperty(navigator, 'mediaDevices', {
-      value: {
-        getUserMedia: () => Promise.reject(error),
-      },
-    });
-  }
-
-  function allowCameraPermissions(): void {
-    Object.defineProperty(navigator, 'mediaDevices', {
-      value: {
-        getUserMedia: () => Promise.resolve(MOCK_MEDIA_STREAM),
-      },
-    });
-  }
 });
