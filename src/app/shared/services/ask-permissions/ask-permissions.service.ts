@@ -5,10 +5,14 @@ import { UserDevicePermissions, DEVICE_PERMISSIONS_STATUS } from './user-device-
 
 @Injectable()
 export class AskPermissionsService {
-  public userDevicePermissionsSubject: BehaviorSubject<UserDevicePermissions> = new BehaviorSubject({
+  private userDevicePermissionsSubject: BehaviorSubject<UserDevicePermissions> = new BehaviorSubject({
     video: null,
     audio: null,
   });
+
+  get userDevicePermissions$(): Observable<UserDevicePermissions> {
+    return this.userDevicePermissionsSubject.asObservable();
+  }
 
   public askCameraPermissions(): Observable<MediaStream | never> {
     return this.askPermissions({

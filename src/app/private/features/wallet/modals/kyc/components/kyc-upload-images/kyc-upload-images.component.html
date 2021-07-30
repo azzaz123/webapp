@@ -7,19 +7,23 @@
             </a>
         </div>
     </div>
+    <div class="row" [ngClass]="{'d-none': !requestCameraSucceed((userDevicePermissions$ | async).video)}">
+        <div class="col">
+            <video autoplay playsInline muted #userCamera class="w-100"></video>
+        </div>
+    </div>
     <div class="row mt-2">
         <div class="col">
-            <div *ngIf="requestCameraFailed((userDevicePermissionsSubject | async).video) else takingImageSection" class="mx-3">
+            <div *ngIf="requestCameraFailed((userDevicePermissions$ | async).video) else takingImageSection" class="mx-3">
                 <tsl-banner [specifications]="errorBannerSpecifications">
                     <div class="d-flex align-items-center">
-                        <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy((userDevicePermissionsSubject | async).video)}}
+                        <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy((userDevicePermissions$ | async).video)}}
                     </div>
                 </tsl-banner>
             </div>
             <ng-template #takingImageSection>
                 <div class="text-center">
-                    <video autoplay playsInline muted #userCamera class="w-100"></video>
-                    <tsl-button *ngIf="requestCameraSucceed((userDevicePermissionsSubject | async).video)" id="shootImageButton">Hacer foto (1/{{photosNeeded}})</tsl-button>
+                    <tsl-button *ngIf="requestCameraSucceed((userDevicePermissions$ | async).video)" id="shootImageButton">Hacer foto (1/{{photosNeeded}})</tsl-button>
                 </div>
             </ng-template>
         </div>
