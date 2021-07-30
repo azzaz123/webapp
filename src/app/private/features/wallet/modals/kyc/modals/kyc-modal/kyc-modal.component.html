@@ -22,7 +22,7 @@
             <tsl-kyc-upload-images
                 *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications"
                 [takeImageMethod]="KYCSpecifications.imageMethod"
-                [photosNeeded]="KYCSpecifications.documentation.photosNeeded"
+                [imagesNeeded]="KYCSpecifications.documentation.imagesNeeded"
             ></tsl-kyc-upload-images>
         </ng-template>
     </tsl-stepper>
