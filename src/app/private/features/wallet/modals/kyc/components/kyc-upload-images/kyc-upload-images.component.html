@@ -8,12 +8,12 @@
         </div>
     </div>
     <div class="row mx-2" *ngIf="takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT">
-        <div class="col-6 py-2">
-            <span *ngIf="!imagesTaken.firstImage">Hacer foto de la parte delantera</span>
+        <div class="col-6 py-2 position-relative">
+            <span *ngIf="!imagesTaken.firstImage" class="position-absolute">Hacer foto de la parte delantera</span>
             <canvas #frontSideImage class="KYCUploadImages__camera w-100 h-100"></canvas>
         </div>
-        <div class="col-6 py-2" *ngIf="imagesNeeded === 2">
-            <span *ngIf="!imagesTaken.secondImage">Hacer foto de la parte trasera</span>
+        <div class="col-6 py-2 position-relative" *ngIf="imagesNeeded === 2">
+            <span *ngIf="!imagesTaken.secondImage" class="position-absolute">Hacer foto de la parte trasera</span>
             <canvas #backSideImage class="KYCUploadImages__camera w-100 h-100"></canvas>
         </div>
     </div>
@@ -34,7 +34,9 @@
                     </div>
                 </div>
                 <div class="text-center row" *ngIf="requestCameraSucceed((userDevicePermissions$ | async).video)">
-                    <tsl-button class="col" id="shootImageButton" (click)="takeImage()">Hacer foto ({{imagesTakenCounter}}/{{imagesNeeded}})</tsl-button>
+                    <tsl-button 
+                        [disabled]="imagesTakenCounter === imagesNeeded"
+                        class="col" id="shootImageButton" (click)="takeImage()">Hacer foto ({{imagesTakenCounter}}/{{imagesNeeded}})</tsl-button>
                 </div>
             </ng-template>
         </div>
