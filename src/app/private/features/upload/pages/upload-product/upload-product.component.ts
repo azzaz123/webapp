@@ -804,7 +804,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
 
     if (item.delivery_info) {
-      baseEventAttrs.shippingWeight = item.delivery_info?.min_weight_kg;
+      baseEventAttrs.shippingWeight = item.delivery_info.min_weight_kg;
     }
 
     if (this.isShippabilityActive) {
