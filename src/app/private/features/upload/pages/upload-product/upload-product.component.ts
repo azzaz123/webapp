@@ -360,8 +360,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         if (supportsShipping) {
           deliveryInfo.setValidators([Validators.required]);
         } else {
-          deliveryInfo.setValue(null);
           deliveryInfo.setValidators([]);
+          deliveryInfo.setValue(null);
         }
       });
   }
@@ -437,7 +437,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
     if (!this.uploadForm.get('images').valid) {
       this.errorsService.i18nError(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
-    } else if (!this.uploadForm.get('delivery_info').valid && this.isShippabilityActive) {
+    } else if (!this.uploadForm.get('delivery_info').valid && this.uploadForm.get('sale_conditions').get('supports_shipping').value) {
       this.errorsService.i18nError(TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR);
     } else {
       this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
