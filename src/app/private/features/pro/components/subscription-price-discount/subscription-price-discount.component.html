@@ -1,10 +1,13 @@
-<div class="SubscriptionPriceDiscount d-flex flex-column">
-  <div i18n="@@web_subscription_price_discount_from_price" *ngIf="subscription.tiers.length">From:
-    <span *ngIf="!tierDiscount; else discount">
-      {{subscription?.tiers[0]?.price}}{{subscription?.tiers[0]?.currency}}</span>
-    <ng-template #discount>
+<div class="SubscriptionPriceDiscount d-flex flex-column" *ngIf="subscription.tiers.length">
+  <div *ngIf="!tierDiscount; else discount" i18n="@@web_subscription_price_discount_from_price">From:
+    {{subscription?.tiers[0]?.price}}{{subscription?.tiers[0]?.currency}}/month
+  </div>
+  <ng-template #discount>
+    <div>
+      <span i18n="@@web_from">From</span>:
       <span class="SubscriptionPriceDiscount__price--discounted">
         {{tierDiscount.price}}{{tierDiscount.currency}}</span>
-      {{tierDiscount.discount.price}}{{tierDiscount.currency}}</ng-template>/month
-  </div>
+      {{tierDiscount.discount.price}}{{tierDiscount.currency}}/month
+    </div>
+  </ng-template>
 </div>
