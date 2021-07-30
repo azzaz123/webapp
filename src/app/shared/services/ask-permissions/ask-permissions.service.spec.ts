@@ -44,7 +44,7 @@ describe('AskPermissionsService', () => {
 
           service.askCameraPermissions().subscribe();
           tick();
-          service.userDevicePermissionsSubject.subscribe((userPermissions: UserDevicePermissions) => {
+          service.userDevicePermissions$.subscribe((userPermissions: UserDevicePermissions) => {
             cameraPermissions = userPermissions.video;
           });
 
@@ -80,7 +80,7 @@ describe('AskPermissionsService', () => {
 
           service.askCameraPermissions().subscribe({ error: () => {} });
           tick();
-          service.userDevicePermissionsSubject.subscribe((userPermissions: UserDevicePermissions) => {
+          service.userDevicePermissions$.subscribe((userPermissions: UserDevicePermissions) => {
             cameraPermissions = userPermissions.video;
           });
 
@@ -114,7 +114,7 @@ describe('AskPermissionsService', () => {
 
           service.askCameraPermissions().subscribe({ error: () => {} });
           tick();
-          service.userDevicePermissionsSubject.subscribe((userPermissions: UserDevicePermissions) => {
+          service.userDevicePermissions$.subscribe((userPermissions: UserDevicePermissions) => {
             cameraPermissions = userPermissions.video;
           });
 
@@ -144,7 +144,7 @@ describe('AskPermissionsService', () => {
 
         service.askCameraPermissions().subscribe({ error: () => {} });
         tick();
-        service.userDevicePermissionsSubject.subscribe((userPermissions: UserDevicePermissions) => {
+        service.userDevicePermissions$.subscribe((userPermissions: UserDevicePermissions) => {
           cameraPermissions = userPermissions.video;
         });
 
