@@ -996,6 +996,8 @@
     "upload_shipping_toggle_enabled_description": "La spedizione è gratuita e ti consente di vendere di più. Disponi del servizio di ritiro a domicilio.",
     "upload_shipping_toggle_wallapop_shipping_title": "Spedizioni Wallapop",
     "upload_shipping_toggle_weight_selector_weight_selector_title": "Peso del pacco",
+    "upload_shipping_toggle_weight_selector_max_label": "max.",
+    "upload_shipping_toggle_weight_selector_weight_limit_from_label": "Fino a",
     "upload_shipping_toggle_weight_selector_dimension_restrictions_description": "Il peso del pacco non deve superare quello indicato. Tieni presente che la somma di lunghezza, altezza e larghezza non può superare i 210 cm; e che la dimensione maggiore non può superare i 120 cm.",
     "upload_shipping_toggle_not_enabled_description": "Sicuro? Se lo spedisci, potrai venderlo ovunque.",
     "web_upload_product_shipping": "Spedizione",
