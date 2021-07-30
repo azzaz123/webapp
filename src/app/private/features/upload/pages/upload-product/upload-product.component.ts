@@ -803,6 +803,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }
     }
 
+    if (item.delivery_info) {
+      baseEventAttrs.shippingWeight = item.delivery_info.min_weight_kg;
+    }
+
+    if (this.isShippabilityActive) {
+      baseEventAttrs.shippingAllowed = item.sale_conditions.supports_shipping;
+    }
+
     if (isEdit) {
       const editItemCGEvent: AnalyticsEvent<EditItemCG> = {
         name: ANALYTICS_EVENT_NAMES.EditItemCG,
@@ -812,6 +820,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           screenId: SCREEN_IDS.EditItem,
         },
       };
+
       this.analyticsService.trackEvent(editItemCGEvent);
     } else {
       const listItemCGEvent: AnalyticsEvent<ListItemCG> = {
@@ -824,6 +833,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           language: this.analyticsService.appLocale,
         },
       };
+
       this.analyticsService.trackEvent(listItemCGEvent);
     }
   }
