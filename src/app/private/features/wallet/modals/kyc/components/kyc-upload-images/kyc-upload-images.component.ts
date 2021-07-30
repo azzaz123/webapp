@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { KYCPhotosNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
@@ -12,8 +12,8 @@ import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.e
   styleUrls: ['./kyc-upload-images.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KYCUploadImagesComponent implements OnInit, OnDestroy {
-  @ViewChild('userCamera', { static: true }) userCamera: ElementRef;
+export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('userCamera') userCamera: ElementRef;
   @Input() photosNeeded: KYCPhotosNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
 
@@ -28,7 +28,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     this.userDevicePermissions$ = askPermissionsService.userDevicePermissions$;
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     if (this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT) {
       this.requestCameraPermissions();
     }

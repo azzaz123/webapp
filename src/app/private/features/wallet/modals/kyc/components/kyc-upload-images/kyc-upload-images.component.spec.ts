@@ -192,6 +192,7 @@ describe('KYCUploadImagesComponent', () => {
       beforeEach(() => {
         component.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
         cameraResponseSubjectMock.next(MOCK_MEDIA_STREAM);
+        devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.ACCEPTED });
 
         fixture.detectChanges();
       });
