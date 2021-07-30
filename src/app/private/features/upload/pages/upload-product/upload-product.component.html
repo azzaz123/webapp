@@ -341,12 +341,21 @@
             >
               <p i18n="@@upload_shipping_toggle_weight_selector_weight_selector_title" class="error">Package weight</p>
 
-              <label ngbButtonLabel class="selector shipping-selector" *ngFor="let delivery of deliveryInfo">
-                <div class="selector-icon btn">
-                  <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value); p.close()" />
-                  <tsl-svg-icon src="/assets/icons/shipping-{{ delivery.value.max_weight_kg }}.svg"></tsl-svg-icon>
-                </div>
-                <span class="selector-text">{{ delivery.value.max_weight_kg }}kg max</span>
+              <label ngbButtonLabel class="WeightSelector" *ngFor="let delivery of deliveryInfo">
+                <span class="WeightSelector__text--small font-weight-bold" i18n="@@upload_shipping_toggle_weight_selector_max_label"
+                  >máx.</span
+                >
+
+                <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value); p.close()" />
+
+                <span class="WeightSelector__text--big d-block font-weight-bold mb-1">{{ delivery.value.max_weight_kg }}kg</span>
+
+                <span class="WeightSelector__text--small d-block"
+                  >(<span class="WeightSelector__text--small" i18n="@@upload_shipping_toggle_weight_selector_weight_limit_from_label"
+                    >Up to</span
+                  >
+                  {{ delivery.value.max_weight_kg }}kg)</span
+                >
               </label>
 
               <p class="error mt-4" i18n="@@upload_shipping_toggle_weight_selector_dimension_restrictions_description">
