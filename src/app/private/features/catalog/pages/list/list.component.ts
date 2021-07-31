@@ -28,7 +28,7 @@ import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/su
 import { User } from '@core/user/user';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
-import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
+import { LOCAL_STORAGE_SUGGEST_PRO_SHOWN, LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
@@ -463,7 +463,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private reactivatedNoFeaturedUser(item: Item, index: number): void {
     this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
-      if (permissions[PERMISSIONS.subscriptions]) {
+      if (permissions[PERMISSIONS.subscriptions] && !this.isSuggestProModalShown()) {
         this.openSuggestProModal(item, index);
       } else {
         this.reloadItem(item.id, index);
@@ -471,9 +471,19 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
+  private isSuggestProModalShown(): boolean {
+    const ONE_DAY = 1000 * 60 * 60 * 24;
+    const lastShown = this.userService.getLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN);
+    if (!lastShown) {
+      return false;
+    }
+    return Date.now() - parseInt(lastShown) < ONE_DAY;
+  }
+
   private openSuggestProModal(reactivatedItem: Item, index: number): void {
     const isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(this.subscriptions, reactivatedItem.categoryId);
     this.trackViewProExpiredItemsPopup(isFreeTrial);
+    this.userService.saveLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, Date.now().toString());
 
     const modalRef = this.modalService.open(SuggestProModalComponent, {
       windowClass: 'modal-standard',
