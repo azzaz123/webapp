@@ -1,4 +1,4 @@
-import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild, AfterViewInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild, AfterViewInit, Renderer2, OnChanges } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
@@ -7,8 +7,9 @@ import { MultiSelectFormOption } from '@shared/form/components/multi-select-form
 import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
-import { fromEvent, Observable, of } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { fromEvent, Observable, of, throwError } from 'rxjs';
+import { debounceTime, switchMap, catchError } from 'rxjs/operators';
+import { isArray } from 'util';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
   selector: 'tsl-suggester-input',
@@ -34,9 +35,10 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public options: SelectFormOption<string>[] = [];
   public suggestions: MultiSelectValue = [];
   public isClickOutside: boolean = false;
+  public isValid: boolean = true;
   private extendedOptions: MultiSelectFormOption[];
 
-  constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService, private renderer: Renderer2) {
+  constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
     super();
   }
   ngOnInit() {
@@ -60,24 +62,33 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   public detectTitleKeyboardChanges(): void {
     fromEvent(this.hashtagSuggester.nativeElement, 'keyup')
-      .pipe(debounceTime(750))
-      .subscribe((e) => {
-        if (e['key'] === 'Escape') {
-          this.closeForm();
-        }
-        if (!this.isValidKey()) {
-          this.options = []; // When PR: To refactor
+      .pipe(
+        debounceTime(750),
+        switchMap(() => {
+          if (!this.isValidKey()) {
+            this.suggestions = this.value;
+            return of([]);
+          } else {
+            this.suggestions = this.value;
+            return this.getHashtagSuggesters();
+          }
+        })
+      )
+      .subscribe((options: any) => {
+        if (Array.isArray(options)) {
+          this.options = options;
         } else {
-          this.suggestions = this.value;
-          this.getHashtagSuggesters().subscribe((m) => {
-            this.options = this.mapHashtagSuggestersToOptions(m);
-          });
+          this.options = this.mapHashtagSuggestersToOptions(options);
         }
       });
   }
 
   public showOptions(): boolean {
-    return !!this.isValidKey() && !this.isClickOutside;
+    // when not click outside
+    // when not clicking keyCode
+    // when input not lose focus
+    // when key isValid
+    return !!this.options && this.isValidKey();
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag>> {
@@ -114,24 +125,14 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     return newValue;
   }
 
-  private isValidKey(): boolean {
+  public isValidKey(): boolean {
     const pattern: RegExp = /^#?([\p{L}\p{Nd}])+$/u;
     if (this.model) {
+      this.isValid = pattern.test(this.model);
       return pattern.test(this.model);
     } else {
+      this.isValid = true;
       return true;
     }
-  }
-
-  private closeForm() {
-    this.isClickOutside = true;
-  }
-
-  private onClickOutsideForm() {
-    this.renderer.listen('window', 'click', (e: Event) => {
-      if (e.target !== this.formMenu.nativeElement) {
-        this.isClickOutside = true;
-      }
-    });
   }
 }
