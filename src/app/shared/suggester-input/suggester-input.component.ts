@@ -8,7 +8,7 @@ import { MultiSelectValue } from '@shared/form/components/multi-select-form/inte
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { fromEvent, Observable, of, throwError } from 'rxjs';
-import { debounceTime, switchMap, catchError } from 'rxjs/operators';
+import { debounceTime, switchMap, catchError, tap } from 'rxjs/operators';
 import { isArray } from 'util';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
@@ -49,6 +49,16 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     this.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions) => {
       this.extendedOptions = extendedOptions;
     });
+  }
+
+  public focus() {
+    console.log('focus');
+    this.hashtagSuggester.nativeElement.placeholder = '#';
+  }
+
+  public blur() {
+    console.log('unblur');
+    this.hashtagSuggester.nativeElement.placeholder = 'Suggesters...';
   }
 
   public writeValue(value): void {
@@ -92,7 +102,8 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag>> {
-    return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
+    return of({ list: [], paginationParameter: '10' });
+    //return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
   }
 
   private mapHashtagSuggestersToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
@@ -101,13 +112,13 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
       return this.createHashtagSuggesterOption();
     }
     let options = list.map((hashtag: Hashtag) => {
-      return { label: hashtag.text, sublabel: hashtag.occurrences.toString(), value: hashtag.text };
+      return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     });
     return options;
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
-    return [{ label: this.model, value: this.model }];
+    return [{ label: `#${this.model}`, value: `#${this.model}` }];
   }
 
   private mapExtendedOptionsToValue(): string[] {
@@ -126,7 +137,8 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public isValidKey(): boolean {
-    const pattern: RegExp = /^#?([\p{L}\p{Nd}])+$/u;
+    const pattern: RegExp = /^([\p{L}\p{Nd}])+$/u;
+
     if (this.model) {
       this.isValid = pattern.test(this.model);
       return pattern.test(this.model);
