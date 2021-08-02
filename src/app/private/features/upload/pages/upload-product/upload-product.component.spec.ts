@@ -1176,8 +1176,7 @@ describe('UploadProductComponent', () => {
 
       describe('and shipping flag is active', () => {
         beforeEach(() => {
-          component.isShippabilityActive = true;
-          fixture.detectChanges();
+          spyOn(shippingToggleService, 'isActive').and.returnValue(of(true));
         });
 
         describe('and item is shippable', () => {
@@ -1282,8 +1281,7 @@ describe('UploadProductComponent', () => {
 
       describe('and shipping flag is active', () => {
         beforeEach(() => {
-          component.isShippabilityActive = true;
-          fixture.detectChanges();
+          spyOn(shippingToggleService, 'isActive').and.returnValue(of(true));
         });
 
         describe('and item is shippable', () => {
@@ -1301,6 +1299,7 @@ describe('UploadProductComponent', () => {
               min_weight_kg: weight,
               max_weight_kg: weight,
             };
+
             const expectedEvent: AnalyticsEvent<EditItemCG> = {
               name: ANALYTICS_EVENT_NAMES.EditItemCG,
               eventType: ANALYTIC_EVENT_TYPES.Other,
