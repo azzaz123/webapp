@@ -927,8 +927,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.isShippabilityAllowedByCategory = shippingToggleAllowance.category && shippingToggleAllowance.subcategory;
           this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
 
-          if (this.isShippabilityAllowed) {
-          } else {
+          if (!this.isShippabilityAllowed) {
             this.clearShippingToggleFormData();
           }
         });
@@ -941,7 +940,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private detectShippabilityAllowanceChanges(): void {
-    // todo mirar de juntar todos, parece que puedo encolarlos de forma paralela o algo así :D
     this.uploadForm.get('category_id').valueChanges.subscribe(() => {
       this.updateShippingToggleStatus();
     });
