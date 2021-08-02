@@ -1,15 +1,12 @@
 import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
-import { SuggesterInputComponent } from './suggester-input.component';
 import { CommonModule } from '@angular/common';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
-import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/cancel-bubble.module';
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { SuggesterInputModule } from './suggester-input.module';
 @Component({
   selector: 'tsl-story-suggester-input',
@@ -26,7 +23,7 @@ import { SuggesterInputModule } from './suggester-input.module';
 })
 class StorySuggesterInputFormComponent {
   public formGroup = new FormGroup({
-    hashtag: new FormControl(['aa', 'ss', 'design']),
+    hashtag: new FormControl(['#aa', '#ss', '#design']),
   });
   public options = this.formGroup.value.hashtag;
 }
@@ -36,17 +33,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StorySuggesterInputFormComponent],
-      imports: [
-        CommonModule,
-        NgbTypeaheadModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        SelectFormModule,
-        FormsModule,
-        MultiSelectFormModule,
-        CancelBubbleModule,
-        SuggesterInputModule,
-      ],
+      imports: [CommonModule, HttpClientModule, MultiSelectFormModule, CancelBubbleModule, ReactiveFormsModule, SuggesterInputModule],
       providers: [HashtagSuggesterApiService],
     }),
   ],
