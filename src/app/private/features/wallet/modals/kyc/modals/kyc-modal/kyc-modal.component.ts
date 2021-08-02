@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { KYCDocumentation } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
+import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable } from 'rxjs';
@@ -25,6 +26,14 @@ export class KYCModalComponent {
 
   public defineNationality(nationalitySelected: KYCNationality): void {
     this.KYCStoreService.specifications = { ...this.KYCStoreService.specifications, nationality: nationalitySelected };
+  }
+
+  public defineImages(newImages: KYCImages): void {
+    this.KYCStoreService.specifications.images = {
+      ...this.KYCStoreService.specifications.images,
+      frontSide: newImages.frontSide,
+      backSide: newImages.backSide,
+    };
   }
 
   public defineDocumentationAndGoNext(documentationSelected: KYCDocumentation): void {

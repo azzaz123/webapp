@@ -1,4 +1,14 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
@@ -20,15 +30,15 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   @Input() imagesNeeded: KYCImagesNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
+  @Input() images: KYCImages;
 
-  public imagesTaken: KYCImages = {
-    frontSide: null,
-    backSide: null,
-  };
+  @Output() imagesChange: EventEmitter<KYCImages> = new EventEmitter();
+  @Output() endVerification: EventEmitter<void> = new EventEmitter();
+
+  public userDevicePermissions$: Observable<UserDevicePermissions>;
   public readonly DEVICE_PERMISSIONS_STATUS = DEVICE_PERMISSIONS_STATUS;
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
-  public userDevicePermissions$: Observable<UserDevicePermissions>;
-  public errorBannerSpecifications: NgbAlertConfig = {
+  public readonly errorBannerSpecifications: NgbAlertConfig = {
     type: 'danger',
     dismissible: false,
   };
@@ -51,6 +61,14 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  public takeImage(): void {
+    const imageContainer = this.isFirstImageDefined() ? this.backSideImage.nativeElement : this.frontSideImage.nativeElement;
+
+    imageContainer.getContext('2d').drawImage(this.userCamera.nativeElement, 0, 0, imageContainer.width, imageContainer.height);
+
+    this.emitNewImage(imageContainer.toDataURL('image/png'));
+  }
+
   public requestCameraFailed(userCameraPermissions: DEVICE_PERMISSIONS_STATUS): boolean {
     return userCameraPermissions === DEVICE_PERMISSIONS_STATUS.DENIED || userCameraPermissions === DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS;
   }
@@ -65,23 +83,21 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       : $localize`:@@kyc_camera_cannot_access:Oops, an error occurred and we cannot access your camera`;
   }
 
-  public takeImage(): void {
-    const imageContainer = this.isFirstImageDefined() ? this.backSideImage.nativeElement : this.frontSideImage.nativeElement;
-
-    imageContainer.getContext('2d').drawImage(this.userCamera.nativeElement, 0, 0, imageContainer.width, imageContainer.height);
-
-    this.defineImage(imageContainer.toDataURL('image/png'));
-  }
-
   private isFirstImageDefined(): boolean {
-    return !!this.imagesTaken.frontSide || this.imagesNeeded === 1;
+    return !!this.images.frontSide || this.imagesNeeded === 1;
   }
 
-  private defineImage(newImage): void {
+  private emitNewImage(newImage: string): void {
     if (this.isFirstImageDefined()) {
-      this.imagesTaken = { ...this.imagesTaken, backSide: newImage };
+      this.imagesChange.emit({
+        ...this.images,
+        backSide: newImage,
+      });
     } else {
-      this.imagesTaken = { ...this.imagesTaken, frontSide: newImage };
+      this.imagesChange.emit({
+        ...this.images,
+        frontSide: newImage,
+      });
     }
   }
 
@@ -102,8 +118,8 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   get imagesTakenCounter(): number {
-    const firstImage = this.imagesTaken.frontSide;
-    const secondImage = this.imagesTaken.backSide;
+    const firstImage = this.images.frontSide;
+    const secondImage = this.images.backSide;
 
     return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
   }

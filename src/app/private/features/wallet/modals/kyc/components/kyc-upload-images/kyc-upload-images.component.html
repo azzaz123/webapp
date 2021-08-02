@@ -1,4 +1,4 @@
-<div class="KYCUploadImages">
+<div class="KYCUploadImages" *ngIf="userDevicePermissions$ | async as userDevicePermissions">
     <div class="row">
         <div class="col">
             <a class="KYCUploadImages__back d-flex pb-4 pb-md-2">
@@ -7,27 +7,27 @@
             </a>
         </div>
     </div>
-    <div class="row mx-2" *ngIf="takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT">
+    <div class="row mx-2" *ngIf="takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT && requestCameraSucceed(userDevicePermissions.video)">
         <div class="col-6 py-2 position-relative">
-            <span *ngIf="!imagesTaken.frontSide" class="position-absolute" i18n="@@kyc_request_front_side_photo">Take a photo of the front side</span>
+            <span *ngIf="!images.frontSide" class="position-absolute" i18n="@@kyc_request_front_side_photo">Take a photo of the front side</span>
             <canvas #frontSideImage class="KYCUploadImages__camera w-100 h-100"></canvas>
         </div>
         <div class="col-6 py-2 position-relative" *ngIf="imagesNeeded === 2">
-            <span *ngIf="!imagesTaken.backSide" class="position-absolute" i18n="@@kyc_request_back_side_photo">Take a photo of the back side</span>
+            <span *ngIf="!images.backSide" class="position-absolute" i18n="@@kyc_request_back_side_photo">Take a photo of the back side</span>
             <canvas #backSideImage class="KYCUploadImages__camera w-100 h-100"></canvas>
         </div>
     </div>
     <div class="row mt-2">
         <div class="col">
-            <div *ngIf="requestCameraFailed((userDevicePermissions$ | async).video) else takingImageSection" class="mx-3">
+            <div *ngIf="requestCameraFailed(userDevicePermissions.video) else takingImageSection" class="mx-3">
                 <tsl-banner [specifications]="errorBannerSpecifications">
                     <div class="d-flex align-items-center">
-                        <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy((userDevicePermissions$ | async).video)}}
+                        <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy(userDevicePermissions.video)}}
                     </div>
                 </tsl-banner>
             </div>
             <ng-template #takingImageSection>
-                <div class="justify-content-center row" [ngClass]="{'d-none': !requestCameraSucceed((userDevicePermissions$ | async).video)}">
+                <div class="justify-content-center row" [ngClass]="{'d-none': !requestCameraSucceed(userDevicePermissions.video)}">
                     <div class="KYCUploadImages__cameraContainer my-2 col-12 col-sm-8">
                         <video autoplay playsInline muted #userCamera class="KYCUploadImages__camera h-100 w-100"></video>
                         <div class="cameraOverlay"></div>
@@ -35,9 +35,14 @@
                 </div>
                 <div class="text-center row" *ngIf="requestCameraSucceed((userDevicePermissions$ | async).video)">
                     <tsl-button 
-                        [disabled]="imagesTakenCounter === imagesNeeded"
+                        *ngIf="imagesTakenCounter !== imagesNeeded"
                         i18n="@@kyc_request_photo_counter"
                         class="col" id="shootImageButton" (click)="takeImage()">Take photo ({{imagesTakenCounter}}/{{imagesNeeded}})</tsl-button>
+                    <tsl-button 
+                        *ngIf="imagesTakenCounter === imagesNeeded"
+                        i18n="@@kyc_end_verification"
+                        class="col"
+                        (click)="endVerification.emit()">Finalizar verificación</tsl-button>
                 </div>
             </ng-template>
         </div>

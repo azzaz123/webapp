@@ -23,6 +23,9 @@
                 *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications"
                 [takeImageMethod]="KYCSpecifications.imageMethod"
                 [imagesNeeded]="KYCSpecifications.documentation.imagesNeeded"
+                [images]="KYCSpecifications.images"
+                (imagesChange)="defineImages($event)"
+                (endVerification)="false"
             ></tsl-kyc-upload-images>
         </ng-template>
     </tsl-stepper>
