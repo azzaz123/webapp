@@ -29,10 +29,12 @@ export class KYCModalComponent {
   }
 
   public defineImages(newImages: KYCImages): void {
-    this.KYCStoreService.specifications.images = {
-      ...this.KYCStoreService.specifications.images,
-      frontSide: newImages.frontSide,
-      backSide: newImages.backSide,
+    this.KYCStoreService.specifications = {
+      ...this.KYCStoreService.specifications,
+      images: {
+        frontSide: newImages.frontSide,
+        backSide: newImages.backSide,
+      },
     };
   }
 
@@ -51,6 +53,21 @@ export class KYCModalComponent {
   public resetKYCDocumentationAndGoPreviousStep(): void {
     this.KYCStoreService.specifications = { ...this.KYCStoreService.specifications, documentation: null };
     this.goPreviousStep();
+  }
+
+  public resetSpecificationsAndCloseModal(): void {
+    this.KYCStoreService.specifications = {
+      ...this.KYCStoreService.specifications,
+      nationality: null,
+      documentation: null,
+      imageMethod: null,
+      images: {
+        frontSide: null,
+        backSide: null,
+      },
+    };
+
+    this.activeModal.close();
   }
 
   public goNextStep(): void {

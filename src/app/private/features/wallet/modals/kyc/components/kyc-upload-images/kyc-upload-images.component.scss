@@ -19,20 +19,17 @@
     border-radius: $border-radius;
   }
 
-  &__cameraContainer {
-    &__overlay {
-      top: 13%;
-      right: 12%;
-      border: 3px solid $white;
-      height: 75%;
-      width: 76%;
-      box-shadow: rgb(0 0 0 / 50%) 0px 0px 0px 40px;
-    }
+  &__cameraContainer__overlay {
+    top: 12%;
+    left: 8%;
+    width: 83%;
+    height: 76%;
+    border: 3px solid $white;
+    box-shadow: rgb(0 0 0 / 50%) 0px 0px 0px 40px;
   }
 
   &__image {
     border: solid 2px $blue-grey-5;
-    cursor: pointer;
 
     &__title {
       color: $blue-grey-2;
