@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PaginatedList } from '@api/core/model/paginated-list.interface';
+import { PaginatedList } from '@api/core/model';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
