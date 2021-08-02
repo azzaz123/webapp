@@ -1,4 +1,4 @@
-import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild, AfterViewInit, Renderer2, OnChanges } from '@angular/core';
+import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
@@ -7,9 +7,8 @@ import { MultiSelectFormOption } from '@shared/form/components/multi-select-form
 import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
-import { fromEvent, Observable, of, throwError } from 'rxjs';
-import { debounceTime, switchMap, catchError, tap } from 'rxjs/operators';
-import { isArray } from 'util';
+import { fromEvent, Observable, of } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
   selector: 'tsl-suggester-input',
@@ -73,17 +72,13 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
       .pipe(
         debounceTime(750),
         switchMap(() => {
-          if (this.model && this.model.length === 1 && this.model[0] === '#') {
-            // this.model = this.model.substring(1);
-            return of([]);
-          } else if (!this.isValidKey()) {
-            this.suggestions = this.value;
+          this.suggestions = this.value;
+          if (!this.isValidKey()) {
             return of([]);
           } else {
             if (this.model && !this.model.includes('#')) {
               this.model = `#${this.model}`;
             }
-            this.suggestions = this.value;
             return this.getHashtagSuggesters();
           }
         })
@@ -106,7 +101,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag>> {
-    //return of({ list: [], paginationParameter: '10' });
     let newModel = this.model.substring(1);
     return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
   }
@@ -123,7 +117,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
-    // change model
     let newModel = this.model.substring(1);
     return [{ label: `#${newModel}`, value: `#${newModel}` }];
   }
@@ -144,14 +137,12 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public isValidKey(): boolean {
-    const pattern: RegExp = /^#?([\p{L}\p{Nd}])+$/u;
-
-    if (this.model) {
-      this.isValid = pattern.test(this.model);
-      return pattern.test(this.model);
-    } else {
+    const pattern: RegExp = /^#$|#?([\p{L}\p{Nd}])+$/u;
+    if (!this.model) {
       this.isValid = true;
-      return true;
+    } else {
+      this.isValid = pattern.test(this.model);
     }
+    return this.isValid;
   }
 }
