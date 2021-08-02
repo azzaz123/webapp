@@ -918,8 +918,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           this.isShippabilityAllowedByCategory = shippingToggleAllowance.category && shippingToggleAllowance.subcategory;
           this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
 
-          if (this.isShippabilityAllowed) {
-          } else {
+          if (!this.isShippabilityAllowed) {
             this.clearShippingToggleFormData();
           }
         });
