@@ -18,14 +18,14 @@ export class ShippingToggleService {
     });
   }
 
-  isActive(): Observable<boolean> {
+  public isActive(): Observable<boolean> {
     return this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SHIPPING_TOGGLE).pipe(
       map((isActive) => isActive),
       catchError(() => of(false))
     );
   }
 
-  isAllowed(categoryId: string, subcategoryId: string, price: number): Observable<ShippingToggleAllowance> {
+  public isAllowed(categoryId: string, subcategoryId: string, price: number): Observable<ShippingToggleAllowance> {
     if (!this.shippingRules) {
       return this.shippingRulesSubject.asObservable().pipe(
         map((shippingRules) => {
