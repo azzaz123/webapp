@@ -52,12 +52,10 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public focus() {
-    console.log('focus');
     this.hashtagSuggester.nativeElement.placeholder = '#';
   }
 
   public blur() {
-    console.log('unblur');
     this.hashtagSuggester.nativeElement.placeholder = 'Suggesters...';
   }
 
@@ -75,10 +73,16 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
       .pipe(
         debounceTime(750),
         switchMap(() => {
-          if (!this.isValidKey()) {
+          if (this.model && this.model.length === 1 && this.model[0] === '#') {
+            // this.model = this.model.substring(1);
+            return of([]);
+          } else if (!this.isValidKey()) {
             this.suggestions = this.value;
             return of([]);
           } else {
+            if (this.model && !this.model.includes('#')) {
+              this.model = `#${this.model}`;
+            }
             this.suggestions = this.value;
             return this.getHashtagSuggesters();
           }
@@ -102,8 +106,9 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag>> {
-    return of({ list: [], paginationParameter: '10' });
-    //return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, this.model);
+    //return of({ list: [], paginationParameter: '10' });
+    let newModel = this.model.substring(1);
+    return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
   }
 
   private mapHashtagSuggestersToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
@@ -118,7 +123,9 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
-    return [{ label: `#${this.model}`, value: `#${this.model}` }];
+    // change model
+    let newModel = this.model.substring(1);
+    return [{ label: `#${newModel}`, value: `#${newModel}` }];
   }
 
   private mapExtendedOptionsToValue(): string[] {
@@ -137,7 +144,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public isValidKey(): boolean {
-    const pattern: RegExp = /^([\p{L}\p{Nd}])+$/u;
+    const pattern: RegExp = /^#?([\p{L}\p{Nd}])+$/u;
 
     if (this.model) {
       this.isValid = pattern.test(this.model);
