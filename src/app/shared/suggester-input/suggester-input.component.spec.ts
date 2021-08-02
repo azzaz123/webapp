@@ -39,6 +39,10 @@ describe('SuggesterInputComponent', () => {
     it('should have the placeholder changed to #', () => {});
   });
 
+  describe('when user unfocus the input', () => {
+    it('should return the placeholder as initial', () => {});
+  });
+
   describe('when user type in the input', () => {
     describe.each(HASHTAG_TESTING.isValid)('Check whether the hashtag is valid', (isValid) => {
       it(`should pass the test if input is ${isValid}`, () => {
