@@ -101,6 +101,7 @@ describe('UploadProductComponent', () => {
   let categoryService: CategoryService;
   let uploadService: UploadService;
   let itemReactivationService: ItemReactivationService;
+  let shippingToggleService: ShippingToggleService;
   const componentInstance: any = {};
 
   beforeEach(
@@ -236,6 +237,7 @@ describe('UploadProductComponent', () => {
     categoryService = TestBed.inject(CategoryService);
     uploadService = TestBed.inject(UploadService);
     itemReactivationService = TestBed.inject(ItemReactivationService);
+    shippingToggleService = TestBed.inject(ShippingToggleService);
     fixture.detectChanges();
   });
 
@@ -708,8 +710,40 @@ describe('UploadProductComponent', () => {
     });
 
     describe('and supports shipping', () => {
+      function fillValidForm() {
+        component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.SERVICES,
+          title: 'title',
+          description: 'title',
+          sale_price: 1000000,
+          currency_code: 'EUR',
+          images: [{ image: true }],
+          location: {
+            address: USER_LOCATION.full_address,
+            latitude: USER_LOCATION.approximated_latitude,
+            longitude: USER_LOCATION.approximated_longitude,
+          },
+        });
+      }
+      beforeEach(() => {
+        spyOn(shippingToggleService, 'isActive').and.returnValue(of(true));
+        component.ngOnInit();
+      });
+
       it('should show weight error', () => {
-        // having issues with this one and got stuck for too many time, will try to solve it on next PR
+        spyOn(errorService, 'i18nError');
+
+        fillValidForm();
+        component.uploadForm.patchValue({
+          sale_conditions: {
+            supports_shipping: true,
+          },
+          delivery_info: null,
+        });
+
+        component.onSubmit();
+
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR);
       });
     });
 

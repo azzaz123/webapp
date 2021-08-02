@@ -153,7 +153,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     ];
 
     this.fillForm();
-    this.initShippabilityFeatureFlag();
 
     config.placement = 'right';
     config.triggers = 'focus:blur';
@@ -161,6 +160,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
+    this.initShippabilityFeatureFlag();
+
     this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories;
 
@@ -352,6 +353,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private detectShippabilityChanges() {
+    console.log('detectShippabilityChanges');
     this.uploadForm
       .get('sale_conditions')
       .get('supports_shipping')
