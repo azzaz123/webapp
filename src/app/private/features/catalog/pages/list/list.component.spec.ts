@@ -1429,52 +1429,6 @@ describe('ListComponent', () => {
               expect(userService.saveLocalStore).toHaveBeenCalledTimes(1);
               expect(userService.saveLocalStore).toHaveBeenCalledWith(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, FAKE_DATE_NOW.toString());
             });
-            describe('and has free trial category', () => {
-              beforeEach(() => {
-                spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(true);
-              });
-              it('should track modal', () => {
-                const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
-                  name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
-                  attributes: {
-                    screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
-                    freeTrial: true,
-                  },
-                };
-                const item = cloneDeep(component.items[3]);
-
-                component.itemChanged({
-                  item: item,
-                  action: ITEM_CHANGE_ACTION.REACTIVATED,
-                });
-
-                expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-                expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
-              });
-            });
-            describe('and has not free trial category', () => {
-              beforeEach(() => {
-                spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(false);
-              });
-              it('should track modal', () => {
-                const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
-                  name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
-                  attributes: {
-                    screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
-                    freeTrial: false,
-                  },
-                };
-                const item = cloneDeep(component.items[3]);
-
-                component.itemChanged({
-                  item: item,
-                  action: ITEM_CHANGE_ACTION.REACTIVATED,
-                });
-
-                expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
-                expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
-              });
-            });
           });
         describe('and click cta button', () => {
           it('should redirect to subscriptions', fakeAsync(() => {
