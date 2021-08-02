@@ -783,6 +783,7 @@
     "web_start": "Probar",
     "web_total": "Total",
     "web_price_after_free_days": "al terminar la prueba gratuita",
+    "pro_subscription_purchase_summary_start_period": "A partir de",
     "web_monthly_renewal_plan": "El plan se renovará mensualmente",
     "web_stripe_card_element_513": "Al suscribirte estás aceptando las {$START_LINK}condiciones de uso{$CLOSE_LINK} y la {$START_LINK_1}política de privacidad{$CLOSE_LINK} de Wallapop S.L. y Stripe Ltd",
     "web_pay": "Pagar",
