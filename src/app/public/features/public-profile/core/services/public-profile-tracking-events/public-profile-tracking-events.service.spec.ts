@@ -16,7 +16,6 @@ import {
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { UserService } from '@core/user/user.service';
-import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 
@@ -46,7 +45,7 @@ describe('PublicProfileTrackingEventsService', () => {
       spyOn(service, 'trackClickItemCardEvent').and.callThrough();
       spyOn(analyticsService, 'trackEvent');
 
-      service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_USER, MOCK_ITEM_INDEX);
+      service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_USER);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_TRACK_CLICK_ITEM_CARD_EVENT_FROM_PROFILE);
     });

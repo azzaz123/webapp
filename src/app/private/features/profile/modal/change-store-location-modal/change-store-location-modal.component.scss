@@ -1,0 +1,52 @@
+@import '~style/common';
+
+.ChangeStoreLocationModal {
+  padding: $spacing-xxl $spacing-xxl $spacing-xl $spacing-xxl;
+  width: 768px;
+
+  @include media-breakpoint-down(md) {
+    padding: $spacing-xl $spacing-m $spacing-ml $spacing-m;
+    width: auto;
+
+    &__container {
+      max-width: 306px;
+      img {
+        width: 200px;
+      }
+    }
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__container {
+    max-width: 400px;
+    white-space: break-spaces;
+  }
+
+  &__subtitle {
+    color: $blue-grey-2;
+  }
+
+  &__secondaryAction {
+    color: $walla-main;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__close {
+    cursor: pointer;
+    top: 20px;
+    right: 20px;
+    tsl-svg-icon {
+      @include square($spacing-ms);
+      ::ng-deep svg path {
+        fill: $blue-grey-3;
+      }
+    }
+  }
+}

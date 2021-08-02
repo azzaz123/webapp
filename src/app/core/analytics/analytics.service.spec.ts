@@ -5,9 +5,9 @@ import { MockedUserService, MOCK_FULL_USER } from '@fixtures/user.fixtures.spec'
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import { DeviceService } from '@core/device/device.service';
-import {MARKET_PROVIDER} from '../../../configs/market.config';
-import {LOCALE_ID} from '@angular/core';
-import {APP_LOCALE_MOCK, MARKET_MOCK} from '@fixtures/analytics.fixtures.spec';
+import { MARKET_PROVIDER } from '../../../configs/market.config';
+import { LOCALE_ID } from '@angular/core';
+import { APP_LOCALE_MOCK, MARKET_MOCK } from '@fixtures/analytics.fixtures.spec';
 
 const user = {
   setUserAttribute: () => {},
@@ -54,12 +54,12 @@ describe('AnalyticsService', () => {
         },
         {
           provide: MARKET_PROVIDER,
-          useValue: MARKET_MOCK
+          useValue: MARKET_MOCK,
         },
         {
           provide: LOCALE_ID,
-          useValue: APP_LOCALE_MOCK
-        }
+          useValue: APP_LOCALE_MOCK,
+        },
       ],
     });
 
@@ -177,17 +177,17 @@ describe('AnalyticsService', () => {
 
   describe('market', () => {
     it('should return market pass in the constructor', () => {
-      const market = service.market
+      const market = service.market;
 
-      expect(market).toEqual(MARKET_MOCK)
-    })
-  })
+      expect(market).toEqual(MARKET_MOCK);
+    });
+  });
 
   describe('appLocale', () => {
     it('should return app locale pass in the constructor', () => {
-      const appLocale = service.appLocale
+      const appLocale = service.appLocale;
 
-      expect(appLocale).toEqual(APP_LOCALE_MOCK)
-    })
-  })
+      expect(appLocale).toEqual(APP_LOCALE_MOCK);
+    });
+  });
 });

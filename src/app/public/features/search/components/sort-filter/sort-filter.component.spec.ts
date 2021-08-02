@@ -19,17 +19,13 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ButtonModule } from '@shared/button/button.module';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
-import {
-  SORT_BY,
-  SORT_BY_DEFAULT_OPTIONS,
-  SORT_BY_DISTANCE_OPTION,
-  SORT_BY_RELEVANCE_OPTION,
-} from './services/constants/sort-by-options-constants';
+import { SORT_BY_DEFAULT_OPTIONS, SORT_BY_DISTANCE_OPTION, SORT_BY_RELEVANCE_OPTION } from './services/constants/sort-by-options-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SortByService } from './services/sort-by.service';
+import { SORT_BY } from '@api/core/model';
 
 @Component({
   selector: 'tsl-select-form',

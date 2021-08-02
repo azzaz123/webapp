@@ -29,7 +29,7 @@ export type FavouriteItemAnalyticsEvent = AnalyticsEvent<FavoriteItem | Unfavori
 export class PublicProfileTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 
-  public trackClickItemCardEvent(itemCard: ItemCard, user: User, index: number): void {
+  public trackClickItemCardEvent(itemCard: ItemCard, index: number, user?: User): void {
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -38,7 +38,7 @@ export class PublicProfileTrackingEventsService {
         categoryId: itemCard.categoryId,
         position: index + 1,
         screenId: SCREEN_IDS.Profile,
-        isPro: user.featured,
+        isPro: user?.featured,
         salePrice: itemCard.salePrice,
         title: itemCard.title,
         shippingAllowed: !!itemCard.saleConditions?.shipping_allowed,
@@ -78,7 +78,7 @@ export class PublicProfileTrackingEventsService {
     this.analyticsService.trackPageView(event);
   }
 
-  public trackFavouriteOrUnfavouriteItemEvent(itemCard: ItemCard, user: User): void {
+  public trackFavouriteOrUnfavouriteItemEvent(itemCard: ItemCard, user?: User): void {
     const event: FavouriteItemAnalyticsEvent = PublicProfileTrackingEventsService.getFavouriteItemAnalyticsEvent(itemCard, user);
     this.analyticsService.trackEvent(event);
   }
@@ -128,7 +128,7 @@ export class PublicProfileTrackingEventsService {
     };
   }
 
-  private static getFavouriteItemAnalyticsEvent(itemCard: ItemCard, { featured }: User): FavouriteItemAnalyticsEvent {
+  private static getFavouriteItemAnalyticsEvent(itemCard: ItemCard, user: User): FavouriteItemAnalyticsEvent {
     return {
       name: itemCard.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
@@ -137,7 +137,7 @@ export class PublicProfileTrackingEventsService {
         categoryId: itemCard.categoryId,
         screenId: SCREEN_IDS.Profile,
         salePrice: itemCard.salePrice,
-        isPro: featured,
+        isPro: user?.featured,
         title: itemCard.title,
         isBumped: !!itemCard.bumpFlags?.bumped,
       },

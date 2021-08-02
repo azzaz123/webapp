@@ -6,13 +6,13 @@
  */
 
 /**
- * Users successfully verifies email, facebook or phone number
+ * Users successfully verifies email, facebook, phone number, google or apple
  */
 export interface VerificationSuccess {
   /**
    * Identifier of the verification done
    */
-  verificationMethod: 'phone' | 'email' | 'facebook';
+  verificationMethod: 'phone' | 'email' | 'facebook' | 'google' | 'apple';
   /**
    * From where is the verification being done
    */

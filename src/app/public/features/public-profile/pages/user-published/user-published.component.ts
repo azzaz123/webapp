@@ -6,12 +6,12 @@ import { EmptyStateProperties } from '@public/shared/components/empty-state/empt
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { finalize, take } from 'rxjs/operators';
 import { PublicProfileTrackingEventsService } from '../../core/services/public-profile-tracking-events/public-profile-tracking-events.service';
-import { CatalogApiService } from '../../../../../api/catalog/catalog-api.service';
+import { CatalogApiService } from '@api/catalog/catalog-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { PUBLIC_PATH_PARAMS } from '@public/public-routing-constants';
 import { Subscription } from 'rxjs';
 import { SlugsUtilService } from '@core/services/slugs-util/slugs-util.service';
-import { PaginatedList } from '../../../../../api/core/model/paginated-list.interface';
+import { PaginatedList } from '@api/core/model';
 
 @Component({
   selector: 'tsl-user-published',
@@ -56,12 +56,16 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
   }
 
   public toggleFavourite(itemCard: ItemCard): void {
-    this.userService
-      .get(itemCard.ownerId)
-      .pipe(take(1))
-      .subscribe((user: User) => {
-        this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent(itemCard, user);
-      });
+    if (itemCard.ownerId) {
+      this.userService
+        .get(itemCard.ownerId)
+        .pipe(take(1))
+        .subscribe((user: User) => {
+          this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent(itemCard, user);
+        });
+    } else {
+      this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent(itemCard);
+    }
   }
 
   private loadItems(): void {
@@ -89,9 +93,13 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
   }
 
   public itemCardClicked({ itemCard, index }: ClickedItemCard): void {
-    this.userService.get(itemCard.ownerId).subscribe((user: User) => {
-      this.publicProfileTrackingEventsService.trackClickItemCardEvent(itemCard, user, index);
-    });
+    if (itemCard.ownerId) {
+      this.userService.get(itemCard.ownerId).subscribe((user: User) => {
+        this.publicProfileTrackingEventsService.trackClickItemCardEvent(itemCard, index, user);
+      });
+    } else {
+      this.publicProfileTrackingEventsService.trackClickItemCardEvent(itemCard, index);
+    }
   }
 
   private onError(): void {

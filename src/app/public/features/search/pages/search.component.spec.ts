@@ -52,10 +52,10 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 import { AdSlotShoppingComponentStub } from '@fixtures/shared/components/ad-shopping.component.stub';
 import { SearchResponseExtraData } from '../core/services/interfaces/search-response-extra-data.interface';
 import { FeatureFlagService } from '@core/user/featureflag.service';
-import { SORT_BY } from '../components/sort-filter/services/constants/sort-by-options-constants';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { SortByService } from '../components/sort-filter/services/sort-by.service';
+import { SORT_BY } from '@api/core/model/lists/sort.enum';
 
 @Directive({
   selector: '[tslInfiniteScroll]',

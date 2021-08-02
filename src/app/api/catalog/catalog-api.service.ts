@@ -1,55 +1,73 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable, of } from 'rxjs';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { PUBLISHED_ITEMS_ENDPOINT } from './endpoints';
-import { CatalogPublicProfileItemsResponse } from './dtos/catalog-public-profile-items-response';
+import { PUBLISHED_QUERY_PARAMS, PublishedItem, PublishedResponse, WALL_QUERY_PARAMS, WallItem, WallResponse } from '@api/catalog/dtos';
 import { map, switchMap } from 'rxjs/operators';
-import { PaginatedList } from '../core/model/paginated-list.interface';
-import { ACCEPTED_PARAMETERS } from './enums/accepted-parameters.enum';
+import { Location, PaginatedList } from '@api/core/model';
 import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';
-import { CatalogItem } from './dtos/catalog-item';
-import { mapCatalogItemsToItemCards } from './mappers/published-item-mapper';
+import { mapPublishedItemsToItemCards } from './mappers/published-item-mapper';
+import { CatalogHttpService } from '@api/catalog/http/catalog-http.service';
+import { QueryParams } from '@api/core/utils/types';
+import { mapWallItemsToItemCards } from '@api/catalog/mappers/wall-item-mapper';
 
 @Injectable()
 export class CatalogApiService {
-  constructor(private httpClient: HttpClient, private favouriteService: FavouritesApiService) {}
+  constructor(private catalogHttpService: CatalogHttpService, private favouriteService: FavouritesApiService) {}
 
-  // TODO: For now this service maps the response to ItemCard model, as it is currently the common model on the public domain. We need to
-  //       port this to an "Item" model once we have a decent definition of the item domain.
   public getUserPublishedItems(
     userId: string,
     checkFavourites: boolean,
     paginationParameter?: string
   ): Observable<PaginatedList<ItemCard>> {
-    let params = new HttpParams();
-
+    let params: QueryParams<PUBLISHED_QUERY_PARAMS>;
     if (paginationParameter) {
-      params = params.append(ACCEPTED_PARAMETERS.SINCE, paginationParameter);
+      params = { [PUBLISHED_QUERY_PARAMS.SINCE]: paginationParameter };
     }
 
-    return this.httpClient
-      .get<CatalogPublicProfileItemsResponse>(PUBLISHED_ITEMS_ENDPOINT(userId), {
-        params,
+    return this.catalogHttpService.getUserPublishedItems(userId, params).pipe(
+      switchMap((response: PublishedResponse) => {
+        let favouriteIds$ = of([]);
+
+        if (checkFavourites) {
+          const itemIds = response.data.map((item: PublishedItem) => item.id);
+          favouriteIds$ = this.favouriteService.getFavouriteItemsId(itemIds);
+        }
+
+        return forkJoin(of(response), favouriteIds$).pipe(
+          map(([res, favouritedIds]: [PublishedResponse, string[]]) => {
+            return {
+              list: mapPublishedItemsToItemCards(res.data, userId, favouritedIds),
+              paginationParameter: res.meta.next,
+            };
+          })
+        );
       })
-      .pipe(
-        switchMap((response: CatalogPublicProfileItemsResponse) => {
-          let favouriteIds$ = of([]);
+    );
+  }
 
-          if (checkFavourites) {
-            const itemIds = response.data.map((item: CatalogItem) => item.id);
-            favouriteIds$ = this.favouriteService.getFavouriteItemsId(itemIds);
-          }
+  public getWallItems(location: Location, checkFavourites: boolean, paginationParameter?: string): Observable<PaginatedList<ItemCard>> {
+    let params: QueryParams<WALL_QUERY_PARAMS>;
+    if (paginationParameter) {
+      params = { [WALL_QUERY_PARAMS.SINCE]: paginationParameter };
+    }
+    return this.catalogHttpService.getWallItems(location, params).pipe(
+      switchMap((response: WallResponse) => {
+        let favouriteIds$ = of([]);
 
-          return forkJoin(of(response), favouriteIds$).pipe(
-            map(([res, favouritedIds]: [CatalogPublicProfileItemsResponse, string[]]) => {
-              return {
-                list: mapCatalogItemsToItemCards(res.data, userId, favouritedIds),
-                paginationParameter: res.meta.next,
-              };
-            })
-          );
-        })
-      );
+        if (checkFavourites) {
+          const itemIds = response.data.map((item: WallItem) => item.id);
+          favouriteIds$ = this.favouriteService.getFavouriteItemsId(itemIds);
+        }
+
+        return forkJoin(of(response), favouriteIds$).pipe(
+          map(([response, favouriteIds]: [WallResponse, string[]]) => {
+            return {
+              list: mapWallItemsToItemCards(response.data, favouriteIds),
+              paginationParameter: response.meta.next,
+            };
+          })
+        );
+      })
+    );
   }
 }
