@@ -21,6 +21,7 @@ import {
   MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY,
   MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE,
   MAPPED_SUBSCRIPTIONS_ADDED,
+  TIER_DISCOUNT,
 } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -479,6 +480,29 @@ describe('SubscriptionsService', () => {
         const result = service.hasHighestLimit(selectedSubscription);
 
         expect(result).toEqual(true);
+      });
+    });
+  });
+
+  describe('get default tier discount', () => {
+    describe('when has tiers with discount', () => {
+      it('should return first tier with discount', () => {
+        const selectedSubscription: SubscriptionsResponse = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED[0]);
+        selectedSubscription.tiers[1].discount = TIER_DISCOUNT;
+
+        const result = service.getDefaultTierDiscount(selectedSubscription);
+
+        expect(result).toEqual(selectedSubscription.tiers[1]);
+      });
+    });
+
+    describe('when has not any tier with discount', () => {
+      it('should not return tier', () => {
+        const selectedSubscription: SubscriptionsResponse = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED[0]);
+
+        const result = service.getDefaultTierDiscount(selectedSubscription);
+
+        expect(result).toBeFalsy();
       });
     });
   });

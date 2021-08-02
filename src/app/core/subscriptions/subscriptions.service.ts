@@ -7,7 +7,6 @@ import {
   SubscriptionSlotResponse,
   SubscriptionSlotGeneralResponse,
   SUBSCRIPTION_MARKETS,
-  TierDiscount,
 } from './subscriptions.interface';
 import { UserService } from '../user/user.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';

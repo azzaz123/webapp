@@ -42,7 +42,7 @@ export class SubscriptionListComponent {
     return !!subscription.subscribed_from;
   }
 
-  private getSubscribedButtonText(subscription: SubscriptionsResponse): string {
+  private getNotSubscribedButtonText(subscription: SubscriptionsResponse): string {
     if (this.hasOneFreeSubscription(subscription)) {
       return $localize`:@@web_start_free_trial:Start free trial`;
     }
@@ -56,7 +56,7 @@ export class SubscriptionListComponent {
 
   public getTextButton(subscription: SubscriptionsResponse): string {
     if (!subscription.subscribed_from) {
-      return this.getSubscribedButtonText(subscription);
+      return this.getNotSubscribedButtonText(subscription);
     }
     if (subscription.subscribed_until) {
       return $localize`:@@web_profile_pages_subscription_331:Stay subscribed`;
