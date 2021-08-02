@@ -42,18 +42,6 @@ export class SubscriptionListComponent {
     return !!subscription.subscribed_from;
   }
 
-  private getNotSubscribedButtonText(subscription: SubscriptionsResponse): string {
-    if (this.hasOneFreeSubscription(subscription)) {
-      return $localize`:@@web_start_free_trial:Start free trial`;
-    }
-
-    if (this.hasDiscount(subscription)) {
-      return $localize`:@@pro_subscription_purchase_try_discount_button: Start with discount`;
-    }
-
-    return this.getNotFreeTrialText(subscription);
-  }
-
   public getTextButton(subscription: SubscriptionsResponse): string {
     if (!subscription.subscribed_from) {
       return this.getNotSubscribedButtonText(subscription);
@@ -78,6 +66,18 @@ export class SubscriptionListComponent {
 
   public getBenefits(subscription: SubscriptionsResponse): string[] {
     return this.benefitsService.getBenefitsByCategory(subscription.category_id);
+  }
+
+  private getNotSubscribedButtonText(subscription: SubscriptionsResponse): string {
+    if (this.hasOneFreeSubscription(subscription)) {
+      return $localize`:@@web_start_free_trial:Start free trial`;
+    }
+
+    if (this.hasDiscount(subscription)) {
+      return $localize`:@@pro_subscription_purchase_try_discount_button: Start with discount`;
+    }
+
+    return this.getNotFreeTrialText(subscription);
   }
 
   private showEdit(subscription: SubscriptionsResponse): boolean {
