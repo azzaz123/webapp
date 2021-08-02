@@ -61,12 +61,10 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   public writeValue(value): void {
     this.value = value;
-    console.log('value', this.value);
   }
 
   public handleSelectedOption(): void {
     this.value = this.mapExtendedOptionsToValue();
-    console.log('this value is selected', this.value);
     this.onChange(this.value);
   }
 
