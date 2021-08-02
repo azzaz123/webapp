@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
+import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
 import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
 import { Observable } from 'rxjs';
@@ -20,9 +21,9 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   @Input() imagesNeeded: KYCImagesNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
 
-  public imagesTaken = {
-    firstImage: null,
-    secondImage: null,
+  public imagesTaken: KYCImages = {
+    frontSide: null,
+    backSide: null,
   };
   public readonly DEVICE_PERMISSIONS_STATUS = DEVICE_PERMISSIONS_STATUS;
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
@@ -73,14 +74,14 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   private isFirstImageDefined(): boolean {
-    return this.imagesTaken.firstImage || this.imagesNeeded === 1;
+    return !!this.imagesTaken.frontSide || this.imagesNeeded === 1;
   }
 
   private defineImage(newImage): void {
     if (this.isFirstImageDefined()) {
-      this.imagesTaken = { ...this.imagesTaken, secondImage: newImage };
+      this.imagesTaken = { ...this.imagesTaken, backSide: newImage };
     } else {
-      this.imagesTaken = { ...this.imagesTaken, firstImage: newImage };
+      this.imagesTaken = { ...this.imagesTaken, frontSide: newImage };
     }
   }
 
@@ -101,8 +102,8 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   get imagesTakenCounter(): number {
-    const firstImage = this.imagesTaken.firstImage;
-    const secondImage = this.imagesTaken.secondImage;
+    const firstImage = this.imagesTaken.frontSide;
+    const secondImage = this.imagesTaken.backSide;
 
     return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
   }
