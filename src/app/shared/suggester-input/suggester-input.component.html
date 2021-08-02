@@ -1,6 +1,6 @@
 <input
 type="text" 
-placeholder="Suggesters..." 
+[placeholder]="hashtagPlaceholder" 
 (focus)="focus()"
 (blur)="blur()"
 [(ngModel)]="model"
@@ -10,7 +10,6 @@ class="SuggesterInput"
 <div *ngIf="!!options" #formMenu>
     <tsl-multi-select-form [(ngModel)]="suggestions" [options]="options" (change)="handleSelectedOption()"></tsl-multi-select-form>
 </div> 
-
 <div *ngIf="!isValid">
-    <div style="background-color: beige; border:1px solid black">Not valid</div>
+    <div  i18n="@@web_upload_hashtag_invalid_error_message">Our hashtags are good with anything except special characters and spaces of course.</div>
 </div>

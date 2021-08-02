@@ -35,6 +35,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public suggestions: MultiSelectValue = [];
   public isClickOutside: boolean = false;
   public isValid: boolean = true;
+  public hashtagPlaceholder: string = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
   private extendedOptions: MultiSelectFormOption[];
 
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
@@ -55,7 +56,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public blur() {
-    this.hashtagSuggester.nativeElement.placeholder = 'Find or create a hashtag';
+    this.hashtagSuggester.nativeElement.placeholder = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
   }
 
   public writeValue(value): void {
