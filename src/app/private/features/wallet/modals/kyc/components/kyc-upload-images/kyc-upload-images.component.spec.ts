@@ -50,6 +50,10 @@ describe('KYCUploadImagesComponent', () => {
     de = fixture.debugElement;
     component = fixture.componentInstance;
     askPermissionsService = TestBed.inject(AskPermissionsService);
+    component.images = {
+      frontSide: null,
+      backSide: null,
+    };
   });
 
   it('should create', () => {
