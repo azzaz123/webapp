@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { KYCPhotosNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
+import { BANNER_TYPES } from '@shared/banner/banner-types.enum';
 import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
 import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
 import { Observable } from 'rxjs';
@@ -20,7 +21,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   public readonly DEVICE_PERMISSIONS_STATUS = DEVICE_PERMISSIONS_STATUS;
   public userDevicePermissions$: Observable<UserDevicePermissions>;
   public errorBannerSpecifications: NgbAlertConfig = {
-    type: 'danger',
+    type: BANNER_TYPES.DANGER,
     dismissible: false,
   };
 
