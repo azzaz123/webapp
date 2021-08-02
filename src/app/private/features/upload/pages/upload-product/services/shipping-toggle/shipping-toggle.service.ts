@@ -30,20 +30,20 @@ export class ShippingToggleService {
       return this.shippingRulesSubject.asObservable().pipe(
         map((shippingRules) => {
           this.shippingRules = shippingRules;
-          return {
-            category: this.isAllowedByCategoryShippingRules(categoryId),
-            subcategory: this.isAllowedBySubcategoryShippingRules(subcategoryId),
-            price: this.isAllowedByPriceShippingRules(price),
-          };
+          return this.buildShippingToggleAllowance(categoryId, subcategoryId, price);
         })
       );
     } else {
-      return of({
-        category: this.isAllowedByCategoryShippingRules(categoryId),
-        subcategory: this.isAllowedBySubcategoryShippingRules(subcategoryId),
-        price: this.isAllowedByPriceShippingRules(price),
-      });
+      return of(this.buildShippingToggleAllowance(categoryId, subcategoryId, price));
     }
+  }
+
+  private buildShippingToggleAllowance(categoryId: string, subcategoryId: string, price: number): ShippingToggleAllowance {
+    return {
+      category: this.isAllowedByCategoryShippingRules(categoryId),
+      subcategory: this.isAllowedBySubcategoryShippingRules(subcategoryId),
+      price: this.isAllowedByPriceShippingRules(price),
+    };
   }
 
   private isAllowedByCategoryShippingRules(categoryId: string): boolean {
