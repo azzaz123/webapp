@@ -1,0 +1,57 @@
+<div class="page-content" tslInfiniteScroll [infiniteScrollDistance]="3"
+  [infiniteScrollDisabled]="end || loading" (scrolled)="loadMore()">
+  <div class="container">
+    <tsl-header>
+      <div class="col-9 col-md-11">
+        <div class="header-row">
+          <h1 class="header-title" i18n="@@web_favorites_pages_201">Your favorites</h1>
+        </div>
+        <div class="header-row">
+          <h4 class="header-subtitle" *ngIf="selectedStatus === 'products'" i18n="@@web_wallapop_products_like_most">These are the Wallapop products that you like the most</h4>
+          <h4 class="header-subtitle" *ngIf="selectedStatus === 'profiles'" i18n="@@web_wallapop_profiles_like_most">These are the Wallapop profiles that you like the most</h4>
+        </div>
+      </div>
+      <div class="col-3 col-md-1 header-numbers">
+        <p class="header-numbers-top">{{numberOfFavorites}}</p>
+        <p class="header-numbers-bottom">
+          <span *ngIf="numberOfFavorites > 1 || numberOfFavorites === 0" i18n="@@web_favorites_pages_202">favorites</span>
+          <span *ngIf="numberOfFavorites === 1" i18n="@@web_favorites_pages_203">favorite</span>
+        </p>
+      </div>
+    </tsl-header>
+    <div class="row">
+      <div class="col-12">
+        <nav class="nav filters-nav">
+          <a (click)="filterByStatus('products')" [ngClass]="{active: selectedStatus === 'products'}" class="nav-link"
+            i18n="@@web_favorites_pages_204">Products</a>
+          <a (click)="filterByStatus('profiles')" [ngClass]="{active: selectedStatus === 'profiles'}" class="nav-link"
+            i18n="@@web_favorites_pages_205">Profiles</a>
+        </nav>
+      </div>
+    </div>
+    <div class="mt-3">
+      <div class="favorites-empty-state"
+        *ngIf="!items.length && !loading && selectedStatus === 'products' || !profiles.length && !loading && selectedStatus === 'profiles'">
+        <img src="/assets/images/placeholders/favorites-empty-state.svg" class="d-none d-md-block w-100 h-100">
+        <img src="/assets/images/placeholders/favorites-empty-state-mobile.svg" width="304" height="547" class="d-block d-md-none">
+        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'products'" i18n="@@web_favorites_pages_206">In this list you can see all
+          the products you
+          saved as favourite</div>
+        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'profiles'" i18n="@@web_favorites_pages_207">In this list you can see all
+          the profiles you
+          saved as favourite</div>
+      </div>
+      <div class="cards-container" *ngIf="selectedStatus === 'products'">
+        <div class="card-wrapper" *ngFor="let item of items">
+          <tsl-item-card-favourite [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-item-card-favourite>
+        </div>
+      </div>
+      <div class="cards-container" *ngIf="selectedStatus === 'profiles'">
+        <div class="card-wrapper" *ngFor="let profile of profiles">
+          <tsl-profile-card-favorite [profile]="profile" (onFavoriteProfileChange)="onFavoriteProfileChange($event)">
+          </tsl-profile-card-favorite>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

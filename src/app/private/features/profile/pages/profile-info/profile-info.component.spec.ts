@@ -18,7 +18,15 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
-import { IMAGE, MOCK_FULL_USER, USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES, USER_PRO_DATA } from '@fixtures/user.fixtures.spec';
+import {
+  IMAGE,
+  MOCK_FULL_USER,
+  STORE_LOCATION,
+  USER_DATA,
+  USER_EDIT_DATA,
+  USER_LOCATION_COORDINATES,
+  USER_PRO_DATA,
+} from '@fixtures/user.fixtures.spec';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from '@shared/switch/switch.component';
@@ -30,6 +38,7 @@ import { VisibleDirectiveModule } from '@shared/directives/visible/visible.direc
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
+import { ChangeStoreLocationModal } from '../../modal/change-store-location-modal/change-store-location-modal.component';
 
 @Component({
   selector: 'tsl-cover-upload',
@@ -47,6 +56,8 @@ describe('ProfileInfoComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let analyticsService: AnalyticsService;
   let permissionsService: NgxPermissionsService;
+  let spyUpdateStoreLocation: jasmine.Spy;
+  let spyModalService: jasmine.Spy;
 
   const locationBoxSelector = 'tsl-location-box';
 
@@ -79,6 +90,12 @@ describe('ProfileInfoComponent', () => {
                 return of({});
               },
               updateSearchLocationCookies() {},
+              hasStoreLocation() {
+                return true;
+              },
+              updateStoreLocation() {
+                return of({});
+              },
             },
           },
           {
@@ -243,6 +260,104 @@ describe('ProfileInfoComponent', () => {
             latitude: USER_LOCATION_COORDINATES.latitude + 1,
             longitude: USER_LOCATION_COORDINATES.longitude + 1,
             name: USER_LOCATION_COORDINATES.name,
+          });
+        });
+      });
+
+      describe('edit store location', () => {
+        beforeEach(() => {
+          spyUpdateStoreLocation = spyOn(userService, 'updateStoreLocation').and.callThrough();
+          spyModalService = spyOn(modalService, 'open').and.callThrough();
+        });
+        describe('and data was not edited', () => {
+          it('should not call the service', () => {
+            component.onSubmit();
+
+            expect(userService.updateStoreLocation).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('and data was edited', () => {
+          it('should call the service', () => {
+            component.profileForm.get('storeLocation').patchValue(STORE_LOCATION);
+
+            fixture.detectChanges();
+            component.onSubmit();
+
+            expect(userService.updateStoreLocation).toHaveBeenCalledWith(STORE_LOCATION);
+            expect(userService.updateStoreLocation).toHaveBeenCalledTimes(1);
+          });
+          describe('and the store location is far from user location', () => {
+            beforeEach(() => {
+              spyUpdateStoreLocation.and.returnValue(of({ check_change_location: true }));
+            });
+            it('should show the modal', () => {
+              component.profileForm.get('storeLocation').patchValue(STORE_LOCATION);
+
+              fixture.detectChanges();
+              component.onSubmit();
+
+              expect(modalService.open).toHaveBeenCalledWith(ChangeStoreLocationModal, { windowClass: 'change-store-location' });
+              expect(modalService.open).toHaveBeenCalledTimes(1);
+            });
+            describe('and user wants to change location', () => {
+              beforeEach(() => {
+                spyOn(userService, 'updateLocation').and.callThrough();
+                spyModalService.and.returnValue({
+                  result: Promise.resolve(),
+                });
+              });
+
+              it('should save new user location', fakeAsync(() => {
+                component.profileForm.get('storeLocation').patchValue(STORE_LOCATION);
+                fixture.detectChanges();
+
+                component.onSubmit();
+                tick();
+                fixture.detectChanges();
+
+                expect(userService.updateLocation).toHaveBeenCalledWith({
+                  latitude: STORE_LOCATION.latitude,
+                  longitude: STORE_LOCATION.longitude,
+                  name: STORE_LOCATION.address,
+                });
+              }));
+            });
+
+            describe('and user doesnt want to change location', () => {
+              beforeEach(() => {
+                spyOn(userService, 'updateLocation').and.callThrough();
+                spyModalService.and.returnValue({
+                  result: Promise.reject(),
+                });
+              });
+
+              it('should not save new user location', fakeAsync(() => {
+                component.profileForm.get('storeLocation').patchValue(STORE_LOCATION);
+                fixture.detectChanges();
+
+                component.onSubmit();
+                tick();
+                fixture.detectChanges();
+
+                expect(userService.updateLocation).not.toHaveBeenCalledWith({
+                  latitude: STORE_LOCATION.latitude,
+                  longitude: STORE_LOCATION.longitude,
+                  name: STORE_LOCATION.address,
+                });
+              }));
+            });
+          });
+        });
+        describe('and the store location is not far from user location', () => {
+          it('should not show the modal', () => {
+            spyUpdateStoreLocation.and.returnValue(of({ check_change_location: false }));
+            component.profileForm.get('storeLocation').patchValue(STORE_LOCATION);
+
+            fixture.detectChanges();
+            component.onSubmit();
+
+            expect(modalService.open).not.toHaveBeenCalled();
           });
         });
       });

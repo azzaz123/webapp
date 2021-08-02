@@ -9,7 +9,7 @@ import { UserLocation, UserResponse, Image } from './user-response.interface';
 import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '@environments/environment';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
-import { Coordinate } from '../geolocation/address-response.interface';
+import { Coordinate, StoreLocation, StoreLocationResponse } from '../geolocation/address-response.interface';
 import { Counters, Ratings, UserStats, UserStatsResponse } from './user-stats.interface';
 import { UserData, UserProData } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
@@ -34,7 +34,7 @@ export const USER_ONLINE_ENDPOINT = `${USER_ENDPOINT}online`;
 export const USER_LOCATION_ENDPOINT = `${USER_ENDPOINT}location`;
 export const USER_COVER_IMAGE_ENDPOINT = `${USER_ENDPOINT}cover-image`;
 export const USER_PHONE_INFO_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/phone-method`;
-export const USER_STORE_LOCATION_ENDPOINT = `${USER_ENDPOINT}bumped-profile/store-location'`;
+export const USER_STORE_LOCATION_ENDPOINT = `${USER_ENDPOINT}bumped-profile/store-location`;
 export const USER_STATS_ENDPOINT = `${USER_ENDPOINT}stats`;
 export const USER_EXTRA_INFO_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/extra-info`;
 export const USER_EMAIL_ENDPOINT = `${USER_ENDPOINT}email`;
@@ -217,13 +217,8 @@ export class UserService {
     this.cookieService.put('searchPosName', location.name, cookieOptions);
   }
 
-  // TODO: This is in the apps but currently not now in web. Not being used but in the future is going to be implemented
-  public updateStoreLocation(coordinates: Coordinate): Observable<any> {
-    return this.http.post(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`, {
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
-      address: coordinates.name,
-    });
+  public updateStoreLocation(storeLocation: StoreLocation): Observable<StoreLocationResponse> {
+    return this.http.post<StoreLocationResponse>(`${environment.baseUrl}${USER_STORE_LOCATION_ENDPOINT}`, storeLocation);
   }
 
   public getStats(): Observable<UserStats> {
@@ -396,5 +391,9 @@ export class UserService {
 
   private getStoredIsClickedProSection(user: User): void {
     this._isProSectionClicked = !!localStorage.getItem(`${user.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
+  }
+
+  public hasStoreLocation(user: User): boolean {
+    return !!(user.extraInfo && user.extraInfo.address?.length > 0 && (user.extraInfo.latitude || user.extraInfo.longitude));
   }
 }

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { SearchItemListFactory } from '@fixtures/item-card.fixtures.spec';
+import { ItemCardListFactory } from '@fixtures/item-card.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ItemFavouritesService } from '@public/core/services/item-favourites/item-favourites.service';
 import { of } from 'rxjs';
@@ -30,7 +30,7 @@ describe('SearchFavouritesService', () => {
   });
 
   describe('when we want to get favourite items', () => {
-    const searchItemList: ItemCard[] = SearchItemListFactory(20);
+    const searchItemList: ItemCard[] = ItemCardListFactory(20);
     const searchItemIdsList: string[] = searchItemList.map(({id}: ItemCard) => id);
     const itemIdsFavourites: string[] = searchItemList.slice(0, 5).map(({id}: ItemCard) => id);
 

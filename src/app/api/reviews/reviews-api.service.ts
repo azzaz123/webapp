@@ -5,8 +5,8 @@ import { ReviewsHttpService } from '@api/reviews/http/reviews-http.service';
 import { map } from 'rxjs/operators';
 import { ReviewsElementDto } from '@api/reviews/dtos/reviews-element-dto.interface';
 import { mapReviewElementsToReviews } from '@api/reviews/mappers/reviews.mapper';
-import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { ReviewTranslationDto } from '@api/reviews/dtos/review-translation-dto.interface';
+import { PaginatedList } from '@api/core/model';
 
 @Injectable()
 export class ReviewsApiService {

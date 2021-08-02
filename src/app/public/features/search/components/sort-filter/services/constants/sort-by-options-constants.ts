@@ -1,12 +1,5 @@
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
-
-export enum SORT_BY {
-  RELEVANCE = 'most_relevance',
-  DISTANCE = 'closest',
-  PRICE_LOW_TO_HIGH = 'price_low_to_high',
-  PRICE_HIGH_TO_LOW = 'price_high_to_low',
-  NEWEST = 'newest',
-}
+import { SORT_BY } from '@api/core/model';
 
 export const SORT_BY_RELEVANCE_OPTION: SelectFormOption<SORT_BY> = {
   label: $localize`:@@web_filter_sort_by_relevance:Relevance`,
