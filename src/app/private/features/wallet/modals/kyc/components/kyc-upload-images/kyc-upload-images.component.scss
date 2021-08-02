@@ -14,21 +14,35 @@
     }
   }
 
-  &__cameraContainer {
+  &__cameraContainer,
+  &__takenImage {
     border-radius: $border-radius;
   }
 
-  &__camera {
-    transform: scaleX(-1);
+  &__cameraContainer {
+    &__overlay {
+      top: 13%;
+      right: 12%;
+      border: 3px solid $white;
+      height: 75%;
+      width: 76%;
+      box-shadow: rgb(0 0 0 / 50%) 0px 0px 0px 40px;
+    }
   }
-}
 
-.cameraOverlay {
-  position: absolute !important;
-  top: 13%;
-  right: 12%;
-  border: 3px solid $white;
-  height: 75%;
-  width: 76%;
-  box-shadow: rgb(0 0 0 / 50%) 0px 0px 0px 40px;
+  &__image {
+    border: solid 2px $blue-grey-5;
+    cursor: pointer;
+
+    &__title {
+      color: $blue-grey-2;
+    }
+
+    &--active {
+      border: solid 2px $blue-grey-2;
+      .KYCUploadImages__image__title {
+        color: $blue-grey-1;
+      }
+    }
+  }
 }

@@ -83,7 +83,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       : $localize`:@@kyc_camera_cannot_access:Oops, an error occurred and we cannot access your camera`;
   }
 
-  private isFirstImageDefined(): boolean {
+  public isFirstImageDefined(): boolean {
     return !!this.images.frontSide || this.imagesNeeded === 1;
   }
 
@@ -115,6 +115,10 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
 
     this.userCamera.nativeElement.srcObject = null;
+  }
+
+  get allImagesAreDefined(): boolean {
+    return this.imagesTakenCounter === this.imagesNeeded;
   }
 
   get imagesTakenCounter(): number {
