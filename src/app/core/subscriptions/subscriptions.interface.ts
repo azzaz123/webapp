@@ -14,12 +14,13 @@ export interface Tier {
   limit?: number;
   price: number;
   currency: string;
-  discount_available?: TierDiscount;
+  discount?: TierDiscount;
 }
 
 export interface TierDiscount {
-  months: number;
-  discounted_price: number;
+  price: number;
+  end_date: number;
+  percentage: number;
 }
 
 export enum SUBSCRIPTION_MARKETS {

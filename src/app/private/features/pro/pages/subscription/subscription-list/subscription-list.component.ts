@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
-import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 
 @Component({
@@ -34,15 +34,17 @@ export class SubscriptionListComponent {
     return this.subscriptionsService.hasTrial(subscription);
   }
 
+  public hasDiscount(subscription: SubscriptionsResponse): Tier {
+    return this.subscriptionsService.getDefaultTierDiscount(subscription);
+  }
+
   public isSubscribed(subscription: SubscriptionsResponse): boolean {
     return !!subscription.subscribed_from;
   }
 
   public getTextButton(subscription: SubscriptionsResponse): string {
     if (!subscription.subscribed_from) {
-      return this.hasOneFreeSubscription(subscription)
-        ? $localize`:@@web_start_free_trial:Start free trial`
-        : this.getNotFreeTrialText(subscription);
+      return this.getNotSubscribedButtonText(subscription);
     }
     if (subscription.subscribed_until) {
       return $localize`:@@web_profile_pages_subscription_331:Stay subscribed`;
@@ -56,9 +58,6 @@ export class SubscriptionListComponent {
     if (this.showManageInApp(subscription)) {
       return $localize`:@@web_profile_pages_subscription_327:Manage in app`;
     }
-    if (this.showUnsubscribeFirst(subscription)) {
-      return $localize`:@@web_profile_pages_subscription_328:Unsubscribe first from app for your free month`;
-    }
   }
 
   public onClickButton(subscription: SubscriptionsResponse): void {
@@ -67,6 +66,18 @@ export class SubscriptionListComponent {
 
   public getBenefits(subscription: SubscriptionsResponse): string[] {
     return this.benefitsService.getBenefitsByCategory(subscription.category_id);
+  }
+
+  private getNotSubscribedButtonText(subscription: SubscriptionsResponse): string {
+    if (this.hasOneFreeSubscription(subscription)) {
+      return $localize`:@@web_start_free_trial:Start free trial`;
+    }
+
+    if (this.hasDiscount(subscription)) {
+      return $localize`:@@pro_subscription_purchase_try_discount_button: Start with discount`;
+    }
+
+    return this.getNotFreeTrialText(subscription);
   }
 
   private showEdit(subscription: SubscriptionsResponse): boolean {
@@ -78,11 +89,7 @@ export class SubscriptionListComponent {
   }
 
   private showManageInApp(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription) && !this.subscriptionsService.hasOneFreeTier(subscription);
-  }
-
-  private showUnsubscribeFirst(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneFreeTier(subscription);
+    return this.subscriptionsService.isSubscriptionInApp(subscription);
   }
 
   private getNotFreeTrialText(subscription: SubscriptionsResponse): string {

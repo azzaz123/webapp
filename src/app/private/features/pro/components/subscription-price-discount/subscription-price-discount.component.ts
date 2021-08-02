@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
-import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
-import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-subscription-price-discount',
@@ -10,20 +8,7 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 })
 export class SubscriptionPriceDiscountComponent {
   @Input() subscription: SubscriptionsResponse;
-  public loading = true;
-  public priceDiscount: SubscriptionBenefit[];
+  @Input() tierDiscount: Tier;
 
-  constructor(private subscriptionsService: SubscriptionsService) {}
-
-  public hasTrial(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.hasTrial(subscription);
-  }
-
-  public hasOneTierDiscount(subscription: SubscriptionsResponse) {
-    return this.subscriptionsService.hasOneTierDiscount(subscription);
-  }
-
-  public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.hasOneFreeTier(subscription);
-  }
+  constructor() {}
 }

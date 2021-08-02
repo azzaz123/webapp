@@ -8,6 +8,7 @@ import {
   MAPPED_SUBSCRIPTIONS_ADDED,
   MockSubscriptionService,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+  TIER_WITH_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { SpinnerComponent } from '@shared/spinner/spinner.component';
 import { SubscriptionListComponent } from './subscription-list.component';
@@ -95,18 +96,30 @@ describe('SubscriptionListComponent', () => {
         beforeEach(() => {
           spyOn(component, 'hasOneFreeSubscription').and.returnValue(false);
         });
-        describe('and has multiple tiers', () => {
+        describe('and has no discounts', () => {
+          describe('and has multiple tiers', () => {
+            it('should show see plans text', () => {
+              const text = component.getTextButton(MAPPED_SUBSCRIPTIONS_ADDED[1]);
+
+              expect(text).toBe($localize`:@@seePlans:See plans`);
+            });
+          });
+          describe('and has one tier', () => {
+            it('should show start text', () => {
+              const text = component.getTextButton(MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED);
+
+              expect(text).toBe($localize`:@@start:Start`);
+            });
+          });
+        });
+        describe('and has tier discounts', () => {
+          beforeEach(() => {
+            spyOn(component, 'hasDiscount').and.returnValue(TIER_WITH_DISCOUNT);
+          });
           it('should show see plans text', () => {
             const text = component.getTextButton(MAPPED_SUBSCRIPTIONS_ADDED[1]);
 
-            expect(text).toBe($localize`:@@seePlans:See plans`);
-          });
-        });
-        describe('and has one tier', () => {
-          it('should show start text', () => {
-            const text = component.getTextButton(MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED);
-
-            expect(text).toBe($localize`:@@start:Start`);
+            expect(text).toBe($localize`:@@pro_subscription_purchase_try_discount_button: Start with discount`);
           });
         });
       });

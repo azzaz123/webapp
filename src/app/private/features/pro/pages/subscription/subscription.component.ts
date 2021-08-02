@@ -220,11 +220,6 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse): SubscriptionModal {
-    // User is trying to edit subscription that is from inapp and has discount
-    if (this.subscriptionsService.isSubscriptionInApp(subscription) && this.subscriptionsService.hasOneTierDiscount(subscription)) {
-      return DiscountAvailableUnsubscribeInAppModalComponent;
-    }
-
     // User is trying to edit subscription that is from inapp
     if (this.subscriptionsService.isSubscriptionInApp(subscription)) {
       return CheckSubscriptionInAppModalComponent;
