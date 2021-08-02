@@ -3,11 +3,11 @@ import { TestBed } from '@angular/core/testing';
 import { ReviewsHttpService } from './reviews-http.service';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { reviewsElementDtoFixture } from '@api/fixtures/reviews/reviews-element-dto.fixture';
-import { PaginatedList } from '@api/core/model/paginated-list.interface';
 import { ReviewsElementDto } from '@api/reviews/dtos/reviews-element-dto.interface';
 import { reviewTranslationDtoFixture } from '@api/fixtures/reviews/review-translation-dto.fixture';
 import { ReviewTranslationDto } from '@api/reviews/dtos/review-translation-dto.interface';
 import { REVIEW_TRANSLATION_ENDPOINT, USER_REVIEWS_ENDPOINT } from '@api/reviews/http/endpoints';
+import { PaginatedList } from '@api/core/model';
 
 describe('ReviewsHttpService', () => {
   let service: ReviewsHttpService;

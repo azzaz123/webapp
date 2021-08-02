@@ -1,5 +1,11 @@
 @import '~web-styleguide/scss/colors';
 
-input.ng-dirty.ng-invalid {
-  border: 1px solid $negative-main !important;
+input {
+  &.ng-dirty.ng-invalid {
+    border: 1px solid $negative-main !important;
+  }
+  &[readonly] {
+    background: $white;
+    border: 1px solid $blue-grey-5;
+  }
 }

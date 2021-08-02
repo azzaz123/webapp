@@ -1,5 +1,5 @@
 import { mapCatalogImagesToImages } from './image-mapper';
-import { catalogItemImageFixture, mappedCatalogItemImageFixture } from '../../fixtures/catalog/catalog-image.fixtures';
+import { catalogItemImageFixture, mappedCatalogItemImageFixture } from '@api/fixtures/catalog/catalog-image.fixtures';
 
 describe('CatalogImageMapper', () => {
   describe('when mapping from catalog image dto to image domain', () => {

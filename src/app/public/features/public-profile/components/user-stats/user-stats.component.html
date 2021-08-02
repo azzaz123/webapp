@@ -39,12 +39,21 @@
             </ng-template>
         </ng-container>
     </div>
-    <div class="d-flex align-items-center mb-2" *ngIf="userInfo.location">
-        <tsl-svg-icon width="18" height="18" class="mr-2" src="/assets/icons/public-profile/location.svg"></tsl-svg-icon>
-        {{userInfo.location.zip}},
-        {{userInfo.location.city}}
-        <a (click)="showLocation()" i18n="@@web_show_location" class="ml-2">View location</a>
-    </div>
+    <ng-container *ngIf="showStoreAdress; else userLocation">
+        <div class="d-flex align-items-center mb-2">
+            <tsl-svg-icon width="18" height="18" class="mr-2" src="/assets/icons/public-profile/store-location.svg"></tsl-svg-icon>
+            {{userInfo.extraInfo.address}}
+            <a (click)="showLocation()" i18n="@@web_show_location" class="ml-2">View location</a>
+        </div>
+    </ng-container>
+    <ng-template #userLocation>
+        <div class="d-flex align-items-center mb-2" *ngIf="userInfo.location">
+            <tsl-svg-icon width="18" height="18" class="mr-2" src="/assets/icons/public-profile/location.svg"></tsl-svg-icon>
+            {{userInfo.location.zip}},
+            {{userInfo.location.city}}
+            <a (click)="showLocation()" i18n="@@web_show_location" class="ml-2">View location</a>
+        </div>
+    </ng-template>
     <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
         <div *ngIf="userInfo.featured && (userInfo.extraInfo && userInfo.extraInfo.link)" class="d-flex align-items-center mb-2">
             <tsl-svg-icon width="18" height="18" class="mr-2" src="/assets/icons/public-profile/computer.svg"></tsl-svg-icon>

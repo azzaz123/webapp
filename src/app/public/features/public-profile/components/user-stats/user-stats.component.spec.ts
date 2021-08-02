@@ -1,15 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserStatsComponent } from './user-stats.component';
 import { By } from '@angular/platform-browser';
-import { MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { MockedUserService, MOCK_FULL_USER_FEATURED, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicPipesModule } from '@public/core/pipes/public-pipes.module';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { UserService } from '@core/user/user.service';
 
 describe('UserStatsComponent', () => {
   const profileUserClass = '.ProfileUser';
@@ -20,6 +21,7 @@ describe('UserStatsComponent', () => {
   let deviceDetectorService: DeviceDetectorService;
   let router: Router;
   let scrollIntoViewService: ScrollIntoViewService;
+  let userService: UserService;
   let permissionService: NgxPermissionsService;
 
   beforeEach(async () => {
@@ -43,6 +45,7 @@ describe('UserStatsComponent', () => {
             url: 'environment/public/user/1234/published',
           },
         },
+        { provide: UserService, useClass: MockedUserService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -57,6 +60,7 @@ describe('UserStatsComponent', () => {
     scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
     permissionService = TestBed.inject(NgxPermissionsService);
     router = TestBed.inject(Router);
+    userService = TestBed.inject(UserService);
     fixture.detectChanges();
   });
 
@@ -107,6 +111,28 @@ describe('UserStatsComponent', () => {
         beforeEach(() => {
           permissionService.addPermission(PERMISSIONS.subscriptions);
         });
+        describe('when it has store address', () => {
+          beforeEach(() => {
+            spyOn(userService, 'hasStoreLocation').and.returnValue(true);
+            component.ngOnInit();
+          });
+          it('should show store address', fakeAsync(() => {
+            tick();
+
+            expect(component.showStoreAdress).toBe(true);
+          }));
+        });
+        describe('when it has not store address', () => {
+          beforeEach(() => {
+            spyOn(userService, 'hasStoreLocation').and.returnValue(false);
+            component.ngOnInit();
+          });
+          it('should not show store address', fakeAsync(() => {
+            tick();
+
+            expect(component.showStoreAdress).toBe(false);
+          }));
+        });
         describe('when have the extra info...', () => {
           it('should show three anchors if it have the extra info', () => {
             fixture.detectChanges();
@@ -144,6 +170,12 @@ describe('UserStatsComponent', () => {
         beforeEach(() => {
           permissionService.removePermission(PERMISSIONS.subscriptions);
         });
+        it('should not show store address', fakeAsync(() => {
+          component.ngOnInit();
+          tick();
+
+          expect(component.showStoreAdress).toBe(false);
+        }));
         it('should show only one anchor', () => {
           component.userInfo.featured = false;
 
@@ -156,13 +188,26 @@ describe('UserStatsComponent', () => {
     });
 
     describe('when the user is NOT pro...', () => {
-      it('should show only one anchor', () => {
+      beforeEach(() => {
         component.userInfo.featured = false;
-
         fixture.detectChanges();
+      });
+      it('should show only one anchor', () => {
         const errorMessages = fixture.debugElement.queryAll(By.css('a'));
-
         expect(errorMessages.length).toBe(1);
+      });
+
+      describe('should not show store address', () => {
+        beforeEach(() => {
+          spyOn(userService, 'hasStoreLocation').and.callThrough();
+          component.ngOnInit();
+        });
+        it('should not show store location', fakeAsync(() => {
+          tick();
+
+          expect(component.showStoreAdress).toBe(false);
+          expect(userService.hasStoreLocation).not.toHaveBeenCalled();
+        }));
       });
     });
 

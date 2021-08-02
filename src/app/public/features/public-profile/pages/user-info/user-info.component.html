@@ -58,10 +58,16 @@
         </div>
         <div class="col-12 col-lg-6" #map>
             <p class="UserInfo__title--bold  mb-1" i18n="@@web_profile_info_location">Location</p>
-            <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"
-                [isApproximateLocation]="coordinates.approximated_location">
-            </tsl-here-maps>
-            <div class="UserInfo__fake-map" *ngIf="!coordinates"></div>
+            <ng-container *ngIf="storeLocation; else userLocation">
+                <tsl-here-maps [coordinates]="storeLocation" zoom="15" size="small">
+                </tsl-here-maps>
+            </ng-container>
+            <ng-template #userLocation>
+                <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"
+                    [isApproximateLocation]="coordinates.approximated_location">
+                </tsl-here-maps>
+                <div class="UserInfo__fake-map" *ngIf="!coordinates"></div>
+            </ng-template>
         </div>
     </div>
 </div>

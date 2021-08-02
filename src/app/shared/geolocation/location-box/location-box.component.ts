@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UserService } from '../../../core/user/user.service';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
+import { UserLocation } from '@core/user/user-response.interface';
 
 @Component({
   selector: 'tsl-location-box',
@@ -13,12 +14,14 @@ export class LocationBoxComponent implements OnInit {
   @Input() name: string;
   @Input() title: string;
   @Input() updateLocation = true;
-  @Input() location;
+  @Input() location: Partial<UserLocation>;
   @Input() isIncorrectAddress = false;
   @Input() disableFocus: boolean;
   @Input() disableTitle: boolean;
   @Input() disableFooter: boolean;
   @Input() disablePopover: boolean;
+  @Input() disableInput: boolean;
+  @Input() defaultUserLocation = true;
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   public coordinates: Coordinate;
 
@@ -32,8 +35,7 @@ export class LocationBoxComponent implements OnInit {
       });
     } else {
       const user = this.userService.user;
-
-      if (user && user.location) {
+      if (this.defaultUserLocation && user && user.location) {
         this.form.get(this.name).patchValue({
           address: user.location.title,
           latitude: user.location.approximated_latitude,

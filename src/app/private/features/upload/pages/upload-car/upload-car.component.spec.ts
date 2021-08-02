@@ -785,7 +785,7 @@ describe('UploadCarComponent', () => {
             isCarDealer: false,
             isPro: false,
             country: analyticsService.market,
-            language: analyticsService.appLocale
+            language: analyticsService.appLocale,
           },
         };
         spyOn(analyticsService, 'trackEvent');

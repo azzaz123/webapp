@@ -107,9 +107,13 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   public trackClickItemCardEvent(event: ClickedItemCard): void {
     const recommendedItemCard: ItemCard = event.itemCard;
     const sourceItem: Item = this.itemDetail.item;
-    this.userService.get(recommendedItemCard.ownerId).subscribe((recommendedUser: User) => {
-      this.itemDetailTrackEventsService.trackClickItemCardEvent(recommendedItemCard, sourceItem, recommendedUser, event.index);
-    });
+    if (recommendedItemCard.ownerId) {
+      this.userService.get(recommendedItemCard.ownerId).subscribe((recommendedUser: User) => {
+        this.itemDetailTrackEventsService.trackClickItemCardEvent(recommendedItemCard, sourceItem, event.index, recommendedUser);
+      });
+    } else {
+      this.itemDetailTrackEventsService.trackClickItemCardEvent(recommendedItemCard, sourceItem, event.index);
+    }
   }
 
   public trackShareItemEvent(channel: SOCIAL_SHARE_CHANNELS): void {
