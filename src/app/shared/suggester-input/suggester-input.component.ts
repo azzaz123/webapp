@@ -1,6 +1,6 @@
 import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { PaginatedList } from '@api/core/model/paginated-list.interface';
+import { PaginatedList } from '@api/core/model';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
@@ -55,15 +55,17 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public blur() {
-    this.hashtagSuggester.nativeElement.placeholder = 'Suggesters...';
+    this.hashtagSuggester.nativeElement.placeholder = 'Find or create a hashtag';
   }
 
   public writeValue(value): void {
     this.value = value;
+    console.log('value', this.value);
   }
 
   public handleSelectedOption(): void {
     this.value = this.mapExtendedOptionsToValue();
+    console.log('this value is selected', this.value);
     this.onChange(this.value);
   }
 
