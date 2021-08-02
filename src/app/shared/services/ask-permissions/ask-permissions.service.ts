@@ -31,7 +31,7 @@ export class AskPermissionsService {
     );
   }
 
-  public askPermissions(mediaToRequest: MediaStreamConstraints): Observable<MediaStream | never> {
+  private askPermissions(mediaToRequest: MediaStreamConstraints): Observable<MediaStream | never> {
     if (this.isAPIAllowed()) {
       return from(navigator.mediaDevices.getUserMedia(mediaToRequest));
     } else {
