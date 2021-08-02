@@ -1,0 +1,25 @@
+<div class="ChangeStoreLocationModal d-flex flex-column align-items-center text-center">
+  <div class="ChangeStoreLocationModal__close position-fixed" (click)="activeModal.dismiss()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  </div>
+  <div class="ChangeStoreLocationModal__container">
+    <div class="ChangeStoreLocationModal__title">
+      <span i18n="@@upload_pro_user_modal_shop_item_location_missmatch_title">The location of your products and your store are different</span>
+    </div>
+    <div class="ChangeStoreLocationModal__subtitle">
+      <span i18n="@@upload_pro_user_modal_shop_item_location_missmatch_description">Do you want the location of your products to match the location of your store?</span>
+    </div>
+    <div>
+      <img width="380" src="/assets/images/use-shop-location.svg" alt="shop location">
+    </div>
+    <div class="ChangeStoreLocationModal__actions w-100">
+      <div class="mb-2">
+        <span class="ChangeStoreLocationModal__secondaryAction" (click)="activeModal.dismiss()"
+        i18n="@@upload_pro_user_modal_shop_item_location_missmatch_cancel_button">Not now, thanks</span>
+      </div>
+      <tsl-button class="w-100" className="btn-primary btn-primary--bold w-100"
+      i18n="@@upload_pro_user_modal_shop_item_location_missmatch_relocate_button" 
+      (click)="activeModal.close()">Locate in my store</tsl-button>
+    </div>
+  </div>
+</div>
