@@ -18,12 +18,12 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   @Input() photosNeeded: KYCPhotosNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
 
-  public readonly DEVICE_PERMISSIONS_STATUS = DEVICE_PERMISSIONS_STATUS;
   public userDevicePermissions$: Observable<UserDevicePermissions>;
   public errorBannerSpecifications: NgbAlertConfig = {
     type: BANNER_TYPES.DANGER,
     dismissible: false,
   };
+  private readonly DEVICE_PERMISSIONS_STATUS = DEVICE_PERMISSIONS_STATUS;
 
   constructor(private askPermissionsService: AskPermissionsService) {
     this.userDevicePermissions$ = askPermissionsService.userDevicePermissions$;

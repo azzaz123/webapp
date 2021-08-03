@@ -9,7 +9,7 @@ describe('AskPermissionsService', () => {
   const cameraMediaStreamConstraints = {
     video: { facingMode: 'environment' },
   };
-  const MOCK_PERMISION_DENIED_ERROR = 'DOMException: Permission denied';
+  const MOCK_PERMISSION_DENIED_ERROR = 'DOMException: Permission denied';
   const MOCK_PERMISION_GENERIC_ERROR = 'General Error';
   const MOCK_NOT_ALLOWED_ERROR = 'Not Allowed';
 
@@ -92,7 +92,7 @@ describe('AskPermissionsService', () => {
           service.askCameraPermissions().subscribe({ error: (e) => (error = e) });
           tick();
 
-          expect(error).toBe(MOCK_PERMISION_DENIED_ERROR);
+          expect(error).toBe(MOCK_PERMISSION_DENIED_ERROR);
         }));
       });
 
@@ -170,7 +170,7 @@ describe('AskPermissionsService', () => {
   }
 
   function setPermissionsError(isPermissionDenied: boolean): void {
-    const error = isPermissionDenied ? MOCK_PERMISION_DENIED_ERROR : MOCK_PERMISION_GENERIC_ERROR;
+    const error = isPermissionDenied ? MOCK_PERMISSION_DENIED_ERROR : MOCK_PERMISION_GENERIC_ERROR;
 
     Object.defineProperty(navigator, 'mediaDevices', {
       value: {
