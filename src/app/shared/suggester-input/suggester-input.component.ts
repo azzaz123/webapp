@@ -1,4 +1,4 @@
-import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
@@ -27,6 +27,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   @ViewChild('hashtagSuggester', { static: true }) hashtagSuggester: ElementRef;
   @ViewChild(MultiSelectFormComponent) multiSelectFormComponent: MultiSelectFormComponent;
   @ViewChild('formMenu') formMenu: ElementRef;
+  @Output() showInvalidMessage = new EventEmitter<boolean>();
 
   public selected: string[];
   public start: string = '0';
@@ -76,6 +77,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
         switchMap(() => {
           this.suggestions = this.value;
           if (!this.isValidKey()) {
+            this.showInvalidMessage.emit(!this.isValid);
             return of([]);
           } else {
             if (this.model && !this.model.includes('#')) {
@@ -150,6 +152,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     } else {
       this.isValid = pattern.test(this.model);
     }
+    this.showInvalidMessage.emit(!this.isValid);
     return this.isValid;
   }
 }

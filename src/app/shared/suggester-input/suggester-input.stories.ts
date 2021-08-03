@@ -17,8 +17,13 @@ import { SuggesterInputModule } from './suggester-input.module';
         <tsl-cancel-bubble [bubbleText]="option"></tsl-cancel-bubble>
       </div>
       dynamic input
-      <tsl-suggester-input formControlName="hashtag"></tsl-suggester-input>
+      <tsl-suggester-input formControlName="hashtag" (showInvalidMessage)="showMessage($event)"></tsl-suggester-input>
     </form>
+    <div *ngIf="showErrorNessage">
+      <div i18n="@@web_upload_hashtag_invalid_error_message">
+        Our hashtags are good with anything except special characters and spaces of course.
+      </div>
+    </div>
   `,
 })
 class StorySuggesterInputFormComponent {
@@ -26,6 +31,11 @@ class StorySuggesterInputFormComponent {
     hashtag: new FormControl(['#aa', '#ss', '#design']),
   });
   public options = this.formGroup.value.hashtag;
+  public showErrorNessage: boolean = false;
+
+  public showMessage(event) {
+    this.showErrorNessage = event;
+  }
 }
 export default {
   title: 'Webapp/Shared/SuggesterInput',
