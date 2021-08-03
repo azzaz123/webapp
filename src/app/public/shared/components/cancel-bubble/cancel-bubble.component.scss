@@ -4,7 +4,9 @@
   cursor: pointer;
   border-radius: 21.5px;
   background: $blue-grey-6;
-  border: solid 1px $walla-main;
+  border: 1px solid;
+  border-image-slice: 3;
+  border-image-source: linear-gradient(#bacc5b, #25c2a3, #13c1ac);
   &__rounded_icon {
     height: 20px;
     width: 20px;
