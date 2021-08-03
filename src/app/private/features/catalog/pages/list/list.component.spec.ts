@@ -1304,6 +1304,7 @@ describe('ListComponent', () => {
         });
 
         it('should track ClickProSubscription event', () => {
+          spyOn(subscriptionsService, 'hasSomeSubscriptionDiscount').and.returnValue(true);
           component.hasTrialAvailable = true;
           const event: AnalyticsEvent<ClickProSubscription> = {
             name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
@@ -1311,6 +1312,7 @@ describe('ListComponent', () => {
             attributes: {
               screenId: SCREEN_IDS.MyCatalog,
               freeTrial: component.hasTrialAvailable,
+              discount: true,
             },
           };
 
@@ -1374,6 +1376,7 @@ describe('ListComponent', () => {
                 attributes: {
                   screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
                   freeTrial: true,
+                  discount: false,
                 },
               };
               const item = cloneDeep(component.items[3]);
@@ -1397,6 +1400,31 @@ describe('ListComponent', () => {
                 attributes: {
                   screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
                   freeTrial: false,
+                  discount: false,
+                },
+              };
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+              expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+            });
+          });
+          describe('and has discount', () => {
+            beforeEach(() => {
+              spyOn(subscriptionsService, 'hasDiscountByCategoryId').and.returnValue(true);
+            });
+            it('should track modal', () => {
+              const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+                name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+                attributes: {
+                  screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+                  freeTrial: true,
+                  discount: true,
                 },
               };
               const item = cloneDeep(component.items[3]);

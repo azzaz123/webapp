@@ -257,8 +257,6 @@ export class SubscriptionsComponent implements OnInit {
       attributes: {
         screenId: SCREEN_IDS.WebHome,
         isLoggedIn: true,
-        freeTrial: this.subscriptionsService.hasOneTrialSubscription(this.subscriptions),
-        discount: this.subscriptionsService.hasSomeSubscriptionDiscount(this.subscriptions),
       },
     };
     return this.analyticsService.trackEvent(event);
