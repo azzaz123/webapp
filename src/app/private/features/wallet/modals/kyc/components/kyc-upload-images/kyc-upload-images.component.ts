@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
-import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
+import { KYCImages, KYC_IMAGES } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
 import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
 import { Observable } from 'rxjs';
@@ -38,6 +38,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   public userDevicePermissions$: Observable<UserDevicePermissions>;
   public readonly DEVICE_PERMISSIONS_STATUS = DEVICE_PERMISSIONS_STATUS;
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
+  public readonly KYC_IMAGES = KYC_IMAGES;
   public readonly errorBannerSpecifications: NgbAlertConfig = {
     type: 'danger',
     dismissible: false,
@@ -62,11 +63,19 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   public takeImage(): void {
-    const imageContainer = this.isFirstImageDefined() ? this.backSideImage.nativeElement : this.frontSideImage.nativeElement;
+    const imageContainer = this.isFirstImageDefined ? this.backSideImage.nativeElement : this.frontSideImage.nativeElement;
 
     imageContainer.getContext('2d').drawImage(this.userCamera.nativeElement, 0, 0, imageContainer.width, imageContainer.height);
 
     this.emitNewImage(imageContainer.toDataURL('image/png'));
+  }
+
+  public removeImage(imageToRemove: KYC_IMAGES): void {
+    if (imageToRemove === KYC_IMAGES.FRONT_SIDE) {
+      this.emitFrontSideImageChange(null);
+    } else {
+      this.emitBackSideImageChange(null);
+    }
   }
 
   public requestCameraFailed(userCameraPermissions: DEVICE_PERMISSIONS_STATUS): boolean {
@@ -83,22 +92,26 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       : $localize`:@@kyc_camera_cannot_access:Oops, an error occurred and we cannot access your camera`;
   }
 
-  public isFirstImageDefined(): boolean {
-    return !!this.images.frontSide || this.imagesNeeded === 1;
+  private emitNewImage(newImage: string): void {
+    if (this.isFirstImageDefined) {
+      this.emitBackSideImageChange(newImage);
+    } else {
+      this.emitFrontSideImageChange(newImage);
+    }
   }
 
-  private emitNewImage(newImage: string): void {
-    if (this.isFirstImageDefined()) {
-      this.imagesChange.emit({
-        ...this.images,
-        backSide: newImage,
-      });
-    } else {
-      this.imagesChange.emit({
-        ...this.images,
-        frontSide: newImage,
-      });
-    }
+  private emitFrontSideImageChange(newImage: string): void {
+    this.imagesChange.emit({
+      ...this.images,
+      frontSide: newImage,
+    });
+  }
+
+  private emitBackSideImageChange(newImage: string): void {
+    this.imagesChange.emit({
+      ...this.images,
+      backSide: newImage,
+    });
   }
 
   private requestCameraPermissions(): void {
@@ -117,6 +130,12 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     this.userCamera.nativeElement.srcObject = null;
   }
 
+  get title(): string {
+    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT
+      ? $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`
+      : $localize`:@@kyc_upload_photo_view_title:Upload a photo of your document`;
+  }
+
   get allImagesAreDefined(): boolean {
     return this.imagesTakenCounter === this.imagesNeeded;
   }
@@ -126,5 +145,9 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     const secondImage = this.images.backSide;
 
     return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
+  }
+
+  get isFirstImageDefined(): boolean {
+    return !!this.images.frontSide || this.imagesNeeded === 1;
   }
 }

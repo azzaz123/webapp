@@ -7,25 +7,40 @@
             </a>
         </div>
     </div>
-    <div class="row mx-0 mx-md-2 justify-content-center" *ngIf="takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT && requestCameraSucceed(userDevicePermissions.video)">
-        <div class="GenericCard KYCUploadImages__image col-5 p-0" [ngClass]="{'KYCUploadImages__image--active': !isFirstImageDefined()}">
+    <div class="row mb-4 mt-2">
+        <div class="col col-md-11 offset-md-1">
+            <h3>{{title}}</h3>
+            <span class="d-block">Go somewhere with good lighting and take the photo. Make sure the document you provide is valid for at least 3 months.</span>
+            <span class="d-block">All the details on your document must be clear and perfectly legible.</span>
+        </div>
+    </div>
+    <div class="row mx-0 mx-md-2 mb-4 justify-content-center" *ngIf="takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT && requestCameraSucceed(userDevicePermissions.video)">
+        <div class="GenericCard KYCUploadImages__image col-5 p-0" 
+            [ngClass]="isFirstImageDefined ? 'KYCUploadImages__image--defined' : 'KYCUploadImages__image--active'">
             <div *ngIf="!images.frontSide" class="w-100 h-100 d-flex flex-column align-items-center justify-content-center text-center p-2">
                 <span class="GenericCard__title KYCUploadImages__image__title" i18n="@@kyc_request_front_side_photo">Take a photo of the front side</span>
                 <span class="GenericCard__subtitle m-0">Solo archivos JPEG o PNG</span>
             </div>
-            <canvas #frontSideImage class="KYCUploadImages__takenImage w-100 h-100"></canvas>
+            <a *ngIf="images.frontSide" (click)="removeImage(KYC_IMAGES.FRONT_SIDE)">
+                <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+              </a>
+            <canvas #frontSideImage class="KYCUploadImages__takenImage w-100 h-100" [ngClass]="{'d-none': !images.frontSide}"></canvas>
         </div>
         <div *ngIf="imagesNeeded === 2"
             class="GenericCard KYCUploadImages__image col-5 p-0 ml-3"
-            [ngClass]="{'KYCUploadImages__image--active': isFirstImageDefined() && !allImagesAreDefined}">
+            [ngClass]="{'KYCUploadImages__image--active': isFirstImageDefined && !allImagesAreDefined,
+                        'KYCUploadImages__image--defined': images.backSide}">
             <div *ngIf="!images.backSide" class="w-100 h-100 d-flex flex-column align-items-center justify-content-center text-center p-2">
                 <span class="GenericCard__title KYCUploadImages__image__title" i18n="@@kyc_request_back_side_photo">Take a photo of the back side</span>
                 <span class="GenericCard__subtitle m-0">Solo archivos JPEG o PNG</span>
             </div>
-            <canvas #backSideImage class="KYCUploadImages__takenImage w-100 h-100"></canvas>
+            <a *ngIf="images.backSide" (click)="removeImage(KYC_IMAGES.BACK_SIDE)">
+                <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+            </a>
+            <canvas #backSideImage class="KYCUploadImages__takenImage w-100 h-100" [ngClass]="{'d-none': !images.backSide}"></canvas>
         </div>
     </div>
-    <div class="row mt-2">
+    <div class="row">
         <div class="col">
             <div *ngIf="requestCameraFailed(userDevicePermissions.video) else takingImageSection" class="mx-3">
                 <tsl-banner [specifications]="errorBannerSpecifications">
@@ -37,11 +52,11 @@
             <ng-template #takingImageSection>
                 <div class="justify-content-center row" [ngClass]="{'d-none': !requestCameraSucceed(userDevicePermissions.video)}">
                     <div class="KYCUploadImages__cameraContainer col-12 col-sm-8 p-0">
-                        <video autoplay playsInline muted #userCamera class="h-100 w-100"></video>
+                        <video autoplay playsInline muted #userCamera class="h-100 w-100 p-2 p-sm-0"></video>
                         <div class="KYCUploadImages__cameraContainer__overlay position-absolute"></div>
                     </div>
                 </div>
-                <div class="text-center row" *ngIf="requestCameraSucceed((userDevicePermissions$ | async).video)">
+                <div class="text-center row mt-3" *ngIf="requestCameraSucceed((userDevicePermissions$ | async).video)">
                     <tsl-button 
                         *ngIf="!allImagesAreDefined"
                         i18n="@@kyc_request_photo_counter"
