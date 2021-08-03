@@ -24,6 +24,7 @@ import { HashtagSuggesterApiService } from '../../private/features/upload/core/s
 })
 export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit {
   @Input() categoryId: string = '1000'; // When PR: need to modify
+  @Input() disabled: boolean;
   @ViewChild('hashtagSuggester', { static: true }) hashtagSuggester: ElementRef;
   @ViewChild(MultiSelectFormComponent) multiSelectFormComponent: MultiSelectFormComponent;
   @ViewChild('formMenu') formMenu: ElementRef;
@@ -37,7 +38,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public isClickOutside: boolean = false;
   public isValid: boolean = true;
   public hashtagPlaceholder: string = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
-  public disabled: boolean = false;
   private extendedOptions: MultiSelectFormOption[];
 
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
@@ -120,7 +120,9 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     let options = slicedList.map((hashtag: Hashtag) => {
       return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     });
-    return [...this.createHashtagSuggesterOption(), ...options];
+    if (options[0].label !== this.model) {
+      return [...this.createHashtagSuggesterOption(), ...options];
+    } else return options;
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {

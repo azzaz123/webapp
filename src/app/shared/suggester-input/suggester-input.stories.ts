@@ -6,7 +6,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/cancel-bubble.module';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SuggesterInputModule } from './suggester-input.module';
 @Component({
   selector: 'tsl-story-suggester-input',
@@ -17,7 +17,7 @@ import { SuggesterInputModule } from './suggester-input.module';
         <tsl-cancel-bubble [bubbleText]="option"></tsl-cancel-bubble>
       </div>
       dynamic input
-      <tsl-suggester-input formControlName="hashtag" (showInvalidMessage)="showMessage($event)"></tsl-suggester-input>
+      <tsl-suggester-input formControlName="hashtag" [disabled]="disabled" (showInvalidMessage)="showMessage($event)"></tsl-suggester-input>
     </form>
     <div *ngIf="showErrorNessage">
       <div i18n="@@web_upload_hashtag_invalid_error_message">
@@ -27,9 +27,11 @@ import { SuggesterInputModule } from './suggester-input.module';
   `,
 })
 class StorySuggesterInputFormComponent {
+  @Input() disabled: boolean = false;
   public formGroup = new FormGroup({
     hashtag: new FormControl(['#aa', '#ss', '#design']),
   });
+
   public options = this.formGroup.value.hashtag;
   public showErrorNessage: boolean = false;
 
@@ -52,9 +54,16 @@ export default {
 const Template: Story<StorySuggesterInputFormComponent> = (args) => ({
   props: args,
   template: `
-  <tsl-story-suggester-input></tsl-story-suggester-input>
+  <tsl-story-suggester-input [disabled]="disabled"></tsl-story-suggester-input>
     `,
 });
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  disabled: false,
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  disabled: true,
+};
