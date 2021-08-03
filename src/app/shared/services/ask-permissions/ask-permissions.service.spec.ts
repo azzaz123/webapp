@@ -9,8 +9,7 @@ describe('AskPermissionsService', () => {
   const cameraMediaStreamConstraints = {
     video: { facingMode: 'environment' },
   };
-  const audioMediaStreamConstraints = { audio: true };
-  const MOCK_PERMISION_DENIED_ERROR = 'DOMException: Permission denied';
+  const MOCK_PERMISSION_DENIED_ERROR = 'DOMException: Permission denied';
   const MOCK_PERMISION_GENERIC_ERROR = 'General Error';
   const MOCK_NOT_ALLOWED_ERROR = 'Not Allowed';
 
@@ -93,7 +92,7 @@ describe('AskPermissionsService', () => {
           service.askCameraPermissions().subscribe({ error: (e) => (error = e) });
           tick();
 
-          expect(error).toBe(MOCK_PERMISION_DENIED_ERROR);
+          expect(error).toBe(MOCK_PERMISSION_DENIED_ERROR);
         }));
       });
 
@@ -134,7 +133,7 @@ describe('AskPermissionsService', () => {
       });
     });
 
-    describe(`and the user's browser DON'T supports the API`, () => {
+    describe(`and the user's browser does NOT support the API`, () => {
       beforeEach(() => {
         setPermissionsAsNotSupported();
       });
@@ -164,69 +163,6 @@ describe('AskPermissionsService', () => {
     });
   });
 
-  describe('when we ask for custom permissions', () => {
-    describe(`and the user's browser supports the API`, () => {
-      describe('and the user accept the permission', () => {
-        beforeEach(() => {
-          setPermissionsAsAccepted();
-          spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
-        });
-
-        it('should ask the user for the custom permissions', () => {
-          service.askPermissions(audioMediaStreamConstraints).subscribe();
-
-          expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(audioMediaStreamConstraints);
-        });
-
-        it('should return the stream', fakeAsync(() => {
-          let mediaStream: MediaStream;
-
-          service.askPermissions(audioMediaStreamConstraints).subscribe((stream) => {
-            mediaStream = stream;
-          });
-          tick();
-
-          expect(mediaStream).toBe(MOCK_MEDIA_STREAM);
-        }));
-      });
-
-      describe('and the user deny the permission', () => {
-        beforeEach(() => {
-          setPermissionsError(true);
-          spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
-        });
-
-        it('should return an error', fakeAsync(() => {
-          let error;
-
-          service.askPermissions(audioMediaStreamConstraints).subscribe({
-            error: (e) => (error = e),
-          });
-          tick();
-
-          expect(error).toBe(MOCK_PERMISION_DENIED_ERROR);
-        }));
-      });
-    });
-
-    describe(`and the user's browser DON'T supports the API`, () => {
-      beforeEach(() => {
-        setPermissionsAsNotSupported();
-      });
-
-      it('should return a not allowed error', fakeAsync(() => {
-        let error;
-
-        service.askPermissions(audioMediaStreamConstraints).subscribe({
-          error: (e) => (error = e),
-        });
-        tick();
-
-        expect(error).toBe(MOCK_NOT_ALLOWED_ERROR);
-      }));
-    });
-  });
-
   function setPermissionsAsNotSupported(): void {
     Object.defineProperty(navigator, 'mediaDevices', {
       value: () => null,
@@ -234,7 +170,7 @@ describe('AskPermissionsService', () => {
   }
 
   function setPermissionsError(isPermissionDenied: boolean): void {
-    const error = isPermissionDenied ? MOCK_PERMISION_DENIED_ERROR : MOCK_PERMISION_GENERIC_ERROR;
+    const error = isPermissionDenied ? MOCK_PERMISSION_DENIED_ERROR : MOCK_PERMISION_GENERIC_ERROR;
 
     Object.defineProperty(navigator, 'mediaDevices', {
       value: {

@@ -12,6 +12,8 @@ import {
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages, KYC_IMAGES } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
+import { BANNER_TYPES } from '@shared/banner/banner-types.enum';
+
 import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
 import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
 import { Observable } from 'rxjs';
@@ -36,13 +38,13 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   @Output() endVerification: EventEmitter<void> = new EventEmitter();
 
   public userDevicePermissions$: Observable<UserDevicePermissions>;
-  public readonly DEVICE_PERMISSIONS_STATUS = DEVICE_PERMISSIONS_STATUS;
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
   public readonly KYC_IMAGES = KYC_IMAGES;
   public readonly errorBannerSpecifications: NgbAlertConfig = {
-    type: 'danger',
+    type: BANNER_TYPES.DANGER,
     dismissible: false,
   };
+  private readonly DEVICE_PERMISSIONS_STATUS = DEVICE_PERMISSIONS_STATUS;
 
   constructor(private askPermissionsService: AskPermissionsService) {
     this.userDevicePermissions$ = askPermissionsService.userDevicePermissions$;
