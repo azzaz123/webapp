@@ -8,7 +8,7 @@ import { MultiSelectValue } from '@shared/form/components/multi-select-form/inte
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { fromEvent, Observable, of } from 'rxjs';
-import { debounceTime, switchMap } from 'rxjs/operators';
+import { debounceTime, map, switchMap, take } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
   selector: 'tsl-suggester-input',
@@ -114,17 +114,17 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     if (!list.length && !!this.model) {
       return this.createHashtagSuggesterOption();
     }
-    let options = list.map((hashtag: Hashtag) => {
+    let slicedList = list.slice(0, 3);
+    let options = slicedList.map((hashtag: Hashtag) => {
       return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     });
-    return options;
+    return [...this.createHashtagSuggesterOption(), ...options];
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
     let newModel = this.model.substring(1);
-    console.log('this', newModel);
     if (!!newModel) {
-      return [{ label: `#${newModel}`, value: `#${newModel}` }];
+      return [{ label: `#${newModel}`, sublabel: '0', value: `#${newModel}` }];
     } else return [];
   }
 
