@@ -36,6 +36,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public isClickOutside: boolean = false;
   public isValid: boolean = true;
   public hashtagPlaceholder: string = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
+  public disabled: boolean = false;
   private extendedOptions: MultiSelectFormOption[];
 
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
@@ -104,6 +105,8 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag>> {
     let newModel = this.model.substring(1);
     return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
+    /*  let newModel = this.model.substring(1);
+    return of({ list: [], paginationParameter: '10' }); */
   }
 
   private mapHashtagSuggestersToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
@@ -119,7 +122,10 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
     let newModel = this.model.substring(1);
-    return [{ label: `#${newModel}`, value: `#${newModel}` }];
+    console.log('this', newModel);
+    if (!!newModel) {
+      return [{ label: `#${newModel}`, value: `#${newModel}` }];
+    } else return [];
   }
 
   private mapExtendedOptionsToValue(): string[] {
@@ -138,7 +144,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public isValidKey(): boolean {
-    const pattern: RegExp = /^#$|#?([\p{L}\p{Nd}])+$/u;
+    const pattern: RegExp = /^#$|^#?([\p{L}\p{Nd}])+$/u;
     if (!this.model) {
       this.isValid = true;
     } else {
