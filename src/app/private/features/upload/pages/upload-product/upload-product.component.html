@@ -346,7 +346,13 @@
                   >máx.</span
                 >
 
-                <input ngbButton type="radio" [value]="delivery.value" (click)="onDeliveryChange(delivery.value); p.close()" />
+                <input
+                  ngbButton
+                  type="radio"
+                  class="position-absolute"
+                  [value]="delivery.value"
+                  (click)="onDeliveryChange(delivery.value); p.close()"
+                />
 
                 <span class="WeightSelector__text--big d-block font-weight-bold mb-1">{{ delivery.value.max_weight_kg }}kg</span>
 
