@@ -22,6 +22,7 @@ export class AskPermissionsService {
         () => this.updateUserDevicePermissions({ video: DEVICE_PERMISSIONS_STATUS.ACCEPTED }),
         (error: DOMException) => {
           const errorMessage = error + '';
+          // FIXME: take a look at handling error in the future		Date: 2021/08/03
           const errorPermissionStatus: DEVICE_PERMISSIONS_STATUS = errorMessage.includes('denied')
             ? DEVICE_PERMISSIONS_STATUS.DENIED
             : DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS;
