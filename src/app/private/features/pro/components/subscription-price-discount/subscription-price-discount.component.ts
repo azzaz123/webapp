@@ -9,6 +9,4 @@ import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.i
 export class SubscriptionPriceDiscountComponent {
   @Input() subscription: SubscriptionsResponse;
   @Input() tierDiscount: Tier;
-
-  constructor() {}
 }
