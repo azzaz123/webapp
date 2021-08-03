@@ -50,7 +50,7 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
     }
 
     this.buttonText = this.selectedTier.discount
-      ? $localize`:@@pro_subscription_purchase_try_discount_button: Start with discount`
+      ? $localize`:@@pro_subscription_purchase_try_discount_button:Try with discount`
       : $localize`:@@web_pay:Pay`;
   }
 
