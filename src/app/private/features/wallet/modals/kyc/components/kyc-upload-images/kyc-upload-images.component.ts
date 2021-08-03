@@ -36,6 +36,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   @Output() imagesChange: EventEmitter<KYCImages> = new EventEmitter();
   @Output() endVerification: EventEmitter<void> = new EventEmitter();
+  @Output() goBack: EventEmitter<void> = new EventEmitter();
 
   public userDevicePermissions$: Observable<UserDevicePermissions>;
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
@@ -51,7 +52,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT) {
+    if (this.isShootTakeImageMethod) {
       this.requestCameraPermissions();
     }
   }
@@ -65,7 +66,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   public takeImage(): void {
-    const imageContainer = this.isFirstImageDefined ? this.backSideImage.nativeElement : this.frontSideImage.nativeElement;
+    const imageContainer = this.isFrontSideImageDefined ? this.backSideImage?.nativeElement : this.frontSideImage.nativeElement;
 
     imageContainer.getContext('2d').drawImage(this.userCamera.nativeElement, 0, 0, imageContainer.width, imageContainer.height);
 
@@ -78,6 +79,16 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     } else {
       this.emitBackSideImageChange(null);
     }
+  }
+
+  public handleBack(): void {
+    this.imagesChange.emit({
+      ...this.images,
+      frontSide: null,
+      backSide: null,
+    });
+
+    this.goBack.emit();
   }
 
   public requestCameraFailed(userCameraPermissions: DEVICE_PERMISSIONS_STATUS): boolean {
@@ -95,7 +106,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   private emitNewImage(newImage: string): void {
-    if (this.isFirstImageDefined) {
+    if (this.isFrontSideImageDefined) {
       this.emitBackSideImageChange(newImage);
     } else {
       this.emitFrontSideImageChange(newImage);
@@ -132,8 +143,12 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     this.userCamera.nativeElement.srcObject = null;
   }
 
+  get isShootTakeImageMethod(): boolean {
+    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT;
+  }
+
   get title(): string {
-    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT
+    return this.isShootTakeImageMethod
       ? $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`
       : $localize`:@@kyc_upload_photo_view_title:Upload a photo of your document`;
   }
@@ -149,7 +164,11 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
   }
 
-  get isFirstImageDefined(): boolean {
-    return !!this.images.frontSide || this.imagesNeeded === 1;
+  get isFrontSideImageDefined(): boolean {
+    return !!this.images.frontSide;
+  }
+
+  get isBackSideImageDefined(): boolean {
+    return !!this.images.backSide;
   }
 }

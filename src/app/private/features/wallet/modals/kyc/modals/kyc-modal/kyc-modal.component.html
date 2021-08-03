@@ -26,6 +26,7 @@
                 [images]="KYCSpecifications.images"
                 (imagesChange)="defineImages($event)"
                 (endVerification)="endVerification(KYCSpecifications.images)"
+                (goBack)="goPreviousStep()"
             ></tsl-kyc-upload-images>
         </ng-template>
     </tsl-stepper>
