@@ -996,6 +996,8 @@
     "upload_shipping_toggle_enabled_description": "Shipping is free and lets you sell more. You also have a home pick-up service.",
     "upload_shipping_toggle_wallapop_shipping_title": "Wallapop Shipping",
     "upload_shipping_toggle_weight_selector_weight_selector_title": "Package weight",
+    "upload_shipping_toggle_weight_selector_max_label": "max.",
+    "upload_shipping_toggle_weight_selector_weight_limit_from_label": "Up to",
     "upload_shipping_toggle_weight_selector_dimension_restrictions_description": "The weight of the package must not exceed the indicated weight. Regarding its dimensions, the sum of the length, height and width cannot exceed 210 cm; and the longest side cannot exceed 120 cm.",
     "upload_shipping_toggle_not_enabled_description": "Are you sure? By shipping it you could sell it everywhere.",
     "web_upload_product_shipping": "Shipping",
