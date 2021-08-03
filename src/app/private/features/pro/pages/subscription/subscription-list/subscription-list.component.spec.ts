@@ -119,7 +119,7 @@ describe('SubscriptionListComponent', () => {
           it('should show see plans text', () => {
             const text = component.getTextButton(MAPPED_SUBSCRIPTIONS_ADDED[1]);
 
-            expect(text).toBe($localize`:@@pro_subscription_purchase_try_discount_button: Start with discount`);
+            expect(text).toBe($localize`:@@pro_subscription_purchase_try_discount_button:Try with discount`);
           });
         });
       });
