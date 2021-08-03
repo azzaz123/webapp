@@ -7,9 +7,9 @@
             'SubscriptionCard__banner--trial': hasTrialAvailable,
             'SubscriptionCard__banner--discount': tierDiscount && !hasTrialAvailable 
         }">
-        <span *ngIf="!tierDiscount; else discountLabel" i18n="@@web_subscription_price_discount_days_trial_free">{{subscription.trial_days}}-day trial for free</span>
-        <ng-template #discountLabel>
-            <span i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tierDiscount.discount.percentage}}% off!</span>
+        <span *ngIf="tierDiscount; else trialLabel"  i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tierDiscount.discount.percentage}}% off!</span>
+        <ng-template #trialLabel>
+            <span i18n="@@web_subscription_price_discount_days_trial_free">{{subscription.trial_days}}-day trial for free</span>
         </ng-template>
     </div>
     <div class="d-flex flex-column align-items-center w-100">

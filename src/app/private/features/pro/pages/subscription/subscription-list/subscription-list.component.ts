@@ -74,7 +74,7 @@ export class SubscriptionListComponent {
     }
 
     if (this.hasDiscount(subscription)) {
-      return $localize`:@@pro_subscription_purchase_try_discount_button: Start with discount`;
+      return $localize`:@@pro_subscription_purchase_try_discount_button:Try with discount`;
     }
 
     return this.getNotFreeTrialText(subscription);
