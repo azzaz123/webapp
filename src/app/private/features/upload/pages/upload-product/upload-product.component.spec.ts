@@ -73,6 +73,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ShippingToggleService } from './services/shipping-toggle/shipping-toggle.service';
 import { FALLBACK_SHIPPING_RULES_RESPONSE } from '@api/bff/delivery/rules/constants/fallback-shipping-rules-response';
 import { mapShippingRulesResponseToShippingRules } from '@api/bff/delivery/rules/mappers/shipping-rules-mapper';
+import {
+  MOCK_UPLOAD_PRODUCT_EDIT_ITEM_CG_SHIPPABLE_EVENT,
+  MOCK_UPLOAD_PRODUCT_LIST_ITEM_CG_SHIPPABLE_EVENT,
+} from '@fixtures/private/upload/events/upload-events.fixures.spec';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -1194,20 +1198,9 @@ describe('UploadProductComponent', () => {
               min_weight_kg: weight,
               max_weight_kg: weight,
             };
-            const expectedEvent: AnalyticsEvent<EditItemCG> = {
-              name: ANALYTICS_EVENT_NAMES.EditItemCG,
-              eventType: ANALYTIC_EVENT_TYPES.Other,
-              attributes: {
-                itemId: editResponse.id,
-                categoryId: editResponse.category_id,
-                salePrice: editResponse.sale_price,
-                title: editResponse.title,
-                isPro: false,
-                screenId: SCREEN_IDS.EditItem,
-                shippingAllowed: true,
-                shippingWeight: weight,
-              },
-            };
+
+            const expectedEvent = MOCK_UPLOAD_PRODUCT_EDIT_ITEM_CG_SHIPPABLE_EVENT(editResponse, true, weight);
+
             spyOn(analyticsService, 'trackEvent');
 
             component.ngOnInit();
@@ -1229,19 +1222,8 @@ describe('UploadProductComponent', () => {
             };
             editResponse.delivery_info = null;
 
-            const expectedEvent: AnalyticsEvent<EditItemCG> = {
-              name: ANALYTICS_EVENT_NAMES.EditItemCG,
-              eventType: ANALYTIC_EVENT_TYPES.Other,
-              attributes: {
-                itemId: editResponse.id,
-                categoryId: editResponse.category_id,
-                salePrice: editResponse.sale_price,
-                title: editResponse.title,
-                isPro: false,
-                screenId: SCREEN_IDS.EditItem,
-                shippingAllowed: false,
-              },
-            };
+            const expectedEvent = MOCK_UPLOAD_PRODUCT_EDIT_ITEM_CG_SHIPPABLE_EVENT(editResponse, false);
+
             spyOn(analyticsService, 'trackEvent');
 
             component.ngOnInit();
@@ -1285,9 +1267,8 @@ describe('UploadProductComponent', () => {
         });
 
         describe('and item is shippable', () => {
-          it('should send the Edit Item CG tracking event', () => {
-            component.item = MOCK_ITEM;
-            const action = UPLOAD_ACTION.updated;
+          it('should send the List Item CG tracking event', () => {
+            const action = UPLOAD_ACTION.created;
             const uploadResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
             const weight = 10;
             uploadResponse.sale_conditions = {
@@ -1300,20 +1281,8 @@ describe('UploadProductComponent', () => {
               max_weight_kg: weight,
             };
 
-            const expectedEvent: AnalyticsEvent<EditItemCG> = {
-              name: ANALYTICS_EVENT_NAMES.EditItemCG,
-              eventType: ANALYTIC_EVENT_TYPES.Other,
-              attributes: {
-                itemId: uploadResponse.id,
-                categoryId: uploadResponse.category_id,
-                salePrice: uploadResponse.sale_price,
-                title: uploadResponse.title,
-                isPro: false,
-                screenId: SCREEN_IDS.EditItem,
-                shippingAllowed: true,
-                shippingWeight: weight,
-              },
-            };
+            const expectedEvent = MOCK_UPLOAD_PRODUCT_LIST_ITEM_CG_SHIPPABLE_EVENT(uploadResponse, true, weight);
+
             spyOn(analyticsService, 'trackEvent');
 
             component.ngOnInit();
@@ -1324,9 +1293,8 @@ describe('UploadProductComponent', () => {
         });
 
         describe('and item is NOT shippable', () => {
-          it('should send the Edit Item CG tracking event', () => {
-            component.item = MOCK_ITEM;
-            const action = UPLOAD_ACTION.updated;
+          it('should send the List Item CG tracking event', () => {
+            const action = UPLOAD_ACTION.created;
             const uploadResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
             uploadResponse.sale_conditions = {
               supports_shipping: false,
@@ -1335,19 +1303,8 @@ describe('UploadProductComponent', () => {
             };
             uploadResponse.delivery_info = null;
 
-            const expectedEvent: AnalyticsEvent<EditItemCG> = {
-              name: ANALYTICS_EVENT_NAMES.EditItemCG,
-              eventType: ANALYTIC_EVENT_TYPES.Other,
-              attributes: {
-                itemId: uploadResponse.id,
-                categoryId: uploadResponse.category_id,
-                salePrice: uploadResponse.sale_price,
-                title: uploadResponse.title,
-                isPro: false,
-                screenId: SCREEN_IDS.EditItem,
-                shippingAllowed: false,
-              },
-            };
+            const expectedEvent = MOCK_UPLOAD_PRODUCT_LIST_ITEM_CG_SHIPPABLE_EVENT(uploadResponse, false);
+
             spyOn(analyticsService, 'trackEvent');
 
             component.ngOnInit();
