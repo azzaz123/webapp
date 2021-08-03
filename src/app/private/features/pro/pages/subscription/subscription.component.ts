@@ -23,7 +23,6 @@ import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscriptio
 import { CheckSubscriptionInAppModalComponent } from '../../modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
 import { EditSubscriptionModalComponent } from '../../modal/edit-subscription/edit-subscription-modal.component';
-import { DiscountAvailableUnsubscribeInAppModalComponent } from '../../modal/discount-available-unsubscribe-in-app-modal/discount-available-unsubscribe-in-app-modal.component';
 import { UnsubscribeInAppFirstModalComponent } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { PRO_PATHS } from '../../pro-routing-constants';
 
