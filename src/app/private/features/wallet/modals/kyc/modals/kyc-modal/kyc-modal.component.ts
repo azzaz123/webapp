@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../../components/kyc-image-options/kyc-image-options.enum';
 import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
+import { KYCService } from '../../services/kyc.service';
 
 @Component({
   selector: 'tsl-kyc-modal',
@@ -20,8 +21,12 @@ export class KYCModalComponent {
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
   public KYCStoreSpecifications$: Observable<KYCSpecifications>;
 
-  constructor(private KYCStoreService: KYCStoreService, public activeModal: NgbActiveModal) {
+  constructor(private KYCStoreService: KYCStoreService, private KYCService: KYCService, private activeModal: NgbActiveModal) {
     this.KYCStoreSpecifications$ = KYCStoreService.specifications$;
+  }
+
+  public endVerification(KYCImages: KYCImages): void {
+    this.KYCService.request(KYCImages).subscribe();
   }
 
   public defineNationality(nationalitySelected: KYCNationality): void {
