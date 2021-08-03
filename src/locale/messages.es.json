@@ -1061,6 +1061,7 @@
     "kyc_select_nationality_view_description": "Y te diremos qué tipo de documento puedes usar para verificar tu identidad.",
     "kyc_select_nationality_view_top_bar_title": "Nacionalidad",
     "kyc_request_front_side_photo": "Hacer foto de la parte delantera",
+    "kyc_jpeg_png_file": "Solo archivos JPEG o PNG",
     "kyc_request_back_side_photo": "Hacer foto de la parte trasera",
     "kyc_request_photo_counter": "Hacer foto ({$INTERPOLATION}/{$INTERPOLATION})",
     "kyc_end_verification": "Finalizar verificación",
