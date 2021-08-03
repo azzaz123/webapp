@@ -133,7 +133,7 @@ describe('AskPermissionsService', () => {
       });
     });
 
-    describe(`and the user's browser DON'T supports the API`, () => {
+    describe(`and the user's browser does NOT support the API`, () => {
       beforeEach(() => {
         setPermissionsAsNotSupported();
       });

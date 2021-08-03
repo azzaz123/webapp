@@ -149,7 +149,7 @@ describe('KYCUploadImagesComponent', () => {
       });
     });
 
-    describe(`and the user's browser DON'T supports the API`, () => {
+    describe(`and the user's browser does NOT support the API`, () => {
       beforeEach(() => {
         cameraResponseSubjectMock.next(throwError('Not Allowed'));
         devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS });
