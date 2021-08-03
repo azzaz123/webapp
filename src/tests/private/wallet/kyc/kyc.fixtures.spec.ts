@@ -1,4 +1,5 @@
 import { KYCBanner, KYC_BANNER_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-banner.interface';
+import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 
 export const MOCK_KYC_BANNER_PENDING_VERIFICATION: KYCBanner = {
   status: KYC_BANNER_STATUS.PENDING_VERIFICATION,
@@ -18,4 +19,9 @@ export const MOCK_KYC_BANNER_VERIFIED: KYCBanner = {
 
 export const MOCK_KYC_BANNER_NO_NEED: KYCBanner = {
   status: KYC_BANNER_STATUS.NO_NEED,
+};
+
+export const MOCK_KYC_IMAGES: KYCImages = {
+  frontSide: 'fakeBase64PImage',
+  backSide: 'fakeBase64PImage2',
 };

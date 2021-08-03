@@ -11,6 +11,9 @@ export class KYCService {
   constructor(private http: HttpClient) {}
 
   public request(KYCImages: KYCImages): Observable<any> {
-    return this.http.post<any>(KYC_ENDPOINT, KYCImages);
+    return this.http.post<any>(KYC_ENDPOINT, {
+      firstImage: KYCImages.frontSide,
+      secondImage: KYCImages.backSide,
+    });
   }
 }
