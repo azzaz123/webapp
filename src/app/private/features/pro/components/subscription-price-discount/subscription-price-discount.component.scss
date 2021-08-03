@@ -1,23 +1,10 @@
 @import '~style/common';
 
 .SubscriptionPriceDiscount {
-  display: flex;
-  flex-direction: column;
-  .Subscriptions__category-info {
+  &__price {
     &--discounted {
       text-decoration: line-through;
-      justify-content: center;
-      display: flex;
+      color: $blue-grey-3;
     }
-  }
-
-  .Subscriptions__category-info-discount,
-  .Subscriptions__category-info-trial {
-    color: $blue-grey-1;
-    background-color: rgba($yellow-main, 0.3);
-    padding: $spacing-xxs $spacing-ms;
-    margin: $spacing-ms;
-    border-radius: $spacing-xxs;
-    line-height: 22px;
   }
 }

@@ -280,7 +280,6 @@ describe('SubscriptionPurchaseComponent', () => {
         expect(component.isLoading).toEqual(true);
       });
       it('should track SubscriptionPayConfirmation', () => {
-        spyOn(subscriptionsService, 'getTierDiscountPercentatge').and.returnValue(0);
         spyOn(subscriptionsService, 'hasTrial').and.returnValue(false);
         spyOn(analyticsService, 'trackEvent').and.callThrough();
         const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
