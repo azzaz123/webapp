@@ -1,4 +1,4 @@
-export interface CatalogItemImage {
+export interface ImageDto {
   average_color: string;
   urls: {
     small: string;

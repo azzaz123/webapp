@@ -30,6 +30,8 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { isEqual } from 'lodash-es';
 import { Observable, of } from 'rxjs';
+import { ChangeStoreLocationModal } from '../../modal/change-store-location-modal/change-store-location-modal.component';
+import { UserLocation } from '@core/user/user-response.interface';
 
 export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
@@ -127,6 +129,14 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     );
   }
 
+  private mapUserLocation(userLocation: UserLocation): Partial<UserLocation> {
+    return {
+      address: userLocation.title,
+      latitude: userLocation.approximated_latitude,
+      longitude: userLocation.approximated_longitude,
+    };
+  }
+
   private setUserData() {
     let userData: any = {
       first_name: this.user.firstName,
@@ -136,11 +146,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     if (this.user.location) {
       userData = {
         ...userData,
-        location: {
-          address: this.user.location.title,
-          latitude: this.user.location.approximated_latitude,
-          longitude: this.user.location.approximated_longitude,
-        },
+        location: this.mapUserLocation(this.user.location),
       };
     }
 
@@ -237,10 +243,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
                   longitude: profileFormLocation.longitude,
                   name: profileFormLocation.address,
                 };
-                this.userService.updateLocation(newLocation).subscribe((newUserLocation) => {
-                  this.userService.user.location = newUserLocation;
-                  this.userService.updateSearchLocationCookies(newLocation);
-                });
+                this.updateUserLocation(newLocation).subscribe();
               }
 
               this.errorsService.i18nSuccess(TRANSLATION_KEY.USER_EDITED);
@@ -267,6 +270,17 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     }
   }
 
+  private updateUserLocation(newLocation: Coordinate): Observable<UserLocation> {
+    return this.userService.updateLocation(newLocation).pipe(
+      tap((newUserLocation) => {
+        this.userService.user.location = newUserLocation;
+        this.profileForm.patchValue({ location: this.mapUserLocation(newUserLocation) });
+        this.userService.updateSearchLocationCookies(newLocation);
+        this.formComponent.initFormControl();
+      })
+    );
+  }
+
   public openBecomeProModal(field: ANALYTICS_FIELDS): void {
     if (!this.isPro) {
       this.trackClickEditProField(field);
@@ -290,10 +304,37 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
 
     return this.userService.updateStoreLocation(storeLocationValue).pipe(
       tap((response) => {
-        // TODO ADD MODAl
+        if (response.check_change_location) {
+          this.openChangeStoreLocationModal();
+        }
       }),
       map(() => true)
     );
+  }
+
+  private openChangeStoreLocationModal(): void {
+    const modalRef = this.modalService.open(ChangeStoreLocationModal, {
+      windowClass: 'change-store-location',
+    });
+
+    modalRef.result.then(
+      () => this.changeUserLocationByShopLocation(),
+      () => {}
+    );
+  }
+
+  private changeUserLocationByShopLocation(): void {
+    const profileFormValue = { ...this.profileForm.value };
+    const profileFormStoreLocation = profileFormValue.storeLocation;
+    const newLocation: Coordinate = {
+      latitude: profileFormStoreLocation.latitude,
+      longitude: profileFormStoreLocation.longitude,
+      name: profileFormStoreLocation.address,
+    };
+    this.loading = true;
+    this.updateUserLocation(newLocation)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe();
   }
 
   public onMapContainerVisible(): void {

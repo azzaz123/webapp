@@ -1,8 +1,9 @@
-import { CatalogItemPrice, WallItem } from '@api/catalog/dtos';
+import { WallItem } from '@api/catalog/dtos';
 import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { catalogItemImageFixture, mappedCatalogItemImageFixture } from '@api/fixtures/catalog/catalog-image.fixtures';
+import { itemImageFixture, mappedItemImageFixture } from '@api/fixtures/core/image.fixtures';
 import { ItemType } from '@api/core/model';
+import { PriceDto } from '@api/core/dtos';
 
 const id = 'my-item-id';
 const title = 'Title';
@@ -38,7 +39,7 @@ const attributes: CatalogItemAttribute[] = [
 
 const storytelling = 'Brand: Audi Surface: 200 Description Garage';
 
-const price: CatalogItemPrice = {
+const price: PriceDto = {
   currency: 'EUR',
   amount: 200,
 };
@@ -49,7 +50,7 @@ export const favouriteIdsFixture = ['my-item-id'];
 export const wallItemFixture: WallItem = {
   id,
   category_id: 0,
-  images: [catalogItemImageFixture],
+  images: [itemImageFixture],
   type: ItemType.CONSUMER_GOODS,
   slug,
   attributes,
@@ -72,7 +73,7 @@ export const mappedWallItemFixture: ItemCard = {
   salePrice: price.amount,
   currencyCode: price.currency,
   webSlug: slug,
-  images: [mappedCatalogItemImageFixture],
+  images: [mappedItemImageFixture],
   flags: {
     pending: false,
     sold: false,

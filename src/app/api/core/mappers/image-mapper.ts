@@ -1,11 +1,11 @@
-import { CatalogItemImage } from '../dtos/catalog-item-image';
+import { ImageDto } from '@api/core/dtos';
 import { Image } from '@core/user/user-response.interface';
 
-export function mapCatalogImagesToImages(catalogImages: CatalogItemImage[]): Image[] {
-  return catalogImages.map((image: CatalogItemImage) => mapCatalogImageToImage(image));
+export function mapImageDtosToImages(catalogImages: ImageDto[]): Image[] {
+  return catalogImages.map((image: ImageDto) => mapCatalogImageToImage(image));
 }
 
-function mapCatalogImageToImage(image: CatalogItemImage): Image {
+function mapCatalogImageToImage(image: ImageDto): Image {
   const { average_color, urls } = image;
   const { big: imageBigUrl, medium: imageMediumUrl, small: imageSmallUrl } = urls;
 
