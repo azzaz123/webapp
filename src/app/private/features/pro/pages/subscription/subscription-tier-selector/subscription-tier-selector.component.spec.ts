@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy } from '@angular/compiler/src/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -5,6 +6,7 @@ import {
   FREE_TRIAL_AVAILABLE_SUBSCRIPTION,
   MAPPED_SUBSCRIPTIONS,
   MAPPED_SUBSCRIPTIONS_WITH_RE,
+  TIER_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 
 import { SubscriptionTierSelectorComponent } from './subscription-tier-selector.component';
@@ -113,12 +115,37 @@ describe('SubscriptionTierSelectorComponent', () => {
     });
 
     describe('has not free trial', () => {
-      it('should show description', () => {
-        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle')).nativeElement;
+      describe('and has no discount', () => {
+        it('should show description', () => {
+          const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle'));
+          const tierDescriptionText = tierDescription.nativeElement.textContent;
+          const classDiscounted = tierDescription.query(By.css('.Card__subtitle--discounted'));
 
-        expect(tierTitle.textContent).toContain(component.subscription.tiers[0].price);
-        expect(tierTitle.textContent).toContain(component.subscription.tiers[0].currency);
-        expect(tierTitle.textContent).not.toContain($localize`:@@after_free_trial:after free trial`);
+          expect(tierDescriptionText).toContain(component.subscription.tiers[0].price);
+          expect(tierDescriptionText).toContain(component.subscription.tiers[0].currency);
+          expect(tierDescriptionText).not.toContain($localize`:@@after_free_trial:after free trial`);
+          expect(classDiscounted).toBeFalsy();
+        });
+      });
+      describe('and has discount', () => {
+        beforeEach(() => {
+          component.subscription.tiers[0].discount = TIER_DISCOUNT;
+          component.selectedTier = FREE_TRIAL_AVAILABLE_SUBSCRIPTION.tiers[0];
+          fixture.detectChanges();
+        });
+        it('should show description with discount', () => {
+          const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle'));
+          const tierDescriptionText = tierDescription.nativeElement.textContent;
+          const classDiscounted = tierDescription.query(By.css('.Card__subtitle--discounted'));
+
+          expect(tierDescriptionText).toContain(component.subscription.tiers[0].price);
+          expect(tierDescriptionText).toContain(component.subscription.tiers[0].currency);
+          expect(tierDescriptionText).toContain(
+            new DatePipe('en').transform(component.subscription.tiers[0].discount.end_date, 'dd/MM/yy')
+          );
+          expect(tierDescriptionText).not.toContain($localize`:@@after_free_trial:after free trial`);
+          expect(classDiscounted).toBeTruthy();
+        });
       });
     });
   });
