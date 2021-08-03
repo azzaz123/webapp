@@ -6,7 +6,7 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable } from 'rxjs';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../../components/kyc-image-options/kyc-image-options.enum';
 import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
-import { KYCStoreService } from '../../services/kyc-store.service';
+import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
 
 @Component({
   selector: 'tsl-kyc-modal',
