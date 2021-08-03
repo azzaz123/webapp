@@ -1060,6 +1060,8 @@
     "kyc_select_document_view_description": "Make sure the document you provide is valid for at least 3 months.",
     "kyc_select_nationality_view_description": "And we'll tell you what kind of document you can use to verify your identity",
     "kyc_select_nationality_view_top_bar_title": "Nationality",
+    "kyc_camera_access_refused": "You must accept the permissions to be able to take photos",
+    "kyc_camera_cannot_access": "Oops, an error occurred and we cannot access your camera",
     "kyc_select_document_view_list_id_placeholder": "National Identity document",
     "kyc_select_document_view_list_driving_license_placeholder": "Driving license",
     "kyc_select_document_view_list_passport_placeholder": "Passport",

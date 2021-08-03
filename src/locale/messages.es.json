@@ -1060,6 +1060,8 @@
     "kyc_select_document_view_description": "Asegúrate de que el documento tenga, al menos, 3 meses de validez.",
     "kyc_select_nationality_view_description": "Y te diremos qué tipo de documento puedes usar para verificar tu identidad.",
     "kyc_select_nationality_view_top_bar_title": "Nacionalidad",
+    "kyc_camera_access_refused": "Debes aceptar los permisos para poder hacer las fotos",
+    "kyc_camera_cannot_access": "Oops, ha ocurrido un error y no podemos acceder a tu cámara",
     "kyc_select_document_view_list_id_placeholder": "National Identification Document",
     "kyc_select_document_view_list_driving_license_placeholder": "Permiso de conducir",
     "kyc_select_document_view_list_passport_placeholder": "Pasaporte",
