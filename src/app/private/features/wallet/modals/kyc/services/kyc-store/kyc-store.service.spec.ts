@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { MOCK_KYC_SPECIFICATIONS } from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
+import { MOCK_EMPTY_KYC_SPECIFICATIONS, MOCK_KYC_SPECIFICATIONS } from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
 import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
 
 import { KYCStoreService } from './kyc-store.service';
@@ -16,6 +16,10 @@ describe('KYCStoreService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should have empty specifications by default', () => {
+    expect(service.specifications).toStrictEqual(MOCK_EMPTY_KYC_SPECIFICATIONS);
   });
 
   describe('when updating the specifications...', () => {

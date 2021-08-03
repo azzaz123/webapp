@@ -17,3 +17,13 @@ export const MOCK_KYC_SPECIFICATIONS: KYCSpecifications = {
     backSide: null,
   },
 };
+
+export const MOCK_EMPTY_KYC_SPECIFICATIONS: KYCSpecifications = {
+  nationality: null,
+  documentation: null,
+  imageMethod: null,
+  images: {
+    frontSide: null,
+    backSide: null,
+  },
+};
