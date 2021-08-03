@@ -24,7 +24,7 @@ export interface UnfavoriteItem {
   /**
    * If the item unfavorited is from a professional user
    */
-  isPro?: boolean;
+  isPro: boolean;
   /**
    * Item price
    */

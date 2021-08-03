@@ -93,5 +93,4 @@ export enum SCREEN_IDS {
   ActualizationTermsCommunicationsConsent = 264,
   SuggestedUpdateAppVersionPopup = 265,
   RequiredUpdateAppVersionPopup = 266,
-  WallRecommendationSliderFeedback = 267,
 }
