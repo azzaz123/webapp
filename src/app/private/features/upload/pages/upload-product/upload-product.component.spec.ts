@@ -76,7 +76,7 @@ import { mapShippingRulesResponseToShippingRules } from '@api/bff/delivery/rules
 import {
   MOCK_UPLOAD_PRODUCT_EDIT_ITEM_CG_SHIPPABLE_EVENT,
   MOCK_UPLOAD_PRODUCT_LIST_ITEM_CG_SHIPPABLE_EVENT,
-} from '@fixtures/private/upload/events/upload-events.fixures.spec';
+} from '@fixtures/private/upload/events/upload-events.fixtures.spec';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
