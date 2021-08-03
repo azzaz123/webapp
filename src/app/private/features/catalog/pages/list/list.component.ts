@@ -463,7 +463,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private reactivatedNoFeaturedUser(item: Item, index: number): void {
     this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
-      if (permissions[PERMISSIONS.subscriptions] && !this.isSuggestProModalShown()) {
+      if (permissions[PERMISSIONS.subscriptions] && this.shouldShowSuggestProModal()) {
         this.openSuggestProModal(item, index);
       } else {
         this.reloadItem(item.id, index);
@@ -471,10 +471,10 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private isSuggestProModalShown(): boolean {
-    const one_day = 1000 * 60 * 60 * 24;
+  private shouldShowSuggestProModal(): boolean {
+    const oneDay = 1000 * 60 * 60 * 24;
     const lastShown = this.userService.getLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN);
-    return lastShown ? Date.now() - parseInt(lastShown) < one_day : false;
+    return lastShown ? Date.now() - parseInt(lastShown) > oneDay : true;
   }
 
   private openSuggestProModal(reactivatedItem: Item, index: number): void {
