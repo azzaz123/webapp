@@ -472,12 +472,9 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private isSuggestProModalShown(): boolean {
-    const ONE_DAY = 1000 * 60 * 60 * 24;
+    const one_day = 1000 * 60 * 60 * 24;
     const lastShown = this.userService.getLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN);
-    if (!lastShown) {
-      return false;
-    }
-    return Date.now() - parseInt(lastShown) < ONE_DAY;
+    return lastShown ? Date.now() - parseInt(lastShown) < one_day : false;
   }
 
   private openSuggestProModal(reactivatedItem: Item, index: number): void {
