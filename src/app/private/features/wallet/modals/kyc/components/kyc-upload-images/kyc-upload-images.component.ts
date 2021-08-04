@@ -153,6 +153,12 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       : $localize`:@@kyc_upload_photo_view_title:Upload a photo of your document`;
   }
 
+  get actionButtonCopy(): string {
+    return this.isShootTakeImageMethod
+      ? $localize`:@@kyc_request_photo_counter_shoot:Take photo`
+      : $localize`:@@kyc_request_photo_counter_upload:Upload photo`;
+  }
+
   get allImagesAreDefined(): boolean {
     return this.imagesTakenCounter === this.imagesNeeded;
   }

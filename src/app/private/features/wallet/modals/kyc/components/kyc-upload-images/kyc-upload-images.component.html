@@ -60,8 +60,9 @@
                 <div class="text-center row mt-3" *ngIf="requestCameraSucceed((userDevicePermissions$ | async).video)">
                     <tsl-button 
                         *ngIf="!allImagesAreDefined"
-                        i18n="@@kyc_request_photo_counter"
-                        class="col" id="shootImageButton" (click)="takeImage()">Take photo ({{imagesTakenCounter}}/{{imagesNeeded}})</tsl-button>
+                        class="col"
+                        id="shootImageButton"
+                        (click)="takeImage()">{{actionButtonCopy}} ({{imagesTakenCounter}}/{{imagesNeeded}})</tsl-button>
                     <tsl-button 
                         *ngIf="allImagesAreDefined"
                         i18n="@@kyc_end_verification"
