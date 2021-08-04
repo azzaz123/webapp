@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ShippingRulesPrice } from '@api/bff/delivery/rules/dtos/shipping-rules';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -33,8 +34,6 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { Item, ITEM_TYPES } from '@core/item/item';
 import { DeliveryInfo, ItemContent, ItemResponse, ItemSaleConditions } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -42,8 +41,8 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, of, Subject } from 'rxjs';
-import { catchError, debounceTime, map, take, tap } from 'rxjs/operators';
+import { fromEvent, Observable, Subject } from 'rxjs';
+import { debounceTime, map, take, tap } from 'rxjs/operators';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -51,6 +50,8 @@ import { GeneralSuggestionsService } from '../../core/services/general-suggestio
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
+import { ShippingToggleAllowance } from './services/shipping-toggle/interfaces/shipping-toggle-allowance.interface';
+import { ShippingToggleService } from './services/shipping-toggle/shipping-toggle.service';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
@@ -122,7 +123,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
-  public isShippingToggleActive = false;
+  public isShippabilityActive = false;
+  public isShippabilityAllowed = false;
+  public isShippabilityAllowedByCategory = false;
+  public priceShippingRules: ShippingRulesPrice;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
 
   constructor(
@@ -141,30 +145,28 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private subscriptionService: SubscriptionsService,
     private itemReactivationService: ItemReactivationService,
     private customerHelpService: CustomerHelpService,
-    private featureFlagService: FeatureFlagService
+    private shippingToggleService: ShippingToggleService
   ) {
-    this.featureFlagsInit();
-
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
       { value: 'female', label: this.i18n.translate(TRANSLATION_KEY.FEMALE) },
     ];
+
     this.fillForm();
+
     config.placement = 'right';
     config.triggers = 'focus:blur';
     config.container = 'body';
   }
 
   ngOnInit() {
+    this.initShippabilityFeatureFlag();
+
     this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories;
 
       this.detectCategoryChanges();
       this.detectObjectTypeChanges();
-
-      if (this.isShippingToggleActive) {
-        this.detectShippabilityChanges();
-      }
 
       if (this.item) {
         this.initializeEditForm();
@@ -179,6 +181,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.handleUploadFormExtraFields();
     });
     this.detectTitleKeyboardChanges();
+
+    this.updateShippingToggleStatus();
   }
 
   private fillForm(): void {
@@ -357,8 +361,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         if (supportsShipping) {
           deliveryInfo.setValidators([Validators.required]);
         } else {
-          deliveryInfo.setValue(null);
           deliveryInfo.setValidators([]);
+          deliveryInfo.setValue(null);
         }
       });
   }
@@ -434,7 +438,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
     if (!this.uploadForm.get('images').valid) {
       this.errorsService.i18nError(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
-    } else if (!this.uploadForm.get('delivery_info').valid && this.isShippingToggleActive) {
+    } else if (!this.uploadForm.get('delivery_info').valid && this.uploadForm.get('sale_conditions').get('supports_shipping').value) {
       this.errorsService.i18nError(TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR);
     } else {
       this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
@@ -800,6 +804,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }
     }
 
+    if (item.delivery_info) {
+      baseEventAttrs.shippingWeight = item.delivery_info.min_weight_kg;
+    }
+
+    if (this.isShippabilityActive) {
+      baseEventAttrs.shippingAllowed = item.sale_conditions?.supports_shipping || false;
+    }
     if (isEdit) {
       const editItemCGEvent: AnalyticsEvent<EditItemCG> = {
         name: ANALYTICS_EVENT_NAMES.EditItemCG,
@@ -809,6 +820,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           screenId: SCREEN_IDS.EditItem,
         },
       };
+
       this.analyticsService.trackEvent(editItemCGEvent);
     } else {
       const listItemCGEvent: AnalyticsEvent<ListItemCG> = {
@@ -821,6 +833,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           language: this.analyticsService.appLocale,
         },
       };
+
       this.analyticsService.trackEvent(listItemCGEvent);
     }
   }
@@ -890,10 +903,56 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
   }
 
-  private featureFlagsInit(): void {
-    this.featureFlagService
-      .getFlag(FEATURE_FLAGS_ENUM.SHIPPING_TOGGLE)
-      .pipe(catchError(() => of(false)))
-      .subscribe((isShippingToggleActive) => (this.isShippingToggleActive = isShippingToggleActive));
+  private initShippabilityFeatureFlag(): void {
+    this.shippingToggleService.isActive().subscribe((isActive) => {
+      this.isShippabilityActive = isActive;
+      if (isActive) {
+        this.detectShippabilityAllowanceChanges();
+        this.detectShippabilityChanges();
+      }
+    });
+  }
+
+  private updateShippingToggleStatus(): void {
+    if (this.isShippabilityActive) {
+      const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
+      const subcategoryId =
+        this.uploadForm.get('extra_info')?.get('object_type')?.get('id')?.value || this.item?.extraInfo?.object_type?.id;
+      const price = this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
+
+      this.shippingToggleService
+        .isAllowed(categoryId, subcategoryId, price)
+        .subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
+          this.isShippabilityAllowed =
+            shippingToggleAllowance.category && shippingToggleAllowance.subcategory && shippingToggleAllowance.price;
+          this.isShippabilityAllowedByCategory = shippingToggleAllowance.category && shippingToggleAllowance.subcategory;
+          this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
+
+          if (!this.isShippabilityAllowed) {
+            this.clearShippingToggleFormData();
+          }
+        });
+    }
+  }
+
+  private clearShippingToggleFormData(): void {
+    this.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
+    this.uploadForm.get('delivery_info').setValue(null);
+  }
+
+  private detectShippabilityAllowanceChanges(): void {
+    this.uploadForm.get('category_id').valueChanges.subscribe(() => {
+      this.updateShippingToggleStatus();
+    });
+    this.uploadForm
+      .get('extra_info')
+      .get('object_type')
+      .get('id')
+      .valueChanges.subscribe(() => {
+        this.updateShippingToggleStatus();
+      });
+    this.uploadForm.get('sale_price').valueChanges.subscribe((price) => {
+      this.updateShippingToggleStatus();
+    });
   }
 }

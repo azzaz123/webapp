@@ -198,7 +198,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR]: $localize`:@@delivery_delete_bank_account_error:Sorry, something went wrong. Try again.`,
   [TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS]: $localize`:@@delivery_delete_credit_card_success:The credit card has been removed successfully`,
   [TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR]: $localize`:@@delivery_delete_credit_card_error:Sorry, something went wrong. Try again.`,
-  [TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR]: $localize`:@@finding_listing_shipping_toggle_check:To enable this item to be sent, select its weight range.`,
+  [TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR]: $localize`:@@upload_shipping_toggle_snackbar_select_weight_description:To enable this item to be sent, select its weight range.`,
   [TRANSLATION_KEY.ZENDESK_REAL_ESTATE_LIMIT_URL]: $localize`:@@web_zendesk_real_estate_limit_url:https://ayuda.wallapop.com/hc/en-us/articles/4403261623185-Wallapop-PRO-Real-estate`,
   [TRANSLATION_KEY.REAL_ESTATE_HIGHEST_LIMIT_REACHED_DESCRIPTION]: $localize`:@@listing_limit_pro_user_real_estate_subscription_modal_description:It’s not possible to have so many Real Estate items for sale at the same time. The item will be listed to your catalog, but it will remain inactive.`,
 };

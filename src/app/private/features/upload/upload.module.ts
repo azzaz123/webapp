@@ -26,6 +26,8 @@ import { UploadRealestateComponent } from './pages/upload-realestate/upload-real
 import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
 import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-form.module';
+import { ShippingToggleService } from './pages/upload-product/services/shipping-toggle/shipping-toggle.service';
+import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-api.module';
 
 @NgModule({
   imports: [
@@ -42,6 +44,7 @@ import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-fo
     DropdownModule,
     CustomCurrencyModule,
     CheckboxFormModule,
+    DeliveryRulesApiModule, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
   ],
   declarations: [
     uploadRoutedComponents,
@@ -64,6 +67,7 @@ import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-fo
     GeneralSuggestionsService,
     ItemReactivationService,
     EditTrackingEventService,
+    ShippingToggleService, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
   ],
   entryComponents: [RemoveConfirmModalComponent, PreviewModalComponent],
 })

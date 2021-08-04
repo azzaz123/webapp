@@ -1,8 +1,10 @@
 export interface ShippingRules {
   categoriesNotAllowed: number[];
   subcategoriesNotAllowed: number[];
-  priceRangeAllowed: {
-    maxPrice: number;
-    minPrice: number;
-  };
+  priceRangeAllowed: ShippingRulesPrice;
+}
+
+export interface ShippingRulesPrice {
+  maxPrice: number;
+  minPrice: number;
 }
