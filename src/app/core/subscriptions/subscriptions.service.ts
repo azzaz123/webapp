@@ -279,7 +279,7 @@ export class SubscriptionsService {
       return false;
     }
 
-    return this.getDefaultTierDiscount(selectedsubscription) && !selectedsubscription.subscribed_from;
+    return !!this.getDefaultTierDiscount(selectedsubscription) && !selectedsubscription.subscribed_from;
   }
 
   public hasHighestLimit(subscription: SubscriptionsResponse): boolean {
