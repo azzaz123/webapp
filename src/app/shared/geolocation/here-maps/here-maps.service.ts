@@ -16,13 +16,17 @@ import { finalize, mergeMap, retry, takeUntil } from 'rxjs/operators';
 
 export const HERE_MAPS_VERSION = '3.1.26.0'; // latest
 export const HERE_MAPS_CORE_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-core.js`;
+export const HERE_MAPS_CORE_LEGACY_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-core-legacy.js`;
 export const HERE_MAPS_SERVICE_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-service.js`;
+export const HERE_MAPS_SERVICE_LEGACY_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-service-legacy.js`;
 export const HERE_MAPS_UI_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-ui.js`;
 export const HERE_MAPS_UI_CSS_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-ui.css`;
 export const HERE_MAPS_EVENTS_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-mapevents.js`;
 
 export const HERE_MAPS_CORE_REF_ID = 'src-here-maps-core';
+export const HERE_MAPS_CORE_LEGACY_REF_ID = 'src-here-maps-core-legacy';
 export const HERE_MAPS_SERVICE_REF_ID = 'src-here-maps-service';
+export const HERE_MAPS_SERVICE_LEGACY_REF_ID = 'src-here-maps-service-legacy';
 export const HERE_MAPS_UI_REF_ID = 'src-here-maps-ui';
 export const HERE_MAPS_UI_CSS_REF_ID = 'src-here-maps-ui-css';
 export const HERE_MAPS_EVENTS_REF_ID = 'src-here-maps-events';
@@ -104,6 +108,7 @@ export class HereMapsService {
 
   private appendCoreToDOM(): void {
     this.appendScriptToDOM(HERE_MAPS_CORE_REF_ID, HERE_MAPS_CORE_URL);
+    this.appendScriptToDOM(HERE_MAPS_CORE_LEGACY_REF_ID, HERE_MAPS_CORE_LEGACY_URL);
   }
 
   private isServiceReady$(): Observable<boolean> {
@@ -128,6 +133,7 @@ export class HereMapsService {
 
   private appendServiceToDOM(): void {
     this.appendScriptToDOM(HERE_MAPS_SERVICE_REF_ID, HERE_MAPS_SERVICE_URL);
+    this.appendScriptToDOM(HERE_MAPS_SERVICE_LEGACY_REF_ID, HERE_MAPS_SERVICE_LEGACY_URL);
   }
 
   private isUIReady$(): Observable<boolean> {
