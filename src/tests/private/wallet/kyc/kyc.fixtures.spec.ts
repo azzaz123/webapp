@@ -21,6 +21,21 @@ export const MOCK_KYC_BANNER_NO_NEED: KYCBanner = {
   status: KYC_BANNER_STATUS.NO_NEED,
 };
 
+export const MOCK_EMPTY_KYC_IMAGES: KYCImages = {
+  frontSide: null,
+  backSide: null,
+};
+
+export const MOCK_KYC_IMAGES_FRONT_DEFINED: KYCImages = {
+  frontSide: 'fakeBase64PImage',
+  backSide: null,
+};
+
+export const MOCK_KYC_IMAGES_BACK_DEFINED: KYCImages = {
+  frontSide: null,
+  backSide: 'fakeBase64PImage2',
+};
+
 export const MOCK_KYC_IMAGES: KYCImages = {
   frontSide: 'fakeBase64PImage',
   backSide: 'fakeBase64PImage2',

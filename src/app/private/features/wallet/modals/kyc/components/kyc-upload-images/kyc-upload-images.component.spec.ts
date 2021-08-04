@@ -3,8 +3,16 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_MEDIA_STREAM } from '@fixtures/media-stream.fixtures.spec';
+import {
+  MOCK_EMPTY_KYC_IMAGES,
+  MOCK_KYC_IMAGES,
+  MOCK_KYC_IMAGES_BACK_DEFINED,
+  MOCK_KYC_IMAGES_FRONT_DEFINED,
+} from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { MOCK_DEVICE_PERMISSIONS } from '@fixtures/user-device-permissions.fixtures.spec';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
+import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { BannerComponent } from '@shared/banner/banner.component';
 import { ButtonComponent } from '@shared/button/button.component';
 import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
@@ -24,6 +32,17 @@ describe('KYCUploadImagesComponent', () => {
     MOCK_DEVICE_PERMISSIONS
   );
   const cameraResponseSubjectMock: BehaviorSubject<any> = new BehaviorSubject<any>(MOCK_MEDIA_STREAM);
+  const imagesSubjectMock: BehaviorSubject<KYCImages> = new BehaviorSubject<KYCImages>(MOCK_EMPTY_KYC_IMAGES);
+  const imagesNeededSubjectMock: BehaviorSubject<KYCImagesNeeded> = new BehaviorSubject<KYCImagesNeeded>(2);
+
+  const takeFrontSideImageSelector = '#takeFrontSideImage';
+  const takeBackSideImageSelector = '#takeBackSideImage';
+  const endVerificationButtonSelector = '#endVerificationButton';
+  const imagesCounterButtonSelector = '#imagesCounterButton';
+  const frontSideImageSelector = '#frontSideImage';
+  const deleteFrontSideImageSelector = '#deleteFrontSideImage';
+  const backSideImageSelector = '#backSideImage';
+  const deleteBackSideImageSelector = '#deleteBackSideImage';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -50,10 +69,8 @@ describe('KYCUploadImagesComponent', () => {
     de = fixture.debugElement;
     component = fixture.componentInstance;
     askPermissionsService = TestBed.inject(AskPermissionsService);
-    component.images = {
-      frontSide: null,
-      backSide: null,
-    };
+    component.images = imagesSubjectMock.value;
+    component.imagesNeeded = imagesNeededSubjectMock.value;
   });
 
   it('should create', () => {
@@ -68,6 +85,7 @@ describe('KYCUploadImagesComponent', () => {
     describe(`and the user's browser supports the API`, () => {
       describe('and the user accept the permission', () => {
         beforeEach(() => {
+          spyOn(component.imagesChange, 'emit');
           cameraResponseSubjectMock.next(MOCK_MEDIA_STREAM);
           devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.ACCEPTED });
 
@@ -94,8 +112,8 @@ describe('KYCUploadImagesComponent', () => {
         });
 
         it('should show the take image button ', () => {
-          const shootImageButton = de.query(By.css('#shootImageButton'));
-          expect(shootImageButton).toBeTruthy();
+          const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector));
+          expect(imagesCounterButton).toBeTruthy();
         });
 
         it('should NOT show an error banner', () => {
@@ -104,104 +122,397 @@ describe('KYCUploadImagesComponent', () => {
         });
 
         describe('and the user must provide two images of the document', () => {
-          beforeEach(() => {});
+          beforeEach(() => {
+            imagesNeededSubjectMock.next(2);
+          });
 
           describe('and the images are not shoot', () => {
-            it('should show the front side take photo message', () => {});
-            it('should show the back side take photo message', () => {});
-            it('should NOT show the end verification button', () => {});
-            it('should show the defined images counter as 0', () => {});
+            beforeEach(() => {
+              imagesSubjectMock.next(MOCK_EMPTY_KYC_IMAGES);
+
+              fixture.detectChanges();
+            });
+
+            it('should show the front side image as the active one', () => {});
+
+            it('should show the front side take photo message', () => {
+              const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
+              expect(takeFrontSideImage).toBeTruthy();
+            });
+
+            it('should NOT show the front side image', () => {
+              const frontSideImageStyles = de.query(By.css(frontSideImageSelector)).classes;
+
+              expect(frontSideImageStyles).toHaveProperty('d-none', true);
+            });
+
+            it('should show the back side take photo message', () => {
+              const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
+              expect(takeBackSideImage).toBeTruthy();
+            });
+
+            it('should NOT show the back side image', () => {
+              const backSideImageStyles = de.query(By.css(backSideImageSelector)).classes;
+
+              expect(backSideImageStyles).toHaveProperty('d-none', true);
+            });
+
+            it('should NOT show the end verification button', () => {
+              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
+              expect(endVerificationButton).toBeFalsy();
+            });
+
+            it('should show the defined images counter as 0', () => {
+              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
+              expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (0/2)`);
+            });
 
             describe('and they shoot an image', () => {
-              it('should show the front side image', () => {});
-              it('should NOT show the front side take photo message', () => {});
-              it('should show the back side take photo message', () => {});
-              it('should update the defined images counter to 1', () => {});
-              it('should NOT show the end verification button', () => {});
+              beforeEach(() => {
+                spyOn(component.frontSideImage.nativeElement.getContext('2d'), 'drawImage');
+                spyOn(component.frontSideImage.nativeElement, 'toDataURL').and.returnValue('NEW_IMAGE_SHOOT');
+
+                de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
+              });
+
+              it('should draw the front side image on the screen', () => {
+                expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+              });
+
+              it('should emit the new front side image', () => {
+                expect(component.imagesChange.emit).toHaveBeenCalledWith({
+                  ...component.images,
+                  frontSide: 'NEW_IMAGE_SHOOT',
+                });
+              });
             });
           });
 
-          describe('and the front side image is already shoot', () => {
-            it('should show the front side image', () => {});
-            it('should show the back side take photo message', () => {});
-            it('should NOT show the end verification button', () => {});
-            it('should show the defined images counter as 1', () => {});
+          describe('and ONLY the front side image is already shoot', () => {
+            beforeEach(() => {
+              imagesSubjectMock.next(MOCK_KYC_IMAGES_FRONT_DEFINED);
+
+              fixture.detectChanges();
+            });
+
+            it('should show the back side image as the active one', () => {});
+
+            it('should show the front side image', () => {
+              const frontSideImage = de.query(By.css(frontSideImageSelector));
+
+              expect(frontSideImage).toBeTruthy();
+              expect(frontSideImage.classes).not.toHaveProperty('d-none', true);
+            });
+
+            it('should NOT show the front side take photo message', () => {
+              const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
+
+              expect(takeFrontSideImage).toBeFalsy();
+            });
+
+            it('should NOT show the back side image', () => {
+              const backSideImageStyles = de.query(By.css(backSideImageSelector)).classes;
+
+              expect(backSideImageStyles).toHaveProperty('d-none', true);
+            });
+
+            it('should show the back side take photo message', () => {
+              const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
+
+              expect(takeBackSideImage).toBeTruthy();
+            });
+
+            it('should NOT show the end verification button', () => {
+              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
+
+              expect(endVerificationButton).toBeFalsy();
+            });
+
+            it('should show the defined images counter as 1', () => {
+              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
+
+              expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (1/2)`);
+            });
 
             describe('and they shoot an image', () => {
-              it('should define the back side photo', () => {});
-              it('should NOT show the back side take photo message', () => {});
-              it('should show the end verification button', () => {});
+              beforeEach(() => {
+                spyOn(component.backSideImage.nativeElement.getContext('2d'), 'drawImage');
+                spyOn(component.backSideImage.nativeElement, 'toDataURL').and.returnValue('NEW_BACK_IMAGE_SHOOT');
+
+                de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
+              });
+
+              it('should draw the back side image on the screen', () => {
+                expect(component.backSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+              });
+
+              it('should emit the new back side image', () => {
+                expect(component.imagesChange.emit).toHaveBeenCalledWith({
+                  ...component.images,
+                  backSide: 'NEW_BACK_IMAGE_SHOOT',
+                });
+              });
             });
 
             describe('and they delete the front side image', () => {
-              it('should NOT show the front side image', () => {});
-              it('should show the front side take photo message', () => {});
-              it('should update the defined images counter to 0', () => {});
+              beforeEach(() => {
+                de.query(By.css(deleteFrontSideImageSelector)).nativeElement.click();
+              });
+
+              it('should emit the empty front side image', () => {
+                expect(component.imagesChange.emit).toHaveBeenCalledWith({
+                  ...component.images,
+                  frontSide: null,
+                });
+              });
             });
           });
 
-          describe('and the back side image is already shoot', () => {
-            it('should show the back side image', () => {});
-            it('should show the front side take photo message', () => {});
-            it('should NOT show the end verification button', () => {});
-            it('should show the defined images counter as 1', () => {});
+          describe('and ONLY the back side image is already shoot', () => {
+            beforeEach(() => {
+              imagesSubjectMock.next(MOCK_KYC_IMAGES_BACK_DEFINED);
+
+              fixture.detectChanges();
+            });
+
+            it('should show the front side image as the active one', () => {});
+
+            it('should show the back side image', () => {
+              const backSideImage = de.query(By.css(backSideImageSelector));
+
+              expect(backSideImage).toBeTruthy();
+              expect(backSideImage.classes).not.toHaveProperty('d-none', true);
+            });
+
+            it('should NOT show the back side take photo message', () => {
+              const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
+
+              expect(takeBackSideImage).toBeFalsy();
+            });
+
+            it('should NOT show the front side image', () => {
+              const frontSideImageStyles = de.query(By.css(frontSideImageSelector)).classes;
+
+              expect(frontSideImageStyles).toHaveProperty('d-none', true);
+            });
+
+            it('should show the front side take photo message', () => {
+              const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
+
+              expect(takeFrontSideImage).toBeTruthy();
+            });
+
+            it('should NOT show the end verification button', () => {
+              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
+
+              expect(endVerificationButton).toBeFalsy();
+            });
+
+            it('should show the defined images counter as 1', () => {
+              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
+
+              expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (1/2)`);
+            });
 
             describe('and they shoot an image', () => {
-              it('should show the front side photo', () => {});
-              it('should NOT show the front side take photo message', () => {});
-              it('should show the end verification button', () => {});
+              beforeEach(() => {
+                spyOn(component.frontSideImage.nativeElement.getContext('2d'), 'drawImage');
+                spyOn(component.frontSideImage.nativeElement, 'toDataURL').and.returnValue('NEW_FRONT_IMAGE_SHOOT');
+
+                de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
+              });
+
+              it('should draw the front side image on the screen', () => {
+                expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+              });
+
+              it('should emit the new front side image', () => {
+                expect(component.imagesChange.emit).toHaveBeenCalledWith({
+                  ...component.images,
+                  frontSide: 'NEW_FRONT_IMAGE_SHOOT',
+                });
+              });
             });
 
             describe('and they delete the back side image', () => {
-              it('should NOT show the back side image', () => {});
-              it('should show the back side take photo message', () => {});
-              it('should update the defined images counter to 0', () => {});
+              beforeEach(() => {
+                de.query(By.css(deleteBackSideImageSelector)).nativeElement.click();
+              });
+
+              it('should emit the empty back side image', () => {
+                expect(component.imagesChange.emit).toHaveBeenCalledWith({
+                  ...component.images,
+                  backSide: null,
+                });
+              });
             });
           });
 
           describe('and the two images are already shoot', () => {
-            it('should show the end verification button', () => {});
-            it('should let us delete the two images', () => {});
-            it('should show the end verification button', () => {});
+            beforeEach(() => {
+              imagesSubjectMock.next(MOCK_KYC_IMAGES);
+
+              fixture.detectChanges();
+            });
+
+            it('should not show any image as the active one', () => {});
+
+            it('should NOT show the counter images button', () => {
+              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector));
+              expect(imagesCounterButton).toBeFalsy();
+            });
+
+            it('should show the end verification button', () => {
+              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
+              expect(endVerificationButton).toBeTruthy();
+            });
 
             describe('and they delete the front side image', () => {
-              it('should NOT show the front side image', () => {});
-              it('should show the front side take photo message', () => {});
-              it('should update the defined images counter to 1', () => {});
-              it('should NOT show the end verification button', () => {});
+              beforeEach(() => {
+                de.query(By.css(deleteFrontSideImageSelector)).nativeElement.click();
+              });
+
+              it('should emit the empty front side image', () => {
+                expect(component.imagesChange.emit).toHaveBeenCalledWith({
+                  ...component.images,
+                  frontSide: null,
+                });
+              });
             });
 
             describe('and they delete the back side image', () => {
-              it('should NOT show the back side image', () => {});
-              it('should show the back side take photo message', () => {});
-              it('should update the defined images counter to 1', () => {});
-              it('should NOT show the end verification button', () => {});
-            });
+              beforeEach(() => {
+                de.query(By.css(deleteBackSideImageSelector)).nativeElement.click();
+              });
 
-            describe('and they delete the two images', () => {
-              it('should NOT show the front side image', () => {});
-              it('should NOT show the back side image', () => {});
-
-              it('should show the front side take photo message', () => {});
-              it('should show the back side take photo message', () => {});
-
-              it('should update the defined images counter to 0', () => {});
-              it('should NOT show the end verification button', () => {});
+              it('should emit the empty back side image', () => {
+                expect(component.imagesChange.emit).toHaveBeenCalledWith({
+                  ...component.images,
+                  backSide: null,
+                });
+              });
             });
           });
         });
 
         describe('and the user must provide ONLY one image of the document', () => {
-          describe('and they shoot an image', () => {
-            it('should show the front side photo', () => {});
-            it('should NOT show the front side take photo message', () => {});
-            it('should show the end verification button', () => {});
+          beforeEach(() => {
+            imagesNeededSubjectMock.next(1);
           });
 
-          describe('and they delete the front side image', () => {
-            it('should NOT show the front side image', () => {});
-            it('should update the defined images counter to 0', () => {});
-            it('should NOT show the end verification button', () => {});
+          describe('and the front side image is NOT shoot', () => {
+            beforeEach(() => {
+              imagesSubjectMock.next(MOCK_EMPTY_KYC_IMAGES);
+
+              fixture.detectChanges();
+            });
+
+            it('should show the front side image as the active one', () => {});
+
+            it('should show the front side take photo message', () => {
+              const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
+
+              expect(takeFrontSideImage).toBeTruthy();
+            });
+
+            it('should NOT show the front side image', () => {
+              const frontSideImageStyles = de.query(By.css(frontSideImageSelector)).classes;
+
+              expect(frontSideImageStyles).toHaveProperty('d-none', true);
+            });
+
+            it('should NOT render the back side image content', () => {
+              const backSideImage = de.query(By.css(backSideImageSelector));
+              const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
+
+              expect(backSideImage).toBeFalsy();
+              expect(takeBackSideImage).toBeFalsy();
+            });
+
+            it('should show the defined images counter as 0', () => {
+              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
+
+              expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (0/1)`);
+            });
+
+            it('should NOT show the end verification button', () => {
+              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
+              expect(endVerificationButton).toBeFalsy();
+            });
+
+            describe('and they shoot an image', () => {
+              beforeEach(() => {
+                spyOn(component.frontSideImage.nativeElement.getContext('2d'), 'drawImage');
+                spyOn(component.frontSideImage.nativeElement, 'toDataURL').and.returnValue('IMAGE_SHOOT');
+
+                de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
+              });
+
+              it('should draw the front side image on the screen', () => {
+                expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+              });
+
+              it('should emit the new front side image', () => {
+                expect(component.imagesChange.emit).toHaveBeenCalledWith({
+                  ...component.images,
+                  frontSide: 'IMAGE_SHOOT',
+                });
+              });
+            });
+          });
+
+          describe('and the front side image is already shoot', () => {
+            beforeEach(() => {
+              imagesSubjectMock.next(MOCK_KYC_IMAGES_FRONT_DEFINED);
+
+              fixture.detectChanges();
+            });
+
+            it('should not show any image as the active one', () => {});
+
+            it('should NOT show the front side take photo message', () => {
+              const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
+
+              expect(takeFrontSideImage).toBeFalsy();
+            });
+
+            it('should show the front side image', () => {
+              const frontSideImage = de.query(By.css(frontSideImageSelector));
+
+              expect(frontSideImage).toBeTruthy();
+              expect(frontSideImage.classes).not.toHaveProperty('d-none', true);
+            });
+
+            it('should NOT render the back side image content', () => {
+              const backSideImage = de.query(By.css(backSideImageSelector));
+              const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
+
+              expect(backSideImage).toBeFalsy();
+              expect(takeBackSideImage).toBeFalsy();
+            });
+
+            it('should NOT show the counter images button', () => {
+              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector));
+              expect(imagesCounterButton).toBeFalsy();
+            });
+
+            it('should show the end verification button', () => {
+              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
+              expect(endVerificationButton).toBeTruthy();
+            });
+
+            describe('and they delete the front side image', () => {
+              beforeEach(() => {
+                de.query(By.css(deleteFrontSideImageSelector)).nativeElement.click();
+              });
+
+              it('should emit the empty front side image', () => {
+                expect(component.imagesChange.emit).toHaveBeenCalledWith({
+                  ...component.images,
+                  frontSide: null,
+                });
+              });
+            });
           });
         });
       });
