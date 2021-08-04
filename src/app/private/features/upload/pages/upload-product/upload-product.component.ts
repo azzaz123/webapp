@@ -352,7 +352,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
-  private detectShippabilityChanges() {
+  private detectShippabilityChanges(): void {
     this.uploadForm
       .get('sale_conditions')
       .get('supports_shipping')
