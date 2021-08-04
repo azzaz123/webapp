@@ -103,13 +103,7 @@ export class HereMapsService {
   }
 
   private appendCoreToDOM(): void {
-    const coreScript = document.createElement('script');
-    coreScript.setAttribute('id', HERE_MAPS_CORE_REF_ID);
-    coreScript.setAttribute('src', HERE_MAPS_CORE_URL);
-    coreScript.setAttribute('type', 'text/javascript');
-    coreScript.setAttribute('charset', 'utf-8');
-    this.removeFromDOM(HERE_MAPS_CORE_REF_ID);
-    document.head.appendChild(coreScript);
+    this.appendScriptToDOM(HERE_MAPS_CORE_REF_ID, HERE_MAPS_CORE_URL);
   }
 
   private isServiceReady$(): Observable<boolean> {
@@ -133,13 +127,7 @@ export class HereMapsService {
   }
 
   private appendServiceToDOM(): void {
-    const serviceScript = document.createElement('script');
-    serviceScript.setAttribute('id', HERE_MAPS_SERVICE_REF_ID);
-    serviceScript.setAttribute('src', HERE_MAPS_SERVICE_URL);
-    serviceScript.setAttribute('type', 'text/javascript');
-    serviceScript.setAttribute('charset', 'utf-8');
-    this.removeFromDOM(HERE_MAPS_SERVICE_REF_ID);
-    document.head.appendChild(serviceScript);
+    this.appendScriptToDOM(HERE_MAPS_SERVICE_REF_ID, HERE_MAPS_SERVICE_URL);
   }
 
   private isUIReady$(): Observable<boolean> {
@@ -163,13 +151,7 @@ export class HereMapsService {
   }
 
   private appendUIToDOM() {
-    const uiScript = document.createElement('script');
-    uiScript.setAttribute('id', HERE_MAPS_UI_REF_ID);
-    uiScript.setAttribute('src', HERE_MAPS_UI_URL);
-    uiScript.setAttribute('type', 'text/javascript');
-    uiScript.setAttribute('charset', 'utf-8');
-    this.removeFromDOM(HERE_MAPS_UI_REF_ID);
-    document.head.appendChild(uiScript);
+    this.appendScriptToDOM(HERE_MAPS_UI_REF_ID, HERE_MAPS_UI_URL);
   }
 
   private isUICSSReady$(): Observable<boolean> {
@@ -193,13 +175,7 @@ export class HereMapsService {
   }
 
   private appendUICSStoDOM(): void {
-    const uiCss = document.createElement('link');
-    uiCss.setAttribute('id', HERE_MAPS_UI_CSS_REF_ID);
-    uiCss.setAttribute('href', HERE_MAPS_UI_CSS_URL);
-    uiCss.setAttribute('type', 'text/css');
-    uiCss.setAttribute('rel', 'stylesheet');
-    this.removeFromDOM(HERE_MAPS_UI_CSS_REF_ID);
-    document.head.appendChild(uiCss);
+    this.appendStyleToDOM(HERE_MAPS_UI_CSS_REF_ID, HERE_MAPS_UI_CSS_URL);
   }
 
   private isEventsReady$(): Observable<boolean> {
@@ -223,13 +199,27 @@ export class HereMapsService {
   }
 
   private appendEventsToDOM(): void {
-    const eventsScript = document.createElement('script');
-    eventsScript.setAttribute('id', HERE_MAPS_EVENTS_REF_ID);
-    eventsScript.setAttribute('src', HERE_MAPS_EVENTS_URL);
-    eventsScript.setAttribute('type', 'text/javascript');
-    eventsScript.setAttribute('charset', 'utf-8');
-    this.removeFromDOM(HERE_MAPS_EVENTS_REF_ID);
-    document.head.appendChild(eventsScript);
+    this.appendScriptToDOM(HERE_MAPS_EVENTS_REF_ID, HERE_MAPS_EVENTS_URL);
+  }
+
+  private appendScriptToDOM(id: string, src: string): void {
+    const script = document.createElement('script');
+    script.setAttribute('id', id);
+    script.setAttribute('src', src);
+    script.setAttribute('type', 'text/javascript');
+    script.setAttribute('charset', 'utf-8');
+    this.removeFromDOM(id);
+    document.head.appendChild(script);
+  }
+
+  private appendStyleToDOM(id: string, src: string): void {
+    const style = document.createElement('link');
+    style.setAttribute('id', id);
+    style.setAttribute('href', src);
+    style.setAttribute('type', 'text/css');
+    style.setAttribute('rel', 'stylesheet');
+    this.removeFromDOM(id);
+    document.head.appendChild(style);
   }
 
   private removeFromDOM(id: string): void {
