@@ -4,13 +4,17 @@
  *
  * "Weird" solution, but allows us to add Here Maps just once and when we need it
  *
+ * Info about version: In the high load production environment it is recommended to use the full
+ * version of the API in the form 3.1.x.y instead of the evergreen 3.1.
+ * That will ensure the continuity and no disruption when the library version is updated on the CDN.
+ *
  */
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, concat, interval, Observable, of, Subject, throwError } from 'rxjs';
 import { finalize, mergeMap, retry, takeUntil } from 'rxjs/operators';
 
-export const HERE_MAPS_VERSION = '3.0';
+export const HERE_MAPS_VERSION = '3.1.26.0'; // latest
 export const HERE_MAPS_CORE_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-core.js`;
 export const HERE_MAPS_SERVICE_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-service.js`;
 export const HERE_MAPS_UI_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-ui.js`;
