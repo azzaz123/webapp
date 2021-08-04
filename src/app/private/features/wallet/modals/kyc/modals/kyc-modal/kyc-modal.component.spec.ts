@@ -37,7 +37,7 @@ describe('KYCModalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [KYCModule, RouterTestingModule, HttpClientTestingModule],
       declarations: [KYCModalComponent, StepperComponent, StepDirective],
-      providers: [DeviceDetectorService, NgbActiveModal, KYCStoreService],
+      providers: [DeviceDetectorService, NgbActiveModal, KYCStoreService, KYCService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -167,9 +167,9 @@ describe('KYCModalComponent', () => {
       });
     });
 
-    xdescribe('and we are on upload images step', () => {
+    describe('and we are on upload images step', () => {
       beforeEach(() => {
-        jest.spyOn(kycStoreService, 'specifications$', 'get').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS));
+        kycStoreService.specifications = MOCK_KYC_SPECIFICATIONS;
         component.stepper.activeId = 3;
 
         fixture.detectChanges();
@@ -189,7 +189,7 @@ describe('KYCModalComponent', () => {
 
       describe('and the verification end...', () => {
         beforeEach(() => {
-          spyOn(kycService, 'request');
+          spyOn(kycService, 'request').and.returnValue(of(null));
           const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
 
           KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES);
