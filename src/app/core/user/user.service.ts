@@ -55,6 +55,7 @@ export enum USER_TYPE {
 
 export const LOCAL_STORAGE_TRY_PRO_SLOT = 'try-pro-slot';
 export const LOCAL_STORAGE_CLICK_PRO_SECTION = 'click-pro-section';
+export const LOCAL_STORAGE_SUGGEST_PRO_SHOWN = 'suggest-pro-shown';
 
 @Injectable({
   providedIn: 'root',
@@ -385,12 +386,20 @@ export class UserService {
   }
 
   public setClickedProSection(): void {
-    localStorage.setItem(`${this.user.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`, 'true');
+    this.saveLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION, 'true');
     this._isProSectionClicked = true;
   }
 
+  public saveLocalStore(key: string, value: string): void {
+    localStorage.setItem(`${this.user.id}-${key}`, value);
+  }
+
+  public getLocalStore(key: string): string {
+    return localStorage.getItem(`${this.user.id}-${key}`);
+  }
+
   private getStoredIsClickedProSection(user: User): void {
-    this._isProSectionClicked = !!localStorage.getItem(`${user.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
+    this._isProSectionClicked = !!this.getLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION);
   }
 
   public hasStoreLocation(user: User): boolean {
