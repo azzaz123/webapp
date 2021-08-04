@@ -47,17 +47,14 @@ export class ShippingToggleService {
   }
 
   private isAllowedByCategoryShippingRules(categoryId: string): boolean {
-    const categoryAllowed = !this.shippingRules.categoriesNotAllowed.includes(parseInt(categoryId));
-    return categoryAllowed;
+    return !this.shippingRules.categoriesNotAllowed.includes(parseInt(categoryId));
   }
 
   private isAllowedBySubcategoryShippingRules(subcategoryId: string): boolean {
-    const subcategoryAllowed = !this.shippingRules.subcategoriesNotAllowed.includes(parseInt(subcategoryId));
-    return subcategoryAllowed;
+    return !this.shippingRules.subcategoriesNotAllowed.includes(parseInt(subcategoryId));
   }
 
   private isAllowedByPriceShippingRules(price: number): boolean {
-    const priceAllowed = price >= this.shippingRules.priceRangeAllowed.minPrice && price <= this.shippingRules.priceRangeAllowed.maxPrice;
-    return priceAllowed;
+    return price >= this.shippingRules.priceRangeAllowed.minPrice && price <= this.shippingRules.priceRangeAllowed.maxPrice;
   }
 }
