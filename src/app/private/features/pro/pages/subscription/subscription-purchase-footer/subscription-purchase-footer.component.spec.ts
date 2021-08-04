@@ -40,7 +40,7 @@ describe('SubscriptionPurchaseFooterComponent', () => {
       });
     });
     describe('Has no trial available', () => {
-      describe('and not has discount', () => {
+      describe('and has not discount', () => {
         it('should show pay text', () => {
           const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
@@ -124,7 +124,7 @@ describe('SubscriptionPurchaseFooterComponent', () => {
       });
     });
     describe('Has not trial available', () => {
-      describe('and not has discount', () => {
+      describe('and has not discount', () => {
         beforeEach(() => {
           fixture.detectChanges();
         });
