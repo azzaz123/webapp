@@ -31,6 +31,8 @@ export const HERE_MAPS_UI_REF_ID = 'src-here-maps-ui';
 export const HERE_MAPS_UI_CSS_REF_ID = 'src-here-maps-ui-css';
 export const HERE_MAPS_EVENTS_REF_ID = 'src-here-maps-events';
 
+export const GEO_APP_ID = 'RgPrXX1bXt123UgUFc7B';
+export const GEO_APP_CODE = 'HtfX0DsqZ2Y0x-44GfujFA';
 export const GEO_APP_API_KEY = '';
 
 export const CHECK_INTERVAL_MS = 100;
