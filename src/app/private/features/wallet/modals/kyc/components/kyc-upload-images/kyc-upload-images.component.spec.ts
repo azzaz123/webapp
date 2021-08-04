@@ -102,6 +102,108 @@ describe('KYCUploadImagesComponent', () => {
           const banner = de.query(By.directive(BannerComponent));
           expect(banner).toBeFalsy();
         });
+
+        describe('and the user must provide two images of the document', () => {
+          beforeEach(() => {});
+
+          describe('and the images are not shoot', () => {
+            it('should show the front side take photo message', () => {});
+            it('should show the back side take photo message', () => {});
+            it('should NOT show the end verification button', () => {});
+            it('should show the defined images counter as 0', () => {});
+
+            describe('and they shoot an image', () => {
+              it('should show the front side image', () => {});
+              it('should NOT show the front side take photo message', () => {});
+              it('should show the back side take photo message', () => {});
+              it('should update the defined images counter to 1', () => {});
+              it('should NOT show the end verification button', () => {});
+            });
+          });
+
+          describe('and the front side image is already shoot', () => {
+            it('should show the front side image', () => {});
+            it('should show the back side take photo message', () => {});
+            it('should NOT show the end verification button', () => {});
+            it('should show the defined images counter as 1', () => {});
+
+            describe('and they shoot an image', () => {
+              it('should define the back side photo', () => {});
+              it('should NOT show the back side take photo message', () => {});
+              it('should show the end verification button', () => {});
+            });
+
+            describe('and they delete the front side image', () => {
+              it('should NOT show the front side image', () => {});
+              it('should show the front side take photo message', () => {});
+              it('should update the defined images counter to 0', () => {});
+            });
+          });
+
+          describe('and the back side image is already shoot', () => {
+            it('should show the back side image', () => {});
+            it('should show the front side take photo message', () => {});
+            it('should NOT show the end verification button', () => {});
+            it('should show the defined images counter as 1', () => {});
+
+            describe('and they shoot an image', () => {
+              it('should show the front side photo', () => {});
+              it('should NOT show the front side take photo message', () => {});
+              it('should show the end verification button', () => {});
+            });
+
+            describe('and they delete the back side image', () => {
+              it('should NOT show the back side image', () => {});
+              it('should show the back side take photo message', () => {});
+              it('should update the defined images counter to 0', () => {});
+            });
+          });
+
+          describe('and the two images are already shoot', () => {
+            it('should show the end verification button', () => {});
+            it('should let us delete the two images', () => {});
+            it('should show the end verification button', () => {});
+
+            describe('and they delete the front side image', () => {
+              it('should NOT show the front side image', () => {});
+              it('should show the front side take photo message', () => {});
+              it('should update the defined images counter to 1', () => {});
+              it('should NOT show the end verification button', () => {});
+            });
+
+            describe('and they delete the back side image', () => {
+              it('should NOT show the back side image', () => {});
+              it('should show the back side take photo message', () => {});
+              it('should update the defined images counter to 1', () => {});
+              it('should NOT show the end verification button', () => {});
+            });
+
+            describe('and they delete the two images', () => {
+              it('should NOT show the front side image', () => {});
+              it('should NOT show the back side image', () => {});
+
+              it('should show the front side take photo message', () => {});
+              it('should show the back side take photo message', () => {});
+
+              it('should update the defined images counter to 0', () => {});
+              it('should NOT show the end verification button', () => {});
+            });
+          });
+        });
+
+        describe('and the user must provide ONLY one image of the document', () => {
+          describe('and they shoot an image', () => {
+            it('should show the front side photo', () => {});
+            it('should NOT show the front side take photo message', () => {});
+            it('should show the end verification button', () => {});
+          });
+
+          describe('and they delete the front side image', () => {
+            it('should NOT show the front side image', () => {});
+            it('should update the defined images counter to 0', () => {});
+            it('should NOT show the end verification button', () => {});
+          });
+        });
       });
 
       describe('and the user denied the permission', () => {
