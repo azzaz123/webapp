@@ -1,12 +1,7 @@
 @import '~style/common';
 
 .CancelBubbleComponent {
-  cursor: pointer;
-  border-radius: 21.5px;
-  background: $blue-grey-6;
-  border: 1px solid;
-  border-image-slice: 3;
-  border-image-source: linear-gradient(#bacc5b, #25c2a3, #13c1ac);
+  font: $blue-grey-1;
   &__rounded_icon {
     height: 20px;
     width: 20px;
@@ -15,4 +10,25 @@
       fill: $walla-main;
     }
   }
+}
+
+.rounded-gradient {
+  border-radius: 21.5px;
+  border-width: 1px;
+  border: 0;
+  background: linear-gradient(5deg, #bacc5b, #25c2a3, $walla-main);
+  z-index: 1;
+  position: relative;
+}
+.rounded-gradient:before {
+  content: '';
+  display: block;
+  height: calc(100% - 2px);
+  width: calc(100% - 2px);
+  background: $blue-grey-6;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  border-radius: 15.5px;
+  z-index: -1;
 }
