@@ -11,8 +11,8 @@
       *ngIf="item.itemType === itemTypes.CARS"
       [item]="item"
       [isReactivation]="isReactivation"
-      (onValidationError)="onValidationError()"
-      (onFormChanged)="onFormChanged($event)"
+      (validationError)="validationError()"
+      (formChanged)="formChanged($event)"
       [urgentPrice]="urgentPrice"
       (locationSelected)="getUrgentPrice(100)"
     >
@@ -21,8 +21,8 @@
       *ngIf="item.itemType === itemTypes.REAL_ESTATE"
       [item]="item"
       [isReactivation]="isReactivation"
-      (onValidationError)="onValidationError()"
-      (onFormChanged)="onFormChanged($event)"
+      (validationError)="validationError()"
+      (formChanged)="formChanged($event)"
       [urgentPrice]="urgentPrice"
       (locationSelected)="getUrgentPrice(13000)"
     >
@@ -31,10 +31,10 @@
       *ngIf="item.itemType === itemTypes.CONSUMER_GOODS"
       [item]="item"
       [isReactivation]="isReactivation"
-      (onValidationError)="onValidationError()"
-      (onFormChanged)="onFormChanged($event)"
+      (validationError)="validationError()"
+      (formChanged)="formChanged($event)"
       [urgentPrice]="urgentPrice"
-      (onCategorySelect)="getUrgentPrice($event)"
+      (categorySelect)="getUrgentPrice($event)"
       (locationSelected)="getUrgentPrice(categoryId)"
     >
     </tsl-upload-product>

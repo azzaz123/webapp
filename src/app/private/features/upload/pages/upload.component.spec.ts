@@ -115,13 +115,13 @@ describe('UploadComponent', () => {
     });
   });
 
-  describe('onValidationError', () => {
+  describe('validationError', () => {
     it('should set scrollTop to 0', () => {
       component.scrollPanel = {
         nativeElement: {},
       };
 
-      component.onValidationError();
+      component.validationError();
 
       expect(component.scrollPanel.nativeElement.scrollTop).toBe(0);
     });

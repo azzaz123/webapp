@@ -17,12 +17,14 @@ import { EditTrackingEventService } from '../../core/services/edit-tracking-even
   styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent implements OnInit, CanComponentDeactivate {
-  public item: Item;
   @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
-  private hasNotSavedChanges: boolean;
+
+  public item: Item;
   public urgentPrice: string = null;
   public itemTypes: any = ITEM_TYPES;
   public isReactivation = false;
+
+  private hasNotSavedChanges: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,7 +54,7 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
     });
   }
 
-  public onValidationError() {
+  public validationError() {
     this.scrollPanel.nativeElement.scrollTop = 0;
   }
 
@@ -67,7 +69,7 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
     return modalRef.result;
   }
 
-  public onFormChanged(notSavedChanges: boolean) {
+  public formChanged(notSavedChanges: boolean) {
     this.hasNotSavedChanges = notSavedChanges;
   }
 

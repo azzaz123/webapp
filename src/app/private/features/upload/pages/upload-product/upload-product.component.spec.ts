@@ -9,6 +9,10 @@ import {
   MOCK_ITEM_CELLPHONES_NO_SUBCATEGORY,
   MOCK_ITEM_RESPONSE_CONTENT,
   UPLOAD_FORM_ITEM_VALUES,
+  ITEM_CATEGORY_ID,
+  ITEM_DELIVERY_INFO,
+  MOCK_ITEM,
+  MOCK_ITEM_FASHION,
 } from '@fixtures/item.fixtures.spec';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
@@ -30,7 +34,6 @@ import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.
 import { ErrorsService } from '@core/errors/errors.service';
 import { User } from '@core/user/user';
 import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
-import { ITEM_CATEGORY_ID, ITEM_DELIVERY_INFO, MOCK_ITEM, MOCK_ITEM_FASHION } from '@fixtures/item.fixtures.spec';
 import { UserLocation } from '@core/user/user-response.interface';
 import { GeneralSuggestionsService } from '../../core/services/general-suggestions/general-suggestions.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -599,7 +602,7 @@ describe('UploadProductComponent', () => {
 
     beforeEach(() => {
       component.item = MOCK_ITEM;
-      component.onFormChanged.subscribe((value: boolean) => {
+      component.formChanged.subscribe((value: boolean) => {
         formChanged = value;
       });
 
@@ -1071,7 +1074,7 @@ describe('UploadProductComponent', () => {
 
     it('should emit form changed event', () => {
       let formChanged = true;
-      component.onFormChanged.subscribe((value: boolean) => {
+      component.formChanged.subscribe((value: boolean) => {
         formChanged = value;
       });
 
@@ -1254,7 +1257,7 @@ describe('UploadProductComponent', () => {
     let categoryId: number;
 
     it('should emit category select event', () => {
-      component.onCategorySelect.subscribe((s: number) => {
+      component.categorySelect.subscribe((s: number) => {
         categoryId = s;
       });
 
