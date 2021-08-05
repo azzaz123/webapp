@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_MEDIA_STREAM } from '@fixtures/media-stream.fixtures.spec';
@@ -22,9 +22,22 @@ import { BehaviorSubject, throwError } from 'rxjs';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
 import { KYCUploadImagesComponent } from './kyc-upload-images.component';
 
+@Component({
+  selector: 'tsl-test-wrapper',
+  template: `
+    <tsl-kyc-upload-images [imagesNeeded]="imagesNeeded" [takeImageMethod]="takeImageMethod" [images]="images"></tsl-kyc-upload-images>
+  `,
+})
+class TestWrapperComponent {
+  @Input() imagesNeeded: KYCImagesNeeded;
+  @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
+  @Input() images: KYCImages;
+}
+
 describe('KYCUploadImagesComponent', () => {
   let component: KYCUploadImagesComponent;
-  let fixture: ComponentFixture<KYCUploadImagesComponent>;
+  let testComponent: TestWrapperComponent;
+  let fixture: ComponentFixture<TestWrapperComponent>;
   let de: DebugElement;
   let askPermissionsService: AskPermissionsService;
 
@@ -32,8 +45,6 @@ describe('KYCUploadImagesComponent', () => {
     MOCK_DEVICE_PERMISSIONS
   );
   const cameraResponseSubjectMock: BehaviorSubject<any> = new BehaviorSubject<any>(MOCK_MEDIA_STREAM);
-  const imagesSubjectMock: BehaviorSubject<KYCImages> = new BehaviorSubject<KYCImages>(MOCK_EMPTY_KYC_IMAGES);
-  const imagesNeededSubjectMock: BehaviorSubject<KYCImagesNeeded> = new BehaviorSubject<KYCImagesNeeded>(2);
 
   const takeFrontSideImageSelector = '#takeFrontSideImage';
   const takeBackSideImageSelector = '#takeBackSideImage';
@@ -43,11 +54,12 @@ describe('KYCUploadImagesComponent', () => {
   const deleteFrontSideImageSelector = '#deleteFrontSideImage';
   const backSideImageSelector = '#backSideImage';
   const deleteBackSideImageSelector = '#deleteBackSideImage';
+  const backButtonSelector = '.KYCUploadImages__back';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgbAlertModule],
-      declarations: [KYCUploadImagesComponent, BannerComponent, SvgIconComponent, ButtonComponent],
+      declarations: [TestWrapperComponent, KYCUploadImagesComponent, BannerComponent, SvgIconComponent, ButtonComponent],
       providers: [
         {
           provide: AskPermissionsService,
@@ -65,12 +77,12 @@ describe('KYCUploadImagesComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KYCUploadImagesComponent);
-    de = fixture.debugElement;
-    component = fixture.componentInstance;
+    fixture = TestBed.createComponent(TestWrapperComponent);
     askPermissionsService = TestBed.inject(AskPermissionsService);
-    component.images = imagesSubjectMock.value;
-    component.imagesNeeded = imagesNeededSubjectMock.value;
+    de = fixture.debugElement;
+    component = de.query(By.directive(KYCUploadImagesComponent)).componentInstance;
+    testComponent = fixture.componentInstance;
+    testComponent.images = MOCK_EMPTY_KYC_IMAGES;
   });
 
   it('should create', () => {
@@ -79,7 +91,7 @@ describe('KYCUploadImagesComponent', () => {
 
   describe('when the user selects the shoot image method', () => {
     beforeEach(() => {
-      component.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
+      testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
     });
 
     describe(`and the user's browser supports the API`, () => {
@@ -123,17 +135,15 @@ describe('KYCUploadImagesComponent', () => {
 
         describe('and the user must provide two images of the document', () => {
           beforeEach(() => {
-            imagesNeededSubjectMock.next(2);
+            testComponent.imagesNeeded = 2;
           });
 
           describe('and the images are not shoot', () => {
             beforeEach(() => {
-              imagesSubjectMock.next(MOCK_EMPTY_KYC_IMAGES);
+              testComponent.images = MOCK_EMPTY_KYC_IMAGES;
 
               fixture.detectChanges();
             });
-
-            it('should show the front side image as the active one', () => {});
 
             it('should show the front side take photo message', () => {
               const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
@@ -190,12 +200,10 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and ONLY the front side image is already shoot', () => {
             beforeEach(() => {
-              imagesSubjectMock.next(MOCK_KYC_IMAGES_FRONT_DEFINED);
+              testComponent.images = MOCK_KYC_IMAGES_FRONT_DEFINED;
 
               fixture.detectChanges();
             });
-
-            it('should show the back side image as the active one', () => {});
 
             it('should show the front side image', () => {
               const frontSideImage = de.query(By.css(frontSideImageSelector));
@@ -270,12 +278,10 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and ONLY the back side image is already shoot', () => {
             beforeEach(() => {
-              imagesSubjectMock.next(MOCK_KYC_IMAGES_BACK_DEFINED);
+              testComponent.images = MOCK_KYC_IMAGES_BACK_DEFINED;
 
               fixture.detectChanges();
             });
-
-            it('should show the front side image as the active one', () => {});
 
             it('should show the back side image', () => {
               const backSideImage = de.query(By.css(backSideImageSelector));
@@ -350,12 +356,10 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and the two images are already shoot', () => {
             beforeEach(() => {
-              imagesSubjectMock.next(MOCK_KYC_IMAGES);
+              testComponent.images = MOCK_KYC_IMAGES;
 
               fixture.detectChanges();
             });
-
-            it('should not show any image as the active one', () => {});
 
             it('should NOT show the counter images button', () => {
               const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector));
@@ -397,17 +401,15 @@ describe('KYCUploadImagesComponent', () => {
 
         describe('and the user must provide ONLY one image of the document', () => {
           beforeEach(() => {
-            imagesNeededSubjectMock.next(1);
+            testComponent.imagesNeeded = 1;
           });
 
           describe('and the front side image is NOT shoot', () => {
             beforeEach(() => {
-              imagesSubjectMock.next(MOCK_EMPTY_KYC_IMAGES);
+              testComponent.images = MOCK_EMPTY_KYC_IMAGES;
 
               fixture.detectChanges();
             });
-
-            it('should show the front side image as the active one', () => {});
 
             it('should show the front side take photo message', () => {
               const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
@@ -463,12 +465,10 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and the front side image is already shoot', () => {
             beforeEach(() => {
-              imagesSubjectMock.next(MOCK_KYC_IMAGES_FRONT_DEFINED);
+              testComponent.images = MOCK_KYC_IMAGES_FRONT_DEFINED;
 
               fixture.detectChanges();
             });
-
-            it('should not show any image as the active one', () => {});
 
             it('should NOT show the front side take photo message', () => {
               const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
@@ -594,7 +594,7 @@ describe('KYCUploadImagesComponent', () => {
   describe('when the user selects the upload image method', () => {
     beforeEach(() => {
       spyOn(askPermissionsService, 'askCameraPermissions');
-      component.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
+      testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
 
       fixture.detectChanges();
     });
@@ -604,10 +604,33 @@ describe('KYCUploadImagesComponent', () => {
     });
   });
 
+  describe('when the user clicks on the back button...', () => {
+    beforeEach(() => {
+      spyOn(component.goBack, 'emit');
+      spyOn(component.imagesChange, 'emit');
+      devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.ACCEPTED });
+
+      fixture.detectChanges();
+      de.query(By.css(backButtonSelector)).nativeElement.click();
+    });
+
+    it('should reset the images value', () => {
+      expect(component.imagesChange.emit).toHaveBeenCalledWith({
+        ...component.images,
+        frontSide: null,
+        backSide: null,
+      });
+    });
+
+    it('should go back', () => {
+      expect(component.goBack.emit).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('ngOnDestroy', () => {
     describe('and the user camera is active', () => {
       beforeEach(() => {
-        component.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
+        testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
         cameraResponseSubjectMock.next(MOCK_MEDIA_STREAM);
         devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.ACCEPTED });
 
