@@ -12,7 +12,7 @@
 
   <tsl-search-error-layout *ngIf="searchWithoutResults$ | async"></tsl-search-error-layout>
 
-  <tsl-search-layout *ngIf="(searchWithoutResults$ | async) === (false || null || undefined)">
+  <tsl-search-layout *ngIf="(searchWithoutResults$ | async) !== true">
     <div top class="d-block h-100 position-relative">
       <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search1"></tsl-sky>
     </div>
