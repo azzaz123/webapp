@@ -138,7 +138,7 @@ describe('KYCUploadImagesComponent', () => {
             testComponent.imagesNeeded = 2;
           });
 
-          describe('and the images are not shoot', () => {
+          describe('and the images are NOT shoot', () => {
             beforeEach(() => {
               testComponent.images = MOCK_EMPTY_KYC_IMAGES;
 
@@ -146,30 +146,23 @@ describe('KYCUploadImagesComponent', () => {
             });
 
             it('should show the front side take photo message', () => {
-              const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
-              expect(takeFrontSideImage).toBeTruthy();
+              takeFrontSideImageInDOM(true);
             });
 
             it('should NOT show the front side image', () => {
-              const frontSideImageStyles = de.query(By.css(frontSideImageSelector)).classes;
-
-              expect(frontSideImageStyles).toHaveProperty('d-none', true);
+              frontSideImageInDOM(false);
             });
 
             it('should show the back side take photo message', () => {
-              const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
-              expect(takeBackSideImage).toBeTruthy();
+              takeBackSideImageInDOM(true);
             });
 
             it('should NOT show the back side image', () => {
-              const backSideImageStyles = de.query(By.css(backSideImageSelector)).classes;
-
-              expect(backSideImageStyles).toHaveProperty('d-none', true);
+              backSideImageInDOM(false);
             });
 
             it('should NOT show the end verification button', () => {
-              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
-              expect(endVerificationButton).toBeFalsy();
+              verificationButtonInDOM(false);
             });
 
             it('should show the defined images counter as 0', () => {
@@ -210,34 +203,23 @@ describe('KYCUploadImagesComponent', () => {
             });
 
             it('should show the front side image', () => {
-              const frontSideImage = de.query(By.css(frontSideImageSelector));
-
-              expect(frontSideImage).toBeTruthy();
-              expect(frontSideImage.classes).not.toHaveProperty('d-none', true);
+              frontSideImageInDOM(true);
             });
 
             it('should NOT show the front side take photo message', () => {
-              const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
-
-              expect(takeFrontSideImage).toBeFalsy();
+              takeFrontSideImageInDOM(false);
             });
 
             it('should NOT show the back side image', () => {
-              const backSideImageStyles = de.query(By.css(backSideImageSelector)).classes;
-
-              expect(backSideImageStyles).toHaveProperty('d-none', true);
+              backSideImageInDOM(false);
             });
 
             it('should show the back side take photo message', () => {
-              const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
-
-              expect(takeBackSideImage).toBeTruthy();
+              takeBackSideImageInDOM(true);
             });
 
             it('should NOT show the end verification button', () => {
-              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
-
-              expect(endVerificationButton).toBeFalsy();
+              verificationButtonInDOM(false);
             });
 
             it('should show the defined images counter as 1', () => {
@@ -292,34 +274,23 @@ describe('KYCUploadImagesComponent', () => {
             });
 
             it('should show the back side image', () => {
-              const backSideImage = de.query(By.css(backSideImageSelector));
-
-              expect(backSideImage).toBeTruthy();
-              expect(backSideImage.classes).not.toHaveProperty('d-none', true);
+              backSideImageInDOM(true);
             });
 
             it('should NOT show the back side take photo message', () => {
-              const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
-
-              expect(takeBackSideImage).toBeFalsy();
+              takeBackSideImageInDOM(false);
             });
 
             it('should NOT show the front side image', () => {
-              const frontSideImageStyles = de.query(By.css(frontSideImageSelector)).classes;
-
-              expect(frontSideImageStyles).toHaveProperty('d-none', true);
+              frontSideImageInDOM(false);
             });
 
             it('should show the front side take photo message', () => {
-              const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
-
-              expect(takeFrontSideImage).toBeTruthy();
+              takeFrontSideImageInDOM(true);
             });
 
             it('should NOT show the end verification button', () => {
-              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
-
-              expect(endVerificationButton).toBeFalsy();
+              verificationButtonInDOM(false);
             });
 
             it('should show the defined images counter as 1', () => {
@@ -379,8 +350,7 @@ describe('KYCUploadImagesComponent', () => {
             });
 
             it('should show the end verification button', () => {
-              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
-              expect(endVerificationButton).toBeTruthy();
+              verificationButtonInDOM(true);
             });
 
             describe('and they delete the front side image', () => {
@@ -424,23 +394,15 @@ describe('KYCUploadImagesComponent', () => {
             });
 
             it('should show the front side take photo message', () => {
-              const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
-
-              expect(takeFrontSideImage).toBeTruthy();
+              takeFrontSideImageInDOM(true);
             });
 
             it('should NOT show the front side image', () => {
-              const frontSideImageStyles = de.query(By.css(frontSideImageSelector)).classes;
-
-              expect(frontSideImageStyles).toHaveProperty('d-none', true);
+              frontSideImageInDOM(false);
             });
 
             it('should NOT render the back side image content', () => {
-              const backSideImage = de.query(By.css(backSideImageSelector));
-              const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
-
-              expect(backSideImage).toBeFalsy();
-              expect(takeBackSideImage).toBeFalsy();
+              backSideImageContentInNOTinDOM();
             });
 
             it('should show the defined images counter as 0', () => {
@@ -450,8 +412,7 @@ describe('KYCUploadImagesComponent', () => {
             });
 
             it('should NOT show the end verification button', () => {
-              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
-              expect(endVerificationButton).toBeFalsy();
+              verificationButtonInDOM(false);
             });
 
             describe('and they shoot an image', () => {
@@ -487,24 +448,15 @@ describe('KYCUploadImagesComponent', () => {
             });
 
             it('should NOT show the front side take photo message', () => {
-              const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
-
-              expect(takeFrontSideImage).toBeFalsy();
+              takeFrontSideImageInDOM(false);
             });
 
             it('should show the front side image', () => {
-              const frontSideImage = de.query(By.css(frontSideImageSelector));
-
-              expect(frontSideImage).toBeTruthy();
-              expect(frontSideImage.classes).not.toHaveProperty('d-none', true);
+              frontSideImageInDOM(true);
             });
 
             it('should NOT render the back side image content', () => {
-              const backSideImage = de.query(By.css(backSideImageSelector));
-              const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
-
-              expect(backSideImage).toBeFalsy();
-              expect(takeBackSideImage).toBeFalsy();
+              backSideImageContentInNOTinDOM();
             });
 
             it('should NOT show the counter images button', () => {
@@ -513,8 +465,7 @@ describe('KYCUploadImagesComponent', () => {
             });
 
             it('should show the end verification button', () => {
-              const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
-              expect(endVerificationButton).toBeTruthy();
+              verificationButtonInDOM(true);
             });
 
             describe('and they delete the front side image', () => {
@@ -615,7 +566,7 @@ describe('KYCUploadImagesComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should not request camera access', () => {
+    it('should NOT request camera access', () => {
       expect(askPermissionsService.askCameraPermissions).not.toHaveBeenCalled();
     });
   });
@@ -660,4 +611,61 @@ describe('KYCUploadImagesComponent', () => {
       });
     });
   });
+
+  function verificationButtonInDOM(expectIsDefined: boolean): void {
+    const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
+    if (expectIsDefined) {
+      expect(endVerificationButton).toBeTruthy();
+    } else {
+      expect(endVerificationButton).toBeFalsy();
+    }
+  }
+
+  function takeFrontSideImageInDOM(expectIsDefined: boolean): void {
+    const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
+
+    if (expectIsDefined) {
+      expect(takeFrontSideImage).toBeTruthy();
+    } else {
+      expect(takeFrontSideImage).toBeFalsy();
+    }
+  }
+
+  function frontSideImageInDOM(expectIsDefined: boolean): void {
+    const frontSideImage = de.query(By.css(frontSideImageSelector)).classes;
+
+    if (expectIsDefined) {
+      expect(frontSideImage).not.toHaveProperty('d-none', true);
+    } else {
+      expect(frontSideImage).toHaveProperty('d-none', true);
+    }
+  }
+
+  function takeBackSideImageInDOM(expectIsDefined: boolean): void {
+    const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
+
+    if (expectIsDefined) {
+      expect(takeBackSideImage).toBeTruthy();
+    } else {
+      expect(takeBackSideImage).toBeFalsy();
+    }
+  }
+
+  function backSideImageInDOM(expectIsDefined: boolean): void {
+    const backSideImage = de.query(By.css(backSideImageSelector)).classes;
+
+    if (expectIsDefined) {
+      expect(backSideImage).not.toHaveProperty('d-none', true);
+    } else {
+      expect(backSideImage).toHaveProperty('d-none', true);
+    }
+  }
+
+  function backSideImageContentInNOTinDOM(): void {
+    const backSideImage = de.query(By.css(backSideImageSelector));
+    const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
+
+    expect(backSideImage).toBeFalsy();
+    expect(takeBackSideImage).toBeFalsy();
+  }
 });
