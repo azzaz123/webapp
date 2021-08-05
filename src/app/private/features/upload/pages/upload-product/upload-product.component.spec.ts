@@ -1257,7 +1257,7 @@ describe('UploadProductComponent', () => {
     let categoryId: number;
 
     it('should emit category select event', () => {
-      component.categorySelect.subscribe((s: number) => {
+      component.categorySelected.subscribe((s: number) => {
         categoryId = s;
       });
 

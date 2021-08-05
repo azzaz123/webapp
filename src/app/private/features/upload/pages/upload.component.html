@@ -20,7 +20,7 @@
       [categoryId]="categoryId"
       [urgentPrice]="urgentPrice"
       (validationError)="validationError()"
-      (categorySelect)="getUrgentPrice($event)"
+      (categorySelected)="getUrgentPrice($event)"
       (locationSelected)="getUrgentPrice(categoryId)"
     >
     </tsl-upload-product>
