@@ -8,7 +8,7 @@ import { MultiSelectValue } from '@shared/form/components/multi-select-form/inte
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { fromEvent, Observable, of } from 'rxjs';
-import { debounceTime, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, switchMap } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
   selector: 'tsl-suggester-input',
@@ -62,8 +62,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
       this.showInvalidMessage.emit(!this.isValid);
       this.notShowOptions();
     }
-    if (this.model && !this.model.includes('#')) {
-      // check length here
+    if (this.model.length >= 1 && !this.model.includes('#')) {
       this.model = `#${this.model}`;
     }
   }
@@ -89,6 +88,9 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public detectTitleKeyboardChanges(): void {
     fromEvent(this.hashtagSuggester.nativeElement, 'keyup')
       .pipe(
+        filter((key: KeyboardEvent) => {
+          return key.key !== 'Escape';
+        }),
         debounceTime(750),
         switchMap(() => {
           this.suggestions = this.value;
