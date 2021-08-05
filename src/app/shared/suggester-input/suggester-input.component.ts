@@ -8,7 +8,7 @@ import { MultiSelectValue } from '@shared/form/components/multi-select-form/inte
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { fromEvent, Observable, of } from 'rxjs';
-import { debounceTime, map, switchMap, take } from 'rxjs/operators';
+import { debounceTime, switchMap } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
   selector: 'tsl-suggester-input',
@@ -38,6 +38,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public isClickOutside: boolean = false;
   public isValid: boolean = true;
   public hashtagPlaceholder: string = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
+  public showOptions: boolean;
   private extendedOptions: MultiSelectFormOption[];
 
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
@@ -53,12 +54,27 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     });
   }
 
+  public keyUp(event): void {
+    if (event.key === 'Escape') {
+      this.notShowOptions();
+    }
+    if (!this.isValidKey()) {
+      this.showInvalidMessage.emit(!this.isValid);
+      this.notShowOptions();
+    }
+    if (this.model && !this.model.includes('#')) {
+      // check length here
+      this.model = `#${this.model}`;
+    }
+  }
+
   public focus() {
     this.hashtagSuggester.nativeElement.placeholder = '#';
   }
 
   public blur() {
     this.hashtagSuggester.nativeElement.placeholder = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
+    this.notShowOptions();
   }
 
   public writeValue(value): void {
@@ -76,15 +92,9 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
         debounceTime(750),
         switchMap(() => {
           this.suggestions = this.value;
-          if (!this.isValidKey()) {
-            this.showInvalidMessage.emit(!this.isValid);
-            return of([]);
-          } else {
-            if (this.model && !this.model.includes('#')) {
-              this.model = `#${this.model}`;
-            }
+          if (this.isValid) {
             return this.getHashtagSuggesters();
-          }
+          } else return of([]);
         })
       )
       .subscribe((options: any) => {
@@ -96,19 +106,13 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
       });
   }
 
-  public showOptions(): boolean {
-    // when not click outside
-    // when not clicking keyCode
-    // when input not lose focus
-    // when key isValid
-    return !!this.options && this.isValidKey();
+  private notShowOptions(): void {
+    this.options = [];
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag>> {
     let newModel = this.model.substring(1);
     return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
-    /*  let newModel = this.model.substring(1);
-    return of({ list: [], paginationParameter: '10' }); */
   }
 
   private mapHashtagSuggestersToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
@@ -116,12 +120,14 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     if (!list.length && !!this.model) {
       return this.createHashtagSuggesterOption();
     }
-    let slicedList = list.slice(0, 3);
+    let slicedList = list.slice(0, 4);
     let options = slicedList.map((hashtag: Hashtag) => {
       return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     });
-    if (options[0].label !== this.model) {
-      return [...this.createHashtagSuggesterOption(), ...options];
+    if (this.model.length >= 2 && options[0].label !== this.model) {
+      console.log('mm', options[0].label, this.model);
+      let newOptions = options.slice(0, 3);
+      return [...this.createHashtagSuggesterOption(), ...newOptions];
     } else return options;
   }
 

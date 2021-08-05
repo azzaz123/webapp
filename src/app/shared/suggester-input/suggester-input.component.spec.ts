@@ -95,16 +95,12 @@ describe('SuggesterInputComponent', () => {
       it('should have the # symbol infront of the value entered by the user', fakeAsync(() => {
         spyOn(component, 'detectTitleKeyboardChanges').and.callFake(() => {});
         inputElement.nativeElement.value = 'sss';
-        inputElement.nativeElement.dispatchEvent(
-          new Event('input', {
-            bubbles: true,
-            cancelable: true,
-          })
-        );
-        // inputElement.triggerEventHandler('keyup', {});
+        inputElement.nativeElement.dispatchEvent(new Event('input'));
+        inputElement.triggerEventHandler('keyup', {});
         // component.detectTitleKeyboardChanges();
         tick(800);
         fixture.detectChanges();
+        expect(component.model).toBe('#sss');
         expect(inputElement.nativeElement.value).toBe('...');
         /*  fixture.whenStable().then(() => {
           expect(component.model).toBe('...');
