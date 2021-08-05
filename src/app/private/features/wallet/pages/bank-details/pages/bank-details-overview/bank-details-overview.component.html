@@ -24,12 +24,7 @@
           id="creditCard"
         >
         </tsl-payments-card-info>
-        <tsl-add-credit-card
-          *ngIf="(creditCard$ | async) === (false || null || undefined)"
-          class="col"
-          (click)="redirect(CREDIT_CARD_FORM_LINK)"
-          id="addCreditCard"
-        >
+        <tsl-add-credit-card *ngIf="!(creditCard$ | async)" class="col" (click)="redirect(CREDIT_CARD_FORM_LINK)" id="addCreditCard">
           <span i18n="@@banking_data_menu_add_credit_card">Add credit or debit card</span>
         </tsl-add-credit-card>
       </div>
@@ -52,12 +47,7 @@
           id="bankAccount"
         >
         </tsl-payments-card-info>
-        <tsl-add-credit-card
-          *ngIf="(bankAccount$ | async) === (false || null || undefined)!"
-          (click)="redirect(BANK_ACCOUNT_FORM_LINK)"
-          class="col"
-          id="addBankAccount"
-        >
+        <tsl-add-credit-card *ngIf="!(bankAccount$ | async)" (click)="redirect(BANK_ACCOUNT_FORM_LINK)" class="col" id="addBankAccount">
           <span i18n="@@banking_data_menu_add_bank_account">Add bank account</span>
         </tsl-add-credit-card>
       </div>
