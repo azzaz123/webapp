@@ -1,76 +1,86 @@
-<div class="Search"
+<div
+  class="Search"
   tslAdSlotGroup
   tslInfiniteScroll
   [infiniteScrollDisabled]="(infiniteScrollDisabled$ | async) || (isLoadingPaginationResults$ | async)"
-  (scrolled)="scrolled()">
+  (scrolled)="scrolled()"
+>
+  <div class="Search__filters w-100" [class.Search__filters--opened]="filterOpened">
+    <tsl-filters-wrapper (filterOpened)="handleFilterOpened($event)"></tsl-filters-wrapper>
+    <tsl-sort-filter [value]="sortBy$ | async"></tsl-sort-filter>
+  </div>
 
-    <div class="Search__filters w-100" [class.Search__filters--opened]="filterOpened">
-      <tsl-filters-wrapper (filterOpened)="handleFilterOpened($event)"></tsl-filters-wrapper>
-      <tsl-sort-filter [value]="sortBy$ | async"></tsl-sort-filter>
+  <tsl-search-error-layout *ngIf="searchWithoutResults$ | async"></tsl-search-error-layout>
+
+  <tsl-search-layout *ngIf="(searchWithoutResults$ | async) === (false || null || undefined)">
+    <div top class="d-block h-100 position-relative">
+      <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search1"></tsl-sky>
     </div>
-
-    <tsl-search-error-layout *ngIf="searchWithoutResults$ | async"></tsl-search-error-layout>
-
-    <tsl-search-layout *ngIf="!(searchWithoutResults$ | async)">
-      <div top class="d-block h-100 position-relative">
-        <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search1"></tsl-sky>
-      </div>
-      <div right class="d-flex flex-column h-100">
-        <ng-container *ngIf="device === DevicesType.DESKTOP">
-          <div class="Search__sky w-100 mb-3">
-            <div class="Search__sky-wrapper position-sticky">
-              <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search2r"></tsl-sky>
-            </div>
+    <div right class="d-flex flex-column h-100">
+      <ng-container *ngIf="device === DevicesType.DESKTOP">
+        <div class="Search__sky w-100 mb-3">
+          <div class="Search__sky-wrapper position-sticky">
+            <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search2r"></tsl-sky>
           </div>
-          <div class="Search__sky w-100">
-            <div class="Search__sky-wrapper position-sticky">
-              <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search3r"></tsl-sky>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-      <ng-container main>
-        <div class="Search__filters__bubble d-flex position-sticky justify-content-center" *ngIf="showInfoBubble">
-          <tsl-info-bubble class="position-relative mt-2">{{ infoBubbleText }}</tsl-info-bubble>
         </div>
-          <tsl-public-item-card-list
-            [items]="items$ | async"
-            [isLoading]="isLoadingResults$ | async"
-            [showPlaceholder]="showPlaceholder$ | async"
-            [columnsConfig]="listColumnsConfig$ | async"
-            [cardType]="listCardType$ | async"
-            [slotsConfig]="slotsConfig"
-            (clickedItemAndIndex)="trackClickItemCardEvent($event)"
-            (toggleFavouriteEvent)="trackFavouriteToggleEvent($event)"
-          >
-          <ng-container *ngIf="searchWithKeyword$ | async">
-            <ng-template #slotTemplate let-index>
-              <tsl-sky-shopping *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlotContainer]="adSlotShoppingContainer" [adShoppingPageOptions]="adShoppingNativeListPageOptions" [index]="index" [cardType]="listCardType$ | async"></tsl-sky-shopping>
-            </ng-template>
-          </ng-container>
-          <ng-container *ngxPermissionsOnly="PERMISSIONS.showAds">
-            <ng-template #inlineSlotTemplate>
-              <tsl-sky *ngIf="device === DevicesType.MOBILE" [adSlot]="adSlots.search2r"></tsl-sky>
-            </ng-template>
-          </ng-container>
-        </tsl-public-item-card-list>
-
-        <div class="Search__spinner d-flex align-items-center justify-content-center py-5" *ngIf="(isLoadingPaginationResults$ | async)">
-          <img width="50" height="50" src="/assets/images/spinner.gif" />
-        </div>
-
-        <ng-container *ngIf="infiniteScrollDisabled$ | async" >
-          <div class="row justify-content-center mt-4" *ngIf="hasMoreItems$ | async">
-            <tsl-button id="btn-load-more" (click)="loadMoreProducts()" i18n="@@web_search_view_more_products">View more products</tsl-button>
-          </div>
-          <div *ngIf="device === DevicesType.DESKTOP && (searchWithKeyword$ | async)" class="row justify-content-center my-4">
-            <tsl-sky-slot-group-shopping *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration" [adShoppingPageOptions]="adShoppingGroupPageOptions"></tsl-sky-slot-group-shopping>
-          </div>
-          <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
+        <div class="Search__sky w-100">
+          <div class="Search__sky-wrapper position-sticky">
             <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search3r"></tsl-sky>
           </div>
-        </ng-container>
+        </div>
       </ng-container>
-    </tsl-search-layout>
+    </div>
+    <ng-container main>
+      <div class="Search__filters__bubble d-flex position-sticky justify-content-center" *ngIf="showInfoBubble">
+        <tsl-info-bubble class="position-relative mt-2">{{ infoBubbleText }}</tsl-info-bubble>
+      </div>
+      <tsl-public-item-card-list
+        [items]="items$ | async"
+        [isLoading]="isLoadingResults$ | async"
+        [showPlaceholder]="showPlaceholder$ | async"
+        [columnsConfig]="listColumnsConfig$ | async"
+        [cardType]="listCardType$ | async"
+        [slotsConfig]="slotsConfig"
+        (clickedItemAndIndex)="trackClickItemCardEvent($event)"
+        (toggleFavouriteEvent)="trackFavouriteToggleEvent($event)"
+      >
+        <ng-container *ngIf="searchWithKeyword$ | async">
+          <ng-template #slotTemplate let-index>
+            <tsl-sky-shopping
+              *ngxPermissionsOnly="PERMISSIONS.showAds"
+              [adSlotContainer]="adSlotShoppingContainer"
+              [adShoppingPageOptions]="adShoppingNativeListPageOptions"
+              [index]="index"
+              [cardType]="listCardType$ | async"
+            ></tsl-sky-shopping>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngxPermissionsOnly="PERMISSIONS.showAds">
+          <ng-template #inlineSlotTemplate>
+            <tsl-sky *ngIf="device === DevicesType.MOBILE" [adSlot]="adSlots.search2r"></tsl-sky>
+          </ng-template>
+        </ng-container>
+      </tsl-public-item-card-list>
 
+      <div class="Search__spinner d-flex align-items-center justify-content-center py-5" *ngIf="isLoadingPaginationResults$ | async">
+        <img width="50" height="50" src="/assets/images/spinner.gif" />
+      </div>
+
+      <ng-container *ngIf="infiniteScrollDisabled$ | async">
+        <div class="row justify-content-center mt-4" *ngIf="hasMoreItems$ | async">
+          <tsl-button id="btn-load-more" (click)="loadMoreProducts()" i18n="@@web_search_view_more_products">View more products</tsl-button>
+        </div>
+        <div *ngIf="device === DevicesType.DESKTOP && (searchWithKeyword$ | async)" class="row justify-content-center my-4">
+          <tsl-sky-slot-group-shopping
+            *ngxPermissionsOnly="PERMISSIONS.showAds"
+            [adSlotShoppingConfiguration]="adSlotGroupShoppingConfiguration"
+            [adShoppingPageOptions]="adShoppingGroupPageOptions"
+          ></tsl-sky-slot-group-shopping>
+        </div>
+        <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
+          <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search3r"></tsl-sky>
+        </div>
+      </ng-container>
+    </ng-container>
+  </tsl-search-layout>
 </div>

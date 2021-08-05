@@ -17,6 +17,14 @@ import { SearchResponseExtraData } from './interfaces/search-response-extra-data
 export class SearchService {
   private static INITIAL_LOADING_STATE = true;
   private static INITIAL_PAGINATION_LOADING_STATE = false;
+
+  public isWall$: Observable<boolean> = this.parameterStoreService.parameters$.pipe(
+    map((filterParameters: FilterParameter[]) =>
+      filterParameters.find(({ key }: FilterParameter) => key === FILTER_QUERY_PARAM_KEY.keywords)
+    ),
+    map((filterKeyowrd: FilterParameter) => !filterKeyowrd)
+  );
+
   private readonly isLoadingResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_LOADING_STATE);
   private readonly isLoadingPaginationResultsSubject = new BehaviorSubject<boolean>(SearchService.INITIAL_PAGINATION_LOADING_STATE);
   private readonly currentCategoryIdSubject = new BehaviorSubject<string>(undefined);
@@ -53,13 +61,6 @@ export class SearchService {
   get hasMore$(): Observable<boolean> {
     return this.searchStoreService.hasMore$;
   }
-
-  public isWall$: Observable<boolean> = this.parameterStoreService.parameters$.pipe(
-    map((filterParameters: FilterParameter[]) =>
-      filterParameters.find(({ key }: FilterParameter) => key === FILTER_QUERY_PARAM_KEY.keywords)
-    ),
-    map((filterKeyowrd: FilterParameter) => !filterKeyowrd)
-  );
 
   get currentCategoryId$(): Observable<string> {
     return this.currentCategoryIdSubject.asObservable();

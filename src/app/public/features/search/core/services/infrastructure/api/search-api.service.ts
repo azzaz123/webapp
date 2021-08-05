@@ -9,7 +9,7 @@ import { SearchPagination } from '../../../../interfaces/search-pagination.inter
 import { FILTER_PARAMETERS_SEARCH } from '../../constants/filter-parameters';
 import { SEARCH_ITEMS_MINIMAL_LENGTH } from '../../constants/search-item-max';
 import { ItemCardMapper, SearchApiItemMapperFactory } from './search-api-item-mapper.factory';
-import { SearchApiUrlFactory} from './search-api-url.factory';
+import { SearchApiUrlFactory } from './search-api-url.factory';
 import { SearchResponse } from './search-response.interface';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 
@@ -25,6 +25,8 @@ export class SearchAPIService {
   private order: SORT_BY | null = null;
   private bubble: string | null = null;
 
+  constructor(protected httpClient: HttpClient) {}
+
   protected static buildNextPageUrl(url: string, nextPage: string): string {
     return nextPage && url.split('?')[0] + '?' + nextPage;
   }
@@ -32,8 +34,6 @@ export class SearchAPIService {
   protected static hasToLoadMoreItems({ items, hasMore }: SearchPagination): boolean {
     return items.length < SEARCH_ITEMS_MINIMAL_LENGTH && hasMore;
   }
-
-  constructor(protected httpClient: HttpClient) {}
 
   public loadMore(): Observable<SearchPagination> {
     return this.nextPageUrl ? this.makeSearchApi(this.nextPageUrl) : of(null);
