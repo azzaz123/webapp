@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { UuidService } from '@core/uuid/uuid.service';
 import { MOCK_KYC_IMAGES } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { KYC_ENDPOINT } from './endpoints';
 
@@ -11,7 +12,7 @@ describe('KYCHttpService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [KYCHttpService],
+      providers: [KYCHttpService, UuidService],
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(KYCHttpService);

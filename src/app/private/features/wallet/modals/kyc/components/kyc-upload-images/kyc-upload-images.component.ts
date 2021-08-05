@@ -70,7 +70,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
     imageContainer.getContext('2d').drawImage(this.userCamera.nativeElement, 0, 0, imageContainer.width, imageContainer.height);
 
-    this.emitNewImage(imageContainer.toDataURL('image/png'));
+    this.emitNewImage(imageContainer.toDataURL('image/jpeg', 1));
   }
 
   public removeImage(imageToRemove: KYC_IMAGES): void {

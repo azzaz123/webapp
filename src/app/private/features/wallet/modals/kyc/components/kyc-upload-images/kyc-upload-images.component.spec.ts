@@ -185,6 +185,10 @@ describe('KYCUploadImagesComponent', () => {
                 de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
               });
 
+              it('should convert the canvas to a jpeg image with hight quality', () => {
+                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith('image/jpeg', 1);
+              });
+
               it('should draw the front side image on the screen', () => {
                 expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
               });
@@ -248,6 +252,10 @@ describe('KYCUploadImagesComponent', () => {
                 spyOn(component.backSideImage.nativeElement, 'toDataURL').and.returnValue('NEW_BACK_IMAGE_SHOOT');
 
                 de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
+              });
+
+              it('should convert the canvas to a jpeg image with hight quality', () => {
+                expect(component.backSideImage.nativeElement.toDataURL).toHaveBeenCalledWith('image/jpeg', 1);
               });
 
               it('should draw the back side image on the screen', () => {
@@ -326,6 +334,10 @@ describe('KYCUploadImagesComponent', () => {
                 spyOn(component.frontSideImage.nativeElement, 'toDataURL').and.returnValue('NEW_FRONT_IMAGE_SHOOT');
 
                 de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
+              });
+
+              it('should convert the canvas to a jpeg image with hight quality', () => {
+                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith('image/jpeg', 1);
               });
 
               it('should draw the front side image on the screen', () => {
@@ -448,6 +460,10 @@ describe('KYCUploadImagesComponent', () => {
                 spyOn(component.frontSideImage.nativeElement, 'toDataURL').and.returnValue('IMAGE_SHOOT');
 
                 de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
+              });
+
+              it('should convert the canvas to a jpeg image with hight quality', () => {
+                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith('image/jpeg', 1);
               });
 
               it('should draw the front side image on the screen', () => {
