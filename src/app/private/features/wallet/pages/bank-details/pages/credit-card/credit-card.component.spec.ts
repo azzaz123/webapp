@@ -28,8 +28,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-only.directive';
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
-import { of, throwError } from 'rxjs';
-import { Subject } from 'rxjs';
+import { of, throwError, Subject } from 'rxjs';
 import { Location } from '@angular/common';
 
 import { CreditCardComponent } from './credit-card.component';
