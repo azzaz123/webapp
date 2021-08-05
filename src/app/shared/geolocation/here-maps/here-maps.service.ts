@@ -91,7 +91,8 @@ export class HereMapsService {
     return interval(CHECK_INTERVAL_MS).pipe(
       mergeMap(() => {
         const coreScriptRef = document.getElementById(HERE_MAPS_CORE_REF_ID);
-        if (coreScriptRef && window['H']) {
+        const coreScriptLegacyRef = document.getElementById(HERE_MAPS_CORE_LEGACY_REF_ID);
+        if (coreScriptRef && coreScriptLegacyRef && window['H']) {
           isReady$.next(true);
           return of(true);
         }
@@ -116,7 +117,8 @@ export class HereMapsService {
     return interval(CHECK_INTERVAL_MS).pipe(
       mergeMap(() => {
         const serviceScriptRef = document.getElementById(HERE_MAPS_SERVICE_REF_ID);
-        if (serviceScriptRef && H.service) {
+        const serviceScriptLegacyRef = document.getElementById(HERE_MAPS_SERVICE_LEGACY_REF_ID);
+        if (serviceScriptRef && serviceScriptLegacyRef && H.service) {
           isReady$.next(true);
           return of(true);
         }
