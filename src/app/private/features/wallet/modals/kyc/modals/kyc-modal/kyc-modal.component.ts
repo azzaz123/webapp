@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { KYCService } from '@api/payments/kyc/kyc.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { KYCDocumentation } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
@@ -8,7 +9,6 @@ import { Observable } from 'rxjs';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../../components/kyc-image-options/kyc-image-options.enum';
 import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
-import { KYCService } from '../../services/kyc.service';
 
 @Component({
   selector: 'tsl-kyc-modal',

@@ -3,6 +3,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { KYCServicesModule } from '@api/payments/kyc/kyc-services.module';
+import { KYCService } from '@api/payments/kyc/kyc.service';
 import {
   MOCK_EMPTY_KYC_SPECIFICATIONS,
   MOCK_KYC_DOCUMENTATION,
@@ -17,7 +19,6 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
 import { KYCModule } from '../../kyc.module';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
-import { KYCService } from '../../services/kyc.service';
 
 import { KYCModalComponent } from './kyc-modal.component';
 
@@ -35,9 +36,9 @@ describe('KYCModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [KYCModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [KYCModule, RouterTestingModule, HttpClientTestingModule, KYCServicesModule],
       declarations: [KYCModalComponent, StepperComponent, StepDirective],
-      providers: [DeviceDetectorService, NgbActiveModal, KYCStoreService, KYCService],
+      providers: [DeviceDetectorService, NgbActiveModal, KYCStoreService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });

@@ -1,19 +1,20 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MOCK_KYC_IMAGES } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+import { KYC_ENDPOINT } from './endpoints';
 
-import { KYCService, KYC_ENDPOINT } from './kyc.service';
+import { KYCHttpService } from './kyc-http.service';
 
-describe('KYCService', () => {
-  let service: KYCService;
+describe('KYCHttpService', () => {
+  let service: KYCHttpService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [KYCService],
+      providers: [KYCHttpService],
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(KYCService);
+    service = TestBed.inject(KYCHttpService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -22,7 +23,7 @@ describe('KYCService', () => {
   });
 
   describe('when requesting the KYC...', () => {
-    it('should request the KYC with specified images', () => {
+    it('should request the KYC with the specified images', () => {
       service.request(MOCK_KYC_IMAGES).subscribe();
       const req: TestRequest = httpMock.expectOne(KYC_ENDPOINT);
       req.flush({});
