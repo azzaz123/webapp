@@ -40,3 +40,8 @@ export const MOCK_KYC_IMAGES: KYCImages = {
   frontSide: 'fakeBase64PImage',
   backSide: 'fakeBase64PImage2',
 };
+
+export const MOCK_KYC_IMAGES_BASE_64: KYCImages = {
+  frontSide: 'data:image/jpeg;base64,/9j/eF/tURKSxCTdp0ckjOsOT/',
+  backSide: 'data:image/jpeg;base64,/9j/eF/tURKSxCTdp0ck222sOT/',
+};
