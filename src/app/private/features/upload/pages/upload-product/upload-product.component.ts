@@ -840,7 +840,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private isFormCategoryChangeNeeded(formCategoryValue: string, suggestedId: string): boolean {
-    return formCategoryValue !== suggestedId && this.categories.find((category) => category.value === suggestedId) !== null;
+    return formCategoryValue !== suggestedId && !!this.categories.find((category) => category.value === suggestedId);
   }
 
   private removeFileFromForm(imageId: string): void {
