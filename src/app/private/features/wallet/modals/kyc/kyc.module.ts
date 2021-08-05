@@ -27,8 +27,9 @@ import { KYCServicesModule } from '@api/payments/kyc/kyc-services.module';
     FormsModule,
     ButtonModule,
     BannerModule,
+    KYCServicesModule,
   ],
   declarations: [KYCRoutedComponents, KYCImageOptionsComponent, KYCNationalityComponent, KYCModalComponent, KYCUploadImagesComponent],
-  providers: [KYCStoreService, , AskPermissionsService, KYCServicesModule],
+  providers: [KYCStoreService, AskPermissionsService],
 })
 export class KYCModule {}

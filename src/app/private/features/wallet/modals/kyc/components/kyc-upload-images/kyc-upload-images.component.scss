@@ -1,5 +1,8 @@
 @import '~style/common';
 
+$images-size-big: 180px;
+$images-size-small: 100px;
+
 .KYCUploadImages {
   &__back {
     cursor: pointer;
@@ -29,7 +32,12 @@
   }
 
   &__image {
-    height: 180px;
+    height: $images-size-big;
+
+    @include media-breakpoint-down(sm) {
+      height: $images-size-small;
+    }
+
     border: solid 2px $blue-grey-5;
 
     &__title {
