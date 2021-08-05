@@ -15,13 +15,15 @@
                 <div class="SubscriptionPurchaseFooter__description">
                     <ng-container *ngIf="subscription.trial_available; else noTrialDescription">
                         <b><span i18n="@@web_profile_pages_subscription_326">{{selectedTier.price}}{{selectedTier.currency}}/month</span>
-                        </b>&nbsp;<span i18n="@@web_price_after_free_days">at the end of free trial</span>
+                        </b><span i18n="@@web_price_after_free_days">
+                            at the end of free trial</span>
                     </ng-container>
                     <ng-template #noTrialDescription>
                         <ng-container *ngIf="selectedTier.discount; else montlyRenewal">
                             <b><span i18n="@@web_profile_pages_subscription_326">{{selectedTier.price}}{{selectedTier.currency}}/month</span>
-                            </b>&nbsp;<span i18n="@@pro_subscription_purchase_summary_start_period">Starting from</span>&nbsp;{{selectedTier.discount.end_date |  date:'dd/MM/yy' }}
-                        </ng-container>
+                            </b><span i18n="@@pro_subscription_purchase_summary_start_period">
+                                Starting from</span>
+                            {{selectedTier.discount.end_date |  date:'dd/MM/yy' }}</ng-container>
                         <ng-template #montlyRenewal>
                             <span i18n="@@web_monthly_renewal_plan">The plan will be renewed monthly</span>
                         </ng-template>
@@ -29,9 +31,7 @@
                 </div>
             </div>
             <tsl-button className="btn btn-primary btn-primary--bold btn--big btn--width" [loading]="isLoading"
-                [disabled]="buttonDisable" (click)="onClickButton()">
-                {{buttonText}}
-            </tsl-button>
+                [disabled]="buttonDisable" (click)="onClickButton()">{{buttonText}}</tsl-button>
         </div>
         <div>
             <span class="SubscriptionPurchaseFooter__legal" i18n="@@web_stripe_card_element_513">By subscribing, you

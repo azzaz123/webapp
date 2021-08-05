@@ -72,7 +72,7 @@ describe('SubscriptionTierSelectorComponent', () => {
         it('should show title', () => {
           const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__title')).nativeElement;
 
-          expect(tierTitle.textContent).toContain(
+          expect(tierTitle.textContent).toBe(
             $localize`:@@web_profile_pages_subscription_332:List up to ${component.subscription.selected_tier.limit} real estate`
           );
         });
@@ -82,7 +82,7 @@ describe('SubscriptionTierSelectorComponent', () => {
         it('should show title', () => {
           const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__title')).nativeElement;
 
-          expect(tierTitle.textContent).toContain(
+          expect(tierTitle.textContent).toBe(
             $localize`:@@web_profile_pages_subscription_325:List up to ${component.subscription.tiers[0].limit} items`
           );
         });
@@ -93,7 +93,7 @@ describe('SubscriptionTierSelectorComponent', () => {
       it('should show title', () => {
         const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[3].query(By.css('.Card__title')).nativeElement;
 
-        expect(tierTitle.textContent).toContain($localize`:@@web_profile_pages_subscription_586:List without limits`);
+        expect(tierTitle.textContent).toBe($localize`:@@web_profile_pages_subscription_586:List without limits`);
       });
     });
   });
@@ -107,10 +107,10 @@ describe('SubscriptionTierSelectorComponent', () => {
       });
       it('should show description with trial', () => {
         const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle')).nativeElement;
+        const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${component.subscription.tiers[0].price}:INTERPOLATION:${component.subscription.tiers[0].currency}:INTERPOLATION:/month`;
+        const expectedFreeTrialText = $localize`:@@after_free_trial:after free trial`;
 
-        expect(tierTitle.textContent).toContain(component.subscription.tiers[0].price);
-        expect(tierTitle.textContent).toContain(component.subscription.tiers[0].currency);
-        expect(tierTitle.textContent).toContain($localize`:@@after_free_trial:after free trial`);
+        expect(tierTitle.textContent).toEqual(`${expectedMonthlyPriceText} ${expectedFreeTrialText}`);
       });
     });
 
@@ -120,10 +120,9 @@ describe('SubscriptionTierSelectorComponent', () => {
           const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle'));
           const tierDescriptionText = tierDescription.nativeElement.textContent;
           const classDiscounted = tierDescription.query(By.css('.Card__subtitle--discounted'));
+          const expectedText = $localize`:@@web_profile_pages_subscription_326:${component.selectedTier.price}:INTERPOLATION:${component.selectedTier.currency}:INTERPOLATION:/month`;
 
-          expect(tierDescriptionText).toContain(component.subscription.tiers[0].price);
-          expect(tierDescriptionText).toContain(component.subscription.tiers[0].currency);
-          expect(tierDescriptionText).not.toContain($localize`:@@after_free_trial:after free trial`);
+          expect(tierDescriptionText).toBe(expectedText);
           expect(classDiscounted).toBeFalsy();
         });
       });
@@ -134,16 +133,17 @@ describe('SubscriptionTierSelectorComponent', () => {
           fixture.detectChanges();
         });
         it('should show description with discount', () => {
+          const tier = component.subscription.tiers[0];
           const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle'));
           const tierDescriptionText = tierDescription.nativeElement.textContent;
           const classDiscounted = tierDescription.query(By.css('.Card__subtitle--discounted'));
 
-          expect(tierDescriptionText).toContain(component.subscription.tiers[0].price);
-          expect(tierDescriptionText).toContain(component.subscription.tiers[0].currency);
-          expect(tierDescriptionText).toContain(
-            new DatePipe('en').transform(component.subscription.tiers[0].discount.end_date, 'dd/MM/yy')
-          );
-          expect(tierDescriptionText).not.toContain($localize`:@@after_free_trial:after free trial`);
+          const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${tier.discount.price}:INTERPOLATION:${tier.currency}:INTERPOLATION:/month`;
+          const expectedDateText = $localize`:@@pro_subscription_purchase_tier_list_discount_limit_date_label:Enjoy the discount until ${new DatePipe(
+            'en'
+          ).transform(tier.discount.end_date, 'dd/MM/yy')}:INTERPOLATION:`;
+
+          expect(tierDescriptionText).toEqual(`${tier.price} ${expectedMonthlyPriceText} ${expectedDateText}`);
           expect(classDiscounted).toBeTruthy();
         });
       });
