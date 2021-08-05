@@ -1,10 +1,20 @@
 @import '~style/common';
+$linear-yellow: #bacc5b;
+$linear-blue: #25c2a3;
 
 .CancelBubbleComponent {
+  width: 100%;
+
   font: $blue-grey-1;
+  &__text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
   &__rounded_icon {
-    height: 20px;
-    width: 20px;
+    background-color: $white;
+    min-height: 20px;
+    min-width: 20px;
     border: 1px solid $walla-main;
     ::ng-deep svg path {
       fill: $walla-main;
@@ -13,7 +23,7 @@
 }
 
 .rounded-gradient {
-  border-radius: 21.5px;
+  border-radius: 21px;
   border-width: 1px;
   border: 0;
   background: linear-gradient(5deg, #bacc5b, #25c2a3, $walla-main);
@@ -29,6 +39,6 @@
   position: absolute;
   top: 1px;
   left: 1px;
-  border-radius: 15.5px;
+  border-radius: 21px;
   z-index: -1;
 }
