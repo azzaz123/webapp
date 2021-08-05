@@ -46,6 +46,7 @@ describe('KYCUploadImagesComponent', () => {
   );
   const cameraResponseSubjectMock: BehaviorSubject<any> = new BehaviorSubject<any>(MOCK_MEDIA_STREAM);
 
+  const takePhotoCopy = $localize`:@@kyc_request_photo_counter_shoot:Take photo`;
   const takeFrontSideImageSelector = '#takeFrontSideImage';
   const takeBackSideImageSelector = '#takeBackSideImage';
   const endVerificationButtonSelector = '#endVerificationButton';
@@ -55,6 +56,7 @@ describe('KYCUploadImagesComponent', () => {
   const backSideImageSelector = '#backSideImage';
   const deleteBackSideImageSelector = '#deleteBackSideImage';
   const backButtonSelector = '.KYCUploadImages__back';
+  const titleSelector = '#KYCUploadImages__title';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -92,6 +94,13 @@ describe('KYCUploadImagesComponent', () => {
   describe('when the user selects the shoot image method', () => {
     beforeEach(() => {
       testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
+    });
+
+    it('should show the shoot image title', () => {
+      fixture.detectChanges();
+
+      const title = de.query(By.css(titleSelector)).nativeElement;
+      expect(title.innerHTML).toBe($localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`);
     });
 
     describe(`and the user's browser supports the API`, () => {
@@ -167,6 +176,8 @@ describe('KYCUploadImagesComponent', () => {
 
             it('should show the defined images counter as 0', () => {
               const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
+
+              expect(component.actionButtonCopy).toBe(takePhotoCopy);
               expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (0/2)`);
             });
 
@@ -225,6 +236,7 @@ describe('KYCUploadImagesComponent', () => {
             it('should show the defined images counter as 1', () => {
               const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
 
+              expect(component.actionButtonCopy).toBe(takePhotoCopy);
               expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (1/2)`);
             });
 
@@ -296,6 +308,7 @@ describe('KYCUploadImagesComponent', () => {
             it('should show the defined images counter as 1', () => {
               const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
 
+              expect(component.actionButtonCopy).toBe(takePhotoCopy);
               expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (1/2)`);
             });
 
@@ -408,6 +421,7 @@ describe('KYCUploadImagesComponent', () => {
             it('should show the defined images counter as 0', () => {
               const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
 
+              expect(component.actionButtonCopy).toBe(takePhotoCopy);
               expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (0/1)`);
             });
 
@@ -564,6 +578,11 @@ describe('KYCUploadImagesComponent', () => {
       testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
 
       fixture.detectChanges();
+    });
+
+    it('should show the upload image title', () => {
+      const title = de.query(By.css(titleSelector)).nativeElement;
+      expect(title.innerHTML).toBe($localize`:@@kyc_upload_photo_view_title:Upload a photo of your document`);
     });
 
     it('should NOT request camera access', () => {
