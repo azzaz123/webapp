@@ -68,6 +68,7 @@ export * from './impression-ad-creative-load-time.interface';
 export * from './impression-ad-google-shopping.interface';
 export * from './detect-malicious-user-conversation.interface';
 export * from './send-first-message.interface';
+export * from './translate-chat.interface';
 export * from './click-confirm-close-subscription.interface';
 export * from './click-confirm-edit-current-subscription.interface';
 export * from './edit-item-car.interface';
