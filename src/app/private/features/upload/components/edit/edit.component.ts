@@ -19,9 +19,10 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
 
   public item: Item;
   public urgentPrice: string = null;
-  private hasNotSavedChanges: boolean;
   public itemTypes: any = ITEM_TYPES;
   public isReactivation = false;
+
+  private hasNotSavedChanges: boolean;
 
   constructor(
     private route: ActivatedRoute,
