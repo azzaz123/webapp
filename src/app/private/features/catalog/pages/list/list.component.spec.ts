@@ -83,7 +83,6 @@ describe('ListComponent', () => {
   let router: Router;
   let errorService: ErrorsService;
   const componentInstance: any = {
-    urgentPrice: jasmine.createSpy('urgentPrice'),
     trackUploaded: jasmine.createSpy('trackUploaded'),
   };
   let modalSpy: jasmine.Spy;

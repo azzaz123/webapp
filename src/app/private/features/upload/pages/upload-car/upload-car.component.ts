@@ -41,7 +41,6 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 export class UploadCarComponent implements OnInit {
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
-  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Car;
   @Input() isReactivation = false;
 
@@ -432,10 +431,6 @@ export class UploadCarComponent implements OnInit {
       const v: number = Number(control.value);
       return v > max ? { max: { requiredMax: max, actualMax: v } } : null;
     };
-  }
-
-  public emitLocation(): void {
-    this.locationSelected.emit(100);
   }
 
   public toggleCustomMakeSelection() {

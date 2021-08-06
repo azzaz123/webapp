@@ -13,8 +13,6 @@
       [isReactivation]="isReactivation"
       (onValidationError)="onValidationError()"
       (onFormChanged)="onFormChanged($event)"
-      [urgentPrice]="urgentPrice"
-      (locationSelected)="getUrgentPrice(100)"
     >
     </tsl-upload-car>
     <tsl-upload-realestate
@@ -23,8 +21,6 @@
       [isReactivation]="isReactivation"
       (onValidationError)="onValidationError()"
       (onFormChanged)="onFormChanged($event)"
-      [urgentPrice]="urgentPrice"
-      (locationSelected)="getUrgentPrice(13000)"
     >
     </tsl-upload-realestate>
     <tsl-upload-product
@@ -33,9 +29,6 @@
       [isReactivation]="isReactivation"
       (onValidationError)="onValidationError()"
       (onFormChanged)="onFormChanged($event)"
-      [urgentPrice]="urgentPrice"
-      (onCategorySelect)="getUrgentPrice($event)"
-      (locationSelected)="getUrgentPrice(categoryId)"
     >
     </tsl-upload-product>
   </div>
