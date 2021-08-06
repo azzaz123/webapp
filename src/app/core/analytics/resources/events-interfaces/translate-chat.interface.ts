@@ -6,9 +6,9 @@
  */
 
 /**
- * Users view chat screen
+ * User clicks on the button to translate the chat
  */
-export interface ViewChatScreen {
+export interface TranslateChat {
   /**
    * The unique identifier for an item
    */
@@ -33,8 +33,4 @@ export interface ViewChatScreen {
    * If the item has the shipping toggle ON and a shipping weight informed
    */
   shippingAllowed?: boolean;
-  /**
-   * Chat has the option to be translated
-   */
-  translationAllowed: boolean;
 }
