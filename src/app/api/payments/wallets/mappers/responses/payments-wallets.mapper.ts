@@ -1,5 +1,4 @@
-import { mapCurrencyCodeToCurrency } from '@api/core/mappers/currency-mapper';
-import { mapNumberToNumericAmount } from '@api/core/mappers/numeric-amount-mapper';
+import { mapCurrencyCodeToCurrency, mapNumberToNumericAmount } from '@api/core/mappers';
 import { Money } from '@api/core/model/money.interface';
 import { ToDomainMapper } from '@api/core/utils/types';
 import { PaymentsWalletsApi } from '../../dtos/responses/payments-wallets-api.interface';

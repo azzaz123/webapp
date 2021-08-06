@@ -1,5 +1,5 @@
-import { NumericAmount } from '../model/numeric-amount.interface';
-import { ToDomainMapper } from '../utils/types';
+import { NumericAmount } from '../../model/numeric-amount.interface';
+import { ToDomainMapper } from '../../utils/types';
 
 export const mapNumberToNumericAmount: ToDomainMapper<number, NumericAmount> = (input: number): NumericAmount => {
   return {

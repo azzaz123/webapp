@@ -1,8 +1,8 @@
-import { CurrencyCode } from '../model/currency.interface';
-import { Money } from '../model/money.interface';
-import { ToDomainMapper } from '../utils/types';
-import { mapCurrencyCodeToCurrency } from './currency-mapper';
-import { mapNumberToNumericAmount } from './numeric-amount-mapper';
+import { CurrencyCode } from '../../model/currency.interface';
+import { Money } from '../../model/money.interface';
+import { ToDomainMapper } from '../../utils/types';
+import { mapCurrencyCodeToCurrency } from '../currency/currency-mapper';
+import { mapNumberToNumericAmount } from '../numeric-amount/numeric-amount-mapper';
 
 type InputToMoney = { number: number; currency: CurrencyCode };
 
