@@ -26,9 +26,7 @@ describe('CatalogProListComponent', () => {
   let fixture: ComponentFixture<CatalogProListComponent>;
   let itemService: ItemService;
   let modalService: NgbModal;
-  const componentInstance: any = {
-    urgentPrice: jasmine.createSpy('urgentPrice'),
-  };
+  const componentInstance: any = {};
   let itemServiceSpy: jasmine.Spy;
   let userService: UserService;
   let router: Router;

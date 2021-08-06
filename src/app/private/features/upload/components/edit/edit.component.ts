@@ -1,8 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Item, ITEM_TYPES } from '@core/item/item';
-import { Product } from '@core/item/item-response.interface';
-import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '@shared/exit-confirmation-modal/exit-confirmation-modal.component';
@@ -20,7 +18,6 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
   public item: Item;
   @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
   private hasNotSavedChanges: boolean;
-  public urgentPrice: string = null;
   public itemTypes: any = ITEM_TYPES;
   public isReactivation = false;
 
@@ -28,7 +25,6 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
     private route: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
-    private itemService: ItemService,
     private userService: UserService,
     private editTrackingEventService: EditTrackingEventService
   ) {
@@ -45,7 +41,6 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
   ngOnInit() {
     this.item = this.route.snapshot.data['item'];
     this.isReactivation = this.router.url.endsWith(UPLOAD_PATHS.REACTIVATE);
-    this.getUrgentPrice();
 
     this.editTrackingEventService.viewTrackingReady$.pipe(take(1)).subscribe(() => {
       this.editTrackingEventService.trackViewEditItemEvent(this.item.categoryId, this.isReactivation);
@@ -69,11 +64,5 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
 
   public onFormChanged(notSavedChanges: boolean) {
     this.hasNotSavedChanges = notSavedChanges;
-  }
-
-  public getUrgentPrice(): void {
-    this.itemService.getUrgentProducts(this.item.id).subscribe((product: Product) => {
-      this.urgentPrice = product.durations[0].market_code;
-    });
   }
 }

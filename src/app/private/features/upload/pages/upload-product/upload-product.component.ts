@@ -76,7 +76,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() onCategorySelect = new EventEmitter<string>();
-  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() suggestionValue: string;
 
   MAX_DESCRIPTION_LENGTH = 640;
@@ -535,10 +534,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       const v: number = Number(control.value);
       return v > max ? { max: { requiredMax: max, actualMax: v } } : null;
     };
-  }
-
-  public emitLocation(): void {
-    this.locationSelected.emit(this.categoryId);
   }
 
   public getBrands(brandKeyword: string): void {
