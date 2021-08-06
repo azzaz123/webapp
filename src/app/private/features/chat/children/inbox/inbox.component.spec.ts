@@ -192,6 +192,9 @@ describe('Component: InboxComponent', () => {
           itemId: conversation.item.id,
           conversationId: conversation.id,
           screenId: SCREEN_IDS.Chat,
+          translationAllowed: null,
+          buyerUserId: null,
+          sellerUserId: null,
         },
       };
 
