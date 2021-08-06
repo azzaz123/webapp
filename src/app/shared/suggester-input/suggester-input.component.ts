@@ -112,9 +112,13 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     this.options = [];
   }
 
-  private getHashtagSuggesters(): Observable<PaginatedList<Hashtag>> {
+  private getHashtagSuggesters(): Observable<PaginatedList<Hashtag> | []> {
     let newModel = this.model.substring(1);
-    return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
+    if (!newModel) {
+      return of([]);
+    } else {
+      return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
+    }
   }
 
   private mapHashtagSuggestersToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
@@ -135,6 +139,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
     let newModel = this.model.substring(1);
+    console.log('new model', newModel);
     if (!!newModel) {
       return [{ label: `#${newModel}`, sublabel: '0', value: `#${newModel}` }];
     } else return [];
