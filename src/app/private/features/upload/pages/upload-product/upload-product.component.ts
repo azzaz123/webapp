@@ -76,7 +76,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Output() validationError: EventEmitter<any> = new EventEmitter();
   @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() categorySelected = new EventEmitter<string>();
-  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() suggestionValue: string;
   @ViewChild('title', { static: true }) titleField: ElementRef;
 
@@ -318,10 +317,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       },
       () => {}
     );
-  }
-
-  public emitLocation(): void {
-    this.locationSelected.emit(this.categoryId);
   }
 
   public getBrands(brandKeyword: string): void {

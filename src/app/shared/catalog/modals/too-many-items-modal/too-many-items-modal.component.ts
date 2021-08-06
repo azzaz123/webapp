@@ -28,6 +28,7 @@ export class TooManyItemsModalComponent implements OnInit {
   public carDealerType = SUBSCRIPTION_TYPES.carDealer;
   public stripeType = SUBSCRIPTION_TYPES.stripe;
   public isFreeTrial: boolean;
+  private isDiscountAvailable: boolean;
   public isHighestLimit: boolean;
   public categorySubscription: SubscriptionsResponse;
   @Input() itemId: string;
@@ -67,6 +68,7 @@ export class TooManyItemsModalComponent implements OnInit {
         subscription: this.categorySubscription.category_id as SUBSCRIPTION_CATEGORIES,
         freeTrial: this.isFreeTrial,
         isCarDealer: this.type === this.carDealerType,
+        discount: this.isDiscountAvailable,
       },
     };
 
@@ -81,6 +83,7 @@ export class TooManyItemsModalComponent implements OnInit {
         this.categorySubscription = subscriptions.find((subscription) => item.categoryId === subscription.category_id);
         this.isHighestLimit = this.hasHighestLimitReached();
         this.isFreeTrial = this.hasFreeOption();
+        this.isDiscountAvailable = !!this.subscriptionsService.getDefaultTierDiscount(this.categorySubscription);
       })
     );
   }

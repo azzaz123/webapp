@@ -41,7 +41,6 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 export class UploadCarComponent implements OnInit {
   @Output() validationError: EventEmitter<any> = new EventEmitter();
   @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
-  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Car;
   @Input() isReactivation = false;
 
@@ -168,10 +167,6 @@ export class UploadCarComponent implements OnInit {
       },
       () => {}
     );
-  }
-
-  public emitLocation(): void {
-    this.locationSelected.emit(100);
   }
 
   public toggleCustomMakeSelection() {

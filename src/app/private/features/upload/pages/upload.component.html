@@ -1,27 +1,12 @@
 <div class="page-content" #scrollPanel>
   <div class="container upload-page">
-    <tsl-category-selector (selected)="setCategory($event)" *ngxPermissionsExcept="['isProfessional']"></tsl-category-selector>
-    <tsl-upload-car
-      *ngIf="categoryId === '100'"
-      [urgentPrice]="urgentPrice"
-      (validationError)="validationError()"
-      (locationSelected)="getUrgentPrice(100)"
-    >
-    </tsl-upload-car>
-    <tsl-upload-realestate
-      *ngIf="categoryId === '13000'"
-      [urgentPrice]="urgentPrice"
-      (validationError)="validationError()"
-      (locationSelected)="getUrgentPrice(13000)"
-    >
-    </tsl-upload-realestate>
+    <tsl-category-selector (onSelect)="setCategory($event)" *ngxPermissionsExcept="['isProfessional']"></tsl-category-selector>
+    <tsl-upload-car *ngIf="categoryId === '100'" (validationError)="validationError()"> </tsl-upload-car>
+    <tsl-upload-realestate *ngIf="categoryId === '13000'" (validationError)="validationError()"> </tsl-upload-realestate>
     <tsl-upload-product
       *ngIf="categoryId && categoryId !== '100' && categoryId !== '13000'"
       [categoryId]="categoryId"
-      [urgentPrice]="urgentPrice"
-      (validationError)="validationError()"
-      (categorySelected)="getUrgentPrice($event)"
-      (locationSelected)="getUrgentPrice(categoryId)"
+      (validationError)="onValidationError()"
     >
     </tsl-upload-product>
   </div>

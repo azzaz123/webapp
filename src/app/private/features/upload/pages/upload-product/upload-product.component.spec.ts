@@ -1267,15 +1267,6 @@ describe('UploadProductComponent', () => {
     });
   });
 
-  describe('Emit Location', () => {
-    it('should emit location updated event', () => {
-      spyOn(component.locationSelected, 'emit');
-      component.emitLocation();
-
-      expect(component.locationSelected.emit).toHaveBeenCalled();
-    });
-  });
-
   describe('updateUploadPercentage', () => {
     it('should update the completed percentage of the upload', () => {
       component.updateUploadPercentage(55.99);

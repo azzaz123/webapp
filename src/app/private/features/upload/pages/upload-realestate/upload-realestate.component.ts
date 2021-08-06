@@ -43,7 +43,6 @@ import { LocationSelectorModal } from '@shared/modals/location-selector-modal/lo
 export class UploadRealestateComponent implements OnInit {
   @Output() validationError: EventEmitter<any> = new EventEmitter();
   @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
-  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Realestate;
   @Input() isReactivation = false;
   public coordinates: ItemLocation;
@@ -153,7 +152,6 @@ export class UploadRealestateComponent implements OnInit {
     if (this.item) {
       this.updateLocation();
     }
-    this.locationSelected.emit(13000);
   }
 
   public onSubmit(): void {

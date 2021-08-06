@@ -479,7 +479,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private openSuggestProModal(reactivatedItem: Item, index: number): void {
     const isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(this.subscriptions, reactivatedItem.categoryId);
-    this.trackViewProExpiredItemsPopup(isFreeTrial);
+    const isDiscountAvailable = this.subscriptionsService.hasDiscountByCategoryId(this.subscriptions, reactivatedItem.categoryId);
+    this.trackViewProExpiredItemsPopup(isFreeTrial, isDiscountAvailable);
     this.userService.saveLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, Date.now().toString());
 
     const modalRef = this.modalService.open(SuggestProModalComponent, {
@@ -495,12 +496,13 @@ export class ListComponent implements OnInit, OnDestroy {
     );
   }
 
-  private trackViewProExpiredItemsPopup(freeTrial: boolean): void {
+  private trackViewProExpiredItemsPopup(freeTrial: boolean, discount: boolean): void {
     const event: AnalyticsPageView<ViewProExpiredItemsPopup> = {
       name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
       attributes: {
         screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
         freeTrial,
+        discount,
       },
     };
 
@@ -926,6 +928,7 @@ export class ListComponent implements OnInit, OnDestroy {
       attributes: {
         screenId: SCREEN_IDS.MyCatalog,
         freeTrial: this.hasTrialAvailable,
+        discount: this.subscriptionsService.hasSomeSubscriptionDiscount(this.subscriptions),
       },
     };
     this.analyticsService.trackEvent(event);

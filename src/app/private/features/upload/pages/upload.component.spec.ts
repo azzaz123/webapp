@@ -1,7 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CARS_CATEGORY } from '@core/item/item-categories';
-import { ItemService } from '@core/item/item.service';
 import { MockTrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.fixtures.spec';
 import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-safety.interface';
 import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
@@ -14,7 +13,6 @@ import { UploadComponent } from './upload.component';
 describe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
-  let itemService: ItemService;
   let userService: UserService;
   let trustAndSafetyService: TrustAndSafetyService;
 
@@ -25,12 +23,6 @@ describe('UploadComponent', () => {
         declarations: [UploadComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
-          {
-            provide: ItemService,
-            useValue: {
-              getUrgentProductByCategoryId() {},
-            },
-          },
           {
             provide: UserService,
             useValue: {
@@ -50,7 +42,6 @@ describe('UploadComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadComponent);
-    itemService = TestBed.inject(ItemService);
     userService = TestBed.inject(UserService);
     trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
     component = fixture.componentInstance;
@@ -88,30 +79,12 @@ describe('UploadComponent', () => {
   });
 
   describe('setCategory', () => {
-    beforeEach(() => {
-      spyOn(component, 'getUrgentPrice');
-    });
     it('should set categoryId', () => {
       const CATEGORY_ID = 123;
 
       component.setCategory(CATEGORY_ID.toString());
 
       expect(component.categoryId).toBe(CATEGORY_ID.toString());
-    });
-
-    it('should not call getUrgentPrice if categoryId == -1', () => {
-      const CATEGORY_ID = -1;
-
-      component.setCategory(CATEGORY_ID.toString());
-
-      expect(component.getUrgentPrice).not.toHaveBeenCalled();
-    });
-    it('should call getUrgentPrice if categoryId != -1', () => {
-      const CATEGORY_ID = 123;
-
-      component.setCategory(CATEGORY_ID.toString());
-
-      expect(component.getUrgentPrice).toHaveBeenCalledWith(CATEGORY_ID.toString());
     });
   });
 
@@ -124,19 +97,6 @@ describe('UploadComponent', () => {
       component.validationError();
 
       expect(component.scrollPanel.nativeElement.scrollTop).toBe(0);
-    });
-  });
-
-  describe('get urgent price', () => {
-    it('should set the urgent price', () => {
-      spyOn(itemService, 'getUrgentProductByCategoryId').and.returnValue(of(PRODUCT_RESPONSE));
-
-      const categoryId = ITEM_DATA_V3.content.category_id;
-
-      component.getUrgentPrice(categoryId.toString());
-
-      expect(itemService.getUrgentProductByCategoryId).toHaveBeenCalledWith(categoryId.toString());
-      expect(component.urgentPrice).toEqual(PRODUCT_RESPONSE.durations[0].market_code);
     });
   });
 });

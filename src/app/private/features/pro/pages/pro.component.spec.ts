@@ -106,6 +106,7 @@ describe('ProComponent', () => {
             attributes: {
               screenId: SCREEN_IDS.MyProfile,
               freeTrial: false,
+              discount: false,
             },
           };
           subscriptionTabElement = fixture.debugElement
@@ -132,6 +133,34 @@ describe('ProComponent', () => {
             attributes: {
               screenId: SCREEN_IDS.MyProfile,
               freeTrial: true,
+              discount: false,
+            },
+          };
+          subscriptionTabElement = fixture.debugElement
+            .queryAll(By.css('a'))
+            .find((anchors) => anchors.nativeElement.innerHTML === expectedText).nativeElement;
+
+          subscriptionTabElement.click();
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        });
+      });
+
+      describe('and there is a discount', () => {
+        beforeEach(() => {
+          spyOn(subscriptionsService, 'hasSomeSubscriptionDiscount').and.returnValue(true);
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('should track the event', () => {
+          const expectedEvent: AnalyticsEvent<ClickProSubscription> = {
+            name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
+            attributes: {
+              screenId: SCREEN_IDS.MyProfile,
+              freeTrial: false,
+              discount: true,
             },
           };
           subscriptionTabElement = fixture.debugElement
