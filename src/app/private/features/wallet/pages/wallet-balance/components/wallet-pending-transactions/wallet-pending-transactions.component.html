@@ -1,0 +1,5 @@
+<div class="WalletPendingTransactions" *ngIf="(walletPendingTransactions$ | async) as pendingTransactions" >
+  <div class="WalletPendingTransactions__overview">Pending transactions ({{pendingTransactions.length}})</div>
+  <div class="WalletPendingTransactions__transaction" *ngFor="let pendingTransaction of pendingTransactions">{{pendingTransaction.itemTitle}}</div>
+  <div><button>Show More button</button></div>
+</div>
