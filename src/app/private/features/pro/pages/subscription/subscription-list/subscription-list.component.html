@@ -1,29 +1,37 @@
 <div class="box SubscriptionList">
-    <ng-container *ngIf="!isLoading; else loading">
-        <div class="box-content text-center" [class.box-content--narrow]="subscriptions.length <= MAX_NARROW_CARDS">
-            <h4 class="section-title mb-2" i18n="@@web_wallapop_pro_subscription_title">Boost your online business with Wallapop PRO</h4>
-            <p class="section-subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a subscription to take your sales to the next level</p>
-            <div class="d-flex justify-content-center">
-                <div class="d-md-flex justify-content-center d-sm-block h-100 flex-wrap">
-                    <ng-container *ngFor="let subscription of subscriptionsOrdered">
-                        <tsl-subscription-card class="SubscriptionList__subscription  mx-2 mb-3" [class.SubscriptionList__subscription--narrow]="subscriptions.length <= MAX_NARROW_CARDS"
-                            (buttonClick)="onClickButton(subscription)" [isSubscribed]="isSubscribed(subscription)"
-                            [subscription]="subscription" [textButton]="getTextButton(subscription)"
-                            [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
-                            [tierDiscount]="hasDiscount(subscription)"
-                            [subscriptionBenefits]="getBenefits(subscription)" *ngIf="subscription">
-                        </tsl-subscription-card>
-                    </ng-container>
-                </div>
-            </div>
-            <div class="SubscriptionList__link">
-                <a [href]="HELP_LINK" target="_blank" i18n="@@web_wallapop_pro_about">Learn more about Wallapop PRO</a>
-            </div>
+  <ng-container *ngIf="!isLoading; else loading">
+    <div class="box-content text-center" [class.box-content--narrow]="subscriptions.length <= MAX_NARROW_CARDS">
+      <h4 class="section-title mb-2" i18n="@@web_wallapop_pro_subscription_title">Boost your online business with Wallapop PRO</h4>
+      <p class="section-subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">
+        Choose a subscription to take your sales to the next level
+      </p>
+      <div class="d-flex justify-content-center">
+        <div class="d-md-flex justify-content-center d-sm-block h-100 flex-wrap">
+          <ng-container *ngFor="let subscription of subscriptionsOrdered">
+            <tsl-subscription-card
+              class="SubscriptionList__subscription mx-2 mb-3"
+              [class.SubscriptionList__subscription--narrow]="subscriptions.length <= MAX_NARROW_CARDS"
+              (buttonClick)="onClickButton(subscription)"
+              [isSubscribed]="isSubscribed(subscription)"
+              [subscription]="subscription"
+              [textButton]="getTextButton(subscription)"
+              [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
+              [tierDiscount]="hasDiscount(subscription)"
+              [subscriptionBenefits]="getBenefits(subscription)"
+              *ngIf="subscription"
+            >
+            </tsl-subscription-card>
+          </ng-container>
         </div>
-    </ng-container>
-    <ng-template #loading>
-        <div class="row loading-center">
-            <tsl-spinner></tsl-spinner>
-        </div>
-    </ng-template>
+      </div>
+      <div class="SubscriptionList__link">
+        <a [href]="HELP_LINK" target="_blank" i18n="@@web_wallapop_pro_about">Learn more about Wallapop PRO</a>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <div class="row loading-center">
+      <tsl-spinner></tsl-spinner>
+    </div>
+  </ng-template>
 </div>
