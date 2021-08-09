@@ -47,7 +47,6 @@ import { GeneralSuggestionsService } from '../../core/services/general-suggestio
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
-
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
   if (!objectTypeControl) {
@@ -97,7 +96,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
   public pendingFiles: PendingFiles;
-
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     { value: 'EUR', label: '€' },
@@ -111,11 +109,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
   public uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
+
   private focused: boolean;
   private oldFormValue: any;
   private oldDeliveryValue: any;
   private rawCategories: CategoryResponse[];
-
   private dataReadyToValidate$: Subject<void> = new Subject<void>();
 
   constructor(
