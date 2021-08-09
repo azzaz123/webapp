@@ -10,8 +10,9 @@ import { UserService } from '@core/user/user.service';
   styleUrls: ['./upload.component.scss'],
 })
 export class UploadComponent implements OnInit {
-  public categoryId: string;
   @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
+
+  public categoryId: string;
 
   constructor(private userService: UserService, private trustAndSafetyService: TrustAndSafetyService) {}
 
@@ -29,7 +30,7 @@ export class UploadComponent implements OnInit {
     this.categoryId = categoryId;
   }
 
-  public onValidationError() {
+  public validationError() {
     this.scrollPanel.nativeElement.scrollTop = 0;
   }
 }

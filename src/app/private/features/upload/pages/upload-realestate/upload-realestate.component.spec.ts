@@ -232,7 +232,7 @@ describe('UploadRealestateComponent', () => {
       it('should emit changed event if form values changes', () => {
         let formChanged: boolean;
         component.item = MOCK_REALESTATE;
-        component.onFormChanged.subscribe((value: boolean) => {
+        component.formChanged.subscribe((value: boolean) => {
           formChanged = value;
         });
         component.ngOnInit();

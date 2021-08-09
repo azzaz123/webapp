@@ -265,9 +265,9 @@
       (onError)="onError($event)"
       formControlName="images"
       [isUpdatingItem]="!!item"
-      (onOrderImages)="onOrderImages()"
-      (onDeleteImage)="onDeleteImage($event)"
-      (onAddImage)="onAddImage($event)"
+      (orderImages)="onOrderImages()"
+      (deleteImage)="onDeleteImage($event)"
+      (addImage)="onAddImage($event)"
     ></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n="@@web_upload_product_coachmark_pictures">

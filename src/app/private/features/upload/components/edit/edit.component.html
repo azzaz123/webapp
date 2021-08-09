@@ -11,24 +11,24 @@
       *ngIf="item.itemType === itemTypes.CARS"
       [item]="item"
       [isReactivation]="isReactivation"
-      (onValidationError)="onValidationError()"
-      (onFormChanged)="onFormChanged($event)"
+      (validationError)="validationError()"
+      (formChanged)="formChanged($event)"
     >
     </tsl-upload-car>
     <tsl-upload-realestate
       *ngIf="item.itemType === itemTypes.REAL_ESTATE"
       [item]="item"
       [isReactivation]="isReactivation"
-      (onValidationError)="onValidationError()"
-      (onFormChanged)="onFormChanged($event)"
+      (validationError)="validationError()"
+      (formChanged)="formChanged($event)"
     >
     </tsl-upload-realestate>
     <tsl-upload-product
       *ngIf="item.itemType === itemTypes.CONSUMER_GOODS"
       [item]="item"
       [isReactivation]="isReactivation"
-      (onValidationError)="onValidationError()"
-      (onFormChanged)="onFormChanged($event)"
+      (validationError)="validationError()"
+      (formChanged)="formChanged($event)"
     >
     </tsl-upload-product>
   </div>
