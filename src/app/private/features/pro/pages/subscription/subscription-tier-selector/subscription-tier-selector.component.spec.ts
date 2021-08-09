@@ -143,7 +143,7 @@ describe('SubscriptionTierSelectorComponent', () => {
             'en'
           ).transform(tier.discount.end_date, 'dd/MM/yy')}:INTERPOLATION:`;
 
-          expect(tierDescriptionText).toEqual(`${tier.price} ${expectedMonthlyPriceText} ${expectedDateText}`);
+          expect(tierDescriptionText).toEqual(`${tier.price}${expectedMonthlyPriceText} ${expectedDateText}`);
           expect(classDiscounted).toBeTruthy();
         });
       });
