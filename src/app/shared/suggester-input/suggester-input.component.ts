@@ -1,4 +1,16 @@
-import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  forwardRef,
+  Input,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  Output,
+  EventEmitter,
+  Renderer2,
+  HostListener,
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
@@ -35,7 +47,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public model: string;
   public options: SelectFormOption<string>[] = [];
   public suggestions: MultiSelectValue = [];
-  public isClickOutside: boolean = false;
   public isValid: boolean = true;
   public hashtagPlaceholder: string = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
   public showOptions: boolean;
@@ -52,6 +63,12 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     this.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions) => {
       this.extendedOptions = extendedOptions;
     });
+  }
+
+  @HostListener('window:click', ['$event']) onWindowClick(n: Event) {
+    if ((n.target as HTMLElement).contains(this.formMenu.nativeElement)) {
+      this.notShowOptions();
+    }
   }
 
   public keyUp(event): void {
@@ -73,7 +90,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   public blur() {
     this.hashtagSuggester.nativeElement.placeholder = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
-    this.notShowOptions();
   }
 
   public writeValue(value): void {
@@ -86,6 +102,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public detectTitleKeyboardChanges(): void {
+    // need to unsubscribe
     fromEvent(this.hashtagSuggester.nativeElement, 'keyup')
       .pipe(
         filter((key: KeyboardEvent) => {
@@ -117,7 +134,19 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     if (!newModel) {
       return of([]);
     } else {
-      return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
+      return of({
+        list: [
+          { text: 'testing', occurrences: 10 },
+          { text: 'sa', occurrences: 10 },
+          { text: 'add', occurrences: 10 },
+          { text: 'addas', occurrences: 10 },
+          { text: 'adada', occurrences: 10 },
+          { text: 'dsd', occurrences: 10 },
+          { text: 'dd', occurrences: 10 },
+        ],
+        paginationParameter: '10',
+      });
+      //return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
     }
   }
 
@@ -126,20 +155,20 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     if (!list.length && !!this.model) {
       return this.createHashtagSuggesterOption();
     }
-    let slicedList = list.slice(0, 4);
-    let options = slicedList.map((hashtag: Hashtag) => {
+    let options = list.map((hashtag: Hashtag) => {
       return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     });
-    if (this.model.length >= 2 && options[0].label !== this.model) {
-      console.log('mm', options[0].label, this.model);
-      let newOptions = options.slice(0, 3);
-      return [...this.createHashtagSuggesterOption(), ...newOptions];
-    } else return options;
+    if (options[0].label !== this.model) {
+      console.log('model', this.model);
+      return [...this.createHashtagSuggesterOption(), ...options].slice(0, 4);
+    } else {
+      console.log('model no rule', this.model);
+      return options.slice(0, 4);
+    }
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
     let newModel = this.model.substring(1);
-    console.log('new model', newModel);
     if (!!newModel) {
       return [{ label: `#${newModel}`, sublabel: '0', value: `#${newModel}` }];
     } else return [];

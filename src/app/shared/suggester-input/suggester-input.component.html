@@ -9,8 +9,8 @@ class="SuggesterInput"
 [disabled]="disabled"
 #hashtagSuggester
 />
-<div *ngIf="!!options" #formMenu>
-    <div  [ngClass]="{'SuggesterInput__hashtagList': options.length >= 1 }" >
-        <tsl-multi-select-form [(ngModel)]="suggestions" [options]="options" (change)="handleSelectedOption()"></tsl-multi-select-form>
+<div *ngIf="!!options">
+    <div  [ngClass]="{'SuggesterInput__hashtagList': options.length >= 1 }" #formMenu>
+        <tsl-multi-select-form [(ngModel)]="suggestions" [options]="options" (change)="handleSelectedOption()" ></tsl-multi-select-form>
     </div>
 </div>
