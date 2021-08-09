@@ -8,7 +8,6 @@ import {
   AfterViewInit,
   Output,
   EventEmitter,
-  Renderer2,
   HostListener,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -19,7 +18,7 @@ import { MultiSelectFormOption } from '@shared/form/components/multi-select-form
 import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
-import { fromEvent, Observable, of } from 'rxjs';
+import { fromEvent, Observable, of, Subscription } from 'rxjs';
 import { debounceTime, filter, switchMap } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
@@ -51,6 +50,8 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public hashtagPlaceholder: string = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
   public showOptions: boolean;
   private extendedOptions: MultiSelectFormOption[];
+  private fromEvent$: Observable<unknown>;
+  private subscriptions: Subscription;
 
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
     super();
@@ -63,6 +64,10 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     this.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions) => {
       this.extendedOptions = extendedOptions;
     });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   @HostListener('window:click', ['$event']) onWindowClick(n: Event) {
@@ -102,27 +107,28 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public detectTitleKeyboardChanges(): void {
-    // need to unsubscribe
-    fromEvent(this.hashtagSuggester.nativeElement, 'keyup')
-      .pipe(
-        filter((key: KeyboardEvent) => {
-          return key.key !== 'Escape';
-        }),
-        debounceTime(750),
-        switchMap(() => {
-          this.suggestions = this.value;
-          if (this.isValid) {
-            return this.getHashtagSuggesters();
-          } else return of([]);
-        })
-      )
-      .subscribe((options: any) => {
+    this.fromEvent$ = fromEvent(this.hashtagSuggester.nativeElement, 'keyup').pipe(
+      filter((key: KeyboardEvent) => {
+        return key.key !== 'Escape';
+      }),
+      debounceTime(750),
+      switchMap(() => {
+        this.suggestions = this.value;
+        if (this.isValid) {
+          return this.getHashtagSuggesters();
+        } else return of([]);
+      })
+    );
+
+    this.subscriptions.add(
+      this.fromEvent$.subscribe((options: PaginatedList<Hashtag> | []) => {
         if (Array.isArray(options)) {
           this.options = options;
         } else {
           this.options = this.mapHashtagSuggestersToOptions(options);
         }
-      });
+      })
+    );
   }
 
   private notShowOptions(): void {
@@ -134,7 +140,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     if (!newModel) {
       return of([]);
     } else {
-      return of({
+      /* return of({
         list: [
           { text: 'testing', occurrences: 10 },
           { text: 'sa', occurrences: 10 },
@@ -145,8 +151,8 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
           { text: 'dd', occurrences: 10 },
         ],
         paginationParameter: '10',
-      });
-      //return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
+      }); */
+      return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
     }
   }
 
@@ -159,10 +165,8 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
       return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     });
     if (options[0].label !== this.model) {
-      console.log('model', this.model);
       return [...this.createHashtagSuggesterOption(), ...options].slice(0, 4);
     } else {
-      console.log('model no rule', this.model);
       return options.slice(0, 4);
     }
   }
