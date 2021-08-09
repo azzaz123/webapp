@@ -533,16 +533,6 @@ describe('UploadRealestateComponent', () => {
 
       expect(itemService.updateRealEstateLocation).toHaveBeenCalledWith(MOCK_REALESTATE.id, USER_LOCATION_COORDINATES);
     });
-
-    it('should emit location updated event', () => {
-      component.locationSelected.subscribe((s: number) => {
-        categoryId = s;
-      });
-
-      component.emitLocation();
-
-      expect(categoryId).toBe(13000);
-    });
   });
 
   describe('preview', () => {

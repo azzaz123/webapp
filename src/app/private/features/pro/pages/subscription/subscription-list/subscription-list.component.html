@@ -10,6 +10,7 @@
                             (buttonClick)="onClickButton(subscription)" [isSubscribed]="isSubscribed(subscription)"
                             [subscription]="subscription" [textButton]="getTextButton(subscription)"
                             [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
+                            [tierDiscount]="hasDiscount(subscription)"
                             [subscriptionBenefits]="getBenefits(subscription)" *ngIf="subscription">
                         </tsl-subscription-card>
                     </ng-container>

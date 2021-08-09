@@ -8,7 +8,6 @@ import {
   SubscriptionSlotGeneralResponse,
   SUBSCRIPTION_MARKETS,
 } from './subscriptions.interface';
-import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryResponse } from '../category/category-response.interface';
@@ -238,32 +237,12 @@ export class SubscriptionsService {
     return subscriptions.some((subscription) => this.isStripeSubscription(subscription));
   }
 
-  public hasOneFreeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
-    return subscriptions.some((subscription) => this.hasOneFreeTier(subscription));
+  public hasSomeSubscriptionDiscount(subscriptions: SubscriptionsResponse[]): boolean {
+    return !!subscriptions && subscriptions.some((subscription) => this.getDefaultTierDiscount(subscription));
   }
 
-  public hasOneDiscountedSubscription(subscriptions: SubscriptionsResponse[]): boolean {
-    return subscriptions.some((subscription) => this.hasOneTierDiscount(subscription));
-  }
-
-  public hasOneTierDiscount(subscription: SubscriptionsResponse): boolean {
-    return subscription.tiers.some((tier) => this.isDiscountedTier(tier));
-  }
-
-  public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {
-    return subscription.tiers.some((tier) => this.isFreeTier(tier));
-  }
-
-  public isDiscountedTier(tier: Tier): boolean {
-    return !!tier.discount_available;
-  }
-
-  public isFreeTier(tier: Tier): boolean {
-    if (!this.isDiscountedTier(tier)) {
-      return false;
-    }
-
-    return tier.discount_available.discounted_price === 0;
+  public getDefaultTierDiscount(subscription: SubscriptionsResponse): Tier {
+    return subscription.tiers.find((tier) => tier.discount);
   }
 
   public hasTrial(subscription: SubscriptionsResponse): boolean {
@@ -283,24 +262,6 @@ export class SubscriptionsService {
       .map((subscription) => subscription.category_id);
   }
 
-  public getTierDiscountPercentatge(tier: Tier): number {
-    let discountPercentatge = 0;
-
-    if (!tier.discount_available) {
-      return discountPercentatge;
-    }
-
-    try {
-      discountPercentatge = ((tier.price - tier.discount_available.discounted_price) / tier.price) * 100;
-    } catch {}
-
-    if (discountPercentatge > 100) {
-      discountPercentatge = 100;
-    }
-
-    return discountPercentatge;
-  }
-
   public hasFreeTrialByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): boolean {
     const selectedsubscription = subscriptions.find((subscription) => subscription.category_id === categoryId);
 
@@ -309,6 +270,16 @@ export class SubscriptionsService {
     }
 
     return this.hasTrial(selectedsubscription) && !selectedsubscription.subscribed_from;
+  }
+
+  public hasDiscountByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): boolean {
+    const selectedsubscription = subscriptions.find((subscription) => subscription.category_id === categoryId);
+
+    if (!selectedsubscription) {
+      return false;
+    }
+
+    return !!this.getDefaultTierDiscount(selectedsubscription) && !selectedsubscription.subscribed_from;
   }
 
   public hasHighestLimit(subscription: SubscriptionsResponse): boolean {

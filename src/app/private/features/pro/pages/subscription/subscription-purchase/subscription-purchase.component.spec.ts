@@ -189,6 +189,7 @@ describe('SubscriptionPurchaseComponent', () => {
     });
     describe('Track trackViewSubscriptionTier', () => {
       it('should track event', () => {
+        component.selectedTier = component.subscription.tiers[0];
         const hasTrial = true;
         const event: AnalyticsPageView<ViewSubscriptionTier> = {
           name: ANALYTICS_EVENT_NAMES.ViewSubscriptionTier,
@@ -196,6 +197,7 @@ describe('SubscriptionPurchaseComponent', () => {
             screenId: SCREEN_IDS.SubscriptionTier,
             freeTrial: hasTrial,
             subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+            discount: !!component.subscription.tiers[0].discount,
           },
         };
         spyOn(analyticsService, 'trackPageView').and.callThrough();
@@ -280,7 +282,6 @@ describe('SubscriptionPurchaseComponent', () => {
         expect(component.isLoading).toEqual(true);
       });
       it('should track SubscriptionPayConfirmation', () => {
-        spyOn(subscriptionsService, 'getTierDiscountPercentatge').and.returnValue(0);
         spyOn(subscriptionsService, 'hasTrial').and.returnValue(false);
         spyOn(analyticsService, 'trackEvent').and.callThrough();
         const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
@@ -295,6 +296,7 @@ describe('SubscriptionPurchaseComponent', () => {
             discountPercent: 0,
             invoiceNeeded: false,
             freeTrial: false,
+            discount: !!component.selectedTier.discount,
           },
         };
 

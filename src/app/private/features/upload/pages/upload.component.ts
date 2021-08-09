@@ -1,7 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CARS_CATEGORY } from '@core/item/item-categories';
-import { Product } from '@core/item/item-response.interface';
-import { ItemService } from '@core/item/item.service';
 import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-safety.interface';
 import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
 import { UserService } from '@core/user/user.service';
@@ -13,10 +11,9 @@ import { UserService } from '@core/user/user.service';
 })
 export class UploadComponent implements OnInit {
   public categoryId: string;
-  public urgentPrice: string = null;
   @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
 
-  constructor(private itemService: ItemService, private userService: UserService, private trustAndSafetyService: TrustAndSafetyService) {}
+  constructor(private userService: UserService, private trustAndSafetyService: TrustAndSafetyService) {}
 
   ngOnInit() {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
@@ -30,24 +27,9 @@ export class UploadComponent implements OnInit {
 
   public setCategory(categoryId: string) {
     this.categoryId = categoryId;
-    if (categoryId !== '-1') {
-      this.getUrgentPrice(categoryId);
-    } else {
-      this.urgentPrice = null;
-    }
   }
 
   public onValidationError() {
     this.scrollPanel.nativeElement.scrollTop = 0;
-  }
-
-  public getUrgentPrice(categoryId: string): void {
-    if (categoryId !== '-1') {
-      this.itemService.getUrgentProductByCategoryId(categoryId).subscribe((product: Product) => {
-        this.urgentPrice = product.durations[0].market_code;
-      });
-    } else {
-      this.urgentPrice = null;
-    }
   }
 }
