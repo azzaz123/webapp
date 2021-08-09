@@ -1,0 +1,7 @@
+<div class="WalletPendingTransaction">
+  <div class="WalletPendingTransaction__image"><img [src]="walletPendingTransaction.itemImageUrl" /></div>
+  <div class="WalletPendingTransaction__title">{{walletPendingTransaction.itemTitle}}</div>
+  <div class="WalletPendingTransaction__amount">
+    {{walletPendingTransaction.moneyAmount.amount.total}}{{walletPendingTransaction.moneyAmount.currency.symbol}}
+  </div>
+</div>
