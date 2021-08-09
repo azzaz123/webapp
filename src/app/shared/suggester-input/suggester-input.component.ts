@@ -34,7 +34,7 @@ import { HashtagSuggesterApiService } from '../../private/features/upload/core/s
   ],
 })
 export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit {
-  @Input() categoryId: string = '1000'; // When PR: need to modify
+  @Input() categoryId: string;
   @Input() disabled: boolean;
   @ViewChild('hashtagSuggester', { static: true }) hashtagSuggester: ElementRef;
   @ViewChild(MultiSelectFormComponent) multiSelectFormComponent: MultiSelectFormComponent;
@@ -51,7 +51,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public showOptions: boolean;
   private extendedOptions: MultiSelectFormOption[];
   private fromEvent$: Observable<unknown>;
-  private subscriptions: Subscription;
+  private subscriptions = new Subscription();
 
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
     super();
@@ -140,18 +140,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     if (!newModel) {
       return of([]);
     } else {
-      /* return of({
-        list: [
-          { text: 'testing', occurrences: 10 },
-          { text: 'sa', occurrences: 10 },
-          { text: 'add', occurrences: 10 },
-          { text: 'addas', occurrences: 10 },
-          { text: 'adada', occurrences: 10 },
-          { text: 'dsd', occurrences: 10 },
-          { text: 'dd', occurrences: 10 },
-        ],
-        paginationParameter: '10',
-      }); */
       return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
     }
   }

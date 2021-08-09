@@ -17,7 +17,12 @@ import { SuggesterInputModule } from './suggester-input.module';
         <tsl-cancel-bubble [bubbleText]="option"></tsl-cancel-bubble>
       </div>
       dynamic input
-      <tsl-suggester-input formControlName="hashtag" [disabled]="disabled" (showInvalidMessage)="showMessage($event)"></tsl-suggester-input>
+      <tsl-suggester-input
+        formControlName="hashtag"
+        [disabled]="disabled"
+        [categoryId]="categoryId"
+        (showInvalidMessage)="showMessage($event)"
+      ></tsl-suggester-input>
     </form>
     <div *ngIf="showErrorNessage">
       <div i18n="@@web_upload_hashtag_invalid_error_message">
@@ -28,6 +33,7 @@ import { SuggesterInputModule } from './suggester-input.module';
 })
 class StorySuggesterInputFormComponent {
   @Input() disabled: boolean = false;
+  @Input() categoryId: string = '1000';
   public formGroup = new FormGroup({
     hashtag: new FormControl(['#aa', '#ss', '#design']),
   });
@@ -54,16 +60,18 @@ export default {
 const Template: Story<StorySuggesterInputFormComponent> = (args) => ({
   props: args,
   template: `
-  <tsl-story-suggester-input [disabled]="disabled"></tsl-story-suggester-input>
+  <tsl-story-suggester-input [disabled]="disabled" [categoryId]="categoryId"></tsl-story-suggester-input>
     `,
 });
 
 export const Default = Template.bind({});
 Default.args = {
   disabled: false,
+  categoryId: '1000',
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
+  categoryId: '1000',
 };
