@@ -19,7 +19,7 @@ import { MultiSelectValue } from '@shared/form/components/multi-select-form/inte
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { fromEvent, Observable, of, Subscription } from 'rxjs';
-import { debounceTime, filter, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
   selector: 'tsl-suggester-input',
@@ -122,24 +122,29 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
     this.subscriptions.add(
       this.fromEvent$.subscribe((options: PaginatedList<Hashtag> | []) => {
+        console.log('subscribe', options);
         if (Array.isArray(options)) {
           this.options = options;
         } else {
           this.options = this.mapHashtagSuggestersToOptions(options);
+          console.log('the options', this.options);
         }
       })
     );
   }
 
-  private notShowOptions(): void {
+  public notShowOptions(): void {
     this.options = [];
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag> | []> {
+    console.log('read', this.model);
     let newModel = this.model.substring(1);
     if (!newModel) {
+      console.log('read empty array');
       return of([]);
     } else {
+      console.log('read no no empty array');
       return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
     }
   }
@@ -153,10 +158,17 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
       return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     });
     if (options[0].label !== this.model) {
-      return [...this.createHashtagSuggesterOption(), ...options].slice(0, 4);
+      return this.sliceOptions([...this.createHashtagSuggesterOption(), ...options]);
     } else {
-      return options.slice(0, 4);
+      console.log('the end options', this.options);
+      return this.sliceOptions(options);
     }
+  }
+
+  private sliceOptions(options: SelectFormOption<string>[]): SelectFormOption<string>[] {
+    if (options.length > 4) {
+      return options.slice(0, 4);
+    } else return options;
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
