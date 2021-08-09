@@ -5,6 +5,7 @@ import { CAR_CONFIGURATION_ID } from '../../../components/filters/core/enums/con
 import { FASHION_CONFIGURATION_ID } from '../../../components/filters/core/enums/configuration-ids/fashion-configuration-ids.enum';
 import { ConfigurationId } from '../../../components/filters/core/types/configuration-id.type';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { COMMON_CONSUMER_GOODS_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/consumer-goods-configuration-ids.enum';
 
 export type OriginConfigurationValue = OptionsApiOrigin | 'hardcoded';
 export type OriginConfiguration = {
@@ -171,6 +172,21 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
     },
     mapperConfiguration: {
       method: 'formatFashionBrand',
+    },
+  },
+  [COMMON_CONSUMER_GOODS_CONFIGURATION_ID.OBJECT_TYPE]: {
+    apiConfiguration: {
+      method: 'getObjectTypesByCategoryId',
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.categoryId }],
+      keyMappers: [
+        {
+          sourceParamKey: FILTER_QUERY_PARAM_KEY.categoryId,
+          destinationParamKey: 'category_id',
+        },
+      ],
+    },
+    mapperConfiguration: {
+      method: 'formatObjectType',
     },
   },
 };
