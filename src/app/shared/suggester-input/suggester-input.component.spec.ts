@@ -4,6 +4,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { MOCK_HASHTAGS } from '@fixtures/hashtag.fixtures.spec';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
@@ -15,6 +16,7 @@ describe('SuggesterInputComponent', () => {
   let component: SuggesterInputComponent;
   let fixture: ComponentFixture<SuggesterInputComponent>;
   let inputElement: DebugElement;
+  let hashtagSuggesterApiService: HashtagSuggesterApiService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,6 +29,8 @@ describe('SuggesterInputComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SuggesterInputComponent);
     component = fixture.componentInstance;
+    component.model = '';
+    hashtagSuggesterApiService = TestBed.inject(HashtagSuggesterApiService);
     inputElement = fixture.debugElement.query(By.css('.SuggesterInput'));
     fixture.detectChanges();
   });
@@ -92,24 +96,41 @@ describe('SuggesterInputComponent', () => {
     });
 
     describe('the input value', () => {
-      it('should have the # symbol infront of the value entered by the user', fakeAsync(() => {
-        spyOn(component, 'detectTitleKeyboardChanges').and.callFake(() => {});
+      it('should have the # symbol infront of the value entered by the user', () => {
         inputElement.nativeElement.value = 'sss';
         inputElement.nativeElement.dispatchEvent(new Event('input'));
+
         inputElement.triggerEventHandler('keyup', {});
-        // component.detectTitleKeyboardChanges();
-        tick(800);
         fixture.detectChanges();
+
         expect(component.model).toBe('#sss');
-        expect(inputElement.nativeElement.value).toBe('...');
-        /*  fixture.whenStable().then(() => {
-          expect(component.model).toBe('...');
-        }); */
-      }));
+      });
     });
 
     describe('when we have the hashtag suggestions', () => {
-      it('should load the hashtags from our endpoint', () => {});
+      it('should load the hashtags from our endpoint with our input value', fakeAsync(() => {
+        spyOn(hashtagSuggesterApiService, 'getHashtagsByPrefix').and.returnValue(of({ list: MOCK_HASHTAGS, paginationParameter: '10' }));
+
+        const event = new KeyboardEvent('keyup', { bubbles: true, cancelable: true, shiftKey: false });
+        inputElement.nativeElement.value = 'ab';
+        inputElement.nativeElement.dispatchEvent(event);
+        //inputElement.triggerEventHandler('keyup', {});
+        //component.model = '#ab';
+        tick(1000);
+
+        fixture.detectChanges();
+
+        /*      expect(component.options).toEqual([
+          { label: '#ab', sublabel: '1', value: '#ab' },
+          { label: '#abc', sublabel: '2', value: '#abc' },
+          { label: '#abcd', sublabel: '1', value: '#abcd' },
+          { label: '#ad', sublabel: '2', value: '#ad' },
+        ]); */
+        fixture.whenStable().then(() => {
+          expect(component.options.length).toBe(4);
+        });
+        // expect(component.options.length).toBe(4);
+      }));
 
       it('the hashtags should have # infront', () => {});
     });
@@ -129,5 +150,11 @@ describe('SuggesterInputComponent', () => {
     describe('when unselect the hashtag', () => {
       it('should remove the hashtag from the hashtag list', () => {});
     });
+  });
+
+  describe('Close form', () => {
+    it('should close the form when we click outside of the form', () => {});
+
+    it('should close the form when we press Escape', () => {});
   });
 });
