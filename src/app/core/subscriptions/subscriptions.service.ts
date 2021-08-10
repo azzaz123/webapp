@@ -280,7 +280,7 @@ export class SubscriptionsService {
     return this.hasTrial(selectedsubscription) && !selectedsubscription.subscribed_from;
   }
 
-  public tierDiscountByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): Tier {
+  public getSubscriptionByCategory(subscriptions: SubscriptionsResponse[], categoryId: number): SubscriptionsResponse {
     let categorySubscriptionId: number;
 
     if (CATEGORIES_EXCLUDED_FROM_EVERYTHING_ELSE.includes(categoryId)) {
@@ -289,7 +289,11 @@ export class SubscriptionsService {
       categorySubscriptionId = categoryId;
     }
 
-    const selectedsubscription = subscriptions.find((subscription) => subscription.category_id === categoryId);
+    return subscriptions.find((subscription) => subscription.category_id === categoryId);
+  }
+
+  public tierDiscountByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): Tier {
+    const selectedsubscription = this.getSubscriptionByCategory(subscriptions, categoryId);
 
     if (!selectedsubscription) {
       return;

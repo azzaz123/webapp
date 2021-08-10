@@ -80,20 +80,12 @@ export class TooManyItemsModalComponent implements OnInit {
       map((values) => {
         const item = values[0];
         const subscriptions = values[1];
-        this.categorySubscription = subscriptions.find((subscription) => item.categoryId === subscription.category_id);
+        this.categorySubscription = this.subscriptionsService.getSubscriptionByCategory(subscriptions, item.categoryId);
         this.isHighestLimit = this.hasHighestLimitReached();
-        this.isFreeTrial = this.hasFreeOption();
-        this.tierDicounted = this.subscriptionsService.getDefaultTierDiscount(this.categorySubscription);
-        console.log('tier', this.tierDicounted);
+        this.isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(subscriptions, item.categoryId);
+        this.tierDicounted = this.subscriptionsService.tierDiscountByCategoryId(subscriptions, item.categoryId);
       })
     );
-  }
-
-  private hasFreeOption(): boolean {
-    if (!this.categorySubscription || !!this.categorySubscription.subscribed_from) {
-      return false;
-    }
-    return this.subscriptionsService.hasTrial(this.categorySubscription);
   }
 
   private hasHighestLimitReached(): boolean {
