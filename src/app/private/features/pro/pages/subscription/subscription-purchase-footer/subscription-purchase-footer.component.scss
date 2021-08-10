@@ -14,6 +14,11 @@
   &__amount {
     font-size: $font-size-xl;
     line-height: normal;
+
+    &--discounted {
+      text-decoration: line-through;
+      color: $blue-grey-3;
+    }
   }
 
   &__description {
@@ -31,7 +36,7 @@
   }
 
   tsl-button {
-    width: 160px;
+    width: 220px;
     @include media-breakpoint-down(xs) {
       width: 100%;
       display: block;
