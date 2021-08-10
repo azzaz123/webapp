@@ -1,0 +1,43 @@
+@import '~web-styleguide/scss/spacing';
+@import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/text';
+
+$wallet-transaction-card-image-size: 62px;
+$wallet-transaction-card-height: 84px;
+$wallet-transaction-card-padding: 12px;
+
+@mixin wallet-transaction-card() {
+  height: $wallet-transaction-card-height;
+  box-shadow: 0px 0px 8px rgba($blue-grey-1, 0.08);
+  color: $blue-grey-1;
+  padding: $spacing-ms;
+  border-radius: 10px;
+  background-color: $white;
+  font-weight: $font-weight-chunky;
+}
+
+.WalletPendingTransaction {
+  @include wallet-transaction-card();
+
+  div:not(:last-child) {
+    margin-right: $spacing-ms;
+  }
+
+  &__image {
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: $wallet-transaction-card-image-size;
+    height: $wallet-transaction-card-image-size;
+    border-radius: 5px;
+  }
+
+  &__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__amount {
+    color: $blue-grey-3;
+    font-size: 18px;
+  }
+}
