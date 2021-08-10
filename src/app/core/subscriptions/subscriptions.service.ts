@@ -16,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CURRENCY_SYMBOLS } from '../constants';
 import { UuidService } from '../uuid/uuid.service';
+import { CATEGORIES_EXCLUDED_FROM_EVERYTHING_ELSE, CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -279,14 +280,22 @@ export class SubscriptionsService {
     return this.hasTrial(selectedsubscription) && !selectedsubscription.subscribed_from;
   }
 
-  public hasDiscountByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): boolean {
+  public tierDiscountByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): Tier {
+    let categorySubscriptionId: number;
+
+    if (CATEGORIES_EXCLUDED_FROM_EVERYTHING_ELSE.includes(categoryId)) {
+      categorySubscriptionId = CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE;
+    } else {
+      categorySubscriptionId = categoryId;
+    }
+
     const selectedsubscription = subscriptions.find((subscription) => subscription.category_id === categoryId);
 
     if (!selectedsubscription) {
-      return false;
+      return;
     }
 
-    return !!this.getDefaultTierDiscount(selectedsubscription) && !selectedsubscription.subscribed_from;
+    return this.getDefaultTierDiscount(selectedsubscription);
   }
 
   public hasHighestLimit(subscription: SubscriptionsResponse): boolean {

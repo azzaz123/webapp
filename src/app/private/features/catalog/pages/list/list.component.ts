@@ -482,8 +482,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private openSuggestProModal(reactivatedItem: Item, index: number): void {
     const isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(this.subscriptions, reactivatedItem.categoryId);
-    const isDiscountAvailable = this.subscriptionsService.hasDiscountByCategoryId(this.subscriptions, reactivatedItem.categoryId);
-    this.trackViewProExpiredItemsPopup(isFreeTrial, isDiscountAvailable);
+    const tierDiscount = this.subscriptionsService.tierDiscountByCategoryId(this.subscriptions, reactivatedItem.categoryId);
+    this.trackViewProExpiredItemsPopup(isFreeTrial, !!tierDiscount);
     this.userService.saveLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, Date.now().toString());
 
     const modalRef = this.modalService.open(SuggestProModalComponent, {
@@ -492,6 +492,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     modalRef.componentInstance.title = $localize`:@@web_suggest_pro_modal_title:If you were PRO your items wouldn’t become inactive. Sounds good, right?`;
     modalRef.componentInstance.isFreeTrial = isFreeTrial;
+    modalRef.componentInstance.tierWithDiscount = tierDiscount;
 
     modalRef.result.then(
       () => this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]),
