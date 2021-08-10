@@ -444,6 +444,7 @@
     "web_subscriptions_slot_item_publish_more": "You can list {$START_BOLD_TEXT}{$INTERPOLATION}{$CLOSE_BOLD_TEXT} more {$INTERPOLATION_1}",
     "web_try_pro_slot_description": "Want to boost your online business? Become a PRO!",
     "web_free_trial": "Free trial",
+    "listing_limit_non_pro_users_discount_modal_start_button": "Try with {$INTERPOLATION}% off",
     "web_know_more": "Know more",
     "web_catalog_modals_bump_confirmation_modal_642": "Congratulations",
     "web_catalog_modals_bump_confirmation_modal_115": "Your item(s) have been featured and you can see them in the top position.",

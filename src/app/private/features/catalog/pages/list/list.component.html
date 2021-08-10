@@ -64,6 +64,7 @@
       <tsl-try-pro-slot *ngIf="showTryProSlot"
         class="d-md-block"
         [hasTrialAvailable]="hasTrialAvailable"
+        [tierWithDiscount]="tierWithDiscount"
         (clickCTA)="onClickTryProSlot()"
         (close)="onCloseTryProSlot()"
         >

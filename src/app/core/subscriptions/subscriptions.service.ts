@@ -241,6 +241,13 @@ export class SubscriptionsService {
     return !!subscriptions && subscriptions.some((subscription) => this.getDefaultTierDiscount(subscription));
   }
 
+  public getDefaultTierSubscriptionDiscount(subscriptions: SubscriptionsResponse[]): Tier {
+    if (this.hasSomeSubscriptionDiscount(subscriptions)) {
+      const subscriptionWithDiscount = subscriptions.find((subscription) => this.getDefaultTierDiscount(subscription));
+      return this.getDefaultTierDiscount(subscriptionWithDiscount);
+    }
+  }
+
   public getDefaultTierDiscount(subscription: SubscriptionsResponse): Tier {
     return subscription.tiers.find((tier) => tier.discount);
   }

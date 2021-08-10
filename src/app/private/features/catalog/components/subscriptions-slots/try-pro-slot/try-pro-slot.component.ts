@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Tier, TierDiscount } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-try-pro-slot',
@@ -7,13 +8,19 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 })
 export class TryProSlotComponent {
   @Input() hasTrialAvailable: boolean;
+  @Input() tierWithDiscount: Tier;
   @Output() close: EventEmitter<void> = new EventEmitter();
   @Output() clickCTA: EventEmitter<void> = new EventEmitter();
 
   constructor() {}
 
   get CTAtext(): string {
-    return this.hasTrialAvailable ? $localize`:@@web_free_trial:Free trial` : $localize`:@@web_know_more:Know more`;
+    if (this.hasTrialAvailable) {
+      return $localize`:@@web_free_trial:Free trial`;
+    }
+    return this.tierWithDiscount
+      ? $localize`:@@listing_limit_non_pro_users_discount_modal_start_button:Try with ${this.tierWithDiscount.discount.percentage}:INTERPOLATION:% discount`
+      : $localize`:@@web_know_more:Know more`;
   }
 
   public onClose(): void {

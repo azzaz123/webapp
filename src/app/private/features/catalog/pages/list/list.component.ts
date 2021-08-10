@@ -23,12 +23,13 @@ import { CheapestProducts, ItemBulkResponse, ItemsData } from '@core/item/item-r
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
-import { SubscriptionSlot, SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionSlot, SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { LOCAL_STORAGE_SUGGEST_PRO_SHOWN, LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
+import { TIER } from '@fixtures/subscriptions.fixtures.spec';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
@@ -101,6 +102,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private componentSubscriptions: Subscription[] = [];
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly PRO_PATHS = PRO_PATHS;
+  public tierWithDiscount: Tier;
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true })
@@ -154,6 +156,7 @@ export class ListComponent implements OnInit, OnDestroy {
       .subscribe((subscriptions) => {
         if (subscriptions) {
           this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(subscriptions);
+          this.tierWithDiscount = this.subscriptionsService.getDefaultTierSubscriptionDiscount(subscriptions);
           this.subscriptions = subscriptions;
           this.initTryProSlot();
         }
