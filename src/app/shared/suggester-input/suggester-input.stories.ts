@@ -13,7 +13,7 @@ import { SuggesterInputModule } from './suggester-input.module';
   template: `
     <form [formGroup]="formGroup">
       <h4 class="mt-4">Dynamic input: {{ formGroup.value.hashtag }}</h4>
-      <div *ngFor="let option of formGroup.value.hashtag">
+      <div *ngFor="let option of formGroup.value.hashtag" style="margin:35px">
         <tsl-cancel-bubble [bubbleText]="option"></tsl-cancel-bubble>
       </div>
       dynamic input

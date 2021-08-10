@@ -6,11 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MOCK_HASHTAGS } from '@fixtures/hashtag.fixtures.spec';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
+import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { of } from 'rxjs';
 import { SuggesterInputComponent } from './suggester-input.component';
-import { HASHTAG_TESTING, INITIAL_HASHTAGS } from './suggester-input.fixtures.spec';
+import { HASHTAG_OPTIONS, HASHTAG_TESTING, INITIAL_HASHTAGS } from './suggester-input.fixtures.spec';
 
 describe('SuggesterInputComponent', () => {
   let component: SuggesterInputComponent;
@@ -114,20 +115,15 @@ describe('SuggesterInputComponent', () => {
         const event = new KeyboardEvent('keyup', { bubbles: true, cancelable: true, shiftKey: false });
         inputElement.nativeElement.value = 'ab';
         inputElement.nativeElement.dispatchEvent(event);
-        //inputElement.triggerEventHandler('keyup', {});
+        inputElement.triggerEventHandler('keyup', {});
         //component.model = '#ab';
         tick(1000);
 
         fixture.detectChanges();
 
-        /*      expect(component.options).toEqual([
-          { label: '#ab', sublabel: '1', value: '#ab' },
-          { label: '#abc', sublabel: '2', value: '#abc' },
-          { label: '#abcd', sublabel: '1', value: '#abcd' },
-          { label: '#ad', sublabel: '2', value: '#ad' },
-        ]); */
         fixture.whenStable().then(() => {
-          expect(component.options.length).toBe(4);
+          // expect(component.options.length).toBe(4);
+          expect(component.model).toBe(4);
         });
         // expect(component.options.length).toBe(4);
       }));
@@ -144,7 +140,25 @@ describe('SuggesterInputComponent', () => {
 
   describe('Select and unslect hashtag suggestions', () => {
     describe('when select the hashtag', () => {
-      it('should add the selected hashtag to the hashtag list', () => {});
+      it('should add the selected hashtag to the hashtag list', () => {
+        spyOn(component, 'handleSelectedOption');
+        spyOn(component, 'onChange');
+        component.options = HASHTAG_OPTIONS;
+        fixture.detectChanges();
+
+        const form = fixture.debugElement.query(By.directive(MultiSelectFormComponent));
+        form.nativeElement.dispatchEvent(new Event('input'));
+        form.triggerEventHandler('change', {});
+        tick(10);
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+          expect(component.onChange).toHaveBeenCalled();
+        });
+        // form.triggerEventHandler('change', {});
+
+        expect(component.handleSelectedOption).toHaveBeenCalled();
+        expect(component.onChange).toHaveBeenCalled();
+      });
     });
 
     describe('when unselect the hashtag', () => {
@@ -153,8 +167,26 @@ describe('SuggesterInputComponent', () => {
   });
 
   describe('Close form', () => {
-    it('should close the form when we click outside of the form', () => {});
+    it('should close the form when we click outside of the form', () => {
+      spyOn(component, 'notShowOptions');
 
-    it('should close the form when we press Escape', () => {});
+      const event: any = {
+        target: component.formMenu.nativeElement as HTMLElement,
+      };
+
+      component.onWindowClick(event);
+      fixture.detectChanges();
+
+      expect(component.notShowOptions).toHaveBeenCalled();
+    });
+
+    it('should close the form when we press Escape', () => {
+      spyOn(component, 'notShowOptions');
+
+      inputElement.triggerEventHandler('keyup', { key: 'Escape' });
+      fixture.detectChanges();
+
+      expect(component.notShowOptions).toHaveBeenCalled();
+    });
   });
 });

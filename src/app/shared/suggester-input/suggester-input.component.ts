@@ -102,6 +102,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public handleSelectedOption(): void {
+    console.log('hhandle');
     this.value = this.mapExtendedOptionsToValue();
     this.onChange(this.value);
   }
@@ -179,6 +180,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private mapExtendedOptionsToValue(): string[] {
+    console.log('value', this.value);
     let newValue: string[] = this.value;
     this.extendedOptions.forEach((option: MultiSelectFormOption) => {
       if (option.checked && !this.value.includes(option.value)) {
