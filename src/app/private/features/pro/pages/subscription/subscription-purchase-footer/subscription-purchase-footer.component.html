@@ -20,9 +20,8 @@
                     </ng-container>
                     <ng-template #noTrialDescription>
                         <ng-container *ngIf="selectedTier.discount; else montlyRenewal">
-                            <b><span i18n="@@web_profile_pages_subscription_326">{{selectedTier.price}}{{selectedTier.currency}}/month</span>
-                            </b><span i18n="@@pro_subscription_purchase_summary_start_period_web">
-                                starting from {{selectedTier.discount.end_date |  date:'dd/MM/yy' }}</span>
+                            <b><span i18n="@@web_profile_pages_subscription_326">{{selectedTier.price}}{{selectedTier.currency}}/month</span></b>
+                            <span i18n="@@pro_subscription_purchase_summary_start_period_web" class="ml-1">starting from {{selectedTier.discount.end_date |  date:'dd/MM/yy' }}</span>
                             </ng-container>
                         <ng-template #montlyRenewal>
                             <span i18n="@@web_monthly_renewal_plan">The plan will be renewed monthly</span>
