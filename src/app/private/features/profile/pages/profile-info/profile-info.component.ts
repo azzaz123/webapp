@@ -64,6 +64,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public ANALYTICS_FIELDS = ANALYTICS_FIELDS;
   public renderMap = false;
   public readonly PERMISSIONS = PERMISSIONS;
+  private isDiscountAvailable: boolean;
 
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
@@ -360,6 +361,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       .subscribe((subscriptions) => {
         if (!!subscriptions) {
           this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(subscriptions);
+          this.isDiscountAvailable = this.subscriptionsService.hasSomeSubscriptionDiscount(subscriptions);
         }
         if (!!callback) {
           callback();
@@ -401,6 +403,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       attributes: {
         freeTrial: this.hasTrialAvailable,
         screenId: SCREEN_IDS.ProAdvantagesPopup,
+        discount: this.isDiscountAvailable,
       },
     };
     this.analyticsService.trackPageView(event);

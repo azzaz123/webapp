@@ -264,9 +264,9 @@
       (onError)="onError($event)"
       formControlName="images"
       [isUpdatingItem]="!!item"
-      (onOrderImages)="onOrderImages()"
-      (onDeleteImage)="onDeleteImage($event)"
-      (onAddImage)="onAddImage($event)"
+      (orderImages)="onOrderImages()"
+      (deleteImage)="onDeleteImage($event)"
+      (addImage)="onAddImage($event)"
     ></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n="@@web_upload_pages_realestate_445">
@@ -282,7 +282,9 @@
           <span *ngIf="!isReactivation" i18n="@@web_upload_pages_realestate_661">Update</span>
           <span *ngIf="isReactivation" i18n="@@web_upload_seller_reactivation_button">Reactivate item</span>
         </ng-container>
-        <span *ngIf="loading && !pendingFiles" i18n="@@web_upload_product_submit_loading">Uploading... {{ uploadCompletedPercentage }}%</span>
+        <span *ngIf="loading && !pendingFiles" i18n="@@web_upload_product_submit_loading"
+          >Uploading... {{ uploadCompletedPercentage }}%</span
+        >
         <span *ngIf="loading && pendingFiles" i18n="@@web_upload_images_submit_loading"
           >Uploading image... {{ pendingFiles.currentUploading }}/{{ pendingFiles.totalFiles }}</span
         >

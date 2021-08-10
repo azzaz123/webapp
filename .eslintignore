@@ -25,7 +25,6 @@
 
 # FINDING
 /src/app/public/features/search
-/src/app/private/features/upload
 
 # T&S
 /src/app/public/features/register

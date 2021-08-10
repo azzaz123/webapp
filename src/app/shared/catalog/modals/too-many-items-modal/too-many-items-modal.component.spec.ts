@@ -9,7 +9,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ItemService } from '../../../../core/item/item.service';
 import { SubscriptionsService } from '../../../../core/subscriptions/subscriptions.service';
 import { MOCK_ITEM_V3_3 } from '../../../../../tests/item.fixtures.spec';
-import { MockSubscriptionService, MAPPED_SUBSCRIPTIONS_ADDED, MAPPED_SUBSCRIPTIONS_WITH_RE } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  MockSubscriptionService,
+  MAPPED_SUBSCRIPTIONS_ADDED,
+  MAPPED_SUBSCRIPTIONS_WITH_RE,
+  TIER_WITH_DISCOUNT,
+} from '@fixtures/subscriptions.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions.service';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { MockAnalyticsService } from '../../../../../tests/analytics.fixtures.spec';
@@ -90,6 +95,7 @@ describe('TooManyItemsModalComponent', () => {
             subscription: MOCK_ITEM_V3_3.categoryId as SUBSCRIPTION_CATEGORIES,
             freeTrial: true,
             isCarDealer: false,
+            discount: false,
           },
         };
 
@@ -119,6 +125,33 @@ describe('TooManyItemsModalComponent', () => {
             subscription: MOCK_CAR.categoryId as SUBSCRIPTION_CATEGORIES,
             freeTrial: false,
             isCarDealer: false,
+            discount: false,
+          },
+        };
+
+        component.ngOnInit();
+        tick();
+
+        expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+      }));
+    });
+
+    describe('when subscription for item category has a tier with discount', () => {
+      beforeEach(() => {
+        component.itemId = MOCK_CAR.id;
+        spyOn(itemService, 'get').and.returnValue(of(MOCK_CAR));
+        spyOn(subscriptionsService, 'getDefaultTierDiscount').and.returnValue(TIER_WITH_DISCOUNT);
+      });
+
+      it('should track the page view event to analytics', fakeAsync(() => {
+        const expectedEvent: AnalyticsPageView<ViewProSubscriptionPopup> = {
+          name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
+          attributes: {
+            screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
+            subscription: MOCK_CAR.categoryId as SUBSCRIPTION_CATEGORIES,
+            freeTrial: false,
+            isCarDealer: false,
+            discount: true,
           },
         };
 
