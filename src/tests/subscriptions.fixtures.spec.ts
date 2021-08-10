@@ -91,6 +91,14 @@ export class MockSubscriptionService {
   public getDefaultTierDiscount(): TierDiscount {
     return null;
   }
+
+  public hasSomeSubscriptionDiscount(): boolean {
+    return false;
+  }
+
+  public hasDiscountByCategoryId(): boolean {
+    return false;
+  }
 }
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [

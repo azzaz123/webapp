@@ -232,7 +232,7 @@ describe('UploadRealestateComponent', () => {
       it('should emit changed event if form values changes', () => {
         let formChanged: boolean;
         component.item = MOCK_REALESTATE;
-        component.onFormChanged.subscribe((value: boolean) => {
+        component.formChanged.subscribe((value: boolean) => {
           formChanged = value;
         });
         component.ngOnInit();
@@ -532,16 +532,6 @@ describe('UploadRealestateComponent', () => {
       component.emitLocation();
 
       expect(itemService.updateRealEstateLocation).toHaveBeenCalledWith(MOCK_REALESTATE.id, USER_LOCATION_COORDINATES);
-    });
-
-    it('should emit location updated event', () => {
-      component.locationSelected.subscribe((s: number) => {
-        categoryId = s;
-      });
-
-      component.emitLocation();
-
-      expect(categoryId).toBe(13000);
     });
   });
 

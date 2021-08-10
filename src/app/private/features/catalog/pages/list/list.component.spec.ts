@@ -83,7 +83,6 @@ describe('ListComponent', () => {
   let router: Router;
   let errorService: ErrorsService;
   const componentInstance: any = {
-    urgentPrice: jasmine.createSpy('urgentPrice'),
     trackUploaded: jasmine.createSpy('trackUploaded'),
   };
   let modalSpy: jasmine.Spy;
@@ -1308,6 +1307,7 @@ describe('ListComponent', () => {
         });
 
         it('should track ClickProSubscription event', () => {
+          spyOn(subscriptionsService, 'hasSomeSubscriptionDiscount').and.returnValue(true);
           component.hasTrialAvailable = true;
           const event: AnalyticsEvent<ClickProSubscription> = {
             name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
@@ -1315,6 +1315,7 @@ describe('ListComponent', () => {
             attributes: {
               screenId: SCREEN_IDS.MyCatalog,
               freeTrial: component.hasTrialAvailable,
+              discount: true,
             },
           };
 
@@ -1367,6 +1368,80 @@ describe('ListComponent', () => {
         beforeEach(() => {
           permissionService.addPermission(PERMISSIONS.subscriptions);
           spyOn(Date, 'now').and.returnValue(FAKE_DATE_NOW);
+        });
+        describe('modal is shown', () => {
+          describe('and has free trial category', () => {
+            beforeEach(() => {
+              spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(true);
+            });
+            it('should track modal', () => {
+              const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+                name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+                attributes: {
+                  screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+                  freeTrial: true,
+                  discount: false,
+                },
+              };
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+              expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+            });
+          });
+          describe('and has not free trial category', () => {
+            beforeEach(() => {
+              spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(false);
+            });
+            it('should track modal', () => {
+              const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+                name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+                attributes: {
+                  screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+                  freeTrial: false,
+                  discount: false,
+                },
+              };
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+              expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+            });
+          });
+          describe('and has discount', () => {
+            beforeEach(() => {
+              spyOn(subscriptionsService, 'hasDiscountByCategoryId').and.returnValue(true);
+            });
+            it('should track modal', () => {
+              const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+                name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+                attributes: {
+                  screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+                  freeTrial: true,
+                  discount: true,
+                },
+              };
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+              expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+            });
+          });
         });
         describe('and modal was not shown before', () => {
           it('should open modal', () => {

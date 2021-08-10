@@ -18,19 +18,38 @@
 
     &__subtitle {
       margin: 0;
+
+      &--discounted {
+        text-decoration: line-through;
+        color: $blue-grey-3;
+      }
+    }
+
+    &__footer {
+      color: $blue-grey-2;
+      font-size: $font-size-s;
+    }
+
+    &__banner {
+      border-radius: 2px;
+      background-color: $skyblue-main;
+      color: $white;
+      font-weight: $font-weight-chunky;
     }
 
     &:hover {
       transform: $item-card-hover-translate;
       box-shadow: $item-card-hover-box-shadow;
-      .Card__title {
+      .Card__title,
+      .Card__subtitle {
         color: $blue-grey-1;
       }
     }
 
     &--selected {
       border: solid 2px $blue-grey-2;
-      .Card__title {
+      .Card__title,
+      .Card__subtitle {
         color: $blue-grey-1;
       }
     }

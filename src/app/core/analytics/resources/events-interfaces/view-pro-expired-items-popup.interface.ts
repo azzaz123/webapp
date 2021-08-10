@@ -14,6 +14,10 @@ export interface ViewProExpiredItemsPopup {
    */
   screenId: 257;
   /**
+   * If the view offers discount or not
+   */
+  discount?: boolean;
+  /**
    * If the view offers free trial or not
    */
   freeTrial?: boolean;

@@ -21,6 +21,7 @@ export class ProComponent implements OnInit {
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly PRO_PATHS = PRO_PATHS;
   private hasOneTrialSubscription: boolean;
+  private hasSomeDiscount: boolean;
 
   constructor(
     public userService: UserService,
@@ -32,6 +33,7 @@ export class ProComponent implements OnInit {
     this.subscriptionService.getSubscriptions().subscribe((subscriptions) => {
       if (!!subscriptions) {
         this.hasOneTrialSubscription = this.subscriptionService.hasOneTrialSubscription(subscriptions);
+        this.hasSomeDiscount = this.subscriptionService.hasSomeSubscriptionDiscount(subscriptions);
       }
     });
   }
@@ -43,6 +45,7 @@ export class ProComponent implements OnInit {
       attributes: {
         screenId: SCREEN_IDS.MyProfile,
         freeTrial: this.hasOneTrialSubscription,
+        discount: this.hasSomeDiscount,
       },
     };
 

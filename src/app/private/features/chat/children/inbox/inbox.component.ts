@@ -273,6 +273,9 @@ export class InboxComponent implements OnInit, OnDestroy {
         itemId: conversation.item.id,
         conversationId: conversation.id,
         screenId: SCREEN_IDS.Chat,
+        translationAllowed: null,
+        buyerUserId: null,
+        sellerUserId: null,
       },
     };
 

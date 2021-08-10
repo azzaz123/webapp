@@ -26,6 +26,10 @@ export interface SubscriptionPaymentButtonAvailable {
    */
   screenId: 206;
   /**
+   * If the view offers discount or not
+   */
+  discount?: boolean;
+  /**
    * Whether the subscription offers free trial
    */
   freeTrial?: boolean;
