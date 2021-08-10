@@ -111,21 +111,27 @@ describe('SuggesterInputComponent', () => {
     describe('when we have the hashtag suggestions', () => {
       it('should load the hashtags from our endpoint with our input value', fakeAsync(() => {
         spyOn(hashtagSuggesterApiService, 'getHashtagsByPrefix').and.returnValue(of({ list: MOCK_HASHTAGS, paginationParameter: '10' }));
-
-        const event = new KeyboardEvent('keyup', { bubbles: true, cancelable: true, shiftKey: false });
-        inputElement.nativeElement.value = 'ab';
+        spyOn(component, 'detectTitleKeyboardChanges').and.callThrough();
+        component.value = ['#ss', '#aa'];
+        const event = new KeyboardEvent('keyup', {
+          bubbles: true,
+          cancelable: true,
+          shiftKey: false,
+        });
+        inputElement.nativeElement.value = 'f';
         inputElement.nativeElement.dispatchEvent(event);
-        inputElement.triggerEventHandler('keyup', {});
-        //component.model = '#ab';
-        tick(1000);
 
+        component.detectTitleKeyboardChanges();
+        inputElement.nativeElement.dispatchEvent(new Event('input'));
+        inputElement.triggerEventHandler('keyup', {});
+
+        tick(1000);
         fixture.detectChanges();
 
         fixture.whenStable().then(() => {
-          // expect(component.options.length).toBe(4);
-          expect(component.model).toBe(4);
+          expect(component.model).toBe('#f');
+          expect(component.options).toBe('');
         });
-        // expect(component.options.length).toBe(4);
       }));
 
       it('the hashtags should have # infront', () => {});
