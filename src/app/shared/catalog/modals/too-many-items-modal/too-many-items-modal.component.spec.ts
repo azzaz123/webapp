@@ -32,6 +32,7 @@ describe('TooManyItemsModalComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let analyticsService: AnalyticsService;
   let i18nService: I18nService;
+  let hasFreeTrialByCategoryIdSpy: jasmine.Spy;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -73,7 +74,7 @@ describe('TooManyItemsModalComponent', () => {
     beforeEach(() => {
       spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
       spyOn(subscriptionsService, 'getSubscriptionByCategory').and.returnValue(MAPPED_SUBSCRIPTIONS_ADDED[1]);
-      spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(false);
+      hasFreeTrialByCategoryIdSpy = spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(false);
       spyOn(analyticsService, 'trackPageView');
     });
 
@@ -81,7 +82,7 @@ describe('TooManyItemsModalComponent', () => {
       beforeEach(() => {
         component.itemId = MOCK_ITEM_V3_3.id;
         spyOn(itemService, 'get').and.returnValue(of(MOCK_ITEM_V3_3));
-        spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(true);
+        hasFreeTrialByCategoryIdSpy.and.returnValue(true);
       });
 
       it('should set isFreeTrial to true', () => {

@@ -30,6 +30,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { UuidService } from '../uuid/uuid.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { cloneDeep } from 'lodash-es';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
 
 describe('SubscriptionsService', () => {
   let service: SubscriptionsService;
@@ -530,7 +531,27 @@ describe('SubscriptionsService', () => {
     });
   });
 
-  describe('hasDiscountByCategoryId', () => {
+  describe('getSubscriptionByCategory', () => {
+    describe('when category is inside consumer goods subscription', () => {
+      it('should return consumer goods subscription ', () => {
+        const result = service.getSubscriptionByCategory(MAPPED_SUBSCRIPTIONS, CATEGORY_IDS.BIKES);
+
+        expect(result).toEqual(
+          MAPPED_SUBSCRIPTIONS.find((subscription) => subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS)
+        );
+      });
+    });
+
+    describe('when category is not inside consumer goods subscription', () => {
+      it('should return subscription related to the category ', () => {
+        const result = service.getSubscriptionByCategory(MAPPED_SUBSCRIPTIONS, CATEGORY_IDS.CAR);
+
+        expect(result).toEqual(MAPPED_SUBSCRIPTIONS.find((subscription) => subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.CAR));
+      });
+    });
+  });
+
+  describe('tierDiscountByCategoryId', () => {
     describe('when has a subscription id with tiers with discount', () => {
       it('should return tier with discount', () => {
         const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS);
@@ -548,6 +569,29 @@ describe('SubscriptionsService', () => {
         subscriptions[0].tiers[1].discount = TIER_DISCOUNT;
 
         const result = service.tierDiscountByCategoryId(subscriptions, subscriptions[1].category_id);
+
+        expect(result).toBeFalsy();
+      });
+    });
+  });
+
+  describe('getDefaultTierSubscriptionDiscount', () => {
+    describe('when has a subscription tiers with discount', () => {
+      it('should return tier with discount', () => {
+        const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS);
+        subscriptions[0].tiers[1].discount = TIER_DISCOUNT;
+
+        const result = service.getDefaultTierSubscriptionDiscount(subscriptions);
+
+        expect(result).toEqual(subscriptions[0].tiers[1]);
+      });
+    });
+
+    describe('when has not a subscription id with tiers with discount', () => {
+      it('should return nothing', () => {
+        const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS);
+
+        const result = service.getDefaultTierSubscriptionDiscount(subscriptions);
 
         expect(result).toBeFalsy();
       });

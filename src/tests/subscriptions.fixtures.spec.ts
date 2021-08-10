@@ -13,6 +13,7 @@ import {
 import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 
 export class MockSubscriptionService {
   getSubscriptions() {
@@ -105,10 +106,6 @@ export class MockSubscriptionService {
   }
 
   public hasSomeSubscriptionDiscount(): boolean {
-    return false;
-  }
-
-  public hasDiscountByCategoryId(): boolean {
     return false;
   }
 }
@@ -1114,6 +1111,22 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] = [
       currency: '€',
     },
     market: SUBSCRIPTION_MARKETS.STRIPE,
+  },
+  {
+    category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
+    selected_tier_id: null,
+    default_tier_id: 'consumer_goods',
+    market: null,
+    trial_available: false,
+    trial_days: 0,
+    tiers: [
+      {
+        id: 'consumer_goods',
+        price: 39.99,
+        currency: 'EUR',
+        discount: null,
+      },
+    ],
   },
 ];
 

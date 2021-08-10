@@ -284,7 +284,7 @@ export class SubscriptionsService {
     let categorySubscriptionId: number;
 
     if (CATEGORIES_EXCLUDED_FROM_EVERYTHING_ELSE.includes(categoryId)) {
-      categorySubscriptionId = CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE;
+      categorySubscriptionId = CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS;
     } else {
       categorySubscriptionId = categoryId;
     }
