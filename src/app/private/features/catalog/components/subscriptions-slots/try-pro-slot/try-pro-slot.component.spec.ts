@@ -6,6 +6,7 @@ import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { TryProSlotComponent } from './try-pro-slot.component';
 import { By } from '@angular/platform-browser';
 import { ButtonComponent } from '@shared/button/button.component';
+import { TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
 
 describe('TryProSlotItemComponent', () => {
   let component: TryProSlotComponent;
@@ -35,6 +36,18 @@ describe('TryProSlotItemComponent', () => {
 
       const submitButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
       expect(submitButton.textContent).toEqual('Free trial');
+    });
+
+    it('should show discount text', () => {
+      component.hasTrialAvailable = false;
+      component.tierWithDiscount = TIER_WITH_DISCOUNT;
+
+      fixture.detectChanges();
+
+      const submitButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+      expect(submitButton.textContent).toEqual(
+        $localize`:@@listing_limit_non_pro_users_discount_modal_start_button:Try with ${component.tierWithDiscount.discount.percentage}:INTERPOLATION:% discount`
+      );
     });
 
     it('should show default text', () => {

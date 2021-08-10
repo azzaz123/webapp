@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from '@shared/button/button.component';
@@ -46,6 +47,21 @@ describe('SuggestProModalComponent', () => {
       });
     });
     describe('when has not trial available', () => {
+      beforeEach(() => {
+        component.isFreeTrial = false;
+      });
+      it('should show discount text', () => {
+        component.tierWithDiscount = TIER_WITH_DISCOUNT;
+        fixture.detectChanges();
+
+        expect(window['$localize']).toHaveBeenCalledWith(
+          [
+            expect.stringMatching(':@@pro_after_reactivation_non_subscribed_user_start_with_discount_button:'),
+            expect.stringMatching(':INTERPOLATION:'),
+          ],
+          component.tierWithDiscount.discount.percentage
+        );
+      });
       it('should show default text', () => {
         component.isFreeTrial = false;
 
