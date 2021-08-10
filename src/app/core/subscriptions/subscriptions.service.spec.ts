@@ -509,7 +509,7 @@ describe('SubscriptionsService', () => {
 
   describe('hasSomeSubscriptionDiscount', () => {
     describe('when has a subscription with tiers with discount', () => {
-      it('should return has discount', () => {
+      it('should return tier with discount', () => {
         const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED);
         subscriptions[0].tiers[1].discount = TIER_DISCOUNT;
 
@@ -520,7 +520,7 @@ describe('SubscriptionsService', () => {
     });
 
     describe('when has not a subscription with tiers with discount', () => {
-      it('should return has not discount', () => {
+      it('should return nothing', () => {
         const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED);
 
         const result = service.hasSomeSubscriptionDiscount(subscriptions);
@@ -532,24 +532,24 @@ describe('SubscriptionsService', () => {
 
   describe('hasDiscountByCategoryId', () => {
     describe('when has a subscription id with tiers with discount', () => {
-      it('should return has discount', () => {
+      it('should return tier with discount', () => {
         const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS);
         subscriptions[0].tiers[1].discount = TIER_DISCOUNT;
 
-        const result = service.hasDiscountByCategoryId(subscriptions, subscriptions[0].category_id);
+        const result = service.tierDiscountByCategoryId(subscriptions, subscriptions[0].category_id);
 
-        expect(result).toEqual(true);
+        expect(result).toEqual(subscriptions[0].tiers[1]);
       });
     });
 
     describe('when has not a subscription id with tiers with discount', () => {
-      it('should return has not discount', () => {
+      it('should return nothing', () => {
         const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS);
         subscriptions[0].tiers[1].discount = TIER_DISCOUNT;
 
-        const result = service.hasDiscountByCategoryId(subscriptions, subscriptions[1].category_id);
+        const result = service.tierDiscountByCategoryId(subscriptions, subscriptions[1].category_id);
 
-        expect(result).toEqual(false);
+        expect(result).toBeFalsy();
       });
     });
   });

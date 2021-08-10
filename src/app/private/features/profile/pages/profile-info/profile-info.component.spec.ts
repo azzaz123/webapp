@@ -528,6 +528,7 @@ describe('ProfileInfoComponent', () => {
           attributes: {
             freeTrial: true,
             screenId: SCREEN_IDS.ProAdvantagesPopup,
+            discount: false,
           },
         };
 

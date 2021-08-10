@@ -65,6 +65,18 @@ export class MockSubscriptionService {
     return false;
   }
 
+  public getDefaultTierSubscriptionDiscount(_subscriptions: SubscriptionsResponse[]): Tier {
+    return null;
+  }
+
+  public getSubscriptionByCategory(_subscriptions: SubscriptionsResponse[]): Tier {
+    return null;
+  }
+
+  public tierDiscountByCategoryId(_subscriptions: SubscriptionsResponse[], id: string): Tier {
+    return null;
+  }
+
   public getTrialSubscriptionsIds(subscriptions: SubscriptionsResponse[]): number[] {
     if (!subscriptions) {
       return [];
