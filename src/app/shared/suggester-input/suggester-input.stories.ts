@@ -2,7 +2,7 @@ import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/cancel-bubble.module';
@@ -13,8 +13,8 @@ import { SuggesterInputModule } from './suggester-input.module';
   template: `
     <form [formGroup]="formGroup">
       <h4 class="mt-4">Dynamic input: {{ formGroup.value.hashtag }}</h4>
-      <div *ngFor="let option of formGroup.value.hashtag" style="margin:35px">
-        <tsl-cancel-bubble [bubbleText]="option"></tsl-cancel-bubble>
+      <div>
+        <tsl-cancel-bubble style="margin:35px" *ngFor="let option of options" [bubbleText]="option"></tsl-cancel-bubble>
       </div>
       dynamic input
       <tsl-suggester-input
