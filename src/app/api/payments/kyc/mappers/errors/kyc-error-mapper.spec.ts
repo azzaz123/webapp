@@ -10,7 +10,7 @@ import {
   MOCK_KYC_DOCUMENT_IMAGE_INVALID_RESPONSE,
   MOCK_KYC_DOCUMENT_IMAGE_SIZE_EXCEEDED_RESPONSE,
   MOCK_KYC_MANGOPAY_USER_NOT_FOUND_RESPONSE,
-} from '@fixtures/private/kyc/kyc-errors.fixtures.spec';
+} from '@fixtures/private/wallet/kyc/kyc-errors.fixtures.spec';
 import { KYCErrorMapper } from './kyc-error-mapper';
 
 const kycErrorMapper = new KYCErrorMapper();
