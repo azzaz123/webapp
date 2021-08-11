@@ -7,6 +7,11 @@ export const MOCK_KYC_BASE_ERROR_RESPONSE: KYCErrorResponseApi = {
   error: [],
 };
 
+export const MOCK_KYC_UNKNOWN_ERROR_RESPONSE: KYCErrorResponseApi<unknown> = {
+  ...MOCK_ERROR_RESPONSE,
+  error: [{ error_code: 'unknown', message: 'rip' }],
+};
+
 export const MOCK_KYC_MANGOPAY_USER_NOT_FOUND: KYCErrorApi<KYC_ERROR_CODES> = {
   error_code: KYC_ERROR_CODES.MANGOPAY_USER_NOT_FOUND,
   message: 'mangopay user not found (ɔ◔‿◔)ɔ ♥',
