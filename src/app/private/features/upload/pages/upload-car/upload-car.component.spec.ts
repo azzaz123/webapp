@@ -883,20 +883,6 @@ describe('UploadCarComponent', () => {
     });
   });
 
-  describe('Emit Location', () => {
-    let categoryId: number;
-
-    it('should emit location updated event', () => {
-      component.locationSelected.subscribe((s: number) => {
-        categoryId = s;
-      });
-
-      component.emitLocation();
-
-      expect(categoryId).toBe(100);
-    });
-  });
-
   describe('when selecting a custom make', () => {
     it('should reset brand, model and year values', () => {
       component.uploadForm.patchValue({

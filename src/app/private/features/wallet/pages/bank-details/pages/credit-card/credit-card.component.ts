@@ -112,6 +112,10 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     }
   }
 
+  public goBack(): void {
+    this.location.back();
+  }
+
   private markInvalidFields(): void {
     for (const control in this.creditCardForm.controls) {
       if (this.creditCardForm.controls.hasOwnProperty(control) && !this.creditCardForm.controls[control].valid) {
@@ -211,10 +215,6 @@ export class CreditCardComponent implements OnInit, OnDestroy {
 
   private initializeAndPatchForm(): void {
     this.formComponent.initFormControl();
-  }
-
-  public goBack(): void {
-    this.location.back();
   }
 
   private buildForm(): void {

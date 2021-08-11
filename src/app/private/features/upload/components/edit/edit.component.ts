@@ -1,8 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Item, ITEM_TYPES } from '@core/item/item';
-import { Product } from '@core/item/item-response.interface';
-import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '@shared/exit-confirmation-modal/exit-confirmation-modal.component';
@@ -17,18 +15,19 @@ import { EditTrackingEventService } from '../../core/services/edit-tracking-even
   styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent implements OnInit, CanComponentDeactivate {
-  public item: Item;
   @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
-  private hasNotSavedChanges: boolean;
+
+  public item: Item;
   public urgentPrice: string = null;
   public itemTypes: any = ITEM_TYPES;
   public isReactivation = false;
+
+  private hasNotSavedChanges: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
-    private itemService: ItemService,
     private userService: UserService,
     private editTrackingEventService: EditTrackingEventService
   ) {
@@ -45,14 +44,13 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
   ngOnInit() {
     this.item = this.route.snapshot.data['item'];
     this.isReactivation = this.router.url.endsWith(UPLOAD_PATHS.REACTIVATE);
-    this.getUrgentPrice();
 
     this.editTrackingEventService.viewTrackingReady$.pipe(take(1)).subscribe(() => {
       this.editTrackingEventService.trackViewEditItemEvent(this.item.categoryId, this.isReactivation);
     });
   }
 
-  public onValidationError() {
+  public validationError() {
     this.scrollPanel.nativeElement.scrollTop = 0;
   }
 
@@ -67,13 +65,7 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
     return modalRef.result;
   }
 
-  public onFormChanged(notSavedChanges: boolean) {
+  public formChanged(notSavedChanges: boolean) {
     this.hasNotSavedChanges = notSavedChanges;
-  }
-
-  public getUrgentPrice(): void {
-    this.itemService.getUrgentProducts(this.item.id).subscribe((product: Product) => {
-      this.urgentPrice = product.durations[0].market_code;
-    });
   }
 }

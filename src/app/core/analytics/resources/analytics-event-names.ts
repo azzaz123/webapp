@@ -69,6 +69,7 @@ export enum ANALYTICS_EVENT_NAMES {
   ImpressionAdGoogleShopping = 'Impression Ad Google Shopping',
   DetectMaliciousUserConversation = 'Detect Malicious User Conversation',
   SendFirstMessage = 'Send First Message',
+  TranslateChat = 'Translate Chat',
   ClickConfirmCloseSubscription = 'Click Confirm Close Subscription',
   ClickConfirmEditCurrentSubscription = 'Click Confirm Edit Current Subscription',
   EditItemCar = 'Edit Item Car',

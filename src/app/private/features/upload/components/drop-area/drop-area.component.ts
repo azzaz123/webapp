@@ -22,24 +22,22 @@ import { RemoveConfirmModalComponent } from '../../modals/remove-confirm-modal/r
   ],
 })
 export class DropAreaComponent implements OnInit, ControlValueAccessor, OnDestroy {
-  @Output() onDeleteImage: EventEmitter<string> = new EventEmitter();
-  @Output() onOrderImages: EventEmitter<void> = new EventEmitter();
-  @Output() onAddImage: EventEmitter<UploadFile> = new EventEmitter();
+  @Output() deleteImage: EventEmitter<string> = new EventEmitter();
+  @Output() orderImages: EventEmitter<void> = new EventEmitter();
+  @Output() addImage: EventEmitter<UploadFile> = new EventEmitter();
 
   @Input() isUpdatingItem: boolean;
   @Input() maxUploads = 10;
 
-  dragOver: boolean;
-  files: UploadFile[] = [];
-  placeholders: number[];
-  options: NgUploaderOptions;
-  eventsSubscription: Subscription;
+  public dragOver: boolean;
+  public files: UploadFile[] = [];
+  public placeholders: number[];
+  public options: NgUploaderOptions;
+  public eventsSubscription: Subscription;
 
   private setDragOver = throttle((dragOver: boolean) => {
     this.dragOver = dragOver;
   }, 100);
-
-  propagateChange = (_: any) => {};
 
   constructor(private errorsService: ErrorsService, private modalService: NgbModal, private uploaderService: UploaderService) {}
 
@@ -53,11 +51,12 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor, OnDestro
     this.subscribeEvents();
   }
 
-  private subscribeEvents(): void {
-    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe((event: UploadOutput) => {
-      this.onUploadOutput(event);
-    });
+  ngOnDestroy() {
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
+    }
   }
+  public propagateChange = (_: any) => {};
 
   public writeValue(value: UploadFile[]) {
     this.files = value;
@@ -72,18 +71,11 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor, OnDestro
   public onUploadOutput(output: UploadOutput): void {
     switch (output?.type) {
       case OUTPUT_TYPE.addedToQueue:
-        this.addImage(output.file);
+        this.addFile(output.file);
         break;
       case OUTPUT_TYPE.rejected:
         this.errorsService.i18nError(output.reason, output.file.name);
     }
-  }
-
-  private addImage(file: UploadFile): void {
-    file.fileIndex = this.files.length + 1;
-    this.files.push(file);
-    this.propagateChange(this.files);
-    this.onAddImage.emit(file);
   }
 
   public onFileDropAction(event: IFileDropAction): void {
@@ -104,19 +96,16 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor, OnDestro
     }
   }
 
-  private removeConfirmation(file: UploadFile) {
-    this.modalService.open(RemoveConfirmModalComponent).result.then(() => {
-      const fileId = file.response.id || file.response;
-      this.onDeleteImage.emit(fileId);
-    });
-  }
-
   public updateOrder(): void {
     if (this.isUpdatingItem) {
-      this.onOrderImages.emit();
+      this.orderImages.emit();
     } else {
       this.updateIndex();
     }
+  }
+
+  public onFilesAdded(event: FileList): void {
+    this.uploaderService.handleFiles(event, this.options, null, this.files);
   }
 
   private updateIndex(): void {
@@ -125,13 +114,23 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor, OnDestro
     });
   }
 
-  ngOnDestroy() {
-    if (this.eventsSubscription) {
-      this.eventsSubscription.unsubscribe();
-    }
+  private subscribeEvents(): void {
+    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe((event: UploadOutput) => {
+      this.onUploadOutput(event);
+    });
   }
 
-  public onFilesAdded(event: FileList): void {
-    this.uploaderService.handleFiles(event, this.options, null, this.files);
+  private addFile(file: UploadFile): void {
+    file.fileIndex = this.files.length + 1;
+    this.files.push(file);
+    this.propagateChange(this.files);
+    this.addImage.emit(file);
+  }
+
+  private removeConfirmation(file: UploadFile) {
+    this.modalService.open(RemoveConfirmModalComponent).result.then(() => {
+      const fileId = file.response.id || file.response;
+      this.deleteImage.emit(fileId);
+    });
   }
 }

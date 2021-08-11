@@ -14,6 +14,10 @@ export interface ClickProSubscription {
    */
   freeTrial?: boolean;
   /**
+   * If the view offers discount or not
+   */
+  discount?: boolean;
+  /**
    * Identifier of the screen in which the user has clicked
    */
   screenId: 111 | 112 | 216 | 219 | 233;

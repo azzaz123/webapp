@@ -237,6 +237,10 @@ export class SubscriptionsService {
     return subscriptions.some((subscription) => this.isStripeSubscription(subscription));
   }
 
+  public hasSomeSubscriptionDiscount(subscriptions: SubscriptionsResponse[]): boolean {
+    return !!subscriptions && subscriptions.some((subscription) => this.getDefaultTierDiscount(subscription));
+  }
+
   public getDefaultTierDiscount(subscription: SubscriptionsResponse): Tier {
     return subscription.tiers.find((tier) => tier.discount);
   }
@@ -266,6 +270,16 @@ export class SubscriptionsService {
     }
 
     return this.hasTrial(selectedsubscription) && !selectedsubscription.subscribed_from;
+  }
+
+  public hasDiscountByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): boolean {
+    const selectedsubscription = subscriptions.find((subscription) => subscription.category_id === categoryId);
+
+    if (!selectedsubscription) {
+      return false;
+    }
+
+    return !!this.getDefaultTierDiscount(selectedsubscription) && !selectedsubscription.subscribed_from;
   }
 
   public hasHighestLimit(subscription: SubscriptionsResponse): boolean {

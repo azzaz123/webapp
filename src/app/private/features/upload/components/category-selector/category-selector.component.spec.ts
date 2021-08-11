@@ -26,7 +26,7 @@ describe('CategorySelectorComponent', () => {
   describe('setCategory', () => {
     it('should emit category', () => {
       let category: string;
-      component.onSelect.subscribe((cat: string) => {
+      component.selected.subscribe((cat: string) => {
         category = cat;
       });
 
