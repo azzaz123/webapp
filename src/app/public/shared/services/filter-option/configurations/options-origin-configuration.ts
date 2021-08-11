@@ -176,7 +176,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   },
   [COMMON_CONSUMER_GOODS_CONFIGURATION_ID.OBJECT_TYPE]: {
     apiConfiguration: {
-      method: 'getObjectTypesByCategoryId',
+      method: 'getObjectTypesByCategoryIdWithChildren',
       requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.categoryId }],
       keyMappers: [
         {
