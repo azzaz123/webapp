@@ -18,7 +18,7 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     isClearable: true,
   },
   {
-    id: FASHION_CONFIGURATION_ID.CLOTHING_TYPE,
+    id: FASHION_CONFIGURATION_ID.OBJECT_TYPE,
     type: FILTER_TYPES.SELECT,
     title: $localize`:@@web_filter_clothing_type_title:Type of clothing`,
     bubblePlaceholder: $localize`:@@web_filter_clothing_type_bubble_placeholder:Type of clothing`,

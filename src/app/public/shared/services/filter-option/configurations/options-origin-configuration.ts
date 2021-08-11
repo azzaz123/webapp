@@ -134,7 +134,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
       requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.gender }],
     },
   },
-  [FASHION_CONFIGURATION_ID.CLOTHING_TYPE]: {
+  [FASHION_CONFIGURATION_ID.OBJECT_TYPE]: {
     apiConfiguration: {
       method: 'getObjectTypesByCategoryIdWithChildren',
       requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.categoryId }],
