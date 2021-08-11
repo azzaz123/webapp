@@ -16,7 +16,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CURRENCY_SYMBOLS } from '../constants';
 import { UuidService } from '../uuid/uuid.service';
-import { CATEGORIES_EXCLUDED_FROM_EVERYTHING_ELSE, CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
+import { CATEGORIES_EXCLUDED_FROM_CONSUMER_GOODS, CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -283,7 +283,7 @@ export class SubscriptionsService {
   public getSubscriptionByCategory(subscriptions: SubscriptionsResponse[], categoryId: number): SubscriptionsResponse {
     let categorySubscriptionId: number;
 
-    if (CATEGORIES_EXCLUDED_FROM_EVERYTHING_ELSE.includes(categoryId)) {
+    if (CATEGORIES_EXCLUDED_FROM_CONSUMER_GOODS.includes(categoryId)) {
       categorySubscriptionId = CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS;
     } else {
       categorySubscriptionId = categoryId;
