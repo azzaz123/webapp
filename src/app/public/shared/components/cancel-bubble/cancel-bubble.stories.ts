@@ -19,7 +19,11 @@ export default {
 const Template: Story<CancelBubbleComponent> = (args) => ({
   props: args,
   template: `
-  <div style="width:132px; margin-bottom:15px;">
+  <div style="width:132px; margin:35px;">
+  <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>
+  <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>
+  <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>
+  <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>
   <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>
   </div>
   <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>`,
