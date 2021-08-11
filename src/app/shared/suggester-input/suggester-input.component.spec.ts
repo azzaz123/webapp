@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -8,10 +9,11 @@ import { MOCK_HASHTAGS } from '@fixtures/hashtag.fixtures.spec';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
+import { MultiSelectOptionComponent } from '@shared/form/components/multi-select-form/multi-select-option/multi-select-option/multi-select-option.component';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { of } from 'rxjs';
 import { SuggesterInputComponent } from './suggester-input.component';
-import { HASHTAG_OPTIONS, HASHTAG_TESTING, INITIAL_HASHTAGS } from './suggester-input.fixtures.spec';
+import { HASHTAG_EXTENDED_OPTIONS, HASHTAG_OPTIONS, HASHTAG_TESTING, INITIAL_HASHTAGS } from './suggester-input.fixtures.spec';
 
 describe('SuggesterInputComponent', () => {
   let component: SuggesterInputComponent;
@@ -22,7 +24,7 @@ describe('SuggesterInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [HashtagSuggesterApiService],
-      imports: [CommonModule, HttpClientModule, SelectFormModule, FormsModule, MultiSelectFormModule],
+      imports: [CommonModule, HttpClientTestingModule, SelectFormModule, FormsModule, MultiSelectFormModule],
       declarations: [SuggesterInputComponent],
     }).compileComponents();
   });
@@ -109,66 +111,65 @@ describe('SuggesterInputComponent', () => {
     });
 
     describe('when we have the hashtag suggestions', () => {
-      it('should load the hashtags from our endpoint with our input value', fakeAsync(() => {
+      it('should load the hashtags from our endpoint with our input value and hashtags should have # in front', fakeAsync(() => {
         spyOn(hashtagSuggesterApiService, 'getHashtagsByPrefix').and.returnValue(of({ list: MOCK_HASHTAGS, paginationParameter: '10' }));
         spyOn(component, 'detectTitleKeyboardChanges').and.callThrough();
-        component.value = ['#ss', '#aa'];
-        const event = new KeyboardEvent('keyup', {
-          bubbles: true,
-          cancelable: true,
-          shiftKey: false,
-        });
-        inputElement.nativeElement.value = 'f';
-        inputElement.nativeElement.dispatchEvent(event);
+        const event = new KeyboardEvent('keyup', {});
+        const inputValue = 'ff';
 
-        component.detectTitleKeyboardChanges();
+        component.writeValue([]);
+        inputElement.nativeElement.value = inputValue;
+        inputElement.nativeElement.dispatchEvent(event);
         inputElement.nativeElement.dispatchEvent(new Event('input'));
         inputElement.triggerEventHandler('keyup', {});
 
-        tick(1000);
+        tick(750);
         fixture.detectChanges();
 
-        fixture.whenStable().then(() => {
-          expect(component.model).toBe('#f');
-          expect(component.options).toBe('');
-        });
+        expect(component.options[0].label).toBe(`#${inputValue}`);
+        expect(component.options[1].label).toBe(`#${MOCK_HASHTAGS[0].text}`);
       }));
-
-      it('the hashtags should have # infront', () => {});
     });
 
     describe('when we do not have the hashtags suggestions', () => {
-      it('should create new hashtag for user', () => {});
+      it('should create new hashtag for user with hashtag # symbol in front', fakeAsync(() => {
+        spyOn(hashtagSuggesterApiService, 'getHashtagsByPrefix').and.returnValue(of({ list: [] }));
+        spyOn(component, 'detectTitleKeyboardChanges').and.callThrough();
+        const event = new KeyboardEvent('keyup', {});
+        const inputValue = 'ff';
 
-      it('ths hashtage should have # infront', () => {});
+        component.writeValue([]);
+        inputElement.nativeElement.value = inputValue;
+        inputElement.nativeElement.dispatchEvent(event);
+        inputElement.nativeElement.dispatchEvent(new Event('input'));
+        inputElement.triggerEventHandler('keyup', {});
+
+        tick(750);
+        fixture.detectChanges();
+
+        expect(component.options[0].label).toBe(`#${inputValue}`);
+        expect(component.options.length).toBe(1);
+      }));
     });
   });
 
   describe('Select and unslect hashtag suggestions', () => {
-    describe('when select the hashtag', () => {
-      it('should add the selected hashtag to the hashtag list', () => {
-        spyOn(component, 'handleSelectedOption');
+    describe('when we change the input checkbox', () => {
+      it('should be able to update the value', fakeAsync(() => {
+        spyOn(component, 'handleSelectedOption').and.callThrough();
         spyOn(component, 'onChange');
-        component.options = HASHTAG_OPTIONS;
-        fixture.detectChanges();
+        spyOn(component.multiSelectFormComponent.extendedOptions$, 'subscribe').and.returnValue(of(HASHTAG_EXTENDED_OPTIONS));
+        component.value = [HASHTAG_OPTIONS[0].label, '#aa', '#bb'];
+        const form = fixture.debugElement.query(By.css('.multiselectForm'));
 
-        const form = fixture.debugElement.query(By.directive(MultiSelectFormComponent));
-        form.nativeElement.dispatchEvent(new Event('input'));
+        component.multiSelectFormComponent.extendedOptions$.subscribe();
+        tick(1000);
+        fixture.detectChanges();
         form.triggerEventHandler('change', {});
-        tick(10);
-        fixture.detectChanges();
-        fixture.whenStable().then(() => {
-          expect(component.onChange).toHaveBeenCalled();
-        });
-        // form.triggerEventHandler('change', {});
 
-        expect(component.handleSelectedOption).toHaveBeenCalled();
-        expect(component.onChange).toHaveBeenCalled();
-      });
-    });
-
-    describe('when unselect the hashtag', () => {
-      it('should remove the hashtag from the hashtag list', () => {});
+        expect(component.handleSelectedOption).toBeCalled();
+        expect(component.onChange).toHaveBeenCalledWith([HASHTAG_OPTIONS[0].label, '#aa', '#bb']);
+      }));
     });
   });
 
