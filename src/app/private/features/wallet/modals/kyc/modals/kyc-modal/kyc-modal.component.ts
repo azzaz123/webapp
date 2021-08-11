@@ -1,5 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
+import {
+  DocumentImageIsInvalidError,
+  DocumentImageIsInvalidInputFileError,
+  DocumentImageSizeExceededError,
+  KYCError,
+  MangopayUserNotFoundError,
+} from '@api/core/errors/payments/kyc';
 import { KYCService } from '@api/payments/kyc/kyc.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { KYCDocumentation } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
@@ -21,12 +32,22 @@ export class KYCModalComponent {
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
   public KYCStoreSpecifications$: Observable<KYCSpecifications>;
 
-  constructor(private KYCStoreService: KYCStoreService, private KYCService: KYCService, private activeModal: NgbActiveModal) {
+  constructor(
+    private KYCStoreService: KYCStoreService,
+    private KYCService: KYCService,
+    private activeModal: NgbActiveModal,
+    private toastService: ToastService,
+    private i18nService: I18nService
+  ) {
     this.KYCStoreSpecifications$ = KYCStoreService.specifications$;
   }
 
   public endVerification(KYCImages: KYCImages): void {
-    this.KYCService.request(KYCImages).subscribe();
+    this.KYCService.request(KYCImages).subscribe({
+      error: (e: KYCError) => {
+        this.handleKYCError(e);
+      },
+    });
   }
 
   public defineNationality(nationalitySelected: KYCNationality): void {
@@ -81,5 +102,31 @@ export class KYCModalComponent {
 
   public goPreviousStep(): void {
     this.stepper.goBack();
+  }
+
+  private handleKYCError(e: KYCError): void {
+    let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
+
+    if (e instanceof MangopayUserNotFoundError) {
+      translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
+    }
+    if (e instanceof DocumentImageIsInvalidInputFileError) {
+      translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
+    }
+    if (e instanceof DocumentImageIsInvalidError) {
+      translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
+    }
+    if (e instanceof DocumentImageSizeExceededError) {
+      translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
+    }
+
+    this.showToast(translationKey, TOAST_TYPES.ERROR);
+  }
+
+  private showToast(key: TRANSLATION_KEY, type: TOAST_TYPES): void {
+    this.toastService.show({
+      text: `${this.i18nService.translate(key)}`,
+      type,
+    });
   }
 }

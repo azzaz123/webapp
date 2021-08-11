@@ -16,9 +16,9 @@ export class KYCErrorMapper extends ErrorMapper<KYCErrorResponseApi> {
 
   private mapPaymentsCardsErrorResponse(networkError: KYCErrorResponseApi): KYCError[] {
     const mappedErrors: KYCError[] = [];
-    const { error } = networkError;
+    const { error: backendDeliveryErrors } = networkError;
 
-    error.forEach((error) => {
+    backendDeliveryErrors.forEach((error) => {
       if (error.error_code === KYC_ERROR_CODES.MANGOPAY_USER_NOT_FOUND) {
         return mappedErrors.push(new MangopayUserNotFoundError());
       }
