@@ -33,3 +33,8 @@ export const Default = Template.bind({});
 Default.args = {
   bubbleText: 'Bubble',
 };
+
+export const LongText = Template.bind({});
+Default.args = {
+  bubbleText: 'SuperLongTextSJOIJDOJFUHOU',
+};
