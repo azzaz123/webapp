@@ -6,6 +6,7 @@ import { FASHION_CONFIGURATION_ID } from '../../../components/filters/core/enums
 import { ConfigurationId } from '../../../components/filters/core/types/configuration-id.type';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { COMMON_CONSUMER_GOODS_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/consumer-goods-configuration-ids.enum';
+import { PHONE_N_ACCESORIES_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/phone-n-accessories-ids.enum';
 
 export type OriginConfigurationValue = OptionsApiOrigin | 'hardcoded';
 export type OriginConfiguration = {
@@ -27,21 +28,6 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
     },
     mapperConfiguration: {
       method: 'formatConditionResponse',
-    },
-  },
-  [COMMON_CONFIGURATION_ID.OBJECT_TYPE]: {
-    apiConfiguration: {
-      method: 'getObjectTypesByCategoryId',
-      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.categoryId }],
-      keyMappers: [
-        {
-          sourceParamKey: FILTER_QUERY_PARAM_KEY.categoryId,
-          destinationParamKey: 'category_id',
-        },
-      ],
-    },
-    mapperConfiguration: {
-      method: 'formatObjectType',
     },
   },
   [COMMON_CONFIGURATION_ID.BRAND_MODEL]: {
@@ -150,7 +136,7 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   },
   [FASHION_CONFIGURATION_ID.CLOTHING_TYPE]: {
     apiConfiguration: {
-      method: 'getObjectTypesByCategoryId',
+      method: 'getObjectTypesByCategoryIdWithChildren',
       requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.categoryId }],
       keyMappers: [
         {
@@ -172,6 +158,21 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
     },
     mapperConfiguration: {
       method: 'formatFashionBrand',
+    },
+  },
+  [PHONE_N_ACCESORIES_CONFIGURATION_ID.OBJECT_TYPE]: {
+    apiConfiguration: {
+      method: 'getObjectTypesByCategoryIdWithChildren',
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.categoryId }],
+      keyMappers: [
+        {
+          sourceParamKey: FILTER_QUERY_PARAM_KEY.categoryId,
+          destinationParamKey: 'category_id',
+        },
+      ],
+    },
+    mapperConfiguration: {
+      method: 'formatObjectType',
     },
   },
   [COMMON_CONSUMER_GOODS_CONFIGURATION_ID.OBJECT_TYPE]: {
