@@ -1,18 +1,17 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { Tier, TierDiscount } from '@core/subscriptions/subscriptions.interface';
+import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Tier } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-try-pro-slot',
   templateUrl: './try-pro-slot.component.html',
   styleUrls: ['./try-pro-slot.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TryProSlotComponent {
   @Input() hasTrialAvailable: boolean;
   @Input() tierWithDiscount: Tier;
   @Output() close: EventEmitter<void> = new EventEmitter();
   @Output() clickCTA: EventEmitter<void> = new EventEmitter();
-
-  constructor() {}
 
   get CTAtext(): string {
     if (this.hasTrialAvailable) {
