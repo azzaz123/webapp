@@ -9,9 +9,9 @@ import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { KYCModule } from '../../kyc.module';
+import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
 
 import { KYCModalComponent } from './kyc-modal.component';
-import { KYCStoreService } from '../../services/kyc-store.service';
 
 describe('KYCModalComponent', () => {
   const bankAccountSelector = 'tsl-bank-account';

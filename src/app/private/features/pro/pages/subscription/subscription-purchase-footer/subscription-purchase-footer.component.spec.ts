@@ -1,7 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FREE_TRIAL_AVAILABLE_SUBSCRIPTION, MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { FREE_TRIAL_AVAILABLE_SUBSCRIPTION, MAPPED_SUBSCRIPTIONS, TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
 import { ButtonComponent } from '@shared/button/button.component';
 
 import { SubscriptionPurchaseFooterComponent } from './subscription-purchase-footer.component';
@@ -35,14 +36,28 @@ describe('SubscriptionPurchaseFooterComponent', () => {
       it('should show trial text', () => {
         const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
-        expect(button.textContent).toContain($localize`:@@web_start_free_trial:Start free trial`);
+        expect(button.textContent).toEqual($localize`:@@web_start_free_trial:Start free trial`);
       });
     });
     describe('Has no trial available', () => {
-      it('should show pay text', () => {
-        const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+      describe('and has not discount', () => {
+        it('should show pay text', () => {
+          const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
-        expect(button.textContent).toContain($localize`:@@web_pay:Pay`);
+          expect(button.textContent).toEqual($localize`:@@web_pay:Pay`);
+        });
+      });
+      describe('and has discount', () => {
+        beforeEach(() => {
+          component.selectedTier = TIER_WITH_DISCOUNT;
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should show discount text', () => {
+          const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+
+          expect(button.textContent).toEqual($localize`:@@pro_subscription_purchase_try_discount_button:Try with discount`);
+        });
       });
     });
   });
@@ -93,38 +108,60 @@ describe('SubscriptionPurchaseFooterComponent', () => {
       });
       it('should show trial text', () => {
         const description: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__description')).nativeElement;
+        const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${component.selectedTier.price}:INTERPOLATION:${component.selectedTier.currency}:INTERPOLATION:/month`;
+        const expectedFreeTrialText = $localize`:@@web_price_after_free_days:at the end of free trial`;
 
-        expect(description.textContent).toContain(component.selectedTier.price);
-        expect(description.textContent).toContain(component.selectedTier.currency);
-        expect(description.textContent).toContain($localize`:@@web_price_after_free_days:at the end of free trial`);
+        expect(description.textContent).toEqual(`${expectedMonthlyPriceText} ${expectedFreeTrialText}`);
       });
 
       it('should show empty price', () => {
         component.ngOnChanges({ selectedTier: new SimpleChange(null, component.selectedTier, false) });
         fixture.detectChanges();
-
         const price: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__amount')).nativeElement;
-        expect(price.textContent).toContain('0,00');
-        expect(price.textContent).toContain(component.selectedTier.currency);
+        const expectedTrialPrice = '0,00';
+        expect(price.textContent).toEqual(`${expectedTrialPrice}${component.selectedTier.currency}`);
       });
     });
     describe('Has not trial available', () => {
-      beforeEach(() => {
-        fixture.detectChanges();
+      describe('and has not discount', () => {
+        beforeEach(() => {
+          fixture.detectChanges();
+        });
+        it('should not show trial text', () => {
+          const description: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__description')).nativeElement;
+
+          expect(description.textContent).toEqual($localize`:@@web_monthly_renewal_plan:The plan will be renewed monthly`);
+        });
+
+        it('should show price', () => {
+          component.ngOnChanges({ selectedTier: new SimpleChange(null, component.selectedTier, false) });
+          fixture.detectChanges();
+
+          const price: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__amount')).nativeElement;
+          expect(price.textContent).toEqual(`${component.selectedTier.price}${component.selectedTier.currency}`);
+        });
       });
-      it('should not show trial text', () => {
-        const description: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__description')).nativeElement;
+      describe('and has discount', () => {
+        beforeEach(() => {
+          component.selectedTier = TIER_WITH_DISCOUNT;
+          fixture.detectChanges();
+        });
+        it('should show discount text', () => {
+          const description: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__description')).nativeElement;
+          const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${component.selectedTier.price}:INTERPOLATION:${component.selectedTier.currency}:INTERPOLATION:/month`;
+          const expectedDate = new DatePipe('en').transform(component.selectedTier.discount.end_date, 'dd/MM/yy');
+          const expectedText = $localize`:@@pro_subscription_purchase_summary_start_period_web:starting from ${expectedDate}:INTERPOLATION:`;
 
-        expect(description.textContent).toContain($localize`:@@web_monthly_renewal_plan:The plan will be renewed monthly`);
-      });
+          expect(description.textContent).toEqual(`${expectedMonthlyPriceText}${expectedText}`);
+        });
 
-      it('should show price', () => {
-        component.ngOnChanges({ selectedTier: new SimpleChange(null, component.selectedTier, false) });
-        fixture.detectChanges();
+        it('should show price discounted', () => {
+          component.ngOnChanges({ selectedTier: new SimpleChange(null, component.selectedTier, false) });
+          fixture.detectChanges();
+          const price: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__amount')).nativeElement;
 
-        const price: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__amount')).nativeElement;
-        expect(price.textContent).toContain(component.selectedTier.price);
-        expect(price.textContent).toContain(component.selectedTier.currency);
+          expect(price.textContent).toEqual(`${component.selectedTier.price}${component.selectedTier.currency}`);
+        });
       });
     });
   });

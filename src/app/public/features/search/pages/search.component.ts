@@ -62,6 +62,7 @@ export const WIDE_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xs: 1,
 };
 
+/* eslint-disable  @typescript-eslint/member-ordering */
 @Component({
   selector: 'tsl-search',
   templateUrl: './search.component.html',

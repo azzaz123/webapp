@@ -147,6 +147,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
         tier: this.selectedTier.id,
         invoiceNeeded: this.isInvoiceRequired,
+        discount: !!this.selectedTier.discount,
       },
     };
     this.analyticsService.trackEvent(event);
@@ -325,13 +326,13 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
         screenId: SCREEN_IDS.SubscriptionTier,
         freeTrial: this.subscriptionsService.hasTrial(this.subscription),
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        discount: !!this.selectedTier.discount,
       },
     };
     this.analyticsService.trackPageView(event);
   }
 
   private trackSubscriptionPayConfirmation(): void {
-    const discountPercent = this.subscriptionsService.getTierDiscountPercentatge(this.selectedTier);
     const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
       name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
       eventType: ANALYTIC_EVENT_TYPES.Transaction,
@@ -341,9 +342,10 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
         screenId: SCREEN_IDS.ProfileSubscription,
         isNewCard: !this.isSavedCard,
         isNewSubscriber: !this.user.featured,
-        discountPercent,
+        discountPercent: this.selectedTier.discount?.percentage | 0,
         invoiceNeeded: this.isInvoiceRequired,
         freeTrial: this.subscriptionsService.hasTrial(this.subscription),
+        discount: !!this.selectedTier.discount,
       },
     };
     this.analyticsService.trackEvent(event);

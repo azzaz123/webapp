@@ -736,37 +736,6 @@ describe('ItemService', () => {
     });
   });
 
-  describe('getUrgentProducts', () => {
-    it('should return the urgent product information', () => {
-      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/${ITEM_ID}/available-urgent-products`;
-      let response: Product;
-
-      service.getUrgentProducts(ITEM_ID).subscribe((r) => (response = r));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(PRODUCTS_RESPONSE);
-
-      expect(req.request.url).toEqual(expectedUrl);
-      expect(response).toBe(PRODUCT_RESPONSE);
-      expect(req.request.method).toBe('GET');
-    });
-  });
-
-  describe('getUrgentProductByCategoryId', () => {
-    it('should return the urgent product information by category', () => {
-      const expectedUrlParams = `categoryId=${ITEM_CATEGORY_ID.toString()}`;
-      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-urgent-products?${expectedUrlParams}`;
-      let response: Product;
-
-      service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID.toString()).subscribe((r) => (response = r));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(PRODUCTS_RESPONSE);
-
-      expect(req.request.urlWithParams).toEqual(expectedUrl);
-      expect(response).toBe(PRODUCT_RESPONSE);
-      expect(req.request.method).toBe('GET');
-    });
-  });
-
   describe('cancelAutorenew', () => {
     it('should cancel the item bump autorenew', () => {
       const expectedUrl = `${environment.baseUrl}${PROTOOL_API_URL}/autorenew/update`;
