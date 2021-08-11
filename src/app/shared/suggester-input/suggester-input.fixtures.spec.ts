@@ -7,3 +7,10 @@ export const HASHTAG_OPTIONS = [
   { label: '#kids', sublabel: '0', value: '#kids' },
   { label: '#kidsfashion', sublabel: '0', value: '#kidsfashion' },
 ];
+
+export const HASHTAG_EXTENDED_OPTIONS = [
+  { label: '#k', sublabel: '0', value: '#k', checked: false },
+  { label: '#kartell', sublabel: '0', value: '#kartell', checked: true },
+  { label: '#kids', sublabel: '0', value: '#kids', checked: false },
+  { label: '#kidsfashion', sublabel: '0', value: '#kidsfashion', checked: true },
+];

@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -9,7 +8,6 @@ import { MOCK_HASHTAGS } from '@fixtures/hashtag.fixtures.spec';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
-import { MultiSelectOptionComponent } from '@shared/form/components/multi-select-form/multi-select-option/multi-select-option/multi-select-option.component';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { of } from 'rxjs';
 import { SuggesterInputComponent } from './suggester-input.component';
@@ -160,7 +158,7 @@ describe('SuggesterInputComponent', () => {
         spyOn(component, 'onChange');
         spyOn(component.multiSelectFormComponent.extendedOptions$, 'subscribe').and.returnValue(of(HASHTAG_EXTENDED_OPTIONS));
         component.value = [HASHTAG_OPTIONS[0].label, '#aa', '#bb'];
-        const form = fixture.debugElement.query(By.css('.multiselectForm'));
+        const form = fixture.debugElement.query(By.directive(MultiSelectFormComponent));
 
         component.multiSelectFormComponent.extendedOptions$.subscribe();
         tick(1000);
