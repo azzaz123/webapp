@@ -68,7 +68,7 @@ const Template: Story<FiltersComponent> = (args: FiltersComponent) => ({
 
 const CONFIG: [RangeFilterConfig, ToggleFilterConfig] = [
   {
-    id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+    id: COMMON_CONFIGURATION_ID.CATEGORIES,
     type: FILTER_TYPES.RANGE,
     mapKey: {
       maxKey: FILTER_QUERY_PARAM_KEY.maxPrice,
@@ -81,7 +81,7 @@ const CONFIG: [RangeFilterConfig, ToggleFilterConfig] = [
     units: '€',
   },
   {
-    id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+    id: COMMON_CONFIGURATION_ID.CATEGORIES,
     type: FILTER_TYPES.TOGGLE,
     mapKey: {
       key: FILTER_QUERY_PARAM_KEY.warranty,

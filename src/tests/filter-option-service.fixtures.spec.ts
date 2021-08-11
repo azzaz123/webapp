@@ -57,7 +57,7 @@ export class MockFilterOptionService implements Partial<FilterOptionService> {
         ]);
       case CAR_CONFIGURATION_ID.BRAND_N_MODEL:
         return of(this.getOptionsByText(params, true));
-      case COMMON_CONFIGURATION_ID.OBJECT_TYPE:
+      case COMMON_CONFIGURATION_ID.CATEGORIES:
         params = params || {};
         return of(this.getOptionsByText(params));
       case CAR_CONFIGURATION_ID.ENGINE:

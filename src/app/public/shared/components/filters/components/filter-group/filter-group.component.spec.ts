@@ -48,7 +48,7 @@ describe('FilterGroupComponent', () => {
 
   const initialConfig: FilterConfig<unknown>[] = [
     {
-      id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+      id: COMMON_CONFIGURATION_ID.CATEGORIES,
       type: FILTER_TYPES.TOGGLE,
       mapKey: {
         key: 'toggle',
