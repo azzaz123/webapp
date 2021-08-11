@@ -40,6 +40,7 @@ describe('MultiSelectFormComponent', () => {
     fixture = TestBed.createComponent(MultiSelectFormComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
+    component.value = ['aa', 'cc'];
     component.options = multiSelectedOptionsFixture;
     fixture.detectChanges();
   });
