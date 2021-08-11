@@ -19,7 +19,7 @@ import { MultiSelectValue } from '@shared/form/components/multi-select-form/inte
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { fromEvent, Observable, of, Subscription } from 'rxjs';
-import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, filter, switchMap } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
   selector: 'tsl-suggester-input',
@@ -102,7 +102,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public handleSelectedOption(): void {
-    console.log('hhandle');
     this.value = this.mapExtendedOptionsToValue();
     this.onChange(this.value);
   }
@@ -123,12 +122,10 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
     this.subscriptions.add(
       this.fromEvent$.subscribe((options: PaginatedList<Hashtag> | []) => {
-        console.log('subscribe', options);
         if (Array.isArray(options)) {
           this.options = options;
         } else {
           this.options = this.mapHashtagSuggestersToOptions(options);
-          console.log('the options', this.options);
         }
       })
     );
@@ -139,13 +136,10 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag> | []> {
-    console.log('read', this.model);
     let newModel = this.model.substring(1);
     if (!newModel) {
-      console.log('read empty array');
       return of([]);
     } else {
-      console.log('read no no empty array');
       return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
     }
   }
@@ -161,7 +155,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     if (options[0].label !== this.model) {
       return this.sliceOptions([...this.createHashtagSuggesterOption(), ...options]);
     } else {
-      console.log('the end options', this.options);
       return this.sliceOptions(options);
     }
   }
@@ -180,7 +173,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private mapExtendedOptionsToValue(): string[] {
-    console.log('value', this.value);
     let newValue: string[] = this.value;
     this.extendedOptions.forEach((option: MultiSelectFormOption) => {
       if (option.checked && !this.value.includes(option.value)) {
@@ -192,6 +184,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
         });
       }
     });
+
     return newValue;
   }
 
