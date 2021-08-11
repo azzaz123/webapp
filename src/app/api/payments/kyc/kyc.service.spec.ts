@@ -13,8 +13,8 @@ import {
   MOCK_KYC_DOCUMENT_IMAGE_SIZE_EXCEEDED_RESPONSE,
   MOCK_KYC_MANGOPAY_USER_NOT_FOUND_RESPONSE,
   MOCK_KYC_UNKNOWN_ERROR_RESPONSE,
-} from '@fixtures/private/kyc/kyc-errors.fixtures.spec';
-import { MOCK_KYC_IMAGES, MOCK_KYC_IMAGES_BASE_64 } from '@fixtures/private/kyc/kyc.fixtures.spec';
+} from '@fixtures/private/wallet/kyc/kyc-errors.fixtures.spec';
+import { MOCK_KYC_IMAGES, MOCK_KYC_IMAGES_BASE_64 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { of, throwError } from 'rxjs';
 import { KYCHttpService } from './http/kyc-http.service';
 

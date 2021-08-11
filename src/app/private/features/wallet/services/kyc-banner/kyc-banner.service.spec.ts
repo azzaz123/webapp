@@ -6,7 +6,7 @@ import {
   MOCK_KYC_BANNER_PENDING_VERIFICATION,
   MOCK_KYC_BANNER_REJECTED,
   MOCK_KYC_BANNER_VERIFIED,
-} from '@fixtures/private/kyc/kyc.fixtures.spec';
+} from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { of } from 'rxjs';
 import { KYC_BANNER_TYPES } from '../../components/kyc-banner/kyc-banner-constants';
 import { KYCBanner, KYCBannerSpecifications } from '../../interfaces/kyc/kyc-banner.interface';

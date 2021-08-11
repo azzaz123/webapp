@@ -12,8 +12,8 @@ import {
   MOCK_KYC_DOCUMENTATION,
   MOCK_KYC_NATIONALITY,
   MOCK_KYC_SPECIFICATIONS,
-} from '@fixtures/private/kyc/kyc-specifications.fixtures.spec';
-import { MOCK_KYC_IMAGES } from '@fixtures/private/kyc/kyc.fixtures.spec';
+} from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
+import { MOCK_KYC_IMAGES } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
