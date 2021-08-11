@@ -10,8 +10,8 @@ import {
   MOCK_KYC_DOCUMENTATION,
   MOCK_KYC_NATIONALITY,
   MOCK_KYC_SPECIFICATIONS,
-} from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
-import { MOCK_KYC_IMAGES } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+} from '@fixtures/private/kyc/kyc-specifications.fixtures.spec';
+import { MOCK_KYC_IMAGES } from '@fixtures/private/kyc/kyc.fixtures.spec';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';

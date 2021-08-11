@@ -1,8 +1,8 @@
-import { KYC_VERIFICATION_ERROR_CODES } from '@api/payments/kyc/mappers/errors/kyc-verification-error-codes.enum';
+import { KYC_ERROR_CODES } from '@api/payments/kyc/mappers/errors/kyc-error-codes.enum';
 import { KYCError } from './kyc.error';
 
 export class DocumentImageIsInvalidError extends KYCError {
   constructor() {
-    super(KYC_VERIFICATION_ERROR_CODES.KYC_DOCUMENT_IMAGE_INVALID);
+    super(KYC_ERROR_CODES.KYC_DOCUMENT_IMAGE_INVALID);
   }
 }

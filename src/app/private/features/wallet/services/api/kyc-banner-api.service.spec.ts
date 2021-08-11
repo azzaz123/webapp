@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MOCK_KYC_BANNER_PENDING_VERIFICATION } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+import { MOCK_KYC_BANNER_PENDING_VERIFICATION } from '@fixtures/private/kyc/kyc.fixtures.spec';
 import { KYCBanner } from '../../interfaces/kyc/kyc-banner.interface';
 
 import { KYCBannerApiService, KYC_BANNER_STATUS_API_URL } from './kyc-banner-api.service';

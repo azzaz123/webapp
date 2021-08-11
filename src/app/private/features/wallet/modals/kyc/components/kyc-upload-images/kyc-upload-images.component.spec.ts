@@ -8,7 +8,7 @@ import {
   MOCK_KYC_IMAGES,
   MOCK_KYC_IMAGES_BACK_DEFINED,
   MOCK_KYC_IMAGES_FRONT_DEFINED,
-} from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+} from '@fixtures/private/kyc/kyc.fixtures.spec';
 import { MOCK_DEVICE_PERMISSIONS } from '@fixtures/user-device-permissions.fixtures.spec';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
