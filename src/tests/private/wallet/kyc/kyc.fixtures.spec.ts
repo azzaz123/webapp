@@ -45,3 +45,37 @@ export const MOCK_KYC_IMAGES_BASE_64: KYCImages = {
   frontSide: 'data:image/jpeg;base64,/9j/eF/tURKSxCTdp0ckjOsOT/',
   backSide: 'data:image/jpeg;base64,/9j/eF/tURKSxCTdp0ck222sOT/',
 };
+
+export const MOCK_KYC_IMAGES_BASE_64_BACK_NULL: KYCImages = {
+  frontSide: 'data:image/jpeg;base64,/9j/eF/tURKSxCTdp0ckjOsOT/',
+  backSide: null,
+};
+
+function getBlobFromBase64JPEGImage(dataURI: string): Blob {
+  let rawBinary: string;
+  if (dataURI.split(',')[0].indexOf('base64') >= 0) rawBinary = atob(dataURI.split(',')[1]);
+  else rawBinary = unescape(dataURI.split(',')[1]);
+
+  const blobPart: Uint8Array = new Uint8Array(rawBinary.length);
+  for (let i = 0; i < rawBinary.length; i++) {
+    blobPart[i] = rawBinary.charCodeAt(i);
+  }
+
+  return new Blob([blobPart], { type: 'image/jpeg' });
+}
+
+function getRequestIdAsBlob(): Blob {
+  return new Blob([JSON.stringify({ id: '1-2' })], { type: 'application/json' });
+}
+
+export function MOCK_KYC_REQUEST_BODY(firstImage: string, secondImage: string): FormData {
+  const body = {
+    firstImage: getBlobFromBase64JPEGImage(firstImage),
+    secondImage: secondImage ? getBlobFromBase64JPEGImage(secondImage) : null,
+    request: getRequestIdAsBlob(),
+  };
+  const bodyAsQueryParams: FormData = new FormData();
+  Object.keys(body).forEach((key: string) => bodyAsQueryParams.append(key, body[key]));
+
+  return bodyAsQueryParams;
+}

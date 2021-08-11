@@ -1,7 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { UuidService } from '@core/uuid/uuid.service';
-import { MOCK_KYC_IMAGES_BASE_64 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+import {
+  MOCK_KYC_IMAGES_BASE_64,
+  MOCK_KYC_IMAGES_BASE_64_BACK_NULL,
+  MOCK_KYC_REQUEST_BODY,
+} from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { KYC_ENDPOINT } from './endpoints';
 
 import { KYCHttpService } from './kyc-http.service';
@@ -28,64 +32,78 @@ describe('KYCHttpService', () => {
   describe('when requesting the KYC...', () => {
     beforeEach(() => {
       spyOn(uuidService, 'getUUID').and.returnValue('1-2');
-      service.request(MOCK_KYC_IMAGES_BASE_64).subscribe();
     });
 
-    it('should request the KYC with the specified images', () => {
-      const req: TestRequest = httpMock.expectOne(KYC_ENDPOINT);
-      req.flush({});
+    describe('and we request it with first image and second image', () => {
+      beforeEach(() => {
+        service.request(MOCK_KYC_IMAGES_BASE_64).subscribe();
+      });
 
-      expect(req.request.url).toBe(KYC_ENDPOINT);
+      it('should request the KYC', () => {
+        shouldRequestTheKYC();
+      });
+
+      it('should do a POST petition', () => {
+        shouldDoPOSTPetition();
+      });
+
+      it('should make the request with kyc required formed data', () => {
+        shouldMakeRequestWithSpecifiedImages(MOCK_KYC_IMAGES_BASE_64.frontSide, MOCK_KYC_IMAGES_BASE_64.backSide);
+      });
+
+      it('should make the request with response type specified', () => {
+        shouldResponseTypeText();
+      });
     });
 
-    it('should do a POST petition', () => {
-      const req: TestRequest = httpMock.expectOne(KYC_ENDPOINT);
-      req.flush({});
+    describe('and we request it only with the first image', () => {
+      beforeEach(() => {
+        service.request(MOCK_KYC_IMAGES_BASE_64_BACK_NULL).subscribe();
+      });
 
-      expect(req.request.method).toBe('POST');
-    });
+      it('should request the KYC', () => {
+        shouldRequestTheKYC();
+      });
 
-    it('should make the request with kyc required formed data', () => {
-      const req: TestRequest = httpMock.expectOne(KYC_ENDPOINT);
-      req.flush({});
+      it('should do a POST petition', () => {
+        shouldDoPOSTPetition();
+      });
 
-      expect(req.request.body).toEqual(getBodyAsFormData());
-    });
+      it('should make the request with second image null and kyc required formed data', () => {
+        shouldMakeRequestWithSpecifiedImages(MOCK_KYC_IMAGES_BASE_64_BACK_NULL.frontSide, MOCK_KYC_IMAGES_BASE_64_BACK_NULL.backSide);
+      });
 
-    it('should make the request with response type specified', () => {
-      const req: TestRequest = httpMock.expectOne(KYC_ENDPOINT);
-      req.flush({});
-
-      expect(req.request.responseType).toEqual('text');
+      it('should make the request with response type specified', () => {
+        shouldResponseTypeText();
+      });
     });
   });
-});
 
-function getBlobFromBase64JPEGImage(dataURI: string): Blob {
-  let rawBinary: string;
-  if (dataURI.split(',')[0].indexOf('base64') >= 0) rawBinary = atob(dataURI.split(',')[1]);
-  else rawBinary = unescape(dataURI.split(',')[1]);
+  function shouldRequestTheKYC(): void {
+    const req: TestRequest = httpMock.expectOne(KYC_ENDPOINT);
+    req.flush({});
 
-  const blobPart: Uint8Array = new Uint8Array(rawBinary.length);
-  for (let i = 0; i < rawBinary.length; i++) {
-    blobPart[i] = rawBinary.charCodeAt(i);
+    expect(req.request.url).toBe(KYC_ENDPOINT);
   }
 
-  return new Blob([blobPart], { type: 'image/jpeg' });
-}
+  function shouldDoPOSTPetition(): void {
+    const req: TestRequest = httpMock.expectOne(KYC_ENDPOINT);
+    req.flush({});
 
-function getRequestIdAsBlob(): Blob {
-  return new Blob([JSON.stringify({ id: '1-2' })], { type: 'application/json' });
-}
+    expect(req.request.method).toBe('POST');
+  }
 
-function getBodyAsFormData(): FormData {
-  const body = {
-    firstImage: getBlobFromBase64JPEGImage(MOCK_KYC_IMAGES_BASE_64.frontSide),
-    secondImage: getBlobFromBase64JPEGImage(MOCK_KYC_IMAGES_BASE_64.backSide),
-    request: getRequestIdAsBlob(),
-  };
-  const bodyAsQueryParams: FormData = new FormData();
-  Object.keys(body).forEach((key: string) => bodyAsQueryParams.append(key, body[key]));
+  function shouldResponseTypeText(): void {
+    const req: TestRequest = httpMock.expectOne(KYC_ENDPOINT);
+    req.flush({});
 
-  return bodyAsQueryParams;
-}
+    expect(req.request.responseType).toEqual('text');
+  }
+
+  function shouldMakeRequestWithSpecifiedImages(frontSideImage: string, backSideImage: string): void {
+    const req: TestRequest = httpMock.expectOne(KYC_ENDPOINT);
+    req.flush({});
+
+    expect(req.request.body).toEqual(MOCK_KYC_REQUEST_BODY(frontSideImage, backSideImage));
+  }
+});

@@ -21,7 +21,7 @@ export class KYCHttpService {
 
     const body: KYCBodyRequest = {
       firstImage: this.dataURItoBlob(KYCImages.frontSide),
-      secondImage: this.dataURItoBlob(KYCImages.backSide),
+      secondImage: KYCImages.backSide ? this.dataURItoBlob(KYCImages.backSide) : null,
       request: new Blob([JSON.stringify(requestId)], { type: 'application/json' }),
     };
 
