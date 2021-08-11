@@ -37,7 +37,7 @@ $gradient-border-radius: 21px;
     position: absolute;
     width: calc(100% + 2px);
     height: calc(100% + 2px);
-    border-radius: calc($gradient-border-radius + 10px);
+    border-radius: $gradient-border-radius + 10px;
     z-index: -1;
   }
 }
