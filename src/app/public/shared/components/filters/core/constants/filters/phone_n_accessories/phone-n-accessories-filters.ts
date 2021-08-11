@@ -2,6 +2,7 @@ import { AvailableFilterConfig } from '../../../types/available-filter-config.ty
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
 import { FILTER_QUERY_PARAM_KEY } from '../../../../enums/filter-query-param-key.enum';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
+import { PHONE_N_ACCESORIES_CONFIGURATION_ID } from '../../../enums/configuration-ids/phone-n-accessories-ids.enum';
 
 export const PHONE_N_ACCESSORIES_FILTERS: AvailableFilterConfig[] = [
   {
@@ -21,7 +22,7 @@ export const PHONE_N_ACCESSORIES_FILTERS: AvailableFilterConfig[] = [
     isLabelInValue: true,
   },
   {
-    id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+    id: PHONE_N_ACCESORIES_CONFIGURATION_ID.OBJECT_TYPE,
     type: FILTER_TYPES.SELECT,
     title: $localize`:@@web_filter_phone_n_accessories_type_title:Type of product`,
     bubblePlaceholder: $localize`:@@web_filter_phone_n_accessories_type_bubble_placeholder:Type of product`,
