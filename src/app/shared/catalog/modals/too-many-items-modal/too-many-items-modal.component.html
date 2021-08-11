@@ -48,7 +48,13 @@
     <tsl-button *ngIf="type === inAppType || type === carDealerType" (click)="activeModal.close()" i18n="@@web_understood">Understood</tsl-button>
     <tsl-button *ngIf="type === notSubscribedType || (type === stripeType && !isHighestLimit)" (click)="activeModal.close()"
     routerLink="/{{PRO_PATHS.PRO_MANAGER}}/{{PRO_PATHS.SUBSCRIPTIONS}}">
-      {{CTAtext}}
+    <ng-container *ngIf="isFreeTrial; else noTrialButton">
+      <span  i18n="@@web_too_many_items_modal_button_go_to_trial">Start free trial</span>
+    </ng-container>
+    <ng-template #noTrialButton>
+      <span *ngIf="tierDicounted" i18n="@@listing_limit_non_pro_users_discount_modal_start_button">Try with {{tierDicounted.discount.percentage}}% discount</span>
+      <span *ngIf="!tierDicounted" i18n="@@web_too_many_items_modal_button_go_to_subscriptions">See plans</span>
+    </ng-template>
     </tsl-button>
     <a *ngIf="type === stripeType && isHighestLimit" [href]="zenDeskUrl" target="_blank">
       <tsl-button (click)="activeModal.close()" i18n="@@listing_limit_pro_user_real_estate_subscription_modal_more_info_button">More info
