@@ -3,13 +3,28 @@
         <ng-container *ngFor="let tier of subscription.tiers">
             <div class="GenericCard Card col-md col-sm-12" [class.Card--selected]="selectedTier?.id === tier.id"
                 (click)="onTierSelectedChanged(tier)">
-                <div class="GenericCard__title Card__title">
-                    {{ getLimitText(tier) }}
+                <div *ngIf="tier.discount" class="mb-2">
+                    <span class="Card__banner p-1" i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tier.discount.percentage}}% off!</span>
                 </div>
+                <div class="GenericCard__title Card__title">{{ getLimitText(tier) }}</div>
                 <div class="GenericCard__subtitle Card__subtitle">
-                    <b><span i18n="@@web_profile_pages_subscription_326">{{tier.price}}{{tier.currency}}/month</span></b>
-                    <ng-container *ngIf="subscription.trial_available">&nbsp;<span i18n="@@web_after_free_trial">after free trial</span>
+                    <ng-container *ngIf="tier.discount; else noTierDiscount">
+                        <b><span class="Card__subtitle--discounted mr-1">{{tier.price}}</span>
+                            <span i18n="@@web_profile_pages_subscription_326">{{tier.discount.price}}{{tier.currency}}/month</span></b>
+                        <ng-container *ngIf="subscription.trial_available"><span i18n="@@web_after_free_trial">
+                            after free trial</span>
+                        </ng-container>
+                        <div class="mt-1">
+                            <span class="Card__footer" i18n="@@pro_subscription_purchase_tier_list_discount_limit_date_label">
+                                Enjoy the discount until {{tier.discount.end_date |  date:'dd/MM/yy' }}</span>
+                        </div>
                     </ng-container>
+                    <ng-template #noTierDiscount>
+                        <b><span i18n="@@web_profile_pages_subscription_326">{{tier.price}}{{tier.currency}}/month</span></b>
+                        <ng-container *ngIf="subscription.trial_available"><span i18n="@@web_after_free_trial">
+                            after free trial</span>
+                        </ng-container>
+                    </ng-template>
                 </div>
             </div>
         </ng-container>
