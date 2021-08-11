@@ -1408,6 +1408,7 @@
     "web_modals_already_featured_modal_478": "Los coches que están planeados no pueden ser destacados de nuevo.",
     "web_modals_already_featured_modal_479": "Ok, entiendo",
     "web_suggest_pro_modal_button_cancel": "Ahora no, gracias",
+    "pro_after_reactivation_non_subscribed_user_start_with_discount_button": "Probar con {$INTERPOLATION}% descuento",
     "web_suggest_pro_modal_description_trial": "Prueba gratis Wallapop PRO y descubre todas sus ventajas.",
     "web_suggest_pro_modal_description_plans": "Elige un plan y aprovecha los beneficios de Wallapop PRO.",
     "web_too_many_items_modal_cardealer_title": "{$START_BOLD_TEXT}Estás intentando activar más {$INTERPOLATION} de los que te permite tu plan.{$CLOSE_BOLD_TEXT}",

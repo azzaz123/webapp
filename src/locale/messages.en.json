@@ -1408,6 +1408,7 @@
     "web_modals_already_featured_modal_478": "Items that are already planned can't be featured again.",
     "web_modals_already_featured_modal_479": "Ok, got it",
     "web_suggest_pro_modal_button_cancel": " Not now thanks ",
+    "pro_after_reactivation_non_subscribed_user_start_with_discount_button": "Try with {$INTERPOLATION}% off",
     "web_suggest_pro_modal_description_trial": "Try Wallapop PRO for free and explore all their benefits.",
     "web_suggest_pro_modal_description_plans": "Choose a plan and take advantage of Wallapop PRO benefits.",
     "web_too_many_items_modal_cardealer_title": "{$START_BOLD_TEXT}You are trying to activate more {$INTERPOLATION} than what your plan supports{$CLOSE_BOLD_TEXT}",
