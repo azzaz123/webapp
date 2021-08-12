@@ -11,10 +11,10 @@ import { KYC_ERROR_CODES } from './kyc-error-codes.enum';
 
 export class KYCErrorMapper extends ErrorMapper<KYCErrorResponseApi> {
   protected generateErrorByRequest(networkError: KYCErrorResponseApi): KYCError[] {
-    return this.mapPaymentsCardsErrorResponse(networkError);
+    return this.mapKYCErrorResponse(networkError);
   }
 
-  private mapPaymentsCardsErrorResponse(networkError: KYCErrorResponseApi): KYCError[] {
+  private mapKYCErrorResponse(networkError: KYCErrorResponseApi): KYCError[] {
     const mappedErrors: KYCError[] = [];
     const { error: backendDeliveryErrors } = networkError;
 
