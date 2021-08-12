@@ -7,7 +7,7 @@ import { KYCHttpService } from './http/kyc-http.service';
 export class KYCService {
   constructor(private KYCHttpService: KYCHttpService) {}
 
-  public request(KYCImages: KYCImages): Observable<any> {
+  public request(KYCImages: KYCImages): Observable<void> {
     return this.KYCHttpService.request(KYCImages);
   }
 }

@@ -27,8 +27,8 @@ import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.e
 })
 export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   @ViewChild('userCamera') userCamera: ElementRef;
-  @ViewChild('frontSideImage') frontSideImage: ElementRef;
-  @ViewChild('backSideImage') backSideImage: ElementRef;
+  @ViewChild('frontSideImage') frontSideImage: ElementRef<HTMLCanvasElement>;
+  @ViewChild('backSideImage') backSideImage: ElementRef<HTMLCanvasElement>;
 
   @Input() imagesNeeded: KYCImagesNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
@@ -39,13 +39,11 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   @Output() goBack: EventEmitter<void> = new EventEmitter();
 
   public userDevicePermissions$: Observable<UserDevicePermissions>;
-  public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
   public readonly KYC_IMAGES = KYC_IMAGES;
   public readonly errorBannerSpecifications: NgbAlertConfig = {
     type: BANNER_TYPES.DANGER,
     dismissible: false,
   };
-  private readonly DEVICE_PERMISSIONS_STATUS = DEVICE_PERMISSIONS_STATUS;
 
   constructor(private askPermissionsService: AskPermissionsService) {
     this.userDevicePermissions$ = askPermissionsService.userDevicePermissions$;

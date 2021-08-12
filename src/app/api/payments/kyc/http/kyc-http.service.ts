@@ -10,7 +10,7 @@ import { KYCBodyRequest, KYCBodyRequestedId } from '../dtos/requests';
 export class KYCHttpService {
   constructor(private http: HttpClient, private uuidService: UuidService) {}
 
-  public request(KYCImages: KYCImages): Observable<never> {
+  public request(KYCImages: KYCImages): Observable<void> {
     return this.http.post<never>(KYC_ENDPOINT, this.getFormattedBody(KYCImages), { responseType: 'text' as 'json' });
   }
 
