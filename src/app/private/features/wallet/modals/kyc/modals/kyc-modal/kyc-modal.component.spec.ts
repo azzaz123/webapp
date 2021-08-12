@@ -37,7 +37,7 @@ describe('KYCModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [KYCModule, RouterTestingModule, HttpClientTestingModule, KYCServicesModule],
-      declarations: [KYCModalComponent, StepperComponent, StepDirective],
+      declarations: [StepperComponent, StepDirective],
       providers: [DeviceDetectorService, NgbActiveModal, KYCStoreService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

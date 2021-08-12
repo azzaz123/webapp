@@ -34,8 +34,11 @@ export class KYCHttpService {
   private dataURItoBlob(dataURI: string): Blob {
     // Convert base64/URLEncoded data component to raw binary data
     let rawBinary: string;
-    if (dataURI.split(',')[0].indexOf('base64') >= 0) rawBinary = atob(dataURI.split(',')[1]);
-    else rawBinary = unescape(dataURI.split(',')[1]);
+    if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+      rawBinary = atob(dataURI.split(',')[1]);
+    } else {
+      rawBinary = unescape(dataURI.split(',')[1]);
+    }
 
     // Separate out MIMEFormData
     const mimeString: string = dataURI.split(',')[0].split(':')[1].split(';')[0];
