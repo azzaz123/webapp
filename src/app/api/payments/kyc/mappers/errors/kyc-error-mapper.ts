@@ -6,15 +6,15 @@ import {
   KYCError,
 } from '@api/core/errors/payments/kyc';
 import { ErrorMapper } from '@api/core/utils/classes';
-import { KYCErrorResponseApi } from '../../dtos/errors';
+import { KYCErrorApi, KYCErrorResponseApi, KYCErrorResponseApiMapped } from '../../dtos/errors';
 import { KYC_ERROR_CODES } from './kyc-error-codes.enum';
 
 export class KYCErrorMapper extends ErrorMapper<KYCErrorResponseApi> {
   protected generateErrorByRequest(networkError: KYCErrorResponseApi): KYCError[] {
-    return this.mapKYCErrorResponse(networkError);
+    return this.mapKYCErrorResponse(this.mapNetworkError(networkError));
   }
 
-  private mapKYCErrorResponse(networkError: KYCErrorResponseApi): KYCError[] {
+  private mapKYCErrorResponse(networkError: KYCErrorResponseApiMapped): KYCError[] {
     const mappedErrors: KYCError[] = [];
     const { error: backendDeliveryErrors } = networkError;
 
@@ -37,5 +37,17 @@ export class KYCErrorMapper extends ErrorMapper<KYCErrorResponseApi> {
     });
 
     return mappedErrors;
+  }
+
+  private mapNetworkError(networkError: KYCErrorResponseApi): KYCErrorResponseApiMapped {
+    if (this.isString(networkError.error)) {
+      networkError.error = JSON.parse(networkError.error);
+    }
+
+    return networkError as KYCErrorResponseApiMapped;
+  }
+
+  private isString(networkError: KYCErrorApi[] | string): networkError is string {
+    return typeof networkError === 'string';
   }
 }

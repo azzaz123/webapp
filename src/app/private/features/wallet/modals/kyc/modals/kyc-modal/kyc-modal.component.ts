@@ -105,27 +105,23 @@ export class KYCModalComponent {
   }
 
   private handleKYCError(e: KYCError): void {
-    let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
+    let errorMessage: string = `${this.i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR)}`;
 
-    if (e instanceof MangopayUserNotFoundError) {
-      translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
-    }
-    if (e instanceof DocumentImageIsInvalidInputFileError) {
-      translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
-    }
-    if (e instanceof DocumentImageIsInvalidError) {
-      translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
-    }
-    if (e instanceof DocumentImageSizeExceededError) {
-      translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
+    if (
+      e instanceof MangopayUserNotFoundError ||
+      e instanceof DocumentImageIsInvalidInputFileError ||
+      e instanceof DocumentImageIsInvalidError ||
+      e instanceof DocumentImageSizeExceededError
+    ) {
+      errorMessage = e.message;
     }
 
-    this.showToast(translationKey, TOAST_TYPES.ERROR);
+    this.showToast(errorMessage, TOAST_TYPES.ERROR);
   }
 
-  private showToast(key: TRANSLATION_KEY, type: TOAST_TYPES): void {
+  private showToast(text: string, type: TOAST_TYPES): void {
     this.toastService.show({
-      text: `${this.i18nService.translate(key)}`,
+      text,
       type,
     });
   }
