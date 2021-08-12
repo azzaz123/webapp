@@ -12,11 +12,8 @@ import { SuggesterInputModule } from './suggester-input.module';
   selector: 'tsl-story-suggester-input',
   template: `
     <form [formGroup]="formGroup">
-      <h4 class="mt-4">Dynamic input: {{ formGroup.value.hashtag }}</h4>
-      <div>
-        <tsl-cancel-bubble style="margin:35px" *ngFor="let option of formGroup.value.hashtag" [bubbleText]="option"></tsl-cancel-bubble>
-      </div>
-      dynamic input
+      <h4 class="mt-4">Selected hashtags: {{ formGroup.value.hashtag }}</h4>
+      Get your hashtags:
       <tsl-suggester-input
         formControlName="hashtag"
         [disabled]="disabled"
@@ -24,11 +21,7 @@ import { SuggesterInputModule } from './suggester-input.module';
         (showInvalidMessage)="showMessage($event)"
       ></tsl-suggester-input>
     </form>
-    <div *ngIf="showErrorNessage">
-      <div i18n="@@web_upload_hashtag_invalid_error_message">
-        Our hashtags are good with anything except special characters and spaces of course.
-      </div>
-    </div>
+    <div *ngIf="showErrorNessage">Our hashtags are good with anything except special characters and spaces of course</div>
   `,
 })
 class StorySuggesterInputFormComponent {
