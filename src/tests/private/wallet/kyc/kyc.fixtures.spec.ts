@@ -1,5 +1,6 @@
 import { KYCBanner, KYC_BANNER_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-banner.interface';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
+import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 
 export const MOCK_KYC_BANNER_PENDING_VERIFICATION: KYCBanner = {
   status: KYC_BANNER_STATUS.PENDING_VERIFICATION,
@@ -61,7 +62,7 @@ function getBlobFromBase64JPEGImage(dataURI: string): Blob {
     blobPart[i] = rawBinary.charCodeAt(i);
   }
 
-  return new Blob([blobPart], { type: 'image/jpeg' });
+  return new Blob([blobPart], { type: MIME_TYPES.IMAGE_JPEG });
 }
 
 function getRequestIdAsBlob(): Blob {

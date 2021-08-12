@@ -15,6 +15,7 @@ import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-doc
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { BannerComponent } from '@shared/banner/banner.component';
 import { ButtonComponent } from '@shared/button/button.component';
+import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
 import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
@@ -190,7 +191,7 @@ describe('KYCUploadImagesComponent', () => {
               });
 
               it('should convert the canvas to a jpeg image with hight quality', () => {
-                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith('image/jpeg', 1);
+                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
               });
 
               it('should draw the front side image on the screen', () => {
@@ -249,7 +250,7 @@ describe('KYCUploadImagesComponent', () => {
               });
 
               it('should convert the canvas to a jpeg image with hight quality', () => {
-                expect(component.backSideImage.nativeElement.toDataURL).toHaveBeenCalledWith('image/jpeg', 1);
+                expect(component.backSideImage.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
               });
 
               it('should draw the back side image on the screen', () => {
@@ -321,7 +322,7 @@ describe('KYCUploadImagesComponent', () => {
               });
 
               it('should convert the canvas to a jpeg image with hight quality', () => {
-                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith('image/jpeg', 1);
+                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
               });
 
               it('should draw the front side image on the screen', () => {
@@ -438,7 +439,7 @@ describe('KYCUploadImagesComponent', () => {
               });
 
               it('should convert the canvas to a jpeg image with hight quality', () => {
-                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith('image/jpeg', 1);
+                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
               });
 
               it('should draw the front side image on the screen', () => {

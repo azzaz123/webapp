@@ -13,6 +13,7 @@ import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages, KYC_IMAGES } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { BANNER_TYPES } from '@shared/banner/banner-types.enum';
+import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 
 import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
 import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
@@ -68,7 +69,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
     imageContainer.getContext('2d').drawImage(this.userCamera.nativeElement, 0, 0, imageContainer.width, imageContainer.height);
 
-    this.emitNewImage(imageContainer.toDataURL('image/jpeg', 1));
+    this.emitNewImage(imageContainer.toDataURL(MIME_TYPES.IMAGE_JPEG, 1));
   }
 
   public removeImage(imageToRemove: KYC_IMAGES): void {
