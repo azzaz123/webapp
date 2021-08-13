@@ -1,0 +1,22 @@
+.SubscriptionPurchaseSuccess {
+  &__title {
+    color: #253238;
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  &__subtitle {
+    color: #607d8b;
+    font-size: 20px;
+    margin-top: 20px;
+  }
+
+  &__buttons {
+    width: 270px;
+    margin-top: 32px;
+  }
+
+  .GenericCard {
+    padding: 48px;
+  }
+}

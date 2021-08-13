@@ -36,6 +36,7 @@ import { SubscriptionBenefitsComponent } from './components/subscription-benefit
 import { SpinnerModule } from '@shared/spinner/spinner.module';
 import { HeaderModule } from '@shared/header/header.module';
 import { SubscriptionPurchaseSuccessComponent } from './components/subscription-purchase-success/subscription-purchase-success.component';
+import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { SubscriptionPurchaseSuccessComponent } from './components/subscription-
     PaymentsCardInfoModule,
     SpinnerModule,
     HeaderModule,
+    UserAvatarModule,
   ],
 })
 export class ProModule {}

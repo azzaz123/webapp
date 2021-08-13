@@ -40,9 +40,10 @@ export const PAYMENT_SUCCESSFUL_CODE = 202;
 export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   @Input() subscription: SubscriptionsResponse;
   @Input() user: User;
-  @Output() purchaseSuccessful: EventEmitter<void> = new EventEmitter();
+  @Output() purchaseSuccessful: EventEmitter<string> = new EventEmitter();
   @Output() unselectSubcription: EventEmitter<void> = new EventEmitter();
 
+  public showPurchaseSuccessful: boolean;
   public stripeCards: FinancialCard[];
   public selectedCard: FinancialCard;
   public isInvoiceRequired = false;
@@ -277,7 +278,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   private paymentSucceeded(): void {
     this.isLoading = false;
     this.isRetryPayment = false;
-    this.openPaymentSuccessModal();
+    this.showPurchaseSuccessful = true;
   }
 
   private retrySubscription(paymentMethodId = this.selectedCard.id): void {
@@ -296,6 +297,10 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
           this.requestNewPayment(error);
         }
       );
+  }
+
+  public onRedirectTo(path: string) {
+    this.purchaseSuccessful.emit(path);
   }
 
   private openPaymentSuccessModal(): void {
