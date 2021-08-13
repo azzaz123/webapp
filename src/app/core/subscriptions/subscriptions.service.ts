@@ -16,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CURRENCY_SYMBOLS } from '../constants';
 import { UuidService } from '../uuid/uuid.service';
+import { CATEGORIES_EXCLUDED_FROM_CONSUMER_GOODS, CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -241,6 +242,13 @@ export class SubscriptionsService {
     return !!subscriptions && subscriptions.some((subscription) => this.getDefaultTierDiscount(subscription));
   }
 
+  public getDefaultTierSubscriptionDiscount(subscriptions: SubscriptionsResponse[]): Tier {
+    if (this.hasSomeSubscriptionDiscount(subscriptions)) {
+      const subscriptionWithDiscount = subscriptions.find((subscription) => this.getDefaultTierDiscount(subscription));
+      return this.getDefaultTierDiscount(subscriptionWithDiscount);
+    }
+  }
+
   public getDefaultTierDiscount(subscription: SubscriptionsResponse): Tier {
     return subscription.tiers.find((tier) => tier.discount);
   }
@@ -272,14 +280,26 @@ export class SubscriptionsService {
     return this.hasTrial(selectedsubscription) && !selectedsubscription.subscribed_from;
   }
 
-  public hasDiscountByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): boolean {
-    const selectedsubscription = subscriptions.find((subscription) => subscription.category_id === categoryId);
+  public getSubscriptionByCategory(subscriptions: SubscriptionsResponse[], categoryId: number): SubscriptionsResponse {
+    let categorySubscriptionId: number;
 
-    if (!selectedsubscription) {
-      return false;
+    if (CATEGORIES_EXCLUDED_FROM_CONSUMER_GOODS.includes(categoryId)) {
+      categorySubscriptionId = CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS;
+    } else {
+      categorySubscriptionId = categoryId;
     }
 
-    return !!this.getDefaultTierDiscount(selectedsubscription) && !selectedsubscription.subscribed_from;
+    return subscriptions.find((subscription) => subscription.category_id === categoryId);
+  }
+
+  public tierDiscountByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): Tier {
+    const selectedsubscription = this.getSubscriptionByCategory(subscriptions, categoryId);
+
+    if (!selectedsubscription) {
+      return;
+    }
+
+    return this.getDefaultTierDiscount(selectedsubscription);
   }
 
   public hasHighestLimit(subscription: SubscriptionsResponse): boolean {

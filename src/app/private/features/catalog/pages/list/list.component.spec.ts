@@ -43,7 +43,12 @@ import {
   ORDER_EVENT,
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
-import { MockSubscriptionService, MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  MockSubscriptionService,
+  MOCK_SUBSCRIPTION_SLOTS,
+  MOCK_SUBSCRIPTION_SLOT_CARS,
+  TIER_WITH_DISCOUNT,
+} from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER, USER_ID, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -1420,7 +1425,7 @@ describe('ListComponent', () => {
           });
           describe('and has discount', () => {
             beforeEach(() => {
-              spyOn(subscriptionsService, 'hasDiscountByCategoryId').and.returnValue(true);
+              spyOn(subscriptionsService, 'tierDiscountByCategoryId').and.returnValue(TIER_WITH_DISCOUNT);
             });
             it('should track modal', () => {
               const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
