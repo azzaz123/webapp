@@ -113,7 +113,7 @@ const Template: Story<FiltersComponent> = (args) => ({
 });
 
 const clothingTypeConfig: SuggesterFilterConfig = {
-  id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+  id: COMMON_CONFIGURATION_ID.CATEGORIES,
   title: 'Clothing type',
   icon: '/assets/icons/joke.svg',
   bubblePlaceholder: 'Clothing type',

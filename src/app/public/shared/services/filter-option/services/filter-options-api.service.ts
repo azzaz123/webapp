@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { API_VERSION_URL } from '@public/core/constants/api-version-url-constants';
@@ -12,6 +12,7 @@ import { IconOption } from '../interfaces/option-responses/icon-option.interface
 import { BrandModel } from '../interfaces/option-responses/brand-model.interface';
 import { SizeNGenderResponse } from '../interfaces/option-responses/fashion-size-n-gender.interface';
 import { FashionBrand } from '../interfaces/option-responses/fashion-brand.interface';
+import { ACCEPT_HEADERS, HEADER_NAMES } from '@public/core/constants/header-constants';
 
 export type FilterOptionsApiMethods = keyof Omit<FilterOptionsApiService, 'httpClient' | 'getApiOptions'>;
 
@@ -34,6 +35,15 @@ export class FilterOptionsApiService {
   public getObjectTypesByCategoryId(params: QueryParams, paginationOptions: PaginationOptions): Observable<unknown>;
   public getObjectTypesByCategoryId(params: QueryParams): Observable<unknown> {
     return this.get<ObjectType[]>(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, params);
+  }
+
+  public getObjectTypesByCategoryIdWithChildren(params: QueryParams<'category_id'>): Observable<ObjectType[]>;
+  public getObjectTypesByCategoryIdWithChildren(params: QueryParams, paginationOptions: PaginationOptions): Observable<unknown>;
+  public getObjectTypesByCategoryIdWithChildren(params: QueryParams): Observable<unknown> {
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append(HEADER_NAMES.ACCEPT, ACCEPT_HEADERS.SUGGESTERS_V3);
+
+    return this.get<ObjectType[]>(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, params, headers);
   }
 
   public getBrandModelByCategoryId(params: QueryParams<'category_id'>): Observable<BrandModel[]>;
@@ -111,7 +121,7 @@ export class FilterOptionsApiService {
     });
   }
 
-  private get<T>(path: string, params: QueryParams, headers?: Record<string, string>): Observable<T> {
+  private get<T>(path: string, params: QueryParams, headers?: HttpHeaders): Observable<T> {
     return this.httpClient.get<T>(`${API_VERSION_URL.v3}${path}`, {
       params,
       headers,
