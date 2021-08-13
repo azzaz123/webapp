@@ -18,18 +18,13 @@ describe('TryProSlotItemComponent', () => {
         declarations: [TryProSlotComponent, ButtonComponent],
         providers: [{ provide: AnalyticsService, useClass: MockAnalyticsService }],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      })
-        .overrideComponent(TryProSlotComponent, {
-          set: { changeDetection: ChangeDetectionStrategy.Default },
-        })
-        .compileComponents();
+      }).compileComponents();
     })
   );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TryProSlotComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   describe('CTA text', () => {
