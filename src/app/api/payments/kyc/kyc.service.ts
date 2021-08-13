@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentImageSizeTooSmallError } from '@api/core/errors/payments/kyc/document-image-size-too-small.error';
+import { DocumentImageSizeTooSmallError } from '@api/core/errors/payments/kyc';
 import { UuidService } from '@core/uuid/uuid.service';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
