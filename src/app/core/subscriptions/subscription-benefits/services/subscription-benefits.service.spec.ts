@@ -32,7 +32,7 @@ describe('SubscriptionBenefitsService', () => {
   describe('get benefits list by category', () => {
     describe('is everything else category', () => {
       it('should return benefits', () => {
-        const result = service.getBenefitsByCategory(CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE);
+        const result = service.getBenefitsByCategory(CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS);
 
         expect(result).toEqual([$localize`:@@web_subscription_benefit_title_branding:Boost your branding`, ...GENERIC_BENEFITS]);
       });

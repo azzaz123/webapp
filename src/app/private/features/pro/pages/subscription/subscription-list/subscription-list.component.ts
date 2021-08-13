@@ -17,7 +17,7 @@ export class SubscriptionListComponent {
   MAX_NARROW_CARDS = 4;
   public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
   private readonly rowOrder = [
-    CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE,
+    CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
     CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES,
     CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
     CATEGORY_SUBSCRIPTIONS_IDS.CAR,

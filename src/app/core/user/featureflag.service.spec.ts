@@ -9,7 +9,7 @@ import * as coreLibrary from '@angular/core';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { MockPermissionsService } from '@fixtures/permissions.fixtures';
 import { FeatureFlag, FEATURE_FLAGS_ENUM } from './featureflag-constants';
-import { FeatureFlagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
+import { FeatureFlagService, FEATURE_FLAG_ACCEPT_HEADER, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { PERMISSIONS } from './user-constants';
 
 const isDevMode = jasmine.createSpy().and.returnValue(true);
@@ -72,6 +72,7 @@ describe('FeatureFlagService', () => {
       expect(req.request.url).toBe(expectedUrlWithEndpoint);
       expect(req.request.urlWithParams.toString()).toBe(expectedUrlWithEndpointAndParams);
       expect(req.request.method).toBe('GET');
+      expect(req.request.headers.get('Accept')).toBe(FEATURE_FLAG_ACCEPT_HEADER);
     });
 
     it('should not do extra HTTP request when feature flag was already fetched', () => {
@@ -232,6 +233,7 @@ describe('FeatureFlagService', () => {
         expect(req.request.url).toBe(expectedUrlWithEndpoint);
         expect(req.request.urlWithParams.toString()).toBe(expectedUrlWithEndpointAndParams);
         expect(req.request.method).toBe('GET');
+        expect(req.request.headers.get('Accept')).toBe(FEATURE_FLAG_ACCEPT_HEADER);
       });
     });
 
