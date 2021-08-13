@@ -4,6 +4,8 @@ import { UuidService } from '@core/uuid/uuid.service';
 import {
   MOCK_KYC_IMAGES_BASE_64,
   MOCK_KYC_IMAGES_BASE_64_BACK_NULL,
+  MOCK_KYC_IMAGES_NON_BASE_64,
+  MOCK_KYC_IMAGES_NON_BASE_64_BACK_NULL,
   MOCK_KYC_REQUEST_BODY,
 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { of } from 'rxjs';
@@ -37,33 +39,71 @@ describe('KYCService', () => {
     });
 
     describe('and we request it with first image and second image', () => {
-      beforeEach(() => {
-        service.request(MOCK_KYC_IMAGES_BASE_64).subscribe();
+      describe('and the base images are base 64', () => {
+        beforeEach(() => {
+          service.request(MOCK_KYC_IMAGES_BASE_64).subscribe();
+        });
+
+        it('should request the KYC', () => {
+          shouldRequestKYC();
+        });
+
+        it('should make the request with kyc required formed data', () => {
+          shouldDoRequestWithFormattedImages(MOCK_KYC_IMAGES_BASE_64.frontSide, MOCK_KYC_IMAGES_BASE_64.backSide);
+        });
       });
 
-      it('should request the KYC', () => {
-        expect(kycHttpService.request).toHaveBeenCalledTimes(1);
-      });
+      describe('and the base images are NOT base 64', () => {
+        beforeEach(() => {
+          service.request(MOCK_KYC_IMAGES_NON_BASE_64).subscribe();
+        });
 
-      it('should make the request with kyc required formed data', () => {
-        expect(kycHttpService.request).toBeCalledWith(
-          MOCK_KYC_REQUEST_BODY(MOCK_KYC_IMAGES_BASE_64.frontSide, MOCK_KYC_IMAGES_BASE_64.backSide)
-        );
+        it('should request the KYC', () => {
+          shouldRequestKYC();
+        });
+
+        it('should make the request with kyc required formed data', () => {
+          shouldDoRequestWithFormattedImages(MOCK_KYC_IMAGES_NON_BASE_64.frontSide, MOCK_KYC_IMAGES_NON_BASE_64.backSide);
+        });
       });
     });
 
     describe('and we request it only with the first image', () => {
-      beforeEach(() => {
-        service.request(MOCK_KYC_IMAGES_BASE_64_BACK_NULL).subscribe();
+      describe('and the base images are base 64', () => {
+        beforeEach(() => {
+          service.request(MOCK_KYC_IMAGES_BASE_64_BACK_NULL).subscribe();
+        });
+
+        it('should request the KYC', () => {
+          shouldRequestKYC();
+        });
+
+        it('should make the request with second image null and kyc required formed data', () => {
+          shouldDoRequestWithFormattedImages(MOCK_KYC_IMAGES_BASE_64_BACK_NULL.frontSide, null);
+        });
       });
 
-      it('should request the KYC', () => {
-        expect(kycHttpService.request).toHaveBeenCalledTimes(1);
-      });
+      describe('and the base images are NOT base 64', () => {
+        beforeEach(() => {
+          service.request(MOCK_KYC_IMAGES_NON_BASE_64_BACK_NULL).subscribe();
+        });
 
-      it('should make the request with second image null and kyc required formed data', () => {
-        MOCK_KYC_REQUEST_BODY(MOCK_KYC_IMAGES_BASE_64_BACK_NULL.frontSide, null);
+        it('should request the KYC', () => {
+          shouldRequestKYC();
+        });
+
+        it('should make the request with second image null and kyc required formed data', () => {
+          shouldDoRequestWithFormattedImages(MOCK_KYC_IMAGES_NON_BASE_64_BACK_NULL.frontSide, null);
+        });
       });
     });
   });
+
+  function shouldRequestKYC(): void {
+    expect(kycHttpService.request).toHaveBeenCalledTimes(1);
+  }
+
+  function shouldDoRequestWithFormattedImages(frontSideImage: string, backSideImage: string) {
+    expect(kycHttpService.request).toBeCalledWith(MOCK_KYC_REQUEST_BODY(frontSideImage, backSideImage));
+  }
 });

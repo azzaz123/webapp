@@ -47,8 +47,18 @@ export const MOCK_KYC_IMAGES_BASE_64: KYCImages = {
   backSide: 'data:image/jpeg;base64,/9j/eF/tURKSxCTdp0ck222sOT/',
 };
 
+export const MOCK_KYC_IMAGES_NON_BASE_64: KYCImages = {
+  frontSide: 'data:image/jpeg,/9j/eF/tURKSxCTdp0ckjOsOT/',
+  backSide: 'data:image/jpeg,/9j/eF/tURKSxCTdp0ck222sOT/',
+};
+
 export const MOCK_KYC_IMAGES_BASE_64_BACK_NULL: KYCImages = {
   frontSide: 'data:image/jpeg;base64,/9j/eF/tURKSxCTdp0ckjOsOT/',
+  backSide: null,
+};
+
+export const MOCK_KYC_IMAGES_NON_BASE_64_BACK_NULL: KYCImages = {
+  frontSide: 'data:image/jpeg,/9j/eF/tURKSxCTdp0ckjOsOT/',
   backSide: null,
 };
 
@@ -66,7 +76,7 @@ function getBlobFromBase64JPEGImage(dataURI: string): Blob {
 }
 
 function getRequestIdAsBlob(): Blob {
-  return new Blob([JSON.stringify({ id: '1-2' })], { type: 'application/json' });
+  return new Blob([JSON.stringify({ id: '1-2' })], { type: MIME_TYPES.APPLICATION_JSON });
 }
 
 export function MOCK_KYC_REQUEST_BODY(firstImage: string, secondImage: string): FormData {
