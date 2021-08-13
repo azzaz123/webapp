@@ -10,6 +10,7 @@ import {
   SubscriptionPayConfirmation,
   SubscriptionPaymentButtonAvailable,
   ViewSubscriptionTier,
+  ViewSuccessSubscriptionPayment,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -279,6 +280,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     this.isLoading = false;
     this.isRetryPayment = false;
     this.showPurchaseSuccessful = true;
+    this.trackViewSuccessSubscriptionPayment();
   }
 
   private retrySubscription(paymentMethodId = this.selectedCard.id): void {
@@ -354,5 +356,19 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
       },
     };
     this.analyticsService.trackEvent(event);
+  }
+
+  private trackViewSuccessSubscriptionPayment() {
+    const pageView: AnalyticsPageView<ViewSuccessSubscriptionPayment> = {
+      name: ANALYTICS_EVENT_NAMES.ViewSuccessSubscriptionPayment,
+      attributes: {
+        tier: this.selectedTier.id,
+        isNewSubscriber: !this.user.featured,
+        isNewCard: !this.isSavedCard,
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        screenId: SCREEN_IDS.ProfileSubscription,
+      },
+    };
+    this.analyticsService.trackPageView(pageView);
   }
 }
