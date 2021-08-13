@@ -160,8 +160,8 @@ describe('SearchInfrastructureService', () => {
         paginationParameter: 'next',
         orderParameter: SORT_BY.DISTANCE,
         list: ItemCardListFactory(40)
-      }
-    })
+      };
+    });
     describe('on first load', () => {
       it('should call to wall api to search', () => {
         const filters: FilterParameter[] = locationFilterParametersMock;
@@ -255,7 +255,7 @@ describe('SearchInfrastructureService', () => {
         expect(searchFavouritesServiceMock.getFavouritesByItems).toHaveBeenCalledWith(paginatedList.list);
       });
     });
-  })
+  });
 
 
 });

@@ -149,10 +149,10 @@ describe('SubscriptionPurchaseFooterComponent', () => {
         it('should show discount text', () => {
           const description: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseFooter__description')).nativeElement;
           const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${component.selectedTier.price}:INTERPOLATION:${component.selectedTier.currency}:INTERPOLATION:/month`;
-          const expectedText = $localize`:@@pro_subscription_purchase_summary_start_period_web:starting from`;
           const expectedDate = new DatePipe('en').transform(component.selectedTier.discount.end_date, 'dd/MM/yy');
+          const expectedText = $localize`:@@pro_subscription_purchase_summary_start_period_web:starting from ${expectedDate}:INTERPOLATION:`;
 
-          expect(description.textContent).toEqual(`${expectedMonthlyPriceText} ${expectedText} ${expectedDate}`);
+          expect(description.textContent).toEqual(`${expectedMonthlyPriceText}${expectedText}`);
         });
 
         it('should show price discounted', () => {
