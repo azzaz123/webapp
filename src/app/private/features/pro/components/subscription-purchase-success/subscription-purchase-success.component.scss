@@ -1,22 +1,25 @@
+@import '~style/common';
+
 .SubscriptionPurchaseSuccess {
   &__title {
-    color: #253238;
-    font-size: 32px;
-    font-weight: bold;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-chunky;
   }
 
   &__subtitle {
-    color: #607d8b;
-    font-size: 20px;
-    margin-top: 20px;
+    color: $blue-grey-2;
+    font-size: $font-size-l;
+    margin-top: $spacing-ml;
   }
 
   &__buttons {
-    width: 270px;
-    margin-top: 32px;
+    max-width: 270px;
+    margin-top: $spacing-xl;
   }
 
-  .GenericCard {
-    padding: 48px;
+  @include media-breakpoint-up(md) {
+    .GenericCard {
+      padding: $spacing-xxl;
+    }
   }
 }

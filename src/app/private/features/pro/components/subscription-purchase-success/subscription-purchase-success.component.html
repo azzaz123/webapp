@@ -9,7 +9,7 @@
         <div *ngIf="invoicedRequired" class="SubscriptionPurchaseSuccess__subtitle">
             <span i18n="@@pro_subscription_success_invoice_claim">An invoice will be sent to your email, as you asked</span>
         </div>
-        <div class="SubscriptionPurchaseSuccess__buttons d-flex flex-column">
+        <div class="SubscriptionPurchaseSuccess__buttons d-flex flex-column w-100">
             <tsl-button className="btn btn-primary btn-primary--bold btn--big w-100  mb-3" i18n="@@purchases_pro_customize_experience_now" (click)="onClose('profile')"
             >Customiza tu perfil PRO</tsl-button>
             <tsl-button class="w-100" className="btn-secondary w-100" i18n="@@web_suggest_pro_modal_button_cancel" (click)="onClose()"> 
