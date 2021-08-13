@@ -6,6 +6,7 @@ import {
   KYCError,
   MangopayUserNotFoundError,
 } from '@api/core/errors/payments/kyc';
+import { DocumentImageSizeTooSmallError } from '@api/core/errors/payments/kyc/document-image-size-too-small.error';
 import { KYCService } from '@api/payments/kyc/kyc.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -110,7 +111,8 @@ export class KYCModalComponent {
       e instanceof MangopayUserNotFoundError ||
       e instanceof DocumentImageIsInvalidInputFileError ||
       e instanceof DocumentImageIsInvalidError ||
-      e instanceof DocumentImageSizeExceededError
+      e instanceof DocumentImageSizeExceededError ||
+      e instanceof DocumentImageSizeTooSmallError
     ) {
       errorMessage = e.message;
     }
