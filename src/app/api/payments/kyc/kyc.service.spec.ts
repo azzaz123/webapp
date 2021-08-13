@@ -226,7 +226,7 @@ describe('KYCService', () => {
       expect(kycHttpService.request).toHaveBeenCalledTimes(1);
     }
 
-    function shouldDoRequestWithFormattedImages(frontSideImage: string, backSideImage: string) {
+    function shouldDoRequestWithFormattedImages(frontSideImage: string, backSideImage: string): void {
       expect(kycHttpService.request).toBeCalledWith(MOCK_KYC_REQUEST_BODY(frontSideImage, backSideImage));
     }
   });

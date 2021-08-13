@@ -32,6 +32,11 @@ export const MOCK_KYC_DOCUMENT_IMAGE_INVALID: KYCErrorApi<KYC_ERROR_CODES> = {
   message: 'kyc document image invalid （っ＾▿＾）',
 };
 
+export const MOCK_KYC_ERROR_AS_STRING_RESPONSE: KYCErrorResponseApi<string> = {
+  ...MOCK_KYC_BASE_ERROR_RESPONSE,
+  error: `[{"error_code":"Internal Server Error"}]`,
+};
+
 export const MOCK_KYC_MANGOPAY_USER_NOT_FOUND_RESPONSE: KYCErrorResponseApi<KYC_ERROR_CODES> = {
   ...MOCK_KYC_BASE_ERROR_RESPONSE,
   error: [MOCK_KYC_MANGOPAY_USER_NOT_FOUND],
