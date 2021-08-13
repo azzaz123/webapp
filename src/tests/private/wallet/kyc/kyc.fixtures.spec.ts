@@ -1,5 +1,6 @@
 import { KYCBanner, KYC_BANNER_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-banner.interface';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
+import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 
 export const MOCK_KYC_BANNER_PENDING_VERIFICATION: KYCBanner = {
   status: KYC_BANNER_STATUS.PENDING_VERIFICATION,
@@ -46,8 +47,18 @@ export const MOCK_KYC_IMAGES_BASE_64: KYCImages = {
   backSide: 'data:image/jpeg;base64,/9j/eF/tURKSxCTdp0ck222sOT/',
 };
 
+export const MOCK_KYC_IMAGES_NON_BASE_64: KYCImages = {
+  frontSide: 'data:image/jpeg,/9j/eF/tURKSxCTdp0ckjOsOT/',
+  backSide: 'data:image/jpeg,/9j/eF/tURKSxCTdp0ck222sOT/',
+};
+
 export const MOCK_KYC_IMAGES_BASE_64_BACK_NULL: KYCImages = {
   frontSide: 'data:image/jpeg;base64,/9j/eF/tURKSxCTdp0ckjOsOT/',
+  backSide: null,
+};
+
+export const MOCK_KYC_IMAGES_NON_BASE_64_BACK_NULL: KYCImages = {
+  frontSide: 'data:image/jpeg,/9j/eF/tURKSxCTdp0ckjOsOT/',
   backSide: null,
 };
 
@@ -61,11 +72,11 @@ function getBlobFromBase64JPEGImage(dataURI: string): Blob {
     blobPart[i] = rawBinary.charCodeAt(i);
   }
 
-  return new Blob([blobPart], { type: 'image/jpeg' });
+  return new Blob([blobPart], { type: MIME_TYPES.IMAGE_JPEG });
 }
 
 function getRequestIdAsBlob(): Blob {
-  return new Blob([JSON.stringify({ id: '1-2' })], { type: 'application/json' });
+  return new Blob([JSON.stringify({ id: '1-2' })], { type: MIME_TYPES.APPLICATION_JSON });
 }
 
 export function MOCK_KYC_REQUEST_BODY(firstImage: string, secondImage: string): FormData {

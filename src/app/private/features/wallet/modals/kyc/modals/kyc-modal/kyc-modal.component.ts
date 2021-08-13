@@ -29,7 +29,6 @@ import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
 export class KYCModalComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
-  public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
   public KYCStoreSpecifications$: Observable<KYCSpecifications>;
 
   constructor(

@@ -225,7 +225,8 @@ describe('KYCModalComponent', () => {
           });
 
           it('should show an error toast', () => {
-            expect(toastService.show).toHaveBeenCalledWith({ text: '', type: TOAST_TYPES.ERROR });
+            const errorMessage = $localize`:@@saving_bank_account_unknown_error:Sorry, something went wrong`;
+            expect(toastService.show).toHaveBeenCalledWith({ text: errorMessage, type: TOAST_TYPES.ERROR });
           });
         });
       });
