@@ -13,7 +13,7 @@ import {
   MOCK_KYC_NATIONALITY,
   MOCK_KYC_SPECIFICATIONS,
 } from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
-import { MOCK_KYC_IMAGES } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+import { MOCK_KYC_IMAGES_BASE_64 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -188,11 +188,11 @@ describe('KYCModalComponent', () => {
         beforeEach(() => {
           const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
 
-          KYCUploadImagesComponent.triggerEventHandler('imagesChange', MOCK_KYC_IMAGES);
+          KYCUploadImagesComponent.triggerEventHandler('imagesChange', MOCK_KYC_IMAGES_BASE_64);
         });
 
         it('should update the images on the store', () => {
-          expect(kycStoreService.specifications.images).toStrictEqual(MOCK_KYC_IMAGES);
+          expect(kycStoreService.specifications.images).toStrictEqual(MOCK_KYC_IMAGES_BASE_64);
         });
       });
 
@@ -202,7 +202,7 @@ describe('KYCModalComponent', () => {
             spyOn(kycService, 'request').and.returnValue(of(null));
             const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
 
-            KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES);
+            KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
           });
 
           it('should do the kyc request ', () => {
@@ -217,7 +217,7 @@ describe('KYCModalComponent', () => {
             spyOn(kycService, 'request').and.returnValue(throwError(new DocumentImageIsInvalidError()));
             const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
 
-            KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES);
+            KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
           });
 
           it('should do the kyc request ', () => {

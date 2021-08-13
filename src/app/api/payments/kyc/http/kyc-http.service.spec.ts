@@ -1,10 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import {
-  MOCK_KYC_IMAGES_BASE_64,
-  MOCK_KYC_IMAGES_BASE_64_BACK_NULL,
-  MOCK_KYC_REQUEST_BODY,
-} from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+import { MOCK_KYC_IMAGES_BASE_64, MOCK_KYC_REQUEST_BODY } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { KYC_ENDPOINT } from './endpoints';
 
 import { KYCHttpService } from './kyc-http.service';

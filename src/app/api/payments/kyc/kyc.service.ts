@@ -18,7 +18,7 @@ export class KYCService {
 
   public request(KYCImages: KYCImages): Observable<void | never> {
     if (this.photosAreTooSmall(KYCImages)) {
-      return throwError(new DocumentImageSizeTooSmallError());
+      return throwError([new DocumentImageSizeTooSmallError()]);
     }
 
     return this.KYCHttpService.request(this.getBodyAsFormData(KYCImages)).pipe(
