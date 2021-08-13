@@ -6,7 +6,7 @@
         <div class="SubscriptionPurchaseSuccess__title">
             <span  i18n="@@purchases_pro_customize_experience_title_user_male">Awesome, {{user.firstName}}! Now you are PRO</span>
         </div>
-        <div class="SubscriptionPurchaseSuccess__subtitle">
+        <div *ngIf="invoicedRequired" class="SubscriptionPurchaseSuccess__subtitle">
             <span i18n="@@pro_subscription_success_invoice_claim">An invoice will be sent to your email, as you asked</span>
         </div>
         <div class="SubscriptionPurchaseSuccess__buttons d-flex flex-column">

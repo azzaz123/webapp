@@ -58,5 +58,5 @@
 </tsl-subscription-purchase-footer>
 </ng-container>
 <ng-template #purchaseSuccessfulMessage>
-    <tsl-subscription-purchase-success [user]="user" (redirectTo)="onRedirectTo($event)"></tsl-subscription-purchase-success>
+    <tsl-subscription-purchase-success [user]="user" [invoicedRequired]="isInvoiceRequired" (redirectTo)="onRedirectTo($event)"></tsl-subscription-purchase-success>
 </ng-template>

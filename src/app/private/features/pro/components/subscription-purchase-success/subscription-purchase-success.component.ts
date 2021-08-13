@@ -8,6 +8,7 @@ import { User } from '@core/user/user';
 })
 export class SubscriptionPurchaseSuccessComponent {
   @Input() user: User;
+  @Input() invoicedRequired: boolean;
   @Output() redirectTo: EventEmitter<string | void> = new EventEmitter();
 
   public onClose(redirectTo?: string): void {
