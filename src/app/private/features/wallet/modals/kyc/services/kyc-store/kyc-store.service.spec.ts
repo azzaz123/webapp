@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MOCK_KYC_SPECIFICATIONS } from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
-import { KYCSpecifications } from '../interfaces/kyc-specifications.interface';
+import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
 
 import { KYCStoreService } from './kyc-store.service';
 

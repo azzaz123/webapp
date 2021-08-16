@@ -26,7 +26,7 @@ export class SubscriptionBenefitsService {
 
   public getBenefitsByCategory(id: number): string[] {
     const customBenefit =
-      id !== CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE
+      id !== CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS
         ? $localize`:@@web_subscription_benefit_title_limit:Set your listing limit`
         : $localize`:@@web_subscription_benefit_title_branding:Boost your branding`;
     return [customBenefit, ...GENERIC_BENEFITS];

@@ -630,22 +630,6 @@ export class ItemService {
     return find(product.durations, { duration: duration });
   }
 
-  public getUrgentProducts(itemId: string): Observable<Product> {
-    return this.http
-      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/${itemId}/available-urgent-products`)
-      .pipe(mapRx.map((response: AvailableProductsResponse) => response.products[0]));
-  }
-
-  public getUrgentProductByCategoryId(categoryId: string): Observable<Product> {
-    return this.http
-      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/available-urgent-products`, {
-        params: {
-          categoryId,
-        },
-      })
-      .pipe(mapRx.map((response: AvailableProductsResponse) => response.products[0]));
-  }
-
   public mines(
     pageNumber: number,
     pageSize: number,

@@ -23,12 +23,13 @@ import { CheapestProducts, ItemBulkResponse, ItemsData } from '@core/item/item-r
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
-import { SubscriptionSlot, SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionSlot, SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
-import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
+import { LOCAL_STORAGE_SUGGEST_PRO_SHOWN, LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
+import { TIER } from '@fixtures/subscriptions.fixtures.spec';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
@@ -101,6 +102,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private componentSubscriptions: Subscription[] = [];
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly PRO_PATHS = PRO_PATHS;
+  public tierWithDiscount: Tier;
 
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true })
@@ -154,6 +156,7 @@ export class ListComponent implements OnInit, OnDestroy {
       .subscribe((subscriptions) => {
         if (subscriptions) {
           this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(subscriptions);
+          this.tierWithDiscount = this.subscriptionsService.getDefaultTierSubscriptionDiscount(subscriptions);
           this.subscriptions = subscriptions;
           this.initTryProSlot();
         }
@@ -463,7 +466,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private reactivatedNoFeaturedUser(item: Item, index: number): void {
     this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
-      if (permissions[PERMISSIONS.subscriptions]) {
+      if (permissions[PERMISSIONS.subscriptions] && this.shouldShowSuggestProModal()) {
         this.openSuggestProModal(item, index);
       } else {
         this.reloadItem(item.id, index);
@@ -471,9 +474,17 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
+  private shouldShowSuggestProModal(): boolean {
+    const oneDay = 1000 * 60 * 60 * 24;
+    const lastShown = this.userService.getLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN);
+    return lastShown ? Date.now() - parseInt(lastShown) > oneDay : true;
+  }
+
   private openSuggestProModal(reactivatedItem: Item, index: number): void {
     const isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(this.subscriptions, reactivatedItem.categoryId);
-    this.trackViewProExpiredItemsPopup(isFreeTrial);
+    const tierDiscount = this.subscriptionsService.tierDiscountByCategoryId(this.subscriptions, reactivatedItem.categoryId);
+    this.trackViewProExpiredItemsPopup(isFreeTrial, !!tierDiscount);
+    this.userService.saveLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, Date.now().toString());
 
     const modalRef = this.modalService.open(SuggestProModalComponent, {
       windowClass: 'modal-standard',
@@ -481,6 +492,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     modalRef.componentInstance.title = $localize`:@@web_suggest_pro_modal_title:If you were PRO your items wouldn’t become inactive. Sounds good, right?`;
     modalRef.componentInstance.isFreeTrial = isFreeTrial;
+    modalRef.componentInstance.tierWithDiscount = tierDiscount;
 
     modalRef.result.then(
       () => this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]),
@@ -488,12 +500,13 @@ export class ListComponent implements OnInit, OnDestroy {
     );
   }
 
-  private trackViewProExpiredItemsPopup(freeTrial: boolean): void {
+  private trackViewProExpiredItemsPopup(freeTrial: boolean, discount: boolean): void {
     const event: AnalyticsPageView<ViewProExpiredItemsPopup> = {
       name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
       attributes: {
         screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
         freeTrial,
+        discount,
       },
     };
 
@@ -919,6 +932,7 @@ export class ListComponent implements OnInit, OnDestroy {
       attributes: {
         screenId: SCREEN_IDS.MyCatalog,
         freeTrial: this.hasTrialAvailable,
+        discount: this.subscriptionsService.hasSomeSubscriptionDiscount(this.subscriptions),
       },
     };
     this.analyticsService.trackEvent(event);

@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from '@shared/button/button.component';
@@ -58,18 +59,34 @@ describe('SuggestProModalComponent', () => {
 
   describe('CTA button', () => {
     describe('when has trial available', () => {
-      it('should show trial text', () => {
+      beforeEach(() => {
         component.isFreeTrial = true;
-
+      });
+      it('should show trial text', () => {
         fixture.detectChanges();
 
         expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@web_start_free_trial:')]);
       });
     });
-    describe('when has not trial available', () => {
-      it('should show default text', () => {
+    describe('when has discount available', () => {
+      beforeEach(() => {
         component.isFreeTrial = false;
+        component.tierWithDiscount = TIER_WITH_DISCOUNT;
+      });
+      it('should show discount text', () => {
+        fixture.detectChanges();
 
+        expect(window['$localize']).toHaveBeenCalledWith(
+          [
+            expect.stringMatching(':@@pro_after_reactivation_non_subscribed_user_start_with_discount_button:'),
+            expect.stringMatching(':INTERPOLATION:'),
+          ],
+          component.tierWithDiscount.discount.percentage
+        );
+      });
+    });
+    describe('when has not trial available and discount', () => {
+      it('should show default text', () => {
         fixture.detectChanges();
 
         expect(window['$localize']).toHaveBeenCalledWith([expect.stringMatching(':@@web_see_plans:')]);

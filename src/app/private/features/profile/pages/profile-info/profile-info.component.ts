@@ -32,6 +32,7 @@ import { isEqual } from 'lodash-es';
 import { Observable, of } from 'rxjs';
 import { ChangeStoreLocationModal } from '../../modal/change-store-location-modal/change-store-location-modal.component';
 import { UserLocation } from '@core/user/user-response.interface';
+import { Tier } from '@core/subscriptions/subscriptions.interface';
 
 export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
@@ -64,6 +65,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public ANALYTICS_FIELDS = ANALYTICS_FIELDS;
   public renderMap = false;
   public readonly PERMISSIONS = PERMISSIONS;
+  private tierWithDiscount: Tier;
 
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;
@@ -346,6 +348,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       windowClass: 'become-pro',
     });
     modalRef.componentInstance.hasTrialAvailable = this.hasTrialAvailable;
+    modalRef.componentInstance.tierWithDiscount = this.tierWithDiscount;
     modalRef.result.then(
       () => this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]),
       () => null
@@ -360,6 +363,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       .subscribe((subscriptions) => {
         if (!!subscriptions) {
           this.hasTrialAvailable = this.subscriptionsService.hasOneTrialSubscription(subscriptions);
+          this.tierWithDiscount = this.subscriptionsService.getDefaultTierSubscriptionDiscount(subscriptions);
         }
         if (!!callback) {
           callback();
@@ -401,6 +405,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       attributes: {
         freeTrial: this.hasTrialAvailable,
         screenId: SCREEN_IDS.ProAdvantagesPopup,
+        discount: !!this.tierWithDiscount,
       },
     };
     this.analyticsService.trackPageView(event);
