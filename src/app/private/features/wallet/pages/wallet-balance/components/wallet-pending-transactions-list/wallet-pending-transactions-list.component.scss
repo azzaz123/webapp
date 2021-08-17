@@ -1,0 +1,9 @@
+@import '~web-styleguide/scss/spacing';
+
+.WalletPendingTransactionsList {
+  &__transaction {
+    &:not(:last-child) {
+      margin-bottom: $spacing-xs;
+    }
+  }
+}

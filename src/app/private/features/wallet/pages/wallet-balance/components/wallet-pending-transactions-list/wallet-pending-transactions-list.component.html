@@ -1,0 +1,6 @@
+<div class="WalletPendingTransactionsList">
+  <div class="WalletPendingTransactionsList__transaction" *ngFor="let pendingTransaction of pendingTransactions; let index = index">
+    <tsl-wallet-pending-transaction *ngIf="isPendingTransactionVisible(index)" [walletPendingTransaction]="pendingTransaction">
+    </tsl-wallet-pending-transaction>
+  </div>
+</div>

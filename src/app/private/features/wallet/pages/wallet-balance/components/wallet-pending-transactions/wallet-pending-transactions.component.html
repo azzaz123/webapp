@@ -3,8 +3,5 @@
     <span i18n="wallet_view_pending_collection_label">Pending collection</span>
     <span i18n="wallet_view_pending_collection_transactions_number_label">({{pendingTransactions.length}})</span>
   </div>
-  <div class="WalletPendingTransactions__transaction" *ngFor="let pendingTransaction of pendingTransactions">
-    <tsl-wallet-pending-transaction [walletPendingTransaction]="pendingTransaction">
-    </tsl-wallet-pending-transaction>
-  </div>
+  <tsl-wallet-pending-transactions-list [pendingTransactions]="pendingTransactions"></tsl-wallet-pending-transactions-list>
 </div>
