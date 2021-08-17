@@ -1,6 +1,10 @@
 <div class="WalletPendingTransactionsList">
-  <div class="WalletPendingTransactionsList__transaction" *ngFor="let pendingTransaction of pendingTransactions; let index = index">
-    <tsl-wallet-pending-transaction *ngIf="isPendingTransactionVisible(index)" [walletPendingTransaction]="pendingTransaction">
-    </tsl-wallet-pending-transaction>
+  <div class="WalletPendingTransactionsList__transaction"
+  [ngClass]="{ 'WalletPendingTransactionsList__transaction--visible': isPendingTransactionVisible(index) }"
+  *ngFor="let pendingTransaction of pendingTransactions; let index = index">
+    <tsl-wallet-pending-transaction [walletPendingTransaction]="pendingTransaction"></tsl-wallet-pending-transaction>
+  </div>
+  <div class="WalletPendingTransactionsList__arrow-down d-flex justify-content-center" (click)="toggleShowAllTransactions()">
+    <tsl-svg-icon src="/assets/icons/dropdown-arrow.svg"></tsl-svg-icon>
   </div>
 </div>

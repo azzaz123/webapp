@@ -2,8 +2,23 @@
 
 .WalletPendingTransactionsList {
   &__transaction {
+    display: none;
+
     &:not(:last-child) {
       margin-bottom: $spacing-xs;
+    }
+
+    &--visible {
+      display: block;
+    }
+  }
+
+  &__arrow-down {
+    margin-top: 22px;
+
+    tsl-svg-icon {
+      padding: 10px;
+      cursor: pointer;
     }
   }
 }

@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { PendingTransaction } from '@api/core/model';
 
@@ -12,7 +13,17 @@ const DEFAULT_VISIBLE_PENDING_TRANSACTIONS = 2;
 export class WalletPendingTransactionsListComponent {
   @Input() pendingTransactions: PendingTransaction[];
 
+  public showAllTransactions = false;
+
   public isPendingTransactionVisible(index: number): boolean {
+    return this.showAllTransactions || this.isTransactionVisible(index);
+  }
+
+  public toggleShowAllTransactions(): void {
+    this.showAllTransactions = !this.showAllTransactions;
+  }
+
+  private isTransactionVisible(index: number): boolean {
     return index < DEFAULT_VISIBLE_PENDING_TRANSACTIONS;
   }
 }
