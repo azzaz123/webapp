@@ -1,0 +1,19 @@
+@import '~web-styleguide/scss/text';
+@import '~web-styleguide/scss/spacing';
+
+.WalletPendingTransactions {
+  &__label {
+    margin-bottom: $spacing-ms;
+
+    span:first-child {
+      font-weight: $font-weight-chunky;
+      margin-right: 5px;
+    }
+  }
+
+  &__transaction {
+    &:not(:last-child) {
+      margin-bottom: 4px;
+    }
+  }
+}
