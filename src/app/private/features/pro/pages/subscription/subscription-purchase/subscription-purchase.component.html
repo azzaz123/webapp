@@ -1,4 +1,7 @@
-<ng-container *ngIf="!showPurchaseSuccessful; else purchaseSuccessfulMessage">
+<ng-container *ngIf="showPurchaseSuccessful; else purchaseInProgress">
+    <tsl-subscription-purchase-success [user]="user" [invoicedRequired]="isInvoiceRequired" (redirectTo)="onRedirectTo($event)"></tsl-subscription-purchase-success>
+</ng-container>
+<ng-template #purchaseInProgress>
     <div class="SubscriptionPurchase">
         <div class="GenericCard">
             <div class="d-flex justify-content-between">
@@ -42,21 +45,18 @@
             </div>
         </div>
     </div>
-    <div *ngIf="isInvoiceRequired">
-        <div class="GenericCard">
+        <div *ngIf="isInvoiceRequired">
+            <div class="GenericCard">
             <div class="GenericCard__title" i18n="@@web_invoice_information">Invoice information</div>
             <div class="GenericCard__subtitle" i18n="@@web_add_new_subscription_modal_step3_subtitle">For services other than
                 subscriptions (e.g. visibility packs) you won't receive invoices.</div>
             <tsl-profile-pro-billing id="billing" [containerType]="INVOICE_COMPONENT_TYPE.SUBSCRIPTION_INFO"
                 (billingInfoFormSaved)="purchaseSubscription()" (billingInfoNotUpdateRequired)="purchaseSubscription()">
             </tsl-profile-pro-billing>
+            </div>
         </div>
     </div>
-</div>
-<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="!selectedCard || isLoading || !!paymentError"
+    <tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="!selectedCard || isLoading || !!paymentError"
     [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()" (buttonEnabled)="trackSubscriptionPaymentButtonAvailable()">
-</tsl-subscription-purchase-footer>
-</ng-container>
-<ng-template #purchaseSuccessfulMessage>
-    <tsl-subscription-purchase-success [user]="user" [invoicedRequired]="isInvoiceRequired" (redirectTo)="onRedirectTo($event)"></tsl-subscription-purchase-success>
+    </tsl-subscription-purchase-footer>
 </ng-template>
