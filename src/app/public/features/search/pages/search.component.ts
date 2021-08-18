@@ -164,8 +164,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
     this.subscription.add(
       this.queryParamsChange().subscribe((params) => {
-        console.log('force', this.forceSortByDistance(params));
-
         if (this.forceSortByDistance(params)) {
           params.push({ key: FILTER_QUERY_PARAM_KEY.orderBy, value: SORT_BY_DISTANCE_OPTION.value });
         }
