@@ -13,23 +13,27 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 
 @Injectable()
 export class SearchInfrastructureService {
-  constructor(private searchApiService: SearchAPIService, private searchFavouritesService: SearchFavouritesService, private catalogApiService: CatalogApiService) {}
-
   private wallParameters: string[] = [
     FILTER_PARAMETERS_SEARCH.LATITUDE,
     FILTER_PARAMETERS_SEARCH.LONGITUDE,
-    FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE
+    FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE,
   ];
   private wallPaginationParameter: string;
   private isWall: boolean;
   private currentLocation: Location;
+
+  constructor(
+    private searchApiService: SearchAPIService,
+    private searchFavouritesService: SearchFavouritesService,
+    private catalogApiService: CatalogApiService
+  ) {}
 
   public search(params: FilterParameter[]): Observable<SearchPagination> {
     this.isWall = this.isWallQuery(params);
     this.currentLocation = this.getLocationFromParams(params);
     if (this.isWall) {
       return this.catalogApiService.getWallItems(this.currentLocation, false).pipe(
-        tap((list) => this.wallPaginationParameter = list.paginationParameter),
+        tap((list) => (this.wallPaginationParameter = list.paginationParameter)),
         switchMap((list: PaginatedList<ItemCard>) => this.setFavourites(this.mapPaginatedListToSearchPagination(list)))
       );
     }
@@ -42,7 +46,7 @@ export class SearchInfrastructureService {
   public loadMore(): Observable<SearchPagination> {
     if (this.isWall) {
       return this.catalogApiService.getWallItems(this.currentLocation, false, this.wallPaginationParameter).pipe(
-        tap((list) => this.wallPaginationParameter = list.paginationParameter),
+        tap((list) => (this.wallPaginationParameter = list.paginationParameter)),
         switchMap((list: PaginatedList<ItemCard>) => this.setFavourites(this.mapPaginatedListToSearchPagination(list)))
       );
     }
@@ -56,14 +60,14 @@ export class SearchInfrastructureService {
   }
 
   private isWallQuery(params: FilterParameter[]): boolean {
-    return params.every(({key}: FilterParameter) => this.wallParameters.includes(key))
+    return params.every(({ key }: FilterParameter) => this.wallParameters.includes(key));
   }
 
   private getLocationFromParams(params: FilterParameter[]): Location {
     return {
-      latitude: Number.parseFloat(params.find(param => param.key === FILTER_QUERY_PARAM_KEY.latitude).value),
-      longitude: Number.parseFloat(params.find(param => param.key === FILTER_QUERY_PARAM_KEY.longitude).value),
-    }
+      latitude: Number.parseFloat(params.find((param) => param.key === FILTER_QUERY_PARAM_KEY.latitude).value),
+      longitude: Number.parseFloat(params.find((param) => param.key === FILTER_QUERY_PARAM_KEY.longitude).value),
+    };
   }
 
   private mapPaginatedListToSearchPagination({ list, paginationParameter, orderParameter }: PaginatedList<ItemCard>): SearchPagination {
@@ -72,7 +76,7 @@ export class SearchInfrastructureService {
       searchId: null,
       hasMore: !!paginationParameter,
       sortBy: orderParameter,
-      bubble: null
-    }
+      bubble: null,
+    };
   }
 }

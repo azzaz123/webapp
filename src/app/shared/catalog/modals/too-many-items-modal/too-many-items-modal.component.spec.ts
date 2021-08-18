@@ -32,6 +32,7 @@ describe('TooManyItemsModalComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let analyticsService: AnalyticsService;
   let i18nService: I18nService;
+  let hasFreeTrialByCategoryIdSpy: jasmine.Spy;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -72,6 +73,8 @@ describe('TooManyItemsModalComponent', () => {
   describe('ngOnInit', () => {
     beforeEach(() => {
       spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
+      spyOn(subscriptionsService, 'getSubscriptionByCategory').and.returnValue(MAPPED_SUBSCRIPTIONS_ADDED[1]);
+      hasFreeTrialByCategoryIdSpy = spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(false);
       spyOn(analyticsService, 'trackPageView');
     });
 
@@ -79,6 +82,7 @@ describe('TooManyItemsModalComponent', () => {
       beforeEach(() => {
         component.itemId = MOCK_ITEM_V3_3.id;
         spyOn(itemService, 'get').and.returnValue(of(MOCK_ITEM_V3_3));
+        hasFreeTrialByCategoryIdSpy.and.returnValue(true);
       });
 
       it('should set isFreeTrial to true', () => {
@@ -92,7 +96,7 @@ describe('TooManyItemsModalComponent', () => {
           name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
           attributes: {
             screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
-            subscription: MOCK_ITEM_V3_3.categoryId as SUBSCRIPTION_CATEGORIES,
+            subscription: MAPPED_SUBSCRIPTIONS_ADDED[1].category_id as SUBSCRIPTION_CATEGORIES,
             freeTrial: true,
             isCarDealer: false,
             discount: false,
@@ -122,7 +126,7 @@ describe('TooManyItemsModalComponent', () => {
           name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
           attributes: {
             screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
-            subscription: MOCK_CAR.categoryId as SUBSCRIPTION_CATEGORIES,
+            subscription: MAPPED_SUBSCRIPTIONS_ADDED[1].category_id as SUBSCRIPTION_CATEGORIES,
             freeTrial: false,
             isCarDealer: false,
             discount: false,
@@ -140,7 +144,7 @@ describe('TooManyItemsModalComponent', () => {
       beforeEach(() => {
         component.itemId = MOCK_CAR.id;
         spyOn(itemService, 'get').and.returnValue(of(MOCK_CAR));
-        spyOn(subscriptionsService, 'getDefaultTierDiscount').and.returnValue(TIER_WITH_DISCOUNT);
+        spyOn(subscriptionsService, 'tierDiscountByCategoryId').and.returnValue(TIER_WITH_DISCOUNT);
       });
 
       it('should track the page view event to analytics', fakeAsync(() => {
@@ -148,7 +152,7 @@ describe('TooManyItemsModalComponent', () => {
           name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
           attributes: {
             screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
-            subscription: MOCK_CAR.categoryId as SUBSCRIPTION_CATEGORIES,
+            subscription: MAPPED_SUBSCRIPTIONS_ADDED[1].category_id as SUBSCRIPTION_CATEGORIES,
             freeTrial: false,
             isCarDealer: false,
             discount: true,
@@ -174,6 +178,7 @@ describe('TooManyItemsModalComponent', () => {
         beforeEach(() => {
           spyOn(itemService, 'get').and.returnValue(of(MOCK_REALESTATE));
           spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_WITH_RE));
+          spyOn(subscriptionsService, 'getSubscriptionByCategory').and.returnValue(MAPPED_SUBSCRIPTIONS_WITH_RE[0]);
           component.itemId = MOCK_REALESTATE.id;
           component.ngOnInit();
         });
