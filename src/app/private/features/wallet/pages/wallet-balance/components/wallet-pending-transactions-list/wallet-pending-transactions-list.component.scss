@@ -1,15 +1,15 @@
 @import '~web-styleguide/scss/spacing';
 
 .WalletPendingTransactionsList {
-  &__transaction {
-    display: none;
+  &__transactions {
+    overflow: hidden;
 
-    &:not(:last-child) {
-      margin-bottom: $spacing-xs;
-    }
+    transition: height 0.4s ease;
 
-    &--visible {
-      display: block;
+    &__element {
+      &:not(:last-child) {
+        margin-bottom: $spacing-xs;
+      }
     }
   }
 
