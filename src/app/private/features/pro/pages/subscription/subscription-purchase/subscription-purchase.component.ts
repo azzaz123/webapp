@@ -26,7 +26,6 @@ import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, T
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { PaymentSuccessModalComponent } from '@private/features/pro/modal/payment-success/payment-success-modal.component';
 import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { filter, mergeMap } from 'rxjs/operators';
@@ -303,21 +302,6 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
 
   public onRedirectTo(path: string) {
     this.purchaseSuccessful.emit(path);
-  }
-
-  private openPaymentSuccessModal(): void {
-    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
-    const modalComponent: PaymentSuccessModalComponent = modalRef.componentInstance;
-    modalComponent.tier = this.selectedTier.id;
-    modalComponent.isNewSubscriber = !this.user.featured;
-    modalComponent.isNewCard = !this.isSavedCard;
-    modalComponent.isInvoice = this.isInvoiceRequired;
-    modalComponent.subscriptionCategoryId = this.subscription.category_id as SUBSCRIPTION_CATEGORIES;
-
-    modalRef.result.then(
-      () => this.purchaseSuccessful.emit(),
-      () => this.purchaseSuccessful.emit()
-    );
   }
 
   private requestNewPayment(error?: HttpErrorResponse): void {

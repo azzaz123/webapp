@@ -26,7 +26,6 @@ import { CancelSubscriptionModalComponent } from './modal/cancel-subscription/ca
 import { CheckSubscriptionInAppModalComponent } from './modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { ContinueSubscriptionModalComponent } from './modal/continue-subscription/continue-subscription-modal.component';
 import { EditSubscriptionModalComponent } from './modal/edit-subscription/edit-subscription-modal.component';
-import { PaymentSuccessModalComponent } from './modal/payment-success/payment-success-modal.component';
 import { UnsubscribeInAppFirstModalComponent } from './modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { VisibilityProductsModalComponent } from './modal/visibility-products-modal/visibility-products-modal.component';
 import { SubscriptionIconPipe } from '../profile/pipes/subscription-icon.pipe';
@@ -57,7 +56,6 @@ import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
     SubscriptionCardSelectorComponent,
     SubscriptionPurchaseFooterComponent,
     VisibilityProductsModalComponent,
-    PaymentSuccessModalComponent,
     EditSubscriptionModalComponent,
     CancelSubscriptionModalComponent,
     ContinueSubscriptionModalComponent,
