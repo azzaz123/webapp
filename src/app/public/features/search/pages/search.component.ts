@@ -337,4 +337,8 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   private paramsHaveSortBy(params: FilterParameter[]): boolean {
     return params.some((param) => param.key === FILTER_QUERY_PARAM_KEY.orderBy);
   }
+
+  private paramsHaveKeywords(params: FilterParameter[]): boolean {
+    return params.some((param) => param.key === FILTER_QUERY_PARAM_KEY.keywords);
+  }
 }
