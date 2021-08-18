@@ -11,6 +11,14 @@ export class SubscriptionPurchaseSuccessComponent {
   @Input() invoicedRequired: boolean;
   @Output() redirectTo: EventEmitter<string | void> = new EventEmitter();
 
+  badgeConfig = {
+    url: '/assets/icons/badge-pro-dark-narrow.svg',
+    badgeStyle: {
+      'bottom.px': 4,
+      'left.px': 54,
+    },
+  };
+
   public onClose(redirectTo?: string): void {
     this.redirectTo.emit(redirectTo);
   }
