@@ -164,10 +164,10 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
     this.subscription.add(
       this.queryParamsChange().subscribe((params) => {
-        if (!this.paramsHaveSortBy(params)) {
-          if (!this.sortByService.isRelevanceFeatureFlagActive) {
-            params.push({ key: FILTER_QUERY_PARAM_KEY.orderBy, value: SORT_BY_DISTANCE_OPTION.value });
-          }
+        console.log('force', this.forceSortByDistance(params));
+
+        if (this.forceSortByDistance(params)) {
+          params.push({ key: FILTER_QUERY_PARAM_KEY.orderBy, value: SORT_BY_DISTANCE_OPTION.value });
         }
 
         if (!this.paramsHaveLocation(params)) {
@@ -342,5 +342,17 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   private paramsHaveKeywords(params: FilterParameter[]): boolean {
     return params.some((param) => param.key === FILTER_QUERY_PARAM_KEY.keywords);
+  }
+
+  private forceSortByDistance(params: FilterParameter[]): boolean {
+    const categoryId = params.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
+
+    return (
+      !this.paramsHaveSortBy(params) &&
+      this.paramsHaveKeywords(params) &&
+      !this.sortByService.isRelevanceFeatureFlagActive &&
+      !!categoryId &&
+      this.categoryWithSortByRelevanceEnabled(categoryId)
+    );
   }
 }
