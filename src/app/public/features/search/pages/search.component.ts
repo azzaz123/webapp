@@ -240,10 +240,8 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   private handleSearchResponseExtraData(searchResponseExtraData: SearchResponseExtraData): void {
     const categoryId = this.filterParameterStore.getParametersByKeys([FILTER_QUERY_PARAM_KEY.categoryId])[0]?.value;
-    const categoryWithSortByRelevanceEnabled =
-      categoryId !== CATEGORY_IDS.CAR.toString() && categoryId !== CATEGORY_IDS.REAL_ESTATE.toString(); // temporal until we open cars and real estate relevance for web
 
-    if (searchResponseExtraData.sortBy && categoryWithSortByRelevanceEnabled) {
+    if (searchResponseExtraData.sortBy && this.categoryWithSortByRelevanceEnabled(categoryId)) {
       this.sortBySubject.next(searchResponseExtraData.sortBy);
 
       const isSortByRelevance = searchResponseExtraData.sortBy === SORT_BY.RELEVANCE;
@@ -336,6 +334,10 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   private paramsHaveSortBy(params: FilterParameter[]): boolean {
     return params.some((param) => param.key === FILTER_QUERY_PARAM_KEY.orderBy);
+  }
+
+  private categoryWithSortByRelevanceEnabled(categoryId: string): boolean {
+    return categoryId !== CATEGORY_IDS.CAR.toString() && categoryId !== CATEGORY_IDS.REAL_ESTATE.toString();
   }
 
   private paramsHaveKeywords(params: FilterParameter[]): boolean {
