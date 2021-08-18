@@ -25,7 +25,6 @@ import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-be
 import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { filter, mergeMap } from 'rxjs/operators';
@@ -64,7 +63,6 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     private stripeService: StripeService,
     private errorService: ErrorsService,
     private subscriptionsService: SubscriptionsService,
-    private modalService: NgbModal,
     private scrollIntoViewService: ScrollIntoViewService,
     private eventService: EventService,
     private analyticsService: AnalyticsService,

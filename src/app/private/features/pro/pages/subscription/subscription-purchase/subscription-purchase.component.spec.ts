@@ -10,6 +10,7 @@ import {
   SCREEN_IDS,
   SubscriptionPayConfirmation,
   ViewSubscriptionTier,
+  ViewSuccessSubscriptionPayment,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -49,7 +50,6 @@ describe('SubscriptionPurchaseComponent', () => {
   let analyticsService: AnalyticsService;
   let scrollIntoViewService: ScrollIntoViewService;
   let eventService: EventService;
-  let modalService: NgbModal;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -108,7 +108,6 @@ describe('SubscriptionPurchaseComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
     eventService = TestBed.inject(EventService);
-    modalService = TestBed.inject(NgbModal);
     benefitsService = TestBed.inject(SubscriptionBenefitsService);
   });
 
@@ -405,17 +404,38 @@ describe('SubscriptionPurchaseComponent', () => {
         expect(component.purchaseSuccessful.emit).toHaveBeenCalledWith('test');
       }));
 
-      it('should show success component if response status is succeeded', fakeAsync(() => {
-        spyOn(modalService, 'open').and.callThrough();
-        spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
+      describe('and status is succeeded', () => {
+        beforeEach(() => {
+          spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
+          spyOn(analyticsService, 'trackPageView').and.callThrough();
+        });
+        it('should show success component', fakeAsync(() => {
+          component.purchaseSubscription();
+          tick();
+          fixture.detectChanges();
 
-        component.purchaseSubscription();
-        tick();
-        fixture.detectChanges();
+          expect(component.isRetryPayment).toBe(false);
+          expect(fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent))).toBeTruthy();
+        }));
 
-        expect(component.isRetryPayment).toBe(false);
-        expect(fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent))).toBeTruthy();
-      }));
+        it('should track event', fakeAsync(() => {
+          const event: AnalyticsPageView<ViewSuccessSubscriptionPayment> = {
+            name: ANALYTICS_EVENT_NAMES.ViewSuccessSubscriptionPayment,
+            attributes: {
+              subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+              tier: component.selectedTier.id,
+              screenId: SCREEN_IDS.ProfileSubscription,
+              isNewCard: !component.isSavedCard,
+              isNewSubscriber: !component.user.featured,
+            },
+          };
+
+          component.purchaseSubscription();
+
+          expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
+        }));
+      });
 
       it('should call actionPayment if response status is requires_action', fakeAsync(() => {
         spyOn(stripeService, 'actionPayment').and.callThrough();

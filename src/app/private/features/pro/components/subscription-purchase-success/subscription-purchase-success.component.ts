@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { User } from '@core/user/user';
 
 @Component({
@@ -11,7 +11,7 @@ export class SubscriptionPurchaseSuccessComponent {
   @Input() invoicedRequired: boolean;
   @Output() redirectTo: EventEmitter<string | void> = new EventEmitter();
 
-  badgeConfig = {
+  public badgeConfig = {
     url: '/assets/icons/badge-pro-dark-narrow.svg',
     badgeStyle: {
       'bottom.px': 4,
