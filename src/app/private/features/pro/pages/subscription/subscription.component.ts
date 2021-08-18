@@ -147,7 +147,6 @@ export class SubscriptionsComponent implements OnInit {
         ),
         take(30),
         finalize(() => {
-          console.log('userUpdated');
           this.responseUpdated(redirect);
         })
       )

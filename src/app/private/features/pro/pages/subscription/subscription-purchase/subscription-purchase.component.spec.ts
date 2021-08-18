@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -34,6 +35,7 @@ import {
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
 import { PaymentSuccessModalComponent } from '@private/features/pro/modal/payment-success/payment-success-modal.component';
 import { of, throwError } from 'rxjs';
 import { SubscriptionPurchaseComponent, PAYMENT_SUCCESSFUL_CODE } from './subscription-purchase.component';
@@ -52,7 +54,7 @@ describe('SubscriptionPurchaseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionPurchaseComponent],
+      declarations: [SubscriptionPurchaseComponent, SubscriptionPurchaseSuccessComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
@@ -394,29 +396,26 @@ describe('SubscriptionPurchaseComponent', () => {
         expect(subscriptionsService.checkNewSubscriptionStatus).toHaveBeenCalled();
       }));
 
-      it('should emit event when success', fakeAsync(() => {
+      it('should emit event when success button is clicked', fakeAsync(() => {
         spyOn(component.purchaseSuccessful, 'emit');
-        spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
 
-        component.purchaseSubscription();
+        component.onRedirectTo('test');
         tick();
 
-        expect(component.isRetryPayment).toBe(false);
         expect(component.purchaseSuccessful.emit).toHaveBeenCalledTimes(1);
-        expect(component.purchaseSuccessful.emit).toHaveBeenCalledWith();
+        expect(component.purchaseSuccessful.emit).toHaveBeenCalledWith('test');
       }));
 
-      it('should show success modal if response status is succeeded', fakeAsync(() => {
+      it('should show success component if response status is succeeded', fakeAsync(() => {
         spyOn(modalService, 'open').and.callThrough();
         spyOn(subscriptionsService, 'checkNewSubscriptionStatus').and.returnValue(of(SUBSCRIPTION_SUCCESS));
 
         component.purchaseSubscription();
         tick();
+        fixture.detectChanges();
 
         expect(component.isRetryPayment).toBe(false);
-        expect(modalService.open).toHaveBeenCalledWith(PaymentSuccessModalComponent, {
-          windowClass: 'success',
-        });
+        expect(fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent))).toBeTruthy();
       }));
 
       it('should call actionPayment if response status is requires_action', fakeAsync(() => {

@@ -4,7 +4,7 @@
             <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.large" size="90" [customBadgeUrl]="badgeConfig.url" [badgeStyles]="badgeConfig.badgeStyle"></tsl-user-avatar>
         </div>
         <div class="SubscriptionPurchaseSuccess__title">
-            <span  i18n="@@purchases_pro_customize_experience_title_user_male">Awesome, {{user.firstName}}! Now you are PRO</span>
+            <span  i18n="@@purchases_pro_customize_experience_title_user_male">Awesome, {{user?.firstName}}! Now you are PRO</span>
         </div>
         <div *ngIf="invoicedRequired" class="SubscriptionPurchaseSuccess__subtitle">
             <span i18n="@@pro_subscription_success_invoice_claim">An invoice will be sent to your email, as you asked</span>
