@@ -132,5 +132,53 @@ describe('Component: UserAvatar', () => {
         });
       });
     });
+    describe('and has not custom badge', () => {
+      beforeEach(() => {
+        permissionService.addPermission(PERMISSIONS.subscriptions);
+        component.showProBadge = false;
+        component.customBadgeUrl = null;
+      });
+      it('should not show badge', () => {
+        fixture.detectChanges();
+        const badgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+
+        expect(badgeElement).toBeFalsy();
+      });
+    });
+    describe('and has custom badge', () => {
+      beforeEach(() => {
+        permissionService.addPermission(PERMISSIONS.subscriptions);
+        component.showProBadge = false;
+        component.customBadgeUrl = 'test.svg';
+      });
+      it('should show badge', () => {
+        fixture.detectChanges();
+        const badgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+
+        expect(badgeElement).toBeTruthy();
+      });
+      describe('and has custom styles', () => {
+        beforeEach(() => {
+          component.badgeStyles = {
+            'bottom.px': 4,
+            'left.px': 54,
+          };
+        });
+        it('should set custom styles', () => {
+          fixture.detectChanges();
+          const badgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+
+          expect(badgeElement.nativeElement.style._values).toEqual({ bottom: '4px', left: '54px' });
+        });
+      });
+      describe('and has not custom styles', () => {
+        it('should not set custom styles', () => {
+          fixture.detectChanges();
+          const badgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+
+          expect(badgeElement.nativeElement.style._values).toEqual({});
+        });
+      });
+    });
   });
 });
