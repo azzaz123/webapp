@@ -2,9 +2,6 @@
 .SubscriptionTierSelector {
   .Card {
     border: solid 2px $blue-grey-5;
-    &:not(:last-child) {
-      margin-right: $spacing-ms;
-    }
 
     @include media-breakpoint-down(sm) {
       margin-right: 0 !important;

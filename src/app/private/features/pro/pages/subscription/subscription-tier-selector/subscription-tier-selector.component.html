@@ -1,7 +1,8 @@
-<div class="SubscriptionTierSelector container">
+<div class="SubscriptionTierSelector">
     <div class="row">
-        <ng-container *ngFor="let tier of subscription.tiers">
-            <div class="GenericCard Card col-md col-sm-12" [class.Card--selected]="selectedTier?.id === tier.id"
+        <ng-container *ngFor="let tier of tiers">
+            <div class="col-md-4 col-sm-12">
+            <div class="GenericCard Card h-100" [class.Card--selected]="selectedTier?.id === tier.id"
                 (click)="onTierSelectedChanged(tier)">
                 <div *ngIf="tier.discount" class="mb-2">
                     <span class="Card__banner p-1" i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tier.discount.percentage}}% off!</span>
@@ -27,6 +28,7 @@
                     </ng-template>
                 </div>
             </div>
+          </div>
         </ng-container>
     </div>
 </div>
