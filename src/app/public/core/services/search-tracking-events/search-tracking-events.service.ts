@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { SORT_BY } from '@api/core/model';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS, Search } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { SORT_BY_DEFAULT_OPTIONS } from '@public/features/search/components/sort-filter/services/constants/sort-by-options-constants';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
@@ -54,8 +53,6 @@ export class SearchTrackingEventsService {
         ? (filters[this.FILTER_KEY_EVENT_MAP[parameter.key]] = parameter.value)
         : (filters[this.camelize(parameter.key)] = parameter.value);
     });
-
-    console.log(filters);
 
     return filters;
   }
