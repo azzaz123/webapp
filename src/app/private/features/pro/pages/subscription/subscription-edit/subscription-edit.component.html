@@ -18,11 +18,10 @@
         <div class="GenericCard__title" i18n="@@web_tier_selector_title">How many items you want to list?</div>
         <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="[subscribedTier]"> </tsl-subscription-tier-selector>
         <div class="GenericCard__title mt-4" i18n="@@web_tier_selector_title">How many items you want to list?</div>
-            <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="availableTiers"
+            <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="availableTiers" [selectedTier]="selectedTier"
                 (changeSelectedTier)="onSelectedTierChanged($event)"> </tsl-subscription-tier-selector>
     </div>
 </div>
-<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="!selectedCard || isLoading || !!paymentError"
-    [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()" (buttonEnabled)="trackSubscriptionPaymentButtonAvailable()">
-
+<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="isLoading || isEqualTier"
+    [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()">
 </tsl-subscription-purchase-footer>

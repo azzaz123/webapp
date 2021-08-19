@@ -5,4 +5,4 @@
 </ng-container>
 
 <tsl-subscription-purchase *ngIf="newSubscription" [subscription]="newSubscription" [user]="user" (purchaseSuccessful)="subscriptionChangeSuccessful()" (unselectSubcription)="onUnselectSubcription()"></tsl-subscription-purchase>
-<tsl-subscription-edit *ngIf="editSubscription" [subscription]="editSubscription" [user]="user" (purchaseSuccessful)="subscriptionChangeSuccessful()" (unselectSubcription)="onUnselectSubcription()"></tsl-subscription-edit>
+<tsl-subscription-edit *ngIf="editSubscription" [subscription]="editSubscription" [user]="user" (editSuccesful)="subscriptionChangeSuccessful()" (unselectSubcription)="onUnselectSubcription()"></tsl-subscription-edit>
