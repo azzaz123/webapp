@@ -913,7 +913,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
       const subcategoryId =
         this.uploadForm.get('extra_info')?.get('object_type')?.get('id')?.value || this.item?.extraInfo?.object_type?.id;
-      const price = this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
+      const price = this.uploadForm.get('sale_price')?.value === 0 ? 0 : this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
 
       this.shippingToggleService
         .isAllowed(categoryId, subcategoryId, price)
