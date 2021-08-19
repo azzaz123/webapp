@@ -15,12 +15,21 @@
     }
   }
 
-  &__arrow-down {
+  &__expandable-button {
     margin-top: 22px;
 
     tsl-svg-icon {
       padding: 10px;
       cursor: pointer;
+
+      transition: all 0.25s ease;
+      transform: rotate(0deg);
+    }
+
+    &--rotated {
+      tsl-svg-icon {
+        transform: rotate(-180deg);
+      }
     }
   }
 }

@@ -7,7 +7,10 @@
       <tsl-wallet-pending-transaction [walletPendingTransaction]="pendingTransaction"></tsl-wallet-pending-transaction>
     </div>
   </div>
-  <div class="WalletPendingTransactionsList__arrow-down d-flex justify-content-center" *ngIf="isExpandableButtonVisible" (click)="toggleShowAllTransactions()">
+  <div class="WalletPendingTransactionsList__expandable-button d-flex justify-content-center" *ngIf="isExpandableButtonVisible"
+    (click)="toggleShowAllTransactions()" 
+    [ngClass]="{ 'WalletPendingTransactionsList__expandable-button--rotated': isExpanded }"
+  >
     <tsl-svg-icon src="/assets/icons/dropdown-arrow.svg"></tsl-svg-icon>
   </div>
 </div>
