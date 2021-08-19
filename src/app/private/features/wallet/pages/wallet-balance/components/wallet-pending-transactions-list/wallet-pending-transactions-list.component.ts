@@ -22,10 +22,20 @@ const DEFAULT_VISIBLE_PENDING_TRANSACTIONS = 2;
 export class WalletPendingTransactionsListComponent implements AfterViewInit {
   @Input() pendingTransactions: PendingTransaction[];
   @ViewChildren(WalletPendingTransactionComponent, { read: ElementRef }) private pendingTransactionsRef: QueryList<ElementRef>;
-  public isExpanded = false;
   public animated = false;
+  public isExpanded = false;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
+
+  public get isExpandableButtonVisible(): boolean {
+    return this.pendingTransactions.length > DEFAULT_VISIBLE_PENDING_TRANSACTIONS;
+  }
+
+  public get tansactionsWrapperStyle(): Object {
+    return {
+      height: `${this.getTransactionContainerHeight()}px`,
+    };
+  }
 
   ngAfterViewInit() {
     this.changeDetectorRef.detectChanges();
@@ -39,12 +49,6 @@ export class WalletPendingTransactionsListComponent implements AfterViewInit {
   public toggleShowAllTransactions(): void {
     this.isExpanded = !this.isExpanded;
     this.changeDetectorRef.detectChanges();
-  }
-
-  public get tansactionsWrapperStyle(): Object {
-    return {
-      height: `${this.getTransactionContainerHeight()}px`,
-    };
   }
 
   private activateAnimation(): void {
