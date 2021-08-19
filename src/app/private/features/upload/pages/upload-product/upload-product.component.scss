@@ -16,6 +16,15 @@
   }
 }
 
+.ShippingSection {
+  &__text {
+    &--small {
+      color: $blue-grey-2;
+      font-size: $font-size-s;
+    }
+  }
+}
+
 .WeightSelector {
   width: 96px;
   height: 96px;
