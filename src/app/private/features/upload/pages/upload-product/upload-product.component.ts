@@ -52,6 +52,7 @@ import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { ShippingToggleAllowance } from './services/shipping-toggle/interfaces/shipping-toggle-allowance.interface';
 import { ShippingToggleService } from './services/shipping-toggle/shipping-toggle.service';
+import { UploadTrackingEventService } from './upload-tracking-event/upload-tracking-event.service';
 
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
@@ -144,7 +145,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private subscriptionService: SubscriptionsService,
     private itemReactivationService: ItemReactivationService,
     private customerHelpService: CustomerHelpService,
-    private shippingToggleService: ShippingToggleService
+    private shippingToggleService: ShippingToggleService,
+    private uploadTrackingEventService: UploadTrackingEventService
   ) {
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
@@ -481,6 +483,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       () => null,
       (error: HttpErrorResponse) => this.onError(error)
     );
+  }
+
+  public trackClickHelpTransactionalEvent(): void {
+    const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
+    const price = this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
+
+    this.uploadTrackingEventService.trackClickHelpTransactionalEvent(categoryId, this.userService.user?.id, price, this.item?.id);
   }
 
   private fillForm(): void {
