@@ -28,6 +28,7 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.mo
 import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-form.module';
 import { ShippingToggleService } from './pages/upload-product/services/shipping-toggle/shipping-toggle.service';
 import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-api.module';
+import { UploadTrackingEventService } from './pages/upload-product/upload-tracking-event/upload-tracking-event.service';
 
 @NgModule({
   imports: [
@@ -67,6 +68,7 @@ import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-a
     GeneralSuggestionsService,
     ItemReactivationService,
     EditTrackingEventService,
+    UploadTrackingEventService,
     ShippingToggleService, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
   ],
   entryComponents: [RemoveConfirmModalComponent, PreviewModalComponent],

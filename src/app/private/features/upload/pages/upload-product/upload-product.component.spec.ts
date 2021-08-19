@@ -80,6 +80,7 @@ import {
   MOCK_UPLOAD_PRODUCT_EDIT_ITEM_CG_SHIPPABLE_EVENT,
   MOCK_UPLOAD_PRODUCT_LIST_ITEM_CG_SHIPPABLE_EVENT,
 } from '@fixtures/private/upload/events/upload-events.fixtures.spec';
+import { UploadTrackingEventService } from './upload-tracking-event/upload-tracking-event.service';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -109,6 +110,7 @@ describe('UploadProductComponent', () => {
   let uploadService: UploadService;
   let itemReactivationService: ItemReactivationService;
   let shippingToggleService: ShippingToggleService;
+  let uploadTrackingEventService: UploadTrackingEventService;
   const componentInstance: any = {};
 
   beforeEach(
@@ -224,6 +226,12 @@ describe('UploadProductComponent', () => {
               shippingRules: mapShippingRulesResponseToShippingRules(FALLBACK_SHIPPING_RULES_RESPONSE),
             },
           },
+          {
+            provide: UploadTrackingEventService,
+            useValue: {
+              trackClickHelpTransactionalEvent() {},
+            },
+          },
         ],
         declarations: [UploadProductComponent],
         schemas: [NO_ERRORS_SCHEMA],
@@ -245,6 +253,7 @@ describe('UploadProductComponent', () => {
     uploadService = TestBed.inject(UploadService);
     itemReactivationService = TestBed.inject(ItemReactivationService);
     shippingToggleService = TestBed.inject(ShippingToggleService);
+    uploadTrackingEventService = TestBed.inject(UploadTrackingEventService);
     fixture.detectChanges();
   });
 
@@ -1820,6 +1829,23 @@ describe('UploadProductComponent', () => {
         const shippingSection = fixture.debugElement.query(By.css(shippabilitySectionSelector));
 
         expect(shippingSection).toBeTruthy();
+      });
+
+      describe('when click in +info link', () => {
+        it('should send +info click navigation event', () => {
+          const moreInfoLinkSelector = `[href="${component.SHIPPING_INFO_HELP_LINK}"]`;
+          const moreInfoLink = fixture.debugElement.query(By.css(moreInfoLinkSelector));
+          spyOn(uploadTrackingEventService, 'trackClickHelpTransactionalEvent');
+
+          moreInfoLink.nativeElement.click();
+
+          expect(uploadTrackingEventService.trackClickHelpTransactionalEvent).toHaveBeenCalledWith(
+            component.item?.id,
+            userService.user?.id,
+            component.item?.salePrice,
+            component.item?.id
+          );
+        });
       });
     });
 
