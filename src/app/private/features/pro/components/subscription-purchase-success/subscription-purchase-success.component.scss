@@ -17,17 +17,12 @@
   }
 
   @include media-breakpoint-up(md) {
-    .GenericCard {
-      padding: $spacing-xxl;
-    }
-
     &__title {
       font-size: $font-size-xl;
     }
 
     &__subtitle {
       font-size: $font-size-l;
-      margin-top: $spacing-ml;
     }
   }
 }
