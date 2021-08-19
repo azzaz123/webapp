@@ -29,6 +29,8 @@ import { User } from '@core/user/user';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
+import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 import { PaymentSuccessModalComponent } from '@private/features/pro/modal/payment-success/payment-success-modal.component';
 import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
@@ -128,6 +130,21 @@ export class SubscriptionEditComponent implements OnInit {
       },
     };
     this.analyticsService.trackEvent(event);
+  }
+
+  public cancelSubscription(): void {
+    let modalRef: NgbModalRef = this.modalService.open(CancelSubscriptionModalComponent, {
+      windowClass: 'review',
+    });
+    modalRef.componentInstance.subscription = this.subscription;
+    modalRef.result.then(
+      (result: ModalStatuses) => {
+        if (result === ModalStatuses.SUCCESS) {
+          this.editSuccesful.emit();
+        }
+      },
+      () => {}
+    );
   }
 
   onChageSubscription() {}
