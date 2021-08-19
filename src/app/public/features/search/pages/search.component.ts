@@ -345,12 +345,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   private forceSortByDistance(params: FilterParameter[]): boolean {
     const categoryId = params.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
 
-    return (
-      !this.paramsHaveSortBy(params) &&
-      this.paramsHaveKeywords(params) &&
-      !this.sortByService.isRelevanceFeatureFlagActive &&
-      !!categoryId &&
-      this.categoryWithSortByRelevanceEnabled(categoryId)
-    );
+    return !this.paramsHaveSortBy(params) && this.paramsHaveKeywords(params) && this.categoryWithSortByRelevanceEnabled(categoryId);
   }
 }
