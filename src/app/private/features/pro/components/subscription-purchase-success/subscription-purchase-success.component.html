@@ -4,16 +4,16 @@
             <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.large" size="90" [customBadgeUrl]="badgeConfig.url" [badgeStyles]="badgeConfig.badgeStyle"></tsl-user-avatar>
         </div>
         <div class="SubscriptionPurchaseSuccess__title">
-            <span  i18n="@@purchases_pro_customize_experience_title_user_male">Awesome, {{user?.firstName}}! Now you are PRO</span>
+            <span  i18n="@@purchase_confirmation_view_pro_users_description">Awesome, {{user?.firstName}}! Now you are PRO</span>
         </div>
         <div *ngIf="invoicedRequired" class="SubscriptionPurchaseSuccess__subtitle">
-            <span i18n="@@pro_subscription_success_invoice_claim">An invoice will be sent to your email, as you asked</span>
+            <span i18n="@@purchase_confirmation_view_pro_users_if_invoicing_details_informative_text">An invoice will be sent to your email, as you asked</span>
         </div>
         <div class="SubscriptionPurchaseSuccess__buttons d-flex flex-column w-100">
-            <tsl-button className="btn btn-primary btn-primary--bold btn--big w-100  mb-3" i18n="@@purchases_pro_customize_experience_now" (click)="onClose('profile')"
-            >Customiza tu perfil PRO</tsl-button>
-            <tsl-button class="w-100" className="btn-secondary w-100" i18n="@@web_suggest_pro_modal_button_cancel" (click)="onClose()"> 
-                Not now thanks
+            <tsl-button className="btn btn-primary btn-primary--bold btn--big w-100  mb-3" i18n="@@purchase_confirmation_view_pro_users_customize_profile_button" (click)="onClose('profile')"
+            >Customize your PRO profile</tsl-button>
+            <tsl-button class="w-100" className="btn-secondary w-100" i18n="@@purchase_confirmation_view_pro_users_dismiss_button" (click)="onClose()"> 
+                Not now, thanks
             </tsl-button>
         </div>
      </div>
