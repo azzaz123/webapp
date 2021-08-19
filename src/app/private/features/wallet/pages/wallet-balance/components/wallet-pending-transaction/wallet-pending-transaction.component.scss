@@ -29,6 +29,7 @@ $wallet-transaction-card-padding: 12px;
     width: $wallet-transaction-card-image-size;
     height: $wallet-transaction-card-image-size;
     border-radius: 5px;
+    flex-shrink: 0;
   }
 
   &__title {

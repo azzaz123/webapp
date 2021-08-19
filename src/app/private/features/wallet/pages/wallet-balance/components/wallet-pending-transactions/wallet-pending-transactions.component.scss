@@ -5,6 +5,7 @@
 .WalletPendingTransactions {
   &__label {
     color: $blue-grey-1;
+    margin-left: $spacing-ms;
     margin-bottom: $spacing-ms;
 
     span:first-child {
