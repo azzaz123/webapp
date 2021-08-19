@@ -79,8 +79,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Input() isReactivation = false;
   @Output() validationError: EventEmitter<any> = new EventEmitter();
   @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
-  @Output() categorySelect = new EventEmitter<string>();
-  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
+  @Output() categorySelected = new EventEmitter<string>();
   @Input() suggestionValue: string;
   @ViewChild('title', { static: true }) titleField: ElementRef;
 
@@ -280,10 +279,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       },
       () => {}
     );
-  }
-
-  public emitLocation(): void {
-    this.locationSelected.emit(this.categoryId);
   }
 
   public getBrands(brandKeyword: string): void {
@@ -590,7 +585,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.lastSuggestedCategoryText = '';
         this.searchSuggestedCategories();
       }
-      this.categorySelect.emit(categoryId);
+      this.categorySelected.emit(categoryId);
     });
   }
 
