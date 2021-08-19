@@ -35,6 +35,7 @@ import { PaymentsCardInfoModule } from '@shared/payments-card-info/payments-card
 import { SubscriptionBenefitsComponent } from './components/subscription-benefits/subscription-benefits.component';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
 import { HeaderModule } from '@shared/header/header.module';
+import { SubscriptionEditComponent } from './pages/subscription/subscription-edit/subscription-edit.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { HeaderModule } from '@shared/header/header.module';
     UnsubscribeInAppFirstModalComponent,
     SubscriptionIconPipe,
     SubscriptionBenefitsComponent,
+    SubscriptionEditComponent,
   ],
   imports: [
     CommonModule,
