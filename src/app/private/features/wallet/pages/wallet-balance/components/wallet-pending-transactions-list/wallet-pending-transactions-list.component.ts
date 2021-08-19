@@ -56,8 +56,8 @@ export class WalletPendingTransactionsListComponent implements AfterViewInit {
   }
 
   private getTransactionContainerHeight(): number {
-    const shouldShowAllTransactions = this.isExpanded || this.pendingTransactions.length < DEFAULT_VISIBLE_PENDING_TRANSACTIONS;
-    const shouldShowDefaultTransactions = this.pendingTransactions.length > DEFAULT_VISIBLE_PENDING_TRANSACTIONS;
+    const shouldShowAllTransactions = this.isExpanded || this.pendingTransactions.length <= DEFAULT_VISIBLE_PENDING_TRANSACTIONS;
+    const shouldShowDefaultTransactions = this.pendingTransactions.length >= DEFAULT_VISIBLE_PENDING_TRANSACTIONS;
 
     if (shouldShowAllTransactions) {
       return this.getTransactionHeightByPosition(this.pendingTransactions.length);
