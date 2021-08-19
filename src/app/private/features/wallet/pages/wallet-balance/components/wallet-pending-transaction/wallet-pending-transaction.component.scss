@@ -40,5 +40,6 @@ $wallet-transaction-card-padding: 12px;
   &__amount {
     color: $blue-grey-3;
     font-size: 18px;
+    white-space: nowrap;
   }
 }

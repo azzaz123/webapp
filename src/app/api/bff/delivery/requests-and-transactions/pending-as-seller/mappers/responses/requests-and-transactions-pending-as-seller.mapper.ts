@@ -11,16 +11,9 @@ export const mapRequestsAndTransactionsPendingAsSellerToPendingBalance: ToDomain
   PendingTransaction[]
 > = (input: RequestsAndTransactionsPendingAsSellerApi): PendingTransaction[] => {
   const { transactions } = input;
-
-  return mapTransactionsApiToTransactions(transactions);
-};
-
-const mapTransactionsApiToTransactions: ToDomainMapper<TransactionPendingAsSellerApi[], PendingTransaction[]> = (
-  input: TransactionPendingAsSellerApi[]
-): PendingTransaction[] => {
   const mappedTransactions = [];
 
-  input.forEach((rawTransaction) => {
+  transactions.forEach((rawTransaction: TransactionPendingAsSellerApi) => {
     const { item_hash: itemHash, item_image: itemImageUrl, item_name: itemTitle, item_cost: itemCost } = rawTransaction;
     const { amount: number, currency } = itemCost;
     const typedCurrency = currency as CurrencyCode;

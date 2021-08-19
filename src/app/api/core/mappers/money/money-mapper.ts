@@ -8,9 +8,12 @@ type InputToMoney = { number: number; currency: CurrencyCode };
 
 export const mapNumberAndCurrencyCodeToMoney: ToDomainMapper<InputToMoney, Money> = (input: InputToMoney): Money => {
   const { number, currency } = input;
+  const mappedAmount = mapNumberToNumericAmount(number);
+  const mappedCurrency = mapCurrencyCodeToCurrency(currency);
 
   return {
-    amount: mapNumberToNumericAmount(number),
-    currency: mapCurrencyCodeToCurrency(currency),
+    amount: mappedAmount,
+    currency: mappedCurrency,
+    toString: (showSign = false) => `${mappedAmount.toString(showSign)}${mappedCurrency.symbol}`,
   };
 };
