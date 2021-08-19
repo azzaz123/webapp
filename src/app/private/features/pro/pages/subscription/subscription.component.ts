@@ -43,6 +43,7 @@ export class SubscriptionsComponent implements OnInit {
   public loading = false;
   public user: User;
   public newSubscription: SubscriptionsResponse = null;
+  public editSubscription: SubscriptionsResponse = null;
 
   constructor(
     private modalService: NgbModal,
@@ -60,6 +61,7 @@ export class SubscriptionsComponent implements OnInit {
 
   public onUnselectSubcription(): void {
     this.newSubscription = null;
+    this.editSubscription = null;
   }
 
   public setNewSubscription(subscription: SubscriptionsResponse) {
@@ -69,7 +71,11 @@ export class SubscriptionsComponent implements OnInit {
   public manageSubscription(subscription: SubscriptionsResponse): void {
     const modal = this.getModalTypeDependingOnSubscription(subscription);
     if (!modal) {
-      this.setNewSubscription(subscription);
+      if (this.subscriptionsService.isStripeSubscription(subscription)) {
+        this.editSubscription = subscription;
+      } else {
+        this.setNewSubscription(subscription);
+      }
     } else {
       this.openSubscriptionModal(subscription, modal);
     }
@@ -237,11 +243,6 @@ export class SubscriptionsComponent implements OnInit {
     // Subscription was previously canceled
     if (this.subscriptionsService.isStripeSubscription(subscription) && subscription.subscribed_until) {
       return ContinueSubscriptionModalComponent;
-    }
-
-    // Subscription is active
-    if (this.subscriptionsService.isStripeSubscription(subscription)) {
-      return EditSubscriptionModalComponent;
     }
 
     // User is trying to subscribe but there is an active inapp subscription

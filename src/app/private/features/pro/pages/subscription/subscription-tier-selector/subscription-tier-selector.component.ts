@@ -11,9 +11,12 @@ import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.i
 export class SubscriptionTierSelectorComponent {
   @Input() subscription: SubscriptionsResponse;
   @Input() selectedTier: Tier;
+  @Input() tierList: Tier[];
   @Output() changeSelectedTier: EventEmitter<Tier> = new EventEmitter();
 
-  constructor() {}
+  get tiers(): Tier[] {
+    return this.tierList ? this.tierList : this.subscription.tiers;
+  }
 
   public onTierSelectedChanged(event: Tier): void {
     this.changeSelectedTier.emit(event);
