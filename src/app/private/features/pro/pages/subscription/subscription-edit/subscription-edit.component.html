@@ -3,31 +3,25 @@
         <div class="d-flex justify-content-between">
             <div>
                 <div class="GenericCard__title" i18n="@@web_wallapop_pro_subscription_title">Boost your online business
-                    with Wallapop PRO
-                </div>
-                <div class="GenericCard__subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a
-                    subscription to take your
-                    sales to the next level
-                </div>
+                    with Wallapop PRO</div>
+                <div class="GenericCard__subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a subscription to take your sales to the next level</div>
             </div>
-            <tsl-button class="d-md-inline d-none" className="btn-secondary" (click)="cancelSubscription()">Cancelar
-                subscripcion</tsl-button>
+            <tsl-button class="d-md-inline d-none" className="btn-secondary" (click)="cancelSubscription()" i18n="@@pro_manage_subscriptions_view_cancel_subscription_button">Cancel subscription</tsl-button>
         </div>
         <tsl-subscription-purchase-header [subscription]="subscription" [benefits]="benefits">
         </tsl-subscription-purchase-header>
-        <tsl-button class="d-md-none mt-3" className="btn-secondary" (click)="cancelSubscription()">
-            Cancelar subscripcion</tsl-button>
+        <tsl-button class="d-md-none mt-3" className="btn-secondary" (click)="cancelSubscription()" i18n="@@pro_manage_subscriptions_view_cancel_subscription_button">Cancel subscription</tsl-button>
     </div>
     <div *ngIf="subscription.tiers.length > 1" class="GenericCard">
-        <div class="GenericCard__title" i18n="@@web_tier_selector_title">How many items you want to list?</div>
+        <div class="GenericCard__title" i18n="@@pro_edit_subscriptions_view_change_plan_current_plan_title">Current plan</div>
         <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="[subscribedTier]">
         </tsl-subscription-tier-selector>
-        <div class="GenericCard__title mt-4" i18n="@@web_tier_selector_title">How many items you want to list?</div>
+        <div class="GenericCard__title mt-4" i18n="@@pro_edit_subscriptions_view_change_plan_other_available_plans_title">Other available</div>
         <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="availableTiers"
             [selectedTier]="selectedTier" (changeSelectedTier)="onSelectedTierChanged($event)">
         </tsl-subscription-tier-selector>
     </div>
 </div>
-<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="isLoading || isEqualTier"
+<tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="isLoading || isEqualTier" [isEdit]="true"
     [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()">
 </tsl-subscription-purchase-footer>

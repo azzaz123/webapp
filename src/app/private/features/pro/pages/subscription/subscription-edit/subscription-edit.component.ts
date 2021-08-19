@@ -1,29 +1,18 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AnalyticsEvent,
-  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  ClickSubscriptionAddCard,
   ClickSubscriptionPlanDone,
   SCREEN_IDS,
-  SubscriptionPayConfirmation,
-  SubscriptionPaymentButtonAvailable,
-  ViewSubscriptionTier,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { translations } from '@core/i18n/translations/constants/translations';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
-import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
-import { PaymentError, STRIPE_ERROR } from '@core/stripe/stripe.interface';
-import { StripeService, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from '@core/stripe/stripe.service';
+import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
-import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
@@ -31,10 +20,8 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
 import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
-import { PaymentSuccessModalComponent } from '@private/features/pro/modal/payment-success/payment-success-modal.component';
 import { FinancialCard } from '@shared/payments-card-info/financial-card';
-import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
-import { filter, finalize, mergeMap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 export const PAYMENT_SUCCESSFUL_CODE = 202;
 
@@ -62,11 +49,8 @@ export class SubscriptionEditComponent implements OnInit {
   public isEqualTier: boolean;
 
   constructor(
-    private stripeService: StripeService,
-    private errorService: ErrorsService,
     private subscriptionsService: SubscriptionsService,
     private modalService: NgbModal,
-    private eventService: EventService,
     private analyticsService: AnalyticsService,
     private benefitsService: SubscriptionBenefitsService,
     private toastService: ToastService,
@@ -118,7 +102,7 @@ export class SubscriptionEditComponent implements OnInit {
       });
   }
 
-  private trackClickConfirmEdit() {
+  private trackClickConfirmEdit(): void {
     const event: AnalyticsEvent<ClickSubscriptionPlanDone> = {
       name: ANALYTICS_EVENT_NAMES.ClickSubscriptionPlanDone,
       eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -146,6 +130,4 @@ export class SubscriptionEditComponent implements OnInit {
       () => {}
     );
   }
-
-  onChageSubscription() {}
 }
