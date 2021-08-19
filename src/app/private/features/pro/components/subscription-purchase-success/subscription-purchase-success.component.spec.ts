@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ButtonComponent } from '@shared/button/button.component';
 
 import { SubscriptionPurchaseSuccessComponent } from './subscription-purchase-success.component';
@@ -28,7 +29,7 @@ describe('SubscriptionPurchaseSuccessComponent', () => {
       button.click();
 
       expect(component.redirectTo.emit).toHaveBeenCalledTimes(1);
-      expect(component.redirectTo.emit).toHaveBeenCalledWith('profile');
+      expect(component.redirectTo.emit).toHaveBeenCalledWith(PRIVATE_PATHS.PROFILE);
     });
   });
 
