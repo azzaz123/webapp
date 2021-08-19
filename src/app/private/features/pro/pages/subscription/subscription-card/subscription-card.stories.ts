@@ -5,7 +5,7 @@ import { SubscriptionCardComponent } from './subscription-card.component';
 import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
 import { HttpClientModule } from '@angular/common/http';
 import { ButtonComponent } from '@shared/button/button.component';
-import { SubscriptionPriceDiscountComponent } from '@private/features/profile/components/subscription-price-discount/subscription-price-discount.component';
+import { SubscriptionPriceDiscountComponent } from '@private/features/pro/components/subscription-price-discount/subscription-price-discount.component';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { CookieModule } from 'ngx-cookie';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';

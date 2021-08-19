@@ -5,7 +5,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { SUBSCRIPTION_TYPES } from '../../../../core/subscriptions/subscriptions.service';
 import { ItemService } from '../../../../core/item/item.service';
 import { SubscriptionsService } from '../../../../core/subscriptions/subscriptions.service';
-import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES } from '../../../../core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '../../../../core/subscriptions/subscriptions.interface';
 import { map, take } from 'rxjs/operators';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { AnalyticsPageView, ViewProSubscriptionPopup, ANALYTICS_EVENT_NAMES, SCREEN_IDS } from 'app/core/analytics/analytics-constants';
@@ -28,6 +28,7 @@ export class TooManyItemsModalComponent implements OnInit {
   public carDealerType = SUBSCRIPTION_TYPES.carDealer;
   public stripeType = SUBSCRIPTION_TYPES.stripe;
   public isFreeTrial: boolean;
+  public tierDicounted: Tier;
   public isHighestLimit: boolean;
   public categorySubscription: SubscriptionsResponse;
   @Input() itemId: string;
@@ -67,6 +68,7 @@ export class TooManyItemsModalComponent implements OnInit {
         subscription: this.categorySubscription.category_id as SUBSCRIPTION_CATEGORIES,
         freeTrial: this.isFreeTrial,
         isCarDealer: this.type === this.carDealerType,
+        discount: !!this.tierDicounted,
       },
     };
 
@@ -78,18 +80,12 @@ export class TooManyItemsModalComponent implements OnInit {
       map((values) => {
         const item = values[0];
         const subscriptions = values[1];
-        this.categorySubscription = subscriptions.find((subscription) => item.categoryId === subscription.category_id);
+        this.categorySubscription = this.subscriptionsService.getSubscriptionByCategory(subscriptions, item.categoryId);
         this.isHighestLimit = this.hasHighestLimitReached();
-        this.isFreeTrial = this.hasFreeOption();
+        this.isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(subscriptions, item.categoryId);
+        this.tierDicounted = this.subscriptionsService.tierDiscountByCategoryId(subscriptions, item.categoryId);
       })
     );
-  }
-
-  private hasFreeOption(): boolean {
-    if (!this.categorySubscription || !!this.categorySubscription.subscribed_from) {
-      return false;
-    }
-    return this.subscriptionsService.hasTrial(this.categorySubscription);
   }
 
   private hasHighestLimitReached(): boolean {

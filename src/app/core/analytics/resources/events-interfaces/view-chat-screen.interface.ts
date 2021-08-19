@@ -14,11 +14,27 @@ export interface ViewChatScreen {
    */
   itemId: string;
   /**
+   * Identifier of the user interested in the item
+   */
+  buyerUserId: string;
+  /**
+   * Identifier of the user that the item belongs to
+   */
+  sellerUserId: string;
+  /**
    * Identifier of the conversation
    */
   conversationId: string;
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: number;
+  screenId: 27;
+  /**
+   * If the item has the shipping toggle ON and a shipping weight informed
+   */
+  shippingAllowed?: boolean;
+  /**
+   * Chat has the option to be translated
+   */
+  translationAllowed: boolean;
 }

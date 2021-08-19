@@ -18,6 +18,10 @@ export interface ViewSubscriptionTier {
    */
   freeTrial?: boolean;
   /**
+   * If the view offers discount or not
+   */
+  discount?: boolean;
+  /**
    * Subscription category type that reached the limit
    */
   subscription?: 0 | 100 | 200 | 14000 | 12800;

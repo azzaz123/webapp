@@ -53,7 +53,7 @@ export function SearchItemRealEstateSpecsMapper(content: SearchItemRealStateResp
     specs.push(`${bathrooms} ${label}`);
   }
   if (surface) {
-    specs.push(`${surface} ${SURFACE_UNIT}`)
+    specs.push(`${surface} ${SURFACE_UNIT}`);
   }
   return specs;
 }

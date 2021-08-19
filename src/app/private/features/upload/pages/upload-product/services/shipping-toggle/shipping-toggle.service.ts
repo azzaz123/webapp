@@ -9,8 +9,8 @@ import { ShippingToggleAllowance } from './interfaces/shipping-toggle-allowance.
 
 @Injectable()
 export class ShippingToggleService {
-  private shippingRulesSubject: ReplaySubject<ShippingRules> = new ReplaySubject<ShippingRules>();
   public shippingRules: ShippingRules;
+  private shippingRulesSubject: ReplaySubject<ShippingRules> = new ReplaySubject<ShippingRules>();
 
   constructor(private featureFlagService: FeatureFlagService, private deliveryRulesApiService: DeliveryRulesApiService) {
     this.deliveryRulesApiService.getRules().subscribe((shippingRules) => {

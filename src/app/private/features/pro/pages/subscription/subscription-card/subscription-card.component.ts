@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
-import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-subscription-card',
@@ -14,6 +14,7 @@ export class SubscriptionCardComponent {
   @Input() hasTrialAvailable: boolean;
   @Input() isSubscribed: boolean;
   @Input() subscriptionBenefits: string[];
+  @Input() tierDiscount: Tier;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter();
 
   public readonly titleConfig = {
@@ -21,7 +22,7 @@ export class SubscriptionCardComponent {
     [CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE]: $localize`:@@web_profile_pages_subscription_motorbike_desc:List all your motorbikes`,
     [CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES]: $localize`:@@web_profile_pages_subscription_motor_acc_desc:List all your Motor and Accessories items`,
     [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE]: $localize`:@@web_profile_pages_subscription_real_estate_desc:List all your real estate`,
-    [CATEGORY_SUBSCRIPTIONS_IDS.EVERYTHING_ELSE]: $localize`:@@web_profile_pages_subscription_other_desc:Your best plan to sell all kinds of items`,
+    [CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS]: $localize`:@@web_profile_pages_subscription_other_desc:Your best plan to sell all kinds of items`,
   };
 
   public onButtonClick(): void {

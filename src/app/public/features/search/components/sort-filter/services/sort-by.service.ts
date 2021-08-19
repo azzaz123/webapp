@@ -13,6 +13,7 @@ import { SORT_BY_RELEVANCE_CATEGORY_IDS } from './constants/sort-by-config-const
 import { SORT_BY_DEFAULT_OPTIONS, SORT_BY_RELEVANCE_OPTIONS } from './constants/sort-by-options-constants';
 import { SORT_BY } from '@api/core/model';
 
+/* eslint-disable  @typescript-eslint/member-ordering */
 @Injectable()
 export class SortByService {
   private optionsSubject = new BehaviorSubject<SelectFormOption<SORT_BY>[]>(SORT_BY_DEFAULT_OPTIONS);

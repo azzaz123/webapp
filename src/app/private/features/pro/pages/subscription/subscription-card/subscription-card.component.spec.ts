@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_WITH_RE } from '@fixtures/subscriptions.fixtures.spec';
+import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_WITH_RE, TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SubscriptionCardComponent } from './subscription-card.component';
 
@@ -40,7 +40,7 @@ describe('SubscriptionCardComponent', () => {
     });
 
     it('should not show trial banner', () => {
-      const trialBanner = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
+      const trialBanner = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
 
       expect(trialBanner).toBeTruthy();
     });
@@ -141,24 +141,54 @@ describe('SubscriptionCardComponent', () => {
         component.hasTrialAvailable = true;
         fixture.detectChanges();
       });
-      it('should show trial banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
+      it('should show banner', () => {
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
 
         expect(trialBannerHidden).toBeFalsy();
       });
       it('should show free days amount', () => {
-        const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner')).nativeElement;
+        const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__banner')).nativeElement;
+
         expect(trialBanner.textContent).toContain(component.subscription.trial_days);
+      });
+      it('should show trial banner', () => {
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--trial'));
+
+        expect(trialBannerHidden).toBeTruthy();
       });
     });
 
-    describe('and has not trial available', () => {
+    describe('and has discount available', () => {
       beforeEach(() => {
         component.hasTrialAvailable = false;
+        component.tierDiscount = TIER_WITH_DISCOUNT;
         fixture.detectChanges();
       });
-      it('should not show trial banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__trialBanner--hidden'));
+      it('should show banner', () => {
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
+
+        expect(trialBannerHidden).toBeFalsy();
+      });
+      it('should show discount percentage', () => {
+        const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__banner')).nativeElement;
+
+        expect(trialBanner.textContent).toContain(TIER_WITH_DISCOUNT.discount.percentage);
+      });
+      it('should show discount banner', () => {
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--discount'));
+
+        expect(trialBannerHidden).toBeTruthy();
+      });
+    });
+
+    describe('and has not trial or discount available', () => {
+      beforeEach(() => {
+        component.hasTrialAvailable = false;
+        component.tierDiscount = null;
+        fixture.detectChanges();
+      });
+      it('should not show banner', () => {
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
 
         expect(trialBannerHidden).toBeTruthy();
       });

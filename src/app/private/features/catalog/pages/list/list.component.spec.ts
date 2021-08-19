@@ -26,7 +26,7 @@ import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
-import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
+import { LOCAL_STORAGE_SUGGEST_PRO_SHOWN, LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { TryProSlotComponent } from '@private/features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -43,7 +43,12 @@ import {
   ORDER_EVENT,
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
-import { MockSubscriptionService, MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  MockSubscriptionService,
+  MOCK_SUBSCRIPTION_SLOTS,
+  MOCK_SUBSCRIPTION_SLOT_CARS,
+  TIER_WITH_DISCOUNT,
+} from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER, USER_ID, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -83,7 +88,6 @@ describe('ListComponent', () => {
   let router: Router;
   let errorService: ErrorsService;
   const componentInstance: any = {
-    urgentPrice: jasmine.createSpy('urgentPrice'),
     trackUploaded: jasmine.createSpy('trackUploaded'),
   };
   let modalSpy: jasmine.Spy;
@@ -101,7 +105,9 @@ describe('ListComponent', () => {
     publish: 12,
     onHold: 5,
   };
-
+  const FAKE_DATE_NOW = 1627743615459;
+  const FAKE_DATE_LESS_24 = 1627722294000;
+  const FAKE_DATE_MORE_24 = 1627635894000;
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
@@ -231,6 +237,8 @@ describe('ListComponent', () => {
               getInfo() {
                 return of(USER_INFO_RESPONSE);
               },
+              getLocalStore() {},
+              saveLocalStore() {},
             },
           },
           {
@@ -1304,6 +1312,7 @@ describe('ListComponent', () => {
         });
 
         it('should track ClickProSubscription event', () => {
+          spyOn(subscriptionsService, 'hasSomeSubscriptionDiscount').and.returnValue(true);
           component.hasTrialAvailable = true;
           const event: AnalyticsEvent<ClickProSubscription> = {
             name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
@@ -1311,6 +1320,7 @@ describe('ListComponent', () => {
             attributes: {
               screenId: SCREEN_IDS.MyCatalog,
               freeTrial: component.hasTrialAvailable,
+              discount: true,
             },
           };
 
@@ -1362,8 +1372,9 @@ describe('ListComponent', () => {
       describe('and has subscription permissions', () => {
         beforeEach(() => {
           permissionService.addPermission(PERMISSIONS.subscriptions);
+          spyOn(Date, 'now').and.returnValue(FAKE_DATE_NOW);
         });
-        describe('and open modal', () => {
+        describe('modal is shown', () => {
           describe('and has free trial category', () => {
             beforeEach(() => {
               spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(true);
@@ -1374,6 +1385,7 @@ describe('ListComponent', () => {
                 attributes: {
                   screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
                   freeTrial: true,
+                  discount: false,
                 },
               };
               const item = cloneDeep(component.items[3]);
@@ -1397,6 +1409,31 @@ describe('ListComponent', () => {
                 attributes: {
                   screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
                   freeTrial: false,
+                  discount: false,
+                },
+              };
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+              expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+            });
+          });
+          describe('and has discount', () => {
+            beforeEach(() => {
+              spyOn(subscriptionsService, 'tierDiscountByCategoryId').and.returnValue(TIER_WITH_DISCOUNT);
+            });
+            it('should track modal', () => {
+              const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+                name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+                attributes: {
+                  screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+                  freeTrial: true,
+                  discount: true,
                 },
               };
               const item = cloneDeep(component.items[3]);
@@ -1411,6 +1448,68 @@ describe('ListComponent', () => {
             });
           });
         });
+        describe('and modal was not shown before', () => {
+          it('should open modal', () => {
+            const item = cloneDeep(component.items[3]);
+
+            component.itemChanged({
+              item: item,
+              action: ITEM_CHANGE_ACTION.REACTIVATED,
+            });
+
+            expect(modalService.open).toHaveBeenCalledWith(SuggestProModalComponent, {
+              windowClass: 'modal-standard',
+            });
+          });
+        }),
+          describe('and modal was shown more than 24hs before', () => {
+            beforeEach(() => {
+              spyOn(userService, 'getLocalStore').and.returnValue(FAKE_DATE_MORE_24.toString());
+            });
+            it('should open modal', () => {
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(modalService.open).toHaveBeenCalledWith(SuggestProModalComponent, {
+                windowClass: 'modal-standard',
+              });
+            });
+          }),
+          describe('and modal was shown less than 24hs before', () => {
+            beforeEach(() => {
+              spyOn(userService, 'getLocalStore').and.returnValue(FAKE_DATE_LESS_24.toString());
+            });
+            it('should open modal', () => {
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(modalService.open).not.toHaveBeenCalledWith(SuggestProModalComponent, {
+                windowClass: 'modal-standard',
+              });
+            });
+          }),
+          describe('and open modal', () => {
+            it('should save date', () => {
+              spyOn(userService, 'saveLocalStore').and.callThrough();
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(userService.saveLocalStore).toHaveBeenCalledTimes(1);
+              expect(userService.saveLocalStore).toHaveBeenCalledWith(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, FAKE_DATE_NOW.toString());
+            });
+          });
         describe('and click cta button', () => {
           it('should redirect to subscriptions', fakeAsync(() => {
             modalSpy.and.returnValue({

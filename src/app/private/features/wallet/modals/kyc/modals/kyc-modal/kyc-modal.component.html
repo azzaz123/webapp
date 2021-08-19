@@ -19,10 +19,11 @@
             <tsl-kyc-image-options (goBack)="resetKYCDocumentationAndGoPreviousStep()" (takeImageOptionChange)="defineImageMethodAndGoNext($event)"></tsl-kyc-image-options>
         </ng-template>
         <ng-template step>
-            <div *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications">
-                <span *ngIf="KYCSpecifications.imageMethod  === KYC_TAKE_IMAGE_OPTIONS.SHOOT">Shoot image component >_></span>
-                <span *ngIf="KYCSpecifications.imageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD">Upload image component >_></span>
-            </div>
+            <tsl-kyc-upload-images
+                *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications"
+                [takeImageMethod]="KYCSpecifications.imageMethod"
+                [photosNeeded]="KYCSpecifications.documentation.photosNeeded"
+            ></tsl-kyc-upload-images>
         </ng-template>
     </tsl-stepper>
 </div>

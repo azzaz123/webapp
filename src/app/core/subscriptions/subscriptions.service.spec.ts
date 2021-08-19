@@ -21,6 +21,7 @@ import {
   MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY,
   MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE,
   MAPPED_SUBSCRIPTIONS_ADDED,
+  TIER_DISCOUNT,
 } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -29,6 +30,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { UuidService } from '../uuid/uuid.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { cloneDeep } from 'lodash-es';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
 
 describe('SubscriptionsService', () => {
   let service: SubscriptionsService;
@@ -386,43 +388,6 @@ describe('SubscriptionsService', () => {
     });
   });
 
-  describe('getDiscountPercentatge', () => {
-    describe('when tier discounted price is 0', () => {
-      it('should return 100', () => {
-        const freeTier: Tier = {
-          id: 'abcd',
-          limit: 288,
-          price: 100,
-          currency: '€',
-          discount_available: {
-            months: 1,
-            discounted_price: 0,
-          },
-        };
-
-        const result = service.getTierDiscountPercentatge(freeTier);
-
-        expect(result).toBe(100);
-      });
-    });
-
-    describe('when tier has no discount', () => {
-      it('should return 0', () => {
-        const tierWithoutDiscount: Tier = {
-          id: 'abcd',
-          limit: 288,
-          price: 100,
-          currency: '€',
-          discount_available: null,
-        };
-
-        const result = service.getTierDiscountPercentatge(tierWithoutDiscount);
-
-        expect(result).toBe(0);
-      });
-    });
-  });
-
   describe('getTrialSubscriptionsIds', () => {
     describe('when has not any free trial', () => {
       it('should return no subscriptions', () => {
@@ -516,6 +481,119 @@ describe('SubscriptionsService', () => {
         const result = service.hasHighestLimit(selectedSubscription);
 
         expect(result).toEqual(true);
+      });
+    });
+  });
+
+  describe('get default tier discount', () => {
+    describe('when has tiers with discount', () => {
+      it('should return first tier with discount', () => {
+        const selectedSubscription: SubscriptionsResponse = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED[0]);
+        selectedSubscription.tiers[1].discount = TIER_DISCOUNT;
+
+        const result = service.getDefaultTierDiscount(selectedSubscription);
+
+        expect(result).toEqual(selectedSubscription.tiers[1]);
+      });
+    });
+
+    describe('when has not any tier with discount', () => {
+      it('should not return tier', () => {
+        const selectedSubscription: SubscriptionsResponse = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED[0]);
+
+        const result = service.getDefaultTierDiscount(selectedSubscription);
+
+        expect(result).toBeFalsy();
+      });
+    });
+  });
+
+  describe('hasSomeSubscriptionDiscount', () => {
+    describe('when has a subscription with tiers with discount', () => {
+      it('should return tier with discount', () => {
+        const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED);
+        subscriptions[0].tiers[1].discount = TIER_DISCOUNT;
+
+        const result = service.hasSomeSubscriptionDiscount(subscriptions);
+
+        expect(result).toEqual(true);
+      });
+    });
+
+    describe('when has not a subscription with tiers with discount', () => {
+      it('should return nothing', () => {
+        const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS_ADDED);
+
+        const result = service.hasSomeSubscriptionDiscount(subscriptions);
+
+        expect(result).toEqual(false);
+      });
+    });
+  });
+
+  describe('getSubscriptionByCategory', () => {
+    describe('when category is inside consumer goods subscription', () => {
+      it('should return consumer goods subscription ', () => {
+        const result = service.getSubscriptionByCategory(MAPPED_SUBSCRIPTIONS, CATEGORY_IDS.BIKES);
+
+        expect(result).toEqual(
+          MAPPED_SUBSCRIPTIONS.find((subscription) => subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS)
+        );
+      });
+    });
+
+    describe('when category is not inside consumer goods subscription', () => {
+      it('should return subscription related to the category ', () => {
+        const result = service.getSubscriptionByCategory(MAPPED_SUBSCRIPTIONS, CATEGORY_IDS.CAR);
+
+        expect(result).toEqual(MAPPED_SUBSCRIPTIONS.find((subscription) => subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.CAR));
+      });
+    });
+  });
+
+  describe('tierDiscountByCategoryId', () => {
+    describe('when has a subscription id with tiers with discount', () => {
+      it('should return tier with discount', () => {
+        const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS);
+        subscriptions[0].tiers[1].discount = TIER_DISCOUNT;
+
+        const result = service.tierDiscountByCategoryId(subscriptions, subscriptions[0].category_id);
+
+        expect(result).toEqual(subscriptions[0].tiers[1]);
+      });
+    });
+
+    describe('when has not a subscription id with tiers with discount', () => {
+      it('should return nothing', () => {
+        const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS);
+        subscriptions[0].tiers[1].discount = TIER_DISCOUNT;
+
+        const result = service.tierDiscountByCategoryId(subscriptions, subscriptions[1].category_id);
+
+        expect(result).toBeFalsy();
+      });
+    });
+  });
+
+  describe('getDefaultTierSubscriptionDiscount', () => {
+    describe('when has a subscription tiers with discount', () => {
+      it('should return tier with discount', () => {
+        const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS);
+        subscriptions[0].tiers[1].discount = TIER_DISCOUNT;
+
+        const result = service.getDefaultTierSubscriptionDiscount(subscriptions);
+
+        expect(result).toEqual(subscriptions[0].tiers[1]);
+      });
+    });
+
+    describe('when has not a subscription id with tiers with discount', () => {
+      it('should return nothing', () => {
+        const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS);
+
+        const result = service.getDefaultTierSubscriptionDiscount(subscriptions);
+
+        expect(result).toBeFalsy();
       });
     });
   });

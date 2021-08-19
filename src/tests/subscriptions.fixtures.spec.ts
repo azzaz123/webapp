@@ -8,10 +8,12 @@ import {
   SubscriptionSlot,
   SubscriptionSlotGeneralResponse,
   SUBSCRIPTION_MARKETS,
+  TierDiscount,
 } from '../app/core/subscriptions/subscriptions.interface';
 import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 
 export class MockSubscriptionService {
   getSubscriptions() {
@@ -56,34 +58,6 @@ export class MockSubscriptionService {
     return subscriptions.some((subscription) => this.isStripeSubscription(subscription));
   }
 
-  public hasOneFreeSubscription(subscriptions: SubscriptionsResponse[]): boolean {
-    return subscriptions.some((subscription) => this.hasOneFreeTier(subscription));
-  }
-
-  public hasOneDiscountedSubscription(subscriptions: SubscriptionsResponse[]): boolean {
-    return subscriptions.some((subscription) => this.hasOneTierDiscount(subscription));
-  }
-
-  public hasOneTierDiscount(subscription: SubscriptionsResponse): boolean {
-    return subscription.tiers.some((tier) => this.isDiscountedTier(tier));
-  }
-
-  public hasOneFreeTier(subscription: SubscriptionsResponse): boolean {
-    return subscription.tiers.some((tier) => this.isFreeTier(tier));
-  }
-
-  public isDiscountedTier(tier: Tier): boolean {
-    return !!tier.discount_available;
-  }
-
-  public isFreeTier(tier: Tier): boolean {
-    if (!this.isDiscountedTier(tier)) {
-      return false;
-    }
-
-    return tier.discount_available.discounted_price === 0;
-  }
-
   public hasTrial(subscription: SubscriptionsResponse): boolean {
     return subscription.trial_available;
   }
@@ -92,15 +66,17 @@ export class MockSubscriptionService {
     return false;
   }
 
+  public getDefaultTierSubscriptionDiscount(_subscriptions: SubscriptionsResponse[]) {}
+
+  public getSubscriptionByCategory(_subscriptions: SubscriptionsResponse[]) {}
+
+  public tierDiscountByCategoryId(_subscriptions: SubscriptionsResponse[], id: string) {}
+
   public getTrialSubscriptionsIds(subscriptions: SubscriptionsResponse[]): number[] {
     if (!subscriptions) {
       return [];
     }
     return subscriptions.filter((subscription) => this.hasTrial(subscription)).map((subscription) => subscription.category_id);
-  }
-
-  public getTierDiscountPercentatge(): number {
-    return 0;
   }
 
   public newSubscription(): Observable<any> {
@@ -116,6 +92,14 @@ export class MockSubscriptionService {
   }
 
   public hasHighestLimit(): boolean {
+    return false;
+  }
+
+  public getDefaultTierDiscount(): TierDiscount {
+    return null;
+  }
+
+  public hasSomeSubscriptionDiscount(): boolean {
     return false;
   }
 }
@@ -972,21 +956,21 @@ export const MAPPED_SUBSCRIPTIONS_WITH_RE: SubscriptionsResponse[] = [
         limit: 10,
         price: 19.0,
         currency: 'EUR',
-        discount_available: null,
+        discount: null,
       },
       {
         id: 'realestate_25',
         limit: 25,
         price: 33.0,
         currency: 'EUR',
-        discount_available: null,
+        discount: null,
       },
       {
         id: 'realestate_100',
         limit: 100,
         price: 46.0,
         currency: 'EUR',
-        discount_available: null,
+        discount: null,
       },
     ],
     selected_tier: {
@@ -994,7 +978,7 @@ export const MAPPED_SUBSCRIPTIONS_WITH_RE: SubscriptionsResponse[] = [
       limit: 10,
       price: 19.0,
       currency: 'EUR',
-      discount_available: null,
+      discount: null,
     },
   },
 ];
@@ -1121,6 +1105,22 @@ export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] = [
       currency: '€',
     },
     market: SUBSCRIPTION_MARKETS.STRIPE,
+  },
+  {
+    category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
+    selected_tier_id: null,
+    default_tier_id: 'consumer_goods',
+    market: null,
+    trial_available: false,
+    trial_days: 0,
+    tiers: [
+      {
+        id: 'consumer_goods',
+        price: 39.99,
+        currency: 'EUR',
+        discount: null,
+      },
+    ],
   },
 ];
 
@@ -1282,4 +1282,18 @@ export const FREE_TRIAL_AVAILABLE_SUBSCRIPTION: SubscriptionsResponse = {
     currency: '€',
   },
   market: SUBSCRIPTION_MARKETS.STRIPE,
+};
+
+export const TIER_DISCOUNT: TierDiscount = {
+  end_date: 1640908800000,
+  percentage: 50,
+  price: 9.5,
+};
+
+export const TIER_WITH_DISCOUNT: Tier = {
+  id: 'plan_FWuFVeTHEDyECa',
+  limit: 9,
+  price: 9.99,
+  currency: '€',
+  discount: TIER_DISCOUNT,
 };

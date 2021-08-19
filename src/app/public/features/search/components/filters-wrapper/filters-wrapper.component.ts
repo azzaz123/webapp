@@ -14,6 +14,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 
+/* eslint-disable  @typescript-eslint/member-ordering */
 @Component({
   selector: 'tsl-filters-wrapper',
   templateUrl: './filters-wrapper.component.html',
@@ -29,6 +30,7 @@ export class FiltersWrapperComponent {
     hasApply: true,
   };
   public activeFiltersCount = 0;
+  public scrollOffset = 0;
 
   private PARAMETER_CLEANUP_EXCEPTIONS: FILTER_QUERY_PARAM_KEY[] = [
     FILTER_QUERY_PARAM_KEY.latitude,
@@ -40,7 +42,6 @@ export class FiltersWrapperComponent {
   private drawerFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(null);
   private bubbleFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(null);
 
-  public scrollOffset = 0;
   private drawerValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
   private bubbleValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
   private openedBubbleSubject = new BehaviorSubject<boolean>(false);

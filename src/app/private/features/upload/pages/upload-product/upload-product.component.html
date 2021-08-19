@@ -292,9 +292,9 @@
       (onError)="onError($event)"
       formControlName="images"
       [isUpdatingItem]="!!item"
-      (onOrderImages)="onOrderImages()"
-      (onDeleteImage)="onDeleteImage($event)"
-      (onAddImage)="onAddImage($event)"
+      (orderImages)="onOrderImages()"
+      (deleteImage)="onDeleteImage($event)"
+      (addImage)="onAddImage($event)"
     ></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n="@@web_upload_product_coachmark_pictures">
@@ -419,7 +419,7 @@
   </div>
   </ng-template>
 
-  <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location" (locationSelected)="emitLocation()"> </tsl-location-box>
+  <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location"></tsl-location-box>
   <div class="row" id="prueba">
     <div class="col-12 col-md-5">
       <tsl-button [type]="'submit'" className="btn-primary btn-block" [disabled]="loading">

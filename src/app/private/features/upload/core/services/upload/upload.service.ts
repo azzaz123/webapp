@@ -73,68 +73,13 @@ export class UploadService {
     });
   }
 
-  private calculatePendingFiles(files: UploadOutput[]): PendingFiles {
-    const totalFiles = files.length + 1;
-    const currentUploading = files.filter((file) => file.type === OUTPUT_TYPE.done).length + 2;
-    return { totalFiles, currentUploading };
-  }
-
-  private createItemWithFirstImage(
-    values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm,
-    file: UploadFile,
-    itemType: ITEM_TYPES
-  ): Observable<UploadOutput> {
-    let inputEvent: UploadInput;
-    if (itemType === ITEM_TYPES.CARS) {
-      inputEvent = this.buildUploadEvent(values, this.API_URL + '/cars', 'item_car');
-    } else if (itemType === ITEM_TYPES.REAL_ESTATE) {
-      inputEvent = this.buildUploadEvent(values, this.API_URL + '/real_estate', 'item_real_estate');
-    } else {
-      inputEvent = this.buildUploadEvent(values, this.API_URL, 'item');
-    }
-    return this.uploaderService.uploadFile(file, inputEvent);
-  }
-
-  updateItem(
+  public updateItem(
     values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm,
     type: ITEM_TYPES
   ): Observable<ItemResponse | CarContent | RealEstateResponse> {
     const parsedValues = cloneDeep(values);
     delete parsedValues.images;
     return this.itemService.update(parsedValues, type);
-  }
-
-  private buildUploadEvent(
-    values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm,
-    url: string,
-    fieldName: string
-  ): UploadInput {
-    if (values.category_id !== REALESTATE_CATEGORY) {
-      delete values.location;
-    } else {
-      delete values.id;
-      delete values.category_id;
-    }
-
-    return {
-      url: environment.baseUrl + url,
-      method: 'POST',
-      fieldName: 'image',
-      data: {
-        [fieldName]: new Blob([JSON.stringify(values)], {
-          type: 'application/json',
-        }),
-      },
-      headers: this.getUploadHeaders(url, { 'X-DeviceOS': '0' }),
-    };
-  }
-
-  private uploadRemainingImages(itemId: string, files: UploadFile[], itemType: ITEM_TYPES): Observable<UploadOutput[]> {
-    const imagesRequest: Observable<UploadOutput>[] = [];
-    files.forEach((file: UploadFile) => {
-      imagesRequest.push(this.uploadSingleImage(file, itemId, itemType));
-    });
-    return combineLatest(imagesRequest);
   }
 
   public uploadSingleImage(file: UploadFile, itemId: string, type: ITEM_TYPES): Observable<UploadOutput> {
@@ -155,13 +100,6 @@ export class UploadService {
       headers: this.getUploadHeaders(url),
     };
     return this.uploaderService.uploadFile(file, inputEvent);
-  }
-
-  private getUploadHeaders(url: string, additionalHeaders?: any): any {
-    return {
-      ...additionalHeaders,
-      [AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
-    };
   }
 
   public updateOrder(files: UploadFile[], itemId: string): Observable<void> {
@@ -209,5 +147,67 @@ export class UploadService {
 
   public onDeleteImage(itemId: string, imageId: string): Observable<void> {
     return this.itemService.deletePicture(itemId, imageId);
+  }
+
+  private calculatePendingFiles(files: UploadOutput[]): PendingFiles {
+    const totalFiles = files.length + 1;
+    const currentUploading = files.filter((file) => file.type === OUTPUT_TYPE.done).length + 2;
+    return { totalFiles, currentUploading };
+  }
+
+  private createItemWithFirstImage(
+    values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm,
+    file: UploadFile,
+    itemType: ITEM_TYPES
+  ): Observable<UploadOutput> {
+    let inputEvent: UploadInput;
+    if (itemType === ITEM_TYPES.CARS) {
+      inputEvent = this.buildUploadEvent(values, this.API_URL + '/cars', 'item_car');
+    } else if (itemType === ITEM_TYPES.REAL_ESTATE) {
+      inputEvent = this.buildUploadEvent(values, this.API_URL + '/real_estate', 'item_real_estate');
+    } else {
+      inputEvent = this.buildUploadEvent(values, this.API_URL, 'item');
+    }
+    return this.uploaderService.uploadFile(file, inputEvent);
+  }
+
+  private buildUploadEvent(
+    values: IProductUploadForm | IRealEstateUploadForm | ICarUploadForm,
+    url: string,
+    fieldName: string
+  ): UploadInput {
+    if (values.category_id !== REALESTATE_CATEGORY) {
+      delete values.location;
+    } else {
+      delete values.id;
+      delete values.category_id;
+    }
+
+    return {
+      url: environment.baseUrl + url,
+      method: 'POST',
+      fieldName: 'image',
+      data: {
+        [fieldName]: new Blob([JSON.stringify(values)], {
+          type: 'application/json',
+        }),
+      },
+      headers: this.getUploadHeaders(url, { 'X-DeviceOS': '0' }),
+    };
+  }
+
+  private uploadRemainingImages(itemId: string, files: UploadFile[], itemType: ITEM_TYPES): Observable<UploadOutput[]> {
+    const imagesRequest: Observable<UploadOutput>[] = [];
+    files.forEach((file: UploadFile) => {
+      imagesRequest.push(this.uploadSingleImage(file, itemId, itemType));
+    });
+    return combineLatest(imagesRequest);
+  }
+
+  private getUploadHeaders(url: string, additionalHeaders?: any): any {
+    return {
+      ...additionalHeaders,
+      [AUTHORIZATION_HEADER_NAME]: `Bearer ${this.accesTokenService.accessToken}`,
+    };
   }
 }

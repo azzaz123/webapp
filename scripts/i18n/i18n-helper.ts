@@ -9,6 +9,17 @@ enum LOCALE {
   ITALIAN = 'it'
 }
 
+const specialCharacters: SpecialCharacters[] = [
+  {
+    original: '%%',
+    replace: '%'
+  }
+]
+
+interface SpecialCharacters {
+  original: string,
+  replace: string
+}
 interface PhraseLocale {
   id: string;
   name: string;
@@ -395,7 +406,19 @@ class I18nHelper {
       }
     });
 
+   formattedMessage = this.escapeSpecialCharacters(formattedMessage);
+
     return formattedMessage;
+  }
+
+  private escapeSpecialCharacters(message: string): string {
+    let parsedMessage = message;
+    
+    specialCharacters.forEach(character => {
+      parsedMessage = parsedMessage.replace(character.original, character.replace);
+    });
+
+    return parsedMessage;
   }
 
   private getLocaleTranslations(locale: PhraseLocale): Promise<PhraseLocaleTranslations> {

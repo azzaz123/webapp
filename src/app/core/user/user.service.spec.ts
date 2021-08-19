@@ -846,4 +846,33 @@ describe('Service: User', () => {
       });
     });
   });
+
+  describe('Save local store', () => {
+    beforeEach(() => {
+      jest.spyOn(service, 'user', 'get').mockReturnValue(MOCK_USER);
+    });
+    it('should save data', () => {
+      spyOn(localStorage, 'setItem').and.callThrough();
+
+      service.saveLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION, 'true');
+
+      expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+      expect(localStorage.setItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`, 'true');
+    });
+  });
+
+  describe('Get local store', () => {
+    beforeEach(() => {
+      jest.spyOn(service, 'user', 'get').mockReturnValue(MOCK_USER);
+    });
+    it('should retrieve data', () => {
+      spyOn(localStorage, 'getItem').and.returnValue('true');
+
+      const value = service.getLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION);
+
+      expect(localStorage.getItem).toHaveBeenCalledTimes(1);
+      expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
+      expect(value).toEqual('true');
+    });
+  });
 });
