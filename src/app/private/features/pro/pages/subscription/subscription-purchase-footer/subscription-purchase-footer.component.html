@@ -32,10 +32,15 @@
             <tsl-button className="btn btn-primary btn-primary--bold btn--big btn--width" [loading]="isLoading"
                 [disabled]="buttonDisable" (click)="onClickButton()">{{buttonText}}</tsl-button>
         </div>
-        <div>
-            <span class="SubscriptionPurchaseFooter__legal" i18n="@@web_stripe_card_element_513">By subscribing, you
-                accept the <a href="{{termsAndConditionsURL}}" target="_blank">Terms of use</a>
-                and <a href="{{policyPrivacyURL}}" target="_blank">Privacy policy</a> of Wallapop S.L. and Stripe Ltd</span>
+        <div class="SubscriptionPurchaseFooter__legal">
+            <ng-container *ngIf="isEdit; else newSubscriptionLegalInformation">
+                <span i18n="@@pro_subscriptions_purchase_summary_change_plan_policy_description">The change will be effective as of today. Remember that you can cancel your subscription any time, with any obligation.</span>
+            </ng-container>
+            <ng-template #newSubscriptionLegalInformation>
+                <span i18n="@@web_stripe_card_element_513">By subscribing, you
+                    accept the <a href="{{termsAndConditionsURL}}" target="_blank">Terms of use</a>
+                    and <a href="{{policyPrivacyURL}}" target="_blank">Privacy policy</a> of Wallapop S.L. and Stripe Ltd</span>
+            </ng-template>
         </div>
     </div>
 </div>

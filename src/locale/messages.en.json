@@ -782,6 +782,7 @@
     "web_price_after_free_days": " at the end of free trial",
     "pro_subscription_purchase_summary_start_period_web": "starting from {$INTERPOLATION}",
     "web_monthly_renewal_plan": "The plan will be renewed monthly",
+    "pro_subscriptions_purchase_summary_change_plan_policy_description": "The change will be effective as of today. Remember that you can cancel your subscription any time, with any obligation.",
     "web_stripe_card_element_513": " By subscribing, you are accepting the {$START_LINK}terms & conditions{$CLOSE_LINK} and the {$START_LINK_1}privacy policy{$CLOSE_LINK} of Wallapop S.L. and Stripe Ltd ",
     "pro_subscriptions_purchase_summary_change_plan_apply_button": "Continue and modify",
     "web_pay": "Pay",
