@@ -2,14 +2,13 @@
 
 .SubscriptionPurchaseSuccess {
   &__title {
-    font-size: $font-size-xl;
+    font-size: $font-size-l;
     font-weight: $font-weight-chunky;
   }
 
   &__subtitle {
     color: $blue-grey-2;
-    font-size: $font-size-l;
-    margin-top: $spacing-ml;
+    font-size: $font-size-s;
   }
 
   &__buttons {
@@ -20,6 +19,15 @@
   @include media-breakpoint-up(md) {
     .GenericCard {
       padding: $spacing-xxl;
+    }
+
+    &__title {
+      font-size: $font-size-xl;
+    }
+
+    &__subtitle {
+      font-size: $font-size-l;
+      margin-top: $spacing-ml;
     }
   }
 }
