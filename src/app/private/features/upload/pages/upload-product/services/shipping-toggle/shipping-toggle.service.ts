@@ -40,9 +40,9 @@ export class ShippingToggleService {
 
   private buildShippingToggleAllowance(categoryId: string, subcategoryId: string, price: number): ShippingToggleAllowance {
     return {
-      category: this.isAllowedByCategoryShippingRules(categoryId),
-      subcategory: this.isAllowedBySubcategoryShippingRules(subcategoryId),
-      price: this.isAllowedByPriceShippingRules(price),
+      category: !categoryId ? true : this.isAllowedByCategoryShippingRules(categoryId),
+      subcategory: !subcategoryId ? true : this.isAllowedBySubcategoryShippingRules(subcategoryId),
+      price: price === (null || undefined) ? true : this.isAllowedByPriceShippingRules(price),
     };
   }
 

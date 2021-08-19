@@ -70,6 +70,23 @@ describe('ShippingToggleService', () => {
       });
     });
 
+    describe('and some of the data is not defined', () => {
+      it('should return to true the data that is not defined', (done) => {
+        const notAllowedSubategoryId = FALLBACK_SHIPPING_RULES_RESPONSE.subcategories_with_shipping_not_allowed[0].toString();
+
+        const expected: ShippingToggleAllowance = {
+          category: true,
+          subcategory: false,
+          price: true,
+        };
+
+        service.isAllowed(undefined, notAllowedSubategoryId, undefined).subscribe((shippingToggleAllowance) => {
+          expect(shippingToggleAllowance).toEqual(expected);
+          done();
+        });
+      });
+    });
+
     describe('and NOT all the data allows it', () => {
       const allowedCategoryId = '1';
       const allowedSubategoryId = '1';
