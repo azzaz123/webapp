@@ -1,5 +1,8 @@
 <div class="WalletPendingTransactionsList">
-  <div class="WalletPendingTransactionsList__transactions" [ngStyle]="tansactionsWrapperStyle">
+  <div class="WalletPendingTransactionsList__transactions"
+    [ngClass]="{ 'WalletPendingTransactionsList__transactions--animated': animated }"
+    [ngStyle]="tansactionsWrapperStyle"
+  >
     <div class="WalletPendingTransactionsList__transactions__element" *ngFor="let pendingTransaction of pendingTransactions">
       <tsl-wallet-pending-transaction [walletPendingTransaction]="pendingTransaction"></tsl-wallet-pending-transaction>
     </div>

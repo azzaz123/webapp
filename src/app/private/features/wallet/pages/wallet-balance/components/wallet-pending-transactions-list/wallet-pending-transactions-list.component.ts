@@ -23,11 +23,13 @@ export class WalletPendingTransactionsListComponent implements AfterViewInit {
   @Input() pendingTransactions: PendingTransaction[];
   @ViewChildren(WalletPendingTransactionComponent, { read: ElementRef }) private pendingTransactionsRef: QueryList<ElementRef>;
   public isExpanded = false;
+  public animated = false;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
     this.changeDetectorRef.detectChanges();
+    this.activateAnimation();
   }
 
   public isPendingTransactionVisible(index: number): boolean {
@@ -43,6 +45,10 @@ export class WalletPendingTransactionsListComponent implements AfterViewInit {
     return {
       height: `${this.getTransactionContainerHeight()}px`,
     };
+  }
+
+  private activateAnimation(): void {
+    this.animated = true;
   }
 
   private getTransactionContainerHeight(): number {

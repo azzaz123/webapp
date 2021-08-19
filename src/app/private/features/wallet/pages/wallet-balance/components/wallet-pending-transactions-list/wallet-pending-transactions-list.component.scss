@@ -4,12 +4,14 @@
   &__transactions {
     overflow: hidden;
 
-    transition: height 0.4s ease;
-
     &__element {
       &:not(:last-child) {
         margin-bottom: $spacing-xs;
       }
+    }
+
+    &--animated {
+      transition: height 0.4s ease;
     }
   }
 
