@@ -14,8 +14,8 @@ export class UserAvatarComponent implements OnInit, OnChanges {
   public uploadedAvatar;
   public fallback: string;
   public badgeSize = 22;
+  public badgeStyles = {};
   public readonly PERMISSIONS = PERMISSIONS;
-  @Input() badgeStyles = {};
   @Input() user: User | InboxUser;
   @Input() size = 40;
   @Input() imageUrl: string;

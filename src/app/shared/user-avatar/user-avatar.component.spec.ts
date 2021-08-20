@@ -107,6 +107,7 @@ describe('Component: UserAvatar', () => {
         beforeEach(() => {
           component.showProBadge = false;
           component.showProBadgeWide = true;
+          component.ngOnInit();
           fixture.detectChanges();
           proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
         });
@@ -161,26 +162,26 @@ describe('Component: UserAvatar', () => {
         });
       });
 
-      describe('and when PRO badge large should be shown', () => {
+      describe('and when wide PRO badge should be shown', () => {
         beforeEach(() => {
           component.showProBadgeWide = true;
           fixture.detectChanges();
           proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
         });
 
-        it('should not show PRO badge large', () => {
+        it('should not show wide PRO badge', () => {
           expect(proBadgeElement).toBeFalsy();
         });
       });
 
-      describe('and when PRO badge large should NOT be shown', () => {
+      describe('and when wide PRO badge should NOT be shown', () => {
         beforeEach(() => {
           component.showProBadgeWide = false;
           fixture.detectChanges();
           proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
         });
 
-        it('should NOT show PRO badge large', () => {
+        it('should NOT show wide PRO badge', () => {
           expect(proBadgeElement).toBeFalsy();
         });
       });
