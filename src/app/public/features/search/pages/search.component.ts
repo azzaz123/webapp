@@ -164,10 +164,8 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
     this.subscription.add(
       this.queryParamsChange().subscribe((params) => {
-        if (!this.paramsHaveSortBy(params)) {
-          if (!this.sortByService.isRelevanceFeatureFlagActive) {
-            params.push({ key: FILTER_QUERY_PARAM_KEY.orderBy, value: SORT_BY_DISTANCE_OPTION.value });
-          }
+        if (this.forceSortByDistance(params)) {
+          params.push({ key: FILTER_QUERY_PARAM_KEY.orderBy, value: SORT_BY_DISTANCE_OPTION.value });
         }
 
         if (!this.paramsHaveLocation(params)) {
@@ -240,10 +238,8 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   private handleSearchResponseExtraData(searchResponseExtraData: SearchResponseExtraData): void {
     const categoryId = this.filterParameterStore.getParametersByKeys([FILTER_QUERY_PARAM_KEY.categoryId])[0]?.value;
-    const categoryWithSortByRelevanceEnabled =
-      categoryId !== CATEGORY_IDS.CAR.toString() && categoryId !== CATEGORY_IDS.REAL_ESTATE.toString(); // temporal until we open cars and real estate relevance for web
 
-    if (searchResponseExtraData.sortBy && categoryWithSortByRelevanceEnabled) {
+    if (searchResponseExtraData.sortBy && this.categoryWithSortByRelevanceEnabled(categoryId)) {
       this.sortBySubject.next(searchResponseExtraData.sortBy);
 
       const isSortByRelevance = searchResponseExtraData.sortBy === SORT_BY.RELEVANCE;
@@ -336,5 +332,18 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   private paramsHaveSortBy(params: FilterParameter[]): boolean {
     return params.some((param) => param.key === FILTER_QUERY_PARAM_KEY.orderBy);
+  }
+
+  private categoryWithSortByRelevanceEnabled(categoryId: string): boolean {
+    return categoryId !== CATEGORY_IDS.CAR.toString() && categoryId !== CATEGORY_IDS.REAL_ESTATE.toString();
+  }
+
+  private paramsHaveKeywords(params: FilterParameter[]): boolean {
+    return params.some((param) => param.key === FILTER_QUERY_PARAM_KEY.keywords);
+  }
+
+  private forceSortByDistance(params: FilterParameter[]): boolean {
+    const categoryId = params.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
+    return !this.paramsHaveSortBy(params) && this.paramsHaveKeywords(params) && this.categoryWithSortByRelevanceEnabled(categoryId);
   }
 }
