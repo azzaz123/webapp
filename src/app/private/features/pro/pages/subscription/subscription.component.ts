@@ -147,7 +147,7 @@ export class SubscriptionsComponent implements OnInit {
         ),
         take(30),
         finalize(() => {
-          this.responseUpdated(redirect);
+          this.redirectIfNeeded(redirect);
         })
       )
       .subscribe((updatedUser) => {
@@ -169,7 +169,7 @@ export class SubscriptionsComponent implements OnInit {
         ),
         take(30),
         finalize(() => {
-          this.responseUpdated(redirect);
+          this.redirectIfNeeded(redirect);
         })
       )
       .subscribe((updatedSubscriptions) => {
@@ -180,7 +180,7 @@ export class SubscriptionsComponent implements OnInit {
       });
   }
 
-  private responseUpdated(redirect?: string): void {
+  private redirectIfNeeded(redirect?: string): void {
     if (redirect) {
       this.router.navigate([redirect]);
     }
