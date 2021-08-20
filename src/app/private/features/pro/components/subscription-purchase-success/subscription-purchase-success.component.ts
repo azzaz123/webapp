@@ -13,14 +13,6 @@ export class SubscriptionPurchaseSuccessComponent {
   @Output() redirectTo: EventEmitter<string | void> = new EventEmitter();
   public readonly PRIVATE_PATHS = PRIVATE_PATHS;
 
-  public badgeConfig = {
-    url: '/assets/icons/badge-pro-dark-narrow.svg',
-    badgeStyle: {
-      'bottom.px': 4,
-      'left.px': 54,
-    },
-  };
-
   public onClose(redirectTo?: string): void {
     this.redirectTo.emit(redirectTo);
   }

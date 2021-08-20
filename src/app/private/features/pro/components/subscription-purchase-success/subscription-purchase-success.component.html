@@ -1,7 +1,7 @@
 <div class="SubscriptionPurchaseSuccess">
     <div class="GenericCard d-flex flex-column text-center align-items-center p-md-5">
         <div class="mb-4">
-            <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.large" size="90" [customBadgeUrl]="badgeConfig.url" [badgeStyles]="badgeConfig.badgeStyle"></tsl-user-avatar>
+            <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.large" size="90" [showProBadgeWide]="true"></tsl-user-avatar>
         </div>
         <div class="SubscriptionPurchaseSuccess__title">
             <span  i18n="@@purchase_confirmation_view_pro_users_description">Awesome, {{user?.firstName}}! Now you are PRO</span>

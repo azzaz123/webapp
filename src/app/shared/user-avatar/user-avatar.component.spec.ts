@@ -103,6 +103,35 @@ describe('Component: UserAvatar', () => {
           expect(proBadgeElement).toBeFalsy();
         });
       });
+      describe('and when PRO badge large should be shown', () => {
+        beforeEach(() => {
+          component.showProBadge = false;
+          component.showProBadgeWide = true;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
+
+        it('should show PRO badge', () => {
+          expect(proBadgeElement).toBeTruthy();
+        });
+
+        it('should be shown in defined position', () => {
+          expect(proBadgeElement.nativeElement.style._values).toEqual({ bottom: '4px', left: '54px' });
+        });
+      });
+
+      describe('and when PRO badge large should NOT be shown', () => {
+        beforeEach(() => {
+          component.showProBadge = false;
+          component.showProBadgeWide = false;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
+
+        it('should NOT show PRO badge', () => {
+          expect(proBadgeElement).toBeFalsy();
+        });
+      });
     });
     describe('and has not subscriptions permission', () => {
       beforeEach(() => {
@@ -131,52 +160,28 @@ describe('Component: UserAvatar', () => {
           expect(proBadgeElement).toBeFalsy();
         });
       });
-    });
-    describe('and has not custom badge', () => {
-      beforeEach(() => {
-        permissionService.addPermission(PERMISSIONS.subscriptions);
-        component.showProBadge = false;
-        component.customBadgeUrl = null;
-      });
-      it('should not show badge', () => {
-        fixture.detectChanges();
-        const badgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
 
-        expect(badgeElement).toBeFalsy();
-      });
-    });
-    describe('and has custom badge', () => {
-      beforeEach(() => {
-        permissionService.addPermission(PERMISSIONS.subscriptions);
-        component.showProBadge = false;
-        component.customBadgeUrl = 'test.svg';
-      });
-      it('should show badge', () => {
-        fixture.detectChanges();
-        const badgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
-
-        expect(badgeElement).toBeTruthy();
-      });
-      describe('and has custom styles', () => {
+      describe('and when PRO badge large should be shown', () => {
         beforeEach(() => {
-          component.badgeStyles = {
-            'bottom.px': 4,
-            'left.px': 54,
-          };
-        });
-        it('should set custom styles', () => {
+          component.showProBadgeWide = true;
           fixture.detectChanges();
-          const badgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
 
-          expect(badgeElement.nativeElement.style._values).toEqual({ bottom: '4px', left: '54px' });
+        it('should not show PRO badge large', () => {
+          expect(proBadgeElement).toBeFalsy();
         });
       });
-      describe('and has not custom styles', () => {
-        it('should not set custom styles', () => {
-          fixture.detectChanges();
-          const badgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
 
-          expect(badgeElement.nativeElement.style._values).toEqual({});
+      describe('and when PRO badge large should NOT be shown', () => {
+        beforeEach(() => {
+          component.showProBadgeWide = false;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
+
+        it('should NOT show PRO badge large', () => {
+          expect(proBadgeElement).toBeFalsy();
         });
       });
     });

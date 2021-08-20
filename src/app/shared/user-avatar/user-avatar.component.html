@@ -12,6 +12,6 @@
        [ngClass]="'avatar-' + size" />
        <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
          <tsl-svg-icon *ngIf="showProBadge" class="position-absolute bottom-0 end-0" src="/assets/icons/pro-seal.svg" [width]="badgeSize" [height]="badgeSize" [ngStyle]="badgeStyles"></tsl-svg-icon>
+         <tsl-svg-icon *ngIf="showProBadgeWide" class="position-absolute" src="/assets/icons/badge-pro-dark-narrow.svg" [ngStyle]="badgeStyles"></tsl-svg-icon>
        </ng-container>
-       <tsl-svg-icon *ngIf="customBadgeUrl" class="position-absolute" [src]="customBadgeUrl" [ngStyle]="badgeStyles"></tsl-svg-icon>
 </div>
