@@ -817,7 +817,7 @@ describe('UploadProductComponent', () => {
           latitude: 41.399132621722174,
           longitude: 2.17585484411869,
         },
-        sale_conditions: MOCK_ITEM_FASHION.saleConditions,
+        sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: null },
         sale_price: 1000000,
         title: 'test',
       };
@@ -866,7 +866,7 @@ describe('UploadProductComponent', () => {
           latitude: 41.399132621722174,
           longitude: 2.17585484411869,
         },
-        sale_conditions: MOCK_ITEM_FASHION.saleConditions,
+        sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: null },
         sale_price: 1000000,
         title: 'test',
       };
@@ -1416,7 +1416,7 @@ describe('UploadProductComponent', () => {
         sale_price: 1000000,
         currency_code: 'EUR',
         images: [{ image: true }],
-        sale_conditions: MOCK_ITEM.saleConditions,
+        sale_conditions: { ...MOCK_ITEM.saleConditions, supports_shipping: null },
         delivery_info: null,
         location: {
           address: USER_LOCATION.full_address,
