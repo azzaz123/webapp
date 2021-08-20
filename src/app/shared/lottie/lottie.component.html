@@ -1,0 +1,11 @@
+<div class="d-flex w-100 h-100 align-content-center">
+  <tsl-svg-icon *ngIf="loading$ | async" class="d-flex w-100 align-items-center justify-content-center spinner"
+    [src]="loadingIconSrc" [width]="iconsSizePercentatge" [height]="iconsSizePercentatge" [sizeUnit]="'%'">
+  </tsl-svg-icon>
+
+  <tsl-svg-icon *ngIf="error$ | async" class="d-flex w-100 align-items-center justify-content-center"
+    [src]="fallbackIconSrc" [width]="iconsSizePercentatge" [height]="iconsSizePercentatge" [fill]="fallbackIconFill" [sizeUnit]="'%'">
+  </tsl-svg-icon>
+  
+  <div #lottieContainer *ngIf="showLottie$ | async"></div>
+</div>
