@@ -1,10 +1,11 @@
 import { AnimationConfigWithPath, AnimationEventName } from 'lottie-web';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 export class MockLottiePlayer {
   public static MOCK_LOTTIE_CONTAINER_CLASS = 'lottieContainer';
 
   public eventQueue = [];
+  public animationDestroyed$ = new Subject();
 
   constructor(callback?: () => {}) {
     if (callback) {
@@ -21,7 +22,7 @@ export class MockLottiePlayer {
 
     return {
       addEventListener,
-      destroy: () => {},
+      destroy: () => this.animationDestroyed$.next(),
     };
   }
 

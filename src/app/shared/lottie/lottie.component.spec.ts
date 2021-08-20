@@ -110,5 +110,16 @@ describe('LottieComponent', () => {
         expect(svgIcons[0].componentInstance.src).toBe(component.fallbackIconSrc);
       });
     });
+
+    describe('and when removing element from browser', () => {
+      it('should remove Lottie animation from browser', fakeAsync(() => {
+        let wasAnimationDestroyed = false;
+
+        mockLottiePlayer.animationDestroyed$.subscribe(() => (wasAnimationDestroyed = true));
+        component.ngOnDestroy();
+
+        expect(wasAnimationDestroyed).toBe(true);
+      }));
+    });
   });
 });
