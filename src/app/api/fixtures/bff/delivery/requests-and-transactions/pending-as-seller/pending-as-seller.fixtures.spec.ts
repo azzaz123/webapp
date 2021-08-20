@@ -1,7 +1,26 @@
 import { RequestsAndTransactionsPendingAsSellerApi } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/dtos/responses';
 
 export const MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_API: RequestsAndTransactionsPendingAsSellerApi = {
-  requests: [],
+  requests: [
+    {
+      buyer_user_hash: 'buyer user hash',
+      buyer_user_image: 'buyer user image',
+      buyer_user_name: 'buyer user name',
+      fail_reason: 'fail reason',
+      id: 'the id',
+      item_cost: {
+        amount: 13,
+        currency: 'the currency',
+      },
+      item_hash: 'item hash',
+      item_image: 'item image',
+      item_name: 'item name',
+      seller_user_hash: 'seller user hash',
+      seller_user_image: 'seller user image',
+      seller_user_name: 'seller user name',
+      status: 'the status',
+    },
+  ],
   transactions: [
     {
       id: '81891bfa-9df3-41f9-9411-0cd85d1daf9e',

@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/bff/delivery/requests-and-transactions/pending-as-seller/pending-transactions-fixtures.spec';
+import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
 import { WalletPendingTransactionsListComponent } from './wallet-pending-transactions-list.component';
 
 describe('WalletPendingTransactionsListComponent', () => {
@@ -8,13 +10,14 @@ describe('WalletPendingTransactionsListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WalletPendingTransactionsListComponent],
+      declarations: [WalletPendingTransactionComponent, WalletPendingTransactionsListComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WalletPendingTransactionsListComponent);
     component = fixture.componentInstance;
+    component.pendingTransactions = MOCK_PENDING_TRANSACTIONS;
     fixture.detectChanges();
   });
 

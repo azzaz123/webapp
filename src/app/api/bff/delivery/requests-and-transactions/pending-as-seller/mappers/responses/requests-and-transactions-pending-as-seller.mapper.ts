@@ -10,6 +10,10 @@ export const mapRequestsAndTransactionsPendingAsSellerToPendingBalance: ToDomain
   RequestsAndTransactionsPendingAsSellerApi,
   PendingTransaction[]
 > = (input: RequestsAndTransactionsPendingAsSellerApi): PendingTransaction[] => {
+  if (!input) {
+    return [];
+  }
+
   const { transactions } = input;
   const mappedTransactions = [];
 
