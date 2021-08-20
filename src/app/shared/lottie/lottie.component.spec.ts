@@ -3,41 +3,14 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { LottieService } from '@core/lottie/lottie.service';
+import { MockLottiePlayer, MockLottieService } from '@fixtures/lottie.fixtures.spec';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { AnimationConfigWithPath, AnimationEventName } from 'lottie-web';
-import { of } from 'rxjs';
+import { AnimationEventName } from 'lottie-web';
 
 import { LottieComponent } from './lottie.component';
 
-class MockLottiePlayer {
-  public static MOCK_LOTTIE_CONTAINER_CLASS = 'lottieContainer';
-
-  public eventQueue = [];
-
-  public loadAnimation(config: AnimationConfigWithPath) {
-    const addEventListener = (animationEventName: AnimationEventName, callBack: () => {}) => {
-      this.eventQueue.push({ animationEventName, callBack });
-    };
-
-    config.container.setAttribute('class', MockLottiePlayer.MOCK_LOTTIE_CONTAINER_CLASS);
-
-    return {
-      addEventListener,
-      destroy: () => {},
-    };
-  }
-
-  public triggerEvent(animationEventName: AnimationEventName) {
-    this.eventQueue.find((event) => event.animationEventName === animationEventName)?.callBack();
-  }
-}
-
 const mockLottiePlayer = new MockLottiePlayer();
-
-const MockLottieService = {
-  lottiePlayer$: of(mockLottiePlayer),
-};
 
 describe('LottieComponent', () => {
   let component: LottieComponent;
@@ -54,7 +27,7 @@ describe('LottieComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SvgIconModule, HttpClientTestingModule],
-      providers: [{ provide: LottieService, useValue: MockLottieService }],
+      providers: [{ provide: LottieService, useValue: MockLottieService(mockLottiePlayer) }],
       declarations: [LottieComponent],
     }).compileComponents();
   });
