@@ -135,11 +135,11 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag> | []> {
-    let newModel = this.searchValue.substring(1);
-    if (!newModel) {
+    let newSearchValue = this.searchValue.substring(1);
+    if (!newSearchValue) {
       return of([]);
     } else {
-      return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, newModel);
+      return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, newSearchValue);
     }
   }
 
@@ -165,9 +165,9 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
-    let newModel = this.searchValue.substring(1);
-    if (!!newModel) {
-      return [{ label: `#${newModel}`, sublabel: '0', value: `#${newModel}` }];
+    let newSearchValue = this.searchValue.substring(1);
+    if (!!newSearchValue) {
+      return [{ label: `#${newSearchValue}`, sublabel: '0', value: `#${newSearchValue}` }];
     } else return [];
   }
 
@@ -177,6 +177,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
       if (option.checked && !this.value.includes(option.value)) {
         newValue = newValue.concat(option.value);
       }
+
       if (!option.checked && this.value.includes(option.value)) {
         newValue = newValue.filter((value) => {
           return value !== option.value;
