@@ -34,8 +34,7 @@ export class SubscriptionEditComponent implements OnInit {
   @Input() subscription: SubscriptionsResponse;
   @Input() user: User;
   @Input() editMode: boolean;
-  @Output() editSuccesful: EventEmitter<void> = new EventEmitter();
-  @Output() unselectSubcription: EventEmitter<void> = new EventEmitter();
+  @Output() editSuccesful: EventEmitter<string> = new EventEmitter();
 
   public stripeCards: FinancialCard[];
   public selectedCard: FinancialCard;
@@ -47,6 +46,7 @@ export class SubscriptionEditComponent implements OnInit {
   public benefits: string[];
   public isLoading: boolean;
   public isEqualTier: boolean;
+  public showEditSuccessful: boolean;
 
   constructor(
     private subscriptionsService: SubscriptionsService,
@@ -86,12 +86,7 @@ export class SubscriptionEditComponent implements OnInit {
       )
       .subscribe((response) => {
         if (response.status === PAYMENT_SUCCESSFUL_CODE) {
-          this.editSuccesful.emit();
-          this.toastService.show({
-            title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_TITLE)}`,
-            text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_BODY)}`,
-            type: TOAST_TYPES.SUCCESS,
-          });
+          this.showEditSuccessful = true;
         } else {
           this.toastService.show({
             title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_TITLE)}`,
@@ -100,6 +95,10 @@ export class SubscriptionEditComponent implements OnInit {
           });
         }
       });
+  }
+
+  public onRedirectTo(path: string) {
+    this.editSuccesful.emit(path);
   }
 
   private trackClickConfirmEdit(): void {

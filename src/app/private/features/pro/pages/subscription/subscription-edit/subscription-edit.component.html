@@ -1,3 +1,7 @@
+<ng-container *ngIf="showEditSuccessful; else editInProgress">
+    <tsl-subscription-purchase-success [user]="user" [invoicedRequired]="isInvoiceRequired" (redirectTo)="onRedirectTo($event)"></tsl-subscription-purchase-success>
+</ng-container>
+<ng-template #editInProgress>
 <div class="SubscriptionEdit">
     <div class="GenericCard text-md-left text-center">
         <div class="d-flex justify-content-between">
@@ -25,3 +29,4 @@
 <tsl-subscription-purchase-footer [selectedTier]="selectedTier" [buttonDisable]="isLoading || isEqualTier" [isEdit]="true"
     [isLoading]="isLoading" [subscription]="subscription" (buttonPurchaseClick)="onPurchaseButtonClick()">
 </tsl-subscription-purchase-footer>
+</ng-template>
