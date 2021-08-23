@@ -42,7 +42,6 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   @Output() showInvalidMessage = new EventEmitter<boolean>();
 
   public selected: string[];
-  public start: string = '0';
   public model: string;
   public options: SelectFormOption<string>[] = [];
   public suggestions: MultiSelectValue = [];
@@ -140,7 +139,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     if (!newModel) {
       return of([]);
     } else {
-      return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, this.start, newModel);
+      return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, newModel);
     }
   }
 
