@@ -18,8 +18,8 @@ import { MultiSelectFormOption } from '@shared/form/components/multi-select-form
 import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
-import { fromEvent, Observable, of, Subscription } from 'rxjs';
-import { debounceTime, filter, switchMap } from 'rxjs/operators';
+import { Observable, of, Subject, Subscription } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
   selector: 'tsl-suggester-input',
@@ -48,8 +48,9 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public isValid: boolean = true;
   public hashtagPlaceholder: string = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
   public showOptions: boolean;
+  public keyUpSubject = new Subject<KeyboardEvent>();
   private extendedOptions: MultiSelectFormOption[];
-  private fromEvent$: Observable<unknown>;
+  private keyUp$: Observable<unknown>;
   private subscriptions = new Subscription();
 
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
@@ -78,14 +79,17 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public keyUp(event): void {
     if (event.key === 'Escape') {
       this.emptyOptions();
+      return;
     }
     if (!this.isValidKey()) {
       this.showInvalidMessage.emit(!this.isValid);
       this.emptyOptions();
+      return;
     }
     if (this.searchValue.length >= 1 && !this.searchValue.includes('#')) {
       this.searchValue = `#${this.searchValue}`;
     }
+    this.keyUpSubject.next(event);
   }
 
   public focus() {
@@ -106,10 +110,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public detectTitleKeyboardChanges(): void {
-    this.fromEvent$ = fromEvent(this.hashtagSuggesterInput.nativeElement, 'keyup').pipe(
-      filter((key: KeyboardEvent) => {
-        return key.key !== 'Escape';
-      }),
+    this.keyUp$ = this.keyUpSubject.pipe(
       debounceTime(750),
       switchMap(() => {
         this.suggestions = this.value;
@@ -120,7 +121,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     );
 
     this.subscriptions.add(
-      this.fromEvent$.subscribe((options: PaginatedList<Hashtag> | []) => {
+      this.keyUp$.subscribe((options: PaginatedList<Hashtag> | []) => {
         if (Array.isArray(options)) {
           this.options = options;
         } else {
