@@ -30,7 +30,7 @@ describe('SuggesterInputComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SuggesterInputComponent);
     component = fixture.componentInstance;
-    component.model = '';
+    component.searchValue = '';
     hashtagSuggesterApiService = TestBed.inject(HashtagSuggesterApiService);
     inputElement = fixture.debugElement.query(By.css('.SuggesterInput'));
     fixture.detectChanges();
@@ -104,7 +104,7 @@ describe('SuggesterInputComponent', () => {
         inputElement.triggerEventHandler('keyup', {});
         fixture.detectChanges();
 
-        expect(component.model).toBe('#sss');
+        expect(component.searchValue).toBe('#sss');
       });
     });
 
@@ -176,7 +176,7 @@ describe('SuggesterInputComponent', () => {
       spyOn(component, 'emptyOptions');
 
       const event: any = {
-        target: component.formMenu.nativeElement as HTMLElement,
+        target: component.hashtagSuggesterOptions.nativeElement as HTMLElement,
       };
 
       component.onWindowClick(event);

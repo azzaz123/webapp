@@ -42,7 +42,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   @Output() showInvalidMessage = new EventEmitter<boolean>();
 
   public selected: string[];
-  public model: string;
+  public searchValue: string;
   public options: SelectFormOption<string>[] = [];
   public suggestions: MultiSelectValue = [];
   public isValid: boolean = true;
@@ -83,8 +83,8 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
       this.showInvalidMessage.emit(!this.isValid);
       this.emptyOptions();
     }
-    if (this.model.length >= 1 && !this.model.includes('#')) {
-      this.model = `#${this.model}`;
+    if (this.searchValue.length >= 1 && !this.searchValue.includes('#')) {
+      this.searchValue = `#${this.searchValue}`;
     }
   }
 
@@ -135,7 +135,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag> | []> {
-    let newModel = this.model.substring(1);
+    let newModel = this.searchValue.substring(1);
     if (!newModel) {
       return of([]);
     } else {
@@ -145,13 +145,13 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   private mapHashtagSuggestersToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
     let { list } = hashtagList;
-    if (!list.length && !!this.model) {
+    if (!list.length && !!this.searchValue) {
       return this.createHashtagSuggesterOption();
     }
     let options = list.map((hashtag: Hashtag) => {
       return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     });
-    if (options[0].label !== this.model) {
+    if (options[0].label !== this.searchValue) {
       return this.sliceOptions([...this.createHashtagSuggesterOption(), ...options]);
     } else {
       return this.sliceOptions(options);
@@ -165,7 +165,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
-    let newModel = this.model.substring(1);
+    let newModel = this.searchValue.substring(1);
     if (!!newModel) {
       return [{ label: `#${newModel}`, sublabel: '0', value: `#${newModel}` }];
     } else return [];
@@ -189,10 +189,10 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   public isValidKey(): boolean {
     const pattern: RegExp = /^#$|^#?([\p{L}\p{Nd}])+$/u;
-    if (!this.model) {
+    if (!this.searchValue) {
       this.isValid = true;
     } else {
-      this.isValid = pattern.test(this.model);
+      this.isValid = pattern.test(this.searchValue);
     }
     this.showInvalidMessage.emit(!this.isValid);
     return this.isValid;
