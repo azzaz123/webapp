@@ -53,6 +53,7 @@ describe('SuggesterInputComponent', () => {
   describe('when user focus the input', () => {
     it('should have the placeholder changed to #', () => {
       inputElement.nativeElement.focus();
+      fixture.detectChanges();
 
       expect(inputElement.nativeElement.placeholder).toBe('#');
     });
