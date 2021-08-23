@@ -49,6 +49,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   public isValid: boolean = true;
   public hashtagPlaceholder: string = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
   public showOptions: boolean;
+  public placeholder: string;
   private extendedOptions: MultiSelectFormOption[];
   private fromEvent$: Observable<unknown>;
   private subscriptions = new Subscription();
@@ -90,11 +91,11 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public focus() {
-    this.hashtagSuggester.nativeElement.placeholder = '#';
+    this.placeholder = '#';
   }
 
   public blur() {
-    this.hashtagSuggester.nativeElement.placeholder = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
+    this.placeholder = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
   }
 
   public writeValue(value): void {
