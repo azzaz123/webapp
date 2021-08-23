@@ -36,9 +36,9 @@ import { HashtagSuggesterApiService } from '../../private/features/upload/core/s
 export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit {
   @Input() categoryId: string;
   @Input() disabled: boolean;
-  @ViewChild('hashtagSuggester', { static: true }) hashtagSuggester: ElementRef;
+  @ViewChild('hashtagSuggesterInput', { static: true }) hashtagSuggesterInput: ElementRef;
   @ViewChild(MultiSelectFormComponent) multiSelectFormComponent: MultiSelectFormComponent;
-  @ViewChild('formMenu') formMenu: ElementRef;
+  @ViewChild('hashtagSuggesterOptions') hashtagSuggesterOptions: ElementRef;
   @Output() showInvalidMessage = new EventEmitter<boolean>();
 
   public selected: string[];
@@ -71,7 +71,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   @HostListener('window:click', ['$event']) onWindowClick(n: Event) {
-    if ((n.target as HTMLElement).contains(this.formMenu.nativeElement)) {
+    if ((n.target as HTMLElement).contains(this.hashtagSuggesterOptions.nativeElement)) {
       this.emptyOptions();
     }
   }
@@ -107,7 +107,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
   }
 
   public detectTitleKeyboardChanges(): void {
-    this.fromEvent$ = fromEvent(this.hashtagSuggester.nativeElement, 'keyup').pipe(
+    this.fromEvent$ = fromEvent(this.hashtagSuggesterInput.nativeElement, 'keyup').pipe(
       filter((key: KeyboardEvent) => {
         return key.key !== 'Escape';
       }),
