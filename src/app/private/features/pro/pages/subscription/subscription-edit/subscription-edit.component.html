@@ -1,5 +1,5 @@
 <ng-container *ngIf="showEditSuccessful; else editInProgress">
-    <tsl-subscription-purchase-success [user]="user" [invoicedRequired]="isInvoiceRequired" (redirectTo)="onRedirectTo($event)"></tsl-subscription-purchase-success>
+    <tsl-subscription-purchase-success [user]="user" [invoicedRequired]="isInvoiceRequired" (redirectTo)="onRedirectTo($event)" [isEditSubscription]="true"></tsl-subscription-purchase-success>
 </ng-container>
 <ng-template #editInProgress>
 <div class="SubscriptionEdit">

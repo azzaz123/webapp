@@ -10,6 +10,8 @@ import { PRIVATE_PATHS } from '@private/private-routing-constants';
 export class SubscriptionPurchaseSuccessComponent {
   @Input() user: User;
   @Input() invoicedRequired: boolean;
+  @Input() isEditSubscription: boolean;
+
   @Output() redirectTo: EventEmitter<string | void> = new EventEmitter();
   public readonly PRIVATE_PATHS = PRIVATE_PATHS;
 
