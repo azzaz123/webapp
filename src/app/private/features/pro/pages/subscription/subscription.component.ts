@@ -72,14 +72,21 @@ export class SubscriptionsComponent implements OnInit {
   public manageSubscription(subscription: SubscriptionsResponse): void {
     const modal = this.getModalTypeDependingOnSubscription(subscription);
     if (!modal) {
-      if (this.subscriptionsService.isStripeSubscription(subscription)) {
-        this.editSubscription = subscription;
-      } else {
-        this.setNewSubscription(subscription);
-      }
+      this.openSubscriptionPage(subscription);
     } else {
       this.openSubscriptionModal(subscription, modal);
     }
+  }
+
+  private openSubscriptionPage(subscription): void {
+    this.subscriptionsService.isStripeSubscription(subscription)
+      ? this.openEditSubscription(subscription)
+      : this.setNewSubscription(subscription);
+  }
+
+  private openEditSubscription(subscription: SubscriptionsResponse): void {
+    this.editSubscription = subscription;
+    this.trackEditSubscription(subscription);
   }
 
   public subscriptionChangeSuccessful(redirect?: string): void {
@@ -138,8 +145,6 @@ export class SubscriptionsComponent implements OnInit {
         modalRef = null;
       }
     );
-
-    this.trackOpenModalEvent(subscription, modal);
   }
 
   private isUserUpdated(redirect?: string): void {
@@ -215,20 +220,17 @@ export class SubscriptionsComponent implements OnInit {
     this.analyticsService.trackPageView(pageView);
   }
 
-  private trackOpenModalEvent(subscription: SubscriptionsResponse, modalType: SubscriptionModal): void {
-    if (modalType === EditSubscriptionModalComponent) {
-      const event: AnalyticsEvent<ClickProfileEditCurrentSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ClickProfileEditCurrentSubscription,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
-          tier: subscription.selected_tier_id,
-          screenId: SCREEN_IDS.ProfileSubscription,
-        },
-      };
-
-      return this.analyticsService.trackEvent(event);
-    }
+  private trackEditSubscription(subscription: SubscriptionsResponse): void {
+    const event: AnalyticsEvent<ClickProfileEditCurrentSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickProfileEditCurrentSubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        tier: subscription.selected_tier_id,
+        screenId: SCREEN_IDS.ProfileSubscription,
+      },
+    };
+    return this.analyticsService.trackEvent(event);
   }
 
   private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse): SubscriptionModal {

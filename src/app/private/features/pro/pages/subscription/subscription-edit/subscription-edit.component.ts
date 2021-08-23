@@ -7,7 +7,6 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
@@ -58,10 +57,10 @@ export class SubscriptionEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.benefits = this.benefitsService.getBenefitsByCategory(this.subscription.category_id);
     this.subscribedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.selected_tier_id);
     this.selectedTier = this.subscribedTier;
     this.availableTiers = this.subscription.tiers.filter((tier) => tier.id !== this.subscription.selected_tier_id);
-    this.benefits = this.benefitsService.getBenefitsByCategory(this.subscription.category_id);
     this.checkTier();
   }
 
@@ -70,8 +69,8 @@ export class SubscriptionEditComponent implements OnInit {
     this.checkTier();
   }
 
-  private checkTier() {
-    this.isEqualTier = this.selectedTier.id === this.subscribedTier.id;
+  private checkTier(): void {
+    this.isEqualTier = this.selectedTier?.id === this.subscribedTier?.id;
   }
 
   public onPurchaseButtonClick(): void {
@@ -84,17 +83,24 @@ export class SubscriptionEditComponent implements OnInit {
           this.isLoading = false;
         })
       )
-      .subscribe((response) => {
-        if (response.status === PAYMENT_SUCCESSFUL_CODE) {
-          this.showEditSuccessful = true;
-        } else {
-          this.toastService.show({
-            title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_TITLE)}`,
-            text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_SUCCESS_BODY)}`,
-            type: TOAST_TYPES.ERROR,
-          });
-        }
-      });
+      .subscribe(
+        (response) => {
+          if (response.status === PAYMENT_SUCCESSFUL_CODE) {
+            this.showEditSuccessful = true;
+          } else {
+            this.showToastError();
+          }
+        },
+        () => this.showToastError()
+      );
+  }
+
+  private showToastError(): void {
+    this.toastService.show({
+      title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_TITLE)}`,
+      text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY)}`,
+      type: TOAST_TYPES.ERROR,
+    });
   }
 
   public onRedirectTo(path: string) {

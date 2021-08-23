@@ -102,6 +102,10 @@ export class MockSubscriptionService {
   public hasSomeSubscriptionDiscount(): boolean {
     return false;
   }
+
+  public editSubscription() {
+    return of({});
+  }
 }
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [

@@ -1,66 +1,44 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import {
   AnalyticsEvent,
-  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
+  ClickSubscriptionPlanDone,
   SCREEN_IDS,
-  SubscriptionPayConfirmation,
-  ViewSubscriptionTier,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { ErrorsService } from '@core/errors/errors.service';
-import { EventService } from '@core/event/event.service';
-import { translations } from '@core/i18n/translations/constants/translations';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
-import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
-import { StripeService } from '@core/stripe/stripe.service';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { MockErrorService } from '@fixtures/error.fixtures.spec';
-import { CARDS_WITHOUT_DEFAULT, CARDS_WITH_ONE_DEFAULT, MockStripeService } from '@fixtures/stripe.fixtures.spec';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
-import {
-  MockSubscriptionService,
-  MAPPED_SUBSCRIPTIONS,
-  SUBSCRIPTION_SUCCESS,
-  SUBSCRIPTION_REQUIRES_ACTION,
-  SUBSCRIPTION_REQUIRES_PAYMENT,
-} from '@fixtures/subscriptions.fixtures.spec';
+import { MockSubscriptionService, MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
+import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
+import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 import { of, throwError } from 'rxjs';
 import { PAYMENT_SUCCESSFUL_CODE, SubscriptionEditComponent } from './subscription-edit.component';
 
 describe('SubscriptionEditComponent', () => {
   let component: SubscriptionEditComponent;
   let fixture: ComponentFixture<SubscriptionEditComponent>;
-  let stripeService: StripeService;
-  let errorsService: ErrorsService;
+  let toastService: ToastService;
   let subscriptionsService: SubscriptionsService;
   let benefitsService: SubscriptionBenefitsService;
   let analyticsService: AnalyticsService;
-  let eventService: EventService;
   let modalService: NgbModal;
+  let modalSpy: jasmine.Spy;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionEditComponent],
+      declarations: [SubscriptionEditComponent, SubscriptionPurchaseSuccessComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        {
-          provide: StripeService,
-          useClass: MockStripeService,
-        },
-        {
-          provide: ErrorsService,
-          useClass: MockErrorService,
-        },
         {
           provide: SubscriptionsService,
           useClass: MockSubscriptionService,
@@ -70,17 +48,11 @@ describe('SubscriptionEditComponent', () => {
           useClass: MockSubscriptionBenefitsService,
         },
         {
-          provide: ScrollIntoViewService,
-          useValue: {
-            scrollToSelector() {},
-          },
-        },
-        {
           provide: NgbModal,
           useValue: {
             open() {
               return {
-                result: Promise.resolve(true),
+                result: Promise.resolve(ModalStatuses.SUCCESS),
                 componentInstance: {},
               };
             },
@@ -97,27 +69,36 @@ describe('SubscriptionEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionEditComponent);
     component = fixture.componentInstance;
-    component.subscription = MAPPED_SUBSCRIPTIONS[0];
+    component.subscription = MAPPED_SUBSCRIPTIONS[2];
     component.user = MOCK_USER;
-    stripeService = TestBed.inject(StripeService);
-    errorsService = TestBed.inject(ErrorsService);
+    toastService = TestBed.inject(ToastService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     analyticsService = TestBed.inject(AnalyticsService);
-    eventService = TestBed.inject(EventService);
     modalService = TestBed.inject(NgbModal);
     benefitsService = TestBed.inject(SubscriptionBenefitsService);
+    fixture.detectChanges();
   });
 
   describe('NgOnInit', () => {
-    describe('Default tier', () => {
-      describe('has default tier', () => {
-        it('should set default tier', () => {
-          fixture.detectChanges();
-
-          expect(component.selectedTier).toEqual(
-            component.subscription.tiers.find((tier) => tier.id === component.subscription.default_tier_id)
-          );
-        });
+    describe('has subscribed tier', () => {
+      it('should set subscribed tier', () => {
+        expect(component.selectedTier).toEqual(
+          component.subscription.tiers.find((tier) => tier.id === component.subscription.selected_tier_id)
+        );
+      });
+      it('should set selected tier', () => {
+        expect(component.selectedTier).toEqual(component.subscribedTier);
+        expect(component.isEqualTier).toBe(true);
+      });
+      it('should set available tiers', () => {
+        expect(component.availableTiers).toEqual(
+          component.subscription.tiers.filter((tier) => tier.id !== component.subscription.selected_tier_id)
+        );
+      });
+      it('should set available tiers', () => {
+        expect(component.availableTiers).toEqual(
+          component.subscription.tiers.filter((tier) => tier.id !== component.subscription.selected_tier_id)
+        );
       });
     });
     describe('Benefits', () => {
@@ -125,7 +106,7 @@ describe('SubscriptionEditComponent', () => {
         it('should set benefits', () => {
           const benefits = ['benefit1', 'benefit2'];
           spyOn(benefitsService, 'getBenefitsByCategory').and.returnValue(benefits);
-          fixture.detectChanges();
+          component.ngOnInit();
 
           expect(component.benefits).toEqual(benefits);
         });
@@ -134,68 +115,113 @@ describe('SubscriptionEditComponent', () => {
   });
   describe('Cancel subscription', () => {
     beforeEach(() => {
-      spyOn(modalService, 'open');
+      modalSpy = spyOn(modalService, 'open').and.callThrough();
+      spyOn(component.editSuccesful, 'emit').and.callThrough();
     });
     it('should open modal', () => {
-      spyOn(component.unselectSubcription, 'emit');
-
       component.cancelSubscription();
 
       expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith();
+      expect(modalService.open).toHaveBeenCalledWith(CancelSubscriptionModalComponent, {
+        windowClass: 'review',
+      });
+    });
+    describe('and modal return success', () => {
+      it('should emit successful', fakeAsync(() => {
+        component.cancelSubscription();
+
+        tick();
+        fixture.detectChanges;
+
+        expect(component.editSuccesful.emit).toHaveBeenCalledTimes(1);
+        expect(component.editSuccesful.emit).toHaveBeenLastCalledWith();
+      }));
+    });
+    describe('and modal not return success', () => {
+      it('should emit successful', fakeAsync(() => {
+        modalSpy.and.returnValue({ result: Promise.resolve(ModalStatuses.FAIL), componentInstance: {} });
+        component.cancelSubscription();
+
+        tick();
+        fixture.detectChanges;
+
+        expect(component.editSuccesful.emit).not.toHaveBeenCalled();
+      }));
     });
   });
-
-  describe('Select tier', () => {
-    it('should change to selected tier', () => {
-      component.selectedTier = component.subscription.tiers[0];
-
-      component.onSelectedTierChanged(component.subscription.tiers[1]);
-
-      expect(component.selectedTier).toEqual(component.subscription.tiers[1]);
-    });
-  });
-  describe('Click buy subscription', () => {
-    beforeEach(() => {
-      component.selectedTier = component.subscription.tiers[0];
-    });
-    describe('and is invoice requeried', () => {
-      it('should save invoice data before', () => {
-        spyOn(eventService, 'emit');
-        component.isInvoiceRequired = true;
-
-        component.onPurchaseButtonClick();
-
-        expect(eventService.emit).toBeCalledTimes(1);
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.FORM_SUBMITTED);
-      });
-      it('should set loading', () => {
-        component.onPurchaseButtonClick();
-
-        expect(component.isLoading).toEqual(true);
-      });
-      it('should track SubscriptionPayConfirmation', () => {
-        spyOn(subscriptionsService, 'hasTrial').and.returnValue(false);
+  describe('Edit subscription', () => {
+    describe('when click on confirm button', () => {
+      it('should track event', () => {
         spyOn(analyticsService, 'trackEvent').and.callThrough();
-        const event: AnalyticsEvent<SubscriptionPayConfirmation> = {
-          name: ANALYTICS_EVENT_NAMES.SubscriptionPayConfirmation,
-          eventType: ANALYTIC_EVENT_TYPES.Transaction,
+        const expectedEvent: AnalyticsEvent<ClickSubscriptionPlanDone> = {
+          name: ANALYTICS_EVENT_NAMES.ClickSubscriptionPlanDone,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
           attributes: {
             subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-            tier: component.selectedTier.id,
-            screenId: SCREEN_IDS.ProfileSubscription,
-            isNewSubscriber: !component.user.featured,
-            discountPercent: 0,
-            invoiceNeeded: false,
-            freeTrial: false,
-            discount: !!component.selectedTier.discount,
+            previousTier: component.subscribedTier.id,
+            newTier: component.selectedTier.id,
+            screenId: SCREEN_IDS.SubscriptionManagement,
           },
         };
-
         component.onPurchaseButtonClick();
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+      describe('and susbcription was edited succesfully', () => {
+        it('should show success page', () => {
+          spyOn(subscriptionsService, 'editSubscription').and.returnValue(of({ status: PAYMENT_SUCCESSFUL_CODE }));
+
+          component.onPurchaseButtonClick();
+          fixture.detectChanges();
+
+          const successPage = fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent));
+          expect(successPage).toBeTruthy();
+        });
+      });
+
+      describe('and susbcription was not edited succesfully', () => {
+        beforeEach(() => {
+          spyOn(toastService, 'show').and.callThrough();
+        });
+        describe('and response returns code different of 202', () => {
+          beforeEach(() => {
+            spyOn(subscriptionsService, 'editSubscription').and.returnValue(of({ status: 204 }));
+          });
+          it('should not show success page', () => {
+            component.onPurchaseButtonClick();
+            fixture.detectChanges();
+
+            const successPage = fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent));
+            expect(successPage).toBeFalsy();
+          });
+
+          it('should error toast', () => {
+            component.onPurchaseButtonClick();
+            fixture.detectChanges();
+
+            expect(toastService.show).toHaveBeenCalledTimes(1);
+          });
+        });
+        describe('and response fails', () => {
+          beforeEach(() => {
+            spyOn(subscriptionsService, 'editSubscription').and.returnValues(throwError('error'));
+          });
+          it('should not show success page', () => {
+            component.onPurchaseButtonClick();
+            fixture.detectChanges();
+
+            const successPage = fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent));
+            expect(successPage).toBeFalsy();
+          });
+
+          it('should error toast', () => {
+            component.onPurchaseButtonClick();
+            fixture.detectChanges();
+
+            expect(toastService.show).toHaveBeenCalledTimes(1);
+          });
+        });
       });
     });
   });
