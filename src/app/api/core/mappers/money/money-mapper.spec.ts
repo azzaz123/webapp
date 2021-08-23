@@ -10,5 +10,13 @@ describe('GIVEN the mapCurrencyCodeToCurrency', () => {
 
       expect(JSON.stringify(result)).toEqual(JSON.stringify(expected));
     });
+    it('should return the money as a string', () => {
+      const expected: string = MOCK_MONEY.toString();
+      const input = MOCK_NUMBER_CURRENCY_CODE;
+
+      const result = mapNumberAndCurrencyCodeToMoney(input).toString();
+
+      expect(result).toBe(expected);
+    });
   });
 });

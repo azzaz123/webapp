@@ -12,6 +12,14 @@ describe('GIVEN the mapNumberToNumericAmount', () => {
 
       expect(JSON.stringify(result)).toEqual(JSON.stringify(expected));
     });
+    it('should return the number as a string', () => {
+      const expected: string = MOCK_NUMERIC_AMOUNT.toString();
+      const input: number = MOCK_NUMBER_CURRENCY_CODE.number;
+
+      const result = mapNumberToNumericAmount(input).toString();
+
+      expect(result).toBe(expected);
+    });
   });
   describe('WHEN mapping an invalid number', () => {
     it('should map to default numeric amount (0)', () => {
