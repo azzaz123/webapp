@@ -347,68 +347,73 @@ describe('SubscriptionComponent', () => {
     }));
   });
 
-  it('should redirect to subscriptions if action is present and user is featured', fakeAsync(() => {
-    component.user.featured = true;
-    spyOn(modalService, 'open').and.returnValue({
-      result: Promise.resolve(true),
-      componentInstance: componentInstance,
+  describe('and purchase is succesful', () => {
+    describe('and the user is pro', () => {
+      beforeEach(() => {
+        component.user.featured = true;
+      });
+      describe('and has to go to profile', () => {
+        it('should redirect', fakeAsync(() => {
+          spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
+          spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
+          spyOn(router, 'navigate');
+          component.subscriptions = MAPPED_SUBSCRIPTIONS;
+
+          component.subscriptionChangeSuccessful(`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`);
+          tick(1000);
+
+          expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
+        }));
+      });
+      describe('and has not to go to profile', () => {
+        it('should redirect', fakeAsync(() => {
+          spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
+          spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
+          spyOn(router, 'navigate');
+          component.subscriptions = MAPPED_SUBSCRIPTIONS;
+
+          component.subscriptionChangeSuccessful();
+          tick(1000);
+
+          expect(router.navigate).not.toHaveBeenCalledWith();
+        }));
+      });
     });
-    spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
-    spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
-    spyOn(router, 'navigate');
-    component.subscriptions = MAPPED_SUBSCRIPTIONS;
+  });
 
-    component.manageSubscription(MAPPED_SUBSCRIPTIONS[1]);
-    tick(1000);
+  describe('and purchase is succesful', () => {
+    describe('and the user not pro', () => {
+      beforeEach(() => {
+        component.user.featured = false;
+      });
+      describe('and has to go to profile', () => {
+        it('should redirect', fakeAsync(() => {
+          jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_FULL_USER);
+          spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
+          spyOn(router, 'navigate');
 
-    expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
-  }));
+          component.user = MOCK_FULL_USER_NON_FEATURED;
+          component.subscriptionChangeSuccessful(`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`);
+          tick(1000);
 
-  it('should redirect to profile if action is present and subscription changed and user is not featured', fakeAsync(() => {
-    spyOn(modalService, 'open').and.returnValue({
-      result: Promise.resolve(true),
-      componentInstance: componentInstance,
+          expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
+        }));
+      });
+      describe('and has not to go to profile', () => {
+        it('should redirect', fakeAsync(() => {
+          spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
+          spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
+          spyOn(router, 'navigate');
+          component.subscriptions = MAPPED_SUBSCRIPTIONS;
+
+          component.subscriptionChangeSuccessful();
+          tick(1000);
+
+          expect(router.navigate).not.toHaveBeenCalledWith();
+        }));
+      });
     });
-    jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_FULL_USER);
-    spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
-    spyOn(router, 'navigate');
-
-    component.user = MOCK_FULL_USER_NON_FEATURED;
-    component.manageSubscription(MAPPED_SUBSCRIPTIONS[1]);
-    tick(1000);
-
-    expect(router.navigate).toHaveBeenCalledWith(['profile/info']);
-  }));
-
-  it('should redirect to subscriptions if action is present and user is featured', fakeAsync(() => {
-    spyOn(modalService, 'open').and.returnValue({
-      result: Promise.resolve('add'),
-      componentInstance: componentInstance,
-    });
-    spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
-    spyOn(router, 'navigate');
-    component.subscriptions = MAPPED_SUBSCRIPTIONS;
-
-    component.subscriptionChangeSuccessful();
-    tick(1000);
-
-    expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
-  }));
-
-  it('should redirect to profile if action is present and subscription changed and user is not featured', fakeAsync(() => {
-    spyOn(modalService, 'open').and.returnValue({
-      result: Promise.resolve('add'),
-      componentInstance: componentInstance,
-    });
-    spyOn(router, 'navigate');
-
-    component.user = MOCK_FULL_USER_NON_FEATURED;
-    component.subscriptionChangeSuccessful();
-
-    tick(1000);
-
-    expect(router.navigate).toHaveBeenCalledWith(['profile/info']);
-  }));
+  });
 
   describe('when the user is subscribed to the selected category', () => {
     it('should send the edit subscription click event', () => {
