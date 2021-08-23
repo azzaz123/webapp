@@ -24,6 +24,10 @@ export class WalletComponent implements OnInit {
       id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`,
       display: $localize`:@@web_delivery_bank_details:Bank details`,
     },
+    {
+      id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.HISTORY}`,
+      display: $localize`:@@web_wallet_history_movements:Movements`,
+    },
   ];
 
   //FIXME: These will be moved into a service
