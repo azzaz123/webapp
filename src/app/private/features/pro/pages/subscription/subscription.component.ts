@@ -44,6 +44,7 @@ export class SubscriptionsComponent implements OnInit {
   public user: User;
   public newSubscription: SubscriptionsResponse = null;
   public editSubscription: SubscriptionsResponse = null;
+  private isPurchaseSuccessful: boolean;
 
   constructor(
     private modalService: NgbModal,
@@ -81,15 +82,15 @@ export class SubscriptionsComponent implements OnInit {
     }
   }
 
-  public subscriptionChangeSuccessful(): void {
+  public subscriptionChangeSuccessful(redirect?: string): void {
     this.newSubscription = null;
     this.editSubscription = null;
     this.loading = true;
     if (this.user.featured) {
-      this.isSubscriptionUpdated();
+      this.isSubscriptionUpdated(redirect);
       return;
     }
-    this.isUserUpdated();
+    this.isUserUpdated(redirect);
   }
 
   private initData(): void {
@@ -141,7 +142,7 @@ export class SubscriptionsComponent implements OnInit {
     this.trackOpenModalEvent(subscription, modal);
   }
 
-  private isUserUpdated() {
+  private isUserUpdated(redirect?: string): void {
     this.userService
       .getAndUpdateLoggedUser()
       .pipe(
@@ -153,8 +154,7 @@ export class SubscriptionsComponent implements OnInit {
         ),
         take(30),
         finalize(() => {
-          this.router.navigate(['profile/info']);
-          this.loading = false;
+          this.redirectIfNeeded(redirect);
         })
       )
       .subscribe((updatedUser) => {
@@ -164,7 +164,7 @@ export class SubscriptionsComponent implements OnInit {
       });
   }
 
-  private isSubscriptionUpdated() {
+  private isSubscriptionUpdated(redirect?: string): void {
     this.subscriptionsService
       .getSubscriptions(false)
       .pipe(
@@ -176,7 +176,7 @@ export class SubscriptionsComponent implements OnInit {
         ),
         take(30),
         finalize(() => {
-          this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]), (this.loading = false);
+          this.redirectIfNeeded(redirect);
         })
       )
       .subscribe((updatedSubscriptions) => {
@@ -185,6 +185,12 @@ export class SubscriptionsComponent implements OnInit {
           this.loading = false;
         }
       });
+  }
+
+  private redirectIfNeeded(redirect?: string): void {
+    if (redirect) {
+      this.router.navigate([redirect]);
+    }
   }
 
   private trackPageView(): void {

@@ -10,6 +10,7 @@ import {
   SubscriptionPayConfirmation,
   SubscriptionPaymentButtonAvailable,
   ViewSubscriptionTier,
+  ViewSuccessSubscriptionPayment,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -24,8 +25,6 @@ import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-be
 import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { PaymentSuccessModalComponent } from '@private/features/pro/modal/payment-success/payment-success-modal.component';
 import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { filter, mergeMap } from 'rxjs/operators';
@@ -44,6 +43,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   @Output() purchaseSuccessful: EventEmitter<void> = new EventEmitter();
   @Output() unselectSubcription: EventEmitter<void> = new EventEmitter();
 
+  public showPurchaseSuccessful: boolean;
   public stripeCards: FinancialCard[];
   public selectedCard: FinancialCard;
   public isInvoiceRequired = false;
@@ -64,7 +64,6 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     private stripeService: StripeService,
     private errorService: ErrorsService,
     private subscriptionsService: SubscriptionsService,
-    private modalService: NgbModal,
     private scrollIntoViewService: ScrollIntoViewService,
     private eventService: EventService,
     private analyticsService: AnalyticsService,
@@ -278,7 +277,8 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   private paymentSucceeded(): void {
     this.isLoading = false;
     this.isRetryPayment = false;
-    this.openPaymentSuccessModal();
+    this.showPurchaseSuccessful = true;
+    this.trackViewSuccessSubscriptionPayment();
   }
 
   private retrySubscription(paymentMethodId = this.selectedCard.id): void {
@@ -299,19 +299,8 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
       );
   }
 
-  private openPaymentSuccessModal(): void {
-    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
-    const modalComponent: PaymentSuccessModalComponent = modalRef.componentInstance;
-    modalComponent.tier = this.selectedTier.id;
-    modalComponent.isNewSubscriber = !this.user.featured;
-    modalComponent.isNewCard = !this.isSavedCard;
-    modalComponent.isInvoice = this.isInvoiceRequired;
-    modalComponent.subscriptionCategoryId = this.subscription.category_id as SUBSCRIPTION_CATEGORIES;
-
-    modalRef.result.then(
-      () => this.purchaseSuccessful.emit(),
-      () => this.purchaseSuccessful.emit()
-    );
+  public onRedirectTo(path: string) {
+    this.purchaseSuccessful.emit(path);
   }
 
   private requestNewPayment(error?: HttpErrorResponse): void {
@@ -350,5 +339,19 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
       },
     };
     this.analyticsService.trackEvent(event);
+  }
+
+  private trackViewSuccessSubscriptionPayment() {
+    const pageView: AnalyticsPageView<ViewSuccessSubscriptionPayment> = {
+      name: ANALYTICS_EVENT_NAMES.ViewSuccessSubscriptionPayment,
+      attributes: {
+        tier: this.selectedTier.id,
+        isNewSubscriber: !this.user.featured,
+        isNewCard: !this.isSavedCard,
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        screenId: SCREEN_IDS.ProfileSubscription,
+      },
+    };
+    this.analyticsService.trackPageView(pageView);
   }
 }
