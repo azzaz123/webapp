@@ -173,7 +173,7 @@ describe('SuggesterInputComponent', () => {
 
   describe('Close form', () => {
     it('should close the form when we click outside of the form', () => {
-      spyOn(component, 'notShowOptions');
+      spyOn(component, 'emptyOptions');
 
       const event: any = {
         target: component.formMenu.nativeElement as HTMLElement,
@@ -182,16 +182,16 @@ describe('SuggesterInputComponent', () => {
       component.onWindowClick(event);
       fixture.detectChanges();
 
-      expect(component.notShowOptions).toHaveBeenCalled();
+      expect(component.emptyOptions).toHaveBeenCalled();
     });
 
     it('should close the form when we press Escape', () => {
-      spyOn(component, 'notShowOptions');
+      spyOn(component, 'emptyOptions');
 
       inputElement.triggerEventHandler('keyup', { key: 'Escape' });
       fixture.detectChanges();
 
-      expect(component.notShowOptions).toHaveBeenCalled();
+      expect(component.emptyOptions).toHaveBeenCalled();
     });
   });
 });

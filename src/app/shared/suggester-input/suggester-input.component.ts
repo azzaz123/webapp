@@ -72,17 +72,17 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
 
   @HostListener('window:click', ['$event']) onWindowClick(n: Event) {
     if ((n.target as HTMLElement).contains(this.formMenu.nativeElement)) {
-      this.notShowOptions();
+      this.emptyOptions();
     }
   }
 
   public keyUp(event): void {
     if (event.key === 'Escape') {
-      this.notShowOptions();
+      this.emptyOptions();
     }
     if (!this.isValidKey()) {
       this.showInvalidMessage.emit(!this.isValid);
-      this.notShowOptions();
+      this.emptyOptions();
     }
     if (this.model.length >= 1 && !this.model.includes('#')) {
       this.model = `#${this.model}`;
@@ -131,7 +131,7 @@ export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectVa
     );
   }
 
-  public notShowOptions(): void {
+  public emptyOptions(): void {
     this.options = [];
   }
 
