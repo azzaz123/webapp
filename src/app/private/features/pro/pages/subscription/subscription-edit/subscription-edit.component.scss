@@ -12,10 +12,4 @@
   @include media-breakpoint-down(md) {
     margin-bottom: $spacing-ml;
   }
-
-  tsl-profile-pro-billing {
-    ::ng-deep .box {
-      border: 0;
-    }
-  }
 }

@@ -43,6 +43,10 @@
       }
     }
 
+    &--noHover {
+      pointer-events: none;
+    }
+
     &--selected {
       border: solid 2px $blue-grey-2;
       .Card__title,

@@ -12,6 +12,7 @@ export class SubscriptionTierSelectorComponent {
   @Input() subscription: SubscriptionsResponse;
   @Input() selectedTier: Tier;
   @Input() tierList: Tier[];
+  @Input() disableHover: boolean;
   @Output() changeSelectedTier: EventEmitter<Tier> = new EventEmitter();
 
   get tiers(): Tier[] {

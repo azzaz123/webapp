@@ -18,7 +18,7 @@
     </div>
     <div *ngIf="subscription.tiers.length > 1" class="GenericCard">
         <div class="GenericCard__title" i18n="@@pro_edit_subscriptions_view_change_plan_current_plan_title">Current plan</div>
-        <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="[subscribedTier]">
+        <tsl-subscription-tier-selector class="SubscriptionEdit__subscribedTier" [subscription]="subscription" [tierList]="[subscribedTier]" [disableHover]="true">
         </tsl-subscription-tier-selector>
         <div class="GenericCard__title mt-4" i18n="@@pro_edit_subscriptions_view_change_plan_other_available_plans_title">Other available</div>
         <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="availableTiers"
