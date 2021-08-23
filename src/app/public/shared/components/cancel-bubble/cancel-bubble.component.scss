@@ -8,11 +8,6 @@ $gradient-border-radius: 21px;
 .CancelBubbleComponent {
   width: 100%;
   font: $blue-grey-1;
-  &__text {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
   &__rounded_icon {
     background-color: $white;
     min-height: 20px;
@@ -27,8 +22,6 @@ $gradient-border-radius: 21px;
 .rounded-gradient {
   border-radius: $gradient-border-radius;
   background: $blue-grey-6;
-  position: relative;
-  margin: 1px;
 
   &::before {
     content: '';
