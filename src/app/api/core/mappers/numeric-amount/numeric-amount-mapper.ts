@@ -5,7 +5,7 @@ export const mapNumberToNumericAmount: ToDomainMapper<number, NumericAmount> = (
   return {
     integer: getIntegerPartFromNumber(input),
     decimals: getDecimalPartFromNumber(input),
-    total: input,
+    total: input ?? 0,
     toString: (showSign?: boolean) => `${getPositiveSign(input, showSign)}${input.toLocaleString()}`,
   };
 };
