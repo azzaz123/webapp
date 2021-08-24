@@ -1,7 +1,7 @@
 <div class="SubscriptionPurchaseSuccess">
     <div class="GenericCard d-flex flex-column text-center align-items-center p-md-5">
         <div class="mb-4">
-            <tsl-user-avatar *ngIf="user.image; else noAvatar" [user]="user" [imageUrl]="user?.image?.urls_by_size.large" size="90" [showProBadgeWide]="true"></tsl-user-avatar>
+            <tsl-user-avatar *ngIf="user?.image; else noAvatar" [user]="user" [imageUrl]="user?.image?.urls_by_size.large" size="90" [showProBadgeWide]="true"></tsl-user-avatar>
             <ng-template #noAvatar>
                 <tsl-svg-icon src="/assets/icons/badge-pro-dark.svg" alt="badge-pro" class="mb-4"></tsl-svg-icon>
             </ng-template>
