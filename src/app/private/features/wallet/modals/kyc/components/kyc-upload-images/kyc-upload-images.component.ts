@@ -104,6 +104,41 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       : $localize`:@@kyc_camera_cannot_access:Oops, an error occurred and we cannot access your camera`;
   }
 
+  public get isShootTakeImageMethod(): boolean {
+    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT;
+  }
+
+  public get title(): string {
+    return this.isShootTakeImageMethod
+      ? $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`
+      : $localize`:@@kyc_upload_photo_view_title:Upload a photo of your document`;
+  }
+
+  public get actionButtonCopy(): string {
+    return this.isShootTakeImageMethod
+      ? $localize`:@@kyc_request_photo_counter_shoot:Take photo`
+      : $localize`:@@kyc_request_photo_counter_upload:Upload photo`;
+  }
+
+  public get allImagesAreDefined(): boolean {
+    return this.imagesTakenCounter === this.imagesNeeded;
+  }
+
+  public get imagesTakenCounter(): number {
+    const firstImage = this.images.frontSide;
+    const secondImage = this.images.backSide;
+
+    return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
+  }
+
+  public get isFrontSideImageDefined(): boolean {
+    return !!this.images.frontSide;
+  }
+
+  public get isBackSideImageDefined(): boolean {
+    return !!this.images.backSide;
+  }
+
   private emitNewImage(newImage: string): void {
     if (this.isFrontSideImageDefined) {
       this.emitBackSideImageChange(newImage);
@@ -140,40 +175,5 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
 
     this.userCamera.nativeElement.srcObject = null;
-  }
-
-  get isShootTakeImageMethod(): boolean {
-    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT;
-  }
-
-  get title(): string {
-    return this.isShootTakeImageMethod
-      ? $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`
-      : $localize`:@@kyc_upload_photo_view_title:Upload a photo of your document`;
-  }
-
-  get actionButtonCopy(): string {
-    return this.isShootTakeImageMethod
-      ? $localize`:@@kyc_request_photo_counter_shoot:Take photo`
-      : $localize`:@@kyc_request_photo_counter_upload:Upload photo`;
-  }
-
-  get allImagesAreDefined(): boolean {
-    return this.imagesTakenCounter === this.imagesNeeded;
-  }
-
-  get imagesTakenCounter(): number {
-    const firstImage = this.images.frontSide;
-    const secondImage = this.images.backSide;
-
-    return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
-  }
-
-  get isFrontSideImageDefined(): boolean {
-    return !!this.images.frontSide;
-  }
-
-  get isBackSideImageDefined(): boolean {
-    return !!this.images.backSide;
   }
 }
