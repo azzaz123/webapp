@@ -62,8 +62,23 @@ export class SubscriptionEditComponent implements OnInit {
     this.checkTier();
   }
 
-  private checkTier(): void {
-    this.isEqualTier = this.selectedTier?.id === this.subscribedTier?.id;
+  public cancelSubscription(): void {
+    let modalRef: NgbModalRef = this.modalService.open(CancelSubscriptionModalComponent, {
+      windowClass: 'review',
+    });
+    modalRef.componentInstance.subscription = this.subscription;
+    modalRef.result.then(
+      (result: ModalStatuses) => {
+        if (result === ModalStatuses.SUCCESS) {
+          this.editSuccesful.emit();
+        }
+      },
+      () => {}
+    );
+  }
+
+  public onRedirectTo(path: string): void {
+    this.editSuccesful.emit(path);
   }
 
   public onPurchaseButtonClick(): void {
@@ -88,16 +103,16 @@ export class SubscriptionEditComponent implements OnInit {
       );
   }
 
+  private checkTier(): void {
+    this.isEqualTier = this.selectedTier?.id === this.subscribedTier?.id;
+  }
+
   private showToastError(): void {
     this.toastService.show({
       title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_TITLE)}`,
       text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY)}`,
       type: TOAST_TYPES.ERROR,
     });
-  }
-
-  public onRedirectTo(path: string): void {
-    this.editSuccesful.emit(path);
   }
 
   private trackClickConfirmEdit(): void {
@@ -112,20 +127,5 @@ export class SubscriptionEditComponent implements OnInit {
       },
     };
     this.analyticsService.trackEvent(event);
-  }
-
-  public cancelSubscription(): void {
-    let modalRef: NgbModalRef = this.modalService.open(CancelSubscriptionModalComponent, {
-      windowClass: 'review',
-    });
-    modalRef.componentInstance.subscription = this.subscription;
-    modalRef.result.then(
-      (result: ModalStatuses) => {
-        if (result === ModalStatuses.SUCCESS) {
-          this.editSuccesful.emit();
-        }
-      },
-      () => {}
-    );
   }
 }

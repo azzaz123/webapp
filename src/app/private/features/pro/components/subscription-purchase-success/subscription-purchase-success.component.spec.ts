@@ -12,7 +12,7 @@ import { SubscriptionPurchaseSuccessComponent } from './subscription-purchase-su
   selector: 'tsl-svg-icon',
   template: '',
 })
-class MockSvgIcon {}
+class MockSvgIconComponent {}
 
 describe('SubscriptionPurchaseSuccessComponent', () => {
   let component: SubscriptionPurchaseSuccessComponent;
@@ -20,7 +20,7 @@ describe('SubscriptionPurchaseSuccessComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionPurchaseSuccessComponent, ButtonComponent, UserAvatarComponent, MockSvgIcon],
+      declarations: [SubscriptionPurchaseSuccessComponent, ButtonComponent, UserAvatarComponent, MockSvgIconComponent],
     }).compileComponents();
   });
 
@@ -135,7 +135,7 @@ describe('SubscriptionPurchaseSuccessComponent', () => {
       });
 
       it('should show pro badge', () => {
-        const proBadge = fixture.debugElement.query(By.directive(MockSvgIcon));
+        const proBadge = fixture.debugElement.query(By.directive(MockSvgIconComponent));
 
         expect(proBadge).toBeTruthy();
         expect(proBadge.nativeElement.getAttribute('src')).toEqual('/assets/icons/badge-pro-dark.svg');
