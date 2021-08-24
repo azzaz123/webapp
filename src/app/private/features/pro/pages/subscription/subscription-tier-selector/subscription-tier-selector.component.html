@@ -1,7 +1,7 @@
 <div class="SubscriptionTierSelector">
     <div class="row">
         <ng-container *ngFor="let tier of tiers">
-            <div class="col-md-4 col-sm-12 mb-md-0 mb-sm-2">
+            <div class="col-md-4 col-sm-12 mb-md-0 mb-2">
             <div class="GenericCard Card h-100" [ngClass]="{'Card--selected' : selectedTier?.id === tier.id, 'Card--noHover': disableHover}"
                 (click)="onTierSelectedChanged(tier)">
                 <div *ngIf="tier.discount" class="mb-2">

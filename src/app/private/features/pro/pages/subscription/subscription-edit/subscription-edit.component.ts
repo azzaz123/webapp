@@ -9,7 +9,6 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -19,7 +18,6 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
 import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
-import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { finalize } from 'rxjs/operators';
 
 export const PAYMENT_SUCCESSFUL_CODE = 202;
@@ -32,16 +30,11 @@ export const PAYMENT_SUCCESSFUL_CODE = 202;
 export class SubscriptionEditComponent implements OnInit {
   @Input() subscription: SubscriptionsResponse;
   @Input() user: User;
-  @Input() editMode: boolean;
-  @Output() editSuccesful: EventEmitter<string> = new EventEmitter();
+  @Output() editSuccesful: EventEmitter<string | void> = new EventEmitter();
 
-  public stripeCards: FinancialCard[];
-  public selectedCard: FinancialCard;
-  public isInvoiceRequired = false;
   public selectedTier: Tier;
   public availableTiers: Tier[];
   public subscribedTier: Tier;
-  public paymentError: STRIPE_ERROR;
   public benefits: string[];
   public isLoading: boolean;
   public isEqualTier: boolean;
@@ -103,7 +96,7 @@ export class SubscriptionEditComponent implements OnInit {
     });
   }
 
-  public onRedirectTo(path: string) {
+  public onRedirectTo(path: string): void {
     this.editSuccesful.emit(path);
   }
 

@@ -178,6 +178,16 @@ describe('SubscriptionEditComponent', () => {
           const successPage = fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent));
           expect(successPage).toBeTruthy();
         });
+        describe('and has to redirect', () => {
+          it('should redirect', () => {
+            spyOn(component.editSuccesful, 'emit').and.callThrough();
+
+            component.onRedirectTo('test');
+
+            expect(component.editSuccesful.emit).toHaveBeenCalledTimes(1);
+            expect(component.editSuccesful.emit).toHaveBeenLastCalledWith('test');
+          });
+        });
       });
 
       describe('and susbcription was not edited succesfully', () => {
