@@ -67,7 +67,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public isUploadAvailable(imageSide: KYC_IMAGES): void {
+  public checkIfUploadIsAvailable(imageSide: KYC_IMAGES): void {
     if (this.isUploadImageMethod) {
       if (imageSide === KYC_IMAGES.FRONT_SIDE) {
         this.frontSideImageUpload.nativeElement.click();
@@ -97,8 +97,18 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   public removeImage(imageToRemove: KYC_IMAGES): void {
     if (imageToRemove === KYC_IMAGES.FRONT_SIDE) {
       this.emitFrontSideImageChange(null);
-    } else {
+
+      if (this.isUploadImageMethod) {
+        this.frontSideImageUpload.nativeElement.value = null;
+      }
+    }
+
+    if (imageToRemove === KYC_IMAGES.BACK_SIDE) {
       this.emitBackSideImageChange(null);
+
+      if (this.isUploadImageMethod) {
+        this.backSideImageUpload.nativeElement.value = null;
+      }
     }
   }
 
