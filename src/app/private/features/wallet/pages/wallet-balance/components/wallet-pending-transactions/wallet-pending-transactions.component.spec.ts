@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/bff/delivery/requests-and-transactions/pending-as-seller/pending-transactions-fixtures.spec';
 import { PendingTransaction } from '@api/core/model';
 import { RequestsAndTransactionsPendingAsSellerService } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.service';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
 import { WalletPendingTransactionsComponent } from './wallet-pending-transactions.component';
 import { WalletPendingTransactionsListComponent } from '../wallet-pending-transactions-list/wallet-pending-transactions-list.component';
@@ -16,7 +17,12 @@ describe('WalletPendingTransactionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WalletPendingTransactionComponent, WalletPendingTransactionsListComponent, WalletPendingTransactionsComponent],
+      declarations: [
+        WalletPendingTransactionComponent,
+        WalletPendingTransactionsListComponent,
+        WalletPendingTransactionsComponent,
+        SvgIconComponent,
+      ],
       providers: [
         {
           provide: RequestsAndTransactionsPendingAsSellerService,
