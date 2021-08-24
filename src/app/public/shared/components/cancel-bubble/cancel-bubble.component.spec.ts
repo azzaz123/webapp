@@ -37,7 +37,7 @@ describe('CancelBubbleComponent', () => {
       fixture.detectChanges();
     });
     it('should show text in bubble', () => {
-      const bubbleText = debugElement.query(By.css('.CancelBubbleComponent__text')).nativeNode.innerHTML;
+      const bubbleText = debugElement.query(By.css('span')).nativeNode.innerHTML;
 
       expect(bubbleText).toBe(bubbleText);
     });
