@@ -154,7 +154,7 @@
 
     <div class="row" [ngbPopover]="coachmarkDescription" [autoClose]="false" popoverClass="ml-3">
       <div class="col-12">
-        <div class="form-group last">
+        <div class="form-group">
           <label for="tellUs" i18n="@@web_upload_product_description">Description</label>
           <span class="chars-counter">{{ uploadForm.value?.description?.length }}/{{ MAX_DESCRIPTION_LENGTH }}</span>
           <textarea
@@ -171,6 +171,16 @@
       <ng-template #coachmarkDescription>
         <div i18n="@@web_upload_product_coachmark_description">Every detail helps: so tell us more!</div>
       </ng-template>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group last">
+        <label for="hashtag" i18n="">Hashtags</label>
+        <span class="chars-counter">{{uploadForm.value.hashtags?.length}}/{{MAX_HASHTAGS_NUMBER}}</span>
+        <tsl-multi-select-form [options]="options"></tsl-multi-select-form>
+        </div>
+      </div>
     </div>
 
     <div class="row" formGroupName="extra_info" *ngIf="!!selectedRawCategory?.fields">
