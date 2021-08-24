@@ -31,7 +31,7 @@ export class WalletPendingTransactionsListComponent implements AfterViewInit {
     return this.pendingTransactions.length > DEFAULT_VISIBLE_PENDING_TRANSACTIONS;
   }
 
-  public get tansactionsWrapperStyle(): Object {
+  public get transactionsWrapperStyle(): Object {
     return {
       height: `${this.getTransactionContainerHeight()}px`,
     };
@@ -57,15 +57,11 @@ export class WalletPendingTransactionsListComponent implements AfterViewInit {
 
   private getTransactionContainerHeight(): number {
     const shouldShowAllTransactions = this.isExpanded || this.pendingTransactions.length <= DEFAULT_VISIBLE_PENDING_TRANSACTIONS;
-    const shouldShowDefaultTransactions = this.pendingTransactions.length >= DEFAULT_VISIBLE_PENDING_TRANSACTIONS;
 
     if (shouldShowAllTransactions) {
       return this.getTransactionHeightByPosition(this.pendingTransactions.length);
     }
-    if (shouldShowDefaultTransactions) {
-      return this.getTransactionHeightByPosition(DEFAULT_VISIBLE_PENDING_TRANSACTIONS);
-    }
-    return 0;
+    return this.getTransactionHeightByPosition(DEFAULT_VISIBLE_PENDING_TRANSACTIONS);
   }
 
   private getTransactionHeightByPosition(position: number): number {
