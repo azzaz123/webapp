@@ -5,9 +5,9 @@ import { By } from '@angular/platform-browser';
 import { MOCK_MEDIA_STREAM } from '@fixtures/media-stream.fixtures.spec';
 import {
   MOCK_EMPTY_KYC_IMAGES,
-  MOCK_KYC_IMAGES,
+  MOCK_KYC_IMAGES_BASE_64,
   MOCK_KYC_IMAGES_BACK_DEFINED,
-  MOCK_KYC_IMAGES_FRONT_DEFINED,
+  MOCK_KYC_IMAGES_BASE_64_BACK_NULL,
 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { MOCK_DEVICE_PERMISSIONS } from '@fixtures/user-device-permissions.fixtures.spec';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
@@ -209,7 +209,7 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and ONLY the front side image is already shoot', () => {
             beforeEach(() => {
-              testComponent.images = MOCK_KYC_IMAGES_FRONT_DEFINED;
+              testComponent.images = MOCK_KYC_IMAGES_BASE_64_BACK_NULL;
 
               fixture.detectChanges();
             });
@@ -353,7 +353,7 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and the two images are already shoot', () => {
             beforeEach(() => {
-              testComponent.images = MOCK_KYC_IMAGES;
+              testComponent.images = MOCK_KYC_IMAGES_BASE_64;
 
               fixture.detectChanges();
             });
@@ -457,7 +457,7 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and the front side image is already shoot', () => {
             beforeEach(() => {
-              testComponent.images = MOCK_KYC_IMAGES_FRONT_DEFINED;
+              testComponent.images = MOCK_KYC_IMAGES_BASE_64_BACK_NULL;
 
               fixture.detectChanges();
             });

@@ -1,17 +1,40 @@
 import { Injectable } from '@angular/core';
+import { DocumentImageSizeTooSmallError } from '@api/core/errors/payments/kyc';
 import { UuidService } from '@core/uuid/uuid.service';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { KYCErrorResponseApi } from './dtos/errors';
 import { KYCBodyRequest, KYCBodyRequestedId } from './dtos/requests';
 import { KYCHttpService } from './http/kyc-http.service';
+import { KYCErrorMapper } from './mappers/errors/kyc-error-mapper';
 
 @Injectable()
 export class KYCService {
+  private errorMapper: KYCErrorMapper = new KYCErrorMapper();
+
   constructor(private KYCHttpService: KYCHttpService, private uuidService: UuidService) {}
 
-  public request(KYCImages: KYCImages): Observable<void> {
-    return this.KYCHttpService.request(this.getBodyAsFormData(KYCImages));
+  public request(KYCImages: KYCImages): Observable<void | never> {
+    if (this.photosAreTooSmall(KYCImages)) {
+      return throwError([new DocumentImageSizeTooSmallError()]);
+    }
+
+    return this.KYCHttpService.request(this.getBodyAsFormData(KYCImages)).pipe(
+      catchError((error: KYCErrorResponseApi) => this.errorMapper.map(error))
+    );
+  }
+
+  private photosAreTooSmall(KYCImages: KYCImages): boolean {
+    const frontImageTooSmall = this.isImageSmallerThanOneKB(this.dataURItoBlob(KYCImages.frontSide));
+    const backImageTooSmall = KYCImages.backSide ? this.isImageSmallerThanOneKB(this.dataURItoBlob(KYCImages.frontSide)) : false;
+
+    return frontImageTooSmall || backImageTooSmall;
+  }
+
+  private isImageSmallerThanOneKB(blobImage: Blob): boolean {
+    return blobImage.size < 1000;
   }
 
   private getBodyAsFormData(KYCImages: KYCImages): FormData {

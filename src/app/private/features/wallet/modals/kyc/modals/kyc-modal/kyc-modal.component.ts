@@ -1,5 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
+import { KYCError } from '@api/core/errors/payments/kyc';
 import { KYCService } from '@api/payments/kyc/kyc.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { KYCDocumentation } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
@@ -20,12 +25,22 @@ export class KYCModalComponent {
 
   public KYCStoreSpecifications$: Observable<KYCSpecifications>;
 
-  constructor(private KYCStoreService: KYCStoreService, private KYCService: KYCService, private activeModal: NgbActiveModal) {
+  constructor(
+    private KYCStoreService: KYCStoreService,
+    private KYCService: KYCService,
+    private activeModal: NgbActiveModal,
+    private toastService: ToastService,
+    private i18nService: I18nService
+  ) {
     this.KYCStoreSpecifications$ = KYCStoreService.specifications$;
   }
 
   public endVerification(KYCImages: KYCImages): void {
-    this.KYCService.request(KYCImages).subscribe();
+    this.KYCService.request(KYCImages).subscribe({
+      error: (e: Error | KYCError) => {
+        this.handleKYCError(e);
+      },
+    });
   }
 
   public defineNationality(nationalitySelected: KYCNationality): void {
@@ -80,5 +95,22 @@ export class KYCModalComponent {
 
   public goPreviousStep(): void {
     this.stepper.goBack();
+  }
+
+  private handleKYCError(e: Error | KYCError): void {
+    let errorMessage: string = `${this.i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR)}`;
+
+    if (e instanceof KYCError) {
+      errorMessage = e.message;
+    }
+
+    this.showToast(errorMessage, TOAST_TYPES.ERROR);
+  }
+
+  private showToast(text: string, type: TOAST_TYPES): void {
+    this.toastService.show({
+      text,
+      type,
+    });
   }
 }

@@ -3,20 +3,24 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DocumentImageIsInvalidError } from '@api/core/errors/payments/kyc';
 import { KYCServicesModule } from '@api/payments/kyc/kyc-services.module';
 import { KYCService } from '@api/payments/kyc/kyc.service';
+import { I18nService } from '@core/i18n/i18n.service';
 import {
   MOCK_EMPTY_KYC_SPECIFICATIONS,
   MOCK_KYC_DOCUMENTATION,
   MOCK_KYC_NATIONALITY,
   MOCK_KYC_SPECIFICATIONS,
 } from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
-import { MOCK_KYC_IMAGES } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+import { MOCK_KYC_IMAGES_BASE_64 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { KYCModule } from '../../kyc.module';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
 
@@ -33,12 +37,14 @@ describe('KYCModalComponent', () => {
   let kycService: KYCService;
   let fixture: ComponentFixture<KYCModalComponent>;
   let activeModal: NgbActiveModal;
+  let toastService: ToastService;
+  let i18nService: I18nService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [KYCModule, RouterTestingModule, HttpClientTestingModule, KYCServicesModule],
-      declarations: [StepperComponent, StepDirective],
-      providers: [DeviceDetectorService, NgbActiveModal, KYCStoreService],
+      declarations: [KYCModalComponent, StepperComponent, StepDirective],
+      providers: [DeviceDetectorService, NgbActiveModal, KYCStoreService, I18nService, ToastService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -49,6 +55,8 @@ describe('KYCModalComponent', () => {
     kycStoreService = TestBed.inject(KYCStoreService);
     kycService = TestBed.inject(KYCService);
     activeModal = TestBed.inject(NgbActiveModal);
+    toastService = TestBed.inject(ToastService);
+    i18nService = TestBed.inject(I18nService);
   });
 
   it('should create', () => {
@@ -180,24 +188,46 @@ describe('KYCModalComponent', () => {
         beforeEach(() => {
           const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
 
-          KYCUploadImagesComponent.triggerEventHandler('imagesChange', MOCK_KYC_IMAGES);
+          KYCUploadImagesComponent.triggerEventHandler('imagesChange', MOCK_KYC_IMAGES_BASE_64);
         });
 
         it('should update the images on the store', () => {
-          expect(kycStoreService.specifications.images).toStrictEqual(MOCK_KYC_IMAGES);
+          expect(kycStoreService.specifications.images).toStrictEqual(MOCK_KYC_IMAGES_BASE_64);
         });
       });
 
       describe('and the verification end...', () => {
-        beforeEach(() => {
-          spyOn(kycService, 'request').and.returnValue(of(null));
-          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
+        describe('and the verification request succeed', () => {
+          beforeEach(() => {
+            spyOn(kycService, 'request').and.returnValue(of(null));
+            const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
 
-          KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES);
+            KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
+          });
+
+          it('should do the kyc request ', () => {
+            expect(kycService.request).toHaveBeenCalledTimes(1);
+          });
         });
 
-        it('should do the kyc request ', () => {
-          expect(kycService.request).toHaveBeenCalledTimes(1);
+        describe('and the verification request fails', () => {
+          beforeEach(() => {
+            spyOn(i18nService, 'translate').and.returnValue('');
+            spyOn(toastService, 'show');
+            spyOn(kycService, 'request').and.returnValue(throwError(new DocumentImageIsInvalidError()));
+            const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
+
+            KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
+          });
+
+          it('should do the kyc request ', () => {
+            expect(kycService.request).toHaveBeenCalledTimes(1);
+          });
+
+          it('should show an error toast', () => {
+            const errorMessage = $localize`:@@saving_bank_account_unknown_error:Sorry, something went wrong`;
+            expect(toastService.show).toHaveBeenCalledWith({ text: errorMessage, type: TOAST_TYPES.ERROR });
+          });
         });
       });
 
