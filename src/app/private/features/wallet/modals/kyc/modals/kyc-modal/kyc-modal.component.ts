@@ -1,12 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  DocumentImageIsInvalidError,
-  DocumentImageIsInvalidInputFileError,
-  DocumentImageSizeExceededError,
-  DocumentImageSizeTooSmallError,
-  KYCError,
-  MangopayUserNotFoundError,
-} from '@api/core/errors/payments/kyc';
+import { KYCError } from '@api/core/errors/payments/kyc';
 import { KYCService } from '@api/payments/kyc/kyc.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -44,7 +37,7 @@ export class KYCModalComponent {
 
   public endVerification(KYCImages: KYCImages): void {
     this.KYCService.request(KYCImages).subscribe({
-      error: (e: KYCError) => {
+      error: (e: Error | KYCError) => {
         this.handleKYCError(e);
       },
     });
@@ -104,16 +97,10 @@ export class KYCModalComponent {
     this.stepper.goBack();
   }
 
-  private handleKYCError(e: KYCError): void {
+  private handleKYCError(e: Error | KYCError): void {
     let errorMessage: string = `${this.i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR)}`;
 
-    if (
-      e instanceof MangopayUserNotFoundError ||
-      e instanceof DocumentImageIsInvalidInputFileError ||
-      e instanceof DocumentImageIsInvalidError ||
-      e instanceof DocumentImageSizeExceededError ||
-      e instanceof DocumentImageSizeTooSmallError
-    ) {
+    if (e instanceof KYCError) {
       errorMessage = e.message;
     }
 
