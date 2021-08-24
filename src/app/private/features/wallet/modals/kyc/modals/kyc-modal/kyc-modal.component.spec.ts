@@ -3,11 +3,20 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MOCK_KYC_DOCUMENTATION, MOCK_KYC_NATIONALITY } from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
+import { KYCServicesModule } from '@api/payments/kyc/kyc-services.module';
+import { KYCService } from '@api/payments/kyc/kyc.service';
+import {
+  MOCK_EMPTY_KYC_SPECIFICATIONS,
+  MOCK_KYC_DOCUMENTATION,
+  MOCK_KYC_NATIONALITY,
+  MOCK_KYC_SPECIFICATIONS,
+} from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
+import { MOCK_KYC_IMAGES } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { of } from 'rxjs';
 import { KYCModule } from '../../kyc.module';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
 
@@ -17,16 +26,19 @@ describe('KYCModalComponent', () => {
   const bankAccountSelector = 'tsl-bank-account';
   const KYCNationalitySelector = 'tsl-kyc-nationality';
   const KYCImageOptionsSelector = 'tsl-kyc-image-options';
+  const KYCUploadImagesSelector = 'tsl-kyc-upload-images';
 
   let component: KYCModalComponent;
   let kycStoreService: KYCStoreService;
+  let kycService: KYCService;
   let fixture: ComponentFixture<KYCModalComponent>;
+  let activeModal: NgbActiveModal;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [KYCModule, RouterTestingModule, HttpClientTestingModule],
-      declarations: [KYCModalComponent, StepperComponent, StepDirective],
-      providers: [DeviceDetectorService, NgbActiveModal],
+      imports: [KYCModule, RouterTestingModule, HttpClientTestingModule, KYCServicesModule],
+      declarations: [StepperComponent, StepDirective],
+      providers: [DeviceDetectorService, NgbActiveModal, KYCStoreService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -35,6 +47,8 @@ describe('KYCModalComponent', () => {
     fixture = TestBed.createComponent(KYCModalComponent);
     component = fixture.componentInstance;
     kycStoreService = TestBed.inject(KYCStoreService);
+    kycService = TestBed.inject(KYCService);
+    activeModal = TestBed.inject(NgbActiveModal);
   });
 
   it('should create', () => {
@@ -151,6 +165,70 @@ describe('KYCModalComponent', () => {
         it('should go back to the previous step', () => {
           expect(component.stepper.goBack).toHaveBeenCalled();
         });
+      });
+    });
+
+    describe('and we are on upload images step', () => {
+      beforeEach(() => {
+        kycStoreService.specifications = MOCK_KYC_SPECIFICATIONS;
+        component.stepper.activeId = 3;
+
+        fixture.detectChanges();
+      });
+
+      describe('and the images change...', () => {
+        beforeEach(() => {
+          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
+
+          KYCUploadImagesComponent.triggerEventHandler('imagesChange', MOCK_KYC_IMAGES);
+        });
+
+        it('should update the images on the store', () => {
+          expect(kycStoreService.specifications.images).toStrictEqual(MOCK_KYC_IMAGES);
+        });
+      });
+
+      describe('and the verification end...', () => {
+        beforeEach(() => {
+          spyOn(kycService, 'request').and.returnValue(of(null));
+          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
+
+          KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES);
+        });
+
+        it('should do the kyc request ', () => {
+          expect(kycService.request).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('and we click on the back button...', () => {
+        beforeEach(() => {
+          spyOn(component.stepper, 'goBack');
+          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
+
+          KYCUploadImagesComponent.triggerEventHandler('goBack', {});
+        });
+
+        it('should go back to the previous step', () => {
+          expect(component.stepper.goBack).toHaveBeenCalledTimes(1);
+        });
+      });
+    });
+
+    describe('and we click on the close modal button...', () => {
+      beforeEach(() => {
+        spyOn(activeModal, 'close');
+        const closeButton = fixture.debugElement.query(By.css('.modal-close')).nativeElement;
+
+        closeButton.click();
+      });
+
+      it('should reset all the specifications', () => {
+        expect(kycStoreService.specifications).toStrictEqual(MOCK_EMPTY_KYC_SPECIFICATIONS);
+      });
+
+      it('should close the modal', () => {
+        expect(activeModal.close).toHaveBeenCalled();
       });
     });
   });
