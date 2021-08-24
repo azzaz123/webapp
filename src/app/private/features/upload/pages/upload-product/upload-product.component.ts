@@ -34,6 +34,7 @@ import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/su
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
+import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.interface';
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
@@ -80,6 +81,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   MAX_DESCRIPTION_LENGTH = 640;
   MAX_TITLE_LENGTH = 50;
+  MAX_HASHTAGS_NUMBER = 5;
 
   public itemTypes: any = ITEM_TYPES;
   public currentCategory: CategoryOption;
@@ -108,6 +110,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
+  public options: SelectFormOption<string>[] = [
+    { label: 'aa', value: 'aa' },
+    { label: 'bb', value: 'bb' },
+  ];
   public uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
 
   private focused: boolean;
@@ -476,6 +482,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         fix_price: false,
         exchange_allowed: false,
       }),
+      hashtags: [[]],
       delivery_info: [null],
       location: this.fb.group({
         address: ['', [Validators.required]],
