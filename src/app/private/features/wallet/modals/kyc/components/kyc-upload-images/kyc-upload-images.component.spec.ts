@@ -589,6 +589,36 @@ describe('KYCUploadImagesComponent', () => {
     it('should NOT request camera access', () => {
       expect(askPermissionsService.askCameraPermissions).not.toHaveBeenCalled();
     });
+
+    describe('and the user needs to upload two images', () => {
+      describe('and the images are not uploaded', () => {
+        describe('and the user clicks on the upload front side image box', () => {
+          it('should allow the user upload an image', () => {});
+        });
+
+        describe('and the user clicks on the upload back side image box', () => {
+          it('should allow the user upload an image', () => {});
+        });
+      });
+
+      describe('and the images are uploaded', () => {
+        it('should allow the user to finish the verification', () => {});
+
+        describe('and the user requests the KYC verification...', () => {
+          it('should send the request to mangopay', () => {});
+        });
+      });
+    });
+
+    describe('and the user needs to upload only one image', () => {
+      describe('and the image is not uploaded', () => {
+        it('should allow the user upload the image', () => {});
+      });
+
+      describe('and the image is already uploaded', () => {
+        it('should allow the user to end the KYC verification', () => {});
+      });
+    });
   });
 
   describe('when the user clicks on the back button...', () => {

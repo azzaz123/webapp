@@ -182,7 +182,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     const img = new Image();
 
     if (file.type.match(this.MIME_TYPES.IMAGE_JPEG)) {
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (evt: ProgressEvent<FileReader>) => {
         if (evt.target.readyState === FileReader.DONE && typeof evt.target.result === 'string') {
