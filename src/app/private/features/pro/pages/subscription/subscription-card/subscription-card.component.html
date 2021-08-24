@@ -3,7 +3,7 @@
   }">
     <div class="SubscriptionCard__banner text-center px-2 mb-3"
         [ngClass]="{
-            'SubscriptionCard__banner--hidden': isSubscribed || (!hasTrialAvailable && !tierDiscount),
+            'SubscriptionCard__banner--hidden': !hasTrialAvailable && !tierDiscount,
             'SubscriptionCard__banner--trial': hasTrialAvailable,
             'SubscriptionCard__banner--discount': tierDiscount && !hasTrialAvailable 
         }">
@@ -27,7 +27,17 @@
                 </tsl-subscription-price-discount>
             </ng-container>
             <ng-template #subscriptionPrice>
-                <span i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span>
+                <span i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.discount ? subscription.selected_tier.discount.price : subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span>
+                <div class="description">
+                    <span *ngIf="subscription.trial_available;else noFreeTrialDesc" i18n="@@web_price_after_free_days">at the end of free trial</span>
+                    <ng-template #noFreeTrialDesc>
+                        <div *ngIf="subscription.selected_tier.discount">
+                            <span i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span>&nbsp;<span 
+                            i18n="@@pro_subscription_purchase_summary_start_period_web">starting from {{subscription.selected_tier.discount.no_discount_date |  date:'longDate' }}</span>
+                        </div>
+                        <br *ngIf="!subscription.selected_tier.discount">
+                    </ng-template>
+                </div>
             </ng-template>
         </div>
         <hr />
@@ -57,13 +67,13 @@
                 <ng-container *ngIf="subscription.subscribed_until; else noSubscriptionEnd">
                     <span i18n="@@web_profile_pages_subscription_330"> Subscription ends on
                         <b>
-                            {{subscription.subscribed_until | date:'dd/MM/yy' }}
+                            {{subscription.subscribed_until | date:'longDate' }}
                         </b>
                     </span>
                 </ng-container>
                 <ng-template #noSubscriptionEnd>
                     <span i18n="@@web_profile_pages_subscription_329"> Subscribed
-                        from <b>{{subscription.subscribed_from | date:'dd/MM/yy' }}</b>
+                        from <b>{{subscription.subscribed_from | date:'longDate' }}</b>
                     </span>
                 </ng-template>
             </span>
