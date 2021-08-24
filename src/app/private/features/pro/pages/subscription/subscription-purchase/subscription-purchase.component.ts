@@ -156,6 +156,10 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     this.eventService.unsubscribeAll(STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
   }
 
+  public onRedirectTo(path: string) {
+    this.purchaseSuccessful.emit(path);
+  }
+
   private subscribeStripeEvents(): void {
     this.eventService.subscribe(STRIPE_PAYMENT_RESPONSE_EVENT_KEY, (response: string | PaymentError) => {
       this.managePaymentResponse(response);
@@ -296,10 +300,6 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
           this.requestNewPayment(error);
         }
       );
-  }
-
-  public onRedirectTo(path: string) {
-    this.purchaseSuccessful.emit(path);
   }
 
   private requestNewPayment(error?: HttpErrorResponse): void {
