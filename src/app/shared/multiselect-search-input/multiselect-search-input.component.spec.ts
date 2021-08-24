@@ -10,12 +10,12 @@ import { MultiSelectFormComponent } from '@shared/form/components/multi-select-f
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { of } from 'rxjs';
-import { SuggesterInputComponent } from './suggester-input.component';
-import { HASHTAG_EXTENDED_OPTIONS, HASHTAG_OPTIONS, HASHTAG_TESTING, INITIAL_HASHTAGS } from './suggester-input.fixtures.spec';
+import { MultiselectSearchInputComponent } from './multiselect-search-input.component';
+import { HASHTAG_EXTENDED_OPTIONS, HASHTAG_OPTIONS, HASHTAG_TESTING, INITIAL_HASHTAGS } from './multiselect-search-input.fixtures.spec';
 
-describe('SuggesterInputComponent', () => {
-  let component: SuggesterInputComponent;
-  let fixture: ComponentFixture<SuggesterInputComponent>;
+describe('MultiselectSearchInputComponent', () => {
+  let component: MultiselectSearchInputComponent;
+  let fixture: ComponentFixture<MultiselectSearchInputComponent>;
   let inputElement: DebugElement;
   let hashtagSuggesterApiService: HashtagSuggesterApiService;
 
@@ -23,16 +23,16 @@ describe('SuggesterInputComponent', () => {
     await TestBed.configureTestingModule({
       providers: [HashtagSuggesterApiService],
       imports: [CommonModule, HttpClientTestingModule, SelectFormModule, FormsModule, MultiSelectFormModule],
-      declarations: [SuggesterInputComponent],
+      declarations: [MultiselectSearchInputComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SuggesterInputComponent);
+    fixture = TestBed.createComponent(MultiselectSearchInputComponent);
     component = fixture.componentInstance;
     component.searchValue = '';
     hashtagSuggesterApiService = TestBed.inject(HashtagSuggesterApiService);
-    inputElement = fixture.debugElement.query(By.css('.SuggesterInput'));
+    inputElement = fixture.debugElement.query(By.css('.MultiselectSearchInput'));
     fixture.detectChanges();
   });
 

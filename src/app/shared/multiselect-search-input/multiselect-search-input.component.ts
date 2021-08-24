@@ -22,18 +22,18 @@ import { Observable, of, Subject, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
-  selector: 'tsl-suggester-input',
-  templateUrl: './suggester-input.component.html',
-  styleUrls: ['./suggester-input.component.scss'],
+  selector: 'tsl-multiselect-search-input',
+  templateUrl: './multiselect-search-input.component.html',
+  styleUrls: ['./multiselect-search-input.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SuggesterInputComponent),
+      useExisting: forwardRef(() => MultiselectSearchInputComponent),
       multi: true,
     },
   ],
 })
-export class SuggesterInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit {
+export class MultiselectSearchInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit {
   @Input() categoryId: string;
   @Input() disabled: boolean;
   @ViewChild('hashtagSuggesterInput', { static: true }) hashtagSuggesterInput: ElementRef;

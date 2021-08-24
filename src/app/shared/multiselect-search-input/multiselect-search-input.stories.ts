@@ -7,24 +7,24 @@ import { HashtagSuggesterApiService } from '@private/features/upload/core/servic
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/cancel-bubble.module';
 import { Component, Input } from '@angular/core';
-import { SuggesterInputModule } from './suggester-input.module';
+import { MultiselectSearchInputModule } from './multiselect-search-input.module';
 @Component({
-  selector: 'tsl-story-suggester-input',
+  selector: 'tsl-story-multiselect-search-input',
   template: `
     <form [formGroup]="formGroup">
       <h4 class="mt-4">Selected hashtags: {{ formGroup.value.hashtag }}</h4>
       Get your hashtags:
-      <tsl-suggester-input
+      <tsl-multiselect-search-input
         formControlName="hashtag"
         [disabled]="disabled"
         [categoryId]="categoryId"
         (showInvalidMessage)="showMessage($event)"
-      ></tsl-suggester-input>
+      ></tsl-multiselect-search-input>
     </form>
     <div *ngIf="showErrorNessage">Our hashtags are good with anything except special characters and spaces of course</div>
   `,
 })
-class StorySuggesterInputFormComponent {
+class StoryMultiselectSearchInputComponent {
   @Input() disabled: boolean = false;
   @Input() categoryId: string = '1000';
   public formGroup = new FormGroup({
@@ -39,21 +39,28 @@ class StorySuggesterInputFormComponent {
   }
 }
 export default {
-  title: 'Webapp/Shared/SuggesterInput',
-  component: StorySuggesterInputFormComponent,
+  title: 'Webapp/Shared/MultiselectSearchInput',
+  component: StoryMultiselectSearchInputComponent,
   decorators: [
     moduleMetadata({
-      declarations: [StorySuggesterInputFormComponent],
-      imports: [CommonModule, HttpClientModule, MultiSelectFormModule, CancelBubbleModule, ReactiveFormsModule, SuggesterInputModule],
+      declarations: [StoryMultiselectSearchInputComponent],
+      imports: [
+        CommonModule,
+        HttpClientModule,
+        MultiSelectFormModule,
+        CancelBubbleModule,
+        ReactiveFormsModule,
+        MultiselectSearchInputModule,
+      ],
       providers: [HashtagSuggesterApiService],
     }),
   ],
 };
 
-const Template: Story<StorySuggesterInputFormComponent> = (args) => ({
+const Template: Story<StoryMultiselectSearchInputComponent> = (args) => ({
   props: args,
   template: `
-  <tsl-story-suggester-input [disabled]="disabled" [categoryId]="categoryId"></tsl-story-suggester-input>
+  <tsl-story-multiselect-search-input [disabled]="disabled" [categoryId]="categoryId"></tsl-story-multiselect-search-input>
     `,
 });
 
