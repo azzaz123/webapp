@@ -87,11 +87,13 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   public takeImage(): void {
-    const imageContainer = this.isFrontSideImageDefined ? this.backSideImage?.nativeElement : this.frontSideImage.nativeElement;
+    if (this.isShootImageMethod) {
+      const imageContainer = this.isFrontSideImageDefined ? this.backSideImage?.nativeElement : this.frontSideImage.nativeElement;
 
-    imageContainer.getContext('2d').drawImage(this.userCamera.nativeElement, 0, 0, imageContainer.width, imageContainer.height);
+      imageContainer.getContext('2d').drawImage(this.userCamera.nativeElement, 0, 0, imageContainer.width, imageContainer.height);
 
-    this.emitNewImage(imageContainer.toDataURL(this.MIME_TYPES.IMAGE_JPEG, 1));
+      this.emitNewImage(imageContainer.toDataURL(this.MIME_TYPES.IMAGE_JPEG, 1));
+    }
   }
 
   public removeImage(imageToRemove: KYC_IMAGES): void {
@@ -185,7 +187,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       reader.onload = (evt: ProgressEvent<FileReader>) => {
         if (evt.target.readyState === FileReader.DONE && typeof evt.target.result === 'string') {
           const base64Image = evt.target.result;
-          img.src = evt.target.result;
+          img.src = base64Image;
           img.onload = () => imageContainer.getContext('2d').drawImage(img, 0, 0, imageContainer.width, imageContainer.height);
 
           if (imageSide === KYC_IMAGES.FRONT_SIDE) {

@@ -67,10 +67,11 @@
                         <div class="KYCUploadImages__cameraContainer__overlay position-absolute"></div>
                     </div>
                 </div>
-                <div class="text-center row mt-3" *ngIf="requestCameraSucceed((userDevicePermissions$ | async).video)">
+                <div class="text-center row mt-3" *ngIf="requestCameraSucceed((userDevicePermissions$ | async).video) || isUploadImageMethod">
                     <tsl-button 
                         *ngIf="!allImagesAreDefined" id="imagesCounterButton"
                         class="col"
+                        [disabled]="isUploadImageMethod"
                         (click)="takeImage()">{{actionButtonCopy}} ({{imagesTakenCounter}}/{{imagesNeeded}})</tsl-button>
                     <tsl-button 
                         *ngIf="allImagesAreDefined" id="endVerificationButton"
