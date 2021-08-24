@@ -252,7 +252,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   private queryParamsChange(): Observable<FilterParameter[]> {
     return this.route.queryParams.pipe(
-      filter(() => window.location.pathname === `/${PUBLIC_PATHS.SEARCH}`),
+      filter(() => this.router.url?.split('?')[0] === `/${PUBLIC_PATHS.SEARCH}`),
       distinctUntilChanged((prevParams, nextParams) => isEqual(prevParams, nextParams)),
       map((params: Params) => this.queryStringService.mapQueryToFilterParams(params))
     );
