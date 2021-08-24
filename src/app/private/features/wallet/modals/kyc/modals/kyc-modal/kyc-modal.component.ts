@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { KYCError } from '@api/core/errors/payments/kyc';
 import { KYCService } from '@api/payments/kyc/kyc.service';
 import { I18nService } from '@core/i18n/i18n.service';
@@ -20,7 +20,7 @@ import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
   templateUrl: './kyc-modal.component.html',
   styleUrls: ['./kyc-modal.component.scss'],
 })
-export class KYCModalComponent {
+export class KYCModalComponent implements OnDestroy {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
   public KYCStoreSpecifications$: Observable<KYCSpecifications>;
@@ -33,6 +33,10 @@ export class KYCModalComponent {
     private i18nService: I18nService
   ) {
     this.KYCStoreSpecifications$ = KYCStoreService.specifications$;
+  }
+
+  ngOnDestroy(): void {
+    this.resetSpecifications();
   }
 
   public endVerification(KYCImages: KYCImages): void {
@@ -74,7 +78,19 @@ export class KYCModalComponent {
     this.goPreviousStep();
   }
 
-  public resetSpecificationsAndCloseModal(): void {
+  public closeModal(): void {
+    this.activeModal.close();
+  }
+
+  public goNextStep(): void {
+    this.stepper.goNext();
+  }
+
+  public goPreviousStep(): void {
+    this.stepper.goBack();
+  }
+
+  private resetSpecifications(): void {
     this.KYCStoreService.specifications = {
       ...this.KYCStoreService.specifications,
       nationality: null,
@@ -85,16 +101,6 @@ export class KYCModalComponent {
         backSide: null,
       },
     };
-
-    this.activeModal.close();
-  }
-
-  public goNextStep(): void {
-    this.stepper.goNext();
-  }
-
-  public goPreviousStep(): void {
-    this.stepper.goBack();
   }
 
   private handleKYCError(e: Error | KYCError): void {
