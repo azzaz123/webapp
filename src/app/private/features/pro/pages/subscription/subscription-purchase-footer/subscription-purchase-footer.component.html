@@ -15,8 +15,7 @@
                 <div class="SubscriptionPurchaseFooter__description">
                     <ng-container *ngIf="subscription.trial_available; else noTrialDescription">
                         <b><span i18n="@@web_profile_pages_subscription_326">{{selectedTier.price}}{{selectedTier.currency}}/month</span>
-                        </b><span i18n="@@web_price_after_free_days">
-                            at the end of free trial</span>
+                        </b>&nbsp;<span i18n="@@web_price_after_free_days">at the end of free trial</span>
                     </ng-container>
                     <ng-template #noTrialDescription>
                         <ng-container *ngIf="selectedTier.discount; else montlyRenewal">

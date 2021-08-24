@@ -110,7 +110,7 @@ describe('SubscriptionTierSelectorComponent', () => {
         const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${component.subscription.tiers[0].price}:INTERPOLATION:${component.subscription.tiers[0].currency}:INTERPOLATION:/month`;
         const expectedFreeTrialText = $localize`:@@after_free_trial:after free trial`;
 
-        expect(tierTitle.textContent).toEqual(`${expectedMonthlyPriceText} ${expectedFreeTrialText}`);
+        expect(tierTitle.textContent).toEqual(`${expectedMonthlyPriceText}${String.fromCharCode(160)}${expectedFreeTrialText}`);
       });
     });
 

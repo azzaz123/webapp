@@ -111,7 +111,7 @@ describe('SubscriptionPurchaseFooterComponent', () => {
         const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${component.selectedTier.price}:INTERPOLATION:${component.selectedTier.currency}:INTERPOLATION:/month`;
         const expectedFreeTrialText = $localize`:@@web_price_after_free_days:at the end of free trial`;
 
-        expect(description.textContent).toEqual(`${expectedMonthlyPriceText} ${expectedFreeTrialText}`);
+        expect(description.textContent).toEqual(`${expectedMonthlyPriceText}${String.fromCharCode(160)}${expectedFreeTrialText}`);
       });
 
       it('should show empty price', () => {
