@@ -8,6 +8,6 @@ export class KYCHttpService {
   constructor(private http: HttpClient) {}
 
   public request(body: FormData): Observable<void> {
-    return this.http.post<never>(KYC_ENDPOINT, body, { responseType: 'text' as 'json' });
+    return this.http.post<void>(KYC_ENDPOINT, body, { responseType: 'text' as 'json' });
   }
 }
