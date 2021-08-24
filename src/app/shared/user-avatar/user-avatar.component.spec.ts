@@ -103,6 +103,36 @@ describe('Component: UserAvatar', () => {
           expect(proBadgeElement).toBeFalsy();
         });
       });
+      describe('and when PRO badge large should be shown', () => {
+        beforeEach(() => {
+          component.showProBadge = false;
+          component.showProBadgeWide = true;
+          component.ngOnInit();
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
+
+        it('should show PRO badge', () => {
+          expect(proBadgeElement).toBeTruthy();
+        });
+
+        it('should be shown in defined position', () => {
+          expect(proBadgeElement.nativeElement.style._values).toEqual({ bottom: '4px', left: '54px' });
+        });
+      });
+
+      describe('and when PRO badge large should NOT be shown', () => {
+        beforeEach(() => {
+          component.showProBadge = false;
+          component.showProBadgeWide = false;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
+
+        it('should NOT show PRO badge', () => {
+          expect(proBadgeElement).toBeFalsy();
+        });
+      });
     });
     describe('and has not subscriptions permission', () => {
       beforeEach(() => {
@@ -128,6 +158,30 @@ describe('Component: UserAvatar', () => {
         });
 
         it('should NOT show PRO badge', () => {
+          expect(proBadgeElement).toBeFalsy();
+        });
+      });
+
+      describe('and when wide PRO badge should be shown', () => {
+        beforeEach(() => {
+          component.showProBadgeWide = true;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
+
+        it('should not show wide PRO badge', () => {
+          expect(proBadgeElement).toBeFalsy();
+        });
+      });
+
+      describe('and when wide PRO badge should NOT be shown', () => {
+        beforeEach(() => {
+          component.showProBadgeWide = false;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+        });
+
+        it('should NOT show wide PRO badge', () => {
           expect(proBadgeElement).toBeFalsy();
         });
       });
