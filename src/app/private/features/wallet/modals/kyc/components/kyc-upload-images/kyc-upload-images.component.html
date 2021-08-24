@@ -10,16 +10,18 @@
     <div class="row mb-4 mt-2">
         <div class="col col-md-11 offset-md-1">
             <h3 id="KYCUploadImages__title">{{title}}</h3>
-            <div *ngIf="isShootTakeImageMethod">
+            <div *ngIf="isShootImageMethod">
                 <span class="d-block">Go somewhere with good lighting and take the photo. Make sure the document you provide is valid for at least 3 months.</span>
                 <span class="d-block">All the details on your document must be clear and perfectly legible.</span>
             </div>
         </div>
     </div>
-    <div class="row mx-0 mx-md-2 mb-4 justify-content-center" *ngIf="isShootTakeImageMethod && requestCameraSucceed(userDevicePermissions.video)">
+    <div class="row mx-0 mx-md-2 mb-4 justify-content-center" *ngIf="(isShootImageMethod && requestCameraSucceed(userDevicePermissions.video)) || isUploadImageMethod">
         <div class="GenericCard KYCUploadImages__image col-5 p-0" 
             [ngClass]="isFrontSideImageDefined ? 'KYCUploadImages__image--defined' : 'KYCUploadImages__image--active'">
+            <input #frontSideImageUpload type="file" (change)="defineImage($event, KYC_IMAGES.FRONT_SIDE)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
             <div *ngIf="!isFrontSideImageDefined" id="takeFrontSideImage"
+                (click)="isUploadAvailable(KYC_IMAGES.FRONT_SIDE)"
                 class="w-100 h-100 d-flex flex-column align-items-center justify-content-center text-center p-2">
                 <span class="GenericCard__title KYCUploadImages__image__title" i18n="@@kyc_request_front_side_photo">Take a photo of the front side</span>
                 <span class="GenericCard__subtitle m-0" i18n="@@kyc_jpeg_png_file">JPEG or PNG files only</span>
@@ -32,9 +34,12 @@
             <canvas #frontSideImage id="frontSideImage" class="KYCUploadImages__takenImage w-100 h-100" [ngClass]="{'d-none': !isFrontSideImageDefined}"></canvas>
         </div>
         <div *ngIf="imagesNeeded === 2" class="GenericCard KYCUploadImages__image col-5 p-0 ml-3"
-            [ngClass]="{'KYCUploadImages__image--active': isFrontSideImageDefined && !allImagesAreDefined,
-                        'KYCUploadImages__image--defined': isBackSideImageDefined}">
+        (click)="isUploadAvailable(KYC_IMAGES.BACK_SIDE)"
+        [ngClass]="{'KYCUploadImages__image--active': isFrontSideImageDefined && !allImagesAreDefined,
+        'KYCUploadImages__image--defined': isBackSideImageDefined}">
+            <input #backSideImageUpload type="file" (change)="defineImage($event, KYC_IMAGES.BACK_SIDE)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
             <div *ngIf="!isBackSideImageDefined" id="takeBackSideImage"
+                (click)="isUploadAvailable(KYC_IMAGES.BACK_SIDE)"
                 class="w-100 h-100 d-flex flex-column align-items-center justify-content-center text-center p-2">
                 <span class="GenericCard__title KYCUploadImages__image__title" i18n="@@kyc_request_back_side_photo">Take a photo of the back side</span>
                 <span class="GenericCard__subtitle m-0" i18n="@@kyc_jpeg_png_file">JPEG or PNG files only</span>

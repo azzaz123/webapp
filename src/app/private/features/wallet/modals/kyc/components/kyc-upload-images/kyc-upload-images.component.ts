@@ -29,7 +29,9 @@ import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.e
 export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   @ViewChild('userCamera') userCamera: ElementRef;
   @ViewChild('frontSideImage') frontSideImage: ElementRef<HTMLCanvasElement>;
+  @ViewChild('frontSideImageUpload') frontSideImageUpload: ElementRef<HTMLInputElement>;
   @ViewChild('backSideImage') backSideImage: ElementRef<HTMLCanvasElement>;
+  @ViewChild('backSideImageUpload') backSideImageUpload: ElementRef<HTMLInputElement>;
 
   @Input() imagesNeeded: KYCImagesNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
@@ -41,6 +43,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   public userDevicePermissions$: Observable<UserDevicePermissions>;
   public readonly KYC_IMAGES = KYC_IMAGES;
+  public readonly MIME_TYPES = MIME_TYPES;
   public readonly errorBannerSpecifications: NgbAlertConfig = {
     type: BANNER_TYPES.DANGER,
     dismissible: false,
@@ -51,7 +54,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (this.isShootTakeImageMethod) {
+    if (this.isShootImageMethod) {
       this.requestCameraPermissions();
     }
   }
@@ -64,12 +67,31 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  public isUploadAvailable(imageSide: KYC_IMAGES): void {
+    if (this.isUploadImageMethod) {
+      if (imageSide === KYC_IMAGES.FRONT_SIDE) {
+        this.frontSideImageUpload.nativeElement.click();
+      } else {
+        this.backSideImageUpload.nativeElement.click();
+      }
+    }
+  }
+
+  public defineImage(e: Event, imageSide: KYC_IMAGES): void {
+    const input = e.target as HTMLInputElement;
+
+    if (!input.files?.length) return;
+
+    const file = input.files[0];
+    this.defineUploadImageAndEmitValue(file, imageSide);
+  }
+
   public takeImage(): void {
     const imageContainer = this.isFrontSideImageDefined ? this.backSideImage?.nativeElement : this.frontSideImage.nativeElement;
 
     imageContainer.getContext('2d').drawImage(this.userCamera.nativeElement, 0, 0, imageContainer.width, imageContainer.height);
 
-    this.emitNewImage(imageContainer.toDataURL(MIME_TYPES.IMAGE_JPEG, 1));
+    this.emitNewImage(imageContainer.toDataURL(this.MIME_TYPES.IMAGE_JPEG, 1));
   }
 
   public removeImage(imageToRemove: KYC_IMAGES): void {
@@ -104,18 +126,22 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       : $localize`:@@kyc_camera_cannot_access:Oops, an error occurred and we cannot access your camera`;
   }
 
-  public get isShootTakeImageMethod(): boolean {
+  public get isUploadImageMethod(): boolean {
+    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
+  }
+
+  public get isShootImageMethod(): boolean {
     return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT;
   }
 
   public get title(): string {
-    return this.isShootTakeImageMethod
+    return this.isShootImageMethod
       ? $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`
       : $localize`:@@kyc_upload_photo_view_title:Upload a photo of your document`;
   }
 
   public get actionButtonCopy(): string {
-    return this.isShootTakeImageMethod
+    return this.isShootImageMethod
       ? $localize`:@@kyc_request_photo_counter_shoot:Take photo`
       : $localize`:@@kyc_request_photo_counter_upload:Upload photo`;
   }
@@ -137,6 +163,29 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   public get isBackSideImageDefined(): boolean {
     return !!this.images.backSide;
+  }
+
+  private defineUploadImageAndEmitValue(file: File, imageSide: KYC_IMAGES): void {
+    const imageContainer = imageSide === KYC_IMAGES.FRONT_SIDE ? this.frontSideImage.nativeElement : this.backSideImage?.nativeElement;
+    const img = new Image();
+
+    if (file.type.match(this.MIME_TYPES.IMAGE_JPEG)) {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (evt: ProgressEvent<FileReader>) => {
+        if (evt.target.readyState === FileReader.DONE && typeof evt.target.result === 'string') {
+          const base64Image = evt.target.result;
+          img.src = evt.target.result;
+          img.onload = () => imageContainer.getContext('2d').drawImage(img, 0, 0, imageContainer.width, imageContainer.height);
+
+          if (imageSide === KYC_IMAGES.FRONT_SIDE) {
+            this.emitFrontSideImageChange(base64Image);
+          } else {
+            this.emitBackSideImageChange(base64Image);
+          }
+        }
+      };
+    }
   }
 
   private emitNewImage(newImage: string): void {
