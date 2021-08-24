@@ -22,15 +22,12 @@ import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
 import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
 import { CheckSubscriptionInAppModalComponent } from '../../modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
-import { EditSubscriptionModalComponent } from '../../modal/edit-subscription/edit-subscription-modal.component';
 import { UnsubscribeInAppFirstModalComponent } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
-import { PRO_PATHS } from '../../pro-routing-constants';
 
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
   | typeof CancelSubscriptionModalComponent
-  | typeof ContinueSubscriptionModalComponent
-  | typeof EditSubscriptionModalComponent;
+  | typeof ContinueSubscriptionModalComponent;
 
 @Component({
   selector: 'tsl-subscription',
@@ -44,7 +41,6 @@ export class SubscriptionsComponent implements OnInit {
   public user: User;
   public newSubscription: SubscriptionsResponse = null;
   public editSubscription: SubscriptionsResponse = null;
-  private isPurchaseSuccessful: boolean;
 
   constructor(
     private modalService: NgbModal,
