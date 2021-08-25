@@ -1288,6 +1288,7 @@ export const TIER_DISCOUNT: TierDiscount = {
   end_date: 1640908800000,
   percentage: 50,
   price: 9.5,
+  no_discount_date: 1640908800000,
 };
 
 export const TIER_WITH_DISCOUNT: Tier = {

@@ -152,7 +152,7 @@ describe('SubscriptionPurchaseFooterComponent', () => {
           const expectedDate = new DatePipe('en').transform(component.selectedTier.discount.end_date, 'dd/MM/yy');
           const expectedText = $localize`:@@pro_subscription_purchase_summary_start_period_web:starting from ${expectedDate}:INTERPOLATION:`;
 
-          expect(description.textContent).toEqual(`${expectedMonthlyPriceText}${expectedText}`);
+          expect(description.textContent).toEqual(`${expectedMonthlyPriceText}${String.fromCharCode(160)}${expectedText}`);
         });
 
         it('should show price discounted', () => {
