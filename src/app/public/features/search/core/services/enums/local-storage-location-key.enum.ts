@@ -1,5 +1,5 @@
 export enum SEARCH_LOCATION_KEY {
-  LATITUDE = 'userDefinedLocationLatitude',
-  LONGITUDE = 'userDefinedLocationLongitude',
-  LABEL = 'userDefinedLocationName',
+  LATITUDE = 'searchLatitude',
+  LONGITUDE = 'searchLongitude',
+  LABEL = 'searchLocationName',
 }
