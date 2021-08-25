@@ -27,14 +27,14 @@ export class KYCService {
   }
 
   private photosAreTooSmall(KYCImages: KYCImages): boolean {
-    const frontImageTooSmall = this.isImageSmallerThanOneKB(this.dataURItoBlob(KYCImages.frontSide));
-    const backImageTooSmall = KYCImages.backSide ? this.isImageSmallerThanOneKB(this.dataURItoBlob(KYCImages.frontSide)) : false;
+    const frontImageTooSmall = this.isImageSmallerThan32KB(this.dataURItoBlob(KYCImages.frontSide));
+    const backImageTooSmall = KYCImages.backSide ? this.isImageSmallerThan32KB(this.dataURItoBlob(KYCImages.frontSide)) : false;
 
     return frontImageTooSmall || backImageTooSmall;
   }
 
-  private isImageSmallerThanOneKB(blobImage: Blob): boolean {
-    return blobImage.size < 1000;
+  private isImageSmallerThan32KB(blobImage: Blob): boolean {
+    return blobImage.size < 32000;
   }
 
   private getBodyAsFormData(KYCImages: KYCImages): FormData {
