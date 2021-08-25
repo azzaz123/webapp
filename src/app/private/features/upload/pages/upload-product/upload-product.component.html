@@ -176,11 +176,9 @@
     <div class="row" formGroupName="hashtags">
       <div class="col-12">
         <div class="form-group last">
-        <label for="hashtag" i18n="">Hashtags,, {{uploadForm.controls.hashtags.value.loaded_hashtags}}</label>
-        <span class="chars-counter">{{uploadForm.controls.hashtags.value.loaded_hashtags.length}} + {{uploadForm.controls.hashtags.value.searched_hashtags.length }}/{{MAX_HASHTAGS_NUMBER}}</span>
-        <tsl-multi-select-form formControlName="loaded_hashtags" [options]="options"></tsl-multi-select-form>
-        <tsl-multi-select-form formControlName="searched_hashtags" [options]="options"></tsl-multi-select-form>
-        <!-- <tsl-hashtag-field [form]="uploadForm.controls.hashtags" [controlName]=""></tsl-hashtag-field> -->
+        <label for="hashtag" i18n="">Hashtags,, {{uploadForm.controls.hashtags.value.hashtags}}</label>
+        <span class="chars-counter">{{uploadForm.controls.hashtags.value.hashtags.length}}/{{MAX_HASHTAGS_NUMBER}}</span>
+       <tsl-hashtag-field [form]="uploadForm.controls.hashtags" [controlName]="'hashtags'" [options]="options"></tsl-hashtag-field>
         </div>
       </div>
     </div>

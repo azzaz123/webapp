@@ -523,8 +523,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         longitude: ['', [Validators.required]],
       }),
       hashtags: this.fb.group({
-        searched_hashtags: [[]],
-        loaded_hashtags: [[]],
+        hashtags: [['#faa']],
       }),
       extra_info: this.fb.group({
         object_type: this.fb.group({

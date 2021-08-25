@@ -27,6 +27,7 @@ import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { HashtagSuggesterApiService } from './core/services/hashtag-suggestions/hashtag-suggester-api.service';
+import { HashtagFieldComponent } from './components/hashtag-field/hashtag-field.component';
 
 @NgModule({
   imports: [
@@ -55,6 +56,7 @@ import { HashtagSuggesterApiService } from './core/services/hashtag-suggestions/
     UploadProductComponent,
     UploadRealestateComponent,
     UploadComponent,
+    HashtagFieldComponent,
   ],
   providers: [
     HashtagSuggesterApiService,
