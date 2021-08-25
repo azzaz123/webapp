@@ -34,7 +34,6 @@
 
   &__info {
     font-size: $font-size-s;
-    flex-grow: 1;
     &--edit {
       color: $walla-main;
       text-align: center;
@@ -55,6 +54,10 @@
     min-height: 48px;
   }
 
+  &__header {
+    flex-grow: 1;
+  }
+
   hr {
     display: block;
     height: 1px;
@@ -62,6 +65,7 @@
     border-top: 2px solid $blue-grey-5;
     margin: $spacing-xs 0;
     width: 100%;
+    margin-top: auto;
   }
 
   &__icon {
