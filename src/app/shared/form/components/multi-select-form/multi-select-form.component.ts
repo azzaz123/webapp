@@ -24,7 +24,11 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
       return { ...option, checked: false };
     });
 
-    if (value) {
+    if (!value) {
+      return;
+    }
+
+    if (this.value) {
       this.mapCheckedValue();
     }
 

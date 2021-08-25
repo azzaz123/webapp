@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControlName, FormGroup } from '@angular/forms';
-import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
-import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 
 @Component({
@@ -9,7 +7,7 @@ import { SelectFormOption } from '@shared/form/components/select/interfaces/sele
   templateUrl: './hashtag-field.component.html',
   styleUrls: ['./hashtag-field.component.scss'],
 })
-export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValue> {
+export class HashtagFieldComponent implements OnInit {
   @Input() options: SelectFormOption<string>[];
   @Input() form: FormGroup;
   @Input() controlName: FormControlName;
@@ -20,11 +18,9 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     { label: '#d', value: '#d' },
   ];
 
-  public setValue() {
-    //this.form.controls.loaded_hashtags.setValue(this.form.controls.searched_hashtags.value);
-  }
-
-  public writeValue(value) {
-    console.log('write value', value);
+  ngOnInit() {
+    this.form.valueChanges.subscribe((val: string[]) => {
+      this.form.patchValue(val, { emitEvent: false });
+    });
   }
 }
