@@ -12,10 +12,10 @@ import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutor
   styleUrls: ['./checkout.component.scss'],
 })
 export class CheckoutComponent implements OnInit {
+  @ViewChild(BumpTutorialComponent, { static: true })
   itemsWithProducts: ItemWithProducts[];
   provincialBump: boolean;
   creditInfo: CreditInfo;
-  @ViewChild(BumpTutorialComponent, { static: true })
   bumpTutorial: BumpTutorialComponent;
 
   constructor(
