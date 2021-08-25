@@ -176,8 +176,7 @@
     <div class="row" formGroupName="hashtags">
       <div class="col-12">
         <div class="form-group last">
-        <label for="hashtag" i18n="">Hashtags,, {{uploadForm.controls.hashtags.value.hashtags}}</label>
-        <span class="chars-counter">{{uploadForm.controls.hashtags.value.hashtags.length}}/{{MAX_HASHTAGS_NUMBER}}</span>
+        <label for="hashtag" i18n="">Hashtags {{uploadForm.controls.hashtags.value.hashtags}}</label>
        <tsl-hashtag-field [form]="uploadForm.controls.hashtags" [controlName]="'hashtags'" [options]="options"></tsl-hashtag-field>
         </div>
       </div>
