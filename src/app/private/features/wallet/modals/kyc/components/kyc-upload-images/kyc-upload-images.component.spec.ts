@@ -8,6 +8,7 @@ import {
   MOCK_KYC_IMAGES_BASE_64,
   MOCK_KYC_IMAGES_BACK_DEFINED,
   MOCK_KYC_IMAGES_BASE_64_BACK_NULL,
+  MOCK_JPEG_IMG_EVENT,
 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { MOCK_DEVICE_PERMISSIONS } from '@fixtures/user-device-permissions.fixtures.spec';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
@@ -48,8 +49,11 @@ describe('KYCUploadImagesComponent', () => {
   const cameraResponseSubjectMock: BehaviorSubject<any> = new BehaviorSubject<any>(MOCK_MEDIA_STREAM);
 
   const takePhotoCopy = $localize`:@@kyc_request_photo_counter_shoot:Take photo`;
+  const uploadPhotoCopy = $localize`:@@kyc_request_photo_counter_upload:Upload photo`;
   const takeFrontSideImageSelector = '#takeFrontSideImage';
   const takeBackSideImageSelector = '#takeBackSideImage';
+  const frontSideImageUploadSelector = '#frontSideImageUpload';
+  const backSideImageUploadSelector = '#backSideImageUpload';
   const endVerificationButtonSelector = '#endVerificationButton';
   const imagesCounterButtonSelector = '#imagesCounterButton';
   const frontSideImageSelector = '#frontSideImage';
@@ -86,6 +90,11 @@ describe('KYCUploadImagesComponent', () => {
     component = de.query(By.directive(KYCUploadImagesComponent)).componentInstance;
     testComponent = fixture.componentInstance;
     testComponent.images = MOCK_EMPTY_KYC_IMAGES;
+
+    // spyOn(window, 'FileReader').and.returnValue({
+    //   readAsDataURL: () => {},
+    //   onload: () => {},
+    // });
   });
 
   it('should create', () => {
@@ -367,6 +376,17 @@ describe('KYCUploadImagesComponent', () => {
               expectVerificationButtonInDOM(true);
             });
 
+            describe('and the user requests the KYC verification...', () => {
+              beforeEach(() => {
+                spyOn(component.endVerification, 'emit');
+                de.query(By.css(endVerificationButtonSelector)).nativeElement.click();
+              });
+
+              it('should notify to the parent that the verification is finished', () => {
+                expectEndVerificationNotifyParent();
+              });
+            });
+
             describe('and they delete the front side image', () => {
               beforeEach(() => {
                 de.query(By.css(deleteFrontSideImageSelector)).nativeElement.click();
@@ -483,6 +503,17 @@ describe('KYCUploadImagesComponent', () => {
               expectVerificationButtonInDOM(true);
             });
 
+            describe('and the user requests the KYC verification...', () => {
+              beforeEach(() => {
+                spyOn(component.endVerification, 'emit');
+                de.query(By.css(endVerificationButtonSelector)).nativeElement.click();
+              });
+
+              it('should notify to the parent that the verification is finished', () => {
+                expectEndVerificationNotifyParent();
+              });
+            });
+
             describe('and they delete the front side image', () => {
               beforeEach(() => {
                 de.query(By.css(deleteFrontSideImageSelector)).nativeElement.click();
@@ -591,26 +622,124 @@ describe('KYCUploadImagesComponent', () => {
     });
 
     describe('and the user needs to upload two images', () => {
+      beforeEach(() => {
+        testComponent.imagesNeeded = 2;
+      });
+
       describe('and the images are not uploaded', () => {
+        beforeEach(() => {
+          testComponent.images = MOCK_EMPTY_KYC_IMAGES;
+
+          fixture.detectChanges();
+        });
+
+        it('should NOT show the end verification button', () => {
+          expectVerificationButtonInDOM(false);
+        });
+
+        it('should show the defined images counter as 0', () => {
+          const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
+
+          expect(component.actionButtonCopy).toBe(uploadPhotoCopy);
+          expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (0/2)`);
+        });
+
+        it('should show the counter button disabled', () => {
+          const buttonComponentRef: ButtonComponent = de.query(By.css(imagesCounterButtonSelector)).componentInstance;
+
+          expect(buttonComponentRef.disabled).toBe(true);
+        });
+
         describe('and the user clicks on the upload front side image box', () => {
-          it('should allow the user upload an image', () => {});
+          beforeEach(() => {
+            spyOn(component.frontSideImage.nativeElement.getContext('2d'), 'drawImage');
+            spyOn(de.query(By.css(frontSideImageUploadSelector)).nativeElement, 'click');
+            spyOn(component.imagesChange, 'emit');
+
+            de.query(By.css(takeFrontSideImageSelector)).nativeElement.click();
+          });
+
+          it('should open the input file upload', () => {
+            expect(de.query(By.css(frontSideImageUploadSelector)).nativeElement.click).toHaveBeenCalledTimes(1);
+          });
+
+          describe('and the user selects a front side image', () => {
+            beforeEach(() => {
+              de.query(By.css(frontSideImageUploadSelector)).triggerEventHandler('change', MOCK_JPEG_IMG_EVENT());
+            });
+
+            xit('should draw the front side image on the screen', () => {
+              expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+            });
+
+            xit('should emit the selected image', () => {
+              expect(component.imagesChange.emit).toHaveBeenCalledWith({
+                ...component.images,
+                frontSide: 'MOCK',
+              });
+            });
+          });
         });
 
         describe('and the user clicks on the upload back side image box', () => {
-          it('should allow the user upload an image', () => {});
+          beforeEach(() => {
+            spyOn(de.query(By.css(backSideImageUploadSelector)).nativeElement, 'click');
+
+            de.query(By.css(takeBackSideImageSelector)).nativeElement.click();
+          });
+
+          it('should open the input file upload', () => {
+            expect(de.query(By.css(backSideImageUploadSelector)).nativeElement.click).toHaveBeenCalledTimes(1);
+          });
+
+          xdescribe('and the user selects a back side image', () => {
+            beforeEach(() => {
+              de.query(By.css(backSideImageUploadSelector)).triggerEventHandler('change', MOCK_JPEG_IMG_EVENT());
+            });
+
+            it('should draw the back side image on the screen', () => {
+              expect(component.backSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+            });
+
+            it('should emit the selected image', () => {
+              expect(component.imagesChange.emit).toHaveBeenCalledWith({
+                ...component.images,
+                backSide: 'MOCK',
+              });
+            });
+          });
         });
       });
 
       describe('and the images are uploaded', () => {
-        it('should allow the user to finish the verification', () => {});
+        beforeEach(() => {
+          testComponent.images = MOCK_KYC_IMAGES_BASE_64;
+
+          fixture.detectChanges();
+        });
+
+        it('should show the end verification button', () => {
+          expectVerificationButtonInDOM(true);
+        });
 
         describe('and the user requests the KYC verification...', () => {
-          it('should send the request to mangopay', () => {});
+          beforeEach(() => {
+            spyOn(component.endVerification, 'emit');
+            de.query(By.css(endVerificationButtonSelector)).nativeElement.click();
+          });
+
+          it('should notify to the parent that the verification is finished', () => {
+            expectEndVerificationNotifyParent();
+          });
         });
       });
     });
 
     describe('and the user needs to upload only one image', () => {
+      beforeEach(() => {
+        testComponent.imagesNeeded = 1;
+      });
+
       describe('and the image is not uploaded', () => {
         it('should allow the user upload the image', () => {});
       });
@@ -669,6 +798,10 @@ describe('KYCUploadImagesComponent', () => {
     } else {
       expect(endVerificationButton).toBeFalsy();
     }
+  }
+
+  function expectEndVerificationNotifyParent(): void {
+    expect(component.endVerification.emit).toHaveBeenCalledTimes(1);
   }
 
   function expectTakeFrontSideImageInDOM(expectIsDefined: boolean): void {
