@@ -39,6 +39,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
     this.mapCheckedValue();
+    console.log('value', this.value, this.extendedOptions);
   }
 
   public handleSelectedOption(): void {
@@ -49,6 +50,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
       .map((option) => {
         return option.value;
       });
+    console.log('handle selected', this.value, this.extendedOptions);
     this.onChange(this.value);
   }
 

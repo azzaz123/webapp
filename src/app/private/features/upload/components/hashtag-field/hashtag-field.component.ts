@@ -21,7 +21,10 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
   ];
 
   public setValue() {
-    //  this.form.value.loaded_hashtags.setValue(['#faa', '#d']);
     //this.form.controls.loaded_hashtags.setValue(this.form.controls.searched_hashtags.value);
+  }
+
+  public writeValue(value) {
+    console.log('write value', value);
   }
 }
