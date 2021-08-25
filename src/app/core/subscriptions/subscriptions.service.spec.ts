@@ -22,6 +22,7 @@ import {
   MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE,
   MAPPED_SUBSCRIPTIONS_ADDED,
   TIER_DISCOUNT,
+  SUBSCTIPTION_WITH_TIER_DISCOUNT,
 } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -192,6 +193,21 @@ describe('SubscriptionsService', () => {
       expect(subscriptionForConsumerGoods.category_icon).toEqual(consumerGoodsCategory.icon_id);
       expect(subscriptionForConsumerGoods.category_id).toEqual(consumerGoodsCategory.category_id);
       expect(subscriptionForConsumerGoods.category_name).toEqual(consumerGoodsCategory.name);
+    });
+
+    it('should map discounts', () => {
+      const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_URL}`;
+      service.subscriptions = null;
+      let response: SubscriptionsResponse[];
+
+      service.getSubscriptions(false).subscribe((res) => (response = res));
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush(SUBSCTIPTION_WITH_TIER_DISCOUNT);
+
+      expect(req.request.url).toBe(expectedUrl);
+      response[0].tiers.forEach((tier) => {
+        expect(tier.discount.no_discount_date).toEqual(tier.discount.end_date + 1000 * 60 * 60 * 24);
+      });
     });
   });
 
