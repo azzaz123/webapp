@@ -12,6 +12,7 @@ export class HashtagFieldComponent implements OnInit {
   @Input() form: FormGroup;
   @Input() controlName: FormControlName;
   public maxHashtagsNumber: number = 5;
+  /* public disabled: boolean = (this.form.value.hashtags.length === this.maxHashtagsNumber) */
   public searchedOptions = [
     { label: '#searched', value: '#searched' },
     { label: '#faa', value: '#faa' },
