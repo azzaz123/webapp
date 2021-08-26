@@ -187,6 +187,26 @@ describe('KYCUploadImagesComponent', () => {
               expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (0/2)`);
             });
 
+            describe('and they click on the front side image box', () => {
+              beforeEach(() => {
+                spyOn(de.query(By.css(frontSideImageUploadSelector)).nativeElement, 'click');
+              });
+
+              it('should not open the device folder to update an image ', () => {
+                expect(component.frontSideImageUpload.nativeElement.click).not.toHaveBeenCalled();
+              });
+            });
+
+            describe('and they click on the back side image box', () => {
+              beforeEach(() => {
+                spyOn(de.query(By.css(backSideImageUploadSelector)).nativeElement, 'click');
+              });
+
+              it('should not open the device folder to update an image ', () => {
+                expect(component.backSideImageUpload.nativeElement.click).not.toHaveBeenCalled();
+              });
+            });
+
             describe('and they shoot an image', () => {
               beforeEach(() => {
                 spyOn(component.frontSideImage.nativeElement.getContext('2d'), 'drawImage');
