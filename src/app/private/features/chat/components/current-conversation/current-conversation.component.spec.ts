@@ -545,7 +545,7 @@ describe('CurrentConversationComponent', () => {
         it('should track event to analytics', fakeAsync(() => {
           const expectedEvent: AnalyticsEvent<ClickBannedUserChatPopUpExitButton> = {
             name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpExitButton,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
             attributes: mockedAtr,
           };
           spyOn(modalService, 'open').and.callThrough();
@@ -565,7 +565,7 @@ describe('CurrentConversationComponent', () => {
           modalMockResult = Promise.reject({});
           const expectedEvent: AnalyticsEvent<ClickBannedUserChatPopUpCloseButton> = {
             name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpCloseButton,
-            eventType: ANALYTIC_EVENT_TYPES.Other,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
             attributes: mockedAtr,
           };
           spyOn(modalService, 'open').and.callThrough();
