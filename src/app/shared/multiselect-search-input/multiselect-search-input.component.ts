@@ -191,10 +191,10 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
 
   public isValidKey(): boolean {
     const pattern: RegExp = /^#$|^#?([\p{L}\p{Nd}])+$/u;
-    if (!this.searchValue) {
-      this.isValid = true;
-    } else {
+    if (this.searchValue) {
       this.isValid = pattern.test(this.searchValue);
+    } else {
+      this.isValid = true;
     }
     this.showInvalidMessage.emit(!this.isValid);
     return this.isValid;
