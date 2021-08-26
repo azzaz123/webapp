@@ -40,7 +40,6 @@ describe('MultiSelectFormComponent', () => {
     fixture = TestBed.createComponent(MultiSelectFormComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
-    component.value = ['aa', 'cc'];
     component.options = multiSelectedOptionsFixture;
     fixture.detectChanges();
   });
@@ -49,7 +48,7 @@ describe('MultiSelectFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when we already have the checked value', () => {
+  describe('when we have the checked value', () => {
     it('should load the options with checkboxes checked accordingly', () => {
       component.writeValue(['aa', 'cc']);
       fixture.detectChanges();
@@ -85,6 +84,18 @@ describe('MultiSelectFormComponent', () => {
       });
 
       expect(checkedCheckBox).toBeUndefined();
+    });
+  });
+
+  describe('when we already have the options', () => {
+    it('should check the options when we load', () => {
+      component.value = ['aa'];
+      component.options = multiSelectedOptionsFixture;
+      fixture.detectChanges();
+
+      const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
+
+      expect(options[0].componentInstance.option.checked).toBeTruthy();
     });
   });
 
