@@ -10,6 +10,7 @@ import {
   MOCK_KYC_IMAGES_BACK_DEFINED,
   MOCK_KYC_IMAGES_BASE_64_BACK_NULL,
   MOCK_JPEG_IMG_EVENT,
+  MOCK_WITHOUT_JPEG_IMG_EVENT,
 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { MOCK_DEVICE_PERMISSIONS } from '@fixtures/user-device-permissions.fixtures.spec';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
@@ -695,13 +696,30 @@ describe('KYCUploadImagesComponent', () => {
               });
             });
           });
+
+          describe(`and the user don't selects an image`, () => {
+            beforeEach(() => {
+              triggerChangeImageUploadWithoutSelectedImage(frontSideImageUploadSelector);
+            });
+
+            it('should NOT draw the image on the screen', () => {
+              expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).not.toHaveBeenCalled();
+            });
+
+            it('should NOT emit the selected image', () => {
+              expect(component.imagesChange.emit).not.toHaveBeenCalled();
+            });
+          });
         });
 
         describe('and the user clicks on the upload back side image box', () => {
           beforeEach(() => {
             spyOn(component.backSideImage.nativeElement.getContext('2d'), 'drawImage');
-            spyOn(de.query(By.css(backSideImageUploadSelector)).nativeElement, 'click');
             spyOn(component.imagesChange, 'emit');
+          });
+
+          beforeEach(() => {
+            spyOn(de.query(By.css(backSideImageUploadSelector)).nativeElement, 'click');
 
             de.query(By.css(takeBackSideImageSelector)).nativeElement.click();
           });
@@ -724,6 +742,20 @@ describe('KYCUploadImagesComponent', () => {
                 ...component.images,
                 backSide: MOCK_BASE_64_SMALL_IMAGE,
               });
+            });
+          });
+
+          describe(`and the user don't selects an image`, () => {
+            beforeEach(() => {
+              triggerChangeImageUploadWithoutSelectedImage(backSideImageSelector);
+            });
+
+            it('should NOT draw the image on the screen', () => {
+              expect(component.backSideImage.nativeElement.getContext('2d').drawImage).not.toHaveBeenCalled();
+            });
+
+            it('should NOT emit the selected image', () => {
+              expect(component.imagesChange.emit).not.toHaveBeenCalled();
             });
           });
         });
@@ -928,5 +960,12 @@ describe('KYCUploadImagesComponent', () => {
     spyOn(FileReader.prototype, 'addEventListener').and.callFake((p1, callback) => callback(MOCK_JPEG_IMG_EVENT()));
 
     de.query(By.css(selector)).triggerEventHandler('change', MOCK_JPEG_IMG_EVENT());
+  }
+
+  function triggerChangeImageUploadWithoutSelectedImage(selector: string): void {
+    spyOn(Image.prototype, 'addEventListener').and.callFake((p1, callback) => callback());
+    spyOn(FileReader.prototype, 'addEventListener').and.callFake((p1, callback) => callback(MOCK_WITHOUT_JPEG_IMG_EVENT()));
+
+    de.query(By.css(selector)).triggerEventHandler('change', MOCK_WITHOUT_JPEG_IMG_EVENT());
   }
 });

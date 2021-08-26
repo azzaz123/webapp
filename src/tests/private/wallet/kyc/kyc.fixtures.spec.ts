@@ -64,6 +64,10 @@ export function MOCK_JPEG_IMG_EVENT() {
   return { target: { files: [mockFile], readyState: FileReader.DONE, result: MOCK_BASE_64_SMALL_IMAGE } };
 }
 
+export function MOCK_WITHOUT_JPEG_IMG_EVENT() {
+  return { target: { files: null, readyState: FileReader.DONE, result: null } };
+}
+
 function getBlobFromBase64JPEGImage(dataURI: string): Blob {
   let rawBinary: string;
 
