@@ -145,11 +145,11 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   private mapHashtagSuggestersToOptions(hashtagList: PaginatedList<Hashtag>): SelectFormOption<string>[] {
-    let { list } = hashtagList;
+    const { list } = hashtagList;
     if (!list.length && !!this.searchValue) {
       return this.createHashtagSuggesterOption();
     }
-    let options = list.map((hashtag: Hashtag) => {
+    const options = list.map((hashtag: Hashtag) => {
       return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     });
     if (options[0].label !== this.searchValue) {
@@ -166,7 +166,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
-    let newSearchValue = this.searchValue.substring(1);
+    const newSearchValue = this.searchValue.substring(1);
     if (!!newSearchValue) {
       return [{ label: `#${newSearchValue}`, sublabel: '0', value: `#${newSearchValue}` }];
     }
