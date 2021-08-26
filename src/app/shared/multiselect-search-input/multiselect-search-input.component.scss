@@ -11,17 +11,3 @@
     color: $blue-grey-1;
   }
 }
-:host {
-  tsl-multi-select-form {
-    ::ng-deep > div {
-      .MultiSelectOption .select {
-        border: 0 !important;
-        background-color: $blue-grey-5 !important;
-      }
-
-      .MultiSelectOption .selected {
-        background: $walla-main !important;
-      }
-    }
-  }
-}

@@ -32,6 +32,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
     this.extendedOptionsSubject.next(this.extendedOptions);
   }
   @Input() disabled: boolean = false;
+  @Input() isCustomStyle: boolean;
 
   private extendedOptions: MultiSelectFormOption[] = [];
   private extendedOptionsSubject: BehaviorSubject<MultiSelectFormOption[]> = new BehaviorSubject([]);
