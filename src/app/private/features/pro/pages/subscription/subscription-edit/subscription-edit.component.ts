@@ -63,7 +63,7 @@ export class SubscriptionEditComponent implements OnInit {
   }
 
   public cancelSubscription(): void {
-    let modalRef: NgbModalRef = this.modalService.open(CancelSubscriptionModalComponent, {
+    const modalRef: NgbModalRef = this.modalService.open(CancelSubscriptionModalComponent, {
       windowClass: 'review',
     });
     modalRef.componentInstance.subscription = this.subscription;

@@ -80,7 +80,7 @@ describe('SubscriptionEditComponent', () => {
   });
 
   describe('NgOnInit', () => {
-    describe('has subscribed tier', () => {
+    describe('when user has a subscribed tier', () => {
       it('should set subscribed tier', () => {
         expect(component.selectedTier).toEqual(
           component.subscription.tiers.find((tier) => tier.id === component.subscription.selected_tier_id)
@@ -95,14 +95,12 @@ describe('SubscriptionEditComponent', () => {
           component.subscription.tiers.filter((tier) => tier.id !== component.subscription.selected_tier_id)
         );
       });
-      it('should set available tiers', () => {
-        expect(component.availableTiers).toEqual(
-          component.subscription.tiers.filter((tier) => tier.id !== component.subscription.selected_tier_id)
-        );
+      it('should selected tier be the same that subscribed tier', () => {
+        expect(component.isEqualTier).toBe(true);
       });
     });
     describe('Benefits', () => {
-      describe('has benefits', () => {
+      describe('when subscription has benefits', () => {
         it('should set benefits', () => {
           const benefits = ['benefit1', 'benefit2'];
           spyOn(benefitsService, 'getBenefitsByCategory').and.returnValue(benefits);
@@ -113,7 +111,7 @@ describe('SubscriptionEditComponent', () => {
       });
     });
   });
-  describe('Cancel subscription', () => {
+  describe('When user cancel a subscription', () => {
     beforeEach(() => {
       modalSpy = spyOn(modalService, 'open').and.callThrough();
       spyOn(component.editSuccesful, 'emit').and.callThrough();
@@ -168,7 +166,7 @@ describe('SubscriptionEditComponent', () => {
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
-      describe('and susbcription was edited succesfully', () => {
+      describe('and subscription was edited succesfully', () => {
         it('should show success page', () => {
           spyOn(subscriptionsService, 'editSubscription').and.returnValue(of({ status: PAYMENT_SUCCESSFUL_CODE }));
 
@@ -190,7 +188,7 @@ describe('SubscriptionEditComponent', () => {
         });
       });
 
-      describe('and susbcription was not edited succesfully', () => {
+      describe('and subscription was not edited succesfully', () => {
         beforeEach(() => {
           spyOn(toastService, 'show').and.callThrough();
         });

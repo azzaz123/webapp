@@ -103,7 +103,7 @@ export class MockSubscriptionService {
     return false;
   }
 
-  public editSubscription() {
+  public editSubscription(): Observable<unknown> {
     return of({});
   }
 }

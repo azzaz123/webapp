@@ -74,7 +74,7 @@ export class SubscriptionsComponent implements OnInit {
     }
   }
 
-  private openSubscriptionPage(subscription): void {
+  private openSubscriptionPage(subscription: SubscriptionsResponse): void {
     this.subscriptionsService.isStripeSubscription(subscription)
       ? this.openEditSubscription(subscription)
       : this.setNewSubscription(subscription);

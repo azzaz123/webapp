@@ -59,6 +59,18 @@ describe('SubscriptionPurchaseFooterComponent', () => {
           expect(button.textContent).toEqual($localize`:@@pro_subscription_purchase_try_discount_button:Try with discount`);
         });
       });
+      describe('and is editing', () => {
+        beforeEach(() => {
+          component.isEdit = true;
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should show edit text', () => {
+          const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+
+          expect(button.textContent).toEqual($localize`:@@pro_subscriptions_purchase_summary_change_plan_apply_button:Continue and change`);
+        });
+      });
     });
   });
 
