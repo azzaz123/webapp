@@ -175,11 +175,12 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   private mapExtendedOptionsToValue(): string[] {
     let newValue: string[] = this.value;
     this.extendedOptions.forEach((option: MultiSelectFormOption) => {
-      if (option.checked && !this.value.includes(option.value)) {
+      const isOptionChecked = option.checked;
+      const isValueIncludedInOption = this.value.includes(option.value);
+      if (isOptionChecked && !isValueIncludedInOption) {
         newValue = newValue.concat(option.value);
       }
-
-      if (!option.checked && this.value.includes(option.value)) {
+      if (!isOptionChecked && isValueIncludedInOption) {
         newValue = newValue.filter((value) => {
           return value !== option.value;
         });
