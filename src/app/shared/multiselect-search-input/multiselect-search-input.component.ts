@@ -169,7 +169,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     let newSearchValue = this.searchValue.substring(1);
     if (!!newSearchValue) {
       return [{ label: `#${newSearchValue}`, sublabel: '0', value: `#${newSearchValue}` }];
-    } else return [];
+    }
   }
 
   private mapExtendedOptionsToValue(): string[] {
