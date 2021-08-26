@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { MOCK_BASE_64_SMALL_IMAGE } from '@fixtures/base64.fixtures.spec';
 import { MOCK_MEDIA_STREAM } from '@fixtures/media-stream.fixtures.spec';
 import {
   MOCK_EMPTY_KYC_IMAGES,
@@ -90,11 +91,6 @@ describe('KYCUploadImagesComponent', () => {
     component = de.query(By.directive(KYCUploadImagesComponent)).componentInstance;
     testComponent = fixture.componentInstance;
     testComponent.images = MOCK_EMPTY_KYC_IMAGES;
-
-    // spyOn(window, 'FileReader').and.returnValue({
-    //   readAsDataURL: () => {},
-    //   onload: () => {},
-    // });
   });
 
   it('should create', () => {
@@ -665,17 +661,17 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and the user selects a front side image', () => {
             beforeEach(() => {
-              de.query(By.css(frontSideImageUploadSelector)).triggerEventHandler('change', MOCK_JPEG_IMG_EVENT());
+              triggerChangeImageUpload(frontSideImageUploadSelector);
             });
 
-            xit('should draw the front side image on the screen', () => {
+            it('should draw the front side image on the screen', () => {
               expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
             });
 
-            xit('should emit the selected image', () => {
+            it('should emit the selected image', () => {
               expect(component.imagesChange.emit).toHaveBeenCalledWith({
                 ...component.images,
-                frontSide: 'MOCK',
+                frontSide: MOCK_BASE_64_SMALL_IMAGE,
               });
             });
           });
@@ -683,7 +679,9 @@ describe('KYCUploadImagesComponent', () => {
 
         describe('and the user clicks on the upload back side image box', () => {
           beforeEach(() => {
+            spyOn(component.backSideImage.nativeElement.getContext('2d'), 'drawImage');
             spyOn(de.query(By.css(backSideImageUploadSelector)).nativeElement, 'click');
+            spyOn(component.imagesChange, 'emit');
 
             de.query(By.css(takeBackSideImageSelector)).nativeElement.click();
           });
@@ -692,9 +690,9 @@ describe('KYCUploadImagesComponent', () => {
             expect(de.query(By.css(backSideImageUploadSelector)).nativeElement.click).toHaveBeenCalledTimes(1);
           });
 
-          xdescribe('and the user selects a back side image', () => {
+          describe('and the user selects a back side image', () => {
             beforeEach(() => {
-              de.query(By.css(backSideImageUploadSelector)).triggerEventHandler('change', MOCK_JPEG_IMG_EVENT());
+              triggerChangeImageUpload(backSideImageUploadSelector);
             });
 
             it('should draw the back side image on the screen', () => {
@@ -704,7 +702,7 @@ describe('KYCUploadImagesComponent', () => {
             it('should emit the selected image', () => {
               expect(component.imagesChange.emit).toHaveBeenCalledWith({
                 ...component.images,
-                backSide: 'MOCK',
+                backSide: MOCK_BASE_64_SMALL_IMAGE,
               });
             });
           });
@@ -731,6 +729,14 @@ describe('KYCUploadImagesComponent', () => {
           it('should notify to the parent that the verification is finished', () => {
             expectEndVerificationNotifyParent();
           });
+        });
+
+        describe('and the front side image is deleted', () => {
+          it('should emit the null front side image to the parent', () => {});
+        });
+
+        describe('and the back side image is deleted', () => {
+          it('should emit the null back side image to the parent', () => {});
         });
       });
     });
@@ -850,5 +856,12 @@ describe('KYCUploadImagesComponent', () => {
 
     expect(backSideImage).toBeFalsy();
     expect(takeBackSideImage).toBeFalsy();
+  }
+
+  function triggerChangeImageUpload(selector: string): void {
+    spyOn(Image.prototype, 'addEventListener').and.callFake((p1, callback) => callback());
+    spyOn(FileReader.prototype, 'addEventListener').and.callFake((p1, callback) => callback(MOCK_JPEG_IMG_EVENT()));
+
+    de.query(By.css(selector)).triggerEventHandler('change', MOCK_JPEG_IMG_EVENT());
   }
 });

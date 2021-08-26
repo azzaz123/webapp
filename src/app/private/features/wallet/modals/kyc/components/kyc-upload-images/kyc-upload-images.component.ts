@@ -184,11 +184,13 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     if (file.type.match(this.MIME_TYPES.IMAGE_JPEG)) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = (evt: ProgressEvent<FileReader>) => {
+      reader.addEventListener('load', (evt: ProgressEvent<FileReader>) => {
         if (evt.target.readyState === FileReader.DONE && typeof evt.target.result === 'string') {
           const base64Image = evt.target.result;
           img.src = base64Image;
-          img.onload = () => imageContainer.getContext('2d').drawImage(img, 0, 0, imageContainer.width, imageContainer.height);
+          img.addEventListener('load', () => {
+            imageContainer.getContext('2d').drawImage(img, 0, 0, imageContainer.width, imageContainer.height);
+          });
 
           if (imageSide === KYC_IMAGES.FRONT_SIDE) {
             this.emitFrontSideImageChange(base64Image);
@@ -196,7 +198,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
             this.emitBackSideImageChange(base64Image);
           }
         }
-      };
+      });
     }
   }
 

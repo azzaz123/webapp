@@ -61,7 +61,7 @@ export const MOCK_KYC_IMAGES_NON_BASE_64_BACK_NULL: KYCImages = {
 
 export function MOCK_JPEG_IMG_EVENT() {
   const mockFile = new File([''], 'filename', { type: MIME_TYPES.IMAGE_JPEG });
-  return { target: { files: [mockFile] } };
+  return { target: { files: [mockFile], readyState: FileReader.DONE, result: MOCK_BASE_64_SMALL_IMAGE } };
 }
 
 function getBlobFromBase64JPEGImage(dataURI: string): Blob {
