@@ -90,7 +90,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     if (this.isShootImageMethod) {
       const imageContainer = this.isFrontSideImageDefined ? this.backSideImage?.nativeElement : this.frontSideImage.nativeElement;
 
-      imageContainer.getContext('2d').drawImage(this.userCamera.nativeElement, 0, 0, imageContainer.width, imageContainer.height);
+      this.drawImageInCanvas(imageContainer, this.userCamera.nativeElement);
 
       this.emitNewImage(imageContainer.toDataURL(this.MIME_TYPES.IMAGE_JPEG, 1));
     }
@@ -188,9 +188,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
         if (evt.target.readyState === FileReader.DONE && typeof evt.target.result === 'string') {
           const base64Image = evt.target.result;
           img.src = base64Image;
-          img.addEventListener('load', () => {
-            imageContainer.getContext('2d').drawImage(img, 0, 0, imageContainer.width, imageContainer.height);
-          });
+          img.addEventListener('load', () => this.drawImageInCanvas(imageContainer, img));
 
           if (imageSide === KYC_IMAGES.FRONT_SIDE) {
             this.emitFrontSideImageChange(base64Image);
@@ -200,6 +198,10 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
         }
       });
     }
+  }
+
+  private drawImageInCanvas(imageContainer: HTMLCanvasElement, img: HTMLImageElement): void {
+    imageContainer.getContext('2d').drawImage(img, 0, 0, imageContainer.width, imageContainer.height);
   }
 
   private emitNewImage(newImage: string): void {

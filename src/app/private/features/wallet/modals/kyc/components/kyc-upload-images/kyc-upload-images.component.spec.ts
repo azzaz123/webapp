@@ -682,7 +682,7 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and the user selects a front side image', () => {
             beforeEach(() => {
-              triggerChangeImageUpload(frontSideImageUploadSelector);
+              triggerChangeImageUpload(frontSideImageUploadSelector, true);
             });
 
             it('should draw the front side image on the screen', () => {
@@ -697,9 +697,9 @@ describe('KYCUploadImagesComponent', () => {
             });
           });
 
-          describe(`and the user don't selects an image`, () => {
+          describe(`and the user does NOT select an image`, () => {
             beforeEach(() => {
-              triggerChangeImageUploadWithoutSelectedImage(frontSideImageUploadSelector);
+              triggerChangeImageUpload(frontSideImageUploadSelector, false);
             });
 
             it('should NOT draw the image on the screen', () => {
@@ -730,7 +730,7 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and the user selects a back side image', () => {
             beforeEach(() => {
-              triggerChangeImageUpload(backSideImageUploadSelector);
+              triggerChangeImageUpload(backSideImageUploadSelector, true);
             });
 
             it('should draw the back side image on the screen', () => {
@@ -745,9 +745,9 @@ describe('KYCUploadImagesComponent', () => {
             });
           });
 
-          describe(`and the user don't selects an image`, () => {
+          describe(`and the user does NOT select an image`, () => {
             beforeEach(() => {
-              triggerChangeImageUploadWithoutSelectedImage(backSideImageSelector);
+              triggerChangeImageUpload(backSideImageSelector, false);
             });
 
             it('should NOT draw the image on the screen', () => {
@@ -964,17 +964,11 @@ describe('KYCUploadImagesComponent', () => {
     expect(takeBackSideImage).toBeFalsy();
   }
 
-  function triggerChangeImageUpload(selector: string): void {
+  function triggerChangeImageUpload(selector: string, isImageSelected: boolean): void {
+    const MOCK_EVENT = isImageSelected ? MOCK_JPEG_IMG_EVENT() : MOCK_WITHOUT_JPEG_IMG_EVENT();
     spyOn(Image.prototype, 'addEventListener').and.callFake((p1, callback) => callback());
-    spyOn(FileReader.prototype, 'addEventListener').and.callFake((p1, callback) => callback(MOCK_JPEG_IMG_EVENT()));
+    spyOn(FileReader.prototype, 'addEventListener').and.callFake((p1, callback) => callback(MOCK_EVENT));
 
-    de.query(By.css(selector)).triggerEventHandler('change', MOCK_JPEG_IMG_EVENT());
-  }
-
-  function triggerChangeImageUploadWithoutSelectedImage(selector: string): void {
-    spyOn(Image.prototype, 'addEventListener').and.callFake((p1, callback) => callback());
-    spyOn(FileReader.prototype, 'addEventListener').and.callFake((p1, callback) => callback(MOCK_WITHOUT_JPEG_IMG_EVENT()));
-
-    de.query(By.css(selector)).triggerEventHandler('change', MOCK_WITHOUT_JPEG_IMG_EVENT());
+    de.query(By.css(selector)).triggerEventHandler('change', MOCK_EVENT);
   }
 });
