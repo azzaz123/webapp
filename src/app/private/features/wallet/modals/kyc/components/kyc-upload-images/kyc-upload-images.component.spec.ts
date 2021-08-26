@@ -720,6 +720,12 @@ describe('KYCUploadImagesComponent', () => {
           expectVerificationButtonInDOM(true);
         });
 
+        it('should NOT show the counter button', () => {
+          const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector));
+
+          expect(imagesCounterButton).toBeFalsy();
+        });
+
         describe('and the user requests the KYC verification...', () => {
           beforeEach(() => {
             spyOn(component.endVerification, 'emit');
@@ -732,11 +738,39 @@ describe('KYCUploadImagesComponent', () => {
         });
 
         describe('and the front side image is deleted', () => {
-          it('should emit the null front side image to the parent', () => {});
+          beforeEach(() => {
+            spyOn(component.imagesChange, 'emit');
+            de.query(By.css(deleteFrontSideImageSelector)).nativeElement.click();
+          });
+
+          it('should clean the front side input upload', () => {
+            expect(component.frontSideImageUpload.nativeElement.value).toBe('');
+          });
+
+          it('should emit the empty front side image', () => {
+            expect(component.imagesChange.emit).toHaveBeenCalledWith({
+              ...component.images,
+              frontSide: null,
+            });
+          });
         });
 
         describe('and the back side image is deleted', () => {
-          it('should emit the null back side image to the parent', () => {});
+          beforeEach(() => {
+            spyOn(component.imagesChange, 'emit');
+            de.query(By.css(deleteBackSideImageSelector)).nativeElement.click();
+          });
+
+          it('should clean the back side input upload', () => {
+            expect(component.backSideImageUpload.nativeElement.value).toBe('');
+          });
+
+          it('should emit the empty back side image', () => {
+            expect(component.imagesChange.emit).toHaveBeenCalledWith({
+              ...component.images,
+              backSide: null,
+            });
+          });
         });
       });
     });
@@ -746,12 +780,23 @@ describe('KYCUploadImagesComponent', () => {
         testComponent.imagesNeeded = 1;
       });
 
-      describe('and the image is not uploaded', () => {
-        it('should allow the user upload the image', () => {});
-      });
-
       describe('and the image is already uploaded', () => {
-        it('should allow the user to end the KYC verification', () => {});
+        beforeEach(() => {
+          component.images = MOCK_KYC_IMAGES_BASE_64_BACK_NULL;
+
+          fixture.detectChanges();
+        });
+
+        describe('and the user requests the KYC verification...', () => {
+          beforeEach(() => {
+            spyOn(component.endVerification, 'emit');
+            de.query(By.css(endVerificationButtonSelector)).nativeElement.click();
+          });
+
+          it('should notify to the parent that the verification is finished', () => {
+            expectEndVerificationNotifyParent();
+          });
+        });
       });
     });
   });
