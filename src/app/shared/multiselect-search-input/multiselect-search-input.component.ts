@@ -160,9 +160,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   private sliceOptions(options: SelectFormOption<string>[]): SelectFormOption<string>[] {
-    if (options.length > 4) {
-      return options.slice(0, 4);
-    } else return options;
+    return options.length > 4 ? options.slice(0, 4) : options;
   }
 
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
