@@ -154,9 +154,9 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     });
     if (options[0].label !== this.searchValue) {
       return this.sliceOptions([...this.createHashtagSuggesterOption(), ...options]);
-    } else {
-      return this.sliceOptions(options);
     }
+
+    return this.sliceOptions(options);
   }
 
   private sliceOptions(options: SelectFormOption<string>[]): SelectFormOption<string>[] {
