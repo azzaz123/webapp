@@ -98,44 +98,19 @@ describe('GIVEN WalletPendingTransactionsListComponent', () => {
         expect(target).toBeTruthy();
       });
     });
-    describe('GIVEN the transaction list collapsed', () => {
-      beforeEach(() => {
-        component.isExpanded = false;
-      });
-      it('should show the first transaction', () => {
-        const result = component.isPendingTransactionVisible(0);
+    describe.each([
+      [false, 0, true],
+      [false, 1, true],
+      [false, 2, false],
+      [true, 0, true],
+      [true, 1, true],
+      [true, 2, true],
+    ])('GIVEN the transaction list collapsed/expanded', (isExpanded, index, expected) => {
+      it('should show or not show the corresponding transaction', () => {
+        component.isExpanded = isExpanded;
+        const result = component.isPendingTransactionVisible(index);
 
-        expect(result).toBe(true);
-      });
-      it('should show the second transaction', () => {
-        const result = component.isPendingTransactionVisible(1);
-
-        expect(result).toBe(true);
-      });
-      it('should not show the third transaction', () => {
-        const result = component.isPendingTransactionVisible(2);
-
-        expect(result).toBe(false);
-      });
-    });
-    describe('GIVEN the transaction list expanded', () => {
-      beforeEach(() => {
-        component.isExpanded = true;
-      });
-      it('should show the first transaction', () => {
-        const result = component.isPendingTransactionVisible(0);
-
-        expect(result).toBe(true);
-      });
-      it('should show the second transaction', () => {
-        const result = component.isPendingTransactionVisible(1);
-
-        expect(result).toBe(true);
-      });
-      it('should show the third transaction', () => {
-        const result = component.isPendingTransactionVisible(2);
-
-        expect(result).toBe(true);
+        expect(result).toBe(expected);
       });
     });
   });
