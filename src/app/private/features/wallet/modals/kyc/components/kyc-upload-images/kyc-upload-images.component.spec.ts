@@ -891,6 +891,15 @@ describe('KYCUploadImagesComponent', () => {
 
         expect(component.userCamera.nativeElement.srcObject).toBeNull();
       });
+
+      it('should stop all the active track', () => {
+        const tracks = component.userCamera.nativeElement.srcObject.getTracks();
+        spyOn(tracks[0], 'stop');
+
+        component.ngOnDestroy();
+
+        tracks.forEach((track) => expect(track.stop).toHaveBeenCalled());
+      });
     });
   });
 
