@@ -42,13 +42,15 @@ describe('CancelBubbleComponent', () => {
       expect(bubbleText).toBe(bubbleText);
     });
 
-    it('should emit the text of the bubble when we click the cross', () => {
-      spyOn(component.clear, 'emit');
-      const crossIcon = debugElement.query(By.css('tsl-svg-icon')).nativeNode;
+    describe('when we click the cross', () => {
+      it('should emit the text of the bubble', () => {
+        spyOn(component.clear, 'emit');
+        const crossIcon = debugElement.query(By.css('tsl-svg-icon')).nativeNode;
 
-      crossIcon.click();
+        crossIcon.click();
 
-      expect(component.clear.emit).toHaveBeenCalledWith(bubbleText);
+        expect(component.clear.emit).toHaveBeenCalledWith(bubbleText);
+      });
     });
   });
 });
