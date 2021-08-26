@@ -24,7 +24,7 @@ describe('LottieService', () => {
   });
 
   describe('when retrieving the Lottie library', () => {
-    it('should retrieve the library', fakeAsync(() => {
+    it('should retrieve the library from browser', fakeAsync(() => {
       let lottiePlayer = null;
 
       service.lottiePlayer$.subscribe((library) => (lottiePlayer = library));
@@ -33,17 +33,19 @@ describe('LottieService', () => {
       expect(lottiePlayer).toEqual(mockLottiePlayer);
       expect(mockLottiePlayerConstructorCallback).toHaveBeenCalledTimes(1);
     }));
+  });
 
-    describe('and when retrieving again the Lottie library', () => {
-      it('should use the cached library reference', fakeAsync(() => {
-        let lottiePlayer = null;
+  describe('when Lottie library was already requested and therefore is in cache', () => {
+    beforeEach(() => service.lottiePlayer$.subscribe());
 
-        service.lottiePlayer$.subscribe((library) => (lottiePlayer = library));
-        tick();
+    it('should retrieve the library only once from browser and use cached one', fakeAsync(() => {
+      let lottiePlayer = null;
 
-        expect(lottiePlayer).toEqual(mockLottiePlayer);
-        expect(mockLottiePlayerConstructorCallback).toHaveBeenCalledTimes(1);
-      }));
-    });
+      service.lottiePlayer$.subscribe((library) => (lottiePlayer = library));
+      tick();
+
+      expect(lottiePlayer).toEqual(mockLottiePlayer);
+      expect(mockLottiePlayerConstructorCallback).toHaveBeenCalledTimes(1);
+    }));
   });
 });
