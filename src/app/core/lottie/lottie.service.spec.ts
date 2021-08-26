@@ -30,7 +30,7 @@ describe('LottieService', () => {
       service.lottiePlayer$.subscribe((library) => (lottiePlayer = library));
       tick();
 
-      expect(lottiePlayer).toEqual(mockLottiePlayer);
+      expect(lottiePlayer).toBe(mockLottiePlayer);
       expect(mockLottiePlayerConstructorCallback).toHaveBeenCalledTimes(1);
     }));
   });
@@ -44,7 +44,7 @@ describe('LottieService', () => {
       service.lottiePlayer$.subscribe((library) => (lottiePlayer = library));
       tick();
 
-      expect(lottiePlayer).toEqual(mockLottiePlayer);
+      expect(lottiePlayer).toBe(mockLottiePlayer);
       expect(mockLottiePlayerConstructorCallback).toHaveBeenCalledTimes(1);
     }));
   });
