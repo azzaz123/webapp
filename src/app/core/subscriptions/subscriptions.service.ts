@@ -207,8 +207,8 @@ export class SubscriptionsService {
         tier.currency = mappedCurrencyCharacter;
       }
       if (tier.discount) {
-        const one_day = 1000 * 60 * 60 * 24;
-        tier.discount.no_discount_date = tier.discount.end_date + one_day;
+        const oneDay = 1000 * 60 * 60 * 24;
+        tier.discount.no_discount_date = tier.discount.end_date + oneDay;
       }
     });
   }

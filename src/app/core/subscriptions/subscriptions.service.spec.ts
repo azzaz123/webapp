@@ -197,6 +197,7 @@ describe('SubscriptionsService', () => {
 
     it('should map discounts', () => {
       const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_URL}`;
+      const nextDayAfterDiscountEndDate = 1000 * 60 * 60 * 24;
       service.subscriptions = null;
       let response: SubscriptionsResponse[];
 
@@ -206,7 +207,7 @@ describe('SubscriptionsService', () => {
 
       expect(req.request.url).toBe(expectedUrl);
       response[0].tiers.forEach((tier) => {
-        expect(tier.discount.no_discount_date).toEqual(tier.discount.end_date + 1000 * 60 * 60 * 24);
+        expect(tier.discount.no_discount_date).toEqual(tier.discount.end_date + nextDayAfterDiscountEndDate);
       });
     });
   });
