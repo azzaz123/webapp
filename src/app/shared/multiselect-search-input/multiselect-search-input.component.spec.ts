@@ -45,9 +45,6 @@ describe('MultiselectSearchInputComponent', () => {
       component.writeValue(INITIAL_HASHTAGS);
       fixture.detectChanges();
     });
-    it('should know the hashtags that are selected outside this component', () => {
-      expect(component.value).toBe(INITIAL_HASHTAGS);
-    });
   });
 
   describe('when user focus the input', () => {
