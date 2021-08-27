@@ -46,12 +46,10 @@ describe('GIVEN the RequestsAndTransactionsPendingAsSellerService', () => {
     });
 
     it('should receive a collection of pending transactions', () => {
-      const expected = MOCK_PENDING_TRANSACTIONS;
-
       const subscription = service.get();
 
       subscription.subscribe((result) => {
-        expect(result).toEqual(expected);
+        expect(result).toEqual(MOCK_PENDING_TRANSACTIONS);
       });
     });
   });
