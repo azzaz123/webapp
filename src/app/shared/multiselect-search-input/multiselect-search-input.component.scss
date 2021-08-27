@@ -1,0 +1,13 @@
+@import '~style/common';
+
+.MultiselectSearchInput {
+  background-color: transparent;
+  &::placeholder {
+    color: $blue-grey-2;
+  }
+  &__hashtagList {
+    border: 1px solid $blue-grey-4;
+    border-radius: 6px;
+    color: $blue-grey-1;
+  }
+}

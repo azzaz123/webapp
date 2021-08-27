@@ -20,21 +20,19 @@ import { MultiSelectValue } from './interfaces/multi-select-value.type';
 })
 export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectValue> {
   @Input() set options(value: SelectFormOption<string>[]) {
-    this.extendedOptions = value.map((option) => {
-      return { ...option, checked: false };
-    });
-
     if (!value) {
       return;
     }
-
+    this.extendedOptions = value.map((option) => {
+      return { ...option, checked: false };
+    });
     if (this.value) {
       this.mapCheckedValue();
     }
-
     this.extendedOptionsSubject.next(this.extendedOptions);
   }
   @Input() disabled: boolean = false;
+  @Input() isCustomStyle: boolean;
 
   private extendedOptions: MultiSelectFormOption[] = [];
   private extendedOptionsSubject: BehaviorSubject<MultiSelectFormOption[]> = new BehaviorSubject([]);
@@ -62,7 +60,6 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
       option.checked = this.value.includes(option.value);
       return { ...option };
     });
-
     this.extendedOptionsSubject.next(this.extendedOptions);
   }
 }
