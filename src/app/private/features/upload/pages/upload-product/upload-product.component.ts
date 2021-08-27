@@ -524,6 +524,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }),
       hashtags: this.fb.group({
         hashtags: [['#faa']],
+        searchedHashtags: [[]],
       }),
       extra_info: this.fb.group({
         object_type: this.fb.group({

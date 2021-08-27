@@ -1,5 +1,7 @@
 <span class="chars-counter">{{form.value.hashtags.length}}/{{maxHashtagsNumber}}</span>
 <div [(formGroup)]="form">
-	<tsl-multi-select-form  formControlName="{{controlName}}" [options]="searchedOptions" [disabled]="form.value.hashtags.length === maxHashtagsNumber"></tsl-multi-select-form>
+	<tsl-multi-select-form  formControlName="searchedHashtags" [options]="searchedOptions" [disabled]="form.value.hashtags.length === maxHashtagsNumber"></tsl-multi-select-form>
 	<tsl-multi-select-form  formControlName="{{controlName}}"[options]="options" [disabled]="form.value.hashtags.length === maxHashtagsNumber"></tsl-multi-select-form>
 </div>
+
+{{form.value.hashtags}}

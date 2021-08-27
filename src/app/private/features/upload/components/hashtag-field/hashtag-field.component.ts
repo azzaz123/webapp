@@ -21,11 +21,24 @@ export class HashtagFieldComponent implements OnInit {
   ];
 
   ngOnInit() {
-    // add two value together
-    const previousVal = [];
     this.form.valueChanges.subscribe((val: string[]) => {
-      console.log('form value', val, this.form.get('hashtags').value);
-      this.form.patchValue(val, { emitEvent: false });
+      console.log('hashtags', this.form.get('hashtags').value, 'searchedHashtags', this.form.get('searchedHashtags').value);
+      const bindedValue = this.bindFormValues();
+      //this.form.patchValue(bindedValue, { emitEvent: false });
+      this.form.get('hashtags').patchValue(bindedValue, { emitEvent: false });
+      this.form.get('searchedHashtags').patchValue(bindedValue, { emitEvent: false });
+      console.log('value', this.form);
     });
+  }
+
+  public bindFormValues(): string[] {
+    const loadedHashtags = this.form.get('hashtags').value;
+    const searchedHashtags = this.form.get('searchedHashtags').value;
+
+    let array = loadedHashtags.concat(searchedHashtags);
+    array = [...new Set([...loadedHashtags, ...searchedHashtags])];
+
+    console.log('a', array);
+    return array;
   }
 }
