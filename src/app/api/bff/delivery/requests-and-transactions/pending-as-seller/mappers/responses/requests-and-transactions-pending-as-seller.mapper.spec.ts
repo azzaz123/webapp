@@ -4,25 +4,21 @@ import { MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_API } from '@api/fixtu
 
 describe('GIVEN mapRequestsAndTransactionsPendingAsSellerToPendingBalance', () => {
   describe('WHEN there is a collection of RequestsAndTransactionsPendingAsSellerApi', () => {
-    describe('THEN', () => {
-      it('should map to a collection of PendingTransactions', () => {
-        const expected = MOCK_PENDING_TRANSACTIONS;
+    it('should map to a collection of PendingTransactions', () => {
+      const expected = MOCK_PENDING_TRANSACTIONS;
 
-        const result = mapRequestsAndTransactionsPendingAsSellerToPendingBalance(MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_API);
+      const result = mapRequestsAndTransactionsPendingAsSellerToPendingBalance(MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_API);
 
-        expect(JSON.stringify(result)).toEqual(JSON.stringify(expected));
-      });
+      expect(JSON.stringify(result)).toEqual(JSON.stringify(expected));
     });
   });
   describe('WHEN there is not a collection of RequestsAndTransactionsPendingAsSellerApi', () => {
-    describe('THEN', () => {
-      it('should map to an empty collection', () => {
-        const expected = [];
+    it('should map to an empty collection', () => {
+      const expected = [];
 
-        const result = mapRequestsAndTransactionsPendingAsSellerToPendingBalance(null);
+      const result = mapRequestsAndTransactionsPendingAsSellerToPendingBalance(null);
 
-        expect(result).toEqual(expected);
-      });
+      expect(result).toEqual(expected);
     });
   });
 });
