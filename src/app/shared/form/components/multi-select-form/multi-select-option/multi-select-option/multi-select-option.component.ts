@@ -10,6 +10,7 @@ import { MultiSelectFormOption } from '../../interfaces/multi-select-form-option
 export class MultiSelectOptionComponent {
   @Input() option: MultiSelectFormOption;
   @Input() disabled: boolean;
+  @Input() isCustomStyle: boolean;
   @Output() toggleOnChange = new EventEmitter();
 
   public toggleCheckbox(): void {

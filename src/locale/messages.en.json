@@ -145,6 +145,8 @@
     "web_password_min_length_error": "Password length should be at least 8 characters",
     "web_password_do_not_match_error": "Passwords don't match",
     "web_upload_extension_not_allowed_error": "You tried to upload an inadequate format. Only photos in JPG or JPEG formats are accepted:",
+    "web_upload_hashtag_invalid_error_message": "Our hashtags are good with anything except special characters and spaces of course.",
+    "web_upload_hashtag_placeholder":"Find or create a hashtag",
     "web_upload_max_uploads_error": "This file exceeds the limit of photos:",
     "web_upload_max_size_error": "This file exceeds the limit of size:",
     "web_item_updated": "The item has been updated correctly",

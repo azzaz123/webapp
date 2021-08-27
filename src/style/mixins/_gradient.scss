@@ -1,0 +1,16 @@
+@mixin rounded-gradient($gradient-border-radius, $background, $gradient-border-color) {
+  border-radius: $gradient-border-radius;
+  background: $background;
+
+  &::before {
+    content: '';
+    top: -1px;
+    left: -1px;
+    position: absolute;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    border-radius: $gradient-border-radius + 10px;
+    z-index: -1;
+    background: $gradient-border-color;
+  }
+}
