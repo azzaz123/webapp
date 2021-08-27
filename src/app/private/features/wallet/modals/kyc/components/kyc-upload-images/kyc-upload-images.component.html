@@ -61,7 +61,7 @@
                 </tsl-banner>
             </div>
             <ng-template #takingImageSection>
-                <div class="justify-content-center row" [ngClass]="{'d-none': !requestCameraSucceed(userDevicePermissions.video)}">
+                <div class="justify-content-center row" [ngClass]="{'d-none': !requestCameraSucceed(userDevicePermissions.video) || !isShootImageMethod}">
                     <div class="KYCUploadImages__cameraContainer col-12 col-sm-8 p-0">
                         <video autoplay playsInline muted #userCamera class="h-100 w-100 p-2 p-sm-0"></video>
                         <div class="KYCUploadImages__cameraContainer__overlay position-absolute"></div>
