@@ -10,6 +10,8 @@ export const mapNumberToNumericAmount: ToDomainMapper<number, NumericAmount> = (
   };
 };
 
+type numericSign = '+' | '';
+
 function getIntegerPartFromNumber(number: number): number {
   let result = 0;
   try {
@@ -39,6 +41,6 @@ function getDecimalPartFromNumber(number: number): number {
   return result;
 }
 
-function getPositiveSign(amount: number, showSign?: boolean): '+' | '' {
+function getPositiveSign(amount: number, showSign?: boolean): numericSign {
   return showSign && amount >= 0 ? '+' : '';
 }
