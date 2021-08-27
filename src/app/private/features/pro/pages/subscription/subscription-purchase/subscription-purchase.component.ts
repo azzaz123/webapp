@@ -156,7 +156,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     this.eventService.unsubscribeAll(STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
   }
 
-  public onRedirectTo(path: string) {
+  public onRedirectTo(path: string): void {
     this.purchaseSuccessful.emit(path);
   }
 
