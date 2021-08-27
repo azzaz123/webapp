@@ -138,6 +138,18 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       : $localize`:@@kyc_camera_cannot_access:Oops, an error occurred and we cannot access your camera`;
   }
 
+  public isUploadImageCards(userDevicePermissions: UserDevicePermissions): boolean {
+    return (this.isShootImageMethod && this.requestCameraSucceed(userDevicePermissions.video)) || this.isUploadImageMethod;
+  }
+
+  public isImageButton(videoPermissionStatus: DEVICE_PERMISSIONS_STATUS): boolean {
+    return this.requestCameraSucceed(videoPermissionStatus) || this.isUploadImageMethod;
+  }
+
+  public isErrorBanner(videoPermissionStatus: DEVICE_PERMISSIONS_STATUS): boolean {
+    return this.requestCameraFailed(videoPermissionStatus) && this.isShootImageMethod;
+  }
+
   public get isUploadImageMethod(): boolean {
     return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
   }

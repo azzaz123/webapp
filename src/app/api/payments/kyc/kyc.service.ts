@@ -34,7 +34,7 @@ export class KYCService {
   }
 
   private isImageSmallerThan32KB(blobImage: Blob): boolean {
-    return blobImage.size < 32000;
+    return blobImage.size < 32768;
   }
 
   private getBodyAsFormData(KYCImages: KYCImages): FormData {

@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    <div class="row mx-0 mx-md-2 mb-4 justify-content-center" *ngIf="(isShootImageMethod && requestCameraSucceed(userDevicePermissions.video)) || isUploadImageMethod">
+    <div class="row mx-0 mx-md-2 mb-4 justify-content-center" *ngIf="isUploadImageCards(userDevicePermissions)">
         <div class="GenericCard KYCUploadImages__image col-5 p-0" 
             [ngClass]="{'KYCUploadImages__image--enabled': isFrontSideImageDefined || isUploadImageMethod, 'KYCUploadImages__image--active': !isFrontSideImageDefined && isShootImageMethod}">
             <input #frontSideImageUpload id="frontSideImageUpload" type="file" (change)="defineImage($event, KYC_IMAGES.FRONT_SIDE)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
@@ -53,7 +53,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <div *ngIf="requestCameraFailed(userDevicePermissions.video) && isShootImageMethod else takingImageSection" class="mx-3">
+            <div *ngIf="isErrorBanner(userDevicePermissions.video); else takingImageSection" class="mx-3">
                 <tsl-banner [specifications]="errorBannerSpecifications">
                     <div class="d-flex align-items-center">
                         <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy(userDevicePermissions.video)}}
@@ -67,7 +67,7 @@
                         <div class="KYCUploadImages__cameraContainer__overlay position-absolute"></div>
                     </div>
                 </div>
-                <div class="text-center row mt-3" *ngIf="requestCameraSucceed((userDevicePermissions$ | async).video) || isUploadImageMethod">
+                <div class="text-center row mt-3" *ngIf="isImageButton(userDevicePermissions.video)">
                     <tsl-button 
                         *ngIf="!allImagesAreDefined" id="imagesCounterButton"
                         class="col"
