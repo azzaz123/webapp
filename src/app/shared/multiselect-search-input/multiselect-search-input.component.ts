@@ -92,11 +92,11 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     this.keyUpSubject.next(event);
   }
 
-  public focus() {
+  public focus(): void {
     this.hashtagPlaceholder = '#';
   }
 
-  public blur() {
+  public blur(): void {
     this.hashtagPlaceholder = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
   }
 
@@ -116,7 +116,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
         this.suggestions = this.value;
         if (this.isValid) {
           return this.getHashtagSuggesters();
-        } else return of([]);
+        }
       })
     );
 
