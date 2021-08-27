@@ -57,7 +57,7 @@ const routes: Routes = [
         ],
       },
       {
-        path: 'profile',
+        path: PRIVATE_PATHS.PROFILE,
         loadChildren: () => import('@private/features/profile/profile.module').then((m) => m.ProfileModule),
       },
       {
@@ -67,7 +67,7 @@ const routes: Routes = [
         data: {
           permissions: {
             only: PERMISSIONS.subscriptions,
-            redirectTo: 'profile',
+            redirectTo: PRIVATE_PATHS.PROFILE,
           },
         },
       },

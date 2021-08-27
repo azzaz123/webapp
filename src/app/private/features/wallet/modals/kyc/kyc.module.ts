@@ -14,6 +14,7 @@ import { KYCUploadImagesComponent } from './components/kyc-upload-images/kyc-upl
 import { BannerModule } from '@shared/banner/banner.module';
 import { KYCStoreService } from './services/kyc-store/kyc-store.service';
 import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
+import { KYCServicesModule } from '@api/payments/kyc/kyc-services.module';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { AskPermissionsService } from '@shared/services/ask-permissions/ask-perm
     FormsModule,
     ButtonModule,
     BannerModule,
+    KYCServicesModule,
   ],
   declarations: [KYCRoutedComponents, KYCImageOptionsComponent, KYCNationalityComponent, KYCModalComponent, KYCUploadImagesComponent],
   providers: [KYCStoreService, AskPermissionsService],

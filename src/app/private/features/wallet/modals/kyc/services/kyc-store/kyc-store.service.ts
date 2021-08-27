@@ -8,6 +8,10 @@ export class KYCStoreService {
     nationality: null,
     documentation: null,
     imageMethod: null,
+    images: {
+      frontSide: null,
+      backSide: null,
+    },
   });
 
   get specifications(): KYCSpecifications {
