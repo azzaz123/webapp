@@ -61,9 +61,11 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   ngAfterViewInit() {
-    this.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions) => {
-      this.extendedOptions = extendedOptions;
-    });
+    this.subscriptions.add(
+      this.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions) => {
+        this.extendedOptions = extendedOptions;
+      })
+    );
   }
 
   ngOnDestroy() {
