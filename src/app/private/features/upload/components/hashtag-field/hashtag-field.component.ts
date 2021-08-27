@@ -17,10 +17,14 @@ export class HashtagFieldComponent implements OnInit {
     { label: '#searched', value: '#searched' },
     { label: '#faa', value: '#faa' },
     { label: '#d', value: '#d' },
+    { label: '#xx', value: '#xx' },
   ];
 
   ngOnInit() {
+    // add two value together
+    const previousVal = [];
     this.form.valueChanges.subscribe((val: string[]) => {
+      console.log('form value', val, this.form.get('hashtags').value);
       this.form.patchValue(val, { emitEvent: false });
     });
   }
