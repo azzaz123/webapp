@@ -9,6 +9,12 @@ export enum SVG_ATTRIBUTES {
   FILL = 'fill',
   DISPLAY = 'display',
 }
+
+export enum SVG_SIZE_UNIT {
+  PIXELS = 'px',
+  PERCENTATGE = '%',
+}
+
 @Component({
   selector: 'tsl-svg-icon',
   template: '',
@@ -18,6 +24,7 @@ export class SvgIconComponent implements OnInit, OnChanges {
   @Input() fill: string;
   @Input() width: number;
   @Input() height: number;
+  @Input() sizeUnit: SVG_SIZE_UNIT = SVG_SIZE_UNIT.PIXELS;
 
   constructor(private svgService: SvgService, private sanitizer: DomSanitizer, private element: ElementRef) {}
 
@@ -57,11 +64,11 @@ export class SvgIconComponent implements OnInit, OnChanges {
 
   private handleCustomAttributes(): void {
     if (this.width) {
-      this.setAttribute(SVG_ATTRIBUTES.WIDTH, `${this.width}px`);
+      this.setAttribute(SVG_ATTRIBUTES.WIDTH, `${this.width}${this.sizeUnit}`);
     }
 
     if (this.height) {
-      this.setAttribute(SVG_ATTRIBUTES.HEIGHT, `${this.height}px`);
+      this.setAttribute(SVG_ATTRIBUTES.HEIGHT, `${this.height}${this.sizeUnit}`);
     }
 
     if (this.fill) {
