@@ -75,12 +75,12 @@ describe('GIVEN WalletPendingTransactionsListComponent', () => {
         component.pendingTransactions = [...MOCK_PENDING_TRANSACTIONS, ...MOCK_PENDING_TRANSACTIONS, ...MOCK_PENDING_TRANSACTIONS];
         fixture.detectChanges();
       });
-      it('should show an expandable button container when there are more than two pending transactions', () => {
+      it('should show an expandable button container', () => {
         const target = fixture.debugElement.query(By.css(walletPendingTransactionsExpandableButtonSelector));
 
         expect(target).toBeTruthy();
       });
-      it('should show an expandable button when there are more than two pending transactions', () => {
+      it('should show an expandable button', () => {
         const target = fixture.debugElement.queryAll(By.css(svgIconSelector));
         const expected = 1;
 
