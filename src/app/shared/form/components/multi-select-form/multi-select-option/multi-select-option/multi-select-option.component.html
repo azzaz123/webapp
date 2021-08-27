@@ -1,10 +1,10 @@
 <div class="MultiSelectOption d-flex w-100 position-relative">
-    <div class="w-100 align-self-center d-flex justify-content-between MultiSelectOption__labelContainer"  [class.MultiSelectOption--disabled]="isDisabled">
-        <span class="MultiSelectOption__label">{{option.label}}</span>
+    <div class="w-100 align-self-center d-flex justify-content-between MultiSelectOption__labelContainer"  [ngClass]="{'MultiSelectOption--disabled': disabled}">
+        <span class="MultiSelectOption__label text-truncate">{{option.label}}</span>
         <span *ngIf="!!option.sublabel" class="MultiSelectOption__label__sub">{{option.sublabel}}</span>
     </div>
-    <label class="checkbox checkbox-corporate">
-        <div class="select" [class.selected]="option.checked">
+    <label class="checkbox checkbox-corporate" >
+        <div [ngClass]="{'customSelect': isCustomStyle, 'selected': option.checked}" class="select">
             <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
             <input type="checkbox" [disabled]="disabled" [(ngModel)]="option.checked" (change)="toggleCheckbox()"/>
         </div>

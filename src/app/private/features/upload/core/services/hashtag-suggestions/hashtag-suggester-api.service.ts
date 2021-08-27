@@ -16,9 +16,9 @@ export class HashtagSuggesterApiService {
 
   constructor(private http: HttpClient) {}
 
-  public getHashtagsByPrefix(category_id: string, start: string, prefix: string): Observable<PaginatedList<Hashtag>> {
+  public getHashtagsByPrefix(category_id: string, prefix: string): Observable<PaginatedList<Hashtag>> {
     const url = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}`;
-    const httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix, start } });
+    const httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix } });
     return this.getResults(
       this.http.get<HttpResponse<HashtagResponse>>(url, { params: httpParams, observe: 'response' as 'body' })
     );
