@@ -136,7 +136,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag> | []> {
-    let newSearchValue = this.searchValue.substring(1);
+    const newSearchValue = this.searchValue.substring(1);
     if (!newSearchValue) {
       return of([]);
     } else {
