@@ -284,7 +284,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   private trackClickMaliciousModalCTAButton(): void {
     const event: AnalyticsEvent<ClickBannedUserChatPopUpExitButton> = {
       name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpExitButton,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: this.chatContext,
     };
     this.analyticsService.trackEvent(event);
@@ -293,7 +293,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   private trackDismissMaliciousModal(): void {
     const event: AnalyticsEvent<ClickBannedUserChatPopUpCloseButton> = {
       name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpCloseButton,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: this.chatContext,
     };
     this.analyticsService.trackEvent(event);

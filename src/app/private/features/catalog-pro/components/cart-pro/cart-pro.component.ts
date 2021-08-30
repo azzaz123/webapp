@@ -64,6 +64,34 @@ export class CartProComponent implements OnInit {
     this.cartService.clean();
   }
 
+  applyBumps() {
+    const order: OrderPro[] = this.cart.prepareOrder();
+    const startsToday: boolean = some(order, (item: OrderPro) => {
+      return new Date(item.start_date).toDateString() === new Date().toDateString();
+    });
+    this.itemService.bumpProItems(order).subscribe(
+      (failedProducts: string[]) => {
+        if (failedProducts && failedProducts.length) {
+          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
+        } else {
+          this.itemService.deselectItems();
+          let code = 201;
+          if (this.isFutureOrderWithNoBalance()) {
+            code = startsToday ? 203 : 202;
+          }
+          this.router.navigate(['/pro/catalog/list', { code: code }]);
+        }
+      },
+      (e: HttpErrorResponse) => {
+        if (e.error) {
+          this.errorService.show(e);
+        } else {
+          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
+        }
+      }
+    );
+  }
+
   private calculateBalance() {
     const autorenewCitybump = (this.status.autorenew_scheduled.citybump || 0) + (this.status.autorenew_scheduled.zonebump || 0);
     if (autorenewCitybump) {
@@ -94,34 +122,6 @@ export class CartProComponent implements OnInit {
       balance['countrybump'] = this.perks.getNationalBumpCounter() - this.cart['countrybump'].total;
     }
     return balance;
-  }
-
-  applyBumps() {
-    const order: OrderPro[] = this.cart.prepareOrder();
-    const startsToday: boolean = some(order, (item: OrderPro) => {
-      return new Date(item.start_date).toDateString() === new Date().toDateString();
-    });
-    this.itemService.bumpProItems(order).subscribe(
-      (failedProducts: string[]) => {
-        if (failedProducts && failedProducts.length) {
-          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
-        } else {
-          this.itemService.deselectItems();
-          let code = 201;
-          if (this.isFutureOrderWithNoBalance()) {
-            code = startsToday ? 203 : 202;
-          }
-          this.router.navigate(['/pro/catalog/list', { code: code }]);
-        }
-      },
-      (e: HttpErrorResponse) => {
-        if (e.error) {
-          this.errorService.show(e);
-        } else {
-          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
-        }
-      }
-    );
   }
 
   private isFutureOrderWithNoBalance(): boolean {

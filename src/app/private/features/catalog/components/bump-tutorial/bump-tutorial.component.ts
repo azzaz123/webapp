@@ -23,6 +23,18 @@ export class BumpTutorialComponent implements OnDestroy {
     this.dots = range(SLIDES_NUMBER);
   }
 
+  @HostListener('window:keyup', ['$event']) keyEvent(event: KeyboardEvent) {
+    if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
+      this.tutorialService.nextStep();
+    }
+    if (event.keyCode === KEY_CODE.LEFT_ARROW) {
+      this.tutorialService.prevStep();
+    }
+    if (event.keyCode === KEY_CODE.ESC) {
+      this.hide();
+    }
+  }
+
   ngOnDestroy() {
     this.tutorialService.resetStep();
   }
@@ -34,17 +46,5 @@ export class BumpTutorialComponent implements OnDestroy {
   public hide(): void {
     this.hidden = true;
     this.tutorialService.resetStep();
-  }
-
-  @HostListener('window:keyup', ['$event']) keyEvent(event: KeyboardEvent) {
-    if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
-      this.tutorialService.nextStep();
-    }
-    if (event.keyCode === KEY_CODE.LEFT_ARROW) {
-      this.tutorialService.prevStep();
-    }
-    if (event.keyCode === KEY_CODE.ESC) {
-      this.hide();
-    }
   }
 }

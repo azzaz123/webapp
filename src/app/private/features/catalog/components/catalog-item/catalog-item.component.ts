@@ -79,24 +79,6 @@ export class CatalogItemComponent implements OnInit {
     this.reactivateItem(item);
   }
 
-  private reactivateItem(item: Item): void {
-    this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
-      this.catalogItemTrackingEventService.trackReactivateItemEvent(item);
-      if (missingRequiredData) {
-        this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
-      } else {
-        this.itemService.reactivateItem(item.id).subscribe(
-          () => {
-            this.itemChange.emit({
-              item,
-              action: ITEM_CHANGE_ACTION.REACTIVATED,
-            });
-          },
-          () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: TOAST_TYPES.ERROR })
-        );
-      }
-    });
-  }
   public select(item: Item) {
     item.selected = !item.selected;
     this.itemService.selectedAction = this.itemService.selectedAction === 'feature' ? 'feature' : '';
@@ -147,5 +129,24 @@ export class CatalogItemComponent implements OnInit {
 
   public openItem() {
     window.open(this.link);
+  }
+
+  private reactivateItem(item: Item): void {
+    this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
+      this.catalogItemTrackingEventService.trackReactivateItemEvent(item);
+      if (missingRequiredData) {
+        this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
+      } else {
+        this.itemService.reactivateItem(item.id).subscribe(
+          () => {
+            this.itemChange.emit({
+              item,
+              action: ITEM_CHANGE_ACTION.REACTIVATED,
+            });
+          },
+          () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: TOAST_TYPES.ERROR })
+        );
+      }
+    });
   }
 }

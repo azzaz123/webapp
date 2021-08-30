@@ -12,6 +12,7 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
   @Input() buttonDisable: boolean;
   @Input() subscription: SubscriptionsResponse;
   @Input() isLoading: boolean;
+  @Input() isEdit: boolean;
   @Output() buttonPurchaseClick: EventEmitter<void> = new EventEmitter();
   @Output() buttonEnabled: EventEmitter<void> = new EventEmitter();
 
@@ -44,6 +45,11 @@ export class SubscriptionPurchaseFooterComponent implements OnInit, OnChanges {
   }
 
   private setButtonText(): void {
+    if (this.isEdit) {
+      this.buttonText = $localize`:@@pro_subscriptions_purchase_summary_change_plan_apply_button:Continue and change`;
+      return;
+    }
+
     if (this.subscription.trial_available) {
       this.buttonText = $localize`:@@web_start_free_trial:Start free trial`;
       return;
