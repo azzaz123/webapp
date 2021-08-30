@@ -16,7 +16,7 @@
           },
           "it": {
             "translation": "src/locale/messages.it.json",
-            "baseHref": ""
+            "baseHref": "/app/"
           }
         }
       },
