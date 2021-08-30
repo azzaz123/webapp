@@ -11,14 +11,14 @@ describe('mapPaymentsWalletsApiToMoney', () => {
     describe('and when ammount does not have decimals', () => {
       it('should map to money', () => {
         const mappedMoney = mapPaymentsWalletsApiToMoney(MOCK_PAYMENTS_WALLETS_RESPONSE);
-        expect(mappedMoney).toEqual(MOCK_PAYMENTS_WALLETS_MAPPED_MONEY);
+        expect(JSON.stringify(mappedMoney)).toEqual(JSON.stringify(MOCK_PAYMENTS_WALLETS_MAPPED_MONEY));
       });
     });
 
     describe('and when ammount has decimals', () => {
       it('should map to money', () => {
         const mappedMoney = mapPaymentsWalletsApiToMoney(MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_RESPONSE);
-        expect(mappedMoney).toEqual(MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_MAPPED_MONEY);
+        expect(JSON.stringify(mappedMoney)).toEqual(JSON.stringify(MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_MAPPED_MONEY));
       });
     });
   });

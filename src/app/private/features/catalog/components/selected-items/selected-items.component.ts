@@ -45,6 +45,12 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
     this.selectedAction.emit(action);
   }
 
+  ngOnDestroy() {
+    if (this.selectedItemsSubscription) {
+      this.selectedItemsSubscription.unsubscribe();
+    }
+  }
+
   private isItemDisabled(items: Item[]) {
     return items.filter((item) => item.flags.onhold || item.flags.expired);
   }
@@ -55,11 +61,5 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
 
   get showActiveButton(): boolean {
     return this.selectedStatus === STATUS.INACTIVE || (this.selectedStatus === STATUS.PUBLISHED && this.showActiveOption);
-  }
-
-  ngOnDestroy() {
-    if (this.selectedItemsSubscription) {
-      this.selectedItemsSubscription.unsubscribe();
-    }
   }
 }

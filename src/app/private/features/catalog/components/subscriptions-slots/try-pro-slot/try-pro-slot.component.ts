@@ -10,7 +10,7 @@ import { Tier } from '@core/subscriptions/subscriptions.interface';
 export class TryProSlotComponent {
   @Input() hasTrialAvailable: boolean;
   @Input() tierWithDiscount: Tier;
-  @Output() close: EventEmitter<void> = new EventEmitter();
+  @Output() clickClose: EventEmitter<void> = new EventEmitter();
   @Output() clickCTA: EventEmitter<void> = new EventEmitter();
 
   get CTAtext(): string {
@@ -23,7 +23,7 @@ export class TryProSlotComponent {
   }
 
   public onClose(): void {
-    this.close.emit();
+    this.clickClose.emit();
   }
 
   public onClick(): void {
