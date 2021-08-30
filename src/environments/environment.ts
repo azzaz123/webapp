@@ -5,6 +5,8 @@ import { dockNum } from './docknum';
 const environmentLocal: Environment = {
   production: false,
   name: 'local',
+  appDomain: `.dock${dockNum}.wallapop.com/`,
+  protocol: 'https://',
   baseUrl: `https://apigw.dock${dockNum}.wallapop.com/`,
   xmppDomain: `dock${dockNum}.wallapop.com`,
   wsUrl: `wss://dock${dockNum}.wallapop.com:5282/ws-xmpp`,

@@ -3,6 +3,8 @@ import { Environment } from './environment.interface';
 export const environment: Environment = {
   production: true,
   name: 'prod',
+  appDomain: `.wallapop.com/`,
+  protocol: 'https://',
   baseUrl: 'https://api.wallapop.com/',
   xmppDomain: 'wallapop.com',
   wsUrl: 'wss://mongooseimprotool-prod.wallapop.com:443/ws-xmpp',

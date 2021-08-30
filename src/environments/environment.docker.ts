@@ -20,6 +20,8 @@ export const docknum = getDockNum();
 export const environment: Environment = {
   production: false,
   name: 'docker',
+  appDomain: `.${docknum}.wallapop.com/`,
+  protocol: 'https://',
   baseUrl: `https://apigw.${docknum}.wallapop.com/`,
   xmppDomain: `${docknum}.wallapop.com`,
   wsUrl: `wss://${docknum}.wallapop.com:5282/ws-xmpp`,
