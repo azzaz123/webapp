@@ -27,8 +27,8 @@ export class KYCModalComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
   public KYCStoreSpecifications$: Observable<KYCSpecifications>;
-  public KYCStatusSucceedProperties: KYCModalStatus = KYC_MODAL_STATUS_PROPERTIES.find(
-    (properties) => properties.status === KYC_MODAL_STATUS_TYPE.SUCCEED
+  public KYCStatusInProgressProperties: KYCModalStatus = KYC_MODAL_STATUS_PROPERTIES.find(
+    (properties) => properties.status === KYC_MODAL_STATUS_TYPE.IN_PROGRESS
   );
 
   constructor(
@@ -95,6 +95,10 @@ export class KYCModalComponent {
       },
     };
 
+    this.closeModal();
+  }
+
+  public closeModal(): void {
     this.activeModal.close();
   }
 

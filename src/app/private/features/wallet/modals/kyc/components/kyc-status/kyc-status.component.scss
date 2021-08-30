@@ -8,6 +8,10 @@ $drawing-height: 130px;
     @include media-breakpoint-up(sm) {
       width: 70%;
     }
+
+    &__info {
+      height: inherit;
+    }
   }
 
   &__title,
@@ -22,5 +26,17 @@ $drawing-height: 130px;
 
   &__drawing {
     height: $drawing-height;
+  }
+
+  &__bottomContainer {
+    bottom: 0;
+    background-color: transparentize($white, 0.5);
+
+    &__button {
+      width: 100%;
+      @include media-breakpoint-up(sm) {
+        width: 75%;
+      }
+    }
   }
 }

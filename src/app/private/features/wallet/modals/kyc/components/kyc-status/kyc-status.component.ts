@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'tsl-kyc-status',
@@ -11,4 +11,5 @@ export class KYCStatusComponent {
   @Input() svgPath: string;
   @Input() linkPath: string;
   @Input() messageCTA: string;
+  @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
 }
