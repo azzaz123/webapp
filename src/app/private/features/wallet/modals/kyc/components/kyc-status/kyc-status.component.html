@@ -1,7 +1,13 @@
-<div>
-    <span>{{title}}</span>
-    <span>{{description}}</span>
-    <tsl-svg-icon [src]="svgPath"></tsl-svg-icon>
-    <a *ngIf="linkPath as path" [href]="path"></a>
-    <tsl-button>{{messageCTA}}</tsl-button>
+<div class="KYCStatus container">
+    <div class="row">
+        <div class="col">
+            <div class="KYCStatus__drawing mb-4 w-100">
+                <tsl-svg-icon [src]="svgPath" width="100" height="100" sizeUnit="%"></tsl-svg-icon>
+            </div>
+            <span class="KYCStatus__title d-block mt-4 mb-3 text-center">{{title}}</span>
+            <span class="KYCStatus__subtitle d-block mb-3 text-center">{{description}}</span>
+            <a *ngIf="linkPath as path" [href]="path"></a>
+            <tsl-button>{{messageCTA}}</tsl-button>
+        </div>
+    </div>
 </div>

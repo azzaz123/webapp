@@ -1,0 +1,26 @@
+@import '~style/common';
+
+$drawing-height: 130px;
+
+.KYCStatus {
+  &__content {
+    width: 100%;
+    @include media-breakpoint-up(sm) {
+      width: 70%;
+    }
+  }
+
+  &__title,
+  &__subtitle {
+    color: $blue-grey-1;
+  }
+
+  &__title {
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-l;
+  }
+
+  &__drawing {
+    height: $drawing-height;
+  }
+}
