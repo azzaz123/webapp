@@ -95,7 +95,7 @@ const routes: Routes = [
         redirectTo: 'catalog/list;disableWallacoinsModal=true',
       },
       {
-        path: 'catalog',
+        path: PRIVATE_PATHS.CATALOG,
         children: [
           {
             path: '',

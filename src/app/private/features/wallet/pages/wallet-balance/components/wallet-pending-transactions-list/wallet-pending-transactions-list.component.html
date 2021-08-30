@@ -1,0 +1,16 @@
+<div class="WalletPendingTransactionsList">
+  <div class="WalletPendingTransactionsList__transactions"
+    [ngClass]="{ 'WalletPendingTransactionsList__transactions--animated': animated }"
+    [ngStyle]="transactionsWrapperStyle"
+  >
+    <div class="WalletPendingTransactionsList__transactions__element" *ngFor="let pendingTransaction of pendingTransactions">
+      <tsl-wallet-pending-transaction [walletPendingTransaction]="pendingTransaction"></tsl-wallet-pending-transaction>
+    </div>
+  </div>
+  <div class="WalletPendingTransactionsList__expandable-button d-flex justify-content-center" *ngIf="isExpandableButtonVisible"
+    (click)="toggleShowAllTransactions()"
+    [ngClass]="{ 'WalletPendingTransactionsList__expandable-button--rotated': isExpanded }"
+  >
+    <tsl-svg-icon src="/assets/icons/dropdown-arrow.svg"></tsl-svg-icon>
+  </div>
+</div>

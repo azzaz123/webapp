@@ -21,6 +21,7 @@ export interface TierDiscount {
   price: number;
   end_date: number;
   percentage: number;
+  no_discount_date?: number;
 }
 
 export enum SUBSCRIPTION_MARKETS {
