@@ -39,7 +39,8 @@ export const PAYMENT_SUCCESSFUL_CODE = 202;
 export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   @Input() subscription: SubscriptionsResponse;
   @Input() user: User;
-  @Output() purchaseSuccessful: EventEmitter<string> = new EventEmitter();
+  @Input() editMode: boolean;
+  @Output() purchaseSuccessful: EventEmitter<string | void> = new EventEmitter();
   @Output() unselectSubcription: EventEmitter<void> = new EventEmitter();
 
   public showPurchaseSuccessful: boolean;

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { TryProSlotComponent } from './try-pro-slot.component';
@@ -78,11 +78,11 @@ describe('TryProSlotItemComponent', () => {
 
   describe('when click close', () => {
     it('should emit close event', () => {
-      spyOn(component.close, 'emit');
+      spyOn(component.clickClose, 'emit');
 
       component.onClose();
 
-      expect(component.close.emit).toBeCalledTimes(1);
+      expect(component.clickClose.emit).toBeCalledTimes(1);
     });
   });
 });

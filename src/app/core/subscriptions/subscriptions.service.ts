@@ -206,6 +206,10 @@ export class SubscriptionsService {
       if (mappedCurrencyCharacter) {
         tier.currency = mappedCurrencyCharacter;
       }
+      if (tier.discount) {
+        const oneDay = 1000 * 60 * 60 * 24;
+        tier.discount.no_discount_date = tier.discount.end_date + oneDay;
+      }
     });
   }
 
