@@ -1,14 +1,14 @@
 import { Inject, Pipe, PipeTransform } from '@angular/core';
-import { environment } from '@environments/environment';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { SITE_URL } from 'configs/site-url.config';
 
 @Pipe({
   name: 'itemDetailRoute',
 })
 export class ItemDetailRoutePipe implements PipeTransform {
-  constructor(@Inject('SUBDOMAIN') private subdomain: string) {}
+  constructor(@Inject(SITE_URL) private siteUrl: string) {}
 
   transform(itemSlug: string): string {
-    return `${environment.siteUrl.replace('es', this.subdomain)}${PUBLIC_PATHS.ITEM_DETAIL}/${itemSlug}`;
+    return `${this.siteUrl}${PUBLIC_PATHS.ITEM_DETAIL}/${itemSlug}`;
   }
 }

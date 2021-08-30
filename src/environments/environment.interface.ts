@@ -8,7 +8,6 @@ export interface Environment {
   protocol: HTTP_PROTOCOL;
   xmppDomain: string;
   wsUrl: string;
-  siteUrl: string;
   appboy: string;
   cookieSuffix: string;
   clickStreamURL: string;
