@@ -1,0 +1,7 @@
+<div>
+    <span>{{title}}</span>
+    <span>{{description}}</span>
+    <tsl-svg-icon [src]="svgPath"></tsl-svg-icon>
+    <a *ngIf="linkPath as path" [href]="path"></a>
+    <tsl-button>{{messageCTA}}</tsl-button>
+</div>

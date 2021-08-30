@@ -30,6 +30,12 @@
             ></tsl-kyc-upload-images>
         </ng-template>
         <ng-template step>
+            <tsl-kyc-status *ngIf="KYCStatusSucceedProperties as succeedProperties"
+                [title]="succeedProperties.title"
+                [description]="succeedProperties.description"
+                [svgPath]="succeedProperties.svgPath"
+                [messageCTA]="succeedProperties.messageCTA">
+            </tsl-kyc-status>
         </ng-template>
     </tsl-stepper>
 </div>

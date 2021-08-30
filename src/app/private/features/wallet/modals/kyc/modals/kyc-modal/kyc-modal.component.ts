@@ -12,6 +12,9 @@ import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nati
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable } from 'rxjs';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../../components/kyc-image-options/kyc-image-options.enum';
+import { KYC_MODAL_STATUS_PROPERTIES } from '../../constants/kyc-modal-status-constants';
+import { KYC_MODAL_STATUS_TYPE } from '../../enums/kyc-modal-status-type-enum';
+import { KYCModalStatus } from '../../interfaces/kyc-modal-status.interface';
 import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
 
@@ -24,6 +27,9 @@ export class KYCModalComponent {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
   public KYCStoreSpecifications$: Observable<KYCSpecifications>;
+  public KYCStatusSucceedProperties: KYCModalStatus = KYC_MODAL_STATUS_PROPERTIES.find(
+    (properties) => properties.status === KYC_MODAL_STATUS_TYPE.SUCCEED
+  );
 
   constructor(
     private KYCStoreService: KYCStoreService,

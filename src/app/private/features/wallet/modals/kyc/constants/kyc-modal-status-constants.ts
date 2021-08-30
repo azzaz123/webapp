@@ -1,7 +1,7 @@
 import { KYC_MODAL_STATUS_TYPE } from '@private/features/wallet/modals/kyc/enums/kyc-modal-status-type-enum';
 import { KYCModalStatus } from '../interfaces/kyc-modal-status.interface';
 
-export const KYC_MODAL_STATUS: KYCModalStatus[] = [
+export const KYC_MODAL_STATUS_PROPERTIES: KYCModalStatus[] = [
   {
     status: KYC_MODAL_STATUS_TYPE.IN_PROGRESS,
     title: $localize`:@@kyc_documentation_sent_modal_title:Now what?`,
@@ -22,6 +22,6 @@ export const KYC_MODAL_STATUS: KYCModalStatus[] = [
     title: $localize`:@@kyc_failed_modal_title:We're sorry, we were unable to verify your identity.`,
     svgPath: '/assets/icons/wallet/kyc/status/kyc_verification_failed.svg',
     messageCTA: $localize`:@@kyc_failed_modal_retry_verification_button:Retry verification`,
-    showCSLink: true,
+    link: '',
   },
 ];
