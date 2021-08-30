@@ -123,7 +123,7 @@ describe('SubscriptionPurchaseFooterComponent', () => {
         const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${component.selectedTier.price}:INTERPOLATION:${component.selectedTier.currency}:INTERPOLATION:/month`;
         const expectedFreeTrialText = $localize`:@@web_price_after_free_days:at the end of free trial`;
 
-        expect(description.textContent).toEqual(`${expectedMonthlyPriceText}${String.fromCharCode(160)}${expectedFreeTrialText}`);
+        expect(description.textContent).toEqual(`${expectedMonthlyPriceText} ${expectedFreeTrialText}`);
       });
 
       it('should show empty price', () => {
@@ -164,7 +164,7 @@ describe('SubscriptionPurchaseFooterComponent', () => {
           const expectedDate = new DatePipe('en').transform(component.selectedTier.discount.end_date, 'dd/MM/yy');
           const expectedText = $localize`:@@pro_subscription_purchase_summary_start_period_web:starting from ${expectedDate}:INTERPOLATION:`;
 
-          expect(description.textContent).toEqual(`${expectedMonthlyPriceText}${expectedText}`);
+          expect(description.textContent).toEqual(`${expectedMonthlyPriceText} ${expectedText}`);
         });
 
         it('should show price discounted', () => {
