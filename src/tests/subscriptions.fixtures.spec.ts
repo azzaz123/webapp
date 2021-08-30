@@ -1292,6 +1292,7 @@ export const TIER_DISCOUNT: TierDiscount = {
   end_date: 1640908800000,
   percentage: 50,
   price: 9.5,
+  no_discount_date: 1640908800000,
 };
 
 export const TIER_WITH_DISCOUNT: Tier = {
@@ -1301,3 +1302,33 @@ export const TIER_WITH_DISCOUNT: Tier = {
   currency: '€',
   discount: TIER_DISCOUNT,
 };
+
+export const SUBSCTIPTION_WITH_TIER_DISCOUNT: SubscriptionsResponse[] = [
+  {
+    id: 'abcd-1234-efgh-5678',
+    category_id: 12800,
+    current_limit: 2,
+    subscribed_from: null,
+    selected_tier_id: null,
+    default_tier_id: 'plan_Fsf0Htv8L6Ox91',
+    trial_available: false,
+    trial_days: 0,
+    tiers: [
+      {
+        id: 'plan_Fsf0Htv8L6Ox91',
+        limit: 9,
+        price: 9.99,
+        currency: '€',
+        discount: TIER_DISCOUNT,
+      },
+      {
+        id: 'plan_Fsf0cCjrcaSCLx',
+        limit: 50,
+        price: 39.99,
+        currency: '€',
+        discount: TIER_DISCOUNT,
+      },
+    ],
+    market: SUBSCRIPTION_MARKETS.STRIPE,
+  },
+];
