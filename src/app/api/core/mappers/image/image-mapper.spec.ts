@@ -1,4 +1,4 @@
-import { mapImageDtosToImages } from './image-mapper';
+import { mapImageDtosToImages } from '../';
 import { itemImageFixture, mappedItemImageFixture } from '@api/fixtures/core/image.fixtures';
 
 describe('CatalogImageMapper', () => {
