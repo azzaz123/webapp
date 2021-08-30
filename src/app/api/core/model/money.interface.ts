@@ -4,4 +4,5 @@ import { NumericAmount } from './numeric-amount.interface';
 export interface Money {
   amount: NumericAmount;
   currency: Currency;
+  toString: (showSign?: boolean) => string;
 }

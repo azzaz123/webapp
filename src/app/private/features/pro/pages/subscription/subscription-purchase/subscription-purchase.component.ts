@@ -39,7 +39,8 @@ export const PAYMENT_SUCCESSFUL_CODE = 202;
 export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   @Input() subscription: SubscriptionsResponse;
   @Input() user: User;
-  @Output() purchaseSuccessful: EventEmitter<string> = new EventEmitter();
+  @Input() editMode: boolean;
+  @Output() purchaseSuccessful: EventEmitter<string | void> = new EventEmitter();
   @Output() unselectSubcription: EventEmitter<void> = new EventEmitter();
 
   public showPurchaseSuccessful: boolean;
@@ -152,8 +153,16 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     this.analyticsService.trackEvent(event);
   }
 
+  public onRedirectTo(path: string) {
+    this.purchaseSuccessful.emit(path);
+  }
+
   ngOnDestroy() {
     this.eventService.unsubscribeAll(STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
+  }
+
+  public onRedirectTo(path: string): void {
+    this.purchaseSuccessful.emit(path);
   }
 
   private subscribeStripeEvents(): void {
@@ -296,10 +305,6 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
           this.requestNewPayment(error);
         }
       );
-  }
-
-  public onRedirectTo(path: string) {
-    this.purchaseSuccessful.emit(path);
   }
 
   private requestNewPayment(error?: HttpErrorResponse): void {

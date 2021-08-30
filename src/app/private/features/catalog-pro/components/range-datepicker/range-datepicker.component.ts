@@ -73,6 +73,10 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
   ],
 })
 export class RangeDatepickerComponent implements OnInit {
+  @Input() bumpType: string;
+  @Input() selectedDates: CalendarDates;
+  @Output() closeCalendar: EventEmitter<any> = new EventEmitter();
+  @Output() applyCalendar: EventEmitter<CalendarDates> = new EventEmitter();
   hoveredDate: NgbDateStruct;
   minDate: NgbDateStruct;
   startDate: NgbDateStruct;
@@ -82,17 +86,6 @@ export class RangeDatepickerComponent implements OnInit {
   model: NgbDateStruct;
   newDates: CalendarDates;
 
-  @Input() bumpType: string;
-  @Input() selectedDates: CalendarDates;
-  @Output() closeCalendar: EventEmitter<any> = new EventEmitter();
-  @Output() applyCalendar: EventEmitter<CalendarDates> = new EventEmitter();
-
-  isHovered = (date) =>
-    this.startDate && !this.endDate && this.hoveredDate && after(date, this.startDate) && before(date, this.hoveredDate);
-  isInside = (date) => after(date, this.startDate) && before(date, this.endDate);
-  isFrom = (date) => equals(date, this.startDate);
-  isTo = (date) => equals(date, this.endDate);
-
   constructor(private calendar: NgbCalendar, config: NgbDatepickerConfig) {
     config.outsideDays = 'hidden';
     this.minDate = {
@@ -101,6 +94,12 @@ export class RangeDatepickerComponent implements OnInit {
       day: calendar.getToday().day,
     };
   }
+
+  isHovered = (date) =>
+    this.startDate && !this.endDate && this.hoveredDate && after(date, this.startDate) && before(date, this.hoveredDate);
+  isInside = (date) => after(date, this.startDate) && before(date, this.endDate);
+  isFrom = (date) => equals(date, this.startDate);
+  isTo = (date) => equals(date, this.endDate);
 
   ngOnInit() {
     this.todayDay = this.selectedDates.fromDate;
