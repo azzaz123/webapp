@@ -16,12 +16,14 @@ import { CreditInfo } from '@core/payments/payment.interface';
 export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
   @Input() creditInfo: CreditInfo;
   @Input() itemWithProducts: ItemWithProducts;
-
-  private active = true;
   types: string[] = BUMP_TYPES;
   durations: string[];
-
   _duration: string;
+  selectedType: string;
+  selectedDuration: string;
+  provincialBump: boolean;
+  private active = true;
+
   set duration(value: string) {
     this._duration = value;
     if (this.selectedType) {
@@ -31,10 +33,6 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
   get duration(): string {
     return this._duration;
   }
-
-  selectedType: string;
-  selectedDuration: string;
-  provincialBump: boolean;
 
   constructor(private cartService: CartService) {}
 

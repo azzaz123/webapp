@@ -116,6 +116,27 @@ export class BuyProductModalComponent implements OnInit {
     );
   }
 
+  public addNewCard() {
+    this.showCard = true;
+    this.savedCard = false;
+  }
+
+  public removeNewCard() {
+    this.showCard = false;
+    this.savedCard = true;
+  }
+
+  public setSavedCard(selectedCard: FinancialCardOption) {
+    this.showCard = false;
+    this.savedCard = true;
+    this.selectedCard = true;
+    this.setCardInfo(selectedCard);
+  }
+
+  public setCardInfo(card: any) {
+    this.card = card;
+  }
+
   private buyStripe(orderId: string) {
     const paymentId: string = this.uuidService.getUUID();
 
@@ -140,10 +161,6 @@ export class BuyProductModalComponent implements OnInit {
     }
   }
 
-  public setCardInfo(card: any) {
-    this.card = card;
-  }
-
   private usedCredits(orderTotal: number): number {
     const totalCreditsToPay: number = orderTotal * this.creditInfo.factor;
     if (totalCreditsToPay < this.creditInfo.credit) {
@@ -151,22 +168,5 @@ export class BuyProductModalComponent implements OnInit {
     } else {
       return this.creditInfo.credit;
     }
-  }
-
-  public addNewCard() {
-    this.showCard = true;
-    this.savedCard = false;
-  }
-
-  public removeNewCard() {
-    this.showCard = false;
-    this.savedCard = true;
-  }
-
-  public setSavedCard(selectedCard: FinancialCardOption) {
-    this.showCard = false;
-    this.savedCard = true;
-    this.selectedCard = true;
-    this.setCardInfo(selectedCard);
   }
 }

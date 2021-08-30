@@ -153,6 +153,10 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     this.analyticsService.trackEvent(event);
   }
 
+  public onRedirectTo(path: string) {
+    this.purchaseSuccessful.emit(path);
+  }
+
   ngOnDestroy() {
     this.eventService.unsubscribeAll(STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
   }

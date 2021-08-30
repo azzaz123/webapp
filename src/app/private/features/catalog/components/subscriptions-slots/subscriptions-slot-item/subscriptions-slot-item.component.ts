@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
@@ -14,15 +14,13 @@ import {
   templateUrl: './subscriptions-slot-item.component.html',
   styleUrls: ['./subscriptions-slot-item.component.scss'],
 })
-export class SubscriptionsSlotItemComponent implements OnInit {
+export class SubscriptionsSlotItemComponent {
   @Input() subscriptionSlot: SubscriptionSlot;
   @Input() subscriptionSlotsLength = 1;
   @Input() selectedSubscriptionSlot: SubscriptionSlot = null;
   @Output() selected: EventEmitter<SubscriptionSlot> = new EventEmitter();
 
   constructor(private analyticsService: AnalyticsService) {}
-
-  ngOnInit() {}
 
   isSelected() {
     if (!this.selectedSubscriptionSlot) {
