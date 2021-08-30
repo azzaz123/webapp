@@ -18,10 +18,6 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
         label: $localize`:@@web_footer_links_jobs_label:Jobs`,
         href: $localize`:@@web_footer_links_jobs_href:https://apply.workable.com/wallapop`,
       },
-      {
-        label: $localize`:@@web_footer_links_team_label:Team`,
-        href: $localize`:@@web_footer_links_team_href:https://about.wallapop.com/en/team`,
-      },
     ],
   },
   {

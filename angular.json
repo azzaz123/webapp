@@ -16,7 +16,7 @@
           },
           "it": {
             "translation": "src/locale/messages.it.json",
-            "baseHref": ""
+            "baseHref": "/app/"
           }
         }
       },
@@ -70,7 +70,8 @@
               "visibilityjs",
               "libphonenumber-js",
               "moment",
-              "hammerjs/hammer"
+              "hammerjs/hammer",
+              "lottie-web"
             ]
           },
           "configurations": {
