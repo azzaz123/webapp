@@ -36,11 +36,14 @@ export class KYCModalComponent {
   }
 
   public endVerification(KYCImages: KYCImages): void {
-    this.KYCService.request(KYCImages).subscribe({
-      error: (e: Error | KYCError) => {
-        this.handleKYCError(e);
+    this.KYCService.request(KYCImages).subscribe(
+      () => {
+        this.goNextStep();
       },
-    });
+      (e: Error | KYCError) => {
+        this.handleKYCError(e);
+      }
+    );
   }
 
   public defineNationality(nationalitySelected: KYCNationality): void {
