@@ -28,6 +28,7 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.mo
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { HashtagSuggesterApiService } from './core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { HashtagFieldComponent } from './components/hashtag-field/hashtag-field.component';
+import { MultiselectSearchInputModule } from '@shared/multiselect-search-input/multiselect-search-input.module';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { HashtagFieldComponent } from './components/hashtag-field/hashtag-field.
     DropdownModule,
     CustomCurrencyModule,
     MultiSelectFormModule,
+    MultiselectSearchInputModule,
   ],
   declarations: [
     uploadRoutedComponents,
