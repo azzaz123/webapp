@@ -4,7 +4,7 @@ import { NavLinksModule } from '@shared/nav-links/nav-links.module';
 import { HeaderModule } from '@shared/header/header.module';
 import { WalletRoutedComponents, WalletRoutingModule } from './wallet.routing.module';
 import { PaymentsCreditCardModule } from '@api/payments/cards';
-import { KYCInfoSliderModule } from './modals/kyc-info-modal/kyc-info-modal.module';
+import { KYCInfoModalModule } from './modals/kyc-info-modal/kyc-info-modal.module';
 import { KYCBannerService } from './services/kyc-banner/kyc-banner.service';
 import { KYCBannerApiService } from './services/api/kyc-banner-api.service';
 import { KYCBannerModule } from './components/kyc-banner/kyc-banner.module';
@@ -19,7 +19,7 @@ import { KYCModule } from './modals/kyc/kyc.module';
     NavLinksModule,
     HeaderModule,
     PaymentsCreditCardModule,
-    KYCInfoSliderModule,
+    KYCInfoModalModule,
     KYCBannerModule,
     KYCModule,
   ],
