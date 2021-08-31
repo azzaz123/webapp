@@ -56,6 +56,8 @@ import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { SortByService } from '../components/sort-filter/services/sort-by.service';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 @Directive({
   selector: '[tslInfiniteScroll]',
@@ -188,6 +190,10 @@ describe('SearchComponent', () => {
         {
           provide: SearchTrackingEventsService,
           useClass: MockSearchTrackingEventsService,
+        },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
         },
         SortByService,
         {

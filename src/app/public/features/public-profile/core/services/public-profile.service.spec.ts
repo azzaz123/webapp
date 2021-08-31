@@ -16,6 +16,8 @@ import {
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { PublicProfileService } from './public-profile.service';
 import { of, throwError } from 'rxjs';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 describe('PublicProfileService', () => {
   let publicProfileService: PublicProfileService;
@@ -70,6 +72,10 @@ describe('PublicProfileService', () => {
               return of();
             },
           },
+        },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
         },
       ],
       imports: [HttpClientTestingModule],

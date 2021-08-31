@@ -35,6 +35,8 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
 import { SuggesterComponentStub } from '@fixtures/shared/components/suggester.component.stub';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -146,6 +148,10 @@ describe('TopbarComponent', () => {
           {
             provide: SuggesterService,
             useValue: {},
+          },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
           },
         ],
         declarations: [SuggesterComponentStub, TopbarComponent, CustomCurrencyPipe],

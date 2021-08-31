@@ -2,11 +2,13 @@
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SITE_URL } from '@configs/site-url.config';
 import { ItemService } from '@core/item/item.service';
 import { environment } from '@environments/environment.prod';
 import { MOCKED_INBOX_CONVERSATIONS } from '@fixtures/inbox.fixtures.spec';
 import { ITEM_COUNTERS_DATA } from '@fixtures/item.fixtures.spec';
-import { CustomCurrencyPipe } from '@shared/pipes';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
 import { InboxItemDetailComponent } from './inbox-item-detail.component';
@@ -23,7 +25,7 @@ describe('Component: Item', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InboxItemDetailComponent, CustomCurrencyPipe],
+      declarations: [InboxItemDetailComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
       providers: [
         DecimalPipe,
         {
@@ -48,6 +50,10 @@ describe('Component: Item', () => {
               return this._value[key];
             },
           },
+        },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
         },
       ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -74,41 +80,15 @@ describe('Component: Item', () => {
   });
 
   describe('prevent', () => {
+    const event = new Event('MouseEvent');
+
     beforeEach(() => {
-      component.item = MOCKED_INBOX_CONVERSATIONS[0].item;
-    });
-
-    it('should call preventDefault and stopPropagation for the event when itemUrl is "#"', () => {
-      const event = new Event('MouseEvent');
       spyOn(event, 'preventDefault');
       spyOn(event, 'stopPropagation');
-      component.item.itemUrl = '#';
+    });
 
+    it('should prevent triggering the default click action', () => {
       component.prevent(event);
-
-      expect(event.preventDefault).toHaveBeenCalled();
-      expect(event.stopPropagation).toHaveBeenCalled();
-    });
-
-    it('should NOT call preventdefault for the event when itemUrl is not "#"', () => {
-      const event = new Event('MouseEvent');
-      spyOn(event, 'preventDefault');
-      spyOn(event, 'stopPropagation');
-      component.item.itemUrl = 'some-other-url';
-
-      component.prevent(event);
-
-      expect(event.preventDefault).not.toHaveBeenCalled();
-      expect(event.stopPropagation).not.toHaveBeenCalled();
-    });
-
-    it('should call prevent when it is called with true as the second param', () => {
-      const event = new Event('MouseEvent');
-      spyOn(event, 'preventDefault');
-      spyOn(event, 'stopPropagation');
-      component.item.itemUrl = 'some-other-url';
-
-      component.prevent(event, true);
 
       expect(event.preventDefault).toHaveBeenCalled();
       expect(event.stopPropagation).toHaveBeenCalled();
@@ -149,11 +129,13 @@ describe('Component: Item', () => {
   });
 
   describe('toggleReserve', () => {
+    const event = new Event('MouseEvent');
+
     it('should call the reserveItem method on itemService', () => {
       component.item = MOCKED_INBOX_CONVERSATIONS[0].item;
       spyOn(itemService, 'reserveItem').and.callThrough();
 
-      component.toggleReserve();
+      component.toggleReserve(event);
 
       expect(itemService.reserveItem).toHaveBeenCalledWith(component.item.id, component.item.reserved);
     });
@@ -163,7 +145,7 @@ describe('Component: Item', () => {
       component.item.reserved = true;
       spyOn(itemService, 'reserveItem').and.callThrough();
 
-      component.toggleReserve();
+      component.toggleReserve(event);
 
       expect(component.item.reserved).toBe(false);
     });
@@ -172,7 +154,7 @@ describe('Component: Item', () => {
       component.item = MOCKED_INBOX_CONVERSATIONS[0].item;
       component.item.reserved = false;
 
-      component.toggleReserve();
+      component.toggleReserve(event);
 
       expect(component.item.reserved).toBe(true);
     });

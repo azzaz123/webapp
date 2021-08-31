@@ -1,9 +1,11 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { SITE_URL } from '@configs/site-url.config';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { CUSTOM_REASON, MOCK_UNSUBSCRIBE_REASONS, SELECTED_REASON } from '@fixtures/user.fixtures.spec';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
@@ -53,6 +55,10 @@ describe('UnsubscribeModalComponent', () => {
             useValue: {
               emit() {},
             },
+          },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
           },
         ],
         schemas: [NO_ERRORS_SCHEMA],
@@ -113,7 +119,7 @@ describe('UnsubscribeModalComponent', () => {
       expect(userService.unsubscribe).toHaveBeenCalledWith(SELECTED_REASON, CUSTOM_REASON);
       expect(activeModal.close).toHaveBeenCalled();
       expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
-      expect(event.emit).toHaveBeenCalledWith(EventService.USER_LOGOUT, environment.siteUrl);
+      expect(event.emit).toHaveBeenCalledWith(EventService.USER_LOGOUT, MOCK_SITE_URL);
     });
   });
 });

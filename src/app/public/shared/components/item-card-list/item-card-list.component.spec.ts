@@ -24,6 +24,8 @@ import { SlotsConfig } from './interfaces/slots-config.interface';
 import { ItemCardListComponent } from './item-card-list.component';
 import { ShowSlotPipe } from './pipes/show-slot.pipe';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 @Component({
   selector: 'tsl-item-card-list-wrapper',
@@ -95,6 +97,10 @@ describe('ItemCardListComponent', () => {
             navigate() {},
           },
         },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -127,7 +133,7 @@ describe('ItemCardListComponent', () => {
     });
 
     it('should render item cards with valid URLs', () => {
-      const expectedEnvironmentURL = environment.siteUrl.replace('es', SUBDOMAIN);
+      const expectedEnvironmentURL = MOCK_SITE_URL;
 
       expect(itemCard.attributes.href).toEqual(`${expectedEnvironmentURL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_CARD.webSlug}`);
     });

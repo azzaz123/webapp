@@ -64,6 +64,8 @@ import { PERMISSIONS } from './user-constants';
 import { LOCALE_ID } from '@angular/core';
 import { StoreLocation, StoreLocationResponse } from '@core/geolocation/address-response.interface';
 import { cloneDeep } from 'lodash-es';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 jest.mock('@mparticle/web-sdk', () => ({
   __esModule: true,
@@ -126,6 +128,10 @@ describe('Service: User', () => {
           },
         },
         { provide: LOCALE_ID, useValue: 'en' },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
+        },
       ],
     });
     service = TestBed.inject(UserService);
