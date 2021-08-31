@@ -3,15 +3,35 @@ import { CATEGORY_SUBSCRIPTIONS_IDS } from '../category-subscription-ids';
 import { CURRENCY_SYMBOLS } from '@core/constants';
 
 export const subscriptionMapper = {
-  [SUBSCRIPTION_CATEGORY_TYPES.CARS]: { category_id: CATEGORY_SUBSCRIPTIONS_IDS.CAR, icon_id: 'car', label: 'test' },
-  [SUBSCRIPTION_CATEGORY_TYPES.MOTORBIKES]: { category_id: CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE, icon_id: 'motorbike', label: 'test' },
-  [SUBSCRIPTION_CATEGORY_TYPES.CAR_PARTS]: { category_id: CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES, icon_id: 'helmet', label: 'test' },
-  [SUBSCRIPTION_CATEGORY_TYPES.REAL_ESTATE]: { category_id: CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE, icon_id: 'house', label: 'test' },
-  [SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS]: { category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS, icon_id: 'All', label: 'test' },
+  [SUBSCRIPTION_CATEGORY_TYPES.CARS]: {
+    category_id: CATEGORY_SUBSCRIPTIONS_IDS.CAR,
+    icon_id: 'car',
+    label: $localize`:@@web_filters_category_cars:Cars`,
+  },
+  [SUBSCRIPTION_CATEGORY_TYPES.MOTORBIKES]: {
+    category_id: CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE,
+    icon_id: 'motorbike',
+    label: $localize`:@@web_filters_category_motorbike:Motorbike`,
+  },
+  [SUBSCRIPTION_CATEGORY_TYPES.CAR_PARTS]: {
+    category_id: CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES,
+    icon_id: 'helmet',
+    label: $localize`:@@web_filters_category_motors_n_accessories:Motors & Accessories`,
+  },
+  [SUBSCRIPTION_CATEGORY_TYPES.REAL_ESTATE]: {
+    category_id: CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
+    icon_id: 'house',
+    label: $localize`:@@web_filters_category_real_estate:Real Estate`,
+  },
+  [SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS]: {
+    category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
+    icon_id: 'All',
+    label: $localize`:@@web_consumer_goods_category_name:Everything else`,
+  },
   [SUBSCRIPTION_CATEGORY_TYPES.OLD_CONSUMER_GOODS]: {
     category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
     icon_id: 'All',
-    label: 'test',
+    label: $localize`:@@web_consumer_goods_category_name:Everything else`,
   },
 };
 
@@ -32,10 +52,8 @@ function mapSubscription(subscription: SubscriptionsV3Response): SubscriptionsRe
 }
 
 function getSelectedTier(subscription: SubscriptionsResponse): Tier {
-  const selectedTier = subscription.selected_tier_id
-    ? subscription.tiers.filter((tier) => tier.id === subscription.selected_tier_id)
-    : subscription.tiers.filter((tier) => tier.id === subscription.default_tier_id);
-  return selectedTier[0];
+  const tierId = subscription.selected_tier_id ? subscription.selected_tier_id : subscription.default_tier_id;
+  return subscription.tiers.find((tier) => tier.id === tierId);
 }
 
 function mapCurrenciesForTiers(subscription: SubscriptionsResponse) {

@@ -34,7 +34,6 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 import { cloneDeep } from 'lodash-es';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
 import { SubscriptionsHttpService } from './http/subscriptions-http.service';
-import { SUBSCRIPTIONS_V3_ENDPOINT } from './http/endpoints';
 
 describe('SubscriptionsService', () => {
   let service: SubscriptionsService;
@@ -178,6 +177,30 @@ describe('SubscriptionsService', () => {
       expect(subscriptionsHttpService.get).toHaveBeenCalledTimes(1);
       expect(subscriptionsHttpService.get).toHaveBeenCalledWith();
       expect(response).toEqual(MOCK_V3_MAPPED_SUBSCRIPTIONS);
+    });
+    describe('and is cache disabled', () => {
+      it('should call http service', () => {
+        let response: SubscriptionsResponse[];
+
+        service.getSubscriptions(false).subscribe((res) => (response = res));
+        service.getSubscriptions(false).subscribe((res) => (response = res));
+
+        expect(subscriptionsHttpService.get).toHaveBeenCalledTimes(2);
+        expect(subscriptionsHttpService.get).toHaveBeenCalledWith();
+        expect(response).toEqual(MOCK_V3_MAPPED_SUBSCRIPTIONS);
+      });
+    });
+    describe('and is cache enabled', () => {
+      it('should call http service', () => {
+        let response: SubscriptionsResponse[];
+
+        service.getSubscriptions(false).subscribe((res) => (response = res));
+        service.getSubscriptions(true).subscribe((res) => (response = res));
+
+        expect(subscriptionsHttpService.get).toHaveBeenCalledTimes(1);
+        expect(subscriptionsHttpService.get).toHaveBeenCalledWith();
+        expect(response).toEqual(MOCK_V3_MAPPED_SUBSCRIPTIONS);
+      });
     });
   });
 

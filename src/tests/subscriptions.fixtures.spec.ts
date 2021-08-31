@@ -1601,7 +1601,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     trial_available: true,
     trial_days: 30,
     category_icon: 'helmet',
-    category_name: 'test',
+    category_name: 'Motors & Accessories',
     selected_tier: {
       id: 'autoparts_infinite',
       limit_perk: true,
@@ -1645,7 +1645,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     trial_available: true,
     trial_days: 30,
     category_icon: 'car',
-    category_name: 'test',
+    category_name: 'Cars',
     selected_tier: {
       id: 'motorplan_basic',
       limit: 5,
@@ -1691,7 +1691,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     trial_available: true,
     trial_days: 30,
     category_icon: 'motorbike',
-    category_name: 'test',
+    category_name: 'Motorbike',
     selected_tier: {
       currency: '€',
       discount: null,
@@ -1736,7 +1736,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     trial_available: true,
     trial_days: 30,
     category_icon: 'house',
-    category_name: 'test',
+    category_name: 'Real Estate',
     selected_tier: {
       currency: '€',
       discount: null,
@@ -1800,7 +1800,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     trial_available: false,
     trial_days: 0,
     category_icon: 'All',
-    category_name: 'test',
+    category_name: 'Everything else',
     selected_tier: {
       currency: '€',
       discount: {
@@ -1889,7 +1889,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     trial_available: false,
     trial_days: 0,
     category_icon: 'All',
-    category_name: 'test',
+    category_name: 'Everything else',
     selected_tier: {
       currency: '€',
       discount: null,
