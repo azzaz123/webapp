@@ -25,7 +25,6 @@ import {
   MockSubscriptionService,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
-  SUBSCRIPTIONS_NOT_SUB,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_FULL_USER, MOCK_FULL_USER_FEATURED, MOCK_FULL_USER_NON_FEATURED, USER_DATA } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -36,7 +35,6 @@ import { By } from '@angular/platform-browser';
 import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
 import { CheckSubscriptionInAppModalComponent } from '../../modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
-import { EditSubscriptionModalComponent } from '../../modal/edit-subscription/edit-subscription-modal.component';
 import { UnsubscribeInAppFirstModalComponent } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { PRO_PATHS } from '../../pro-routing-constants';
 
@@ -45,6 +43,12 @@ import { PRO_PATHS } from '../../pro-routing-constants';
   template: '',
 })
 class MockNewSubscriptionComponent {}
+
+@Component({
+  selector: 'tsl-subscription-edit',
+  template: '',
+})
+class MockEditSubscriptionComponent {}
 
 describe('SubscriptionComponent', () => {
   let component: SubscriptionsComponent;
@@ -61,7 +65,7 @@ describe('SubscriptionComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SubscriptionsComponent, MockNewSubscriptionComponent],
+        declarations: [SubscriptionsComponent, MockNewSubscriptionComponent, MockEditSubscriptionComponent],
         providers: [
           EventService,
           { provide: SubscriptionsService, useClass: MockSubscriptionService },
@@ -310,15 +314,14 @@ describe('SubscriptionComponent', () => {
       expect(newSubscriptionComponent).toBeTruthy();
     });
 
-    it('should not open the EditSubscription modal when subscription is not active', () => {
-      spyOn(modalService, 'open').and.callThrough();
+    it('should not show Edit Subscription when subscription is not active', () => {
       spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
 
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS[1]);
+      component.manageSubscription(MAPPED_SUBSCRIPTIONS[0]);
+      fixture.detectChanges();
 
-      expect(modalService.open).not.toHaveBeenCalledWith(EditSubscriptionModalComponent, {
-        windowClass: 'review',
-      });
+      const editSubscriptionComponent = fixture.debugElement.query(By.directive(MockEditSubscriptionComponent));
+      expect(editSubscriptionComponent).toBeFalsy();
     });
 
     it('should not set loading to true if action is not present', fakeAsync(() => {
@@ -344,6 +347,37 @@ describe('SubscriptionComponent', () => {
       tick(400000);
 
       expect(component.loading).toBe(false);
+    }));
+  });
+
+  describe('Edit subscription flow', () => {
+    it('should show edit subscription form when subscription is active', () => {
+      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
+
+      component.manageSubscription(MAPPED_SUBSCRIPTIONS[2]);
+      fixture.detectChanges();
+
+      const editSubscriptionComponent = fixture.debugElement.query(By.directive(MockEditSubscriptionComponent));
+      expect(editSubscriptionComponent).toBeTruthy();
+    });
+
+    it('should not show new subscription when subscription is active', () => {
+      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
+
+      component.manageSubscription(MAPPED_SUBSCRIPTIONS[2]);
+      fixture.detectChanges();
+
+      const newSubscriptionComponent = fixture.debugElement.query(By.directive(MockNewSubscriptionComponent));
+      expect(newSubscriptionComponent).toBeFalsy();
+    });
+
+    it('should not open modal', fakeAsync(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      component.subscriptions = MAPPED_SUBSCRIPTIONS;
+
+      component.manageSubscription(MAPPED_SUBSCRIPTIONS[2]);
+
+      expect(modalService.open).not.toHaveBeenCalled();
     }));
   });
 
