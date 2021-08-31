@@ -1,11 +1,4 @@
-import { PublishedItem } from '@api/catalog/dtos';
-import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { mapImageDtosToImages } from '@api/core/mappers';
-import { formatDescription } from '@api/catalog/mappers/utils';
-import { ItemType } from '@api/core/model/item';
-import { CATEGORY_IDS } from '@core/category/category-ids';
 import { SubscriptionsResponse, SubscriptionsV3Response, SUBSCRIPTION_CATEGORY_TYPES, Tier } from '../subscriptions.interface';
-import { CategoryResponse } from '@core/category/category-response.interface';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '../category-subscription-ids';
 import { CURRENCY_SYMBOLS } from '@core/constants';
 
@@ -22,7 +15,11 @@ export const subscriptionMapper = {
   },
 };
 
-export function mapSubscriptions(subscription: SubscriptionsV3Response): SubscriptionsResponse {
+export function mapSubscriptions(subscriptions: SubscriptionsV3Response[]): SubscriptionsResponse[] {
+  return subscriptions.map((subscription) => mapSubscription(subscription));
+}
+
+function mapSubscription(subscription: SubscriptionsV3Response): SubscriptionsResponse {
   let subscriptionMapped: SubscriptionsResponse = { ...subscription, category_id: subscriptionMapper[subscription.type].category_id };
 
   subscriptionMapped.category_name = subscriptionMapper[subscription.type].label;

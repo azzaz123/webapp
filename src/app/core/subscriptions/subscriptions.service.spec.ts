@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { SubscriptionsService, SUBSCRIPTIONS_URL, SUBSCRIPTIONS_SLOTS_ENDPOINT, SUBSCRIPTION_TYPES } from './subscriptions.service';
+import { SubscriptionsService, SUBSCRIPTIONS_SLOTS_ENDPOINT, SUBSCRIPTION_TYPES } from './subscriptions.service';
 import { of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { FeatureFlagService } from '../user/featureflag.service';
@@ -7,7 +7,7 @@ import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
-import { SubscriptionsResponse, SubscriptionSlot, Tier } from './subscriptions.interface';
+import { SubscriptionsResponse, SubscriptionSlot } from './subscriptions.interface';
 import {
   SUBSCRIPTIONS,
   MAPPED_SUBSCRIPTIONS,
@@ -22,7 +22,8 @@ import {
   MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE,
   MAPPED_SUBSCRIPTIONS_ADDED,
   TIER_DISCOUNT,
-  SUBSCTIPTION_WITH_TIER_DISCOUNT,
+  MOCK_RESPONSE_V3_SUBSCRIPTIONS,
+  MOCK_V3_MAPPED_SUBSCRIPTIONS,
 } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -32,12 +33,15 @@ import { UuidService } from '../uuid/uuid.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { cloneDeep } from 'lodash-es';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
+import { SubscriptionsHttpService } from './http/subscriptions-http.service';
+import { SUBSCRIPTIONS_V3_ENDPOINT } from './http/endpoints';
 
 describe('SubscriptionsService', () => {
   let service: SubscriptionsService;
   let http: HttpClient;
   let httpMock: HttpTestingController;
   let userService: UserService;
+  let subscriptionsHttpService: SubscriptionsHttpService;
   let categoryService: CategoryService;
   let uuidService: UuidService;
   const API_URL = 'api/v3/payments';
@@ -78,6 +82,7 @@ describe('SubscriptionsService', () => {
         },
         CategoryService,
         I18nService,
+        SubscriptionsHttpService,
       ],
     });
     service = TestBed.inject(SubscriptionsService);
@@ -86,9 +91,11 @@ describe('SubscriptionsService', () => {
     userService = TestBed.inject(UserService);
     categoryService = TestBed.inject(CategoryService);
     uuidService = TestBed.inject(UuidService);
+    subscriptionsHttpService = TestBed.inject(SubscriptionsHttpService);
     service.uuid = '1-2-3';
     spyOn(uuidService, 'getUUID').and.returnValue('1-2-3');
     spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
+    spyOn(subscriptionsHttpService, 'get').and.returnValue(of(MOCK_RESPONSE_V3_SUBSCRIPTIONS));
   });
 
   afterEach(() => {
@@ -163,52 +170,14 @@ describe('SubscriptionsService', () => {
   });
 
   describe('getSubscriptions', () => {
-    it('should return the json from the categories and convert it into options', () => {
-      const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_URL}`;
-      service.subscriptions = null;
+    it('should return subscriptions formatted', () => {
       let response: SubscriptionsResponse[];
 
       service.getSubscriptions(false).subscribe((res) => (response = res));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(SUBSCRIPTIONS);
 
-      expect(req.request.url).toBe(expectedUrl);
-      expect(response).toEqual(SUBSCRIPTIONS);
-    });
-
-    it('should map the mock consumer goods category when backend returns a subscription type with category as 0', () => {
-      const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_URL}`;
-      const subscriptionsWithConsumerGoods = [...SUBSCRIPTIONS, MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED];
-      service.subscriptions = null;
-      let response: SubscriptionsResponse[];
-
-      service.getSubscriptions(false).subscribe((res) => (response = res));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(subscriptionsWithConsumerGoods);
-
-      const subscriptionForConsumerGoods = response.find((subscription) => subscription.category_id === 0);
-      const consumerGoodsCategory = categoryService.getConsumerGoodsCategory();
-      expect(req.request.url).toBe(expectedUrl);
-      expect(response).toEqual(subscriptionsWithConsumerGoods);
-      expect(subscriptionForConsumerGoods.category_icon).toEqual(consumerGoodsCategory.icon_id);
-      expect(subscriptionForConsumerGoods.category_id).toEqual(consumerGoodsCategory.category_id);
-      expect(subscriptionForConsumerGoods.category_name).toEqual(consumerGoodsCategory.name);
-    });
-
-    it('should map discounts', () => {
-      const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_URL}`;
-      const nextDayAfterDiscountEndDate = 1000 * 60 * 60 * 24;
-      service.subscriptions = null;
-      let response: SubscriptionsResponse[];
-
-      service.getSubscriptions(false).subscribe((res) => (response = res));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(SUBSCTIPTION_WITH_TIER_DISCOUNT);
-
-      expect(req.request.url).toBe(expectedUrl);
-      response[0].tiers.forEach((tier) => {
-        expect(tier.discount.no_discount_date).toEqual(tier.discount.end_date + nextDayAfterDiscountEndDate);
-      });
+      expect(subscriptionsHttpService.get).toHaveBeenCalledTimes(1);
+      expect(subscriptionsHttpService.get).toHaveBeenCalledWith();
+      expect(response).toEqual(MOCK_V3_MAPPED_SUBSCRIPTIONS);
     });
   });
 
@@ -336,7 +305,6 @@ describe('SubscriptionsService', () => {
         let result: SUBSCRIPTION_TYPES;
 
         service.getUserSubscriptionType().subscribe((response) => (result = response));
-        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush({});
 
         expect(result).toEqual(SUBSCRIPTION_TYPES.carDealer);
       });
@@ -345,10 +313,10 @@ describe('SubscriptionsService', () => {
     describe('when user has inapp subscriptions', () => {
       it('should say that user subscription type is inapp', () => {
         spyOn(userService, 'isProfessional').and.returnValue(of(false));
+        spyOn(service, 'getSubscriptions').and.returnValue(of(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY));
         let result: SUBSCRIPTION_TYPES;
 
         service.getUserSubscriptionType().subscribe((response) => (result = response));
-        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY);
 
         expect(result).toEqual(SUBSCRIPTION_TYPES.inApp);
       });
@@ -357,10 +325,10 @@ describe('SubscriptionsService', () => {
     describe('when user has Stripe subscriptions', () => {
       it('should say that user subscription type Stripe', () => {
         spyOn(userService, 'isProfessional').and.returnValue(of(false));
+        spyOn(service, 'getSubscriptions').and.returnValue(of(SUBSCRIPTIONS));
         let result: SUBSCRIPTION_TYPES;
 
         service.getUserSubscriptionType().subscribe((response) => (result = response));
-        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS);
 
         expect(result).toEqual(SUBSCRIPTION_TYPES.stripe);
       });
@@ -369,10 +337,10 @@ describe('SubscriptionsService', () => {
     describe('when user has no subscriptions', () => {
       it('should say that user subscription type not subscribed', () => {
         spyOn(userService, 'isProfessional').and.returnValue(of(false));
+        spyOn(service, 'getSubscriptions').and.returnValue(of(SUBSCRIPTIONS_NOT_SUB));
         let result: SUBSCRIPTION_TYPES;
 
         service.getUserSubscriptionType().subscribe((response) => (result = response));
-        httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS_NOT_SUB);
 
         expect(result).toEqual(SUBSCRIPTION_TYPES.notSubscribed);
       });
@@ -380,27 +348,27 @@ describe('SubscriptionsService', () => {
 
     it('should cache the result by default', () => {
       spyOn(userService, 'isProfessional').and.returnValue(of(false));
+      spyOn(service, 'getSubscriptions').and.returnValue(of(SUBSCRIPTIONS));
       let result: SUBSCRIPTION_TYPES;
       let result2: SUBSCRIPTION_TYPES;
 
       service.getUserSubscriptionType().subscribe((response) => (result = response));
-      httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS_NOT_SUB);
       service.getUserSubscriptionType().subscribe((response) => (result2 = response));
-      httpMock.expectNone(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`);
 
       expect(result).toBe(result2);
+      expect(service.getSubscriptions).toBeCalledTimes(1);
     });
 
     it('should bypass cache if not using cache', () => {
       spyOn(userService, 'isProfessional').and.returnValue(of(false));
+      spyOn(service, 'getSubscriptions').and.returnValues(of(SUBSCRIPTIONS_NOT_SUB), of(SUBSCRIPTIONS));
       let result: SUBSCRIPTION_TYPES;
       let result2: SUBSCRIPTION_TYPES;
 
       service.getUserSubscriptionType().subscribe((response) => (result = response));
-      httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS_NOT_SUB);
       service.getUserSubscriptionType(false).subscribe((response) => (result2 = response));
-      httpMock.expectOne(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`).flush(SUBSCRIPTIONS);
 
+      expect(service.getSubscriptions).toBeCalledTimes(2);
       expect(result).not.toBe(result2);
     });
   });

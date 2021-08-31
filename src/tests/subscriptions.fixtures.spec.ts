@@ -1586,7 +1586,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
   },
 ];
 
-export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
+export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
   {
     id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
     type: SUBSCRIPTION_CATEGORY_TYPES.CAR_PARTS,
@@ -1600,13 +1600,22 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     market: SUBSCRIPTION_MARKETS.STRIPE,
     trial_available: true,
     trial_days: 30,
+    category_icon: 'helmet',
+    category_name: 'test',
+    selected_tier: {
+      id: 'autoparts_infinite',
+      limit_perk: true,
+      price: 99.0,
+      currency: '€',
+      discount: null,
+    },
     tiers: [
       {
         id: 'autoparts_200',
         limit: 200,
         limit_perk: true,
         price: 9.0,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
       {
@@ -1614,14 +1623,14 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
         limit: 500,
         limit_perk: true,
         price: 39.0,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
       {
         id: 'autoparts_infinite',
         limit_perk: true,
         price: 99.0,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
     ],
@@ -1635,13 +1644,23 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     market: SUBSCRIPTION_MARKETS.STRIPE,
     trial_available: true,
     trial_days: 30,
+    category_icon: 'car',
+    category_name: 'test',
+    selected_tier: {
+      id: 'motorplan_basic',
+      limit: 5,
+      limit_perk: true,
+      price: 39.99,
+      currency: '€',
+      discount: null,
+    },
     tiers: [
       {
         id: 'motorplan_basic',
         limit: 5,
         limit_perk: true,
         price: 39.99,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
       {
@@ -1649,7 +1668,7 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
         limit: 9,
         limit_perk: true,
         price: 69.99,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
       {
@@ -1657,7 +1676,7 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
         limit: 15,
         limit_perk: true,
         price: 89.99,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
     ],
@@ -1671,13 +1690,23 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     market: null,
     trial_available: true,
     trial_days: 30,
+    category_icon: 'motorbike',
+    category_name: 'test',
+    selected_tier: {
+      currency: '€',
+      discount: null,
+      id: 'motorbikes_5',
+      limit: 5,
+      limit_perk: true,
+      price: 19,
+    },
     tiers: [
       {
         id: 'motorbikes_5',
         limit: 5,
         limit_perk: true,
         price: 19.0,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
       {
@@ -1685,14 +1714,14 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
         limit: 15,
         limit_perk: true,
         price: 39.0,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
       {
         id: 'motorbikes_infinite',
         limit_perk: true,
         price: 69.0,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
     ],
@@ -1706,13 +1735,23 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     market: null,
     trial_available: true,
     trial_days: 30,
+    category_icon: 'house',
+    category_name: 'test',
+    selected_tier: {
+      currency: '€',
+      discount: null,
+      id: 'realestate_10',
+      limit: 10,
+      limit_perk: true,
+      price: 19,
+    },
     tiers: [
       {
         id: 'realestate_10',
         limit: 10,
         limit_perk: true,
         price: 19.0,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
       {
@@ -1720,7 +1759,7 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
         limit: 25,
         limit_perk: true,
         price: 33.0,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
       {
@@ -1728,7 +1767,7 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
         limit: 100,
         limit_perk: true,
         price: 46.0,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
     ],
@@ -1760,16 +1799,31 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     market: null,
     trial_available: false,
     trial_days: 0,
+    category_icon: 'All',
+    category_name: 'test',
+    selected_tier: {
+      currency: '€',
+      discount: {
+        end_date: 1639526400000,
+        no_discount_date: 1639612800000,
+        percentage: 50,
+        price: 39,
+      },
+      id: 'consumer_goods_200',
+      limit_perk: false,
+      price: 39,
+    },
     tiers: [
       {
         id: 'consumer_goods_200',
         limit_perk: false,
         price: 39.0,
-        currency: 'EUR',
+        currency: '€',
         discount: {
           price: 39.0,
           percentage: 50,
           end_date: 1639526400000,
+          no_discount_date: 1639612800000,
         },
       },
       {
@@ -1777,11 +1831,12 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
         limit: 400,
         limit_perk: true,
         price: 59.0,
-        currency: 'EUR',
+        currency: '€',
         discount: {
           price: 59.0,
           percentage: 50,
           end_date: 1639526400000,
+          no_discount_date: 1639612800000,
         },
       },
       {
@@ -1789,11 +1844,12 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
         limit: 800,
         limit_perk: true,
         price: 99.0,
-        currency: 'EUR',
+        currency: '€',
         discount: {
           price: 99.0,
           percentage: 50,
           end_date: 1639526400000,
+          no_discount_date: 1639612800000,
         },
       },
       {
@@ -1801,11 +1857,12 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
         limit: 1200,
         limit_perk: true,
         price: 159.0,
-        currency: 'EUR',
+        currency: '€',
         discount: {
           price: 159.0,
           percentage: 50,
           end_date: 1639526400000,
+          no_discount_date: 1639612800000,
         },
       },
       {
@@ -1813,11 +1870,12 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
         limit: 2000,
         limit_perk: true,
         price: 229.0,
-        currency: 'EUR',
+        currency: '€',
         discount: {
           price: 229.0,
           percentage: 50,
           end_date: 1639526400000,
+          no_discount_date: 1639612800000,
         },
       },
     ],
@@ -1830,12 +1888,21 @@ export const MOCK_V3_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     market: null,
     trial_available: false,
     trial_days: 0,
+    category_icon: 'All',
+    category_name: 'test',
+    selected_tier: {
+      currency: '€',
+      discount: null,
+      id: 'consumer_goods',
+      limit_perk: false,
+      price: 39.99,
+    },
     tiers: [
       {
         id: 'consumer_goods',
         limit_perk: false,
         price: 39.99,
-        currency: 'EUR',
+        currency: '€',
         discount: null,
       },
     ],
