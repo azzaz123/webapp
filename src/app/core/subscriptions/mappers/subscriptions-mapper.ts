@@ -40,18 +40,20 @@ export function mapSubscriptions(subscriptions: SubscriptionsV3Response[]): Subs
 }
 
 function mapSubscription(subscription: SubscriptionsV3Response): SubscriptionsResponse {
-  let subscriptionMapped: SubscriptionsResponse = { ...subscription, category_id: subscriptionMapper[subscription.type].category_id };
-
-  subscriptionMapped.category_name = subscriptionMapper[subscription.type].label;
-  subscriptionMapped.selected_tier = getSelectedTier(subscriptionMapped);
-  subscriptionMapped.category_icon = subscriptionMapper[subscription.type].icon_id;
+  let subscriptionMapped: SubscriptionsResponse = {
+    ...subscription,
+    category_id: subscriptionMapper[subscription.type].category_id,
+    category_name: subscriptionMapper[subscription.type].label,
+    category_icon: subscriptionMapper[subscription.type].icon_id,
+    selected_tier: getSelectedTier(subscription),
+  };
 
   mapCurrenciesForTiers(subscriptionMapped);
 
   return subscriptionMapped;
 }
 
-function getSelectedTier(subscription: SubscriptionsResponse): Tier {
+function getSelectedTier(subscription: SubscriptionsV3Response): Tier {
   const tierId = subscription.selected_tier_id ? subscription.selected_tier_id : subscription.default_tier_id;
   return subscription.tiers.find((tier) => tier.id === tierId);
 }
