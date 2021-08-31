@@ -1070,6 +1070,7 @@
     "kyc_select_document_view_description": "Make sure the document you provide is valid for at least 3 months.",
     "kyc_select_nationality_view_description": "And we'll tell you what kind of document you can use to verify your identity",
     "kyc_select_nationality_view_top_bar_title": "Nationality",
+    "kyc_failed_verification_customer_service": "Need help?",
     "kyc_request_front_side_photo": "Take a photo of the front side",
     "kyc_jpeg_png_file": "JPEG or PNG files only",
     "kyc_request_back_side_photo": "Take a photo of the back side",

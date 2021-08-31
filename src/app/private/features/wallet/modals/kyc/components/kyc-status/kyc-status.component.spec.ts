@@ -83,7 +83,7 @@ describe('KYCStatusComponent', () => {
       it('should show the CS link', () => {
         const CSLink: DebugElement = de.query(By.css(CSLinkSelector));
 
-        expect(CSLink.attributes['href']).toEqual(component.CS_URL);
+        expect(CSLink.attributes['href']).toEqual(component.KYC_HELP_URL);
       });
     });
 

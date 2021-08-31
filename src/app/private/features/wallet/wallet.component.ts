@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { Observable } from 'rxjs';
@@ -25,12 +27,9 @@ export class WalletComponent implements OnInit {
       display: $localize`:@@web_delivery_bank_details:Bank details`,
     },
   ];
+  public ZENDESK_WALLET_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.WALLET_HELP);
 
-  //FIXME: These will be moved into a service
-  public zendeskWalletHelpArticleId: number = 360017172677;
-  public zendeskWalletHelpURL = `https://ayuda.wallapop.com/hc/es-es/articles/${this.zendeskWalletHelpArticleId}`;
-
-  constructor(private router: Router, private kycBannerService: KYCBannerService) {
+  constructor(private router: Router, private kycBannerService: KYCBannerService, private customerHelpService: CustomerHelpService) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id || this.getLastLocationIdThatMatch(e);

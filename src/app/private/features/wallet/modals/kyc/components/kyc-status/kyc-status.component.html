@@ -7,7 +7,7 @@
                 </div>
                 <span class="KYCStatus__title d-block mt-4 mb-3 text-center">{{properties.title}}</span>
                 <span class="KYCStatus__description d-block mb-3 text-center">{{properties.description}}</span>
-                <a *ngIf="properties.showCSLink" [href]="CS_URL" class="KYCStatus__link"></a>
+                <a *ngIf="properties.showCSLink" [href]="KYC_HELP_URL" class="KYCStatus__link text-center" i18n="@@kyc_failed_verification_customer_service" target="_blank">Need help?</a>
             </div>
             <div class="KYCStatus__bottomContainer d-flex justify-content-center pb-4 px-2 position-sticky">
                 <div class="KYCStatus__bottomContainer__button">

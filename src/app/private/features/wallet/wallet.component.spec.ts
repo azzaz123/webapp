@@ -123,7 +123,7 @@ describe('WalletComponent', () => {
     it('should open the Wallet help page', () => {
       const helpButtonRef = fixture.debugElement.query(By.css(walletHelpButtonSelector));
 
-      expect(helpButtonRef.attributes['href']).toEqual(component.zendeskWalletHelpURL);
+      expect(helpButtonRef.attributes['href']).toEqual(component.ZENDESK_WALLET_HELP_URL);
     });
   });
 });

@@ -1070,6 +1070,7 @@
     "kyc_select_document_view_description": "Asegúrate de que el documento tenga, al menos, 3 meses de validez.",
     "kyc_select_nationality_view_description": "Y te diremos qué tipo de documento puedes usar para verificar tu identidad.",
     "kyc_select_nationality_view_top_bar_title": "Nacionalidad",
+    "kyc_failed_verification_customer_service": "Need help?",
     "kyc_request_front_side_photo": "Hacer foto de la parte delantera",
     "kyc_jpeg_png_file": "Solo archivos JPEG o PNG",
     "kyc_request_back_side_photo": "Hacer foto de la parte trasera",
