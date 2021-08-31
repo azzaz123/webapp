@@ -8,13 +8,4 @@ import { WalletSharedErrorActionComponent } from './components/error-action/wall
   imports: [CommonModule],
   exports: [WalletSharedErrorActionComponent],
 })
-export class WalletSharedErrorActionModule {
-  /* constructor(@Optional() @SkipSelf() parentModule?: WalletSharedErrorActionModule) {}
-
-  static forRoot(config: WalletSharedErrorActionConfigurationInterface): ModuleWithProviders<WalletSharedErrorActionModule> {
-    return {
-      ngModule: WalletSharedErrorActionModule,
-      providers: [WalletSharedErrorActionService, { provide: WalletSharedErrorActionConfiguration, useValue: config }],
-    };
-  } */
-}
+export class WalletSharedErrorActionModule {}
