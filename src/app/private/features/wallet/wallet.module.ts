@@ -10,6 +10,7 @@ import { KYCBannerApiService } from './services/api/kyc-banner-api.service';
 import { KYCBannerModule } from './components/kyc-banner/kyc-banner.module';
 import { KYCGuard } from './guards/kyc/kyc.guard';
 import { KYCModule } from './modals/kyc/kyc.module';
+import { KYCStatusModalModule } from './modals/kyc-status-modal/kyc-status-modal.module';
 
 @NgModule({
   declarations: [WalletRoutedComponents],
@@ -22,6 +23,7 @@ import { KYCModule } from './modals/kyc/kyc.module';
     KYCInfoModalModule,
     KYCBannerModule,
     KYCModule,
+    KYCStatusModalModule,
   ],
   providers: [KYCBannerService, KYCBannerApiService, KYCGuard],
 })
