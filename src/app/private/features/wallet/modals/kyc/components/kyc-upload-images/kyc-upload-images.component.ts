@@ -185,30 +185,49 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     return !!this.images.frontSide;
   }
 
+  public get isFrontSideImageActive(): boolean {
+    return !this.isFrontSideImageDefined && this.isShootImageMethod;
+  }
+
+  public get isFrontSideImageEnabled(): boolean {
+    return this.isFrontSideImageDefined || this.isUploadImageMethod;
+  }
+
   public get isBackSideImageDefined(): boolean {
     return !!this.images.backSide;
   }
 
-  private defineUploadImageAndEmitValue(file: File, imageSide: KYC_IMAGES): void {
-    const imageContainer = imageSide === KYC_IMAGES.FRONT_SIDE ? this.frontSideImage.nativeElement : this.backSideImage?.nativeElement;
-    const img = new Image();
+  public get isBackSideImageActive(): boolean {
+    return this.isFrontSideImageDefined && !this.allImagesAreDefined;
+  }
 
+  public get isBackSideImageEnabled(): boolean {
+    return this.isBackSideImageDefined || this.isUploadImageMethod;
+  }
+
+  private defineUploadImageAndEmitValue(file: File, imageSide: KYC_IMAGES): void {
     if (file.type.match(this.MIME_TYPES.IMAGE_JPEG)) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.addEventListener('load', (evt: ProgressEvent<FileReader>) => {
-        if (evt.target.readyState === FileReader.DONE && typeof evt.target.result === 'string') {
-          const base64Image = evt.target.result;
-          img.src = base64Image;
-          img.addEventListener('load', () => this.drawImageInCanvas(imageContainer, img));
+      reader.addEventListener('load', (evt: ProgressEvent<FileReader>) => this.handleUploadedImage(evt, imageSide));
+    }
+  }
 
-          if (imageSide === KYC_IMAGES.FRONT_SIDE) {
-            this.emitFrontSideImageChange(base64Image);
-          } else {
-            this.emitBackSideImageChange(base64Image);
-          }
-        }
-      });
+  private handleUploadedImage(evt: ProgressEvent<FileReader>, imageSide: KYC_IMAGES): void {
+    const imageContainer = imageSide === KYC_IMAGES.FRONT_SIDE ? this.frontSideImage.nativeElement : this.backSideImage?.nativeElement;
+    const isFileReaderDone = evt.target.readyState === FileReader.DONE;
+    const { result: base64Image } = evt.target;
+    const img = new Image();
+
+    if (isFileReaderDone && typeof base64Image === 'string') {
+      img.src = base64Image;
+      img.addEventListener('load', () => this.drawImageInCanvas(imageContainer, img));
+
+      if (imageSide === KYC_IMAGES.FRONT_SIDE) {
+        this.emitFrontSideImageChange(base64Image);
+      } else {
+        this.emitBackSideImageChange(base64Image);
+      }
     }
   }
 

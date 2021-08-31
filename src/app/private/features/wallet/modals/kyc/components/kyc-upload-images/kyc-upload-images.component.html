@@ -18,7 +18,7 @@
     </div>
     <div class="row mx-0 mx-md-2 mb-4 justify-content-center" *ngIf="isUploadImageCards(userDevicePermissions)">
         <div class="GenericCard KYCUploadImages__image col-5 p-0" 
-            [ngClass]="{'KYCUploadImages__image--enabled': isFrontSideImageDefined || isUploadImageMethod, 'KYCUploadImages__image--active': !isFrontSideImageDefined && isShootImageMethod}">
+            [ngClass]="{'KYCUploadImages__image--enabled': isFrontSideImageEnabled, 'KYCUploadImages__image--active': isFrontSideImageActive}">
             <input #frontSideImageUpload id="frontSideImageUpload" type="file" (change)="defineImage($event, KYC_IMAGES.FRONT_SIDE)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
             <div *ngIf="!isFrontSideImageDefined" id="takeFrontSideImage"
                 (click)="checkIfUploadIsAvailable(KYC_IMAGES.FRONT_SIDE)"
@@ -34,8 +34,8 @@
             <canvas #frontSideImage id="frontSideImage" class="KYCUploadImages__takenImage w-100 h-100" [ngClass]="{'d-none': !isFrontSideImageDefined}"></canvas>
         </div>
         <div *ngIf="imagesNeeded === 2" class="GenericCard KYCUploadImages__image col-5 p-0 ml-3"
-        [ngClass]="{'KYCUploadImages__image--active': isFrontSideImageDefined && !allImagesAreDefined,
-        'KYCUploadImages__image--enabled': isBackSideImageDefined || isUploadImageMethod}">
+        [ngClass]="{'KYCUploadImages__image--active': isBackSideImageActive,
+        'KYCUploadImages__image--enabled': isBackSideImageEnabled}">
             <input #backSideImageUpload id="backSideImageUpload" type="file" (change)="defineImage($event, KYC_IMAGES.BACK_SIDE)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
             <div *ngIf="!isBackSideImageDefined" id="takeBackSideImage"
                 (click)="checkIfUploadIsAvailable(KYC_IMAGES.BACK_SIDE)"
