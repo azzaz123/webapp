@@ -2,7 +2,7 @@ import { CanActivate, CanLoad } from '@angular/router';
 import { Inject, Injectable } from '@angular/core';
 import { AccessTokenService } from '../http/access-token.service';
 import * as CryptoJSAES from 'crypto-js/aes';
-import { SITE_URL } from 'configs/site-url.config';
+import { SITE_URL } from '@configs/site-url.config';
 
 export const REDIRECT_SECRET = 'redirectSecretBRUH';
 

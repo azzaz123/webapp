@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ItemPlace } from './geolocation-response.interface';
 import { Coordinate } from './address-response.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { SITE_URL } from 'configs/site-url.config';
+import { SITE_URL } from '@configs/site-url.config';
 
 export const MAPS_PLACES_API = 'maps/places';
 export const MAPS_PLACE_API = 'maps/here/place';

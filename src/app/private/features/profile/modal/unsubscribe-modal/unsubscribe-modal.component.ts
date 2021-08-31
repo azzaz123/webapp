@@ -4,7 +4,7 @@ import { AccessTokenService } from '@core/http/access-token.service';
 import { UnsubscribeReason } from '@core/user/unsubscribe-reason.interface';
 import { UserService } from '@core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SITE_URL } from 'configs/site-url.config';
+import { SITE_URL } from '@configs/site-url.config';
 
 @Component({
   selector: 'tsl-unsubscribe-modal',

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import * as CryptoJSAES from 'crypto-js/aes';
 import { REDIRECT_SECRET } from '@core/user/logged.guard';
-import { SITE_URL } from 'configs/site-url.config';
+import { SITE_URL } from '@configs/site-url.config';
 
 @Injectable({
   providedIn: 'root',

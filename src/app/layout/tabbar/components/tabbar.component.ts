@@ -7,7 +7,7 @@ import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { Subscription } from 'rxjs';
 import { TabbarService } from '../core/services/tabbar.service';
-import { SITE_URL } from 'configs/site-url.config';
+import { SITE_URL } from '@configs/site-url.config';
 
 export const INPUT_TYPE = {
   TEXT: 'text',
