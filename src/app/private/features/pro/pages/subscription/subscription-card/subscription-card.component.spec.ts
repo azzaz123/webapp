@@ -107,7 +107,7 @@ describe('SubscriptionCardComponent', () => {
       it('should show subscription end date', () => {
         const subscriptionEnd: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__date')).nativeElement;
 
-        expect(subscriptionEnd.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_until, 'dd/MM/yy'));
+        expect(subscriptionEnd.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_until, 'longDate'));
       });
     });
 
@@ -119,7 +119,7 @@ describe('SubscriptionCardComponent', () => {
       it('should show subscription start date', () => {
         const subscriptionStart: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__date')).nativeElement;
 
-        expect(subscriptionStart.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_from, 'dd/MM/yy'));
+        expect(subscriptionStart.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_from, 'longDate'));
       });
     });
   });

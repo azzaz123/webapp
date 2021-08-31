@@ -18,6 +18,7 @@
       font-size: $font-size-s;
       line-height: $line-height-ml;
     }
+
     &.urgent {
       display: flex;
       flex-direction: row;
@@ -251,6 +252,12 @@ form {
     }
     .input-radio.ng-invalid input {
       border: 1px solid $negative-main !important;
+    }
+
+    .ng-invalid {
+      .error {
+        color: $negative-main;
+      }
     }
   }
 
