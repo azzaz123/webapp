@@ -24,8 +24,8 @@ import { ReleaseVersionService } from '@core/release-version/release-version.ser
 
 import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
-import { APP_LOCALE } from 'configs/subdomains.config';
-import { SITE_URL } from 'configs/site-url.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
+import { SITE_URL } from '@configs/site-url.config';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
