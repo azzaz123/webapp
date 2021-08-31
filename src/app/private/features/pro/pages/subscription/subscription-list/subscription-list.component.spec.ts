@@ -8,6 +8,7 @@ import {
   MAPPED_SUBSCRIPTIONS_ADDED,
   MockSubscriptionService,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+  MOCK_V3_MAPPED_SUBSCRIPTIONS,
   TIER_WITH_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { SpinnerComponent } from '@shared/spinner/spinner.component';
@@ -55,7 +56,7 @@ describe('SubscriptionListComponent', () => {
   });
   describe('when is not loading', () => {
     beforeEach(() => {
-      component.subscriptions = MAPPED_SUBSCRIPTIONS_ADDED;
+      component.subscriptions = MOCK_V3_MAPPED_SUBSCRIPTIONS;
       component.isLoading = false;
       fixture.detectChanges();
     });
