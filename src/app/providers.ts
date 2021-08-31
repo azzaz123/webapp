@@ -13,11 +13,6 @@ import { siteUrlFactory, SITE_URL } from 'configs/site-url.config';
 
 export const PROVIDERS: Provider[] = [
   {
-    provide: 'SUBDOMAIN',
-    useFactory: subdomainFactory,
-    deps: [LOCALE_ID],
-  },
-  {
     provide: SITE_URL,
     useFactory: siteUrlFactory,
     deps: [LOCALE_ID],

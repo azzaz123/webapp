@@ -39,7 +39,6 @@ describe('TabbarComponent', () => {
             provide: UnreadChatMessagesService,
             useClass: MockUnreadChatMessagesService,
           },
-          { provide: 'SUBDOMAIN', useValue: 'es' },
           EventService,
           TabbarService,
         ],

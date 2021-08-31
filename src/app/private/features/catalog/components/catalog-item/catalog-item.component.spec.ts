@@ -102,7 +102,6 @@ describe('CatalogItemComponent', () => {
             },
           },
           I18nService,
-          { provide: 'SUBDOMAIN', useValue: 'es' },
         ],
         imports: [HttpClientTestingModule],
         schemas: [NO_ERRORS_SCHEMA],

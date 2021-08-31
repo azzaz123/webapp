@@ -178,7 +178,6 @@ describe('SearchComponent', () => {
         },
         SearchQueryStringService,
         QueryStringLocationService,
-        { provide: 'SUBDOMAIN', useValue: 'es' },
         { provide: CookieService, useValue: MockCookieService },
         {
           provide: SearchListTrackingEventsService,

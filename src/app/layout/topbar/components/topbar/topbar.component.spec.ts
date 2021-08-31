@@ -111,10 +111,6 @@ describe('TopbarComponent', () => {
             },
           },
           {
-            provide: 'SUBDOMAIN',
-            useValue: 'www',
-          },
-          {
             provide: CookieService,
             useValue: {
               put(key, value) {},

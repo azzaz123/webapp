@@ -49,7 +49,6 @@ describe('Component: Item', () => {
             },
           },
         },
-        { provide: 'SUBDOMAIN', useValue: 'es' },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });

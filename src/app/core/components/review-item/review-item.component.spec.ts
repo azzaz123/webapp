@@ -38,7 +38,6 @@ describe('ReviewItemComponent', () => {
         schemas: [NO_ERRORS_SCHEMA],
         imports: [ReviewsApiModule, HttpClientTestingModule],
         providers: [
-          { provide: 'SUBDOMAIN', useValue: 'www' },
           {
             provide: CategoryService,
             useValue: {

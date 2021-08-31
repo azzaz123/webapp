@@ -25,10 +25,6 @@ describe('ItemStatsRowComponent', () => {
         providers: [
           DecimalPipe,
           {
-            provide: 'SUBDOMAIN',
-            useValue: 'es',
-          },
-          {
             provide: ItemStatsService,
             useValue: {
               getStatistics() {

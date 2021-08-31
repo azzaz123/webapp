@@ -48,8 +48,6 @@ export class ItemCardListWrapperComponent {
   placeholderCards = ItemCardListWrapperComponent.DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS;
 }
 
-const SUBDOMAIN = 'it';
-
 describe('ItemCardListComponent', () => {
   const cardSelector = 'tsl-public-item-card';
   let componentWrapper: ItemCardListWrapperComponent;
@@ -97,7 +95,6 @@ describe('ItemCardListComponent', () => {
             navigate() {},
           },
         },
-        { provide: 'SUBDOMAIN', useValue: SUBDOMAIN },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

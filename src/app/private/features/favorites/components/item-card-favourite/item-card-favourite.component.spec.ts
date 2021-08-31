@@ -18,7 +18,6 @@ describe('ItemCardFavouriteComponent', () => {
   let element: HTMLElement;
 
   let itemService: ItemService;
-  let subdomain: string;
   let modalService: NgbModal;
 
   const modalRef: any = {
@@ -54,7 +53,6 @@ describe('ItemCardFavouriteComponent', () => {
               },
             },
           },
-          { provide: 'SUBDOMAIN', useValue: 'www' },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -68,7 +66,6 @@ describe('ItemCardFavouriteComponent', () => {
     component.item = MOCK_ITEM;
     itemService = TestBed.inject(ItemService);
     modalService = TestBed.inject(NgbModal);
-    subdomain = TestBed.inject(<any>'SUBDOMAIN');
 
     fixture.detectChanges();
   });

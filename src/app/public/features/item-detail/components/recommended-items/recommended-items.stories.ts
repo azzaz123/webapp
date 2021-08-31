@@ -23,12 +23,7 @@ const Template: Story<RecommendedItemsComponent> = (args: RecommendedItemsCompon
   moduleMetadata: {
     declarations: [RecommendedItemsComponent],
     imports: [CoreModule, HttpModule, ItemCardListModule, CheckSessionModule, CommonModule, RouterTestingModule],
-    providers: [
-      DeviceDetectorService,
-      MapRecommendedItemCardService,
-      ItemDetailTrackEventsService,
-      { provide: 'SUBDOMAIN', useValue: 'www' },
-    ],
+    providers: [DeviceDetectorService, MapRecommendedItemCardService, ItemDetailTrackEventsService],
   },
   template: '<tsl-recommended-items [recommendedItems]="recommendedItems" showDescription="false"></tsl-recommended-items>',
 });

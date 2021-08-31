@@ -95,10 +95,6 @@ describe('Service: User', () => {
         I18nService,
         AccessTokenService,
         {
-          provide: 'SUBDOMAIN',
-          useValue: 'www',
-        },
-        {
           provide: ReleaseVersionService,
           useValue: {
             getReleaseVersion() {
