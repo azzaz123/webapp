@@ -1,10 +1,8 @@
-import { MOCK_BASE_64_1KB_IMAGE, MOCK_BASE_64_SMALL_IMAGE } from '@fixtures/base64.fixtures.spec';
+import { MOCK_BASE_64_32KB_IMAGE, MOCK_BASE_64_SMALL_IMAGE } from '@fixtures/base64.fixtures.spec';
+import { MOCK_JPEG_IMAGE_BIGGER_32KB } from '@fixtures/jpeg.fixtures.spec';
 import { KYCBanner, KYC_BANNER_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-banner.interface';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
-
-const MOCK_IMAGE_NON_BASE_64 =
-  'data:image/jpeg,/9j/eF/tURKtURKSxCTdp0ckjOsOTSxCTdp0ckjOsOT/tURKSxCtURKSxCTdp0ckjOsOTTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdtURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTTtURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTTp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTtURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdp0ckjOtURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTTsOT/tUtURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTTRKSxCTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxtURKSxCTdp0ckjtURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTTOsOTCTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdp0ckjOsOT/tURKSxCTdtURKSxCTdp0ckjOsOTp0ckjtURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTTOsOT/tURKtURKSxCTdp0ckjOsOTSxCTdp0ckjOsOT/tURKSxCTdp0cktURKSxCTdp0ckjOsOTjOsOT/tURKtURKSxCTdp0ckjtURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTTOsOTSxCTdp0ckjOsOT/tURKSxCTdp0ckjOtURKSxCTdp0ckjOsOTsOT/tURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTTtURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTTtURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTT/tURKSxCTdp0tURKSxCTdp0ckjOsOtURKSxCTdp0ckjOsOTTckjOsOTtURKSxCTdp0ckjOsOT/';
 
 export const MOCK_KYC_BANNER_PENDING_VERIFICATION: KYCBanner = {
   status: KYC_BANNER_STATUS.PENDING_VERIFICATION,
@@ -33,12 +31,12 @@ export const MOCK_EMPTY_KYC_IMAGES: KYCImages = {
 
 export const MOCK_KYC_IMAGES_BACK_DEFINED: KYCImages = {
   frontSide: null,
-  backSide: MOCK_BASE_64_1KB_IMAGE,
+  backSide: MOCK_BASE_64_32KB_IMAGE,
 };
 
 export const MOCK_KYC_IMAGES_BASE_64: KYCImages = {
-  frontSide: MOCK_BASE_64_1KB_IMAGE,
-  backSide: MOCK_BASE_64_1KB_IMAGE,
+  frontSide: MOCK_BASE_64_32KB_IMAGE,
+  backSide: MOCK_BASE_64_32KB_IMAGE,
 };
 
 export const MOCK_KYC_IMAGES_BASE_64_SMALL: KYCImages = {
@@ -47,19 +45,28 @@ export const MOCK_KYC_IMAGES_BASE_64_SMALL: KYCImages = {
 };
 
 export const MOCK_KYC_IMAGES_NON_BASE_64: KYCImages = {
-  frontSide: MOCK_IMAGE_NON_BASE_64,
-  backSide: MOCK_IMAGE_NON_BASE_64,
+  frontSide: MOCK_JPEG_IMAGE_BIGGER_32KB,
+  backSide: MOCK_JPEG_IMAGE_BIGGER_32KB,
 };
 
 export const MOCK_KYC_IMAGES_BASE_64_BACK_NULL: KYCImages = {
-  frontSide: MOCK_BASE_64_1KB_IMAGE,
+  frontSide: MOCK_BASE_64_32KB_IMAGE,
   backSide: null,
 };
 
 export const MOCK_KYC_IMAGES_NON_BASE_64_BACK_NULL: KYCImages = {
-  frontSide: MOCK_IMAGE_NON_BASE_64,
+  frontSide: MOCK_JPEG_IMAGE_BIGGER_32KB,
   backSide: null,
 };
+
+export function MOCK_JPEG_IMG_EVENT() {
+  const mockFile = new File([''], 'filename', { type: MIME_TYPES.IMAGE_JPEG });
+  return { target: { files: [mockFile], readyState: FileReader.DONE, result: MOCK_BASE_64_SMALL_IMAGE } };
+}
+
+export function MOCK_WITHOUT_JPEG_IMG_EVENT() {
+  return { target: { files: null, readyState: FileReader.DONE, result: null } };
+}
 
 function getBlobFromBase64JPEGImage(dataURI: string): Blob {
   let rawBinary: string;

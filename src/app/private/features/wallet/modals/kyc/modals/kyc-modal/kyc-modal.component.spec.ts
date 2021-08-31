@@ -285,12 +285,18 @@ describe('KYCModalComponent', () => {
         closeButton.click();
       });
 
-      it('should reset all the specifications', () => {
-        expect(kycStoreService.specifications).toStrictEqual(MOCK_EMPTY_KYC_SPECIFICATIONS);
-      });
-
       it('should close the modal', () => {
         expect(activeModal.close).toHaveBeenCalled();
+      });
+    });
+
+    describe('onDestroy', () => {
+      beforeEach(() => {
+        component.ngOnDestroy();
+      });
+
+      it('should reset all the specifications', () => {
+        expect(kycStoreService.specifications).toStrictEqual(MOCK_EMPTY_KYC_SPECIFICATIONS);
       });
     });
   });
