@@ -1,0 +1,19 @@
+@import '~style/common';
+
+$modal-width: 500px;
+$content-height: 520px;
+
+.KYCStatusModal {
+  @include media-breakpoint-up(sm) {
+    width: 100%;
+    min-width: $modal-width;
+  }
+
+  &__cross {
+    right: 0;
+  }
+
+  &__slides {
+    height: $content-height;
+  }
+}

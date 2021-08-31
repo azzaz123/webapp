@@ -21,7 +21,7 @@ export class KYCStatusModalComponent {
     this.activeModal.close();
   }
 
-  public handleButtonClick() {
+  public handleButtonClick(): void {
     if (this.properties.status === KYC_MODAL_STATUS_TYPE.IN_PROGRESS || this.properties.status === KYC_MODAL_STATUS_TYPE.SUCCEED) {
       this.closeModal();
     }
