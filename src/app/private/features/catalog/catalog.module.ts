@@ -20,6 +20,7 @@ import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-sl
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
 import { CatalogItemTrackingEventService } from './core/services/catalog-item-tracking-event.service';
 import { NavLinksModule } from '@shared/nav-links/nav-links.module';
+import { ItemDetailRoutePipe } from '@shared/pipes';
 
 @NgModule({
   imports: [
@@ -34,7 +35,7 @@ import { NavLinksModule } from '@shared/nav-links/nav-links.module';
     CustomCurrencyModule,
     NavLinksModule,
   ],
-  providers: [BumpTutorialService, ItemRequiredDataService, CatalogItemTrackingEventService],
+  providers: [BumpTutorialService, ItemRequiredDataService, CatalogItemTrackingEventService, ItemDetailRoutePipe],
   declarations: [
     catalogRoutedComponents,
     CatalogItemComponent,
