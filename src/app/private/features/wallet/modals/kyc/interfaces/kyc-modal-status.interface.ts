@@ -6,5 +6,5 @@ export interface KYCModalStatus {
   description?: string;
   svgPath: string;
   messageCTA: string;
-  link?: string;
+  showCSLink?: boolean;
 }

@@ -1,17 +1,17 @@
-<div class="KYCStatus h-100">
+<div class="KYCStatus h-100" *ngIf="properties">
     <div class="h-100 d-flex justify-content-center">
         <div class="KYCStatus__content h-100 d-flex flex-column justify-content-between">
             <div class="KYCStatus__content__info d-flex flex-column justify-content-center">
                 <div class="KYCStatus__drawing mb-4 w-100">
-                    <tsl-svg-icon [src]="svgPath" width="100" height="100" sizeUnit="%"></tsl-svg-icon>
+                    <tsl-svg-icon [src]="properties.svgPath" width="100" height="100" sizeUnit="%"></tsl-svg-icon>
                 </div>
-                <span class="KYCStatus__title d-block mt-4 mb-3 text-center">{{title}}</span>
-                <span class="KYCStatus__subtitle d-block mb-3 text-center">{{description}}</span>
-                <a *ngIf="linkPath as path" [href]="path"></a>
+                <span class="KYCStatus__title d-block mt-4 mb-3 text-center">{{properties.title}}</span>
+                <span class="KYCStatus__description d-block mb-3 text-center">{{properties.description}}</span>
+                <a *ngIf="properties.showCSLink" [href]="CS_URL" class="KYCStatus__link"></a>
             </div>
             <div class="KYCStatus__bottomContainer d-flex justify-content-center pb-4 px-2 position-sticky">
                 <div class="KYCStatus__bottomContainer__button">
-                    <tsl-button className="btn-primary btn-block" (click)="buttonClick.emit()">{{messageCTA}}</tsl-button>
+                    <tsl-button className="btn-primary btn-block" (click)="buttonClick.emit()">{{properties.messageCTA}}</tsl-button>
                 </div>
             </div>
         </div>

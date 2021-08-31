@@ -15,7 +15,7 @@ $drawing-height: 130px;
   }
 
   &__title,
-  &__subtitle {
+  &__description {
     color: $blue-grey-1;
   }
 
@@ -26,6 +26,10 @@ $drawing-height: 130px;
 
   &__drawing {
     height: $drawing-height;
+  }
+
+  &__link {
+    color: $walla-main;
   }
 
   &__bottomContainer {
