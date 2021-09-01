@@ -45,5 +45,27 @@ describe('GIVEN the WalletSharedErrorActionService', () => {
       service.show(expected);
       tick();
     }));
+    describe('WHEN the error is a not found error', () => {
+      it('should not send the received data', fakeAsync(() => {
+        let received = null;
+        const expected = new HttpErrorResponse({
+          error: 'any error',
+          headers: new HttpHeaders('some headers'),
+          status: 404,
+          statusText: 'No found',
+          url: 'some url',
+        });
+        const observer = service.errorObserver.subscribe((result: unknown) => {
+          observer.unsubscribe();
+          received = result;
+        });
+
+        service.show(expected);
+        tick();
+
+        expect(received).toBe(null);
+        observer.unsubscribe();
+      }));
+    });
   });
 });
