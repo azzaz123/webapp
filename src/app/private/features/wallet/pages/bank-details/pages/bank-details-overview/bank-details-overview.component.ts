@@ -16,6 +16,7 @@ import * as moment from 'moment';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
+import { BankAccountTrackingEventsService } from '../../services/bank-account-tracking-events/bank-account-tracking-events.service';
 
 @Component({
   selector: 'tsl-bank-details-overview',
@@ -36,6 +37,7 @@ export class BankDetailsOverviewComponent implements OnInit {
     private paymentsCreditCardService: PaymentsCreditCardService,
     private i18nService: I18nService,
     private modalService: NgbModal,
+    private bankAccountTrackingEventsService: BankAccountTrackingEventsService,
     private toastService: ToastService
   ) {}
 
@@ -48,6 +50,12 @@ export class BankDetailsOverviewComponent implements OnInit {
 
   public redirect(URL: string): void {
     this.router.navigate([URL]);
+  }
+
+  public handleBankAccountCardClick(urlRedirect: string, bankAccount: BankAccount): void {
+    const isEdit = !!bankAccount;
+    this.bankAccountTrackingEventsService.trackClickAddEditBankAccount(isEdit);
+    this.redirect(urlRedirect);
   }
 
   public formattedCreditCardDate(expirationDateCard: Date): string {
