@@ -12,28 +12,28 @@ export const USER_STARTER_ENDPOINT = `${environment.baseUrl}api/v3/users/me/star
 
 @Injectable()
 export class TrustAndSafetyService {
-  private _threatMetrixRef: ThreatMetrixLibrary;
-  private _sessionId: string;
-  private _profileSentToThreatMetrix: ReplaySubject<boolean> = new ReplaySubject();
+  private threatMetrixRef: ThreatMetrixLibrary;
+  private sessionId: string;
+  private profileSentToThreatMetrix: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(private http: HttpClient, private uuidService: UuidService) {}
 
-  private _initializeSessionId(): void {
-    if (this._sessionId) {
+  private initializeSessionId(): void {
+    if (this.sessionId) {
       return;
     }
-    this._sessionId = this.uuidService.getUUID();
+    this.sessionId = this.uuidService.getUUID();
   }
 
-  private _initializeLibrary() {
-    if (this._threatMetrixRef) {
+  private initializeLibrary() {
+    if (this.threatMetrixRef) {
       return;
     }
-    this._includeThreatMetrixInDOM();
-    this._checkThreatMetrixReady();
+    this.includeThreatMetrixInDOM();
+    this.checkThreatMetrixReady();
   }
 
-  private _includeThreatMetrixInDOM() {
+  private includeThreatMetrixInDOM() {
     const coreScript = document.createElement('script');
     coreScript.setAttribute('type', 'text/javascript');
     coreScript.setAttribute('charset', 'utf-8');
@@ -41,52 +41,52 @@ export class TrustAndSafetyService {
     document.head.appendChild(coreScript);
   }
 
-  private _checkThreatMetrixReady() {
+  private checkThreatMetrixReady() {
     const checkThreatMetrixInterval = interval(1000).subscribe(() => {
       if (wadgtlft) {
         checkThreatMetrixInterval.unsubscribe();
-        this._threatMetrixRef = wadgtlft;
-        this._startThreatMetrixProfiling();
+        this.threatMetrixRef = wadgtlft;
+        this.startThreatMetrixProfiling();
       }
     });
   }
 
-  private _isThreatMetrixProfilingStarted() {
+  private isThreatMetrixProfilingStarted() {
     return typeof window['tmx_profiling_started'] !== 'undefined' && window['tmx_profiling_started'];
   }
 
-  private _startThreatMetrixProfiling() {
-    if (!this._sessionId || !this._threatMetrixRef) {
+  private startThreatMetrixProfiling() {
+    if (!this.sessionId || !this.threatMetrixRef) {
       throw new Error('Session profiling error');
     }
-    this._threatMetrixRef.nfl(environment.threatMetrixProfilingDomain, environment.threatMetrixOrgId, this._sessionId);
-    this._checkProfileSentToThreatMetrix();
+    this.threatMetrixRef.nfl(environment.threatMetrixProfilingDomain, environment.threatMetrixOrgId, this.sessionId);
+    this.checkProfileSentToThreatMetrix();
   }
 
-  private _checkProfileSentToThreatMetrix() {
+  private checkProfileSentToThreatMetrix() {
     const checkProfile = interval(1000).subscribe(() => {
-      if (this._canSubmitProfile()) {
+      if (this.canSubmitProfile()) {
         checkProfile.unsubscribe();
-        this._profileSentToThreatMetrix.next(true);
+        this.profileSentToThreatMetrix.next(true);
       }
     });
   }
 
-  private _canSubmitProfile(): boolean {
-    return this._sessionId && this._threatMetrixRef && this._isThreatMetrixProfilingStarted();
+  private canSubmitProfile(): boolean {
+    return this.sessionId && this.threatMetrixRef && this.isThreatMetrixProfilingStarted();
   }
 
   public submitProfile(location: SessionProfileDataLocation): void {
-    this._initializeSessionId();
-    this._initializeLibrary();
+    this.initializeSessionId();
+    this.initializeLibrary();
 
     const profile: SessionProfileData = {
-      id: this._sessionId,
+      id: this.sessionId,
       location,
       platform: SessionProfileDataPlatform.WEB,
     };
 
-    this._profileSentToThreatMetrix.pipe(take(1)).subscribe((profileSent) => {
+    this.profileSentToThreatMetrix.pipe(take(1)).subscribe((profileSent) => {
       if (!profileSent) {
         return;
       }
