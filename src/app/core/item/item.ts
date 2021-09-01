@@ -277,10 +277,6 @@ export class Item implements Model {
     return this._deliveryInfo;
   }
 
-  getUrl(subdomain: string) {
-    return environment.siteUrl.replace('es', subdomain) + 'item/' + this.webSlug;
-  }
-
   get urgent(): boolean {
     return this._flags ? this._flags.urgent : false;
   }

@@ -3,10 +3,11 @@ import { Environment } from './environment.interface';
 export const environment: Environment = {
   production: true,
   name: 'prod',
+  appDomain: `.wallapop.com/`,
+  protocol: 'https://',
   baseUrl: 'https://api.wallapop.com/',
   xmppDomain: 'wallapop.com',
   wsUrl: 'wss://mongooseimprotool-prod.wallapop.com:443/ws-xmpp',
-  siteUrl: 'https://es.wallapop.com/',
   appboy: '47b54d36-7a86-4c05-9bfc-2d7b8aadd1ce',
   cookieSuffix: '',
   clickStreamURL: 'https://collector.wallapop.com/clickstream.json/sendEvents',

@@ -39,10 +39,6 @@ describe('SearchNavigatorService', () => {
         SearchQueryStringService,
         QueryStringLocationService,
         {
-          provide: 'SUBDOMAIN',
-          useValue: 'es',
-        },
-        {
           provide: CookieService,
           useValue: MockCookieService,
         },
