@@ -6,7 +6,7 @@ import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { Observable } from 'rxjs';
 import { KYCBannerSpecifications } from './interfaces/kyc/kyc-status.interface';
-import { KYCBannerService } from './services/kyc-banner/kyc-banner.service';
+import { KYCStatusService } from './services/kyc-status/kyc-status.service';
 import { WALLET_PATHS } from './wallet.routing.constants';
 
 @Component({
@@ -29,7 +29,7 @@ export class WalletComponent implements OnInit {
   ];
   public ZENDESK_WALLET_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.WALLET_HELP);
 
-  constructor(private router: Router, private kycBannerService: KYCBannerService, private customerHelpService: CustomerHelpService) {
+  constructor(private router: Router, private kycStatusService: KYCStatusService, private customerHelpService: CustomerHelpService) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id || this.getLastLocationIdThatMatch(e);
@@ -38,7 +38,7 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.kycBannerSpecifications$ = this.kycBannerService.getSpecifications();
+    this.kycBannerSpecifications$ = this.kycStatusService.getBannerSpecifications();
   }
 
   public onNavLinkClicked(navLinkId: string): void {

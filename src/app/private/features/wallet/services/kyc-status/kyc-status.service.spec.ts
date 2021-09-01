@@ -10,19 +10,18 @@ import {
 import { of } from 'rxjs';
 import { KYC_BANNER_TYPES } from '../../components/kyc-banner/kyc-banner-constants';
 import { KYCStatus, KYCBannerSpecifications } from '../../interfaces/kyc/kyc-status.interface';
-import { KYCStatusApiService } from '../api/kyc-status-api.service';
+import { KYCStatusApiService } from '../api/kyc-status-api/kyc-status-api.service';
+import { KYCStatusService } from './kyc-status.service';
 
-import { KYCBannerService } from './kyc-banner.service';
-
-describe('KYCBannerService', () => {
-  let service: KYCBannerService;
+describe('KYCStatusService', () => {
+  let service: KYCStatusService;
   let kycStatusApiService: KYCStatusApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        KYCBannerService,
+        KYCStatusService,
         {
           provide: KYCStatusApiService,
           useValue: {
@@ -34,7 +33,7 @@ describe('KYCBannerService', () => {
       ],
     });
 
-    service = TestBed.inject(KYCBannerService);
+    service = TestBed.inject(KYCStatusService);
     kycStatusApiService = TestBed.inject(KYCStatusApiService);
   });
 

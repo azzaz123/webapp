@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { KYCBannerSpecifications, KYC_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-status.interface';
-import { KYCBannerService } from '@private/features/wallet/services/kyc-banner/kyc-banner.service';
+import { KYCStatus, KYC_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-status.interface';
+import { KYCStatusService } from '@private/features/wallet/services/kyc-status/kyc-status.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class KYCGuard implements CanActivate {
-  constructor(private kycBannerService: KYCBannerService, private router: Router) {}
+  constructor(private kycStatusService: KYCStatusService, private router: Router) {}
 
   public canActivate(): Observable<boolean> {
-    return this.kycBannerService.getSpecifications().pipe(
-      map((specifications: KYCBannerSpecifications) => this.isVerificationNeeded(specifications)),
+    return this.kycStatusService.getSpecifications().pipe(
+      map((specifications: KYCStatus) => this.isVerificationNeeded(specifications)),
       tap((isVerificationNeeded: boolean) => {
         if (!isVerificationNeeded) {
           this.router.navigate([PRIVATE_PATHS.WALLET]);
@@ -21,7 +21,7 @@ export class KYCGuard implements CanActivate {
     );
   }
 
-  private isVerificationNeeded(specifications: KYCBannerSpecifications): boolean {
+  private isVerificationNeeded(specifications: KYCStatus): boolean {
     return specifications?.status === KYC_STATUS.PENDING || specifications?.status === KYC_STATUS.REJECTED;
   }
 }

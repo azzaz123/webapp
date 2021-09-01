@@ -12,8 +12,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
 import { KYC_BANNER_TYPES } from './components/kyc-banner/kyc-banner-constants';
 import { KYCBannerComponent } from './components/kyc-banner/kyc-banner.component';
-import { KYCStatusApiService } from './services/api/kyc-status-api.service';
-import { KYCBannerService } from './services/kyc-banner/kyc-banner.service';
+import { KYCStatusApiService } from './services/api/kyc-status-api/kyc-status-api.service';
+import { KYCStatusService } from './services/kyc-status/kyc-status.service';
 
 import { WalletComponent } from './wallet.component';
 import { WALLET_PATHS } from './wallet.routing.constants';
@@ -25,7 +25,7 @@ describe('WalletComponent', () => {
   let component: WalletComponent;
   let fixture: ComponentFixture<WalletComponent>;
   let router: Router;
-  let kycBannerService: KYCBannerService;
+  let kycStatusService: KYCStatusService;
 
   const walletHelpButtonSelector = 'a';
 
@@ -43,7 +43,7 @@ describe('WalletComponent', () => {
           },
         },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
-        KYCBannerService,
+        KYCStatusService,
         KYCStatusApiService,
       ],
     }).compileComponents();
@@ -53,7 +53,7 @@ describe('WalletComponent', () => {
     fixture = TestBed.createComponent(WalletComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
-    kycBannerService = TestBed.inject(KYCBannerService);
+    kycStatusService = TestBed.inject(KYCStatusService);
     fixture.detectChanges();
   });
 
@@ -91,7 +91,7 @@ describe('WalletComponent', () => {
 
   describe('when the wallet status for the user is not need', () => {
     beforeEach(() => {
-      spyOn(kycBannerService, 'getSpecifications').and.returnValue(of(null));
+      spyOn(kycStatusService, 'getSpecifications').and.returnValue(of(null));
 
       component.ngOnInit();
       fixture.detectChanges();
@@ -106,7 +106,7 @@ describe('WalletComponent', () => {
 
   describe('when the wallet status for the user is needed and defined', () => {
     beforeEach(() => {
-      spyOn(kycBannerService, 'getSpecifications').and.returnValue(of(KYC_BANNER_TYPES[0]));
+      spyOn(kycStatusService, 'getSpecifications').and.returnValue(of(KYC_BANNER_TYPES[0]));
 
       component.ngOnInit();
       fixture.detectChanges();
