@@ -3,6 +3,7 @@ import { Money } from '@api/core/model/money.interface';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -16,7 +17,11 @@ export class WalletBalanceInfoComponent implements OnInit {
   public hasPositiveBalance = false;
   public isError = false;
 
-  constructor(private paymentsWalletsService: PaymentsWalletsService, private toastService: ToastService) {}
+  constructor(
+    private paymentsWalletsService: PaymentsWalletsService,
+    private toastService: ToastService,
+    private errorActionService: WalletSharedErrorActionService
+  ) {}
 
   ngOnInit() {
     this.paymentsWalletsService.walletBalance$.pipe(finalize(() => (this.loading = false))).subscribe({
@@ -27,6 +32,7 @@ export class WalletBalanceInfoComponent implements OnInit {
       error: () => {
         this.isError = true;
         this.toastService.show(DEFAULT_ERROR_TOAST);
+        this.errorActionService.show();
       },
     });
   }
