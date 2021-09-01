@@ -1,4 +1,4 @@
-<div class="modal-close d-flex align-items-center justify-content-center" (click)="activeModal.close()">
+<div class="modal-close d-flex align-items-center justify-content-center" (click)="closeModal()">
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
 </div>
 <div class="KYCModal__content modal-body profile-box">
@@ -22,7 +22,11 @@
             <tsl-kyc-upload-images
                 *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications"
                 [takeImageMethod]="KYCSpecifications.imageMethod"
-                [photosNeeded]="KYCSpecifications.documentation.photosNeeded"
+                [imagesNeeded]="KYCSpecifications.documentation.imagesNeeded"
+                [images]="KYCSpecifications.images"
+                (imagesChange)="defineImages($event)"
+                (endVerification)="endVerification(KYCSpecifications.images)"
+                (goBack)="goPreviousStep()"
             ></tsl-kyc-upload-images>
         </ng-template>
     </tsl-stepper>

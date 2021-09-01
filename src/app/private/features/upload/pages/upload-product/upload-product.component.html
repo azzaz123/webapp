@@ -78,7 +78,34 @@
         </div>
       </div>
       <ng-template #coachmarkPrice>
-        <div i18n="@@web_upload_product_coachmark_price">Add a fair price and the category that best suits your item.</div>
+        <div *ngIf="!isShippabilityActive" i18n="@@web_upload_product_coachmark_price">
+          Add a fair price and the category that best suits your item.
+        </div>
+        <ng-container *ngIf="isShippabilityActive">
+          <div
+            *ngIf="
+              !isShippabilityAllowedByCategory ||
+              (uploadForm.controls.sale_price.value >= priceShippingRules.minPrice &&
+                uploadForm.controls.sale_price.value <= priceShippingRules.maxPrice)
+            "
+            i18n="@@web_upload_product_coachmark_price"
+          >
+            Add a fair price and the category that best suits your item.
+          </div>
+
+          <div
+            *ngIf="isShippabilityAllowedByCategory && uploadForm.controls.sale_price.value < priceShippingRules.minPrice"
+            i18n="@@upload_shipping_toggle_snackbar_min_price_description"
+          >
+            Products priced at €1 euro or less can't be shipped.
+          </div>
+          <div
+            *ngIf="isShippabilityAllowedByCategory && uploadForm.controls.sale_price.value > priceShippingRules.maxPrice"
+            i18n="@@upload_shipping_toggle_snackbar_max_price_description"
+          >
+            Products priced at €1,000 or more can't be shipped.
+          </div>
+        </ng-container>
       </ng-template>
     </div>
 
@@ -276,7 +303,83 @@
     </ng-template>
   </div>
 
-  <div
+  <ng-container *ngIf="isShippabilityActive; else shippabilityInactive">
+    <div class="box" *ngIf="isShippabilityAllowed" [ngbPopover]="coachmarkShippingWithToggle" [autoClose]="false" #p="ngbPopover">
+      <div data-toggle="buttons">
+        <div class="row">
+          <div class="col">
+            <h2 i18n="@@upload_shipping_toggle_title">Shipping</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p id="shippabilitySection">
+              <span i18n="@@upload_shipping_toggle_enabled_description"
+                >Shipping is free and lets you sell more. You also have a home pick up service.</span
+              >
+
+              <a [href]="SHIPPING_INFO_HELP_LINK" target="_blank" class="ml-1" (click)="trackClickHelpTransactionalEvent()">+ info</a>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="d-flex" [class.mb-3]="uploadForm.value.sale_conditions.supports_shipping" formGroupName="sale_conditions">
+              <tsl-checkbox-form
+                formControlName="supports_shipping"
+                (change)="!uploadForm.value.sale_conditions.supports_shipping ? p.open() : p.close()"
+              ></tsl-checkbox-form>
+              <span class="ShippingSection__text--small ml-2 mb-0" i18n="@@upload_shipping_toggle_wallapop_shipping_title">Shipping</span>
+            </div>
+
+            <div
+              *ngIf="uploadForm.value.sale_conditions.supports_shipping"
+              class="selector-container m-0"
+              ngbRadioGroup
+              name="radioBasic"
+              formControlName="delivery_info"
+            >
+              <p i18n="@@upload_shipping_toggle_weight_selector_weight_selector_title" class="error">Package weight</p>
+
+              <label ngbButtonLabel class="WeightSelector" *ngFor="let delivery of deliveryInfo">
+                <span class="WeightSelector__text--small font-weight-bold" i18n="@@upload_shipping_toggle_weight_selector_max_label"
+                  >máx.</span
+                >
+
+                <input
+                  ngbButton
+                  type="radio"
+                  class="position-absolute"
+                  [value]="delivery.value"
+                  (click)="onDeliveryChange(delivery.value); p.close()"
+                />
+
+                <span class="WeightSelector__text--big d-block font-weight-bold mb-1">{{ delivery.value.max_weight_kg }}kg</span>
+
+                <span class="WeightSelector__text--small d-block"
+                  >(<span class="WeightSelector__text--small" i18n="@@upload_shipping_toggle_weight_selector_weight_limit_from_label"
+                    >Up to</span
+                  >
+                  {{ delivery.value.max_weight_kg }}kg)</span
+                >
+              </label>
+
+              <p class="error mt-4" i18n="@@upload_shipping_toggle_weight_selector_dimension_restrictions_description">
+                The weight of the package must not exceed the indicated weight. Regarding its dimensions, the sum of the length, height and
+                width cannot exceed 210 cm; and the longest side cannot exceed 120 cm.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #coachmarkShippingWithToggle>
+        <div i18n="@@upload_shipping_toggle_not_enabled_description">Are you sure? By shipping it you could sell it everywhere.</div>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <ng-template #shippabilityInactive>
+    <div
     class="box"
     *ngIf="categoryId === '-1' || (item && item.itemType === itemTypes.CONSUMER_GOODS)"
     [ngbPopover]="coachmarkShipping"
@@ -314,6 +417,7 @@
       </div>
     </ng-template>
   </div>
+  </ng-template>
 
   <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location"></tsl-location-box>
   <div class="row" id="prueba">

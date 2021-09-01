@@ -247,11 +247,7 @@ export interface ItemUploadForm {
   sale_price: number;
   currency_code: string;
   description?: string;
-  sale_conditions?: {
-    fix_price: boolean;
-    exchange_allowed: boolean;
-    shipping_allowed?: boolean;
-  };
+  sale_conditions?: ItemSaleConditions;
   delivery_info?: any;
   location?: {
     address: string;
@@ -360,6 +356,7 @@ export interface ItemSaleConditions {
   fix_price: boolean;
   exchange_allowed: boolean;
   shipping_allowed?: boolean;
+  supports_shipping?: boolean;
 }
 
 export interface ItemCounters {

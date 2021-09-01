@@ -25,8 +25,6 @@ import { ProfileProSubscriptionComponent } from './pages/profile-pro-subscriptio
 import { CancelSubscriptionModalComponent } from './modal/cancel-subscription/cancel-subscription-modal.component';
 import { CheckSubscriptionInAppModalComponent } from './modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { ContinueSubscriptionModalComponent } from './modal/continue-subscription/continue-subscription-modal.component';
-import { EditSubscriptionModalComponent } from './modal/edit-subscription/edit-subscription-modal.component';
-import { PaymentSuccessModalComponent } from './modal/payment-success/payment-success-modal.component';
 import { UnsubscribeInAppFirstModalComponent } from './modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { VisibilityProductsModalComponent } from './modal/visibility-products-modal/visibility-products-modal.component';
 import { SubscriptionIconPipe } from '../profile/pipes/subscription-icon.pipe';
@@ -35,6 +33,9 @@ import { PaymentsCardInfoModule } from '@shared/payments-card-info/payments-card
 import { SubscriptionBenefitsComponent } from './components/subscription-benefits/subscription-benefits.component';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
 import { HeaderModule } from '@shared/header/header.module';
+import { SubscriptionPurchaseSuccessComponent } from './components/subscription-purchase-success/subscription-purchase-success.component';
+import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
+import { SubscriptionEditComponent } from './pages/subscription/subscription-edit/subscription-edit.component';
 
 @NgModule({
   declarations: [
@@ -55,14 +56,14 @@ import { HeaderModule } from '@shared/header/header.module';
     SubscriptionCardSelectorComponent,
     SubscriptionPurchaseFooterComponent,
     VisibilityProductsModalComponent,
-    PaymentSuccessModalComponent,
-    EditSubscriptionModalComponent,
     CancelSubscriptionModalComponent,
     ContinueSubscriptionModalComponent,
     CheckSubscriptionInAppModalComponent,
     UnsubscribeInAppFirstModalComponent,
     SubscriptionIconPipe,
     SubscriptionBenefitsComponent,
+    SubscriptionPurchaseSuccessComponent,
+    SubscriptionEditComponent,
   ],
   imports: [
     CommonModule,
@@ -82,6 +83,7 @@ import { HeaderModule } from '@shared/header/header.module';
     PaymentsCardInfoModule,
     SpinnerModule,
     HeaderModule,
+    UserAvatarModule,
   ],
 })
 export class ProModule {}
