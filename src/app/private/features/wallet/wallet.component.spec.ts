@@ -12,7 +12,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
 import { KYC_BANNER_TYPES } from './components/kyc-banner/kyc-banner-constants';
 import { KYCBannerComponent } from './components/kyc-banner/kyc-banner.component';
-import { KYCBannerApiService } from './services/api/kyc-banner-api.service';
+import { KYCStatusApiService } from './services/api/kyc-status-api.service';
 import { KYCBannerService } from './services/kyc-banner/kyc-banner.service';
 
 import { WalletComponent } from './wallet.component';
@@ -44,7 +44,7 @@ describe('WalletComponent', () => {
         },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         KYCBannerService,
-        KYCBannerApiService,
+        KYCStatusApiService,
       ],
     }).compileComponents();
   });

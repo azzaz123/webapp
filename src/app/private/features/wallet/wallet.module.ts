@@ -6,7 +6,7 @@ import { WalletRoutedComponents, WalletRoutingModule } from './wallet.routing.mo
 import { PaymentsCreditCardModule } from '@api/payments/cards';
 import { KYCInfoModalModule } from './modals/kyc-info-modal/kyc-info-modal.module';
 import { KYCBannerService } from './services/kyc-banner/kyc-banner.service';
-import { KYCBannerApiService } from './services/api/kyc-banner-api.service';
+import { KYCStatusApiService } from './services/api/kyc-status-api.service';
 import { KYCBannerModule } from './components/kyc-banner/kyc-banner.module';
 import { KYCGuard } from './guards/kyc/kyc.guard';
 import { KYCModule } from './modals/kyc/kyc.module';
@@ -25,6 +25,6 @@ import { KYCStatusModalModule } from './modals/kyc-status-modal/kyc-status-modal
     KYCModule,
     KYCStatusModalModule,
   ],
-  providers: [KYCBannerService, KYCBannerApiService, KYCGuard],
+  providers: [KYCBannerService, KYCStatusApiService, KYCGuard],
 })
 export class WalletModule {}

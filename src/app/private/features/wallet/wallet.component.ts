@@ -5,7 +5,7 @@ import { CustomerHelpService } from '@core/external-links/customer-help/customer
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { Observable } from 'rxjs';
-import { KYCBannerSpecifications } from './interfaces/kyc/kyc-banner.interface';
+import { KYCBannerSpecifications } from './interfaces/kyc/kyc-status.interface';
 import { KYCBannerService } from './services/kyc-banner/kyc-banner.service';
 import { WALLET_PATHS } from './wallet.routing.constants';
 

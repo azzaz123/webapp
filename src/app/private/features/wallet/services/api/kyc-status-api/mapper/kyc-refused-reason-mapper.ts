@@ -1,4 +1,4 @@
-import { KYC_REFUSED_REASONS } from './kyc-refused-reasons.enum';
+import { KYC_REFUSED_REASONS } from '../../../../enums/kyc-refused-reasons.enum';
 
 export function getRefusedReason(documentRefusedReason: string): KYC_REFUSED_REASONS {
   switch (documentRefusedReason) {

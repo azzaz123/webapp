@@ -9,14 +9,14 @@ import {
 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { of } from 'rxjs';
 import { KYC_BANNER_TYPES } from '../../components/kyc-banner/kyc-banner-constants';
-import { KYCBanner, KYCBannerSpecifications } from '../../interfaces/kyc/kyc-banner.interface';
-import { KYCBannerApiService } from '../api/kyc-banner-api.service';
+import { KYCStatus, KYCBannerSpecifications } from '../../interfaces/kyc/kyc-status.interface';
+import { KYCStatusApiService } from '../api/kyc-status-api.service';
 
 import { KYCBannerService } from './kyc-banner.service';
 
 describe('KYCBannerService', () => {
   let service: KYCBannerService;
-  let kycBannerApiService: KYCBannerApiService;
+  let kycStatusApiService: KYCStatusApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -24,9 +24,9 @@ describe('KYCBannerService', () => {
       providers: [
         KYCBannerService,
         {
-          provide: KYCBannerApiService,
+          provide: KYCStatusApiService,
           useValue: {
-            getKYCBanner() {
+            get() {
               return of(MOCK_KYC_BANNER_PENDING_VERIFICATION);
             },
           },
@@ -35,7 +35,7 @@ describe('KYCBannerService', () => {
     });
 
     service = TestBed.inject(KYCBannerService);
-    kycBannerApiService = TestBed.inject(KYCBannerApiService);
+    kycStatusApiService = TestBed.inject(KYCStatusApiService);
   });
 
   it('should be created', () => {
@@ -44,19 +44,19 @@ describe('KYCBannerService', () => {
 
   describe('when getting the kyc banner status', () => {
     it('should request the banner status to the api service', () => {
-      spyOn(kycBannerApiService, 'getKYCBanner').and.returnValue(of(MOCK_KYC_BANNER_PENDING_VERIFICATION));
+      spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING_VERIFICATION));
 
       let request: KYCBannerSpecifications;
       service.getSpecifications().subscribe((result: KYCBannerSpecifications) => {
         request = result;
       });
 
-      expect(kycBannerApiService.getKYCBanner).toHaveBeenCalled();
+      expect(kycStatusApiService.get).toHaveBeenCalled();
     });
 
     describe('and the kyc status is verification pending', () => {
       beforeEach(() => {
-        spyOn(kycBannerApiService, 'getKYCBanner').and.returnValue(of(MOCK_KYC_BANNER_PENDING_VERIFICATION));
+        spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING_VERIFICATION));
       });
 
       it('should return the banner specification', () => {
@@ -72,7 +72,7 @@ describe('KYCBannerService', () => {
 
     describe('and the kyc status is pending', () => {
       beforeEach(() => {
-        spyOn(kycBannerApiService, 'getKYCBanner').and.returnValue(of(MOCK_KYC_BANNER_PENDING));
+        spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING));
       });
 
       it('should return the banner specification', () => {
@@ -88,7 +88,7 @@ describe('KYCBannerService', () => {
 
     describe('and the kyc status is rejected', () => {
       beforeEach(() => {
-        spyOn(kycBannerApiService, 'getKYCBanner').and.returnValue(of(MOCK_KYC_BANNER_REJECTED));
+        spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_REJECTED));
       });
 
       it('should return the banner specification', () => {
@@ -104,7 +104,7 @@ describe('KYCBannerService', () => {
 
     describe('and the kyc status is verified', () => {
       beforeEach(() => {
-        spyOn(kycBannerApiService, 'getKYCBanner').and.returnValue(of(MOCK_KYC_BANNER_VERIFIED));
+        spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_VERIFIED));
       });
 
       it('should return the banner specification', () => {
@@ -120,7 +120,7 @@ describe('KYCBannerService', () => {
 
     describe('and the kyc status is not needed', () => {
       beforeEach(() => {
-        spyOn(kycBannerApiService, 'getKYCBanner').and.returnValue(of(MOCK_KYC_BANNER_NO_NEED));
+        spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_NO_NEED));
       });
 
       it('should return null', () => {
@@ -135,7 +135,7 @@ describe('KYCBannerService', () => {
     });
   });
 
-  function KYC_BANNER_SPECIFICATIONS(kycBanner: KYCBanner): KYCBannerSpecifications {
-    return KYC_BANNER_TYPES.find((specification) => specification.status === kycBanner.status);
+  function KYC_BANNER_SPECIFICATIONS(KYCStatus: KYCStatus): KYCBannerSpecifications {
+    return KYC_BANNER_TYPES.find((specification) => specification.status === KYCStatus.status);
   }
 });
