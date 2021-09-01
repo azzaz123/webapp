@@ -787,6 +787,8 @@
     "web_change_subscription": "Change subscription",
     "pro_subscription_purchase_non_subscribed_users_cg_basic_plan_title": "The plan you need to start becoming PRO!",
     "pro_subscription_purchase_non_subscribed_users_cg_other_plans_title": "Plans to achieve your goals",
+    "web_tier_selector_title": "How many items you want to list?",
+    "web_tier_selector_subtitle": "Choose the plan that fits your goals",
     "web_stripe_cards_535": "Payment method",
     "web_card_selector_subtitle": "Encrypted and secure",
     "web_receive_invoices": "Do you want to receive invoices?",

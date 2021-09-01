@@ -106,7 +106,7 @@ describe('SubscriptionTierSelectorComponent', () => {
         fixture.detectChanges();
       });
       it('should show description with trial', () => {
-        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle')).nativeElement;
+        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__description')).nativeElement;
         const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${component.subscription.tiers[0].price}:INTERPOLATION:${component.subscription.tiers[0].currency}:INTERPOLATION:/month`;
         const expectedFreeTrialText = $localize`:@@after_free_trial:after free trial`;
 
@@ -117,9 +117,9 @@ describe('SubscriptionTierSelectorComponent', () => {
     describe('has not free trial', () => {
       describe('and has no discount', () => {
         it('should show description', () => {
-          const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle'));
+          const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__description'));
           const tierDescriptionText = tierDescription.nativeElement.textContent;
-          const classDiscounted = tierDescription.query(By.css('.Card__subtitle--discounted'));
+          const classDiscounted = tierDescription.query(By.css('.Card__description--discounted'));
           const expectedText = $localize`:@@web_profile_pages_subscription_326:${component.selectedTier.price}:INTERPOLATION:${component.selectedTier.currency}:INTERPOLATION:/month`;
 
           expect(tierDescriptionText).toBe(expectedText);
@@ -134,9 +134,9 @@ describe('SubscriptionTierSelectorComponent', () => {
         });
         it('should show description with discount', () => {
           const tier = component.subscription.tiers[0];
-          const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle'));
+          const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__description'));
           const tierDescriptionText = tierDescription.nativeElement.textContent;
-          const classDiscounted = tierDescription.query(By.css('.Card__subtitle--discounted'));
+          const classDiscounted = tierDescription.query(By.css('.Card__description--discounted'));
 
           const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${tier.discount.price}:INTERPOLATION:${tier.currency}:INTERPOLATION:/month`;
           const expectedDateText = $localize`:@@pro_subscription_purchase_tier_list_discount_limit_date_label:Enjoy the discount until ${new DatePipe(

@@ -964,6 +964,7 @@ export const MAPPED_SUBSCRIPTIONS_WITH_RE: SubscriptionsResponse[] = [
         price: 19.0,
         currency: 'EUR',
         discount: null,
+        limit_perk: true,
       },
       {
         id: 'realestate_25',
@@ -971,6 +972,7 @@ export const MAPPED_SUBSCRIPTIONS_WITH_RE: SubscriptionsResponse[] = [
         price: 33.0,
         currency: 'EUR',
         discount: null,
+        limit_perk: true,
       },
       {
         id: 'realestate_100',
@@ -978,6 +980,7 @@ export const MAPPED_SUBSCRIPTIONS_WITH_RE: SubscriptionsResponse[] = [
         price: 46.0,
         currency: 'EUR',
         discount: null,
+        limit_perk: true,
       },
     ],
     selected_tier: {
@@ -986,6 +989,7 @@ export const MAPPED_SUBSCRIPTIONS_WITH_RE: SubscriptionsResponse[] = [
       price: 19.0,
       currency: 'EUR',
       discount: null,
+      limit_perk: true,
     },
   },
 ];
