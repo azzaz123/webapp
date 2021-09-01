@@ -27,6 +27,13 @@ export class SubscriptionTierSelectorComponent {
     return tier.limit ? this.getTextWithLimit(tier.limit) : $localize`:@@web_profile_pages_subscription_586:List without limits`;
   }
 
+  public getTitleText(tier: Tier): string {
+    if (!tier.limit_perk) {
+      return 'Basic';
+    }
+    return this.getLimitText(tier);
+  }
+
   private getTextWithLimit(limit: number): string {
     return this.subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE
       ? $localize`:@@web_profile_pages_subscription_332:List up to ${limit} real estate`
