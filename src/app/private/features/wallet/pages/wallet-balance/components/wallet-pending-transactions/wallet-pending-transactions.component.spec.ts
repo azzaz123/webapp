@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/pending-transactions-fixtures.spec';
 import { PendingTransaction } from '@api/core/model';
@@ -7,12 +7,14 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
 import { WalletPendingTransactionsComponent } from './wallet-pending-transactions.component';
 import { WalletPendingTransactionsListComponent } from '../wallet-pending-transactions-list/wallet-pending-transactions-list.component';
+import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 
 import { By } from '@angular/platform-browser';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
 describe('GIVEN the WalletPendingTransactionsComponent', () => {
   let component: WalletPendingTransactionsComponent;
+  let errorActionService: WalletSharedErrorActionService;
   let fixture: ComponentFixture<WalletPendingTransactionsComponent>;
   let mockPendingTransactions$: Observable<PendingTransaction[]> = of(MOCK_PENDING_TRANSACTIONS);
   let service: RequestsAndTransactionsPendingAsSellerService;
@@ -38,9 +40,16 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
             },
           },
         },
+        {
+          provide: WalletSharedErrorActionService,
+          useValue: {
+            show(data?: unknown): void {},
+          },
+        },
       ],
     }).compileComponents();
     service = TestBed.inject(RequestsAndTransactionsPendingAsSellerService);
+    errorActionService = TestBed.inject(WalletSharedErrorActionService);
   });
 
   beforeEach(() => {
@@ -87,6 +96,24 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
         expect(target.length).toBe(expected);
       });
     });
+    describe('WHEN there is an error retrieving the pending transactions', () => {
+      let errorActionSpy;
+
+      beforeEach(() => {
+        errorActionSpy = spyOn(errorActionService, 'show');
+      });
+      it('should show the generic error catcher', fakeAsync(() => {
+        jest.spyOn(service, 'walletPendingTransactions$', 'get').mockReturnValue(throwError('The server is broken'));
+
+        component.walletPendingTransactions$.subscribe(
+          () => {},
+          (error) => {
+            expect(errorActionSpy).toHaveBeenCalledTimes(1);
+            flush();
+          }
+        );
+      }));
+    });
   });
 });
 
@@ -114,6 +141,12 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
             get walletPendingTransactions$() {
               return mockPendingTransactions$;
             },
+          },
+        },
+        {
+          provide: WalletSharedErrorActionService,
+          useValue: {
+            show(data?: unknown): void {},
           },
         },
       ],
