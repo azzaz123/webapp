@@ -18,6 +18,9 @@ import { format } from 'libphonenumber-js/custom';
 import { EMPTY } from 'rxjs';
 import { SendPhoneComponent } from './send-phone.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;
@@ -49,6 +52,10 @@ describe('SendPhoneComponent', () => {
               i18nError() {},
             },
           },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
+          },
         ],
         declarations: [SendPhoneComponent],
         schemas: [NO_ERRORS_SCHEMA],
@@ -65,7 +72,7 @@ describe('SendPhoneComponent', () => {
     inboxConversationService = TestBed.inject(InboxConversationService);
     errorsService = TestBed.inject(ErrorsService);
     httpMock = TestBed.inject(HttpTestingController);
-    window.location.href = environment.siteUrl;
+    window.location.href = MOCK_SITE_URL;
     fixture.detectChanges();
   });
 
@@ -220,18 +227,21 @@ describe('SendPhoneComponent', () => {
 
   describe('when clicking the cross in the modal', () => {
     let closeButtonRef;
+    const MOCK_ITEM_SLUG = 'aa-186156806';
+    const ITEM_DETAIl_PATH = `${PUBLIC_PATHS.ITEM_DETAIL}/`;
 
     beforeEach(() => {
       component.conversation = MOCK_INBOX_CONVERSATION;
-      component.conversation.item.itemUrl = `${environment.siteUrl}item/aa-186156806`;
+      component.conversation.item.itemSlug = MOCK_ITEM_SLUG;
       fixture.detectChanges();
       closeButtonRef = fixture.debugElement.query(By.css('.modal-close')).nativeElement;
     });
 
     it('should redirect to the item detail page', () => {
+      const expectedRedirection = `${MOCK_SITE_URL}${ITEM_DETAIl_PATH}${MOCK_ITEM_SLUG}`;
       closeButtonRef.click();
 
-      expect(window.location.href).toEqual(`${component.conversation.item.itemUrl}`);
+      expect(window.location.href).toEqual(expectedRedirection);
     });
   });
 });

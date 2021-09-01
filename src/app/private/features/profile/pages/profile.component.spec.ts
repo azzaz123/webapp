@@ -48,10 +48,6 @@ describe('ProfileComponent', () => {
             provide: UserService,
             useClass: MockedUserService,
           },
-          {
-            provide: 'SUBDOMAIN',
-            useValue: 'www',
-          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();

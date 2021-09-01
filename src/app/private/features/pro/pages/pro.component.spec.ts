@@ -60,10 +60,6 @@ describe('ProComponent', () => {
             useClass: MockedUserService,
           },
           {
-            provide: 'SUBDOMAIN',
-            useValue: 'www',
-          },
-          {
             provide: SubscriptionsService,
             useClass: MockSubscriptionService,
           },

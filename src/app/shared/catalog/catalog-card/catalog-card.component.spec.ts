@@ -68,7 +68,6 @@ describe('CatalogCardComponent', () => {
               i18nError() {},
             },
           },
-          { provide: 'SUBDOMAIN', useValue: 'es' },
           EventService,
         ],
         schemas: [NO_ERRORS_SCHEMA],

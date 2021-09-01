@@ -1,4 +1,4 @@
-<div *ngFor="let step of steps; let i = index">
+<div [ngClass]="{'w-100 h-100': i === activeId}" *ngFor="let step of steps; let i = index">
     <ng-template *ngIf="i === activeId" [ngTemplateOutlet]="step.templateRef"></ng-template>
 </div>
     

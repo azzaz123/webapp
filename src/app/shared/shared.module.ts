@@ -238,7 +238,7 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     InfiniteScrollDirective,
     LocationSelectorModal,
   ],
-  providers: [DecimalPipe, LinkTransformPipe],
+  providers: [DecimalPipe, LinkTransformPipe, ItemDetailRoutePipe],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,

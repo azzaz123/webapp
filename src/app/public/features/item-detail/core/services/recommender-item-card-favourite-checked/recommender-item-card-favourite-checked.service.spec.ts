@@ -1,7 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { SITE_URL } from '@configs/site-url.config';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
@@ -35,6 +37,10 @@ describe('RecommenderItemCardFavouriteCheckedService', () => {
         {
           provide: CookieService,
           useValue: MockCookieService,
+        },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
         },
       ],
     });

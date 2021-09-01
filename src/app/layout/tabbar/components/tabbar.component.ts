@@ -2,12 +2,12 @@ import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
-import { environment } from '@environments/environment';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { Subscription } from 'rxjs';
 import { TabbarService } from '../core/services/tabbar.service';
+import { SITE_URL } from '@configs/site-url.config';
 
 export const INPUT_TYPE = {
   TEXT: 'text',
@@ -44,12 +44,11 @@ export class TabbarComponent implements OnInit {
     private tabBarService: TabbarService,
     private unreadChatMessagesService: UnreadChatMessagesService,
     private eventService: EventService,
-    @Inject('SUBDOMAIN') private subdomain: string
-  ) {
-    this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
-  }
+    @Inject(SITE_URL) private siteUrl: string
+  ) {}
 
   ngOnInit() {
+    this.homeUrl = this.siteUrl;
     this.isLogged = this.userService.isLogged;
     this.user = this.userService.user;
     this.componentSubscriptions.push(this.tabBarService.tabBarHidden$.subscribe((hidden) => (this.hidden = hidden)));
