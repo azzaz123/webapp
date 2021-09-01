@@ -9,5 +9,4 @@ import { KYCModalStatus } from '../../interfaces/kyc-modal-status.interface';
 export class KYCStatusComponent {
   @Input() properties: KYCModalStatus;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
-  public CS_URL = '';
 }

@@ -11,7 +11,7 @@ import { KYCStatusComponent } from './kyc-status.component';
 describe('KYCStatusComponent', () => {
   const KYC_STATUS_IN_PROGRESS = KYC_MODAL_STATUS_PROPERTIES[0];
   const KYC_STATUS_ERROR = KYC_MODAL_STATUS_PROPERTIES[2];
-  const CSLinkSelector = '.KYCStatus__link';
+  const linkSelector = '.KYCStatus__link';
 
   let component: KYCStatusComponent;
   let fixture: ComponentFixture<KYCStatusComponent>;
@@ -65,25 +65,25 @@ describe('KYCStatusComponent', () => {
       expect(button.textContent).toEqual(KYC_STATUS_IN_PROGRESS.messageCTA);
     });
 
-    describe(`and we don't need to show the CS link`, () => {
+    describe(`and we don't need to show the link`, () => {
       it('should not show the link', () => {
-        const link: DebugElement = de.query(By.css(CSLinkSelector));
+        const link: DebugElement = de.query(By.css(linkSelector));
 
         expect(link).toBeFalsy();
       });
     });
 
-    describe('and we need to show the CS link', () => {
+    describe('and we need to show the link', () => {
       beforeEach(() => {
         component.properties = KYC_STATUS_ERROR;
 
         fixture.detectChanges();
       });
 
-      it('should show the CS link', () => {
-        const CSLink: DebugElement = de.query(By.css(CSLinkSelector));
+      it('should show the link', () => {
+        const CSLink: DebugElement = de.query(By.css(linkSelector));
 
-        expect(CSLink.attributes['href']).toEqual(component.CS_URL);
+        expect(CSLink.attributes['href']).toEqual(component.properties.link.url);
       });
     });
 
