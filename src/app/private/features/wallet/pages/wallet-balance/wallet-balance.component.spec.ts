@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { RequestsAndTransactionsPendingAsSellerService } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.service';
@@ -25,6 +26,7 @@ describe('WalletBalanceComponent', () => {
         WalletPendingTransactionsListComponent,
         WalletSharedErrorActionComponent,
       ],
+      imports: [RouterTestingModule],
       providers: [
         {
           provide: PaymentsWalletsService,
