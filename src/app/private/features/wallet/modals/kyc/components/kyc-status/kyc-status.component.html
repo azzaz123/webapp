@@ -7,7 +7,7 @@
                 </div>
                 <span class="KYCStatus__title d-block mt-4 mb-3 text-center">{{properties.title}}</span>
                 <span class="KYCStatus__description d-block mb-3 text-center">{{properties.description}}</span>
-                <a *ngIf="properties.messageLink" [href]="ZENDESK_HELP_FORM_URL" class="KYCStatus__link">{{properties.messageLink}}</a>
+                <a *ngIf="properties.messageLink" [href]="ZENDESK_HELP_FORM_URL" class="KYCStatus__link text-center" target="_blank">{{properties.messageLink}}</a>
             </div>
             <div class="KYCStatus__bottomContainer d-flex justify-content-center pb-4 px-2 position-sticky">
                 <div class="KYCStatus__bottomContainer__button">

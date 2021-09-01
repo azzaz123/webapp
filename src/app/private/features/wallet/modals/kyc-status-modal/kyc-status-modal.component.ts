@@ -22,12 +22,10 @@ export class KYCStatusModalComponent {
   }
 
   public handleButtonClick(): void {
-    if (this.properties.status === KYC_MODAL_STATUS_TYPE.IN_PROGRESS || this.properties.status === KYC_MODAL_STATUS_TYPE.SUCCEED) {
-      this.closeModal();
-    }
-
     if (this.properties.status === KYC_MODAL_STATUS_TYPE.ERROR) {
       this.router.navigate([this.KYC_LINK]);
     }
+
+    this.closeModal();
   }
 }
