@@ -22,6 +22,9 @@ export const KYC_MODAL_STATUS_PROPERTIES: KYCModalStatus[] = [
     title: $localize`:@@kyc_failed_modal_title:We're sorry, we were unable to verify your identity.`,
     svgPath: '/assets/icons/wallet/kyc/status/kyc_verification_failed.svg',
     messageCTA: $localize`:@@kyc_failed_modal_retry_verification_button:Retry verification`,
-    showCSLink: true,
+    link: {
+      url: 'TBD',
+      message: $localize`:@@kyc_failed_modal_help_link:Need help?`,
+    },
   },
 ];
