@@ -10,6 +10,8 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 import { ELEMENT_TYPE, INPUT_TYPE, TabbarComponent } from './tabbar.component';
 import { TabbarService } from '../core/services/tabbar.service';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 describe('TabbarComponent', () => {
   let component: TabbarComponent;
@@ -39,7 +41,10 @@ describe('TabbarComponent', () => {
             provide: UnreadChatMessagesService,
             useClass: MockUnreadChatMessagesService,
           },
-          { provide: 'SUBDOMAIN', useValue: 'es' },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
+          },
           EventService,
           TabbarService,
         ],

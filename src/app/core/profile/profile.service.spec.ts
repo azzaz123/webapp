@@ -36,10 +36,6 @@ describe('Service: Profile', () => {
         I18nService,
         ProfileService,
         {
-          provide: 'SUBDOMAIN',
-          useValue: 'www',
-        },
-        {
           provide: CookieService,
           useValue: {
             cookies: {},

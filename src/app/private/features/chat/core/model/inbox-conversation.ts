@@ -166,8 +166,16 @@ export class InboxConversation {
     if (!item) {
       return InboxItemPlaceholder;
     }
-    const itemUrl = `${environment.siteUrl}item/${item.slug}`;
-    return new InboxItem(item.hash, item.price, item.title, image, itemUrl, item.status as InboxItemStatus, item.is_mine, item.category_id);
+    return new InboxItem(
+      item.hash,
+      item.price,
+      item.title,
+      image,
+      item.slug,
+      item.status as InboxItemStatus,
+      item.is_mine,
+      item.category_id
+    );
   }
 
   private static buildInboxMessages(conversation, id) {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ItemService } from '@core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
@@ -16,21 +16,12 @@ export class ItemCardFavouriteComponent implements OnInit {
   @Input() item: Item;
   @Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
 
-  constructor(
-    private itemService: ItemService,
-    private modalService: NgbModal,
-    private i18nService: I18nService,
-    @Inject('SUBDOMAIN') private subdomain: string
-  ) {}
+  constructor(private itemService: ItemService, private modalService: NgbModal, private i18nService: I18nService) {}
 
   ngOnInit() {}
 
-  goToItemDetail() {
-    const url = this.item.getUrl(this.subdomain);
-    window.open(url);
-  }
-
   removeFavoriteModal(e: Event) {
+    e.preventDefault();
     e.stopPropagation();
     const modalRef = this.modalService.open(ConfirmationModalComponent);
 

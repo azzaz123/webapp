@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CategoryResponse } from '@core/category/category-response.interface';
 import { CategoryService } from 'app/core/category/category.service';
 import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from 'app/core/item/item';
@@ -21,7 +21,6 @@ export class ReviewItemComponent implements OnInit {
   @Input() isOwner = false;
   @Input() review: Review;
   public fallback: string;
-  public itemWebLink: string;
   public reviewUser: User;
   public category: CategoryResponse;
   public reviewItemCopies: ReviewItemCopies;
@@ -31,15 +30,10 @@ export class ReviewItemComponent implements OnInit {
   private translation: string;
   private loadingTranslation: boolean;
 
-  constructor(
-    @Inject('SUBDOMAIN') private subdomain: string,
-    private categoryService: CategoryService,
-    private reviewsApiService: ReviewsApiService
-  ) {}
+  constructor(private categoryService: CategoryService, private reviewsApiService: ReviewsApiService) {}
 
   public ngOnInit(): void {
     this.fallback = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
-    this.itemWebLink = this.review.item ? this.review.item.getUrl(this.subdomain) : null;
     this.reviewUser = this.review.user;
     this.reviewComment = this.review.comments;
     this.initializeCopies();
