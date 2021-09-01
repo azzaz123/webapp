@@ -80,10 +80,16 @@ describe('KYCStatusComponent', () => {
         fixture.detectChanges();
       });
 
-      it('should show the link', () => {
+      it('should redirect to the help form page', () => {
         const CSLink: DebugElement = de.query(By.css(linkSelector));
 
-        expect(CSLink.attributes['href']).toEqual(component.properties.link.url);
+        expect(CSLink.attributes['href']).toEqual(component.ZENDESK_HELP_FORM_URL);
+      });
+
+      it('should show the message link correctly', () => {
+        const CSLink: HTMLElement = de.query(By.css(linkSelector)).nativeElement;
+
+        expect(CSLink.textContent).toEqual(component.properties.messageLink);
       });
     });
 

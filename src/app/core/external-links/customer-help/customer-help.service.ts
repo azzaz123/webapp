@@ -1,6 +1,6 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { CUSTOMER_HELP_PAGE, HelpLocaleId } from './customer-help-constants';
-import { getCustomerHelpUrl } from './get-customer-help-url';
+import { CUSTOMER_HELP_PAGE, CUSTOMER_TICKET_FORM, HelpLocaleId } from './customer-help-constants';
+import { getCustomerHelpUrl, getTicketFormUrl } from './get-customer-help-url';
 
 @Injectable({
   providedIn: 'root',
@@ -10,5 +10,9 @@ export class CustomerHelpService {
 
   public getPageUrl(articleId: CUSTOMER_HELP_PAGE): string {
     return getCustomerHelpUrl(articleId, this.locale);
+  }
+
+  public getFormPageUrl(formId: CUSTOMER_TICKET_FORM): string {
+    return getTicketFormUrl(formId, this.locale);
   }
 }

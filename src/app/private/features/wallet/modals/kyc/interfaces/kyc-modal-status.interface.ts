@@ -6,10 +6,5 @@ export interface KYCModalStatus {
   description?: string;
   svgPath: string;
   messageCTA: string;
-  link?: KYCModalLink;
-}
-
-interface KYCModalLink {
-  message: string;
-  url: string;
+  messageLink?: string;
 }
