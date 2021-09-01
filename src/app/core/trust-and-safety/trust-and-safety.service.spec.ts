@@ -2,7 +2,7 @@ import { TestBed, tick, fakeAsync, discardPeriodicTasks } from '@angular/core/te
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { TrustAndSafetyService, USER_STARTER_ENDPOINT } from './trust-and-safety.service';
-import { SessionProfileData, SessionProfileDataLocation, SessionProfileDataPlatform } from './trust-and-safety.interface';
+import { SessionProfileData, SessionProfileDataLocation, SessionProfileDataPlatform, TMXStatusCode } from './trust-and-safety.interface';
 import { environment } from 'environments/environment';
 import { environment as prodEnv } from 'environments/environment.prod';
 import { UuidService } from '../uuid/uuid.service';
@@ -115,5 +115,26 @@ describe('TrustAndSafetyService', () => {
         expect(wadgtlft.nfl).toHaveBeenCalledWith(environment.threatMetrixProfilingDomain, environment.threatMetrixOrgId, mockUUID);
       }));
     });
+  });
+
+  describe('when submitting profile is blocked', () => {
+    it('should send an status error to Wallapop server', fakeAsync(() => {
+      const expectedBody: SessionProfileData = {
+        id: mockUUID,
+        location: SessionProfileDataLocation.OPEN_CHAT,
+        platform: SessionProfileDataPlatform.WEB,
+        status: TMXStatusCode.TMX_INTERNAL_ERROR,
+      };
+
+      service.submitProfile(SessionProfileDataLocation.OPEN_CHAT);
+      tick(1000);
+      tick(1000);
+      tick(service.SCRIPT_MAX_LOAD_TIME_SEC * 1000);
+      const postStarterRequest = httpMock.expectOne(USER_STARTER_ENDPOINT);
+      postStarterRequest.flush({});
+
+      expect(postStarterRequest.request.method).toBe('POST');
+      expect(postStarterRequest.request.body).toEqual(expectedBody);
+    }));
   });
 });
