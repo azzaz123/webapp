@@ -1,6 +1,6 @@
-import { KYC_STATUS_STATES } from '@api/core/model/kyc/kyc-status-states.enum';
-import { KYCStatus } from '@api/core/model/kyc/kyc-status.interface';
-import { KYCDocumentStatus, KYCStatusApi } from '../../dtos/responses';
+import { KYC_STATUS_STATES } from '@api/core/model/kyc-status/kyc-status-states.enum';
+import { KYCStatus } from '@api/core/model/kyc-status/kyc-status.interface';
+import { KYCDocumentStatus, KYCStatusApi } from '@api/payments/kyc-status/dtos/responses';
 import { mapKYCRefusedReason } from './kyc-refused-reason.mapper';
 
 export function mapKYCStatusApiToKYCStatus(KYCStatusApi: KYCStatusApi): KYCStatus {

@@ -1,27 +1,26 @@
-import { KYC_STATUS_STATES } from '@api/core/model/kyc/kyc-status-states.enum';
-import { KYCStatus } from '@api/core/model/kyc/kyc-status.interface';
+import { KYC_STATUS_STATES } from '@api/core/model/kyc-status/kyc-status-states.enum';
 import { MOCK_BASE_64_32KB_IMAGE, MOCK_BASE_64_SMALL_IMAGE } from '@fixtures/base64.fixtures.spec';
 import { MOCK_JPEG_IMAGE_BIGGER_32KB } from '@fixtures/jpeg.fixtures.spec';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 
-export const MOCK_KYC_BANNER_PENDING_VERIFICATION: KYCStatus = {
+export const MOCK_KYC_BANNER_PENDING_VERIFICATION = {
   status: KYC_STATUS_STATES.PENDING_VERIFICATION,
 };
 
-export const MOCK_KYC_BANNER_PENDING: KYCStatus = {
+export const MOCK_KYC_BANNER_PENDING = {
   status: KYC_STATUS_STATES.PENDING,
 };
 
-export const MOCK_KYC_BANNER_REJECTED: KYCStatus = {
+export const MOCK_KYC_BANNER_REJECTED = {
   status: KYC_STATUS_STATES.REJECTED,
 };
 
-export const MOCK_KYC_BANNER_VERIFIED: KYCStatus = {
+export const MOCK_KYC_BANNER_VERIFIED = {
   status: KYC_STATUS_STATES.VERIFIED,
 };
 
-export const MOCK_KYC_BANNER_NO_NEED: KYCStatus = {
+export const MOCK_KYC_BANNER_NO_NEED = {
   status: KYC_STATUS_STATES.NO_NEED,
 };
 

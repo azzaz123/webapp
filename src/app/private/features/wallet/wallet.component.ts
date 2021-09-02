@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { KYCBannerSpecifications } from '@api/core/model/kyc/kyc-banner-specifications.interface';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-status/kyc-banner-specifications.interface';
 import { KYCStatusService } from '@api/payments/kyc-status/kyc-status.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';

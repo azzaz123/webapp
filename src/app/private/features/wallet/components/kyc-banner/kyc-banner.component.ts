@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { KYCBannerSpecifications } from '@api/core/model/kyc/kyc-banner-specifications.interface';
-import { KYC_STATUS_STATES } from '@api/core/model/kyc/kyc-status-states.enum';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-status/kyc-banner-specifications.interface';
+import { KYC_STATUS_STATES } from '@api/core/model/kyc-status/kyc-status-states.enum';
 import { NgbAlertConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { KYCInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
 import { KYCStatusModalComponent } from '../../modals/kyc-status-modal/kyc-status-modal.component';

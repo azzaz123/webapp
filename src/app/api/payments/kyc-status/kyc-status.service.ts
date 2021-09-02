@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { KYCStatus } from '@api/core/model/kyc/kyc-status.interface';
-import { KYCBannerSpecifications } from '@api/core/model/kyc/kyc-banner-specifications.interface';
-import { KYC_STATUS_STATES } from '@api/core/model/kyc/kyc-status-states.enum';
+import { KYCStatus } from '@api/core/model/kyc-status/kyc-status.interface';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-status/kyc-banner-specifications.interface';
+import { KYC_STATUS_STATES } from '@api/core/model/kyc-status/kyc-status-states.enum';
 import { mapKYCStatusApiToKYCStatus } from '@api/payments/kyc/mappers/responses/kyc-status.mapper';
 import { KYCStatusApiService } from '@private/features/wallet/services/api/kyc-status-api/kyc-status-api.service';
 import { KYCStatusApi } from './dtos/responses';
-import { KYC_BANNER_TYPES } from '@api/core/model/kyc/kyc-banner-constants';
+import { KYC_BANNER_TYPES } from '@api/core/model/kyc-status/kyc-banner-constants';
 
 @Injectable()
 export class KYCStatusService {

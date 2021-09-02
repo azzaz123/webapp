@@ -4,16 +4,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { KYCStatusService } from '@api/payments/kyc-status/kyc-status.service';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { HeaderComponent } from '@shared/header/header.component';
 import { NavLinksComponent } from '@shared/nav-links/nav-links.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
-import { KYC_BANNER_TYPES } from '../../../api/core/model/kyc/kyc-banner-constants';
+import { KYC_BANNER_TYPES } from '../../../api/core/model/kyc-status/kyc-banner-constants';
 import { KYCBannerComponent } from './components/kyc-banner/kyc-banner.component';
 import { KYCStatusApiService } from './services/api/kyc-status-api/kyc-status-api.service';
-import { KYCStatusService } from './services/kyc-status/kyc-status.service';
 
 import { WalletComponent } from './wallet.component';
 import { WALLET_PATHS } from './wallet.routing.constants';
@@ -91,7 +91,7 @@ describe('WalletComponent', () => {
 
   describe('when the wallet status for the user is not need', () => {
     beforeEach(() => {
-      spyOn(kycStatusService, 'getSpecifications').and.returnValue(of(null));
+      spyOn(kycStatusService, 'get').and.returnValue(of(null));
 
       component.ngOnInit();
       fixture.detectChanges();
@@ -106,7 +106,7 @@ describe('WalletComponent', () => {
 
   describe('when the wallet status for the user is needed and defined', () => {
     beforeEach(() => {
-      spyOn(kycStatusService, 'getSpecifications').and.returnValue(of(KYC_BANNER_TYPES[0]));
+      spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_TYPES[0]));
 
       component.ngOnInit();
       fixture.detectChanges();
