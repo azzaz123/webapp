@@ -43,6 +43,7 @@ export class WalletSharedErrorActionComponent implements OnDestroy, OnInit {
   }
 
   doAction(): void {
+    this.errorAction = null;
     const currentUrl = this.router.url;
     this.router.navigateByUrl(`${PRIVATE_PATHS.WALLET}/refresh`, { skipLocationChange: true }).then(() => {
       this.router.navigate([currentUrl]);
