@@ -1,4 +1,15 @@
 @import '~style/common';
 
 .TabsBar {
+  ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  &__element {
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
 }

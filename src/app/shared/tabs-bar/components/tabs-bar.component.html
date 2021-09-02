@@ -1,5 +1,7 @@
-<nav class="TabsBar d-flex">
-  <ul>
-    <li></li>
+<nav class="TabsBar">
+  <ul class="d-flex">
+    <li class="TabsBar__element" *ngFor="let tabsBarElement of tabsBarElements">
+      <tsl-tab [tabsBarElement]="tabsBarElement" [isSelected]="isTabBarSelected(tabsBarElement)" (onClick)="handleClick(tabsBarElement)"></tsl-tab>
+    </li>
   </ul>
 </nav>
