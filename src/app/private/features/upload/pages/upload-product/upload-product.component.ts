@@ -157,15 +157,15 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   ngOnInit() {
     //PR
-    /* this.hashtagSuggesterApiService.getHashtags('100', '0').subscribe((n) => {
+    this.hashtagSuggesterApiService.getHashtags('100', '0').subscribe((n) => {
       console.log('test', this.categoryId);
       this.mapHashtagOptions(n);
-    }); */
-
-    this.hashtagSuggesterApiService.getHashtagsByPrefix('100', 'g', this.start).subscribe((n) => {
+    });
+    /* 
+    this.hashtagSuggesterApiService.getHashtags('100', 'g').subscribe((n) => {
       console.log('test', this.categoryId, this.start);
       this.mapHashtagOptions(n);
-    });
+    }); */
     this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories;
 
