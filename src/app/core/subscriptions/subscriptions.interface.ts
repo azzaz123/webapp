@@ -14,8 +14,8 @@ export interface Tier {
   limit?: number;
   price: number;
   currency: string;
-  discount?: TierDiscount;
-  limit_perk?: boolean;
+  discount: TierDiscount;
+  limit_perk: boolean;
 }
 
 export interface TierDiscount {
@@ -59,8 +59,8 @@ export interface SubscriptionsResponse {
   selected_tier?: Tier;
   subscribed_until?: number;
   market?: SUBSCRIPTION_MARKETS;
-  type?: SUBSCRIPTION_CATEGORY_TYPES;
-  category_ids?: number[];
+  type: SUBSCRIPTION_CATEGORY_TYPES;
+  category_ids: number[];
 }
 
 export interface SubscriptionsV3Response {

@@ -3,9 +3,10 @@ import { ChangeDetectionStrategy } from '@angular/compiler/src/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
+  FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION,
   FREE_TRIAL_AVAILABLE_SUBSCRIPTION,
-  MAPPED_SUBSCRIPTIONS,
-  MAPPED_SUBSCRIPTIONS_WITH_RE,
+  MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS,
+  MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
   TIER_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 
@@ -28,8 +29,8 @@ describe('SubscriptionTierSelectorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionTierSelectorComponent);
     component = fixture.componentInstance;
-    component.subscription = MAPPED_SUBSCRIPTIONS[0];
-    component.selectedTier = MAPPED_SUBSCRIPTIONS[0].tiers[0];
+    component.subscription = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS;
+    component.selectedTier = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS.tiers[0];
     fixture.detectChanges();
   });
 
@@ -66,7 +67,7 @@ describe('SubscriptionTierSelectorComponent', () => {
     describe('has limits', () => {
       describe('and is real estate', () => {
         beforeEach(() => {
-          component.subscription = MAPPED_SUBSCRIPTIONS_WITH_RE[0];
+          component.subscription = MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED;
           fixture.detectChanges();
         });
         it('should show title', () => {
@@ -90,8 +91,12 @@ describe('SubscriptionTierSelectorComponent', () => {
     });
 
     describe('has not limits', () => {
+      beforeEach(() => {
+        component.subscription = FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION;
+        fixture.detectChanges();
+      });
       it('should show title', () => {
-        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[3].query(By.css('.Card__title')).nativeElement;
+        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[1].query(By.css('.Card__title')).nativeElement;
 
         expect(tierTitle.textContent).toBe($localize`:@@web_profile_pages_subscription_586:List without limits`);
       });
@@ -101,8 +106,8 @@ describe('SubscriptionTierSelectorComponent', () => {
   describe('Description', () => {
     describe('has free trial', () => {
       beforeEach(() => {
-        component.subscription = FREE_TRIAL_AVAILABLE_SUBSCRIPTION;
-        component.selectedTier = FREE_TRIAL_AVAILABLE_SUBSCRIPTION.tiers[0];
+        component.subscription = FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION;
+        component.selectedTier = FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION.tiers[0];
         fixture.detectChanges();
       });
       it('should show description with trial', () => {

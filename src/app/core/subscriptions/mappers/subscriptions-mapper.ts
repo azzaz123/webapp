@@ -45,17 +45,15 @@ function mapSubscription(subscription: SubscriptionsV3Response): SubscriptionsRe
     category_id: subscriptionMapper[subscription.type].category_id,
     category_name: subscriptionMapper[subscription.type].label,
     category_icon: subscriptionMapper[subscription.type].icon_id,
-    selected_tier: getSelectedTier(subscription),
   };
+
+  if (subscription.selected_tier_id) {
+    subscriptionMapped.selected_tier = subscription.tiers.find((tier) => tier.id === subscription.selected_tier_id);
+  }
 
   mapCurrenciesForTiers(subscriptionMapped);
 
   return subscriptionMapped;
-}
-
-function getSelectedTier(subscription: SubscriptionsV3Response): Tier {
-  const tierId = subscription.selected_tier_id ? subscription.selected_tier_id : subscription.default_tier_id;
-  return subscription.tiers.find((tier) => tier.id === tierId);
 }
 
 function mapCurrenciesForTiers(subscription: SubscriptionsResponse) {

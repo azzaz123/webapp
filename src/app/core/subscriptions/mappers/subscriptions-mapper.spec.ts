@@ -49,9 +49,8 @@ describe('SubscriptionsMapper', () => {
     describe('and has not selected tier id', () => {
       it('shuld set selected tier using default tier', () => {
         const subscriptionsMapped = mapSubscriptions(MOCK_RESPONSE_V3_SUBSCRIPTIONS);
-        const expectedTier = subscriptionsMapped[1].tiers.find((tier) => tier.id === subscriptionsMapped[1].default_tier_id);
 
-        expect(subscriptionsMapped[1].selected_tier).toEqual(expectedTier);
+        expect(subscriptionsMapped[1].selected_tier).toBeFalsy();
       });
     });
   });
