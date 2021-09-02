@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { KYC_BANNER_TYPES } from '../../components/kyc-banner/kyc-banner-constants';
-import { KYCStatusApi } from '../../interfaces/kyc/kyc-status-api.interface';
-import { KYCBannerSpecifications, KYCStatus, KYC_STATUS } from '../../interfaces/kyc/kyc-status.interface';
+import { KYC_BANNER_TYPES } from '../../../../../api/core/model/kyc/kyc-banner-constants';
+import { KYCStatusApi } from '../../../../../api/payments/kyc/dtos/responses/kyc-status-api.interface';
 import { KYCStatusApiService } from '../api/kyc-status-api/kyc-status-api.service';
-import { mapKYCStatusApiToKYCStatus } from '../api/kyc-status-api/mapper/kyc-status-mapper';
+import { KYCStatus } from '@api/core/model/kyc/kyc-status.interface';
+import { KYCBannerSpecifications } from '@api/core/model/kyc/kyc-banner-specifications.interface';
+import { KYC_STATUS_STATES } from '@api/core/model/kyc/kyc-status-states.enum';
+import { mapKYCStatusApiToKYCStatus } from '@api/payments/kyc/mappers/responses/kyc-status.mapper';
 
 @Injectable()
 export class KYCStatusService {
@@ -16,7 +18,7 @@ export class KYCStatusService {
   }
 
   public mapSpecificationsToBannerSpecifications(KYCStatus: KYCStatus): KYCBannerSpecifications {
-    return KYCStatus.status === KYC_STATUS.NO_NEED
+    return KYCStatus.status === KYC_STATUS_STATES.NO_NEED
       ? null
       : KYC_BANNER_TYPES.find((specification: KYCBannerSpecifications) => specification.status === KYCStatus.status);
   }

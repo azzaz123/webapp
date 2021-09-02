@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { KYCBannerSpecifications } from '@api/core/model/kyc/kyc-banner-specifications.interface';
+import { KYC_STATUS_STATES } from '@api/core/model/kyc/kyc-status-states.enum';
 import { NgbAlertConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { KYCBannerSpecifications, KYC_STATUS } from '../../interfaces/kyc/kyc-status.interface';
 import { KYCInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
 import { KYCStatusModalComponent } from '../../modals/kyc-status-modal/kyc-status-modal.component';
 import { KYC_MODAL_STATUS_PROPERTIES } from '../../modals/kyc/constants/kyc-modal-status-constants';
@@ -17,7 +18,7 @@ export class KYCBannerComponent {
   constructor(private modalService: NgbModal) {}
 
   public openModal(): void {
-    if (this.KYCBannerSpecifications.status === KYC_STATUS.PENDING) {
+    if (this.KYCBannerSpecifications.status === KYC_STATUS_STATES.PENDING) {
       this.openKYCInformativeSliderModal();
     } else {
       this.openKYCStatusModal();
@@ -47,15 +48,15 @@ export class KYCBannerComponent {
   }
 
   private get KYCStatusProperties(): KYCModalStatus {
-    const KYCBannerStatus: KYC_STATUS = this.KYCBannerSpecifications.status;
+    const KYCBannerStatus: KYC_STATUS_STATES = this.KYCBannerSpecifications.status;
 
-    if (KYCBannerStatus === KYC_STATUS.PENDING_VERIFICATION) {
+    if (KYCBannerStatus === KYC_STATUS_STATES.PENDING_VERIFICATION) {
       return KYC_MODAL_STATUS_PROPERTIES.find((property) => property.status === KYC_MODAL_STATUS_TYPE.IN_PROGRESS);
     }
-    if (KYCBannerStatus === KYC_STATUS.VERIFIED) {
+    if (KYCBannerStatus === KYC_STATUS_STATES.VERIFIED) {
       return KYC_MODAL_STATUS_PROPERTIES.find((property) => property.status === KYC_MODAL_STATUS_TYPE.SUCCEED);
     }
-    if (KYCBannerStatus === KYC_STATUS.REJECTED) {
+    if (KYCBannerStatus === KYC_STATUS_STATES.REJECTED) {
       return KYC_MODAL_STATUS_PROPERTIES.find((property) => property.status === KYC_MODAL_STATUS_TYPE.ERROR);
     }
   }

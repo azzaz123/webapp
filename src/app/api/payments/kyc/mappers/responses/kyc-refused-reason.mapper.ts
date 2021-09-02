@@ -1,7 +1,7 @@
-import { KYCRefusedReason } from '@private/features/wallet/interfaces/kyc/kyc-status-api.interface';
-import { KYC_REFUSED_REASON } from '../../../../enums/kyc-refused-reason.enum';
+import { KYC_REFUSED_REASON } from '@api/core/model/kyc/kyc-refused-reason.enum';
+import { KYCRefusedReasonApi } from '../../dtos/responses';
 
-export function mapKYCRefusedReason(documentRefusedReason: KYCRefusedReason): KYC_REFUSED_REASON {
+export function mapKYCRefusedReason(documentRefusedReason: KYCRefusedReasonApi): KYC_REFUSED_REASON {
   switch (documentRefusedReason) {
     case 'document unreadable':
       return KYC_REFUSED_REASON.DOCUMENT_UNREADABLE;

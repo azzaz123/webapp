@@ -1,4 +1,4 @@
-export enum KYC_STATUS {
+export enum KYC_STATUS_STATES {
   PENDING = 'pending',
   PENDING_VERIFICATION = 'pending verification',
   VERIFIED = 'verified',

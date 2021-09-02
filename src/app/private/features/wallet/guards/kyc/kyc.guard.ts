@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { KYCStatus, KYC_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-status.interface';
+import { KYC_STATUS_STATES } from '@api/core/model/kyc/kyc-status-states.enum';
+import { KYCStatus } from '@api/core/model/kyc/kyc-status.interface';
 import { KYCStatusService } from '@private/features/wallet/services/kyc-status/kyc-status.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { Observable } from 'rxjs';
@@ -22,6 +23,6 @@ export class KYCGuard implements CanActivate {
   }
 
   private isVerificationNeeded(specifications: KYCStatus): boolean {
-    return specifications?.status === KYC_STATUS.PENDING || specifications?.status === KYC_STATUS.REJECTED;
+    return specifications?.status === KYC_STATUS_STATES.PENDING || specifications?.status === KYC_STATUS_STATES.REJECTED;
   }
 }
