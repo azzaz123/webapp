@@ -293,7 +293,7 @@ describe('SubscriptionPurchaseComponent', () => {
             screenId: SCREEN_IDS.ProfileSubscription,
             isNewCard: !component.isSavedCard,
             isNewSubscriber: !component.user.featured,
-            discountPercent: 0,
+            discountPercent: component.selectedTier.discount.percentage,
             invoiceNeeded: false,
             freeTrial: false,
             discount: !!component.selectedTier.discount,

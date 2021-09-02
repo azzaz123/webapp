@@ -12,7 +12,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
@@ -75,14 +75,13 @@ describe('CancelSubscriptionModalComponent', () => {
     toastService = TestBed.inject(ToastService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     analyticsService = TestBed.inject(AnalyticsService);
-    component.subscription = MAPPED_SUBSCRIPTIONS[2];
+    component.subscription = MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED;
     fixture.detectChanges();
   });
 
   describe('cancelSubscription', () => {
-    const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
-
     it('should call the cancelsubscription service', () => {
+      const tier = component.subscription.selected_tier;
       spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({ status: 202 }));
 
       component.cancelSubscription();

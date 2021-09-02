@@ -23,8 +23,11 @@ import {
   MAPPED_SUBSCRIPTIONS_ADDED,
   MAPPED_SUBSCRIPTIONS_WITH_INAPP,
   MockSubscriptionService,
+  MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
+  MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
+  SUBSCRIPTIONS_WITH_ONE_FREE_TRIAL,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_FULL_USER, MOCK_FULL_USER_FEATURED, MOCK_FULL_USER_NON_FEATURED, USER_DATA } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -257,7 +260,7 @@ describe('SubscriptionComponent', () => {
       it('should send event', () => {
         component.user.featured = false;
         spyOn(analyticsService, 'trackPageView');
-        spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
+        spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(SUBSCRIPTIONS_WITH_ONE_FREE_TRIAL));
 
         const expectedPageViewEvent: AnalyticsPageView<ViewSubscription> = {
           name: ANALYTICS_EVENT_NAMES.ViewSubscription,
@@ -354,7 +357,7 @@ describe('SubscriptionComponent', () => {
     it('should show edit subscription form when subscription is active', () => {
       spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
 
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS[2]);
+      component.manageSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED);
       fixture.detectChanges();
 
       const editSubscriptionComponent = fixture.debugElement.query(By.directive(MockEditSubscriptionComponent));
@@ -364,7 +367,7 @@ describe('SubscriptionComponent', () => {
     it('should not show new subscription when subscription is active', () => {
       spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
 
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS[2]);
+      component.manageSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED);
       fixture.detectChanges();
 
       const newSubscriptionComponent = fixture.debugElement.query(By.directive(MockNewSubscriptionComponent));
@@ -373,9 +376,9 @@ describe('SubscriptionComponent', () => {
 
     it('should not open modal', fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
-      component.subscriptions = MAPPED_SUBSCRIPTIONS;
+      component.subscriptions = [MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED];
 
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS[2]);
+      component.manageSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED);
 
       expect(modalService.open).not.toHaveBeenCalled();
     }));
@@ -388,10 +391,10 @@ describe('SubscriptionComponent', () => {
       });
       describe('and has to go to profile', () => {
         it('should redirect', fakeAsync(() => {
-          spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
+          spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED));
           spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
           spyOn(router, 'navigate');
-          component.subscriptions = MAPPED_SUBSCRIPTIONS;
+          component.subscriptions = [MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED];
 
           component.subscriptionChangeSuccessful(`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`);
           tick(1000);
@@ -401,10 +404,10 @@ describe('SubscriptionComponent', () => {
       });
       describe('and has not to go to profile', () => {
         it('should redirect', fakeAsync(() => {
-          spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
+          spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED));
           spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
           spyOn(router, 'navigate');
-          component.subscriptions = MAPPED_SUBSCRIPTIONS;
+          component.subscriptions = [MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED];
 
           component.subscriptionChangeSuccessful();
           tick(1000);
@@ -435,10 +438,10 @@ describe('SubscriptionComponent', () => {
       });
       describe('and has not to go to profile', () => {
         it('should redirect', fakeAsync(() => {
-          spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
+          spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED));
           spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
           spyOn(router, 'navigate');
-          component.subscriptions = MAPPED_SUBSCRIPTIONS;
+          component.subscriptions = [MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED];
 
           component.subscriptionChangeSuccessful();
           tick(1000);
@@ -512,7 +515,7 @@ describe('SubscriptionComponent', () => {
       spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
       spyOn(modalService, 'open').and.callThrough();
 
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS_WITH_INAPP[1]);
+      component.manageSubscription(MAPPED_SUBSCRIPTIONS_WITH_INAPP[0]);
 
       expect(modalService.open).toHaveBeenCalledWith(UnsubscribeInAppFirstModalComponent, {
         windowClass: 'review',
