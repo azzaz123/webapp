@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControlName, FormGroup } from '@angular/forms';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
+import { FindValueSubscriber } from 'rxjs/internal/operators/find';
 import { pairwise, startWith } from 'rxjs/operators';
 
 @Component({
@@ -34,16 +35,10 @@ export class HashtagFieldComponent implements OnInit {
       this.form.get(formToBePatched).patchValue(newValue, { emitEvent: false });
       console.log(this.form.controls.hashtags);
     });
-  }
-
-  private detectFormControls() {
-    this.form.get('hashtags').valueChanges.subscribe((n) => {
-      console.log('hashtags', n);
-      this.form.get('searchedHashtags').valueChanges.subscribe(() => {});
-    });
-
-    /* this.form.get('searchedHashtags').valueChanges.subscribe((n) => {
-      console.log('searched', n);
+    /* 
+    this.form.valueChanges.subscribe(() => {
+      this.form.get('hashtags').patchValue(this.bindFormValues(), { emitEvent: false });
+      this.form.get('searchedHashtags').patchValue(this.bindFormValues(), { emitEvent: false });
     }); */
   }
 
@@ -54,6 +49,7 @@ export class HashtagFieldComponent implements OnInit {
     if (prev.hashtags.length !== next.hashtags.length) {
       console.log('hashtags changed', prev, next);
       let formToBePatched = 'searchedHashtags';
+      //   this.form.patchValue(this.bindFormValues(), { emitEvent: false });
       if (next['hashtags'].length > prev['hashtags'].length) {
         const lastItemIndex = next['hashtags'].length - 1;
         const newSelected = next['hashtags'][lastItemIndex];
@@ -79,11 +75,6 @@ export class HashtagFieldComponent implements OnInit {
         return { newValue, formToBePatched };
       } else {
         next['hashtags'].pop();
-        /* newValue = prev['hashtags'].filter((n) => {
-          if (!next['hashtags'].includes(n)) {
-            return n;
-          }
-        }); */
         newValue = next['hashtags'];
         console.log('searchedHashtags remove', newValue);
         return { newValue, formToBePatched };
