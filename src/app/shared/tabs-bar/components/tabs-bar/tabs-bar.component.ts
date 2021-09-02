@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TabsBarElement } from '../interfaces/tabs-bar-element.interface';
+import { TabsBarElement } from '../../interfaces/tabs-bar-element.interface';
 
 @Component({
   selector: 'tsl-tabs-bar',
