@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 
 @Component({
@@ -10,4 +10,9 @@ import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.int
 export class TabComponent {
   @Input() tabsBarElement: TabsBarElement;
   @Input() isSelected = false;
+  @Output() onClick: EventEmitter<TabsBarElement> = new EventEmitter<TabsBarElement>();
+
+  public handleClick() {
+    this.onClick.emit(this.tabsBarElement);
+  }
 }
