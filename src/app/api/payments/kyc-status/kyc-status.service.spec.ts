@@ -8,7 +8,7 @@ import {
   MOCK_KYC_BANNER_VERIFIED,
 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { of } from 'rxjs';
-import { KYC_BANNER_TYPES } from '../../components/kyc-banner/kyc-banner-constants';
+import { KYC_BANNER_TYPES } from '../../../../../api/core/model/kyc/kyc-banner-constants';
 import { KYCStatus, KYCBannerSpecifications } from '../../interfaces/kyc/kyc-status.interface';
 import { KYCStatusApiService } from '../api/kyc-status-api/kyc-status-api.service';
 import { KYCStatusService } from './kyc-status.service';

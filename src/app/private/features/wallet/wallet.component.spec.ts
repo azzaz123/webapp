@@ -10,7 +10,7 @@ import { HeaderComponent } from '@shared/header/header.component';
 import { NavLinksComponent } from '@shared/nav-links/nav-links.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
-import { KYC_BANNER_TYPES } from './components/kyc-banner/kyc-banner-constants';
+import { KYC_BANNER_TYPES } from '../../../api/core/model/kyc/kyc-banner-constants';
 import { KYCBannerComponent } from './components/kyc-banner/kyc-banner.component';
 import { KYCStatusApiService } from './services/api/kyc-status-api/kyc-status-api.service';
 import { KYCStatusService } from './services/kyc-status/kyc-status.service';

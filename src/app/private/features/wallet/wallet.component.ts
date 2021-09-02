@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { KYCBannerSpecifications } from '@api/core/model/kyc/kyc-banner-specifications.interface';
+import { KYCStatusService } from '@api/payments/kyc-status/kyc-status.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { Observable } from 'rxjs';
-import { KYCBannerSpecifications } from './interfaces/kyc/kyc-status.interface';
-import { KYCStatusService } from './services/kyc-status/kyc-status.service';
+import { map } from 'rxjs/operators';
 import { WALLET_PATHS } from './wallet.routing.constants';
 
 @Component({
@@ -38,7 +39,11 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.kycBannerSpecifications$ = this.kycStatusService.getBannerSpecifications();
+    this.kycBannerSpecifications$ = this.kycStatusService
+      .getSpecifications()
+      .pipe(map((specifications) => this.kycStatusService.mapSpecificationsToBannerSpecifications(specifications)));
+
+    this.kycStatusService.getSpecifications().subscribe((res) => console.log('res => ', res));
   }
 
   public onNavLinkClicked(navLinkId: string): void {
