@@ -9,11 +9,12 @@ import { FeatureFlag, INIT_FEATURE_FLAGS } from '@core/user/featureflag-constant
 import { MonitoringService } from '@core/monitoring/services/monitoring.service';
 import { APP_LOCALE, SUBDOMAIN, SUBDOMAINS } from 'configs/subdomains.config';
 import { MARKET_PROVIDER, MarketSiteByLocale } from '../configs/market.config';
+import { siteUrlFactory, SITE_URL } from '@configs/site-url.config';
 
 export const PROVIDERS: Provider[] = [
   {
-    provide: 'SUBDOMAIN',
-    useFactory: subdomainFactory,
+    provide: SITE_URL,
+    useFactory: siteUrlFactory,
     deps: [LOCALE_ID],
   },
   {

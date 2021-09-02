@@ -9,6 +9,7 @@ import { metadata } from 'assets/js/metadata-phonenumber';
 
 import { RealTimeService } from 'app/core/message/real-time.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { ItemDetailRoutePipe } from '@shared/pipes';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -25,6 +26,7 @@ export class SendPhoneComponent implements OnInit {
     private realTimeService: RealTimeService,
     private inboxConversationService: InboxConversationService,
     private errorsService: ErrorsService,
+    private itemDetailRoutePipe: ItemDetailRoutePipe,
     public activeModal: NgbActiveModal
   ) {
     this.sendPhoneForm = this.fb.group({
@@ -75,6 +77,7 @@ export class SendPhoneComponent implements OnInit {
   }
 
   dismiss() {
-    window.location.href = this.conversation.item.itemUrl;
+    const itemUrl = this.itemDetailRoutePipe.transform(this.conversation.item.itemSlug);
+    window.location.href = itemUrl;
   }
 }

@@ -76,6 +76,8 @@ import { IsCurrentUserPipe } from '@public/core/pipes/is-current-user/is-current
 import { IsCurrentUserPipeMock } from '@fixtures/is-current-user.fixtures.spec';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 describe('ItemDetailComponent', () => {
   const mapTag = 'tsl-here-maps';
@@ -215,6 +217,10 @@ describe('ItemDetailComponent', () => {
         {
           provide: IsCurrentUserPipe,
           useClass: IsCurrentUserPipeMock,
+        },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

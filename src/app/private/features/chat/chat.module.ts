@@ -12,7 +12,6 @@ import { InboxItemDetailComponent } from './children/inbox/components/inbox-item
 import { InboxItemForSellComponent } from './children/inbox/components/inbox-item-for-sell/inbox-item-for-sell.component';
 import { InboxUserDetailComponent } from './children/inbox/components/inbox-user-component';
 import { InboxComponent } from './children/inbox/inbox.component';
-import { ItemComponent } from './children/item';
 import { ItemReservedComponent } from './children/item/components/item-reserved';
 import { ItemSoldComponent } from './children/item/components/item-sold';
 import { MessageModule } from './children/message';
@@ -56,7 +55,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     chatRoutedComponents,
     InputComponent,
     ConnectionAlertComponent,
-    ItemComponent,
     ItemReservedComponent,
     ItemSoldComponent,
     ArchiveInboxConversationComponent,

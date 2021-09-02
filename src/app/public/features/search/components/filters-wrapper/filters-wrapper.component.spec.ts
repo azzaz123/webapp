@@ -65,7 +65,6 @@ describe('FiltersWrapperComponent', () => {
         },
         SearchQueryStringService,
         QueryStringLocationService,
-        { provide: 'SUBDOMAIN', useValue: 'es' },
         { provide: CookieService, useValue: MockCookieService },
       ],
     }).compileComponents();
