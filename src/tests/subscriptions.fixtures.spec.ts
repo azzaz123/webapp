@@ -199,7 +199,7 @@ export const TIER_WITH_DISCOUNT: Tier = {
   price: 9.99,
   currency: '€',
   discount: TIER_DISCOUNT,
-  limit_perk: true,
+  is_basic: false,
 };
 
 export const TIER_2_WITH_DISCOUNT: Tier = {
@@ -220,7 +220,7 @@ export const TIER_BASIC_WITH_DISCOUNT: Tier = {
   price: 9.99,
   currency: '€',
   discount: TIER_DISCOUNT,
-  limit_perk: false,
+  is_basic: true,
 };
 
 export const TIER_NO_DISCOUNT_NO_BASIC: Tier = {
@@ -229,7 +229,7 @@ export const TIER_NO_DISCOUNT_NO_BASIC: Tier = {
   price: 9.99,
   currency: '€',
   discount: null,
-  limit_perk: true,
+  is_basic: false,
 };
 
 export const TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT: Tier = {
@@ -237,7 +237,7 @@ export const TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT: Tier = {
   price: 9.99,
   currency: '€',
   discount: null,
-  limit_perk: true,
+  is_basic: false,
 };
 
 const MOCK_CG_BASIC_DATA: Partial<SubscriptionsResponse> = {
@@ -490,7 +490,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'autoparts_200',
         limit: 200,
-        limit_perk: true,
+        is_basic: false,
         price: 9.0,
         currency: 'EUR',
         discount: null,
@@ -498,14 +498,14 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'autoparts_500',
         limit: 500,
-        limit_perk: true,
+        is_basic: false,
         price: 39.0,
         currency: 'EUR',
         discount: null,
       },
       {
         id: 'autoparts_infinite',
-        limit_perk: true,
+        is_basic: false,
         price: 99.0,
         currency: 'EUR',
         discount: null,
@@ -524,7 +524,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'motorplan_basic',
         limit: 5,
-        limit_perk: true,
+        is_basic: false,
         price: 39.99,
         currency: 'EUR',
         discount: null,
@@ -532,7 +532,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'motorplan_medium',
         limit: 9,
-        limit_perk: true,
+        is_basic: false,
         price: 69.99,
         currency: 'EUR',
         discount: null,
@@ -540,7 +540,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'motorplan_super',
         limit: 15,
-        limit_perk: true,
+        is_basic: false,
         price: 89.99,
         currency: 'EUR',
         discount: null,
@@ -559,7 +559,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'motorbikes_5',
         limit: 5,
-        limit_perk: true,
+        is_basic: false,
         price: 19.0,
         currency: 'EUR',
         discount: null,
@@ -567,14 +567,14 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'motorbikes_15',
         limit: 15,
-        limit_perk: true,
+        is_basic: false,
         price: 39.0,
         currency: 'EUR',
         discount: null,
       },
       {
         id: 'motorbikes_infinite',
-        limit_perk: true,
+        is_basic: false,
         price: 69.0,
         currency: 'EUR',
         discount: null,
@@ -593,7 +593,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'realestate_10',
         limit: 10,
-        limit_perk: true,
+        is_basic: false,
         price: 19.0,
         currency: 'EUR',
         discount: null,
@@ -601,7 +601,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'realestate_25',
         limit: 25,
-        limit_perk: true,
+        is_basic: false,
         price: 33.0,
         currency: 'EUR',
         discount: null,
@@ -609,7 +609,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'realestate_100',
         limit: 100,
-        limit_perk: true,
+        is_basic: false,
         price: 46.0,
         currency: 'EUR',
         discount: null,
@@ -645,7 +645,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
     tiers: [
       {
         id: 'consumer_goods_200',
-        limit_perk: false,
+        is_basic: true,
         price: 39.0,
         currency: 'EUR',
         discount: {
@@ -657,7 +657,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'consumer_goods_400',
         limit: 400,
-        limit_perk: true,
+        is_basic: false,
         price: 59.0,
         currency: 'EUR',
         discount: {
@@ -669,7 +669,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'consumer_goods_800',
         limit: 800,
-        limit_perk: true,
+        is_basic: false,
         price: 99.0,
         currency: 'EUR',
         discount: {
@@ -681,7 +681,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'consumer_goods_1200',
         limit: 1200,
-        limit_perk: true,
+        is_basic: false,
         price: 159.0,
         currency: 'EUR',
         discount: {
@@ -693,7 +693,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
       {
         id: 'consumer_goods_2000',
         limit: 2000,
-        limit_perk: true,
+        is_basic: false,
         price: 229.0,
         currency: 'EUR',
         discount: {
@@ -714,7 +714,7 @@ export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
     tiers: [
       {
         id: 'consumer_goods',
-        limit_perk: false,
+        is_basic: true,
         price: 39.99,
         currency: 'EUR',
         discount: null,
@@ -741,7 +741,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     category_name: 'Motors & Accessories',
     selected_tier: {
       id: 'autoparts_infinite',
-      limit_perk: true,
+      is_basic: false,
       price: 99.0,
       currency: '€',
       discount: null,
@@ -750,7 +750,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'autoparts_200',
         limit: 200,
-        limit_perk: true,
+        is_basic: false,
         price: 9.0,
         currency: '€',
         discount: null,
@@ -758,14 +758,14 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'autoparts_500',
         limit: 500,
-        limit_perk: true,
+        is_basic: false,
         price: 39.0,
         currency: '€',
         discount: null,
       },
       {
         id: 'autoparts_infinite',
-        limit_perk: true,
+        is_basic: false,
         price: 99.0,
         currency: '€',
         discount: null,
@@ -787,7 +787,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'motorplan_basic',
         limit: 5,
-        limit_perk: true,
+        is_basic: false,
         price: 39.99,
         currency: '€',
         discount: null,
@@ -795,7 +795,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'motorplan_medium',
         limit: 9,
-        limit_perk: true,
+        is_basic: false,
         price: 69.99,
         currency: '€',
         discount: null,
@@ -803,7 +803,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'motorplan_super',
         limit: 15,
-        limit_perk: true,
+        is_basic: false,
         price: 89.99,
         currency: '€',
         discount: null,
@@ -825,7 +825,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'motorbikes_5',
         limit: 5,
-        limit_perk: true,
+        is_basic: false,
         price: 19.0,
         currency: '€',
         discount: null,
@@ -833,14 +833,14 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'motorbikes_15',
         limit: 15,
-        limit_perk: true,
+        is_basic: false,
         price: 39.0,
         currency: '€',
         discount: null,
       },
       {
         id: 'motorbikes_infinite',
-        limit_perk: true,
+        is_basic: false,
         price: 69.0,
         currency: '€',
         discount: null,
@@ -862,7 +862,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'realestate_10',
         limit: 10,
-        limit_perk: true,
+        is_basic: false,
         price: 19.0,
         currency: '€',
         discount: null,
@@ -870,7 +870,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'realestate_25',
         limit: 25,
-        limit_perk: true,
+        is_basic: false,
         price: 33.0,
         currency: '€',
         discount: null,
@@ -878,7 +878,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'realestate_100',
         limit: 100,
-        limit_perk: true,
+        is_basic: false,
         price: 46.0,
         currency: '€',
         discount: null,
@@ -917,7 +917,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     tiers: [
       {
         id: 'consumer_goods_200',
-        limit_perk: false,
+        is_basic: true,
         price: 39.0,
         currency: '€',
         discount: {
@@ -930,7 +930,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'consumer_goods_400',
         limit: 400,
-        limit_perk: true,
+        is_basic: false,
         price: 59.0,
         currency: '€',
         discount: {
@@ -943,7 +943,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'consumer_goods_800',
         limit: 800,
-        limit_perk: true,
+        is_basic: false,
         price: 99.0,
         currency: '€',
         discount: {
@@ -956,7 +956,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'consumer_goods_1200',
         limit: 1200,
-        limit_perk: true,
+        is_basic: false,
         price: 159.0,
         currency: '€',
         discount: {
@@ -969,7 +969,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
       {
         id: 'consumer_goods_2000',
         limit: 2000,
-        limit_perk: true,
+        is_basic: false,
         price: 229.0,
         currency: '€',
         discount: {
@@ -994,7 +994,7 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
     tiers: [
       {
         id: 'consumer_goods',
-        limit_perk: false,
+        is_basic: true,
         price: 39.99,
         currency: '€',
         discount: null,

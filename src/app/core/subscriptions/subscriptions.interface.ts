@@ -15,7 +15,7 @@ export interface Tier {
   price: number;
   currency: string;
   discount: TierDiscount;
-  limit_perk: boolean;
+  is_basic: boolean;
 }
 
 export interface TierDiscount {
