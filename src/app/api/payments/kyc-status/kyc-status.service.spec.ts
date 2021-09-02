@@ -1,5 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { KYC_BANNER_TYPES } from '@api/core/model/kyc/kyc-banner-constants';
+import { KYCBannerSpecifications } from '@api/core/model/kyc/kyc-banner-specifications.interface';
+import { KYCStatus } from '@api/core/model/kyc/kyc-status.interface';
 import {
   MOCK_KYC_BANNER_NO_NEED,
   MOCK_KYC_BANNER_PENDING,
@@ -7,10 +10,8 @@ import {
   MOCK_KYC_BANNER_REJECTED,
   MOCK_KYC_BANNER_VERIFIED,
 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+import { KYCStatusApiService } from '@private/features/wallet/services/api/kyc-status-api/kyc-status-api.service';
 import { of } from 'rxjs';
-import { KYC_BANNER_TYPES } from '../../../../../api/core/model/kyc/kyc-banner-constants';
-import { KYCStatus, KYCBannerSpecifications } from '../../interfaces/kyc/kyc-status.interface';
-import { KYCStatusApiService } from '../api/kyc-status-api/kyc-status-api.service';
 import { KYCStatusService } from './kyc-status.service';
 
 describe('KYCStatusService', () => {
@@ -46,7 +47,7 @@ describe('KYCStatusService', () => {
       spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING_VERIFICATION));
 
       let request: KYCBannerSpecifications;
-      service.getSpecifications().subscribe((result: KYCBannerSpecifications) => {
+      service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
         request = result;
       });
 
@@ -61,7 +62,7 @@ describe('KYCStatusService', () => {
       it('should return the banner specification', () => {
         let request: KYCBannerSpecifications;
 
-        service.getSpecifications().subscribe((result: KYCBannerSpecifications) => {
+        service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
           request = result;
         });
 
@@ -77,7 +78,7 @@ describe('KYCStatusService', () => {
       it('should return the banner specification', () => {
         let request: KYCBannerSpecifications;
 
-        service.getSpecifications().subscribe((result: KYCBannerSpecifications) => {
+        service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
           request = result;
         });
 
@@ -93,7 +94,7 @@ describe('KYCStatusService', () => {
       it('should return the banner specification', () => {
         let request: KYCBannerSpecifications;
 
-        service.getSpecifications().subscribe((result: KYCBannerSpecifications) => {
+        service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
           request = result;
         });
 
@@ -109,7 +110,7 @@ describe('KYCStatusService', () => {
       it('should return the banner specification', () => {
         let request: KYCBannerSpecifications;
 
-        service.getSpecifications().subscribe((result: KYCBannerSpecifications) => {
+        service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
           request = result;
         });
 
@@ -125,7 +126,7 @@ describe('KYCStatusService', () => {
       it('should return null', () => {
         let request: KYCBannerSpecifications;
 
-        service.getSpecifications().subscribe((result: KYCBannerSpecifications) => {
+        service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
           request = result;
         });
 

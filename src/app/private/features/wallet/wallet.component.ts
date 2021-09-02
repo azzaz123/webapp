@@ -39,11 +39,7 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.kycBannerSpecifications$ = this.kycStatusService
-      .getSpecifications()
-      .pipe(map((specifications) => this.kycStatusService.mapSpecificationsToBannerSpecifications(specifications)));
-
-    this.kycStatusService.getSpecifications().subscribe((res) => console.log('res => ', res));
+    this.kycBannerSpecifications$ = this.kycStatusService.getBannerSpecifications();
   }
 
   public onNavLinkClicked(navLinkId: string): void {
