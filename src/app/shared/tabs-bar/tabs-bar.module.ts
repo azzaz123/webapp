@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TabsBarComponent } from './components/tabs-bar.component';
 import { TabComponent } from './components/tab/tab.component';
+import { TabsBarComponent } from './components/tabs-bar/tabs-bar.component';
 
 @NgModule({
   imports: [CommonModule],
