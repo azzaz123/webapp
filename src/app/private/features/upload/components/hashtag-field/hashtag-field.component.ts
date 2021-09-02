@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControlName, FormGroup } from '@angular/forms';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
+import { pairwise, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-hashtag-field',
@@ -24,16 +25,20 @@ export class HashtagFieldComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.form.valueChanges.subscribe((val: string[]) => {
-      console.log('hashtags', this.form.get('hashtags').value, 'searchedHashtags', this.form.get('searchedHashtags').value);
-      const bindedValue = this.bindFormValues();
-      //this.form.patchValue(bindedValue, { emitEvent: false });
-      this.form.get('hashtags').patchValue(bindedValue, { emitEvent: false });
-      this.form.get('searchedHashtags').patchValue(bindedValue, { emitEvent: false });
-      console.log('value', this.form);
-    });
+    this.form.valueChanges.pipe(startWith({ hashtags: [], searchedHashtags: [] }), pairwise()).subscribe(([prev, next]) => {
+      this.onChangeFormControlValue(prev, next);
+      // Check which one has changed
 
-    //this.loadMore();
+      /*   this.form.get('hashtags').patchValue(bindedValue, { emitEvent: false });
+      this.form.get('searchedHashtags').patchValue(bindedValue, { emitEvent: false });
+      console.log('value', this.form); */
+    });
+  }
+
+  private onChangeFormControlValue(prev, next): void {
+    console.log(prev, next);
+    let newValue = [];
+    // Compare the property of object
   }
 
   public bindFormValues(): string[] {
@@ -48,25 +53,10 @@ export class HashtagFieldComponent implements OnInit {
   }
 
   public loadMore(event): void {
-    /*  let lastOption = this.generalHashtagForm.nativeElement.childNodes[0].children;
-    let parentDiv = this.generalHashtagForm.nativeElement.childNodes[0]; */
-    // console.log(event.target.offsetTop, event.target.scrollTop, event.target.scrollHeight, lastOption[6].offsetTop);
-    /*   if (lastOption[6].offsetTop === event.target.offsetTop) {
-      this.page++;
-      console.log('Bottom', 'child page', this.page, this.page.toString());
-      this.start.emit(this.page.toString());
-    } */
-    console.log(event.target.offsetHeight, event.target.scrollTop, event.target.offsetTop);
     if ((event.target.scrollTop = event.target.offsetTop)) {
-      console.log('bottom');
       this.page++;
       this.start.emit(this.page.toString());
       return;
     }
-    /* let lastOption = this.generalHashtagForm.nativeElement.childNodes[0].children;
-    let parentDiv = this.generalHashtagForm.nativeElement.childNodes[0];
-
-    console.log(parentDiv.bodyClientHeight, parentDiv.scrollHeight, parentDiv.offsetTop, lastOption, lastOption[5].offsetTop);
- */ // console.log('loadmoar', this.multiSelectForm.nativeElement);
   }
 }
