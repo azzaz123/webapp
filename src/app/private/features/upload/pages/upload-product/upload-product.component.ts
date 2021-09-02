@@ -120,6 +120,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     { label: 'saa', value: 'saa' },
   ];
   public uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
+  public start: string = '0';
 
   private focused: boolean;
   private oldFormValue: any;
@@ -155,8 +156,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
-    this.hashtagSuggesterApiService.getHashtags('100', '0').subscribe((n) => {
+    //PR
+    /* this.hashtagSuggesterApiService.getHashtags('100', '0').subscribe((n) => {
       console.log('test', this.categoryId);
+      this.mapHashtagOptions(n);
+    }); */
+
+    this.hashtagSuggesterApiService.getHashtagsByPrefix('100', 'g', this.start).subscribe((n) => {
+      console.log('test', this.categoryId, this.start);
       this.mapHashtagOptions(n);
     });
     this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
@@ -198,7 +205,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private mapHashtagOptions(hashtagList: PaginatedList<Hashtag>) {
-    /* let { list } = hashtagList;
+    /*  let { list } = hashtagList;
     this.options = list.map((hashtag: Hashtag) => {
       return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     }); */
@@ -218,6 +225,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.options = list.map((hashtag: Hashtag) => {
       return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     });
+  }
+
+  public loadNextPage(page: string) {
+    this.start = page;
+    console.log('start', this.start);
   }
 
   public getExtraInfo(): any {
@@ -523,7 +535,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         longitude: ['', [Validators.required]],
       }),
       hashtags: this.fb.group({
-        hashtags: [['#faa']],
+        hashtags: [[]],
         searchedHashtags: [[]],
       }),
       extra_info: this.fb.group({
