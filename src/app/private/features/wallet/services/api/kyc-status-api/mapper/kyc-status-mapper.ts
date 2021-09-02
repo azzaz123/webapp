@@ -1,4 +1,4 @@
-import { KYCStatusApi } from '@private/features/wallet/interfaces/kyc/kyc-status-api.interface';
+import { KYCDocumentStatus, KYCStatusApi } from '@private/features/wallet/interfaces/kyc/kyc-status-api.interface';
 import { KYCStatus, KYC_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-status.interface';
 import { mapKYCRefusedReason } from './kyc-refused-reason-mapper';
 
@@ -11,7 +11,7 @@ export function mapKYCStatusApiToKYCStatus(KYCStatusApi: KYCStatusApi): KYCStatu
   };
 }
 
-function getStatus(status: string): KYC_STATUS {
+function getStatus(status: KYCDocumentStatus): KYC_STATUS {
   if (status === 'pending') return KYC_STATUS.PENDING;
   if (status === 'pending verification') return KYC_STATUS.PENDING_VERIFICATION;
   if (status === 'verified') return KYC_STATUS.VERIFIED;

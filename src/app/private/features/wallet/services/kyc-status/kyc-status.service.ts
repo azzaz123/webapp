@@ -15,13 +15,9 @@ export class KYCStatusService {
     return this.kycStatusApiService.get().pipe(map((KYCStatusApi: KYCStatusApi) => mapKYCStatusApiToKYCStatus(KYCStatusApi)));
   }
 
-  public getBannerSpecifications(): Observable<KYCBannerSpecifications> {
-    return this.getSpecifications().pipe(
-      map((KYCStatus: KYCStatus) => {
-        return KYCStatus.status === KYC_STATUS.NO_NEED
-          ? null
-          : KYC_BANNER_TYPES.find((specification) => specification.status === KYCStatus.status);
-      })
-    );
+  public mapSpecificationsToBannerSpecifications(KYCStatus: KYCStatus): KYCBannerSpecifications {
+    return KYCStatus.status === KYC_STATUS.NO_NEED
+      ? null
+      : KYC_BANNER_TYPES.find((specification: KYCBannerSpecifications) => specification.status === KYCStatus.status);
   }
 }
