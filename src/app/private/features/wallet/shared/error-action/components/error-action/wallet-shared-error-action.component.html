@@ -2,14 +2,16 @@
   <tsl-banner [specifications]="bannerConfiguration">
     <div class="d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center">
-        <svg width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M24 35c-6.065 0-11-4.935-11-11s4.935-11 11-11 11 4.935 11 11-4.935 11-11 11zm0-20c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm-.701 14.71a1.008 1.008 0 01-.299-.712c0-.26.11-.521.299-.71a1.005 1.005 0 011.402 0c.19.189.299.45.299.71a1 1 0 01-.299.711.976.976 0 01-.696.291.986.986 0 01-.706-.29zM23 18.745v7.508c0 .413.447.746 1 .746.553 0 1-.333 1-.746v-7.508c0-.413-.447-.746-1-.746-.553 0-1 .333-1 .746z"
-            fill="#fff"
-          />
-        </svg>
+        <div class="WalletSharedErrorAction__icon">
+          <svg width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M24 35c-6.065 0-11-4.935-11-11s4.935-11 11-11 11 4.935 11 11-4.935 11-11 11zm0-20c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm-.701 14.71a1.008 1.008 0 01-.299-.712c0-.26.11-.521.299-.71a1.005 1.005 0 011.402 0c.19.189.299.45.299.71a1 1 0 01-.299.711.976.976 0 01-.696.291.986.986 0 01-.706-.29zM23 18.745v7.508c0 .413.447.746 1 .746.553 0 1-.333 1-.746v-7.508c0-.413-.447-.746-1-.746-.553 0-1 .333-1 .746z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
         <span>{{ bannerConfiguration.description }}</span>
       </div>
       <tsl-button [className]="'btn-white btn-white--danger'" (click)="doAction()">{{ bannerConfiguration.buttonText }}</tsl-button>
@@ -17,8 +19,7 @@
   </tsl-banner>
   <div class="py-3 box mt-3 profile-box">
     <div class="w-100 h-100 d-flex justify-content-center align-content-center align-items-center">
-      <svg width="108" height="138" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0)">
+      <svg width="108" height="138" viewBox="0 0 108 138" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             opacity=".33"
             d="M65.566 86.27l-7.89-6.168-.382-.386a2.93 2.93 0 01.46-1.002c.612-1.08 1.378-2.004 2.297-2.544l.23.077 7.89 6.168 3.6 2.775 3.523 6.09-6.74-1.773-2.988-3.238z"
@@ -144,7 +145,6 @@
             stroke-linecap="round"
             stroke-linejoin="round"
           />
-        </g>
         <defs>
           <clipPath id="clip0"><path fill="#fff" d="M0 0h108v138H0z" /></clipPath>
         </defs>

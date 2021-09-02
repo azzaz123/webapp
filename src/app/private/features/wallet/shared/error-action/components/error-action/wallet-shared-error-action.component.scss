@@ -3,4 +3,8 @@
 
 .WalletSharedErrorAction {
   padding-top: $spacing-ms;
+  &__icon {
+    height: 48px;
+    width: 48px;
+  }
 }
