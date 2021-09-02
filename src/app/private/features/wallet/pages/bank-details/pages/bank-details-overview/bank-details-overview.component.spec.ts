@@ -407,6 +407,64 @@ describe('BankDetailsOverviewComponent', () => {
       expect(component.formattedBankAccountIBAN(MOCK_BANK_ACCOUNT.iban)).toBe('8273');
     });
   });
+});
+('');
+describe('WHEN there is an error retrieving data', () => {
+  let component: BankDetailsOverviewComponent;
+  let fixture: ComponentFixture<BankDetailsOverviewComponent>;
+  let bankAccountService: BankAccountService;
+  let paymentsCreditCardService: PaymentsCreditCardService;
+  let errorActionService: WalletSharedErrorActionService;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [BankDetailsOverviewComponent, AddCreditCardComponent, PaymentsCardInfoComponent],
+      imports: [RouterTestingModule],
+      providers: [
+        {
+          provide: BankAccountService,
+          useValue: {
+            delete() {},
+            get bankAccount$() {
+              return throwError('There is an error!');
+            },
+            get() {
+              return of(MOCK_BANK_ACCOUNT);
+            },
+          },
+        },
+        {
+          provide: PaymentsCreditCardService,
+          useValue: {
+            delete() {},
+            get creditCard$() {
+              return throwError('There is an error!');
+            },
+            get() {
+              return of(mockCreditCard);
+            },
+          },
+        },
+        {
+          provide: WalletSharedErrorActionService,
+          useValue: {
+            show(data?: unknown): void {},
+          },
+        },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(BankDetailsOverviewComponent);
+    component = fixture.componentInstance;
+    bankAccountService = TestBed.inject(BankAccountService);
+    paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
+    errorActionService = TestBed.inject(WalletSharedErrorActionService);
+
+    fixture.detectChanges();
+  });
 
   describe('WHEN there is an error retrieving the bank acount data', () => {
     let errorActionSpy;

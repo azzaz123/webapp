@@ -70,5 +70,6 @@ export class WalletSharedErrorActionComponent implements OnDestroy, OnInit {
 
   private unsubscribe(): void {
     this.errorActionSubscription?.unsubscribe();
+    this.errorActionSubscription = null;
   }
 }

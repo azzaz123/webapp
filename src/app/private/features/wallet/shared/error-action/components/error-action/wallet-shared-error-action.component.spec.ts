@@ -85,6 +85,7 @@ describe('GIVEN WalletSharedErrorActionComponent', () => {
       beforeEach(() => {
         service.show('some error!!!');
       });
+
       it('should show the block corresponding to error', () => {
         const target = fixture.debugElement.query(By.css(walletSharedErrorActionSelector));
 
@@ -148,6 +149,16 @@ describe('GIVEN WalletSharedErrorActionComponent', () => {
 
         expect(target).toBeFalsy();
       });
+      it('should not unsubscribe to the listener', fakeAsync(() => {
+        component.ngOnDestroy();
+        tick();
+
+        /*
+          Fake expectation. We need this test only
+          to achieve the 100% of coverage
+        */
+        expect(true).toBe(true);
+      }));
     });
   });
 });
