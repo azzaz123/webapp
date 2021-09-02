@@ -51,7 +51,6 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
       .map((option) => {
         return option.value;
       });
-    console.log('handle selected', this.value, this.extendedOptions);
     this.onChange(this.value);
   }
 
