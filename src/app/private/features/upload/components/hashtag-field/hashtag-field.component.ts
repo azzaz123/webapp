@@ -25,20 +25,61 @@ export class HashtagFieldComponent implements OnInit {
   ];
 
   ngOnInit() {
+    this.detectFormControls();
     this.form.valueChanges.pipe(startWith({ hashtags: [], searchedHashtags: [] }), pairwise()).subscribe(([prev, next]) => {
-      this.onChangeFormControlValue(prev, next);
-      // Check which one has changed
-
-      /*   this.form.get('hashtags').patchValue(bindedValue, { emitEvent: false });
-      this.form.get('searchedHashtags').patchValue(bindedValue, { emitEvent: false });
-      console.log('value', this.form); */
+      const newValue = this.onChangeFormControlValue(prev, next).newValue;
+      const formToBePatched = this.onChangeFormControlValue(prev, next).formToBePatched;
+      console.log('final newValue', this.onChangeFormControlValue(prev, next));
+      this.form.get(formToBePatched).patchValue(newValue);
+      console.log(this.form.controls.hashtags);
     });
   }
 
-  private onChangeFormControlValue(prev, next): void {
+  private detectFormControls() {
+    this.form.get('hashtags').valueChanges.subscribe((n) => {
+      console.log('hashtags', n);
+    });
+
+    this.form.get('searchedHashtags').valueChanges.subscribe((n) => {
+      console.log('searched', n);
+    });
+  }
+
+  private onChangeFormControlValue(prev, next): { newValue: string[]; formToBePatched: string } {
     console.log(prev, next);
     let newValue = [];
-    // Compare the property of object
+    // Compare the property of object and only patch the one that is not changed
+    if (prev['hashtags'] !== next['hashtags']) {
+      let formToBePatched = 'searchedHashtags';
+      if (next['hashtags'].length > prev['hashtags'].length) {
+        const lastItemIndex = next['hashtags'].length - 1;
+        const newSelected = next['hashtags'][lastItemIndex];
+        next['searchedHashtags'].push(newSelected);
+        newValue = next['searchedHashtags'];
+        console.log('add', newValue);
+        return { newValue, formToBePatched };
+      } else {
+        next['searchedHashtags'].pop();
+        newValue = next['searchedHashtags'];
+        console.log('remove', newValue);
+        return { newValue, formToBePatched };
+      }
+    } else if (prev['searchedHashtags'] !== next['searchedHashtags']) {
+      let formToBePatched = 'hashtags';
+      if (next['searchedHashtags'].length > prev['searchedHashtags'].length) {
+        const lastItemIndex = next['searchedHashtags'].length - 1;
+        const newSelected = next['searchedHashtags'][lastItemIndex];
+        next['hashtags'].push(newSelected);
+        newValue = next['hashtags'];
+        console.log('add', newValue);
+        return { newValue, formToBePatched };
+      } else {
+        next['hashtags'].pop();
+        newValue = next['hashtags'];
+        console.log('remove', newValue);
+        return { newValue, formToBePatched };
+      }
+    }
   }
 
   public bindFormValues(): string[] {
