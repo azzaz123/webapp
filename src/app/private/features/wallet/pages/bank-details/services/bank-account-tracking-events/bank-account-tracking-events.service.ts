@@ -13,6 +13,11 @@ import { KYCBannerApiService } from '@private/features/wallet/services/api/kyc-b
 
 type KycStatusEventAttribute = InnerType<ClickAddEditBankAccount, 'kycStatus'> | undefined;
 type AddOrEditEventAttribute = InnerType<ClickAddEditBankAccount, 'addOrEdit'>;
+const kycBannerStatusToEventAttribute: Partial<Record<KYC_BANNER_STATUS, KycStatusEventAttribute>> = {
+  [KYC_BANNER_STATUS.PENDING]: 'pending',
+  [KYC_BANNER_STATUS.PENDING_VERIFICATION]: 'inProgress',
+  [KYC_BANNER_STATUS.VERIFIED]: 'verified',
+};
 
 @Injectable({
   providedIn: 'root',
@@ -49,16 +54,7 @@ export class BankAccountTrackingEventsService {
   }
 
   private mapKycBannerStatusToEventAttribute(kycStatus: KYC_BANNER_STATUS): KycStatusEventAttribute {
-    if (kycStatus === KYC_BANNER_STATUS.PENDING) {
-      return 'pending';
-    }
-    if (kycStatus === KYC_BANNER_STATUS.PENDING_VERIFICATION) {
-      return 'inProgress';
-    }
-    if (kycStatus === KYC_BANNER_STATUS.VERIFIED) {
-      return 'verified';
-    }
-    return;
+    return kycBannerStatusToEventAttribute[kycStatus];
   }
 
   private mapAddOrEditAttribute(isEdit: boolean): AddOrEditEventAttribute {
