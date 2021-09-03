@@ -160,14 +160,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
-    this.detectShippabilityAllowanceChanges();
-    this.detectShippabilityChanges();
-
     this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories;
 
       this.detectCategoryChanges();
       this.detectObjectTypeChanges();
+      this.detectShippabilityAllowanceChanges();
+      this.detectShippabilityChanges();
 
       if (this.item) {
         this.initializeEditForm();
@@ -506,7 +505,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         exchange_allowed: false,
         supports_shipping: true,
       }),
-      delivery_info: [null],
+      delivery_info: [null, [Validators.required]],
       location: this.fb.group({
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
