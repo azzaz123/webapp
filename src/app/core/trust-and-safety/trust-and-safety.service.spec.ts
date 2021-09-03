@@ -127,9 +127,7 @@ describe('TrustAndSafetyService', () => {
       };
 
       service.submitProfile(SessionProfileDataLocation.OPEN_CHAT);
-      tick(1000);
-      tick(1000);
-      tick(service.SCRIPT_MAX_LOAD_TIME_SEC * 1000);
+      tick(2000 + service.SCRIPT_MAX_LOAD_TIME_SEC * 1000);
       const postStarterRequest = httpMock.expectOne(USER_STARTER_ENDPOINT);
       postStarterRequest.flush({});
 

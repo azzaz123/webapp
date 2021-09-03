@@ -21,10 +21,9 @@ export class TrustAndSafetyService {
   constructor(private http: HttpClient, private uuidService: UuidService) {}
 
   private initializeSessionId(): void {
-    if (this.sessionId) {
-      return;
+    if (!this.sessionId) {
+      this.sessionId = this.uuidService.getUUID();
     }
-    this.sessionId = this.uuidService.getUUID();
   }
 
   private initializeLibrary() {
