@@ -273,6 +273,7 @@ describe('BankDetailsOverviewComponent', () => {
       });
 
       it('should track event to analytics', () => {
+        expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledTimes(1);
         expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledWith(true);
       });
     });
@@ -382,6 +383,7 @@ describe('BankDetailsOverviewComponent', () => {
       });
 
       it('should track event to analytics', () => {
+        expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledTimes(1);
         expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledWith(false);
       });
     });
