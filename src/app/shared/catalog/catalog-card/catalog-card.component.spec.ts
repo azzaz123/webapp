@@ -10,8 +10,10 @@ import { EventService } from '../../../core/event/event.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
-import { CustomCurrencyPipe } from '../../pipes';
+import { CustomCurrencyPipe, ItemDetailRoutePipe } from '../../pipes';
 import { CatalogCardComponent } from './catalog-card.component';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;
@@ -30,7 +32,7 @@ describe('CatalogCardComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CatalogCardComponent, CustomCurrencyPipe],
+        declarations: [CatalogCardComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
         providers: [
           DecimalPipe,
           I18nService,
@@ -67,6 +69,10 @@ describe('CatalogCardComponent', () => {
             useValue: {
               i18nError() {},
             },
+          },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
           },
           EventService,
         ],
