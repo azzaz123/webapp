@@ -238,12 +238,12 @@ export class SubscriptionsService {
     let categorySubscriptionId: number;
 
     if (CATEGORIES_EXCLUDED_FROM_CONSUMER_GOODS.includes(categoryId)) {
-      categorySubscriptionId = CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS;
-    } else {
       categorySubscriptionId = categoryId;
+    } else {
+      categorySubscriptionId = CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS;
     }
 
-    return subscriptions.find((subscription) => subscription.category_id === categoryId);
+    return subscriptions.find((subscription) => subscription.category_id === categorySubscriptionId);
   }
 
   public tierDiscountByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): Tier {

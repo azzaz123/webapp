@@ -14,7 +14,7 @@ import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.inter
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
-import { MockSubscriptionService, MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { MockSubscriptionService, MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -69,7 +69,7 @@ describe('SubscriptionEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionEditComponent);
     component = fixture.componentInstance;
-    component.subscription = MAPPED_SUBSCRIPTIONS[2];
+    component.subscription = MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED;
     component.user = MOCK_USER;
     toastService = TestBed.inject(ToastService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
