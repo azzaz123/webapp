@@ -29,7 +29,7 @@ export class SubscriptionTierSelectorComponent {
 
   public getTitleText(tier: Tier): string {
     if (tier.is_basic) {
-      return 'Basic';
+      return $localize`:@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_title:Basic`;
     }
     return this.getLimitText(tier);
   }
