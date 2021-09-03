@@ -12,17 +12,17 @@ import {
 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 import { KYCStatusApiService } from '@private/features/wallet/services/api/kyc-status-api/kyc-status-api.service';
 import { of } from 'rxjs';
-import { KYCStatusService } from './kyc-status.service';
+import { KYCPropertiesService } from './kyc-properties.service';
 
-describe('KYCStatusService', () => {
-  let service: KYCStatusService;
+describe('KYCPropertiesService', () => {
+  let service: KYCPropertiesService;
   let kycStatusApiService: KYCStatusApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        KYCStatusService,
+        KYCPropertiesService,
         {
           provide: KYCStatusApiService,
           useValue: {
@@ -34,7 +34,7 @@ describe('KYCStatusService', () => {
       ],
     });
 
-    service = TestBed.inject(KYCStatusService);
+    service = TestBed.inject(KYCPropertiesService);
     kycStatusApiService = TestBed.inject(KYCStatusApiService);
   });
 

@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { KYCPropertiesApi } from '@api/payments/kyc-status/dtos/responses';
+import { KYCPropertiesApi } from '@api/payments/kyc-properties/dtos/responses';
 import { MOCK_KYC_BANNER_PENDING_VERIFICATION } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
 
 import { KYCStatusApiService, KYC_PROPERTIES_API_URL } from './kyc-status-api.service';

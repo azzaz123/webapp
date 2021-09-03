@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { KYCStatusService } from '@api/payments/kyc-status/kyc-status.service';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { HeaderComponent } from '@shared/header/header.component';
@@ -25,7 +25,7 @@ describe('WalletComponent', () => {
   let component: WalletComponent;
   let fixture: ComponentFixture<WalletComponent>;
   let router: Router;
-  let kycStatusService: KYCStatusService;
+  let kycStatusService: KYCPropertiesService;
 
   const walletHelpButtonSelector = 'a';
 
@@ -43,7 +43,7 @@ describe('WalletComponent', () => {
           },
         },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
-        KYCStatusService,
+        KYCPropertiesService,
         KYCStatusApiService,
       ],
     }).compileComponents();
@@ -53,7 +53,7 @@ describe('WalletComponent', () => {
     fixture = TestBed.createComponent(WalletComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
-    kycStatusService = TestBed.inject(KYCStatusService);
+    kycStatusService = TestBed.inject(KYCPropertiesService);
     fixture.detectChanges();
   });
 

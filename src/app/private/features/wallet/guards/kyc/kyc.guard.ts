@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { KYCProperties } from '@api/core/model/kyc-properties/kyc-properties.interface';
-import { KYCStatusService } from '@api/payments/kyc-status/kyc-status.service';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class KYCGuard implements CanActivate {
-  constructor(private kycStatusService: KYCStatusService, private router: Router) {}
+  constructor(private kycStatusService: KYCPropertiesService, private router: Router) {}
 
   public canActivate(): Observable<boolean> {
     return this.kycStatusService.get().pipe(

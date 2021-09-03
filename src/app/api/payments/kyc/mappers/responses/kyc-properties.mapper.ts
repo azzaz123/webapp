@@ -1,6 +1,6 @@
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { KYCProperties } from '@api/core/model/kyc-properties/kyc-properties.interface';
-import { KYCDocumentStatus, KYCPropertiesApi } from '@api/payments/kyc-status/dtos/responses';
+import { KYCDocumentStatus, KYCPropertiesApi } from '@api/payments/kyc-properties/dtos/responses';
 import { mapKYCRefusedReason } from './kyc-refused-reason.mapper';
 
 export function mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi: KYCPropertiesApi): KYCProperties {

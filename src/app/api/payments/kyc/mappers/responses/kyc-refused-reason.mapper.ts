@@ -1,5 +1,5 @@
 import { KYC_REFUSED_REASON } from '@api/core/model/kyc-properties/kyc-refused-reason.enum';
-import { KYCRefusedReasonApi } from '@api/payments/kyc-status/dtos/responses';
+import { KYCRefusedReasonApi } from '@api/payments/kyc-properties/dtos/responses';
 
 export function mapKYCRefusedReason(documentRefusedReason: KYCRefusedReasonApi): KYC_REFUSED_REASON {
   switch (documentRefusedReason) {

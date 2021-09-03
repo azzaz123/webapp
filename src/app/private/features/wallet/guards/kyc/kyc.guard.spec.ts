@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/kyc-banner-constants';
 import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/kyc-banner-specifications.interface';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
-import { KYCStatusService } from '@api/payments/kyc-status/kyc-status.service';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
@@ -15,7 +15,7 @@ import { KYCGuard } from './kyc.guard';
 describe('KYCGuard', () => {
   const WALLET_URL = PRIVATE_PATHS.WALLET;
   let guard: KYCGuard;
-  let kycStatusService: KYCStatusService;
+  let kycStatusService: KYCPropertiesService;
   let router: Router;
 
   beforeEach(() => {
@@ -23,7 +23,7 @@ describe('KYCGuard', () => {
       imports: [HttpClientTestingModule],
       providers: [
         KYCGuard,
-        KYCStatusService,
+        KYCPropertiesService,
         KYCStatusApiService,
         {
           provide: Router,
@@ -34,7 +34,7 @@ describe('KYCGuard', () => {
       ],
     });
     guard = TestBed.inject(KYCGuard);
-    kycStatusService = TestBed.inject(KYCStatusService);
+    kycStatusService = TestBed.inject(KYCPropertiesService);
     router = TestBed.inject(Router);
   });
 
