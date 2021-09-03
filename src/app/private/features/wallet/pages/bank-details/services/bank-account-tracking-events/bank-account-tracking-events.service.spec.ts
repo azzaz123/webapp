@@ -11,7 +11,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { KYCBannerApiService } from '@private/features/wallet/services/api/kyc-banner-api.service';
 import { of, throwError } from 'rxjs';
-import { BankAccountTrackingEventCase, MOCK_BANK_ACCOUNT_TRACKING_EVENTS_CASES } from './bank-account-tracking-events.fixtures.spec';
+import { BankAccountTrackingEventTestCase, MOCK_BANK_ACCOUNT_TRACKING_EVENTS_CASES } from './bank-account-tracking-events.fixtures.spec';
 
 import { BankAccountTrackingEventsService } from './bank-account-tracking-events.service';
 
@@ -38,7 +38,7 @@ describe('BankAccountTrackingEventsService', () => {
 
   describe.each(MOCK_BANK_ACCOUNT_TRACKING_EVENTS_CASES)(
     'when tracking the event',
-    (bankAccountTrackingEventCase: BankAccountTrackingEventCase) => {
+    (bankAccountTrackingEventCase: BankAccountTrackingEventTestCase) => {
       describe(`and when user clicked on ${bankAccountTrackingEventCase.isEdit ? 'edit' : 'add'} bank account with KYC status "${
         bankAccountTrackingEventCase.kycBannerStatus
       }"`, () => {

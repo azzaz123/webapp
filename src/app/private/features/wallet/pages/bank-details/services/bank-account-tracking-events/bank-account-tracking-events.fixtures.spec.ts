@@ -2,14 +2,14 @@ import { InnerType } from '@api/core/utils/types';
 import { ClickAddEditBankAccount } from '@core/analytics/analytics-constants';
 import { KYC_BANNER_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-banner.interface';
 
-export type BankAccountTrackingEventCase = {
+export type BankAccountTrackingEventTestCase = {
   isEdit: boolean;
   kycBannerStatus: KYC_BANNER_STATUS;
   mappedAddOrEditToAnalytics: InnerType<ClickAddEditBankAccount, 'addOrEdit'>;
   mappedBannerStatusToAnalytics?: InnerType<ClickAddEditBankAccount, 'kycStatus'>;
 };
 
-export const MOCK_ADD_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEventCase[] = [
+export const MOCK_ADD_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEventTestCase[] = [
   {
     isEdit: false,
     kycBannerStatus: KYC_BANNER_STATUS.PENDING,
@@ -40,7 +40,7 @@ export const MOCK_ADD_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEven
   },
 ];
 
-export const MOCK_EDIT_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEventCase[] = [
+export const MOCK_EDIT_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEventTestCase[] = [
   {
     isEdit: true,
     kycBannerStatus: KYC_BANNER_STATUS.PENDING,
@@ -71,7 +71,7 @@ export const MOCK_EDIT_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEve
   },
 ];
 
-export const MOCK_BANK_ACCOUNT_TRACKING_EVENTS_CASES: BankAccountTrackingEventCase[] = [
+export const MOCK_BANK_ACCOUNT_TRACKING_EVENTS_CASES: BankAccountTrackingEventTestCase[] = [
   ...MOCK_ADD_BANK_ACCOUNT_TRACKING_EVENT_CASES,
   ...MOCK_EDIT_BANK_ACCOUNT_TRACKING_EVENT_CASES,
 ];
