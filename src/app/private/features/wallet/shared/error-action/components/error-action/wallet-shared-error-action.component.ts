@@ -33,7 +33,7 @@ export class WalletSharedErrorActionComponent implements OnDestroy, OnInit {
     this.subscribe();
   }
 
-  get bannerConfiguration(): WalletSharedErrorActionBannerConfigurationInterface {
+  public get bannerConfiguration(): WalletSharedErrorActionBannerConfigurationInterface {
     return {
       buttonText: $localize`:@@wallet_shared_error_action_button:Retry`,
       description: $localize`:@@wallet_shared_error_action_message:Service unavailable temporarily. Try it later`,
@@ -42,7 +42,7 @@ export class WalletSharedErrorActionComponent implements OnDestroy, OnInit {
     };
   }
 
-  doAction(): void {
+  public doAction(): void {
     this.errorAction = null;
     const currentUrl = this.router.url;
     this.router.navigateByUrl(`${PRIVATE_PATHS.WALLET}/refresh`, { skipLocationChange: true }).then(() => {
@@ -50,11 +50,11 @@ export class WalletSharedErrorActionComponent implements OnDestroy, OnInit {
     });
   }
 
-  get showContent(): boolean {
+  public get showContent(): boolean {
     return !this.errorAction;
   }
 
-  get showError(): boolean {
+  public get showError(): boolean {
     return !!this.errorAction;
   }
 
