@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UnsubscribeReason } from '@core/user/unsubscribe-reason.interface';
 import { UserService } from '@core/user/user.service';
-import { environment } from '@environments/environment';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { SITE_URL } from '@configs/site-url.config';
 
 @Component({
   selector: 'tsl-unsubscribe-modal',
@@ -22,7 +22,8 @@ export class UnsubscribeModalComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private userService: UserService,
     private event: EventService,
-    private accessTokenService: AccessTokenService
+    private accessTokenService: AccessTokenService,
+    @Inject(SITE_URL) private siteUrl: string
   ) {}
 
   ngOnInit() {
@@ -36,7 +37,7 @@ export class UnsubscribeModalComponent implements OnInit {
     this.userService.unsubscribe(this.selectedReason, this.customReason).subscribe(() => {
       this.activeModal.close();
       this.accessTokenService.deleteAccessToken();
-      this.event.emit(EventService.USER_LOGOUT, environment.siteUrl);
+      this.event.emit(EventService.USER_LOGOUT, this.siteUrl);
     });
   }
 }

@@ -43,6 +43,7 @@ export const MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_MAPPED_MONEY: Money = {
     integer: 1722,
     decimals: 41,
     total: 1722.41,
+    toString: () => '',
   },
   currency: {
     code: 'EUR',

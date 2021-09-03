@@ -78,7 +78,6 @@ describe('SortFilterComponent', () => {
             },
           },
         },
-        { provide: 'SUBDOMAIN', useValue: 'es' },
         {
           provide: CookieService,
           useValue: MockCookieService,

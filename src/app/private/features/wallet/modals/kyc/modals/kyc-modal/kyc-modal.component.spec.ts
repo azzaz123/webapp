@@ -31,6 +31,7 @@ describe('KYCModalComponent', () => {
   const KYCNationalitySelector = 'tsl-kyc-nationality';
   const KYCImageOptionsSelector = 'tsl-kyc-image-options';
   const KYCUploadImagesSelector = 'tsl-kyc-upload-images';
+  const KYCStatusPropertiesSelector = 'tsl-kyc-status';
 
   let component: KYCModalComponent;
   let kycStoreService: KYCStoreService;
@@ -200,6 +201,7 @@ describe('KYCModalComponent', () => {
         describe('and the verification request succeed', () => {
           beforeEach(() => {
             spyOn(kycService, 'request').and.returnValue(of(null));
+            spyOn(component.stepper, 'goNext');
             const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
 
             KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
@@ -208,13 +210,18 @@ describe('KYCModalComponent', () => {
           it('should do the kyc request ', () => {
             expect(kycService.request).toHaveBeenCalledTimes(1);
           });
+
+          it('should go to the next step', () => {
+            expect(component.stepper.goNext).toHaveBeenCalledTimes(1);
+          });
         });
 
         describe('and the verification request fails', () => {
           beforeEach(() => {
-            spyOn(i18nService, 'translate').and.returnValue('');
-            spyOn(toastService, 'show');
             spyOn(kycService, 'request').and.returnValue(throwError(new DocumentImageIsInvalidError()));
+            spyOn(i18nService, 'translate').and.returnValue('');
+            spyOn(component.stepper, 'goNext');
+            spyOn(toastService, 'show');
             const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
 
             KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
@@ -227,6 +234,10 @@ describe('KYCModalComponent', () => {
           it('should show an error toast', () => {
             const errorMessage = $localize`:@@saving_bank_account_unknown_error:Sorry, something went wrong`;
             expect(toastService.show).toHaveBeenCalledWith({ text: errorMessage, type: TOAST_TYPES.ERROR });
+          });
+
+          it('should NOT go to the next step', () => {
+            expect(component.stepper.goNext).not.toHaveBeenCalled();
           });
         });
       });
@@ -245,6 +256,27 @@ describe('KYCModalComponent', () => {
       });
     });
 
+    describe('and we are on in progress informative step', () => {
+      beforeEach(() => {
+        component.stepper.activeId = 4;
+
+        fixture.detectChanges();
+      });
+
+      describe('and the user clicks on the OK button', () => {
+        beforeEach(() => {
+          spyOn(activeModal, 'close');
+          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCStatusPropertiesSelector));
+
+          KYCUploadImagesComponent.triggerEventHandler('buttonClick', {});
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
+        });
+      });
+    });
+
     describe('and we click on the close modal button...', () => {
       beforeEach(() => {
         spyOn(activeModal, 'close');
@@ -253,12 +285,18 @@ describe('KYCModalComponent', () => {
         closeButton.click();
       });
 
-      it('should reset all the specifications', () => {
-        expect(kycStoreService.specifications).toStrictEqual(MOCK_EMPTY_KYC_SPECIFICATIONS);
-      });
-
       it('should close the modal', () => {
         expect(activeModal.close).toHaveBeenCalled();
+      });
+    });
+
+    describe('onDestroy', () => {
+      beforeEach(() => {
+        component.ngOnDestroy();
+      });
+
+      it('should reset all the specifications', () => {
+        expect(kycStoreService.specifications).toStrictEqual(MOCK_EMPTY_KYC_SPECIFICATIONS);
       });
     });
   });

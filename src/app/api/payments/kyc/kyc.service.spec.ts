@@ -49,7 +49,7 @@ describe('KYCService', () => {
   });
 
   describe('when we request the KYC verification...', () => {
-    describe('and the images are smaller than 1KB', () => {
+    describe('and the images are smaller than 32KB', () => {
       beforeEach(() => {
         spyOn(kycHttpService, 'request');
       });
@@ -71,7 +71,7 @@ describe('KYCService', () => {
       });
     });
 
-    describe('and the images are NOT smaller than 1KB', () => {
+    describe('and the images are bigger than 32KB', () => {
       describe(`and the server don't notify errors`, () => {
         beforeEach(() => {
           spyOn(uuidService, 'getUUID').and.returnValue('1-2');

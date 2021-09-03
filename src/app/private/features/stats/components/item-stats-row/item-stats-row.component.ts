@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Item } from '@core/item/item';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from '@private/features/stats/core/item-stats-response.interface';
@@ -28,10 +28,9 @@ export class ItemStatsRowComponent implements OnInit {
   };
   public readonly PERMISSIONS = PERMISSIONS;
 
-  constructor(@Inject('SUBDOMAIN') private subdomain: string, private itemStatsService: ItemStatsService) {}
+  constructor(private itemStatsService: ItemStatsService) {}
 
   ngOnInit() {
-    this.link = this.item.getUrl(this.subdomain);
     this.itemStatsService.getStatistics(this.item.id).subscribe((response: ItemStatisticFullResponse) => {
       this.statsData = { entries: [] };
       this.statsData.entries = this.removeCurrentDay(response);

@@ -71,7 +71,6 @@ describe('UserPublishedComponent', () => {
             accessToken: 'ACCESS_TOKEN',
           },
         },
-        { provide: 'SUBDOMAIN', useValue: 'www' },
         {
           provide: ActivatedRoute,
           useValue: {

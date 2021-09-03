@@ -47,7 +47,6 @@ export default {
         EventService,
         I18nService,
         ItemCardService,
-        { provide: 'SUBDOMAIN', useValue: 'www' },
         SearchService,
         SearchStoreService,
         SearchInfrastructureService,
