@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { SITE_URL } from '@configs/site-url.config';
 import { CategoryService } from '@core/category/category.service';
 import {
   MOCK_CELLPHONE_PARENT_RESPONSE,
@@ -18,11 +19,14 @@ import {
   ITEM_XLARGE_IMAGE,
 } from '@fixtures/item.fixtures.spec';
 import { MOCK_MAP_SPECIFICATIONS_CAR } from '@fixtures/map-specifications.fixtures.spec';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
 import { ItemTaxonomies } from '@public/features/item-detail/components/item-taxonomies/interfaces/item-taxonomies.interface';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { ItemDetailRoutePipe } from '@shared/pipes';
 import { of } from 'rxjs';
 import { MOCK_FASHION_EXTRA_INFO_LABELS } from '../map-extra-info/map-extra-info.fixtures.spec';
 import { MapExtraInfoService } from '../map-extra-info/map-extra-info.service';
@@ -49,7 +53,7 @@ describe('MapItemDetailStoreService', () => {
         MapItemDetailStoreService,
         TypeCheckService,
         MapSpecificationsService,
-
+        ItemDetailRoutePipe,
         {
           provide: MapExtraInfoService,
           useValue: {
@@ -59,6 +63,10 @@ describe('MapItemDetailStoreService', () => {
         PublicProfileService,
         CategoryService,
         PublicUserApiService,
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
+        },
       ],
     });
     service = TestBed.inject(MapItemDetailStoreService);
@@ -327,7 +335,7 @@ describe('MapItemDetailStoreService', () => {
         describe('when we handle the socialShare...', () => {
           it('should return the formatted social share data', () => {
             const itemDetail = service.mapItemDetailStore(MOCK_ITEM_DETAIL_RESPONSE);
-            const itemWebLink = MOCK_ITEM_DETAIL_RESPONSE?.item.webLink;
+            const itemWebLink = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_DETAIL_RESPONSE?.item.webSlug}`;
             const itemTitle = MOCK_ITEM_DETAIL_RESPONSE?.item.title;
             const itemDescription = MOCK_ITEM_DETAIL_RESPONSE?.item.description;
             const emailcopy = $localize`:@@ItemDetailShareEmailText:This may interest you - ` + itemDescription;
