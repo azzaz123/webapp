@@ -20,7 +20,7 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 
 export class MockSubscriptionService {
   getSubscriptions() {
-    return of(MAPPED_SUBSCRIPTIONS);
+    return of(SUBSCRIPTIONS);
   }
 
   public getSlots() {
@@ -241,33 +241,49 @@ export const TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT: Tier = {
 };
 
 const MOCK_CG_BASIC_DATA: Partial<SubscriptionsResponse> = {
-  category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
   category_ids: [CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS],
   type: SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS,
+};
+
+const MOCK_RE_BASIC_DATA: Partial<SubscriptionsResponse> = {
+  category_ids: [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE],
+  type: SUBSCRIPTION_CATEGORY_TYPES.REAL_ESTATE,
+};
+
+const MOCK_CARS_BASIC_DATA: Partial<SubscriptionsResponse> = {
+  category_ids: [CATEGORY_SUBSCRIPTIONS_IDS.CAR],
+  type: SUBSCRIPTION_CATEGORY_TYPES.CARS,
+};
+
+const MOCK_MOTORBIKE_BASIC_DATA: Partial<SubscriptionsResponse> = {
+  category_ids: [CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE],
+  type: SUBSCRIPTION_CATEGORY_TYPES.MOTORBIKES,
+};
+
+const MOCK_CG_BASIC_DATA_MAPPED: Partial<SubscriptionsResponse> = {
+  ...MOCK_CG_BASIC_DATA,
+  category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
   category_icon: 'All',
   category_name: 'Everything else',
 };
 
-const MOCK_RE_BASIC_DATA: Partial<SubscriptionsResponse> = {
+const MOCK_RE_BASIC_DATA_MAPPED: Partial<SubscriptionsResponse> = {
+  ...MOCK_RE_BASIC_DATA,
   category_id: CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
-  category_ids: [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE],
-  type: SUBSCRIPTION_CATEGORY_TYPES.REAL_ESTATE,
   category_icon: 'house',
   category_name: 'Real Estate',
 };
 
-const MOCK_CARS_BASIC_DATA: Partial<SubscriptionsResponse> = {
+const MOCK_CARS_BASIC_DATA_MAPPED: Partial<SubscriptionsResponse> = {
+  ...MOCK_CARS_BASIC_DATA,
   category_id: CATEGORY_SUBSCRIPTIONS_IDS.CAR,
-  category_ids: [CATEGORY_SUBSCRIPTIONS_IDS.CAR],
-  type: SUBSCRIPTION_CATEGORY_TYPES.CARS,
   category_icon: 'car',
   category_name: 'Cars',
 };
 
-const MOCK_MOTORBIKE_BASIC_DATA: Partial<SubscriptionsResponse> = {
+const MOCK_MOTORBIKE_BASIC_DATA_MAPPED: Partial<SubscriptionsResponse> = {
+  ...MOCK_MOTORBIKE_BASIC_DATA,
   category_id: CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE,
-  category_ids: [CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE],
-  type: SUBSCRIPTION_CATEGORY_TYPES.MOTORBIKES,
   category_icon: 'motorbike',
   category_name: 'Motorbike',
 };
@@ -333,63 +349,87 @@ function generateSubscription(
   };
 }
 
+export const MOCK_SUBSCRIPTION_RE_SUBSCRIBED: SubscriptionsResponse = generateSubscription(MOCK_RE_BASIC_DATA, MOCK_SUBSCRIBED_DATA, [
+  TIER_WITH_DISCOUNT,
+  TIER_WITH_DISCOUNT_WITHOUT_LIMIT,
+]);
+
+export const MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED: SubscriptionsResponse = generateSubscription(
+  MOCK_CARS_BASIC_DATA,
+  MOCK_NO_SUBSCRIBED_DATA,
+  [TIER_WITH_DISCOUNT, TIER_WITH_DISCOUNT_WITHOUT_LIMIT]
+);
+
+export const MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_NO_DISCOUNTS: SubscriptionsResponse = generateSubscription(
+  MOCK_CARS_BASIC_DATA,
+  MOCK_NO_SUBSCRIBED_DATA,
+  [TIER_NO_DISCOUNT_NO_BASIC, TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT]
+);
+
+export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED: SubscriptionsResponse = generateSubscription(
+  MOCK_CG_BASIC_DATA,
+  MOCK_NO_SUBSCRIBED_DATA,
+  [TIER_BASIC_WITH_DISCOUNT]
+);
+
 export const MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED: SubscriptionsResponse = generateSubscription(
-  MOCK_RE_BASIC_DATA,
+  MOCK_RE_BASIC_DATA_MAPPED,
   MOCK_SUBSCRIBED_DATA,
   [TIER_WITH_DISCOUNT, TIER_WITH_DISCOUNT_WITHOUT_LIMIT]
 );
 
 export const MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED: SubscriptionsResponse = generateSubscription(
-  MOCK_CARS_BASIC_DATA,
+  MOCK_CARS_BASIC_DATA_MAPPED,
   MOCK_SUBSCRIBED_DATA,
   [TIER_WITH_DISCOUNT, TIER_WITH_DISCOUNT_WITHOUT_LIMIT]
 );
 
 export const MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED: SubscriptionsResponse = generateSubscription(
-  MOCK_CARS_BASIC_DATA,
+  MOCK_CARS_BASIC_DATA_MAPPED,
   MOCK_NO_SUBSCRIBED_DATA,
   [TIER_WITH_DISCOUNT, TIER_WITH_DISCOUNT_WITHOUT_LIMIT]
 );
 
-export const MOCK_SUBSCRIPTION_CARS_WITH_LIMITS: SubscriptionsResponse = generateSubscription(MOCK_CARS_BASIC_DATA, MOCK_SUBSCRIBED_DATA, [
-  TIER_WITH_DISCOUNT,
-  TIER_2_WITH_DISCOUNT,
-]);
+export const MOCK_SUBSCRIPTION_CARS_WITH_LIMITS: SubscriptionsResponse = generateSubscription(
+  MOCK_CARS_BASIC_DATA_MAPPED,
+  MOCK_SUBSCRIBED_DATA,
+  [TIER_WITH_DISCOUNT, TIER_2_WITH_DISCOUNT]
+);
 
 export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED: SubscriptionsResponse = generateSubscription(
-  MOCK_CG_BASIC_DATA,
+  MOCK_CG_BASIC_DATA_MAPPED,
   MOCK_NO_SUBSCRIBED_DATA,
   [TIER_BASIC_WITH_DISCOUNT]
 );
 
 export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED: SubscriptionsResponse = generateSubscription(
-  MOCK_CG_BASIC_DATA,
+  MOCK_CG_BASIC_DATA_MAPPED,
   MOCK_SUBSCRIBED_DATA,
   [TIER_BASIC_WITH_DISCOUNT]
 );
 
 export const MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS: SubscriptionsResponse = generateSubscription(
-  MOCK_CG_BASIC_DATA,
+  MOCK_CARS_BASIC_DATA_MAPPED,
   MOCK_NO_SUBSCRIBED_DATA,
   [TIER_NO_DISCOUNT_NO_BASIC, TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT]
 );
 
 export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED: SubscriptionsResponse = generateSubscription(
-  MOCK_CG_BASIC_DATA,
+  MOCK_CG_BASIC_DATA_MAPPED,
   MOCK_SUBSCRIBED_DATA,
   [TIER_BASIC_WITH_DISCOUNT],
   SUBSCRIPTION_MARKETS.GOOGLE_PLAY
 );
 
 export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED: SubscriptionsResponse = generateSubscription(
-  MOCK_CG_BASIC_DATA,
+  MOCK_CG_BASIC_DATA_MAPPED,
   MOCK_SUBSCRIBED_DATA,
   [TIER_BASIC_WITH_DISCOUNT],
   SUBSCRIPTION_MARKETS.APPLE_STORE
 );
 
 export const FREE_TRIAL_AVAILABLE_SUBSCRIPTION: SubscriptionsResponse = generateSubscription(
-  MOCK_MOTORBIKE_BASIC_DATA,
+  MOCK_MOTORBIKE_BASIC_DATA_MAPPED,
   MOCK_NO_SUBSCRIBED_DATA,
   [TIER_WITH_DISCOUNT, TIER_WITH_DISCOUNT_WITHOUT_LIMIT],
   null,
@@ -397,7 +437,7 @@ export const FREE_TRIAL_AVAILABLE_SUBSCRIPTION: SubscriptionsResponse = generate
 );
 
 export const FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION: SubscriptionsResponse = generateSubscription(
-  MOCK_MOTORBIKE_BASIC_DATA,
+  MOCK_MOTORBIKE_BASIC_DATA_MAPPED,
   MOCK_NO_SUBSCRIBED_DATA,
   [TIER_NO_DISCOUNT_NO_BASIC, TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT],
   null,
@@ -407,7 +447,7 @@ export const FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION: SubscriptionsRespon
 export const SUBSCTIPTION_WITH_TIER_DISCOUNT: SubscriptionsResponse[] = [MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED];
 
 export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED: SubscriptionsResponse = generateSubscription(
-  MOCK_CG_BASIC_DATA,
+  MOCK_CG_BASIC_DATA_MAPPED,
   MOCK_SUBSCRIBED_DATA_WITH_CANCELATION,
   [TIER_BASIC_WITH_DISCOUNT]
 );
@@ -438,11 +478,7 @@ export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] = [
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
 ];
 
-export const MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = SUBSCRIPTIONS;
-
 export const MAPPED_SUBSCRIPTIONS_WITH_RE: SubscriptionsResponse[] = [MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED];
-
-export const MAPPED_SUBSCRIPTIONS_ADDED: SubscriptionsResponse[] = SUBSCRIPTIONS;
 
 export const MAPPED_SUBSCRIPTIONS_WITH_INAPP: SubscriptionsResponse[] = MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE;
 
@@ -475,530 +511,30 @@ export const SUBSCRIPTION_REQUIRES_PAYMENT: SubscriptionResponse = {
 
 export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
   {
+    ...MOCK_SUBSCRIPTION_RE_SUBSCRIBED,
     id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
-    type: SUBSCRIPTION_CATEGORY_TYPES.CAR_PARTS,
-    category_ids: [CATEGORY_IDS.MOTOR_ACCESSORIES],
-    current_limit: 200,
-    subscribed_from: 1629968553000,
-    subscribed_until: 1632906145000,
-    selected_tier_id: 'autoparts_infinite',
-    default_tier_id: 'autoparts_200',
-    market: SUBSCRIPTION_MARKETS.STRIPE,
-    trial_available: true,
-    trial_days: 30,
-    tiers: [
-      {
-        id: 'autoparts_200',
-        limit: 200,
-        is_basic: false,
-        price: 9.0,
-        currency: 'EUR',
-        discount: null,
-      },
-      {
-        id: 'autoparts_500',
-        limit: 500,
-        is_basic: false,
-        price: 39.0,
-        currency: 'EUR',
-        discount: null,
-      },
-      {
-        id: 'autoparts_infinite',
-        is_basic: false,
-        price: 99.0,
-        currency: 'EUR',
-        discount: null,
-      },
-    ],
   },
   {
-    type: SUBSCRIPTION_CATEGORY_TYPES.CARS,
-    category_ids: [CATEGORY_IDS.CAR],
-    current_limit: 2,
-    default_tier_id: 'motorplan_basic',
-    market: SUBSCRIPTION_MARKETS.STRIPE,
-    trial_available: true,
-    trial_days: 30,
-    tiers: [
-      {
-        id: 'motorplan_basic',
-        limit: 5,
-        is_basic: false,
-        price: 39.99,
-        currency: 'EUR',
-        discount: null,
-      },
-      {
-        id: 'motorplan_medium',
-        limit: 9,
-        is_basic: false,
-        price: 69.99,
-        currency: 'EUR',
-        discount: null,
-      },
-      {
-        id: 'motorplan_super',
-        limit: 15,
-        is_basic: false,
-        price: 89.99,
-        currency: 'EUR',
-        discount: null,
-      },
-    ],
+    ...MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_NO_DISCOUNTS,
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c07',
   },
   {
-    type: SUBSCRIPTION_CATEGORY_TYPES.MOTORBIKES,
-    category_ids: [CATEGORY_IDS.MOTORBIKE],
-    current_limit: 2,
-    default_tier_id: 'motorbikes_5',
-    market: null,
-    trial_available: true,
-    trial_days: 30,
-    tiers: [
-      {
-        id: 'motorbikes_5',
-        limit: 5,
-        is_basic: false,
-        price: 19.0,
-        currency: 'EUR',
-        discount: null,
-      },
-      {
-        id: 'motorbikes_15',
-        limit: 15,
-        is_basic: false,
-        price: 39.0,
-        currency: 'EUR',
-        discount: null,
-      },
-      {
-        id: 'motorbikes_infinite',
-        is_basic: false,
-        price: 69.0,
-        currency: 'EUR',
-        discount: null,
-      },
-    ],
-  },
-  {
-    type: SUBSCRIPTION_CATEGORY_TYPES.REAL_ESTATE,
-    category_ids: [CATEGORY_IDS.REAL_ESTATE],
-    current_limit: 2,
-    default_tier_id: 'realestate_10',
-    market: null,
-    trial_available: true,
-    trial_days: 30,
-    tiers: [
-      {
-        id: 'realestate_10',
-        limit: 10,
-        is_basic: false,
-        price: 19.0,
-        currency: 'EUR',
-        discount: null,
-      },
-      {
-        id: 'realestate_25',
-        limit: 25,
-        is_basic: false,
-        price: 33.0,
-        currency: 'EUR',
-        discount: null,
-      },
-      {
-        id: 'realestate_100',
-        limit: 100,
-        is_basic: false,
-        price: 46.0,
-        currency: 'EUR',
-        discount: null,
-      },
-    ],
-  },
-  {
-    type: SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS,
-    category_ids: [
-      CATEGORY_IDS.APPLIANCES,
-      CATEGORY_IDS.BABIES_CHILD,
-      CATEGORY_IDS.BIKES,
-      CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
-      CATEGORY_IDS.COLLECTIBLES_ART,
-      CATEGORY_IDS.COMPUTERS_ELECTRONICS,
-      CATEGORY_IDS.CONSTRUCTION,
-      CATEGORY_IDS.FASHION_ACCESSORIES,
-      CATEGORY_IDS.GAMES_CONSOLES,
-      CATEGORY_IDS.HOME_GARDEN,
-      CATEGORY_IDS.GAMES_BOOKS,
-      CATEGORY_IDS.OTHERS,
-      CATEGORY_IDS.SPORTS_LEISURE,
-      CATEGORY_IDS.TV_AUDIO_CAMERAS,
-      CATEGORY_IDS.SERVICES,
-      CATEGORY_IDS.AGRICULTURE_INDUSTRIAL,
-      CATEGORY_IDS.JOBS,
-    ],
-    current_limit: 200,
-    default_tier_id: 'consumer_goods_200',
-    market: null,
-    trial_available: false,
-    trial_days: 0,
-    tiers: [
-      {
-        id: 'consumer_goods_200',
-        is_basic: true,
-        price: 39.0,
-        currency: 'EUR',
-        discount: {
-          price: 39.0,
-          percentage: 50,
-          end_date: 1639526400000,
-        },
-      },
-      {
-        id: 'consumer_goods_400',
-        limit: 400,
-        is_basic: false,
-        price: 59.0,
-        currency: 'EUR',
-        discount: {
-          price: 59.0,
-          percentage: 50,
-          end_date: 1639526400000,
-        },
-      },
-      {
-        id: 'consumer_goods_800',
-        limit: 800,
-        is_basic: false,
-        price: 99.0,
-        currency: 'EUR',
-        discount: {
-          price: 99.0,
-          percentage: 50,
-          end_date: 1639526400000,
-        },
-      },
-      {
-        id: 'consumer_goods_1200',
-        limit: 1200,
-        is_basic: false,
-        price: 159.0,
-        currency: 'EUR',
-        discount: {
-          price: 159.0,
-          percentage: 50,
-          end_date: 1639526400000,
-        },
-      },
-      {
-        id: 'consumer_goods_2000',
-        limit: 2000,
-        is_basic: false,
-        price: 229.0,
-        currency: 'EUR',
-        discount: {
-          price: 229.0,
-          percentage: 50,
-          end_date: 1639526400000,
-        },
-      },
-    ],
-  },
-  {
-    type: SUBSCRIPTION_CATEGORY_TYPES.OLD_CONSUMER_GOODS,
-    category_ids: [0],
-    default_tier_id: 'consumer_goods',
-    market: null,
-    trial_available: false,
-    trial_days: 0,
-    tiers: [
-      {
-        id: 'consumer_goods',
-        is_basic: true,
-        price: 39.99,
-        currency: 'EUR',
-        discount: null,
-      },
-    ],
+    ...MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c08',
   },
 ];
 
 export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
   {
+    ...MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
     id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
-    type: SUBSCRIPTION_CATEGORY_TYPES.CAR_PARTS,
-    category_id: CATEGORY_IDS.MOTOR_ACCESSORIES,
-    category_ids: [CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES],
-    current_limit: 200,
-    subscribed_from: 1629968553000,
-    subscribed_until: 1632906145000,
-    selected_tier_id: 'autoparts_infinite',
-    default_tier_id: 'autoparts_200',
-    market: SUBSCRIPTION_MARKETS.STRIPE,
-    trial_available: true,
-    trial_days: 30,
-    category_icon: 'helmet',
-    category_name: 'Motors & Accessories',
-    selected_tier: {
-      id: 'autoparts_infinite',
-      is_basic: false,
-      price: 99.0,
-      currency: '€',
-      discount: null,
-    },
-    tiers: [
-      {
-        id: 'autoparts_200',
-        limit: 200,
-        is_basic: false,
-        price: 9.0,
-        currency: '€',
-        discount: null,
-      },
-      {
-        id: 'autoparts_500',
-        limit: 500,
-        is_basic: false,
-        price: 39.0,
-        currency: '€',
-        discount: null,
-      },
-      {
-        id: 'autoparts_infinite',
-        is_basic: false,
-        price: 99.0,
-        currency: '€',
-        discount: null,
-      },
-    ],
   },
   {
-    type: SUBSCRIPTION_CATEGORY_TYPES.CARS,
-    category_ids: [CATEGORY_IDS.CAR],
-    category_id: CATEGORY_SUBSCRIPTIONS_IDS.CAR,
-    current_limit: 2,
-    default_tier_id: 'motorplan_basic',
-    market: SUBSCRIPTION_MARKETS.STRIPE,
-    trial_available: true,
-    trial_days: 30,
-    category_icon: 'car',
-    category_name: 'Cars',
-    tiers: [
-      {
-        id: 'motorplan_basic',
-        limit: 5,
-        is_basic: false,
-        price: 39.99,
-        currency: '€',
-        discount: null,
-      },
-      {
-        id: 'motorplan_medium',
-        limit: 9,
-        is_basic: false,
-        price: 69.99,
-        currency: '€',
-        discount: null,
-      },
-      {
-        id: 'motorplan_super',
-        limit: 15,
-        is_basic: false,
-        price: 89.99,
-        currency: '€',
-        discount: null,
-      },
-    ],
+    ...MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS,
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c07',
   },
   {
-    type: SUBSCRIPTION_CATEGORY_TYPES.MOTORBIKES,
-    category_ids: [CATEGORY_IDS.MOTORBIKE],
-    category_id: CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE,
-    current_limit: 2,
-    default_tier_id: 'motorbikes_5',
-    market: null,
-    trial_available: true,
-    trial_days: 30,
-    category_icon: 'motorbike',
-    category_name: 'Motorbike',
-    tiers: [
-      {
-        id: 'motorbikes_5',
-        limit: 5,
-        is_basic: false,
-        price: 19.0,
-        currency: '€',
-        discount: null,
-      },
-      {
-        id: 'motorbikes_15',
-        limit: 15,
-        is_basic: false,
-        price: 39.0,
-        currency: '€',
-        discount: null,
-      },
-      {
-        id: 'motorbikes_infinite',
-        is_basic: false,
-        price: 69.0,
-        currency: '€',
-        discount: null,
-      },
-    ],
-  },
-  {
-    type: SUBSCRIPTION_CATEGORY_TYPES.REAL_ESTATE,
-    category_ids: [CATEGORY_IDS.REAL_ESTATE],
-    category_id: CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
-    current_limit: 2,
-    default_tier_id: 'realestate_10',
-    market: null,
-    trial_available: true,
-    trial_days: 30,
-    category_icon: 'house',
-    category_name: 'Real Estate',
-    tiers: [
-      {
-        id: 'realestate_10',
-        limit: 10,
-        is_basic: false,
-        price: 19.0,
-        currency: '€',
-        discount: null,
-      },
-      {
-        id: 'realestate_25',
-        limit: 25,
-        is_basic: false,
-        price: 33.0,
-        currency: '€',
-        discount: null,
-      },
-      {
-        id: 'realestate_100',
-        limit: 100,
-        is_basic: false,
-        price: 46.0,
-        currency: '€',
-        discount: null,
-      },
-    ],
-  },
-  {
-    type: SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS,
-    category_ids: [
-      CATEGORY_IDS.APPLIANCES,
-      CATEGORY_IDS.BABIES_CHILD,
-      CATEGORY_IDS.BIKES,
-      CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
-      CATEGORY_IDS.COLLECTIBLES_ART,
-      CATEGORY_IDS.COMPUTERS_ELECTRONICS,
-      CATEGORY_IDS.CONSTRUCTION,
-      CATEGORY_IDS.FASHION_ACCESSORIES,
-      CATEGORY_IDS.GAMES_CONSOLES,
-      CATEGORY_IDS.HOME_GARDEN,
-      CATEGORY_IDS.GAMES_BOOKS,
-      CATEGORY_IDS.OTHERS,
-      CATEGORY_IDS.SPORTS_LEISURE,
-      CATEGORY_IDS.TV_AUDIO_CAMERAS,
-      CATEGORY_IDS.SERVICES,
-      CATEGORY_IDS.AGRICULTURE_INDUSTRIAL,
-      CATEGORY_IDS.JOBS,
-    ],
-    category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
-    current_limit: 200,
-    default_tier_id: 'consumer_goods_200',
-    market: null,
-    trial_available: false,
-    trial_days: 0,
-    category_icon: 'All',
-    category_name: 'Everything else',
-    tiers: [
-      {
-        id: 'consumer_goods_200',
-        is_basic: true,
-        price: 39.0,
-        currency: '€',
-        discount: {
-          price: 39.0,
-          percentage: 50,
-          end_date: 1639526400000,
-          no_discount_date: 1639612800000,
-        },
-      },
-      {
-        id: 'consumer_goods_400',
-        limit: 400,
-        is_basic: false,
-        price: 59.0,
-        currency: '€',
-        discount: {
-          price: 59.0,
-          percentage: 50,
-          end_date: 1639526400000,
-          no_discount_date: 1639612800000,
-        },
-      },
-      {
-        id: 'consumer_goods_800',
-        limit: 800,
-        is_basic: false,
-        price: 99.0,
-        currency: '€',
-        discount: {
-          price: 99.0,
-          percentage: 50,
-          end_date: 1639526400000,
-          no_discount_date: 1639612800000,
-        },
-      },
-      {
-        id: 'consumer_goods_1200',
-        limit: 1200,
-        is_basic: false,
-        price: 159.0,
-        currency: '€',
-        discount: {
-          price: 159.0,
-          percentage: 50,
-          end_date: 1639526400000,
-          no_discount_date: 1639612800000,
-        },
-      },
-      {
-        id: 'consumer_goods_2000',
-        limit: 2000,
-        is_basic: false,
-        price: 229.0,
-        currency: '€',
-        discount: {
-          price: 229.0,
-          percentage: 50,
-          end_date: 1639526400000,
-          no_discount_date: 1639612800000,
-        },
-      },
-    ],
-  },
-  {
-    type: SUBSCRIPTION_CATEGORY_TYPES.OLD_CONSUMER_GOODS,
-    category_ids: [0],
-    category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
-    default_tier_id: 'consumer_goods',
-    market: null,
-    trial_available: false,
-    trial_days: 0,
-    category_icon: 'All',
-    category_name: 'Everything else',
-    tiers: [
-      {
-        id: 'consumer_goods',
-        is_basic: true,
-        price: 39.99,
-        currency: '€',
-        discount: null,
-      },
-    ],
+    ...MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c08',
   },
 ];

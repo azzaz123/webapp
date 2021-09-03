@@ -21,7 +21,7 @@ describe('SubscriptionsMapper', () => {
         const nextDayAfterDiscountEndDate = 1000 * 60 * 60 * 24;
         const subscriptionsMapped = mapSubscriptions(MOCK_RESPONSE_V3_SUBSCRIPTIONS);
 
-        subscriptionsMapped[4].tiers.forEach((tier) => {
+        subscriptionsMapped[0].tiers.forEach((tier) => {
           expect(tier.discount.no_discount_date).toEqual(tier.discount.end_date + nextDayAfterDiscountEndDate);
         });
       });
@@ -30,7 +30,7 @@ describe('SubscriptionsMapper', () => {
       it('should not map discounts', () => {
         const subscriptionsMapped = mapSubscriptions(MOCK_RESPONSE_V3_SUBSCRIPTIONS);
 
-        subscriptionsMapped[0].tiers.forEach((tier) => {
+        subscriptionsMapped[1].tiers.forEach((tier) => {
           expect(tier.discount).toBeFalsy();
         });
       });

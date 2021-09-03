@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FREE_TRIAL_AVAILABLE_SUBSCRIPTION, MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { FREE_TRIAL_AVAILABLE_SUBSCRIPTION, SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
 import { SubscriptionPurchaseHeaderComponent } from './subscription-purchase-header.component';
 
 @Component({
@@ -30,7 +30,7 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionPurchaseHeaderComponent);
     component = fixture.componentInstance;
-    component.subscription = MAPPED_SUBSCRIPTIONS[0];
+    component.subscription = SUBSCRIPTIONS[0];
     component.benefits = ['benefit1', 'benefit2'];
 
     fixture.detectChanges();

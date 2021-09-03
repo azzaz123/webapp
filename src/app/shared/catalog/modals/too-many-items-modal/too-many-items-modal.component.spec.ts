@@ -11,7 +11,7 @@ import { SubscriptionsService } from '../../../../core/subscriptions/subscriptio
 import { MOCK_ITEM_V3_3 } from '../../../../../tests/item.fixtures.spec';
 import {
   MockSubscriptionService,
-  MAPPED_SUBSCRIPTIONS_ADDED,
+  SUBSCRIPTIONS,
   MAPPED_SUBSCRIPTIONS_WITH_RE,
   TIER_WITH_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
@@ -72,8 +72,8 @@ describe('TooManyItemsModalComponent', () => {
 
   describe('ngOnInit', () => {
     beforeEach(() => {
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS_ADDED));
-      spyOn(subscriptionsService, 'getSubscriptionByCategory').and.returnValue(MAPPED_SUBSCRIPTIONS_ADDED[1]);
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(SUBSCRIPTIONS));
+      spyOn(subscriptionsService, 'getSubscriptionByCategory').and.returnValue(SUBSCRIPTIONS[1]);
       hasFreeTrialByCategoryIdSpy = spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(false);
       spyOn(analyticsService, 'trackPageView');
     });
@@ -96,7 +96,7 @@ describe('TooManyItemsModalComponent', () => {
           name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
           attributes: {
             screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
-            subscription: MAPPED_SUBSCRIPTIONS_ADDED[1].category_id as SUBSCRIPTION_CATEGORIES,
+            subscription: SUBSCRIPTIONS[1].category_id as SUBSCRIPTION_CATEGORIES,
             freeTrial: true,
             isCarDealer: false,
             discount: false,
@@ -126,7 +126,7 @@ describe('TooManyItemsModalComponent', () => {
           name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
           attributes: {
             screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
-            subscription: MAPPED_SUBSCRIPTIONS_ADDED[1].category_id as SUBSCRIPTION_CATEGORIES,
+            subscription: SUBSCRIPTIONS[1].category_id as SUBSCRIPTION_CATEGORIES,
             freeTrial: false,
             isCarDealer: false,
             discount: false,
@@ -152,7 +152,7 @@ describe('TooManyItemsModalComponent', () => {
           name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
           attributes: {
             screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
-            subscription: MAPPED_SUBSCRIPTIONS_ADDED[1].category_id as SUBSCRIPTION_CATEGORIES,
+            subscription: SUBSCRIPTIONS[1].category_id as SUBSCRIPTION_CATEGORIES,
             freeTrial: false,
             isCarDealer: false,
             discount: true,

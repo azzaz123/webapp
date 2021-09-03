@@ -6,32 +6,32 @@ export const subscriptionMapper = {
   [SUBSCRIPTION_CATEGORY_TYPES.CARS]: {
     category_id: CATEGORY_SUBSCRIPTIONS_IDS.CAR,
     icon_id: 'car',
-    label: $localize`:@@web_filters_category_cars:Cars`,
+    label: $localize`:@@generic_pro_subscription_naming_cars:Cars`,
   },
   [SUBSCRIPTION_CATEGORY_TYPES.MOTORBIKES]: {
     category_id: CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE,
     icon_id: 'motorbike',
-    label: $localize`:@@web_filters_category_motorbike:Motorbike`,
+    label: $localize`:@@generic_pro_subscription_naming_motorbikes:Motorbike`,
   },
   [SUBSCRIPTION_CATEGORY_TYPES.CAR_PARTS]: {
     category_id: CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES,
     icon_id: 'helmet',
-    label: $localize`:@@web_filters_category_motors_n_accessories:Motors & Accessories`,
+    label: $localize`:@@generic_pro_subscription_naming_motors_accesories:Motors & Accessories`,
   },
   [SUBSCRIPTION_CATEGORY_TYPES.REAL_ESTATE]: {
     category_id: CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
     icon_id: 'house',
-    label: $localize`:@@web_filters_category_real_estate:Real Estate`,
+    label: $localize`:@@generic_pro_subscription_naming_real_estate:Real Estate`,
   },
   [SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS]: {
     category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
     icon_id: 'All',
-    label: $localize`:@@web_consumer_goods_category_name:Everything else`,
+    label: $localize`:@@generic_pro_subscription_naming_consumer_goods:Everything else`,
   },
   [SUBSCRIPTION_CATEGORY_TYPES.OLD_CONSUMER_GOODS]: {
     category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
     icon_id: 'All',
-    label: $localize`:@@web_consumer_goods_category_name:Everything else`,
+    label: $localize`:@@generic_pro_subscription_naming_consumer_goods:Everything else`,
   },
 };
 
