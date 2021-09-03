@@ -21,6 +21,7 @@ import { BankDetailsOverviewComponent } from './bank-details-overview.component'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
+import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
@@ -78,9 +79,7 @@ describe('BankDetailsOverviewComponent', () => {
         { provide: ToastService, useClass: MockToastService },
         {
           provide: WalletSharedErrorActionService,
-          useValue: {
-            show(data?: unknown): void {},
-          },
+          useValue: MockWalletSharedErrorActionService,
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -447,9 +446,7 @@ describe('WHEN there is an error retrieving data', () => {
         },
         {
           provide: WalletSharedErrorActionService,
-          useValue: {
-            show(data?: unknown): void {},
-          },
+          useValue: MockWalletSharedErrorActionService,
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

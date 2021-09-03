@@ -46,15 +46,13 @@ export class BankDetailsOverviewComponent implements OnInit {
     this.getBankAccountAndCreditCard();
 
     this.bankAccount$ = this.bankAccountService.bankAccount$.pipe(
-      catchError((error) => {
-        this.errorActionService.show(error);
-        return throwError(error);
+      catchError((error: unknown) => {
+        return this.handleError(error);
       })
     );
     this.creditCard$ = this.paymentsCreditCardService.creditCard$.pipe(
-      catchError((error) => {
-        this.errorActionService.show(error);
-        return throwError(error);
+      catchError((error: unknown) => {
+        return this.handleError(error);
       })
     );
   }
@@ -109,18 +107,16 @@ export class BankDetailsOverviewComponent implements OnInit {
     this.bankAccountService
       .get()
       .pipe(
-        catchError((error) => {
-          this.errorActionService.show(error);
-          return throwError(error);
+        catchError((error: unknown) => {
+          return this.handleError(error);
         })
       )
       .subscribe();
     this.paymentsCreditCardService
       .get()
       .pipe(
-        catchError((error) => {
-          this.errorActionService.show(error);
-          return throwError(error);
+        catchError((error: unknown) => {
+          return this.handleError(error);
         })
       )
       .subscribe();
@@ -161,5 +157,10 @@ export class BankDetailsOverviewComponent implements OnInit {
     modalRef.componentInstance.properties = properties;
 
     return modalRef;
+  }
+
+  private handleError(error: unknown): Observable<never> {
+    this.errorActionService.show(error);
+    return throwError(error);
   }
 }

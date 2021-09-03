@@ -19,6 +19,7 @@ import { of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { WalletBalanceInfoComponent } from './wallet-balance-info.component';
+import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 
 describe('WalletBalanceInfoComponent', () => {
   let component: WalletBalanceInfoComponent;
@@ -45,9 +46,7 @@ describe('WalletBalanceInfoComponent', () => {
         DecimalPipe,
         {
           provide: WalletSharedErrorActionService,
-          useValue: {
-            show(data?: unknown): void {},
-          },
+          useValue: MockWalletSharedErrorActionService,
         },
       ],
     }).compileComponents();

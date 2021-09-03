@@ -19,7 +19,7 @@ export class WalletPendingTransactionsComponent {
     private errorActionService: WalletSharedErrorActionService
   ) {
     this.walletPendingTransactions$ = this.requestsAndTransactionsPendingAsSellerService.walletPendingTransactions$.pipe(
-      catchError((error) => {
+      catchError((error: unknown) => {
         this.errorActionService.show(error);
         return throwError(error);
       })
