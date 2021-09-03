@@ -795,7 +795,7 @@
     "web_add_new_subscription_modal_step3_subtitle": "Per i servizi diversi dagli abbonamenti (ad esempio i pacchetti visibilità) non riceverai fatture.",
     "web_after_free_trial": "after free trial",
     "pro_subscription_purchase_tier_list_discount_limit_date_label": " Enjoy the discount until {$INTERPOLATION}",
-    "pro_subscription_purchase_non_subscribed_users_cg_basic_plan_description": "List up to {$PH} items and boost your sales",
+    "pro_subscription_purchase_non_subscribed_users_cg_basic_plan_description": "List up to {$INTERPOLATION} items and boost your sales",
     "web_profile_modal_become_pro_230": "Questi campi sono per gli utenti PRO",
     "web_profile_modal_become_pro_231": "I tuoi prodotti avranno più visibilità perché saranno nelle prime posizioni delle ricerche",
     "web_profile_modal_become_pro_232": "Gli acquirenti possono salvare il tuo negozio/profilo come preferito",
