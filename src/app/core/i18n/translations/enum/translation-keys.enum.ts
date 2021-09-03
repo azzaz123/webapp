@@ -159,6 +159,8 @@ export enum TRANSLATION_KEY {
   FINDING_MISSING_WEIGHT_ERROR,
   ZENDESK_REAL_ESTATE_LIMIT_URL,
   REAL_ESTATE_HIGHEST_LIMIT_REACHED_DESCRIPTION,
+  ZENDESK_CONSUMER_GOODS_LIMIT_URL,
+  CONSUMER_GOODS_HIGHEST_LIMIT_REACHED_DESCRIPTION,
 
   // TODO: Remaining keys with no explicit usage. Some of them might come from the backend so we need to keep it's string value
   //       We leave cleaning this keys after Italy release, as some of them come from some legacy parts (chat, calls..)
