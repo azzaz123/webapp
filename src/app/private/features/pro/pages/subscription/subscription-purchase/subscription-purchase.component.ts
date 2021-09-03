@@ -359,11 +359,11 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   }
 
   private mapTiers() {
-    this.basicTier = this.subscription.tiers.find((tier) => !tier.limit_perk);
+    this.basicTier = this.subscription.tiers.find((tier) => tier.is_basic);
 
     if (this.basicTier) {
       this.selectedTier = this.basicTier;
-      this.availableTiers = this.subscription.tiers.filter((tier) => tier.limit_perk);
+      this.availableTiers = this.subscription.tiers.filter((tier) => !tier.is_basic);
     } else {
       this.selectedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.default_tier_id);
     }

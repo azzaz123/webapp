@@ -795,6 +795,7 @@
     "web_add_new_subscription_modal_step3_subtitle": "For services other than subscriptions (e.g. visibility packs) you won't receive invoices.",
     "web_after_free_trial": "after free trial",
     "pro_subscription_purchase_tier_list_discount_limit_date_label": "Enjoy the discount until {$INTERPOLATION}",
+    "pro_subscription_purchase_non_subscribed_users_cg_basic_plan_description": "Publish up to {$INTERPOLATION} items and boost your sales",
     "web_profile_modal_become_pro_230": "These fields are for Pro users",
     "web_profile_modal_become_pro_231": "Your products will be seen more: they will be in the first position of the searches",
     "web_profile_modal_become_pro_232": "Buyers can save your shop/profile as a favorite",
