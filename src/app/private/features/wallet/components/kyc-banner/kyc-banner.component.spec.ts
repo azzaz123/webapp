@@ -10,7 +10,7 @@ import { ButtonModule } from '@shared/button/button.module';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { KYCInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
-import { KYC_BANNER_TYPES } from '../../../../../api/core/model/kyc-status/kyc-banner-constants';
+import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/kyc-banner-constants';
 import { KYCBannerComponent } from './kyc-banner.component';
 
 describe('KYCBannerComponent', () => {

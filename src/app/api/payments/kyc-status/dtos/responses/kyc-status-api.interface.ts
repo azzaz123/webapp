@@ -1,4 +1,4 @@
-export interface KYCStatusApi {
+export interface KYCPropertiesApi {
   document_id: string;
   document_refused_reason_type: KYCRefusedReasonApi;
   document_status: KYCDocumentStatus;

@@ -1,34 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { KYCStatus } from '@api/core/model/kyc-status/kyc-status.interface';
-import { KYCBannerSpecifications } from '@api/core/model/kyc-status/kyc-banner-specifications.interface';
-import { KYC_STATUS_STATES } from '@api/core/model/kyc-status/kyc-status-states.enum';
-import { mapKYCStatusApiToKYCStatus } from '@api/payments/kyc/mappers/responses/kyc-status.mapper';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/kyc-banner-specifications.interface';
+import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { KYCStatusApiService } from '@private/features/wallet/services/api/kyc-status-api/kyc-status-api.service';
-import { KYCStatusApi } from './dtos/responses';
-import { KYC_BANNER_TYPES } from '@api/core/model/kyc-status/kyc-banner-constants';
+import { KYCPropertiesApi } from './dtos/responses';
+import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/kyc-banner-constants';
+import { KYCProperties } from '@api/core/model/kyc-properties/kyc-properties.interface';
+import { mapKYCPropertiesApiToKYCProperties } from '../kyc/mappers/responses/kyc-status.mapper';
 
 @Injectable()
 export class KYCStatusService {
-  private readonly KYCStatusSubject: ReplaySubject<KYCStatus> = new ReplaySubject<KYCStatus>(1);
+  private readonly KYCPropertiesSubject: ReplaySubject<KYCProperties> = new ReplaySubject<KYCProperties>(1);
 
   constructor(private kycStatusApiService: KYCStatusApiService) {}
 
-  public get(cache = true): Observable<KYCStatus> {
-    if (cache && this.KYCStatusSubject) {
-      return this.KYCStatusSubject.asObservable();
+  public get(cache = true): Observable<KYCProperties> {
+    if (cache && this.KYCPropertiesSubject) {
+      return this.KYCPropertiesSubject.asObservable();
     }
 
-    return this.kycStatusApiService.get().pipe(map((KYCStatusApi: KYCStatusApi) => mapKYCStatusApiToKYCStatus(KYCStatusApi)));
+    return this.kycStatusApiService
+      .get()
+      .pipe(map((KYCPropertiesApi: KYCPropertiesApi) => mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi)));
   }
 
   public getBannerSpecifications(cache = true): Observable<KYCBannerSpecifications> {
     return this.get(cache).pipe(
-      map((KYCStatus: KYCStatus) => {
-        return KYCStatus.status === KYC_STATUS_STATES.NO_NEED
+      map((properties: KYCProperties) => {
+        return properties.status === KYC_STATUS.NO_NEED
           ? null
-          : KYC_BANNER_TYPES.find((specification: KYCBannerSpecifications) => specification.status === KYCStatus.status);
+          : KYC_BANNER_TYPES.find((banner: KYCBannerSpecifications) => banner.status === properties.status);
       })
     );
   }

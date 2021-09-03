@@ -1,9 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { KYC_BANNER_TYPES } from '@api/core/model/kyc-status/kyc-banner-constants';
-import { KYCBannerSpecifications } from '@api/core/model/kyc-status/kyc-banner-specifications.interface';
-import { KYC_STATUS_STATES } from '@api/core/model/kyc-status/kyc-status-states.enum';
+import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/kyc-banner-constants';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/kyc-banner-specifications.interface';
+import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { KYCStatusService } from '@api/payments/kyc-status/kyc-status.service';
 
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
@@ -46,7 +46,7 @@ describe('KYCGuard', () => {
     describe('and the status is pending...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
-        spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS_STATES.PENDING)));
+        spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS.PENDING)));
       });
 
       it('should be able to activate the KYC page', () => {
@@ -70,7 +70,7 @@ describe('KYCGuard', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
 
-        spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS_STATES.REJECTED)));
+        spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS.REJECTED)));
       });
 
       it('should be able to activate the KYC page', () => {
@@ -93,7 +93,7 @@ describe('KYCGuard', () => {
     describe('and the status is pending verification...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
-        spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS_STATES.PENDING_VERIFICATION)));
+        spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS.PENDING_VERIFICATION)));
       });
 
       it(`should NOT be able to activate the KYC page`, () => {
@@ -116,7 +116,7 @@ describe('KYCGuard', () => {
     describe('and the status is verified...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
-        spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS_STATES.VERIFIED)));
+        spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS.VERIFIED)));
       });
 
       it(`should NOT be able to activate the KYC page`, () => {
@@ -139,7 +139,7 @@ describe('KYCGuard', () => {
     describe('and the status is not need...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
-        spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS_STATES.NO_NEED)));
+        spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS.NO_NEED)));
       });
 
       it(`should NOT be able to activate the KYC page`, () => {
@@ -160,7 +160,7 @@ describe('KYCGuard', () => {
     });
   });
 
-  function KYC_BANNER_SPECIFICATIONS(kycBannerStatus: KYC_STATUS_STATES): KYCBannerSpecifications {
+  function KYC_BANNER_SPECIFICATIONS(kycBannerStatus: KYC_STATUS): KYCBannerSpecifications {
     return KYC_BANNER_TYPES.find((specification) => specification.status === kycBannerStatus);
   }
 });

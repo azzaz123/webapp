@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { KYC_BANNER_TYPES } from '@api/core/model/kyc-status/kyc-banner-constants';
-import { KYCBannerSpecifications } from '@api/core/model/kyc-status/kyc-banner-specifications.interface';
-import { KYCStatus } from '@api/core/model/kyc-status/kyc-status.interface';
+import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/kyc-banner-constants';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/kyc-banner-specifications.interface';
+import { KYCProperties } from '@api/core/model/kyc-properties/kyc-properties.interface';
 import {
   MOCK_KYC_BANNER_NO_NEED,
   MOCK_KYC_BANNER_PENDING,
@@ -135,7 +135,7 @@ describe('KYCStatusService', () => {
     });
   });
 
-  function KYC_BANNER_SPECIFICATIONS(KYCStatus: KYCStatus): KYCBannerSpecifications {
-    return KYC_BANNER_TYPES.find((specification) => specification.status === KYCStatus.status);
+  function KYC_BANNER_SPECIFICATIONS(KYCProperties: KYCProperties): KYCBannerSpecifications {
+    return KYC_BANNER_TYPES.find((specification) => specification.status === KYCProperties.status);
   }
 });

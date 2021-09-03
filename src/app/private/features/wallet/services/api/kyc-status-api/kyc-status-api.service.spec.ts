@@ -1,9 +1,9 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { KYCPropertiesApi } from '@api/payments/kyc-status/dtos/responses';
 import { MOCK_KYC_BANNER_PENDING_VERIFICATION } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
-import { KYCStatus } from '@private/features/wallet/interfaces/kyc/kyc-status.interface';
 
-import { KYCStatusApiService, KYC_STATUS_API_URL } from './kyc-status-api.service';
+import { KYCStatusApiService, KYC_PROPERTIES_API_URL } from './kyc-status-api.service';
 
 describe('KYCStatusApiService', () => {
   let service: KYCStatusApiService;
@@ -24,16 +24,16 @@ describe('KYCStatusApiService', () => {
 
   describe('when requesting the kyc banner status...', () => {
     it('should get the kyc banner status ', () => {
-      let response: KYCStatus;
+      let response: KYCPropertiesApi;
 
-      service.get().subscribe((data: KYCStatus) => {
+      service.get().subscribe((data: KYCPropertiesApi) => {
         response = data;
       });
-      const req: TestRequest = httpMock.expectOne(KYC_STATUS_API_URL);
+      const req: TestRequest = httpMock.expectOne(KYC_PROPERTIES_API_URL);
       req.flush(MOCK_KYC_BANNER_PENDING_VERIFICATION);
 
       expect(response).toEqual(MOCK_KYC_BANNER_PENDING_VERIFICATION);
-      expect(req.request.url).toEqual(KYC_STATUS_API_URL);
+      expect(req.request.url).toEqual(KYC_PROPERTIES_API_URL);
       expect(req.request.method).toBe('GET');
     });
   });
