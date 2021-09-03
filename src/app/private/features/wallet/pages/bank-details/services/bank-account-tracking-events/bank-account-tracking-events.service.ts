@@ -19,9 +19,7 @@ const kycBannerStatusToEventAttribute: Partial<Record<KYC_BANNER_STATUS, KycStat
   [KYC_BANNER_STATUS.VERIFIED]: 'verified',
 };
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class BankAccountTrackingEventsService {
   constructor(private analyticsService: AnalyticsService, private kYCBannerApiService: KYCBannerApiService) {}
 
