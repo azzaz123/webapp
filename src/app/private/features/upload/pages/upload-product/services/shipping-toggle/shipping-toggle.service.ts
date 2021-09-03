@@ -12,17 +12,10 @@ export class ShippingToggleService {
   public shippingRules: ShippingRules;
   private shippingRulesSubject: ReplaySubject<ShippingRules> = new ReplaySubject<ShippingRules>();
 
-  constructor(private featureFlagService: FeatureFlagService, private deliveryRulesApiService: DeliveryRulesApiService) {
+  constructor(private deliveryRulesApiService: DeliveryRulesApiService) {
     this.deliveryRulesApiService.getRules().subscribe((shippingRules) => {
       this.shippingRulesSubject.next(shippingRules);
     });
-  }
-
-  public isActive(): Observable<boolean> {
-    return this.featureFlagService.getFlag(FEATURE_FLAGS_ENUM.SHIPPING_TOGGLE).pipe(
-      map((isActive) => isActive),
-      catchError(() => of(false))
-    );
   }
 
   public isAllowed(categoryId: string, subcategoryId: string, price: number): Observable<ShippingToggleAllowance> {
