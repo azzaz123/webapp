@@ -10,7 +10,6 @@ import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { SubscriptionsResponse, SubscriptionSlot } from './subscriptions.interface';
 import {
   SUBSCRIPTIONS,
-  MAPPED_SUBSCRIPTIONS,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE,
   MOCK_SUBSCRIPTION_SLOTS,
@@ -403,7 +402,7 @@ describe('SubscriptionsService', () => {
   describe('getTrialSubscriptionsIds', () => {
     describe('when has not any free trial', () => {
       it('should return no subscriptions', () => {
-        const result = service.getTrialSubscriptionsIds(MAPPED_SUBSCRIPTIONS);
+        const result = service.getTrialSubscriptionsIds(SUBSCRIPTIONS);
 
         expect(result).toEqual([]);
       });
@@ -549,19 +548,19 @@ describe('SubscriptionsService', () => {
   describe('getSubscriptionByCategory', () => {
     describe('when category is inside consumer goods subscription', () => {
       it('should return consumer goods subscription ', () => {
-        const result = service.getSubscriptionByCategory(MAPPED_SUBSCRIPTIONS, CATEGORY_IDS.BIKES);
+        const result = service.getSubscriptionByCategory(SUBSCRIPTIONS, CATEGORY_IDS.BIKES);
 
         expect(result).toEqual(
-          MAPPED_SUBSCRIPTIONS.find((subscription) => subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS)
+          SUBSCRIPTIONS.find((subscription) => subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS)
         );
       });
     });
 
     describe('when category is not inside consumer goods subscription', () => {
       it('should return subscription related to the category ', () => {
-        const result = service.getSubscriptionByCategory(MAPPED_SUBSCRIPTIONS, CATEGORY_IDS.CAR);
+        const result = service.getSubscriptionByCategory(SUBSCRIPTIONS, CATEGORY_IDS.CAR);
 
-        expect(result).toEqual(MAPPED_SUBSCRIPTIONS.find((subscription) => subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.CAR));
+        expect(result).toEqual(SUBSCRIPTIONS.find((subscription) => subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.CAR));
       });
     });
   });
@@ -569,7 +568,7 @@ describe('SubscriptionsService', () => {
   describe('tierDiscountByCategoryId', () => {
     describe('when has a subscription id with tiers with discount', () => {
       it('should return tier with discount', () => {
-        const subscriptions: SubscriptionsResponse[] = cloneDeep(MAPPED_SUBSCRIPTIONS);
+        const subscriptions: SubscriptionsResponse[] = cloneDeep(SUBSCRIPTIONS);
         subscriptions[0].tiers[0].discount = null;
 
         const result = service.tierDiscountByCategoryId(subscriptions, subscriptions[0].category_id);

@@ -12,7 +12,7 @@ import { delay } from 'rxjs/operators';
 import { ButtonComponent } from '../../button/button.component';
 import { NewCardModalComponent } from 'app/shared/modals/new-card-modal/new-card-modal.component';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
-import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { NoCardModalComponent } from '@shared/modals/no-card-modal/no-card-modal.component';
@@ -72,7 +72,7 @@ describe('StripeCardsComponent', () => {
             provide: SubscriptionsService,
             useValue: {
               getSubscriptions() {
-                return of(MAPPED_SUBSCRIPTIONS);
+                return of(SUBSCRIPTIONS);
               },
             },
           },
