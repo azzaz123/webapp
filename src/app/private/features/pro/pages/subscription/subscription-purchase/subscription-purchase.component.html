@@ -20,10 +20,10 @@
     </div>
     <div *ngIf="subscription.tiers.length > 1" class="GenericCard">
         <ng-container *ngIf="basicTier; else noBasicTierSelector">
-            <div class="GenericCard__title" i18n="@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_header">The plan you need to start becoming PRO!</div>
+            <div class="GenericCard__title mb-3" i18n="@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_header">The plan you need to start becoming PRO!</div>
             <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="[basicTier]" [selectedTier]="selectedTier"
                 (changeSelectedTier)="onSelectedTierChanged($event)"> </tsl-subscription-tier-selector>
-            <div class="GenericCard__title mt-4" i18n="@@pro_subscription_purchase_non_subscribed_users_cg_other_plans_title">Plans to achieve your goals</div>
+            <div class="GenericCard__title mb-3 mt-4" i18n="@@pro_subscription_purchase_non_subscribed_users_cg_other_plans_title">Plans to achieve your goals</div>
             <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="availableTiers" [selectedTier]="selectedTier"
             (changeSelectedTier)="onSelectedTierChanged($event)"> </tsl-subscription-tier-selector>
         </ng-container>

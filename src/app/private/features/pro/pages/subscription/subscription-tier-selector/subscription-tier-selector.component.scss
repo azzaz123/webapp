@@ -29,11 +29,11 @@
     }
 
     &__banner {
-      border-radius: 2px;
+      border-radius: 4px;
       background-color: $skyblue-main;
       color: $white;
       font-weight: $font-weight-chunky;
-      font-size: 12px;
+      font-size: $font-size-xs;
     }
 
     &:hover {
