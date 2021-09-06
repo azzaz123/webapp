@@ -407,7 +407,6 @@ describe('BankDetailsOverviewComponent', () => {
     });
   });
 });
-('');
 describe('WHEN there is an error retrieving data', () => {
   let component: BankDetailsOverviewComponent;
   let fixture: ComponentFixture<BankDetailsOverviewComponent>;
