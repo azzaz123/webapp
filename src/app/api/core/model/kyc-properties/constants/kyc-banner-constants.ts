@@ -1,6 +1,6 @@
-import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/kyc-banner-specifications.interface';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { BANNER_TYPES } from '@shared/banner/banner-types.enum';
+import { KYCBannerSpecifications } from '../interfaces/kyc-banner-specifications.interface';
 
 export const KYC_BANNER_TYPES: KYCBannerSpecifications[] = [
   {

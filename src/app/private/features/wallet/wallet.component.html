@@ -12,6 +12,7 @@
           <ng-container *ngIf="KYCProperties$ | async as properties">
             <tsl-kyc-banner 
               *ngIf="(getKYCBannerSpecifications(properties) | async) as specifications"
+              [KYCProperties]="properties"
               [KYCBannerSpecifications]="specifications"></tsl-kyc-banner>
           </ng-container>
         </div>

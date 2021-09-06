@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/kyc-banner-specifications.interface';
-import { KYCProperties } from '@api/core/model/kyc-properties/kyc-properties.interface';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';

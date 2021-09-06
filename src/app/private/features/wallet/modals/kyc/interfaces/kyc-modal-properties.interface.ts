@@ -7,4 +7,5 @@ export interface KYCModalProperties {
   svgPath: string;
   messageCTA: string;
   messageLink?: string;
+  refusedMessage?: string;
 }

@@ -1,8 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/kyc-banner-constants';
-import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/kyc-banner-specifications.interface';
-import { KYCProperties } from '@api/core/model/kyc-properties/kyc-properties.interface';
+import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-banner-constants';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
 import {
   MOCK_KYC_BANNER_NO_NEED,
   MOCK_KYC_BANNER_PENDING,

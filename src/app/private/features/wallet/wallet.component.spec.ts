@@ -1,4 +1,3 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -11,12 +10,13 @@ import { HeaderComponent } from '@shared/header/header.component';
 import { NavLinksComponent } from '@shared/nav-links/nav-links.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
-import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/kyc-banner-constants';
+import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-banner-constants';
 import { KYCBannerComponent } from './components/kyc-banner/kyc-banner.component';
 import { KYCStatusApiService } from './services/api/kyc-status-api/kyc-status-api.service';
 
 import { WalletComponent } from './wallet.component';
 import { WALLET_PATHS } from './wallet.routing.constants';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('WalletComponent', () => {
   const BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;

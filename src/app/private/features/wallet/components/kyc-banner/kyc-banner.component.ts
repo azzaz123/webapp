@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/kyc-banner-specifications.interface';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { NgbAlertConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { KYCInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
 import { KYCStatusModalComponent } from '../../modals/kyc-status-modal/kyc-status-modal.component';
 import { KYC_MODAL_STATUS_PROPERTIES } from '../../modals/kyc/constants/kyc-modal-status-constants';
 import { KYC_MODAL_STATUS_TYPE } from '../../modals/kyc/enums/kyc-modal-status-type-enum';
-import { KYCModalStatus } from '../../modals/kyc/interfaces/kyc-modal-status.interface';
+import { KYCModalProperties } from '../../modals/kyc/interfaces/kyc-modal-properties.interface';
 
 @Component({
   selector: 'tsl-kyc-banner',
@@ -15,6 +16,8 @@ import { KYCModalStatus } from '../../modals/kyc/interfaces/kyc-modal-status.int
 })
 export class KYCBannerComponent {
   @Input() KYCBannerSpecifications: KYCBannerSpecifications;
+  @Input() KYCProperties: KYCProperties;
+
   constructor(private modalService: NgbModal) {}
 
   public openModal(): void {
@@ -23,17 +26,6 @@ export class KYCBannerComponent {
     } else {
       this.openKYCStatusModal();
     }
-  }
-
-  private openKYCInformativeSliderModal(): void {
-    this.modalService.open(KYCInfoModalComponent).result.then(() => {});
-  }
-
-  private openKYCStatusModal(): void {
-    let modalRef: NgbModalRef = this.modalService.open(KYCStatusModalComponent);
-    modalRef.componentInstance.properties = this.KYCStatusProperties;
-
-    modalRef.result.then(() => {});
   }
 
   public get buttonClassName(): string {
@@ -47,7 +39,17 @@ export class KYCBannerComponent {
     };
   }
 
-  private get KYCStatusProperties(): KYCModalStatus {
+  private openKYCStatusModal(): void {
+    let modalRef: NgbModalRef = this.modalService.open(KYCStatusModalComponent);
+    modalRef.componentInstance.properties = this.KYCModalProperties;
+
+    modalRef.result.then(
+      () => {},
+      () => {}
+    );
+  }
+
+  private get KYCModalProperties(): KYCModalProperties {
     const KYCBannerStatus: KYC_STATUS = this.KYCBannerSpecifications.status;
 
     if (KYCBannerStatus === KYC_STATUS.PENDING_VERIFICATION) {
@@ -57,7 +59,19 @@ export class KYCBannerComponent {
       return KYC_MODAL_STATUS_PROPERTIES.find((property) => property.status === KYC_MODAL_STATUS_TYPE.SUCCEED);
     }
     if (KYCBannerStatus === KYC_STATUS.REJECTED) {
-      return KYC_MODAL_STATUS_PROPERTIES.find((property) => property.status === KYC_MODAL_STATUS_TYPE.ERROR);
+      const modalProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
+        (property) => property.status === KYC_MODAL_STATUS_TYPE.ERROR
+      );
+      modalProperties.refusedMessage = this.KYCProperties.refusedReason.translation;
+
+      return modalProperties;
     }
+  }
+
+  private openKYCInformativeSliderModal(): void {
+    this.modalService.open(KYCInfoModalComponent).result.then(
+      () => {},
+      () => {}
+    );
   }
 }

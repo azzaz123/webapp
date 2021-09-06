@@ -1,6 +1,6 @@
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
 import { KYC_REFUSED_REASON } from '@api/core/model/kyc-properties/kyc-refused-reason.enum';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
-import { KYCProperties } from '@api/core/model/kyc-properties/kyc-properties.interface';
 import { MOCK_BASE_64_32KB_IMAGE, MOCK_BASE_64_SMALL_IMAGE } from '@fixtures/base64.fixtures.spec';
 import { MOCK_JPEG_IMAGE_BIGGER_32KB } from '@fixtures/jpeg.fixtures.spec';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
@@ -22,7 +22,7 @@ export const MOCK_KYC_BANNER_PENDING: KYCProperties = {
 
 export const MOCK_KYC_BANNER_REJECTED: KYCProperties = {
   status: KYC_STATUS.REJECTED,
-  refusedReason: KYC_REFUSED_REASON.DOCUMENT_DO_NOT_MATCH_ACCOUNT_DATA,
+  refusedReason: { reason: KYC_REFUSED_REASON.DOCUMENT_DO_NOT_MATCH_ACCOUNT_DATA, translation: '' },
   documentId: '',
   mangopayUserId: '',
 };

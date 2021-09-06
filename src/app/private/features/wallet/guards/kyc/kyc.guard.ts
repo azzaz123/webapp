@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
-import { KYCProperties } from '@api/core/model/kyc-properties/kyc-properties.interface';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { Observable } from 'rxjs';
