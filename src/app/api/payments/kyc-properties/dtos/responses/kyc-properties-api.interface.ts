@@ -1,7 +1,7 @@
 export interface KYCPropertiesApi {
   document_id: string;
   document_refused_reason_type: KYCRefusedReasonApi;
-  document_status: KYCDocumentStatus;
+  document_status: KYCDocumentStatusApi;
   mangopay_user_kyc_id: string;
 }
 
@@ -17,4 +17,4 @@ export type KYCRefusedReasonApi =
   | 'underage person'
   | 'specific case';
 
-export type KYCDocumentStatus = 'pending' | 'pending verification' | 'verified' | 'rejected' | 'no need';
+export type KYCDocumentStatusApi = 'pending' | 'pending verification' | 'verified' | 'rejected' | 'no need';
