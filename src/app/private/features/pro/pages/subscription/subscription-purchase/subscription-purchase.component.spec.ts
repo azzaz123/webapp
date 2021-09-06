@@ -29,7 +29,7 @@ import { CARDS_WITHOUT_DEFAULT, CARDS_WITH_ONE_DEFAULT, MockStripeService } from
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import {
   MockSubscriptionService,
-  MAPPED_SUBSCRIPTIONS,
+  SUBSCRIPTIONS,
   SUBSCRIPTION_SUCCESS,
   SUBSCRIPTION_REQUIRES_ACTION,
   SUBSCRIPTION_REQUIRES_PAYMENT,
@@ -100,7 +100,7 @@ describe('SubscriptionPurchaseComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionPurchaseComponent);
     component = fixture.componentInstance;
-    component.subscription = MAPPED_SUBSCRIPTIONS[0];
+    component.subscription = SUBSCRIPTIONS[0];
     component.user = MOCK_USER;
     stripeService = TestBed.inject(StripeService);
     errorsService = TestBed.inject(ErrorsService);
@@ -293,7 +293,7 @@ describe('SubscriptionPurchaseComponent', () => {
             screenId: SCREEN_IDS.ProfileSubscription,
             isNewCard: !component.isSavedCard,
             isNewSubscriber: !component.user.featured,
-            discountPercent: 0,
+            discountPercent: component.selectedTier.discount.percentage,
             invoiceNeeded: false,
             freeTrial: false,
             discount: !!component.selectedTier.discount,

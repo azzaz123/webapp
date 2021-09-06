@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MAPPED_SUBSCRIPTIONS_ADDED, TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
+import { MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED, TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
 import { SubscriptionPriceDiscountComponent } from './subscription-price-discount.component';
 
 describe('SubscriptionPriceDiscountComponent', () => {
@@ -20,7 +20,7 @@ describe('SubscriptionPriceDiscountComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionPriceDiscountComponent);
     component = fixture.componentInstance;
-    component.subscription = MAPPED_SUBSCRIPTIONS_ADDED[2];
+    component.subscription = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED;
     fixture.detectChanges();
   });
 

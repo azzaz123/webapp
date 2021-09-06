@@ -5,9 +5,10 @@ import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-be
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import {
-  MAPPED_SUBSCRIPTIONS_ADDED,
   MockSubscriptionService,
+  MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+  SUBSCRIPTIONS,
   TIER_WITH_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { SpinnerComponent } from '@shared/spinner/spinner.component';
@@ -55,7 +56,7 @@ describe('SubscriptionListComponent', () => {
   });
   describe('when is not loading', () => {
     beforeEach(() => {
-      component.subscriptions = MAPPED_SUBSCRIPTIONS_ADDED;
+      component.subscriptions = SUBSCRIPTIONS;
       component.isLoading = false;
       fixture.detectChanges();
     });
@@ -73,7 +74,7 @@ describe('SubscriptionListComponent', () => {
       spyOn(component.clickButton, 'emit');
     });
     it('should emit to parent', () => {
-      const subscription = MAPPED_SUBSCRIPTIONS_ADDED[0];
+      const subscription = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS;
       component.onClickButton(subscription);
 
       expect(component.clickButton.emit).toHaveBeenCalledTimes(1);
@@ -87,7 +88,7 @@ describe('SubscriptionListComponent', () => {
           spyOn(component, 'hasOneFreeSubscription').and.returnValue(true);
         });
         it('should show Free Trial text', () => {
-          const text = component.getTextButton(MAPPED_SUBSCRIPTIONS_ADDED[1]);
+          const text = component.getTextButton(MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS);
 
           expect(text).toBe($localize`:@@startFreeTrial:Start free trial`);
         });
@@ -99,7 +100,7 @@ describe('SubscriptionListComponent', () => {
         describe('and has no discounts', () => {
           describe('and has multiple tiers', () => {
             it('should show see plans text', () => {
-              const text = component.getTextButton(MAPPED_SUBSCRIPTIONS_ADDED[1]);
+              const text = component.getTextButton(MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS);
 
               expect(text).toBe($localize`:@@seePlans:See plans`);
             });
@@ -117,7 +118,7 @@ describe('SubscriptionListComponent', () => {
             spyOn(component, 'hasDiscount').and.returnValue(TIER_WITH_DISCOUNT);
           });
           it('should show see plans text', () => {
-            const text = component.getTextButton(MAPPED_SUBSCRIPTIONS_ADDED[1]);
+            const text = component.getTextButton(MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS);
 
             expect(text).toBe($localize`:@@pro_subscription_purchase_try_discount_button:Try with discount`);
           });
