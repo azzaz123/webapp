@@ -24,7 +24,7 @@ import {
   MOCK_KYC_IMAGES_NON_BASE_64,
   MOCK_KYC_IMAGES_NON_BASE_64_BACK_NULL,
   MOCK_KYC_REQUEST_BODY,
-} from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+} from '@fixtures/private/wallet/kyc/kyc-images.fixtures.spec';
 import { KYCHttpService } from './http/kyc-http.service';
 
 import { KYCService } from './kyc.service';

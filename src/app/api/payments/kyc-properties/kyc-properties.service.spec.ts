@@ -8,7 +8,7 @@ import {
   MOCK_KYC_BANNER_PENDING_VERIFICATION,
   MOCK_KYC_BANNER_REJECTED,
   MOCK_KYC_BANNER_VERIFIED,
-} from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+} from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
 import { of } from 'rxjs';
 import { KYCPropertiesService } from './kyc-properties.service';
