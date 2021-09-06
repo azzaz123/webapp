@@ -4,7 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WALLET_PATHS } from '../../wallet.routing.constants';
 import { KYC_MODAL_STATUS_TYPE } from '../kyc/enums/kyc-modal-status-type-enum';
-import { KYCModalStatus } from '../kyc/interfaces/kyc-modal-status.interface';
+import { KYCModalProperties } from '../kyc/interfaces/kyc-modal-properties.interface';
 
 @Component({
   selector: 'tsl-kyc-status-modal',
@@ -12,7 +12,7 @@ import { KYCModalStatus } from '../kyc/interfaces/kyc-modal-status.interface';
   styleUrls: ['./kyc-status-modal.component.scss'],
 })
 export class KYCStatusModalComponent {
-  public properties: KYCModalStatus;
+  public properties: KYCModalProperties;
   private readonly KYC_LINK = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}/${WALLET_PATHS.KYC}`;
 
   constructor(public activeModal: NgbActiveModal, private router: Router) {}

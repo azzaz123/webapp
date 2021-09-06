@@ -44,7 +44,8 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.KYCProperties$ = this.kycPropertiesService.get();
+    this.kycPropertiesService.get().subscribe();
+    this.KYCProperties$ = this.kycPropertiesService.KYCProperties$;
   }
 
   public getKYCBannerSpecifications(properties: KYCProperties): Observable<KYCBannerSpecifications> {

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CUSTOMER_TICKET_FORM } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
-import { KYCModalStatus } from '../../interfaces/kyc-modal-status.interface';
+import { KYCModalProperties } from '../../interfaces/kyc-modal-properties.interface';
 
 @Component({
   selector: 'tsl-kyc-status',
@@ -9,7 +9,7 @@ import { KYCModalStatus } from '../../interfaces/kyc-modal-status.interface';
   styleUrls: ['./kyc-status.component.scss'],
 })
 export class KYCStatusComponent {
-  @Input() properties: KYCModalStatus;
+  @Input() properties: KYCModalProperties;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
   public ZENDESK_HELP_FORM_URL: string = this.customerHelpService.getFormPageUrl(CUSTOMER_TICKET_FORM.MANGOPAY_HELP);
 

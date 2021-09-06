@@ -1,7 +1,7 @@
 import { KYC_MODAL_STATUS_TYPE } from '@private/features/wallet/modals/kyc/enums/kyc-modal-status-type-enum';
-import { KYCModalStatus } from '../interfaces/kyc-modal-status.interface';
+import { KYCModalProperties } from '../interfaces/kyc-modal-properties.interface';
 
-export const KYC_MODAL_STATUS_PROPERTIES: KYCModalStatus[] = [
+export const KYC_MODAL_STATUS_PROPERTIES: KYCModalProperties[] = [
   {
     status: KYC_MODAL_STATUS_TYPE.IN_PROGRESS,
     title: $localize`:@@kyc_documentation_sent_modal_title:Now what?`,
