@@ -143,10 +143,8 @@ export class SubscriptionsService {
     }
 
     return this.subscriptionsHttpService.get().pipe(
-      map((subscriptions: SubscriptionsV3Response[]) => {
-        this.subscriptions = mapSubscriptions(subscriptions);
-        return this.subscriptions;
-      })
+      map(mapSubscriptions),
+      tap((mappedSubscriptions) => (this.subscriptions = mappedSubscriptions))
     );
   }
 
