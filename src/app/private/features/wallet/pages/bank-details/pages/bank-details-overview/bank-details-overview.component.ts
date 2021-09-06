@@ -7,7 +7,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
 import { I18nService } from '@core/i18n/i18n.service';
-import { Observable, throwError } from 'rxjs';
+import { forkJoin, Observable, throwError } from 'rxjs';
 import { COLORS } from '@core/colors/colors-constants';
 import { Router } from '@angular/router';
 import { PaymentsCreditCardService } from '@api/payments/cards';
@@ -104,16 +104,10 @@ export class BankDetailsOverviewComponent implements OnInit {
   }
 
   private getBankAccountAndCreditCard(): void {
-    this.bankAccountService
-      .get()
-      .pipe(
-        catchError((error: unknown) => {
-          return this.handleError(error);
-        })
-      )
-      .subscribe();
-    this.paymentsCreditCardService
-      .get()
+    forkJoin({
+      bankAccount: this.bankAccountService.get(),
+      creditCard: this.paymentsCreditCardService.get(),
+    })
       .pipe(
         catchError((error: unknown) => {
           return this.handleError(error);
