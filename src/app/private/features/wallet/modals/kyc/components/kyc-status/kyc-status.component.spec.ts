@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { KYC_MODAL_STATUS_PROPERTIES } from '../../constants/kyc-modal-status-constants';
@@ -73,7 +74,7 @@ describe('KYCStatusComponent', () => {
       });
     });
 
-    describe('and we need to show the link', () => {
+    describe('and we need to show the zendesk link', () => {
       beforeEach(() => {
         component.properties = KYC_STATUS_ERROR;
 

@@ -4,11 +4,10 @@ import { KYCModalProperties } from '@private/features/wallet/modals/kyc/interfac
 export const MOCK_KYC_MODAL_ERROR_PROPERTIES: KYCModalProperties = {
   status: KYC_MODAL_STATUS.ERROR,
   title: 'Error title',
-  description: 'Description',
+  description: 'Refused Reason',
   svgPath: 'svgPath',
   messageCTA: 'messageCTA',
   showZendeskLink: true,
-  refusedMessage: 'refusedMessage',
 };
 
 export const MOCK_KYC_MODAL_SUCCEED_PROPERTIES: KYCModalProperties = {
