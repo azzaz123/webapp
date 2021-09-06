@@ -9,8 +9,13 @@ export enum SessionProfileDataPlatform {
   WEB = 'Web',
 }
 
+export enum TMXStatusCode {
+  TMX_INTERNAL_ERROR = 'TMX_Internal_Error',
+}
+
 export interface SessionProfileData {
   id: string;
   location: SessionProfileDataLocation;
   platform: SessionProfileDataPlatform;
+  status?: TMXStatusCode;
 }

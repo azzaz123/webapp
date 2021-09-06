@@ -23,7 +23,7 @@
 </div>	
 <div class="share">	
     <div i18n="@@web_bump_suggestion_modal_share">Share it with your friends:</div>	
-    <div class="social-icons" [ngClass]="{'social-icons--disabled' : !item?.webLink}">	
+    <div class="social-icons" [ngClass]="{'social-icons--disabled' : !item}">	
       <a (click)="onFacebookShare()"><tsl-svg-icon src="/assets/icons/facebook.svg"></tsl-svg-icon></a>	
       <a (click)="onTwitterShare()"><tsl-svg-icon src="/assets/icons/twitter.svg"></tsl-svg-icon></a>	
     </div>	
