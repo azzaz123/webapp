@@ -20,6 +20,7 @@ import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { SITE_URL } from '@configs/site-url.config';
 
 @Component({
   selector: 'tsl-topbar',
@@ -49,12 +50,11 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private featureFlagService: FeatureFlagService,
     private searchNavigator: SearchNavigatorService,
     private topbarTrackingEventsService: TopbarTrackingEventsService,
-    @Inject('SUBDOMAIN') private subdomain: string
-  ) {
-    this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
-  }
+    @Inject(SITE_URL) private siteUrl: string
+  ) {}
 
   ngOnInit() {
+    this.homeUrl = this.siteUrl;
     this.isLogged = this.userService.isLogged;
     this.user = this.userService.user;
     this.componentSubscriptions.push(

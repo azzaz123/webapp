@@ -6,10 +6,11 @@ import { BankAccountApiService } from '@private/features/wallet/services/api/ban
 import { MapBankAccountService } from '@private/features/wallet/services/bank-account/map-bank-account/map-bank-account.service';
 import { AddCreditCardModule } from '@shared/add-credit-card/add-credit-card.module';
 import { bankDetailsOverviewRoutedComponents, BankDetailsOverviewRoutingModule } from './bank-details-overview.routing.module';
+import { BankAccountTrackingEventsService } from '../../services/bank-account-tracking-events/bank-account-tracking-events.service';
 
 @NgModule({
   declarations: [bankDetailsOverviewRoutedComponents],
   imports: [BankDetailsOverviewRoutingModule, CommonModule, PaymentsCardInfoModule, AddCreditCardModule],
-  providers: [BankAccountService, BankAccountApiService, MapBankAccountService],
+  providers: [BankAccountService, BankAccountApiService, MapBankAccountService, BankAccountTrackingEventsService],
 })
 export class BankDetailsOverviewModule {}

@@ -19,8 +19,7 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import {
-  MAPPED_SUBSCRIPTIONS,
-  MAPPED_SUBSCRIPTIONS_ADDED,
+  SUBSCRIPTIONS,
   MAPPED_SUBSCRIPTIONS_WITH_INAPP,
   MockSubscriptionService,
   MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
@@ -63,7 +62,7 @@ describe('SubscriptionComponent', () => {
   let analyticsService: AnalyticsService;
   let userService: UserService;
   let route: ActivatedRoute;
-  const componentInstance = { subscription: MAPPED_SUBSCRIPTIONS[0] };
+  const componentInstance = { subscription: SUBSCRIPTIONS[0] };
 
   beforeEach(
     waitForAsync(() => {
@@ -142,11 +141,11 @@ describe('SubscriptionComponent', () => {
   describe('OnInit', () => {
     it('should get the mapped subscriptions', () => {
       spyOn(categoryService, 'getCategories').and.callThrough();
-      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MAPPED_SUBSCRIPTIONS));
+      spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(SUBSCRIPTIONS));
 
       component.ngOnInit();
 
-      expect(component.subscriptions).toEqual(MAPPED_SUBSCRIPTIONS);
+      expect(component.subscriptions).toEqual(SUBSCRIPTIONS);
     });
 
     it('should set the user information', () => {
@@ -310,7 +309,7 @@ describe('SubscriptionComponent', () => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
 
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS[0]);
+      component.manageSubscription(SUBSCRIPTIONS[0]);
       fixture.detectChanges();
 
       const newSubscriptionComponent = fixture.debugElement.query(By.directive(MockNewSubscriptionComponent));
@@ -320,7 +319,7 @@ describe('SubscriptionComponent', () => {
     it('should not show Edit Subscription when subscription is not active', () => {
       spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
 
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS[0]);
+      component.manageSubscription(SUBSCRIPTIONS[0]);
       fixture.detectChanges();
 
       const editSubscriptionComponent = fixture.debugElement.query(By.directive(MockEditSubscriptionComponent));
@@ -332,9 +331,9 @@ describe('SubscriptionComponent', () => {
         result: Promise.resolve(undefined),
         componentInstance: componentInstance,
       });
-      component.subscriptions = MAPPED_SUBSCRIPTIONS;
+      component.subscriptions = SUBSCRIPTIONS;
 
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS[0]);
+      component.manageSubscription(SUBSCRIPTIONS[0]);
 
       expect(component.loading).toBe(false);
     }));
@@ -344,9 +343,9 @@ describe('SubscriptionComponent', () => {
         result: Promise.resolve('update'),
         componentInstance: componentInstance,
       });
-      component.subscriptions = MAPPED_SUBSCRIPTIONS;
+      component.subscriptions = SUBSCRIPTIONS;
 
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS[0]);
+      component.manageSubscription(SUBSCRIPTIONS[0]);
       tick(400000);
 
       expect(component.loading).toBe(false);
@@ -460,12 +459,12 @@ describe('SubscriptionComponent', () => {
         eventType: ANALYTIC_EVENT_TYPES.Other,
         attributes: {
           screenId: SCREEN_IDS.ProfileSubscription,
-          tier: MAPPED_SUBSCRIPTIONS_ADDED[0].selected_tier_id,
-          subscription: MAPPED_SUBSCRIPTIONS_ADDED[0].category_id as SUBSCRIPTION_CATEGORIES,
+          tier: SUBSCRIPTIONS[0].selected_tier_id,
+          subscription: SUBSCRIPTIONS[0].category_id as SUBSCRIPTION_CATEGORIES,
         },
       };
 
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS_ADDED[0]);
+      component.manageSubscription(SUBSCRIPTIONS[0]);
 
       expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
