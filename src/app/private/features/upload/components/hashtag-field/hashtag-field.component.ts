@@ -10,6 +10,7 @@ import { distinctUntilChanged, pairwise, startWith } from 'rxjs/operators';
   styleUrls: ['./hashtag-field.component.scss'],
 })
 export class HashtagFieldComponent implements OnInit {
+  @Input() categoryId: string;
   @Input() options: SelectFormOption<string>[];
   @Input() form: FormGroup;
   @Input() controlName: FormControlName;

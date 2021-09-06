@@ -177,7 +177,7 @@
       <div class="col-12">
         <div class="form-group last">
         <label for="hashtag" i18n="">Hashtags {{uploadForm.controls.hashtags.value.hashtags}}</label>
-       <tsl-hashtag-field [form]="uploadForm.controls.hashtags" [options]="options" (start)="loadNextPage($event)"></tsl-hashtag-field>
+       <tsl-hashtag-field [form]="uploadForm.controls.hashtags" [categoryId]="categoryId" [options]="options" (start)="loadNextPage($event)"></tsl-hashtag-field>
         </div>
       </div>
     </div>

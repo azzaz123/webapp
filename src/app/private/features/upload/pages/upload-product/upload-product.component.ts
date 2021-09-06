@@ -156,16 +156,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
-    //PR
-    this.hashtagSuggesterApiService.getHashtags('100', '0').subscribe((n) => {
-      console.log('test', this.categoryId);
+    this.hashtagSuggesterApiService.getHashtags(this.categoryId, '0').subscribe((n) => {
       this.mapHashtagOptions(n);
     });
-    /* 
-    this.hashtagSuggesterApiService.getHashtags('100', 'g').subscribe((n) => {
-      console.log('test', this.categoryId, this.start);
-      this.mapHashtagOptions(n);
-    }); */
     this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories;
 
@@ -205,7 +198,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private mapHashtagOptions(hashtagList: PaginatedList<Hashtag>) {
-    /*  let { list } = hashtagList;
+    /*   let { list } = hashtagList;
     this.options = list.map((hashtag: Hashtag) => {
       return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
     }); */
