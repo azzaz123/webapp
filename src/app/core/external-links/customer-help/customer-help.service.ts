@@ -1,6 +1,7 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { CUSTOMER_HELP_PAGE, CUSTOMER_TICKET_FORM, HelpLocaleId } from './customer-help-constants';
-import { getCustomerHelpUrl, getTicketFormUrl } from './get-customer-help-url';
+import { getCustomerHelpUrl } from './get-customer-help-url';
+import { getTicketFormUrl } from './get-ticket-form-url';
 
 @Injectable({
   providedIn: 'root',
