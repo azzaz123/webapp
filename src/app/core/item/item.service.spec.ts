@@ -50,7 +50,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { UserService } from '../user/user.service';
 import { UuidService } from '../uuid/uuid.service';
 import { Car } from './car';
-import { Item, ITEM_BASE_PATH, ITEM_TYPES } from './item';
+import { Item, ITEM_TYPES } from './item';
 import {
   CarInfo,
   CheapestProducts,
@@ -283,7 +283,6 @@ describe('ItemService', () => {
           average_hex_color: '',
           urls_by_size: ITEMS_DATA_V3[0].content.image,
         });
-        expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
         expect(item.bumpExpiringDate).toBeUndefined();
         expect(response.init).toBe(INIT + 10);
       });
@@ -1199,5 +1198,4 @@ function checkItemResponse(item: Item) {
   expect(item.saleConditions).toEqual(ITEM_DATA_V3.content.sale_conditions);
   expect(item.mainImage).toEqual(ITEM_DATA_V3.content.images[0]);
   expect(item.images).toEqual(ITEM_DATA_V3.content.images);
-  expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEM_DATA_V3.content.web_slug);
 }
