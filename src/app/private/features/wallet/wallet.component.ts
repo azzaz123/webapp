@@ -48,7 +48,7 @@ export class WalletComponent implements OnInit {
     this.KYCProperties$ = this.kycPropertiesService.KYCProperties$;
   }
 
-  public getKYCBannerSpecifications(properties: KYCProperties): Observable<KYCBannerSpecifications> {
+  public KYCBannerSpecifications$(properties: KYCProperties): Observable<KYCBannerSpecifications> {
     return this.kycPropertiesService.getBannerSpecifications(properties);
   }
 

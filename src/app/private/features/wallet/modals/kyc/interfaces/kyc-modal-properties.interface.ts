@@ -6,6 +6,6 @@ export interface KYCModalProperties {
   description?: string;
   svgPath: string;
   messageCTA: string;
-  messageLink?: string;
+  showZendeskLink?: boolean;
   refusedMessage?: string;
 }

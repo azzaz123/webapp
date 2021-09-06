@@ -89,7 +89,7 @@ describe('KYCStatusComponent', () => {
       it('should show the message link correctly', () => {
         const CSLink: HTMLElement = de.query(By.css(linkSelector)).nativeElement;
 
-        expect(CSLink.textContent).toEqual(component.properties.messageLink);
+        expect(CSLink.textContent).toEqual($localize`:@@kyc_failed_modal_help_link:Need help?`);
       });
     });
 
