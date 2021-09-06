@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WALLET_PATHS } from '../../wallet.routing.constants';
-import { KYC_MODAL_STATUS_TYPE } from '../kyc/enums/kyc-modal-status-type-enum';
+import { KYC_MODAL_STATUS } from '../kyc/enums/kyc-modal-status.enum';
 import { KYCModalProperties } from '../kyc/interfaces/kyc-modal-properties.interface';
 
 @Component({
@@ -22,7 +22,7 @@ export class KYCStatusModalComponent {
   }
 
   public handleButtonClick(): void {
-    if (this.properties.status === KYC_MODAL_STATUS_TYPE.ERROR) {
+    if (this.properties.status === KYC_MODAL_STATUS.ERROR) {
       this.router.navigate([this.KYC_LINK]);
     }
 

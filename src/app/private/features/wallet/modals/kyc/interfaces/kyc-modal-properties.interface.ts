@@ -1,7 +1,7 @@
-import { KYC_MODAL_STATUS_TYPE } from '../enums/kyc-modal-status-type-enum';
+import { KYC_MODAL_STATUS } from '../enums/kyc-modal-status.enum';
 
 export interface KYCModalProperties {
-  status: KYC_MODAL_STATUS_TYPE;
+  status: KYC_MODAL_STATUS;
   title: string;
   description?: string;
   svgPath: string;

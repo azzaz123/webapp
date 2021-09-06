@@ -6,7 +6,7 @@ import { NgbAlertConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { KYCInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
 import { KYCStatusModalComponent } from '../../modals/kyc-status-modal/kyc-status-modal.component';
 import { KYC_MODAL_STATUS_PROPERTIES } from '../../modals/kyc/constants/kyc-modal-status-constants';
-import { KYC_MODAL_STATUS_TYPE } from '../../modals/kyc/enums/kyc-modal-status-type-enum';
+import { KYC_MODAL_STATUS } from '../../modals/kyc/enums/kyc-modal-status.enum';
 import { KYCModalProperties } from '../../modals/kyc/interfaces/kyc-modal-properties.interface';
 
 @Component({
@@ -53,14 +53,14 @@ export class KYCBannerComponent {
     const KYCBannerStatus: KYC_STATUS = this.KYCBannerSpecifications.status;
 
     if (KYCBannerStatus === KYC_STATUS.PENDING_VERIFICATION) {
-      return KYC_MODAL_STATUS_PROPERTIES.find((property) => property.status === KYC_MODAL_STATUS_TYPE.IN_PROGRESS);
+      return KYC_MODAL_STATUS_PROPERTIES.find((property) => property.status === KYC_MODAL_STATUS.IN_PROGRESS);
     }
     if (KYCBannerStatus === KYC_STATUS.VERIFIED) {
-      return KYC_MODAL_STATUS_PROPERTIES.find((property) => property.status === KYC_MODAL_STATUS_TYPE.SUCCEED);
+      return KYC_MODAL_STATUS_PROPERTIES.find((property) => property.status === KYC_MODAL_STATUS.SUCCEED);
     }
     if (KYCBannerStatus === KYC_STATUS.REJECTED) {
       const modalProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
-        (property) => property.status === KYC_MODAL_STATUS_TYPE.ERROR
+        (property) => property.status === KYC_MODAL_STATUS.ERROR
       );
       modalProperties.refusedMessage = this.KYCProperties.refusedReason.translation;
 

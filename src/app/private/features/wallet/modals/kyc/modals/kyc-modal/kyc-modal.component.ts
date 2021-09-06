@@ -13,7 +13,7 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable } from 'rxjs';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../../components/kyc-image-options/kyc-image-options.enum';
 import { KYC_MODAL_STATUS_PROPERTIES } from '../../constants/kyc-modal-status-constants';
-import { KYC_MODAL_STATUS_TYPE } from '../../enums/kyc-modal-status-type-enum';
+import { KYC_MODAL_STATUS } from '../../enums/kyc-modal-status.enum';
 import { KYCModalProperties } from '../../interfaces/kyc-modal-properties.interface';
 import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
@@ -28,7 +28,7 @@ export class KYCModalComponent implements OnDestroy {
 
   public KYCStoreSpecifications$: Observable<KYCSpecifications>;
   public KYCStatusInProgressProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
-    (properties) => properties.status === KYC_MODAL_STATUS_TYPE.IN_PROGRESS
+    (properties) => properties.status === KYC_MODAL_STATUS.IN_PROGRESS
   );
 
   constructor(
