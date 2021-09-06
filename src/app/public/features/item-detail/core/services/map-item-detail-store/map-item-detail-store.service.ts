@@ -11,6 +11,7 @@ import { ItemDetail } from '@public/features/item-detail/interfaces/item-detail.
 import { SocialShare } from '@public/features/item-detail/interfaces/social-share.interface';
 import { ItemDetailLocation } from '@public/features/item-detail/pages/constants/item-detail.interface';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
+import { ItemDetailRoutePipe } from '@shared/pipes';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MapExtraInfoService } from '../map-extra-info/map-extra-info.service';
@@ -25,7 +26,8 @@ export class MapItemDetailStoreService {
     private mapSpecificationsService: MapSpecificationsService,
     private mapExtraInfoService: MapExtraInfoService,
     private publicProfileService: PublicProfileService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private itemDetailRoutePipe: ItemDetailRoutePipe
   ) {}
 
   public mapItemDetailStore(itemDetailResponse: ItemDetailResponse): ItemDetail {
@@ -147,17 +149,19 @@ export class MapItemDetailStoreService {
   }
 
   private getSocialShare(): SocialShare {
+    const itemLink = this.itemDetailRoutePipe.transform(this.itemDetailResponse?.item.webSlug);
+
     return {
       title: $localize`:@@web_item_detail_share_title:Share this product with your friends`,
       facebook: {
-        url: this.itemDetailResponse?.item.webLink,
+        url: itemLink,
       },
       twitter: {
-        url: this.itemDetailResponse?.item.webLink,
+        url: itemLink,
         text: $localize`:@@web_item_detail_share_twitter_text:Look what I found @wallapop:`,
       },
       email: {
-        url: this.itemDetailResponse?.item.webLink,
+        url: itemLink,
         subject: this.itemDetailResponse?.item.title,
         message: $localize`:@@web_item_detail_share_email_text:This may interest you - ` + this.itemDetailResponse?.item.description,
       },
