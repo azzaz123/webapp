@@ -1,4 +1,4 @@
-<a class="card" href="{{user?.sellingItem.webLink}}"
+<a class="card" [href]="user?.sellingItem.webSlug | itemDetailRoute"
    target="_blank" *ngIf="user?.sellingItem">
   <div class="card-block">
     <tsl-item-avatar class="pull-left" [item]="user?.sellingItem" fallbackLight="true"></tsl-item-avatar>

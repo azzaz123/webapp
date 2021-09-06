@@ -6,10 +6,10 @@
   </div>
   <div class="item" [ngClass]="{expired: item.flags.expired, selected: item.selected, pending: item.flags.pending, onhold: item.flags.onhold, itemSold: item.sold}">
     <div class="selected-veil" (click)="select(item)"></div>
-    <a href="{{item.webLink}}" target="_blank" class="image">
+    <a [href]="item.webSlug | itemDetailRoute" target="_blank" class="image">
       <tsl-item-avatar [item]="item" size="bigger" fallbackLight="true"></tsl-item-avatar>
     </a>
-    <a href="{{item.webLink}}" target="_blank" class="info">
+    <a [href]="item.webSlug | itemDetailRoute" target="_blank" class="info">
       <div class="price">{{item.salePrice | customCurrency:item.currencyCode}}</div>
       <div class="title">{{item.title}}</div>
       <div class="title" *ngIf="item.km">{{item.km | number}} km</div>

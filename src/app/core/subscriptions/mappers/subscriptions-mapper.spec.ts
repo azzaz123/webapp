@@ -18,11 +18,12 @@ describe('SubscriptionsMapper', () => {
   describe('discounts', () => {
     describe('and has discounts', () => {
       it('should map discounts', () => {
-        const nextDayAfterDiscountEndDate = 1000 * 60 * 60 * 24;
+        const oneDay = 1000 * 60 * 60 * 24;
         const subscriptionsMapped = mapSubscriptions(MOCK_RESPONSE_V3_SUBSCRIPTIONS);
 
         subscriptionsMapped[0].tiers.forEach((tier) => {
-          expect(tier.discount.no_discount_date).toEqual(tier.discount.end_date + nextDayAfterDiscountEndDate);
+          const nextDayAfterDiscountEndDate = tier.discount.end_date + oneDay;
+          expect(tier.discount.no_discount_date).toEqual(nextDayAfterDiscountEndDate);
         });
       });
     });

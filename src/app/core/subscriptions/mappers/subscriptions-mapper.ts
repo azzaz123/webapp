@@ -2,7 +2,7 @@ import { SubscriptionsResponse, SubscriptionsV3Response, SUBSCRIPTION_CATEGORY_T
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '../category-subscription-ids';
 import { CURRENCY_SYMBOLS } from '@core/constants';
 
-export const subscriptionMapper = {
+export const subscriptionMapper: Record<SUBSCRIPTION_CATEGORY_TYPES, { category_id: number; icon_id: string; label: string }> = {
   [SUBSCRIPTION_CATEGORY_TYPES.CARS]: {
     category_id: CATEGORY_SUBSCRIPTIONS_IDS.CAR,
     icon_id: 'car',
