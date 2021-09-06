@@ -18,6 +18,7 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
 import { catchError } from 'rxjs/operators';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+import { BankAccountTrackingEventsService } from '../../services/bank-account-tracking-events/bank-account-tracking-events.service';
 
 @Component({
   selector: 'tsl-bank-details-overview',
@@ -39,7 +40,8 @@ export class BankDetailsOverviewComponent implements OnInit {
     private i18nService: I18nService,
     private modalService: NgbModal,
     private toastService: ToastService,
-    private errorActionService: WalletSharedErrorActionService
+    private errorActionService: WalletSharedErrorActionService,
+    private bankAccountTrackingEventsService: BankAccountTrackingEventsService
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +61,12 @@ export class BankDetailsOverviewComponent implements OnInit {
 
   public redirect(URL: string): void {
     this.router.navigate([URL]);
+  }
+
+  public handleBankAccountCardClick(urlRedirect: string, bankAccount: BankAccount): void {
+    const isEdit = !!bankAccount;
+    this.bankAccountTrackingEventsService.trackClickAddEditBankAccount(isEdit);
+    this.redirect(urlRedirect);
   }
 
   public formattedCreditCardDate(expirationDateCard: Date): string {

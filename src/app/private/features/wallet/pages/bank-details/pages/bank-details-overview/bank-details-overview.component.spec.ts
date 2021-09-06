@@ -25,6 +25,11 @@ import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/sha
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+import { BankAccountTrackingEventsService } from '../../services/bank-account-tracking-events/bank-account-tracking-events.service';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { KYCBannerApiService } from '@private/features/wallet/services/api/kyc-banner-api.service';
 
 describe('BankDetailsOverviewComponent', () => {
   const creditCardInfoSelector = '#creditCard';
@@ -43,13 +48,14 @@ describe('BankDetailsOverviewComponent', () => {
   let i18nService: I18nService;
   let modalService: NgbModal;
   let router: Router;
+  let bankAccountTrackingEventsService: BankAccountTrackingEventsService;
   let de: DebugElement;
   let errorActionService: WalletSharedErrorActionService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BankDetailsOverviewComponent, AddCreditCardComponent, PaymentsCardInfoComponent],
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
         {
           provide: BankAccountService,
@@ -81,6 +87,9 @@ describe('BankDetailsOverviewComponent', () => {
           provide: WalletSharedErrorActionService,
           useValue: MockWalletSharedErrorActionService,
         },
+        BankAccountTrackingEventsService,
+        KYCBannerApiService,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -96,6 +105,7 @@ describe('BankDetailsOverviewComponent', () => {
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
+    bankAccountTrackingEventsService = TestBed.inject(BankAccountTrackingEventsService);
     de = fixture.debugElement;
 
     fixture.detectChanges();
@@ -260,6 +270,7 @@ describe('BankDetailsOverviewComponent', () => {
     describe('when clicking to the edit/change bank account button...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
+        spyOn(bankAccountTrackingEventsService, 'trackClickAddEditBankAccount');
         const bankAccountCard = fixture.debugElement.query(By.css(bankAccountInfoSelector));
 
         bankAccountCard.triggerEventHandler('changeCardClick', {});
@@ -267,6 +278,11 @@ describe('BankDetailsOverviewComponent', () => {
 
       it('should redirect to the bank account form', () => {
         expect(router.navigate).toHaveBeenCalledWith([component.BANK_ACCOUNT_FORM_LINK]);
+      });
+
+      it('should track event to analytics', () => {
+        expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledTimes(1);
+        expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledWith(true);
       });
     });
 
@@ -364,6 +380,7 @@ describe('BankDetailsOverviewComponent', () => {
     describe('when clicking to the add bank account button...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
+        spyOn(bankAccountTrackingEventsService, 'trackClickAddEditBankAccount');
         const addBankAccountCard = de.query(By.css(addBankAccountSelector)).nativeNode;
 
         addBankAccountCard.click();
@@ -371,6 +388,11 @@ describe('BankDetailsOverviewComponent', () => {
 
       it('should redirect to the bank account form', () => {
         expect(router.navigate).toHaveBeenCalledWith([component.BANK_ACCOUNT_FORM_LINK]);
+      });
+
+      it('should track event to analytics', () => {
+        expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledTimes(1);
+        expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledWith(false);
       });
     });
   });
@@ -413,11 +435,12 @@ describe('WHEN there is an error retrieving data', () => {
   let bankAccountService: BankAccountService;
   let paymentsCreditCardService: PaymentsCreditCardService;
   let errorActionService: WalletSharedErrorActionService;
+  let bankAccountTrackingEventsService: BankAccountTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BankDetailsOverviewComponent, AddCreditCardComponent, PaymentsCardInfoComponent],
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
         {
           provide: BankAccountService,
@@ -447,6 +470,9 @@ describe('WHEN there is an error retrieving data', () => {
           provide: WalletSharedErrorActionService,
           useValue: MockWalletSharedErrorActionService,
         },
+        BankAccountTrackingEventsService,
+        KYCBannerApiService,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -458,6 +484,7 @@ describe('WHEN there is an error retrieving data', () => {
     bankAccountService = TestBed.inject(BankAccountService);
     paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
+    bankAccountTrackingEventsService = TestBed.inject(BankAccountTrackingEventsService);
 
     fixture.detectChanges();
   });

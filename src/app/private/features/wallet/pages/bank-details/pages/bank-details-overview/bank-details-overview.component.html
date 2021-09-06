@@ -43,14 +43,14 @@
             [ownerName]="formattedBankAccountName(bankAccount)"
             [numberCard]="formattedBankAccountIBAN(bankAccount.iban)"
             [isBankAccount]="true"
-            (changeCardClick)="redirect(BANK_ACCOUNT_FORM_LINK)"
+            (changeCardClick)="handleBankAccountCardClick(BANK_ACCOUNT_FORM_LINK, bankAccount)"
             (deleteCardClick)="openDeleteBankAccountModal()"
             id="bankAccount"
           >
           </tsl-payments-card-info>
         </div>
         <ng-template #addBankAccount>
-          <tsl-add-credit-card (click)="redirect(BANK_ACCOUNT_FORM_LINK)" class="col" id="addBankAccount">
+          <tsl-add-credit-card (click)="handleBankAccountCardClick(BANK_ACCOUNT_FORM_LINK, bankAccount)" class="col" id="addBankAccount">
             <span i18n="@@banking_data_menu_add_bank_account">Add bank account</span>
           </tsl-add-credit-card>
         </ng-template>
