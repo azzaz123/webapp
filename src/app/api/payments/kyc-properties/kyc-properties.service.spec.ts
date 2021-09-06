@@ -1,17 +1,17 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-banner-constants';
 import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
 import {
-  MOCK_KYC_BANNER_NO_NEED,
-  MOCK_KYC_BANNER_PENDING,
-  MOCK_KYC_BANNER_PENDING_VERIFICATION,
-  MOCK_KYC_BANNER_REJECTED,
-  MOCK_KYC_BANNER_VERIFIED,
+  MOCK_KYC_NO_NEED_PROPERTIES_API,
+  MOCK_KYC_PENDING_PROPERTIES_API,
+  MOCK_KYC_REJECTED_PROPERTIES_API,
 } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
 import { of } from 'rxjs';
 import { KYCPropertiesService } from './kyc-properties.service';
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
+import { mapKYCPropertiesApiToKYCProperties } from '../kyc/mappers/responses/kyc-properties.mapper';
+import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-banner-constants';
 
 describe('KYCPropertiesService', () => {
   let service: KYCPropertiesService;
@@ -26,7 +26,7 @@ describe('KYCPropertiesService', () => {
           provide: KYCPropertiesHttpService,
           useValue: {
             get() {
-              return of(MOCK_KYC_BANNER_PENDING_VERIFICATION);
+              return of();
             },
           },
         },
@@ -41,95 +41,53 @@ describe('KYCPropertiesService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when getting the kyc banner status', () => {
-    it('should request the banner status to the api service', () => {
-      spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING_VERIFICATION));
+  describe('when getting the kyc properties', () => {
+    beforeEach(() => {
+      spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_PENDING_PROPERTIES_API));
+    });
 
-      let request: KYCBannerSpecifications;
-      service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
+    it('should request the kyc properties to the api service', () => {
+      let request: KYCProperties;
+      service.get().subscribe((result: KYCProperties) => {
         request = result;
       });
 
       expect(kycPropertiesHttpService.get).toHaveBeenCalled();
+      expect(request).toStrictEqual(mapKYCPropertiesApiToKYCProperties(MOCK_KYC_PENDING_PROPERTIES_API));
     });
 
-    describe('and the kyc status is verification pending', () => {
-      beforeEach(() => {
-        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING_VERIFICATION));
+    it('should update the KYCProperties subject', () => {
+      service.get().subscribe();
+
+      let KYCPropertiesSubject: KYCProperties;
+      service.KYCProperties$.subscribe((result: KYCProperties) => {
+        KYCPropertiesSubject = result;
       });
 
-      it('should return the banner specification', () => {
-        let request: KYCBannerSpecifications;
-
-        service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
-          request = result;
-        });
-
-        expect(request).toStrictEqual(KYC_BANNER_SPECIFICATIONS(MOCK_KYC_BANNER_PENDING_VERIFICATION));
-      });
+      expect(KYCPropertiesSubject).toStrictEqual(mapKYCPropertiesApiToKYCProperties(MOCK_KYC_PENDING_PROPERTIES_API));
     });
+  });
 
-    describe('and the kyc status is pending', () => {
-      beforeEach(() => {
-        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING));
-      });
+  describe('when getting the banner specifications from the KYC properties...', () => {
+    describe('and the status requires banner', () => {
+      it('should return the banner specifications', () => {
+        const rejectedProperties: KYCProperties = mapKYCPropertiesApiToKYCProperties(MOCK_KYC_REJECTED_PROPERTIES_API);
 
-      it('should return the banner specification', () => {
-        let request: KYCBannerSpecifications;
+        let bannerSpecification: KYCBannerSpecifications;
+        service.getBannerSpecifications(rejectedProperties).subscribe((res) => (bannerSpecification = res));
 
-        service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
-          request = result;
-        });
-
-        expect(request).toStrictEqual(KYC_BANNER_SPECIFICATIONS(MOCK_KYC_BANNER_PENDING));
+        expect(bannerSpecification).toStrictEqual(KYC_BANNER_SPECIFICATIONS(rejectedProperties));
       });
     });
 
-    describe('and the kyc status is rejected', () => {
-      beforeEach(() => {
-        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_REJECTED));
-      });
+    describe('and the banner is not needed', () => {
+      it('should NOT return the banner specifications', () => {
+        const noNeedProperties: KYCProperties = mapKYCPropertiesApiToKYCProperties(MOCK_KYC_NO_NEED_PROPERTIES_API);
 
-      it('should return the banner specification', () => {
-        let request: KYCBannerSpecifications;
+        let bannerSpecification: KYCBannerSpecifications;
+        service.getBannerSpecifications(noNeedProperties).subscribe((res) => (bannerSpecification = res));
 
-        service.kycPropertiesHttpService().subscribe((result: KYCBannerSpecifications) => {
-          request = result;
-        });
-
-        expect(request).toStrictEqual(KYC_BANNER_SPECIFICATIONS(MOCK_KYC_BANNER_REJECTED));
-      });
-    });
-
-    describe('and the kyc status is verified', () => {
-      beforeEach(() => {
-        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_VERIFIED));
-      });
-
-      it('should return the banner specification', () => {
-        let request: KYCBannerSpecifications;
-
-        service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
-          request = result;
-        });
-
-        expect(request).toStrictEqual(KYC_BANNER_SPECIFICATIONS(MOCK_KYC_BANNER_VERIFIED));
-      });
-    });
-
-    describe('and the kyc status is not needed', () => {
-      beforeEach(() => {
-        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_NO_NEED));
-      });
-
-      it('should return null', () => {
-        let request: KYCBannerSpecifications;
-
-        service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
-          request = result;
-        });
-
-        expect(request).toStrictEqual(null);
+        expect(bannerSpecification).toStrictEqual(null);
       });
     });
   });
