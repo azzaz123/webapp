@@ -27,7 +27,7 @@ import { BankAccountTrackingEventsService } from '../../services/bank-account-tr
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { KYCBannerApiService } from '@private/features/wallet/services/api/kyc-banner-api.service';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 
 describe('BankDetailsOverviewComponent', () => {
   const creditCardInfoSelector = '#creditCard';
@@ -81,7 +81,7 @@ describe('BankDetailsOverviewComponent', () => {
         I18nService,
         { provide: ToastService, useClass: MockToastService },
         BankAccountTrackingEventsService,
-        KYCBannerApiService,
+        KYCPropertiesService,
         { provide: AnalyticsService, useClass: MockAnalyticsService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

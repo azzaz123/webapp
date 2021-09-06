@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -9,7 +10,6 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { KYCBannerApiService } from '@private/features/wallet/services/api/kyc-banner-api.service';
 import { of, throwError } from 'rxjs';
 import { BankAccountTrackingEventTestCase, MOCK_BANK_ACCOUNT_TRACKING_EVENTS_CASES } from './bank-account-tracking-events.fixtures.spec';
 
@@ -18,16 +18,16 @@ import { BankAccountTrackingEventsService } from './bank-account-tracking-events
 describe('BankAccountTrackingEventsService', () => {
   let service: BankAccountTrackingEventsService;
   let analyticsService: AnalyticsService;
-  let kycBannerStatusService: KYCBannerApiService;
+  let kycPropertiesService: KYCPropertiesService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [BankAccountTrackingEventsService, { provide: AnalyticsService, useClass: MockAnalyticsService }, KYCBannerApiService],
+      providers: [BankAccountTrackingEventsService, { provide: AnalyticsService, useClass: MockAnalyticsService }, KYCPropertiesService],
     });
     service = TestBed.inject(BankAccountTrackingEventsService);
     analyticsService = TestBed.inject(AnalyticsService);
-    kycBannerStatusService = TestBed.inject(KYCBannerApiService);
+    kycPropertiesService = TestBed.inject(KYCPropertiesService);
 
     spyOn(analyticsService, 'trackEvent');
   });
@@ -43,13 +43,13 @@ describe('BankAccountTrackingEventsService', () => {
         bankAccountTrackingEventCase.kycBannerStatus
       }"`, () => {
         beforeEach(() => {
-          spyOn(kycBannerStatusService, 'getKYCBanner').and.returnValue(of({ status: bankAccountTrackingEventCase.kycBannerStatus }));
+          spyOn(kycPropertiesService, 'get').and.returnValue(of({ status: bankAccountTrackingEventCase.kycBannerStatus }));
         });
 
         it('should ask the KYC status to the server', () => {
           service.trackClickAddEditBankAccount(bankAccountTrackingEventCase.isEdit);
 
-          expect(kycBannerStatusService.getKYCBanner).toHaveBeenCalledTimes(1);
+          expect(kycPropertiesService.get).toHaveBeenCalledTimes(1);
         });
 
         it('should track the event to analytics', () => {
@@ -75,12 +75,12 @@ describe('BankAccountTrackingEventsService', () => {
   );
 
   describe('when KYC status server gives an error', () => {
-    beforeEach(() => spyOn(kycBannerStatusService, 'getKYCBanner').and.returnValue(throwError('F in chat')));
+    beforeEach(() => spyOn(kycPropertiesService, 'get').and.returnValue(throwError('F in chat')));
 
     it('should ask the KYC status to the server', () => {
       service.trackClickAddEditBankAccount(true);
 
-      expect(kycBannerStatusService.getKYCBanner).toHaveBeenCalledTimes(1);
+      expect(kycPropertiesService.get).toHaveBeenCalledTimes(1);
     });
 
     it('should not track the event', () => {
