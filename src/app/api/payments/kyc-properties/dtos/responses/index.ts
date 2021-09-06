@@ -1,1 +1,1 @@
-export * from './kyc-status-api.interface';
+export * from './kyc-properties-api.interface';

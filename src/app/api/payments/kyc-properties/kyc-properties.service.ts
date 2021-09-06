@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, ReplaySubject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/kyc-banner-specifications.interface';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { KYCStatusApiService } from '@private/features/wallet/services/api/kyc-status-api/kyc-status-api.service';
@@ -15,23 +15,27 @@ export class KYCPropertiesService {
 
   constructor(private kycStatusApiService: KYCStatusApiService) {}
 
-  public get(cache = true): Observable<KYCProperties> {
-    if (cache && this.KYCPropertiesSubject) {
-      return this.KYCPropertiesSubject.asObservable();
-    }
-
-    return this.kycStatusApiService
-      .get()
-      .pipe(map((KYCPropertiesApi: KYCPropertiesApi) => mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi)));
+  public get KYCProperties$(): Observable<KYCProperties> {
+    return this.KYCPropertiesSubject.asObservable();
   }
 
-  public getBannerSpecifications(cache = true): Observable<KYCBannerSpecifications> {
-    return this.get(cache).pipe(
-      map((properties: KYCProperties) => {
-        return properties.status === KYC_STATUS.NO_NEED
-          ? null
-          : KYC_BANNER_TYPES.find((banner: KYCBannerSpecifications) => banner.status === properties.status);
-      })
+  private set KYCProperties(KYCProperties: KYCProperties) {
+    this.KYCPropertiesSubject.next(KYCProperties);
+  }
+
+  public get(): Observable<KYCProperties> {
+    return this.kycStatusApiService.get().pipe(
+      map((KYCPropertiesApi: KYCPropertiesApi) => mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi)),
+      tap((properties: KYCProperties) => (this.KYCProperties = properties))
     );
+  }
+
+  public getBannerSpecifications(properties: KYCProperties): Observable<KYCBannerSpecifications> {
+    const bannerSpecification: KYCBannerSpecifications =
+      properties.status === KYC_STATUS.NO_NEED
+        ? null
+        : KYC_BANNER_TYPES.find((banner: KYCBannerSpecifications) => banner.status === properties.status);
+
+    return of(bannerSpecification);
   }
 }

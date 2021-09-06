@@ -9,7 +9,11 @@
               </div>
             </h1>
           </div>
-          <tsl-kyc-banner *ngIf="kycBannerSpecifications$ | async" [KYCBannerSpecifications]="kycBannerSpecifications$ | async"></tsl-kyc-banner>
+          <ng-container *ngIf="KYCProperties$ | async as properties">
+            <tsl-kyc-banner 
+              *ngIf="(getKYCBannerSpecifications(properties) | async) as specifications"
+              [KYCBannerSpecifications]="specifications"></tsl-kyc-banner>
+          </ng-container>
         </div>
       </tsl-header>
       <div class="row">
