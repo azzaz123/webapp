@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-banner-constants';
 import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
+import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
-import { KYCStatusApiService } from '../../services/api/kyc-status-api/kyc-status-api.service';
 
 import { KYCGuard } from './kyc.guard';
 
@@ -24,7 +24,7 @@ describe('KYCGuard', () => {
       providers: [
         KYCGuard,
         KYCPropertiesService,
-        KYCStatusApiService,
+        KYCPropertiesHttpService,
         {
           provide: Router,
           useValue: {

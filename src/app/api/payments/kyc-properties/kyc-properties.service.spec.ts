@@ -9,13 +9,13 @@ import {
   MOCK_KYC_BANNER_REJECTED,
   MOCK_KYC_BANNER_VERIFIED,
 } from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
-import { KYCStatusApiService } from '@private/features/wallet/services/api/kyc-status-api/kyc-status-api.service';
+import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
 import { of } from 'rxjs';
 import { KYCPropertiesService } from './kyc-properties.service';
 
 describe('KYCPropertiesService', () => {
   let service: KYCPropertiesService;
-  let kycStatusApiService: KYCStatusApiService;
+  let kycPropertiesHttpService: KYCPropertiesHttpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -23,7 +23,7 @@ describe('KYCPropertiesService', () => {
       providers: [
         KYCPropertiesService,
         {
-          provide: KYCStatusApiService,
+          provide: KYCPropertiesHttpService,
           useValue: {
             get() {
               return of(MOCK_KYC_BANNER_PENDING_VERIFICATION);
@@ -34,7 +34,7 @@ describe('KYCPropertiesService', () => {
     });
 
     service = TestBed.inject(KYCPropertiesService);
-    kycStatusApiService = TestBed.inject(KYCStatusApiService);
+    kycPropertiesHttpService = TestBed.inject(KYCPropertiesHttpService);
   });
 
   it('should be created', () => {
@@ -43,19 +43,19 @@ describe('KYCPropertiesService', () => {
 
   describe('when getting the kyc banner status', () => {
     it('should request the banner status to the api service', () => {
-      spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING_VERIFICATION));
+      spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING_VERIFICATION));
 
       let request: KYCBannerSpecifications;
       service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
         request = result;
       });
 
-      expect(kycStatusApiService.get).toHaveBeenCalled();
+      expect(kycPropertiesHttpService.get).toHaveBeenCalled();
     });
 
     describe('and the kyc status is verification pending', () => {
       beforeEach(() => {
-        spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING_VERIFICATION));
+        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING_VERIFICATION));
       });
 
       it('should return the banner specification', () => {
@@ -71,7 +71,7 @@ describe('KYCPropertiesService', () => {
 
     describe('and the kyc status is pending', () => {
       beforeEach(() => {
-        spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING));
+        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_PENDING));
       });
 
       it('should return the banner specification', () => {
@@ -87,13 +87,13 @@ describe('KYCPropertiesService', () => {
 
     describe('and the kyc status is rejected', () => {
       beforeEach(() => {
-        spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_REJECTED));
+        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_REJECTED));
       });
 
       it('should return the banner specification', () => {
         let request: KYCBannerSpecifications;
 
-        service.getBannerSpecifications().subscribe((result: KYCBannerSpecifications) => {
+        service.kycPropertiesHttpService().subscribe((result: KYCBannerSpecifications) => {
           request = result;
         });
 
@@ -103,7 +103,7 @@ describe('KYCPropertiesService', () => {
 
     describe('and the kyc status is verified', () => {
       beforeEach(() => {
-        spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_VERIFIED));
+        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_VERIFIED));
       });
 
       it('should return the banner specification', () => {
@@ -119,7 +119,7 @@ describe('KYCPropertiesService', () => {
 
     describe('and the kyc status is not needed', () => {
       beforeEach(() => {
-        spyOn(kycStatusApiService, 'get').and.returnValue(of(MOCK_KYC_BANNER_NO_NEED));
+        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_BANNER_NO_NEED));
       });
 
       it('should return null', () => {
