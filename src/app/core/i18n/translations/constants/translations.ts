@@ -201,6 +201,6 @@ export const translations: Translations = {
   [TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR]: $localize`:@@upload_shipping_toggle_snackbar_select_weight_description:To enable this item to be sent, select its weight range.`,
   [TRANSLATION_KEY.ZENDESK_REAL_ESTATE_LIMIT_URL]: $localize`:@@web_zendesk_real_estate_limit_url:https://ayuda.wallapop.com/hc/en-us/articles/4403261623185-Wallapop-PRO-Real-estate`,
   [TRANSLATION_KEY.REAL_ESTATE_HIGHEST_LIMIT_REACHED_DESCRIPTION]: $localize`:@@listing_limit_pro_user_real_estate_subscription_modal_description:It’s not possible to have so many Real Estate items for sale at the same time. The item will be listed to your catalog, but it will remain inactive.`,
-  [TRANSLATION_KEY.ZENDESK_REAL_ESTATE_LIMIT_URL]: $localize`:@@web_zendesk_real_estate_limit_url:https://ayuda.wallapop.com/hc/es-es/articles/360002050398-Todo-lo-dem%C3%A1s`,
-  [TRANSLATION_KEY.REAL_ESTATE_HIGHEST_LIMIT_REACHED_DESCRIPTION]: $localize`:@@listing_limit_pro_user_cg_subscription_modal_description:It’s not possible to have so many items for sale at the same time. The item will be listed to your catalog, but it will remain inactive.`,
+  [TRANSLATION_KEY.ZENDESK_CONSUMER_GOODS_LIMIT_URL]: $localize`:@@web_zendesk_consumer_good_limit_url:https://ayuda.wallapop.com/hc/es-es/articles/360002050398-Todo-lo-dem%C3%A1s`,
+  [TRANSLATION_KEY.CONSUMER_GOODS_HIGHEST_LIMIT_REACHED_DESCRIPTION]: $localize`:@@listing_limit_pro_user_cg_subscription_modal_description:It’s not possible to have so many items for sale at the same time. The item will be listed to your catalog, but it will remain inactive.`,
 };
