@@ -74,7 +74,7 @@ describe('KYCPropertiesService', () => {
         const rejectedProperties: KYCProperties = mapKYCPropertiesApiToKYCProperties(MOCK_KYC_REJECTED_PROPERTIES_API);
 
         let bannerSpecification: KYCBannerSpecifications;
-        service.getBannerSpecifications(rejectedProperties).subscribe((res) => (bannerSpecification = res));
+        service.getBannerSpecificationsFromProperties(rejectedProperties).subscribe((res) => (bannerSpecification = res));
 
         expect(bannerSpecification).toStrictEqual(KYC_BANNER_SPECIFICATIONS(rejectedProperties));
       });
@@ -85,7 +85,7 @@ describe('KYCPropertiesService', () => {
         const noNeedProperties: KYCProperties = mapKYCPropertiesApiToKYCProperties(MOCK_KYC_NO_NEED_PROPERTIES_API);
 
         let bannerSpecification: KYCBannerSpecifications;
-        service.getBannerSpecifications(noNeedProperties).subscribe((res) => (bannerSpecification = res));
+        service.getBannerSpecificationsFromProperties(noNeedProperties).subscribe((res) => (bannerSpecification = res));
 
         expect(bannerSpecification).toStrictEqual(null);
       });

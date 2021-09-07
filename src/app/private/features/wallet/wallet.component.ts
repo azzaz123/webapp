@@ -49,7 +49,7 @@ export class WalletComponent implements OnInit {
   }
 
   public KYCBannerSpecifications$(properties: KYCProperties): Observable<KYCBannerSpecifications> {
-    return this.kycPropertiesService.getBannerSpecifications(properties);
+    return this.kycPropertiesService.getBannerSpecificationsFromProperties(properties);
   }
 
   public onNavLinkClicked(navLinkId: string): void {

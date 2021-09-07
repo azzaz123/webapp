@@ -95,7 +95,7 @@ describe('WalletComponent', () => {
   describe('when the KYC banner for the user is not need', () => {
     beforeEach(() => {
       jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(null));
-      spyOn(kycPropertiesService, 'getBannerSpecifications').and.returnValue(of(null));
+      spyOn(kycPropertiesService, 'getBannerSpecificationsFromProperties').and.returnValue(of(null));
 
       fixture.detectChanges();
     });
@@ -110,7 +110,7 @@ describe('WalletComponent', () => {
   describe('when the KYC banner for the user is needed and defined', () => {
     beforeEach(() => {
       jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_PENDING_PROPERTIES));
-      spyOn(kycPropertiesService, 'getBannerSpecifications').and.returnValue(of(KYC_BANNER_TYPES[0]));
+      spyOn(kycPropertiesService, 'getBannerSpecificationsFromProperties').and.returnValue(of(KYC_BANNER_TYPES[0]));
 
       fixture.detectChanges();
     });

@@ -30,7 +30,7 @@ export class KYCPropertiesService {
     );
   }
 
-  public getBannerSpecifications(properties: KYCProperties): Observable<KYCBannerSpecifications> {
+  public getBannerSpecificationsFromProperties(properties: KYCProperties): Observable<KYCBannerSpecifications> {
     const bannerSpecification: KYCBannerSpecifications =
       properties.status === KYC_STATUS.NO_NEED
         ? null
