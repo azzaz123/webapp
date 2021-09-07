@@ -28,10 +28,8 @@ import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.e
 })
 export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   @ViewChild('userCamera') userCamera: ElementRef;
-  @ViewChild('frontSideImage') frontSideImage: ElementRef<HTMLCanvasElement>;
-  @ViewChild('frontSideImageUpload') frontSideImageUpload: ElementRef<HTMLInputElement>;
-  @ViewChild('backSideImage') backSideImage: ElementRef<HTMLCanvasElement>;
-  @ViewChild('backSideImageUpload') backSideImageUpload: ElementRef<HTMLInputElement>;
+  @ViewChild('definedImage') definedImageCanvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('uploadImage') uploadImage: ElementRef<HTMLInputElement>;
 
   @Input() imagesNeeded: KYCImagesNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
@@ -42,6 +40,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   @Output() goBack: EventEmitter<void> = new EventEmitter();
 
   public userDevicePermissions$: Observable<UserDevicePermissions>;
+  public activeStep: KYCImagesNeeded = 1;
   public readonly KYC_IMAGES = KYC_IMAGES;
   public readonly MIME_TYPES = MIME_TYPES;
   public readonly errorBannerSpecifications: NgbAlertConfig = {
@@ -67,61 +66,88 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public checkIfUploadIsAvailable(imageSide: KYC_IMAGES): void {
-    if (this.isUploadImageMethod) {
-      if (imageSide === KYC_IMAGES.FRONT_SIDE) {
-        this.frontSideImageUpload.nativeElement.click();
-      } else {
-        this.backSideImageUpload.nativeElement.click();
-      }
+  public get isFrontSideImageDefined(): boolean {
+    return !!this.images.frontSide;
+  }
+
+  public get isBackSideImageDefined(): boolean {
+    return !!this.images.backSide;
+  }
+
+  public get isCurrentImageDefined(): boolean {
+    if (this.imagesNeeded === 2) {
+    } else {
+      return this.isFrontSideImageDefined;
     }
   }
 
-  public defineImage(e: Event, imageSide: KYC_IMAGES): void {
-    const input = e.target as HTMLInputElement;
+  public get allImagesAreDefined(): boolean {
+    return this.definedImages === this.imagesNeeded;
+  }
 
+  public get isUploadImageMethod(): boolean {
+    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
+  }
+
+  public get isShootImageMethod(): boolean {
+    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT;
+  }
+
+  private get definedImages(): number {
+    const firstImage = this.images.frontSide;
+    const secondImage = this.images.backSide;
+
+    return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
+  }
+
+  public get showTakeImageButton(): boolean {
+    const oneImageNeededAndNotDefined = this.imagesNeeded === 1 && !this.images.frontSide;
+    const firstStepAndFrontSideNotDefined = this.activeStep === 1 && !this.images.frontSide;
+    const secondStepAndBackSideNotDefined = this.activeStep === 2 && !this.images.backSide;
+
+    return (
+      oneImageNeededAndNotDefined ||
+      (this.twoImagesNeeded && firstStepAndFrontSideNotDefined) ||
+      (this.twoImagesNeeded && secondStepAndBackSideNotDefined)
+    );
+  }
+
+  public get isContinueButtonActive(): boolean {
+    return this.twoImagesNeeded && this.images.frontSide && !this.images.backSide;
+  }
+
+  public get showRetakeImageButton(): boolean {
+    const oneImageNeededAndDefined = this.imagesNeeded === 1 && !!this.images.frontSide;
+    const firstStepAndFrontSideDefined = this.activeStep === 1 && !!this.images.frontSide;
+    const secondStepAndBackSideDefined = this.activeStep === 2 && !!this.images.backSide;
+
+    return (
+      oneImageNeededAndDefined ||
+      (this.twoImagesNeeded && firstStepAndFrontSideDefined) ||
+      (this.twoImagesNeeded && secondStepAndBackSideDefined)
+    );
+  }
+
+  public canUploadOrShootImage(userDevicePermissions: UserDevicePermissions): boolean {
+    return (this.isShootImageMethod && this.requestCameraSucceed(userDevicePermissions.video)) || this.isUploadImageMethod;
+  }
+
+  public uploadOrShootImage(): void {
+    if (this.isUploadImageMethod) {
+      this.uploadImage.nativeElement.click();
+    } else {
+      this.takeImage();
+    }
+  }
+
+  public defineImage(e: Event): void {
+    const input = e.target as HTMLInputElement;
     if (!input.files?.length) return;
 
     const file = input.files[0];
+    const imageSide = !this.isFrontSideImageDefined ? KYC_IMAGES.FRONT_SIDE : KYC_IMAGES.BACK_SIDE;
+
     this.defineUploadImageAndEmitValue(file, imageSide);
-  }
-
-  public takeImage(): void {
-    if (this.isShootImageMethod) {
-      const imageContainer = this.isFrontSideImageDefined ? this.backSideImage?.nativeElement : this.frontSideImage.nativeElement;
-
-      this.drawImageInCanvas(imageContainer, this.userCamera.nativeElement);
-
-      this.emitNewImage(imageContainer.toDataURL(this.MIME_TYPES.IMAGE_JPEG, 1));
-    }
-  }
-
-  public removeImage(imageToRemove: KYC_IMAGES): void {
-    if (imageToRemove === KYC_IMAGES.FRONT_SIDE) {
-      this.emitFrontSideImageChange(null);
-
-      if (this.isUploadImageMethod) {
-        this.frontSideImageUpload.nativeElement.value = null;
-      }
-    }
-
-    if (imageToRemove === KYC_IMAGES.BACK_SIDE) {
-      this.emitBackSideImageChange(null);
-
-      if (this.isUploadImageMethod) {
-        this.backSideImageUpload.nativeElement.value = null;
-      }
-    }
-  }
-
-  public handleBack(): void {
-    this.imagesChange.emit({
-      ...this.images,
-      frontSide: null,
-      backSide: null,
-    });
-
-    this.goBack.emit();
   }
 
   public requestCameraFailed(userCameraPermissions: DEVICE_PERMISSIONS_STATUS): boolean {
@@ -138,71 +164,34 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       : $localize`:@@kyc_camera_cannot_access:Oops, an error occurred and we cannot access your camera`;
   }
 
-  public isUploadImageCards(userDevicePermissions: UserDevicePermissions): boolean {
-    return (this.isShootImageMethod && this.requestCameraSucceed(userDevicePermissions.video)) || this.isUploadImageMethod;
-  }
-
-  public isImageButton(videoPermissionStatus: DEVICE_PERMISSIONS_STATUS): boolean {
-    return this.requestCameraSucceed(videoPermissionStatus) || this.isUploadImageMethod;
-  }
-
   public isErrorBanner(videoPermissionStatus: DEVICE_PERMISSIONS_STATUS): boolean {
     return this.requestCameraFailed(videoPermissionStatus) && this.isShootImageMethod;
   }
 
-  public get isUploadImageMethod(): boolean {
-    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
+  public handleBack(): void {
+    this.imagesChange.emit({
+      ...this.images,
+      frontSide: null,
+      backSide: null,
+    });
+
+    this.goBack.emit();
   }
 
-  public get isShootImageMethod(): boolean {
-    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT;
+  public removeImage(): void {
+    if (this.isFrontSideImageDefined) {
+      this.emitFrontSideImageChange(null);
+    } else {
+      this.emitBackSideImageChange(null);
+    }
+
+    if (this.isUploadImageMethod) {
+      this.uploadImage.nativeElement.value = null;
+    }
   }
 
-  public get title(): string {
-    return this.isShootImageMethod
-      ? $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`
-      : $localize`:@@kyc_upload_photo_view_title:Upload a photo of your document`;
-  }
-
-  public get actionButtonCopy(): string {
-    return this.isShootImageMethod
-      ? $localize`:@@kyc_request_photo_counter_shoot:Take photo`
-      : $localize`:@@kyc_request_photo_counter_upload:Upload photo`;
-  }
-
-  public get allImagesAreDefined(): boolean {
-    return this.imagesTakenCounter === this.imagesNeeded;
-  }
-
-  public get imagesTakenCounter(): number {
-    const firstImage = this.images.frontSide;
-    const secondImage = this.images.backSide;
-
-    return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
-  }
-
-  public get isFrontSideImageDefined(): boolean {
-    return !!this.images.frontSide;
-  }
-
-  public get isFrontSideImageActive(): boolean {
-    return !this.isFrontSideImageDefined && this.isShootImageMethod;
-  }
-
-  public get isFrontSideImageEnabled(): boolean {
-    return this.isFrontSideImageDefined || this.isUploadImageMethod;
-  }
-
-  public get isBackSideImageDefined(): boolean {
-    return !!this.images.backSide;
-  }
-
-  public get isBackSideImageActive(): boolean {
-    return this.isFrontSideImageDefined && !this.allImagesAreDefined;
-  }
-
-  public get isBackSideImageEnabled(): boolean {
-    return this.isBackSideImageDefined || this.isUploadImageMethod;
+  private get twoImagesNeeded(): boolean {
+    return this.imagesNeeded === 2;
   }
 
   private defineUploadImageAndEmitValue(file: File, imageSide: KYC_IMAGES): void {
@@ -214,7 +203,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   private handleUploadedImage(evt: ProgressEvent<FileReader>, imageSide: KYC_IMAGES): void {
-    const imageContainer = imageSide === KYC_IMAGES.FRONT_SIDE ? this.frontSideImage.nativeElement : this.backSideImage?.nativeElement;
+    const imageContainer = this.definedImageCanvas.nativeElement;
     const isFileReaderDone = evt.target.readyState === FileReader.DONE;
     const { result: base64Image } = evt.target;
     const img = new Image();
@@ -229,6 +218,13 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
         this.emitBackSideImageChange(base64Image);
       }
     }
+  }
+
+  private takeImage(): void {
+    const imageContainer = this.definedImageCanvas.nativeElement;
+
+    this.drawImageInCanvas(imageContainer, this.userCamera.nativeElement);
+    this.emitNewImage(imageContainer.toDataURL(this.MIME_TYPES.IMAGE_JPEG, 1));
   }
 
   private drawImageInCanvas(imageContainer: HTMLCanvasElement, img: HTMLImageElement): void {

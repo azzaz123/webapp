@@ -1,7 +1,7 @@
 @import '~style/common';
 
-$images-size-big: 180px;
-$images-size-small: 100px;
+$image-height-big: 300px;
+$image-height-small: 200px;
 
 .KYCUploadImages {
   &__back {
@@ -17,57 +17,28 @@ $images-size-small: 100px;
     }
   }
 
-  &__cameraContainer,
-  &__takenImage {
-    border-radius: $border-radius;
+  &__container {
+    margin: 0px 32px;
   }
 
-  &__cameraContainer__overlay {
-    top: 12%;
-    left: 8%;
-    width: 83%;
-    height: 76%;
-    border: 3px solid $white;
-    box-shadow: rgb(0 0 0 / 50%) 0px 0px 0px 40px;
+  &__title,
+  &__subtitle {
+    color: $blue-grey-1;
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    font-weight: $font-weight-chunky;
   }
 
   &__image {
-    height: $images-size-big;
+    height: $image-height-big;
 
     @include media-breakpoint-down(sm) {
-      height: $images-size-small;
+      height: $image-height-small;
     }
 
-    border: solid 2px $blue-grey-5;
-
-    &__title {
-      color: $blue-grey-2;
-    }
-
-    &--enabled {
-      a {
-        display: none;
-        top: -10px;
-        right: -10px;
-        border-radius: 50%;
-        @include square(19px);
-        background: $blue-grey-4;
-        line-height: $line-height-ml;
-      }
-      &:hover {
-        cursor: pointer;
-        box-shadow: 0 4px 6px 0 rgba(37, 50, 56, 0.15);
-        a {
-          display: flex;
-        }
-      }
-    }
-
-    &--active {
-      border: solid 2px $blue-grey-2;
-      .KYCUploadImages__image__title {
-        color: $blue-grey-1;
-      }
-    }
+    border: dashed 2px $blue-grey-5;
+    border-radius: $border-radius;
   }
 }
