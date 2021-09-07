@@ -27,7 +27,6 @@ describe('GIVEN the WalletSharedErrorActionService', () => {
       expect(target).toBeInstanceOf(Observable);
     });
     it('should send the received data', fakeAsync(() => {
-      // Arrange
       const expected = new HttpErrorResponse({
         error: 'any error',
         headers: new HttpHeaders('some headers'),
@@ -35,13 +34,12 @@ describe('GIVEN the WalletSharedErrorActionService', () => {
         statusText: 'No found',
         url: 'some url',
       });
+
       const observer = service.errorObserver.subscribe((result: unknown) => {
         observer.unsubscribe();
-        // Assert
         expect(result).toEqual(expected);
       });
 
-      // Act
       service.show(expected);
       tick();
     }));

@@ -25,19 +25,21 @@ export class WalletSharedErrorActionComponent implements OnDestroy, OnInit {
     private router: Router
   ) {}
 
-  ngOnDestroy(): void {
-    this.unsubscribe();
-  }
-
   ngOnInit(): void {
     this.subscribe();
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe();
+  }
+
   public get bannerConfiguration(): WalletSharedErrorActionBannerConfigurationInterface {
     return {
-      buttonText: $localize`:@@wallet_shared_error_action_button:Retry`,
-      description: $localize`:@@wallet_shared_error_action_message:Service unavailable temporarily. Try it later`,
+      buttonText: $localize`:@@wallet_view_snackbar_generic_error_retry_button:Retry`,
+      description: $localize`:@@wallet_view_snackbar_generic_error_description:¡Oops! Something has gone wrong. Please try again.`,
       dismissible: false,
+      iconPath: '/assets/images/wallet/error-action/icon.svg',
+      imagePath: '/assets/images/wallet/error-action/error.svg',
       type: BANNER_TYPES.DANGER,
     };
   }

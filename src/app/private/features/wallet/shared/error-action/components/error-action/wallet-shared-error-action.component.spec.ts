@@ -2,6 +2,7 @@ import { By } from '@angular/platform-browser';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -9,6 +10,7 @@ import { BannerComponent } from '@shared/banner/banner.component';
 import { ButtonComponent } from '@shared/button/button.component';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletSharedErrorActionComponent } from './wallet-shared-error-action.component';
 import { WalletSharedErrorActionService } from './../../services/wallet-shared-error-action.service';
 
@@ -34,8 +36,8 @@ describe('GIVEN WalletSharedErrorActionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BannerComponent, ButtonComponent, FakeComponent],
-      imports: [CommonModule, NgbAlertModule, RouterTestingModule],
+      declarations: [BannerComponent, ButtonComponent, FakeComponent, SvgIconComponent],
+      imports: [CommonModule, HttpClientTestingModule, NgbAlertModule, RouterTestingModule],
       providers: [
         {
           provide: Router,

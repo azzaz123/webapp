@@ -22,9 +22,6 @@ export class WalletSharedErrorActionService {
   private hasToBeShowed(data: unknown): boolean {
     const status = (!!data && (data as HttpErrorResponse).status) ?? 0;
 
-    if (status === NotFound) {
-      return false;
-    }
-    return true;
+    return status !== NotFound;
   }
 }
