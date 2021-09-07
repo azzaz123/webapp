@@ -1,0 +1,42 @@
+@import '~style/common';
+
+.CategoryListingModal {
+  text-align: center;
+  padding: $spacing-xl 60px $spacing-xl;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    font-size: $font-size-l;
+    font-weight: bold;
+    margin: $spacing-m 0 $spacing-s;
+  }
+  &__subtitle {
+    font-size: $font-size-m;
+    color: $blue-grey-2;
+    margin: 0 0 $spacing-l;
+  }
+  &__options {
+    overflow: auto;
+  }
+}
+
+.modal-close {
+  width: $spacing-ms;
+  height: $spacing-ms;
+  tsl-svg-icon {
+    width: $spacing-ms;
+    height: $spacing-ms;
+    line-height: $spacing-ms;
+    ::ng-deep svg path {
+      fill: $blue-grey-2;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .CategoryListingModal {
+    padding: $spacing-m $spacing-ms;
+  }
+}
