@@ -10,9 +10,7 @@ import {
   KmInfo,
   ItemVisibilityFlags,
 } from './item-response.interface';
-import { environment } from '../../../environments/environment';
 
-export const ITEM_BASE_PATH = 'http://es.wallapop.com/item/';
 export const FAKE_ITEM_IMAGE_BASE_PATH = '../../../assets/images/fake-item.png';
 export const FAKE_ITEM_IMAGE_SMALL_BASE_PATH = '../../../assets/images/fake-item-s.png';
 export const FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH = '../../../assets/images/fake-item-s-l.png';
@@ -28,7 +26,6 @@ export enum ITEM_TYPES {
 }
 
 export class Item implements Model {
-  private _webLink: string;
   private _views: number;
 
   private _favorites: number;
@@ -65,9 +62,8 @@ export class Item implements Model {
     private _car_info?: KmInfo,
     private _km?: number,
     private _bumpFlags?: ItemVisibilityFlags
-  ) {
-    this._webLink = ITEM_BASE_PATH + _webSlug;
-  }
+  ) {}
+
   get id(): string {
     return this._id;
   }
@@ -142,10 +138,6 @@ export class Item implements Model {
 
   get images(): Image[] {
     return this._images;
-  }
-
-  get webLink(): string {
-    return this._webLink;
   }
 
   get views(): number {
@@ -275,10 +267,6 @@ export class Item implements Model {
 
   get deliveryInfo(): DeliveryInfo {
     return this._deliveryInfo;
-  }
-
-  getUrl(subdomain: string) {
-    return environment.siteUrl.replace('es', subdomain) + 'item/' + this.webSlug;
   }
 
   get urgent(): boolean {

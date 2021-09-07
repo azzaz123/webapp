@@ -72,10 +72,6 @@ describe('SearchService', () => {
         },
         QueryStringLocationService,
         {
-          provide: 'SUBDOMAIN',
-          useValue: 'es',
-        },
-        {
           provide: CookieService,
           useValue: MockCookieService,
         },

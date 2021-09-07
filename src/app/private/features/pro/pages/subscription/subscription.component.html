@@ -1,9 +1,8 @@
-<ng-container *ngIf="!newSubscription; else newSubscriptionCard">
+<ng-container *ngIf="!newSubscription && !editSubscription">
 <tsl-subscription-list [isLoading]="loading" (clickButton)="manageSubscription($event)" [subscriptions]="subscriptions"></tsl-subscription-list>
 
 <tsl-subscription-benefits [hidden]="loading"></tsl-subscription-benefits>
 </ng-container>
 
-<ng-template #newSubscriptionCard>
-  <tsl-subscription-purchase [subscription]="newSubscription" [user]="user" (purchaseSuccessful)="subscriptionChangeSuccessful()" (unselectSubcription)="onUnselectSubcription()"></tsl-subscription-purchase>
-</ng-template>
+<tsl-subscription-purchase *ngIf="newSubscription" [subscription]="newSubscription" [user]="user" (purchaseSuccessful)="subscriptionChangeSuccessful($event)" (unselectSubcription)="onUnselectSubcription()"></tsl-subscription-purchase>
+<tsl-subscription-edit *ngIf="editSubscription" [subscription]="editSubscription" [user]="user" (editSuccesful)="subscriptionChangeSuccessful($event)"></tsl-subscription-edit>

@@ -42,7 +42,7 @@ describe('PaymentsWalletsService', () => {
 
       service.walletBalance$.subscribe((data) => (response = data));
 
-      expect(response).toEqual(MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_MAPPED_MONEY);
+      expect(JSON.stringify(response)).toEqual(JSON.stringify(MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_MAPPED_MONEY));
     });
   });
 });

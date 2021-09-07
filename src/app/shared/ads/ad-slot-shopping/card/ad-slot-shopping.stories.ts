@@ -27,7 +27,6 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StoryAdSlotShoppingComponent, AdSlotShoppingComponent],
-      providers: [{ provide: 'SUBDOMAIN', useValue: 'www' }],
       imports: [CoreModule, HttpClientModule],
     }),
   ],

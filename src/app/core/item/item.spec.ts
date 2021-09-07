@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 
-import { Item, ITEM_BASE_PATH } from './item';
+import { Item } from './item';
 import {
   ITEM_ACTIONS_ALLOWED,
   ITEM_CATEGORY_ID,
@@ -50,7 +50,6 @@ describe('Item', () => {
     expect(item.saleConditions).toBe(ITEM_SALE_CONDITIONS);
     expect(item.mainImage).toBe(ITEM_MAIN_IMAGE);
     expect(item.images).toBe(ITEM_IMAGES);
-    expect(item.webLink).toBe(ITEM_BASE_PATH + ITEM_WEB_SLUG);
     expect(item.publishedDate).toBe(ITEM_PUBLISHED_DATE);
   });
 

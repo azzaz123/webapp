@@ -50,19 +50,6 @@ export class CreditCardModalComponent implements OnInit {
     }
   }
 
-  private managePaymentResponse(paymentResponse) {
-    switch (paymentResponse && paymentResponse.toUpperCase()) {
-      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-        this.activeModal.close('success');
-        break;
-      }
-      default: {
-        this.activeModal.close('error');
-        break;
-      }
-    }
-  }
-
   public setCardInfo(card: any) {
     this.card = card;
   }
@@ -88,6 +75,19 @@ export class CreditCardModalComponent implements OnInit {
     this.hasSavedCard = hasCard;
     if (!hasCard) {
       this.addNewCard();
+    }
+  }
+
+  private managePaymentResponse(paymentResponse) {
+    switch (paymentResponse && paymentResponse.toUpperCase()) {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
+        this.activeModal.close('success');
+        break;
+      }
+      default: {
+        this.activeModal.close('error');
+        break;
+      }
     }
   }
 }

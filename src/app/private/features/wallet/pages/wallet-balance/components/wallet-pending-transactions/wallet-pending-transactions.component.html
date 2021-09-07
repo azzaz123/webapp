@@ -1,0 +1,7 @@
+<div class="WalletPendingTransactions" *ngIf="(walletPendingTransactions$ | async) as pendingTransactions" >
+  <div class="WalletPendingTransactions__label" *ngIf="pendingTransactions.length">
+    <span i18n="@@wallet_view_pending_collection_label">Pending collection</span>
+    <span i18n="@@wallet_view_pending_collection_transactions_number_label">({{pendingTransactions.length}})</span>
+  </div>
+  <tsl-wallet-pending-transactions-list [pendingTransactions]="pendingTransactions"></tsl-wallet-pending-transactions-list>
+</div>

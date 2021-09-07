@@ -3,8 +3,6 @@
 
 # PROs
 /src/app/private/features/calls
-/src/app/private/features/catalog
-/src/app/private/features/catalog-pro
 /src/app/private/features/dashboard
 /src/app/private/features/help
 /src/app/private/features/wallacoins

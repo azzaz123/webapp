@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CustomCurrencyPipe } from '@shared/pipes';
+import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ItemCardFavouriteComponent } from './item-card-favourite.component';
 import { ItemService } from '@core/item/item.service';
@@ -11,6 +11,9 @@ import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmat
 import { USER_ID } from '@fixtures/user.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { I18nService } from '@core/i18n/i18n.service';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { By } from '@angular/platform-browser';
 
 describe('ItemCardFavouriteComponent', () => {
   let component: ItemCardFavouriteComponent;
@@ -18,7 +21,6 @@ describe('ItemCardFavouriteComponent', () => {
   let element: HTMLElement;
 
   let itemService: ItemService;
-  let subdomain: string;
   let modalService: NgbModal;
 
   const modalRef: any = {
@@ -34,7 +36,7 @@ describe('ItemCardFavouriteComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [],
-        declarations: [ItemCardFavouriteComponent, CustomCurrencyPipe],
+        declarations: [ItemCardFavouriteComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
         providers: [
           DecimalPipe,
           I18nService,
@@ -54,7 +56,10 @@ describe('ItemCardFavouriteComponent', () => {
               },
             },
           },
-          { provide: 'SUBDOMAIN', useValue: 'www' },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -68,7 +73,6 @@ describe('ItemCardFavouriteComponent', () => {
     component.item = MOCK_ITEM;
     itemService = TestBed.inject(ItemService);
     modalService = TestBed.inject(NgbModal);
-    subdomain = TestBed.inject(<any>'SUBDOMAIN');
 
     fixture.detectChanges();
   });
@@ -76,9 +80,10 @@ describe('ItemCardFavouriteComponent', () => {
   describe('goToItemDetail', () => {
     it('should change window url', () => {
       spyOn(window, 'open');
-      const MOCK_ITEM_URL: string = environment.siteUrl.replace('es', subdomain) + 'item/' + MOCK_ITEM.webSlug;
-      component.goToItemDetail();
-      expect(window.open).toHaveBeenCalledWith(MOCK_ITEM_URL);
+      const MOCK_ITEM_URL: string = MOCK_SITE_URL + 'item/' + MOCK_ITEM.webSlug;
+      const element = fixture.debugElement.query(By.css('a'));
+
+      expect(element.attributes.href).toEqual(MOCK_ITEM_URL);
     });
   });
 

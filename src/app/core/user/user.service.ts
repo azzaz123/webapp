@@ -24,7 +24,8 @@ import { ReleaseVersionService } from '@core/release-version/release-version.ser
 
 import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
+import { SITE_URL } from '@configs/site-url.config';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
@@ -73,8 +74,8 @@ export class UserService {
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
     private releaseVersionService: ReleaseVersionService,
-    @Inject('SUBDOMAIN') private subdomain: string,
-    @Inject(LOCALE_ID) private locale: APP_LOCALE
+    @Inject(LOCALE_ID) private locale: APP_LOCALE,
+    @Inject(SITE_URL) private siteUrl: string
   ) {}
 
   get user(): User {
@@ -86,7 +87,7 @@ export class UserService {
   }
 
   public logoutLogic(redirect?: string): void {
-    const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
+    const redirectUrl = redirect ? redirect : this.siteUrl;
     const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.remove('publisherId', cookieOptions);
     this.cookieService.remove('creditName', cookieOptions);

@@ -5,12 +5,14 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '@core/item/item.service';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
-import { CustomCurrencyPipe } from '@shared/pipes';
+import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
 import { PaymentService } from '@core/payments/payment.service';
 import { BumpSuggestionModalComponent } from './bump-suggestion-modal.component';
 import { By } from '@angular/platform-browser';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SocialShareService } from '@core/social-share/social-share.service';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 describe('BumpSuggestionModalComponent', () => {
   let component: BumpSuggestionModalComponent;
@@ -25,6 +27,7 @@ describe('BumpSuggestionModalComponent', () => {
       declarations: [BumpSuggestionModalComponent, ButtonComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
+        ItemDetailRoutePipe,
         {
           provide: ItemService,
           useValue: {
@@ -54,6 +57,10 @@ describe('BumpSuggestionModalComponent', () => {
             twitterShare() {},
           },
         },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -76,7 +83,7 @@ describe('BumpSuggestionModalComponent', () => {
       component.onFacebookShare();
 
       expect(socialShareService.facebookShare).toHaveBeenCalledTimes(1);
-      expect(socialShareService.facebookShare).toHaveBeenCalledWith(MOCK_ITEM.webLink);
+      expect(socialShareService.facebookShare).toHaveBeenCalledWith(component.itemLink);
     });
 
     it('should open twiter link', () => {
@@ -86,7 +93,7 @@ describe('BumpSuggestionModalComponent', () => {
       component.onTwitterShare();
 
       expect(socialShareService.twitterShare).toHaveBeenCalledTimes(1);
-      expect(socialShareService.twitterShare).toHaveBeenCalledWith(MOCK_ITEM.webLink);
+      expect(socialShareService.twitterShare).toHaveBeenCalledWith(component.itemLink);
     });
 
     it('should not disable shere icons if item data is available', () => {

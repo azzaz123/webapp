@@ -7,10 +7,12 @@ import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe, CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ItemService } from '@core/item/item.service';
-import { CustomCurrencyPipe } from '@shared/pipes';
+import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
 import { environment } from '@environments/environment';
 import { ItemStatsService } from '../../core/services/item-stats.service';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { By } from '@angular/platform-browser';
 
 describe('ItemStatsRowComponent', () => {
   let component: ItemStatsRowComponent;
@@ -21,13 +23,9 @@ describe('ItemStatsRowComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CommonModule, NoopAnimationsModule],
-        declarations: [ItemStatsRowComponent, CustomCurrencyPipe],
+        declarations: [ItemStatsRowComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
         providers: [
           DecimalPipe,
-          {
-            provide: 'SUBDOMAIN',
-            useValue: 'es',
-          },
           {
             provide: ItemStatsService,
             useValue: {
@@ -35,6 +33,10 @@ describe('ItemStatsRowComponent', () => {
                 return of(ITEM_STATISTIC_RESPONSE);
               },
             },
+          },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
           },
         ],
         schemas: [NO_ERRORS_SCHEMA],
@@ -52,7 +54,9 @@ describe('ItemStatsRowComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set link', () => {
-      expect(component.link).toBe(environment.siteUrl + 'item/toyota-yaris-1-3-99cv-500008657');
+      const element = fixture.debugElement.query(By.css('.image'));
+
+      expect(element.attributes.href).toBe(MOCK_SITE_URL + 'item/toyota-yaris-1-3-99cv-500008657');
     });
 
     it('should call getStatistics and set it', () => {

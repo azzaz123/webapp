@@ -12,21 +12,23 @@
         </div>
       </div>
       <div class="row">
-        <tsl-payments-card-info
-          *ngIf="creditCard$ | async as creditCard"
-          [brand]="creditCard.brand"
-          [numberCard]="creditCard.lastFourDigits"
-          [expireDate]="formattedCreditCardDate(creditCard.expirationDate)"
-          [ownerName]="creditCard.ownerFullName"
-          [hideEdit]="true"
-          (deleteCardClick)="openDeleteCardModal()"
-          class="col"
-          id="creditCard"
-        >
-        </tsl-payments-card-info>
-        <tsl-add-credit-card *ngIf="!(creditCard$ | async)" class="col" (click)="redirect(CREDIT_CARD_FORM_LINK)" id="addCreditCard">
-          <span i18n="@@banking_data_menu_add_credit_card">Add credit or debit card</span>
-        </tsl-add-credit-card>
+        <div *ngIf="creditCard$ | async as creditCard; else addCreditCard" class="col">
+          <tsl-payments-card-info
+            [brand]="creditCard.brand"
+            [numberCard]="creditCard.lastFourDigits"
+            [expireDate]="formattedCreditCardDate(creditCard.expirationDate)"
+            [ownerName]="creditCard.ownerFullName"
+            [hideEdit]="true"
+            (deleteCardClick)="openDeleteCardModal()"
+            id="creditCard"
+          >
+          </tsl-payments-card-info>
+        </div>
+        <ng-template #addCreditCard>
+          <tsl-add-credit-card class="col" (click)="redirect(CREDIT_CARD_FORM_LINK)" id="addCreditCard">
+            <span i18n="@@banking_data_menu_add_credit_card">Add credit or debit card</span>
+          </tsl-add-credit-card>
+        </ng-template>
       </div>
     </div>
     <div class="col-sm-12 col-md-5">
@@ -36,20 +38,22 @@
         </div>
       </div>
       <div class="row">
-        <tsl-payments-card-info
-          *ngIf="bankAccount$ | async as bankAccount"
-          [ownerName]="formattedBankAccountName(bankAccount)"
-          [numberCard]="formattedBankAccountIBAN(bankAccount.iban)"
-          [isBankAccount]="true"
-          (changeCardClick)="redirect(BANK_ACCOUNT_FORM_LINK)"
-          (deleteCardClick)="openDeleteBankAccountModal()"
-          class="col"
-          id="bankAccount"
-        >
-        </tsl-payments-card-info>
-        <tsl-add-credit-card *ngIf="!(bankAccount$ | async)" (click)="redirect(BANK_ACCOUNT_FORM_LINK)" class="col" id="addBankAccount">
-          <span i18n="@@banking_data_menu_add_bank_account">Add bank account</span>
-        </tsl-add-credit-card>
+        <div *ngIf="bankAccount$ | async as bankAccount; else addBankAccount" class="col">
+          <tsl-payments-card-info
+            [ownerName]="formattedBankAccountName(bankAccount)"
+            [numberCard]="formattedBankAccountIBAN(bankAccount.iban)"
+            [isBankAccount]="true"
+            (changeCardClick)="handleBankAccountCardClick(BANK_ACCOUNT_FORM_LINK, bankAccount)"
+            (deleteCardClick)="openDeleteBankAccountModal()"
+            id="bankAccount"
+          >
+          </tsl-payments-card-info>
+        </div>
+        <ng-template #addBankAccount>
+          <tsl-add-credit-card (click)="handleBankAccountCardClick(BANK_ACCOUNT_FORM_LINK, bankAccount)" class="col" id="addBankAccount">
+            <span i18n="@@banking_data_menu_add_bank_account">Add bank account</span>
+          </tsl-add-credit-card>
+        </ng-template>
       </div>
     </div>
   </div>

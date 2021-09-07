@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ItemService } from '@core/item/item.service';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
@@ -14,6 +14,7 @@ import { ItemRequiredDataService } from '@private/core/services/item-required-da
 import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ItemDetailRoutePipe } from '@shared/pipes';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -42,11 +43,11 @@ export class CatalogItemComponent implements OnInit {
     private catalogItemTrackingEventService: CatalogItemTrackingEventService,
     private router: Router,
     private i18nService: I18nService,
-    @Inject('SUBDOMAIN') private subdomain: string
+    private itemDetailRoutePipe: ItemDetailRoutePipe
   ) {}
 
   ngOnInit() {
-    this.link = this.item.getUrl(this.subdomain);
+    this.link = this.itemDetailRoutePipe.transform(this.item.webSlug);
     this.itemService.selectedItems$.subscribe(() => {
       this.selectMode = this.itemService.selectedItems.length !== 0;
     });
@@ -79,24 +80,6 @@ export class CatalogItemComponent implements OnInit {
     this.reactivateItem(item);
   }
 
-  private reactivateItem(item: Item): void {
-    this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
-      this.catalogItemTrackingEventService.trackReactivateItemEvent(item);
-      if (missingRequiredData) {
-        this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
-      } else {
-        this.itemService.reactivateItem(item.id).subscribe(
-          () => {
-            this.itemChange.emit({
-              item,
-              action: ITEM_CHANGE_ACTION.REACTIVATED,
-            });
-          },
-          () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: TOAST_TYPES.ERROR })
-        );
-      }
-    });
-  }
   public select(item: Item) {
     item.selected = !item.selected;
     this.itemService.selectedAction = this.itemService.selectedAction === 'feature' ? 'feature' : '';
@@ -147,5 +130,24 @@ export class CatalogItemComponent implements OnInit {
 
   public openItem() {
     window.open(this.link);
+  }
+
+  private reactivateItem(item: Item): void {
+    this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
+      this.catalogItemTrackingEventService.trackReactivateItemEvent(item);
+      if (missingRequiredData) {
+        this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
+      } else {
+        this.itemService.reactivateItem(item.id).subscribe(
+          () => {
+            this.itemChange.emit({
+              item,
+              action: ITEM_CHANGE_ACTION.REACTIVATED,
+            });
+          },
+          () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: TOAST_TYPES.ERROR })
+        );
+      }
+    });
   }
 }

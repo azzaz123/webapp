@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ItemCounters } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { InboxItem } from '@private/features/chat/core/model';
@@ -8,10 +8,10 @@ import { InboxItem } from '@private/features/chat/core/model';
   templateUrl: './inbox-item-detail.component.html',
   styleUrls: ['./inbox-item-detail.component.scss'],
 })
-export class InboxItemDetailComponent implements OnInit, OnChanges, OnDestroy {
+export class InboxItemDetailComponent implements OnInit {
   @Input() item: InboxItem;
 
-  constructor(private itemService: ItemService, @Inject('SUBDOMAIN') private subdomain: string) {}
+  constructor(private itemService: ItemService) {}
 
   ngOnInit() {
     if (this.item.price !== undefined && (this.item.views === undefined || this.item.favorites === undefined)) {
@@ -22,10 +22,6 @@ export class InboxItemDetailComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnChanges(changes?: any) {}
-
-  ngOnDestroy() {}
-
   public canEdit() {
     return this.item.isMine && !this.item.sold;
   }
@@ -34,18 +30,17 @@ export class InboxItemDetailComponent implements OnInit, OnChanges, OnDestroy {
     return this.item.isMine;
   }
 
-  public prevent($event: Event, stop?: boolean) {
-    if (this.item.itemUrl === undefined || this.item.itemUrl === '#' || stop) {
-      $event.preventDefault();
-      $event.stopPropagation();
-    }
+  public prevent($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();
   }
 
   get itemImageUrl(): String {
     return this.item.mainImage.urls_by_size.small.replace('http://', 'https://');
   }
 
-  public toggleReserve() {
+  public toggleReserve(e: Event) {
+    this.prevent(e);
     this.itemService.reserveItem(this.item.id, !this.item.reserved).subscribe(() => {
       this.item.reserved = !this.item.reserved;
     });

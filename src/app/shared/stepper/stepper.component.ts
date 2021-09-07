@@ -34,12 +34,14 @@ export class StepperComponent implements AfterContentInit {
   public goBack(): void {
     if (this.havePreviousSlide()) {
       this.activeId = --this.activeId;
+      this.cdr.detectChanges();
     }
   }
 
   public goNext(): void {
     if (this.haveNextSlide()) {
       this.activeId = ++this.activeId;
+      this.cdr.detectChanges();
     }
 
     this.emitLastStep();

@@ -29,7 +29,6 @@ import { User } from '@core/user/user';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { LOCAL_STORAGE_SUGGEST_PRO_SHOWN, LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
-import { TIER } from '@fixtures/subscriptions.fixtures.spec';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
@@ -68,45 +67,43 @@ const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'purc
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit, OnDestroy {
+  @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
+  @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
   public items: Item[] = [];
   public selectedStatus: string = STATUS.PUBLISHED;
   public loading = true;
-  private init = 0;
   public end: boolean;
   public scrollTop: number;
-  private bumpSuggestionModalRef: NgbModalRef;
-  private active = true;
-  private firstItemLoad = true;
-  public numberOfProducts: number;
-  private counters: Counters;
-  private tooManyItemsModalRef: NgbModalRef;
   public userCanDeactivate: boolean;
   public selectedItems: Item[];
   public creditInfo: CreditInfo;
   public subscriptionSlots: SubscriptionSlot[] = [];
   public selectedSubscriptionSlot: SubscriptionSlot;
   public navLinks: NavLink[] = [];
-  private searchTerm: string;
+  public numberOfProducts: number;
   public searchPlaceholder: string;
   public sortItems: any[];
   public sortBy: string;
-  private page = 1;
-  private pageSize = 20;
   public normalNavLinks: NavLink[] = [];
   public subscriptionSelectedNavLinks: NavLink[] = [];
   public user: User;
   public userScore: number;
   public showTryProSlot: boolean;
   public hasTrialAvailable: boolean;
-  private subscriptions: SubscriptionsResponse[];
-  private componentSubscriptions: Subscription[] = [];
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly PRO_PATHS = PRO_PATHS;
   public tierWithDiscount: Tier;
-
-  @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
-  @ViewChild(BumpTutorialComponent, { static: true })
-  bumpTutorial: BumpTutorialComponent;
+  private bumpSuggestionModalRef: NgbModalRef;
+  private active = true;
+  private firstItemLoad = true;
+  private init = 0;
+  private counters: Counters;
+  private tooManyItemsModalRef: NgbModalRef;
+  private searchTerm: string;
+  private page = 1;
+  private pageSize = 20;
+  private subscriptions: SubscriptionsResponse[];
+  private componentSubscriptions: Subscription[] = [];
 
   constructor(
     public itemService: ItemService,
@@ -283,75 +280,6 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setNormalLinks(): void {
-    this.normalNavLinks = [
-      { id: STATUS.PUBLISHED, display: this.i18n.translate(TRANSLATION_KEY.PUBLISHED) },
-      { id: STATUS.SOLD, display: this.i18n.translate(TRANSLATION_KEY.SOLD) },
-      { id: STATUS.INACTIVE, display: this.i18n.translate(TRANSLATION_KEY.INACTIVE), counter: { currentVal: this.counters?.onHold } },
-    ];
-
-    if (this.deviceService.isMobile()) {
-      this.normalNavLinks.push({
-        id: 'reviews',
-        display: this.i18n.translate(TRANSLATION_KEY.REVIEWS),
-      });
-    }
-  }
-
-  private onOpenWallacoinsModal(): void {
-    this.modalService.open(WallacoinsDisabledModalComponent, {
-      windowClass: 'modal-standard',
-      backdrop: 'static',
-    });
-  }
-
-  private showBumpSuggestionModal(itemId: string): void {
-    this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
-      if (permissions[PERMISSIONS.bumps]) {
-        this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
-          windowClass: 'modal-standard',
-        });
-        this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
-          this.bumpSuggestionModalRef = null;
-          if (result?.redirect) {
-            this.router.navigate(['catalog/checkout', { itemId }]);
-          }
-        });
-      } else {
-        this.errorService.i18nSuccess(TRANSLATION_KEY.TOAST_PRODUCT_CREATED);
-      }
-    });
-  }
-
-  private getCheapestProductPrice(modalRef: NgbModalRef, itemId: string, creditInfo: CreditInfo): void {
-    this.itemService.getCheapestProductPrice([itemId]).subscribe((value: CheapestProducts) => {
-      modalRef.componentInstance.productPrice = +value[itemId] * creditInfo.factor;
-    });
-  }
-
-  private getCreditInfo() {
-    this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
-      if (creditInfo.credit === 0) {
-        creditInfo.currencyName = 'wallacredits';
-        creditInfo.factor = 1;
-      }
-      this.creditInfo = creditInfo;
-      if (this.bumpSuggestionModalRef) {
-        this.getCheapestProductPrice(this.bumpSuggestionModalRef, this.route.snapshot.params['itemId'], creditInfo);
-        this.bumpSuggestionModalRef.componentInstance.productCurrency = creditInfo.currencyName;
-      }
-    });
-  }
-
-  private restoreSelectedItems() {
-    this.itemService.selectedItems.forEach((itemId: string) => {
-      this.itemService.selectedItems$.next({
-        id: itemId,
-        action: STATUS.SELECTED,
-      });
-    });
-  }
-
   ngOnDestroy() {
     this.active = false;
     this.componentSubscriptions.forEach((subscription: Subscription) => {
@@ -388,58 +316,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems(true);
   }
 
-  private getItems(append?: boolean) {
-    this.loading = true;
-    this.end = false;
-
-    if (!append) {
-      this.init = 0;
-      this.page = 1;
-      this.items = [];
-    } else {
-      this.page++;
-    }
-    const status = this.selectedStatus;
-
-    if (this.selectedSubscriptionSlot) {
-      this.itemService
-        .minesByCategory(
-          this.page,
-          this.pageSize,
-          this.selectedSubscriptionSlot.category.category_id,
-          this.sortBy,
-          this.selectedStatus,
-          this.searchTerm
-        )
-        .subscribe((itemsByCategory) => {
-          if (itemsByCategory) {
-            this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
-            this.updateNavLinksCounters();
-            this.setNumberOfProducts();
-          }
-          this.loading = false;
-        });
-    } else {
-      this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
-        const items = itemsData.data;
-        this.init = itemsData.init;
-        this.items = append ? this.items.concat(items) : items;
-        this.end = !this.init;
-        if (this.bumpSuggestionModalRef) {
-          this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
-        }
-        if (this.firstItemLoad) {
-          setTimeout(() => {
-            this.restoreSelectedItems();
-          });
-        }
-        this.firstItemLoad = false;
-        this.getNumberOfProducts();
-        this.loading = false;
-      });
-    }
-  }
-
   public itemChanged($event: ItemChangeEvent) {
     if ($event.action === ITEM_CHANGE_ACTION.REACTIVATED) {
       this.reactivationAction($event.item.id);
@@ -450,76 +326,6 @@ export class ListComponent implements OnInit, OnDestroy {
       this.items.splice(index, 1);
       this.getNumberOfProducts();
     }
-  }
-
-  private reactivationAction(id: string): void {
-    const index: number = findIndex(this.items, { id });
-    const reactivatedItem = this.items[index];
-    reactivatedItem.flags.expired = false;
-    reactivatedItem.flags.pending = true;
-    if (!this.user.featured) {
-      this.reactivatedNoFeaturedUser(reactivatedItem, index);
-    } else {
-      this.reloadItem(reactivatedItem.id, index);
-    }
-  }
-
-  private reactivatedNoFeaturedUser(item: Item, index: number): void {
-    this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
-      if (permissions[PERMISSIONS.subscriptions] && this.shouldShowSuggestProModal()) {
-        this.openSuggestProModal(item, index);
-      } else {
-        this.reloadItem(item.id, index);
-      }
-    });
-  }
-
-  private shouldShowSuggestProModal(): boolean {
-    const oneDay = 1000 * 60 * 60 * 24;
-    const lastShown = this.userService.getLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN);
-    return lastShown ? Date.now() - parseInt(lastShown) > oneDay : true;
-  }
-
-  private openSuggestProModal(reactivatedItem: Item, index: number): void {
-    const isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(this.subscriptions, reactivatedItem.categoryId);
-    const tierDiscount = this.subscriptionsService.tierDiscountByCategoryId(this.subscriptions, reactivatedItem.categoryId);
-    this.trackViewProExpiredItemsPopup(isFreeTrial, !!tierDiscount);
-    this.userService.saveLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, Date.now().toString());
-
-    const modalRef = this.modalService.open(SuggestProModalComponent, {
-      windowClass: 'modal-standard',
-    });
-
-    modalRef.componentInstance.title = $localize`:@@web_suggest_pro_modal_title:If you were PRO your items wouldn’t become inactive. Sounds good, right?`;
-    modalRef.componentInstance.isFreeTrial = isFreeTrial;
-    modalRef.componentInstance.tierWithDiscount = tierDiscount;
-
-    modalRef.result.then(
-      () => this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]),
-      () => this.reloadItem(reactivatedItem.id, index)
-    );
-  }
-
-  private trackViewProExpiredItemsPopup(freeTrial: boolean, discount: boolean): void {
-    const event: AnalyticsPageView<ViewProExpiredItemsPopup> = {
-      name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
-      attributes: {
-        screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
-        freeTrial,
-        discount,
-      },
-    };
-
-    this.analyticsService.trackPageView(event);
-  }
-
-  private reloadItem(id: string, index: number): void {
-    this.itemService
-      .get(id)
-      .pipe(take(1))
-      .subscribe((item) => {
-        this.items[index] = item;
-      });
   }
 
   public deselect() {
@@ -614,12 +420,6 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private activateNormalLinks(): void {
-    this.setNormalLinks();
-    this.resetNavLinksCounters();
-    this.navLinks = this.normalNavLinks;
-  }
-
   public purchaseListingFee(orderEvent: OrderEvent) {
     const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'modal-standard' });
     modalRef.componentInstance.type = 'listing-fee';
@@ -633,24 +433,6 @@ export class ListComponent implements OnInit, OnDestroy {
         this.router.navigate(['catalog/list', { code: -1 }]);
       }
     });
-  }
-
-  private setNumberOfProducts(): void {
-    if (this.selectedSubscriptionSlot) {
-      this.numberOfProducts = this.items.length;
-      return;
-    }
-
-    switch (this.selectedStatus) {
-      case STATUS.SOLD:
-        this.numberOfProducts = this.counters.sold;
-        break;
-      case STATUS.PUBLISHED:
-        this.numberOfProducts = this.counters.publish;
-        break;
-      case STATUS.INACTIVE:
-        this.numberOfProducts = this.counters.onHold;
-    }
   }
 
   public deactivate() {
@@ -675,6 +457,321 @@ export class ListComponent implements OnInit, OnDestroy {
   public activate(subscriptionType = SUBSCRIPTION_TYPES.stripe, itemId?: string) {
     this.trackActivateProItem(itemId);
     itemId ? this.activateSingleItem(itemId, subscriptionType) : this.activateMultiItems(subscriptionType);
+  }
+
+  public onSelectSubscriptionSlot(subscription: SubscriptionSlot) {
+    if (this.selectedSubscriptionSlot && subscription) {
+      if (this.selectedSubscriptionSlot.category.category_id === subscription.category.category_id) {
+        return;
+      }
+    }
+
+    this.itemService.deselectItems();
+    this.selectedSubscriptionSlot = subscription;
+
+    if (!subscription) {
+      this.selectedStatus = STATUS.PUBLISHED;
+      this.searchTerm = null;
+      this.sortBy = SORTS[0];
+      this.trackCloseSelectedSlot();
+    } else {
+      this.selectedStatus = STATUS.ACTIVE;
+    }
+
+    this.updateNavLinks();
+    this.getItems();
+  }
+
+  public updateNavLinks() {
+    if (this.selectedSubscriptionSlot) {
+      this.navLinks = this.subscriptionSelectedNavLinks;
+    } else {
+      this.navLinks = this.normalNavLinks;
+      this.resetNavLinksCounters();
+    }
+  }
+
+  public updateNavLinksCounters() {
+    this.navLinks.forEach((navLink) => {
+      if (navLink.id === this.selectedStatus) {
+        if (this.selectedStatus === STATUS.ACTIVE) {
+          navLink.counter = {
+            currentVal: this.items.length,
+            maxVal: this.selectedSubscriptionSlot.limit,
+          };
+        } else {
+          navLink.counter = { currentVal: this.items.length };
+        }
+      }
+    });
+  }
+
+  public getNavLinkById(id: string): NavLink {
+    return this.navLinks.filter((navLink) => navLink.id === id)[0];
+  }
+
+  public resetNavLinksCounters() {
+    this.navLinks.forEach((navLink) => (navLink.counter = null));
+  }
+
+  public onSearchInputChange(value: string) {
+    this.searchTerm = value;
+    this.getItems();
+  }
+
+  public setSortItems() {
+    this.sortItems = SORTS.map((value, i) => {
+      return { value, label: this.i18n.translate(SORTS_TRANSLATION_KEYS[i]) };
+    });
+    this.sortBy = SORTS[0];
+  }
+
+  public onSortChange(value: any) {
+    this.sortBy = value;
+    this.getItems();
+  }
+
+  public onCloseTryProSlot(): void {
+    const event: AnalyticsEvent<RemoveProSubscriptionBanner> = {
+      name: ANALYTICS_EVENT_NAMES.RemoveProSubscriptionBanner,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+      attributes: {
+        screenId: SCREEN_IDS.MyCatalog,
+        freeTrial: this.hasTrialAvailable,
+      },
+    };
+    this.analyticsService.trackEvent(event);
+    this.saveLocalStorage(LOCAL_STORAGE_TRY_PRO_SLOT, 'true');
+    this.showTryProSlot = false;
+  }
+
+  public onClickTryProSlot(): void {
+    const event: AnalyticsEvent<ClickProSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.MyCatalog,
+        freeTrial: this.hasTrialAvailable,
+        discount: this.subscriptionsService.hasSomeSubscriptionDiscount(this.subscriptions),
+      },
+    };
+    this.analyticsService.trackEvent(event);
+    this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
+  }
+
+  private setNormalLinks(): void {
+    this.normalNavLinks = [
+      { id: STATUS.PUBLISHED, display: this.i18n.translate(TRANSLATION_KEY.PUBLISHED) },
+      { id: STATUS.SOLD, display: this.i18n.translate(TRANSLATION_KEY.SOLD) },
+      { id: STATUS.INACTIVE, display: this.i18n.translate(TRANSLATION_KEY.INACTIVE), counter: { currentVal: this.counters?.onHold } },
+    ];
+
+    if (this.deviceService.isMobile()) {
+      this.normalNavLinks.push({
+        id: 'reviews',
+        display: this.i18n.translate(TRANSLATION_KEY.REVIEWS),
+      });
+    }
+  }
+
+  private onOpenWallacoinsModal(): void {
+    this.modalService.open(WallacoinsDisabledModalComponent, {
+      windowClass: 'modal-standard',
+      backdrop: 'static',
+    });
+  }
+
+  private showBumpSuggestionModal(itemId: string): void {
+    this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
+      if (permissions[PERMISSIONS.bumps]) {
+        this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
+          windowClass: 'modal-standard',
+        });
+        this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
+          this.bumpSuggestionModalRef = null;
+          if (result?.redirect) {
+            this.router.navigate(['catalog/checkout', { itemId }]);
+          }
+        });
+      } else {
+        this.errorService.i18nSuccess(TRANSLATION_KEY.TOAST_PRODUCT_CREATED);
+      }
+    });
+  }
+
+  private getCheapestProductPrice(modalRef: NgbModalRef, itemId: string, creditInfo: CreditInfo): void {
+    this.itemService.getCheapestProductPrice([itemId]).subscribe((value: CheapestProducts) => {
+      modalRef.componentInstance.productPrice = +value[itemId] * creditInfo.factor;
+    });
+  }
+
+  private getCreditInfo() {
+    this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
+      if (creditInfo.credit === 0) {
+        creditInfo.currencyName = 'wallacredits';
+        creditInfo.factor = 1;
+      }
+      this.creditInfo = creditInfo;
+      if (this.bumpSuggestionModalRef) {
+        this.getCheapestProductPrice(this.bumpSuggestionModalRef, this.route.snapshot.params['itemId'], creditInfo);
+        this.bumpSuggestionModalRef.componentInstance.productCurrency = creditInfo.currencyName;
+      }
+    });
+  }
+
+  private restoreSelectedItems() {
+    this.itemService.selectedItems.forEach((itemId: string) => {
+      this.itemService.selectedItems$.next({
+        id: itemId,
+        action: STATUS.SELECTED,
+      });
+    });
+  }
+
+  private getItems(append?: boolean) {
+    this.loading = true;
+    this.end = false;
+
+    if (!append) {
+      this.init = 0;
+      this.page = 1;
+      this.items = [];
+    } else {
+      this.page++;
+    }
+    const status = this.selectedStatus;
+
+    if (this.selectedSubscriptionSlot) {
+      this.itemService
+        .minesByCategory(
+          this.page,
+          this.pageSize,
+          this.selectedSubscriptionSlot.category.category_id,
+          this.sortBy,
+          this.selectedStatus,
+          this.searchTerm
+        )
+        .subscribe((itemsByCategory) => {
+          if (itemsByCategory) {
+            this.items = append ? this.items.concat(itemsByCategory) : itemsByCategory;
+            this.updateNavLinksCounters();
+            this.setNumberOfProducts();
+          }
+          this.loading = false;
+        });
+    } else {
+      this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
+        const items = itemsData.data;
+        this.init = itemsData.init;
+        this.items = append ? this.items.concat(items) : items;
+        this.end = !this.init;
+        if (this.bumpSuggestionModalRef) {
+          this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
+        }
+        if (this.firstItemLoad) {
+          setTimeout(() => {
+            this.restoreSelectedItems();
+          });
+        }
+        this.firstItemLoad = false;
+        this.getNumberOfProducts();
+        this.loading = false;
+      });
+    }
+  }
+
+  private reactivationAction(id: string): void {
+    const index: number = findIndex(this.items, { id });
+    const reactivatedItem = this.items[index];
+    reactivatedItem.flags.expired = false;
+    reactivatedItem.flags.pending = true;
+    if (!this.user.featured) {
+      this.reactivatedNoFeaturedUser(reactivatedItem, index);
+    } else {
+      this.reloadItem(reactivatedItem.id, index);
+    }
+  }
+
+  private reactivatedNoFeaturedUser(item: Item, index: number): void {
+    this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
+      if (permissions[PERMISSIONS.subscriptions] && this.shouldShowSuggestProModal()) {
+        this.openSuggestProModal(item, index);
+      } else {
+        this.reloadItem(item.id, index);
+      }
+    });
+  }
+
+  private shouldShowSuggestProModal(): boolean {
+    const oneDay = 1000 * 60 * 60 * 24;
+    const lastShown = this.userService.getLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN);
+    return lastShown ? Date.now() - parseInt(lastShown) > oneDay : true;
+  }
+
+  private openSuggestProModal(reactivatedItem: Item, index: number): void {
+    const isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(this.subscriptions, reactivatedItem.categoryId);
+    const tierDiscount = this.subscriptionsService.tierDiscountByCategoryId(this.subscriptions, reactivatedItem.categoryId);
+    this.trackViewProExpiredItemsPopup(isFreeTrial, !!tierDiscount);
+    this.userService.saveLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, Date.now().toString());
+
+    const modalRef = this.modalService.open(SuggestProModalComponent, {
+      windowClass: 'modal-standard',
+    });
+
+    modalRef.componentInstance.title = $localize`:@@web_suggest_pro_modal_title:If you were PRO your items wouldn’t become inactive. Sounds good, right?`;
+    modalRef.componentInstance.isFreeTrial = isFreeTrial;
+    modalRef.componentInstance.tierWithDiscount = tierDiscount;
+
+    modalRef.result.then(
+      () => this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]),
+      () => this.reloadItem(reactivatedItem.id, index)
+    );
+  }
+
+  private trackViewProExpiredItemsPopup(freeTrial: boolean, discount: boolean): void {
+    const event: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+      name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+      attributes: {
+        screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+        freeTrial,
+        discount,
+      },
+    };
+
+    this.analyticsService.trackPageView(event);
+  }
+
+  private reloadItem(id: string, index: number): void {
+    this.itemService
+      .get(id)
+      .pipe(take(1))
+      .subscribe((item) => {
+        this.items[index] = item;
+      });
+  }
+
+  private activateNormalLinks(): void {
+    this.setNormalLinks();
+    this.resetNavLinksCounters();
+    this.navLinks = this.normalNavLinks;
+  }
+
+  private setNumberOfProducts(): void {
+    if (this.selectedSubscriptionSlot) {
+      this.numberOfProducts = this.items.length;
+      return;
+    }
+
+    switch (this.selectedStatus) {
+      case STATUS.SOLD:
+        this.numberOfProducts = this.counters.sold;
+        break;
+      case STATUS.PUBLISHED:
+        this.numberOfProducts = this.counters.publish;
+        break;
+      case STATUS.INACTIVE:
+        this.numberOfProducts = this.counters.onHold;
+    }
   }
 
   private trackActivateProItem(itemId: string): void {
@@ -808,29 +905,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.setSortItems();
   }
 
-  public onSelectSubscriptionSlot(subscription: SubscriptionSlot) {
-    if (this.selectedSubscriptionSlot && subscription) {
-      if (this.selectedSubscriptionSlot.category.category_id === subscription.category.category_id) {
-        return;
-      }
-    }
-
-    this.itemService.deselectItems();
-    this.selectedSubscriptionSlot = subscription;
-
-    if (!subscription) {
-      this.selectedStatus = STATUS.PUBLISHED;
-      this.searchTerm = null;
-      this.sortBy = SORTS[0];
-      this.trackCloseSelectedSlot();
-    } else {
-      this.selectedStatus = STATUS.ACTIVE;
-    }
-
-    this.updateNavLinks();
-    this.getItems();
-  }
-
   private trackCloseSelectedSlot(): void {
     const event: AnalyticsPageView<ViewOwnSaleItems> = {
       name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
@@ -841,55 +915,6 @@ export class ListComponent implements OnInit, OnDestroy {
       },
     };
     this.analyticsService.trackPageView(event);
-  }
-
-  public updateNavLinks() {
-    if (this.selectedSubscriptionSlot) {
-      this.navLinks = this.subscriptionSelectedNavLinks;
-    } else {
-      this.navLinks = this.normalNavLinks;
-      this.resetNavLinksCounters();
-    }
-  }
-
-  public updateNavLinksCounters() {
-    this.navLinks.forEach((navLink) => {
-      if (navLink.id === this.selectedStatus) {
-        if (this.selectedStatus === STATUS.ACTIVE) {
-          navLink.counter = {
-            currentVal: this.items.length,
-            maxVal: this.selectedSubscriptionSlot.limit,
-          };
-        } else {
-          navLink.counter = { currentVal: this.items.length };
-        }
-      }
-    });
-  }
-
-  public getNavLinkById(id: string): NavLink {
-    return this.navLinks.filter((navLink) => navLink.id === id)[0];
-  }
-
-  public resetNavLinksCounters() {
-    this.navLinks.forEach((navLink) => (navLink.counter = null));
-  }
-
-  public onSearchInputChange(value: string) {
-    this.searchTerm = value;
-    this.getItems();
-  }
-
-  public setSortItems() {
-    this.sortItems = SORTS.map((value, i) => {
-      return { value, label: this.i18n.translate(SORTS_TRANSLATION_KEYS[i]) };
-    });
-    this.sortBy = SORTS[0];
-  }
-
-  public onSortChange(value: any) {
-    this.sortBy = value;
-    this.getItems();
   }
 
   private getUserInfo() {
@@ -905,38 +930,10 @@ export class ListComponent implements OnInit, OnDestroy {
     this.showTryProSlot = this.userService.suggestPro();
   }
 
-  public onCloseTryProSlot(): void {
-    const event: AnalyticsEvent<RemoveProSubscriptionBanner> = {
-      name: ANALYTICS_EVENT_NAMES.RemoveProSubscriptionBanner,
-      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-      attributes: {
-        screenId: SCREEN_IDS.MyCatalog,
-        freeTrial: this.hasTrialAvailable,
-      },
-    };
-    this.analyticsService.trackEvent(event);
-    this.saveLocalStorage(LOCAL_STORAGE_TRY_PRO_SLOT, 'true');
-    this.showTryProSlot = false;
-  }
-
   private saveLocalStorage(key: string, value: string): void {
     if (this.user) {
       localStorage.setItem(`${this.user.id}-${key}`, value);
     }
-  }
-
-  public onClickTryProSlot(): void {
-    const event: AnalyticsEvent<ClickProSubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes: {
-        screenId: SCREEN_IDS.MyCatalog,
-        freeTrial: this.hasTrialAvailable,
-        discount: this.subscriptionsService.hasSomeSubscriptionDiscount(this.subscriptions),
-      },
-    };
-    this.analyticsService.trackEvent(event);
-    this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
   }
 
   get subscriptionButtonName(): string {

@@ -23,13 +23,7 @@ const Template: Story<SubscriptionCardComponent> = (args: SubscriptionCardCompon
   moduleMetadata: {
     declarations: [SubscriptionCardComponent, ButtonComponent, SubscriptionPriceDiscountComponent],
     imports: [CommonModule, SvgIconModule, HttpClientModule, CookieModule.forRoot(), NgxPermissionsModule.forRoot()],
-    providers: [
-      SubscriptionsService,
-      CategoryService,
-      NgxPermissionsService,
-      { provide: 'SUBDOMAIN', useValue: 'es' },
-      { provide: APP_BASE_HREF, useValue: '/' },
-    ],
+    providers: [SubscriptionsService, CategoryService, NgxPermissionsService, { provide: APP_BASE_HREF, useValue: '/' }],
   },
   template:
     '<tsl-subscription-card [subscription]="subscription" [textButton]="textButton" [hasTrialAvailable]="hasTrialAvailable" [isSubscribed]="isSubscribed" (buttonClick)="buttonClick()"></tsl-subscription-card>',

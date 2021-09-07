@@ -10,6 +10,10 @@ div {
   display: block;
 }
 
+.avatar-90 {
+  @include square(90px);
+}
+
 .avatar-80 {
   @include square(80px);
 }

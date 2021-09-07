@@ -1,0 +1,16 @@
+@import '~web-styleguide/scss/text';
+@import '~web-styleguide/scss/spacing';
+@import '~web-styleguide/scss/colors';
+
+.WalletPendingTransactions {
+  &__label {
+    color: $blue-grey-1;
+    margin-left: $spacing-ms;
+    margin-bottom: $spacing-ms;
+
+    span:first-child {
+      font-weight: $font-weight-chunky;
+      margin-right: 5px;
+    }
+  }
+}
