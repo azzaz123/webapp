@@ -42,14 +42,6 @@ describe('ShippingToggleService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when asking for shipping toggle state', () => {
-    it('should return same state as feature flag', () => {
-      service.isActive().subscribe((isActive) => {
-        expect(isActive).toEqual(featureFlagValue);
-      });
-    });
-  });
-
   describe('when asking for shipping toggle allowance', () => {
     describe('and all the data allows it', () => {
       const allowedCategoryId = '1';
