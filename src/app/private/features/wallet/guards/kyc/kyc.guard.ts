@@ -9,10 +9,10 @@ import { map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class KYCGuard implements CanActivate {
-  constructor(private kycStatusService: KYCPropertiesService, private router: Router) {}
+  constructor(private kycPropertiesService: KYCPropertiesService, private router: Router) {}
 
   public canActivate(): Observable<boolean> {
-    return this.kycStatusService.get().pipe(
+    return this.kycPropertiesService.get().pipe(
       map((properties: KYCProperties) => this.isVerificationNeeded(properties)),
       tap((isVerificationNeeded: boolean) => {
         if (!isVerificationNeeded) {
