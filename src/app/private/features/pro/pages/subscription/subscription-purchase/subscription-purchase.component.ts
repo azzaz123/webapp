@@ -344,7 +344,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     this.analyticsService.trackEvent(event);
   }
 
-  private trackViewSuccessSubscriptionPayment() {
+  private trackViewSuccessSubscriptionPayment(): void {
     const pageView: AnalyticsPageView<ViewSuccessSubscriptionPayment> = {
       name: ANALYTICS_EVENT_NAMES.ViewSuccessSubscriptionPayment,
       attributes: {
@@ -358,7 +358,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     this.analyticsService.trackPageView(pageView);
   }
 
-  private mapTiers() {
+  private mapTiers(): void {
     this.basicTier = this.subscription.tiers.find((tier) => tier.is_basic);
 
     if (this.basicTier) {
