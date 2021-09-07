@@ -36,7 +36,7 @@ export class FooterComponent implements OnInit {
     });
   }
 
-  private filterByLocale(sections: FooterLinkSection[], locale: string): FooterLinkSection[] {
+  private filterByLocale(sections: FooterLinkSection[], locale: APP_LOCALE): FooterLinkSection[] {
     return sections
       .filter((footerLinkSection: FooterLinkSection) => {
         return !(footerLinkSection.excludedLanguages || []).includes(locale);

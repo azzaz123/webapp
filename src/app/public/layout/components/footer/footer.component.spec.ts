@@ -66,6 +66,12 @@ describe('FooterComponent', () => {
   it('should have all links except the excluded ones on template', () => {
     const excluded = FOOTER_SECTIONS.filter((footerLinkSection: FooterLinkSection) => {
       return !(footerLinkSection.excludedLanguages || []).includes(MOCK_LOCALE);
+    }).map((section: FooterLinkSection) => {
+      const links = section.links.filter((link) => {
+        return !(link.excludedLanguages || []).includes(MOCK_LOCALE);
+      });
+
+      return { ...section, links };
     });
 
     excluded.forEach((footerLinkSection: FooterLinkSection) => {
@@ -83,7 +89,7 @@ describe('FooterComponent', () => {
         });
 
         included.forEach((footerLinkSection: FooterLinkSection) => {
-          expect(component.FOOTER_SECTIONS).toContain(footerLinkSection);
+          expect(component.FOOTER_SECTIONS).toContainEqual(footerLinkSection);
         });
       });
     });
@@ -108,10 +114,16 @@ describe('FooterComponent', () => {
       it('should show link', () => {
         const included = FOOTER_SECTIONS.filter((footerLinkSection: FooterLinkSection) => {
           return !footerLinkSection.permission && !footerLinkSection.excludedLanguages;
+        }).map((section: FooterLinkSection) => {
+          const links = section.links.filter((link) => {
+            return !(link.excludedLanguages || []).includes(MOCK_LOCALE);
+          });
+
+          return { ...section, links };
         });
 
         included.forEach((footerLinkSection: FooterLinkSection) => {
-          expect(component.FOOTER_SECTIONS).toContain(footerLinkSection);
+          expect(component.FOOTER_SECTIONS).toContainEqual(footerLinkSection);
         });
       });
     });
