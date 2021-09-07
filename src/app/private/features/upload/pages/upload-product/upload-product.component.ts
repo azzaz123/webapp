@@ -840,7 +840,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       categoryId: item.category_id,
       salePrice: item.sale_price,
       title: item.title,
-      shippingAllowed: item.sale_conditions?.supports_shipping || false,
+      shippingAllowed: !!item.sale_conditions?.supports_shipping,
       isPro,
     };
 
