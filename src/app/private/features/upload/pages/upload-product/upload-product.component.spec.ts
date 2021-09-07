@@ -218,9 +218,9 @@ describe('UploadProductComponent', () => {
               },
               isAllowed() {
                 return of({
-                  category: false,
-                  subcagegory: false,
-                  price: false,
+                  category: true,
+                  subcategory: true,
+                  price: true,
                 });
               },
               shippingRules: mapShippingRulesResponseToShippingRules(FALLBACK_SHIPPING_RULES_RESPONSE),
@@ -690,9 +690,18 @@ describe('UploadProductComponent', () => {
   });
 
   describe('onSubmit', () => {
+    beforeEach(() => {
+      spyOn(shippingToggleService, 'isAllowed').and.returnValue(
+        of({
+          category: false,
+          subcategory: false,
+          price: false,
+        })
+      );
+    });
+
     it('should emit uploadEvent if form is valid', () => {
       spyOn(uploadService, 'createItem').and.callThrough();
-      fixture.detectChanges();
       component.uploadForm.get('category_id').patchValue(CATEGORY_IDS.SERVICES);
       component.uploadForm.get('title').patchValue('test');
       component.uploadForm.get('description').patchValue('test');
@@ -705,7 +714,9 @@ describe('UploadProductComponent', () => {
         longitude: USER_LOCATION.approximated_longitude,
       });
 
+      fixture.detectChanges();
       component.onSubmit();
+
       expect(uploadService.createItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.CONSUMER_GOODS);
       expect(component.uploadForm.valid).toBe(true);
       expect(component.loading).toBe(true);
@@ -742,7 +753,6 @@ describe('UploadProductComponent', () => {
         });
       }
       beforeEach(() => {
-        spyOn(shippingToggleService, 'isActive').and.returnValue(of(true));
         component.ngOnInit();
       });
 
@@ -817,7 +827,7 @@ describe('UploadProductComponent', () => {
           latitude: 41.399132621722174,
           longitude: 2.17585484411869,
         },
-        sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: null },
+        sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: false },
         sale_price: 1000000,
         title: 'test',
       };
@@ -866,7 +876,7 @@ describe('UploadProductComponent', () => {
           latitude: 41.399132621722174,
           longitude: 2.17585484411869,
         },
-        sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: null },
+        sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: false },
         sale_price: 1000000,
         title: 'test',
       };
@@ -1180,6 +1190,7 @@ describe('UploadProductComponent', () => {
             title: editResponse.title,
             isPro: false,
             screenId: SCREEN_IDS.EditItem,
+            shippingAllowed: false,
           },
         };
         spyOn(analyticsService, 'trackEvent');
@@ -1191,10 +1202,6 @@ describe('UploadProductComponent', () => {
       });
 
       describe('and shipping flag is active', () => {
-        beforeEach(() => {
-          spyOn(shippingToggleService, 'isActive').and.returnValue(of(true));
-        });
-
         describe('and item is shippable', () => {
           it('should send the Edit Item CG tracking event', () => {
             component.item = MOCK_ITEM;
@@ -1263,6 +1270,7 @@ describe('UploadProductComponent', () => {
             screenId: SCREEN_IDS.Upload,
             country: analyticsService.market,
             language: analyticsService.appLocale,
+            shippingAllowed: false,
           },
         };
         spyOn(analyticsService, 'trackEvent');
@@ -1274,10 +1282,6 @@ describe('UploadProductComponent', () => {
       });
 
       describe('and shipping flag is active', () => {
-        beforeEach(() => {
-          spyOn(shippingToggleService, 'isActive').and.returnValue(of(true));
-        });
-
         describe('and item is shippable', () => {
           it('should send the List Item CG tracking event', () => {
             const action = UPLOAD_ACTION.created;
@@ -1416,7 +1420,7 @@ describe('UploadProductComponent', () => {
         sale_price: 1000000,
         currency_code: 'EUR',
         images: [{ image: true }],
-        sale_conditions: { ...MOCK_ITEM.saleConditions, supports_shipping: null },
+        sale_conditions: { ...MOCK_ITEM.saleConditions, supports_shipping: true },
         delivery_info: null,
         location: {
           address: USER_LOCATION.full_address,
@@ -1807,10 +1811,6 @@ describe('UploadProductComponent', () => {
 
   describe('if shipping toggle is enabled', () => {
     const shippabilitySectionSelector = '#shippabilitySection';
-
-    beforeEach(() => {
-      component.isShippabilityActive = true;
-    });
 
     it('should reset weight if disabled', () => {
       component.ngOnInit();
