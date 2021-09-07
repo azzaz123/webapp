@@ -16,6 +16,7 @@ import { WalletComponent } from './wallet.component';
 import { WALLET_PATHS } from './wallet.routing.constants';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
+import { MOCK_KYC_PENDING_PROPERTIES } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 
 describe('WalletComponent', () => {
   const BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
@@ -24,7 +25,7 @@ describe('WalletComponent', () => {
   let component: WalletComponent;
   let fixture: ComponentFixture<WalletComponent>;
   let router: Router;
-  let kycStatusService: KYCPropertiesService;
+  let kycPropertiesService: KYCPropertiesService;
 
   const walletHelpButtonSelector = 'a';
 
@@ -52,8 +53,7 @@ describe('WalletComponent', () => {
     fixture = TestBed.createComponent(WalletComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
-    kycStatusService = TestBed.inject(KYCPropertiesService);
-    fixture.detectChanges();
+    kycPropertiesService = TestBed.inject(KYCPropertiesService);
   });
 
   it('should create', () => {
@@ -61,6 +61,10 @@ describe('WalletComponent', () => {
   });
 
   describe('when the user navigates through the nav links...', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
     it('should navigate to the specified URL', () => {
       const navLinksElement = fixture.debugElement.query(By.css('tsl-nav-links'));
       spyOn(router, 'navigate');
@@ -88,30 +92,30 @@ describe('WalletComponent', () => {
     });
   });
 
-  describe('when the wallet status for the user is not need', () => {
+  describe('when the KYC banner for the user is not need', () => {
     beforeEach(() => {
-      spyOn(kycStatusService, 'get').and.returnValue(of(null));
+      jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(null));
+      spyOn(kycPropertiesService, 'getBannerSpecifications').and.returnValue(of(null));
 
-      component.ngOnInit();
       fixture.detectChanges();
     });
 
-    it('should not show the kyc banner', () => {
+    it('should not show the banner', () => {
       const banner = fixture.debugElement.query(By.directive(KYCBannerComponent));
 
       expect(banner).toBeFalsy();
     });
   });
 
-  describe('when the wallet status for the user is needed and defined', () => {
+  describe('when the KYC banner for the user is needed and defined', () => {
     beforeEach(() => {
-      spyOn(kycStatusService, 'get').and.returnValue(of(KYC_BANNER_TYPES[0]));
+      jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_PENDING_PROPERTIES));
+      spyOn(kycPropertiesService, 'getBannerSpecifications').and.returnValue(of(KYC_BANNER_TYPES[0]));
 
-      component.ngOnInit();
       fixture.detectChanges();
     });
 
-    it('should show the kyc banner', () => {
+    it('should show the banner', () => {
       const banner = fixture.debugElement.query(By.directive(KYCBannerComponent));
 
       expect(banner).toBeTruthy();
@@ -119,6 +123,8 @@ describe('WalletComponent', () => {
   });
 
   describe('when the user clicks the help button', () => {
+    beforeEach(() => fixture.detectChanges());
+
     it('should open the Wallet help page', () => {
       const helpButtonRef = fixture.debugElement.query(By.css(walletHelpButtonSelector));
 

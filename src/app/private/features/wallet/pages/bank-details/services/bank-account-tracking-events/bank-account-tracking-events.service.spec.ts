@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import {
   AnalyticsEvent,
@@ -23,7 +24,12 @@ describe('BankAccountTrackingEventsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [BankAccountTrackingEventsService, { provide: AnalyticsService, useClass: MockAnalyticsService }, KYCPropertiesService],
+      providers: [
+        BankAccountTrackingEventsService,
+        KYCPropertiesHttpService,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        KYCPropertiesService,
+      ],
     });
     service = TestBed.inject(BankAccountTrackingEventsService);
     analyticsService = TestBed.inject(AnalyticsService);

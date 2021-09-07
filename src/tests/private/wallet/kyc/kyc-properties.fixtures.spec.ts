@@ -1,3 +1,5 @@
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
+import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { KYCPropertiesApi } from '@api/payments/kyc-properties/dtos/responses';
 
 const MOCK_KYC_PROPERTIES_API: KYCPropertiesApi = {
@@ -21,4 +23,11 @@ export const MOCK_KYC_PENDING_PROPERTIES_API: KYCPropertiesApi = {
 export const MOCK_KYC_NO_NEED_PROPERTIES_API: KYCPropertiesApi = {
   ...MOCK_KYC_PROPERTIES_API,
   document_status: 'no need',
+};
+
+export const MOCK_KYC_PENDING_PROPERTIES: KYCProperties = {
+  status: KYC_STATUS.PENDING,
+  refusedReason: null,
+  documentId: '123',
+  mangopayUserId: '123',
 };

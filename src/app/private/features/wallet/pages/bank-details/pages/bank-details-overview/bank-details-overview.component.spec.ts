@@ -28,6 +28,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
+import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
 
 describe('BankDetailsOverviewComponent', () => {
   const creditCardInfoSelector = '#creditCard';
@@ -83,6 +84,7 @@ describe('BankDetailsOverviewComponent', () => {
         BankAccountTrackingEventsService,
         KYCPropertiesService,
         { provide: AnalyticsService, useClass: MockAnalyticsService },
+        KYCPropertiesHttpService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
