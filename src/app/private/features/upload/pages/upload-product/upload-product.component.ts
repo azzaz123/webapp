@@ -686,7 +686,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private getSaleConditions(): ItemSaleConditions {
-    // TBC with Irene
     this.item.saleConditions.supports_shipping = !!this.item.deliveryInfo;
     return this.item.saleConditions ? this.item.saleConditions : null;
   }
