@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { KYCPropertiesApi } from './dtos/responses';
 import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-banner-constants';
@@ -25,6 +25,7 @@ export class KYCPropertiesService {
 
   public get(): Observable<KYCProperties> {
     return this.KYCPropertiesHttpService.get().pipe(
+      filter((KYCPropertiesApi: KYCPropertiesApi) => KYCPropertiesApi && KYCPropertiesApi.document_status !== 'no need'),
       map((KYCPropertiesApi: KYCPropertiesApi) => mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi)),
       tap((properties: KYCProperties) => (this.KYCProperties = properties))
     );

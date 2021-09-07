@@ -42,29 +42,58 @@ describe('KYCPropertiesService', () => {
   });
 
   describe('when getting the kyc properties', () => {
-    beforeEach(() => {
-      spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_PENDING_PROPERTIES_API));
-    });
-
-    it('should request the kyc properties to the api service', () => {
-      let request: KYCProperties;
-      service.get().subscribe((result: KYCProperties) => {
-        request = result;
+    describe('and the properties are defined', () => {
+      beforeEach(() => {
+        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_PENDING_PROPERTIES_API));
       });
 
-      expect(kycPropertiesHttpService.get).toHaveBeenCalled();
-      expect(request).toStrictEqual(mapKYCPropertiesApiToKYCProperties(MOCK_KYC_PENDING_PROPERTIES_API));
-    });
+      it('should request the kyc properties to the api service', () => {
+        let request: KYCProperties;
+        service.get().subscribe((result: KYCProperties) => {
+          request = result;
+        });
 
-    it('should update the KYCProperties subject', () => {
-      service.get().subscribe();
-
-      let KYCPropertiesSubject: KYCProperties;
-      service.KYCProperties$.subscribe((result: KYCProperties) => {
-        KYCPropertiesSubject = result;
+        expect(kycPropertiesHttpService.get).toHaveBeenCalled();
+        expect(request).toStrictEqual(mapKYCPropertiesApiToKYCProperties(MOCK_KYC_PENDING_PROPERTIES_API));
       });
 
-      expect(KYCPropertiesSubject).toStrictEqual(mapKYCPropertiesApiToKYCProperties(MOCK_KYC_PENDING_PROPERTIES_API));
+      it('should update the KYCProperties subject', () => {
+        service.get().subscribe();
+
+        let KYCPropertiesSubject: KYCProperties;
+        service.KYCProperties$.subscribe((result: KYCProperties) => {
+          KYCPropertiesSubject = result;
+        });
+
+        expect(KYCPropertiesSubject).toStrictEqual(mapKYCPropertiesApiToKYCProperties(MOCK_KYC_PENDING_PROPERTIES_API));
+      });
+    });
+
+    describe('and the properties are not defined', () => {
+      beforeEach(() => {
+        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(null));
+      });
+
+      it('should NOT return any property', () => {
+        let request: KYCProperties;
+        service.get().subscribe((result: KYCProperties) => {
+          request = result;
+        });
+
+        expect(kycPropertiesHttpService.get).toHaveBeenCalled();
+        expect(request).not.toBeDefined();
+      });
+
+      it('should update the KYCProperties subject', () => {
+        service.get().subscribe();
+
+        let KYCPropertiesSubject: KYCProperties;
+        service.KYCProperties$.subscribe((result: KYCProperties) => {
+          KYCPropertiesSubject = result;
+        });
+
+        expect(KYCPropertiesSubject).not.toBeDefined();
+      });
     });
   });
 
