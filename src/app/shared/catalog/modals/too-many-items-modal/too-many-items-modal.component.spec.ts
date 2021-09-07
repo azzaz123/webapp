@@ -24,6 +24,8 @@ import { MOCK_CAR } from '../../../../../tests/car.fixtures.spec';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 
 describe('TooManyItemsModalComponent', () => {
   let component: TooManyItemsModalComponent;
@@ -33,6 +35,7 @@ describe('TooManyItemsModalComponent', () => {
   let analyticsService: AnalyticsService;
   let i18nService: I18nService;
   let hasFreeTrialByCategoryIdSpy: jasmine.Spy;
+  let customerHelpService: CustomerHelpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -41,6 +44,7 @@ describe('TooManyItemsModalComponent', () => {
       providers: [
         NgbActiveModal,
         I18nService,
+        CustomerHelpService,
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         {
           provide: ItemService,
@@ -65,6 +69,7 @@ describe('TooManyItemsModalComponent', () => {
     subscriptionsService = TestBed.inject(SubscriptionsService);
     analyticsService = TestBed.inject(AnalyticsService);
     i18nService = TestBed.inject(I18nService);
+    customerHelpService = TestBed.inject(CustomerHelpService);
     component = fixture.componentInstance;
     component.type = SUBSCRIPTION_TYPES.stripe;
     fixture.detectChanges();
@@ -169,6 +174,7 @@ describe('TooManyItemsModalComponent', () => {
   describe('Tier limit', () => {
     beforeEach(() => {
       spyOn(i18nService, 'translate').and.callThrough();
+      spyOn(customerHelpService, 'getPageUrl').and.returnValue('text');
     });
     describe('when tier has the highest limit', () => {
       beforeEach(() => {
@@ -192,7 +198,7 @@ describe('TooManyItemsModalComponent', () => {
           tick();
           fixture.detectChanges();
 
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.ZENDESK_REAL_ESTATE_LIMIT_URL);
+          expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(CUSTOMER_HELP_PAGE.PROS_REAL_ESTATE_SUBSCRIPTION);
         }));
         it('should call description text', fakeAsync(() => {
           tick();
@@ -215,7 +221,7 @@ describe('TooManyItemsModalComponent', () => {
           tick();
           fixture.detectChanges();
 
-          expect(i18nService.translate).not.toHaveBeenCalledWith(TRANSLATION_KEY.ZENDESK_REAL_ESTATE_LIMIT_URL);
+          expect(customerHelpService.getPageUrl).not.toHaveBeenCalled();
         }));
         it('should not call description text', fakeAsync(() => {
           tick();
@@ -246,7 +252,7 @@ describe('TooManyItemsModalComponent', () => {
           tick();
           fixture.detectChanges();
 
-          expect(i18nService.translate).not.toHaveBeenCalledWith(TRANSLATION_KEY.ZENDESK_REAL_ESTATE_LIMIT_URL);
+          expect(customerHelpService.getPageUrl).not.toHaveBeenCalled();
         }));
         it('should not call description text', fakeAsync(() => {
           tick();
