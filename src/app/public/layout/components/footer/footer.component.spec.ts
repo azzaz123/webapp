@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 import { FooterComponent } from './footer.component';
-import { FOOTER_LINKS } from './constants/footer-constants';
+import { FOOTER_SECTIONS } from './constants/footer-constants';
 import { FooterLink, FooterLinkSection } from './interfaces/footer.interface';
 import { DebugElement, LOCALE_ID } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -52,7 +52,7 @@ describe('FooterComponent', () => {
   });
 
   it('should not have excluded links on template', () => {
-    const excluded = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+    const excluded = FOOTER_SECTIONS.filter((footerLinkSection: FooterLinkSection) => {
       return (footerLinkSection.excludedLanguages || []).includes(MOCK_LOCALE);
     });
 
@@ -64,7 +64,7 @@ describe('FooterComponent', () => {
   });
 
   it('should have all links except the excluded ones on template', () => {
-    const excluded = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+    const excluded = FOOTER_SECTIONS.filter((footerLinkSection: FooterLinkSection) => {
       return !(footerLinkSection.excludedLanguages || []).includes(MOCK_LOCALE);
     });
 
@@ -78,18 +78,18 @@ describe('FooterComponent', () => {
   describe('and has links with permissions', () => {
     describe('and has valid permission', () => {
       it('should show link', () => {
-        const included = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+        const included = FOOTER_SECTIONS.filter((footerLinkSection: FooterLinkSection) => {
           return MOCK_PERMISSIONS[footerLinkSection.permission];
         });
 
         included.forEach((footerLinkSection: FooterLinkSection) => {
-          expect(component.FOOTER_LINKS).toContain(footerLinkSection);
+          expect(component.FOOTER_SECTIONS).toContain(footerLinkSection);
         });
       });
     });
 
     describe('and has invalid permission', () => {
-      const MOCK_LINKS: FooterLinkSection[] = [FOOTER_LINKS[0]];
+      const MOCK_LINKS: FooterLinkSection[] = [FOOTER_SECTIONS[0]];
       beforeEach(() => {
         MOCK_LINKS[0].permission = PERMISSIONS.professional;
       });
@@ -99,19 +99,19 @@ describe('FooterComponent', () => {
         });
 
         included.forEach((footerLinkSection: FooterLinkSection) => {
-          expect(component.FOOTER_LINKS).not.toContain(footerLinkSection);
+          expect(component.FOOTER_SECTIONS).not.toContain(footerLinkSection);
         });
       });
     });
 
     describe('and has not permission set', () => {
       it('should show link', () => {
-        const included = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
+        const included = FOOTER_SECTIONS.filter((footerLinkSection: FooterLinkSection) => {
           return !footerLinkSection.permission && !footerLinkSection.excludedLanguages;
         });
 
         included.forEach((footerLinkSection: FooterLinkSection) => {
-          expect(component.FOOTER_LINKS).toContain(footerLinkSection);
+          expect(component.FOOTER_SECTIONS).toContain(footerLinkSection);
         });
       });
     });
