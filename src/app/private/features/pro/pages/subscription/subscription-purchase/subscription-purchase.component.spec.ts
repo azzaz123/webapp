@@ -33,6 +33,8 @@ import {
   SUBSCRIPTION_SUCCESS,
   SUBSCRIPTION_REQUIRES_ACTION,
   SUBSCRIPTION_REQUIRES_PAYMENT,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MULTI_TIER,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -173,6 +175,23 @@ describe('SubscriptionPurchaseComponent', () => {
           expect(component.selectedTier).toEqual(
             component.subscription.tiers.find((tier) => tier.id === component.subscription.default_tier_id)
           );
+        });
+      });
+    });
+    describe('Basic tier', () => {
+      describe('has has basic tier', () => {
+        beforeEach(() => {
+          component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MULTI_TIER;
+          fixture.detectChanges();
+        });
+        it('should set basic tier', () => {
+          expect(component.basicTier).toEqual(component.subscription.tiers.find((tier) => tier.is_basic));
+          expect(component.basicTier).toEqual(component.selectedTier);
+        });
+        it('should set available tiers', () => {
+          fixture.detectChanges();
+
+          expect(component.availableTiers).toEqual(component.subscription.tiers.filter((tier) => !tier.is_basic));
         });
       });
     });

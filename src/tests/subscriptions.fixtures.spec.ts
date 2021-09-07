@@ -16,7 +16,6 @@ import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
-import { CATEGORY_IDS } from '@core/category/category-ids';
 
 export class MockSubscriptionService {
   getSubscriptions() {
@@ -370,6 +369,12 @@ export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED: SubscriptionsRespo
   MOCK_CG_BASIC_DATA,
   MOCK_NO_SUBSCRIBED_DATA,
   [TIER_BASIC_WITH_DISCOUNT]
+);
+
+export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MULTI_TIER: SubscriptionsResponse = generateSubscription(
+  MOCK_CG_BASIC_DATA,
+  MOCK_NO_SUBSCRIBED_DATA,
+  [TIER_BASIC_WITH_DISCOUNT, TIER_2_WITH_DISCOUNT]
 );
 
 export const MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED: SubscriptionsResponse = generateSubscription(
