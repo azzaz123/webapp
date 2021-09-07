@@ -4,17 +4,18 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By, DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { SvgService } from '@core/svg-icon/svg.service';
-import { SvgIconComponent, SVG_ATTRIBUTES } from './svg-icon.component';
+import { SvgIconComponent, SVG_ATTRIBUTES, SVG_SIZE_UNIT } from './svg-icon.component';
 
 @Component({
   selector: 'tsl-test-component',
-  template: `<tsl-svg-icon [fill]="fill" [height]="height" [src]="src" [width]="width"></tsl-svg-icon>`,
+  template: `<tsl-svg-icon [fill]="fill" [height]="height" [src]="src" [width]="width" [sizeUnit]="sizeUnit"></tsl-svg-icon>`,
 })
 class TestComponent {
   @Input() src: string;
   @Input() fill: string;
   @Input() width: number;
   @Input() height: number;
+  @Input() sizeUnit: SVG_SIZE_UNIT = SVG_SIZE_UNIT.PIXELS;
 }
 
 describe('SvgIconComponent', () => {
@@ -23,6 +24,7 @@ describe('SvgIconComponent', () => {
   const width = 10;
   const height = 10;
   const fill = 'red';
+  const defaultSizeUnit: SVG_SIZE_UNIT = SVG_SIZE_UNIT.PIXELS;
   let testComponent: TestComponent;
   let component: SvgIconComponent;
   let debugElement: DebugElement;
@@ -95,8 +97,8 @@ describe('SvgIconComponent', () => {
           fixture.detectChanges();
           const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(svgSelector);
 
-          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.WIDTH)).toBe(`${width}px`);
-          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.HEIGHT)).toBe(`${height}px`);
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.WIDTH)).toBe(`${width}${defaultSizeUnit}`);
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.HEIGHT)).toBe(`${height}${defaultSizeUnit}`);
           expect(innerHTML.getAttribute(SVG_ATTRIBUTES.FILL)).toBe(fill);
         });
 
@@ -126,6 +128,19 @@ describe('SvgIconComponent', () => {
           const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(svgSelector);
 
           expect(innerHTML.getAttribute(SVG_ATTRIBUTES.FILL)).toEqual(customFillColor);
+        });
+
+        it('should apply custom size unit', () => {
+          const customSizeUnit = SVG_SIZE_UNIT.PERCENTATGE;
+          testComponent.width = width;
+          testComponent.height = height;
+          testComponent.sizeUnit = customSizeUnit;
+
+          fixture.detectChanges();
+          const innerHTML: HTMLElement = fixture.debugElement.nativeElement.querySelector(svgSelector);
+
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.WIDTH)).toBe(`${width}${customSizeUnit}`);
+          expect(innerHTML.getAttribute(SVG_ATTRIBUTES.HEIGHT)).toBe(`${height}${customSizeUnit}`);
         });
       });
     });

@@ -22,15 +22,12 @@ import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
 import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
 import { CheckSubscriptionInAppModalComponent } from '../../modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
-import { EditSubscriptionModalComponent } from '../../modal/edit-subscription/edit-subscription-modal.component';
 import { UnsubscribeInAppFirstModalComponent } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
-import { PRO_PATHS } from '../../pro-routing-constants';
 
 export type SubscriptionModal =
   | typeof CheckSubscriptionInAppModalComponent
   | typeof CancelSubscriptionModalComponent
-  | typeof ContinueSubscriptionModalComponent
-  | typeof EditSubscriptionModalComponent;
+  | typeof ContinueSubscriptionModalComponent;
 
 @Component({
   selector: 'tsl-subscription',
@@ -43,6 +40,7 @@ export class SubscriptionsComponent implements OnInit {
   public loading = false;
   public user: User;
   public newSubscription: SubscriptionsResponse = null;
+  public editSubscription: SubscriptionsResponse = null;
 
   constructor(
     private modalService: NgbModal,
@@ -60,6 +58,7 @@ export class SubscriptionsComponent implements OnInit {
 
   public onUnselectSubcription(): void {
     this.newSubscription = null;
+    this.editSubscription = null;
   }
 
   public setNewSubscription(subscription: SubscriptionsResponse) {
@@ -69,20 +68,32 @@ export class SubscriptionsComponent implements OnInit {
   public manageSubscription(subscription: SubscriptionsResponse): void {
     const modal = this.getModalTypeDependingOnSubscription(subscription);
     if (!modal) {
-      this.setNewSubscription(subscription);
+      this.openSubscriptionPage(subscription);
     } else {
       this.openSubscriptionModal(subscription, modal);
     }
   }
 
-  public subscriptionChangeSuccessful(): void {
+  private openSubscriptionPage(subscription: SubscriptionsResponse): void {
+    this.subscriptionsService.isStripeSubscription(subscription)
+      ? this.openEditSubscription(subscription)
+      : this.setNewSubscription(subscription);
+  }
+
+  private openEditSubscription(subscription: SubscriptionsResponse): void {
+    this.editSubscription = subscription;
+    this.trackEditSubscription(subscription);
+  }
+
+  public subscriptionChangeSuccessful(redirect?: string): void {
     this.newSubscription = null;
+    this.editSubscription = null;
     this.loading = true;
     if (this.user.featured) {
-      this.isSubscriptionUpdated();
+      this.isSubscriptionUpdated(redirect);
       return;
     }
-    this.isUserUpdated();
+    this.isUserUpdated(redirect);
   }
 
   private initData(): void {
@@ -130,11 +141,9 @@ export class SubscriptionsComponent implements OnInit {
         modalRef = null;
       }
     );
-
-    this.trackOpenModalEvent(subscription, modal);
   }
 
-  private isUserUpdated() {
+  private isUserUpdated(redirect?: string): void {
     this.userService
       .getAndUpdateLoggedUser()
       .pipe(
@@ -146,8 +155,7 @@ export class SubscriptionsComponent implements OnInit {
         ),
         take(30),
         finalize(() => {
-          this.router.navigate(['profile/info']);
-          this.loading = false;
+          this.redirectIfNeeded(redirect);
         })
       )
       .subscribe((updatedUser) => {
@@ -157,7 +165,7 @@ export class SubscriptionsComponent implements OnInit {
       });
   }
 
-  private isSubscriptionUpdated() {
+  private isSubscriptionUpdated(redirect?: string): void {
     this.subscriptionsService
       .getSubscriptions(false)
       .pipe(
@@ -169,7 +177,7 @@ export class SubscriptionsComponent implements OnInit {
         ),
         take(30),
         finalize(() => {
-          this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]), (this.loading = false);
+          this.redirectIfNeeded(redirect);
         })
       )
       .subscribe((updatedSubscriptions) => {
@@ -178,6 +186,12 @@ export class SubscriptionsComponent implements OnInit {
           this.loading = false;
         }
       });
+  }
+
+  private redirectIfNeeded(redirect?: string): void {
+    if (redirect) {
+      this.router.navigate([redirect]);
+    }
   }
 
   private trackPageView(): void {
@@ -202,20 +216,17 @@ export class SubscriptionsComponent implements OnInit {
     this.analyticsService.trackPageView(pageView);
   }
 
-  private trackOpenModalEvent(subscription: SubscriptionsResponse, modalType: SubscriptionModal): void {
-    if (modalType === EditSubscriptionModalComponent) {
-      const event: AnalyticsEvent<ClickProfileEditCurrentSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ClickProfileEditCurrentSubscription,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
-          tier: subscription.selected_tier_id,
-          screenId: SCREEN_IDS.ProfileSubscription,
-        },
-      };
-
-      return this.analyticsService.trackEvent(event);
-    }
+  private trackEditSubscription(subscription: SubscriptionsResponse): void {
+    const event: AnalyticsEvent<ClickProfileEditCurrentSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickProfileEditCurrentSubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        subscription: subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        tier: subscription.selected_tier_id,
+        screenId: SCREEN_IDS.ProfileSubscription,
+      },
+    };
+    return this.analyticsService.trackEvent(event);
   }
 
   private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse): SubscriptionModal {
@@ -237,11 +248,6 @@ export class SubscriptionsComponent implements OnInit {
     // Subscription was previously canceled
     if (this.subscriptionsService.isStripeSubscription(subscription) && subscription.subscribed_until) {
       return ContinueSubscriptionModalComponent;
-    }
-
-    // Subscription is active
-    if (this.subscriptionsService.isStripeSubscription(subscription)) {
-      return EditSubscriptionModalComponent;
     }
 
     // User is trying to subscribe but there is an active inapp subscription

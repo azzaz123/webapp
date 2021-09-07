@@ -22,19 +22,19 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
   styleUrls: ['./cart-extras-pro.component.scss'],
 })
 export class CartExtrasProComponent implements OnInit, OnDestroy {
-  public cart: CartBase;
-  public types: string[] = BUMP_TYPES;
-  public loading: boolean;
-  public cardType = 'old';
-  private active = true;
+  @Output() billingInfoMissing: EventEmitter<boolean> = new EventEmitter();
+  @Input() billingInfoForm: FormGroup;
+  @Input() billingInfoFormEnabled: boolean;
   public card: any;
   public hasSavedCard = true;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
-  @Output() billingInfoMissing: EventEmitter<boolean> = new EventEmitter();
-  @Input() billingInfoForm: FormGroup;
-  @Input() billingInfoFormEnabled: boolean;
+  public cart: CartBase;
+  public types: string[] = BUMP_TYPES;
+  public loading: boolean;
+  public cardType = 'old';
+  private active = true;
 
   constructor(
     private cartService: CartService,
@@ -99,25 +99,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     }
   }
 
-  private processCheckout() {
-    const order: OrderProExtras = this.cart.prepareOrder();
-    const paymentId: string = this.uuidService.getUUID();
-    order.provider = PAYMENT_METHOD.STRIPE;
-    this.paymentService.orderExtrasProPack(order).subscribe(
-      () => {
-        this.stripeService.buy(order.id, paymentId, this.hasSavedCard, this.savedCard, this.card);
-      },
-      (e: HttpErrorResponse) => {
-        this.loading = false;
-        if (e.error) {
-          this.errorService.show(e);
-        } else {
-          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
-        }
-      }
-    );
-  }
-
   public hasCard(hasCard: boolean) {
     this.hasSavedCard = hasCard;
     if (!hasCard) {
@@ -127,19 +108,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   public setCardInfo(card: any): void {
     this.card = card;
-  }
-
-  private managePaymentResponse(paymentResponse: string): void {
-    switch (paymentResponse && paymentResponse.toUpperCase()) {
-      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-        this.router.navigate(['pro/catalog/list', { code: '200', extras: true }]);
-        break;
-      }
-      default: {
-        this.router.navigate(['pro/catalog/list', { code: -1 }]);
-        break;
-      }
-    }
   }
 
   public addNewCard() {
@@ -157,5 +125,37 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     this.savedCard = true;
     this.selectedCard = true;
     this.setCardInfo(selectedCard);
+  }
+
+  private managePaymentResponse(paymentResponse: string): void {
+    switch (paymentResponse && paymentResponse.toUpperCase()) {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
+        this.router.navigate(['pro/catalog/list', { code: '200', extras: true }]);
+        break;
+      }
+      default: {
+        this.router.navigate(['pro/catalog/list', { code: -1 }]);
+        break;
+      }
+    }
+  }
+
+  private processCheckout() {
+    const order: OrderProExtras = this.cart.prepareOrder();
+    const paymentId: string = this.uuidService.getUUID();
+    order.provider = PAYMENT_METHOD.STRIPE;
+    this.paymentService.orderExtrasProPack(order).subscribe(
+      () => {
+        this.stripeService.buy(order.id, paymentId, this.hasSavedCard, this.savedCard, this.card);
+      },
+      (e: HttpErrorResponse) => {
+        this.loading = false;
+        if (e.error) {
+          this.errorService.show(e);
+        } else {
+          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
+        }
+      }
+    );
   }
 }

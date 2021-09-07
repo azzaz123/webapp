@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { SITE_URL } from '@configs/site-url.config';
 import { UuidService } from '@core/uuid/uuid.service';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import {
@@ -7,6 +8,7 @@ import {
   MOCK_RECOMMENDED_ITEM_CARD_NON_FAVOURITE,
   MOCK_RECOMMENDED_ITEM_CARD_WITHOUT_IMAGES,
 } from '@fixtures/item-card.fixtures.spec';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
 import { ItemFavouritesService } from '@public/core/services/item-favourites/item-favourites.service';
@@ -32,6 +34,10 @@ describe('MapRecommendedItemCardService', () => {
         {
           provide: CookieService,
           useValue: MockCookieService,
+        },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
         },
       ],
     });

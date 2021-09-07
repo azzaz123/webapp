@@ -24,6 +24,10 @@ import { InboxService } from './core/inbox/inbox.service';
 import { InboxConversation, MessageStatus, PhoneMethod } from './core/model';
 import { SendPhoneComponent } from './modals';
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
+import { ItemDetailRoutePipe } from '@shared/pipes';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 
 class MockUserService {
   public isProfessional() {
@@ -68,6 +72,7 @@ describe('Component: ChatComponent with ItemId', () => {
         },
         I18nService,
         EventService,
+        ItemDetailRoutePipe,
         {
           provide: AdsService,
           useValue: {
@@ -75,6 +80,10 @@ describe('Component: ChatComponent with ItemId', () => {
           },
         },
         { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
+        },
         NgbModal,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -286,10 +295,11 @@ describe('Component: ChatComponent with ItemId', () => {
       });
 
       it('should redirect to the item if the modal is closed', fakeAsync(() => {
-        const expectedUrl = 'item-123';
+        const itemSlug = 'item-123';
+        const expectedUrl = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${itemSlug}`;
         const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION('123', USER_STRING_ID.YA_ENCONTRE);
         inboxConversationWithoutMessages.messages = [];
-        inboxConversationWithoutMessages.item.itemUrl = expectedUrl;
+        inboxConversationWithoutMessages.item.itemSlug = itemSlug;
         spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
         spyOn(modalService, 'open').and.returnValue({
           result: Promise.resolve(),
@@ -336,6 +346,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
         },
         I18nService,
         EventService,
+        ItemDetailRoutePipe,
         {
           provide: AdsService,
           useValue: {
@@ -344,6 +355,10 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
         },
         NgbModal,
         { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });

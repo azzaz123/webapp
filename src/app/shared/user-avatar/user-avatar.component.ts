@@ -20,8 +20,7 @@ export class UserAvatarComponent implements OnInit, OnChanges {
   @Input() size = 40;
   @Input() imageUrl: string;
   @Input() showProBadge = false;
-
-  constructor() {}
+  @Input() showProBadgeWide = false;
 
   ngOnInit(): void {
     this.checkPROBadgeProperties();
@@ -51,6 +50,12 @@ export class UserAvatarComponent implements OnInit, OnChanges {
     if (this.showProBadge) {
       this.badgeSize = this.calculateBadgeSize();
       this.badgeStyles = this.calculateBadgeStyles();
+    }
+    if (this.showProBadgeWide) {
+      this.badgeStyles = {
+        'bottom.px': 4,
+        'left.px': 54,
+      };
     }
   }
 

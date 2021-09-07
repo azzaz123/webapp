@@ -17,7 +17,6 @@ describe('ProfileCardFavoriteComponent', () => {
   let element: HTMLElement;
   let modalService: NgbModal;
   let profileService: ProfileService;
-  let subdomain: string;
 
   const modalRef: any = {
     result: Promise.resolve({
@@ -52,7 +51,6 @@ describe('ProfileCardFavoriteComponent', () => {
               },
             },
           },
-          { provide: 'SUBDOMAIN', useValue: 'www' },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -66,7 +64,6 @@ describe('ProfileCardFavoriteComponent', () => {
     profileService = TestBed.inject(ProfileService);
     element = fixture.nativeElement;
     modalService = TestBed.inject(NgbModal);
-    subdomain = TestBed.inject(<any>'SUBDOMAIN');
 
     fixture.detectChanges();
   });

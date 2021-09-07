@@ -10,7 +10,7 @@ export default {
   title: 'Webapp/Private/Features/Catalog/Components/TryProSlot',
   component: TryProSlotComponent,
   decorators: [styledWrapperDecorator('max-width: 500px;')],
-  argTypes: { close: { action: 'close' }, clickCTA: { action: 'clickCTA' } },
+  argTypes: { clickClose: { action: 'close' }, clickCTA: { action: 'clickCTA' } },
 } as Meta;
 
 const Template: Story<TryProSlotComponent> = (args: TryProSlotComponent) => ({
@@ -20,7 +20,7 @@ const Template: Story<TryProSlotComponent> = (args: TryProSlotComponent) => ({
     declarations: [TryProSlotComponent, ButtonComponent],
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
-  template: '<tsl-try-pro-slot [hasTrialAvailable]="hasTrialAvailable" (close)="close()" (clickCTA)="clickCTA()"></tsl-try-pro-slot>',
+  template: '<tsl-try-pro-slot [hasTrialAvailable]="hasTrialAvailable" (close)="clickClose()" (clickCTA)="clickCTA()"></tsl-try-pro-slot>',
 });
 
 export const Default = Template.bind({});

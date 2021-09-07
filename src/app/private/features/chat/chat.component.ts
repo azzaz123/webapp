@@ -7,6 +7,7 @@ import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-saf
 import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ItemDetailRoutePipe } from '@shared/pipes';
 import { isNil } from 'lodash-es';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -37,7 +38,8 @@ export class ChatComponent implements OnInit {
     private inboxService: InboxService,
     public inboxConversationService: InboxConversationService,
     private modalService: NgbModal,
-    private trustAndSafetyService: TrustAndSafetyService
+    private trustAndSafetyService: TrustAndSafetyService,
+    private itemDetailRoutePipe: ItemDetailRoutePipe
   ) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
@@ -175,9 +177,10 @@ export class ChatComponent implements OnInit {
   }
 
   private openPersonalDataWarningModal(conversation: InboxConversation): void {
+    const itemUrl = this.itemDetailRoutePipe.transform(conversation.item.itemSlug);
     this.modalService
       .open(PersonalDataInformationModal, { windowClass: 'warning' })
-      .result.then(() => (window.location.href = conversation.item.itemUrl))
+      .result.then(() => (window.location.href = itemUrl))
       .catch(() => null);
   }
 }
