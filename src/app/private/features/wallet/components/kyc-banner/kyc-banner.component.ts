@@ -22,7 +22,7 @@ export class KYCBannerComponent {
 
   public openModal(): void {
     if (this.KYCBannerSpecifications.status === KYC_STATUS.PENDING) {
-      this.openKYCInformativeSliderModal();
+      this.openKYCInformativeModal();
     } else {
       this.openKYCStatusModal();
     }
@@ -37,16 +37,6 @@ export class KYCBannerComponent {
       dismissible: this.KYCBannerSpecifications.dismissible,
       type: this.KYCBannerSpecifications.type,
     };
-  }
-
-  private openKYCStatusModal(): void {
-    let modalRef: NgbModalRef = this.modalService.open(KYCStatusModalComponent);
-    modalRef.componentInstance.properties = this.KYCModalProperties;
-
-    modalRef.result.then(
-      () => {},
-      () => {}
-    );
   }
 
   private get KYCModalProperties(): KYCModalProperties {
@@ -68,7 +58,17 @@ export class KYCBannerComponent {
     }
   }
 
-  private openKYCInformativeSliderModal(): void {
+  private openKYCStatusModal(): void {
+    let modalRef: NgbModalRef = this.modalService.open(KYCStatusModalComponent);
+    modalRef.componentInstance.properties = this.KYCModalProperties;
+
+    modalRef.result.then(
+      () => {},
+      () => {}
+    );
+  }
+
+  private openKYCInformativeModal(): void {
     this.modalService.open(KYCInfoModalComponent).result.then(
       () => {},
       () => {}
