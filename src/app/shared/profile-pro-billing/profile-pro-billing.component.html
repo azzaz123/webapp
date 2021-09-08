@@ -1,5 +1,5 @@
 <tsl-profile-form [profileForm]="billingForm" (onInit)="initForm()">
-  <form [formGroup]="billingForm" (submit)="onSubmit($event)">
+  <form [formGroup]="billingForm" (submit)="onSubmit($event)" class="BillingForm">
     <div class="box profile-box">
       <div class="content" [hidden]="loading">
         <div class="row mb-2 mb-md-4" *ngIf="!containerType">
@@ -9,6 +9,11 @@
           <div class="content-subtitle col-11 offset-sm-0 offset-md-1">
             <span i18n="@@web_profile_pro_billing_subtitle">For services other than subscriptions (e.g. visibility packs) you won't receive invoices.</span>
           </div>
+        </div>
+        <div class="row mb-2 mb-md-4" *ngIf="containerType===INVOICE_COMPONENT_TYPE.PROFILE_INFO">
+          <span i18n="@@web_invoice_history_description" class="BillingForm__description">
+            For now, you can only view or download invoices or credit memos from your subscriptions.
+          </span>
         </div>
         <div class="row">
           <div class="col-sm-12 col-md-12 offset-md-0">

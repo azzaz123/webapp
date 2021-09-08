@@ -1,27 +1,19 @@
 @import '~style/common';
 
-.delete-link {
-  text-decoration: underline;
-  color: $blue-grey-4;
-  font-size: $font-size-s;
-  cursor: pointer;
-  align-items: end;
-  display: grid;
-  &:hover {
-    text-decoration: none;
+.BillingForm {
+  .content {
+    margin: 0 $spacing-s;
+    padding: 0 $spacing-l;
+
+    &-subtitle {
+      font-size: $font-size-s;
+    }
   }
-}
 
-.content {
-  margin: 0 $spacing-s;
-  padding: 0 $spacing-l;
-
-  &-subtitle {
-    font-size: $font-size-s;
+  &__description {
+    color: $blue-grey-3;
   }
-}
 
-form {
   input,
   textarea {
     &.ng-dirty.ng-invalid {
@@ -44,17 +36,19 @@ form {
     font-size: $font-size-s;
     color: $negative-main;
   }
-}
-.RegistrationType {
-  display: flex;
-  .RegistrationType_radio {
-    margin: 0 $spacing-l 0 0;
-    .RegistrationType_title {
+
+  .RegistrationType {
+    display: flex;
+    &_radio {
+      margin: 0 $spacing-l 0 0;
+    }
+    &_title {
       margin: 0 $spacing-s;
     }
   }
-}
-.loading-center {
-  display: block;
-  margin: 0 auto;
+
+  .loading-center {
+    display: block;
+    margin: 0 auto;
+  }
 }

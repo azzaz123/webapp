@@ -1,11 +1,6 @@
 <div class="box profile-box">
   <div class="InvoiceHistory">
         <h3 i18n="@@web_invoice_history">Invoice history</h3>
-        <div>
-          <span i18n="@@web_invoice_history_description" class="InvoiceHistory__description">
-            For now, you can only view or download invoices or credit memos from your subscriptions.
-          </span>
-        </div>
     <div class="InvoiceHistory__tabs">
       <tsl-button [className]="getButtonClass(filterInvoices.ALL)" (click)="onChangeFilter(filterInvoices.ALL)" i18n="@@web_invoice_history_all">All</tsl-button>
       <tsl-button [className]="getButtonClass(filterInvoices.INVOICES)" (click)="onChangeFilter(filterInvoices.INVOICES)" i18n="@@web_invoice_history_invoices">Invoices</tsl-button>
