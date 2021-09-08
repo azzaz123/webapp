@@ -62,6 +62,12 @@ describe('SubscriptionCardComponent', () => {
       expect(price.textContent).toContain(component.subscription.selected_tier.currency);
     });
 
+    it('should show subscription from date', () => {
+      const subscriptionEnd: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__date')).nativeElement;
+
+      expect(subscriptionEnd.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_from, 'longDate'));
+    });
+
     describe('and has tier limit', () => {
       describe('and is real estate', () => {
         beforeEach(() => {
@@ -99,27 +105,31 @@ describe('SubscriptionCardComponent', () => {
       });
     });
 
-    describe('and has subscription end', () => {
-      beforeEach(() => {
-        component.subscription.subscribed_until = 1567675697;
-        fixture.detectChanges();
-      });
-      it('should show subscription end date', () => {
-        const subscriptionEnd: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__date')).nativeElement;
+    describe('end date', () => {
+      describe('and has subscription end', () => {
+        beforeEach(() => {
+          component.subscription.subscribed_until = component.subscription.subscribed_from + 1000 * 60 * 60 * 24;
+          fixture.detectChanges();
+        });
+        it('should show subscription end date', () => {
+          const subscriptionEnd: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
 
-        expect(subscriptionEnd.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_until, 'longDate'));
+          expect(subscriptionEnd.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_until, 'longDate'));
+        });
       });
-    });
 
-    describe('and has not subscription end', () => {
-      beforeEach(() => {
-        component.subscription.subscribed_until = null;
-        fixture.detectChanges();
-      });
-      it('should show subscription start date', () => {
-        const subscriptionStart: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__date')).nativeElement;
+      describe('and has not subscription end', () => {
+        beforeEach(() => {
+          component.subscription.subscribed_until = null;
+          fixture.detectChanges();
+        });
+        it('should show subscription start date', () => {
+          const subscriptionStart: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
 
-        expect(subscriptionStart.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_from, 'longDate'));
+          expect(subscriptionStart.textContent).not.toContain(
+            new DatePipe('en').transform(component.subscription.subscribed_until, 'longDate')
+          );
+        });
       });
     });
   });
