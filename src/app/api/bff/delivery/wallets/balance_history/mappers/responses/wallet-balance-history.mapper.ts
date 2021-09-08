@@ -77,11 +77,13 @@ const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): Wall
   const { item, amount, created_at, currency, type } = input;
   const imageUrl = item?.picture_url ?? 'assets/images/bank.svg';
 
-  const mappedType = type === 'TRANSFER_IN' ? WALLET_HISTORY_MOVEMENT_TYPE.IN : WALLET_HISTORY_MOVEMENT_TYPE.OUT;
+  const isTransferInType = type === 'TRANSFER_IN';
+  const mappedType = isTransferInType ? WALLET_HISTORY_MOVEMENT_TYPE.IN : WALLET_HISTORY_MOVEMENT_TYPE.OUT;
   const title = getTitleFromHistoryElement(input);
   const description = getDescriptionFromHistoryElement(input);
   const date = new Date(created_at);
-  const moneyAmmount = mapNumberAndCurrencyCodeToMoney({ number: amount, currency });
+  const numberSign = isTransferInType ? 1 : -1;
+  const moneyAmmount = mapNumberAndCurrencyCodeToMoney({ number: numberSign * amount, currency });
 
   return {
     imageUrl,
