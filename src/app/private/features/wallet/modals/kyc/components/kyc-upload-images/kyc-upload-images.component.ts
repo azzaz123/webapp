@@ -66,8 +66,40 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  public get title(): string {
+    if (this.twoImagesNeeded) {
+      if (this.isCurrentImageDefined) {
+        return this.activeStep === 1
+          ? $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_title:Check the photo of the front side of your document`
+          : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_title:Check the photo of the back side of your document`;
+      } else {
+        return this.activeStep === 1
+          ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_title:Take a photo of the front side of your ID document`
+          : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_title:Take a back side photo of your document`;
+      }
+    } else {
+      if (this.isCurrentImageDefined) {
+        return $localize`:@@kyc_take_photo_view_if_one_side_review_title:Check the photo of your document`;
+      } else {
+        return $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`;
+      }
+    }
+  }
+
+  public get subtitle(): string {
+    return '';
+  }
+
+  public get takeImageMessage(): string {
+    return '';
+  }
+
+  public get retakeImageMessage(): string {
+    return '';
+  }
+
   public get isCurrentImageDefined(): boolean {
-    if (this.imagesNeeded === 2) {
+    if (this.twoImagesNeeded) {
       return this.activeStep === 1 ? !!this.images.frontSide : !!this.images.backSide;
     } else {
       return this.isFrontSideImageDefined;
@@ -95,11 +127,11 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   public get showEndVerificationButton(): boolean {
-    return this.imagesNeeded === 1 || (this.imagesNeeded === 2 && this.activeStep === 2);
+    return this.imagesNeeded === 1 || (this.twoImagesNeeded && this.activeStep === 2);
   }
 
   public get showContinueButton(): boolean {
-    return this.imagesNeeded === 2 && this.activeStep === 1;
+    return this.twoImagesNeeded && this.activeStep === 1;
   }
 
   public get isContinueButtonActive(): boolean {
