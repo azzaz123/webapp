@@ -1,3 +1,15 @@
-<div class="box">
+<div class="WalletHistoryMovements mt-3">
   <tsl-tabs-bar [tabsBarElements]="this.tabBarElements"></tsl-tabs-bar>
+  <div *ngIf="historicMovements$ | async as historicMovements">
+    <div class="WalletHistoryMovements__year" *ngFor="let year of historicMovements.years">
+      {{year.title}}
+      <div class="WalletHistoryMovements__year__month" *ngFor="let month of year.elements">{{month.title}}
+        <div *ngFor="let balanceHistoryMovement of month.elements; let last = last">
+          <div class="WalletHistoryMovements__separator w-100"></div>
+          <tsl-wallet-history-movement [walletMovementHistoryDetail]="balanceHistoryMovement"></tsl-wallet-history-movement>
+          <div class="WalletHistoryMovements__separator w-100" *ngIf="last"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,0 +1,26 @@
+@import '~style/common';
+
+$wallet-history-movements-border: 1px solid $blue-grey-5;
+
+.WalletHistoryMovements {
+  @include box();
+  padding: 20px;
+
+  color: $blue-grey-1;
+  font-weight: $font-weight-chunky;
+
+  &__year {
+    margin-top: 20px;
+    font-size: 32px;
+
+    &__month {
+      margin: 32px 0;
+      font-size: 20px;
+    }
+  }
+}
+
+.WalletHistoryMovements__separator {
+  height: 1px;
+  background-color: $blue-grey-5;
+}
