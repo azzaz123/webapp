@@ -103,11 +103,23 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   public get takeImageMessage(): string {
-    return '';
+    if (this.twoImagesNeeded) {
+      return this.activeStep === 1
+        ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_photo_button:Take front side photo`
+        : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_continue_button:Take back side photo`;
+    } else {
+      return $localize`:@@kyc_take_photo_view_if_one_side_take_photo_button:Take photo`;
+    }
   }
 
   public get retakeImageMessage(): string {
-    return '';
+    if (this.twoImagesNeeded) {
+      return this.activeStep === 1
+        ? $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_photo_button:Retake front side photo`
+        : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_photo_button:Retake back side photo`;
+    } else {
+      return $localize`:@@kyc_take_photo_view_if_one_side_review_retake_photo_button:Retake photo`;
+    }
   }
 
   public get isCurrentImageDefined(): boolean {
@@ -221,6 +233,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
     if (this.isUploadImageMethod) {
       this.uploadImage.nativeElement.value = null;
+      this.uploadOrShootImage();
     }
   }
 
