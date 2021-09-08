@@ -58,7 +58,7 @@ const getMonthNameFromDate = (input: BalanceHistoryElementApi): string => {
 
 const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): WalletMovementHistoryDetail => {
   const { item, amount, bank_account, created_at, currency } = input;
-  const imageUrl = item?.picture_url ?? 'test.png';
+  const imageUrl = item?.picture_url ?? 'assets/images/bank.svg';
 
   const type = amount >= 0 ? WALLET_HISTORY_MOVEMENT_TYPE.IN : WALLET_HISTORY_MOVEMENT_TYPE.OUT;
   const title = item?.title || bank_account;
