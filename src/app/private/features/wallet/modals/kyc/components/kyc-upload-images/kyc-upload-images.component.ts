@@ -66,14 +66,6 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public get isFrontSideImageDefined(): boolean {
-    return !!this.images.frontSide;
-  }
-
-  public get isBackSideImageDefined(): boolean {
-    return !!this.images.backSide;
-  }
-
   public get isCurrentImageDefined(): boolean {
     if (this.imagesNeeded === 2) {
       return this.activeStep === 1 ? !!this.images.frontSide : !!this.images.backSide;
@@ -86,19 +78,8 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     return this.definedImages === this.imagesNeeded;
   }
 
-  public get isUploadImageMethod(): boolean {
-    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
-  }
-
   public get isShootImageMethod(): boolean {
     return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT;
-  }
-
-  private get definedImages(): number {
-    const firstImage = this.images.frontSide;
-    const secondImage = this.images.backSide;
-
-    return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
   }
 
   public get showTakeImageButton(): boolean {
@@ -163,10 +144,6 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     this.defineUploadImageAndEmitValue(file, imageSide);
   }
 
-  public requestCameraFailed(userCameraPermissions: DEVICE_PERMISSIONS_STATUS): boolean {
-    return userCameraPermissions === DEVICE_PERMISSIONS_STATUS.DENIED || userCameraPermissions === DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS;
-  }
-
   public requestCameraSucceed(userCameraPermissions: DEVICE_PERMISSIONS_STATUS): boolean {
     return userCameraPermissions === DEVICE_PERMISSIONS_STATUS.ACCEPTED;
   }
@@ -191,7 +168,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     this.goBack.emit();
   }
 
-  public removeImage(): void {
+  public removeCurrentImage(): void {
     if (this.activeStep === 1) {
       this.emitFrontSideImageChange(null);
     } else {
@@ -205,6 +182,25 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   private get twoImagesNeeded(): boolean {
     return this.imagesNeeded === 2;
+  }
+
+  private get isUploadImageMethod(): boolean {
+    return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
+  }
+
+  private get isFrontSideImageDefined(): boolean {
+    return !!this.images.frontSide;
+  }
+
+  private get definedImages(): number {
+    const firstImage = this.images.frontSide;
+    const secondImage = this.images.backSide;
+
+    return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
+  }
+
+  private requestCameraFailed(userCameraPermissions: DEVICE_PERMISSIONS_STATUS): boolean {
+    return userCameraPermissions === DEVICE_PERMISSIONS_STATUS.DENIED || userCameraPermissions === DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS;
   }
 
   private defineUploadImageAndEmitValue(file: File, imageSide: KYC_IMAGES): void {

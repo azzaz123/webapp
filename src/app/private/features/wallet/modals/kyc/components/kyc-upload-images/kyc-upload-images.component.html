@@ -26,7 +26,7 @@
         <div class="row text-center">
             <div class="col">
                 <tsl-button *ngIf="showTakeImageButton" className="btn-primary" (click)="uploadOrShootImage()" i18n="@@kyc_take_photo_view_if_one_side_take_photo_button">Take photo</tsl-button>
-                <tsl-button *ngIf="showRetakeImageButton" className="btn-primary" (click)="removeImage()" i18n="@@">Rehacer foto</tsl-button>
+                <tsl-button *ngIf="showRetakeImageButton" className="btn-primary" (click)="removeCurrentImage()" i18n="@@kyc_take_photo_view_if_one_side_review_retake_photo_button">Rehacer foto</tsl-button>
             </div>
         </div>
         <div class="row">
