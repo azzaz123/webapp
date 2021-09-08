@@ -6,6 +6,12 @@ import * as moment from 'moment';
 import { WalletBalanceHistoryApi } from '../../dtos/responses';
 
 type BalanceHistoryElementApi = InnerType<WalletBalanceHistoryApi, 'balance_history'>;
+type BalanceHistoryMovementType = InnerType<BalanceHistoryElementApi, 'type'>;
+const LOCALIZED_MOVEMENT_TYPE: Record<BalanceHistoryMovementType, string> = {
+  TRANSFER_IN: $localize`:@@movements_history_all_users_movement_details_sale_label:Sale`,
+  TRANSFER_OUT: $localize`:@@movements_history_all_users_movement_details_purchase_label:Purchase`,
+  TRANSFER_TO_BANK: $localize`:@@movements_history_all_users_movement_details_cashout_label:Withdrawal`,
+};
 
 export const mapWalletBalanceHistoryApiToWalletMovements: ToDomainMapper<WalletBalanceHistoryApi, WalletMovementsHistory> = (
   input: WalletBalanceHistoryApi
@@ -56,18 +62,25 @@ const getMonthNameFromDate = (input: BalanceHistoryElementApi): string => {
   return moment(input.created_at).format('MMMM');
 };
 
+const getDescriptionFromHistoryElement = (historyElement: BalanceHistoryElementApi): string => {
+  const { type, created_at } = historyElement;
+  return `${LOCALIZED_MOVEMENT_TYPE[type]} · ${moment(created_at).format('D MMM')}`;
+};
+
 const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): WalletMovementHistoryDetail => {
-  const { item, amount, bank_account, created_at, currency } = input;
+  const { item, amount, bank_account, created_at, currency, type } = input;
   const imageUrl = item?.picture_url ?? 'assets/images/bank.svg';
 
-  const type = amount >= 0 ? WALLET_HISTORY_MOVEMENT_TYPE.IN : WALLET_HISTORY_MOVEMENT_TYPE.OUT;
+  const mappedType = type === 'TRANSFER_IN' ? WALLET_HISTORY_MOVEMENT_TYPE.IN : WALLET_HISTORY_MOVEMENT_TYPE.OUT;
   const title = item?.title || bank_account;
+  const description = getDescriptionFromHistoryElement(input);
   const date = new Date(created_at);
   const moneyAmmount = mapNumberAndCurrencyCodeToMoney({ number: amount, currency });
 
   return {
     imageUrl,
-    type,
+    type: mappedType,
+    description,
     title,
     date,
     moneyAmmount,

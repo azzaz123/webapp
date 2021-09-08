@@ -9,6 +9,7 @@ export interface WalletMovementHistoryDetail {
   imageUrl: string;
   type: WALLET_HISTORY_MOVEMENT_TYPE;
   title: string;
+  description: string;
   date: Date;
   moneyAmmount: Money;
 }
