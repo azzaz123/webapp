@@ -11,38 +11,37 @@
         <div class="row text-center mb-4 mt-2">
             <div class="col">
                 <span class="KYCUploadImages__title d-block mb-2">{{title}}</span>
-                <span class="KYCUploadImages__subtitle d-block mb-3">{{subtitle}}</span>
+                <span class="KYCUploadImages__subtitle d-block mb-2">{{subtitle}}</span>
             </div>
         </div>
-        <div class="row mb-4" *ngIf="canUploadOrShootImage(userDevicePermissions)">
-            <div class="KYCUploadImages__image col d-flex align-items-center justify-content-center p-0">
-                <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
-                <tsl-svg-icon *ngIf="!isCurrentImageDefined" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
-                <canvas id="definedImage" #definedImage class="KYCUploadImages__image__canvas w-100 h-100" [ngClass]="{'d-none': !isCurrentImageDefined}"></canvas>
+        <ng-container *ngIf="canUploadOrShootImage(userDevicePermissions)">
+            <div class="row justify-content-center mb-4" >
+                <div class="KYCUploadImages__image col col-sm-10  d-flex align-items-center justify-content-center p-0">
+                    <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
+                    <tsl-svg-icon *ngIf="!isCurrentImageDefined && !isShootImageMethod" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
+                    <canvas id="definedImage" #definedImage class="KYCUploadImages__image__canvas w-100 h-100" [ngClass]="{'d-none': !isCurrentImageDefined}"></canvas>
+                    <video *ngIf="isShootImageMethod" autoplay playsInline muted id="userCamera" #userCamera
+                    class="KYCUploadImages__image__video h-100 w-100"
+                    [ngClass]="{'d-none': !requestCameraSucceed(userDevicePermissions.video) || isCurrentImageDefined}"></video>
+                </div>
             </div>
-        </div>
-        <div class="row text-center">
-            <div class="col">
-                <tsl-button *ngIf="showTakeImageButton" className="btn-primary" (click)="uploadOrShootImage()">{{takeImageMessage}}</tsl-button>
-                <tsl-button *ngIf="showRetakeImageButton" className="btn-primary" (click)="removeCurrentImage()">{{retakeImageMessage}}</tsl-button>
+            <div class="row text-center">
+                <div class="col">
+                    <tsl-button *ngIf="showTakeImageButton" className="btn-primary" (click)="uploadOrShootImage()">{{takeImageMessage}}</tsl-button>
+                    <tsl-button *ngIf="showRetakeImageButton" className="btn-primary" (click)="removeCurrentImage()">{{retakeImageMessage}}</tsl-button>
+                </div>
             </div>
-        </div>
+        </ng-container>
         <div class="row">
             <div class="col">
-                <div *ngIf="isErrorBanner(userDevicePermissions.video); else takingImageSection" class="mx-3">
+                <div *ngIf="isErrorBanner(userDevicePermissions.video); else buttonSection">
                     <tsl-banner [specifications]="errorBannerSpecifications">
                         <div class="d-flex align-items-center">
                             <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy(userDevicePermissions.video)}}
                         </div>
                     </tsl-banner>
                 </div>
-                <ng-template #takingImageSection>
-                    <div class="justify-content-center row" [ngClass]="{'d-none': !requestCameraSucceed(userDevicePermissions.video) || !isShootImageMethod}">
-                        <div class="KYCUploadImages__cameraContainer col-12 col-sm-8 p-0">
-                            <video autoplay playsInline muted #userCamera class="h-100 w-100 p-2 p-sm-0"></video>
-                            <div class="KYCUploadImages__cameraContainer__overlay position-absolute"></div>
-                        </div>
-                    </div>
+                <ng-template #buttonSection>
                     <div class="text-center row mt-3">
                         <tsl-button 
                             *ngIf="showContinueButton" id="endVerificationButton"

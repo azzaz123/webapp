@@ -179,7 +179,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   public canUploadOrShootImage(userDevicePermissions: UserDevicePermissions): boolean {
-    return (this.isShootImageMethod && this.requestCameraSucceed(userDevicePermissions.video)) || this.isUploadImageMethod;
+    return (this.isShootImageMethod && !this.isErrorBanner(userDevicePermissions.video)) || this.isUploadImageMethod;
   }
 
   public uploadOrShootImage(): void {
