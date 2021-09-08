@@ -17,8 +17,12 @@ $image-height-small: 200px;
     }
   }
 
-  &__container {
+  &__imageContainer {
     margin: 0px 32px;
+  }
+
+  &__bottomContainer {
+    bottom: 0;
   }
 
   &__title,
@@ -33,21 +37,18 @@ $image-height-small: 200px;
 
   &__image {
     height: $image-height-small;
+    border: dashed 2px $blue-grey-5;
 
     @include media-breakpoint-up(sm) {
       height: $image-height-big;
     }
 
-    border: dashed 2px $blue-grey-5;
-    border-radius: $border-radius;
-
-    &__canvas,
-    &__video {
-      border-radius: $border-radius;
-    }
-
     &__video {
       object-fit: cover;
+    }
+
+    &--round {
+      border-radius: $border-radius;
     }
   }
 }

@@ -158,6 +158,10 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     return this.twoImagesNeeded && this.activeStep === 1;
   }
 
+  public get showCameraSvg(): boolean {
+    return !this.isCurrentImageDefined && !this.isShootImageMethod;
+  }
+
   public get isContinueButtonActive(): boolean {
     return this.twoImagesNeeded && this.images.frontSide && !this.images.backSide;
   }

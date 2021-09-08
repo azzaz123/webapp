@@ -1,38 +1,38 @@
-<div class="KYCUploadImages" *ngIf="userDevicePermissions$ | async as userDevicePermissions">
+<div class="KYCUploadImages h-100" *ngIf="userDevicePermissions$ | async as userDevicePermissions">
     <div class="row">
         <div class="col">
-            <a class="KYCUploadImages__back d-flex pb-4 pb-md-2" (click)="handleBack()">
+            <a class="KYCUploadImages__back d-flex" (click)="handleBack()">
                 <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
                 <span i18n="@@web_catalog_pro_pages_checkout_638" class="ml-3">Back</span>
             </a>
         </div>
     </div>
-    <div class="KYCUploadImages__container">
-        <div class="row text-center mb-4 mt-2">
-            <div class="col">
-                <span class="KYCUploadImages__title d-block mb-2">{{title}}</span>
-                <span class="KYCUploadImages__subtitle d-block mb-2">{{subtitle}}</span>
-            </div>
-        </div>
-        <ng-container *ngIf="canUploadOrShootImage(userDevicePermissions)">
-            <div class="row justify-content-center mb-4" >
-                <div class="KYCUploadImages__image col col-sm-10  d-flex align-items-center justify-content-center p-0">
-                    <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
-                    <tsl-svg-icon *ngIf="!isCurrentImageDefined && !isShootImageMethod" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
-                    <canvas id="definedImage" #definedImage class="KYCUploadImages__image__canvas w-100 h-100" [ngClass]="{'d-none': !isCurrentImageDefined}"></canvas>
-                    <video *ngIf="isShootImageMethod" autoplay playsInline muted id="userCamera" #userCamera
-                    class="KYCUploadImages__image__video h-100 w-100"
-                    [ngClass]="{'d-none': !requestCameraSucceed(userDevicePermissions.video) || isCurrentImageDefined}"></video>
-                </div>
-            </div>
-            <div class="row text-center">
+    <div class="h-100 d-flex flex-column justify-content-between">
+        <div class="KYCUploadImages__imageContainer h-100 d-flex flex-column justify-content-center">
+            <div class="row text-center mb-4 mt-2">
                 <div class="col">
-                    <tsl-button *ngIf="showTakeImageButton" className="btn-primary" (click)="uploadOrShootImage()">{{takeImageMessage}}</tsl-button>
-                    <tsl-button *ngIf="showRetakeImageButton" className="btn-primary" (click)="removeCurrentImage()">{{retakeImageMessage}}</tsl-button>
+                    <span class="KYCUploadImages__title d-block mb-2">{{title}}</span>
+                    <span class="KYCUploadImages__subtitle d-block mb-2">{{subtitle}}</span>
                 </div>
             </div>
-        </ng-container>
-        <div class="row">
+            <ng-container *ngIf="canUploadOrShootImage(userDevicePermissions)">
+                <div class="row justify-content-center mb-4" >
+                    <div class="KYCUploadImages__image KYCUploadImages__image--round col col-sm-10  d-flex align-items-center justify-content-center p-0">
+                        <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
+                        <tsl-svg-icon *ngIf="showCameraSvg" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
+                        <canvas id="definedImage" #definedImage class="KYCUploadImages__image--round h-100 w-100" [ngClass]="{'d-none': !isCurrentImageDefined}"></canvas>
+                        <video *ngIf="isShootImageMethod" autoplay playsInline muted id="userCamera" #userCamera
+                            class="KYCUploadImages__image__video KYCUploadImages__image--round h-100 w-100"
+                            [ngClass]="{'d-none': !requestCameraSucceed(userDevicePermissions.video) || isCurrentImageDefined}"></video>
+                    </div>
+                </div>
+                <div class="row text-center justify-content-center">
+                    <tsl-button *ngIf="showTakeImageButton" class="col-12 col-md-7 p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage}}</tsl-button>
+                    <tsl-button *ngIf="showRetakeImageButton" class="col-12 col-md-7 p-0" className="btn-primary btn-block" (click)="removeCurrentImage()">{{retakeImageMessage}}</tsl-button>
+                </div>
+            </ng-container>
+        </div>
+        <div class="KYCUploadImages__bottomContainer row position-sticky my-4">
             <div class="col">
                 <div *ngIf="isErrorBanner(userDevicePermissions.video); else buttonSection">
                     <tsl-banner [specifications]="errorBannerSpecifications">
@@ -42,19 +42,21 @@
                     </tsl-banner>
                 </div>
                 <ng-template #buttonSection>
-                    <div class="text-center row mt-3">
+                    <div class="row text-center justify-content-center">
                         <tsl-button 
                             *ngIf="showContinueButton" id="endVerificationButton"
                             [disabled]="!isContinueButtonActive"
                             i18n="@@kyc_take_photo_view_continue_button"
-                            class="col"
-                            (click)="goToDefineBackImage()">Continuar</tsl-button>
+                            class="col-12 col-md-7"
+                            className="btn-primary btn-block"
+                            (click)="goToDefineBackImage()">Continue</tsl-button>
                         <tsl-button 
                             *ngIf="showEndVerificationButton" id="endVerificationButton"
                             [disabled]="!allImagesAreDefined"
                             i18n="@@kyc_end_verification"
-                            class="col"
-                            (click)="endVerification.emit()">End verification</tsl-button>
+                            class="col-12 col-md-7"
+                            className="btn-primary btn-block"
+                            (click)="endVerification.emit()">Finish verification</tsl-button>
                     </div>
                 </ng-template>
             </div>
