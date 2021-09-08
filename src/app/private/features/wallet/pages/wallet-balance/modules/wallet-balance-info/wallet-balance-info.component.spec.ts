@@ -82,11 +82,13 @@ describe('WalletBalanceInfoComponent', () => {
           .spyOn(walletService, 'walletBalance$', 'get')
           .mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY).pipe(delay(delayedTime)));
         jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(null).pipe(delay(delayedTime)));
+
         component.ngOnInit();
         fixture.detectChanges();
 
         const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
         expect(loadingContainerRef).toBeTruthy();
+
         discardPeriodicTasks();
       }));
 
@@ -97,6 +99,7 @@ describe('WalletBalanceInfoComponent', () => {
           jest
             .spyOn(walletService, 'walletBalance$', 'get')
             .mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY).pipe(delay(delayedTime)));
+
           component.ngOnInit();
           tick(delayedTime);
           fixture.detectChanges();
@@ -112,11 +115,13 @@ describe('WalletBalanceInfoComponent', () => {
         component.loading = true;
         const delayedTime = 2000;
         jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(null).pipe(delay(delayedTime)));
+
         component.ngOnInit();
         fixture.detectChanges();
 
         const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
         expect(loadingContainerRef).toBeTruthy();
+
         discardPeriodicTasks();
       }));
 
@@ -125,6 +130,7 @@ describe('WalletBalanceInfoComponent', () => {
           component.loading = true;
           const delayedTime = 2000;
           jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(null).pipe(delay(delayedTime)));
+
           component.ngOnInit();
           tick(delayedTime);
           fixture.detectChanges();
@@ -138,6 +144,7 @@ describe('WalletBalanceInfoComponent', () => {
     describe('and when the user has a balance of 0 in the Wallet', () => {
       beforeEach(() => {
         jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY));
+
         component.ngOnInit();
         fixture.detectChanges();
       });
@@ -154,17 +161,20 @@ describe('WalletBalanceInfoComponent', () => {
 
       it('should display balance with the non positive balance style', () => {
         const containerWithPositiveBalanceRef = fixture.debugElement.query(By.css(walletBalanceInfoWithPositiveBalance));
+
         expect(containerWithPositiveBalanceRef).toBeFalsy();
       });
 
       describe('WHEN the user is validated', () => {
         beforeEach(() => {
           jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(KYC_BANNER_TYPES[2]));
+
           component.ngOnInit();
           fixture.detectChanges();
         });
         it('should disable the transfer money button', () => {
           const buttonComponentRef: ButtonComponent = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance;
+
           expect(buttonComponentRef.disabled).toBe(true);
         });
       });
@@ -172,11 +182,13 @@ describe('WalletBalanceInfoComponent', () => {
       describe('WHEN the user does not need validation', () => {
         beforeEach(() => {
           jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(null));
+
           component.ngOnInit();
           fixture.detectChanges();
         });
         it('should disable the transfer money button', () => {
           const buttonComponentRef: ButtonComponent = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance;
+
           expect(buttonComponentRef.disabled).toBe(true);
         });
       });
@@ -185,6 +197,7 @@ describe('WalletBalanceInfoComponent', () => {
     describe('and when there is no balance', () => {
       beforeEach(() => {
         jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(null));
+
         component.ngOnInit();
         fixture.detectChanges();
       });
@@ -209,6 +222,7 @@ describe('WalletBalanceInfoComponent', () => {
     describe('and when the user has some money in the Wallet', () => {
       beforeEach(() => {
         jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(MOCK_PAYMENTS_WALLETS_MAPPED_MONEY));
+
         component.ngOnInit();
         fixture.detectChanges();
       });
@@ -226,11 +240,13 @@ describe('WalletBalanceInfoComponent', () => {
       describe('WHEN the user is validated', () => {
         beforeEach(() => {
           jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(KYC_BANNER_TYPES[2]));
+
           component.ngOnInit();
           fixture.detectChanges();
         });
         it('should display balance with the positive balance style', () => {
           const containerWithPositiveBalanceRef = fixture.debugElement.query(By.css(walletBalanceInfoWithPositiveBalance));
+
           expect(containerWithPositiveBalanceRef).toBeTruthy();
         });
       });
@@ -238,11 +254,13 @@ describe('WalletBalanceInfoComponent', () => {
       describe('WHEN the user does not need validation', () => {
         beforeEach(() => {
           jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(null));
+
           component.ngOnInit();
           fixture.detectChanges();
         });
         it('should display balance with the positive balance style', () => {
           const containerWithPositiveBalanceRef = fixture.debugElement.query(By.css(walletBalanceInfoWithPositiveBalance));
+
           expect(containerWithPositiveBalanceRef).toBeTruthy();
         });
       });
@@ -250,11 +268,13 @@ describe('WalletBalanceInfoComponent', () => {
       describe('WHEN the user is not validated and needs validations', () => {
         beforeEach(() => {
           jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(KYC_BANNER_TYPES[0]));
+
           component.ngOnInit();
           fixture.detectChanges();
         });
         it('should disable the transfer money button', () => {
           const buttonComponentRef: ButtonComponent = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance;
+
           expect(buttonComponentRef.disabled).toBe(true);
         });
       });
@@ -264,12 +284,14 @@ describe('WalletBalanceInfoComponent', () => {
       beforeEach(() => {
         jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(throwError('F in chat'));
         spyOn(toastService, 'show');
+
         component.ngOnInit();
         fixture.detectChanges();
       });
 
       it('should show an empty error state', () => {
         const errorContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoErrorSelector));
+
         expect(errorContainerRef).toBeTruthy();
       });
 
