@@ -62,17 +62,23 @@ const getMonthNameFromDate = (input: BalanceHistoryElementApi): string => {
   return moment(input.created_at).format('MMMM');
 };
 
+const getTitleFromHistoryElement = (input: BalanceHistoryElementApi): string => {
+  const { item, bank_account } = input;
+  const regexpToGetAllXs = /(\X)+/g;
+  return item?.title || bank_account.replace(regexpToGetAllXs, '••••');
+};
+
 const getDescriptionFromHistoryElement = (historyElement: BalanceHistoryElementApi): string => {
   const { type, created_at } = historyElement;
   return `${LOCALIZED_MOVEMENT_TYPE[type]} · ${moment(created_at).format('D MMM')}`;
 };
 
 const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): WalletMovementHistoryDetail => {
-  const { item, amount, bank_account, created_at, currency, type } = input;
+  const { item, amount, created_at, currency, type } = input;
   const imageUrl = item?.picture_url ?? 'assets/images/bank.svg';
 
   const mappedType = type === 'TRANSFER_IN' ? WALLET_HISTORY_MOVEMENT_TYPE.IN : WALLET_HISTORY_MOVEMENT_TYPE.OUT;
-  const title = item?.title || bank_account;
+  const title = getTitleFromHistoryElement(input);
   const description = getDescriptionFromHistoryElement(input);
   const date = new Date(created_at);
   const moneyAmmount = mapNumberAndCurrencyCodeToMoney({ number: amount, currency });
@@ -80,8 +86,8 @@ const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): Wall
   return {
     imageUrl,
     type: mappedType,
-    description,
     title,
+    description,
     date,
     moneyAmmount,
   };
