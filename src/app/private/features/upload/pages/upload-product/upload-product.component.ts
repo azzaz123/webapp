@@ -117,7 +117,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
 
-  public isShippabilityActive = false;
   public isShippabilityAllowed = false;
   public isShippabilityAllowedByCategory = false;
   public priceShippingRules: ShippingRulesPrice;
@@ -161,13 +160,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
-    this.initShippabilityFeatureFlag();
-
     this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories;
 
       this.detectCategoryChanges();
       this.detectObjectTypeChanges();
+      this.detectShippabilityAllowanceChanges();
+      this.detectShippabilityChanges();
 
       if (this.item) {
         this.initializeEditForm();
@@ -504,9 +503,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       sale_conditions: this.fb.group({
         fix_price: false,
         exchange_allowed: false,
-        supports_shipping: this.isShippabilityActive ? true : null,
+        supports_shipping: true,
       }),
-      delivery_info: [null],
+      delivery_info: [null, [Validators.required]],
       location: this.fb.group({
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
@@ -840,6 +839,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       categoryId: item.category_id,
       salePrice: item.sale_price,
       title: item.title,
+      shippingAllowed: !!item.sale_conditions?.supports_shipping,
       isPro,
     };
 
@@ -859,9 +859,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       baseEventAttrs.shippingWeight = item.delivery_info.min_weight_kg;
     }
 
-    if (this.isShippabilityActive) {
-      baseEventAttrs.shippingAllowed = item.sale_conditions?.supports_shipping || false;
-    }
     if (isEdit) {
       const editItemCGEvent: AnalyticsEvent<EditItemCG> = {
         name: ANALYTICS_EVENT_NAMES.EditItemCG,
@@ -907,36 +904,20 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
   }
 
-  private initShippabilityFeatureFlag(): void {
-    this.shippingToggleService.isActive().subscribe((isActive) => {
-      this.isShippabilityActive = isActive;
-      if (isActive) {
-        this.detectShippabilityAllowanceChanges();
-        this.detectShippabilityChanges();
+  private updateShippingToggleStatus(): void {
+    const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
+    const subcategoryId = this.uploadForm.get('extra_info')?.get('object_type')?.get('id')?.value || this.item?.extraInfo?.object_type?.id;
+    const price = this.uploadForm.get('sale_price')?.value === 0 ? 0 : this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
+
+    this.shippingToggleService.isAllowed(categoryId, subcategoryId, price).subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
+      this.isShippabilityAllowed = shippingToggleAllowance.category && shippingToggleAllowance.subcategory && shippingToggleAllowance.price;
+      this.isShippabilityAllowedByCategory = shippingToggleAllowance.category && shippingToggleAllowance.subcategory;
+      this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
+
+      if (!this.isShippabilityAllowed) {
+        this.clearShippingToggleFormData();
       }
     });
-  }
-
-  private updateShippingToggleStatus(): void {
-    if (this.isShippabilityActive) {
-      const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
-      const subcategoryId =
-        this.uploadForm.get('extra_info')?.get('object_type')?.get('id')?.value || this.item?.extraInfo?.object_type?.id;
-      const price = this.uploadForm.get('sale_price')?.value === 0 ? 0 : this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
-
-      this.shippingToggleService
-        .isAllowed(categoryId, subcategoryId, price)
-        .subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
-          this.isShippabilityAllowed =
-            shippingToggleAllowance.category && shippingToggleAllowance.subcategory && shippingToggleAllowance.price;
-          this.isShippabilityAllowedByCategory = shippingToggleAllowance.category && shippingToggleAllowance.subcategory;
-          this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
-
-          if (!this.isShippabilityAllowed) {
-            this.clearShippingToggleFormData();
-          }
-        });
-    }
   }
 
   private clearShippingToggleFormData(): void {

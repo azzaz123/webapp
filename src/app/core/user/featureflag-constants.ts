@@ -20,7 +20,6 @@ export enum FEATURE_FLAGS_ENUM {
   SUBSCRIPTIONS = 'EnablePros',
   SORT_BY_RELEVANCE = 'SortByRelevance',
   HIDE_ADS = 'NoAds',
-  SHIPPING_TOGGLE = 'ShippingToggleUpload',
 }
 
 export const INIT_FEATURE_FLAGS = [
@@ -28,7 +27,6 @@ export const INIT_FEATURE_FLAGS = [
   FEATURE_FLAGS_ENUM.SUBSCRIPTIONS,
   FEATURE_FLAGS_ENUM.HIDE_ADS,
   FEATURE_FLAGS_ENUM.SORT_BY_RELEVANCE,
-  FEATURE_FLAGS_ENUM.SHIPPING_TOGGLE,
 ];
 
 export const featurePermissionConfig: Partial<Record<FEATURE_FLAGS_ENUM, PermissionConfig>> = {

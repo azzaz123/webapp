@@ -176,13 +176,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
         } else {
           this.filterParameterStore.setParameters(params);
         }
-
-        //TODO: Remove this after tests
-        const shouldEnableExperimental =
-          params.some((p) => p.key === ('experimental' as FILTER_QUERY_PARAM_KEY)) && !localStorage.getItem('experimentalFeatures');
-        if (shouldEnableExperimental) {
-          localStorage.setItem('experimentalFeatures', 'true');
-        }
       })
     );
 

@@ -13,7 +13,7 @@ export interface WallItem {
   images: ImageDto[];
   price: PriceDto;
   attributes: CatalogItemAttribute[];
-  bump?: { type: string };
+  bump?: { type?: string };
   reserved?: { flag: boolean };
   pro?: { flag: boolean };
 }

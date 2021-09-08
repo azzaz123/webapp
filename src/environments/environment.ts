@@ -1,6 +1,7 @@
 import { Environment } from './environment.interface';
 import { environment as environmentBeta } from './environment.beta';
 import { dockNum } from './docknum';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 const environmentLocal: Environment = {
   production: false,
@@ -20,6 +21,8 @@ const environmentLocal: Environment = {
   threatMetrixOrgId: '6ldgf22r',
   threatMetrixProfilingDomain: 'clear.wallapop.com',
 };
+
+export const localesWithNewSearchEnabled: APP_LOCALE[] = ['it'];
 
 export const environment = dockNum === 'beta' ? environmentBeta : environmentLocal;
 
