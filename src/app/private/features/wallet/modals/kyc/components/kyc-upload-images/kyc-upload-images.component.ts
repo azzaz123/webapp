@@ -78,16 +78,28 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
           : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_title:Take a back side photo of your document`;
       }
     } else {
-      if (this.isCurrentImageDefined) {
-        return $localize`:@@kyc_take_photo_view_if_one_side_review_title:Check the photo of your document`;
-      } else {
-        return $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`;
-      }
+      return this.isCurrentImageDefined
+        ? $localize`:@@kyc_take_photo_view_if_one_side_review_title:Check the photo of your document`
+        : $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`;
     }
   }
 
   public get subtitle(): string {
-    return '';
+    if (this.twoImagesNeeded) {
+      if (this.isCurrentImageDefined) {
+        return this.activeStep === 1
+          ? $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_description:All the details on your ID document must be clear and perfectly legible.`
+          : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_description:All the details on your ID document must be clear and perfectly legible.`;
+      } else {
+        return this.activeStep === 1
+          ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Go somewhere with good lighting, focus the camera on the document, and take the best photo possible.`
+          : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_description:To finish the verification process, you just need to take a photo of the back side of your ID document.`;
+      }
+    } else {
+      return this.isCurrentImageDefined
+        ? $localize`:@@kyc_take_photo_view_if_one_side_review_description:All the details on your document must be clear and perfectly legible.`
+        : $localize`:@@kyc_take_photo_view_if_one_side_description:Go somewhere with good lighting and take the photo. Make sure the document you provide is valid for at least 3 months.`;
+    }
   }
 
   public get takeImageMessage(): string {
