@@ -6,6 +6,7 @@ import {
   FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION,
   FREE_TRIAL_AVAILABLE_SUBSCRIPTION,
   MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
   MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
   TIER_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
@@ -64,6 +65,24 @@ describe('SubscriptionTierSelectorComponent', () => {
   });
 
   describe('Title', () => {
+    describe('is basic tier', () => {
+      beforeEach(() => {
+        component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED;
+        fixture.detectChanges();
+      });
+      it('should show basic title', () => {
+        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__title')).nativeElement;
+
+        expect(tierTitle.textContent).toBe($localize`:@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_title:Basic`);
+      });
+      it('should show limit subtitle', () => {
+        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.GenericCard__subtitle')).nativeElement;
+
+        expect(tierTitle.textContent).toBe(
+          $localize`:@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_description:List up to ${component.subscription.tiers[0].limit}:INTERPOLATION: items and boost your sales`
+        );
+      });
+    });
     describe('has limits', () => {
       describe('and is real estate', () => {
         beforeEach(() => {

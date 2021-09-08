@@ -186,12 +186,21 @@ describe('SubscriptionPurchaseComponent', () => {
         });
         it('should set basic tier', () => {
           expect(component.basicTier).toEqual(component.subscription.tiers.find((tier) => tier.is_basic));
-          expect(component.basicTier).toEqual(component.selectedTier);
+          expect(component.selectedTier).toEqual(component.basicTier);
         });
         it('should set available tiers', () => {
-          fixture.detectChanges();
-
           expect(component.availableTiers).toEqual(component.subscription.tiers.filter((tier) => !tier.is_basic));
+        });
+      });
+      describe('has has not basic tier', () => {
+        beforeEach(() => {
+          fixture.detectChanges();
+        });
+        it('should not set basic tier', () => {
+          expect(component.basicTier).toBeUndefined();
+        });
+        it('should not set available tiers', () => {
+          expect(component.availableTiers).toBeUndefined();
         });
       });
     });
