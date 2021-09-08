@@ -180,6 +180,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   public goToDefineBackImage(): void {
     this.activeStep = 2;
+    this.clearImageInput();
   }
 
   public canUploadOrShootImage(userDevicePermissions: UserDevicePermissions): boolean {
@@ -236,7 +237,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
 
     if (this.isUploadImageMethod) {
-      this.uploadImage.nativeElement.value = null;
+      this.clearImageInput();
       this.uploadOrShootImage();
     }
   }
@@ -299,6 +300,10 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   private drawImageInCanvas(imageContainer: HTMLCanvasElement, img: HTMLImageElement): void {
     imageContainer.getContext('2d').drawImage(img, 0, 0, imageContainer.width, imageContainer.height);
+  }
+
+  private clearImageInput(): void {
+    this.uploadImage.nativeElement.value = null;
   }
 
   private emitNewImage(newImage: string): void {

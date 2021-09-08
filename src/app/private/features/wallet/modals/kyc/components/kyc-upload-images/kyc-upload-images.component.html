@@ -28,7 +28,7 @@
                 </div>
                 <div class="row text-center justify-content-center">
                     <tsl-button *ngIf="showTakeImageButton" class="col-12 col-md-7 p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage}}</tsl-button>
-                    <tsl-button *ngIf="showRetakeImageButton" class="col-12 col-md-7 p-0" className="btn-primary btn-block" (click)="removeCurrentImage()">{{retakeImageMessage}}</tsl-button>
+                    <tsl-button *ngIf="showRetakeImageButton" class="col-12 col-md-7 p-0" className="btn-gray btn-block" (click)="removeCurrentImage()">{{retakeImageMessage}}</tsl-button>
                 </div>
             </ng-container>
         </div>
