@@ -40,5 +40,9 @@ $image-height-small: 200px;
 
     border: dashed 2px $blue-grey-5;
     border-radius: $border-radius;
+
+    &__canvas {
+      border-radius: $border-radius;
+    }
   }
 }

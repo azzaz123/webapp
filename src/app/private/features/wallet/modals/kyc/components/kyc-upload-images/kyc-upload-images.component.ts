@@ -76,6 +76,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   public get isCurrentImageDefined(): boolean {
     if (this.imagesNeeded === 2) {
+      return this.activeStep === 1 ? !!this.images.frontSide : !!this.images.backSide;
     } else {
       return this.isFrontSideImageDefined;
     }
@@ -112,6 +113,14 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     );
   }
 
+  public get showEndVerificationButton(): boolean {
+    return this.imagesNeeded === 1 || (this.imagesNeeded === 2 && this.activeStep === 2);
+  }
+
+  public get showContinueButton(): boolean {
+    return this.imagesNeeded === 2 && this.activeStep === 1;
+  }
+
   public get isContinueButtonActive(): boolean {
     return this.twoImagesNeeded && this.images.frontSide && !this.images.backSide;
   }
@@ -126,6 +135,10 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       (this.twoImagesNeeded && firstStepAndFrontSideDefined) ||
       (this.twoImagesNeeded && secondStepAndBackSideDefined)
     );
+  }
+
+  public goToDefineBackImage(): void {
+    this.activeStep = 2;
   }
 
   public canUploadOrShootImage(userDevicePermissions: UserDevicePermissions): boolean {
@@ -179,7 +192,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   public removeImage(): void {
-    if (this.isFrontSideImageDefined) {
+    if (this.activeStep === 1) {
       this.emitFrontSideImageChange(null);
     } else {
       this.emitBackSideImageChange(null);
