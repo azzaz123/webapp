@@ -1,6 +1,6 @@
-import { KYC_REFUSED_REASON_PROPERTIES } from '@api/core/model/kyc-properties/constants/kyc-refused-reasons-constants';
+import { KYC_REFUSED_REASONS } from '@api/core/model/kyc-properties/constants/kyc-refused-reasons-constants';
 import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
-import { KYCRefusedReasonProperty } from '@api/core/model/kyc-properties/interfaces/kyc-refused-reason-property.interface';
+import { KYCRefusedReason } from '@api/core/model/kyc-properties/interfaces/kyc-refused-reason.interface';
 import { KYC_FLOW_STATUS } from '@api/core/model/kyc-properties/kyc-flow-status.enum';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { KYCDocumentStatusApi, KYCFlowStatusApi, KYCPropertiesApi, KYCRefusedReasonApi } from '@api/payments/kyc-properties/dtos/responses';
@@ -14,8 +14,8 @@ export function mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi: KYCProperti
   };
 }
 
-function getRefusedReason(refusedReasonApi: KYCRefusedReasonApi): KYCRefusedReasonProperty {
-  return refusedReasonApi ? KYC_REFUSED_REASON_PROPERTIES.find((properties) => properties.reason === refusedReasonApi) : null;
+function getRefusedReason(refusedReasonApi: KYCRefusedReasonApi): KYCRefusedReason {
+  return refusedReasonApi ? KYC_REFUSED_REASONS.find((properties) => properties.reason === refusedReasonApi) : null;
 }
 
 function getDocumentStatus(definedStatus: KYCDocumentStatusApi): KYC_STATUS {
