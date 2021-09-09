@@ -156,13 +156,13 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   private getCategories(): Observable<CategoriesFilterOption[]> {
     return this.httpClient.get<CategoryResponse[]>(`${API_VERSION_URL.v3}${FILTER_OPTIONS_API_ENDPOINTS.CATRGORIES}`).pipe(
       map((categories: CategoryResponse[]) => {
-        const newOptions: CategoriesFilterOption[] = [CATEGORY_OPTIONS[0]];
+        const formattedCategories: CategoriesFilterOption[] = [CATEGORY_OPTIONS[0]];
 
         categories.forEach((categoryResponse) => {
           const hardcodedCategory = CATEGORY_OPTIONS.find((category) => category.value === categoryResponse.category_id.toString());
+
           if (hardcodedCategory) {
-            console.log(hardcodedCategory.label);
-            newOptions.push({
+            formattedCategories.push({
               value: categoryResponse.category_id.toString(),
               label: categoryResponse.name,
               icon: hardcodedCategory.icon,
@@ -170,7 +170,7 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
           }
         });
 
-        return newOptions;
+        return formattedCategories;
       })
     );
   }
