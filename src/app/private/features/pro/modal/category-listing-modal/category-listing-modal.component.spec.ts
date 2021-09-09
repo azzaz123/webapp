@@ -1,65 +1,37 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  AnalyticsEvent,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
-  ClickConfirmCloseSubscription,
-  SCREEN_IDS,
-} from '@core/analytics/analytics-constants';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { I18nService } from '@core/i18n/i18n.service';
-import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
-import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { ToastService } from '@layout/toast/core/services/toast.service';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { By } from '@angular/platform-browser';
+import { CategoryService } from '@core/category/category.service';
+import { CATEGORIES_DATA_CONSUMER_GOODS } from '@fixtures/category.fixtures.spec';
+import { MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { SelectOptionComponent } from '@shared/form/components/select/select-option/select-option.component';
 import { of } from 'rxjs';
+import { CategoryListingModalComponent } from './category-listing-modal.component';
 
-describe('CancelSubscriptionModalComponent', () => {
-  let component: CancelSubscriptionModalComponent;
-  let fixture: ComponentFixture<CancelSubscriptionModalComponent>;
+describe('CategoryListingModalComponent', () => {
+  let component: CategoryListingModalComponent;
+  let fixture: ComponentFixture<CategoryListingModalComponent>;
   let activeModal: NgbActiveModal;
-  let subscriptionsService: SubscriptionsService;
-  let analyticsService: AnalyticsService;
-  let toastService: ToastService;
+  let categoryService: CategoryService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CancelSubscriptionModalComponent],
+        declarations: [CategoryListingModalComponent, SelectOptionComponent],
         providers: [
+          {
+            provide: CategoryService,
+            useValue: {
+              getCategoryById() {},
+            },
+          },
           {
             provide: NgbActiveModal,
             useValue: {
               close() {},
             },
           },
-          {
-            provide: NgbModal,
-            useValue: {
-              open() {
-                return {
-                  result: Promise.resolve(),
-                  componentInstance: {},
-                };
-              },
-            },
-          },
-          {
-            provide: SubscriptionsService,
-            useValue: {
-              cancelSubscription() {
-                return of(202);
-              },
-            },
-          },
-          I18nService,
-          {
-            provide: AnalyticsService,
-            useClass: MockAnalyticsService,
-          },
-          ToastService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -67,44 +39,46 @@ describe('CancelSubscriptionModalComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CancelSubscriptionModalComponent);
+    fixture = TestBed.createComponent(CategoryListingModalComponent);
     component = fixture.componentInstance;
     activeModal = TestBed.inject(NgbActiveModal);
-    toastService = TestBed.inject(ToastService);
-    subscriptionsService = TestBed.inject(SubscriptionsService);
-    analyticsService = TestBed.inject(AnalyticsService);
-    component.subscription = MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED;
-    fixture.detectChanges();
+    categoryService = TestBed.inject(CategoryService);
+    component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED;
   });
 
-  describe('cancelSubscription', () => {
-    it('should call the cancelsubscription service', () => {
-      const tier = component.subscription.selected_tier;
-      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({ status: 202 }));
+  describe('Show categories', () => {
+    describe('and category exists', () => {
+      beforeEach(() => {
+        spyOn(categoryService, 'getCategoryById').and.returnValue(of(CATEGORIES_DATA_CONSUMER_GOODS[0]));
+        fixture.detectChanges();
+      });
+      it('should show category', () => {
+        const items = fixture.debugElement.queryAll(By.directive(SelectOptionComponent));
 
-      component.cancelSubscription();
-
-      expect(component.subscriptionsService.cancelSubscription).toHaveBeenCalledWith(tier.id);
-      expect(component.loading).toBe(false);
+        expect(items.length).toEqual(component.subscription.category_ids.length);
+      });
     });
+    describe('and category not exists', () => {
+      beforeEach(() => {
+        spyOn(categoryService, 'getCategoryById').and.returnValue(of(undefined));
+        fixture.detectChanges();
+      });
+      it('should show not category', () => {
+        const items = fixture.debugElement.query(By.directive(SelectOptionComponent));
 
-    it('should send the event', () => {
-      spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({ status: 202 }));
-      spyOn(analyticsService, 'trackEvent');
-      const expectedEvent: AnalyticsEvent<ClickConfirmCloseSubscription> = {
-        name: ANALYTICS_EVENT_NAMES.ClickConfirmCloseSubscription,
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        attributes: {
-          subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-          tier: component.subscription.selected_tier_id,
-          screenId: SCREEN_IDS.ProfileSubscription,
-        },
-      };
+        expect(items).toBeFalsy();
+      });
+    });
+  });
 
-      component.cancelSubscription();
+  describe('Close modal', () => {
+    it('should close modal', () => {
+      spyOn(activeModal, 'close').and.callThrough();
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      component.onClose();
+
+      expect(activeModal.close).toHaveBeenCalledTimes(1);
+      expect(activeModal.close).toHaveBeenCalledWith();
     });
   });
 });
