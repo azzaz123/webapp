@@ -1,4 +1,5 @@
 export const FILTER_OPTIONS_API_ENDPOINTS = {
+  CATRGORIES: '/categories/keys',
   CONDITION_BY_CATEGORY_ID: (categoryId: string) => {
     return categoryId ? `/consumer_goods/category/${categoryId}/keys/condition` : '/consumergoods/keys/condition';
   },
