@@ -9,6 +9,8 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { WalletTransferModalComponent } from '@private/features/wallet/modals/transfer/components/modal/wallet-transfer-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-wallet-balance-info',
@@ -26,7 +28,8 @@ export class WalletBalanceInfoComponent implements OnInit {
     private paymentsWalletsService: PaymentsWalletsService,
     private toastService: ToastService,
     private kycBannerService: KYCBannerService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -35,6 +38,11 @@ export class WalletBalanceInfoComponent implements OnInit {
 
   public get allowTransfer(): boolean {
     return this.hasPositiveBalance && this.isValidStatus;
+  }
+
+  public transferBalance(): void {
+    console.log('Begin transfer balance process by TC');
+    this.modalService.open(WalletTransferModalComponent).result.then(() => {});
   }
 
   private get hasPositiveBalance(): boolean {
