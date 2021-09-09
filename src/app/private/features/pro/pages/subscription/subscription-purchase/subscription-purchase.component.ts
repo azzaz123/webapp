@@ -160,7 +160,6 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   }
 
   public openCategoriesModal(): void {
-    console.log('test entra aca');
     const modal = this.modalService.open(CategoryListingModalComponent, {
       windowClass: 'category-listing',
     });
