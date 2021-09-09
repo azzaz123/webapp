@@ -1,9 +1,11 @@
 export interface KYCPropertiesApi {
-  document_id: string;
-  document_refused_reason_type: KYCRefusedReasonApi;
-  document_status: KYCDocumentStatusApi;
-  mangopay_user_kyc_id: string;
+  inflow_status: KYCFlowStatusApi;
+  outflow_status: KYCFlowStatusApi;
+  user_kyc_status: KYCDocumentStatusApi;
+  document_refused_reason_type: KYCRefusedReasonApi | null;
 }
+
+export type KYCFlowStatusApi = 'blocked' | 'unblocked';
 
 export type KYCRefusedReasonApi =
   | 'unknown'

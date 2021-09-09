@@ -9,7 +9,7 @@ describe('CustomerHelpService', () => {
   let customerHelpService: CustomerHelpService;
   const localeId = 'es';
   const pageId = CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING;
-  const formId = CUSTOMER_TICKET_FORM.MANGOPAY_HELP;
+  const formId = CUSTOMER_TICKET_FORM.BLOCKED_BY_MANGOPAY;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

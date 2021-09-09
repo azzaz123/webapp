@@ -23,6 +23,15 @@ describe('KYCPropertiesHttpService', () => {
   });
 
   describe('when requesting the kyc properties...', () => {
+    it('should call to the backend service', () => {
+      service.get().subscribe();
+      const req: TestRequest = httpMock.expectOne(KYC_PROPERTIES_ENDPOINT);
+      req.flush({});
+
+      expect(req.request.url).toEqual(KYC_PROPERTIES_ENDPOINT);
+      expect(req.request.method).toBe('GET');
+    });
+
     it('should get the kyc properties ', () => {
       let response: KYCPropertiesApi;
 
@@ -33,8 +42,6 @@ describe('KYCPropertiesHttpService', () => {
       req.flush(MOCK_KYC_REJECTED_PROPERTIES_API);
 
       expect(response).toEqual(MOCK_KYC_REJECTED_PROPERTIES_API);
-      expect(req.request.url).toEqual(KYC_PROPERTIES_ENDPOINT);
-      expect(req.request.method).toBe('GET');
     });
   });
 });

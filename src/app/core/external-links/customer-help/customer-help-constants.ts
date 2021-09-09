@@ -3,7 +3,7 @@ export type HelpLocaleId = 'es' | 'en' | 'it';
 export enum HELP_LOCALE {
   es = 'es-es',
   en = 'en-us',
-  it = 'en-us', // default english because the page does not exist in italian
+  it = 'it',
 }
 
 export enum CUSTOMER_HELP_PAGE {
@@ -12,5 +12,5 @@ export enum CUSTOMER_HELP_PAGE {
 }
 
 export enum CUSTOMER_TICKET_FORM {
-  MANGOPAY_HELP = 360003304097,
+  BLOCKED_BY_MANGOPAY = 360003304097,
 }

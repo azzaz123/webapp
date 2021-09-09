@@ -1,8 +1,8 @@
 import { KYCRefusedErrorTranslations } from '@private/features/wallet/enums/kyc-refused-error-translations';
-import { KYCRefusedReasonProperty } from '../interfaces/kyc-refused-reason-property.interface';
+import { KYCRefusedReason } from '../interfaces/kyc-refused-reason.interface';
 import { KYC_REFUSED_REASON } from '../kyc-refused-reason.enum';
 
-export const KYC_REFUSED_REASON_PROPERTIES: KYCRefusedReasonProperty[] = [
+export const KYC_REFUSED_REASONS: KYCRefusedReason[] = [
   {
     reason: KYC_REFUSED_REASON.DOCUMENT_UNREADABLE,
     translation: KYCRefusedErrorTranslations.DOCUMENT_UNREADABLE,

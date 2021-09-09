@@ -34,7 +34,7 @@ describe('CustomerHelpUrl', () => {
       it('should return the expected url', () => {
         const url = getCustomerHelpUrl(pageId, localeId);
 
-        expect(url).toEqual(expected('en-us'));
+        expect(url).toEqual(expected('it'));
       });
     });
   });
