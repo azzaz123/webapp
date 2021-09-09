@@ -4,7 +4,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { APP_LOCALE } from 'configs/subdomains.config';
 import { NgxPermissionsObject, NgxPermissionsService } from 'ngx-permissions';
 import { take } from 'rxjs/operators';
-import { FOOTER_APPS, FOOTER_LINKS, FOOTER_SOCIAL } from './constants/footer-constants';
+import { FOOTER_APPS, FOOTER_SECTIONS, FOOTER_SOCIAL } from './constants/footer-constants';
 import { FooterIcon, FooterLink, FooterLinkSection } from './interfaces/footer.interface';
 
 @Component({
@@ -14,7 +14,7 @@ import { FooterIcon, FooterLink, FooterLinkSection } from './interfaces/footer.i
 })
 export class FooterComponent implements OnInit {
   public currentYear = new Date().getFullYear();
-  public FOOTER_LINKS: FooterLinkSection[] = FOOTER_LINKS;
+  public FOOTER_SECTIONS: FooterLinkSection[] = FOOTER_SECTIONS;
   public readonly FOOTER_APPS: FooterIcon[] = FOOTER_APPS;
   public readonly FOOTER_SOCIAL: FooterIcon[] = FOOTER_SOCIAL;
   private trackingEventsConfig: { [key in ANALYTICS_EVENT_NAMES]?: { (): void } } = {
@@ -29,16 +29,29 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
     this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
-      let links = FOOTER_LINKS.filter((footerLinkSection: FooterLinkSection) => {
-        return !(footerLinkSection.excludedLanguages || []).includes(this.locale);
-      });
-      links = this.filterByPermissions(permissions, links);
-      this.FOOTER_LINKS = links;
+      let sections = FOOTER_SECTIONS;
+      sections = this.filterByLocale(sections, this.locale);
+      sections = this.filterByPermissions(permissions, sections);
+      this.FOOTER_SECTIONS = sections;
     });
   }
 
-  private filterByPermissions(permissions: NgxPermissionsObject, links: FooterLinkSection[]) {
-    return links.filter((footerLinkSection: FooterLinkSection) => {
+  private filterByLocale(sections: FooterLinkSection[], locale: APP_LOCALE): FooterLinkSection[] {
+    return sections
+      .filter((footerLinkSection: FooterLinkSection) => {
+        return !(footerLinkSection.excludedLanguages || []).includes(locale);
+      })
+      .map((section: FooterLinkSection) => {
+        const links = section.links.filter((link) => {
+          return !(link.excludedLanguages || []).includes(locale);
+        });
+
+        return { ...section, links };
+      });
+  }
+
+  private filterByPermissions(permissions: NgxPermissionsObject, sections: FooterLinkSection[]): FooterLinkSection[] {
+    return sections.filter((footerLinkSection: FooterLinkSection) => {
       return !footerLinkSection.permission || permissions[footerLinkSection.permission];
     });
   }

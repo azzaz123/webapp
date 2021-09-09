@@ -23,6 +23,11 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { BankAccountTrackingEventsService } from '../../services/bank-account-tracking-events/bank-account-tracking-events.service';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { KYCBannerApiService } from '@private/features/wallet/services/api/kyc-banner-api.service';
 
 describe('BankDetailsOverviewComponent', () => {
   const creditCardInfoSelector = '#creditCard';
@@ -41,12 +46,13 @@ describe('BankDetailsOverviewComponent', () => {
   let i18nService: I18nService;
   let modalService: NgbModal;
   let router: Router;
+  let bankAccountTrackingEventsService: BankAccountTrackingEventsService;
   let de: DebugElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BankDetailsOverviewComponent, AddCreditCardComponent, PaymentsCardInfoComponent],
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
         {
           provide: BankAccountService,
@@ -74,6 +80,9 @@ describe('BankDetailsOverviewComponent', () => {
         },
         I18nService,
         { provide: ToastService, useClass: MockToastService },
+        BankAccountTrackingEventsService,
+        KYCBannerApiService,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -88,6 +97,7 @@ describe('BankDetailsOverviewComponent', () => {
     i18nService = TestBed.inject(I18nService);
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
+    bankAccountTrackingEventsService = TestBed.inject(BankAccountTrackingEventsService);
     de = fixture.debugElement;
 
     fixture.detectChanges();
@@ -252,6 +262,7 @@ describe('BankDetailsOverviewComponent', () => {
     describe('when clicking to the edit/change bank account button...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
+        spyOn(bankAccountTrackingEventsService, 'trackClickAddEditBankAccount');
         const bankAccountCard = fixture.debugElement.query(By.css(bankAccountInfoSelector));
 
         bankAccountCard.triggerEventHandler('changeCardClick', {});
@@ -259,6 +270,11 @@ describe('BankDetailsOverviewComponent', () => {
 
       it('should redirect to the bank account form', () => {
         expect(router.navigate).toHaveBeenCalledWith([component.BANK_ACCOUNT_FORM_LINK]);
+      });
+
+      it('should track event to analytics', () => {
+        expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledTimes(1);
+        expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledWith(true);
       });
     });
 
@@ -356,6 +372,7 @@ describe('BankDetailsOverviewComponent', () => {
     describe('when clicking to the add bank account button...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
+        spyOn(bankAccountTrackingEventsService, 'trackClickAddEditBankAccount');
         const addBankAccountCard = de.query(By.css(addBankAccountSelector)).nativeNode;
 
         addBankAccountCard.click();
@@ -363,6 +380,11 @@ describe('BankDetailsOverviewComponent', () => {
 
       it('should redirect to the bank account form', () => {
         expect(router.navigate).toHaveBeenCalledWith([component.BANK_ACCOUNT_FORM_LINK]);
+      });
+
+      it('should track event to analytics', () => {
+        expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledTimes(1);
+        expect(bankAccountTrackingEventsService.trackClickAddEditBankAccount).toHaveBeenCalledWith(false);
       });
     });
   });
