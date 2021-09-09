@@ -3,7 +3,7 @@ export type HelpLocaleId = 'es' | 'en' | 'it';
 export enum HELP_LOCALE {
   es = 'es-es',
   en = 'en-us',
-  it = 'en-us', // default english because the page does not exist in italian
+  it = 'it',
 }
 
 export enum CUSTOMER_HELP_PAGE {

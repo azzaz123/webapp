@@ -34,7 +34,7 @@ describe('TicketFormUrl', () => {
       it('should return the expected url', () => {
         const url = getTicketFormUrl(formId, localeId);
 
-        expect(url).toEqual(expected('en-us'));
+        expect(url).toEqual(expected('it'));
       });
     });
   });
