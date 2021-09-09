@@ -1,4 +1,4 @@
-<div class="KYCUploadImages h-100" *ngIf="userDevicePermissions$ | async as userDevicePermissions">
+<div class="KYCUploadImages h-100 container" *ngIf="userDevicePermissions$ | async as userDevicePermissions">
     <div class="row">
         <div class="col">
             <a class="KYCUploadImages__back d-flex" (click)="handleBack()">
@@ -7,8 +7,8 @@
             </a>
         </div>
     </div>
-    <div class="h-100 d-flex flex-column justify-content-between">
-        <div class="KYCUploadImages__imageContainer h-100 d-flex flex-column justify-content-center">
+    <div *ngIf="!isErrorBanner(userDevicePermissions.video); else errorBanner" class="row h-100 d-flex flex-column justify-content-between">
+        <div class="KYCUploadImages__imageContainer col h-100 d-flex flex-column justify-content-center">
             <div class="row text-center mb-4 mt-2">
                 <div class="col">
                     <span class="KYCUploadImages__title d-block mb-2">{{title}}</span>
@@ -32,34 +32,36 @@
                 </div>
             </ng-container>
         </div>
-        <div class="KYCUploadImages__bottomContainer row position-sticky my-4">
+        <div class="KYCUploadImages__bottomContainer row position-sticky mt-4">
             <div class="col">
-                <div *ngIf="isErrorBanner(userDevicePermissions.video); else buttonSection">
-                    <tsl-banner [specifications]="errorBannerSpecifications">
-                        <div class="d-flex align-items-center">
-                            <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy(userDevicePermissions.video)}}
-                        </div>
-                    </tsl-banner>
+                <div class="row text-center justify-content-center">
+                    <tsl-button
+                        *ngIf="showContinueButton" id="endVerificationButton"
+                        [disabled]="!isContinueButtonActive"
+                        i18n="@@kyc_take_photo_view_continue_button"
+                        class="col-12 col-md-7"
+                        className="btn-primary btn-block"
+                        (click)="goToDefineBackImage()">Continue</tsl-button>
+                    <tsl-button
+                        *ngIf="showEndVerificationButton" id="endVerificationButton"
+                        [disabled]="!allImagesAreDefined"
+                        i18n="@@kyc_end_verification"
+                        class="col-12 col-md-7"
+                        className="btn-primary btn-block"
+                        (click)="endVerification.emit()">Finish verification</tsl-button>
                 </div>
-                <ng-template #buttonSection>
-                    <div class="row text-center justify-content-center">
-                        <tsl-button 
-                            *ngIf="showContinueButton" id="endVerificationButton"
-                            [disabled]="!isContinueButtonActive"
-                            i18n="@@kyc_take_photo_view_continue_button"
-                            class="col-12 col-md-7"
-                            className="btn-primary btn-block"
-                            (click)="goToDefineBackImage()">Continue</tsl-button>
-                        <tsl-button 
-                            *ngIf="showEndVerificationButton" id="endVerificationButton"
-                            [disabled]="!allImagesAreDefined"
-                            i18n="@@kyc_end_verification"
-                            class="col-12 col-md-7"
-                            className="btn-primary btn-block"
-                            (click)="endVerification.emit()">Finish verification</tsl-button>
-                    </div>
-                </ng-template>
             </div>
         </div>
     </div>
+    <ng-template #errorBanner>
+        <div class="row h-100 d-flex align-items-center justify-content-center">
+            <div class="col">
+                <tsl-banner [specifications]="errorBannerSpecifications" class="w-100">
+                    <div class="d-flex align-items-center">
+                        <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>{{cameraFailedCopy(userDevicePermissions.video)}}
+                    </div>
+                </tsl-banner>
+            </div>
+        </div>
+    </ng-template>
 </div>

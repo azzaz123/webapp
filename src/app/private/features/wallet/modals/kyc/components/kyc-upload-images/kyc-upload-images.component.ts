@@ -226,7 +226,11 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       backSide: null,
     });
 
-    this.goBack.emit();
+    if (this.activeStep === 2) {
+      this.activeStep = 1;
+    } else {
+      this.goBack.emit();
+    }
   }
 
   public removeCurrentImage(): void {
