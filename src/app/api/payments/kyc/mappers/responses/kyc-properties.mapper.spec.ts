@@ -10,10 +10,10 @@ describe('when mapping the KYC properties api to KYC properties', () => {
     const KYCProperties: KYCProperties = mapKYCPropertiesApiToKYCProperties(MOCK_KYC_REJECTED_PROPERTIES_API);
 
     expect(KYCProperties).toStrictEqual({
-      status: MOCK_KYC_REJECTED_PROPERTIES_API.document_status,
+      status: MOCK_KYC_REJECTED_PROPERTIES_API.user_kyc_status,
       refusedReason: MOCK_REFUSED_REASON(MOCK_KYC_REJECTED_PROPERTIES_API),
-      documentId: MOCK_KYC_REJECTED_PROPERTIES_API.document_id,
-      mangopayUserId: MOCK_KYC_REJECTED_PROPERTIES_API.mangopay_user_kyc_id,
+      inflowStatus: MOCK_KYC_REJECTED_PROPERTIES_API.inflow_status,
+      outflowStatus: MOCK_KYC_REJECTED_PROPERTIES_API.outflow_status,
     });
 
     function MOCK_REFUSED_REASON(KYCPropertiesApi: KYCPropertiesApi): KYCRefusedReasonProperty {

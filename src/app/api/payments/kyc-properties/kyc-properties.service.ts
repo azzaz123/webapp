@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
-import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
+import { map, tap } from 'rxjs/operators';
 import { KYCPropertiesApi } from './dtos/responses';
 import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-banner-constants';
 import { mapKYCPropertiesApiToKYCProperties } from '../kyc/mappers/responses/kyc-properties.mapper';
@@ -25,17 +24,15 @@ export class KYCPropertiesService {
 
   public get(): Observable<KYCProperties> {
     return this.KYCPropertiesHttpService.get().pipe(
-      filter((KYCPropertiesApi: KYCPropertiesApi) => KYCPropertiesApi && KYCPropertiesApi.document_status !== 'no need'),
       map((KYCPropertiesApi: KYCPropertiesApi) => mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi)),
       tap((properties: KYCProperties) => (this.KYCProperties = properties))
     );
   }
 
   public getBannerSpecificationsFromProperties(properties: KYCProperties): Observable<KYCBannerSpecifications> {
-    const bannerSpecification: KYCBannerSpecifications =
-      properties.status === KYC_STATUS.NO_NEED
-        ? null
-        : KYC_BANNER_TYPES.find((banner: KYCBannerSpecifications) => banner.status === properties.status);
+    const bannerSpecification: KYCBannerSpecifications = KYC_BANNER_TYPES.find(
+      (banner: KYCBannerSpecifications) => banner.status === properties.status
+    );
 
     return of(bannerSpecification);
   }
