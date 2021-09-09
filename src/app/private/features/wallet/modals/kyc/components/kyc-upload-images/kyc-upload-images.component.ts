@@ -34,6 +34,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   @Input() imagesNeeded: KYCImagesNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
   @Input() images: KYCImages;
+  @Input() documentType: string;
 
   @Output() imagesChange: EventEmitter<KYCImages> = new EventEmitter();
   @Output() endVerification: EventEmitter<void> = new EventEmitter();
