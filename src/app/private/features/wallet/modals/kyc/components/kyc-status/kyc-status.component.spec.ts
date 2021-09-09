@@ -84,7 +84,7 @@ describe('KYCStatusComponent', () => {
       it('should redirect to the help form page', () => {
         const CSLink: DebugElement = de.query(By.css(linkSelector));
 
-        expect(CSLink.attributes['href']).toEqual(component.ZENDESK_HELP_FORM_URL);
+        expect(CSLink.attributes['href']).toEqual(component.HELP_FORM_URL);
       });
 
       it('should show the message link correctly', () => {
