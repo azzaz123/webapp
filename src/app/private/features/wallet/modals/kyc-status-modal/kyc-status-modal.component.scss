@@ -1,20 +1,12 @@
-@import '~style/common';
-
-$modal-width: 500px;
-$content-height: 520px;
+@import '~web-styleguide/scss/spacing';
 
 .KYCStatusModal {
-  @include media-breakpoint-up(sm) {
-    width: 100%;
-    min-width: $modal-width;
-  }
-
   &__cross {
     right: 0;
     cursor: pointer;
   }
 
   &__slides {
-    height: $content-height;
+    padding: 50px $spacing-ml;
   }
 }
