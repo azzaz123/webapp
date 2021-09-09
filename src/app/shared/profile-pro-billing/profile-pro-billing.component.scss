@@ -5,7 +5,7 @@
     margin: 0 $spacing-s;
     padding: 0 $spacing-l;
 
-    &-subtitle {
+    &__subtitle {
       font-size: $font-size-s;
     }
   }
@@ -38,17 +38,15 @@
   }
 
   .RegistrationType {
-    display: flex;
-    &_radio {
+    &__radio {
       margin: 0 $spacing-l 0 0;
     }
-    &_title {
+    &__title {
       margin: 0 $spacing-s;
     }
   }
 
   .loading-center {
-    display: block;
     margin: 0 auto;
   }
 }

@@ -37,7 +37,6 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnIni
   public loading = true;
   public type: string;
   public isSubmitShown: boolean;
-  public readonly INVOICE_COMPONENT_TYPE = COMPONENT_TYPE;
   private savedData: unknown;
   @ViewChild(ProfileFormComponent, { static: true })
   formComponent: ProfileFormComponent;

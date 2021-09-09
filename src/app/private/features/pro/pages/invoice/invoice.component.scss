@@ -1,29 +1,35 @@
 @import '~style/common';
 
-h3 {
-  font-size: $font-size-s;
-  margin-bottom: 0;
-}
-
-::ng-deep .card {
-  &:hover {
-    box-shadow: none;
+.InvoiceAccordion {
+  h3 {
+    font-size: $font-size-s;
+    margin-bottom: 0;
   }
-  ::ng-deep .card-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 $spacing-s 0 $spacing-l;
+
+  &__description {
+    color: $blue-grey-3;
   }
-}
 
-::ng-deep .box {
-  border: 0;
-}
+  ::ng-deep .card {
+    &:hover {
+      box-shadow: none;
+    }
+    ::ng-deep .card-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 $spacing-s 0 $spacing-l;
+    }
+  }
 
-tsl-svg-icon {
-  width: 48px;
-  height: 48px;
-  &.closed {
-    transform: rotate(180deg);
+  ::ng-deep .box {
+    border: 0;
+  }
+
+  tsl-svg-icon {
+    width: 48px;
+    height: 48px;
+    &.closed {
+      transform: rotate(180deg);
+    }
   }
 }
