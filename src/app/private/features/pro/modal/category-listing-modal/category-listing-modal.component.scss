@@ -1,34 +1,32 @@
 @import '~style/common';
 
 .CategoryListingModal {
-  text-align: center;
-  padding: $spacing-xl 60px $spacing-xl;
   height: 80vh;
-  display: flex;
-  flex-direction: column;
 
   &__title {
     font-size: $font-size-l;
     font-weight: bold;
-    margin: $spacing-m 0 $spacing-s;
+    padding: 0 $spacing-xxxl;
   }
   &__subtitle {
     font-size: $font-size-m;
+    padding: 0 $spacing-xxxl;
     color: $blue-grey-2;
-    margin: 0 0 $spacing-l;
   }
   &__options {
-    overflow: auto;
+    tsl-select-option {
+      pointer-events: none;
+      ::ng-deep > * {
+        margin: 0 $spacing-xxxl;
+        padding: 0 20px;
+        border-bottom: 1px solid #f3f3f3;
+      }
+    }
   }
 }
 
 .modal-close {
-  width: $spacing-ms;
-  height: $spacing-ms;
   tsl-svg-icon {
-    width: $spacing-ms;
-    height: $spacing-ms;
-    line-height: $spacing-ms;
     ::ng-deep svg path {
       fill: $blue-grey-2;
     }
@@ -37,6 +35,19 @@
 
 @include media-breakpoint-down(sm) {
   .CategoryListingModal {
-    padding: $spacing-m $spacing-ms;
+    &__title {
+      padding: 0 $spacing-ms;
+    }
+    &__subtitle {
+      padding: 0 $spacing-ms;
+    }
+    &__options {
+      tsl-select-option {
+        ::ng-deep > * {
+          margin: 0 0;
+          padding: 0 $spacing-ms;
+        }
+      }
+    }
   }
 }

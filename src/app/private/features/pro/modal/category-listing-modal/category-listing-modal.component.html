@@ -1,12 +1,10 @@
-<div class="CategoryListingModal">
-  <div class="CategoryListingModal__close">
-    <div class="modal-close" (click)="activeModal.close()">
-      <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
-    </div>
+<div class="CategoryListingModal d-flex flex-column text-center">
+  <div class="CategoryListingModal__close d-flex justify-content-end mt-3 mr-3">
+      <tsl-svg-icon src="/assets/icons/cross.svg" (click)="activeModal.close()"></tsl-svg-icon>
   </div>
-  <span class="CategoryListingModal__title" i18n="@@web_profile_modal_cancel_subscription_237">Would you want to cancel the PRO subscription {{subscription.category_name}}?</span>
-  <span class="CategoryListingModal__subtitle" i18n="@@web_profile_modal_cancel_subscription_237">Would you want to cancel the PRO subscription {{subscription.category_name}}?</span>
-  <div  class="CategoryListingModal__options">
+  <span class="CategoryListingModal__title mt-3 mb-2" i18n="@@web_subscription_purchase_subscription_title">{{subscription.category_name}} subscription</span>
+  <span class="CategoryListingModal__subtitle mb-3">Con la suscripción De todo podrás subir productos de las siguientes categorías:</span>
+  <div  class="CategoryListingModal__options overflow-auto">
    <ng-container *ngFor="let option of categories">
      <tsl-select-option [icon]="option.icon_id" [label]="option.name">
      </tsl-select-option>

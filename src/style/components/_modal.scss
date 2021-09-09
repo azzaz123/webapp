@@ -176,8 +176,16 @@ $modal-border-radius: 0.3rem;
 }
 
 .modal.category-listing {
+  $modal-width: 720px;
+
+  .modal-content {
+    max-width: $modal-width;
+    width: $modal-width !important;
+    max-width: unset;
+  }
   .modal-dialog {
     max-height: 80vh;
+    max-width: $modal-width;
   }
 }
 
