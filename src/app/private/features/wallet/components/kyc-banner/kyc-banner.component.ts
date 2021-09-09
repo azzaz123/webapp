@@ -43,19 +43,21 @@ export class KYCBannerComponent {
     const KYCBannerStatus: KYC_STATUS = this.KYCBannerSpecifications.status;
 
     if (KYCBannerStatus === KYC_STATUS.PENDING_VERIFICATION) {
-      return KYC_MODAL_STATUS_PROPERTIES.find((property) => property.status === KYC_MODAL_STATUS.IN_PROGRESS);
+      return this.getStatusProperty(KYC_MODAL_STATUS.IN_PROGRESS);
     }
     if (KYCBannerStatus === KYC_STATUS.VERIFIED) {
-      return KYC_MODAL_STATUS_PROPERTIES.find((property) => property.status === KYC_MODAL_STATUS.SUCCEED);
+      return this.getStatusProperty(KYC_MODAL_STATUS.SUCCEED);
     }
     if (KYCBannerStatus === KYC_STATUS.REJECTED) {
-      const modalProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
-        (property) => property.status === KYC_MODAL_STATUS.ERROR
-      );
+      const modalProperties: KYCModalProperties = this.getStatusProperty(KYC_MODAL_STATUS.ERROR);
       modalProperties.description = this.KYCProperties.refusedReason.translation;
 
       return modalProperties;
     }
+  }
+
+  private getStatusProperty(status: KYC_MODAL_STATUS): KYCModalProperties {
+    return KYC_MODAL_STATUS_PROPERTIES.find((property: KYCModalProperties) => property.status === status);
   }
 
   private openKYCStatusModal(): void {
