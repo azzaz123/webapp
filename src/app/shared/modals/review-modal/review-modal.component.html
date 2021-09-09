@@ -12,7 +12,7 @@
     <p class="text" i18n="@@web_review_modal_504">I sold this for:</p>
     <input type="number" class="form-control" id="price" name="price" [(ngModel)]="price" min="0" tslRestrictInputNumber /> <span class="currency">{{item.currencyCode}}</span>
   </div>
-  <div>
+  <div class="form-group">
     <span class="chars-counter">{{reviewCommentLength}}/150</span>
     <textarea i18n-placeholder="@@web_review_modal_505" placeholder="Leave a review..." class="form-control" [(ngModel)]="comments"
               (keyup)="countChars($event)" maxlength="150"></textarea>
