@@ -27,7 +27,12 @@ export class SearchNavigatorService {
     FILTER_QUERY_PARAM_KEY.orderBy,
   ];
 
-  public navigate(filterParams: FilterParameter[], filtersSource: FILTERS_SOURCE, keepCurrentParams?: boolean): void {
+  public navigate(
+    filterParams: FilterParameter[],
+    filtersSource: FILTERS_SOURCE,
+    keepCurrentParams?: boolean,
+    replaceUrl: boolean = false
+  ): void {
     const currentParams = this.route.snapshot.queryParams;
     let newParams = this.queryStringService.mapFilterToQueryParams(filterParams);
 
@@ -38,6 +43,7 @@ export class SearchNavigatorService {
     const cleanParams = this.cleanParams(currentParams, newParams);
 
     this.router.navigate(['/search'], {
+      replaceUrl,
       queryParams: {
         ...this.prepareFinalParams(currentParams, newParams, cleanParams),
         [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersSource,
