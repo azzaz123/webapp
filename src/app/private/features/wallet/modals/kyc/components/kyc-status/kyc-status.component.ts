@@ -11,7 +11,7 @@ import { KYCModalProperties } from '../../interfaces/kyc-modal-properties.interf
 export class KYCStatusComponent {
   @Input() properties: KYCModalProperties;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
-  public HELP_FORM_URL: string = this.customerHelpService.getFormPageUrl(CUSTOMER_TICKET_FORM.MANGOPAY_HELP);
+  public HELP_FORM_URL: string = this.customerHelpService.getFormPageUrl(CUSTOMER_TICKET_FORM.BLOCKED_BY_MANGOPAY);
 
   constructor(private customerHelpService: CustomerHelpService) {}
 }

@@ -3,7 +3,7 @@ import { getTicketFormUrl } from './get-ticket-form-url';
 
 describe('TicketFormUrl', () => {
   describe('when asking for ticket form url', () => {
-    const formId = CUSTOMER_TICKET_FORM.MANGOPAY_HELP;
+    const formId = CUSTOMER_TICKET_FORM.BLOCKED_BY_MANGOPAY;
     const expected = (lang: string) => {
       return `https://ayuda.wallapop.com/hc/${lang}/requests/new?ticket_form_id=${formId}`;
     };
