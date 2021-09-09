@@ -41,7 +41,7 @@
     "saving_bank_account_unknown_error": "Sorry, something went wrong",
     "view_agnostic_kyc_verification_pending_banner_title": "Verifica la tua identità per riscuotere le tue vendite",
     "view_agnostic_kyc_verification_pending_banner_button": "Verifica",
-    "view_agnostic_kyc_verification_in_progress_banner_title": "Verifica dell'identità in corso",
+    "view_agnostic_kyc_verification_in_progress_banner_title": "Verifica dell'identità in corso...",
     "view_agnostic_kyc_verification_in_progress_banner_button": "Dettagli",
     "view_agnostic_kyc_verification_succeeded_banner_title": "Verifica dell'identità completata con successo!",
     "view_agnostic_kyc_verification_succeeded_banner_button": "Dettagli",

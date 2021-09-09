@@ -41,7 +41,7 @@
     "saving_bank_account_unknown_error": "Lo sentimos, algo ha salido mal",
     "view_agnostic_kyc_verification_pending_banner_title": "Verifica tu identidad para cobrar tus ventas",
     "view_agnostic_kyc_verification_pending_banner_button": "Verificar",
-    "view_agnostic_kyc_verification_in_progress_banner_title": "Verificación de identidad en proceso",
+    "view_agnostic_kyc_verification_in_progress_banner_title": "Verificación de identidad en proceso...",
     "view_agnostic_kyc_verification_in_progress_banner_button": "Detalles",
     "view_agnostic_kyc_verification_succeeded_banner_title": "¡Verificación de identidad realizada con éxito!",
     "view_agnostic_kyc_verification_succeeded_banner_button": "Detalles",
