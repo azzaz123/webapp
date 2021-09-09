@@ -4,7 +4,7 @@
   </div>
   <span class="CategoryListingModal__title mt-3 mb-2" i18n="@@pro_subscription_management_regular_title">{{subscription.category_name}} subscription</span>
   <span class="CategoryListingModal__subtitle mb-3" i18n="@@pro_cg_clarification_view_subheader">You can list items from the following categories:</span>
-  <div  class="CategoryListingModal__options overflow-auto">
+  <div  class="CategoryListingModal__options">
    <ng-container *ngFor="let option of categories">
      <tsl-select-option [icon]="option.icon_id" [label]="option.name">
      </tsl-select-option>

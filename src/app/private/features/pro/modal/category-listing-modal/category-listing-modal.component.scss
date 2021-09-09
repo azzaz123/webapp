@@ -14,12 +14,13 @@
     color: $blue-grey-2;
   }
   &__options {
+    overflow: auto;
     tsl-select-option {
       pointer-events: none;
       ::ng-deep > * {
         margin: 0 $spacing-xxxl;
-        padding: 0 20px;
-        border-bottom: 1px solid #f3f3f3;
+        padding: 0 $spacing-ml;
+        border-bottom: 1px solid $blue-grey-5;
       }
     }
   }
@@ -28,6 +29,7 @@
 .modal-close {
   tsl-svg-icon {
     ::ng-deep svg path {
+      cursor: pointer;
       fill: $blue-grey-2;
     }
   }
