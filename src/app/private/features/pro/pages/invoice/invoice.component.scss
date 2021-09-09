@@ -26,8 +26,7 @@
   }
 
   tsl-svg-icon {
-    width: 48px;
-    height: 48px;
+    @include square(48px);
     &.closed {
       transform: rotate(180deg);
     }
