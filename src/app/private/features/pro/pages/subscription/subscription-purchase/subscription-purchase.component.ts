@@ -84,7 +84,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     this.trackViewSubscriptionTier();
   }
 
-  public onChageSubscription(): void {
+  public onClearSubscription(): void {
     this.unselectSubcription.emit();
   }
 

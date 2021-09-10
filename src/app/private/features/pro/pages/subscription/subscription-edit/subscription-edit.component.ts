@@ -104,7 +104,7 @@ export class SubscriptionEditComponent implements OnInit {
       );
   }
 
-  public onChageSubscription(): void {
+  public onClearSubscription(): void {
     this.unselectSubcription.emit();
   }
 
