@@ -215,16 +215,6 @@ describe('SubscriptionPurchaseComponent', () => {
       });
     });
   });
-  describe('Click change subscription', () => {
-    it('should emit change subscription', () => {
-      spyOn(component.unselectSubcription, 'emit');
-
-      component.onChageSubscription();
-
-      expect(component.unselectSubcription.emit).toHaveBeenCalledTimes(1);
-      expect(component.unselectSubcription.emit).toHaveBeenCalledWith();
-    });
-  });
   describe('Click scroll to invoice', () => {
     it('should emit change subscription', fakeAsync(() => {
       spyOn(scrollIntoViewService, 'scrollToSelector').and.callThrough();
