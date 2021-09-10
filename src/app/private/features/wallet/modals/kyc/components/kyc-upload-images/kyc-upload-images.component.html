@@ -27,8 +27,8 @@
                     </div>
                 </div>
                 <div class="row text-center justify-content-center">
-                    <tsl-button *ngIf="showTakeImageButton" class="col-12 col-md-7 p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage}}</tsl-button>
-                    <tsl-button *ngIf="showRetakeImageButton" class="col-12 col-md-7 p-0" className="btn-gray btn-block" (click)="removeCurrentImage()">{{retakeImageMessage}}</tsl-button>
+                    <tsl-button *ngIf="showTakeImageButton" id="takeImageButton" class="col-12 col-md-7 p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage}}</tsl-button>
+                    <tsl-button *ngIf="showRetakeImageButton" id="retakeImageButton" class="col-12 col-md-7 p-0" className="btn-gray btn-block" (click)="removeCurrentImage()">{{retakeImageMessage}}</tsl-button>
                 </div>
             </ng-container>
         </div>
@@ -36,7 +36,7 @@
             <div class="col">
                 <div class="row text-center justify-content-center">
                     <tsl-button
-                        *ngIf="showContinueButton" id="endVerificationButton"
+                        *ngIf="showContinueButton" id="continueVerificationButton"
                         [disabled]="!isContinueButtonActive"
                         i18n="@@kyc_take_photo_view_continue_button"
                         class="col-12 col-md-7"

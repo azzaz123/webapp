@@ -243,7 +243,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
     if (this.isUploadImageMethod) {
       this.clearImageInput();
-      this.uploadOrShootImage();
+      this.uploadImage.nativeElement.click();
     }
   }
 
