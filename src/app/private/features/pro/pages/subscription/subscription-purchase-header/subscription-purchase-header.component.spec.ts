@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FREE_TRIAL_AVAILABLE_SUBSCRIPTION, SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
@@ -20,11 +20,7 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SubscriptionPurchaseHeaderComponent, MockSvgIconComponent],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-      .overrideComponent(SubscriptionPurchaseHeaderComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
-      })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -32,11 +28,12 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
     component = fixture.componentInstance;
     component.subscription = SUBSCRIPTIONS[0];
     component.benefits = ['benefit1', 'benefit2'];
-
-    fixture.detectChanges();
   });
 
   describe('has subscription', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
     it('should show subscription name', () => {
       const titleElement: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__title')).nativeElement;
 
@@ -74,6 +71,9 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
   });
 
   describe('has benefits', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
     it('should show benefits', () => {
       const benefits = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__benefits')).children[0];
 
@@ -81,6 +81,17 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
       benefits.children.forEach((benefit, index) => {
         expect(benefit.nativeElement.textContent).toContain(component.benefits[index]);
       });
+    });
+  });
+
+  describe('click link', () => {
+    it('should emit click link', () => {
+      spyOn(component.clickLink, 'emit').and.callThrough();
+
+      component.onClickLink();
+
+      expect(component.clickLink.emit).toBeCalledTimes(1);
+      expect(component.clickLink.emit).toBeCalledWith();
     });
   });
 });

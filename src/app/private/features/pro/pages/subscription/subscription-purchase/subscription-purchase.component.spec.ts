@@ -33,12 +33,12 @@ import {
   SUBSCRIPTION_SUCCESS,
   SUBSCRIPTION_REQUIRES_ACTION,
   SUBSCRIPTION_REQUIRES_PAYMENT,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MULTI_TIER,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
+import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { of, throwError } from 'rxjs';
 import { SubscriptionPurchaseComponent, PAYMENT_SUCCESSFUL_CODE } from './subscription-purchase.component';
 
@@ -52,6 +52,7 @@ describe('SubscriptionPurchaseComponent', () => {
   let analyticsService: AnalyticsService;
   let scrollIntoViewService: ScrollIntoViewService;
   let eventService: EventService;
+  let modalService: NgbModal;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -111,6 +112,7 @@ describe('SubscriptionPurchaseComponent', () => {
     scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
     eventService = TestBed.inject(EventService);
     benefitsService = TestBed.inject(SubscriptionBenefitsService);
+    modalService = TestBed.inject(NgbModal);
   });
 
   describe('NgOnInit', () => {
@@ -490,6 +492,19 @@ describe('SubscriptionPurchaseComponent', () => {
           TRANSLATION_KEY.PAYMENT_FAILED_ERROR_TITLE
         );
       }));
+    });
+    describe('Categories modal', () => {
+      describe('and click open modal', () => {
+        it('should open modal', () => {
+          spyOn(modalService, 'open').and.callThrough();
+
+          component.openCategoriesModal();
+
+          expect(modalService.open).toHaveBeenCalledWith(CategoryListingModalComponent, {
+            windowClass: 'category-listing',
+          });
+        });
+      });
     });
   });
 });

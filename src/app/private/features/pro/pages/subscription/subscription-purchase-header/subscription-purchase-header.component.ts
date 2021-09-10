@@ -16,7 +16,7 @@ export class SubscriptionPurchaseHeaderComponent {
     return `/assets/icons/categories/normal/${this.subscription.category_icon}.svg`;
   }
 
-  onClickLink() {
+  public onClickLink(): void {
     this.clickLink.emit();
   }
 }

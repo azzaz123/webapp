@@ -20,6 +20,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
 import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
+import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 import { of, throwError } from 'rxjs';
 import { PAYMENT_SUCCESSFUL_CODE, SubscriptionEditComponent } from './subscription-edit.component';
@@ -229,6 +230,19 @@ describe('SubscriptionEditComponent', () => {
 
             expect(toastService.show).toHaveBeenCalledTimes(1);
           });
+        });
+      });
+    });
+  });
+  describe('Categories modal', () => {
+    describe('and click open modal', () => {
+      it('should open modal', () => {
+        spyOn(modalService, 'open').and.callThrough();
+
+        component.openCategoriesModal();
+
+        expect(modalService.open).toHaveBeenCalledWith(CategoryListingModalComponent, {
+          windowClass: 'category-listing',
         });
       });
     });
