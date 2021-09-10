@@ -6,4 +6,4 @@ export const KYCErrorTranslations = {
   MANGOPAY_USER_NOT_FOUND: $localize`:@@saving_bank_account_unknown_error:Sorry, something went wrong`,
 };
 
-// NEED COPYS
+// TODO: Change to the multiplatform copys		Date: 2021/09/10
