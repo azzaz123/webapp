@@ -1137,6 +1137,8 @@
     "wallet_view_pending_collection_label": "Cobros pendientes",
     "wallet_view_pending_collection_transactions_number_label": "({$INTERPOLATION})",
     "wallet_view_transfer_button": "Transferir a mi cuenta bancaria",
+    "wallet_view_snackbar_generic_error_retry_button": "Reintentar",
+    "wallet_view_snackbar_generic_error_description": "¡Vaya! Ha ocurrido un problema. Inténtalo de nuevo.",
     "wallet_view_top_bar_title": "Monedero",
     "wallet_view_top_bar_help_link": "¿Dudas?",
     "profile_menu_wallet": "Wallet",

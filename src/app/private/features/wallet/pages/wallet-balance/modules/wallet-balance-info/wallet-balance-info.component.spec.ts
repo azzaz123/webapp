@@ -1,6 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
   MockPaymentsWalletsService,
@@ -11,6 +11,7 @@ import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.s
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ToastModule } from '@layout/toast/toast.module';
+import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 import { ButtonComponent } from '@shared/button/button.component';
 import { ButtonModule } from '@shared/button/button.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
@@ -18,6 +19,7 @@ import { of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { WalletBalanceInfoComponent } from './wallet-balance-info.component';
+import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 
 describe('WalletBalanceInfoComponent', () => {
   let component: WalletBalanceInfoComponent;
@@ -25,6 +27,7 @@ describe('WalletBalanceInfoComponent', () => {
   let walletService: PaymentsWalletsService;
   let decimalPipe: DecimalPipe;
   let toastService: ToastService;
+  let errorActionService: WalletSharedErrorActionService;
 
   const walletBalanceInfoParentSelector = '.WalletBalanceInfo';
   const walletBalanceInfoLoadingSelector = `${walletBalanceInfoParentSelector}__loading`;
@@ -38,7 +41,14 @@ describe('WalletBalanceInfoComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ButtonModule, ToastModule, SvgIconModule, HttpClientTestingModule],
       declarations: [WalletBalanceInfoComponent],
-      providers: [{ provide: PaymentsWalletsService, useClass: MockPaymentsWalletsService }, DecimalPipe],
+      providers: [
+        { provide: PaymentsWalletsService, useClass: MockPaymentsWalletsService },
+        DecimalPipe,
+        {
+          provide: WalletSharedErrorActionService,
+          useValue: MockWalletSharedErrorActionService,
+        },
+      ],
     }).compileComponents();
   });
 
@@ -50,6 +60,7 @@ describe('WalletBalanceInfoComponent', () => {
     walletService = TestBed.inject(PaymentsWalletsService);
     decimalPipe = TestBed.inject(DecimalPipe);
     toastService = TestBed.inject(ToastService);
+    errorActionService = TestBed.inject(WalletSharedErrorActionService);
   });
 
   it('should create', () => {
@@ -161,6 +172,21 @@ describe('WalletBalanceInfoComponent', () => {
       it('should show a toast with a generic message', () => {
         expect(toastService.show).toHaveBeenCalledWith(DEFAULT_ERROR_TOAST);
       });
+    });
+
+    describe('WHEN there is an error retrieving the balance info', () => {
+      let errorActionSpy;
+
+      beforeEach(() => {
+        errorActionSpy = spyOn(errorActionService, 'show');
+      });
+      it('should show the generic error catcher', fakeAsync(() => {
+        jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(throwError('The server is broken'));
+
+        component.ngOnInit();
+
+        expect(errorActionSpy).toHaveBeenCalledTimes(1);
+      }));
     });
   });
 });
