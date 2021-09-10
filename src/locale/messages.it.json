@@ -1149,6 +1149,8 @@
     "wallet_view_pending_collection_label": "Saldo in sopeso",
     "wallet_view_pending_collection_transactions_number_label": "({$INTERPOLATION})",
     "wallet_view_transfer_button": "Trasferire al mio conto bancario",
+    "wallet_view_snackbar_generic_error_retry_button": "Riprova",
+    "wallet_view_snackbar_generic_error_description": "Ops! Qualcosa è andato storto. Per favore riprova.",
     "wallet_view_top_bar_title": "Portafoglio",
     "wallet_view_top_bar_help_link": "Aiuto",
     "profile_menu_wallet": "Wallet",
