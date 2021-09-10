@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,8 +21,10 @@ import { BankDetailsOverviewComponent } from './bank-details-overview.component'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
+import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 import { BankAccountTrackingEventsService } from '../../services/bank-account-tracking-events/bank-account-tracking-events.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -48,6 +50,7 @@ describe('BankDetailsOverviewComponent', () => {
   let router: Router;
   let bankAccountTrackingEventsService: BankAccountTrackingEventsService;
   let de: DebugElement;
+  let errorActionService: WalletSharedErrorActionService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -80,6 +83,10 @@ describe('BankDetailsOverviewComponent', () => {
         },
         I18nService,
         { provide: ToastService, useClass: MockToastService },
+        {
+          provide: WalletSharedErrorActionService,
+          useValue: MockWalletSharedErrorActionService,
+        },
         BankAccountTrackingEventsService,
         KYCBannerApiService,
         { provide: AnalyticsService, useClass: MockAnalyticsService },
@@ -97,6 +104,7 @@ describe('BankDetailsOverviewComponent', () => {
     i18nService = TestBed.inject(I18nService);
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
+    errorActionService = TestBed.inject(WalletSharedErrorActionService);
     bankAccountTrackingEventsService = TestBed.inject(BankAccountTrackingEventsService);
     de = fixture.debugElement;
 
@@ -418,6 +426,137 @@ describe('BankDetailsOverviewComponent', () => {
   describe('when formatting the bank account IBAN', () => {
     it('should return the last four digits', () => {
       expect(component.formattedBankAccountIBAN(MOCK_BANK_ACCOUNT.iban)).toBe('8273');
+    });
+  });
+});
+describe('BankDetailsOverviewComponent', () => {
+  describe('WHEN there is an error retrieving data', () => {
+    let component: BankDetailsOverviewComponent;
+    let fixture: ComponentFixture<BankDetailsOverviewComponent>;
+    let bankAccountService: BankAccountService;
+    let paymentsCreditCardService: PaymentsCreditCardService;
+    let errorActionService: WalletSharedErrorActionService;
+    let bankAccountTrackingEventsService: BankAccountTrackingEventsService;
+
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        declarations: [BankDetailsOverviewComponent, AddCreditCardComponent, PaymentsCardInfoComponent],
+        imports: [RouterTestingModule, HttpClientTestingModule],
+        providers: [
+          {
+            provide: BankAccountService,
+            useValue: {
+              delete() {},
+              get bankAccount$() {
+                return throwError('There is an error!');
+              },
+              get() {
+                return of(MOCK_BANK_ACCOUNT);
+              },
+            },
+          },
+          {
+            provide: PaymentsCreditCardService,
+            useValue: {
+              delete() {},
+              get creditCard$() {
+                return throwError('There is an error!');
+              },
+              get() {
+                return of(mockCreditCard);
+              },
+            },
+          },
+          {
+            provide: WalletSharedErrorActionService,
+            useValue: MockWalletSharedErrorActionService,
+          },
+          BankAccountTrackingEventsService,
+          KYCBannerApiService,
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    });
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(BankDetailsOverviewComponent);
+      component = fixture.componentInstance;
+      bankAccountService = TestBed.inject(BankAccountService);
+      paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
+      errorActionService = TestBed.inject(WalletSharedErrorActionService);
+      bankAccountTrackingEventsService = TestBed.inject(BankAccountTrackingEventsService);
+
+      fixture.detectChanges();
+    });
+
+    describe('WHEN there is an error retrieving the bank acount data', () => {
+      let errorActionSpy;
+
+      beforeEach(() => {
+        errorActionSpy = spyOn(errorActionService, 'show');
+      });
+      describe('AND WHEN retrieving the raw data', () => {
+        it('should show the generic error catcher', fakeAsync(() => {
+          jest.spyOn(bankAccountService, 'bankAccount$', 'get').mockReturnValue(throwError('The server is broken'));
+
+          component.bankAccount$.subscribe(
+            () => {},
+            (error) => {
+              expect(errorActionSpy).toHaveBeenCalledTimes(1);
+              flush();
+            }
+          );
+        }));
+      });
+      describe('AND WHEN retrieving the formatted data', () => {
+        it('should show the generic error catcher', fakeAsync(() => {
+          spyOn(bankAccountService, 'get').and.returnValue(throwError('The server is broken'));
+
+          expect(() => {
+            component.ngOnInit();
+            fixture.detectChanges();
+            tick();
+          }).toThrowError();
+          flush();
+
+          expect(errorActionSpy).toHaveBeenCalledTimes(1);
+        }));
+      });
+    });
+    describe('WHEN there is an error retrieving the credit card data', () => {
+      let errorActionSpy;
+
+      beforeEach(() => {
+        errorActionSpy = spyOn(errorActionService, 'show');
+      });
+      describe('AND WHEN retrieving the raw data', () => {
+        it('should show the generic error catcher', fakeAsync(() => {
+          jest.spyOn(paymentsCreditCardService, 'creditCard$', 'get').mockReturnValue(throwError('The server is broken'));
+
+          component.creditCard$.subscribe(
+            () => {},
+            (error) => {
+              expect(errorActionSpy).toHaveBeenCalledTimes(1);
+              flush();
+            }
+          );
+        }));
+      });
+      describe('AND WHEN retrieving the formatted data', () => {
+        it('should show the generic error catcher', fakeAsync(() => {
+          spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError('The server is broken'));
+
+          expect(() => {
+            component.ngOnInit();
+            fixture.detectChanges();
+            tick();
+          }).toThrowError();
+          flush();
+
+          expect(errorActionSpy).toHaveBeenCalledTimes(1);
+        }));
+      });
     });
   });
 });
