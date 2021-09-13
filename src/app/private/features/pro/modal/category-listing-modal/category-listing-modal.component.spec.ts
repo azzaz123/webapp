@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CategoryService } from '@core/category/category.service';
@@ -9,6 +9,14 @@ import { SelectOptionComponent } from '@shared/form/components/select/select-opt
 import { of } from 'rxjs';
 import { CategoryListingModalComponent } from './category-listing-modal.component';
 
+@Component({
+  selector: 'tsl-svg-icon',
+  template: '',
+})
+class MockSvgIconComponent {
+  @Input() src: string;
+}
+
 describe('CategoryListingModalComponent', () => {
   let component: CategoryListingModalComponent;
   let fixture: ComponentFixture<CategoryListingModalComponent>;
@@ -18,7 +26,7 @@ describe('CategoryListingModalComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CategoryListingModalComponent, SelectOptionComponent],
+        declarations: [CategoryListingModalComponent, SelectOptionComponent, MockSvgIconComponent],
         providers: [
           {
             provide: CategoryService,
@@ -71,11 +79,12 @@ describe('CategoryListingModalComponent', () => {
     });
   });
 
-  describe('Close modal', () => {
-    it('should close modal', () => {
+  describe('when user clicks on the close button', () => {
+    it('it should close modal', () => {
       spyOn(activeModal, 'close').and.callThrough();
+      const closeButton: HTMLElement = fixture.debugElement.query(By.directive(MockSvgIconComponent)).nativeElement;
 
-      component.onClose();
+      closeButton.click();
 
       expect(activeModal.close).toHaveBeenCalledTimes(1);
       expect(activeModal.close).toHaveBeenCalledWith();

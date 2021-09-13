@@ -26,10 +26,10 @@
   }
 }
 
-.modal-close {
+.modal__close {
+  cursor: pointer;
   tsl-svg-icon {
     ::ng-deep svg path {
-      cursor: pointer;
       fill: $blue-grey-2;
     }
   }

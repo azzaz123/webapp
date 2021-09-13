@@ -1,7 +1,11 @@
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FREE_TRIAL_AVAILABLE_SUBSCRIPTION, SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  FREE_TRIAL_AVAILABLE_SUBSCRIPTION,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
+  SUBSCRIPTIONS,
+} from '@fixtures/subscriptions.fixtures.spec';
 import { SubscriptionPurchaseHeaderComponent } from './subscription-purchase-header.component';
 
 @Component({
@@ -84,14 +88,38 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
     });
   });
 
-  describe('click link', () => {
-    it('should emit click link', () => {
-      spyOn(component.clickLink, 'emit').and.callThrough();
+  describe('Categories link', () => {
+    describe('and has more than one category', () => {
+      beforeEach(() => {
+        component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED;
+        fixture.detectChanges();
+      });
+      it('should show link', () => {
+        spyOn(component.clickLink, 'emit').and.callThrough();
+        const link = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__link'));
 
-      component.onClickLink();
+        expect(link).toBeTruthy();
+      });
+      it('should emit click', () => {
+        spyOn(component.clickLink, 'emit').and.callThrough();
+        const link: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__link')).nativeElement;
 
-      expect(component.clickLink.emit).toBeCalledTimes(1);
-      expect(component.clickLink.emit).toBeCalledWith();
+        link.click();
+
+        expect(component.clickLink.emit).toBeCalledTimes(1);
+        expect(component.clickLink.emit).toBeCalledWith();
+      });
+    });
+    describe('and has more than one category', () => {
+      beforeEach(() => {
+        fixture.detectChanges();
+      });
+      it('should not show link', () => {
+        spyOn(component.clickLink, 'emit').and.callThrough();
+        const link = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__link'));
+
+        expect(link).toBeFalsy();
+      });
     });
   });
 });
