@@ -3,13 +3,13 @@
 .TabsBar {
   ul {
     list-style-type: none;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
   }
 
   &__element {
     &:not(:last-child) {
-      margin-right: 10px;
+      margin-right: $spacing-ms;
     }
   }
 }
