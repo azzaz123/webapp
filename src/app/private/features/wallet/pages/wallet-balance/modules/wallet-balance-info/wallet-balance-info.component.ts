@@ -41,7 +41,6 @@ export class WalletBalanceInfoComponent implements OnInit {
   }
 
   public transferBalance(): void {
-    console.log('Begin transfer balance process by TC');
     this.modalService.open(WalletTransferModalComponent).result.then(() => {});
   }
 
