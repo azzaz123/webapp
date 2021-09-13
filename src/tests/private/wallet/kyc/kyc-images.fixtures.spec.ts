@@ -1,28 +1,7 @@
 import { MOCK_BASE_64_32KB_IMAGE, MOCK_BASE_64_SMALL_IMAGE } from '@fixtures/base64.fixtures.spec';
 import { MOCK_JPEG_IMAGE_BIGGER_32KB } from '@fixtures/jpeg.fixtures.spec';
-import { KYCBanner, KYC_BANNER_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-banner.interface';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
-
-export const MOCK_KYC_BANNER_PENDING_VERIFICATION: KYCBanner = {
-  status: KYC_BANNER_STATUS.PENDING_VERIFICATION,
-};
-
-export const MOCK_KYC_BANNER_PENDING: KYCBanner = {
-  status: KYC_BANNER_STATUS.PENDING,
-};
-
-export const MOCK_KYC_BANNER_REJECTED: KYCBanner = {
-  status: KYC_BANNER_STATUS.REJECTED,
-};
-
-export const MOCK_KYC_BANNER_VERIFIED: KYCBanner = {
-  status: KYC_BANNER_STATUS.VERIFIED,
-};
-
-export const MOCK_KYC_BANNER_NO_NEED: KYCBanner = {
-  status: KYC_BANNER_STATUS.NO_NEED,
-};
 
 export const MOCK_EMPTY_KYC_IMAGES: KYCImages = {
   frontSide: null,

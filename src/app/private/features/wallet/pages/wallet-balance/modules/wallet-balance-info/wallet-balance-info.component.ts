@@ -1,14 +1,17 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
-import { KYCBannerService } from '@private/features/wallet/services/kyc-banner/kyc-banner.service';
-import { KYCBannerSpecifications, KYC_BANNER_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-banner.interface';
+import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { Money } from '@api/core/model/money.interface';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 
 import { forkJoin } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-wallet-balance-info',
@@ -25,7 +28,8 @@ export class WalletBalanceInfoComponent implements OnInit {
   constructor(
     private paymentsWalletsService: PaymentsWalletsService,
     private toastService: ToastService,
-    private kycBannerService: KYCBannerService,
+    private kycPropertiesService: KYCPropertiesService,
+    private errorActionService: WalletSharedErrorActionService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
@@ -42,7 +46,7 @@ export class WalletBalanceInfoComponent implements OnInit {
   }
 
   private get isValidStatus(): boolean {
-    return !this.specifications || this.specifications.status === KYC_BANNER_STATUS.VERIFIED;
+    return this.specifications.status === KYC_STATUS.NO_NEED || this.specifications.status === KYC_STATUS.VERIFIED;
   }
 
   private loadBalanceAndSpecifications(): void {
@@ -50,7 +54,11 @@ export class WalletBalanceInfoComponent implements OnInit {
 
     forkJoin({
       walletBalance: this.paymentsWalletsService.walletBalance$,
-      specifications: this.kycBannerService.getSpecifications(),
+      specifications: this.kycPropertiesService.get().pipe(
+        switchMap((properties: KYCProperties) => {
+          return this.kycPropertiesService.getBannerSpecificationsFromProperties(properties);
+        })
+      ),
     })
       .pipe(
         finalize(() => {
@@ -63,9 +71,10 @@ export class WalletBalanceInfoComponent implements OnInit {
           this.walletBalance = walletBalance;
           this.specifications = specifications;
         },
-        error: () => {
+        error: (error) => {
           this.isError = true;
           this.toastService.show(DEFAULT_ERROR_TOAST);
+          this.errorActionService.show(error);
         },
       });
   }

@@ -1,0 +1,7 @@
+<div class="KYCStatusModal">
+    <tsl-svg-icon class="KYCStatusModal__cross position-absolute mt-4 mr-4" src="/assets/icons/cross.svg" (click)="closeModal()"></tsl-svg-icon>
+    <div *ngIf="properties" class="KYCStatusModal__slides">
+        <tsl-kyc-status [properties]="properties" (buttonClick)="handleButtonClick()">
+        </tsl-kyc-status>
+    </div>
+</div>

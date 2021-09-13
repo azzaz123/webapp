@@ -171,7 +171,9 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
         if (!this.paramsHaveLocation(params)) {
           this.searchNavigatorService.navigate(
             params,
-            (params.find((parameter) => parameter.key === FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE)?.value || null) as FILTERS_SOURCE
+            (params.find((parameter) => parameter.key === FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE)?.value || null) as FILTERS_SOURCE,
+            false,
+            true
           );
         } else {
           this.filterParameterStore.setParameters(params);
