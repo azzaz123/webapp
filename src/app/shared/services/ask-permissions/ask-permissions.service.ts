@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, Observable, throwError } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { UserDevicePermissions, DEVICE_PERMISSIONS_STATUS } from './user-device-permissions.interface';
 
 @Injectable()
@@ -12,6 +12,10 @@ export class AskPermissionsService {
 
   get userDevicePermissions$(): Observable<UserDevicePermissions> {
     return this.userDevicePermissionsSubject.asObservable();
+  }
+
+  get userVideoPermissions$(): Observable<DEVICE_PERMISSIONS_STATUS> {
+    return this.userDevicePermissionsSubject.asObservable().pipe(map((userPermissions) => userPermissions.video));
   }
 
   public askCameraPermissions(): Observable<MediaStream | never> {

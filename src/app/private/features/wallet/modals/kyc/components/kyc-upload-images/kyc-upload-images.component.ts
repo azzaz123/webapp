@@ -18,6 +18,7 @@ import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
 import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
 
 @Component({
@@ -33,25 +34,25 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   @Input() imagesNeeded: KYCImagesNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
-  @Input() images: KYCImages;
   @Input() documentType: string;
 
-  @Output() imagesChange: EventEmitter<KYCImages> = new EventEmitter();
-  @Output() endVerification: EventEmitter<void> = new EventEmitter();
+  @Output() endVerification: EventEmitter<KYCImages> = new EventEmitter();
   @Output() goBack: EventEmitter<void> = new EventEmitter();
 
-  public userDevicePermissions$: Observable<UserDevicePermissions>;
+  public images: KYCImages;
+  public videoPermissions$: Observable<DEVICE_PERMISSIONS_STATUS> = this.buildVideoPermissionsObservable();
+  public isVideoPermissionError$: Observable<boolean> = this.buildVideoPermissionErrorObservable();
+
   public activeStep: KYCImagesNeeded = 1;
   public readonly KYC_IMAGES = KYC_IMAGES;
   public readonly MIME_TYPES = MIME_TYPES;
+  public readonly DEVICE_PERMISSIONS_STATUS = DEVICE_PERMISSIONS_STATUS;
   public readonly errorBannerSpecifications: NgbAlertConfig = {
     type: BANNER_TYPES.DANGER,
     dismissible: false,
   };
 
-  constructor(private askPermissionsService: AskPermissionsService) {
-    this.userDevicePermissions$ = askPermissionsService.userDevicePermissions$;
-  }
+  constructor(private askPermissionsService: AskPermissionsService) {}
 
   ngAfterViewInit(): void {
     if (this.isShootImageMethod) {
@@ -184,10 +185,6 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     this.clearImageInput();
   }
 
-  public canUploadOrShootImage(userDevicePermissions: UserDevicePermissions): boolean {
-    return (this.isShootImageMethod && !this.isErrorBanner(userDevicePermissions.video)) || this.isUploadImageMethod;
-  }
-
   public uploadOrShootImage(): void {
     if (this.isUploadImageMethod) {
       this.uploadImage.nativeElement.click();
@@ -210,22 +207,12 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     return userCameraPermissions === DEVICE_PERMISSIONS_STATUS.ACCEPTED;
   }
 
-  public cameraFailedCopy(userCameraPermissions: DEVICE_PERMISSIONS_STATUS): string {
-    return userCameraPermissions === DEVICE_PERMISSIONS_STATUS.DENIED
-      ? $localize`:@@kyc_camera_access_refused:You must accept the permissions to be able to take photos`
-      : $localize`:@@kyc_camera_cannot_access:Oops, an error occurred and we cannot access your camera`;
-  }
-
-  public isErrorBanner(videoPermissionStatus: DEVICE_PERMISSIONS_STATUS): boolean {
-    return this.requestCameraFailed(videoPermissionStatus) && this.isShootImageMethod;
-  }
-
   public handleBack(): void {
-    this.imagesChange.emit({
+    this.images = {
       ...this.images,
       frontSide: null,
       backSide: null,
-    });
+    };
 
     if (this.activeStep === 2) {
       this.activeStep = 1;
@@ -264,10 +251,6 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     const secondImage = this.images.backSide;
 
     return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
-  }
-
-  private requestCameraFailed(userCameraPermissions: DEVICE_PERMISSIONS_STATUS): boolean {
-    return userCameraPermissions === DEVICE_PERMISSIONS_STATUS.DENIED || userCameraPermissions === DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS;
   }
 
   private defineUploadImageAndEmitValue(file: File, imageSide: KYC_IMAGES): void {
@@ -320,20 +303,21 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   private emitFrontSideImageChange(newImage: string): void {
-    this.imagesChange.emit({
+    this.images = {
       ...this.images,
       frontSide: newImage,
-    });
+    };
   }
 
   private emitBackSideImageChange(newImage: string): void {
-    this.imagesChange.emit({
+    this.images = {
       ...this.images,
       backSide: newImage,
-    });
+    };
   }
 
   private requestCameraPermissions(): void {
+    // TODO: check it		Date: 2021/09/13 => ngif
     this.askPermissionsService.askCameraPermissions().subscribe((stream: MediaStream) => {
       this.userCamera.nativeElement.srcObject = stream;
     });
@@ -347,5 +331,20 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
 
     this.userCamera.nativeElement.srcObject = null;
+  }
+
+  private buildVideoPermissionsObservable(): Observable<DEVICE_PERMISSIONS_STATUS> {
+    return this.askPermissionsService.userVideoPermissions$;
+  }
+
+  private buildVideoPermissionErrorObservable(): Observable<boolean> {
+    return this.askPermissionsService.userVideoPermissions$.pipe(
+      map((videoPermissions: DEVICE_PERMISSIONS_STATUS) => {
+        const isDeniedOrCannotAccessError =
+          videoPermissions === DEVICE_PERMISSIONS_STATUS.DENIED || videoPermissions === DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS;
+
+        return isDeniedOrCannotAccessError && this.isShootImageMethod;
+      })
+    );
   }
 }

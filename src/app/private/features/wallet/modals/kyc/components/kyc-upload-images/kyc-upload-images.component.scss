@@ -1,8 +1,5 @@
 @import '~style/common';
 
-$image-height-big: 300px;
-$image-height-small: 200px;
-
 .KYCUploadImages {
   &__back {
     cursor: pointer;
@@ -36,12 +33,9 @@ $image-height-small: 200px;
   }
 
   &__image {
-    height: $image-height-small;
+    height: 200px;
+    width: 320px;
     border: dashed 2px $blue-grey-5;
-
-    @include media-breakpoint-up(sm) {
-      height: $image-height-big;
-    }
 
     &__video {
       object-fit: cover;

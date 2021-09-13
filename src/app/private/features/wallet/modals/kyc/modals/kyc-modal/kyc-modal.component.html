@@ -23,9 +23,7 @@
                 *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications"
                 [takeImageMethod]="KYCSpecifications.imageMethod"
                 [imagesNeeded]="KYCSpecifications.documentation.imagesNeeded"
-                [images]="KYCSpecifications.images"
                 [documentType]="KYCSpecifications.documentation.label"
-                (imagesChange)="defineImages($event)"
                 (endVerification)="endVerification(KYCSpecifications.images)"
                 (goBack)="goPreviousStep()"
             ></tsl-kyc-upload-images>

@@ -46,6 +46,7 @@ export class KYCModalComponent implements OnDestroy {
   }
 
   public endVerification(KYCImages: KYCImages): void {
+    this.defineImages(KYCImages);
     this.KYCService.request(KYCImages).subscribe(
       () => {
         this.goNextStep();
@@ -58,16 +59,6 @@ export class KYCModalComponent implements OnDestroy {
 
   public defineNationality(nationalitySelected: KYCNationality): void {
     this.KYCStoreService.specifications = { ...this.KYCStoreService.specifications, nationality: nationalitySelected };
-  }
-
-  public defineImages(newImages: KYCImages): void {
-    this.KYCStoreService.specifications = {
-      ...this.KYCStoreService.specifications,
-      images: {
-        frontSide: newImages.frontSide,
-        backSide: newImages.backSide,
-      },
-    };
   }
 
   public defineDocumentationAndGoNext(documentationSelected: KYCDocumentation): void {
@@ -97,6 +88,16 @@ export class KYCModalComponent implements OnDestroy {
 
   public goPreviousStep(): void {
     this.stepper.goBack();
+  }
+
+  private defineImages(newImages: KYCImages): void {
+    this.KYCStoreService.specifications = {
+      ...this.KYCStoreService.specifications,
+      images: {
+        frontSide: newImages.frontSide,
+        backSide: newImages.backSide,
+      },
+    };
   }
 
   private resetSpecifications(): void {
