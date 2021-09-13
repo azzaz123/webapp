@@ -13,9 +13,9 @@ import { KYCImageOptionsComponent } from './components/kyc-image-options/kyc-ima
 import { KYCUploadImagesComponent } from './components/kyc-upload-images/kyc-upload-images.component';
 import { BannerModule } from '@shared/banner/banner.module';
 import { KYCStoreService } from './services/kyc-store/kyc-store.service';
-import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
 import { KYCServicesModule } from '@api/payments/kyc/kyc-services.module';
 import { KYCStatusModule } from './components/kyc-status/kyc-status.module';
+import { RequestVideoPermissionsService } from '@shared/services/request-video-permissions/request-video-permissions.service';
 
 @NgModule({
   imports: [
@@ -32,6 +32,6 @@ import { KYCStatusModule } from './components/kyc-status/kyc-status.module';
     KYCStatusModule,
   ],
   declarations: [KYCRoutedComponents, KYCImageOptionsComponent, KYCNationalityComponent, KYCModalComponent, KYCUploadImagesComponent],
-  providers: [KYCStoreService, AskPermissionsService],
+  providers: [KYCStoreService, RequestVideoPermissionsService],
 })
 export class KYCModule {}

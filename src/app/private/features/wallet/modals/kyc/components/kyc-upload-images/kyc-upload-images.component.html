@@ -7,22 +7,24 @@
             </a>
         </div>
     </div>
-    <div *ngIf="(isVideoPermissionError$ | async) === false; else errorBanner" class="row h-100 d-flex flex-column justify-content-between">
+    <div *ngIf="(showImageBlock$ | async)" class="row h-100 d-flex flex-column justify-content-between">
         <div class="KYCUploadImages__imageContainer col h-100 d-flex flex-column justify-content-center">
             <div class="row text-center mb-4 mt-2">
                 <div class="col">
-                    <span class="KYCUploadImages__title d-block mb-2">{{title}}</span>
-                    <span class="KYCUploadImages__subtitle d-block mb-2">{{subtitle}}</span>
+                    <span class="KYCUploadImages__title d-block mb-2">{{title$ | async}}</span>
+                    <span class="KYCUploadImages__subtitle d-block mb-2">{{subtitle$ | async}}</span>
                 </div>
             </div>
             <div class="row justify-content-center mb-4" >
                 <div class="KYCUploadImages__image KYCUploadImages__image--round col col-sm-10  d-flex align-items-center justify-content-center p-0">
                     <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
-                    <tsl-svg-icon *ngIf="showCameraSvg" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
-                    <canvas id="definedImage" #definedImage class="KYCUploadImages__image--round h-100 w-100" [ngClass]="{'d-none': !isCurrentImageDefined}"></canvas>
-                    <video *ngIf="isShootImageMethod" autoplay playsInline muted id="userCamera" #userCamera
+                    <tsl-svg-icon *ngIf="showCameraSvg$ | async" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
+                    <canvas *ngIf="isCurrentImageDefined$ | async" id="definedImage" #definedImage class="KYCUploadImages__image--round h-100 w-100"></canvas>
+                    <video *ngIf="isShootImageMethod" autoplay playsInline muted
+                        id="userCamera" #userCamera
+                        [src]="(videoStream$ | async)"
                         class="KYCUploadImages__image__video KYCUploadImages__image--round h-100 w-100"
-                        [ngClass]="{'d-none': isCurrentImageDefined}"></video>
+                        [ngClass]="{'d-none': isCurrentImageDefined | async}"></video>
                 </div>
             </div>
             <div class="row text-center justify-content-center">
@@ -35,7 +37,7 @@
                 <div class="row text-center justify-content-center">
                     <tsl-button
                         *ngIf="showContinueButton" id="continueVerificationButton"
-                        [disabled]="!isContinueButtonActive"
+                        [disabled]="(isContinueButtonActive$ | async) === false"
                         i18n="@@kyc_take_photo_view_continue_button"
                         class="col-12 col-md-7"
                         className="btn-primary btn-block"
@@ -46,22 +48,20 @@
                         i18n="@@kyc_end_verification"
                         class="col-12 col-md-7"
                         className="btn-primary btn-block"
-                        (click)="endVerification.emit(images)">Finish verification</tsl-button>
+                        (click)="emitEndVerification()">Finish verification</tsl-button>
                 </div>
             </div>
         </div>
     </div>
-    <ng-template #errorBanner>
-        <div class="row h-100 d-flex align-items-center justify-content-center">
-            <div class="col">
-                <tsl-banner [specifications]="errorBannerSpecifications" class="w-100">
-                    <div class="d-flex align-items-center">
-                        <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>
-                        <span *ngIf="(videoPermissions$ | async) === DEVICE_PERMISSIONS_STATUS.DENIED" i18n="@@kyc_camera_access_refused">You must accept the permissions to be able to take photos</span>
-                        <span *ngIf="(videoPermissions$ | async) === DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS" i18n="@@kyc_camera_cannot_access" >Oops, an error occurred and we cannot access your camera</span>
-                    </div>
-                </tsl-banner>
-            </div>
+    <div *ngIf="(showImageBlock$ | async) === false" class="row h-100 d-flex align-items-center justify-content-center">
+        <div class="col">
+            <tsl-banner [specifications]="errorBannerSpecifications" class="w-100">
+                <div class="d-flex align-items-center">
+                    <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>
+                    <span *ngIf="(videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.DENIED" i18n="@@kyc_camera_access_refused">You must accept the permissions to be able to take photos</span>
+                    <span *ngIf="(videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS" i18n="@@kyc_camera_cannot_access" >Oops, an error occurred and we cannot access your camera</span>
+                </div>
+            </tsl-banner>
         </div>
-    </ng-template>
+    </div>
 </div>

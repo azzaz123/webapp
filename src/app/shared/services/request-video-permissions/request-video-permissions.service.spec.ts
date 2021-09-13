@@ -1,12 +1,12 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MOCK_MEDIA_STREAM } from '@fixtures/media-stream.fixtures.spec';
 
-import { AskPermissionsService } from './ask-permissions.service';
-import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from './user-device-permissions.interface';
+import { RequestVideoPermissionsService } from './request-video-permissions.service';
+import { VIDEO_PERMISSIONS_STATUS } from './video-permissions-status.interface';
 
-describe('AskPermissionsService', () => {
-  let service: AskPermissionsService;
-  const cameraMediaStreamConstraints = {
+describe('RequestVideoPermissionsService', () => {
+  let service: RequestVideoPermissionsService;
+  const videoMediaStreamConstraints = {
     video: { facingMode: 'environment' },
   };
   const MOCK_PERMISSION_DENIED_ERROR = 'DOMException: Permission denied';
@@ -15,16 +15,16 @@ describe('AskPermissionsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AskPermissionsService],
+      providers: [RequestVideoPermissionsService],
     });
-    service = TestBed.inject(AskPermissionsService);
+    service = TestBed.inject(RequestVideoPermissionsService);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when we ask for camera permissions...', () => {
+  describe('when we ask for video permissions...', () => {
     describe(`and the user's browser supports the API`, () => {
       describe('and the user accept the permission', () => {
         beforeEach(() => {
@@ -32,33 +32,33 @@ describe('AskPermissionsService', () => {
           spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
         });
 
-        it('should ask the user for the camera permission', () => {
-          service.askCameraPermissions().subscribe();
+        it('should ask the user for the video permission', () => {
+          service.request();
 
-          expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(cameraMediaStreamConstraints);
+          expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(videoMediaStreamConstraints);
         });
 
         it('should define the video permission as accepted', fakeAsync(() => {
-          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+          let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-          service.askCameraPermissions().subscribe();
+          service.request;
           tick();
-          service.userDevicePermissions$.subscribe((userPermissions: UserDevicePermissions) => {
-            cameraPermissions = userPermissions.video;
+          service.userVideoPermissions$.subscribe((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
+            videoPermissions = videoPermissions;
           });
 
-          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.ACCEPTED);
+          expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.ACCEPTED);
         }));
 
         it('should return the stream', fakeAsync(() => {
-          let cameraStream: MediaStream;
+          let videoStream: MediaStream;
 
-          service.askCameraPermissions().subscribe((stream: MediaStream) => {
-            cameraStream = stream;
+          service.request().subscribe((stream: MediaStream) => {
+            videoStream = stream;
           });
           tick();
 
-          expect(cameraStream).toStrictEqual(MOCK_MEDIA_STREAM);
+          expect(videoStream).toStrictEqual(MOCK_MEDIA_STREAM);
         }));
       });
 
@@ -68,28 +68,28 @@ describe('AskPermissionsService', () => {
           spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
         });
 
-        it('should ask the user for the camera permission', () => {
-          service.askCameraPermissions().subscribe();
+        it('should ask the user for the video permission', () => {
+          service.request().subscribe();
 
-          expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(cameraMediaStreamConstraints);
+          expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(videoMediaStreamConstraints);
         });
 
         it('should define the video permission as denied', fakeAsync(() => {
-          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+          let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-          service.askCameraPermissions().subscribe({ error: () => {} });
+          service.request().subscribe({ error: () => {} });
           tick();
-          service.userDevicePermissions$.subscribe((userPermissions: UserDevicePermissions) => {
-            cameraPermissions = userPermissions.video;
+          service.userVideoPermissions$.subscribe((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
+            videoPermissions = videoPermissions;
           });
 
-          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.DENIED);
+          expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.DENIED);
         }));
 
         it('should return an error', fakeAsync(() => {
           let error;
 
-          service.askCameraPermissions().subscribe({ error: (e) => (error = e) });
+          service.request().subscribe({ error: (e) => (error = e) });
           tick();
 
           expect(error).toBe(MOCK_PERMISSION_DENIED_ERROR);
@@ -102,28 +102,28 @@ describe('AskPermissionsService', () => {
           spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
         });
 
-        it('should ask the user for the camera permission', () => {
-          service.askCameraPermissions().subscribe();
+        it('should ask the user for the video permission', () => {
+          service.request().subscribe();
 
-          expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(cameraMediaStreamConstraints);
+          expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(videoMediaStreamConstraints);
         });
 
         it('should define the video permission as cannot access', fakeAsync(() => {
-          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+          let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-          service.askCameraPermissions().subscribe({ error: () => {} });
+          service.request().subscribe({ error: () => {} });
           tick();
-          service.userDevicePermissions$.subscribe((userPermissions: UserDevicePermissions) => {
-            cameraPermissions = userPermissions.video;
+          service.userVideoPermissions$.subscribe((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
+            videoPermissions = videoPermissions;
           });
 
-          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS);
+          expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
         }));
 
         it('should return an error', fakeAsync(() => {
           let error;
 
-          service.askCameraPermissions().subscribe({
+          service.request().subscribe({
             error: (e) => (error = e),
           });
           tick();
@@ -139,21 +139,21 @@ describe('AskPermissionsService', () => {
       });
 
       it('should define the video permission as cannot access', fakeAsync(() => {
-        let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+        let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-        service.askCameraPermissions().subscribe({ error: () => {} });
+        service.request().subscribe({ error: () => {} });
         tick();
-        service.userDevicePermissions$.subscribe((userPermissions: UserDevicePermissions) => {
-          cameraPermissions = userPermissions.video;
+        service.userVideoPermissions$.subscribe((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
+          videoPermissions = videoPermissions;
         });
 
-        expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS);
+        expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
       }));
 
       it('should return a not allowed error', fakeAsync(() => {
         let error;
 
-        service.askCameraPermissions().subscribe({
+        service.request().subscribe({
           error: (e) => (error = e),
         });
         tick();

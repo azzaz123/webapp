@@ -12,15 +12,17 @@ import {
   MOCK_JPEG_IMG_EVENT,
   MOCK_WITHOUT_JPEG_IMG_EVENT,
 } from '@fixtures/private/wallet/kyc/kyc-images.fixtures.spec';
-import { MOCK_DEVICE_PERMISSIONS } from '@fixtures/user-device-permissions.fixtures.spec';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { BannerComponent } from '@shared/banner/banner.component';
 import { ButtonComponent } from '@shared/button/button.component';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
-import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
-import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
+import { RequestVideoPermissionsService } from '@shared/services/request-video-permissions/ask-permissions.service';
+import {
+  VIDEO_PERMISSIONS_STATUS,
+  UserDevicePermissions,
+} from '@shared/services/request-video-permissions/user-device-permissions.interface';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
@@ -43,7 +45,7 @@ describe('KYCUploadImagesComponent', () => {
   let testComponent: TestWrapperComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
   let de: DebugElement;
-  let askPermissionsService: AskPermissionsService;
+  let RequestVideoPermissionsService: RequestVideoPermissionsService;
 
   const devicePermissionsSubjectMock: BehaviorSubject<UserDevicePermissions> = new BehaviorSubject<UserDevicePermissions>(
     MOCK_DEVICE_PERMISSIONS
@@ -64,12 +66,12 @@ describe('KYCUploadImagesComponent', () => {
       declarations: [TestWrapperComponent, KYCUploadImagesComponent, BannerComponent, SvgIconComponent, ButtonComponent],
       providers: [
         {
-          provide: AskPermissionsService,
+          provide: RequestVideoPermissionsService,
           useValue: {
             get userDevicePermissions$() {
               return devicePermissionsSubjectMock.asObservable();
             },
-            askCameraPermissions() {
+            askVideoPermissions() {
               return cameraResponseSubjectMock.asObservable();
             },
           },
@@ -80,7 +82,7 @@ describe('KYCUploadImagesComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestWrapperComponent);
-    askPermissionsService = TestBed.inject(AskPermissionsService);
+    RequestVideoPermissionsService = TestBed.inject(RequestVideoPermissionsService);
     de = fixture.debugElement;
     component = de.query(By.directive(KYCUploadImagesComponent)).componentInstance;
     testComponent = fixture.componentInstance;
@@ -99,23 +101,22 @@ describe('KYCUploadImagesComponent', () => {
     describe(`and the user's browser supports the API`, () => {
       describe('and the user accept the permission', () => {
         beforeEach(() => {
-          spyOn(component.imagesChange, 'emit');
           spyOn(component.goBack, 'emit');
 
           cameraResponseSubjectMock.next(MOCK_MEDIA_STREAM);
-          devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.ACCEPTED });
+          devicePermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.ACCEPTED);
 
           fixture.detectChanges();
         });
 
         it('should set the user permissions as accepted', () => {
-          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+          let cameraPermissions: VIDEO_PERMISSIONS_STATUS;
 
-          component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
-            cameraPermissions = permissions.video;
-          });
+          // component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
+          //   cameraPermissions = permissions.video;
+          // });
 
-          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.ACCEPTED);
+          expect(cameraPermissions).toBe(VIDEO_PERMISSIONS_STATUS.ACCEPTED);
         });
 
         it('should define the webcam video stream', () => {
@@ -660,19 +661,19 @@ describe('KYCUploadImagesComponent', () => {
       describe('and the user denied the permission', () => {
         beforeEach(() => {
           cameraResponseSubjectMock.next(throwError('denied'));
-          devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.DENIED });
+          devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: VIDEO_PERMISSIONS_STATUS.DENIED });
 
           fixture.detectChanges();
         });
 
         it('should set the user permissions as denied', () => {
-          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+          let cameraPermissions: VIDEO_PERMISSIONS_STATUS;
 
           component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
             cameraPermissions = permissions.video;
           });
 
-          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.DENIED);
+          expect(cameraPermissions).toBe(VIDEO_PERMISSIONS_STATUS.DENIED);
         });
 
         it('should show an error banner', () => {
@@ -684,19 +685,19 @@ describe('KYCUploadImagesComponent', () => {
       describe('and a problem other than permit rejection occurs', () => {
         beforeEach(() => {
           cameraResponseSubjectMock.next(throwError('Generic Error'));
-          devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS });
+          devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS });
 
           fixture.detectChanges();
         });
 
         it('should set the user permissions as cannot access', () => {
-          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+          let cameraPermissions: VIDEO_PERMISSIONS_STATUS;
 
           component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
             cameraPermissions = permissions.video;
           });
 
-          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS);
+          expect(cameraPermissions).toBe(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
         });
 
         it('should show an error banner', () => {
@@ -709,19 +710,19 @@ describe('KYCUploadImagesComponent', () => {
     describe(`and the user's browser does NOT support the API`, () => {
       beforeEach(() => {
         cameraResponseSubjectMock.next(throwError('Not Allowed'));
-        devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS });
+        devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS });
 
         fixture.detectChanges();
       });
 
       it('should set the user permissions as cannot access', () => {
-        let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+        let cameraPermissions: VIDEO_PERMISSIONS_STATUS;
 
         component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
           cameraPermissions = permissions.video;
         });
 
-        expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS);
+        expect(cameraPermissions).toBe(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
       });
 
       it('should show an error banner', () => {
@@ -733,14 +734,14 @@ describe('KYCUploadImagesComponent', () => {
 
   describe('when the user selects the upload image method', () => {
     beforeEach(() => {
-      spyOn(askPermissionsService, 'askCameraPermissions');
+      spyOn(RequestVideoPermissionsService, 'askVideoPermissions');
       testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
 
       fixture.detectChanges();
     });
 
     it('should NOT request camera access', () => {
-      expect(askPermissionsService.askCameraPermissions).not.toHaveBeenCalled();
+      expect(RequestVideoPermissionsService.askVideoPermissions).not.toHaveBeenCalled();
     });
 
     describe('and the user must provide two images of the document', () => {
@@ -785,7 +786,7 @@ describe('KYCUploadImagesComponent', () => {
       beforeEach(() => {
         testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
         cameraResponseSubjectMock.next(MOCK_MEDIA_STREAM);
-        devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.ACCEPTED });
+        devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: VIDEO_PERMISSIONS_STATUS.ACCEPTED });
 
         fixture.detectChanges();
       });
