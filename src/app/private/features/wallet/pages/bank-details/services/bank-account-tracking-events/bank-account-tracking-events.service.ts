@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
+import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { InnerType } from '@api/core/utils/types';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -8,24 +11,22 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { KYCBanner, KYC_BANNER_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-banner.interface';
-import { KYCBannerApiService } from '@private/features/wallet/services/api/kyc-banner-api.service';
 
 type KycStatusEventAttribute = InnerType<ClickAddEditBankAccount, 'kycStatus'> | undefined;
 type AddOrEditEventAttribute = InnerType<ClickAddEditBankAccount, 'addOrEdit'>;
-const kycBannerStatusToEventAttribute: Partial<Record<KYC_BANNER_STATUS, KycStatusEventAttribute>> = {
-  [KYC_BANNER_STATUS.PENDING]: 'pending',
-  [KYC_BANNER_STATUS.PENDING_VERIFICATION]: 'inProgress',
-  [KYC_BANNER_STATUS.VERIFIED]: 'verified',
+const kycBannerStatusToEventAttribute: Partial<Record<KYC_STATUS, KycStatusEventAttribute>> = {
+  [KYC_STATUS.PENDING]: 'pending',
+  [KYC_STATUS.PENDING_VERIFICATION]: 'inProgress',
+  [KYC_STATUS.VERIFIED]: 'verified',
 };
 
 @Injectable()
 export class BankAccountTrackingEventsService {
-  constructor(private analyticsService: AnalyticsService, private kYCBannerApiService: KYCBannerApiService) {}
+  constructor(private analyticsService: AnalyticsService, private kycPropertiesService: KYCPropertiesService) {}
 
   public trackClickAddEditBankAccount(isEdit: boolean): void {
-    this.kYCBannerApiService.getKYCBanner().subscribe((kycBanner: KYCBanner) => {
-      const { status } = kycBanner;
+    this.kycPropertiesService.get().subscribe((kycProperties: KYCProperties) => {
+      const { status } = kycProperties;
       const addOrEdit = this.mapAddOrEditAttribute(isEdit);
       const kycStatus = this.mapKycBannerStatusToEventAttribute(status);
       const event = this.generateAddEditBankAccountEvent(addOrEdit, kycStatus);
@@ -51,7 +52,7 @@ export class BankAccountTrackingEventsService {
     return event;
   }
 
-  private mapKycBannerStatusToEventAttribute(kycStatus: KYC_BANNER_STATUS): KycStatusEventAttribute {
+  private mapKycBannerStatusToEventAttribute(kycStatus: KYC_STATUS): KycStatusEventAttribute {
     return kycBannerStatusToEventAttribute[kycStatus];
   }
 
