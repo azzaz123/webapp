@@ -31,7 +31,7 @@ export class SubscriptionEditComponent implements OnInit {
   @Input() subscription: SubscriptionsResponse;
   @Input() user: User;
   @Output() editSuccesful: EventEmitter<string | void> = new EventEmitter();
-  @Output() unselectSubcription: EventEmitter<void> = new EventEmitter();
+  @Output() unselectSubscription: EventEmitter<void> = new EventEmitter();
 
   public selectedTier: Tier;
   public availableTiers: Tier[];
@@ -105,7 +105,7 @@ export class SubscriptionEditComponent implements OnInit {
   }
 
   public onClearSubscription(): void {
-    this.unselectSubcription.emit();
+    this.unselectSubscription.emit();
   }
 
   private checkTier(): void {

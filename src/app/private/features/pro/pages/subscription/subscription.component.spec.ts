@@ -354,7 +354,7 @@ describe('SubscriptionComponent', () => {
       spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
 
       component.manageSubscription(MAPPED_SUBSCRIPTIONS[0]);
-      component.onUnselectSubcription();
+      component.onunselectSubscription();
       fixture.detectChanges();
 
       const newSubscriptionComponent = fixture.debugElement.query(By.directive(MockNewSubscriptionComponent));
@@ -397,7 +397,7 @@ describe('SubscriptionComponent', () => {
       spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
 
       component.manageSubscription(MAPPED_SUBSCRIPTIONS[2]);
-      component.onUnselectSubcription();
+      component.onunselectSubscription();
       fixture.detectChanges();
 
       const editSubscriptionComponent = fixture.debugElement.query(By.directive(MockEditSubscriptionComponent));

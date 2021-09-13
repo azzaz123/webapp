@@ -235,12 +235,12 @@ describe('SubscriptionEditComponent', () => {
   });
   describe('Click back button', () => {
     it('should emit change subscription', () => {
-      spyOn(component.unselectSubcription, 'emit');
+      spyOn(component.unselectSubscription, 'emit');
 
       component.onClearSubscription();
 
-      expect(component.unselectSubcription.emit).toHaveBeenCalledTimes(1);
-      expect(component.unselectSubcription.emit).toHaveBeenCalledWith();
+      expect(component.unselectSubscription.emit).toHaveBeenCalledTimes(1);
+      expect(component.unselectSubscription.emit).toHaveBeenCalledWith();
     });
   });
 });

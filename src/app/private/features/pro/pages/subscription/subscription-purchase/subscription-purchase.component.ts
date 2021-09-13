@@ -41,7 +41,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() editMode: boolean;
   @Output() purchaseSuccessful: EventEmitter<string | void> = new EventEmitter();
-  @Output() unselectSubcription: EventEmitter<void> = new EventEmitter();
+  @Output() unselectSubscription: EventEmitter<void> = new EventEmitter();
 
   public showPurchaseSuccessful: boolean;
   public stripeCards: FinancialCard[];
@@ -85,7 +85,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   }
 
   public onClearSubscription(): void {
-    this.unselectSubcription.emit();
+    this.unselectSubscription.emit();
   }
 
   get isSavedCard(): boolean {
