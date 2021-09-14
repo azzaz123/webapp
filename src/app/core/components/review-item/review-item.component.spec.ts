@@ -7,13 +7,14 @@ import { Component, DebugElement, Input, NO_ERRORS_SCHEMA } from '@angular/core'
 import { of } from 'rxjs';
 import { CategoryService } from 'app/core/category/category.service';
 import { SanitizedBackgroundDirective } from 'app/shared/sanitized-background/sanitized-background.directive';
-import { environment } from 'environments/environment';
-import { UserProfileRoutePipe } from '@shared/pipes';
+import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import { ReviewsApiModule, ReviewsApiService } from '@api/reviews';
 import { By } from '@angular/platform-browser';
 import { TranslateButtonComponent } from '@core/components/translate-button/translate-button.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Review } from '@private/features/reviews/core/review';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 @Component({
   selector: 'tsl-test',
@@ -34,11 +35,17 @@ describe('ReviewItemComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ReviewItemComponent, SanitizedBackgroundDirective, UserProfileRoutePipe, TestComponent, TranslateButtonComponent],
+        declarations: [
+          ReviewItemComponent,
+          SanitizedBackgroundDirective,
+          UserProfileRoutePipe,
+          TestComponent,
+          TranslateButtonComponent,
+          ItemDetailRoutePipe,
+        ],
         schemas: [NO_ERRORS_SCHEMA],
         imports: [ReviewsApiModule, HttpClientTestingModule],
         providers: [
-          { provide: 'SUBDOMAIN', useValue: 'www' },
           {
             provide: CategoryService,
             useValue: {
@@ -46,6 +53,10 @@ describe('ReviewItemComponent', () => {
                 return of(CATEGORY_DATA_WEB[0]);
               },
             },
+          },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
           },
         ],
       }).compileComponents();
@@ -64,9 +75,6 @@ describe('ReviewItemComponent', () => {
   describe('ngOnInit', () => {
     beforeEach(() => {
       fixture.detectChanges();
-    });
-    it('should set itemWebLink', () => {
-      expect(component.itemWebLink).toBe(environment.siteUrl.replace('es', 'www') + 'item/' + MOCK_REVIEWS[0].item.webSlug);
     });
 
     it('should set reviewUser', () => {

@@ -23,7 +23,7 @@ export class InboxItem {
     private _price: InboxItemPrice,
     private _title: string,
     private _mainImage: InboxImage,
-    private _itemUrl: string,
+    private _itemSlug: string,
     private _status: InboxItemStatus,
     private _isMine: boolean,
     public categoryId: number
@@ -94,12 +94,12 @@ export class InboxItem {
     this._isMine = value;
   }
 
-  get itemUrl(): string {
-    return this._itemUrl;
+  get itemSlug(): string {
+    return this._itemSlug;
   }
 
-  set itemUrl(value: string) {
-    this._itemUrl = value;
+  set itemSlug(value: string) {
+    this._itemSlug = value;
   }
 
   public setFakeImage(image: string) {

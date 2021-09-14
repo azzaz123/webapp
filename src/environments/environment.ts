@@ -1,14 +1,16 @@
 import { Environment } from './environment.interface';
 import { environment as environmentBeta } from './environment.beta';
 import { dockNum } from './docknum';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 const environmentLocal: Environment = {
   production: false,
   name: 'local',
+  appDomain: `.dock${dockNum}.wallapop.com/`,
+  protocol: 'https://',
   baseUrl: `https://apigw.dock${dockNum}.wallapop.com/`,
   xmppDomain: `dock${dockNum}.wallapop.com`,
   wsUrl: `wss://dock${dockNum}.wallapop.com:5282/ws-xmpp`,
-  siteUrl: `https://es.dock${dockNum}.wallapop.com/`,
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
   cookieSuffix: 'Local',
   clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents',
@@ -19,6 +21,8 @@ const environmentLocal: Environment = {
   threatMetrixOrgId: '6ldgf22r',
   threatMetrixProfilingDomain: 'clear.wallapop.com',
 };
+
+export const localesWithNewSearchEnabled: APP_LOCALE[] = ['it'];
 
 export const environment = dockNum === 'beta' ? environmentBeta : environmentLocal;
 

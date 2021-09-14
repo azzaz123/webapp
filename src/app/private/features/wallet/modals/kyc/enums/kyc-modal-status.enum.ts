@@ -1,0 +1,5 @@
+export enum KYC_MODAL_STATUS {
+  IN_PROGRESS,
+  ERROR,
+  SUCCEED,
+}

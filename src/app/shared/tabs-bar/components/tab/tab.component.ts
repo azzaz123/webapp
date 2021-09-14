@@ -7,10 +7,10 @@ import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.int
   styleUrls: ['./tab.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TabComponent {
-  @Input() tabsBarElement: TabsBarElement;
+export class TabComponent<T> {
+  @Input() tabsBarElement: TabsBarElement<T>;
   @Input() isSelected = false;
-  @Output() onClick: EventEmitter<TabsBarElement> = new EventEmitter<TabsBarElement>();
+  @Output() onClick: EventEmitter<TabsBarElement<T>> = new EventEmitter<TabsBarElement<T>>();
 
   public handleClick() {
     this.onClick.emit(this.tabsBarElement);

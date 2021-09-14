@@ -9,6 +9,8 @@ import { FavouriteUserComponent } from './favourite-user.component';
 import { FavouriteIconModule } from '@public/shared/components/favourite-icon/favourite-icon.module';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { throwError } from 'rxjs';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 describe('FavouriteUserComponent', () => {
   let component: FavouriteUserComponent;
@@ -27,6 +29,10 @@ describe('FavouriteUserComponent', () => {
           useValue: {
             accessToken: undefined,
           },
+        },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
         },
       ],
     }).compileComponents();

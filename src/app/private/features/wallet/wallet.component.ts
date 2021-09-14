@@ -1,19 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { Observable } from 'rxjs';
-import { KYCBannerSpecifications } from './interfaces/kyc/kyc-banner.interface';
-import { KYCBannerService } from './services/kyc-banner/kyc-banner.service';
 import { WALLET_PATHS } from './wallet.routing.constants';
 
 @Component({
   selector: 'tsl-wallet',
   templateUrl: './wallet.component.html',
   styleUrls: ['./wallet.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WalletComponent implements OnInit {
-  public kycBannerSpecifications$: Observable<KYCBannerSpecifications>;
+  public KYCProperties$: Observable<KYCProperties>;
   public selectedNavLinkId: string;
   public navLinks: NavLink[] = [
     {
@@ -29,12 +33,13 @@ export class WalletComponent implements OnInit {
       display: $localize`:@@web_wallet_history_movements:Movements`,
     },
   ];
+  public ZENDESK_WALLET_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.WALLET_HELP);
 
-  //FIXME: These will be moved into a service
-  public zendeskWalletHelpArticleId: number = 360017172677;
-  public zendeskWalletHelpURL = `https://ayuda.wallapop.com/hc/es-es/articles/${this.zendeskWalletHelpArticleId}`;
-
-  constructor(private router: Router, private kycBannerService: KYCBannerService) {
+  constructor(
+    private router: Router,
+    private customerHelpService: CustomerHelpService,
+    private kycPropertiesService: KYCPropertiesService
+  ) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id || this.getLastLocationIdThatMatch(e);
@@ -43,7 +48,12 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.kycBannerSpecifications$ = this.kycBannerService.getSpecifications();
+    this.kycPropertiesService.get().subscribe();
+    this.KYCProperties$ = this.kycPropertiesService.KYCProperties$;
+  }
+
+  public KYCBannerSpecifications$(properties: KYCProperties): Observable<KYCBannerSpecifications> {
+    return this.kycPropertiesService.getBannerSpecificationsFromProperties(properties);
   }
 
   public onNavLinkClicked(navLinkId: string): void {

@@ -1,12 +1,12 @@
 <tsl-profile-form [profileForm]="billingForm" (onInit)="initForm()">
-  <form [formGroup]="billingForm" (submit)="onSubmit($event)">
+  <form [formGroup]="billingForm" (submit)="onSubmit($event)" class="BillingForm">
     <div class="box profile-box">
       <div class="content" [hidden]="loading">
         <div class="row mb-2 mb-md-4" *ngIf="!containerType">
           <div class="col-12">
             <h3 i18n="@@web_invoice_information">Invoice information</h3>
           </div>
-          <div class="content-subtitle col-11 offset-sm-0 offset-md-1">
+          <div class="content__subtitle col-11 offset-sm-0 offset-md-1">
             <span i18n="@@web_profile_pro_billing_subtitle">For services other than subscriptions (e.g. visibility packs) you won't receive invoices.</span>
           </div>
         </div>
@@ -14,23 +14,23 @@
           <div class="col-sm-12 col-md-12 offset-md-0">
             <div class="form-group row align-items-center">
               <label for="type" class="col-sm-12 col-md-5" i18n="@@web_profile_pro_billing_form_type">Type of registration</label>
-              <div class="col-sm-12 col-md-7 RegistrationType">
-                <div class="input-radio RegistrationType_radio">
+              <div class="col-sm-12 col-md-7 RegistrationType d-flex">
+                <div class="input-radio RegistrationType__radio">
                   <input type="radio"
                     formControlName="type"
                     value="natural"
                     id="type-natural"
                     required
                     [checked]="type === 'natural'">
-                  <span class="RegistrationType_title" i18n="@@web_profile_pro_billing_form_natural">Natural person</span>
+                  <span class="RegistrationType__title" i18n="@@web_profile_pro_billing_form_natural">Natural person</span>
                 </div>
-                <div class="input-radio RegistrationType_radio">
+                <div class="input-radio RegistrationType__radio">
                   <input type="radio"
                     formControlName="type"
                     value="legal"
                     id="type-legal"
                     [checked]="type !== 'natural'">
-                  <span class="RegistrationType_title" i18n="@@web_profile_pro_billing_form_legal">Legal person</span>
+                  <span class="RegistrationType__title" i18n="@@web_profile_pro_billing_form_legal">Legal person</span>
                 </div>
               </div>
             </div>
@@ -137,7 +137,7 @@
           </div>
         </div>
       </div>
-      <div class="row loading-center">
+      <div class="row loading-center d-block">
         <tsl-spinner [hidden]="!loading"></tsl-spinner>
       </div>
     </div>

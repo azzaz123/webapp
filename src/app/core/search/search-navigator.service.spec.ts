@@ -39,10 +39,6 @@ describe('SearchNavigatorService', () => {
         SearchQueryStringService,
         QueryStringLocationService,
         {
-          provide: 'SUBDOMAIN',
-          useValue: 'es',
-        },
-        {
           provide: CookieService,
           useValue: MockCookieService,
         },
@@ -82,11 +78,49 @@ describe('SearchNavigatorService', () => {
 
         expect(router.navigate).toHaveBeenCalledTimes(1);
         expect(router.navigate).toHaveBeenCalledWith(['/search'], {
+          replaceUrl: false,
           queryParams: {
             existingParam: 'existingParam',
             [FILTER_QUERY_PARAM_KEY.latitude]: '10',
             [FILTER_QUERY_PARAM_KEY.longitude]: '10',
             otherParam: 'otherParam',
+            [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
+          },
+        });
+      });
+    });
+
+    describe('and asked to replace url', () => {
+      it('should replace url', async () => {
+        await router.navigate(['/search'], {
+          queryParams: {
+            existingParam: 'existingParam',
+            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
+            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
+          },
+        });
+
+        spyOn(router, 'navigate');
+
+        service.navigate(
+          [
+            {
+              key: 'otherParam' as FILTER_QUERY_PARAM_KEY,
+              value: 'otherParam',
+            },
+          ],
+          filtersource,
+          false,
+          true
+        );
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith(['/search'], {
+          replaceUrl: true,
+          queryParams: {
+            otherParam: 'otherParam',
+            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
+            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
             [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
           },
         });
@@ -117,6 +151,7 @@ describe('SearchNavigatorService', () => {
 
         expect(router.navigate).toHaveBeenCalledTimes(1);
         expect(router.navigate).toHaveBeenCalledWith(['/search'], {
+          replaceUrl: false,
           queryParams: {
             [FILTER_QUERY_PARAM_KEY.latitude]: '10',
             [FILTER_QUERY_PARAM_KEY.longitude]: '10',
@@ -157,6 +192,7 @@ describe('SearchNavigatorService', () => {
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
           expect(router.navigate).toHaveBeenCalledWith(['/search'], {
+            replaceUrl: false,
             queryParams: {
               [FILTER_QUERY_PARAM_KEY.categoryId]: '200',
               [FILTER_QUERY_PARAM_KEY.latitude]: '10',
@@ -206,6 +242,7 @@ describe('SearchNavigatorService', () => {
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
           expect(router.navigate).toHaveBeenCalledWith(['/search'], {
+            replaceUrl: false,
             queryParams: {
               [FILTER_QUERY_PARAM_KEY.categoryId]: '200',
               [FILTER_QUERY_PARAM_KEY.operation]: 'rent',
@@ -248,6 +285,7 @@ describe('SearchNavigatorService', () => {
 
             expect(router.navigate).toHaveBeenCalledTimes(1);
             expect(router.navigate).toHaveBeenCalledWith(['/search'], {
+              replaceUrl: false,
               queryParams: {
                 [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
                 [FILTER_QUERY_PARAM_KEY.latitude]: '10',
@@ -289,6 +327,7 @@ describe('SearchNavigatorService', () => {
 
               expect(router.navigate).toHaveBeenCalledTimes(1);
               expect(router.navigate).toHaveBeenCalledWith(['/search'], {
+                replaceUrl: false,
                 queryParams: {
                   [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
                   [FILTER_QUERY_PARAM_KEY.latitude]: DEFAULT_LOCATIONS.en.latitude,
@@ -324,6 +363,7 @@ describe('SearchNavigatorService', () => {
 
             expect(router.navigate).toHaveBeenCalledTimes(1);
             expect(router.navigate).toHaveBeenCalledWith(['/search'], {
+              replaceUrl: false,
               queryParams: {
                 [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
                 [FILTER_QUERY_PARAM_KEY.latitude]: '10',

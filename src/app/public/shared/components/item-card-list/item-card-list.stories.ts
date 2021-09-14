@@ -45,7 +45,6 @@ export default {
         EventService,
         I18nService,
         NgxPermissionsService,
-        { provide: 'SUBDOMAIN', useValue: 'es' },
         { provide: APP_BASE_HREF, useValue: '/' },
       ],
     }),

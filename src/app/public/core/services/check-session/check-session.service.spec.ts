@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { SITE_URL } from '@configs/site-url.config';
 import { AccessTokenService } from '@core/http/access-token.service';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { CheckSessionService } from './check-session.service';
 
 describe('CheckSessionService', () => {
@@ -15,6 +17,10 @@ describe('CheckSessionService', () => {
           useValue: {
             accessToken: undefined,
           },
+        },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
         },
       ],
     });

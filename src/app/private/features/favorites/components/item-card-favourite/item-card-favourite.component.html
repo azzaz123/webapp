@@ -1,13 +1,16 @@
-<tsl-card (click)="goToItemDetail()">
-  <tsl-card-image>
-    <tsl-item-avatar [item]="item" size="full" fallbackLight="true"></tsl-item-avatar>
-  </tsl-card-image>
-  <tsl-card-content>
-    <h5 class="tsl-card-title"> {{item.salePrice | customCurrency:item.currencyCode}} </h5>
-    <span> {{item.title}} </span>
-  </tsl-card-content>
-  <tsl-card-footer (click)="removeFavoriteModal($event)">
-    <tsl-svg-icon src="/assets/icons/heart-full.svg" class="cart-footer-icon" [ngClass]="{active: item.favorited}"></tsl-svg-icon>
-    <div class="cart-footer-text" i18n="@@web_favorites_components_item_cart_favorite_200"> Remove </div>
-  </tsl-card-footer>
-</tsl-card>
+<a [href]="item.webSlug | itemDetailRoute" target="_blank">
+  <tsl-card>
+    <tsl-card-image>
+      <tsl-item-avatar [item]="item" size="full" fallbackLight="true"></tsl-item-avatar>
+    </tsl-card-image>
+    <tsl-card-content>
+      <h5 class="tsl-card-title"> {{item.salePrice | customCurrency:item.currencyCode}} </h5>
+      <span> {{item.title}} </span>
+    </tsl-card-content>
+    <tsl-card-footer (click)="removeFavoriteModal($event)">
+      <tsl-svg-icon src="/assets/icons/heart-full.svg" class="cart-footer-icon" [ngClass]="{active: item.favorited}">
+      </tsl-svg-icon>
+      <div class="cart-footer-text" i18n="@@web_favorites_components_item_cart_favorite_200"> Remove </div>
+    </tsl-card-footer>
+  </tsl-card>
+</a>

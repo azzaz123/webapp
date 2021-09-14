@@ -77,7 +77,6 @@ describe('ItemSoldDirective', () => {
               i18nError() {},
             },
           },
-          { provide: 'SUBDOMAIN', useValue: 'es' },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
