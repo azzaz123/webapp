@@ -1,5 +1,5 @@
 <div class="WalletHistoryMovements mt-3">
-  <tsl-tabs-bar [tabsBarElements]="this.tabBarElements"></tsl-tabs-bar>
+  <tsl-tabs-bar [tabsBarElements]="this.tabBarElements" (onChange)="onChangeFilter($event.value)"></tsl-tabs-bar>
   <div *ngIf="historicMovements$ | async as historicMovements">
     <div class="WalletHistoryMovements__year" *ngFor="let year of historicMovements.years">
       {{year.title}}

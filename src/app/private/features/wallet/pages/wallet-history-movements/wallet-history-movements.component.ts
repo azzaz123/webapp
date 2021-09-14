@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletBalanceHistoryService } from '@api/bff/delivery/wallets/balance_history/wallet-balance-history.service';
 import { WalletMovementsHistory } from '@api/core/model/wallet/history/movements-history';
+import { WALLET_HISTORY_FILTERS } from '@api/core/model/wallet/history/wallet-history-filters.enum';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 import { Observable } from 'rxjs';
-import { WALLET_HISTORY_FILTERS } from './wallet-history-filters.enum';
 
 @Component({
   selector: 'tsl-wallet-history-movements',
@@ -23,5 +23,9 @@ export class WalletHistoryMovementsComponent implements OnInit {
 
   ngOnInit() {
     this.historicMovements$ = this.walletBalanceHistoryService.get(0);
+  }
+
+  public onChangeFilter(filter: WALLET_HISTORY_FILTERS) {
+    this.historicMovements$ = this.walletBalanceHistoryService.get(0, filter);
   }
 }
