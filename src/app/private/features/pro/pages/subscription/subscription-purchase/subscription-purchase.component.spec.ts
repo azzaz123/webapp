@@ -40,6 +40,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
 import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { of, throwError } from 'rxjs';
+import { SubscriptionPurchaseHeaderComponent } from '../subscription-purchase-header/subscription-purchase-header.component';
 import { SubscriptionPurchaseComponent, PAYMENT_SUCCESSFUL_CODE } from './subscription-purchase.component';
 
 describe('SubscriptionPurchaseComponent', () => {
@@ -56,7 +57,7 @@ describe('SubscriptionPurchaseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionPurchaseComponent, SubscriptionPurchaseSuccessComponent],
+      declarations: [SubscriptionPurchaseComponent, SubscriptionPurchaseSuccessComponent, SubscriptionPurchaseHeaderComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
@@ -493,16 +494,20 @@ describe('SubscriptionPurchaseComponent', () => {
         );
       }));
     });
-    describe('Categories modal', () => {
-      describe('and click open modal', () => {
-        it('should open modal', () => {
-          spyOn(modalService, 'open').and.callThrough();
+  });
+  describe('Categories modal', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+    describe('and click open modal', () => {
+      it('should open modal', () => {
+        spyOn(modalService, 'open').and.callThrough();
+        const header = fixture.debugElement.query(By.directive(SubscriptionPurchaseHeaderComponent));
 
-          component.openCategoriesModal();
+        header.componentInstance.clickLink.emit();
 
-          expect(modalService.open).toHaveBeenCalledWith(CategoryListingModalComponent, {
-            windowClass: 'category-listing',
-          });
+        expect(modalService.open).toHaveBeenCalledWith(CategoryListingModalComponent, {
+          windowClass: 'category-listing',
         });
       });
     });

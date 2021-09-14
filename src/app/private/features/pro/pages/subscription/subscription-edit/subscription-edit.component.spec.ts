@@ -23,6 +23,7 @@ import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/ca
 import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 import { of, throwError } from 'rxjs';
+import { SubscriptionPurchaseHeaderComponent } from '../subscription-purchase-header/subscription-purchase-header.component';
 import { PAYMENT_SUCCESSFUL_CODE, SubscriptionEditComponent } from './subscription-edit.component';
 
 describe('SubscriptionEditComponent', () => {
@@ -37,7 +38,7 @@ describe('SubscriptionEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionEditComponent, SubscriptionPurchaseSuccessComponent],
+      declarations: [SubscriptionEditComponent, SubscriptionPurchaseSuccessComponent, SubscriptionPurchaseHeaderComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
@@ -238,8 +239,9 @@ describe('SubscriptionEditComponent', () => {
     describe('and click open modal', () => {
       it('should open modal', () => {
         spyOn(modalService, 'open').and.callThrough();
+        const header = fixture.debugElement.query(By.directive(SubscriptionPurchaseHeaderComponent));
 
-        component.openCategoriesModal();
+        header.componentInstance.clickLink.emit();
 
         expect(modalService.open).toHaveBeenCalledWith(CategoryListingModalComponent, {
           windowClass: 'category-listing',
