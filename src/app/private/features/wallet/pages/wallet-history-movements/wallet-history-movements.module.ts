@@ -6,11 +6,19 @@ import { WalletBalanceHistoryModule } from '@api/bff/delivery/wallets/balance_hi
 import { WalletHistoryMovementComponent } from './components/wallet-history-movement/wallet-history-movement.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { WalletHistoryMovementsUIService } from './services/wallet-history-movements-ui.service.spec/wallet-history-movements-ui.service';
+import { InfiniteScrollModule } from '@shared/infinite-scroll/infinite-scroll.module';
 
 const walletHistoryMovementsNonRoutedComponents = [WalletHistoryMovementComponent];
 
 @NgModule({
-  imports: [CommonModule, WalletBalanceHistoryModule, WalletHistoryMovementsRoutingModule, SvgIconModule, TabsBarModule],
+  imports: [
+    CommonModule,
+    WalletBalanceHistoryModule,
+    WalletHistoryMovementsRoutingModule,
+    SvgIconModule,
+    TabsBarModule,
+    InfiniteScrollModule,
+  ],
   declarations: [walletHistoryMovementsRoutedComponents, walletHistoryMovementsNonRoutedComponents],
   providers: [WalletHistoryMovementsUIService],
 })

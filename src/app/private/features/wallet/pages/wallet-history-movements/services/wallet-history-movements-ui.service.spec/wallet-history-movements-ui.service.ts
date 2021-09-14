@@ -6,10 +6,9 @@ import { WalletMovementsHistory } from '../../interfaces/wallet-movements-histor
 
 @Injectable()
 export class WalletHistoryMovementsUIService {
-  public map(input: WalletMovementsHistoryList): WalletMovementsHistory {
+  public map(input: WalletMovementHistoryDetail[]): WalletMovementsHistory {
     const result = { years: [] };
-    const { list } = input;
-    list.forEach((balanceHistoryElement: WalletMovementHistoryDetail) => {
+    input.forEach((balanceHistoryElement: WalletMovementHistoryDetail) => {
       const yearFromElement = this.getYearFromHistoryElement(balanceHistoryElement);
       const monthFromElement = this.getMonthFromHistoryElement(balanceHistoryElement);
 
