@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { InvoiceTransaction } from '@core/invoice/invoice.interface';
 import { InvoiceService } from '@core/invoice/invoice.service';
+import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 import { finalize } from 'rxjs/operators';
 
 export enum InvoiceRequestStatus {
@@ -44,6 +45,12 @@ export class InvoiceHistoryComponent implements OnInit {
       limit: START_LIMIT,
     },
   };
+  public tabsBarElements: TabsBarElement<TRANSACTIONS_FILTERS>[] = [
+    { value: TRANSACTIONS_FILTERS.ALL, label: $localize`:@@web_invoice_history_all:All` },
+    { value: TRANSACTIONS_FILTERS.INVOICES, label: $localize`:@@web_invoice_history_invoices:Invoices` },
+    { value: TRANSACTIONS_FILTERS.CREDIT, label: $localize`:@@web_invoice_history_credit:Credit memos` },
+  ];
+
   private LOAD_MORE_QUANTITY = 5;
   private currencies = {
     EUR: '€',
@@ -73,14 +80,6 @@ export class InvoiceHistoryComponent implements OnInit {
     if (this.invoiceTransactions?.length) {
       this.filterConfig[filter].filterInvoices();
     }
-  }
-
-  public getButtonClass(filter: TRANSACTIONS_FILTERS): string {
-    let cssClass = 'btn invoice';
-    if (filter === this.selectedFilter) {
-      cssClass += ' invoice--selected';
-    }
-    return cssClass;
   }
 
   protected isShown(keyMessage: InvoiceRequestStatus): boolean {
