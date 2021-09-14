@@ -17,11 +17,9 @@
     overflow: auto;
     tsl-select-option {
       pointer-events: none;
-      ::ng-deep > * {
-        margin: 0 $spacing-xxxl;
-        padding: 0 $spacing-ml;
-        border-bottom: 1px solid $blue-grey-5;
-      }
+      margin: 0 $spacing-xxxl;
+      padding: 0 $spacing-ml;
+      border-bottom: 1px solid $blue-grey-5;
     }
   }
 }
@@ -45,10 +43,8 @@
     }
     &__options {
       tsl-select-option {
-        ::ng-deep > * {
-          margin: 0 0;
-          padding: 0 $spacing-ms;
-        }
+        margin: 0 0;
+        padding: 0 $spacing-ms;
       }
     }
   }
