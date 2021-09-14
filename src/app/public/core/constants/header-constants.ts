@@ -3,4 +3,6 @@ export const ACCEPT_HEADERS = {
   CATEGORIES_V2: 'application/vnd.categories-v2+json',
 };
 
+export const HEADER_NAMES = {
+  ACCEPT: 'Accept',
 };
