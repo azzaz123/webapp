@@ -16,6 +16,7 @@ import { API_VERSION_URL } from '@public/core/constants/api-version-url-constant
 import { FILTER_OPTIONS_API_ENDPOINTS } from '@public/shared/services/filter-option/configurations/filter-options-api-endpoints';
 import { CategoryResponse } from '@public/shared/services/filter-option/interfaces/option-responses/category.response';
 import { map } from 'rxjs/operators';
+import { ACCEPT_HEADERS, HEADER_NAMES } from '@public/core/constants/header-constants';
 
 @Component({
   selector: 'tsl-categories-filter',
@@ -154,24 +155,30 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private getCategories(): Observable<CategoriesFilterOption[]> {
-    return this.httpClient.get<CategoryResponse[]>(`${API_VERSION_URL.v3}${FILTER_OPTIONS_API_ENDPOINTS.CATEGORIES}`).pipe(
-      map((categories: CategoryResponse[]) => {
-        const formattedCategories: CategoriesFilterOption[] = [CATEGORY_OPTIONS[0]];
-
-        categories.forEach((categoryResponse) => {
-          const hardcodedCategory = CATEGORY_OPTIONS.find((category) => category.value === categoryResponse.category_id.toString());
-
-          if (hardcodedCategory) {
-            formattedCategories.push({
-              value: categoryResponse.category_id.toString(),
-              label: categoryResponse.name,
-              icon: hardcodedCategory.icon,
-            });
-          }
-        });
-
-        return formattedCategories;
+    return this.httpClient
+      .get<CategoryResponse[]>(`${API_VERSION_URL.v3}${FILTER_OPTIONS_API_ENDPOINTS.CATEGORIES}`, {
+        headers: {
+          [HEADER_NAMES.ACCEPT]: ACCEPT_HEADERS.CATEGORIES_V2,
+        },
       })
-    );
+      .pipe(
+        map((categories: CategoryResponse[]) => {
+          const formattedCategories: CategoriesFilterOption[] = [CATEGORY_OPTIONS[0]];
+
+          categories.forEach((categoryResponse) => {
+            const hardcodedCategory = CATEGORY_OPTIONS.find((category) => category.value === categoryResponse.category_id.toString());
+
+            if (hardcodedCategory) {
+              formattedCategories.push({
+                value: categoryResponse.category_id.toString(),
+                label: categoryResponse.name,
+                icon: hardcodedCategory.icon,
+              });
+            }
+          });
+
+          return formattedCategories;
+        })
+      );
   }
 }
