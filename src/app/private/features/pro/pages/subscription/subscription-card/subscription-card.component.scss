@@ -34,6 +34,7 @@
 
   &__info {
     font-size: $font-size-s;
+    flex-grow: 1;
     &--edit {
       color: $walla-main;
       text-align: center;
@@ -52,10 +53,6 @@
 
   &__subtitle {
     min-height: 48px;
-  }
-
-  &__header {
-    flex-grow: 1;
   }
 
   hr {
