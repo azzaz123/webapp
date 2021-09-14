@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { TabsBarElement } from '../../interfaces/tabs-bar-element.interface';
 
 @Component({
@@ -17,7 +17,7 @@ export class TabsBarComponent<T> {
   @Output() onChange: EventEmitter<TabsBarElement<T>> = new EventEmitter<TabsBarElement<T>>();
 
   private selectedTabBarElement: TabsBarElement<T>;
-  private readonly _tabsBarElements$: BehaviorSubject<TabsBarElement<T>[]> = new BehaviorSubject<TabsBarElement<T>[]>(null);
+  private readonly _tabsBarElements$: ReplaySubject<TabsBarElement<T>[]> = new ReplaySubject<TabsBarElement<T>[]>(1);
   public get tabsBarElements$(): Observable<TabsBarElement<T>[]> {
     return this._tabsBarElements$.asObservable();
   }
