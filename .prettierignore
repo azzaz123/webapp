@@ -12,6 +12,8 @@ githooks
 *.yml
 *.json
 
+/src/richmedia/
+
 # TODO: Apply prettier for HTML templates in each feature
 
 # PROs
