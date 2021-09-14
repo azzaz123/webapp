@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { from, Observable, ReplaySubject, throwError } from 'rxjs';
+import { BehaviorSubject, from, Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { VIDEO_PERMISSIONS_STATUS } from './video-permissions-status.interface';
 
 @Injectable()
 export class RequestVideoPermissionsService {
-  private videoPermissionsSubject: ReplaySubject<VIDEO_PERMISSIONS_STATUS> = new ReplaySubject<VIDEO_PERMISSIONS_STATUS>(1);
+  private videoPermissionsSubject: BehaviorSubject<VIDEO_PERMISSIONS_STATUS> = new BehaviorSubject<VIDEO_PERMISSIONS_STATUS>(
+    VIDEO_PERMISSIONS_STATUS.LOADING
+  );
 
   public get userVideoPermissions$(): Observable<VIDEO_PERMISSIONS_STATUS> {
     return this.videoPermissionsSubject.asObservable();
@@ -16,7 +18,6 @@ export class RequestVideoPermissionsService {
   }
 
   public request(): Observable<MediaStream | never> {
-    this.userVideoPermissions = VIDEO_PERMISSIONS_STATUS.LOADING;
     return this.checkNavigatorCompatibility({
       video: { facingMode: 'environment' },
     }).pipe(

@@ -3,7 +3,7 @@
         <div class="col">
             <a class="KYCUploadImages__back d-flex" (click)="handleBack()">
                 <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
-                <span class="ml-3">{{documentType}}</span>
+                <span class="ml-3">{{headerText}}</span>
             </a>
         </div>
     </div>
@@ -19,17 +19,17 @@
                 <div class="KYCUploadImages__image KYCUploadImages__image--round col col-sm-10  d-flex align-items-center justify-content-center p-0">
                     <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
                     <tsl-svg-icon *ngIf="showCameraSvg$ | async" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
-                    <canvas *ngIf="isCurrentImageDefined$ | async" id="definedImage" #definedImage class="KYCUploadImages__image--round h-100 w-100"></canvas>
+                    <canvas id="definedImage" #definedImage class="KYCUploadImages__image--round h-100 w-100" [ngClass]="{'d-none': (isCurrentImageDefined$ | async) === false}"></canvas>
                     <video *ngIf="isShootImageMethod" autoplay playsInline muted
                         id="userCamera" #userCamera
                         [src]="(videoStream$ | async)"
                         class="KYCUploadImages__image__video KYCUploadImages__image--round h-100 w-100"
-                        [ngClass]="{'d-none': isCurrentImageDefined | async}"></video>
+                        [ngClass]="{'d-none': isCurrentImageDefined$ | async}"></video>
                 </div>
             </div>
             <div class="row text-center justify-content-center">
-                <tsl-button *ngIf="showTakeImageButton" id="takeImageButton" class="col-12 col-md-7 p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage}}</tsl-button>
-                <tsl-button *ngIf="showRetakeImageButton" id="retakeImageButton" class="col-12 col-md-7 p-0" className="btn-gray btn-block" (click)="removeCurrentImage()">{{retakeImageMessage}}</tsl-button>
+                <tsl-button *ngIf="showTakeImageButton$ | async" id="takeImageButton" class="col-12 col-md-7 p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage}}</tsl-button>
+                <tsl-button *ngIf="showRetakeImageButton$ | async" id="retakeImageButton" class="col-12 col-md-7 p-0" className="btn-gray btn-block" (click)="removeCurrentImage()">{{retakeImageMessage}}</tsl-button>
             </div>
         </div>
         <div class="KYCUploadImages__bottomContainer row position-sticky mt-4">

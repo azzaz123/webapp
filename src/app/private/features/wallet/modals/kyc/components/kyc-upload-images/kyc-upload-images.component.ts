@@ -25,7 +25,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
   @Input() imagesNeeded: KYCImagesNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
-  @Input() documentType: string;
+  @Input() headerText: string;
 
   @Output() endVerification: EventEmitter<KYCImages> = new EventEmitter();
   @Output() goBack: EventEmitter<KYCImages> = new EventEmitter();
@@ -42,26 +42,27 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     frontSide: null,
     backSide: null,
   });
-  public isCurrentImageDefined$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public isCurrentImageDefined$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isCurrentImageDefined);
 
   public title$: Observable<string> = this.buildTitleObservable();
   public subtitle$: Observable<string> = this.buildSubtitleObservable();
 
   public videoPermissions$: Observable<VIDEO_PERMISSIONS_STATUS> = this.buildVideoPermissionsObservable();
+  public videoStream$: Observable<MediaStream | null>;
+
   public showImageBlock$: Observable<boolean> = this.buildShowImageBlockObservable();
   public showCameraSvg$: Observable<boolean> = this.buildShowCameraSvgObservable();
   public showTakeImageButton$: Observable<boolean> = this.buildShowTakeImageButtonObservable();
   public showRetakeImageButton$: Observable<boolean> = this.buildShowRetakeImageButtonObservable();
   public isContinueButtonActive$: Observable<boolean> = this.buildIsContinueButtonActiveObservable();
-  public videoStream$: Observable<MediaStream | null>;
 
   constructor(private requestVideoPermissionsService: RequestVideoPermissionsService) {}
 
   ngOnInit(): void {
-    this.videoStream$ = this.requestVideoPermissionsService.request();
-    this.isCurrentImageDefined$.next(this.buildIsCurrentImageDefined());
+    if (this.isShootImageMethod) {
+      this.requestVideoStream();
+    }
   }
-
   ngOnDestroy(): void {
     const cameraStream = this.userCamera?.nativeElement?.srcObject;
 
@@ -135,6 +136,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
       frontSide: null,
       backSide: null,
     });
+    this.isCurrentImageDefined$.next(this.isCurrentImageDefined);
 
     if (this.activeStep === 2) {
       this.activeStep = 1;
@@ -160,6 +162,16 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     this.endVerification.emit(this.images$.value);
   }
 
+  private get isCurrentImageDefined(): boolean {
+    const images = this.images$.value;
+
+    if (this.twoImagesNeeded) {
+      return this.activeStep === 1 ? !!images.frontSide : !!images.backSide;
+    } else {
+      return this.isFrontSideImageDefined;
+    }
+  }
+
   private get twoImagesNeeded(): boolean {
     return this.imagesNeeded === 2;
   }
@@ -177,6 +189,10 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     const secondImage = this.images$.value.backSide;
 
     return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
+  }
+
+  private requestVideoStream(): void {
+    this.videoStream$ = this.requestVideoPermissionsService.request();
   }
 
   private uploadImageAndUpdateIt(file: File, imageSide: KYC_IMAGES): void {
@@ -233,6 +249,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
       ...this.images$.value,
       frontSide: newImage,
     });
+    this.isCurrentImageDefined$.next(this.isCurrentImageDefined);
   }
 
   private updateBackSideImage(newImage: string): void {
@@ -240,6 +257,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
       ...this.images$.value,
       backSide: newImage,
     });
+    this.isCurrentImageDefined$.next(this.isCurrentImageDefined);
   }
 
   private endCameraStreamTracking(cameraStream: MediaStream): void {
@@ -349,15 +367,5 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
         return (isLoadingOrAccepted && this.isShootImageMethod) || this.isUploadImageMethod;
       })
     );
-  }
-
-  private buildIsCurrentImageDefined(): boolean {
-    const images = this.images$.value;
-
-    if (this.twoImagesNeeded) {
-      return this.activeStep === 1 ? !!images.frontSide : !!images.backSide;
-    } else {
-      return this.isFrontSideImageDefined;
-    }
   }
 }
