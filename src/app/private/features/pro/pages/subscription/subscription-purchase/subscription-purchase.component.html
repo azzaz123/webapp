@@ -3,20 +3,19 @@
 </ng-container>
 <ng-template #purchaseInProgress>
     <div class="SubscriptionPurchase">
+        <div class="d-flex mb-3">
+            <div class="d-flex align-items-center SubscriptionPurchase__back" (click)="onClearSubscription()">
+                <tsl-svg-icon class="mr-2" src="/assets/icons/back-arrow.svg"></tsl-svg-icon><span i18n="@@web_catalog_pages_checkout_674">Back</span>
+            </div>
+        </div>
         <div class="GenericCard">
             <div class="d-flex justify-content-between">
                 <span class="GenericCard__title" i18n="@@web_wallapop_pro_subscription_title">Boost your online business with
                     Wallapop PRO</span>
-                    <span class="GenericCard__link text-right d-md-inline d-none" i18n="@@web_change_subscription"
-                    (click)="onChageSubscription()">Change
-                    subscription</span>
                 </div>
                 <div class="GenericCard__subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a subscription to take your
                     sales to the next level</div>
                     <tsl-subscription-purchase-header [subscription]="subscription" [benefits]="benefits" (clickLink)="openCategoriesModal()"> </tsl-subscription-purchase-header>
-                    <div class="GenericCard__link d-md-none mt-3" i18n="@@web_change_subscription"
-                    (click)="onChageSubscription()">Change
-                    subscription</div>
     </div>
     <div *ngIf="subscription.tiers.length > 1" class="GenericCard">
         <ng-container *ngIf="basicTier; else noBasicTierSelector">

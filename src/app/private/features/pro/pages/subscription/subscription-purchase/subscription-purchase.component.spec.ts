@@ -246,14 +246,14 @@ describe('SubscriptionPurchaseComponent', () => {
       });
     });
   });
-  describe('Click change subscription', () => {
+  describe('Click back button', () => {
     it('should emit change subscription', () => {
-      spyOn(component.unselectSubcription, 'emit');
+      spyOn(component.unselectSubscription, 'emit');
 
-      component.onChageSubscription();
+      component.onClearSubscription();
 
-      expect(component.unselectSubcription.emit).toHaveBeenCalledTimes(1);
-      expect(component.unselectSubcription.emit).toHaveBeenCalledWith();
+      expect(component.unselectSubscription.emit).toHaveBeenCalledTimes(1);
+      expect(component.unselectSubscription.emit).toHaveBeenCalledWith();
     });
   });
   describe('Click scroll to invoice', () => {

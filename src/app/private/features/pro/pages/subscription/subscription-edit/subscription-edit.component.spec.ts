@@ -235,6 +235,16 @@ describe('SubscriptionEditComponent', () => {
       });
     });
   });
+  describe('Click back button', () => {
+    it('should emit change subscription', () => {
+      spyOn(component.unselectSubscription, 'emit');
+
+      component.onClearSubscription();
+
+      expect(component.unselectSubscription.emit).toHaveBeenCalledTimes(1);
+      expect(component.unselectSubscription.emit).toHaveBeenCalledWith();
+  });
+});
   describe('Categories modal', () => {
     describe('and click open modal', () => {
       it('should open modal', () => {

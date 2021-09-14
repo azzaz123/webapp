@@ -350,6 +350,19 @@ describe('SubscriptionComponent', () => {
 
       expect(component.loading).toBe(false);
     }));
+
+    it('should clear data', () => {
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
+
+      component.manageSubscription(SUBSCRIPTIONS[0]);
+      component.onunselectSubscription();
+      fixture.detectChanges();
+
+      const newSubscriptionComponent = fixture.debugElement.query(By.directive(MockNewSubscriptionComponent));
+      expect(newSubscriptionComponent).toBeFalsy();
+      expect(component.newSubscription).toBeFalsy();
+    });
   });
 
   describe('Edit subscription flow', () => {
@@ -381,6 +394,18 @@ describe('SubscriptionComponent', () => {
 
       expect(modalService.open).not.toHaveBeenCalled();
     }));
+
+    it('should show clear data', () => {
+      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
+
+      component.manageSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED);
+      component.onunselectSubscription();
+      fixture.detectChanges();
+
+      const editSubscriptionComponent = fixture.debugElement.query(By.directive(MockEditSubscriptionComponent));
+      expect(editSubscriptionComponent).toBeFalsy();
+      expect(component.editSubscription).toBeFalsy();
+    });
   });
 
   describe('and purchase is succesful', () => {

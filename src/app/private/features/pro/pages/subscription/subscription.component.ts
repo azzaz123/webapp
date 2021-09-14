@@ -56,7 +56,7 @@ export class SubscriptionsComponent implements OnInit {
     this.trackParamEvents();
   }
 
-  public onUnselectSubcription(): void {
+  public onunselectSubscription(): void {
     this.newSubscription = null;
     this.editSubscription = null;
   }
@@ -74,6 +74,12 @@ export class SubscriptionsComponent implements OnInit {
     }
   }
 
+  public subscriptionChangeSuccessful(redirect?: string): void {
+    this.onunselectSubscription();
+    this.loading = true;
+    this.user.featured ? this.isSubscriptionUpdated(redirect) : this.isUserUpdated(redirect);
+  }
+
   private openSubscriptionPage(subscription: SubscriptionsResponse): void {
     this.subscriptionsService.isStripeSubscription(subscription)
       ? this.openEditSubscription(subscription)
@@ -83,17 +89,6 @@ export class SubscriptionsComponent implements OnInit {
   private openEditSubscription(subscription: SubscriptionsResponse): void {
     this.editSubscription = subscription;
     this.trackEditSubscription(subscription);
-  }
-
-  public subscriptionChangeSuccessful(redirect?: string): void {
-    this.newSubscription = null;
-    this.editSubscription = null;
-    this.loading = true;
-    if (this.user.featured) {
-      this.isSubscriptionUpdated(redirect);
-      return;
-    }
-    this.isUserUpdated(redirect);
   }
 
   private initData(): void {

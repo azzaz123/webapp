@@ -36,6 +36,7 @@ import { HeaderModule } from '@shared/header/header.module';
 import { SubscriptionPurchaseSuccessComponent } from './components/subscription-purchase-success/subscription-purchase-success.component';
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { SubscriptionEditComponent } from './pages/subscription/subscription-edit/subscription-edit.component';
+import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
 import { CategoryListingModalComponent } from './modal/category-listing-modal/category-listing-modal.component';
 import { SelectOptionModule } from '@shared/form/components/select/select-option/select-option.module';
 
@@ -87,6 +88,7 @@ import { SelectOptionModule } from '@shared/form/components/select/select-option
     SpinnerModule,
     HeaderModule,
     UserAvatarModule,
+    TabsBarModule,
     SelectOptionModule,
   ],
 })
