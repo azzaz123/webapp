@@ -17,7 +17,7 @@ export interface WalletBalanceHistoryApi {
       reserved: boolean;
       title: string;
     } | null;
-    type: 'TRANSFER_IN' | 'TRANSFER_OUT' | 'TRANSFER_TO_BANK';
+    type: 'TRANSFER_IN' | 'TRANSFER_REFUND' | 'TRANSFER_OUT' | 'TRANSFER_TO_BANK';
     user: null;
   }[];
   next_page: null;
