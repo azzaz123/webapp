@@ -57,6 +57,7 @@ describe('KYCUploadImagesComponent', () => {
   const retakeImageButtonSelector = '#retakeImageButton';
   const continueVerificationButtonSelector = '#continueVerificationButton';
   const endVerificationButtonSelector = '#endVerificationButton';
+  const uploadImageSelector = '#uploadImage';
   const userCameraSelector = '#userCamera';
   const definedImageSelector = '#definedImage';
   const backButtonSelector = '.KYCUploadImages__back';
@@ -778,9 +779,97 @@ describe('KYCUploadImagesComponent', () => {
       });
 
       describe('and we are on the front side image step', () => {
+        it('should show the continue verification button', () => {
+          fixture.detectChanges();
+
+          expectContinueButtonInDOM(true);
+        });
+
+        it('should NOT show the end verification button', () => {
+          fixture.detectChanges();
+
+          expectEndVerificationButtonInDOM(false);
+        });
+
         describe('and the front side image is not defined', () => {
           beforeEach(() => {
+            component.images$.next(MOCK_EMPTY_KYC_IMAGES);
+
             fixture.detectChanges();
+          });
+
+          it('should NOT show an error banner', () => {
+            fixture.detectChanges();
+
+            const banner = de.query(By.directive(BannerComponent));
+            expect(banner).toBeFalsy();
+          });
+
+          it('should show the correct title', () => {
+            const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_title:Take a photo of the front side of your ID document`;
+
+            expectShowCorrectTitle(expectedTitle);
+          });
+
+          it('should show the correct subtitle', () => {
+            const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Go somewhere with good lighting, focus the camera on the document, and take the best photo possible.`;
+
+            expectShowCorrectSubtitle(expectedSubtitle);
+          });
+
+          it('should show the take image button', () => {
+            expectTakeImageButtonInDOM(true);
+          });
+
+          it('should show the correct take image message in the button', () => {
+            const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_photo_button:Take front side photo`;
+            expectTakeImageButtonCorrectMessage(expectedMessage);
+          });
+
+          it('should NOT show the retake image button', () => {
+            expectRetakeImageButtonInDOM(false);
+          });
+
+          it('should NOT show the user camera', () => {
+            expectCameraInDOM(false);
+          });
+
+          it('should NOT show the front side image', () => {
+            expectDefinedImageInDOM(false);
+          });
+
+          it('should disable the continue button', () => {
+            expectContinueButtonDisabled(true);
+          });
+
+          describe('and they click on the upload front side image button', () => {
+            beforeEach(() => {
+              spyOn(component.definedImageCanvas.nativeElement.getContext('2d'), 'drawImage');
+              spyOn(de.query(By.css(uploadImageSelector)).nativeElement, 'click');
+
+              de.query(By.css(takeImageButtonSelector)).nativeElement.click();
+            });
+
+            it('should open the input file upload', () => {
+              expect(de.query(By.css(uploadImageSelector)).nativeElement.click).toHaveBeenCalledTimes(1);
+            });
+
+            describe('and the user selects a front side image', () => {
+              beforeEach(() => {
+                triggerChangeImageUpload(true);
+              });
+
+              it('should draw the front side image on the screen', () => {
+                expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+              });
+
+              it('should emit the selected image', () => {
+                expect(component.images$.value).toStrictEqual({
+                  ...component.images$.value,
+                  frontSide: MOCK_BASE_64_SMALL_IMAGE,
+                });
+              });
+            });
           });
         });
 
@@ -916,5 +1005,13 @@ describe('KYCUploadImagesComponent', () => {
     const retakeImageButton = de.query(By.css(retakeImageButtonSelector));
 
     expectIsDefined ? expect(retakeImageButton).toBeTruthy() : expect(retakeImageButton).toBeFalsy();
+  }
+
+  function triggerChangeImageUpload(isImageSelected: boolean): void {
+    const MOCK_EVENT = isImageSelected ? MOCK_JPEG_IMG_EVENT() : MOCK_WITHOUT_JPEG_IMG_EVENT();
+    spyOn(Image.prototype, 'addEventListener').and.callFake((p1, callback) => callback());
+    spyOn(FileReader.prototype, 'addEventListener').and.callFake((p1, callback) => callback(MOCK_EVENT));
+
+    de.query(By.css(uploadImageSelector)).triggerEventHandler('change', MOCK_EVENT);
   }
 });
