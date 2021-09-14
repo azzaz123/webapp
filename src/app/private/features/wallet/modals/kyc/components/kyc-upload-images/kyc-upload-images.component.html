@@ -20,7 +20,7 @@
                     <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
                     <tsl-svg-icon *ngIf="showCameraSvg$ | async" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
                     <canvas id="definedImage" #definedImage class="KYCUploadImages__image--round h-100 w-100" [ngClass]="{'d-none': (isCurrentImageDefined$ | async) === false}"></canvas>
-                    <video *ngIf="isShootImageMethod" autoplay playsInline muted
+                    <video *ngIf="isShootImageMethod && (videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.ACCEPTED" autoplay playsInline muted
                         id="userCamera" #userCamera
                         [src]="(videoStream$ | async)"
                         class="KYCUploadImages__image__video KYCUploadImages__image--round h-100 w-100"
@@ -28,23 +28,23 @@
                 </div>
             </div>
             <div class="row text-center justify-content-center">
-                <tsl-button *ngIf="showTakeImageButton$ | async" id="takeImageButton" class="col-12 col-md-7 p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage}}</tsl-button>
-                <tsl-button *ngIf="showRetakeImageButton$ | async" id="retakeImageButton" class="col-12 col-md-7 p-0" className="btn-gray btn-block" (click)="removeCurrentImage()">{{retakeImageMessage}}</tsl-button>
+                <tsl-button *ngIf="showTakeImageButton$ | async" id="takeImageButton" class="col-12 col-md-7 p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage$ | async}}</tsl-button>
+                <tsl-button *ngIf="showRetakeImageButton$ | async" id="retakeImageButton" class="col-12 col-md-7 p-0" className="btn-gray btn-block" (click)="removeCurrentImage()">{{retakeImageMessage$ | async}}</tsl-button>
             </div>
         </div>
         <div class="KYCUploadImages__bottomContainer row position-sticky mt-4">
             <div class="col">
                 <div class="row text-center justify-content-center">
                     <tsl-button
-                        *ngIf="showContinueButton" id="continueVerificationButton"
+                        *ngIf="showContinueButton$ | async" id="continueVerificationButton"
                         [disabled]="(isContinueButtonActive$ | async) === false"
                         i18n="@@kyc_take_photo_view_continue_button"
                         class="col-12 col-md-7"
                         className="btn-primary btn-block"
                         (click)="goToDefineBackImage()">Continue</tsl-button>
                     <tsl-button
-                        *ngIf="showEndVerificationButton" id="endVerificationButton"
-                        [disabled]="!allImagesAreDefined"
+                        *ngIf="showEndVerificationButton$ | async" id="endVerificationButton"
+                        [disabled]="(isEndVerificationButtonActive$ | async) === false"
                         i18n="@@kyc_end_verification"
                         class="col-12 col-md-7"
                         className="btn-primary btn-block"

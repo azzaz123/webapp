@@ -7,7 +7,7 @@ import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 import { RequestVideoPermissionsService } from '@shared/services/request-video-permissions/request-video-permissions.service';
 import { VIDEO_PERMISSIONS_STATUS } from '@shared/services/request-video-permissions/video-permissions-status.interface';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
 
@@ -30,7 +30,6 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   @Output() endVerification: EventEmitter<KYCImages> = new EventEmitter();
   @Output() goBack: EventEmitter<KYCImages> = new EventEmitter();
 
-  public activeStep: KYCImagesNeeded = 1;
   public readonly MIME_TYPES = MIME_TYPES;
   public readonly VIDEO_PERMISSIONS_STATUS = VIDEO_PERMISSIONS_STATUS;
   public readonly errorBannerSpecifications: NgbAlertConfig = {
@@ -38,14 +37,16 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     dismissible: false,
   };
 
-  public images$: BehaviorSubject<KYCImages> = new BehaviorSubject<KYCImages>({
+  public readonly activeStep$: BehaviorSubject<KYCImagesNeeded> = new BehaviorSubject<KYCImagesNeeded>(1);
+  public readonly images$: BehaviorSubject<KYCImages> = new BehaviorSubject<KYCImages>({
     frontSide: null,
     backSide: null,
   });
-  public isCurrentImageDefined$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isCurrentImageDefined);
 
   public title$: Observable<string> = this.buildTitleObservable();
   public subtitle$: Observable<string> = this.buildSubtitleObservable();
+  public takeImageMessage$: Observable<string> = this.buildTakeImageMessageObservable();
+  public retakeImageMessage$: Observable<string> = this.buildRetakeImageMessageObservable();
 
   public videoPermissions$: Observable<VIDEO_PERMISSIONS_STATUS> = this.buildVideoPermissionsObservable();
   public videoStream$: Observable<MediaStream | null>;
@@ -55,6 +56,10 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   public showTakeImageButton$: Observable<boolean> = this.buildShowTakeImageButtonObservable();
   public showRetakeImageButton$: Observable<boolean> = this.buildShowRetakeImageButtonObservable();
   public isContinueButtonActive$: Observable<boolean> = this.buildIsContinueButtonActiveObservable();
+  public isEndVerificationButtonActive$: Observable<boolean> = this.buildIsEndVerificationButtonActiveObservable();
+  public isCurrentImageDefined$: Observable<boolean> = this.buildIsCurrentImageDefinedObservable();
+  public showEndVerificationButton$: Observable<boolean> = this.buildShowEndVerificationButtonObservable();
+  public showContinueButton$: Observable<boolean> = this.buildShowContinueButtonObservable();
 
   constructor(private requestVideoPermissionsService: RequestVideoPermissionsService) {}
 
@@ -63,6 +68,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
       this.requestVideoStream();
     }
   }
+
   ngOnDestroy(): void {
     const cameraStream = this.userCamera?.nativeElement?.srcObject;
 
@@ -71,44 +77,12 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  public get takeImageMessage(): string {
-    if (this.twoImagesNeeded) {
-      return this.activeStep === 1
-        ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_photo_button:Take front side photo`
-        : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_continue_button:Take back side photo`;
-    } else {
-      return $localize`:@@kyc_take_photo_view_if_one_side_take_photo_button:Take photo`;
-    }
-  }
-
-  public get retakeImageMessage(): string {
-    if (this.twoImagesNeeded) {
-      return this.activeStep === 1
-        ? $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_photo_button:Retake front side photo`
-        : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_photo_button:Retake back side photo`;
-    } else {
-      return $localize`:@@kyc_take_photo_view_if_one_side_review_retake_photo_button:Retake photo`;
-    }
-  }
-
-  public get allImagesAreDefined(): boolean {
-    return this.definedImages === this.imagesNeeded;
-  }
-
   public get isShootImageMethod(): boolean {
     return this.takeImageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT;
   }
 
-  public get showEndVerificationButton(): boolean {
-    return this.imagesNeeded === 1 || (this.twoImagesNeeded && this.activeStep === 2);
-  }
-
-  public get showContinueButton(): boolean {
-    return this.twoImagesNeeded && this.activeStep === 1;
-  }
-
   public goToDefineBackImage(): void {
-    this.activeStep = 2;
+    this.activeStep$.next(2);
     this.clearImageInput();
   }
 
@@ -136,40 +110,33 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
       frontSide: null,
       backSide: null,
     });
-    this.isCurrentImageDefined$.next(this.isCurrentImageDefined);
 
-    if (this.activeStep === 2) {
-      this.activeStep = 1;
-    } else {
-      this.goBack.emit(this.images$.value);
-    }
+    this.activeStep$.subscribe((activeStep: KYCImagesNeeded) => {
+      if (activeStep === 2) {
+        this.activeStep$.next(1);
+      } else {
+        this.goBack.emit(this.images$.value);
+      }
+    });
   }
 
   public removeCurrentImage(): void {
-    if (this.activeStep === 1) {
-      this.updateFrontSideImage(null);
-    } else {
-      this.updateBackSideImage(null);
-    }
+    this.activeStep$.subscribe((activeStep: KYCImagesNeeded) => {
+      if (activeStep === 1) {
+        this.updateFrontSideImage(null);
+      } else {
+        this.updateBackSideImage(null);
+      }
 
-    if (this.isUploadImageMethod) {
-      this.clearImageInput();
-      this.uploadImage.nativeElement.click();
-    }
+      if (this.isUploadImageMethod) {
+        this.clearImageInput();
+        this.uploadImage.nativeElement.click();
+      }
+    });
   }
 
   public emitEndVerification(): void {
     this.endVerification.emit(this.images$.value);
-  }
-
-  private get isCurrentImageDefined(): boolean {
-    const images = this.images$.value;
-
-    if (this.twoImagesNeeded) {
-      return this.activeStep === 1 ? !!images.frontSide : !!images.backSide;
-    } else {
-      return this.isFrontSideImageDefined;
-    }
   }
 
   private get twoImagesNeeded(): boolean {
@@ -184,11 +151,12 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     return !!this.images$.value.frontSide;
   }
 
-  private get definedImages(): number {
-    const firstImage = this.images$.value.frontSide;
-    const secondImage = this.images$.value.backSide;
-
-    return firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
+  private checkIfCurrentImageIsDefined(images: KYCImages, activeStep: KYCImagesNeeded): boolean {
+    if (this.twoImagesNeeded) {
+      return activeStep === 1 ? !!images.frontSide : !!images.backSide;
+    } else {
+      return this.isFrontSideImageDefined;
+    }
   }
 
   private requestVideoStream(): void {
@@ -249,7 +217,6 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
       ...this.images$.value,
       frontSide: newImage,
     });
-    this.isCurrentImageDefined$.next(this.isCurrentImageDefined);
   }
 
   private updateBackSideImage(newImage: string): void {
@@ -257,7 +224,6 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
       ...this.images$.value,
       backSide: newImage,
     });
-    this.isCurrentImageDefined$.next(this.isCurrentImageDefined);
   }
 
   private endCameraStreamTracking(cameraStream: MediaStream): void {
@@ -271,19 +237,33 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   }
 
   private buildIsContinueButtonActiveObservable(): Observable<boolean> {
-    return this.images$.pipe(map((images: KYCImages) => this.twoImagesNeeded && images.frontSide && !images.backSide));
+    return this.images$.pipe(map((images: KYCImages) => this.twoImagesNeeded && !!images.frontSide && !images.backSide));
+  }
+
+  private buildIsEndVerificationButtonActiveObservable(): Observable<boolean> {
+    return this.images$.pipe(
+      map((images: KYCImages) => {
+        const firstImage = images.frontSide;
+        const secondImage = images.backSide;
+        const definedImages = firstImage && secondImage ? 2 : !firstImage && !secondImage ? 0 : 1;
+
+        return definedImages === this.imagesNeeded;
+      })
+    );
   }
 
   private buildTitleObservable(): Observable<string> {
-    return this.isCurrentImageDefined$.pipe(
-      map((isDefined: boolean) => {
+    return this.imagesAndActiveStep$().pipe(
+      map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
+        const isDefined = this.checkIfCurrentImageIsDefined(images, activeStep);
+
         if (this.twoImagesNeeded) {
           if (isDefined) {
-            return this.activeStep === 1
+            return activeStep === 1
               ? $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_title:Check the photo of the front side of your document`
               : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_title:Check the photo of the back side of your document`;
           } else {
-            return this.activeStep === 1
+            return activeStep === 1
               ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_title:Take a photo of the front side of your ID document`
               : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_title:Take a back side photo of your document`;
           }
@@ -297,15 +277,17 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   }
 
   private buildSubtitleObservable(): Observable<string> {
-    return this.isCurrentImageDefined$.pipe(
-      map((isDefined: boolean) => {
+    return this.imagesAndActiveStep$().pipe(
+      map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
+        const isDefined = this.checkIfCurrentImageIsDefined(images, activeStep);
+
         if (this.twoImagesNeeded) {
           if (isDefined) {
-            return this.activeStep === 1
+            return activeStep === 1
               ? $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_description:All the details on your ID document must be clear and perfectly legible.`
               : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_description:All the details on your ID document must be clear and perfectly legible.`;
           } else {
-            return this.activeStep === 1
+            return activeStep === 1
               ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Go somewhere with good lighting, focus the camera on the document, and take the best photo possible.`
               : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_description:To finish the verification process, you just need to take a photo of the back side of your ID document.`;
           }
@@ -318,20 +300,57 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     );
   }
 
+  private buildTakeImageMessageObservable(): Observable<string> {
+    return this.activeStep$.pipe(
+      map((activeStep: KYCImagesNeeded) => {
+        if (this.twoImagesNeeded) {
+          return activeStep === 1
+            ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_photo_button:Take front side photo`
+            : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_continue_button:Take back side photo`;
+        } else {
+          return $localize`:@@kyc_take_photo_view_if_one_side_take_photo_button:Take photo`;
+        }
+      })
+    );
+  }
+
+  private buildRetakeImageMessageObservable(): Observable<string> {
+    return this.activeStep$.pipe(
+      map((activeStep: KYCImagesNeeded) => {
+        if (this.twoImagesNeeded) {
+          return activeStep === 1
+            ? $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_photo_button:Retake front side photo`
+            : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_photo_button:Retake back side photo`;
+        } else {
+          return $localize`:@@kyc_take_photo_view_if_one_side_review_retake_photo_button:Retake photo`;
+        }
+      })
+    );
+  }
+
   private buildVideoPermissionsObservable(): Observable<VIDEO_PERMISSIONS_STATUS> {
     return this.requestVideoPermissionsService.userVideoPermissions$;
   }
 
+  private buildShowEndVerificationButtonObservable(): Observable<boolean> {
+    return this.activeStep$.pipe(
+      map((activeStep: KYCImagesNeeded) => this.imagesNeeded === 1 || (this.twoImagesNeeded && activeStep === 2))
+    );
+  }
+
   private buildShowCameraSvgObservable(): Observable<boolean> {
-    return this.isCurrentImageDefined$.pipe(map((isDefined: boolean) => !isDefined && !this.isShootImageMethod));
+    return this.imagesAndActiveStep$().pipe(
+      map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => this.checkIfCurrentImageIsDefined(images, activeStep)),
+      map((isDefined: boolean) => !isDefined && !this.isShootImageMethod)
+    );
   }
 
   private buildShowTakeImageButtonObservable(): Observable<boolean> {
-    return this.images$.pipe(
-      map((images: KYCImages) => {
+    return this.imagesAndActiveStep$().pipe(
+      map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
         const oneImageNeededAndNotDefined = this.imagesNeeded === 1 && !images.frontSide;
-        const firstStepAndFrontSideNotDefined = this.activeStep === 1 && !images.frontSide;
-        const secondStepAndBackSideNotDefined = this.activeStep === 2 && !images.backSide;
+        const firstStepAndFrontSideNotDefined = activeStep === 1 && !images.frontSide;
+        const secondStepAndBackSideNotDefined = activeStep === 2 && !images.backSide;
 
         return (
           oneImageNeededAndNotDefined ||
@@ -343,11 +362,11 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   }
 
   private buildShowRetakeImageButtonObservable(): Observable<boolean> {
-    return this.images$.pipe(
-      map((images: KYCImages) => {
+    return this.imagesAndActiveStep$().pipe(
+      map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
         const oneImageNeededAndDefined = this.imagesNeeded === 1 && !!images.frontSide;
-        const firstStepAndFrontSideDefined = this.activeStep === 1 && !!images.frontSide;
-        const secondStepAndBackSideDefined = this.activeStep === 2 && !!images.backSide;
+        const firstStepAndFrontSideDefined = activeStep === 1 && !!images.frontSide;
+        const secondStepAndBackSideDefined = activeStep === 2 && !!images.backSide;
 
         return (
           oneImageNeededAndDefined ||
@@ -356,6 +375,10 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
         );
       })
     );
+  }
+
+  private buildShowContinueButtonObservable(): Observable<boolean> {
+    return this.activeStep$.pipe(map((activeStep: KYCImagesNeeded) => this.twoImagesNeeded && activeStep === 1));
   }
 
   private buildShowImageBlockObservable(): Observable<boolean> {
@@ -367,5 +390,21 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
         return (isLoadingOrAccepted && this.isShootImageMethod) || this.isUploadImageMethod;
       })
     );
+  }
+
+  private buildIsCurrentImageDefinedObservable(): Observable<boolean> {
+    return this.imagesAndActiveStep$().pipe(
+      map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
+        if (this.twoImagesNeeded) {
+          return activeStep === 1 ? !!images.frontSide : !!images.backSide;
+        } else {
+          return this.isFrontSideImageDefined;
+        }
+      })
+    );
+  }
+
+  private imagesAndActiveStep$(): Observable<[KYCImages, KYCImagesNeeded]> {
+    return combineLatest([this.images$.asObservable(), this.activeStep$.asObservable()]);
   }
 }
