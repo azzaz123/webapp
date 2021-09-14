@@ -154,7 +154,7 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private getCategories(): Observable<CategoriesFilterOption[]> {
-    return this.httpClient.get<CategoryResponse[]>(`${API_VERSION_URL.v3}${FILTER_OPTIONS_API_ENDPOINTS.CATRGORIES}`).pipe(
+    return this.httpClient.get<CategoryResponse[]>(`${API_VERSION_URL.v3}${FILTER_OPTIONS_API_ENDPOINTS.CATEGORIES}`).pipe(
       map((categories: CategoryResponse[]) => {
         const formattedCategories: CategoriesFilterOption[] = [CATEGORY_OPTIONS[0]];
 
