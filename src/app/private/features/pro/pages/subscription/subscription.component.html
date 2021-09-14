@@ -5,5 +5,5 @@
 
 <ng-template #subscriptionView>
     <tsl-subscription-purchase *ngIf="newSubscription" [subscription]="newSubscription" [user]="user" (purchaseSuccessful)="subscriptionChangeSuccessful($event)" (unselectSubscription)="onunselectSubscription()"></tsl-subscription-purchase>
-    <tsl-subscription-edit *ngIf="editSubscription" [subscription]="editSubscription" [user]="user" (editSuccesful)="subscriptionChangeSuccessful($event)"></tsl-subscription-edit>
+    <tsl-subscription-edit *ngIf="editSubscription" [subscription]="editSubscription" [user]="user" (editSuccesful)="subscriptionChangeSuccessful($event)" (unselectSubscription)="onunselectSubscription()"></tsl-subscription-edit>
 </ng-template>
