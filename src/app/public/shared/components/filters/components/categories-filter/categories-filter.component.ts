@@ -11,6 +11,11 @@ import { FilterTemplateComponent } from '../abstract-filter/filter-template/filt
 import { DrawerPlaceholderTemplateComponent } from '../abstract-select-filter/select-filter-template/drawer-placeholder-template.component';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { CategoriesFilterConfig } from './interfaces/categories-filter-config.interface';
+import { HttpClient } from '@angular/common/http';
+import { API_VERSION_URL } from '@public/core/constants/api-version-url-constants';
+import { FILTER_OPTIONS_API_ENDPOINTS } from '@public/shared/services/filter-option/configurations/filter-options-api-endpoints';
+import { CategoryResponse } from '@public/shared/services/filter-option/interfaces/option-responses/category.response';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-categories-filter',
@@ -19,6 +24,10 @@ import { CategoriesFilterConfig } from './interfaces/categories-filter-config.in
 })
 export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterParams> implements OnInit, OnDestroy {
   @Input() config: CategoriesFilterConfig;
+
+  constructor(private httpClient: HttpClient) {
+    super();
+  }
 
   public VARIANT = FILTER_VARIANT;
   public formGroup = new FormGroup({
@@ -46,9 +55,12 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   public ngOnInit() {
-    this.updateSubjects();
-    this.initializeForm();
-    super.ngOnInit();
+    this.getCategories().subscribe((categories: CategoriesFilterOption[]) => {
+      this.config.options = categories;
+      this.updateSubjects();
+      this.initializeForm();
+      super.ngOnInit();
+    });
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
@@ -139,5 +151,27 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
     if (this.placeholderTemplate?.isPlaceholderOpen) {
       this.placeholderTemplate.togglePlaceholderOpen();
     }
+  }
+
+  private getCategories(): Observable<CategoriesFilterOption[]> {
+    return this.httpClient.get<CategoryResponse[]>(`${API_VERSION_URL.v3}${FILTER_OPTIONS_API_ENDPOINTS.CATEGORIES}`).pipe(
+      map((categories: CategoryResponse[]) => {
+        const formattedCategories: CategoriesFilterOption[] = [CATEGORY_OPTIONS[0]];
+
+        categories.forEach((categoryResponse) => {
+          const hardcodedCategory = CATEGORY_OPTIONS.find((category) => category.value === categoryResponse.category_id.toString());
+
+          if (hardcodedCategory) {
+            formattedCategories.push({
+              value: categoryResponse.category_id.toString(),
+              label: categoryResponse.name,
+              icon: hardcodedCategory.icon,
+            });
+          }
+        });
+
+        return formattedCategories;
+      })
+    );
   }
 }
