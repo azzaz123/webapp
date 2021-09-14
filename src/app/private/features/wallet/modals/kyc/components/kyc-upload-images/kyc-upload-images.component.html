@@ -3,7 +3,7 @@
         <div class="col">
             <a class="KYCUploadImages__back d-flex" (click)="handleBack()">
                 <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
-                <span class="ml-3">{{headerText}}</span>
+                <span id="headerText" class="ml-3">{{headerText}}</span>
             </a>
         </div>
     </div>
@@ -20,9 +20,8 @@
                     <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
                     <tsl-svg-icon *ngIf="showCameraSvg$ | async" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
                     <canvas id="definedImage" #definedImage class="KYCUploadImages__image--round h-100 w-100" [ngClass]="{'d-none': (isCurrentImageDefined$ | async) === false}"></canvas>
-                    <video *ngIf="isShootImageMethod && (videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.ACCEPTED" autoplay playsInline muted
+                    <video *ngIf="isShootImageMethod" autoplay playsInline muted
                         id="userCamera" #userCamera
-                        [src]="(videoStream$ | async)"
                         class="KYCUploadImages__image__video KYCUploadImages__image--round h-100 w-100"
                         [ngClass]="{'d-none': isCurrentImageDefined$ | async}"></video>
                 </div>

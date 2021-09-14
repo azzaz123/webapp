@@ -159,7 +159,9 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   }
 
   private requestVideoStream(): void {
-    this.videoStream$ = this.requestVideoPermissionsService.request();
+    this.requestVideoPermissionsService.request().subscribe((stream: MediaStream) => {
+      this.userCamera.nativeElement.srcObject = stream;
+    });
   }
 
   private uploadImageAndUpdateIt(file: File, imageSide: KYC_IMAGES): void {
