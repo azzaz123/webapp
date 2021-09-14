@@ -15,7 +15,7 @@ import { BannerModule } from '@shared/banner/banner.module';
 import { KYCStoreService } from './services/kyc-store/kyc-store.service';
 import { KYCServicesModule } from '@api/payments/kyc/kyc-services.module';
 import { KYCStatusModule } from './components/kyc-status/kyc-status.module';
-import { RequestVideoPermissionsService } from '@shared/services/request-video-permissions/request-video-permissions.service';
+import { RequestVideoPermissionsService } from '@shared/services/video/request-video-permissions/request-video-permissions.service';
 
 @NgModule({
   imports: [

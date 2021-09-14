@@ -13,10 +13,6 @@ export class RequestVideoPermissionsService {
     return this.videoPermissionsSubject.asObservable();
   }
 
-  private set userVideoPermissions(newPermissions: VIDEO_PERMISSIONS_STATUS) {
-    this.videoPermissionsSubject.next(newPermissions);
-  }
-
   public request(): Observable<MediaStream | never> {
     return this.checkNavigatorCompatibility({
       video: { facingMode: 'environment' },
@@ -33,6 +29,10 @@ export class RequestVideoPermissionsService {
         }
       )
     );
+  }
+
+  private set userVideoPermissions(newPermissions: VIDEO_PERMISSIONS_STATUS) {
+    this.videoPermissionsSubject.next(newPermissions);
   }
 
   private checkNavigatorCompatibility(mediaToRequest: MediaStreamConstraints): Observable<MediaStream | never> {

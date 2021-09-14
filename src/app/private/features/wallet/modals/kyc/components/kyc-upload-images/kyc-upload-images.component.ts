@@ -4,8 +4,8 @@ import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-doc
 import { KYCImages, KYC_IMAGES } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { BANNER_TYPES } from '@shared/banner/banner-types.enum';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
-import { RequestVideoPermissionsService } from '@shared/services/request-video-permissions/request-video-permissions.service';
-import { VIDEO_PERMISSIONS_STATUS } from '@shared/services/request-video-permissions/video-permissions-status.interface';
+import { RequestVideoPermissionsService } from '@shared/services/video/request-video-permissions/request-video-permissions.service';
+import { VIDEO_PERMISSIONS_STATUS } from '@shared/services/video/request-video-permissions/video-permissions-status.interface';
 
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   @Input() headerText: string;
 
   @Output() endVerification: EventEmitter<KYCImages> = new EventEmitter();
-  @Output() goBack: EventEmitter<KYCImages> = new EventEmitter();
+  @Output() goBack: EventEmitter<void> = new EventEmitter();
 
   public readonly MIME_TYPES = MIME_TYPES;
   public readonly VIDEO_PERMISSIONS_STATUS = VIDEO_PERMISSIONS_STATUS;
@@ -105,19 +105,18 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   }
 
   public handleBack(): void {
+    const activeStep: KYCImagesNeeded = this.activeStep$.value;
     this.images$.next({
       ...this.images$.value,
       frontSide: null,
       backSide: null,
     });
 
-    this.activeStep$.subscribe((activeStep: KYCImagesNeeded) => {
-      if (activeStep === 2) {
-        this.activeStep$.next(1);
-      } else {
-        this.goBack.emit(this.images$.value);
-      }
-    });
+    if (activeStep === 2) {
+      this.activeStep$.next(1);
+    } else {
+      this.goBack.emit();
+    }
   }
 
   public removeCurrentImage(): void {
