@@ -17,45 +17,45 @@ githooks
 # TODO: Apply prettier for HTML templates in each feature
 
 # PROs
-/src/app/private/features/calls/
-/src/app/private/features/catalog/
-/src/app/private/features/catalog-pro/
-/src/app/private/features/dashboard/
-/src/app/private/features/help/
-/src/app/private/features/pro/
-/src/app/private/features/upload/
-/src/app/private/features/wallacoins/
+/src/app/private/features/calls/**/*.html
+/src/app/private/features/catalog/**/*.html
+/src/app/private/features/catalog-pro/**/*.html
+/src/app/private/features/dashboard/**/*.html
+/src/app/private/features/help/**/*.html
+/src/app/private/features/pro/**/*.html
+/src/app/private/features/upload/**/*.html
+/src/app/private/features/wallacoins/**/*.html
 
 # CHAT
-/src/app/private/features/chat/
+/src/app/private/features/chat/**/*.html
 
 # WALLET
-/src/app/private/features/wallet/
+/src/app/private/features/wallet/**/*.html
 
 # DELIVERY
-/src/app/private/features/delivery/
+/src/app/private/features/delivery/**/*.html
 
 # ENGAGEMENT
-/src/app/private/features/favorites/
-/src/app/private/features/profile/
-/src/app/private/features/reviews/
-/src/app/private/features/stats/
-/src/app/public/features/item-detail/
-/src/app/public/features/public-profile/
+/src/app/private/features/favorites/**/*.html
+/src/app/private/features/profile/**/*.html
+/src/app/private/features/reviews/**/*.html
+/src/app/private/features/stats/**/*.html
+/src/app/public/features/item-detail/**/*.html
+/src/app/public/features/public-profile/**/*.html
 
 # FINDING
-/src/app/public/features/search/
+/src/app/public/features/search/**/*.html
 
 # T&S
-/src/app/public/features/register/
+/src/app/public/features/register/**/*.html
 
 # TRANSVERSAL
-/src/app/core/
-/src/app/public/core/
-/src/app/private/core/
-/src/app/shared/
-/src/app/public/shared/
-/src/app/layout/
-/src/app/public/layout/
-/src/app/private/layout/
-/src/app/public/features/error/
+/src/app/core/**/*.html
+/src/app/public/core/**/*.html
+/src/app/private/core/**/*.html
+/src/app/shared/**/*.html
+/src/app/public/shared/**/*.html
+/src/app/layout/**/*.html
+/src/app/public/layout/**/*.html
+/src/app/private/layout/**/*.html
+/src/app/public/features/error/**/*.html
