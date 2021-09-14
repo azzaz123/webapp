@@ -1,6 +1,6 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
 import { WalletMovementHistoryDetail, WALLET_HISTORY_MOVEMENT_TYPE } from '@api/core/model/wallet/history/movement-history-detail';
-import { WalletMovementsHistory } from '@api/core/model/wallet/history/movements-history';
+import { WalletMovementsHistoryList } from '@api/core/model/wallet/history/wallet-movements-history-list.interface';
 import { InnerType, ToDomainMapper } from '@api/core/utils/types';
 import * as moment from 'moment';
 import { WalletBalanceHistoryApi } from '../../dtos/responses';
@@ -13,53 +13,14 @@ const LOCALIZED_MOVEMENT_TYPE: Record<BalanceHistoryMovementType, string> = {
   TRANSFER_TO_BANK: $localize`:@@movements_history_all_users_movement_details_cashout_label:Withdrawal`,
 };
 
-export const mapWalletBalanceHistoryApiToWalletMovements: ToDomainMapper<WalletBalanceHistoryApi, WalletMovementsHistory> = (
+export const mapWalletBalanceHistoryApiToWalletMovements: ToDomainMapper<WalletBalanceHistoryApi, WalletMovementsHistoryList> = (
   input: WalletBalanceHistoryApi
-): WalletMovementsHistory => {
-  return generateMovementsHistoryFromApi(input);
-};
+): WalletMovementsHistoryList => {
+  const { wallet_balance_amount: number, wallet_balance_currency: currency, next_page: paginationParameter, balance_history } = input;
+  const walletBalance = mapNumberAndCurrencyCodeToMoney({ number, currency });
+  const list = balance_history.map(mapBalanceHistoryElementToDetail);
 
-const generateMovementsHistoryFromApi = (input: WalletBalanceHistoryApi): WalletMovementsHistory => {
-  const result: WalletMovementsHistory = { years: [] };
-
-  const { balance_history } = input;
-  balance_history.forEach((balanceHistoryElement) => {
-    const yearFromElement = getYearFromHistoryElement(balanceHistoryElement);
-    const monthFromElement = getMonthFromHistoryElement(balanceHistoryElement);
-
-    const yearNeedsToBeAdded = !result.years?.find((y) => y.value === yearFromElement);
-    if (yearNeedsToBeAdded) {
-      result.years.push({ value: yearFromElement, title: yearFromElement.toString(), elements: [] });
-    }
-
-    const yearInResult = result.years.find((y) => y.value === yearFromElement);
-    const monthNeedsToBeAdded = !yearInResult.elements.find((m) => m.value === monthFromElement);
-    if (monthNeedsToBeAdded) {
-      yearInResult.elements.push({
-        value: monthFromElement,
-        title: getMonthNameFromDate(balanceHistoryElement),
-        elements: [mapBalanceHistoryElementToDetail(balanceHistoryElement)],
-      });
-      return;
-    }
-
-    const monthInResult = yearInResult.elements.find((m) => m.value === monthFromElement);
-    monthInResult.elements.push(mapBalanceHistoryElementToDetail(balanceHistoryElement));
-  });
-
-  return result;
-};
-
-const getYearFromHistoryElement = (input: BalanceHistoryElementApi): number => {
-  return moment(input.created_at).year();
-};
-
-const getMonthFromHistoryElement = (input: BalanceHistoryElementApi): number => {
-  return moment(input.created_at).month();
-};
-
-const getMonthNameFromDate = (input: BalanceHistoryElementApi): string => {
-  return moment(input.created_at).format('MMMM');
+  return { list, paginationParameter, walletBalance };
 };
 
 const getTitleFromHistoryElement = (input: BalanceHistoryElementApi): string => {

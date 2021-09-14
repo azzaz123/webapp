@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WalletBalanceHistoryQueryParamsApi } from '../dtos/requests/wallet-balance-history-filters-api.interface';
@@ -9,7 +9,7 @@ import { WALLET_BALANCE_HISTORY_ENDPOINT } from './endpoints';
 export class WalletBalanceHistoryHttpService {
   constructor(private http: HttpClient) {}
 
-  public get(params: WalletBalanceHistoryQueryParamsApi): Observable<any> {
+  public get(params: WalletBalanceHistoryQueryParamsApi): Observable<WalletBalanceHistoryApi> {
     return this.http.get<WalletBalanceHistoryApi>(WALLET_BALANCE_HISTORY_ENDPOINT, { params });
   }
 }

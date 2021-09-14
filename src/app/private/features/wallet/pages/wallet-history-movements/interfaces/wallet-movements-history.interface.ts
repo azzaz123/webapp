@@ -1,10 +1,5 @@
-import { WalletMovementHistoryDetail } from './movement-history-detail';
-
-interface WalletMovementHistoryDate<T> {
-  value: number;
-  title: string;
-  elements: T[];
-}
+import { WalletMovementHistoryDetail } from '@api/core/model/wallet/history/movement-history-detail';
+import { WalletMovementHistoryDate } from './wallet-movements-history-date.interface';
 
 interface WalletMovementHistoryMonth extends WalletMovementHistoryDate<WalletMovementHistoryDetail> {}
 interface WalletMovementHistoryYear extends WalletMovementHistoryDate<WalletMovementHistoryMonth> {}
