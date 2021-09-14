@@ -1,6 +1,5 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MOCK_MEDIA_STREAM } from '@fixtures/media-stream.fixtures.spec';
-
 import { RequestVideoPermissionsService } from './request-video-permissions.service';
 import { VIDEO_PERMISSIONS_STATUS } from './video-permissions-status.interface';
 
@@ -33,7 +32,7 @@ describe('RequestVideoPermissionsService', () => {
         });
 
         it('should ask the user for the video permission', () => {
-          service.request();
+          service.request().subscribe();
 
           expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(videoMediaStreamConstraints);
         });
@@ -41,11 +40,9 @@ describe('RequestVideoPermissionsService', () => {
         it('should define the video permission as accepted', fakeAsync(() => {
           let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-          service.request;
+          service.request().subscribe();
           tick();
-          service.userVideoPermissions$.subscribe((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
-            videoPermissions = videoPermissions;
-          });
+          service.userVideoPermissions$.subscribe((result: VIDEO_PERMISSIONS_STATUS) => (videoPermissions = result));
 
           expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.ACCEPTED);
         }));
@@ -79,9 +76,7 @@ describe('RequestVideoPermissionsService', () => {
 
           service.request().subscribe({ error: () => {} });
           tick();
-          service.userVideoPermissions$.subscribe((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
-            videoPermissions = videoPermissions;
-          });
+          service.userVideoPermissions$.subscribe((result: VIDEO_PERMISSIONS_STATUS) => (videoPermissions = result));
 
           expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.DENIED);
         }));
@@ -113,9 +108,7 @@ describe('RequestVideoPermissionsService', () => {
 
           service.request().subscribe({ error: () => {} });
           tick();
-          service.userVideoPermissions$.subscribe((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
-            videoPermissions = videoPermissions;
-          });
+          service.userVideoPermissions$.subscribe((result: VIDEO_PERMISSIONS_STATUS) => (videoPermissions = result));
 
           expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
         }));
@@ -143,9 +136,7 @@ describe('RequestVideoPermissionsService', () => {
 
         service.request().subscribe({ error: () => {} });
         tick();
-        service.userVideoPermissions$.subscribe((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
-          videoPermissions = videoPermissions;
-        });
+        service.userVideoPermissions$.subscribe((result: VIDEO_PERMISSIONS_STATUS) => (videoPermissions = result));
 
         expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
       }));
