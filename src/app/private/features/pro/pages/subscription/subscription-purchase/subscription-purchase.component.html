@@ -13,7 +13,7 @@
                 </div>
                 <div class="GenericCard__subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a subscription to take your
                     sales to the next level</div>
-                    <tsl-subscription-purchase-header [subscription]="subscription" [benefits]="benefits"> </tsl-subscription-purchase-header>
+                    <tsl-subscription-purchase-header [subscription]="subscription" [benefits]="benefits" (clickLink)="openCategoriesModal()"> </tsl-subscription-purchase-header>
                     <div class="GenericCard__link d-md-none mt-3" i18n="@@web_change_subscription"
                     (click)="onChageSubscription()">Change
                     subscription</div>

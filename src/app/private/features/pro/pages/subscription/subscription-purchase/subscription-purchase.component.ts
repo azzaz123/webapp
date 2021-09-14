@@ -25,6 +25,8 @@ import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-be
 import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { filter, mergeMap } from 'rxjs/operators';
@@ -70,7 +72,8 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     private scrollIntoViewService: ScrollIntoViewService,
     private eventService: EventService,
     private analyticsService: AnalyticsService,
-    private benefitsService: SubscriptionBenefitsService
+    private benefitsService: SubscriptionBenefitsService,
+    private modalService: NgbModal
   ) {}
 
   @HostListener('click') onClick() {
@@ -154,6 +157,13 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
       },
     };
     this.analyticsService.trackEvent(event);
+  }
+
+  public openCategoriesModal(): void {
+    const modal = this.modalService.open(CategoryListingModalComponent, {
+      windowClass: 'category-listing',
+    });
+    modal.componentInstance.subscription = this.subscription;
   }
 
   ngOnDestroy() {

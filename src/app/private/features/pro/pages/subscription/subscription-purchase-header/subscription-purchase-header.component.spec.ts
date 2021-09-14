@@ -1,7 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FREE_TRIAL_AVAILABLE_SUBSCRIPTION, SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  FREE_TRIAL_AVAILABLE_SUBSCRIPTION,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
+  SUBSCRIPTIONS,
+} from '@fixtures/subscriptions.fixtures.spec';
 import { SubscriptionPurchaseHeaderComponent } from './subscription-purchase-header.component';
 
 @Component({
@@ -20,11 +24,7 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SubscriptionPurchaseHeaderComponent, MockSvgIconComponent],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-      .overrideComponent(SubscriptionPurchaseHeaderComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
-      })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -32,11 +32,12 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
     component = fixture.componentInstance;
     component.subscription = SUBSCRIPTIONS[0];
     component.benefits = ['benefit1', 'benefit2'];
-
-    fixture.detectChanges();
   });
 
   describe('has subscription', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
     it('should show subscription name', () => {
       const titleElement: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__title')).nativeElement;
 
@@ -74,12 +75,50 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
   });
 
   describe('has benefits', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
     it('should show benefits', () => {
       const benefits = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__benefits')).children[0];
 
       expect(benefits.children.length).toEqual(component.benefits.length);
       benefits.children.forEach((benefit, index) => {
         expect(benefit.nativeElement.textContent).toContain(component.benefits[index]);
+      });
+    });
+  });
+
+  describe('Categories link', () => {
+    describe('and has more than one category', () => {
+      beforeEach(() => {
+        component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED;
+        fixture.detectChanges();
+      });
+      it('should show link', () => {
+        spyOn(component.clickLink, 'emit').and.callThrough();
+        const link = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__link'));
+
+        expect(link).toBeTruthy();
+      });
+      it('should emit click', () => {
+        spyOn(component.clickLink, 'emit').and.callThrough();
+        const link: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__link')).nativeElement;
+
+        link.click();
+
+        expect(component.clickLink.emit).toBeCalledTimes(1);
+        expect(component.clickLink.emit).toBeCalledWith();
+      });
+    });
+    describe('and has more than one category', () => {
+      beforeEach(() => {
+        fixture.detectChanges();
+      });
+      it('should not show link', () => {
+        spyOn(component.clickLink, 'emit').and.callThrough();
+        const link = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__link'));
+
+        expect(link).toBeFalsy();
       });
     });
   });
