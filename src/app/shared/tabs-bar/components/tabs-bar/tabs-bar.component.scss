@@ -8,8 +8,9 @@
   }
 
   &__element {
-    &:not(:last-child) {
-      margin-right: $spacing-ms;
+    margin-left: $spacing-ms;
+    &:first-child {
+      margin-left: 0;
     }
   }
 }
