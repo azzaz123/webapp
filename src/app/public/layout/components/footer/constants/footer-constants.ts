@@ -2,13 +2,23 @@ import { ANALYTICS_EVENT_NAMES } from '@core/analytics/analytics-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { FooterLinkSection, FooterIcon } from '../interfaces/footer.interface';
 
-export const FOOTER_LINKS: FooterLinkSection[] = [
+export const FOOTER_SECTIONS: FooterLinkSection[] = [
   {
     title: $localize`:@@web_footer_links_wallapop_title:wallapop`,
     links: [
       {
         label: $localize`:@@web_footer_links_about_label:About`,
         href: $localize`:@@web_footer_links_about_href:https://about.wallapop.com/en`,
+      },
+      {
+        label: $localize`:@@web_footer_links_how_it_works_label:How it works`,
+        href: $localize`:@@web_footer_links_how_it_works_href:https://about.wallapop.com/como-funciona-wallapop`,
+        excludedLanguages: ['en'],
+      },
+      {
+        label: $localize`:@@web_footer_links_brandbook_label:Brand Book`,
+        href: $localize`:@@web_footer_links_brandbook_href:https://about.wallapop.com/brand-book`,
+        excludedLanguages: ['it', 'en'],
       },
       {
         label: $localize`:@@web_footer_links_press_label:Press`,
@@ -56,7 +66,7 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
   },
   {
     title: $localize`:@@web_footer_links_motor_title:Motor`,
-    excludedLanguages: ['en'],
+    excludedLanguages: ['en', 'it'],
     links: [
       {
         label: $localize`:@@web_footer_links_particular_label:Particular`,
@@ -71,6 +81,7 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
   {
     title: $localize`:@@web_footer_links_wallapop_pro_title:Wallapop Pro`,
     permission: PERMISSIONS.subscriptions,
+    excludedLanguages: ['it'],
     links: [
       {
         label: $localize`:@@web_footer_links_landing_pro_label:Boost your business`,

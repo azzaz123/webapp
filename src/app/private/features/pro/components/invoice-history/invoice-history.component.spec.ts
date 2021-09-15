@@ -1,8 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { InvoiceService } from '@core/invoice/invoice.service';
 import { MOCK_INVOICE_HISTORY, MOCK_INVOICE_HISTORY_MAPPED, MOCK_INVOICE_HISTORY_SORTED } from '@fixtures/invoice.fixtures.spec';
+import { TabComponent } from '@shared/tabs-bar/components/tab/tab.component';
+import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
 import { of, throwError } from 'rxjs';
 import { InvoiceHistoryComponent, TRANSACTIONS_FILTERS } from './invoice-history.component';
 
@@ -13,6 +15,7 @@ describe('InvoiceComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
+      imports: [TabsBarModule],
       declarations: [InvoiceHistoryComponent],
       providers: [
         {
@@ -114,63 +117,76 @@ describe('InvoiceComponent', () => {
     beforeEach(() => {
       fixture.detectChanges();
     });
-    describe('... an select all', () => {
-      it('should show all transaciones', () => {
-        component.onChangeFilter(TRANSACTIONS_FILTERS.ALL);
-        fixture.detectChanges();
 
+    describe('... an select all', () => {
+      beforeEach(() => {
+        triggerTabByTransactionFilter(TRANSACTIONS_FILTERS.ALL);
+        fixture.detectChanges();
+      });
+
+      it('should show all transaciones', () => {
         expect(component.filteredTransactions).toEqual(MOCK_INVOICE_HISTORY_SORTED);
         expect(component.invoiceTransactions).toEqual(MOCK_INVOICE_HISTORY_SORTED);
       });
+
       it('should button all has to be selected', () => {
-        component.onChangeFilter(TRANSACTIONS_FILTERS.ALL);
-        fixture.detectChanges();
+        const selectedButton = fixture.debugElement
+          .queryAll(By.directive(TabComponent))
+          .find((tabElement) => tabElement.componentInstance.isSelected);
 
-        const selectedButton = fixture.debugElement.queryAll(By.css('.invoice--selected'));
-
-        expect(selectedButton).toHaveLength(1);
-        expect(selectedButton[0].nativeElement.textContent).toBe('All');
+        expect(selectedButton.nativeElement.textContent).toBe('All');
       });
     });
+
     describe('... an select invoices', () => {
+      beforeEach(() => {
+        triggerTabByTransactionFilter(TRANSACTIONS_FILTERS.INVOICES);
+        fixture.detectChanges();
+      });
+
       it('should show only invoices', () => {
         const expected = MOCK_INVOICE_HISTORY_SORTED.filter((invoice) => invoice.price >= 0);
 
-        component.onChangeFilter(TRANSACTIONS_FILTERS.INVOICES);
-        fixture.detectChanges();
-
         expect(component.filteredTransactions).toEqual(expected);
         expect(component.invoiceTransactions).toEqual(MOCK_INVOICE_HISTORY_SORTED);
       });
+
       it('should button invoices has to be selected', () => {
-        component.onChangeFilter(TRANSACTIONS_FILTERS.INVOICES);
-        fixture.detectChanges();
+        const selectedButton = fixture.debugElement
+          .queryAll(By.directive(TabComponent))
+          .find((tabElement) => tabElement.componentInstance.isSelected);
 
-        const selectedButton = fixture.debugElement.queryAll(By.css('.invoice--selected'));
-
-        expect(selectedButton).toHaveLength(1);
-        expect(selectedButton[0].nativeElement.textContent).toBe('Invoices');
+        expect(selectedButton.nativeElement.textContent).toBe('Invoices');
       });
     });
+
     describe('... an select credit memos', () => {
+      beforeEach(() => {
+        triggerTabByTransactionFilter(TRANSACTIONS_FILTERS.CREDIT);
+        fixture.detectChanges();
+      });
+
       it('should show only credit memos', () => {
         const expected = MOCK_INVOICE_HISTORY_SORTED.filter((invoice) => invoice.price < 0);
 
-        component.onChangeFilter(TRANSACTIONS_FILTERS.CREDIT);
-        fixture.detectChanges();
-
         expect(component.filteredTransactions).toEqual(expected);
         expect(component.invoiceTransactions).toEqual(MOCK_INVOICE_HISTORY_SORTED);
       });
+
       it('should button credit memos has to be selected', () => {
-        component.onChangeFilter(TRANSACTIONS_FILTERS.CREDIT);
-        fixture.detectChanges();
+        const selectedButton = fixture.debugElement
+          .queryAll(By.directive(TabComponent))
+          .find((tabElement) => tabElement.componentInstance.isSelected);
 
-        const selectedButton = fixture.debugElement.queryAll(By.css('.invoice--selected'));
-
-        expect(selectedButton).toHaveLength(1);
-        expect(selectedButton[0].nativeElement.textContent).toBe('Credit memos');
+        expect(selectedButton.nativeElement.textContent).toBe('Credit memos');
       });
     });
   });
+
+  const triggerTabByTransactionFilter = (filterType: TRANSACTIONS_FILTERS) => {
+    const tab = fixture.debugElement
+      .queryAll(By.directive(TabComponent))
+      .find((t) => t.componentInstance.tabsBarElement.value === filterType);
+    tab.triggerEventHandler('onClick', { value: filterType });
+  };
 });

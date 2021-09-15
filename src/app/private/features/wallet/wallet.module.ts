@@ -4,12 +4,13 @@ import { NavLinksModule } from '@shared/nav-links/nav-links.module';
 import { HeaderModule } from '@shared/header/header.module';
 import { WalletRoutedComponents, WalletRoutingModule } from './wallet.routing.module';
 import { PaymentsCreditCardModule } from '@api/payments/cards';
-import { KYCInfoSliderModule } from './modals/kyc-info-modal/kyc-info-modal.module';
-import { KYCBannerService } from './services/kyc-banner/kyc-banner.service';
-import { KYCBannerApiService } from './services/api/kyc-banner-api.service';
+import { KYCInfoModalModule } from './modals/kyc-info-modal/kyc-info-modal.module';
 import { KYCBannerModule } from './components/kyc-banner/kyc-banner.module';
 import { KYCGuard } from './guards/kyc/kyc.guard';
 import { KYCModule } from './modals/kyc/kyc.module';
+import { KYCStatusModalModule } from './modals/kyc-status-modal/kyc-status-modal.module';
+import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 
 @NgModule({
   declarations: [WalletRoutedComponents],
@@ -19,10 +20,11 @@ import { KYCModule } from './modals/kyc/kyc.module';
     NavLinksModule,
     HeaderModule,
     PaymentsCreditCardModule,
-    KYCInfoSliderModule,
+    KYCInfoModalModule,
     KYCBannerModule,
     KYCModule,
+    KYCStatusModalModule,
   ],
-  providers: [KYCBannerService, KYCBannerApiService, KYCGuard],
+  providers: [KYCPropertiesService, KYCPropertiesHttpService, KYCGuard],
 })
 export class WalletModule {}

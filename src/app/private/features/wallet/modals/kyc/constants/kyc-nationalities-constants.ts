@@ -1,5 +1,5 @@
 import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
-import { KYC_NATIONALITY_TYPE } from '../enums/kyc-nationality-type-enum';
+import { KYC_NATIONALITY_TYPE } from '../enums/kyc-nationality-type.enum';
 import { getKYCAvailableDocuments } from '../mappers/kyc-documents/kyc-documents.mapper';
 
 export const KYC_NATIONALITIES: KYCNationality[] = [

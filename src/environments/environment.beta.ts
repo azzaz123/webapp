@@ -1,3 +1,4 @@
+import { APP_LOCALE } from '@configs/subdomains.config';
 import { Environment } from './environment.interface';
 
 export const environment: Environment = {
@@ -18,5 +19,7 @@ export const environment: Environment = {
   threatMetrixOrgId: '6ldgf22r',
   threatMetrixProfilingDomain: 'clear.wallapop.com',
 };
+
+export const localesWithNewSearchEnabled: APP_LOCALE[] = ['it'];
 
 export const isSWEnabled = true;

@@ -2,8 +2,8 @@
   <div class="modal-back" (click)="backPress.emit(null)" *ngIf="isSeller && canChooseBuyer">
     <tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon>
   </div>
-  <div class="modal-close" (click)="activeModal.dismiss()">
-    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  <div class="modal-close d-flex align-items-center justify-content-center" (click)="activeModal.dismiss()">
+    <tsl-svg-icon src="/assets/icons/cross.svg" width="13" height="13"></tsl-svg-icon>
   </div>
   <h2 i18n="@@web_review_modal_502">Rate your experience with <strong>{{userName}}</strong></h2>
   <p i18n="@@web_review_modal_503">Click on the stars to leave your review. The more stars, the better your experience.</p>
@@ -12,7 +12,7 @@
     <p class="text" i18n="@@web_review_modal_504">I sold this for:</p>
     <input type="number" class="form-control" id="price" name="price" [(ngModel)]="price" min="0" tslRestrictInputNumber /> <span class="currency">{{item.currencyCode}}</span>
   </div>
-  <div>
+  <div class="form-group">
     <span class="chars-counter">{{reviewCommentLength}}/150</span>
     <textarea i18n-placeholder="@@web_review_modal_505" placeholder="Leave a review..." class="form-control" [(ngModel)]="comments"
               (keyup)="countChars($event)" maxlength="150"></textarea>
