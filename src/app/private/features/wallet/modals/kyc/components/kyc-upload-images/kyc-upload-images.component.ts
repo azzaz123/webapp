@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  AfterViewInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages, KYC_IMAGES } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
@@ -17,8 +27,7 @@ import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.e
   styleUrls: ['./kyc-upload-images.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KYCUploadImagesComponent implements OnInit, OnDestroy {
-  // TODO: remove cv		Date: 2021/09/13
+export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   @ViewChild('userCamera') userCamera: ElementRef;
   @ViewChild('definedImage') definedImageCanvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('uploadImage') uploadImage: ElementRef<HTMLInputElement>;
@@ -63,7 +72,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
   constructor(private requestVideoPermissionsService: RequestVideoPermissionsService) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     if (this.isShootImageMethod) {
       this.requestVideoStream();
     }
@@ -106,13 +115,14 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
   public handleBack(): void {
     const activeStep: KYCImagesNeeded = this.activeStep$.value;
-    this.images$.next({
-      ...this.images$.value,
-      frontSide: null,
-      backSide: null,
-    });
 
     if (activeStep === 2) {
+      this.images$.next({
+        ...this.images$.value,
+        frontSide: null,
+        backSide: null,
+      });
+
       this.activeStep$.next(1);
     } else {
       this.goBack.emit();
