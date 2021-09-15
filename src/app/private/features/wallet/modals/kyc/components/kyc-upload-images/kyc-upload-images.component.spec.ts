@@ -56,7 +56,7 @@ describe('KYCUploadImagesComponent', () => {
   const continueVerificationButtonSelector = '#continueVerificationButton';
   const endVerificationButtonSelector = '#endVerificationButton';
   const uploadImageSelector = '#uploadImage';
-  const userCameraSelector = '#userCamera';
+  const userVideoSelector = '#userVideo';
   const definedImageSelector = '#definedImage';
   const backButtonSelector = '.KYCUploadImages__back';
 
@@ -129,7 +129,7 @@ describe('KYCUploadImagesComponent', () => {
         it('should define the webcam video stream', () => {
           fixture.detectChanges();
 
-          expect(component.userCamera.nativeElement.srcObject).toStrictEqual(MOCK_MEDIA_STREAM);
+          expect(component.userVideo.nativeElement.srcObject).toStrictEqual(MOCK_MEDIA_STREAM);
         });
 
         it('should NOT show an error banner', () => {
@@ -185,8 +185,8 @@ describe('KYCUploadImagesComponent', () => {
                 expectRetakeImageButtonInDOM(false);
               });
 
-              it('should show the user camera', () => {
-                expectCameraHiddenInDom(false);
+              it('should show the user video', () => {
+                expectVideoHiddenInDom(false);
               });
 
               it('should NOT show the front side image', () => {
@@ -260,8 +260,8 @@ describe('KYCUploadImagesComponent', () => {
                 expectRetakeImageButtonCorrectMessage(expectedMessage);
               });
 
-              it('should hidde the user camera', () => {
-                expectCameraHiddenInDom(true);
+              it('should hidde the user video', () => {
+                expectVideoHiddenInDom(true);
               });
 
               it('should show the front side image', () => {
@@ -359,8 +359,8 @@ describe('KYCUploadImagesComponent', () => {
                 expectRetakeImageButtonInDOM(false);
               });
 
-              it('should show the user camera', () => {
-                expectCameraHiddenInDom(false);
+              it('should show the user video', () => {
+                expectVideoHiddenInDom(false);
               });
 
               it('should NOT show the back side image', () => {
@@ -434,8 +434,8 @@ describe('KYCUploadImagesComponent', () => {
                 expectRetakeImageButtonCorrectMessage(expectedMessage);
               });
 
-              it('should hidde the user camera', () => {
-                expectCameraHiddenInDom(true);
+              it('should hidde the user video', () => {
+                expectVideoHiddenInDom(true);
               });
 
               it('should show the back side image', () => {
@@ -541,8 +541,8 @@ describe('KYCUploadImagesComponent', () => {
               expectRetakeImageButtonInDOM(false);
             });
 
-            it('should show the user camera', () => {
-              expectCameraHiddenInDom(false);
+            it('should show the user video', () => {
+              expectVideoHiddenInDom(false);
             });
 
             it('should NOT show the front side image', () => {
@@ -616,8 +616,8 @@ describe('KYCUploadImagesComponent', () => {
               expectRetakeImageButtonCorrectMessage(expectedMessage);
             });
 
-            it('should hidde the user camera', () => {
-              expectCameraHiddenInDom(true);
+            it('should hidde the user video', () => {
+              expectVideoHiddenInDom(true);
             });
 
             it('should show the front side image', () => {
@@ -746,7 +746,7 @@ describe('KYCUploadImagesComponent', () => {
       testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
     });
 
-    it('should NOT request camera access', () => {
+    it('should NOT request video access', () => {
       fixture.detectChanges();
 
       expect(requestVideoPermissionsService.request).not.toHaveBeenCalled();
@@ -809,8 +809,8 @@ describe('KYCUploadImagesComponent', () => {
             expectRetakeImageButtonInDOM(false);
           });
 
-          it('should NOT show the user camera', () => {
-            expectCameraInDOM(false);
+          it('should NOT show the user video', () => {
+            expectVideoInDOM(false);
           });
 
           it('should NOT show the front side image', () => {
@@ -898,8 +898,8 @@ describe('KYCUploadImagesComponent', () => {
             expectRetakeImageButtonCorrectMessage(expectedMessage);
           });
 
-          it('should NOT show the user camera', () => {
-            expectCameraInDOM(false);
+          it('should NOT show the user video', () => {
+            expectVideoInDOM(false);
           });
 
           it('should show the front side image', () => {
@@ -996,8 +996,8 @@ describe('KYCUploadImagesComponent', () => {
             expectRetakeImageButtonInDOM(false);
           });
 
-          it('should NOT show the user camera', () => {
-            expectCameraInDOM(false);
+          it('should NOT show the user video', () => {
+            expectVideoInDOM(false);
           });
 
           it('should NOT show the back side image', () => {
@@ -1085,8 +1085,8 @@ describe('KYCUploadImagesComponent', () => {
             expectRetakeImageButtonCorrectMessage(expectedMessage);
           });
 
-          it('should NOT show the user camera', () => {
-            expectCameraInDOM(false);
+          it('should NOT show the user video', () => {
+            expectVideoInDOM(false);
           });
 
           it('should show the back side image', () => {
@@ -1201,8 +1201,8 @@ describe('KYCUploadImagesComponent', () => {
           expectRetakeImageButtonInDOM(false);
         });
 
-        it('should NOT show the user camera', () => {
-          expectCameraInDOM(false);
+        it('should NOT show the user video', () => {
+          expectVideoInDOM(false);
         });
 
         it('should NOT show the front side image', () => {
@@ -1290,8 +1290,8 @@ describe('KYCUploadImagesComponent', () => {
           expectRetakeImageButtonCorrectMessage(expectedMessage);
         });
 
-        it('should NOT show the user camera', () => {
-          expectCameraInDOM(false);
+        it('should NOT show the user video', () => {
+          expectVideoInDOM(false);
         });
 
         it('should show the front side image', () => {
@@ -1342,7 +1342,7 @@ describe('KYCUploadImagesComponent', () => {
   });
 
   describe('ngOnDestroy', () => {
-    describe('and the user camera is active', () => {
+    describe('and the user video is active', () => {
       beforeEach(() => {
         testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
         requestResponseSubjectMock.next(MOCK_MEDIA_STREAM);
@@ -1351,14 +1351,14 @@ describe('KYCUploadImagesComponent', () => {
         fixture.detectChanges();
       });
 
-      it('should turn off the camera', () => {
+      it('should turn off the video', () => {
         component.ngOnDestroy();
 
-        expect(component.userCamera.nativeElement.srcObject).toBeNull();
+        expect(component.userVideo.nativeElement.srcObject).toBeNull();
       });
 
       it('should stop all the active track', () => {
-        const tracks = component.userCamera.nativeElement.srcObject.getTracks();
+        const tracks = component.userVideo.nativeElement.srcObject.getTracks();
         spyOn(tracks[0], 'stop');
 
         component.ngOnDestroy();
@@ -1394,14 +1394,14 @@ describe('KYCUploadImagesComponent', () => {
     expectIsDefined ? expect(definedImage).not.toHaveProperty('d-none', true) : expect(definedImage).toHaveProperty('d-none', true);
   }
 
-  function expectCameraInDOM(expectIsDefined: boolean): void {
-    const userSideImage = de.query(By.css(userCameraSelector));
+  function expectVideoInDOM(expectIsDefined: boolean): void {
+    const userSideImage = de.query(By.css(userVideoSelector));
 
     expectIsDefined ? expect(userSideImage).toBeTruthy() : expect(userSideImage).toBeFalsy();
   }
 
-  function expectCameraHiddenInDom(expectIsHidden: boolean): void {
-    const userSideImage = de.query(By.css(userCameraSelector)).classes;
+  function expectVideoHiddenInDom(expectIsHidden: boolean): void {
+    const userSideImage = de.query(By.css(userVideoSelector)).classes;
 
     expectIsHidden ? expect(userSideImage).toHaveProperty('d-none', true) : expect(userSideImage).not.toHaveProperty('d-none', true);
   }

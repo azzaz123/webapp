@@ -28,7 +28,7 @@ import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.e
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('userCamera') userCamera: ElementRef;
+  @ViewChild('userVideo') userVideo: ElementRef;
   @ViewChild('definedImage') definedImageCanvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('uploadImage') uploadImage: ElementRef<HTMLInputElement>;
 
@@ -79,10 +79,10 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    const cameraStream = this.userCamera?.nativeElement?.srcObject;
+    const videoStream = this.userVideo?.nativeElement?.srcObject;
 
-    if (cameraStream) {
-      this.endCameraStreamTracking(cameraStream);
+    if (videoStream) {
+      this.endVideoStreamTracking(videoStream);
     }
   }
 
@@ -170,7 +170,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   private requestVideoStream(): void {
     this.requestVideoPermissionsService.request().subscribe((stream: MediaStream) => {
-      this.userCamera.nativeElement.srcObject = stream;
+      this.userVideo.nativeElement.srcObject = stream;
     });
   }
 
@@ -203,7 +203,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   private takeImage(): void {
     const imageContainer = this.definedImageCanvas.nativeElement;
 
-    this.drawImageInCanvas(imageContainer, this.userCamera.nativeElement);
+    this.drawImageInCanvas(imageContainer, this.userVideo.nativeElement);
     this.updateImages(imageContainer.toDataURL(this.MIME_TYPES.IMAGE_JPEG, 1));
   }
 
@@ -237,14 +237,14 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  private endCameraStreamTracking(cameraStream: MediaStream): void {
-    if (cameraStream.getTracks) {
-      this.userCamera.nativeElement.srcObject.getTracks().forEach((track) => {
+  private endVideoStreamTracking(videoStream: MediaStream): void {
+    if (videoStream.getTracks) {
+      this.userVideo.nativeElement.srcObject.getTracks().forEach((track) => {
         track.stop();
       });
     }
 
-    this.userCamera.nativeElement.srcObject = null;
+    this.userVideo.nativeElement.srcObject = null;
   }
 
   private buildIsContinueButtonActiveObservable(): Observable<boolean> {

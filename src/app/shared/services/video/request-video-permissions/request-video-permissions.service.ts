@@ -14,7 +14,7 @@ export class RequestVideoPermissionsService {
   }
 
   public request(): Observable<MediaStream | never> {
-    return this.checkNavigatorCompatibility({
+    return this.requestMediaStream({
       video: { facingMode: 'environment' },
     }).pipe(
       tap(
@@ -35,7 +35,7 @@ export class RequestVideoPermissionsService {
     this.videoPermissionsSubject.next(newPermissions);
   }
 
-  private checkNavigatorCompatibility(mediaToRequest: MediaStreamConstraints): Observable<MediaStream | never> {
+  private requestMediaStream(mediaToRequest: MediaStreamConstraints): Observable<MediaStream | never> {
     if (this.isAPIAllowed()) {
       return from(navigator.mediaDevices.getUserMedia(mediaToRequest));
     } else {

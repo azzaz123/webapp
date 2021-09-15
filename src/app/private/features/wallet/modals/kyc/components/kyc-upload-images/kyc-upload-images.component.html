@@ -21,7 +21,7 @@
                     <tsl-svg-icon *ngIf="showCameraSvg$ | async" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
                     <canvas id="definedImage" #definedImage class="KYCUploadImages__image--round h-100 w-100" [ngClass]="{'d-none': (isCurrentImageDefined$ | async) === false}"></canvas>
                     <video *ngIf="isShootImageMethod" autoplay playsInline muted
-                        id="userCamera" #userCamera
+                        id="userVideo" #userVideo
                         class="KYCUploadImages__image__video KYCUploadImages__image--round h-100 w-100"
                         [ngClass]="{'d-none': isCurrentImageDefined$ | async}"></video>
                 </div>
