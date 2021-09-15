@@ -130,18 +130,18 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   public removeCurrentImage(): void {
-    this.activeStep$.subscribe((activeStep: KYCImagesNeeded) => {
-      if (activeStep === 1) {
-        this.updateFrontSideImage(null);
-      } else {
-        this.updateBackSideImage(null);
-      }
+    const activeStep = this.activeStep$.value;
 
-      if (this.isUploadImageMethod) {
-        this.clearImageInput();
-        this.uploadImage.nativeElement.click();
-      }
-    });
+    if (activeStep === 1) {
+      this.updateFrontSideImage(null);
+    } else {
+      this.updateBackSideImage(null);
+    }
+
+    if (this.isUploadImageMethod) {
+      this.clearImageInput();
+      this.uploadImage.nativeElement.click();
+    }
   }
 
   public emitEndVerification(): void {
