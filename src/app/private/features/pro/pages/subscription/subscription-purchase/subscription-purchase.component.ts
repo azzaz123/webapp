@@ -15,12 +15,15 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { translations } from '@core/i18n/translations/constants/translations';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { PaymentError, STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { StripeService, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from '@core/stripe/stripe.service';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -53,11 +56,19 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   public isLoading: boolean;
   public isRetryPayment = false;
   public INVOICE_COMPONENT_TYPE = COMPONENT_TYPE;
+  public zendeskLink: string;
   private _invoiceId: string;
   private readonly errorTextConfig = {
     [STRIPE_ERROR.card_declined]: translations[TRANSLATION_KEY.CARD_NUMBER_INVALID],
     [STRIPE_ERROR.expired_card]: translations[TRANSLATION_KEY.CARD_DATE_INVALID],
     [STRIPE_ERROR.incorrect_cvc]: translations[TRANSLATION_KEY.CARD_CVC_INVALID],
+  };
+  private readonly zendeskMapper: Record<number, CUSTOMER_HELP_PAGE> = {
+    [CATEGORY_SUBSCRIPTIONS_IDS.CAR]: CUSTOMER_HELP_PAGE.CARS_SUBSCRIPTION,
+    [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE]: CUSTOMER_HELP_PAGE.REAL_ESTATE_SUBSCRIPTION,
+    [CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES]: CUSTOMER_HELP_PAGE.CAR_PARTS_SUBSCRIPTION,
+    [CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE]: CUSTOMER_HELP_PAGE.MOTORBIKE_SUBSCRIPTION,
+    [CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS]: CUSTOMER_HELP_PAGE.EVERYTHING_ELSE_SUBSCRIPTION,
   };
 
   constructor(
@@ -67,7 +78,8 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     private scrollIntoViewService: ScrollIntoViewService,
     private eventService: EventService,
     private analyticsService: AnalyticsService,
-    private benefitsService: SubscriptionBenefitsService
+    private benefitsService: SubscriptionBenefitsService,
+    private customerHelpService: CustomerHelpService
   ) {}
 
   @HostListener('click') onClick() {
@@ -82,6 +94,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     this.benefits = this.benefitsService.getBenefitsByCategory(this.subscription.category_id);
     this.subscribeStripeEvents();
     this.trackViewSubscriptionTier();
+    this.zendeskLink = this.customerHelpService.getPageUrl(this.zendeskMapper[this.subscription.category_id]);
   }
 
   public onClearSubscription(): void {

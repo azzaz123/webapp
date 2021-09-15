@@ -7,6 +7,8 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
@@ -40,6 +42,7 @@ export class SubscriptionEditComponent implements OnInit {
   public isLoading: boolean;
   public isEqualTier: boolean;
   public showEditSuccessful: boolean;
+  public ZENDESK_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.CHANGE_PRO_SUBSCRIPCION);
 
   constructor(
     private subscriptionsService: SubscriptionsService,
@@ -47,7 +50,8 @@ export class SubscriptionEditComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private benefitsService: SubscriptionBenefitsService,
     private toastService: ToastService,
-    private i18n: I18nService
+    private i18n: I18nService,
+    private customerHelpService: CustomerHelpService
   ) {}
 
   ngOnInit(): void {
