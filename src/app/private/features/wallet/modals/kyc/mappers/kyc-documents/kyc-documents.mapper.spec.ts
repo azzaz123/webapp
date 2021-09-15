@@ -1,5 +1,5 @@
-import { KYC_DOCUMENTATION_TYPE } from '../../enums/kyc-documentation-type-enum';
-import { KYC_NATIONALITY_TYPE } from '../../enums/kyc-nationality-type-enum';
+import { KYC_DOCUMENTATION_TYPE } from '../../enums/kyc-documentation-type.enum';
+import { KYC_NATIONALITY_TYPE } from '../../enums/kyc-nationality-type.enum';
 import { getKYCAvailableDocuments } from './kyc-documents.mapper';
 
 describe('getKYCAvailableDocuments', () => {

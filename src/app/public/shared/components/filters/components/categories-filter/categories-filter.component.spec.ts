@@ -24,6 +24,9 @@ import { SelectFormComponent } from '@shared/form/components/select/select-form.
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { HttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
+import { MOCK_CATEGORIES_RESPONSE } from './categories-filter.fixtures.spec';
 
 @Component({
   selector: 'tsl-test-component',
@@ -40,6 +43,7 @@ describe('CategoriesFilterComponent', () => {
   let testComponent: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
   let debugElement: DebugElement;
+  let http: HttpClient;
 
   const filterTemplatePredicate = By.directive(FilterTemplateComponent);
   const placeholderTemplatePredicate = By.directive(DrawerPlaceholderTemplateComponent);
@@ -78,6 +82,9 @@ describe('CategoriesFilterComponent', () => {
     testComponent = fixture.componentInstance;
     debugElement = fixture.debugElement;
     component = debugElement.query(By.directive(CategoriesFilterComponent)).componentInstance;
+    http = TestBed.inject(HttpClient);
+    spyOn(http, 'get').and.returnValue(of(MOCK_CATEGORIES_RESPONSE));
+
     testComponent.config = config;
   });
 

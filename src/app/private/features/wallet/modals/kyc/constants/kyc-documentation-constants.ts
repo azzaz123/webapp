@@ -1,5 +1,5 @@
 import { KYCDocumentation } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
-import { KYC_DOCUMENTATION_TYPE } from '../enums/kyc-documentation-type-enum';
+import { KYC_DOCUMENTATION_TYPE } from '../enums/kyc-documentation-type.enum';
 
 export const KYC_DOCUMENTATION: KYCDocumentation[] = [
   {

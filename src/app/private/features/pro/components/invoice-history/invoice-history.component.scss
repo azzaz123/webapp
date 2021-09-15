@@ -8,21 +8,13 @@
     justify-content: center;
   }
 
-  &__description {
-    color: $blue-grey-3;
-  }
-
   &__tabs {
     padding: $spacing-m $spacing-s;
-    & > * {
-      padding: 0 $spacing-xs;
-    }
   }
-}
 
-.InvoiceHistory__feedback {
-  width: 100%;
-  padding: $spacing-m;
+  &__feedback {
+    padding: $spacing-m;
+  }
 }
 
 .content {

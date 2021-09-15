@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { KYC_MODAL_STATUS_PROPERTIES } from '../../constants/kyc-modal-status-constants';
@@ -73,17 +74,23 @@ describe('KYCStatusComponent', () => {
       });
     });
 
-    describe('and we need to show the link', () => {
+    describe('and we need to show the zendesk link', () => {
       beforeEach(() => {
         component.properties = KYC_STATUS_ERROR;
 
         fixture.detectChanges();
       });
 
-      it('should show the link', () => {
+      it('should redirect to the help form page', () => {
         const CSLink: DebugElement = de.query(By.css(linkSelector));
 
-        expect(CSLink.attributes['href']).toEqual(component.properties.link.url);
+        expect(CSLink.attributes['href']).toEqual(component.HELP_FORM_URL);
+      });
+
+      it('should show the message link correctly', () => {
+        const CSLink: HTMLElement = de.query(By.css(linkSelector)).nativeElement;
+
+        expect(CSLink.textContent).toEqual($localize`:@@kyc_failed_modal_help_link:Need help?`);
       });
     });
 

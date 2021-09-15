@@ -25,7 +25,7 @@ function mapWallItemToItemCard(item: WallItem, favoriteIds: string[]): ItemCard 
       expired: false,
       banned: false,
       reserved: !!reserved?.flag,
-      bumped: !!bump,
+      bumped: !!bump?.type,
       favorite: favoriteIds.includes(id),
     },
   };

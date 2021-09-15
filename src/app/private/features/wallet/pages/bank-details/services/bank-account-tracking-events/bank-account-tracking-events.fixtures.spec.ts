@@ -1,10 +1,10 @@
+import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { InnerType } from '@api/core/utils/types';
 import { ClickAddEditBankAccount } from '@core/analytics/analytics-constants';
-import { KYC_BANNER_STATUS } from '@private/features/wallet/interfaces/kyc/kyc-banner.interface';
 
 export type BankAccountTrackingEventTestCase = {
   isEdit: boolean;
-  kycBannerStatus: KYC_BANNER_STATUS;
+  kycBannerStatus: KYC_STATUS;
   mappedAddOrEditToAnalytics: InnerType<ClickAddEditBankAccount, 'addOrEdit'>;
   mappedBannerStatusToAnalytics?: InnerType<ClickAddEditBankAccount, 'kycStatus'>;
 };
@@ -12,30 +12,30 @@ export type BankAccountTrackingEventTestCase = {
 export const MOCK_ADD_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEventTestCase[] = [
   {
     isEdit: false,
-    kycBannerStatus: KYC_BANNER_STATUS.PENDING,
+    kycBannerStatus: KYC_STATUS.PENDING,
     mappedAddOrEditToAnalytics: 'add',
     mappedBannerStatusToAnalytics: 'pending',
   },
   {
     isEdit: false,
-    kycBannerStatus: KYC_BANNER_STATUS.PENDING_VERIFICATION,
+    kycBannerStatus: KYC_STATUS.PENDING_VERIFICATION,
     mappedAddOrEditToAnalytics: 'add',
     mappedBannerStatusToAnalytics: 'inProgress',
   },
   {
     isEdit: false,
-    kycBannerStatus: KYC_BANNER_STATUS.VERIFIED,
+    kycBannerStatus: KYC_STATUS.VERIFIED,
     mappedAddOrEditToAnalytics: 'add',
     mappedBannerStatusToAnalytics: 'verified',
   },
   {
     isEdit: false,
-    kycBannerStatus: KYC_BANNER_STATUS.NO_NEED,
+    kycBannerStatus: KYC_STATUS.NO_NEED,
     mappedAddOrEditToAnalytics: 'add',
   },
   {
     isEdit: false,
-    kycBannerStatus: KYC_BANNER_STATUS.REJECTED,
+    kycBannerStatus: KYC_STATUS.REJECTED,
     mappedAddOrEditToAnalytics: 'add',
   },
 ];
@@ -43,30 +43,30 @@ export const MOCK_ADD_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEven
 export const MOCK_EDIT_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEventTestCase[] = [
   {
     isEdit: true,
-    kycBannerStatus: KYC_BANNER_STATUS.PENDING,
+    kycBannerStatus: KYC_STATUS.PENDING,
     mappedAddOrEditToAnalytics: 'edit',
     mappedBannerStatusToAnalytics: 'pending',
   },
   {
     isEdit: true,
-    kycBannerStatus: KYC_BANNER_STATUS.PENDING_VERIFICATION,
+    kycBannerStatus: KYC_STATUS.PENDING_VERIFICATION,
     mappedAddOrEditToAnalytics: 'edit',
     mappedBannerStatusToAnalytics: 'inProgress',
   },
   {
     isEdit: true,
-    kycBannerStatus: KYC_BANNER_STATUS.VERIFIED,
+    kycBannerStatus: KYC_STATUS.VERIFIED,
     mappedAddOrEditToAnalytics: 'edit',
     mappedBannerStatusToAnalytics: 'verified',
   },
   {
     isEdit: true,
-    kycBannerStatus: KYC_BANNER_STATUS.NO_NEED,
+    kycBannerStatus: KYC_STATUS.NO_NEED,
     mappedAddOrEditToAnalytics: 'edit',
   },
   {
     isEdit: true,
-    kycBannerStatus: KYC_BANNER_STATUS.REJECTED,
+    kycBannerStatus: KYC_STATUS.REJECTED,
     mappedAddOrEditToAnalytics: 'edit',
   },
 ];
