@@ -1,6 +1,10 @@
 import { PublishedItem } from '@api/catalog/dtos';
 import { itemImageFixture, mappedItemImageFixture } from '../../core/image.fixtures';
-import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute';
+import {
+  CAR_ATTRIBUTE_TYPE,
+  CatalogItemAttributeData,
+  REAL_ESTATE_ATTRIBUTE_TYPE,
+} from '../../../catalog/dtos/catalog-item-attribute-data';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PriceDto } from '@api/core/dtos';
 
@@ -11,7 +15,7 @@ const slug = 'my-slug';
 const noStorytellingCategoryId = 222;
 const storytellingCategoryId = 100;
 
-const attributes: CatalogItemAttribute[] = [
+const attributes: CatalogItemAttributeData[] = [
   {
     title: 'Brand',
     value: 'value',

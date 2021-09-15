@@ -1,5 +1,9 @@
 import { WallItem } from '@api/catalog/dtos';
-import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute';
+import {
+  CAR_ATTRIBUTE_TYPE,
+  CatalogItemAttributeData,
+  REAL_ESTATE_ATTRIBUTE_TYPE,
+} from '../../../catalog/dtos/catalog-item-attribute-data';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { itemImageFixture, mappedItemImageFixture } from '@api/fixtures/core/image.fixtures';
 import { ItemType } from '@api/core/model';
@@ -10,7 +14,7 @@ const title = 'Title';
 const description = 'Description';
 const slug = 'my-slug';
 
-const attributes: CatalogItemAttribute[] = [
+const attributes: CatalogItemAttributeData[] = [
   {
     title: 'Brand',
     value: 'value',
