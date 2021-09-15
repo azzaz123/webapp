@@ -7,8 +7,8 @@
             </a>
         </div>
     </div>
-    <div *ngIf="(showImageBlock$ | async)" class="row h-100 d-flex flex-column justify-content-between">
-        <div class="KYCUploadImages__imageContainer col h-100 d-flex flex-column justify-content-center">
+    <div *ngIf="(showImageBlock$ | async)" class="KYCUploadImages__imageContainer row h-100 d-flex flex-column justify-content-between">
+        <div class="col h-100 d-flex flex-column justify-content-center p-0">
             <div class="row text-center mb-4 mt-2">
                 <div class="col">
                     <span class="KYCUploadImages__title d-block mb-2">{{title$ | async}}</span>
@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="row justify-content-center mb-4" >
-                <div class="col d-flex justify-content-center">
+                <div class="col d-flex justify-content-center p-0">
                     <div class="KYCUploadImages__image KYCUploadImages__imageBlock KYCUploadImages__image--round d-flex align-items-center justify-content-center p-0">
                         <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
                         <tsl-svg-icon *ngIf="showCameraSvg$ | async" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col d-flex justify-content-center">
+                <div class="col d-flex justify-content-center p-0">
                     <div class="KYCUploadImages__imageBlock">
                         <tsl-button *ngIf="showTakeImageButton$ | async" id="takeImageButton" class="p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage$ | async}}</tsl-button>
                         <tsl-button *ngIf="showRetakeImageButton$ | async" id="retakeImageButton" class="p-0" className="btn-gray btn-block" (click)="removeCurrentImage()">{{retakeImageMessage$ | async}}</tsl-button>
@@ -37,26 +37,22 @@
                 </div>
             </div>
         </div>
-        <div class="KYCUploadImages__bottomContainer row position-sticky mt-4">
-            <div class="col d-flex justify-content-center">
-                <div class="KYCUploadImages__imageBlock">
-                    <tsl-button
-                        *ngIf="showContinueButton$ | async" id="continueVerificationButton"
-                        [disabled]="(isContinueButtonActive$ | async) === false"
-                        i18n="@@kyc_take_photo_view_continue_button"
-                        class="p-0"
-                        className="btn-primary btn-block"
-                        (click)="goToDefineBackImage()">Continue</tsl-button>
-                    <tsl-button
-                        *ngIf="showEndVerificationButton$ | async" id="endVerificationButton"
-                        [disabled]="(isEndVerificationButtonActive$ | async) === false"
-                        i18n="@@kyc_end_verification"
-                        class="p-0"
-                        className="btn-primary btn-block"
-                        (click)="emitEndVerification()">Finish verification</tsl-button>
-                </div>
-            </div>
-        </div>
+    </div>
+    <div class="KYCUploadImages__bottomContainer row position-sticky mt-4 text-center justify-content-center">
+        <tsl-button
+            *ngIf="showContinueButton$ | async" id="continueVerificationButton"
+            [disabled]="(isContinueButtonActive$ | async) === false"
+            i18n="@@kyc_take_photo_view_continue_button"
+            class="col-12 col-md-7 p-0"
+            className="btn-primary btn-block"
+            (click)="goToDefineBackImage()">Continue</tsl-button>
+        <tsl-button
+            *ngIf="showEndVerificationButton$ | async" id="endVerificationButton"
+            [disabled]="(isEndVerificationButtonActive$ | async) === false"
+            i18n="@@kyc_end_verification"
+            class="col-12 col-md-7 p-0"
+            className="btn-primary btn-block"
+            (click)="emitEndVerification()">Finish verification</tsl-button>
     </div>
     <div *ngIf="(showImageBlock$ | async) === false" class="row h-100 d-flex align-items-center justify-content-center">
         <div class="col">
