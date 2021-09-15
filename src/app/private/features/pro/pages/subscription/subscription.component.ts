@@ -139,23 +139,24 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private isUserUpdated(redirect?: string): void {
+    let isUserUpdated = false;
     this.userService
       .getAndUpdateLoggedUser()
       .pipe(
         repeatWhen((completed) =>
           completed.pipe(
             delay(1000),
-            takeWhile(() => this.loading)
+            takeWhile(() => !this.isUserUpdated)
           )
         ),
         take(30),
         finalize(() => {
-          this.redirectIfNeeded(redirect);
+          this.isSubscriptionUpdated(redirect);
         })
       )
-      .subscribe((updatedUser) => {
-        if (updatedUser.featured) {
-          this.loading = false;
+      .subscribe((user) => {
+        if (user.featured) {
+          isUserUpdated = true;
         }
       });
   }
