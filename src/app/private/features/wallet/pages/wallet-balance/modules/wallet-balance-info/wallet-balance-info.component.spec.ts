@@ -30,7 +30,7 @@ import { delay } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 
 describe('WalletBalanceInfoComponent', () => {
-  let propertiesService: KYCPropertiesService;
+  let kycPropertiesService: KYCPropertiesService;
   let component: WalletBalanceInfoComponent;
   let decimalPipe: DecimalPipe;
   let fixture: ComponentFixture<WalletBalanceInfoComponent>;
@@ -60,9 +60,6 @@ describe('WalletBalanceInfoComponent', () => {
             get() {
               return of(MOCK_KYC_NO_NEED_PROPERTIES_API);
             },
-            getBannerSpecificationsFromProperties(property) {
-              return of(MOCK_KYC_SPECIFICATIONS_NO_NEED);
-            },
           },
         },
         {
@@ -81,7 +78,7 @@ describe('WalletBalanceInfoComponent', () => {
     walletService = TestBed.inject(PaymentsWalletsService);
     decimalPipe = TestBed.inject(DecimalPipe);
     toastService = TestBed.inject(ToastService);
-    propertiesService = TestBed.inject(KYCPropertiesService);
+    kycPropertiesService = TestBed.inject(KYCPropertiesService);
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
   });
 
@@ -97,9 +94,7 @@ describe('WalletBalanceInfoComponent', () => {
         jest
           .spyOn(walletService, 'walletBalance$', 'get')
           .mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY).pipe(delay(delayedTime)));
-        jest
-          .spyOn(propertiesService, 'getBannerSpecificationsFromProperties')
-          .mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED).pipe(delay(delayedTime)));
+        spyOn(kycPropertiesService, 'get').and.returnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED).pipe(delay(delayedTime)));
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -132,9 +127,7 @@ describe('WalletBalanceInfoComponent', () => {
       it('should show a loading animation', fakeAsync(() => {
         component.loading = true;
         const delayedTime = 2000;
-        jest
-          .spyOn(propertiesService, 'getBannerSpecificationsFromProperties')
-          .mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED).pipe(delay(delayedTime)));
+        spyOn(kycPropertiesService, 'get').and.returnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED).pipe(delay(delayedTime)));
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -186,7 +179,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user is validated', () => {
         beforeEach(() => {
-          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_VERIFIED));
+          spyOn(kycPropertiesService, 'get').and.returnValue(of(MOCK_KYC_SPECIFICATIONS_VERIFIED));
 
           component.ngOnInit();
           fixture.detectChanges();
@@ -256,7 +249,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user is validated', () => {
         beforeEach(() => {
-          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_VERIFIED));
+          spyOn(kycPropertiesService, 'get').and.returnValue(of(MOCK_KYC_SPECIFICATIONS_VERIFIED));
 
           component.ngOnInit();
           fixture.detectChanges();
@@ -270,7 +263,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user does not need validation', () => {
         beforeEach(() => {
-          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED));
+          spyOn(kycPropertiesService, 'get').and.returnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED));
 
           component.ngOnInit();
           fixture.detectChanges();
@@ -284,7 +277,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user is not validated and needs validations', () => {
         beforeEach(() => {
-          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_PENDING));
+          spyOn(kycPropertiesService, 'get').and.returnValue(of(MOCK_KYC_SPECIFICATIONS_PENDING));
 
           component.ngOnInit();
           fixture.detectChanges();
