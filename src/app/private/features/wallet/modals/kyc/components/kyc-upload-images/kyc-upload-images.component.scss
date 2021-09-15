@@ -1,5 +1,8 @@
 @import '~style/common';
 
+$image-block-width: 320px;
+$image-height: 200px;
+
 .KYCUploadImages {
   &__back {
     cursor: pointer;
@@ -32,9 +35,12 @@
     font-weight: $font-weight-chunky;
   }
 
+  &__imageBlock {
+    width: $image-block-width;
+  }
+
   &__image {
-    height: 200px;
-    width: 320px;
+    height: $image-height;
     border: dashed 2px $blue-grey-5;
 
     &__video {
