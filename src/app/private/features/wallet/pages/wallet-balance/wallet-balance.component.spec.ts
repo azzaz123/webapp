@@ -1,8 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
+import { MOCK_KYC_NO_NEED_PROPERTIES_API } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { RequestsAndTransactionsPendingAsSellerService } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.service';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletBalanceComponent } from './wallet-balance.component';
 import { WalletBalanceInfoComponent } from '@private/features/wallet/pages/wallet-balance/modules/wallet-balance-info/wallet-balance-info.component';
 import { WalletPendingTransactionComponent } from '@private/features/wallet/pages/wallet-balance/components/wallet-pending-transaction/wallet-pending-transaction.component';
@@ -19,6 +23,7 @@ describe('WalletBalanceComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
+        SvgIconComponent,
         WalletBalanceComponent,
         WalletBalanceInfoComponent,
         WalletPendingTransactionComponent,
@@ -26,7 +31,7 @@ describe('WalletBalanceComponent', () => {
         WalletPendingTransactionsListComponent,
         WalletSharedErrorActionComponent,
       ],
-      imports: [RouterTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
         {
           provide: PaymentsWalletsService,
@@ -41,6 +46,17 @@ describe('WalletBalanceComponent', () => {
           useValue: {
             get walletPendingTransactions$() {
               return of([]);
+            },
+          },
+        },
+        {
+          provide: KYCPropertiesService,
+          useValue: {
+            get() {
+              return of(MOCK_KYC_NO_NEED_PROPERTIES_API);
+            },
+            getBannerSpecificationsFromProperties(property) {
+              return of();
             },
           },
         },

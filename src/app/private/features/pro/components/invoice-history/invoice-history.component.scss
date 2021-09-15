@@ -10,9 +10,6 @@
 
   &__tabs {
     padding: $spacing-m $spacing-s;
-    & > * {
-      padding: 0 $spacing-xs;
-    }
   }
 
   &__feedback {

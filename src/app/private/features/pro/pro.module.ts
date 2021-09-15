@@ -36,6 +36,7 @@ import { HeaderModule } from '@shared/header/header.module';
 import { SubscriptionPurchaseSuccessComponent } from './components/subscription-purchase-success/subscription-purchase-success.component';
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { SubscriptionEditComponent } from './pages/subscription/subscription-edit/subscription-edit.component';
+import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { SubscriptionEditComponent } from './pages/subscription/subscription-edi
     SpinnerModule,
     HeaderModule,
     UserAvatarModule,
+    TabsBarModule,
   ],
 })
 export class ProModule {}

@@ -1,41 +1,51 @@
+import { By } from '@angular/platform-browser';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+
+import { ButtonComponent } from '@shared/button/button.component';
+import { ButtonModule } from '@shared/button/button.module';
+import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
+import { MOCK_KYC_NO_NEED_PROPERTIES_API } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
+import {
+  MOCK_KYC_SPECIFICATIONS_NO_NEED,
+  MOCK_KYC_SPECIFICATIONS_PENDING,
+  MOCK_KYC_SPECIFICATIONS_VERIFIED,
+} from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
 import {
   MockPaymentsWalletsService,
   MOCK_PAYMENTS_WALLETS_MAPPED_MONEY,
   MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
 } from '@api/fixtures/payments/wallets/payments-wallets.fixtures.spec';
-import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
-import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
-import { ToastService } from '@layout/toast/core/services/toast.service';
-import { ToastModule } from '@layout/toast/toast.module';
-import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
-import { ButtonComponent } from '@shared/button/button.component';
-import { ButtonModule } from '@shared/button/button.module';
-import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { of, throwError } from 'rxjs';
-import { delay } from 'rxjs/operators';
-
-import { WalletBalanceInfoComponent } from './wallet-balance-info.component';
 import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
+import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { ToastModule } from '@layout/toast/toast.module';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { WalletBalanceInfoComponent } from './wallet-balance-info.component';
+import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+
+import { delay } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
 
 describe('WalletBalanceInfoComponent', () => {
+  let propertiesService: KYCPropertiesService;
   let component: WalletBalanceInfoComponent;
-  let fixture: ComponentFixture<WalletBalanceInfoComponent>;
-  let walletService: PaymentsWalletsService;
   let decimalPipe: DecimalPipe;
+  let fixture: ComponentFixture<WalletBalanceInfoComponent>;
   let toastService: ToastService;
+  let walletService: PaymentsWalletsService;
   let errorActionService: WalletSharedErrorActionService;
 
   const walletBalanceInfoParentSelector = '.WalletBalanceInfo';
   const walletBalanceInfoLoadingSelector = `${walletBalanceInfoParentSelector}__loading`;
   const walletBalanceInfoErrorSelector = `${walletBalanceInfoParentSelector}__error`;
-  const walletBalanceInfoAmmountSelector = `${walletBalanceInfoParentSelector}__amount`;
-  const walletBalanceInfoIntegerSelector = `${walletBalanceInfoAmmountSelector}__integer`;
-  const walletBalanceInfoDecimalSelector = `${walletBalanceInfoAmmountSelector}__decimal`;
-  const walletBalanceInfoWithPositiveBalance = `${walletBalanceInfoAmmountSelector}--hasPositiveBalance`;
+  const walletBalanceInfoAmountSelector = `${walletBalanceInfoParentSelector}__amount`;
+  const walletBalanceInfoCtaSelector = `${walletBalanceInfoParentSelector}__CTA`;
+  const walletBalanceInfoIntegerSelector = `${walletBalanceInfoAmountSelector}__integer`;
+  const walletBalanceInfoDecimalSelector = `${walletBalanceInfoAmountSelector}__decimal`;
+  const walletBalanceInfoWithPositiveBalance = `${walletBalanceInfoAmountSelector}--hasPositiveBalance`;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -44,6 +54,17 @@ describe('WalletBalanceInfoComponent', () => {
       providers: [
         { provide: PaymentsWalletsService, useClass: MockPaymentsWalletsService },
         DecimalPipe,
+        {
+          provide: KYCPropertiesService,
+          useValue: {
+            get() {
+              return of(MOCK_KYC_NO_NEED_PROPERTIES_API);
+            },
+            getBannerSpecificationsFromProperties(property) {
+              return of(MOCK_KYC_SPECIFICATIONS_NO_NEED);
+            },
+          },
+        },
         {
           provide: WalletSharedErrorActionService,
           useValue: MockWalletSharedErrorActionService,
@@ -60,6 +81,7 @@ describe('WalletBalanceInfoComponent', () => {
     walletService = TestBed.inject(PaymentsWalletsService);
     decimalPipe = TestBed.inject(DecimalPipe);
     toastService = TestBed.inject(ToastService);
+    propertiesService = TestBed.inject(KYCPropertiesService);
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
   });
 
@@ -68,18 +90,23 @@ describe('WalletBalanceInfoComponent', () => {
   });
 
   describe('when showing the Wallet balance', () => {
-    describe('and while waiting for server response', () => {
+    describe('and while waiting for payment server response', () => {
       it('should show a loading animation', fakeAsync(() => {
         component.loading = true;
         const delayedTime = 2000;
         jest
           .spyOn(walletService, 'walletBalance$', 'get')
           .mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY).pipe(delay(delayedTime)));
+        jest
+          .spyOn(propertiesService, 'getBannerSpecificationsFromProperties')
+          .mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED).pipe(delay(delayedTime)));
+
         component.ngOnInit();
         fixture.detectChanges();
 
         const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
         expect(loadingContainerRef).toBeTruthy();
+
         discardPeriodicTasks();
       }));
 
@@ -90,6 +117,39 @@ describe('WalletBalanceInfoComponent', () => {
           jest
             .spyOn(walletService, 'walletBalance$', 'get')
             .mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY).pipe(delay(delayedTime)));
+
+          component.ngOnInit();
+          tick(delayedTime);
+          fixture.detectChanges();
+
+          const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
+          expect(loadingContainerRef).toBeFalsy();
+        }));
+      });
+    });
+
+    describe('and while waiting for banner server response', () => {
+      it('should show a loading animation', fakeAsync(() => {
+        component.loading = true;
+        const delayedTime = 2000;
+        jest
+          .spyOn(propertiesService, 'getBannerSpecificationsFromProperties')
+          .mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED).pipe(delay(delayedTime)));
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
+        expect(loadingContainerRef).toBeTruthy();
+
+        discardPeriodicTasks();
+      }));
+
+      describe('and when server responses', () => {
+        it('should not show the loading animation', fakeAsync(() => {
+          component.loading = true;
+          const delayedTime = 2000;
+
           component.ngOnInit();
           tick(delayedTime);
           fixture.detectChanges();
@@ -103,6 +163,7 @@ describe('WalletBalanceInfoComponent', () => {
     describe('and when the user has a balance of 0 in the Wallet', () => {
       beforeEach(() => {
         jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY));
+
         component.ngOnInit();
         fixture.detectChanges();
       });
@@ -117,20 +178,68 @@ describe('WalletBalanceInfoComponent', () => {
         expect(decimalValue).toEqual(expectedDecimalValue);
       });
 
-      it('should disable the transfer money button', () => {
-        const buttonComponentRef: ButtonComponent = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance;
-        expect(buttonComponentRef.disabled).toBe(true);
-      });
-
       it('should display balance with the non positive balance style', () => {
         const containerWithPositiveBalanceRef = fixture.debugElement.query(By.css(walletBalanceInfoWithPositiveBalance));
+
         expect(containerWithPositiveBalanceRef).toBeFalsy();
+      });
+
+      describe('WHEN the user is validated', () => {
+        beforeEach(() => {
+          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_VERIFIED));
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should disable the transfer money button', () => {
+          const buttonComponentRef: ButtonComponent = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance;
+
+          expect(buttonComponentRef.disabled).toBe(true);
+        });
+      });
+
+      describe('WHEN the user does not need validation', () => {
+        beforeEach(() => {
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should disable the transfer money button', () => {
+          const buttonComponentRef: ButtonComponent = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance;
+
+          expect(buttonComponentRef.disabled).toBe(true);
+        });
+      });
+    });
+
+    describe('and when there is no balance', () => {
+      beforeEach(() => {
+        jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(null));
+
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should not show balance information', () => {
+        const balanceInfo = fixture.debugElement.query(By.css(walletBalanceInfoAmountSelector));
+
+        expect(balanceInfo).toBeFalsy();
+      });
+
+      it('should not show the CTA', () => {
+        const ctaButton = fixture.debugElement.query(By.css(walletBalanceInfoCtaSelector));
+
+        expect(ctaButton).toBeFalsy();
+      });
+
+      it('should not allow transfer', () => {
+        expect(component.allowTransfer).toBe(false);
       });
     });
 
     describe('and when the user has some money in the Wallet', () => {
       beforeEach(() => {
         jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(MOCK_PAYMENTS_WALLETS_MAPPED_MONEY));
+
         component.ngOnInit();
         fixture.detectChanges();
       });
@@ -145,14 +254,46 @@ describe('WalletBalanceInfoComponent', () => {
         expect(decimalValue).toEqual(expectedDecimalValue);
       });
 
-      it('should activate the transfer money button', () => {
-        const buttonComponentRef: ButtonComponent = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance;
-        expect(buttonComponentRef.disabled).toBe(false);
+      describe('WHEN the user is validated', () => {
+        beforeEach(() => {
+          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_VERIFIED));
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should display balance with the positive balance style', () => {
+          const containerWithPositiveBalanceRef = fixture.debugElement.query(By.css(walletBalanceInfoWithPositiveBalance));
+
+          expect(containerWithPositiveBalanceRef).toBeTruthy();
+        });
       });
 
-      it('should display balance with the positive balance style', () => {
-        const containerWithPositiveBalanceRef = fixture.debugElement.query(By.css(walletBalanceInfoWithPositiveBalance));
-        expect(containerWithPositiveBalanceRef).toBeTruthy();
+      describe('WHEN the user does not need validation', () => {
+        beforeEach(() => {
+          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED));
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should display balance with the positive balance style', () => {
+          const containerWithPositiveBalanceRef = fixture.debugElement.query(By.css(walletBalanceInfoWithPositiveBalance));
+
+          expect(containerWithPositiveBalanceRef).toBeTruthy();
+        });
+      });
+
+      describe('WHEN the user is not validated and needs validations', () => {
+        beforeEach(() => {
+          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_PENDING));
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should disable the transfer money button', () => {
+          const buttonComponentRef: ButtonComponent = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance;
+
+          expect(buttonComponentRef.disabled).toBe(true);
+        });
       });
     });
 
@@ -160,12 +301,14 @@ describe('WalletBalanceInfoComponent', () => {
       beforeEach(() => {
         jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(throwError('F in chat'));
         spyOn(toastService, 'show');
+
         component.ngOnInit();
         fixture.detectChanges();
       });
 
       it('should show an empty error state', () => {
         const errorContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoErrorSelector));
+
         expect(errorContainerRef).toBeTruthy();
       });
 
