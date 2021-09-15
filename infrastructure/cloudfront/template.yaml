@@ -14,6 +14,9 @@ Parameters:
   BucketIT:
     Description: 'Bucket where the IT webapp resides'
     Type: String
+  BucketNameFunctionalWebapp:
+    Description: 'Name of the bucket where the functional webapp is hosted in multiple locales'
+    Type: String
   HostES:
     Description: 'URL to access to it'
     Type: String
@@ -168,6 +171,28 @@ Resources:
               - !Sub "arn:aws:s3:::${BucketIT}"
             Principal:
               CanonicalUser: !GetAtt BucketITCloudFrontOriginaccessIdentity.S3CanonicalUserId
+
+  FunctionalWebappCloudFrontOriginaccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 'Access identity for CloudFront functional webapp distribution'
+
+  FunctionalWebappPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref BucketNameFunctionalWebapp
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - !Sub "arn:aws:s3:::${BucketNameFunctionalWebapp}/*"
+              - !Sub "arn:aws:s3:::${BucketNameFunctionalWebapp}"
+            Principal:
+              CanonicalUser: !GetAtt FunctionalWebappCloudFrontOriginaccessIdentity.S3CanonicalUserId
 
   WebEsRecordSetGroup:
     Type: AWS::Route53::RecordSetGroup
