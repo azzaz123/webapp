@@ -52,7 +52,6 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
         this.options = options;
         this.updateLabel();
       });
-    this.initForm();
     this.updateLabel();
     this.updatePlaceholderIcon();
     super.ngOnInit();
@@ -72,8 +71,15 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   public ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
+  public handleCancel(): void {
+    const value = this.value.find((option) => option.key === this.config.mapKey.parameterKey).value?.split(',');
+    this.formGroup.controls.select.setValue(value, {
+      emitEvent: false,
+    });
+  }
 
   public handleApply(): void {
+    this.handleValueChange(this.formGroup.controls.select.value);
     this.updateLabel();
     this.updatePlaceholderIcon();
     this.hasValueSubject.next(this._hasValue());
@@ -115,19 +121,12 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     return label;
   }
 
-  private initForm(): void {
-    const subscription = this.formGroup.controls.select.valueChanges.subscribe(this.handleValueChange.bind(this));
-    this.subscriptions.add(subscription);
-  }
-
   private updateValueFromParent(): void {
     this.formGroup.controls.select.setValue(this.getValue('parameterKey'), { emitEvent: false });
   }
 
   private handleValueChange(value: string[]): void {
-    if (!value) {
-      this.writeValue([]);
-    } else {
+    if (value) {
       this._value = [{ key: this.config.mapKey.parameterKey, value: value.toString() }];
     }
   }

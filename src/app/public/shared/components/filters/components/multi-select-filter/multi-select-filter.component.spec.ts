@@ -155,7 +155,6 @@ describe('MultiSelectFilterComponent', () => {
     describe('... is open', () => {
       beforeEach(() => {
         debugElement.query(By.directive(BubbleComponent)).nativeElement.click();
-        console.log(debugElement.query(By.directive(BubbleComponent)).nativeElement.innerHTML);
         fixture.detectChanges();
       });
 
@@ -175,6 +174,19 @@ describe('MultiSelectFilterComponent', () => {
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
           expect(component.valueChange.emit).toHaveBeenCalledWith(value);
+        });
+      });
+
+      describe('and is cancelled', () => {
+        it('should not emit changes', () => {
+          spyOn(component.valueChange, 'emit');
+
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+
+          filterTemplate.cancel.emit();
+          fixture.detectChanges();
+
+          expect(component.valueChange.emit).toHaveBeenCalledTimes(0);
         });
       });
     });
