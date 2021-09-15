@@ -12,4 +12,7 @@
       </div>
     </div>
   </div>
+  <tsl-svg-icon *ngIf="loading" class="d-flex w-100 align-items-center justify-content-center spinner"
+    [src]="loadingIconSrc" [width]="loadingIconSizePixels" [height]="loadingIconSizePixels">
+  </tsl-svg-icon>
 </div>

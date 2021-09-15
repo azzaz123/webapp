@@ -22,7 +22,10 @@ export class WalletHistoryMovementsComponent implements OnInit {
     { value: WALLET_HISTORY_FILTERS.OUT, label: $localize`:@@movements_history_all_users_outflows_tap_bar_title:Outflows` },
   ];
 
-  private loading: boolean = true;
+  public loading: boolean = true;
+  public loadingIconSrc = '/assets/icons/spinner.svg';
+  public loadingIconSizePixels: number = 32;
+  private initialLoad: boolean = true;
   private currentPage: number = 0;
   private nextPage: number = this.currentPage + 1;
   private currentFilter: WALLET_HISTORY_FILTERS = WALLET_HISTORY_FILTERS.ALL;
@@ -35,7 +38,7 @@ export class WalletHistoryMovementsComponent implements OnInit {
   ) {}
 
   public get noMoreItemsNeededToLoad(): boolean {
-    return !this.nextPage;
+    return !this.nextPage && !this.initialLoad;
   }
 
   public get disableInfinityScroll(): boolean {
@@ -47,22 +50,23 @@ export class WalletHistoryMovementsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getItems(true);
+    this.getItems();
   }
 
   public onChangeFilter(filter: WALLET_HISTORY_FILTERS) {
     this.currentFilter = filter;
-    this.getItems(true);
+    this.resetCountersAndValues();
+    this.getItems();
   }
 
-  public getItems(initialLoad: boolean = false): void {
+  public getItems(): void {
     this.loading = true;
 
     if (this.noMoreItemsNeededToLoad) {
       return;
     }
 
-    this.currentPage = this.calculateCurrentPage(initialLoad);
+    this.currentPage = this.calculateCurrentPage();
 
     this.walletBalanceHistoryService
       .get(this.currentPage, this.currentFilter)
@@ -80,10 +84,17 @@ export class WalletHistoryMovementsComponent implements OnInit {
       .subscribe();
   }
 
-  private calculateCurrentPage(initialLoad: boolean): number {
-    if (initialLoad) {
+  private calculateCurrentPage(): number {
+    if (this.initialLoad) {
       return 0;
     }
     return this.nextPage?.valueOf();
+  }
+
+  private resetCountersAndValues(): void {
+    this.initialLoad = true;
+    this._historicMovements$.next(null);
+    this.requestedHistoryMovementsDetails = [];
+    this.nextPage = null;
   }
 }
