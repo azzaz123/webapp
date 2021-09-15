@@ -12,6 +12,9 @@ Parameters:
   BucketNameIT:
     Description: 'Name of the bucket EN'
     Type: String
+  BucketNameFunctionalWebapp:
+    Description: 'Name of the bucket where the functional webapp is hosted in multiple locales'
+    Type: String
 
 Resources:
   HostingBucketES:
@@ -32,3 +35,9 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       BucketName: !Sub "${BucketNameIT}"
+  HostingBucketFunctionalWebapp:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !Sub "${BucketNameFunctionalWebapp}"
