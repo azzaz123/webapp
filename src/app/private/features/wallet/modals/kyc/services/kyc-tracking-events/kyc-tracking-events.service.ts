@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   AnalyticsEvent,
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   ClickKYCConfirmBankAccountInfo,
@@ -18,98 +19,123 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 
 @Injectable()
-export class KycTrackingEventsService {
-  // MIRAR EVENTYPE
+export class KYCTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 
   public trackViewKYCTutorialScreen(): void {
-    const event: AnalyticsEvent<ViewKYCTutorialScreen> = {
+    const pageViewEvent: AnalyticsPageView<ViewKYCTutorialScreen> = {
       name: ANALYTICS_EVENT_NAMES.ViewKYCTutorialScreen,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.KYCTutorial,
       },
     };
+
+    this.analyticsService.trackPageView(pageViewEvent);
   }
 
   public trackClickKYCStartVerification(): void {
     const event: AnalyticsEvent<ClickKYCStartVerification> = {
       name: ANALYTICS_EVENT_NAMES.ClickKYCStartVerification,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.KYCTutorial,
       },
     };
+
+    this.analyticsService.trackEvent(event);
   }
 
   public trackViewKYCBankAccountInfoScreen(): void {
-    const event: AnalyticsEvent<ViewKYCBankAccountInfoScreen> = {
+    const pageViewEvent: AnalyticsPageView<ViewKYCBankAccountInfoScreen> = {
       name: ANALYTICS_EVENT_NAMES.ViewKYCBankAccountInfoScreen,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.KYCBankAccountInfo,
       },
     };
+
+    this.analyticsService.trackPageView(pageViewEvent);
   }
 
   public trackClickKYCConfirmBankAccountInfo(): void {
     const event: AnalyticsEvent<ClickKYCConfirmBankAccountInfo> = {
       name: ANALYTICS_EVENT_NAMES.ClickKYCConfirmBankAccountInfo,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.KYCBankAccountInfo,
       },
     };
+
+    this.analyticsService.trackEvent(event);
   }
 
   public trackViewKYCIdentityVerificationScreen(): void {
-    const event: AnalyticsEvent<ViewKYCIdentityVerificationScreen> = {
+    const pageViewEvent: AnalyticsPageView<ViewKYCIdentityVerificationScreen> = {
       name: ANALYTICS_EVENT_NAMES.ViewKYCIdentityVerificationScreen,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.KYCIdentityVerification,
       },
     };
+
+    this.analyticsService.trackPageView(pageViewEvent);
   }
 
   public trackViewKYCUploadIdentityVerificationScreen(nationality): void {
-    const event: AnalyticsEvent<ViewKYCUploadIdentityVerificationScreen> = {
+    const pageViewEvent: AnalyticsPageView<ViewKYCUploadIdentityVerificationScreen> = {
       name: ANALYTICS_EVENT_NAMES.ViewKYCUploadIdentityVerificationScreen,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.KYCUploadIdentityVerification,
         nationality,
       },
     };
+
+    this.analyticsService.trackPageView(pageViewEvent);
   }
 
   public trackViewKYCDocumentationTypeScreen(typeOfDocument): void {
-    const event: AnalyticsEvent<ViewKYCDocumentationTypeScreen> = {
+    const pageViewEvent: AnalyticsPageView<ViewKYCDocumentationTypeScreen> = {
       name: ANALYTICS_EVENT_NAMES.ViewKYCDocumentationTypeScreen,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.KYCDocumentationType,
         typeOfDocument,
       },
     };
+
+    this.analyticsService.trackPageView(pageViewEvent);
   }
 
   public trackViewKYCReviewDocumentationImageScreen(typeOfDocument): void {
-    const event: AnalyticsEvent<ViewKYCReviewDocumentationImageScreen> = {
+    const pageViewEvent: AnalyticsPageView<ViewKYCReviewDocumentationImageScreen> = {
       name: ANALYTICS_EVENT_NAMES.ViewKYCReviewDocumentationImageScreen,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
         screenId: SCREEN_IDS.KYCReviewDocumentationImage,
         typeOfDocument,
       },
     };
+
+    this.analyticsService.trackPageView(pageViewEvent);
   }
 
-  public trackClickKYCFinishIdentityVerification(): void {
-    const event: AnalyticsEvent<ClickKYCFinishIdentityVerification> = null;
+  public trackClickKYCFinishIdentityVerification(typeOfDocument): void {
+    const event: AnalyticsEvent<ClickKYCFinishIdentityVerification> = {
+      name: ANALYTICS_EVENT_NAMES.ClickKYCFinishIdentityVerification,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.KYCReviewDocumentationImage,
+        typeOfDocument,
+      },
+    };
+
+    this.analyticsService.trackEvent(event);
   }
 
   public trackViewKYCVerifyingIdentityScreen(): void {
-    const event: AnalyticsEvent<ViewKYCVerifyingIdentityScreen> = null;
+    const event: AnalyticsPageView<ViewKYCVerifyingIdentityScreen> = {
+      name: ANALYTICS_EVENT_NAMES.ViewKYCVerifyingIdentityScreen,
+      attributes: {
+        screenId: SCREEN_IDS.KYCVerifyingIdentity,
+      },
+    };
+
+    this.analyticsService.trackPageView(event);
   }
 }
