@@ -130,10 +130,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   }
 
   private getLabelPlaceholder(): string {
-    if (this.variant === FILTER_VARIANT.BUBBLE) {
-      return this.config?.bubblePlaceholder;
-    }
-    return this.config?.drawerPlaceholder;
+    return this.variant === FILTER_VARIANT.BUBBLE ? this.config?.bubblePlaceholder : this.config?.drawerPlaceholder;
   }
 
   private closeContent(): void {
