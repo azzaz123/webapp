@@ -116,8 +116,6 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
       label += `${this.options.find((option) => option.value === value)?.label}${index + 1 < stringValues.length ? ', ' : ''}`;
     });
 
-    console.log('buildLabel', label);
-
     return label;
   }
 
