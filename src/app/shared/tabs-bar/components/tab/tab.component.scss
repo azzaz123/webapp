@@ -1,0 +1,18 @@
+@import '~style/common';
+
+.Tab {
+  transition: all 0.2s ease-in-out;
+
+  color: $blue-grey-1;
+  background-color: $white;
+  padding: 6px $spacing-ms;
+  border-radius: 40px;
+  font-weight: bold;
+  font-size: $font-size-s;
+  cursor: pointer;
+
+  &--selected {
+    color: $white;
+    background-color: $blue-grey-1;
+  }
+}

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RequestAndTransactionsPendingAsSellerModule } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { WalletSharedErrorActionModule } from '@private/features/wallet/shared/error-action';
 import { WalletPendingTransactionComponent } from './components/wallet-pending-transaction/wallet-pending-transaction.component';
 import { WalletPendingTransactionsListComponent } from './components/wallet-pending-transactions-list/wallet-pending-transactions-list.component';
 import { WalletPendingTransactionsComponent } from './components/wallet-pending-transactions/wallet-pending-transactions.component';
@@ -17,6 +18,7 @@ import { WalletTransferModule } from '@private/features/wallet/modals/transfer/w
     RequestAndTransactionsPendingAsSellerModule,
     SvgIconModule,
     WalletTransferModule,
+    WalletSharedErrorActionModule,
   ],
   declarations: [
     walletBalanceRoutedComponents,

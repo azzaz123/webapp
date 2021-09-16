@@ -6,29 +6,37 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ButtonComponent } from '@shared/button/button.component';
 import { ButtonModule } from '@shared/button/button.module';
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
-import { KYC_BANNER_TYPES } from '@private/features/wallet/components/kyc-banner/kyc-banner-constants';
-import { KYCBannerService } from '@private/features/wallet/services/kyc-banner/kyc-banner.service';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
+import { MOCK_KYC_NO_NEED_PROPERTIES_API } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
+import {
+  MOCK_KYC_SPECIFICATIONS_NO_NEED,
+  MOCK_KYC_SPECIFICATIONS_PENDING,
+  MOCK_KYC_SPECIFICATIONS_VERIFIED,
+} from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
 import {
   MockPaymentsWalletsService,
   MOCK_PAYMENTS_WALLETS_MAPPED_MONEY,
   MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
 } from '@api/fixtures/payments/wallets/payments-wallets.fixtures.spec';
+import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ToastModule } from '@layout/toast/toast.module';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletBalanceInfoComponent } from './wallet-balance-info.component';
+import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 
 import { delay } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 
 describe('WalletBalanceInfoComponent', () => {
-  let bannerService: KYCBannerService;
+  let propertiesService: KYCPropertiesService;
   let component: WalletBalanceInfoComponent;
   let decimalPipe: DecimalPipe;
   let fixture: ComponentFixture<WalletBalanceInfoComponent>;
   let toastService: ToastService;
   let walletService: PaymentsWalletsService;
+  let errorActionService: WalletSharedErrorActionService;
 
   const walletBalanceInfoParentSelector = '.WalletBalanceInfo';
   const walletBalanceInfoLoadingSelector = `${walletBalanceInfoParentSelector}__loading`;
@@ -47,12 +55,19 @@ describe('WalletBalanceInfoComponent', () => {
         { provide: PaymentsWalletsService, useClass: MockPaymentsWalletsService },
         DecimalPipe,
         {
-          provide: KYCBannerService,
+          provide: KYCPropertiesService,
           useValue: {
-            getSpecifications() {
-              return of(null);
+            get() {
+              return of(MOCK_KYC_NO_NEED_PROPERTIES_API);
+            },
+            getBannerSpecificationsFromProperties(property) {
+              return of(MOCK_KYC_SPECIFICATIONS_NO_NEED);
             },
           },
+        },
+        {
+          provide: WalletSharedErrorActionService,
+          useValue: MockWalletSharedErrorActionService,
         },
       ],
     }).compileComponents();
@@ -66,7 +81,8 @@ describe('WalletBalanceInfoComponent', () => {
     walletService = TestBed.inject(PaymentsWalletsService);
     decimalPipe = TestBed.inject(DecimalPipe);
     toastService = TestBed.inject(ToastService);
-    bannerService = TestBed.inject(KYCBannerService);
+    propertiesService = TestBed.inject(KYCPropertiesService);
+    errorActionService = TestBed.inject(WalletSharedErrorActionService);
   });
 
   it('should create', () => {
@@ -81,7 +97,9 @@ describe('WalletBalanceInfoComponent', () => {
         jest
           .spyOn(walletService, 'walletBalance$', 'get')
           .mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY).pipe(delay(delayedTime)));
-        jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(null).pipe(delay(delayedTime)));
+        jest
+          .spyOn(propertiesService, 'getBannerSpecificationsFromProperties')
+          .mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED).pipe(delay(delayedTime)));
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -114,7 +132,9 @@ describe('WalletBalanceInfoComponent', () => {
       it('should show a loading animation', fakeAsync(() => {
         component.loading = true;
         const delayedTime = 2000;
-        jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(null).pipe(delay(delayedTime)));
+        jest
+          .spyOn(propertiesService, 'getBannerSpecificationsFromProperties')
+          .mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED).pipe(delay(delayedTime)));
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -129,7 +149,6 @@ describe('WalletBalanceInfoComponent', () => {
         it('should not show the loading animation', fakeAsync(() => {
           component.loading = true;
           const delayedTime = 2000;
-          jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(null).pipe(delay(delayedTime)));
 
           component.ngOnInit();
           tick(delayedTime);
@@ -167,7 +186,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user is validated', () => {
         beforeEach(() => {
-          jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(KYC_BANNER_TYPES[2]));
+          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_VERIFIED));
 
           component.ngOnInit();
           fixture.detectChanges();
@@ -181,8 +200,6 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user does not need validation', () => {
         beforeEach(() => {
-          jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(null));
-
           component.ngOnInit();
           fixture.detectChanges();
         });
@@ -239,7 +256,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user is validated', () => {
         beforeEach(() => {
-          jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(KYC_BANNER_TYPES[2]));
+          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_VERIFIED));
 
           component.ngOnInit();
           fixture.detectChanges();
@@ -253,7 +270,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user does not need validation', () => {
         beforeEach(() => {
-          jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(null));
+          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED));
 
           component.ngOnInit();
           fixture.detectChanges();
@@ -267,7 +284,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user is not validated and needs validations', () => {
         beforeEach(() => {
-          jest.spyOn(bannerService, 'getSpecifications').mockReturnValue(of(KYC_BANNER_TYPES[0]));
+          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_PENDING));
 
           component.ngOnInit();
           fixture.detectChanges();
@@ -298,6 +315,21 @@ describe('WalletBalanceInfoComponent', () => {
       it('should show a toast with a generic message', () => {
         expect(toastService.show).toHaveBeenCalledWith(DEFAULT_ERROR_TOAST);
       });
+    });
+
+    describe('WHEN there is an error retrieving the balance info', () => {
+      let errorActionSpy;
+
+      beforeEach(() => {
+        errorActionSpy = spyOn(errorActionService, 'show');
+      });
+      it('should show the generic error catcher', fakeAsync(() => {
+        jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(throwError('The server is broken'));
+
+        component.ngOnInit();
+
+        expect(errorActionSpy).toHaveBeenCalledTimes(1);
+      }));
     });
   });
 });

@@ -59,22 +59,17 @@
                 <div class="d-flex">
                     <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
                     </tsl-svg-icon>
-                    <span class="mb-2">{{ subscriptionBodyText }}</span>
+                    <span>{{ subscriptionBodyText }}</span>
                 </div>
             </div>
             <span class="SubscriptionCard__date">
-                <ng-container *ngIf="subscription.subscribed_until; else noSubscriptionEnd">
-                    <span i18n="@@web_profile_pages_subscription_330"> Subscription ends on
-                        <b>
-                            {{subscription.subscribed_until | date:'longDate' }}
-                        </b>
-                    </span>
-                </ng-container>
-                <ng-template #noSubscriptionEnd>
-                    <span i18n="@@web_profile_pages_subscription_329"> Subscribed
-                        from <b>{{subscription.subscribed_from | date:'longDate' }}</b>
-                    </span>
-                </ng-template>
+                <span i18n="@@web_profile_pages_subscription_329"> Subscribed
+                    from <b>{{subscription.subscribed_from | date:'longDate' }}</b>
+                </span>
+            </span>
+            <span class="mt-2" *ngIf="subscription.subscribed_until">
+                <span i18n="@@pro_manage_subscriptions_view_cancel_plan_cancel_subscription_status_description">You requested subscription cancellation, the deactivation will be effective starting</span>
+                <b ngPreserveWhitespaces> {{subscription.subscribed_until | date:'longDate' }}</b>
             </span>
         </ng-template>
     </div>

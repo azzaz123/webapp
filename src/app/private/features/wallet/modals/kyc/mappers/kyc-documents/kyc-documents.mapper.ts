@@ -1,7 +1,7 @@
 import { IOption } from '@shared/dropdown/utils/option.interface';
-import { KYC_DOCUMENTATION_TYPE } from '../../enums/kyc-documentation-type-enum';
+import { KYC_DOCUMENTATION_TYPE } from '../../enums/kyc-documentation-type.enum';
 import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
-import { KYC_NATIONALITY_TYPE } from '../../enums/kyc-nationality-type-enum';
+import { KYC_NATIONALITY_TYPE } from '../../enums/kyc-nationality-type.enum';
 
 export function getKYCAvailableDocuments(KYC_NATIONALITY: KYC_NATIONALITY_TYPE): IOption[] {
   if (KYC_NATIONALITY === KYC_NATIONALITY_TYPE.EUROPEAN_UNION) {
