@@ -35,16 +35,21 @@ export class KYCInfoModalComponent implements OnInit {
   }
 
   public redirectToKYC(): void {
+    this.requestTrackClickKYCStartVerification();
     this.router.navigate([this.KYC_LINK]);
     this.closeModal();
   }
 
-  get currentSlide(): string {
+  public get currentSlide(): string {
     return this.slidesCarousel.currentSlide;
   }
 
-  get zendeskURL(): string {
+  public get zendeskURL(): string {
     // TODO: change it and use the zendesk service		Date: 2021/07/13
     return `https://ayuda.wallapop.com/hc/en-us/articles/${this.ZENDESK_ID}-Verify-my-identity`;
+  }
+
+  private requestTrackClickKYCStartVerification(): void {
+    this.kycTrackingEventsService.trackClickKYCStartVerification();
   }
 }

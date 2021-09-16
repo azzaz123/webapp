@@ -39,6 +39,7 @@ describe('KYCInfoModalComponent', () => {
           provide: KYCTrackingEventsService,
           useValue: {
             trackViewKYCTutorialScreen() {},
+            trackClickKYCStartVerification() {},
           },
         },
       ],
@@ -138,23 +139,28 @@ describe('KYCInfoModalComponent', () => {
         expect(verifyButton).toBeTruthy();
       });
 
-      it('should navigate to the KYC page when we click', () => {
-        spyOn(router, 'navigate');
-        const verifyButton = de.query(By.css(verifyButtonSelector)).nativeElement;
+      describe('and we click the button...', () => {
+        beforeEach(() => {
+          spyOn(kycTrackingEventsService, 'trackClickKYCStartVerification');
+          spyOn(router, 'navigate');
+          spyOn(activeModal, 'close');
 
-        verifyButton.click();
+          const verifyButton = de.query(By.css(verifyButtonSelector)).nativeElement;
+          verifyButton.click();
 
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([component.KYC_LINK]);
-      });
+          it('should ask to the KYC analytics service to track the click event', () => {
+            expect(kycTrackingEventsService.trackViewKYCTutorialScreen).toHaveBeenCalledTimes(1);
+          });
 
-      it('should close the modal', () => {
-        spyOn(activeModal, 'close');
-        const verifyButton = de.query(By.css(verifyButtonSelector)).nativeElement;
+          it('should navigate to the KYC page', () => {
+            expect(router.navigate).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledWith([component.KYC_LINK]);
+          });
 
-        verifyButton.click();
-
-        expect(activeModal.close).toHaveBeenCalledTimes(1);
+          it('should close the modal', () => {
+            expect(activeModal.close).toHaveBeenCalledTimes(1);
+          });
+        });
       });
     });
   });
