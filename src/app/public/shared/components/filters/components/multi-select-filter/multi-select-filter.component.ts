@@ -113,7 +113,8 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     const stringValues = this._value.find((option) => option.key === this.config.mapKey.parameterKey).value?.split(',');
 
     stringValues.forEach((value: string, index: number) => {
-      label += `${this.options.find((option) => option.value === value)?.label}${index + 1 < stringValues.length ? ', ' : ''}`;
+      const option = this.options.find((option) => option.value === value);
+      label += option ? `${index !== 0 ? ', ' : ''}${option.label}` : '';
     });
 
     return label;
