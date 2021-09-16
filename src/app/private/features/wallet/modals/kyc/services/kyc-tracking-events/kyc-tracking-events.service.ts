@@ -17,6 +17,7 @@ import {
   ViewKYCVerifyingIdentityScreen,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { KYCNationalityAnalytics, KYCTypeOfDocumentAnalytics } from './kyc-tracking-events.type';
 
 @Injectable()
 export class KYCTrackingEventsService {
@@ -79,7 +80,7 @@ export class KYCTrackingEventsService {
     this.analyticsService.trackPageView(pageViewEvent);
   }
 
-  public trackViewKYCUploadIdentityVerificationScreen(nationality): void {
+  public trackViewKYCUploadIdentityVerificationScreen(nationality: KYCNationalityAnalytics): void {
     const pageViewEvent: AnalyticsPageView<ViewKYCUploadIdentityVerificationScreen> = {
       name: ANALYTICS_EVENT_NAMES.ViewKYCUploadIdentityVerificationScreen,
       attributes: {
@@ -91,7 +92,7 @@ export class KYCTrackingEventsService {
     this.analyticsService.trackPageView(pageViewEvent);
   }
 
-  public trackViewKYCDocumentationTypeScreen(typeOfDocument): void {
+  public trackViewKYCDocumentationTypeScreen(typeOfDocument: KYCTypeOfDocumentAnalytics): void {
     const pageViewEvent: AnalyticsPageView<ViewKYCDocumentationTypeScreen> = {
       name: ANALYTICS_EVENT_NAMES.ViewKYCDocumentationTypeScreen,
       attributes: {
@@ -103,7 +104,7 @@ export class KYCTrackingEventsService {
     this.analyticsService.trackPageView(pageViewEvent);
   }
 
-  public trackViewKYCReviewDocumentationImageScreen(typeOfDocument): void {
+  public trackViewKYCReviewDocumentationImageScreen(typeOfDocument: KYCTypeOfDocumentAnalytics): void {
     const pageViewEvent: AnalyticsPageView<ViewKYCReviewDocumentationImageScreen> = {
       name: ANALYTICS_EVENT_NAMES.ViewKYCReviewDocumentationImageScreen,
       attributes: {
@@ -115,7 +116,7 @@ export class KYCTrackingEventsService {
     this.analyticsService.trackPageView(pageViewEvent);
   }
 
-  public trackClickKYCFinishIdentityVerification(typeOfDocument): void {
+  public trackClickKYCFinishIdentityVerification(typeOfDocument: KYCTypeOfDocumentAnalytics): void {
     const event: AnalyticsEvent<ClickKYCFinishIdentityVerification> = {
       name: ANALYTICS_EVENT_NAMES.ClickKYCFinishIdentityVerification,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,

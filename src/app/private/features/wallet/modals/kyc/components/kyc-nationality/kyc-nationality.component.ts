@@ -1,16 +1,17 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { KYC_NATIONALITIES } from '../../constants/kyc-nationalities-constants';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
 import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
 import { KYCDocumentation } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
+import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
 
 @Component({
   selector: 'tsl-kyc-nationality',
   templateUrl: './kyc-nationality.component.html',
   styleUrls: ['./kyc-nationality.component.scss'],
 })
-export class KYCNationalityComponent {
+export class KYCNationalityComponent implements OnInit {
   @Input() KYCNationality: KYCNationality;
   @Input() KYCDocumentation: KYCDocumentation;
 
@@ -20,15 +21,23 @@ export class KYCNationalityComponent {
 
   public readonly KYC_NATIONALITIES = KYC_NATIONALITIES;
 
+  constructor(private kycTrackingEventsService: KYCTrackingEventsService) {}
+
+  ngOnInit() {
+    this.trackViewKYCVerifyingIdentityScreen();
+  }
+
   public emitDocumentChange(selectedDocument: IOption): void {
     const documentation = KYC_DOCUMENTATION.find((nationality) => nationality.value === selectedDocument.value);
 
+    this.trackViewKYCDocumentationTypeScreen();
     this.documentToRequestChange.emit(documentation);
   }
 
   public emitNationalityChange(selectedNationality: IOption): void {
     const nationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
 
+    this.trackViewKYCUploadIdentityVerificationScreen();
     this.nationalityChange.emit(nationality);
   }
 
@@ -59,5 +68,17 @@ export class KYCNationalityComponent {
 
   get svgPath(): string {
     return this.KYCNationality?.svgPath || '/assets/icons/wallet/kyc/stepper/kyc_nationality.svg';
+  }
+
+  private trackViewKYCVerifyingIdentityScreen(): void {
+    this.kycTrackingEventsService.trackViewKYCVerifyingIdentityScreen();
+  }
+
+  private trackViewKYCUploadIdentityVerificationScreen(): void {
+    this.kycTrackingEventsService.trackViewKYCUploadIdentityVerificationScreen(this.KYCNationality.analyticsName);
+  }
+
+  private trackViewKYCDocumentationTypeScreen(): void {
+    this.kycTrackingEventsService.trackViewKYCDocumentationTypeScreen(this.KYCDocumentation.analyticsName);
   }
 }
