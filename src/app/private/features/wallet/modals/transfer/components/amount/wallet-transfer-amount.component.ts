@@ -54,7 +54,6 @@ export class WalletTransferAmountComponent implements OnInit {
         finalize(() => {
           this.loading = false;
           this.changeDetectorRef.detectChanges();
-          console.log('Finish the call to backend');
         })
       )
       .subscribe({

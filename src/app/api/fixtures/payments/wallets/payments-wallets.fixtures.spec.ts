@@ -1,5 +1,6 @@
 import { Money } from '@api/core/model/money.interface';
 import { PaymentsWalletsApi } from '@api/payments/wallets/dtos/responses';
+import { totalmem } from 'os';
 import { Observable, of } from 'rxjs';
 
 export const MOCK_PAYMENTS_WALLETS_RESPONSE: PaymentsWalletsApi = {
@@ -19,6 +20,7 @@ export const MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY: Money = {
     integer: 0,
     decimals: 0,
     total: 0,
+    toString: () => parseFloat('0').toFixed(2).toLocaleString(),
   },
   currency: {
     code: 'EUR',
@@ -31,6 +33,7 @@ export const MOCK_PAYMENTS_WALLETS_MAPPED_MONEY: Money = {
     integer: 3,
     decimals: 0,
     total: 3,
+    toString: () => parseFloat('3').toFixed(2).toLocaleString(),
   },
   currency: {
     code: 'EUR',

@@ -1,22 +1,34 @@
 import { By } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
-import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
-
-import { WalletTransferAmountComponent } from '@private/features/wallet/modals/transfer/components/amount/wallet-transfer-amount.component';
-import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
+import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
 import {
   MockPaymentsWalletsService,
   MOCK_PAYMENTS_WALLETS_MAPPED_MONEY,
   MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
 } from '@api/fixtures/payments/wallets/payments-wallets.fixtures.spec';
+import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { delay } from 'rxjs/operators';
+import { WalletTransferAmountComponent } from '@private/features/wallet/modals/transfer/components/amount/wallet-transfer-amount.component';
+
 import { of, throwError } from 'rxjs';
-import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
+import { delay } from 'rxjs/operators';
+
+@Component({
+  selector: 'tsl-fake-component',
+  templateUrl: './wallet-transfer-amount.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+class FakeComponent extends WalletTransferAmountComponent {
+  constructor(changeDetectorRef: ChangeDetectorRef, paymentsWalletsService: PaymentsWalletsService, toastService: ToastService) {
+    super(changeDetectorRef, paymentsWalletsService, toastService);
+  }
+}
 
 describe('WalletTransferAmountComponent', () => {
   let component: WalletTransferAmountComponent;
@@ -37,7 +49,7 @@ describe('WalletTransferAmountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ButtonComponent, WalletTransferAmountComponent, SvgIconComponent],
+      declarations: [ButtonComponent, FakeComponent, SvgIconComponent],
       imports: [CommonModule, HttpClientTestingModule],
       providers: [{ provide: PaymentsWalletsService, useClass: MockPaymentsWalletsService }, DecimalPipe],
     }).compileComponents();
@@ -48,7 +60,7 @@ describe('WalletTransferAmountComponent', () => {
     toastService = TestBed.inject(ToastService);
     walletService = TestBed.inject(PaymentsWalletsService);
 
-    fixture = TestBed.createComponent(WalletTransferAmountComponent);
+    fixture = TestBed.createComponent(FakeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -63,9 +75,11 @@ describe('WalletTransferAmountComponent', () => {
     describe('AND WHEN while waiting for wallet payment server response', () => {
       it('should show a loading animation', fakeAsync(() => {
         const delayedTime = 2000;
+
         jest
           .spyOn(walletService, 'walletBalance$', 'get')
           .mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY).pipe(delay(delayedTime)));
+        jest.spyOn(component, 'showSpinner', 'get').mockReturnValue(true);
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -82,6 +96,7 @@ describe('WalletTransferAmountComponent', () => {
           jest
             .spyOn(walletService, 'walletBalance$', 'get')
             .mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY).pipe(delay(delayedTime)));
+          jest.spyOn(component, 'showSpinner', 'get').mockReturnValue(false);
 
           component.ngOnInit();
           tick(delayedTime);
@@ -122,7 +137,9 @@ describe('WalletTransferAmountComponent', () => {
       });
 
       it('should show 0 in the range', () => {
-        const expectedRangeValue = `Maximum ${MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY.amount.toString()} - Minimum 0,5 €`;
+        const expectedRangeValue = `<span>Maximum ${MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY.amount.toString()} ${
+          MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY.currency.symbol
+        } - Minimum 0,5 €</span>`;
         const rangeValue = fixture.debugElement.query(By.css(walletTransferAmountFigureRangeSelector)).nativeElement.innerHTML;
 
         expect(rangeValue).toEqual(expectedRangeValue);
@@ -179,7 +196,9 @@ describe('WalletTransferAmountComponent', () => {
       });
 
       it('should show the amount of money in the range', () => {
-        const expectedRangeValue = `Maximum ${MOCK_PAYMENTS_WALLETS_MAPPED_MONEY.amount.toString()} - Minimum 0,5 €`;
+        const expectedRangeValue = `<span>Maximum ${MOCK_PAYMENTS_WALLETS_MAPPED_MONEY.amount.toString()} ${
+          MOCK_PAYMENTS_WALLETS_MAPPED_MONEY.currency.symbol
+        } - Minimum 0,5 €</span>`;
         const rangeValue = fixture.debugElement.query(By.css(walletTransferAmountFigureRangeSelector)).nativeElement.innerHTML;
 
         expect(rangeValue).toEqual(expectedRangeValue);
