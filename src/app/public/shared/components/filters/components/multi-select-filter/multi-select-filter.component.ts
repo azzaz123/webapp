@@ -98,7 +98,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   }
 
   private updateLabel(): void {
-    this.labelSubject.next(this._value.length ? this.buildLabel() : this.getLabelPlaceholder());
+    this.labelSubject.next(this._value.length && this.options.length ? this.buildLabel() : this.getLabelPlaceholder());
   }
 
   private updatePlaceholderIcon(): void {
@@ -115,6 +115,8 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     stringValues.forEach((value: string, index: number) => {
       label += `${this.options.find((option) => option.value === value)?.label}${index + 1 < stringValues.length ? ', ' : ''}`;
     });
+
+    console.log('buildLabel', label);
 
     return label;
   }
