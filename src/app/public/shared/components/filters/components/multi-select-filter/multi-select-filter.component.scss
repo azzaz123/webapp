@@ -10,3 +10,13 @@
     max-height: 325px;
   }
 }
+
+tsl-multi-select-form {
+  ::ng-deep {
+    .MultiSelectOption {
+      &::after {
+        height: 1px;
+      }
+    }
+  }
+}
