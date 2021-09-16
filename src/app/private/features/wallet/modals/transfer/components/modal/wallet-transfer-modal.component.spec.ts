@@ -6,10 +6,13 @@ import { WalletTransferAmountComponent } from '@private/features/wallet/modals/t
 import { WalletTransferModalComponent } from '@private/features/wallet/modals/transfer/components/modal/wallet-transfer-modal.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { By } from '@angular/platform-browser';
 
 describe('GIVEN the WalletTransferModalComponent', () => {
   let component: WalletTransferModalComponent;
   let fixture: ComponentFixture<WalletTransferModalComponent>;
+  const walletTransferModalSelector = '.WalletTransferModal';
+  const walletTransferModalCloseSelector = `${walletTransferModalSelector}__close`;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -28,6 +31,16 @@ describe('GIVEN the WalletTransferModalComponent', () => {
   describe('WHEN displaying the view', () => {
     it('should be created', () => {
       expect(component).toBeTruthy();
+    });
+
+    describe('WHEN they click on the cross button', () => {
+      it('should close the modal', () => {
+        const closeModalSpy = spyOn(component.activeModal, 'close');
+
+        fixture.debugElement.query(By.css(walletTransferModalCloseSelector)).nativeElement.click();
+
+        expect(closeModalSpy).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });
