@@ -24,7 +24,7 @@
                 [takeImageMethod]="KYCSpecifications.imageMethod"
                 [imagesNeeded]="KYCSpecifications.documentation.imagesNeeded"
                 [headerText]="KYCSpecifications.documentation.label"
-                (endVerification)="endVerification(KYCSpecifications.images)"
+                (endVerification)="endVerification($event)"
                 (goBack)="goPreviousStep()"
             ></tsl-kyc-upload-images>
         </ng-template>

@@ -220,7 +220,18 @@ describe('KYCModalComponent', () => {
           });
 
           it('should do the kyc request ', () => {
+            expect(kycService.request).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64);
             expect(kycService.request).toHaveBeenCalledTimes(1);
+          });
+
+          it('should update the specifications on the store', () => {
+            expect(kycStoreService.specifications).toStrictEqual({
+              ...kycStoreService.specifications,
+              images: {
+                frontSide: MOCK_KYC_IMAGES_BASE_64.frontSide,
+                backSide: MOCK_KYC_IMAGES_BASE_64.backSide,
+              },
+            });
           });
 
           it('should go to the next step', () => {
@@ -242,7 +253,12 @@ describe('KYCModalComponent', () => {
           });
 
           it('should do the kyc request ', () => {
+            expect(kycService.request).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64);
             expect(kycService.request).toHaveBeenCalledTimes(1);
+          });
+
+          it('should NOT update the specifications on the store', () => {
+            expect(kycStoreService.specifications).toStrictEqual(MOCK_KYC_SPECIFICATIONS);
           });
 
           it('should show an error toast', () => {
