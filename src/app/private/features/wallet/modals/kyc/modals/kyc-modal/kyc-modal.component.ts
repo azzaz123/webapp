@@ -26,7 +26,7 @@ import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
 export class KYCModalComponent implements OnDestroy {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
-  public KYCStoreSpecifications$: Observable<KYCSpecifications>;
+  public KYCStoreSpecifications$: Observable<KYCSpecifications> = this.KYCStoreService.specifications$;
   public KYCStatusInProgressProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
     (properties) => properties.status === KYC_MODAL_STATUS.IN_PROGRESS
   );
@@ -37,18 +37,16 @@ export class KYCModalComponent implements OnDestroy {
     private activeModal: NgbActiveModal,
     private toastService: ToastService,
     private i18nService: I18nService
-  ) {
-    this.KYCStoreSpecifications$ = KYCStoreService.specifications$;
-  }
+  ) {}
 
   ngOnDestroy(): void {
     this.resetSpecifications();
   }
 
   public endVerification(KYCImages: KYCImages): void {
-    this.defineImages(KYCImages);
     this.KYCService.request(KYCImages).subscribe(
       () => {
+        this.defineImages(KYCImages);
         this.goNextStep();
       },
       (e: Error | KYCError) => {
