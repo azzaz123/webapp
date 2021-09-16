@@ -104,6 +104,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    this.trackClickKYCConfirmBankAccountInfoEventWhenIsKYC();
     if (this.bankAccountForm.valid) {
       this.submitValidForm();
     } else {
@@ -238,6 +239,12 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       text: `${this.i18nService.translate(key)}`,
       type,
     });
+  }
+
+  private trackClickKYCConfirmBankAccountInfoEventWhenIsKYC(): void {
+    if (this.isKYC) {
+      this.kycTrackingEventsService.trackClickKYCConfirmBankAccountInfo();
+    }
   }
 
   private trackPageViewEventWhenIsKYC(): void {

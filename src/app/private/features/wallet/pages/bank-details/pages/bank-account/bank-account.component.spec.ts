@@ -88,6 +88,7 @@ describe('BankAccountComponent', () => {
           provide: KYCTrackingEventsService,
           useValue: {
             trackViewKYCBankAccountInfoScreen() {},
+            trackClickKYCConfirmBankAccountInfo() {},
           },
         },
       ],
@@ -148,7 +149,7 @@ describe('BankAccountComponent', () => {
         component.ngOnInit();
       });
 
-      it('should NOT request to the KYC analytics service to track the event', () => {
+      it('should NOT request to the KYC analytics service to track the page view event', () => {
         expect(kycTrackingEventsService.trackViewKYCBankAccountInfoScreen).not.toHaveBeenCalled();
       });
     });
@@ -209,6 +210,36 @@ describe('BankAccountComponent', () => {
   });
 
   describe('onSubmit', () => {
+    describe('and we click on the save form button...', () => {
+      beforeEach(() => {
+        spyOn(kycTrackingEventsService, 'trackClickKYCConfirmBankAccountInfo');
+      });
+
+      describe('and is KYC...', () => {
+        beforeEach(() => {
+          component.isKYC = true;
+
+          triggerFormSubmit();
+        });
+
+        it('should request to the KYC analytics service to track the click event', () => {
+          expect(kycTrackingEventsService.trackClickKYCConfirmBankAccountInfo).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('and is not KYC...', () => {
+        beforeEach(() => {
+          component.isKYC = false;
+
+          triggerFormSubmit();
+        });
+
+        it('should NOT request to the KYC analytics service to track the click event', () => {
+          expect(kycTrackingEventsService.trackClickKYCConfirmBankAccountInfo).not.toHaveBeenCalled();
+        });
+      });
+    });
+
     describe('when the form is valid...', () => {
       describe('and the bank account is new...', () => {
         beforeEach(() => {
