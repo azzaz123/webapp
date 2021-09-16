@@ -117,7 +117,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
       label += option ? `${index !== 0 && label.length > 2 ? ', ' : ''}${option.label}` : '';
     });
 
-    return label;
+    return label.length ? label : this.getLabelPlaceholder();
   }
 
   private updateValueFromParent(): void {
