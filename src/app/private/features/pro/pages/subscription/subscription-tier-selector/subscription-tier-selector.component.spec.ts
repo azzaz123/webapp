@@ -3,9 +3,11 @@ import { ChangeDetectionStrategy } from '@angular/compiler/src/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
+  FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION,
   FREE_TRIAL_AVAILABLE_SUBSCRIPTION,
-  MAPPED_SUBSCRIPTIONS,
-  MAPPED_SUBSCRIPTIONS_WITH_RE,
+  MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
+  MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
   TIER_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 
@@ -28,8 +30,8 @@ describe('SubscriptionTierSelectorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionTierSelectorComponent);
     component = fixture.componentInstance;
-    component.subscription = MAPPED_SUBSCRIPTIONS[0];
-    component.selectedTier = MAPPED_SUBSCRIPTIONS[0].tiers[0];
+    component.subscription = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS;
+    component.selectedTier = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS.tiers[0];
     fixture.detectChanges();
   });
 
@@ -63,10 +65,28 @@ describe('SubscriptionTierSelectorComponent', () => {
   });
 
   describe('Title', () => {
+    describe('is basic tier', () => {
+      beforeEach(() => {
+        component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED;
+        fixture.detectChanges();
+      });
+      it('should show basic title', () => {
+        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__title')).nativeElement;
+
+        expect(tierTitle.textContent).toBe($localize`:@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_title:Basic`);
+      });
+      it('should show limit subtitle', () => {
+        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.GenericCard__subtitle')).nativeElement;
+
+        expect(tierTitle.textContent).toBe(
+          $localize`:@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_description:List up to ${component.subscription.tiers[0].limit}:INTERPOLATION: items and boost your sales`
+        );
+      });
+    });
     describe('has limits', () => {
       describe('and is real estate', () => {
         beforeEach(() => {
-          component.subscription = MAPPED_SUBSCRIPTIONS_WITH_RE[0];
+          component.subscription = MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED;
           fixture.detectChanges();
         });
         it('should show title', () => {
@@ -90,8 +110,12 @@ describe('SubscriptionTierSelectorComponent', () => {
     });
 
     describe('has not limits', () => {
+      beforeEach(() => {
+        component.subscription = FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION;
+        fixture.detectChanges();
+      });
       it('should show title', () => {
-        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[3].query(By.css('.Card__title')).nativeElement;
+        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[1].query(By.css('.Card__title')).nativeElement;
 
         expect(tierTitle.textContent).toBe($localize`:@@web_profile_pages_subscription_586:List without limits`);
       });
@@ -101,12 +125,12 @@ describe('SubscriptionTierSelectorComponent', () => {
   describe('Description', () => {
     describe('has free trial', () => {
       beforeEach(() => {
-        component.subscription = FREE_TRIAL_AVAILABLE_SUBSCRIPTION;
-        component.selectedTier = FREE_TRIAL_AVAILABLE_SUBSCRIPTION.tiers[0];
+        component.subscription = FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION;
+        component.selectedTier = FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION.tiers[0];
         fixture.detectChanges();
       });
       it('should show description with trial', () => {
-        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle')).nativeElement;
+        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__description')).nativeElement;
         const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${component.subscription.tiers[0].price}:INTERPOLATION:${component.subscription.tiers[0].currency}:INTERPOLATION:/month`;
         const expectedFreeTrialText = $localize`:@@after_free_trial:after free trial`;
 
@@ -117,9 +141,9 @@ describe('SubscriptionTierSelectorComponent', () => {
     describe('has not free trial', () => {
       describe('and has no discount', () => {
         it('should show description', () => {
-          const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle'));
+          const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__description'));
           const tierDescriptionText = tierDescription.nativeElement.textContent;
-          const classDiscounted = tierDescription.query(By.css('.Card__subtitle--discounted'));
+          const classDiscounted = tierDescription.query(By.css('.Card__description--discounted'));
           const expectedText = $localize`:@@web_profile_pages_subscription_326:${component.selectedTier.price}:INTERPOLATION:${component.selectedTier.currency}:INTERPOLATION:/month`;
 
           expect(tierDescriptionText).toBe(expectedText);
@@ -134,9 +158,9 @@ describe('SubscriptionTierSelectorComponent', () => {
         });
         it('should show description with discount', () => {
           const tier = component.subscription.tiers[0];
-          const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__subtitle'));
+          const tierDescription = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__description'));
           const tierDescriptionText = tierDescription.nativeElement.textContent;
-          const classDiscounted = tierDescription.query(By.css('.Card__subtitle--discounted'));
+          const classDiscounted = tierDescription.query(By.css('.Card__description--discounted'));
 
           const expectedMonthlyPriceText = $localize`:@@web_profile_pages_subscription_326:${tier.discount.price}:INTERPOLATION:${tier.currency}:INTERPOLATION:/month`;
           const expectedDateText = $localize`:@@pro_subscription_purchase_tier_list_discount_limit_date_label:Enjoy the discount until ${new DatePipe(

@@ -230,13 +230,8 @@ export class SubscriptionsComponent implements OnInit {
       return CheckSubscriptionInAppModalComponent;
     }
 
-    // Subscription is active, from Stripe, not cancelled, with only one tier and no limits
-    if (
-      this.subscriptionsService.isStripeSubscription(subscription) &&
-      !subscription.subscribed_until &&
-      subscription.tiers.length === 1 &&
-      !subscription.tiers[0].limit
-    ) {
+    // Subscription is active, from Stripe, not cancelled, with only one tier
+    if (this.subscriptionsService.isStripeSubscription(subscription) && !subscription.subscribed_until && subscription.tiers.length === 1) {
       return CancelSubscriptionModalComponent;
     }
 
