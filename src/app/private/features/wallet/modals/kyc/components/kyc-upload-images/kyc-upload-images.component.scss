@@ -1,7 +1,9 @@
 @import '~style/common';
 
-$image-block-width: 320px;
+$image-block-width: 300px;
+$image-block-width--big: 360px;
 $image-height: 200px;
+$image-height--big: 240px;
 
 .KYCUploadImages {
   &__back {
@@ -17,14 +19,6 @@ $image-height: 200px;
     }
   }
 
-  &__imageContainer {
-    padding: 0px 32px;
-  }
-
-  &__bottomContainer {
-    bottom: 0;
-  }
-
   &__title,
   &__subtitle {
     color: $blue-grey-1;
@@ -35,20 +29,39 @@ $image-height: 200px;
     font-weight: $font-weight-chunky;
   }
 
-  &__imageBlock {
-    width: $image-block-width;
+  &__imageLaterals {
+    padding: 0px 32px;
+  }
+
+  &__imageContainer {
+    flex: 1;
   }
 
   &__image {
+    overflow: hidden;
+    box-sizing: content-box;
     height: $image-height;
-    border: dashed 2px $blue-grey-5;
 
-    &__video {
-      object-fit: cover;
+    @include media-breakpoint-up(sm) {
+      height: $image-height--big;
     }
+
+    border: dashed 2px $blue-grey-5;
 
     &--round {
       border-radius: $border-radius;
     }
+  }
+
+  &__imageBlock {
+    width: $image-block-width;
+
+    @include media-breakpoint-up(sm) {
+      width: $image-block-width--big;
+    }
+  }
+
+  &__bottomContainer {
+    bottom: 0;
   }
 }
