@@ -1,0 +1,46 @@
+<div class="WalletTransferAmount">
+  <div class="WalletTransferAmount__question">
+    <span i18n="@@make_transfer_view_how_much_description">How much do you want to transfer?</span>
+  </div>
+  <div class="WalletTransferAmount__square py-3 box profile-box">
+    <div class="row">
+      <div class="col">
+        <div
+          *ngIf="showSpinner"
+          class="WalletTransferAmount__spinner w-100 h-100 d-flex justify-content-center align-content-center align-items-center"
+        >
+          <tsl-svg-icon width="64" height="64" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+        </div>
+
+        <div *ngIf="showBalance" class="w-100 h-100 d-flex flex-column justify-content-center align-content-center align-items-center">
+          <div class="WalletTransferAmount__figure w-100 d-flex justify-content-center align-content-center">
+            <div class="WalletTransferAmount__figure__integer">{{ walletBalance.amount.integer }}</div>
+            <div class="WalletTransferAmount__figure__decimal">{{ walletBalance.amount.decimals | number: '2.0-0' }}</div>
+            <div class="WalletTransferAmount__figure__currency">{{ walletBalance.currency.symbol }}</div>
+            <div class="d-flex align-items-end">
+              <div class="WalletTransferAmount__figure__reset">
+                <tsl-svg-icon src="./assets/icons/remove.svg"></tsl-svg-icon>
+              </div>
+            </div>
+          </div>
+          <span class="WalletTransferAmount__line"></span>
+          <div class="WalletTransferAmount__range">
+            <span i18n="@@make_transfer_view_amount_selector_price_limits_label">Maximum {{ amountAsText }} - Minimum 0,5 €</span>
+          </div>
+          <div class="WalletTransferAmount__CTA">
+            <tsl-button [disabled]="!allowTransfer" i18n="@@make_transfer_view_transfer_button" (click)="transferBalance()"
+              >Transfer to my bank account</tsl-button
+            >
+          </div>
+        </div>
+
+        <div
+          *ngIf="showError"
+          class="WalletTransferAmount__error w-100 h-100 d-flex justify-content-center align-content-center align-items-center"
+        >
+          <img src="/assets/images/error.svg" alt="error" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

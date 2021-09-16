@@ -1,0 +1,78 @@
+@import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/text';
+@import '~web-styleguide/scss/spacing';
+@import '~style/mixins/_square.scss';
+
+$wallet-transfer-amount-container-height: 96px;
+$wallet-transfer-amount-line-width: 250px;
+$wallet-transfer-amount-text-size: 74px;
+$wallet-transfer-amount-square-width: 335px;
+
+$spacing-14: 14px;
+
+.WalletTransferAmount {
+  font-family: $wallie;
+  &__question {
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+    margin-bottom: $spacing-ms;
+    text-align: center;
+  }
+  &__square {
+    background: $white;
+    border-radius: $font-size-s;
+    box-shadow: 0px 2px 6px rgba(37, 50, 56, 0.15);
+    width: $wallet-transfer-amount-square-width;
+  }
+  &__figure {
+    color: $blue-grey-1;
+    font-weight: $font-weight-chunky;
+    height: $wallet-transfer-amount-container-height;
+    padding: $spacing-m 0 11px 52px;
+
+    &__integer {
+      font-size: $wallet-transfer-amount-text-size;
+      line-height: $wallet-transfer-amount-text-size;
+    }
+
+    &__decimal {
+      font-size: $font-size-xl;
+      margin-left: $spacing-s;
+    }
+
+    &__currency {
+      color: $blue-grey-2;
+      font-size: $font-size-xl;
+    }
+
+    &__reset {
+      @include square(20px);
+      margin-left: $spacing-ms;
+      tsl-svg-icon circle {
+        @include square(20px);
+      }
+      tsl-svg-icon path {
+        fill: $white;
+      }
+      &:hover {
+        cursor: pointer;
+        z-index: 99;
+        tsl-svg-icon circle {
+          fill: $blue-grey-3 !important;
+        }
+      }
+    }
+  }
+  &__line {
+    border: 1px solid $blue-grey-4;
+    margin-bottom: $spacing-m;
+    width: $wallet-transfer-amount-line-width;
+  }
+  &__range {
+    color: $walla-main;
+    font-size: $font-size-xs;
+    line-height: $font-size-m;
+    margin-bottom: $spacing-14;
+    text-align: center;
+  }
+}
