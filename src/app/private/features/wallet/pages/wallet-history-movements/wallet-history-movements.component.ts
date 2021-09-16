@@ -7,7 +7,7 @@ import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.int
 import { Observable, ReplaySubject } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
 import { WalletMovementsHistory } from './interfaces/wallet-movements-history.interface';
-import { WalletHistoryMovementsUIService } from './services/wallet-history-movements-ui.service.spec/wallet-history-movements-ui.service';
+import { WalletHistoryMovementsUIService } from './services/wallet-history-movements-ui/wallet-history-movements-ui.service';
 
 @Component({
   selector: 'tsl-wallet-history-movements',
