@@ -17,6 +17,7 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
+import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 import { finalize } from 'rxjs/operators';
 
@@ -106,6 +107,13 @@ export class SubscriptionEditComponent implements OnInit {
 
   public onClearSubscription(): void {
     this.unselectSubscription.emit();
+}
+
+  public openCategoriesModal(): void {
+    const modal = this.modalService.open(CategoryListingModalComponent, {
+      windowClass: 'category-listing',
+    });
+    modal.componentInstance.subscription = this.subscription;
   }
 
   private checkTier(): void {
