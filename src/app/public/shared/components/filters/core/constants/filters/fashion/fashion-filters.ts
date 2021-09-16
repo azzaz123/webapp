@@ -19,7 +19,7 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
   },
   {
     id: FASHION_CONFIGURATION_ID.OBJECT_TYPE,
-    type: FILTER_TYPES.SELECT,
+    type: FILTER_TYPES.MULTISELECT,
     title: $localize`:@@web_filter_clothing_type_title:Type of clothing`,
     bubblePlaceholder: $localize`:@@web_filter_clothing_type_bubble_placeholder:Type of clothing`,
     drawerPlaceholder: $localize`:@@web_filter_clothing_type_drawer_placeholder:Select type of clothing`,
