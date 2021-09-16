@@ -25,6 +25,9 @@ import { KYCModule } from '../../kyc.module';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
 
 import { KYCModalComponent } from './kyc-modal.component';
+import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 
 describe('KYCModalComponent', () => {
   const bankAccountSelector = 'tsl-bank-account';
@@ -45,7 +48,15 @@ describe('KYCModalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [KYCModule, RouterTestingModule, HttpClientTestingModule, KYCServicesModule],
       declarations: [KYCModalComponent, StepperComponent, StepDirective],
-      providers: [DeviceDetectorService, NgbActiveModal, KYCStoreService, I18nService, ToastService],
+      providers: [
+        DeviceDetectorService,
+        NgbActiveModal,
+        KYCStoreService,
+        I18nService,
+        ToastService,
+        KYCTrackingEventsService,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });

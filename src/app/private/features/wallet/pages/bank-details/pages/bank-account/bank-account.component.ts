@@ -25,6 +25,7 @@ import {
 } from '@private/features/wallet/errors/classes/bank-account';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
+import { KYCTrackingEventsService } from '@private/features/wallet/modals/kyc/services/kyc-tracking-events/kyc-tracking-events.service';
 
 export const IBAN_LENGTH = 40;
 @Component({
@@ -60,10 +61,12 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     private i18nService: I18nService,
     private router: Router,
     private bankAccountService: BankAccountService,
-    private location: Location
+    private location: Location,
+    private kycTrackingEventsService: KYCTrackingEventsService
   ) {}
 
   ngOnInit(): void {
+    this.trackPageViewEventWhenIsKYC();
     this.generateIBANMaxLength();
     this.buildForm();
     this.eventService.subscribe(EventService.FORM_SUBMITTED, () => {
@@ -235,5 +238,11 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       text: `${this.i18nService.translate(key)}`,
       type,
     });
+  }
+
+  private trackPageViewEventWhenIsKYC(): void {
+    if (this.isKYC) {
+      this.kycTrackingEventsService.trackViewKYCBankAccountInfoScreen();
+    }
   }
 }

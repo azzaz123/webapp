@@ -31,6 +31,7 @@ import {
 
 import { BankAccountComponent } from './bank-account.component';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { KYCTrackingEventsService } from '@private/features/wallet/modals/kyc/services/kyc-tracking-events/kyc-tracking-events.service';
 
 describe('BankAccountComponent', () => {
   const messageErrorSelector = '.BankAccount__message--error';
@@ -48,6 +49,7 @@ describe('BankAccountComponent', () => {
   let i18nService: I18nService;
   let router: Router;
   let el: HTMLElement;
+  let kycTrackingEventsService: KYCTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -82,6 +84,12 @@ describe('BankAccountComponent', () => {
             events: routerEvents,
           },
         },
+        {
+          provide: KYCTrackingEventsService,
+          useValue: {
+            trackViewKYCBankAccountInfoScreen() {},
+          },
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -95,6 +103,7 @@ describe('BankAccountComponent', () => {
     location = TestBed.inject(Location);
     toastService = TestBed.inject(ToastService);
     i18nService = TestBed.inject(I18nService);
+    kycTrackingEventsService = TestBed.inject(KYCTrackingEventsService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
@@ -105,15 +114,43 @@ describe('BankAccountComponent', () => {
 
   describe('when we initialize the form...', () => {
     beforeEach(() => {
-      component.ngOnInit();
+      spyOn(kycTrackingEventsService, 'trackViewKYCBankAccountInfoScreen');
     });
 
     it('should build the form', () => {
+      component.ngOnInit();
+
       expect(component.bankAccountForm.value).toStrictEqual(MOCK_EMPTY_BANK_ACCOUNT);
     });
 
     it('should set the max iban length', () => {
+      component.ngOnInit();
+
       expect(component.maxLengthIBAN).toBe(49);
+    });
+
+    describe('and is KYC...', () => {
+      beforeEach(() => {
+        component.isKYC = true;
+
+        component.ngOnInit();
+      });
+
+      it('should request to the KYC analytics service to track the page view event', () => {
+        expect(kycTrackingEventsService.trackViewKYCBankAccountInfoScreen).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('and is not KYC...', () => {
+      beforeEach(() => {
+        component.isKYC = false;
+
+        component.ngOnInit();
+      });
+
+      it('should NOT request to the KYC analytics service to track the event', () => {
+        expect(kycTrackingEventsService.trackViewKYCBankAccountInfoScreen).not.toHaveBeenCalled();
+      });
     });
   });
 

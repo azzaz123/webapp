@@ -60,7 +60,7 @@ describe('KYCInfoModalComponent', () => {
   });
 
   describe('when the component opens...', () => {
-    it('should ask to the KYC analytics service to track the page view event', () => {
+    it('should request to the KYC analytics service to track the page view event', () => {
       spyOn(kycTrackingEventsService, 'trackViewKYCTutorialScreen');
 
       fixture.detectChanges();
@@ -148,7 +148,7 @@ describe('KYCInfoModalComponent', () => {
           const verifyButton = de.query(By.css(verifyButtonSelector)).nativeElement;
           verifyButton.click();
 
-          it('should ask to the KYC analytics service to track the click event', () => {
+          it('should request to the KYC analytics service to track the click event', () => {
             expect(kycTrackingEventsService.trackViewKYCTutorialScreen).toHaveBeenCalledTimes(1);
           });
 
