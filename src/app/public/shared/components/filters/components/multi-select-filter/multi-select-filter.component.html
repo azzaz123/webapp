@@ -1,0 +1,32 @@
+<tsl-filter-template
+  #filterTemplateComponent
+  [hasApply]="true"
+  [isBubble]="variant | isBubble"
+  [isDropdown]="true"
+  [isClearable]="true"
+  [title]="config.title"
+  [icon]="config.icon"
+  [label]="label$ | async"
+  [hasValue]="hasValue$ | async"
+  (apply)="handleApply()"
+  (clear)="handleClear()"
+  (openStateChange)="openStateChange.emit($event)"
+  (cancel)="handleCancel()"
+>
+  <tsl-drawer-placeholder-template
+    #selectFilterTemplateComponent
+    [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
+    [placeholderLabel]="label$ | async"
+    [placeholderIcon]="placeholderIcon$ | async"
+    [contentTitle]="contentTitle"
+    [isClearable]="hasValue$ | async"
+    (placeholderOpenStateChange)="placeholderOpenStateChange($event); openStateChange.emit($event)"
+    (clear)="handleClear()"
+  >
+    <div [class.MultiSelectFilter--bubble]="variant | isBubble">
+      <form [formGroup]="formGroup" class="MultiSelectFilter__form">
+        <tsl-multi-select-form formControlName="select" [options]="options"></tsl-multi-select-form>
+      </form>
+    </div>
+  </tsl-drawer-placeholder-template>
+</tsl-filter-template>

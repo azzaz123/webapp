@@ -88,7 +88,7 @@ describe('MultiSelectOptionComponent', () => {
     describe('...disabled checking behavior', () => {
       beforeEach(() => {
         component.option = optionFixture;
-        component.disabled = true;
+        component.isDisabled = true;
         fixture.detectChanges();
       });
       it('should disable checking behavior if we stop user checking the option', () => {

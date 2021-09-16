@@ -24,6 +24,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
       return { ...option, checked: false };
     });
 
+    this.mapCheckedValue();
     this.extendedOptionsSubject.next(this.extendedOptions);
   }
   @Input() disabled: boolean = false;
@@ -50,7 +51,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   private mapCheckedValue(): void {
     this.extendedOptions = this.extendedOptions.map((option: MultiSelectFormOption) => {
-      option.checked = this.value.includes(option.value);
+      option.checked = this.value?.includes(option.value);
       return { ...option };
     });
 
