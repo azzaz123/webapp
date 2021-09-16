@@ -7,6 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SlidesCarouselModule } from '@shared/components/carousel-slides/carousel-slides.module';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
+import { KYCTrackingEventsService } from '../kyc/services/kyc-tracking-events/kyc-tracking-events.service';
 
 import { KYCInfoModalComponent } from './kyc-info-modal.component';
 
@@ -20,6 +21,7 @@ describe('KYCInfoModalComponent', () => {
   let de: DebugElement;
   let activeModal: NgbActiveModal;
   let router: Router;
+  let kycTrackingEventsService: KYCTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -33,6 +35,12 @@ describe('KYCInfoModalComponent', () => {
             navigate() {},
           },
         },
+        {
+          provide: KYCTrackingEventsService,
+          useValue: {
+            trackViewKYCTutorialScreen() {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -42,11 +50,22 @@ describe('KYCInfoModalComponent', () => {
     de = fixture.debugElement;
     activeModal = TestBed.inject(NgbActiveModal);
     router = TestBed.inject(Router);
+    kycTrackingEventsService = TestBed.inject(KYCTrackingEventsService);
     component = fixture.componentInstance;
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('when the component opens...', () => {
+    it('should ask to the KYC analytics service to track the page view event', () => {
+      spyOn(kycTrackingEventsService, 'trackViewKYCTutorialScreen');
+
+      fixture.detectChanges();
+
+      expect(kycTrackingEventsService.trackViewKYCTutorialScreen).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('when we click on the cross...', () => {
