@@ -158,22 +158,59 @@ describe('MultiSelectFilterComponent', () => {
         fixture.detectChanges();
       });
 
-      describe('and new value is applied', () => {
-        it('should emit changes', () => {
-          const value = [
-            {
-              key: FILTER_QUERY_PARAM_KEY.objectType,
-              value: 'un_opened, new',
-            },
-          ];
+      describe('and new known value is applied', () => {
+        const value = [
+          {
+            key: FILTER_QUERY_PARAM_KEY.objectType,
+            value: 'un_opened,new',
+          },
+        ];
 
+        beforeEach(() => {
           spyOn(component.valueChange, 'emit');
+
           setValue(value);
           component.handleApply();
           fixture.detectChanges();
+        });
 
+        it('should emit changes', () => {
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
           expect(component.valueChange.emit).toHaveBeenCalledWith(value);
+        });
+
+        it('should set label with correct values', () => {
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+
+          expect(filterTemplate.label).toEqual('Unopened, New');
+        });
+      });
+
+      describe('and new unkwonw value is applied', () => {
+        const value = [
+          {
+            key: FILTER_QUERY_PARAM_KEY.objectType,
+            value: 'unknown,un_opened,unkwown,new',
+          },
+        ];
+
+        beforeEach(() => {
+          spyOn(component.valueChange, 'emit');
+
+          setValue(value);
+          component.handleApply();
+          fixture.detectChanges();
+        });
+
+        it('should emit changes', () => {
+          expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
+          expect(component.valueChange.emit).toHaveBeenCalledWith(value);
+        });
+
+        it('should set label with correct values', () => {
+          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+
+          expect(filterTemplate.label).toEqual('Unopened, New');
         });
       });
 
