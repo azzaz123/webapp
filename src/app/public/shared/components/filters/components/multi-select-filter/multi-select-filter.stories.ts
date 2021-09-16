@@ -47,7 +47,6 @@ class FiltersComponent {
   @Input() public subcategoryConfig: MultiSelectFilterConfig;
 
   public changeSubcategory(value: FilterParameter[]): void {
-    console.log('FiltersComponent - changeSubcategory', value);
     this.subcategory = value;
   }
 }
