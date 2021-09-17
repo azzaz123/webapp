@@ -95,7 +95,10 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   public goToDefineBackImage(): void {
     this.activeStep$.next(2);
-    this.clearImageInput();
+
+    if (!this.isShootImageMethod) {
+      this.clearImageInput();
+    }
   }
 
   public uploadOrShootImage(): void {

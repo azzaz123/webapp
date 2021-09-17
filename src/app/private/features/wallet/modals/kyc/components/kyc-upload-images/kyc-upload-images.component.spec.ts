@@ -18,6 +18,7 @@ import { ButtonComponent } from '@shared/button/button.component';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 import { RequestVideoPermissionsService } from '@shared/services/video/request-video-permissions/request-video-permissions.service';
 import { VIDEO_PERMISSIONS_STATUS } from '@shared/services/video/request-video-permissions/video-permissions-status.interface';
+import { SpinnerComponent } from '@shared/spinner/spinner.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
@@ -59,11 +60,13 @@ describe('KYCUploadImagesComponent', () => {
   const userVideoSelector = '#userVideo';
   const definedImageSelector = '#definedImage';
   const backButtonSelector = '.KYCUploadImages__back';
+  const imageBlockSelector = '#imageBlock';
+  const uploadImageDefinedContentSelector = '#uploadImageDefinedContent';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgbAlertModule],
-      declarations: [TestWrapperComponent, KYCUploadImagesComponent, BannerComponent, SvgIconComponent, ButtonComponent],
+      declarations: [TestWrapperComponent, KYCUploadImagesComponent, BannerComponent, SvgIconComponent, ButtonComponent, SpinnerComponent],
       providers: [
         {
           provide: RequestVideoPermissionsService,
@@ -107,6 +110,36 @@ describe('KYCUploadImagesComponent', () => {
     });
 
     describe(`and the user's browser supports the API`, () => {
+      describe(`and we are waiting for user's response`, () => {
+        beforeEach(() => {
+          videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.LOADING);
+          fixture.detectChanges();
+        });
+
+        it('should set the user permissions as loading', () => {
+          let videoPermissions: VIDEO_PERMISSIONS_STATUS;
+
+          component.videoPermissions$.subscribe((permissions: VIDEO_PERMISSIONS_STATUS) => {
+            videoPermissions = permissions;
+          });
+
+          expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.LOADING);
+        });
+
+        it('should show the loading status', () => {
+          expect(de.query(By.directive(SpinnerComponent))).toBeTruthy();
+        });
+
+        it('should not show the error banner', () => {
+          const banner = de.query(By.directive(BannerComponent));
+          expect(banner).toBeFalsy();
+        });
+
+        it('should hide the camera block', () => {
+          expectImageBlockHiddenInDOM(true);
+        });
+      });
+
       describe('and the user accept the permission', () => {
         beforeEach(() => {
           spyOn(component.goBack, 'emit');
@@ -132,11 +165,29 @@ describe('KYCUploadImagesComponent', () => {
           expect(component.userVideo.nativeElement.srcObject).toStrictEqual(MOCK_MEDIA_STREAM);
         });
 
+        it('should show the camera block', () => {
+          fixture.detectChanges();
+
+          expectImageBlockHiddenInDOM(false);
+        });
+
         it('should NOT show an error banner', () => {
           fixture.detectChanges();
 
           const banner = de.query(By.directive(BannerComponent));
           expect(banner).toBeFalsy();
+        });
+
+        it('should NOT show the loading status', () => {
+          fixture.detectChanges();
+
+          expect(de.query(By.directive(SpinnerComponent))).toBeFalsy();
+        });
+
+        it('should not render the input upload image ', () => {
+          fixture.detectChanges();
+
+          expectUploadImageInDOM(false);
         });
 
         describe('and the user must provide two images of the document', () => {
@@ -199,16 +250,11 @@ describe('KYCUploadImagesComponent', () => {
 
               describe('and they click on the shoot front side image button', () => {
                 beforeEach(() => {
-                  spyOn(component.uploadImage.nativeElement, 'click');
                   spyOn(component.definedImageCanvas.nativeElement.getContext('2d'), 'drawImage');
                   spyOn(component.definedImageCanvas.nativeElement, 'toDataURL').and.returnValue('NEW_IMAGE_SHOOT');
 
                   de.query(By.css(takeImageButtonSelector)).nativeElement.click();
                   fixture.detectChanges();
-                });
-
-                it('should not open the device folder to update an image ', () => {
-                  expect(component.uploadImage.nativeElement.click).not.toHaveBeenCalled();
                 });
 
                 it('should convert the canvas to a jpeg image with hight quality', () => {
@@ -293,10 +339,6 @@ describe('KYCUploadImagesComponent', () => {
                 it('should go to take the back side image', () => {
                   expect(component.activeStep$.value).toBe(2);
                 });
-
-                it('should clean the defined image on the screen', () => {
-                  expect(component.uploadImage.nativeElement.value).toBeFalsy();
-                });
               });
             });
 
@@ -373,16 +415,11 @@ describe('KYCUploadImagesComponent', () => {
 
               describe('and they click on the shoot back side image button', () => {
                 beforeEach(() => {
-                  spyOn(component.uploadImage.nativeElement, 'click');
                   spyOn(component.definedImageCanvas.nativeElement.getContext('2d'), 'drawImage');
                   spyOn(component.definedImageCanvas.nativeElement, 'toDataURL').and.returnValue('NEW_BACK_IMAGE_SHOOT');
 
                   de.query(By.css(takeImageButtonSelector)).nativeElement.click();
                   fixture.detectChanges();
-                });
-
-                it('should not open the device folder to update an image ', () => {
-                  expect(component.uploadImage.nativeElement.click).not.toHaveBeenCalled();
                 });
 
                 it('should convert the canvas to a jpeg image with hight quality', () => {
@@ -555,16 +592,11 @@ describe('KYCUploadImagesComponent', () => {
 
             describe('and they click on the shoot front side image button', () => {
               beforeEach(() => {
-                spyOn(component.uploadImage.nativeElement, 'click');
                 spyOn(component.definedImageCanvas.nativeElement.getContext('2d'), 'drawImage');
                 spyOn(component.definedImageCanvas.nativeElement, 'toDataURL').and.returnValue('NEW_IMAGE_SHOOT');
 
                 de.query(By.css(takeImageButtonSelector)).nativeElement.click();
                 fixture.detectChanges();
-              });
-
-              it('should not open the device folder to update an image ', () => {
-                expect(component.uploadImage.nativeElement.click).not.toHaveBeenCalled();
               });
 
               it('should convert the canvas to a jpeg image with hight quality', () => {
@@ -746,10 +778,26 @@ describe('KYCUploadImagesComponent', () => {
       testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
     });
 
+    it('should NOT show the loading status', () => {
+      expect(de.query(By.directive(SpinnerComponent))).toBeFalsy();
+    });
+
     it('should NOT request video access', () => {
       fixture.detectChanges();
 
       expect(requestVideoPermissionsService.request).not.toHaveBeenCalled();
+    });
+
+    it('should show the camera block', () => {
+      fixture.detectChanges();
+
+      expectImageBlockHiddenInDOM(false);
+    });
+
+    it('should NOT show the user video', () => {
+      fixture.detectChanges();
+
+      expectVideoInDOM(false);
     });
 
     it('should NOT show an error banner', () => {
@@ -757,6 +805,12 @@ describe('KYCUploadImagesComponent', () => {
 
       const banner = de.query(By.directive(BannerComponent));
       expect(banner).toBeFalsy();
+    });
+
+    it('should render the input upload image ', () => {
+      fixture.detectChanges();
+
+      expectUploadImageInDOM(true);
     });
 
     describe('and the user must provide two images of the document', () => {
@@ -809,12 +863,12 @@ describe('KYCUploadImagesComponent', () => {
             expectRetakeImageButtonInDOM(false);
           });
 
-          it('should NOT show the user video', () => {
-            expectVideoInDOM(false);
+          it('should show the fallback upload image section', () => {
+            expectUploadImageFallbackContentInDOM(true);
           });
 
-          it('should NOT show the front side image', () => {
-            expectDefinedImageInDOM(false);
+          it('should NOT show the image', () => {
+            expectUploadImageDefinedContentInDOM(false);
           });
 
           it('should disable the continue button', () => {
@@ -823,7 +877,6 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and they click on the upload front side image button', () => {
             beforeEach(() => {
-              spyOn(component.definedImageCanvas.nativeElement.getContext('2d'), 'drawImage');
               spyOn(de.query(By.css(uploadImageSelector)).nativeElement, 'click');
 
               de.query(By.css(takeImageButtonSelector)).nativeElement.click();
@@ -836,10 +889,19 @@ describe('KYCUploadImagesComponent', () => {
             describe('and the user selects a front side image', () => {
               beforeEach(() => {
                 triggerChangeImageUpload(true);
+
+                fixture.detectChanges();
               });
 
-              it('should draw the front side image on the screen', () => {
-                expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+              it('should show the updated image on the screen', () => {
+                const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+                const selectedImage = MOCK_JPEG_IMG_EVENT().target.result;
+
+                expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+              });
+
+              it('should NOT show the fallback upload image section', () => {
+                expectUploadImageFallbackContentInDOM(false);
               });
 
               it('should update the selected image', () => {
@@ -853,10 +915,16 @@ describe('KYCUploadImagesComponent', () => {
             describe('and the user NOT selects a front side image', () => {
               beforeEach(() => {
                 triggerChangeImageUpload(false);
+
+                fixture.detectChanges();
               });
 
-              it('should NOT draw the front side image on the screen', () => {
-                expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).not.toHaveBeenCalled();
+              it('should NOT show the defined front side image', () => {
+                expectUploadImageDefinedContentInDOM(false);
+              });
+
+              it('should show the fallback upload image section', () => {
+                expectUploadImageFallbackContentInDOM(true);
               });
 
               it('should NOT update the images', () => {
@@ -898,12 +966,15 @@ describe('KYCUploadImagesComponent', () => {
             expectRetakeImageButtonCorrectMessage(expectedMessage);
           });
 
-          it('should NOT show the user video', () => {
-            expectVideoInDOM(false);
+          it('should NOT show the fallback upload image section', () => {
+            expectUploadImageFallbackContentInDOM(false);
           });
 
-          it('should show the front side image', () => {
-            expectDefinedImageInDOM(true);
+          it('should show the front side image on the screen', () => {
+            const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+            const selectedImage = MOCK_KYC_IMAGES_BASE_64_BACK_NULL.frontSide;
+
+            expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
           });
 
           it('should enable the continue button', () => {
@@ -914,6 +985,16 @@ describe('KYCUploadImagesComponent', () => {
             beforeEach(() => {
               spyOn(component.uploadImage.nativeElement, 'click');
               de.query(By.css(retakeImageButtonSelector)).nativeElement.click();
+
+              fixture.detectChanges();
+            });
+
+            it('should show the fallback upload image section', () => {
+              expectUploadImageFallbackContentInDOM(true);
+            });
+
+            it('should NOT show the image', () => {
+              expectUploadImageDefinedContentInDOM(false);
             });
 
             it('should remove the front side image', () => {
@@ -971,6 +1052,18 @@ describe('KYCUploadImagesComponent', () => {
             fixture.detectChanges();
           });
 
+          it('should NOT show the continue verification button', () => {
+            fixture.detectChanges();
+
+            expectContinueButtonInDOM(false);
+          });
+
+          it('should show the end verification button', () => {
+            fixture.detectChanges();
+
+            expectEndVerificationButtonInDOM(true);
+          });
+
           it('should show the correct title', () => {
             const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_title:Take a back side photo of your document`;
 
@@ -996,12 +1089,12 @@ describe('KYCUploadImagesComponent', () => {
             expectRetakeImageButtonInDOM(false);
           });
 
-          it('should NOT show the user video', () => {
-            expectVideoInDOM(false);
+          it('should show the fallback upload image section', () => {
+            expectUploadImageFallbackContentInDOM(true);
           });
 
-          it('should NOT show the back side image', () => {
-            expectDefinedImageInDOM(false);
+          it('should NOT show the defined back side image', () => {
+            expectUploadImageDefinedContentInDOM(false);
           });
 
           it('should disable the end verification button', () => {
@@ -1010,7 +1103,6 @@ describe('KYCUploadImagesComponent', () => {
 
           describe('and they click on the upload back side image button', () => {
             beforeEach(() => {
-              spyOn(component.definedImageCanvas.nativeElement.getContext('2d'), 'drawImage');
               spyOn(de.query(By.css(uploadImageSelector)).nativeElement, 'click');
 
               de.query(By.css(takeImageButtonSelector)).nativeElement.click();
@@ -1023,10 +1115,19 @@ describe('KYCUploadImagesComponent', () => {
             describe('and the user selects a back side image', () => {
               beforeEach(() => {
                 triggerChangeImageUpload(true);
+
+                fixture.detectChanges();
               });
 
-              it('should draw the back side image on the screen', () => {
-                expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+              it('should show the updated image on the screen', () => {
+                const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+                const selectedImage = MOCK_JPEG_IMG_EVENT().target.result;
+
+                expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+              });
+
+              it('should NOT show the fallback upload image section', () => {
+                expectUploadImageFallbackContentInDOM(false);
               });
 
               it('should update the selected image', () => {
@@ -1040,10 +1141,16 @@ describe('KYCUploadImagesComponent', () => {
             describe('and the user NOT selects a back side image', () => {
               beforeEach(() => {
                 triggerChangeImageUpload(false);
+
+                fixture.detectChanges();
               });
 
-              it('should NOT draw the back side image on the screen', () => {
-                expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).not.toHaveBeenCalled();
+              it('should NOT show the defined back side image', () => {
+                expectUploadImageDefinedContentInDOM(false);
+              });
+
+              it('should show the fallback upload image section', () => {
+                expectUploadImageFallbackContentInDOM(true);
               });
 
               it('should NOT update the images', () => {
@@ -1085,12 +1192,15 @@ describe('KYCUploadImagesComponent', () => {
             expectRetakeImageButtonCorrectMessage(expectedMessage);
           });
 
-          it('should NOT show the user video', () => {
-            expectVideoInDOM(false);
+          it('should NOT show the fallback upload image section', () => {
+            expectUploadImageFallbackContentInDOM(false);
           });
 
-          it('should show the back side image', () => {
-            expectDefinedImageInDOM(true);
+          it('should show the back side image on the screen', () => {
+            const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+            const selectedImage = MOCK_KYC_IMAGES_BASE_64.backSide;
+
+            expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
           });
 
           it('should enable the end verification button', () => {
@@ -1101,6 +1211,16 @@ describe('KYCUploadImagesComponent', () => {
             beforeEach(() => {
               spyOn(component.uploadImage.nativeElement, 'click');
               de.query(By.css(retakeImageButtonSelector)).nativeElement.click();
+
+              fixture.detectChanges();
+            });
+
+            it('should show the fallback upload image section', () => {
+              expectUploadImageFallbackContentInDOM(true);
+            });
+
+            it('should NOT show the image', () => {
+              expectUploadImageDefinedContentInDOM(false);
             });
 
             it('should remove the back side image', () => {
@@ -1201,12 +1321,12 @@ describe('KYCUploadImagesComponent', () => {
           expectRetakeImageButtonInDOM(false);
         });
 
-        it('should NOT show the user video', () => {
-          expectVideoInDOM(false);
+        it('should show the fallback upload image section', () => {
+          expectUploadImageFallbackContentInDOM(true);
         });
 
-        it('should NOT show the front side image', () => {
-          expectDefinedImageInDOM(false);
+        it('should NOT show the image', () => {
+          expectUploadImageDefinedContentInDOM(false);
         });
 
         it('should disable the end verification button', () => {
@@ -1215,7 +1335,6 @@ describe('KYCUploadImagesComponent', () => {
 
         describe('and they click on the upload front side image button', () => {
           beforeEach(() => {
-            spyOn(component.definedImageCanvas.nativeElement.getContext('2d'), 'drawImage');
             spyOn(de.query(By.css(uploadImageSelector)).nativeElement, 'click');
 
             de.query(By.css(takeImageButtonSelector)).nativeElement.click();
@@ -1228,10 +1347,19 @@ describe('KYCUploadImagesComponent', () => {
           describe('and the user selects a front side image', () => {
             beforeEach(() => {
               triggerChangeImageUpload(true);
+
+              fixture.detectChanges();
             });
 
-            it('should draw the front side image on the screen', () => {
-              expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+            it('should show the updated image on the screen', () => {
+              const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+              const selectedImage = MOCK_JPEG_IMG_EVENT().target.result;
+
+              expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+            });
+
+            it('should NOT show the fallback upload image section', () => {
+              expectUploadImageFallbackContentInDOM(false);
             });
 
             it('should update the selected image', () => {
@@ -1245,10 +1373,16 @@ describe('KYCUploadImagesComponent', () => {
           describe('and the user NOT selects a front side image', () => {
             beforeEach(() => {
               triggerChangeImageUpload(false);
+
+              fixture.detectChanges();
             });
 
-            it('should NOT draw the front side image on the screen', () => {
-              expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).not.toHaveBeenCalled();
+            it('should NOT show the defined front side image', () => {
+              expectUploadImageDefinedContentInDOM(false);
+            });
+
+            it('should show the fallback upload image section', () => {
+              expectUploadImageFallbackContentInDOM(true);
             });
 
             it('should NOT update the images', () => {
@@ -1290,12 +1424,15 @@ describe('KYCUploadImagesComponent', () => {
           expectRetakeImageButtonCorrectMessage(expectedMessage);
         });
 
-        it('should NOT show the user video', () => {
-          expectVideoInDOM(false);
+        it('should NOT show the fallback upload image section', () => {
+          expectUploadImageFallbackContentInDOM(false);
         });
 
-        it('should show the front side image', () => {
-          expectDefinedImageInDOM(true);
+        it('should show the front side image on the screen', () => {
+          const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+          const selectedImage = MOCK_KYC_IMAGES_BASE_64_BACK_NULL.frontSide;
+
+          expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
         });
 
         it('should enable the end verification button', () => {
@@ -1304,7 +1441,18 @@ describe('KYCUploadImagesComponent', () => {
 
         describe('and they click on retake the front side image', () => {
           beforeEach(() => {
+            spyOn(component.uploadImage.nativeElement, 'click');
             de.query(By.css(retakeImageButtonSelector)).nativeElement.click();
+
+            fixture.detectChanges();
+          });
+
+          it('should show the fallback upload image section', () => {
+            expectUploadImageFallbackContentInDOM(true);
+          });
+
+          it('should NOT show the image', () => {
+            expectUploadImageDefinedContentInDOM(false);
           });
 
           it('should remove the front side image', () => {
@@ -1312,6 +1460,14 @@ describe('KYCUploadImagesComponent', () => {
               ...component.images$.value,
               frontSide: null,
             });
+          });
+
+          it('should clean the file input value', () => {
+            expect(component.uploadImage.nativeElement.value).toBeFalsy();
+          });
+
+          it('should open the device folder to update a new image', () => {
+            expect(component.uploadImage.nativeElement.click).toHaveBeenCalled();
           });
         });
 
@@ -1440,6 +1596,30 @@ describe('KYCUploadImagesComponent', () => {
     const retakeImageButton = de.query(By.css(retakeImageButtonSelector));
 
     expectIsDefined ? expect(retakeImageButton).toBeTruthy() : expect(retakeImageButton).toBeFalsy();
+  }
+
+  function expectImageBlockHiddenInDOM(expectIsHidden: boolean): void {
+    const imageBlock = de.query(By.css(imageBlockSelector)).classes;
+
+    expectIsHidden ? expect(imageBlock).toHaveProperty('d-none', true) : expect(imageBlock).not.toHaveProperty('d-none', true);
+  }
+
+  function expectUploadImageInDOM(expectInDOM: boolean): void {
+    const uploadImage = de.query(By.css(uploadImageSelector));
+
+    expectInDOM ? expect(uploadImage).toBeTruthy() : expect(uploadImage).toBeFalsy();
+  }
+
+  function expectUploadImageFallbackContentInDOM(expectInDOM: boolean): void {
+    const uploadImageFallbackContent = de.query(By.css('#uploadImageFallbackContent'));
+
+    expectInDOM ? expect(uploadImageFallbackContent).toBeTruthy() : expect(uploadImageFallbackContent).toBeFalsy();
+  }
+
+  function expectUploadImageDefinedContentInDOM(expectInDOM: boolean): void {
+    const uploadImageDefinedContent = de.query(By.css(uploadImageDefinedContentSelector));
+
+    expectInDOM ? expect(uploadImageDefinedContent).toBeTruthy() : expect(uploadImageDefinedContent).toBeFalsy();
   }
 
   function triggerChangeImageUpload(isImageSelected: boolean): void {
