@@ -1,10 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { I18nService } from '@core/i18n/i18n.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -21,8 +22,15 @@ import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PRO_PATHS } from '../pro-routing-constants';
 import { ProComponent } from './pro.component';
 import { SubscriptionsComponent } from './subscription/subscription.component';
+
+@Component({
+  selector: 'tsl-test-component',
+  template: '',
+})
+class TestComponent {}
 
 describe('ProComponent', () => {
   let component: ProComponent;
@@ -31,7 +39,8 @@ describe('ProComponent', () => {
   let httpMock: HttpTestingController;
   let analyticsService: AnalyticsService;
   let subscriptionsService: SubscriptionsService;
-  let i18n: I18nService;
+  let customerHelpService: CustomerHelpService;
+  let router: Router;
 
   beforeEach(
     waitForAsync(() => {
@@ -39,7 +48,10 @@ describe('ProComponent', () => {
         imports: [
           NgxPermissionsModule.forRoot(),
           HttpClientTestingModule,
-          RouterTestingModule.withRoutes([{ path: 'subscriptions', component: SubscriptionsComponent }]),
+          RouterTestingModule.withRoutes([
+            { path: PRO_PATHS.SUBSCRIPTIONS, component: SubscriptionsComponent },
+            { path: PRO_PATHS.BILLING, component: TestComponent },
+          ]),
         ],
         declarations: [ProComponent],
         providers: [
@@ -67,6 +79,14 @@ describe('ProComponent', () => {
             provide: AnalyticsService,
             useClass: MockAnalyticsService,
           },
+          {
+            provide: CustomerHelpService,
+            useValue: {
+              getPageUrl() {
+                return 'fake-url';
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -76,7 +96,8 @@ describe('ProComponent', () => {
       httpMock = TestBed.inject(HttpTestingController);
       analyticsService = TestBed.inject(AnalyticsService);
       subscriptionsService = TestBed.inject(SubscriptionsService);
-      i18n = TestBed.inject(I18nService);
+      customerHelpService = TestBed.inject(CustomerHelpService);
+      router = TestBed.inject(Router);
       fixture.detectChanges();
     })
   );
@@ -166,6 +187,67 @@ describe('ProComponent', () => {
           subscriptionTabElement.click();
 
           expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        });
+      });
+    });
+  });
+  describe('Faqs', () => {
+    describe('and page is loaded', () => {
+      beforeEach(() => {
+        spyOn(customerHelpService, 'getPageUrl').and.callThrough();
+      });
+      describe('and is a route with faqs', () => {
+        beforeEach(() => {
+          jest.spyOn(router, 'url', 'get').mockReturnValue(PRO_PATHS.BILLING);
+          component.ngOnInit();
+        });
+        it('should show faqs', fakeAsync(() => {
+          tick();
+          fixture.detectChanges();
+          const elements = fixture.debugElement.queryAll(By.css('a'));
+          const faq = elements.find((element) => element.attributes.href === 'fake-url');
+
+          expect(faq).toBeTruthy();
+          expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(CUSTOMER_HELP_PAGE.BILLING_INFO);
+        }));
+        describe('and navigate to route without faqs', () => {
+          it('should not show faqs', fakeAsync(() => {
+            router.navigate([PRO_PATHS.SUBSCRIPTIONS]);
+            tick();
+            fixture.detectChanges();
+
+            const elements = fixture.debugElement.queryAll(By.css('a'));
+            const faq = elements.find((element) => element.attributes.href === 'fake-url');
+
+            expect(faq).toBeFalsy();
+          }));
+        });
+      });
+      describe('and is not a route with faqs', () => {
+        beforeEach(() => {
+          jest.spyOn(router, 'url', 'get').mockReturnValue(PRO_PATHS.SUBSCRIPTIONS);
+          component.ngOnInit();
+        });
+        it('should not show faqs', fakeAsync(() => {
+          tick();
+          fixture.detectChanges();
+          const elements = fixture.debugElement.queryAll(By.css('a'));
+          const faq = elements.find((element) => element.attributes.href === 'fake-url');
+
+          expect(faq).toBeFalsy();
+        }));
+        describe('and navigate to route with faqs', () => {
+          it('should show faqs', fakeAsync(() => {
+            router.navigate([PRO_PATHS.BILLING]);
+            tick();
+            fixture.detectChanges();
+
+            const elements = fixture.debugElement.queryAll(By.css('a'));
+            const faq = elements.find((element) => element.attributes.href === 'fake-url');
+
+            expect(faq).toBeTruthy();
+            expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(CUSTOMER_HELP_PAGE.BILLING_INFO);
+          }));
         });
       });
     });

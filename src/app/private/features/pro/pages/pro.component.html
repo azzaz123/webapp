@@ -21,9 +21,9 @@
               information</a>
           </nav>
       </div>
-       <div *ngIf="zendeskUrl" class="col-12 col-sm-3 d-flex justify-content-end">
-         <a [href]="zendeskUrl" target="_blank" i18n="@@pro_subscription_purchase_tier_selector_top_bar_help_button">Help</a>
-       </div>
+      <div *ngIf="helpPageUrl" class="col-12 col-sm-3 d-flex justify-content-end">
+        <a [href]="helpPageUrl" target="_blank" i18n="@@pro_subscription_purchase_tier_selector_top_bar_help_button">Help</a>
+      </div>
     </div>
     <router-outlet></router-outlet>
   </div>
