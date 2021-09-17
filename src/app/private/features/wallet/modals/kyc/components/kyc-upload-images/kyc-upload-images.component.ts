@@ -62,7 +62,6 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   public currentBase64Image$: Observable<string> = this.buildCurrentImageOnBase64Observable();
 
   public showImageBlock$: Observable<boolean> = this.buildShowImageBlockObservable();
-  public showCameraSvg$: Observable<boolean> = this.buildShowCameraSvgObservable();
   public showTakeImageButton$: Observable<boolean> = this.buildShowTakeImageButtonObservable();
   public showRetakeImageButton$: Observable<boolean> = this.buildShowRetakeImageButtonObservable();
   public isContinueButtonActive$: Observable<boolean> = this.buildIsContinueButtonActiveObservable();
@@ -345,13 +344,6 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   private buildShowEndVerificationButtonObservable(): Observable<boolean> {
     return this.activeStep$.pipe(
       map((activeStep: KYCImagesNeeded) => this.imagesNeeded === 1 || (this.twoImagesNeeded && activeStep === 2))
-    );
-  }
-
-  private buildShowCameraSvgObservable(): Observable<boolean> {
-    return this.imagesAndActiveStep$().pipe(
-      map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => this.checkIfCurrentImageIsDefined(images, activeStep)),
-      map((isDefined: boolean) => !isDefined && !this.isShootImageMethod)
     );
   }
 

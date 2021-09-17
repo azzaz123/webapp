@@ -17,11 +17,16 @@
             </div>
             <div class="row justify-content-center mb-4" >
                 <div class="col d-flex justify-content-center p-0">
-                   <div *ngIf="!isShootImageMethod" [style.background]="'url(' + (currentBase64Image$ | async) + ')'"
-                        class="KYCUploadImages__image KYCUploadImages__image--round KYCUploadImages__imageBlock d-flex align-items-center justify-content-center p-0">
+                    <ng-container *ngIf="!isShootImageMethod">
                         <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
-                        <tsl-svg-icon *ngIf="showCameraSvg$ | async" src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
-                    </div>
+                        <div *ngIf="(isCurrentImageDefined$ | async) === false"
+                            class="KYCUploadImages__uploadImageContainer KYCUploadImages__uploadImageContainer--round KYCUploadImages__imageBlock d-flex align-items-center justify-content-center p-0">
+                            <tsl-svg-icon src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
+                        </div>
+                        <div *ngIf="(isCurrentImageDefined$ | async)" [style.background]="'url(' + (currentBase64Image$ | async) + ')'"
+                            class="KYCUploadImages__uploadImageContainer KYCUploadImages__uploadImageContainer--round KYCUploadImages__imageBlock">
+                        </div>
+                     </ng-container>
                     <!-- ng-container  ON SHOOT--> <!-- video --> <!-- canvas -->
                     <ng-container  *ngIf="isShootImageMethod">
                         <canvas id="definedImage" #definedImage class="h-100 w-100" [ngClass]="{'d-none': (isCurrentImageDefined$ | async) === false}"></canvas>
