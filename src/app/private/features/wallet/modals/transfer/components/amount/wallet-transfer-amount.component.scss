@@ -5,7 +5,9 @@
 
 $wallet-transfer-amount-container-height: 96px;
 $wallet-transfer-amount-line-width: 250px;
-$wallet-transfer-amount-text-size: 74px;
+$wallet-transfer-amount-integer-text-size: 74px;
+$wallet-transfer-amount-integer-margin-left: -40px;
+$wallet-transfer-amount-integer-width: 188px;
 $wallet-transfer-amount-square-width: 335px;
 
 $spacing-14: 14px;
@@ -28,26 +30,44 @@ $spacing-14: 14px;
     color: $blue-grey-1;
     font-weight: $font-weight-chunky;
     height: $wallet-transfer-amount-container-height;
-    padding: $spacing-m 0 11px 52px;
+    padding: $spacing-m 0 11px 4px;
 
     &__integer {
-      font-size: $wallet-transfer-amount-text-size;
-      line-height: $wallet-transfer-amount-text-size;
+      border: 0;
+      font-size: $wallet-transfer-amount-integer-text-size;
+      font-weight: $font-weight-chunky;
+      height: $wallet-transfer-amount-integer-text-size;
+      line-height: $wallet-transfer-amount-integer-text-size;
+      margin-left: $wallet-transfer-amount-integer-margin-left;
+      padding-left: 0;
+      text-align: right;
+      width: $wallet-transfer-amount-integer-width;
     }
 
     &__decimal {
+      border: 0;
       font-size: $font-size-xl;
-      margin-left: $spacing-s;
+      font-weight: $font-weight-chunky;
+      height: $font-size-xl;
+      line-height: $font-size-xl;
+      margin-top: 6px;
+      padding-right: 0;
+      width: $spacing-xxl;
     }
 
     &__currency {
       color: $blue-grey-2;
       font-size: $font-size-xl;
+      margin-top: -$spacing-xxs;
     }
 
     &__reset {
+      align-self: flex-end;
       @include square(20px);
-      margin-left: $spacing-ms;
+      margin-left: $spacing-14;
+      tsl-svg-icon svg {
+        @include square(20px);
+      }
       tsl-svg-icon circle {
         @include square(20px);
       }

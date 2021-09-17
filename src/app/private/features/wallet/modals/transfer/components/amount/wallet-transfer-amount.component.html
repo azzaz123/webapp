@@ -13,14 +13,14 @@
         </div>
 
         <div *ngIf="showBalance" class="w-100 h-100 d-flex flex-column justify-content-center align-content-center align-items-center">
-          <div class="WalletTransferAmount__figure w-100 d-flex justify-content-center align-content-center">
-            <div class="WalletTransferAmount__figure__integer">{{ walletBalance.amount.integer }}</div>
-            <div class="WalletTransferAmount__figure__decimal">{{ walletBalance.amount.decimals | number: '2.0-0' }}</div>
+          <div class="WalletTransferAmount__figure w-100 d-flex justify-content-center align-content-start">
+            <input type="text" class="WalletTransferAmount__figure__integer" [(ngModel)]="walletBalance.amount.integer" />
+            <!-- {{ walletBalance.amount.integer }} -->
+            <input type="text" class="WalletTransferAmount__figure__decimal" [(ngModel)]="walletBalance.amount.decimals" />
+            <!-- {{ walletBalance.amount.decimals | number: '2.0-0' }} -->
             <div class="WalletTransferAmount__figure__currency">{{ walletBalance.currency.symbol }}</div>
-            <div class="d-flex align-items-end">
-              <div class="WalletTransferAmount__figure__reset">
-                <tsl-svg-icon src="./assets/icons/remove.svg"></tsl-svg-icon>
-              </div>
+            <div class="WalletTransferAmount__figure__reset">
+              <tsl-svg-icon src="./assets/icons/remove.svg"></tsl-svg-icon>
             </div>
           </div>
           <span class="WalletTransferAmount__line"></span>
