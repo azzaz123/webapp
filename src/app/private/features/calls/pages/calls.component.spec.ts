@@ -1,5 +1,4 @@
 import { of, Subscription } from 'rxjs';
-/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { CallsComponent } from './calls.component';
 import { ActivatedRoute } from '@angular/router';
