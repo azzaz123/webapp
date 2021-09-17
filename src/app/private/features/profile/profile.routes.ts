@@ -7,6 +7,8 @@ import { AccountComponent } from './pages/account/account.component';
 import { ProfileInfoComponent } from './pages/profile-info/profile-info.component';
 import { ProfileComponent } from './pages/profile.component';
 import { PRO_PATHS } from '../pro/pro-routing-constants';
+import { DevelopmentGuard } from '@core/user/development.guard';
+import { VerificationsNScurityModule } from './pages/verifications-n-security/verifications-n-securty.module';
 
 const routes: Route[] = [
   {
@@ -38,6 +40,11 @@ const routes: Route[] = [
           isMyZone: true,
           isProfile: true,
         },
+      },
+      {
+        path: 'verifications',
+        loadChildren: () => VerificationsNScurityModule,
+        canLoad: [DevelopmentGuard],
       },
       {
         path: PRO_PATHS.SUBSCRIPTIONS,

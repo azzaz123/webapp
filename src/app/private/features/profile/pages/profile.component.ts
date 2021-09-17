@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { User } from '@core/user/user';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { UserStats } from '@core/user/user-stats.interface';
@@ -14,7 +15,7 @@ export class ProfileComponent implements OnInit {
   public userStats: UserStats;
   public readonly PERMISSIONS = PERMISSIONS;
 
-  constructor(public userService: UserService) {}
+  constructor(public userService: UserService, public featureFlagService: FeatureFlagService) {}
 
   ngOnInit() {
     this.user = this.userService.user;
