@@ -23,7 +23,7 @@ export const PHONE_N_ACCESSORIES_FILTERS: AvailableFilterConfig[] = [
   },
   {
     id: PHONE_N_ACCESORIES_CONFIGURATION_ID.OBJECT_TYPE,
-    type: FILTER_TYPES.SELECT,
+    type: FILTER_TYPES.MULTISELECT,
     title: $localize`:@@web_filter_phone_n_accessories_type_title:Type of product`,
     bubblePlaceholder: $localize`:@@web_filter_phone_n_accessories_type_bubble_placeholder:Type of product`,
     drawerPlaceholder: $localize`:@@web_filter_phone_n_accessories_type_drawer_placeholder:Select type of product`,
