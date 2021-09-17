@@ -37,23 +37,22 @@ $image-height--big: 240px;
     flex: 1;
   }
 
-  &__uploadImageContainer {
-    overflow: hidden;
-    box-sizing: content-box;
+  &__image {
     height: $image-height;
-    background-repeat: no-repeat !important;
-    background-position: center !important;
-    background-size: contain !important;
+    border: dashed 2px $blue-grey-5;
+    border-radius: $border-radius;
 
     @include media-breakpoint-up(sm) {
       height: $image-height--big;
     }
+  }
 
-    border: dashed 2px $blue-grey-5;
-
-    &--round {
-      border-radius: $border-radius;
-    }
+  &__uploadImageContainer {
+    overflow: hidden;
+    box-sizing: content-box;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
   }
 
   &__imageBlock {
