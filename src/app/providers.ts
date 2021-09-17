@@ -46,10 +46,6 @@ export const PROVIDERS: Provider[] = [
   },
 ];
 
-export function subdomainFactory(locale: APP_LOCALE): SUBDOMAIN | string {
-  return SUBDOMAINS[locale] || 'www';
-}
-
 export function userPermissionsFactory(userService: UserService): () => Promise<boolean> {
   return () => userService.isLogged && userService.initializeUserWithPermissions().toPromise();
 }
