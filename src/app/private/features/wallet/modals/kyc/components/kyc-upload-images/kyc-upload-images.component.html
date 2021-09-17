@@ -7,60 +7,65 @@
             </a>
         </div>
     </div>
-    <div *ngIf="(showImageBlock$ | async)" class="KYCUploadImages__imageLaterals row d-flex flex-column justify-content-between">
-        <div class="col d-flex flex-column justify-content-center p-0 KYCUploadImages__imageContainer">
-            <div class="row text-center mb-4 mt-2">
-                <div class="col">
-                    <span class="KYCUploadImages__title d-block mb-2">{{title$ | async}}</span>
-                    <span class="KYCUploadImages__subtitle d-block mb-2">{{subtitle$ | async}}</span>
+    <tsl-spinner *ngIf="showLoadingBlock$ | async"></tsl-spinner>
+    <ng-container *ngIf="showImageBlock$ | async">
+        <div [ngClass]="(showLoadingBlock$ | async) ? 'd-none' : 'd-flex'"
+            class="KYCUploadImages__imageLaterals row flex-column justify-content-between">
+            <div class="col d-flex flex-column justify-content-center p-0 KYCUploadImages__imageContainer">
+                <div class="row text-center mb-4 mt-2">
+                    <div class="col">
+                        <span class="KYCUploadImages__title d-block mb-2">{{title$ | async}}</span>
+                        <span class="KYCUploadImages__subtitle d-block mb-2">{{subtitle$ | async}}</span>
+                    </div>
                 </div>
-            </div>
-            <div class="row justify-content-center mb-4" >
-                <div class="col d-flex justify-content-center p-0">
-                    <ng-container *ngIf="!isShootImageMethod">
-                        <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
-                        <div *ngIf="(isCurrentImageDefined$ | async) === false"
-                            class="KYCUploadImages__uploadImageContainer KYCUploadImages__uploadImageContainer--round KYCUploadImages__imageBlock d-flex align-items-center justify-content-center p-0">
-                            <tsl-svg-icon src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
-                        </div>
-                        <div *ngIf="(isCurrentImageDefined$ | async)" [style.background]="'url(' + (currentBase64Image$ | async) + ')'"
-                            class="KYCUploadImages__uploadImageContainer KYCUploadImages__uploadImageContainer--round KYCUploadImages__imageBlock">
-                        </div>
-                     </ng-container>
-                    <!-- ng-container  ON SHOOT--> <!-- video --> <!-- canvas -->
-                    <ng-container  *ngIf="isShootImageMethod">
-                        <canvas id="definedImage" #definedImage class="h-100 w-100" [ngClass]="{'d-none': (isCurrentImageDefined$ | async) === false}"></canvas>
-                        <video autoplay playsInline muted id="userVideo" #userVideo class="h-100 w-100" [ngClass]="{'d-none': isCurrentImageDefined$ | async}"></video>
-                    </ng-container>
+                <div class="row justify-content-center mb-4" >
+                    <div class="col d-flex justify-content-center p-0">
+                        <ng-container *ngIf="!isShootImageMethod">
+                            <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
+                            <div *ngIf="(isCurrentImageDefined$ | async) === false"
+                                class="KYCUploadImages__uploadImageContainer KYCUploadImages__uploadImageContainer--round KYCUploadImages__imageBlock d-flex align-items-center justify-content-center p-0">
+                                <tsl-svg-icon src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
+                            </div>
+                            <div *ngIf="(isCurrentImageDefined$ | async)" [style.background]="'url(' + (currentBase64Image$ | async) + ')'"
+                                class="KYCUploadImages__uploadImageContainer KYCUploadImages__uploadImageContainer--round KYCUploadImages__imageBlock">
+                            </div>
+                         </ng-container>
+                        <!-- ng-container  ON SHOOT--> <!-- video --> <!-- canvas -->
+                        <ng-container  *ngIf="isShootImageMethod">
+                            <canvas id="definedImage" #definedImage class="h-100 w-100" [ngClass]="{'d-none': (isCurrentImageDefined$ | async) === false}"></canvas>
+                            <video autoplay playsInline muted id="userVideo" #userVideo class="h-100 w-100" [ngClass]="{'d-none': isCurrentImageDefined$ | async}"></video>
+                        </ng-container>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col d-flex justify-content-center p-0">
-                    <div class="KYCUploadImages__imageBlock">
-                        <tsl-button *ngIf="showTakeImageButton$ | async" id="takeImageButton" class="p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage$ | async}}</tsl-button>
-                        <tsl-button *ngIf="showRetakeImageButton$ | async" id="retakeImageButton" class="p-0" className="btn-gray btn-block" (click)="removeCurrentImage()">{{retakeImageMessage$ | async}}</tsl-button>
+                <div class="row">
+                    <div class="col d-flex justify-content-center p-0">
+                        <div class="KYCUploadImages__imageBlock">
+                            <tsl-button *ngIf="showTakeImageButton$ | async" id="takeImageButton" class="p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage$ | async}}</tsl-button>
+                            <tsl-button *ngIf="showRetakeImageButton$ | async" id="retakeImageButton" class="p-0" className="btn-gray btn-block" (click)="removeCurrentImage()">{{retakeImageMessage$ | async}}</tsl-button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="KYCUploadImages__bottomContainer row position-sticky text-center justify-content-center">
-        <tsl-button
-            *ngIf="showContinueButton$ | async" id="continueVerificationButton"
-            [disabled]="(isContinueButtonActive$ | async) === false"
-            i18n="@@kyc_take_photo_view_continue_button"
-            class="col-12 col-md-7 p-0"
-            className="btn-primary btn-block"
-            (click)="goToDefineBackImage()">Continue</tsl-button>
-        <tsl-button
-            *ngIf="showEndVerificationButton$ | async" id="endVerificationButton"
-            [disabled]="(isEndVerificationButtonActive$ | async) === false"
-            i18n="@@kyc_end_verification"
-            class="col-12 col-md-7 p-0"
-            className="btn-primary btn-block"
-            (click)="emitEndVerification()">Finish verification</tsl-button>
-    </div>
-    <div *ngIf="(showImageBlock$ | async) === false" class="row h-100 d-flex align-items-center justify-content-center">
+        <div [ngClass]="{'d-none': (showLoadingBlock$ | async)}"
+            class="KYCUploadImages__bottomContainer row position-sticky text-center justify-content-center">
+            <tsl-button
+                *ngIf="showContinueButton$ | async" id="continueVerificationButton"
+                [disabled]="(isContinueButtonActive$ | async) === false"
+                i18n="@@kyc_take_photo_view_continue_button"
+                class="col-12 col-md-7 p-0"
+                className="btn-primary btn-block"
+                (click)="goToDefineBackImage()">Continue</tsl-button>
+            <tsl-button
+                *ngIf="showEndVerificationButton$ | async" id="endVerificationButton"
+                [disabled]="(isEndVerificationButtonActive$ | async) === false"
+                i18n="@@kyc_end_verification"
+                class="col-12 col-md-7 p-0"
+                className="btn-primary btn-block"
+                (click)="emitEndVerification()">Finish verification</tsl-button>
+        </div>
+    </ng-container>
+    <div *ngIf="showErrorBlock$ | async" class="row h-100 d-flex align-items-center justify-content-center">
         <div class="col">
             <tsl-banner [specifications]="errorBannerSpecifications" class="w-100">
                 <div class="d-flex align-items-center">

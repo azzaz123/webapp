@@ -62,6 +62,9 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   public currentBase64Image$: Observable<string> = this.buildCurrentImageOnBase64Observable();
 
   public showImageBlock$: Observable<boolean> = this.buildShowImageBlockObservable();
+  public showLoadingBlock$: Observable<boolean> = this.buildShowLoadingBlockObservable();
+  public showErrorBlock$: Observable<boolean> = this.buildShowErrorBlockObservable();
+
   public showTakeImageButton$: Observable<boolean> = this.buildShowTakeImageButtonObservable();
   public showRetakeImageButton$: Observable<boolean> = this.buildShowRetakeImageButtonObservable();
   public isContinueButtonActive$: Observable<boolean> = this.buildIsContinueButtonActiveObservable();
@@ -386,10 +389,30 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   private buildShowImageBlockObservable(): Observable<boolean> {
     return this.requestVideoPermissionsService.userVideoPermissions$.pipe(
       map((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
-        const isLoadingOrAccepted =
+        const isAcceptedOrInProgress =
           videoPermissions === VIDEO_PERMISSIONS_STATUS.ACCEPTED || videoPermissions === VIDEO_PERMISSIONS_STATUS.LOADING;
 
-        return (isLoadingOrAccepted && this.isShootImageMethod) || this.isUploadImageMethod;
+        return (isAcceptedOrInProgress && this.isShootImageMethod) || this.isUploadImageMethod;
+      })
+    );
+  }
+
+  private buildShowLoadingBlockObservable(): Observable<boolean> {
+    return this.requestVideoPermissionsService.userVideoPermissions$.pipe(
+      map((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
+        const isLoading = videoPermissions === VIDEO_PERMISSIONS_STATUS.LOADING;
+
+        return isLoading && this.isShootImageMethod;
+      })
+    );
+  }
+
+  private buildShowErrorBlockObservable(): Observable<boolean> {
+    return this.requestVideoPermissionsService.userVideoPermissions$.pipe(
+      map((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
+        const isError = videoPermissions === VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS || videoPermissions === VIDEO_PERMISSIONS_STATUS.DENIED;
+
+        return isError && this.isShootImageMethod;
       })
     );
   }

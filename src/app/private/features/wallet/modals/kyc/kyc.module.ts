@@ -16,6 +16,7 @@ import { KYCStoreService } from './services/kyc-store/kyc-store.service';
 import { KYCServicesModule } from '@api/payments/kyc/kyc-services.module';
 import { KYCStatusModule } from './components/kyc-status/kyc-status.module';
 import { RequestVideoPermissionsService } from '@shared/services/video/request-video-permissions/request-video-permissions.service';
+import { SpinnerModule } from '@shared/spinner/spinner.module';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { RequestVideoPermissionsService } from '@shared/services/video/request-v
     BannerModule,
     KYCServicesModule,
     KYCStatusModule,
+    SpinnerModule,
   ],
   declarations: [KYCRoutedComponents, KYCImageOptionsComponent, KYCNationalityComponent, KYCModalComponent, KYCUploadImagesComponent],
   providers: [KYCStoreService, RequestVideoPermissionsService],
