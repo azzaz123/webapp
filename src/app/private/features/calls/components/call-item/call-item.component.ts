@@ -14,12 +14,11 @@ import { CalendarSpec } from 'moment';
   animations: [Remove('0.5s')],
 })
 export class CallItemComponent implements OnChanges {
-  @Input() call: Call;
-
   @HostBinding('class.archived') @HostBinding('@remove') archived = false;
   @HostBinding('class.archive') get archive(): boolean {
     return this.call.archived;
   }
+  @Input() call: Call;
 
   public formattedDuration = '-';
   public messages: Message[];
@@ -27,6 +26,11 @@ export class CallItemComponent implements OnChanges {
 
   constructor(private momentCalendarSpecService: MomentCalendarSpecService, private callService: CallsService) {}
 
+  @HostListener('@remove.done') onAnimationDone($event: Event) {
+    if (this.archived) {
+      this.callService.stream();
+    }
+  }
   ngOnChanges() {
     this.messages = this.call.messages.slice(-4);
     if (this.call instanceof Call) {
@@ -45,12 +49,6 @@ export class CallItemComponent implements OnChanges {
       if (seconds > 0) {
         this.formattedDuration += `${seconds}s`;
       }
-    }
-  }
-
-  @HostListener('@remove.done') onAnimationDone($event: Event) {
-    if (this.archived) {
-      this.callService.stream();
     }
   }
 }

@@ -39,6 +39,10 @@ export class StatsGraphComponent implements OnInit {
     this.loadStats();
   }
 
+  onStatsPeriodChange() {
+    this.loadStats();
+  }
+
   private setUpChart(entries: any) {
     const xAxisData = [];
     const data1 = [];
@@ -259,9 +263,5 @@ export class StatsGraphComponent implements OnInit {
         this.setUpChart(response.entries);
       }
     });
-  }
-
-  onStatsPeriodChange() {
-    this.loadStats();
   }
 }
