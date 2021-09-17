@@ -37,6 +37,8 @@ import { SubscriptionPurchaseSuccessComponent } from './components/subscription-
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { SubscriptionEditComponent } from './pages/subscription/subscription-edit/subscription-edit.component';
 import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
+import { CategoryListingModalComponent } from './modal/category-listing-modal/category-listing-modal.component';
+import { SelectOptionModule } from '@shared/form/components/select/select-option/select-option.module';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,7 @@ import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
     SubscriptionBenefitsComponent,
     SubscriptionPurchaseSuccessComponent,
     SubscriptionEditComponent,
+    CategoryListingModalComponent,
   ],
   imports: [
     CommonModule,
@@ -86,6 +89,7 @@ import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
     HeaderModule,
     UserAvatarModule,
     TabsBarModule,
+    SelectOptionModule,
   ],
 })
 export class ProModule {}

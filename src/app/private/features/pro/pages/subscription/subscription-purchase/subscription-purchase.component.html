@@ -18,13 +18,23 @@
                 </div>
                 <div class="GenericCard__subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a subscription to take your
                     sales to the next level</div>
-                    <tsl-subscription-purchase-header [subscription]="subscription" [benefits]="benefits"> </tsl-subscription-purchase-header>
+                    <tsl-subscription-purchase-header [subscription]="subscription" [benefits]="benefits" (clickLink)="openCategoriesModal()"> </tsl-subscription-purchase-header>
     </div>
     <div *ngIf="subscription.tiers.length > 1" class="GenericCard">
-        <div class="GenericCard__title" i18n="@@web_tier_selector_title">How many items you want to list?</div>
-        <div class="GenericCard__subtitle" i18n="@@web_tier_selector_subtitle">Choose the plan that fits your goals</div>
-        <tsl-subscription-tier-selector [subscription]="subscription" [selectedTier]="selectedTier"
+        <ng-container *ngIf="basicTier; else noBasicTierSelector">
+            <div class="GenericCard__title mb-3" i18n="@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_header">The plan you need to start becoming PRO!</div>
+            <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="[basicTier]" [selectedTier]="selectedTier"
+                (changeSelectedTier)="onSelectedTierChanged($event)"> </tsl-subscription-tier-selector>
+            <div class="GenericCard__title mb-3 mt-4" i18n="@@pro_subscription_purchase_non_subscribed_users_cg_other_plans_title">Plans to achieve your goals</div>
+            <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="availableTiers" [selectedTier]="selectedTier"
             (changeSelectedTier)="onSelectedTierChanged($event)"> </tsl-subscription-tier-selector>
+        </ng-container>
+        <ng-template #noBasicTierSelector>
+            <div class="GenericCard__title" i18n="@@web_tier_selector_title">How many items you want to list?</div>
+            <div class="GenericCard__subtitle" i18n="@@web_tier_selector_subtitle">Choose the plan that fits your goals</div>
+            <tsl-subscription-tier-selector [subscription]="subscription" [selectedTier]="selectedTier"
+                (changeSelectedTier)="onSelectedTierChanged($event)"> </tsl-subscription-tier-selector>
+        </ng-template>
     </div>
     <div class="GenericCard">
         <div class="GenericCard__title" i18n="@@web_stripe_cards_535">Payment method</div>

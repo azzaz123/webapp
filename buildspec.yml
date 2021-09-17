@@ -80,6 +80,8 @@ phases:
           zip -r webapp-${IMAGE_TAG}.zip en/*
           mv dist/it ./
           zip -r webapp-${IMAGE_TAG}.zip it/*
+          mv it/assets ./
+          zip -r webapp-${IMAGE_TAG}.zip assets/*
           rm -rf dist
         fi
 

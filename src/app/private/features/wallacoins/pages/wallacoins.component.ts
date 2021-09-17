@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { Pack } from '../../../../core/payments/pack';
 import { NgbCarousel, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -15,15 +15,15 @@ import { WallacoinsTutorialComponent } from '../components/wallacoins-tutorial/w
   templateUrl: './wallacoins.component.html',
   styleUrls: ['./wallacoins.component.scss'],
 })
-export class WallacoinsComponent implements OnInit {
+export class WallacoinsComponent implements OnInit, AfterContentChecked {
+  @ViewChild(NgbCarousel) ngbCarousel: NgbCarousel;
   public packs: Pack[];
   public wallacoins: number = 0;
   public currencyName: string;
   public factor: number;
   public loading = true;
-  private localStorageName = '-wallacoins-tutorial';
   public itemsPerSlide = [0, 1, 2]; // = 3. Has to be an array to be able to used in the ngFor
-  @ViewChild(NgbCarousel) ngbCarousel: NgbCarousel;
+  private localStorageName = '-wallacoins-tutorial';
 
   constructor(
     private paymentService: PaymentService,
@@ -62,19 +62,6 @@ export class WallacoinsComponent implements OnInit {
     return this.currencyName === 'wallacoins';
   }
 
-  private updatePerks(cache?: boolean) {
-    this.paymentService.getPerks(cache).subscribe((perks: PerksModel) => {
-      this.wallacoins = perks[this.currencyName].quantity;
-      this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, this.wallacoins);
-      this.loading = false;
-    });
-  }
-
-  private updateRemainingCredit(pack: Pack): void {
-    this.wallacoins = this.wallacoins + pack.quantity;
-    this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, this.wallacoins);
-  }
-
   public openBuyModal(pack: Pack, packIndex: number) {
     const modal: NgbModalRef = this.modalService.open(BuyWallacoinsModalComponent, { windowClass: 'modal-standard' });
     let code = '-1';
@@ -90,6 +77,19 @@ export class WallacoinsComponent implements OnInit {
       },
       () => {}
     );
+  }
+
+  private updatePerks(cache?: boolean) {
+    this.paymentService.getPerks(cache).subscribe((perks: PerksModel) => {
+      this.wallacoins = perks[this.currencyName].quantity;
+      this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, this.wallacoins);
+      this.loading = false;
+    });
+  }
+
+  private updateRemainingCredit(pack: Pack): void {
+    this.wallacoins = this.wallacoins + pack.quantity;
+    this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, this.wallacoins);
   }
 
   private openConfirmModal(pack: Pack, code = '200') {

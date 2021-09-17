@@ -2,7 +2,12 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_WITH_RE, TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
+  MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+  MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
+  TIER_WITH_DISCOUNT,
+} from '@fixtures/subscriptions.fixtures.spec';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SubscriptionCardComponent } from './subscription-card.component';
 
@@ -28,7 +33,7 @@ describe('SubscriptionCardComponent', () => {
 
   describe('when has an active subscription ', () => {
     beforeEach(() => {
-      component.subscription = MAPPED_SUBSCRIPTIONS[2];
+      component.subscription = MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED;
       component.isSubscribed = true;
       fixture.detectChanges();
     });
@@ -71,7 +76,7 @@ describe('SubscriptionCardComponent', () => {
     describe('and has tier limit', () => {
       describe('and is real estate', () => {
         beforeEach(() => {
-          component.subscription = MAPPED_SUBSCRIPTIONS_WITH_RE[0];
+          component.subscription = MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED;
           component.isSubscribed = true;
           fixture.detectChanges();
         });
@@ -136,7 +141,7 @@ describe('SubscriptionCardComponent', () => {
 
   describe('when has not an active subscription ', () => {
     beforeEach(() => {
-      component.subscription = MAPPED_SUBSCRIPTIONS[0];
+      component.subscription = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED;
       fixture.detectChanges();
     });
 
@@ -225,7 +230,7 @@ describe('SubscriptionCardComponent', () => {
 
   describe('CTA button', () => {
     beforeEach(() => {
-      component.subscription = MAPPED_SUBSCRIPTIONS[2];
+      component.subscription = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED;
       component.textButton = 'test';
       fixture.detectChanges();
     });

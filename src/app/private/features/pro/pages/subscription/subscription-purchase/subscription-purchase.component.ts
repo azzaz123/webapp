@@ -28,6 +28,8 @@ import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-be
 import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { filter, mergeMap } from 'rxjs/operators';
@@ -56,6 +58,8 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   public isLoading: boolean;
   public isRetryPayment = false;
   public INVOICE_COMPONENT_TYPE = COMPONENT_TYPE;
+  public basicTier: Tier;
+  public availableTiers: Tier[];
   public zendeskLink: string;
   private _invoiceId: string;
   private readonly errorTextConfig = {
@@ -79,7 +83,8 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private analyticsService: AnalyticsService,
     private benefitsService: SubscriptionBenefitsService,
-    private customerHelpService: CustomerHelpService
+    private customerHelpService: CustomerHelpService,
+    private modalService: NgbModal
   ) {}
 
   @HostListener('click') onClick() {
@@ -90,8 +95,8 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAllCards();
-    this.selectedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.default_tier_id);
     this.benefits = this.benefitsService.getBenefitsByCategory(this.subscription.category_id);
+    this.mapTiers();
     this.subscribeStripeEvents();
     this.trackViewSubscriptionTier();
     this.zendeskLink = this.customerHelpService.getPageUrl(this.zendeskMapper[this.subscription.category_id]);
@@ -164,6 +169,13 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
       },
     };
     this.analyticsService.trackEvent(event);
+  }
+
+  public openCategoriesModal(): void {
+    const modal = this.modalService.open(CategoryListingModalComponent, {
+      windowClass: 'category-listing',
+    });
+    modal.componentInstance.subscription = this.subscription;
   }
 
   ngOnDestroy() {
@@ -354,7 +366,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     this.analyticsService.trackEvent(event);
   }
 
-  private trackViewSuccessSubscriptionPayment() {
+  private trackViewSuccessSubscriptionPayment(): void {
     const pageView: AnalyticsPageView<ViewSuccessSubscriptionPayment> = {
       name: ANALYTICS_EVENT_NAMES.ViewSuccessSubscriptionPayment,
       attributes: {
@@ -366,5 +378,16 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
       },
     };
     this.analyticsService.trackPageView(pageView);
+  }
+
+  private mapTiers(): void {
+    this.basicTier = this.subscription.tiers.find((tier) => tier.is_basic);
+
+    if (this.basicTier) {
+      this.selectedTier = this.basicTier;
+      this.availableTiers = this.subscription.tiers.filter((tier) => !tier.is_basic);
+    } else {
+      this.selectedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.default_tier_id);
+    }
   }
 }
