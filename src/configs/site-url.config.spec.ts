@@ -47,7 +47,7 @@ describe('Site URL configuration based on browser hostname', () => {
     });
   });
 
-  describe('when the hostname is from the French domain', () => {
+  describe('when the hostname is from the English webapp domain', () => {
     it('should set the site URL as spain', () => {
       const subdomain: FUNCTIONAL_WEBAPP_SUBDOMAIN = 'web-en';
       const expectedSiteUrl = MOCK_SITE_URL(subdomain);
