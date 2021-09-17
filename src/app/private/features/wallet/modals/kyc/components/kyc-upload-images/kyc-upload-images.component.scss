@@ -41,6 +41,9 @@ $image-height--big: 240px;
     overflow: hidden;
     box-sizing: content-box;
     height: $image-height;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
 
     @include media-breakpoint-up(sm) {
       height: $image-height--big;

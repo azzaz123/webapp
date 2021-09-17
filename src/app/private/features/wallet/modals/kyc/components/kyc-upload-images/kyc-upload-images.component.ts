@@ -59,6 +59,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   public videoPermissions$: Observable<VIDEO_PERMISSIONS_STATUS> = this.buildVideoPermissionsObservable();
   public videoStream$: Observable<MediaStream | null>;
+  public currentBase64Image$: Observable<string> = this.buildCurrentImageOnBase64Observable();
 
   public showImageBlock$: Observable<boolean> = this.buildShowImageBlockObservable();
   public showCameraSvg$: Observable<boolean> = this.buildShowCameraSvgObservable();
@@ -183,14 +184,12 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   }
 
   private handleUploadedImage(evt: ProgressEvent<FileReader>, imageSide: KYC_IMAGES): void {
-    const imageContainer = this.definedImageCanvas.nativeElement;
     const isFileReaderDone = evt.target.readyState === FileReader.DONE;
     const { result: base64Image } = evt.target;
     const img = new Image();
 
     if (isFileReaderDone && typeof base64Image === 'string') {
       img.src = base64Image;
-      img.addEventListener('load', () => this.drawImageInCanvas(imageContainer, img));
 
       if (imageSide === KYC_IMAGES.FRONT_SIDE) {
         this.updateFrontSideImage(base64Image);
@@ -399,6 +398,14 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
           videoPermissions === VIDEO_PERMISSIONS_STATUS.ACCEPTED || videoPermissions === VIDEO_PERMISSIONS_STATUS.LOADING;
 
         return (isLoadingOrAccepted && this.isShootImageMethod) || this.isUploadImageMethod;
+      })
+    );
+  }
+
+  private buildCurrentImageOnBase64Observable(): Observable<string> {
+    return this.imagesAndActiveStep$().pipe(
+      map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
+        return activeStep === 1 ? images.frontSide : images.backSide;
       })
     );
   }
