@@ -9,6 +9,8 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -35,6 +37,7 @@ describe('SubscriptionEditComponent', () => {
   let analyticsService: AnalyticsService;
   let modalService: NgbModal;
   let modalSpy: jasmine.Spy;
+  let customerHelpService: CustomerHelpService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -64,6 +67,14 @@ describe('SubscriptionEditComponent', () => {
           provide: AnalyticsService,
           useClass: MockAnalyticsService,
         },
+        {
+          provide: CustomerHelpService,
+          useValue: {
+            getPageUrl() {
+              return 'fake-url';
+            },
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -78,6 +89,7 @@ describe('SubscriptionEditComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     modalService = TestBed.inject(NgbModal);
     benefitsService = TestBed.inject(SubscriptionBenefitsService);
+    customerHelpService = TestBed.inject(CustomerHelpService);
     fixture.detectChanges();
   });
 
@@ -257,6 +269,19 @@ describe('SubscriptionEditComponent', () => {
           windowClass: 'category-listing',
         });
       });
+    });
+  });
+  describe('Faqs', () => {
+    beforeEach(() => {
+      spyOn(customerHelpService, 'getPageUrl').and.callThrough();
+      component.ngOnInit();
+    });
+    it('should show faqs', () => {
+      const elements = fixture.debugElement.queryAll(By.css('a'));
+      const faq = elements.find((element) => element.attributes.href === 'fake-url');
+
+      expect(faq).toBeTruthy();
+      expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(CUSTOMER_HELP_PAGE.CHANGE_PRO_SUBSCRIPCION);
     });
   });
 });

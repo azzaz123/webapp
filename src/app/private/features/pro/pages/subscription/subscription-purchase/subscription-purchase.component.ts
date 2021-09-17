@@ -60,14 +60,14 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   public INVOICE_COMPONENT_TYPE = COMPONENT_TYPE;
   public basicTier: Tier;
   public availableTiers: Tier[];
-  public zendeskLink: string;
+  public helpPageUrl: string;
   private _invoiceId: string;
   private readonly errorTextConfig = {
     [STRIPE_ERROR.card_declined]: translations[TRANSLATION_KEY.CARD_NUMBER_INVALID],
     [STRIPE_ERROR.expired_card]: translations[TRANSLATION_KEY.CARD_DATE_INVALID],
     [STRIPE_ERROR.incorrect_cvc]: translations[TRANSLATION_KEY.CARD_CVC_INVALID],
   };
-  private readonly zendeskMapper: Record<number, CUSTOMER_HELP_PAGE> = {
+  private readonly helpUrlMapper: Record<number, CUSTOMER_HELP_PAGE> = {
     [CATEGORY_SUBSCRIPTIONS_IDS.CAR]: CUSTOMER_HELP_PAGE.CARS_SUBSCRIPTION,
     [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE]: CUSTOMER_HELP_PAGE.REAL_ESTATE_SUBSCRIPTION,
     [CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES]: CUSTOMER_HELP_PAGE.CAR_PARTS_SUBSCRIPTION,
@@ -99,7 +99,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
     this.mapTiers();
     this.subscribeStripeEvents();
     this.trackViewSubscriptionTier();
-    this.zendeskLink = this.customerHelpService.getPageUrl(this.zendeskMapper[this.subscription.category_id]);
+    this.helpPageUrl = this.customerHelpService.getPageUrl(this.helpUrlMapper[this.subscription.category_id]);
   }
 
   public onClearSubscription(): void {
