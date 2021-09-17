@@ -17,11 +17,11 @@ export class SubscriptionListComponent {
   public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
   private readonly rowOrder = [
     SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS,
+    SUBSCRIPTION_CATEGORY_TYPES.OLD_CONSUMER_GOODS,
     SUBSCRIPTION_CATEGORY_TYPES.CAR_PARTS,
     SUBSCRIPTION_CATEGORY_TYPES.REAL_ESTATE,
     SUBSCRIPTION_CATEGORY_TYPES.CARS,
     SUBSCRIPTION_CATEGORY_TYPES.MOTORBIKES,
-    SUBSCRIPTION_CATEGORY_TYPES.OLD_CONSUMER_GOODS,
   ];
 
   get subscriptionsOrdered(): SubscriptionsResponse[] {
