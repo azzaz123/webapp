@@ -17,6 +17,7 @@ import { KYC_MODAL_STATUS } from '../../enums/kyc-modal-status.enum';
 import { KYCModalProperties } from '../../interfaces/kyc-modal-properties.interface';
 import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
+import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
 
 @Component({
   selector: 'tsl-kyc-modal',
@@ -36,7 +37,8 @@ export class KYCModalComponent implements OnDestroy {
     private KYCService: KYCService,
     private activeModal: NgbActiveModal,
     private toastService: ToastService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private kycTrackingEventsService: KYCTrackingEventsService
   ) {
     this.KYCStoreSpecifications$ = KYCStoreService.specifications$;
   }
@@ -46,6 +48,9 @@ export class KYCModalComponent implements OnDestroy {
   }
 
   public endVerification(KYCImages: KYCImages): void {
+    const selectedDocument = this.KYCStoreService.specifications.documentation.analyticsName;
+    this.kycTrackingEventsService.trackClickKYCFinishIdentityVerification(selectedDocument);
+
     this.KYCService.request(KYCImages).subscribe(
       () => {
         this.goNextStep();

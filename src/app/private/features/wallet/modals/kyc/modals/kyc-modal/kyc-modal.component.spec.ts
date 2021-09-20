@@ -39,6 +39,7 @@ describe('KYCModalComponent', () => {
   let component: KYCModalComponent;
   let kycStoreService: KYCStoreService;
   let kycService: KYCService;
+  let kycTrackingEventsService: KYCTrackingEventsService;
   let fixture: ComponentFixture<KYCModalComponent>;
   let activeModal: NgbActiveModal;
   let toastService: ToastService;
@@ -65,6 +66,7 @@ describe('KYCModalComponent', () => {
     fixture = TestBed.createComponent(KYCModalComponent);
     component = fixture.componentInstance;
     kycStoreService = TestBed.inject(KYCStoreService);
+    kycTrackingEventsService = TestBed.inject(KYCTrackingEventsService);
     kycService = TestBed.inject(KYCService);
     activeModal = TestBed.inject(NgbActiveModal);
     toastService = TestBed.inject(ToastService);
@@ -208,7 +210,11 @@ describe('KYCModalComponent', () => {
         });
       });
 
-      describe('and the verification end...', () => {
+      describe('and the verification ends...', () => {
+        beforeEach(() => {
+          spyOn(kycTrackingEventsService, 'trackClickKYCFinishIdentityVerification');
+        });
+
         describe('and the verification request succeed', () => {
           beforeEach(() => {
             spyOn(kycService, 'request').and.returnValue(of(null));
@@ -224,6 +230,13 @@ describe('KYCModalComponent', () => {
 
           it('should go to the next step', () => {
             expect(component.stepper.goNext).toHaveBeenCalledTimes(1);
+          });
+
+          it('should request to the KYC analytics service to track the click event', () => {
+            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledTimes(1);
+            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledWith(
+              MOCK_KYC_SPECIFICATIONS.documentation.analyticsName
+            );
           });
         });
 
@@ -249,6 +262,13 @@ describe('KYCModalComponent', () => {
 
           it('should NOT go to the next step', () => {
             expect(component.stepper.goNext).not.toHaveBeenCalled();
+          });
+
+          it('should request to the KYC analytics service to track the click event', () => {
+            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledTimes(1);
+            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledWith(
+              MOCK_KYC_SPECIFICATIONS.documentation.analyticsName
+            );
           });
         });
       });
