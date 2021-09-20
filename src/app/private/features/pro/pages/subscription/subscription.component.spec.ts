@@ -28,7 +28,7 @@ import {
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
   SUBSCRIPTIONS_WITH_ONE_FREE_TRIAL,
 } from '@fixtures/subscriptions.fixtures.spec';
-import { MOCK_FULL_USER, MOCK_FULL_USER_FEATURED, MOCK_FULL_USER_NON_FEATURED, USER_DATA } from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER, MOCK_FULL_USER_FEATURED, USER_DATA } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'app/core/user/user.service';
 import { of } from 'rxjs';
@@ -450,12 +450,13 @@ describe('SubscriptionComponent', () => {
       describe('and has to go to profile', () => {
         it('should redirect', fakeAsync(() => {
           jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_FULL_USER);
+          spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(of(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED));
           spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
           spyOn(router, 'navigate');
+          component.subscriptions = [MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED];
 
-          component.user = MOCK_FULL_USER_NON_FEATURED;
           component.subscriptionChangeSuccessful(`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`);
-          tick(1000);
+          tick(2000);
 
           expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
         }));
@@ -468,7 +469,7 @@ describe('SubscriptionComponent', () => {
           component.subscriptions = [MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED];
 
           component.subscriptionChangeSuccessful();
-          tick(1000);
+          tick(2000);
 
           expect(router.navigate).not.toHaveBeenCalledWith();
         }));

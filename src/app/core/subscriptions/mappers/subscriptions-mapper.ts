@@ -31,7 +31,7 @@ export const subscriptionMapper: Record<SUBSCRIPTION_CATEGORY_TYPES, { category_
   [SUBSCRIPTION_CATEGORY_TYPES.OLD_CONSUMER_GOODS]: {
     category_id: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
     icon_id: 'All',
-    label: $localize`:@@generic_pro_subscription_naming_consumer_goods:Everything else`,
+    label: $localize`:@@web_consumer_goods_category_name:Everything else`,
   },
 };
 
