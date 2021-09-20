@@ -30,10 +30,10 @@
                                 class="KYCUploadImages__image KYCUploadImages__uploadImageContainer KYCUploadImages__imageBlock">
                             </div>
                          </ng-container>
-                        <ng-container  *ngIf="isShootImageMethod">
+                        <ng-container *ngIf="isShootImageMethod">
                             <div class="KYCUploadImages__image KYCUploadImages__imageBlock d-flex align-items-center">
                                 <canvas id="definedImage" #definedImage [ngClass]="{'d-none': (isCurrentImageDefined$ | async) === false}"></canvas>
-                                <video autoplay playsInline muted class="KYCUploadImages__video w-100" id="userVideo" #userVideo [ngClass]="{'d-none': isCurrentImageDefined$ | async}"></video>
+                                <video *ngIf="(isCurrentImageDefined$ | async) === false" [srcObject]="videoStream$ | async" autoplay playsInline muted class="KYCUploadImages__video w-100" id="userVideo" #userVideo></video>
                             </div>
                         </ng-container>
                     </div>

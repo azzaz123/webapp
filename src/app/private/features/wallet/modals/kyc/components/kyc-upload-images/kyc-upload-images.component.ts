@@ -1,14 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  AfterViewInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild, OnInit } from '@angular/core';
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages, KYC_IMAGES } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
@@ -17,8 +7,8 @@ import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 import { RequestVideoPermissionsService } from '@shared/services/video/request-video-permissions/request-video-permissions.service';
 import { VIDEO_PERMISSIONS_STATUS } from '@shared/services/video/request-video-permissions/video-permissions-status.interface';
 
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
 
 @Component({
@@ -27,7 +17,7 @@ import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.e
   styleUrls: ['./kyc-upload-images.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
+export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   @ViewChild('userVideo') userVideo: ElementRef;
   @ViewChild('definedImage') definedImageCanvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('uploadImage') uploadImage: ElementRef<HTMLInputElement>;
@@ -58,7 +48,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
   public retakeImageMessage$: Observable<string> = this.buildRetakeImageMessageObservable();
 
   public videoPermissions$: Observable<VIDEO_PERMISSIONS_STATUS> = this.buildVideoPermissionsObservable();
-  public videoStream$: Observable<MediaStream | null>;
+  public videoStream$: Observable<MediaStream | null> = this.buildVideoStreamObservable();
   public currentBase64Image$: Observable<string> = this.buildCurrentImageOnBase64Observable();
 
   public showImageBlock$: Observable<boolean> = this.buildShowImageBlockObservable();
@@ -75,18 +65,14 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
 
   constructor(private requestVideoPermissionsService: RequestVideoPermissionsService) {}
 
-  ngAfterViewInit(): void {
+  ngOnInit() {
     if (this.isShootImageMethod) {
-      this.requestVideoStream();
+      this.requestVideoPermissionsService.request();
     }
   }
 
   ngOnDestroy(): void {
-    const videoStream = this.userVideo?.nativeElement?.srcObject;
-
-    if (videoStream) {
-      this.endVideoStreamTracking(videoStream);
-    }
+    this.videoStream$ = of(null);
   }
 
   public get isShootImageMethod(): boolean {
@@ -174,12 +160,6 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private requestVideoStream(): void {
-    this.requestVideoPermissionsService.request().subscribe((stream: MediaStream) => {
-      this.userVideo.nativeElement.srcObject = stream;
-    });
-  }
-
   private uploadImageAndUpdateIt(file: File, imageSide: KYC_IMAGES): void {
     if (file.type.match(this.MIME_TYPES.IMAGE_JPEG)) {
       const reader = new FileReader();
@@ -242,16 +222,6 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       ...this.images$.value,
       backSide: newImage,
     });
-  }
-
-  private endVideoStreamTracking(videoStream: MediaStream): void {
-    if (videoStream.getTracks) {
-      this.userVideo.nativeElement.srcObject.getTracks().forEach((track) => {
-        track.stop();
-      });
-    }
-
-    this.userVideo.nativeElement.srcObject = null;
   }
 
   private buildIsContinueButtonActiveObservable(): Observable<boolean> {
@@ -442,6 +412,31 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
       })
     );
   }
+
+  // TODO: checking filter in switch		Date: 2021/09/20
+  private buildVideoStreamObservable(): Observable<MediaStream> {
+    return of(null);
+    // return this.requestVideoPermissionsService.videoStream$.pipe(
+    //   switchMap(() => this.isCurrentImageDefined$),
+    //   filter((imageDefined) => imageDefined)
+    // )
+    // return this.isCurrentImageDefined$.pipe(
+    //   filter((isDefined: boolean) => isDefined),
+    //   map(() => {
+    //     return this.requestVideoPermissionsService.videoStream$;
+    //   })
+    // );
+  }
+
+  // private endTracks() {
+  //   if (videoStream.getTracks) {
+  //     this.userVideo.nativeElement.srcObject.getTracks().forEach((track) => {
+  //       track.stop();
+  //     });
+  //   }
+
+  //   this.userVideo.nativeElement.srcObject = null;
+  // }
 
   private imagesAndActiveStep$(): Observable<[KYCImages, KYCImagesNeeded]> {
     return combineLatest([this.images$.asObservable(), this.activeStep$.asObservable()]);
