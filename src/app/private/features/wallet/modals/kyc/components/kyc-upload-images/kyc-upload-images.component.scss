@@ -38,6 +38,7 @@ $image-height--big: 240px;
   }
 
   &__image {
+    overflow: hidden;
     height: $image-height;
     border: dashed 2px $blue-grey-5;
     border-radius: $border-radius;
@@ -45,6 +46,10 @@ $image-height--big: 240px;
     @include media-breakpoint-up(sm) {
       height: $image-height--big;
     }
+  }
+
+  &__video {
+    height: fit-content;
   }
 
   &__uploadImageContainer {

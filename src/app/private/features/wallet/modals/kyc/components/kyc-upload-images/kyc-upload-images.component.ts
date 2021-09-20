@@ -211,8 +211,11 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     this.updateImages(imageContainer.toDataURL(this.MIME_TYPES.IMAGE_JPEG, 1));
   }
 
-  private drawImageInCanvas(imageContainer: HTMLCanvasElement, img: HTMLImageElement): void {
-    imageContainer.getContext('2d').drawImage(img, 0, 0, imageContainer.width, imageContainer.height);
+  private drawImageInCanvas(imageContainer: HTMLCanvasElement, userVideo: HTMLImageElement): void {
+    imageContainer.width = userVideo.clientWidth;
+    imageContainer.height = userVideo.clientHeight;
+
+    imageContainer.getContext('2d').drawImage(userVideo, 0, 0, userVideo.clientWidth, userVideo.clientHeight);
   }
 
   private clearImageInput(): void {

@@ -31,8 +31,10 @@
                             </div>
                          </ng-container>
                         <ng-container  *ngIf="isShootImageMethod">
-                            <canvas id="definedImage" #definedImage class="KYCUploadImages__imageBlock KYCUploadImages__image" [ngClass]="{'d-none': (isCurrentImageDefined$ | async) === false}"></canvas>
-                            <video autoplay playsInline muted id="userVideo" #userVideo class="KYCUploadImages__imageBlock KYCUploadImages__image" [ngClass]="{'d-none': isCurrentImageDefined$ | async}"></video>
+                            <div class="KYCUploadImages__image KYCUploadImages__imageBlock d-flex align-items-center">
+                                <canvas id="definedImage" #definedImage [ngClass]="{'d-none': (isCurrentImageDefined$ | async) === false}"></canvas>
+                                <video autoplay playsInline muted class="KYCUploadImages__video w-100" id="userVideo" #userVideo [ngClass]="{'d-none': isCurrentImageDefined$ | async}"></video>
+                            </div>
                         </ng-container>
                     </div>
                 </div>
