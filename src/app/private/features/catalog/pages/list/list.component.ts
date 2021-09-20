@@ -91,7 +91,6 @@ export class ListComponent implements OnInit, OnDestroy {
   public showTryProSlot: boolean;
   public hasTrialAvailable: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
-  public readonly PRO_PATHS = PRO_PATHS;
   public tierWithDiscount: Tier;
   private bumpSuggestionModalRef: NgbModalRef;
   private active = true;
@@ -122,8 +121,12 @@ export class ListComponent implements OnInit, OnDestroy {
     private permissionService: NgxPermissionsService
   ) {}
 
-  get itemsAmount() {
+  public get itemsAmount() {
     return this.page * this.pageSize;
+  }
+
+  public get prosPath(): string {
+    return `/${PRO_PATHS.PRO_MANAGER}`;
   }
 
   ngOnInit() {
@@ -171,6 +174,7 @@ export class ListComponent implements OnInit, OnDestroy {
         });
       });
 
+    // FIXME - Please kill this setTimeout and ensure nothing breaks
     setTimeout(() => {
       this.router.events.pipe(takeWhile(() => this.active)).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
@@ -557,6 +561,10 @@ export class ListComponent implements OnInit, OnDestroy {
     };
     this.analyticsService.trackEvent(event);
     this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
+  }
+
+  public onClickGoToProsModule(): void {
+    this.router.navigate([PRO_PATHS.PRO_MANAGER]);
   }
 
   private setNormalLinks(): void {

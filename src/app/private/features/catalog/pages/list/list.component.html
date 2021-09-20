@@ -9,7 +9,7 @@
       <div class="col-8 col-md-7">
         <div class="header-row">
           <h1 class="header-title">
-            <div class="d-md-none flex-column">
+            <div class="List__profile d-md-none flex-column">
               <div class="mb-2 d-flex align-items-center">
                 <div class="List__title">{{user?.microName}}</div>
                 <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
@@ -18,7 +18,7 @@
               </div>
               <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
               <div *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-                <tsl-button id="qa-list-pro-button" class="w-100 mt-2" className="btn btn-dark w-100" routerLink="/{{PRO_PATHS.PRO_MANAGER}}">
+                <tsl-button id="qa-list-pro-button" class="List__profile__pros w-100 mt-2" className="btn btn-dark w-100" (click)="onClickGoToProsModule()">
                   {{subscriptionButtonName}}
                 </tsl-button>
               </div>
