@@ -14,6 +14,9 @@ $spacing-14: 14px;
 
 .WalletTransferAmount {
   font-family: $wallie;
+  &__hidden {
+    display: none;
+  }
   &__question {
     font-size: $font-size-s;
     font-weight: $font-weight-chunky;
@@ -32,10 +35,14 @@ $spacing-14: 14px;
     height: $wallet-transfer-amount-container-height;
     padding: $spacing-m 0 11px 4px;
 
-    &__integer {
+    input {
       border: 0;
-      font-size: $wallet-transfer-amount-integer-text-size;
+      caret-color: $walla-main;
       font-weight: $font-weight-chunky;
+    }
+
+    &__integer {
+      font-size: $wallet-transfer-amount-integer-text-size;
       height: $wallet-transfer-amount-integer-text-size;
       line-height: $wallet-transfer-amount-integer-text-size;
       margin-left: $wallet-transfer-amount-integer-margin-left;
@@ -45,9 +52,7 @@ $spacing-14: 14px;
     }
 
     &__decimal {
-      border: 0;
       font-size: $font-size-xl;
-      font-weight: $font-weight-chunky;
       height: $font-size-xl;
       line-height: $font-size-xl;
       margin-top: 6px;
@@ -94,5 +99,14 @@ $spacing-14: 14px;
     line-height: $font-size-m;
     margin-bottom: $spacing-14;
     text-align: center;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
   }
 }

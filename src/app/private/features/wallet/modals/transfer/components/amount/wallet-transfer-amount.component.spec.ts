@@ -1,11 +1,13 @@
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, LOCALE_ID } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
+import { HelpLocaleId } from '@core/external-links/customer-help/customer-help-constants';
 import {
   MockPaymentsWalletsService,
   MOCK_PAYMENTS_WALLETS_MAPPED_MONEY,
@@ -25,8 +27,13 @@ import { delay } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class FakeComponent extends WalletTransferAmountComponent {
-  constructor(changeDetectorRef: ChangeDetectorRef, paymentsWalletsService: PaymentsWalletsService, toastService: ToastService) {
-    super(changeDetectorRef, paymentsWalletsService, toastService);
+  constructor(
+    @Inject(LOCALE_ID) locale: HelpLocaleId,
+    changeDetectorRef: ChangeDetectorRef,
+    paymentsWalletsService: PaymentsWalletsService,
+    toastService: ToastService
+  ) {
+    super(locale, changeDetectorRef, paymentsWalletsService, toastService);
   }
 }
 
@@ -50,7 +57,7 @@ describe('WalletTransferAmountComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ButtonComponent, FakeComponent, SvgIconComponent],
-      imports: [CommonModule, HttpClientTestingModule],
+      imports: [CommonModule, FormsModule, HttpClientTestingModule],
       providers: [{ provide: PaymentsWalletsService, useClass: MockPaymentsWalletsService }, DecimalPipe],
     }).compileComponents();
   });
@@ -118,14 +125,14 @@ describe('WalletTransferAmountComponent', () => {
 
       it('should show 0 in the integer part', () => {
         const expectedIntegerValue = MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY.amount.integer.toString();
-        const integerValue = fixture.debugElement.query(By.css(walletTransferAmountFigureIntegerSelector)).nativeElement.innerHTML;
+        const integerValue = fixture.debugElement.query(By.css(walletTransferAmountFigureIntegerSelector)).nativeElement.value;
 
         expect(integerValue).toEqual(expectedIntegerValue);
       });
 
       it('should show 0 in the decimal part', () => {
         const expectedDecimalValue = decimalPipe.transform(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY.amount.decimals, '2.0-0');
-        const decimalValue = fixture.debugElement.query(By.css(walletTransferAmountFigureDecimalSelector)).nativeElement.innerHTML;
+        const decimalValue = fixture.debugElement.query(By.css(walletTransferAmountFigureDecimalSelector)).nativeElement.value;
 
         expect(decimalValue).toEqual(expectedDecimalValue);
       });
@@ -177,14 +184,14 @@ describe('WalletTransferAmountComponent', () => {
 
       it('should show the interger part of the money in the balance', () => {
         const expectedIntegerValue = MOCK_PAYMENTS_WALLETS_MAPPED_MONEY.amount.integer.toString();
-        const integerValue = fixture.debugElement.query(By.css(walletTransferAmountFigureIntegerSelector)).nativeElement.innerHTML;
+        const integerValue = fixture.debugElement.query(By.css(walletTransferAmountFigureIntegerSelector)).nativeElement.value;
 
         expect(integerValue).toEqual(expectedIntegerValue);
       });
 
       it('should show the decimal part of the money in the balance', () => {
         const expectedDecimalValue = decimalPipe.transform(MOCK_PAYMENTS_WALLETS_MAPPED_MONEY.amount.decimals, '2.0-0');
-        const decimalValue = fixture.debugElement.query(By.css(walletTransferAmountFigureDecimalSelector)).nativeElement.innerHTML;
+        const decimalValue = fixture.debugElement.query(By.css(walletTransferAmountFigureDecimalSelector)).nativeElement.value;
 
         expect(decimalValue).toEqual(expectedDecimalValue);
       });
