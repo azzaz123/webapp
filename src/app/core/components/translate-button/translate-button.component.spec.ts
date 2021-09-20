@@ -21,6 +21,10 @@ describe('TranslateButtonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TranslateButtonComponent);
     component = fixture.componentInstance;
+    component.copies = {
+      showTranslation: 'Show me the translation!',
+      showOriginal: 'Show me the original!',
+    };
     fixture.detectChanges();
   });
 
