@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 
 export interface TranslateButtonCopies {
   showTranslation: string;
-  showOriginal: string;
+  showOriginal?: string;
 }
 
 @Component({

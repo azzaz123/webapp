@@ -97,6 +97,10 @@
           (clickScroll)="scrollToLastMessage()"></tsl-scrolling-message>
       </div>
 
+      <div class="translation-button-container">
+        <tsl-translate-button [isTranslated]="false" [copies]="translateButtonCopies"></tsl-translate-button>
+      </div>
+
       <div class="input send-message-container">
         <tsl-input [currentConversation]="currentConversation" (typing)="typing()"
           (clickSentMessage)="clickSendMessage($event)"></tsl-input>

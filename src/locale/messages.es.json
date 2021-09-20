@@ -549,6 +549,7 @@
     "web_item_is_not_available_warning": "El producto ha caducado o ha sido eliminado",
     "web_item_is_unpublished_warning": "El producto incumple las normas de convivencia de Wallapop",
     "web_security_warning": "Por razones de seguridad, nunca compartas datos privados",
+    "chat_all_users_translate_button": "Traducir conversación",
     "web_chat_components_user_detail_170": "A {$INTERPOLATION}km de ti",
     "web_chat_components_user_detail_567": "Sin localización",
     "web_chat_components_user_response_rate_171": "Desconocido",

@@ -34,6 +34,7 @@ import {
 import { MaliciousConversationModalComponent } from './modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { TranslateButtonModule } from '@core/components/translate-button/translate-button.module';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     ItemAvatarModule,
     CustomCurrencyModule,
     NgxPermissionsModule.forChild(),
+    TranslateButtonModule,
   ],
   declarations: [
     chatRoutedComponents,

@@ -40,6 +40,7 @@ import { delay } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';
 import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { TranslateButtonCopies } from '@core/components/translate-button/translate-button.component';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -71,6 +72,9 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public isConversationChanged: boolean;
   public isTopBarExpanded = false;
   public chatRightAdSlot: AdSlotConfiguration = CHAT_AD_SLOTS;
+  public translateButtonCopies: TranslateButtonCopies = {
+    showTranslation: $localize`:@@chat_all_users_translate_button:Translate conversation`,
+  };
 
   public readonly PERMISSIONS = PERMISSIONS;
 
