@@ -1,3 +1,4 @@
+import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -6,7 +7,6 @@ import { WalletTransferAmountComponent } from '@private/features/wallet/modals/t
 import { WalletTransferModalComponent } from '@private/features/wallet/modals/transfer/components/modal/wallet-transfer-modal.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { By } from '@angular/platform-browser';
 
 describe('GIVEN the WalletTransferModalComponent', () => {
   let component: WalletTransferModalComponent;
