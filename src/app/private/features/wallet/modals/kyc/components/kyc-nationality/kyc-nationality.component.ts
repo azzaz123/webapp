@@ -24,7 +24,7 @@ export class KYCNationalityComponent implements OnInit {
   constructor(private kycTrackingEventsService: KYCTrackingEventsService) {}
 
   ngOnInit() {
-    this.trackViewKYCVerifyingIdentityScreen();
+    this.trackViewKYCIdentityVerificationScreen();
   }
 
   public emitDocumentChange(selectedDocument: IOption): void {
@@ -70,8 +70,8 @@ export class KYCNationalityComponent implements OnInit {
     return this.KYCNationality?.svgPath || '/assets/icons/wallet/kyc/stepper/kyc_nationality.svg';
   }
 
-  private trackViewKYCVerifyingIdentityScreen(): void {
-    this.kycTrackingEventsService.trackViewKYCVerifyingIdentityScreen();
+  private trackViewKYCIdentityVerificationScreen(): void {
+    this.kycTrackingEventsService.trackViewKYCIdentityVerificationScreen();
   }
 
   private trackViewKYCUploadIdentityVerificationScreen(): void {

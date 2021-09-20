@@ -36,7 +36,7 @@ describe('KYCNationalityComponent', () => {
         {
           provide: KYCTrackingEventsService,
           useValue: {
-            trackViewKYCVerifyingIdentityScreen() {},
+            trackViewKYCIdentityVerificationScreen() {},
             trackViewKYCUploadIdentityVerificationScreen() {},
             trackViewKYCDocumentationTypeScreen() {},
           },
@@ -59,11 +59,11 @@ describe('KYCNationalityComponent', () => {
 
   describe('when we enter on the KYC nationality page...', () => {
     it('should request to the KYC analytics service to track the page view event', () => {
-      spyOn(kycTrackingEventsService, 'trackViewKYCBankAccountInfoScreen');
+      spyOn(kycTrackingEventsService, 'trackViewKYCIdentityVerificationScreen');
 
       fixture.detectChanges();
 
-      expect(kycTrackingEventsService.trackViewKYCBankAccountInfoScreen).toHaveBeenCalledTimes(1);
+      expect(kycTrackingEventsService.trackViewKYCIdentityVerificationScreen).toHaveBeenCalledTimes(1);
     });
   });
 
