@@ -30,14 +30,14 @@ export class KYCNationalityComponent implements OnInit {
   public emitDocumentChange(selectedDocument: IOption): void {
     const documentation = KYC_DOCUMENTATION.find((nationality) => nationality.value === selectedDocument.value);
 
-    this.trackViewKYCDocumentationTypeScreen();
+    this.trackViewKYCDocumentationTypeScreen(documentation);
     this.documentToRequestChange.emit(documentation);
   }
 
   public emitNationalityChange(selectedNationality: IOption): void {
     const nationality = KYC_NATIONALITIES.find((nationality) => nationality.value === selectedNationality.value);
 
-    this.trackViewKYCUploadIdentityVerificationScreen();
+    this.trackViewKYCUploadIdentityVerificationScreen(nationality);
     this.nationalityChange.emit(nationality);
   }
 
@@ -74,11 +74,11 @@ export class KYCNationalityComponent implements OnInit {
     this.kycTrackingEventsService.trackViewKYCIdentityVerificationScreen();
   }
 
-  private trackViewKYCUploadIdentityVerificationScreen(): void {
-    this.kycTrackingEventsService.trackViewKYCUploadIdentityVerificationScreen(this.KYCNationality.analyticsName);
+  private trackViewKYCUploadIdentityVerificationScreen(nationalitySelected: KYCNationality): void {
+    this.kycTrackingEventsService.trackViewKYCUploadIdentityVerificationScreen(nationalitySelected.analyticsName);
   }
 
-  private trackViewKYCDocumentationTypeScreen(): void {
-    this.kycTrackingEventsService.trackViewKYCDocumentationTypeScreen(this.KYCDocumentation.analyticsName);
+  private trackViewKYCDocumentationTypeScreen(documentationSelected: KYCDocumentation): void {
+    this.kycTrackingEventsService.trackViewKYCDocumentationTypeScreen(documentationSelected.analyticsName);
   }
 }

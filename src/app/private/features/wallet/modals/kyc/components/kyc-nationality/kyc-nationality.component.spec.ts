@@ -258,14 +258,14 @@ describe('KYCNationalityComponent', () => {
       spyOn(component.nationalityChange, 'emit');
 
       fixture.detectChanges();
-    });
 
-    it('should emit the selected nationality', () => {
       de.query(By.directive(DropdownComponent)).triggerEventHandler('selected', {
         label: EUROPEAN_UNION_NATIONALITY.label,
         value: EUROPEAN_UNION_NATIONALITY.value,
       });
+    });
 
+    it('should emit the selected nationality', () => {
       expect(component.nationalityChange.emit).toHaveBeenCalledWith(EUROPEAN_UNION_NATIONALITY);
     });
 
@@ -278,25 +278,23 @@ describe('KYCNationalityComponent', () => {
   });
 
   describe('when we select a document...', () => {
-    const selectedDocument = KYC_DOCUMENTATION[0];
-
     beforeEach(() => {
       spyOn(kycTrackingEventsService, 'trackViewKYCDocumentationTypeScreen');
       spyOn(component.documentToRequestChange, 'emit');
       component.KYCNationality = EUROPEAN_UNION_NATIONALITY;
 
       fixture.detectChanges();
+
+      de.query(By.directive(DropdownComponent)).triggerEventHandler('selected', KYC_DOCUMENTATION[0]);
     });
 
     it('should emit the selected document', () => {
-      de.query(By.directive(DropdownComponent)).triggerEventHandler('selected', selectedDocument);
-
-      expect(component.documentToRequestChange.emit).toHaveBeenCalledWith(selectedDocument);
+      expect(component.documentToRequestChange.emit).toHaveBeenCalledWith(KYC_DOCUMENTATION[0]);
     });
 
     it('should request to the KYC analytics service to track the event', () => {
       expect(kycTrackingEventsService.trackViewKYCDocumentationTypeScreen).toHaveBeenCalledTimes(1);
-      expect(kycTrackingEventsService.trackViewKYCDocumentationTypeScreen).toHaveBeenCalledWith(selectedDocument.analyticsName);
+      expect(kycTrackingEventsService.trackViewKYCDocumentationTypeScreen).toHaveBeenCalledWith(KYC_DOCUMENTATION[0].analyticsName);
     });
   });
 });
