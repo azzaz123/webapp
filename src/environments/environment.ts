@@ -22,7 +22,7 @@ const environmentLocal: Environment = {
   threatMetrixProfilingDomain: 'clear.wallapop.com',
 };
 
-export const localesWithNewSearchEnabled: APP_LOCALE[] = ['it'];
+export const localesWithNewSearchEnabled: APP_LOCALE[] = ['it', 'en'];
 
 export const environment = dockNum === 'beta' ? environmentBeta : environmentLocal;
 

@@ -53,8 +53,6 @@ Resources:
                   commands:
                     - aws s3 sync es/ s3://$HOSTING_BUCKET_ES --delete
                     - aws s3 cp es/index.html s3://$HOSTING_BUCKET_ES/index.html --cache-control max-age=0
-                    - aws s3 sync en/ s3://$HOSTING_BUCKET_EN --delete
-                    - aws s3 cp en/index.html s3://$HOSTING_BUCKET_EN/index.html --cache-control max-age=0
                     - aws s3 sync it/ s3://$HOSTING_BUCKET_IT --delete
                     - aws s3 cp it/index.html s3://$HOSTING_BUCKET_IT/index.html --cache-control max-age=0
                     - aws s3 sync ./ s3://$HOSTING_BUCKET_FUNCTIONAL_WEBAPP --delete --exclude 'infrastructure/*' --exclude 'dist/*'
