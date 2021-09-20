@@ -50,6 +50,36 @@ describe('NumbersOnlyDirective', () => {
       });
     });
 
+    describe('and the new key is the down arrow ...', () => {
+      it('should let us to use it', () => {
+        expect(keyPress('ArrowDown').defaultPrevented).toBe(false);
+      });
+    });
+
+    describe('and the new key is the left arrow ...', () => {
+      it('should let us to use it', () => {
+        expect(keyPress('ArrowLeft').defaultPrevented).toBe(false);
+      });
+    });
+
+    describe('and the new key is the right arrow ...', () => {
+      it('should let us to use it', () => {
+        expect(keyPress('ArrowRight').defaultPrevented).toBe(false);
+      });
+    });
+
+    describe('and the new key is the up arrow ...', () => {
+      it('should let us to use it', () => {
+        expect(keyPress('ArrowUp').defaultPrevented).toBe(false);
+      });
+    });
+
+    describe('and the new key is the delete key ...', () => {
+      it('should let us to use it', () => {
+        expect(keyPress('Delete').defaultPrevented).toBe(false);
+      });
+    });
+
     describe('and the new character is an space...', () => {
       it('should revert the character', () => {
         expect(keyPress(' ').defaultPrevented).toBe(true);
