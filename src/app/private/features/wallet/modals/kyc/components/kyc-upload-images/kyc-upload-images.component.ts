@@ -18,6 +18,7 @@ import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
 import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
 import { Observable } from 'rxjs';
+import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
 
 @Component({
@@ -49,7 +50,7 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     dismissible: false,
   };
 
-  constructor(private askPermissionsService: AskPermissionsService) {
+  constructor(private askPermissionsService: AskPermissionsService, private kycTrackingEventsService: KYCTrackingEventsService) {
     this.userDevicePermissions$ = askPermissionsService.userDevicePermissions$;
   }
 
@@ -271,5 +272,9 @@ export class KYCUploadImagesComponent implements AfterViewInit, OnDestroy {
     }
 
     this.userCamera.nativeElement.srcObject = null;
+  }
+
+  private trackViewKYCReviewDocumentationImageScreen(): void {
+    this.kycTrackingEventsService.trackViewKYCReviewDocumentationImageScreen(null);
   }
 }

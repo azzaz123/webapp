@@ -23,6 +23,7 @@ import { AskPermissionsService } from '@shared/services/ask-permissions/ask-perm
 import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { BehaviorSubject, throwError } from 'rxjs';
+import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
 import { KYCUploadImagesComponent } from './kyc-upload-images.component';
 
@@ -79,6 +80,12 @@ describe('KYCUploadImagesComponent', () => {
             askCameraPermissions() {
               return cameraResponseSubjectMock.asObservable();
             },
+          },
+        },
+        {
+          provide: KYCTrackingEventsService,
+          useValue: {
+            trackViewKYCReviewDocumentationImageScreen() {},
           },
         },
       ],
