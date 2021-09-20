@@ -6,6 +6,7 @@ import { CustomerHelpService } from '@core/external-links/customer-help/customer
 import { ButtonComponent } from '@shared/button/button.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { KYC_MODAL_STATUS_PROPERTIES } from '../../constants/kyc-modal-status-constants';
+import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
 
 import { KYCStatusComponent } from './kyc-status.component';
 
@@ -15,6 +16,7 @@ describe('KYCStatusComponent', () => {
   const linkSelector = '.KYCStatus__link';
 
   let component: KYCStatusComponent;
+  let kycTrackingEventsService: KYCTrackingEventsService;
   let fixture: ComponentFixture<KYCStatusComponent>;
   let de: DebugElement;
   let el: HTMLElement;
@@ -23,11 +25,20 @@ describe('KYCStatusComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [KYCStatusComponent, SvgIconComponent, ButtonComponent],
       imports: [HttpClientTestingModule],
+      providers: [
+        {
+          provide: KYCTrackingEventsService,
+          useValue: {
+            trackViewKYCVerifyingIdentityScreen() {},
+          },
+        },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(KYCStatusComponent);
+    kycTrackingEventsService = TestBed.inject(KYCTrackingEventsService);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
@@ -105,6 +116,26 @@ describe('KYCStatusComponent', () => {
         button.click();
 
         expect(component.buttonClick.emit).toBeCalledTimes(1);
+      });
+    });
+
+    describe('and the kyc status is in progress', () => {
+      it('should request to the KYC analytics service to track the page view event', () => {
+        spyOn(kycTrackingEventsService, 'trackViewKYCVerifyingIdentityScreen');
+
+        component.ngOnInit();
+
+        expect(kycTrackingEventsService.trackViewKYCVerifyingIdentityScreen).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('and the kyc status is NOT in progress', () => {
+      it('should NOT request to track the page view event', () => {
+        spyOn(kycTrackingEventsService, 'trackViewKYCVerifyingIdentityScreen');
+
+        component.ngOnInit();
+
+        expect(kycTrackingEventsService.trackViewKYCVerifyingIdentityScreen).not.toHaveBeenCalled();
       });
     });
   });
