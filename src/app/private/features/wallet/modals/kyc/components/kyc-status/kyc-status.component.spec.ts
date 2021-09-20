@@ -32,6 +32,7 @@ describe('KYCStatusComponent', () => {
             trackViewKYCVerifyingIdentityScreen() {},
           },
         },
+        CustomerHelpService,
       ],
     }).compileComponents();
   });
@@ -42,11 +43,11 @@ describe('KYCStatusComponent', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
-
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture.detectChanges();
+
     expect(component).toBeTruthy();
   });
 
@@ -120,6 +121,12 @@ describe('KYCStatusComponent', () => {
     });
 
     describe('and the kyc status is in progress', () => {
+      beforeEach(() => {
+        component.properties = KYC_STATUS_IN_PROGRESS;
+
+        fixture.detectChanges();
+      });
+
       it('should request to the KYC analytics service to track the page view event', () => {
         spyOn(kycTrackingEventsService, 'trackViewKYCVerifyingIdentityScreen');
 
@@ -130,6 +137,12 @@ describe('KYCStatusComponent', () => {
     });
 
     describe('and the kyc status is NOT in progress', () => {
+      beforeEach(() => {
+        component.properties = KYC_STATUS_ERROR;
+
+        fixture.detectChanges();
+      });
+
       it('should NOT request to track the page view event', () => {
         spyOn(kycTrackingEventsService, 'trackViewKYCVerifyingIdentityScreen');
 
@@ -143,6 +156,8 @@ describe('KYCStatusComponent', () => {
   describe('when we not receive status properties', () => {
     beforeEach(() => {
       component.properties = null;
+
+      fixture.detectChanges();
     });
 
     it('should not show the status information', () => {

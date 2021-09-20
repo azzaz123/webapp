@@ -18,7 +18,7 @@ export class KYCStatusComponent implements OnInit {
   constructor(private customerHelpService: CustomerHelpService, private kycTrackingEventsService: KYCTrackingEventsService) {}
 
   ngOnInit() {
-    if (this.properties.status === KYC_MODAL_STATUS.IN_PROGRESS) {
+    if (this.properties?.status === KYC_MODAL_STATUS.IN_PROGRESS) {
       this.kycTrackingEventsService.trackViewKYCVerifyingIdentityScreen();
     }
   }
