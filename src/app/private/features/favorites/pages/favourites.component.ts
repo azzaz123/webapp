@@ -8,6 +8,7 @@ import { Profile } from '@core/profile/profile';
 import { MeApiService } from '@api/me/me-api.service';
 import { finalize, take } from 'rxjs/operators';
 import { PaginatedList } from '@api/core/model';
+import { FavouritesListTrackingEventsService } from '../services/favourites-list-tracking-events.service';
 
 @Component({
   selector: 'tsl-favourites',
@@ -24,7 +25,12 @@ export class FavouritesComponent implements OnInit {
   private counters: Counters;
   private nextItemParameter: string;
 
-  public constructor(public meApiService: MeApiService, private userService: UserService, private profileService: ProfileService) {}
+  public constructor(
+    public meApiService: MeApiService,
+    private userService: UserService,
+    private profileService: ProfileService,
+    private favouritesListTrackingEventsService: FavouritesListTrackingEventsService
+  ) {}
 
   public ngOnInit() {
     this.getItems();
@@ -106,6 +112,12 @@ export class FavouritesComponent implements OnInit {
       this.counters = userStats.counters;
       this.setNumberOfFavorites();
     });
+  }
+
+  public trackClickFavoriteItem(index: number) {
+    const item = this.items[index];
+
+    this.favouritesListTrackingEventsService.trackClickItemCardEvent(item, index);
   }
 
   private setNumberOfFavorites() {

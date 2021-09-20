@@ -8,6 +8,7 @@ import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ProfileService } from '@core/profile/profile.service';
 import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
 import { MeApiService } from '@api/me/me-api.service';
+import { FavouritesListTrackingEventsService } from '../services/favourites-list-tracking-events.service';
 
 describe('FavouritesComponent', () => {
   let component: FavouritesComponent;
@@ -17,6 +18,7 @@ describe('FavouritesComponent', () => {
   let profileServiceSpy: jasmine.Spy;
   let userService: UserService;
   let profileService: ProfileService;
+  let favouritesListTrackingEventsService: FavouritesListTrackingEventsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -45,6 +47,12 @@ describe('FavouritesComponent', () => {
               getStats() {
                 return of(MOCK_USER_STATS);
               },
+            },
+          },
+          {
+            provide: favouritesListTrackingEventsService,
+            useValue: {
+              trackClickItemCardEvent: () => {},
             },
           },
         ],
