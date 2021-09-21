@@ -107,7 +107,7 @@ export class SubscriptionEditComponent implements OnInit {
 
   public onClearSubscription(): void {
     this.unselectSubscription.emit();
-}
+  }
 
   public openCategoriesModal(): void {
     const modal = this.modalService.open(CategoryListingModalComponent, {

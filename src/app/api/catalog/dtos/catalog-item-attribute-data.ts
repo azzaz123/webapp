@@ -27,8 +27,9 @@ export enum REAL_ESTATE_ATTRIBUTE_TYPE {
 
 export type ATTRIBUTE_TYPE = CAR_ATTRIBUTE_TYPE | REAL_ESTATE_ATTRIBUTE_TYPE;
 
-export interface CatalogItemAttribute {
-  type: ATTRIBUTE_TYPE;
+export type CatalogItemAttributes = Partial<Record<ATTRIBUTE_TYPE, CatalogItemAttributeData>>;
+
+export interface CatalogItemAttributeData {
   value: string;
   title: string;
   text: string;

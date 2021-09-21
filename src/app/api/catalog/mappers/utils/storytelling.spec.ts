@@ -11,7 +11,11 @@ describe('Storytelling util', () => {
   describe('when asked to format description', () => {
     describe('and is not part of the storytelling types', () => {
       it('should not create storytelling, returning description', () => {
-        const description = formatDescription(ItemType.CONSUMER_GOODS, publishedItemFixture.description, publishedItemFixture.attributes);
+        const description = formatDescription(
+          ItemType.CONSUMER_GOODS,
+          publishedItemFixture.description,
+          publishedItemFixture.type_attributes
+        );
 
         expect(description).toEqual(mappedPublishedItemFixture.description);
       });
@@ -22,7 +26,7 @@ describe('Storytelling util', () => {
         const description = formatDescription(
           ItemType.CARS,
           storytellingPublishedItemFixture.description,
-          storytellingPublishedItemFixture.attributes
+          storytellingPublishedItemFixture.type_attributes
         );
 
         expect(description).toEqual(mappedStorytellingPublishedItemFixture.description);

@@ -78,19 +78,6 @@ export class BuyWallacoinsModalComponent implements OnInit {
     );
   }
 
-  private managePaymentResponse(paymentResponse: string): void {
-    switch (paymentResponse && paymentResponse.toUpperCase()) {
-      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-        this.activeModal.close('success');
-        break;
-      }
-      default: {
-        this.activeModal.close('error');
-        break;
-      }
-    }
-  }
-
   public setCardInfo(card: any) {
     this.card = card;
   }
@@ -110,5 +97,18 @@ export class BuyWallacoinsModalComponent implements OnInit {
     this.savedCard = true;
     this.selectedCard = true;
     this.setCardInfo(selectedCard);
+  }
+
+  private managePaymentResponse(paymentResponse: string): void {
+    switch (paymentResponse && paymentResponse.toUpperCase()) {
+      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
+        this.activeModal.close('success');
+        break;
+      }
+      default: {
+        this.activeModal.close('error');
+        break;
+      }
+    }
   }
 }

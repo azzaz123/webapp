@@ -11,11 +11,11 @@ import { CallsService } from '@core/conversation/calls.service';
   styleUrls: ['./calls.component.scss'],
 })
 export class CallsComponent implements OnInit, OnDestroy {
-  private page = 1;
   public loading = true;
   public calls: Call[] = [];
   public archive = false;
   public status: string;
+  private page = 1;
   private callsSubscription: Subscription;
   private active = true;
 
