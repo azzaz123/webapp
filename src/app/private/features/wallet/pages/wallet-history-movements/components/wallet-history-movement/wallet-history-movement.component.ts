@@ -9,8 +9,6 @@ import { WalletMovementHistoryDetail, WALLET_HISTORY_MOVEMENT_TYPE } from '@api/
 })
 export class WalletHistoryMovementComponent {
   @Input() walletMovementHistoryDetail: WalletMovementHistoryDetail;
-  @Input() showBorderTop = true;
-  @Input() showBorderBottom = false;
 
   private MONEY_MOVEMENT_SVG_URL_BY_TYPE: Record<WALLET_HISTORY_MOVEMENT_TYPE, string> = {
     [WALLET_HISTORY_MOVEMENT_TYPE.IN]: 'assets/icons/money-in.svg',
