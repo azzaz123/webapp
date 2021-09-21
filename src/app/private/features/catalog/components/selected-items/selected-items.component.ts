@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { SubscriptionSlot } from '@api/catalog-manager/interfaces/subscription-slot/subscription-slot.interface';
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
-import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { Subscription } from 'rxjs';
 import { STATUS } from './selected-product.interface';

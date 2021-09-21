@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
+import { SubscriptionSlot } from '@api/catalog-manager/interfaces/subscription-slot/subscription-slot.interface';
 import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
@@ -23,7 +25,7 @@ import { CheapestProducts, ItemBulkResponse, ItemsData } from '@core/item/item-r
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
-import { SubscriptionSlot, SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
 import { PERMISSIONS } from '@core/user/user-constants';
@@ -116,6 +118,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     protected i18n: I18nService,
     private subscriptionsService: SubscriptionsService,
+    private catalogManagerService: CatalogManagerApiService,
     private deviceService: DeviceDetectorService,
     private analyticsService: AnalyticsService,
     private i18nService: I18nService,
@@ -143,7 +146,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems();
     this.getCreditInfo();
 
-    this.subscriptionsService.getSlots().subscribe((subscriptionSlots) => {
+    this.catalogManagerService.getSlots().subscribe((subscriptionSlots) => {
       this.setSubscriptionSlots(subscriptionSlots);
     });
 
@@ -642,8 +645,8 @@ export class ListComponent implements OnInit, OnDestroy {
     const status = this.selectedStatus;
 
     if (this.selectedSubscriptionSlot) {
-      this.itemService
-        .minesByCategory(
+      this.catalogManagerService
+        .itemsBySubscriptionType(
           this.page,
           this.pageSize,
           this.selectedSubscriptionSlot.subscription.type,

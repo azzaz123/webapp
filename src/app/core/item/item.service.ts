@@ -43,7 +43,6 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import * as mapRx from 'rxjs/operators';
 import { UuidService } from '../uuid/uuid.service';
-import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -56,7 +55,6 @@ export const ITEM_STATUSES: any = {
 };
 
 export const PAYMENT_PROVIDER = 'STRIPE';
-export const MINES_BY_CATEGORY_ENDPOINT = 'api/v3/catalog-management/items';
 export const ACTIVATE_ENDPOINT = 'activate';
 export enum ITEM_STATUS {
   SOLD = 'sold',
@@ -83,7 +81,6 @@ export class ItemService {
   };
   public selectedItems: string[] = [];
   private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
-  private lastTypeSearched: SUBSCRIPTION_CATEGORY_TYPES;
 
   constructor(private http: HttpClient, private i18n: I18nService, private uuidService: UuidService, private eventService: EventService) {}
 
@@ -319,50 +316,6 @@ export class ItemService {
     );
   }
 
-  private mapItemByCategory(response: ItemByCategoryResponse, categoryId: any) {
-    const item = new Item(
-      response.id,
-      null,
-      null,
-      response.title,
-      null,
-      categoryId,
-      null,
-      response.sale_price,
-      response.currency_code,
-      response.modified_date,
-      null,
-      response.flags,
-      null,
-      null,
-      response.main_image,
-      null,
-      response.web_slug,
-      response.publish_date,
-      null,
-      null,
-      null,
-      response.car_info
-    );
-
-    if (response.active_item_purchase) {
-      if (response.active_item_purchase.listing_fee) {
-        item.listingFeeExpiringDate = new Date().getTime() + response.active_item_purchase.listing_fee.remaining_time_ms;
-      }
-
-      if (response.active_item_purchase.bump) {
-        item.purchases = {
-          bump_type: response.active_item_purchase.bump.type,
-          expiration_date: response.active_item_purchase.bump.remaining_time_ms,
-        };
-
-        item.bumpExpiringDate = new Date().getTime() + response.active_item_purchase.bump.remaining_time_ms;
-      }
-    }
-
-    return item;
-  }
-
   public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
     return this.http
       .get<HttpResponse<ItemResponse[]>>(`${environment.baseUrl}${url}`, {
@@ -441,7 +394,6 @@ export class ItemService {
   }
 
   public mine(init: number, status?: string): Observable<ItemsData> {
-    this.lastTypeSearched = null;
     return this.getPaginationItems(WEB_ITEMS_API_URL + '/mine/' + status, init, true);
   }
 
@@ -662,7 +614,6 @@ export class ItemService {
                 return item;
               });
             this.items[status] = items;
-            this.lastTypeSearched = null;
             return items;
           }
           return [];
@@ -711,82 +662,6 @@ export class ItemService {
               map((res2: ItemProResponse[]) => {
                 return res.concat(res2);
               })
-            );
-          } else {
-            return of([]);
-          }
-        })
-      );
-  }
-
-  public minesByCategory(
-    pageNumber: number,
-    pageSize: number,
-    type: SUBSCRIPTION_CATEGORY_TYPES,
-    sortByParam: string,
-    status: string = 'active',
-    term?: string,
-    cache: boolean = true
-  ): Observable<Item[]> {
-    const init: number = (pageNumber - 1) * pageSize;
-    const end: number = init + pageSize;
-
-    // TODO: Propper condition with last category id searched and so
-    if (status === 'TODO' && this.lastTypeSearched && this.lastTypeSearched === type && this.items[status] && cache) {
-      return of(this.items[status]);
-    } else {
-      return this.recursiveMinesByCategory(0, 20, type, status).pipe(
-        map((responseArray) => {
-          if (responseArray.length > 0) {
-            const items = responseArray.map((i) => this.mapItemByCategory(i, type));
-            this.items[status] = items;
-            this.lastTypeSearched = type;
-            return items;
-          }
-          return [];
-        }),
-        map((res) => {
-          term = term ? term.trim().toLowerCase() : '';
-          if (term !== '') {
-            return filter(res, (item: Item) => {
-              return item.title.toLowerCase().indexOf(term) !== -1;
-            });
-          }
-          return res;
-        }),
-        map((res) => {
-          const sort = sortByParam.split('_');
-          const field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
-          const sorted: Item[] = sortBy(res, [field]);
-          if (sort[1] === 'desc') {
-            return reverse(sorted);
-          }
-          return sorted;
-        })
-      );
-    }
-  }
-
-  public recursiveMinesByCategory(
-    init: number,
-    offset: number,
-    type: SUBSCRIPTION_CATEGORY_TYPES,
-    status: string
-  ): Observable<ItemByCategoryResponse[]> {
-    return this.http
-      .get<any>(`${environment.baseUrl}${MINES_BY_CATEGORY_ENDPOINT}`, {
-        params: {
-          status,
-          init: init.toString(),
-          end: (init + offset).toString(),
-          type,
-        },
-      })
-      .pipe(
-        mergeMap((res) => {
-          if (res.length > 0) {
-            return this.recursiveMinesByCategory(init + offset, offset, type, status).pipe(
-              map((recursiveResult) => res.concat(recursiveResult))
             );
           } else {
             return of([]);

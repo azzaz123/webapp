@@ -2,16 +2,15 @@ import { of, throwError, forkJoin, Observable } from 'rxjs';
 
 import { retryWhen, delay, take, mergeMap, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { SubscriptionSlot, SUBSCRIPTION_MARKETS } from './subscriptions.interface';
+import { SUBSCRIPTION_MARKETS } from './subscriptions.interface';
 import { UserService } from '../user/user.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
-import { CategoryService } from '../category/category.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { UuidService } from '../uuid/uuid.service';
 import { CATEGORIES_EXCLUDED_FROM_CONSUMER_GOODS, CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
 import { SubscriptionsHttpService } from './http/subscriptions-http.service';
-import { mapSlotsResponseToSlots, mapSubscriptions } from './mappers/subscriptions-mapper';
+import { mapSubscriptions } from './mappers/subscriptions-mapper';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -32,16 +31,9 @@ export class SubscriptionsService {
   constructor(
     private userService: UserService,
     private http: HttpClient,
-    private categoryService: CategoryService,
     private uuidService: UuidService,
     private subscriptionsHttpService: SubscriptionsHttpService
   ) {}
-
-  public getSlots(): Observable<SubscriptionSlot[]> {
-    return forkJoin([this.subscriptionsHttpService.getSlots(), this.getSubscriptions(false)]).pipe(
-      map((values) => mapSlotsResponseToSlots(values[0].slots, values[1]))
-    );
-  }
 
   public getUserSubscriptionType(useCache = true): Observable<SUBSCRIPTION_TYPES> {
     if (useCache && this._userSubscriptionType) {

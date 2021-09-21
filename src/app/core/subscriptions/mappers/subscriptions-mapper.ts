@@ -1,10 +1,4 @@
-import {
-  SubscriptionSlot,
-  SubscriptionSlotResponse,
-  SubscriptionsResponse,
-  SubscriptionsV3Response,
-  SUBSCRIPTION_CATEGORY_TYPES,
-} from '../subscriptions.interface';
+import { SubscriptionsResponse, SubscriptionsV3Response, SUBSCRIPTION_CATEGORY_TYPES } from '../subscriptions.interface';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '../category-subscription-ids';
 import { CURRENCY_SYMBOLS } from '@core/constants';
 
@@ -60,19 +54,6 @@ function mapSubscription(subscription: SubscriptionsV3Response): SubscriptionsRe
   mapCurrenciesForTiers(subscriptionMapped);
 
   return subscriptionMapped;
-}
-
-export function mapSlotsResponseToSlots(slots: SubscriptionSlotResponse[], subscriptions: SubscriptionsResponse[]): SubscriptionSlot[] {
-  return slots.map((slot) => mapSlotResponseToSlot(slot, subscriptions));
-}
-
-function mapSlotResponseToSlot(slot: SubscriptionSlotResponse, subscriptions: SubscriptionsResponse[]): SubscriptionSlot {
-  const subscription = subscriptions.find((subscriptionSelected) => subscriptionSelected.type === slot.type);
-  return {
-    subscription,
-    available: slot.available,
-    limit: slot.limit,
-  };
 }
 
 function mapCurrenciesForTiers(subscription: SubscriptionsResponse) {

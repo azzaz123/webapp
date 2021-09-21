@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
   AnalyticsEvent,
@@ -8,6 +7,7 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
 } from '@core/analytics/analytics-constants';
+import { SubscriptionSlot } from '@api/catalog-manager/interfaces/subscription-slot/subscription-slot.interface';
 
 @Component({
   selector: 'tsl-subscriptions-slot-item',
