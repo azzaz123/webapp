@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MOCK_WALLET_BALANCE_HISTORY_API } from '@api/fixtures/bff/delivery/wallets/balance_history/wallet-balance-history.fixtures.spec';
+import { MOCK_DEFAULT_WALLET_BALANCE_HISTORY_API } from '@api/fixtures/bff/delivery/wallets/balance_history/wallet-balance-history.fixtures.spec';
 import { WalletBalanceHistoryQueryParamsApi } from '../dtos/requests/wallet-balance-history-filters-api.interface';
 import { WalletBalanceHistoryApi } from '../dtos/responses';
 import { WALLET_BALANCE_HISTORY_ENDPOINT } from './endpoints';
@@ -44,10 +44,10 @@ describe('WalletBalanceHistoryHttpService', () => {
 
         service.get(queryParams).subscribe((data) => (response = data));
         const req: TestRequest = httpMock.expectOne(expectedUrl);
-        req.flush(MOCK_WALLET_BALANCE_HISTORY_API);
+        req.flush(MOCK_DEFAULT_WALLET_BALANCE_HISTORY_API);
 
         expect(req.request.method).toBe('GET');
-        expect(response).toEqual(MOCK_WALLET_BALANCE_HISTORY_API);
+        expect(response).toEqual(MOCK_DEFAULT_WALLET_BALANCE_HISTORY_API);
       });
     });
 
@@ -68,10 +68,10 @@ describe('WalletBalanceHistoryHttpService', () => {
 
         service.get(queryParams).subscribe((data) => (response = data));
         const req: TestRequest = httpMock.expectOne(expectedUrl);
-        req.flush(MOCK_WALLET_BALANCE_HISTORY_API);
+        req.flush(MOCK_DEFAULT_WALLET_BALANCE_HISTORY_API);
 
         expect(req.request.method).toBe('GET');
-        expect(response).toEqual(MOCK_WALLET_BALANCE_HISTORY_API);
+        expect(response).toEqual(MOCK_DEFAULT_WALLET_BALANCE_HISTORY_API);
       });
     });
 
@@ -92,10 +92,10 @@ describe('WalletBalanceHistoryHttpService', () => {
 
         service.get(queryParams).subscribe((data) => (response = data));
         const req: TestRequest = httpMock.expectOne(expectedUrl);
-        req.flush(MOCK_WALLET_BALANCE_HISTORY_API);
+        req.flush(MOCK_DEFAULT_WALLET_BALANCE_HISTORY_API);
 
         expect(req.request.method).toBe('GET');
-        expect(response).toEqual(MOCK_WALLET_BALANCE_HISTORY_API);
+        expect(response).toEqual(MOCK_DEFAULT_WALLET_BALANCE_HISTORY_API);
       });
     });
   });
