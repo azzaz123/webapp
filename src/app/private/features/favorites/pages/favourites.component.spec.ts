@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavouritesComponent } from './favourites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
@@ -9,6 +9,12 @@ import { ProfileService } from '@core/profile/profile.service';
 import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
 import { MeApiService } from '@api/me/me-api.service';
 import { FavouritesListTrackingEventsService } from '../services/favourites-list-tracking-events.service';
+import { By } from '@angular/platform-browser';
+@Component({
+  selector: 'tsl-item-card-favourite',
+  template: '',
+})
+class ItemCardFavouriteComponent {}
 
 describe('FavouritesComponent', () => {
   let component: FavouritesComponent;
@@ -22,7 +28,7 @@ describe('FavouritesComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [FavouritesComponent],
+        declarations: [FavouritesComponent, ItemCardFavouriteComponent],
         providers: [
           {
             provide: MeApiService,
@@ -296,6 +302,21 @@ describe('FavouritesComponent', () => {
 
       expect(userService.getStats).toHaveBeenCalled();
       expect(component.numberOfFavorites).toEqual(MOCK_USER_STATS.counters.favorites);
+    });
+  });
+
+  describe('when clicking a favourited item', () => {
+    beforeEach(() => {
+      spyOn(component, 'trackClickFavoriteItem').and.callThrough();
+    });
+
+    it('should call click tracking method just once', () => {
+      const itemList = fixture.debugElement.queryAll(By.directive(ItemCardFavouriteComponent));
+      const index = 0;
+
+      itemList[index].triggerEventHandler('click', index);
+
+      expect(component.trackClickFavoriteItem).toHaveBeenCalledTimes(1);
     });
   });
 });
