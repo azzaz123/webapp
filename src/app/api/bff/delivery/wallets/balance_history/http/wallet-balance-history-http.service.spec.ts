@@ -1,6 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MOCK_WALLET_BALANCE_HISTORY_API } from '@api/fixtures/bff/delivery/wallets/balance_history/wallet-balance-history.fixtures.spec';
+import { WalletBalanceHistoryQueryParamsApi } from '../dtos/requests/wallet-balance-history-filters-api.interface';
 import { WalletBalanceHistoryApi } from '../dtos/responses';
 import { WALLET_BALANCE_HISTORY_ENDPOINT } from './endpoints';
 import { WalletBalanceHistoryHttpService } from './wallet-balance-history-http.service';
@@ -8,6 +9,7 @@ import { WalletBalanceHistoryHttpService } from './wallet-balance-history-http.s
 describe('WalletBalanceHistoryHttpService', () => {
   let service: WalletBalanceHistoryHttpService;
   let httpMock: HttpTestingController;
+  let queryParams: WalletBalanceHistoryQueryParamsApi;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -27,13 +29,68 @@ describe('WalletBalanceHistoryHttpService', () => {
   });
 
   describe('when asking to get the Wallet balance history', () => {
-    describe('and when asking page to server', () => {
-      it('should get the Wallet balance history at specific page', () => {
+    describe('and when asking an specific page to server', () => {
+      const page = 1337;
+
+      beforeEach(() => {
+        queryParams = {
+          page: page.toString(),
+        };
+      });
+
+      it('should ask server for an specific page', () => {
         let response: WalletBalanceHistoryApi;
-        const page = 1337;
         const expectedUrl = `${WALLET_BALANCE_HISTORY_ENDPOINT}?page=${page}`;
 
-        service.get(page).subscribe((data) => (response = data));
+        service.get(queryParams).subscribe((data) => (response = data));
+        const req: TestRequest = httpMock.expectOne(expectedUrl);
+        req.flush(MOCK_WALLET_BALANCE_HISTORY_API);
+
+        expect(req.request.method).toBe('GET');
+        expect(response).toEqual(MOCK_WALLET_BALANCE_HISTORY_API);
+      });
+    });
+
+    describe('and when asking for transactions for IN type', () => {
+      const page = '0';
+      const type = 'IN';
+
+      beforeEach(() => {
+        queryParams = {
+          page,
+          type,
+        };
+      });
+
+      it('should get ask server for movements from in type Wallet ', () => {
+        let response: WalletBalanceHistoryApi;
+        const expectedUrl = `${WALLET_BALANCE_HISTORY_ENDPOINT}?page=${page}&type=${type}`;
+
+        service.get(queryParams).subscribe((data) => (response = data));
+        const req: TestRequest = httpMock.expectOne(expectedUrl);
+        req.flush(MOCK_WALLET_BALANCE_HISTORY_API);
+
+        expect(req.request.method).toBe('GET');
+        expect(response).toEqual(MOCK_WALLET_BALANCE_HISTORY_API);
+      });
+    });
+
+    describe('and when asking for transactions for OUT type', () => {
+      const page = '0';
+      const type = 'OUT';
+
+      beforeEach(() => {
+        queryParams = {
+          page,
+          type,
+        };
+      });
+
+      it('should get ask server for movements from in type Wallet ', () => {
+        let response: WalletBalanceHistoryApi;
+        const expectedUrl = `${WALLET_BALANCE_HISTORY_ENDPOINT}?page=${page}&type=${type}`;
+
+        service.get(queryParams).subscribe((data) => (response = data));
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.flush(MOCK_WALLET_BALANCE_HISTORY_API);
 
