@@ -22,9 +22,12 @@
                   {{subscriptionButtonName}}
                 </tsl-button>
               </div>
-              <button [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n="@@web_catalog_pages_list_147">Edit</button>
-              <button *tslDeliveryDevelopment [routerLink]="['/delivery']" class="edit-profile-btn mr-1" i18n="@@web_catalog_delivery">Delivery</button>
-              <button (click)="logout()" class="logout edit-profile-btn" i18n="@@web_catalog_pages_list_148">Logout</button>
+              <div class="d-flex pt-1">
+                <a [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n="@@web_catalog_pages_list_147">Edit</a>
+                <a *tslDeliveryDevelopment [routerLink]="[walletPath]" class="List__profile__wallet edit-profile-btn mr-1" i18n="@@web_catalog_wallet">Wallet</a>
+                <a *tslDeliveryDevelopment [routerLink]="[deliveryPath]" class="List__profile__delivery edit-profile-btn mr-1" i18n="@@web_catalog_delivery">Delivery</a>
+                <a (click)="logout()" class="logout edit-profile-btn" i18n="@@web_catalog_pages_list_148">Logout</a>
+              </div>
             </div>
             <div class="d-none d-md-flex align-items-center">
               <div class="List__title" i18n="@@web_catalog_pages_list_149">Your products</div>

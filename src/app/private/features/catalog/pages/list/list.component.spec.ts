@@ -31,7 +31,6 @@ import { STATUS } from '@private/features/catalog/components/selected-items/sele
 import { TryProSlotComponent } from '@private/features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import {
   createItemsArray,
   ITEMS_BULK_RESPONSE,
@@ -59,7 +58,7 @@ import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { find, cloneDeep } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { of, ReplaySubject, Subject } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { SubscriptionsSlotItemComponent } from '../../components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
 import { SubscriptionsSlotsListComponent } from '../../components/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -77,6 +76,8 @@ import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent } from '@shared/button/button.component';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
+import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -102,6 +103,8 @@ describe('ListComponent', () => {
   let featureFlagService: FeatureFlagService;
 
   const prosButtonSelector = '.List__profile__pros';
+  const deliveryButtonSelector = '.List__profile__delivery';
+  const walletButtonSelector = '.List__profile__wallet';
 
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
@@ -124,7 +127,10 @@ describe('ListComponent', () => {
     { path: `${PRIVATE_PATHS.CATALOG}/list`, component: ListComponent },
     { path: `${PRIVATE_PATHS.CATALOG}/checkout`, component: ListComponent },
     { path: `wallacoins`, component: ListComponent },
+    { path: PRIVATE_PATHS.DELIVERY, component: ListComponent },
+    { path: PRIVATE_PATHS.WALLET, component: ListComponent },
   ];
+  const localFlagSubject = new ReplaySubject<boolean>(1);
 
   beforeEach(
     waitForAsync(() => {
@@ -137,6 +143,7 @@ describe('ListComponent', () => {
           SubscriptionsSlotItemComponent,
           TryProSlotComponent,
           ProBadgeComponent,
+          DeliveryDevelopmentDirective,
           ButtonComponent,
         ],
         providers: [
@@ -289,6 +296,7 @@ describe('ListComponent', () => {
     spyOn(errorService, 'i18nError');
     spyOn(analyticsService, 'trackPageView');
     spyOn(analyticsService, 'trackEvent');
+    spyOn(featureFlagService, 'getLocalFlag').and.returnValue(localFlagSubject.asObservable());
     fixture.detectChanges();
   });
 
@@ -371,12 +379,87 @@ describe('ListComponent', () => {
     }));
 
     describe('when using smaller screen such a mobile phone', () => {
+      let walletButton: DebugElement;
+      let deliveryButton: DebugElement;
+
       it('should not open upload confirmation modal', () => {
         spyOn(deviceService, 'isMobile').and.returnValue(true);
 
         component.ngOnInit();
 
         expect(modalService.open).not.toHaveBeenCalled();
+      });
+
+      describe('and when wallet feature flag is enabled', () => {
+        beforeEach(() => {
+          localFlagSubject.next(true);
+          fixture.detectChanges();
+
+          walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
+        });
+
+        it('should show a wallet button', () => {
+          console.log('expect');
+
+          expect(walletButton).toBeTruthy();
+        });
+
+        describe('and when clicking the wallet button', () => {
+          it('should navigate to wallet', () => {
+            walletButton.nativeElement.click();
+
+            expect(router.url).toEqual(`/${PRIVATE_PATHS.WALLET}`);
+          });
+        });
+      });
+
+      describe('and when wallet feature flag is NOT enabled', () => {
+        beforeEach(fakeAsync(() => {
+          localFlagSubject.next(false);
+          tick();
+          fixture.detectChanges();
+
+          walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
+        }));
+
+        it('should NOT show a wallet button', () => {
+          console.log('expect');
+          expect(walletButton).toBeFalsy();
+        });
+      });
+
+      describe('and when delivery feature flag is enabled', () => {
+        beforeEach(() => {
+          localFlagSubject.next(true);
+          fixture.detectChanges();
+
+          deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
+        });
+
+        it('should show a delivery button', () => {
+          expect(deliveryButton).toBeTruthy();
+        });
+
+        describe('and when clicking the delivery button', () => {
+          it('should navigate to delivery', () => {
+            deliveryButton.nativeElement.click();
+
+            expect(router.url).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
+          });
+        });
+      });
+
+      describe('and when delivery feature flag is NOT enabled', () => {
+        beforeEach(() => {
+          localFlagSubject.next(false);
+          fixture.detectChanges();
+
+          deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
+        });
+
+        it('should NOT show a delivery button', () => {
+          expect(deliveryButton).toBeFalsy();
+        });
       });
     });
 
