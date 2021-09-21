@@ -18,7 +18,7 @@ import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.e
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KYCUploadImagesComponent implements OnInit, OnDestroy {
-  @ViewChild('userVideo') userVideo: ElementRef;
+  @ViewChild('userVideo') userVideo: ElementRef<HTMLVideoElement>;
   @ViewChild('definedImage') definedImageCanvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('uploadImage') uploadImage: ElementRef<HTMLInputElement>;
 
@@ -197,7 +197,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     this.updateImages(imageContainer.toDataURL(this.MIME_TYPES.IMAGE_JPEG, 1));
   }
 
-  private drawImageInCanvas(imageContainer: HTMLCanvasElement, userVideo: HTMLImageElement): void {
+  private drawImageInCanvas(imageContainer: HTMLCanvasElement, userVideo: HTMLVideoElement): void {
     imageContainer.width = userVideo.clientWidth;
     imageContainer.height = userVideo.clientHeight;
 

@@ -50,7 +50,8 @@ describe('KYCUploadImagesComponent', () => {
   const videoPermissionsSubjectMock: BehaviorSubject<VIDEO_PERMISSIONS_STATUS> = new BehaviorSubject<VIDEO_PERMISSIONS_STATUS>(
     VIDEO_PERMISSIONS_STATUS.LOADING
   );
-  const requestResponseSubjectMock: BehaviorSubject<any> = new BehaviorSubject<any>(MOCK_MEDIA_STREAM);
+  const videoStreamSubjectMock: BehaviorSubject<any> = new BehaviorSubject<any>(MOCK_MEDIA_STREAM);
+  const srcObjectMock: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   const takeImageButtonSelector = '#takeImageButton';
   const retakeImageButtonSelector = '#retakeImageButton';
@@ -74,9 +75,10 @@ describe('KYCUploadImagesComponent', () => {
             get userVideoPermissions$() {
               return videoPermissionsSubjectMock.asObservable();
             },
-            request() {
-              return requestResponseSubjectMock.asObservable();
+            get videoStream$() {
+              return videoStreamSubjectMock.asObservable();
             },
+            request() {},
           },
         },
       ],
@@ -84,6 +86,7 @@ describe('KYCUploadImagesComponent', () => {
   });
 
   beforeEach(() => {
+    mockSrcObjectInHTMLVideoElement();
     fixture = TestBed.createComponent(TestWrapperComponent);
     requestVideoPermissionsService = TestBed.inject(RequestVideoPermissionsService);
     de = fixture.debugElement;
@@ -110,6 +113,10 @@ describe('KYCUploadImagesComponent', () => {
     });
 
     describe(`and the user's browser supports the API`, () => {
+      beforeEach(() => {
+        spyOn(requestVideoPermissionsService, 'request');
+      });
+
       describe(`and we are waiting for user's response`, () => {
         beforeEach(() => {
           videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.LOADING);
@@ -144,7 +151,7 @@ describe('KYCUploadImagesComponent', () => {
         beforeEach(() => {
           spyOn(component.goBack, 'emit');
 
-          requestResponseSubjectMock.next(MOCK_MEDIA_STREAM);
+          videoStreamSubjectMock.next(MOCK_MEDIA_STREAM);
           videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.ACCEPTED);
         });
 
@@ -159,10 +166,16 @@ describe('KYCUploadImagesComponent', () => {
           expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.ACCEPTED);
         });
 
+        it('should show the webcam video in the template', () => {
+          fixture.detectChanges();
+
+          expectVideoInDOM(true);
+        });
+
         it('should define the webcam video stream', () => {
           fixture.detectChanges();
 
-          expect(component.userVideo.nativeElement.srcObject).toStrictEqual(MOCK_MEDIA_STREAM);
+          expect(srcObjectMock.value).toStrictEqual(MOCK_MEDIA_STREAM);
         });
 
         it('should show the camera block', () => {
@@ -306,8 +319,12 @@ describe('KYCUploadImagesComponent', () => {
                 expectRetakeImageButtonCorrectMessage(expectedMessage);
               });
 
-              it('should hidde the user video', () => {
-                expectVideoHiddenInDom(true);
+              it('should not render the user video', () => {
+                expectVideoInDOM(false);
+              });
+
+              it('should stop all the activated tracks', () => {
+                expectAllTracksHaveBeenStopped();
               });
 
               it('should show the front side image', () => {
@@ -329,6 +346,10 @@ describe('KYCUploadImagesComponent', () => {
                     frontSide: null,
                   });
                 });
+
+                it('should active the video stream again', () => {
+                  expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
+                });
               });
 
               describe('and they click on continue verification button', () => {
@@ -338,6 +359,10 @@ describe('KYCUploadImagesComponent', () => {
 
                 it('should go to take the back side image', () => {
                   expect(component.activeStep$.value).toBe(2);
+                });
+
+                it('should active the video stream again', () => {
+                  expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
                 });
               });
             });
@@ -471,8 +496,12 @@ describe('KYCUploadImagesComponent', () => {
                 expectRetakeImageButtonCorrectMessage(expectedMessage);
               });
 
-              it('should hidde the user video', () => {
-                expectVideoHiddenInDom(true);
+              it('should not render the user video', () => {
+                expectVideoInDOM(false);
+              });
+
+              it('should stop all the activated tracks', () => {
+                expectAllTracksHaveBeenStopped();
               });
 
               it('should show the back side image', () => {
@@ -493,6 +522,10 @@ describe('KYCUploadImagesComponent', () => {
                     ...component.images$.value,
                     backSide: null,
                   });
+                });
+
+                it('should active the video stream again', () => {
+                  expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
                 });
               });
 
@@ -525,6 +558,10 @@ describe('KYCUploadImagesComponent', () => {
 
               it('should go to the define first image step', () => {
                 expect(component.activeStep$.value).toBe(1);
+              });
+
+              it('should active the video stream again', () => {
+                expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
               });
             });
           });
@@ -648,8 +685,12 @@ describe('KYCUploadImagesComponent', () => {
               expectRetakeImageButtonCorrectMessage(expectedMessage);
             });
 
-            it('should hidde the user video', () => {
-              expectVideoHiddenInDom(true);
+            it('should not render the user video', () => {
+              expectVideoInDOM(false);
+            });
+
+            it('should stop all the activated tracks', () => {
+              expectAllTracksHaveBeenStopped();
             });
 
             it('should show the front side image', () => {
@@ -670,6 +711,10 @@ describe('KYCUploadImagesComponent', () => {
                   ...component.images$.value,
                   frontSide: null,
                 });
+              });
+
+              it('should active the video stream again', () => {
+                expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
               });
             });
 
@@ -700,7 +745,7 @@ describe('KYCUploadImagesComponent', () => {
 
       describe('and the user denied the permission', () => {
         beforeEach(() => {
-          requestResponseSubjectMock.next(throwError('denied'));
+          videoStreamSubjectMock.next(throwError('denied'));
           videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.DENIED);
 
           fixture.detectChanges();
@@ -724,7 +769,7 @@ describe('KYCUploadImagesComponent', () => {
 
       describe('and a problem other than permit rejection occurs', () => {
         beforeEach(() => {
-          requestResponseSubjectMock.next(throwError('Generic Error'));
+          videoStreamSubjectMock.next(throwError('Generic Error'));
           videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
 
           fixture.detectChanges();
@@ -749,7 +794,7 @@ describe('KYCUploadImagesComponent', () => {
 
     describe(`and the user's browser does NOT support the API`, () => {
       beforeEach(() => {
-        requestResponseSubjectMock.next(throwError('Not Allowed'));
+        videoStreamSubjectMock.next(throwError('Not Allowed'));
         videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
 
         fixture.detectChanges();
@@ -1016,6 +1061,8 @@ describe('KYCUploadImagesComponent', () => {
           describe('and they click on continue verification button', () => {
             beforeEach(() => {
               de.query(By.css(continueVerificationButtonSelector)).nativeElement.click();
+
+              fixture.detectChanges();
             });
 
             it('should go to take the back side image', () => {
@@ -1501,25 +1548,16 @@ describe('KYCUploadImagesComponent', () => {
     describe('and the user video is active', () => {
       beforeEach(() => {
         testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
-        requestResponseSubjectMock.next(MOCK_MEDIA_STREAM);
+        videoStreamSubjectMock.next(MOCK_MEDIA_STREAM);
         videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.ACCEPTED);
 
         fixture.detectChanges();
       });
 
-      it('should turn off the video', () => {
-        component.ngOnDestroy();
-
-        expect(component.userVideo.nativeElement.srcObject).toBeNull();
-      });
-
       it('should stop all the active track', () => {
-        const tracks = component.userVideo.nativeElement.srcObject.getTracks();
-        spyOn(tracks[0], 'stop');
-
         component.ngOnDestroy();
 
-        tracks.forEach((track) => expect(track.stop).toHaveBeenCalled());
+        expectAllTracksHaveBeenStopped();
       });
     });
   });
@@ -1628,5 +1666,19 @@ describe('KYCUploadImagesComponent', () => {
     spyOn(FileReader.prototype, 'addEventListener').and.callFake((p1, callback) => callback(MOCK_EVENT));
 
     de.query(By.css(uploadImageSelector)).triggerEventHandler('change', MOCK_EVENT);
+  }
+
+  function mockSrcObjectInHTMLVideoElement(): void {
+    Object.defineProperty(window.HTMLVideoElement.prototype, 'srcObject', {
+      set(mediaStream) {
+        srcObjectMock.next(mediaStream);
+      },
+    });
+  }
+
+  function expectAllTracksHaveBeenStopped(): void {
+    requestVideoPermissionsService.videoStream$.subscribe((tracks) => {
+      tracks.getTracks().forEach((track) => expect(track.stop).toHaveBeenCalled());
+    });
   }
 });
