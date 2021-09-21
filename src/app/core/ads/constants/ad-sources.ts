@@ -8,6 +8,8 @@ export const AMAZON_PUBLISHER_SERVICE_URL = './assets/js/amazon-publisher-servic
 export const GOOGLE_ADS_SENSE_SHOPPING = 'https://www.google.com/adsense/search/ads.js';
 export const GOOGLE_ADS_SENSE_SHOPPING_URL = './assets/js/google-ads-sense-shopping.js';
 
+export const PUBSTACK_URL = 'https://boot.pbstck.com/v1/tag/2cf8aa82-8568-40e6-adff-339a4c958fe6';
+
 export const ADS_SOURCES: string[] = [
   RICH_AUDIENCE_URL,
   CRITEO_URL,
@@ -15,4 +17,5 @@ export const ADS_SOURCES: string[] = [
   AMAZON_PUBLISHER_SERVICE_URL,
   GOOGLE_ADS_SENSE_SHOPPING,
   GOOGLE_ADS_SENSE_SHOPPING_URL,
+  PUBSTACK_URL,
 ];
