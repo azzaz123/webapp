@@ -10,7 +10,6 @@ describe('RequestVideoPermissionsService', () => {
   };
   const MOCK_PERMISSION_DENIED_ERROR = 'DOMException: Permission denied';
   const MOCK_PERMISION_GENERIC_ERROR = 'General Error';
-  const MOCK_NOT_ALLOWED_ERROR = 'Not Allowed';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,28 +28,27 @@ describe('RequestVideoPermissionsService', () => {
         beforeEach(() => {
           setPermissionsAsAccepted();
           spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
+
+          service.request();
         });
 
         it('should ask the user for the video permission', () => {
-          service.request().subscribe();
-
           expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(videoMediaStreamConstraints);
         });
 
         it('should define the video permission as accepted', fakeAsync(() => {
           let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-          service.request().subscribe();
           tick();
           service.userVideoPermissions$.subscribe((result: VIDEO_PERMISSIONS_STATUS) => (videoPermissions = result));
 
           expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.ACCEPTED);
         }));
 
-        it('should return the stream', fakeAsync(() => {
+        it('should return the video stream', fakeAsync(() => {
           let videoStream: MediaStream;
 
-          service.request().subscribe((stream: MediaStream) => {
+          service.videoStream$.subscribe((stream: MediaStream) => {
             videoStream = stream;
           });
           tick();
@@ -63,31 +61,25 @@ describe('RequestVideoPermissionsService', () => {
         beforeEach(() => {
           setPermissionsError(true);
           spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
+
+          service.request();
         });
 
         it('should ask the user for the video permission', () => {
-          service.request().subscribe();
-
           expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(videoMediaStreamConstraints);
         });
 
         it('should define the video permission as denied', fakeAsync(() => {
           let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-          service.request().subscribe({ error: () => {} });
           tick();
           service.userVideoPermissions$.subscribe((result: VIDEO_PERMISSIONS_STATUS) => (videoPermissions = result));
 
           expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.DENIED);
         }));
 
-        it('should return an error', fakeAsync(() => {
-          let error;
-
-          service.request().subscribe({ error: (e) => (error = e) });
-          tick();
-
-          expect(error).toBe(MOCK_PERMISSION_DENIED_ERROR);
+        it('should NOT define the video stream', fakeAsync(() => {
+          expectVideoStreamNotDefined();
         }));
       });
 
@@ -95,33 +87,25 @@ describe('RequestVideoPermissionsService', () => {
         beforeEach(() => {
           setPermissionsError(false);
           spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
+
+          service.request();
         });
 
         it('should ask the user for the video permission', () => {
-          service.request().subscribe();
-
           expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith(videoMediaStreamConstraints);
         });
 
         it('should define the video permission as cannot access', fakeAsync(() => {
           let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-          service.request().subscribe({ error: () => {} });
           tick();
           service.userVideoPermissions$.subscribe((result: VIDEO_PERMISSIONS_STATUS) => (videoPermissions = result));
 
           expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
         }));
 
-        it('should return an error', fakeAsync(() => {
-          let error;
-
-          service.request().subscribe({
-            error: (e) => (error = e),
-          });
-          tick();
-
-          expect(error).toBe(MOCK_PERMISION_GENERIC_ERROR);
+        it('should NOT define the video stream', fakeAsync(() => {
+          expectVideoStreamNotDefined();
         }));
       });
     });
@@ -134,25 +118,29 @@ describe('RequestVideoPermissionsService', () => {
       it('should define the video permission as cannot access', fakeAsync(() => {
         let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-        service.request().subscribe({ error: () => {} });
+        service.request();
         tick();
         service.userVideoPermissions$.subscribe((result: VIDEO_PERMISSIONS_STATUS) => (videoPermissions = result));
 
         expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
       }));
 
-      it('should return a not allowed error', fakeAsync(() => {
-        let error;
-
-        service.request().subscribe({
-          error: (e) => (error = e),
-        });
-        tick();
-
-        expect(error).toBe(MOCK_NOT_ALLOWED_ERROR);
+      it('should NOT define the video stream', fakeAsync(() => {
+        expectVideoStreamNotDefined();
       }));
     });
   });
+
+  function expectVideoStreamNotDefined() {
+    let videoStream: MediaStream;
+
+    service.videoStream$.subscribe((stream: MediaStream) => {
+      videoStream = stream;
+    });
+    tick();
+
+    expect(videoStream).toBeFalsy();
+  }
 
   function setPermissionsAsNotSupported(): void {
     Object.defineProperty(navigator, 'mediaDevices', {

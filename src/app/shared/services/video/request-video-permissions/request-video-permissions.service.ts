@@ -23,14 +23,7 @@ export class RequestVideoPermissionsService {
             this.videoStream = stream;
             this.userVideoPermissions = VIDEO_PERMISSIONS_STATUS.ACCEPTED;
           },
-          (error: DOMException) => {
-            const errorMessage = error + '';
-            // FIXME: take a look at handling error in the future		Date: 2021/08/03
-            const errorPermissionStatus: VIDEO_PERMISSIONS_STATUS = errorMessage.includes('denied')
-              ? VIDEO_PERMISSIONS_STATUS.DENIED
-              : VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS;
-            this.userVideoPermissions = errorPermissionStatus;
-          }
+          (error: DOMException) => this.defineVideoPermissionsError(error)
         );
     } else {
       this.userVideoPermissions = VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS;
@@ -53,5 +46,14 @@ export class RequestVideoPermissionsService {
 
   private isAPIAllowed(): boolean {
     return !!navigator.mediaDevices?.getUserMedia;
+  }
+
+  private defineVideoPermissionsError(error: DOMException): void {
+    const errorMessage = error + '';
+    // FIXME: take a look at handling error in the future		Date: 2021/08/03
+    const errorPermissionStatus: VIDEO_PERMISSIONS_STATUS = errorMessage.includes('denied')
+      ? VIDEO_PERMISSIONS_STATUS.DENIED
+      : VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS;
+    this.userVideoPermissions = errorPermissionStatus;
   }
 }
