@@ -73,7 +73,9 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.endTracks();
+    if (this.isShootImageMethod) {
+      this.endTracks();
+    }
   }
 
   public get isShootImageMethod(): boolean {
@@ -428,6 +430,8 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
         if (isCurrentImageDefined && videoStream.getTracks) {
           videoStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
         }
+
+        console.log('!isCurrentImageDefined => ', !isCurrentImageDefined);
         return !isCurrentImageDefined;
       }),
       switchMap(() => this.requestVideoPermissionsService.videoStream$)
