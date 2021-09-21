@@ -114,7 +114,7 @@ export class FavouritesComponent implements OnInit {
     });
   }
 
-  public trackClickFavoriteItem(index: number) {
+  public trackClickFavoriteItem(index: number): void {
     const item = this.items[index];
 
     this.favouritesListTrackingEventsService.trackClickItemCardEvent(item, index);

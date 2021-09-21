@@ -9,13 +9,11 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { Item } from '@core/item/item';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class FavouritesListTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 
-  public trackClickItemCardEvent(item: Item, index: number) {
+  public trackClickItemCardEvent(item: Item, index: number): void {
     const { id, categoryId, salePrice, title, flags } = item;
 
     const event: AnalyticsEvent<ClickItemCard> = {
