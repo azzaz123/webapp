@@ -119,7 +119,10 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
       });
 
       this.activeStep$.next(1);
-      this.activeVideoStream();
+
+      if (this.isShootImageMethod) {
+        this.activeVideoStream();
+      }
     } else {
       this.goBack.emit();
     }
