@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { WalletMovementHistoryDetail, WALLET_HISTORY_MOVEMENT_TYPE } from '@api/core/model/wallet/history/movement-history-detail';
 
 @Component({
   selector: 'tsl-wallet-history-movement',
   templateUrl: './wallet-history-movement.component.html',
   styleUrls: ['./wallet-history-movement.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WalletHistoryMovementComponent {
   @Input() walletMovementHistoryDetail: WalletMovementHistoryDetail;
