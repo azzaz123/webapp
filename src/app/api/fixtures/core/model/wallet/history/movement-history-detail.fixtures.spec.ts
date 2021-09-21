@@ -18,3 +18,10 @@ export const MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_OUT: WalletMovementHistoryDetail 
   date: new Date('2021-09-16T11:04:20.177Z'),
   moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: -5.9, currency: 'EUR' }),
 };
+
+export const MOCK_MOVEMENT_HISTORY_DETAILS: WalletMovementHistoryDetail[] = [
+  MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN,
+  MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN,
+  MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_OUT,
+  MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN,
+];
