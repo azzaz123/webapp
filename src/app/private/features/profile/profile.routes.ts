@@ -9,6 +9,7 @@ import { ProfileComponent } from './pages/profile.component';
 import { PRO_PATHS } from '../pro/pro-routing-constants';
 import { DevelopmentGuard } from '@core/user/development.guard';
 import { VerificationsNScurityModule } from './pages/verifications-n-security/verifications-n-securty.module';
+import { PROFILE_PATHS } from './profile-routing-constants';
 
 const routes: Route[] = [
   {
@@ -22,9 +23,9 @@ const routes: Route[] = [
       isProfile: true,
     },
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'info' },
+      { path: '', pathMatch: 'full', redirectTo: PROFILE_PATHS.INFO },
       {
-        path: 'info',
+        path: PROFILE_PATHS.INFO,
         component: ProfileInfoComponent,
         canDeactivate: [ExitConfirmGuard],
         data: {
@@ -33,7 +34,7 @@ const routes: Route[] = [
         },
       },
       {
-        path: 'account',
+        path: PROFILE_PATHS.ACCOUNT,
         component: AccountComponent,
         canDeactivate: [ExitConfirmGuard],
         data: {
@@ -42,7 +43,7 @@ const routes: Route[] = [
         },
       },
       {
-        path: 'verifications',
+        path: PROFILE_PATHS.VERIFICATIONS,
         loadChildren: () => VerificationsNScurityModule,
         canLoad: [DevelopmentGuard],
       },
