@@ -1,9 +1,6 @@
-import { HttpParams } from '@angular/common/http';
-import { InnerType } from '@api/core/utils/types';
+type HttpClientQueryParams = { [param: string]: string | string[] };
 
-type AngularQueryParams = { [param: string]: string | string[] };
-
-export interface WalletBalanceHistoryQueryParamsApi extends AngularQueryParams {
+export interface WalletBalanceHistoryQueryParamsApi extends HttpClientQueryParams {
   page: string;
   type?: 'IN' | 'OUT';
 }
