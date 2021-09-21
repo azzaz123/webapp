@@ -48,7 +48,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   public retakeImageMessage$: Observable<string> = this.buildRetakeImageMessageObservable();
 
   public videoPermissions$: Observable<VIDEO_PERMISSIONS_STATUS> = this.buildVideoPermissionsObservable();
-  public videoStream$: Observable<MediaStream | null> = this.buildVideoStreamObservable();
+  public videoStream$: Observable<MediaStream | null>;
   public currentBase64Image$: Observable<string> = this.buildCurrentImageOnBase64Observable();
 
   public showImageBlock$: Observable<boolean> = this.buildShowImageBlockObservable();
@@ -68,11 +68,12 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.isShootImageMethod) {
       this.requestVideoPermissionsService.request();
+      this.videoStream$ = this.buildVideoStreamObservable();
     }
   }
 
   ngOnDestroy(): void {
-    this.videoStream$ = of(null);
+    this.endTracks();
   }
 
   public get isShootImageMethod(): boolean {
@@ -84,6 +85,8 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
     if (!this.isShootImageMethod) {
       this.clearImageInput();
+    } else {
+      this.activeVideoStream();
     }
   }
 
@@ -116,12 +119,13 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
       });
 
       this.activeStep$.next(1);
+      this.activeVideoStream();
     } else {
       this.goBack.emit();
     }
   }
 
-  public removeCurrentImage(): void {
+  public retakeCurrentImage(): void {
     const activeStep = this.activeStep$.value;
 
     if (activeStep === 1) {
@@ -133,6 +137,8 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     if (this.isUploadImageMethod) {
       this.clearImageInput();
       this.uploadImage.nativeElement.click();
+    } else {
+      this.activeVideoStream();
     }
   }
 
@@ -413,30 +419,29 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     );
   }
 
-  // TODO: checking filter in switch		Date: 2021/09/20
   private buildVideoStreamObservable(): Observable<MediaStream> {
-    return of(null);
-    // return this.requestVideoPermissionsService.videoStream$.pipe(
-    //   switchMap(() => this.isCurrentImageDefined$),
-    //   filter((imageDefined) => imageDefined)
-    // )
-    // return this.isCurrentImageDefined$.pipe(
-    //   filter((isDefined: boolean) => isDefined),
-    //   map(() => {
-    //     return this.requestVideoPermissionsService.videoStream$;
-    //   })
-    // );
+    return combineLatest([this.isCurrentImageDefined$, this.requestVideoPermissionsService.videoStream$]).pipe(
+      filter(([isCurrentImageDefined, videoStream]: [boolean, MediaStream]) => {
+        if (isCurrentImageDefined && videoStream.getTracks) {
+          videoStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+        }
+        return !isCurrentImageDefined;
+      }),
+      switchMap(() => this.requestVideoPermissionsService.videoStream$)
+    );
   }
 
-  // private endTracks() {
-  //   if (videoStream.getTracks) {
-  //     this.userVideo.nativeElement.srcObject.getTracks().forEach((track) => {
-  //       track.stop();
-  //     });
-  //   }
+  private endTracks(): void {
+    this.requestVideoPermissionsService.videoStream$.subscribe((videoStream: MediaStream) => {
+      if (videoStream.getTracks) {
+        videoStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+      }
+    });
+  }
 
-  //   this.userVideo.nativeElement.srcObject = null;
-  // }
+  private activeVideoStream(): void {
+    this.requestVideoPermissionsService.request();
+  }
 
   private imagesAndActiveStep$(): Observable<[KYCImages, KYCImagesNeeded]> {
     return combineLatest([this.images$.asObservable(), this.activeStep$.asObservable()]);

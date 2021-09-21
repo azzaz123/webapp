@@ -42,7 +42,7 @@
                     <div class="col d-flex justify-content-center p-0">
                         <div class="KYCUploadImages__imageBlock">
                             <tsl-button *ngIf="showTakeImageButton$ | async" id="takeImageButton" class="p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage$ | async}}</tsl-button>
-                            <tsl-button *ngIf="showRetakeImageButton$ | async" id="retakeImageButton" class="p-0" className="btn-gray btn-block" (click)="removeCurrentImage()">{{retakeImageMessage$ | async}}</tsl-button>
+                            <tsl-button *ngIf="showRetakeImageButton$ | async" id="retakeImageButton" class="p-0" className="btn-gray btn-block" (click)="retakeCurrentImage()">{{retakeImageMessage$ | async}}</tsl-button>
                         </div>
                     </div>
                 </div>
