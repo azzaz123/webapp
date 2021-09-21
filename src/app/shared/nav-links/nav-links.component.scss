@@ -22,6 +22,7 @@
       font-weight: $font-weight-chunky;
       text-transform: uppercase;
       line-height: $line-height-xl;
+      white-space: nowrap;
 
       &:hover {
         color: darken($blue-grey-2, 10%);
