@@ -18,7 +18,6 @@ describe('FavouritesComponent', () => {
   let profileServiceSpy: jasmine.Spy;
   let userService: UserService;
   let profileService: ProfileService;
-  let favouritesListTrackingEventsService: FavouritesListTrackingEventsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -50,9 +49,9 @@ describe('FavouritesComponent', () => {
             },
           },
           {
-            provide: favouritesListTrackingEventsService,
+            provide: FavouritesListTrackingEventsService,
             useValue: {
-              trackClickItemCardEvent: () => {},
+              trackClickItemCardEvent() {},
             },
           },
         ],

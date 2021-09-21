@@ -9,9 +9,7 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { Item } from '@core/item/item';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class FavouritesListTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 
