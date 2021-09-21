@@ -1,13 +1,14 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Money } from '@api/core/model/money.interface';
-import {
-  MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_RESPONSE,
-  MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_MAPPED_MONEY,
-} from '@api/fixtures/payments/wallets/payments-wallets.fixtures.spec';
+import { MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_RESPONSE } from '@api/fixtures/payments/wallets/payments-wallets.fixtures.spec';
 import { of } from 'rxjs';
 import { WalletBalanceHistoryHttpService } from './http/wallet-balance-history-http.service';
+import { mapWalletHistoryFiltersToApi } from './mappers/requests/wallet-balance-history-filter.mapper';
+import { mapWalletBalanceHistoryApiToWalletMovements } from './mappers/responses/wallet-balance-history.mapper';
 import { WalletBalanceHistoryService } from './wallet-balance-history.service';
+
+jest.mock('./mappers/requests/wallet-balance-history-filter.mapper');
+jest.mock('./mappers/responses/wallet-balance-history.mapper');
 
 describe('WalletBalanceHistoryService', () => {
   let service: WalletBalanceHistoryService;
@@ -16,9 +17,10 @@ describe('WalletBalanceHistoryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [WalletBalanceHistoryService],
+      providers: [WalletBalanceHistoryService, WalletBalanceHistoryHttpService],
     });
     service = TestBed.inject(WalletBalanceHistoryService);
+    walletBalanceHistoryHttpService = TestBed.inject(WalletBalanceHistoryHttpService);
   });
 
   it('should be created', () => {
@@ -28,20 +30,19 @@ describe('WalletBalanceHistoryService', () => {
   describe('when asking to get Wallet history balance', () => {
     beforeEach(() => {
       spyOn(walletBalanceHistoryHttpService, 'get').and.returnValue(of(MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_RESPONSE));
+      service.get().subscribe();
     });
 
     it('should get the Wallet history movements', () => {
-      service.get().subscribe();
-
       expect(walletBalanceHistoryHttpService.get).toHaveBeenCalled();
     });
 
     it('should map server response to web context', () => {
-      let response: Money;
+      expect(mapWalletBalanceHistoryApiToWalletMovements).toHaveBeenCalled();
+    });
 
-      service.get().subscribe((data) => (response = data));
-
-      expect(JSON.stringify(response)).toEqual(JSON.stringify(MOCK_PAYMENTS_WALLETS_WITH_DECIMALS_MAPPED_MONEY));
+    it('should map web request to server context', () => {
+      expect(mapWalletHistoryFiltersToApi).toHaveBeenCalled();
     });
   });
 });
