@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { WalletMovementHistoryDetail } from '@api/core/model/wallet/history/movement-history-detail';
-import { MOCK_MOVEMENT_HISTORY_DETAILS } from '@api/fixtures/core/model/wallet/history/movement-history-detail.fixtures.spec';
+import { MOCK_DEFAULT_MOVEMENT_HISTORY_DETAILS } from '@api/fixtures/core/model/wallet/history/movement-history-detail.fixtures.spec';
 import { WalletMovementsHistory } from '../../interfaces/wallet-movements-history.interface';
 
 import { WalletHistoryMovementsUIService } from './wallet-history-movements-ui.service';
@@ -14,7 +14,7 @@ const MOCK_WALLET_MOVEMENTS_HISTORY: WalletMovementsHistory = {
         {
           value: 8,
           title: 'September',
-          elements: MOCK_MOVEMENT_HISTORY_DETAILS,
+          elements: MOCK_DEFAULT_MOVEMENT_HISTORY_DETAILS,
         },
       ],
     },
@@ -35,7 +35,7 @@ describe('WalletHistoryMovementsUIService', () => {
 
   describe('when converting data from model into UI model', () => {
     it('should map to UI model', () => {
-      const inputModel: WalletMovementHistoryDetail[] = MOCK_MOVEMENT_HISTORY_DETAILS;
+      const inputModel: WalletMovementHistoryDetail[] = MOCK_DEFAULT_MOVEMENT_HISTORY_DETAILS;
       const expectedOutputModel: WalletMovementsHistory = MOCK_WALLET_MOVEMENTS_HISTORY;
       let result: WalletMovementsHistory;
 

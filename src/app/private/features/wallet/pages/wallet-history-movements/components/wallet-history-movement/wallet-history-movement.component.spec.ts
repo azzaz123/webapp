@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { WalletMovementHistoryDetail } from '@api/core/model/wallet/history/movement-history-detail';
 import {
-  MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN,
-  MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_OUT,
+  MOCK_MOVEMENT_HISTORY_DETAIL_SALE,
+  MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT,
 } from '@api/fixtures/core/model/wallet/history/movement-history-detail.fixtures.spec';
 
 import { WalletHistoryMovementComponent } from './wallet-history-movement.component';
@@ -37,7 +37,7 @@ describe('WalletHistoryMovementComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestWrapperWalletHistoryMovementComponent);
     wrapperComponent = fixture.componentInstance;
-    wrapperComponent.walletMovementHistoryDetail = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN;
+    wrapperComponent.walletMovementHistoryDetail = MOCK_MOVEMENT_HISTORY_DETAIL_SALE;
     fixture.detectChanges();
   });
 
@@ -49,7 +49,7 @@ describe('WalletHistoryMovementComponent', () => {
     it('should show the image', () => {
       const imageElement = fixture.debugElement.query(By.css(imageSelector));
       const imageUrl = imageElement.attributes['src'];
-      const expectedImageUrl = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN.imageUrl;
+      const expectedImageUrl = MOCK_MOVEMENT_HISTORY_DETAIL_SALE.imageUrl;
 
       expect(imageUrl).toEqual(expectedImageUrl);
     });
@@ -57,7 +57,7 @@ describe('WalletHistoryMovementComponent', () => {
     it('should show the title', () => {
       const titleElement = fixture.debugElement.query(By.css(titleSelector));
       const title = titleElement.nativeElement.innerHTML;
-      const expectedTitle = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN.title;
+      const expectedTitle = MOCK_MOVEMENT_HISTORY_DETAIL_SALE.title;
 
       expect(title).toEqual(expectedTitle);
     });
@@ -65,7 +65,7 @@ describe('WalletHistoryMovementComponent', () => {
     it('should show the amount of money', () => {
       const moneyAmountElement = fixture.debugElement.query(By.css(moneyAmountSelector));
       const moneyAmount = moneyAmountElement.nativeElement.innerHTML;
-      const expectedMoneyAmount = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN.moneyAmmount.toString();
+      const expectedMoneyAmount = MOCK_MOVEMENT_HISTORY_DETAIL_SALE.moneyAmmount.toString();
 
       expect(moneyAmount).toEqual(expectedMoneyAmount);
     });
@@ -73,14 +73,14 @@ describe('WalletHistoryMovementComponent', () => {
     it('should show the description', () => {
       const descriptionElement = fixture.debugElement.query(By.css(descriptionSelector));
       const description = descriptionElement.nativeElement.innerHTML;
-      const expectedDescription = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN.description;
+      const expectedDescription = MOCK_MOVEMENT_HISTORY_DETAIL_SALE.description;
 
       expect(description).toEqual(expectedDescription);
     });
 
     describe('and when money flow is type in', () => {
       beforeEach(() => {
-        wrapperComponent.walletMovementHistoryDetail = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN;
+        wrapperComponent.walletMovementHistoryDetail = MOCK_MOVEMENT_HISTORY_DETAIL_SALE;
         fixture.detectChanges();
       });
 
@@ -95,7 +95,7 @@ describe('WalletHistoryMovementComponent', () => {
 
     describe('and when money flow is type out', () => {
       beforeEach(() => {
-        wrapperComponent.walletMovementHistoryDetail = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_OUT;
+        wrapperComponent.walletMovementHistoryDetail = MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT;
         fixture.detectChanges();
       });
 
