@@ -2,13 +2,7 @@ import { of, throwError, forkJoin, Observable } from 'rxjs';
 
 import { retryWhen, delay, take, mergeMap, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import {
-  SubscriptionSlot,
-  SubscriptionSlotResponse,
-  SubscriptionSlotGeneralResponse,
-  SUBSCRIPTION_MARKETS,
-  SubscriptionsV3Response,
-} from './subscriptions.interface';
+import { SubscriptionSlot, SUBSCRIPTION_MARKETS } from './subscriptions.interface';
 import { UserService } from '../user/user.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { CategoryService } from '../category/category.service';
@@ -17,11 +11,10 @@ import { environment } from '../../../environments/environment';
 import { UuidService } from '../uuid/uuid.service';
 import { CATEGORIES_EXCLUDED_FROM_CONSUMER_GOODS, CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
 import { SubscriptionsHttpService } from './http/subscriptions-http.service';
-import { mapSubscriptions } from './mappers/subscriptions-mapper';
+import { mapSlotsResponseToSlots, mapSubscriptions } from './mappers/subscriptions-mapper';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
-export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'api/v3/users/me/slots-info';
 
 export enum SUBSCRIPTION_TYPES {
   notSubscribed = 1,
@@ -45,24 +38,8 @@ export class SubscriptionsService {
   ) {}
 
   public getSlots(): Observable<SubscriptionSlot[]> {
-    return this.http.get<SubscriptionSlotGeneralResponse>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`).pipe(
-      mergeMap((response) => {
-        return forkJoin(response.slots.map((slot) => this.mapSlotResponseToSlot(slot)));
-      })
-    );
-  }
-
-  private mapSlotResponseToSlot(slot: SubscriptionSlotResponse): Observable<SubscriptionSlot> {
-    return this.categoryService.getCategoryById(slot.category_id).pipe(
-      map((category) => {
-        const mappedSlot: SubscriptionSlot = {
-          category,
-          available: slot.available,
-          limit: slot.limit,
-        };
-
-        return mappedSlot;
-      })
+    return forkJoin([this.subscriptionsHttpService.getSlots(), this.getSubscriptions(false)]).pipe(
+      map((values) => mapSlotsResponseToSlots(values[0].slots, values[1]))
     );
   }
 

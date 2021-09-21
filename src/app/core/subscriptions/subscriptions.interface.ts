@@ -73,8 +73,6 @@ export interface SubscriptionsV3Response {
   trial_available: boolean;
   trial_days: number;
   tiers: Tier[];
-  category_name?: string;
-  category_icon?: string;
   selected_tier?: Tier;
   subscribed_until?: number;
   market?: SUBSCRIPTION_MARKETS;
@@ -86,13 +84,13 @@ export interface SubscriptionSlotGeneralResponse {
 }
 
 export interface SubscriptionSlotResponse {
-  category_id: number;
+  type: SUBSCRIPTION_CATEGORY_TYPES;
   available: number;
   limit: number;
 }
 
 export interface SubscriptionSlot {
-  category: CategoryResponse;
+  subscription: SubscriptionsResponse;
   available: number;
   limit: number;
 }

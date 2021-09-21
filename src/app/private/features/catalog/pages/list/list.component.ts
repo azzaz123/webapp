@@ -461,7 +461,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public onSelectSubscriptionSlot(subscription: SubscriptionSlot) {
     if (this.selectedSubscriptionSlot && subscription) {
-      if (this.selectedSubscriptionSlot.category.category_id === subscription.category.category_id) {
+      if (this.selectedSubscriptionSlot.subscription.category_id === subscription.subscription.category_id) {
         return;
       }
     }
@@ -646,7 +646,7 @@ export class ListComponent implements OnInit, OnDestroy {
         .minesByCategory(
           this.page,
           this.pageSize,
-          this.selectedSubscriptionSlot.category.category_id,
+          this.selectedSubscriptionSlot.subscription.category_id,
           this.sortBy,
           this.selectedStatus,
           this.searchTerm
@@ -866,7 +866,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private updateCountersWhenActivate(items: Item[]): void {
     let selectedSlot: SubscriptionSlot;
     if (!this.selectedSubscriptionSlot) {
-      selectedSlot = this.subscriptionSlots.find((slot) => slot.category.category_id === items[0].categoryId);
+      selectedSlot = this.subscriptionSlots.find((slot) => slot.subscription.category_id === items[0].categoryId);
     } else {
       selectedSlot = this.selectedSubscriptionSlot;
       const inactiveNavLink = this.getNavLinkById(STATUS.INACTIVE);
