@@ -30,7 +30,7 @@ export class WalletComponent implements OnInit {
     },
     {
       id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.HISTORY}`,
-      display: $localize`:@@web_wallet_history_movements:Movements`,
+      display: $localize`:@@wallet_view_balance_history_title_web_specific:Movements`,
     },
   ];
   public ZENDESK_WALLET_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.WALLET_HELP);
