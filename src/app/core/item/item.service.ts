@@ -43,6 +43,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import * as mapRx from 'rxjs/operators';
 import { UuidService } from '../uuid/uuid.service';
+import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -55,7 +56,7 @@ export const ITEM_STATUSES: any = {
 };
 
 export const PAYMENT_PROVIDER = 'STRIPE';
-export const MINES_BY_CATEGORY_ENDPOINT = 'api/v3/items/manageable-items/';
+export const MINES_BY_CATEGORY_ENDPOINT = 'api/v3/catalog-management/items';
 export const ACTIVATE_ENDPOINT = 'activate';
 export enum ITEM_STATUS {
   SOLD = 'sold',
@@ -82,7 +83,7 @@ export class ItemService {
   };
   public selectedItems: string[] = [];
   private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
-  private lastCategoryIdSearched: number;
+  private lastTypeSearched: SUBSCRIPTION_CATEGORY_TYPES;
 
   constructor(private http: HttpClient, private i18n: I18nService, private uuidService: UuidService, private eventService: EventService) {}
 
@@ -318,7 +319,7 @@ export class ItemService {
     );
   }
 
-  private mapItemByCategory(response: ItemByCategoryResponse, categoryId: number) {
+  private mapItemByCategory(response: ItemByCategoryResponse, categoryId: any) {
     const item = new Item(
       response.id,
       null,
@@ -440,7 +441,7 @@ export class ItemService {
   }
 
   public mine(init: number, status?: string): Observable<ItemsData> {
-    this.lastCategoryIdSearched = null;
+    this.lastTypeSearched = null;
     return this.getPaginationItems(WEB_ITEMS_API_URL + '/mine/' + status, init, true);
   }
 
@@ -661,7 +662,7 @@ export class ItemService {
                 return item;
               });
             this.items[status] = items;
-            this.lastCategoryIdSearched = null;
+            this.lastTypeSearched = null;
             return items;
           }
           return [];
@@ -721,7 +722,7 @@ export class ItemService {
   public minesByCategory(
     pageNumber: number,
     pageSize: number,
-    categoryId: number,
+    type: SUBSCRIPTION_CATEGORY_TYPES,
     sortByParam: string,
     status: string = 'active',
     term?: string,
@@ -731,15 +732,15 @@ export class ItemService {
     const end: number = init + pageSize;
 
     // TODO: Propper condition with last category id searched and so
-    if (status === 'TODO' && this.lastCategoryIdSearched && this.lastCategoryIdSearched === categoryId && this.items[status] && cache) {
+    if (status === 'TODO' && this.lastTypeSearched && this.lastTypeSearched === type && this.items[status] && cache) {
       return of(this.items[status]);
     } else {
-      return this.recursiveMinesByCategory(0, 20, categoryId, status).pipe(
+      return this.recursiveMinesByCategory(0, 20, type, status).pipe(
         map((responseArray) => {
           if (responseArray.length > 0) {
-            const items = responseArray.map((i) => this.mapItemByCategory(i, categoryId));
+            const items = responseArray.map((i) => this.mapItemByCategory(i, type));
             this.items[status] = items;
-            this.lastCategoryIdSearched = categoryId;
+            this.lastTypeSearched = type;
             return items;
           }
           return [];
@@ -766,20 +767,25 @@ export class ItemService {
     }
   }
 
-  public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemByCategoryResponse[]> {
+  public recursiveMinesByCategory(
+    init: number,
+    offset: number,
+    type: SUBSCRIPTION_CATEGORY_TYPES,
+    status: string
+  ): Observable<ItemByCategoryResponse[]> {
     return this.http
       .get<any>(`${environment.baseUrl}${MINES_BY_CATEGORY_ENDPOINT}`, {
         params: {
           status,
           init: init.toString(),
           end: (init + offset).toString(),
-          category_id: categoryId.toString(),
+          type,
         },
       })
       .pipe(
         mergeMap((res) => {
           if (res.length > 0) {
-            return this.recursiveMinesByCategory(init + offset, offset, categoryId, status).pipe(
+            return this.recursiveMinesByCategory(init + offset, offset, type, status).pipe(
               map((recursiveResult) => res.concat(recursiveResult))
             );
           } else {

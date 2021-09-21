@@ -646,7 +646,7 @@ export class ListComponent implements OnInit, OnDestroy {
         .minesByCategory(
           this.page,
           this.pageSize,
-          this.selectedSubscriptionSlot.subscription.category_id,
+          this.selectedSubscriptionSlot.subscription.type,
           this.sortBy,
           this.selectedStatus,
           this.searchTerm
