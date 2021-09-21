@@ -1,6 +1,6 @@
 <div class="WalletHistoryMovement d-flex justify-content-between">
   <div class="WalletHistoryMovement__image">
-    <img [src]="walletMovementHistoryDetail.imageUrl" [alt]="walletMovementHistoryDetail.title" loading="lazy">
+    <img [src]="walletMovementHistoryDetail.imageUrl" [alt]="walletMovementHistoryDetail.title" loading="lazy" />
     <div class="WalletHistoryMovement__image__money-flow-icon">
       <tsl-svg-icon [src]="movementTypeIconUrl"></tsl-svg-icon>
     </div>
@@ -8,15 +8,10 @@
 
   <div class="WalletHistoryMovement__text w-100">
     <div class="WalletHistoryMovement__text__title w-100 d-flex justify-content-between">
-      <div>
-        {{walletMovementHistoryDetail.title}}
-      </div>
-      <div class="WalletHistoryMovement__text__title__money-amount">
-        {{walletMovementHistoryDetail.moneyAmmount.toString()}}
-      </div>
+      <div>{{ walletMovementHistoryDetail.title }}</div>
+      <div class="WalletHistoryMovement__text__title__money-amount">{{ walletMovementHistoryDetail.moneyAmmount.toString() }}</div>
     </div>
-    <div class="WalletHistoryMovement__text__description">
-      {{walletMovementHistoryDetail.description}}
-    </div>
+
+    <div class="WalletHistoryMovement__text__description">{{ walletMovementHistoryDetail.description }}</div>
   </div>
 </div>
