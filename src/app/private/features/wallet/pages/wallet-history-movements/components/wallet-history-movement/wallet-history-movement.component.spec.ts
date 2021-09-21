@@ -1,24 +1,111 @@
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { WalletMovementHistoryDetail } from '@api/core/model/wallet/history/movement-history-detail';
+import {
+  MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN,
+  MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_OUT,
+} from '@api/fixtures/core/model/wallet/history/movement-history-detail.fixtures.spec';
 
 import { WalletHistoryMovementComponent } from './wallet-history-movement.component';
 
+@Component({
+  selector: 'tsl-test-wrapper-wallet-history-movement',
+  template: '<tsl-wallet-history-movement [walletMovementHistoryDetail]="walletMovementHistoryDetail"></tsl-wallet-history-movement>',
+})
+export class TestWrapperWalletHistoryMovementComponent {
+  @Input() walletMovementHistoryDetail: WalletMovementHistoryDetail;
+}
+
 describe('WalletHistoryMovementComponent', () => {
-  let component: WalletHistoryMovementComponent;
-  let fixture: ComponentFixture<WalletHistoryMovementComponent>;
+  let wrapperComponent: TestWrapperWalletHistoryMovementComponent;
+  let fixture: ComponentFixture<TestWrapperWalletHistoryMovementComponent>;
+
+  const imageSelector = '.WalletHistoryMovement__image > img';
+  const titleSelector = '.WalletHistoryMovement__text__title > div';
+  const moneyAmountSelector = '.WalletHistoryMovement__text__title__money-amount';
+  const descriptionSelector = '.WalletHistoryMovement__text__description';
+  const iconSelector = 'tsl-svg-icon';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WalletHistoryMovementComponent],
+      declarations: [WalletHistoryMovementComponent, TestWrapperWalletHistoryMovementComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WalletHistoryMovementComponent);
-    component = fixture.componentInstance;
+    fixture = TestBed.createComponent(TestWrapperWalletHistoryMovementComponent);
+    wrapperComponent = fixture.componentInstance;
+    wrapperComponent.walletMovementHistoryDetail = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN;
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(wrapperComponent).toBeTruthy();
+  });
+
+  describe('when rendering the component', () => {
+    it('should show the image', () => {
+      const imageElement = fixture.debugElement.query(By.css(imageSelector));
+      const imageUrl = imageElement.attributes['src'];
+      const expectedImageUrl = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN.imageUrl;
+
+      expect(imageUrl).toEqual(expectedImageUrl);
+    });
+
+    it('should show the title', () => {
+      const titleElement = fixture.debugElement.query(By.css(titleSelector));
+      const title = titleElement.nativeElement.innerHTML;
+      const expectedTitle = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN.title;
+
+      expect(title).toEqual(expectedTitle);
+    });
+
+    it('should show the amount of money', () => {
+      const moneyAmountElement = fixture.debugElement.query(By.css(moneyAmountSelector));
+      const moneyAmount = moneyAmountElement.nativeElement.innerHTML;
+      const expectedMoneyAmount = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN.moneyAmmount.toString();
+
+      expect(moneyAmount).toEqual(expectedMoneyAmount);
+    });
+
+    it('should show the description', () => {
+      const descriptionElement = fixture.debugElement.query(By.css(descriptionSelector));
+      const description = descriptionElement.nativeElement.innerHTML;
+      const expectedDescription = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN.description;
+
+      expect(description).toEqual(expectedDescription);
+    });
+
+    describe('and when money flow is type in', () => {
+      beforeEach(() => {
+        wrapperComponent.walletMovementHistoryDetail = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_IN;
+        fixture.detectChanges();
+      });
+
+      it('should display the in type icon', () => {
+        const iconElement = fixture.debugElement.query(By.css(iconSelector));
+        const iconUrl = iconElement.nativeNode.src;
+        const expectedIconUrl = 'assets/icons/money-in.svg';
+
+        expect(iconUrl).toEqual(expectedIconUrl);
+      });
+    });
+
+    describe('and when money flow is type out', () => {
+      beforeEach(() => {
+        wrapperComponent.walletMovementHistoryDetail = MOCK_MOVEMENT_HISTORY_DETAIL_TYPE_OUT;
+        fixture.detectChanges();
+      });
+
+      it('should display the out type icon', () => {
+        const iconElement = fixture.debugElement.query(By.css(iconSelector));
+        const iconUrl = iconElement.nativeNode.src;
+        const expectedIconUrl = 'assets/icons/money-out.svg';
+
+        expect(iconUrl).toEqual(expectedIconUrl);
+      });
+    });
   });
 });
