@@ -29,15 +29,18 @@ import { CARDS_WITHOUT_DEFAULT, CARDS_WITH_ONE_DEFAULT, MockStripeService } from
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import {
   MockSubscriptionService,
-  MAPPED_SUBSCRIPTIONS,
+  SUBSCRIPTIONS,
   SUBSCRIPTION_SUCCESS,
   SUBSCRIPTION_REQUIRES_ACTION,
   SUBSCRIPTION_REQUIRES_PAYMENT,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MULTI_TIER,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
+import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { of, throwError } from 'rxjs';
+import { SubscriptionPurchaseHeaderComponent } from '../subscription-purchase-header/subscription-purchase-header.component';
 import { SubscriptionPurchaseComponent, PAYMENT_SUCCESSFUL_CODE } from './subscription-purchase.component';
 
 describe('SubscriptionPurchaseComponent', () => {
@@ -50,10 +53,11 @@ describe('SubscriptionPurchaseComponent', () => {
   let analyticsService: AnalyticsService;
   let scrollIntoViewService: ScrollIntoViewService;
   let eventService: EventService;
+  let modalService: NgbModal;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionPurchaseComponent, SubscriptionPurchaseSuccessComponent],
+      declarations: [SubscriptionPurchaseComponent, SubscriptionPurchaseSuccessComponent, SubscriptionPurchaseHeaderComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
@@ -100,7 +104,7 @@ describe('SubscriptionPurchaseComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionPurchaseComponent);
     component = fixture.componentInstance;
-    component.subscription = MAPPED_SUBSCRIPTIONS[0];
+    component.subscription = SUBSCRIPTIONS[0];
     component.user = MOCK_USER;
     stripeService = TestBed.inject(StripeService);
     errorsService = TestBed.inject(ErrorsService);
@@ -109,6 +113,7 @@ describe('SubscriptionPurchaseComponent', () => {
     scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
     eventService = TestBed.inject(EventService);
     benefitsService = TestBed.inject(SubscriptionBenefitsService);
+    modalService = TestBed.inject(NgbModal);
   });
 
   describe('NgOnInit', () => {
@@ -173,6 +178,32 @@ describe('SubscriptionPurchaseComponent', () => {
           expect(component.selectedTier).toEqual(
             component.subscription.tiers.find((tier) => tier.id === component.subscription.default_tier_id)
           );
+        });
+      });
+    });
+    describe('Basic tier', () => {
+      describe('has has basic tier', () => {
+        beforeEach(() => {
+          component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MULTI_TIER;
+          fixture.detectChanges();
+        });
+        it('should set basic tier', () => {
+          expect(component.basicTier).toEqual(component.subscription.tiers.find((tier) => tier.is_basic));
+          expect(component.selectedTier).toEqual(component.basicTier);
+        });
+        it('should set available tiers', () => {
+          expect(component.availableTiers).toEqual(component.subscription.tiers.filter((tier) => !tier.is_basic));
+        });
+      });
+      describe('has has not basic tier', () => {
+        beforeEach(() => {
+          fixture.detectChanges();
+        });
+        it('should not set basic tier', () => {
+          expect(component.basicTier).toBeUndefined();
+        });
+        it('should not set available tiers', () => {
+          expect(component.availableTiers).toBeUndefined();
         });
       });
     });
@@ -293,7 +324,7 @@ describe('SubscriptionPurchaseComponent', () => {
             screenId: SCREEN_IDS.ProfileSubscription,
             isNewCard: !component.isSavedCard,
             isNewSubscriber: !component.user.featured,
-            discountPercent: 0,
+            discountPercent: component.selectedTier.discount.percentage,
             invoiceNeeded: false,
             freeTrial: false,
             discount: !!component.selectedTier.discount,
@@ -462,6 +493,23 @@ describe('SubscriptionPurchaseComponent', () => {
           TRANSLATION_KEY.PAYMENT_FAILED_ERROR_TITLE
         );
       }));
+    });
+  });
+  describe('Categories modal', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+    describe('and click open modal', () => {
+      it('should open modal', () => {
+        spyOn(modalService, 'open').and.callThrough();
+        const header = fixture.debugElement.query(By.directive(SubscriptionPurchaseHeaderComponent));
+
+        header.componentInstance.clickLink.emit();
+
+        expect(modalService.open).toHaveBeenCalledWith(CategoryListingModalComponent, {
+          windowClass: 'category-listing',
+        });
+      });
     });
   });
 });
