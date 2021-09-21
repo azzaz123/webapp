@@ -1,4 +1,4 @@
-import { Directive, TemplateRef, ViewContainerRef, OnInit } from '@angular/core';
+import { Directive, TemplateRef, ViewContainerRef, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 
@@ -9,16 +9,28 @@ export class DeliveryDevelopmentDirective implements OnInit {
   constructor(
     private featureflagService: FeatureFlagService,
     private templateRef: TemplateRef<HTMLElement>,
-    private viewContainer: ViewContainerRef
+    private viewContainer: ViewContainerRef,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.viewContainer.clear();
+    this.removeElementFromDOM();
 
     this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
-      if (isActive) {
-        this.viewContainer.createEmbeddedView(this.templateRef);
-      }
+      isActive ? this.addElementToDOM() : this.removeElementFromDOM();
+      this.notifyChanges();
     });
+  }
+
+  private removeElementFromDOM(): void {
+    this.viewContainer.clear();
+  }
+
+  private addElementToDOM(): void {
+    this.viewContainer.createEmbeddedView(this.templateRef);
+  }
+
+  private notifyChanges(): void {
+    this.changeDetectorRef.markForCheck();
   }
 }
