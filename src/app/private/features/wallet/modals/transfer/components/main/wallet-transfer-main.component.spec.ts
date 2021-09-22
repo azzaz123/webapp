@@ -4,20 +4,20 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletTransferAmountComponent } from '@private/features/wallet/modals/transfer/components/amount/wallet-transfer-amount.component';
-import { WalletTransferModalComponent } from '@private/features/wallet/modals/transfer/components/modal/wallet-transfer-modal.component';
+import { WalletTransferMainComponent } from '@private/features/wallet/modals/transfer/components/main/wallet-transfer-main.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-describe('GIVEN the WalletTransferModalComponent', () => {
-  let component: WalletTransferModalComponent;
-  let fixture: ComponentFixture<WalletTransferModalComponent>;
+describe('GIVEN the WalletTransferMainComponent', () => {
+  let component: WalletTransferMainComponent;
+  let fixture: ComponentFixture<WalletTransferMainComponent>;
   let ngbActiveModal: NgbActiveModal;
   const walletTransferModalSelector = '.WalletTransferModal';
   const walletTransferModalCloseSelector = `${walletTransferModalSelector}__close`;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SvgIconComponent, WalletTransferAmountComponent, WalletTransferModalComponent],
+      declarations: [SvgIconComponent, WalletTransferAmountComponent, WalletTransferMainComponent],
       imports: [HttpClientTestingModule],
       providers: [NgbActiveModal],
     }).compileComponents();
@@ -25,7 +25,7 @@ describe('GIVEN the WalletTransferModalComponent', () => {
 
   beforeEach(() => {
     ngbActiveModal = TestBed.inject(NgbActiveModal);
-    fixture = TestBed.createComponent(WalletTransferModalComponent);
+    fixture = TestBed.createComponent(WalletTransferMainComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

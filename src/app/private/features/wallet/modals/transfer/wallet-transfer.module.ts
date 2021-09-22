@@ -7,16 +7,11 @@ import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numb
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { WalletTransferAmountComponent } from '@private/features/wallet/modals/transfer/components/amount/wallet-transfer-amount.component';
 import { WalletTransferJumpDirective } from '@private/features/wallet/modals/transfer/directives/jump/wallet-transfer-jump.directive';
+import { WalletTransferMainComponent } from '@private/features/wallet/modals/transfer/components/main/wallet-transfer-main.component';
 import { WalletTransferMaxLengthDirective } from '@private/features/wallet/modals/transfer/directives/max-length/wallet-transfer-max-length.directive';
-import { WalletTransferModalComponent } from '@private/features/wallet/modals/transfer/components/modal/wallet-transfer-modal.component';
 
 @NgModule({
-  declarations: [
-    WalletTransferAmountComponent,
-    WalletTransferJumpDirective,
-    WalletTransferMaxLengthDirective,
-    WalletTransferModalComponent,
-  ],
+  declarations: [WalletTransferAmountComponent, WalletTransferJumpDirective, WalletTransferMainComponent, WalletTransferMaxLengthDirective],
   imports: [ButtonModule, CommonModule, FormsModule, NumbersOnlyDirectiveModule, SvgIconModule],
 })
 export class WalletTransferModule {}

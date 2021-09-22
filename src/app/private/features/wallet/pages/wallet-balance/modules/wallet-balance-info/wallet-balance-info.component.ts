@@ -9,7 +9,7 @@ import { Money } from '@api/core/model/money.interface';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
-import { WalletTransferModalComponent } from '@private/features/wallet/modals/transfer/components/modal/wallet-transfer-modal.component';
+import { WalletTransferMainComponent } from '@private/features/wallet/modals/transfer/components/main/wallet-transfer-main.component';
 
 import { forkJoin } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
@@ -45,7 +45,7 @@ export class WalletBalanceInfoComponent implements OnInit {
   }
 
   public transferBalance(): void {
-    this.modalService.open(WalletTransferModalComponent);
+    this.modalService.open(WalletTransferMainComponent);
   }
 
   private get hasPositiveBalance(): boolean {
