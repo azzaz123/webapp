@@ -30,6 +30,6 @@ export class WalletTransferMaxLengthDirective {
   }
 
   private get hasSelection(): boolean {
-    return !!this.document.getSelection();
+    return this.document.getSelection().toString().length > 0;
   }
 }
