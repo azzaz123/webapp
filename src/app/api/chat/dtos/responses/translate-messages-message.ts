@@ -1,4 +1,4 @@
-export interface ConversationTranslateMessage {
+export interface TranslateMessagesMessage {
   id: string;
   from_self: boolean;
   text: string;

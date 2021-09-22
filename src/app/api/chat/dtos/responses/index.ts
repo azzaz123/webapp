@@ -1,2 +1,2 @@
-export * from './conversation-translate-message';
-export * from './conversation-translate-response';
+export * from './translate-messages-message';
+export * from './translate-messages-response';
