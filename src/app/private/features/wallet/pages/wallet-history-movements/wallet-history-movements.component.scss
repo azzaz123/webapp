@@ -18,9 +18,12 @@ $wallet-history-movements-border: 1px solid $blue-grey-5;
       font-size: 20px;
     }
   }
-}
 
-.WalletHistoryMovements__separator {
-  height: 1px;
-  background-color: $blue-grey-5;
+  &__movement {
+    border-top: 1px solid $blue-grey-5;
+
+    &:last-child {
+      border-bottom: 1px solid $blue-grey-5;
+    }
+  }
 }
