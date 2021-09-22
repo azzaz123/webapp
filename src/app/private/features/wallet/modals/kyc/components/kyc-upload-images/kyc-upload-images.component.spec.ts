@@ -1765,6 +1765,7 @@ describe('KYCUploadImagesComponent', () => {
     expect(kycTrackingEventsService.trackViewKYCReviewDocumentationImageScreen).toHaveBeenCalledWith(
       component.documentationSelected.analyticsName
     );
+    expect(kycTrackingEventsService.trackViewKYCReviewDocumentationImageScreen).toHaveBeenCalledTimes(1);
   }
 
   function shouldNotTrackViewKYCReviewDocumentationImageScreen(): void {

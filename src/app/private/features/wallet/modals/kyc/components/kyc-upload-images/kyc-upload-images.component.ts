@@ -72,6 +72,8 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.trackEventWhenViewKYCReviewDocumentationImageScreen();
+
     if (this.isShootImageMethod) {
       this.videoStream$ = this.requestVideoPermissionsService.videoStream$;
       this.manageVideoStreamWhenDefinedImageChange();
@@ -415,16 +417,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   private buildIsCurrentImageDefinedObservable(): Observable<boolean> {
     return this.imagesAndActiveStep$().pipe(
       map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
-        if (this.twoImagesNeeded) {
-          return activeStep === 1 ? !!images.frontSide : !!images.backSide;
-        } else {
-          return this.isFrontSideImageDefined;
-        }
-      }),
-      tap((isCurrentImageDefined: boolean) => {
-        if (isCurrentImageDefined) {
-          this.trackViewKYCReviewDocumentationImageScreen();
-        }
+        return this.checkIfCurrentImageIsDefined(images, activeStep);
       })
     );
   }
@@ -446,7 +439,17 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     return combineLatest([this.images$.asObservable(), this.activeStep$.asObservable()]);
   }
 
-  private trackViewKYCReviewDocumentationImageScreen(): void {
-    this.kycTrackingEventsService.trackViewKYCReviewDocumentationImageScreen(this.documentationSelected.analyticsName);
+  private trackEventWhenViewKYCReviewDocumentationImageScreen(): void {
+    this.imagesAndActiveStep$()
+      .pipe(
+        map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
+          return this.checkIfCurrentImageIsDefined(images, activeStep);
+        })
+      )
+      .subscribe((isCurrentImageDefined: boolean) => {
+        if (isCurrentImageDefined) {
+          this.kycTrackingEventsService.trackViewKYCReviewDocumentationImageScreen(this.documentationSelected.analyticsName);
+        }
+      });
   }
 }
