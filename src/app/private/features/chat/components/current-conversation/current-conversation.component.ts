@@ -41,6 +41,7 @@ import { onVisible } from 'visibilityjs';
 import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { TranslateButtonCopies } from '@core/components/translate-button/translate-button.component';
+import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -86,7 +87,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     private modalService: NgbModal,
     private userService: UserService,
     private analyticsService: AnalyticsService,
-    private momentCalendarSpecService: MomentCalendarSpecService
+    private momentCalendarSpecService: MomentCalendarSpecService,
+    private translationService: ChatTranslationService
   ) {}
 
   get emptyInbox(): boolean {
@@ -238,6 +240,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     of(messageId)
       .pipe(delay(this.MESSAGE_METRIC_DELAY))
       .subscribe((id) => this.sendMetricMessageSendFailedByMessageId(id, `message is not send after ${this.MESSAGE_METRIC_DELAY}ms`));
+  }
+
+  public translateConversation(): void {
+    this.translationService.translateConversation(this.currentConversation);
   }
 
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {

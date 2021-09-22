@@ -104,8 +104,20 @@ export class InboxConversation {
     return this.messages.length === 0;
   }
 
-  get translatable(): boolean {
-    return this._translatable;
+  get isTranslatable(): boolean {
+    return this._translatable && this.hasTranslatableMessages();
+  }
+
+  private hasTranslatableMessages(): boolean {
+    const interlocutorMessages = this.messages.filter((message) => !message.fromSelf);
+
+    for (let message of interlocutorMessages) {
+      if (!message.translation) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   static errorConversationFromMessage(message: InboxMessage) {
