@@ -2,6 +2,10 @@
 
 .WalletHistoryMovement {
   padding: $spacing-m 0;
+  color: $blue-grey-1;
+
+  font-weight: 400;
+  font-size: $font-size-m;
 
   &__image {
     @include square(48px);
@@ -12,30 +16,23 @@
       border-radius: 5px;
       @include square(48px);
     }
-
-    &__money-flow-icon {
-      position: absolute;
-
-      bottom: -2px;
-      right: -2px;
-      z-index: 1;
-    }
   }
 
-  &__text {
-    color: $blue-grey-1;
-    font-weight: 400;
-    font-size: $font-size-m;
+  &__money-flow-icon {
+    position: absolute;
 
-    &__title {
-      &__money-amount {
-        font-weight: $font-weight-chunky;
-      }
-    }
+    bottom: -2px;
+    right: -2px;
+    z-index: 1;
+  }
 
-    &__description {
-      color: $blue-grey-2;
-      font-size: $font-size-xs;
-    }
+  &__money-amount {
+    font-weight: $font-weight-chunky;
+  }
+
+  &__description,
+  &__estimatedPayoutDescription {
+    color: $blue-grey-2;
+    font-size: $font-size-xs;
   }
 }

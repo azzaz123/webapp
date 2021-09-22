@@ -23,10 +23,10 @@ describe('WalletHistoryMovementComponent', () => {
   let fixture: ComponentFixture<TestWrapperWalletHistoryMovementComponent>;
 
   const imageSelector = '.WalletHistoryMovement__image > img';
-  const titleSelector = '.WalletHistoryMovement__text__title > div';
-  const moneyAmountSelector = '.WalletHistoryMovement__text__title__money-amount';
-  const descriptionSelector = '.WalletHistoryMovement__text__description';
-  const estimatedPayoutDescriptionSelector = '.WalletHistoryMovement__text__estimatedPayoutDescription';
+  const titleSelector = '.WalletHistoryMovement__title > div';
+  const moneyAmountSelector = '.WalletHistoryMovement__money-amount';
+  const descriptionSelector = '.WalletHistoryMovement__description';
+  const estimatedPayoutDescriptionSelector = '.WalletHistoryMovement__estimatedPayoutDescription';
   const iconSelector = 'tsl-svg-icon';
 
   beforeEach(async () => {
