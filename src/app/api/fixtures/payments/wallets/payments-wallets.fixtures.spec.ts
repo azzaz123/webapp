@@ -1,6 +1,5 @@
 import { Money } from '@api/core/model/money.interface';
 import { PaymentsWalletsApi } from '@api/payments/wallets/dtos/responses';
-import { totalmem } from 'os';
 import { Observable, of } from 'rxjs';
 
 export const MOCK_PAYMENTS_WALLETS_RESPONSE: PaymentsWalletsApi = {
