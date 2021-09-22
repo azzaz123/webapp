@@ -79,7 +79,10 @@ export class WalletHistoryMovementsComponent implements OnInit {
           const mappedToUI = this.walletHistoryMovementsUIService.map(this.requestedHistoryMovementsDetails);
           this._historicMovements$.next(mappedToUI);
         }),
-        finalize(() => (this.loading = false))
+        finalize(() => {
+          this.loading = false;
+          this.initialLoad = false;
+        })
       )
       .subscribe();
   }
