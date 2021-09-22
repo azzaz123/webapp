@@ -869,7 +869,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private updateCountersWhenActivate(items: Item[]): void {
     let selectedSlot: SubscriptionSlot;
     if (!this.selectedSubscriptionSlot) {
-      selectedSlot = this.subscriptionSlots.find((slot) => slot.subscription.category_id === items[0].categoryId);
+      selectedSlot = this.subscriptionSlots.find((slot) => slot.subscription.category_ids.includes(items[0].categoryId));
     } else {
       selectedSlot = this.selectedSubscriptionSlot;
       const inactiveNavLink = this.getNavLinkById(STATUS.INACTIVE);

@@ -43,12 +43,7 @@ import {
   ORDER_EVENT,
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
-import {
-  MockSubscriptionService,
-  MOCK_SUBSCRIPTION_SLOTS,
-  MOCK_SUBSCRIPTION_SLOT_CARS,
-  TIER_WITH_DISCOUNT,
-} from '@fixtures/subscriptions.fixtures.spec';
+import { MockSubscriptionService, TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER, USER_ID, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -74,6 +69,8 @@ import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
+import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subsctiption-slots.fixtures.spec';
+import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -86,6 +83,7 @@ describe('ListComponent', () => {
   let paymentService: PaymentService;
   let route: ActivatedRoute;
   let router: Router;
+  let catalogManagerApiService: CatalogManagerApiService;
   let errorService: ErrorsService;
   const componentInstance: any = {
     trackUploaded: jasmine.createSpy('trackUploaded'),
@@ -246,6 +244,14 @@ describe('ListComponent', () => {
             useClass: DeviceDetectorServiceMock,
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
+          {
+            provide: CatalogManagerApiService,
+            useValue: {
+              getSlots() {
+                return of([]);
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -269,6 +275,7 @@ describe('ListComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     permissionService = TestBed.inject(NgxPermissionsService);
     i18nService = TestBed.inject(I18nService);
+    catalogManagerApiService = TestBed.inject(CatalogManagerApiService);
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     spyOn(errorService, 'i18nError');
@@ -593,7 +600,7 @@ describe('ListComponent', () => {
           permissionService.addPermission(PERMISSIONS.subscriptions);
         });
         it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
-          spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
+          spyOn(catalogManagerApiService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
 
           component.ngOnInit();
           tick();
@@ -609,7 +616,7 @@ describe('ListComponent', () => {
           permissionService.removePermission(PERMISSIONS.subscriptions);
         });
         it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
-          spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
+          spyOn(catalogManagerApiService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
 
           component.ngOnInit();
           tick();
@@ -1035,7 +1042,7 @@ describe('ListComponent', () => {
     describe('update counters', () => {
       beforeEach(() => {
         component.subscriptionSlots = [cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS)];
-        component.subscriptionSlots[0].category.category_id = ITEM_CATEGORY_ID;
+        component.subscriptionSlots[0].subscription.category_ids = [ITEM_CATEGORY_ID];
       });
 
       it('should update if there is not selected a subscription slot', fakeAsync(() => {
@@ -1149,7 +1156,7 @@ describe('ListComponent', () => {
     describe('update counters', () => {
       beforeEach(() => {
         component.subscriptionSlots = [cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS)];
-        component.subscriptionSlots[0].category.category_id = ITEM_CATEGORY_ID;
+        component.subscriptionSlots[0].subscription.category_ids = [ITEM_CATEGORY_ID];
       });
 
       it('should update if there is not selected a subscription slot', fakeAsync(() => {
