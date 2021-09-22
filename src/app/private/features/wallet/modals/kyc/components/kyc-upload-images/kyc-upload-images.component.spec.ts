@@ -160,6 +160,7 @@ describe('KYCUploadImagesComponent', () => {
 
       describe('and the user accept the permission', () => {
         beforeEach(() => {
+          spyOn(kycTrackingEventsService, 'trackViewKYCReviewDocumentationImageScreen');
           spyOn(component.goBack, 'emit');
 
           videoStreamSubjectMock.next(MOCK_MEDIA_STREAM);
@@ -289,6 +290,10 @@ describe('KYCUploadImagesComponent', () => {
                   expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
                 });
 
+                it('should track the view KYC review documentation image screen event', () => {
+                  shouldTrackViewKYCReviewDocumentationImageScreen();
+                });
+
                 it('should update the new front side image', () => {
                   expect(component.images$.value).toStrictEqual({
                     ...component.images$.value,
@@ -344,6 +349,10 @@ describe('KYCUploadImagesComponent', () => {
 
               it('should enable the continue button', () => {
                 expectContinueButtonDisabled(false);
+              });
+
+              it('should track the view KYC review documentation image screen event', () => {
+                shouldTrackViewKYCReviewDocumentationImageScreen();
               });
 
               describe('and they click on retake the front side image', () => {
@@ -462,6 +471,10 @@ describe('KYCUploadImagesComponent', () => {
                   expect(component.definedImageCanvas.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
                 });
 
+                it('should track the view KYC review documentation image screen event', () => {
+                  shouldTrackViewKYCReviewDocumentationImageScreen();
+                });
+
                 it('should draw the back side image on the screen', () => {
                   expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
                 });
@@ -521,6 +534,10 @@ describe('KYCUploadImagesComponent', () => {
 
               it('should enable the end verification button', () => {
                 expectEndVerificationButtonDisabled(false);
+              });
+
+              it('should track the view KYC review documentation image screen event', () => {
+                shouldTrackViewKYCReviewDocumentationImageScreen();
               });
 
               describe('and they click on retake the back side image', () => {
@@ -655,6 +672,10 @@ describe('KYCUploadImagesComponent', () => {
                 expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
               });
 
+              it('should track the view KYC review documentation image screen event', () => {
+                shouldTrackViewKYCReviewDocumentationImageScreen();
+              });
+
               it('should update the new front side image', () => {
                 expect(component.images$.value).toStrictEqual({
                   ...component.images$.value,
@@ -710,6 +731,10 @@ describe('KYCUploadImagesComponent', () => {
 
             it('should enable the end verification button', () => {
               expectEndVerificationButtonDisabled(false);
+            });
+
+            it('should track the view KYC review documentation image screen event', () => {
+              shouldTrackViewKYCReviewDocumentationImageScreen();
             });
 
             describe('and they click on retake the front side image', () => {
@@ -830,6 +855,7 @@ describe('KYCUploadImagesComponent', () => {
 
   describe('when the user selects the upload image method', () => {
     beforeEach(() => {
+      spyOn(kycTrackingEventsService, 'trackViewKYCReviewDocumentationImageScreen');
       spyOn(requestVideoPermissionsService, 'request');
       testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
     });
@@ -960,6 +986,10 @@ describe('KYCUploadImagesComponent', () => {
                 expectUploadImageFallbackContentInDOM(false);
               });
 
+              it('should track the view KYC review documentation image screen event', () => {
+                shouldTrackViewKYCReviewDocumentationImageScreen();
+              });
+
               it('should update the selected image', () => {
                 expect(component.images$.value).toStrictEqual({
                   ...component.images$.value,
@@ -981,6 +1011,10 @@ describe('KYCUploadImagesComponent', () => {
 
               it('should show the fallback upload image section', () => {
                 expectUploadImageFallbackContentInDOM(true);
+              });
+
+              it('should NOT track the view KYC review documentation image screen event', () => {
+                shouldNotTrackViewKYCReviewDocumentationImageScreen();
               });
 
               it('should NOT update the images', () => {
@@ -1035,6 +1069,10 @@ describe('KYCUploadImagesComponent', () => {
 
           it('should enable the continue button', () => {
             expectContinueButtonDisabled(false);
+          });
+
+          it('should track the view KYC review documentation image screen event', () => {
+            shouldTrackViewKYCReviewDocumentationImageScreen();
           });
 
           describe('and they click on retake the front side image', () => {
@@ -1188,6 +1226,10 @@ describe('KYCUploadImagesComponent', () => {
                 expectUploadImageFallbackContentInDOM(false);
               });
 
+              it('should track the view KYC review documentation image screen event', () => {
+                shouldTrackViewKYCReviewDocumentationImageScreen();
+              });
+
               it('should update the selected image', () => {
                 expect(component.images$.value).toStrictEqual({
                   ...component.images$.value,
@@ -1209,6 +1251,10 @@ describe('KYCUploadImagesComponent', () => {
 
               it('should show the fallback upload image section', () => {
                 expectUploadImageFallbackContentInDOM(true);
+              });
+
+              it('should NOT track the view KYC review documentation image screen event', () => {
+                shouldNotTrackViewKYCReviewDocumentationImageScreen();
               });
 
               it('should NOT update the images', () => {
@@ -1263,6 +1309,10 @@ describe('KYCUploadImagesComponent', () => {
 
           it('should enable the end verification button', () => {
             expectEndVerificationButtonDisabled(false);
+          });
+
+          it('should track the view KYC review documentation image screen event', () => {
+            shouldTrackViewKYCReviewDocumentationImageScreen();
           });
 
           describe('and they click on retake the back side image', () => {
@@ -1420,6 +1470,10 @@ describe('KYCUploadImagesComponent', () => {
               expectUploadImageFallbackContentInDOM(false);
             });
 
+            it('should track the view KYC review documentation image screen event', () => {
+              shouldTrackViewKYCReviewDocumentationImageScreen();
+            });
+
             it('should update the selected image', () => {
               expect(component.images$.value).toStrictEqual({
                 ...component.images$.value,
@@ -1441,6 +1495,10 @@ describe('KYCUploadImagesComponent', () => {
 
             it('should show the fallback upload image section', () => {
               expectUploadImageFallbackContentInDOM(true);
+            });
+
+            it('should NOT track the view KYC review documentation image screen event', () => {
+              shouldNotTrackViewKYCReviewDocumentationImageScreen();
             });
 
             it('should NOT update the images', () => {
@@ -1495,6 +1553,10 @@ describe('KYCUploadImagesComponent', () => {
 
         it('should enable the end verification button', () => {
           expectEndVerificationButtonDisabled(false);
+        });
+
+        it('should track the view KYC review documentation image screen event', () => {
+          shouldTrackViewKYCReviewDocumentationImageScreen();
         });
 
         describe('and they click on retake the front side image', () => {
@@ -1697,5 +1759,15 @@ describe('KYCUploadImagesComponent', () => {
     requestVideoPermissionsService.videoStream$.subscribe((tracks) => {
       tracks.getTracks().forEach((track) => expect(track.stop).toHaveBeenCalled());
     });
+  }
+
+  function shouldTrackViewKYCReviewDocumentationImageScreen(): void {
+    expect(kycTrackingEventsService.trackViewKYCReviewDocumentationImageScreen).toHaveBeenCalledWith(
+      component.documentationSelected.analyticsName
+    );
+  }
+
+  function shouldNotTrackViewKYCReviewDocumentationImageScreen(): void {
+    expect(kycTrackingEventsService.trackViewKYCReviewDocumentationImageScreen).not.toHaveBeenCalled();
   }
 });
