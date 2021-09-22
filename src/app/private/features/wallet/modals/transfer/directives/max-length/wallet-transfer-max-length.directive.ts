@@ -13,9 +13,13 @@ export class WalletTransferMaxLengthDirective {
   constructor(@Inject(DOCUMENT) private document: Document, private element: ElementRef) {}
 
   @HostListener('keydown', ['$event']) onKeyDown(e: KeyboardEvent) {
-    if (this.isFull && !this.hasSelection && !allowedKeys.find((item) => item === e.key)) {
+    if (this.isFull && !this.isAllowedKey(e.key) && !this.hasSelection) {
       e.preventDefault();
     }
+  }
+
+  private isAllowedKey(key: string): boolean {
+    return !!allowedKeys.find((item) => item === key);
   }
 
   private get isFull(): boolean {
@@ -26,6 +30,6 @@ export class WalletTransferMaxLengthDirective {
   }
 
   private get hasSelection(): boolean {
-    return this.document.getSelection().toString().length > 0;
+    return !!this.document.getSelection();
   }
 }

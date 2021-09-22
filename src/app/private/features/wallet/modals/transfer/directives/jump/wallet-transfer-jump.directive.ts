@@ -20,18 +20,20 @@ export class WalletTransferJumpDirective {
     if (!this.isJumpKey(key) || !this.jumpTargetId) {
       return;
     }
+
     const target = this.document.getElementById(this.jumpTargetId);
+
     if (!!target && this.isValidJump) {
       target.focus();
       e.preventDefault();
     }
   }
 
-  private isJumpKey(key: string): boolean {
+  private isJumpKey(key: string[] | string): boolean {
     if (typeof this.jumpKey === 'string') {
       return key === this.jumpKey;
     }
-    return !!this.jumpKey.find((item) => item === key);
+    return !!this.jumpKey?.find((item) => item === key);
   }
 
   private get isValidJump(): boolean {

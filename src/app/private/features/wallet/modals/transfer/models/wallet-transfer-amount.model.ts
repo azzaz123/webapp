@@ -1,5 +1,9 @@
 import { HELP_LOCALE } from '@core/external-links/customer-help/customer-help-constants';
 
+const defaultAmountOfDecimals: number = 2;
+const defaultMinimumAmount: number = 0;
+const defaultTotalAmount: number = 0;
+
 export class WalletTransferAmountModel {
   private _total: number;
   private amountOfDecimals: number;
@@ -7,11 +11,11 @@ export class WalletTransferAmountModel {
   private minimum: number;
   private showDecimalsAsCents = true;
 
-  constructor(total: number, minimum: number = 0, amountOfDecimals: number = 2) {
-    this._total = this.isNullOrUndefined(total) ? 0 : total;
-    this.amountOfDecimals = amountOfDecimals;
+  constructor(total: number, minimum: number = defaultMinimumAmount, amountOfDecimals: number = defaultAmountOfDecimals) {
+    this._total = this.isNullOrUndefined(total) ? defaultTotalAmount : total;
+    this.amountOfDecimals = amountOfDecimals ?? defaultAmountOfDecimals;
     this.maximum = this._total;
-    this.minimum = minimum;
+    this.minimum = minimum ?? defaultMinimumAmount;
   }
 
   public get decimals(): string {
@@ -32,6 +36,10 @@ export class WalletTransferAmountModel {
     return this.total.toFixed(this.amountOfDecimals).split('.')[1];
   }
 
+  public empty(): void {
+    this._total = null;
+  }
+
   public get integer(): string {
     if (this.isNullOrUndefined(this._total)) {
       return null;
@@ -50,10 +58,6 @@ export class WalletTransferAmountModel {
 
   public get isValid(): boolean {
     return this.total >= this.minimum && this.total <= this.maximum;
-  }
-
-  public empty(): void {
-    this._total = null;
   }
 
   public get total(): number {
