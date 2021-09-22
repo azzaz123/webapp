@@ -399,8 +399,6 @@ describe('ListComponent', () => {
         });
 
         it('should show a wallet button', () => {
-          console.log('expect');
-
           expect(walletButton).toBeTruthy();
         });
 
@@ -423,7 +421,6 @@ describe('ListComponent', () => {
         }));
 
         it('should NOT show a wallet button', () => {
-          console.log('expect');
           expect(walletButton).toBeFalsy();
         });
       });
