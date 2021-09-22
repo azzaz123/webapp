@@ -310,12 +310,13 @@ describe('FavouritesComponent', () => {
       spyOn(component, 'trackClickFavoriteItem').and.callThrough();
     });
 
-    it('should call click tracking method just once', () => {
+    it('should call click tracking method just once and with the correct params', () => {
       const itemList = fixture.debugElement.queryAll(By.directive(ItemCardFavouriteComponent));
       const index = 0;
 
       itemList[index].triggerEventHandler('click', index);
 
+      expect(component.trackClickFavoriteItem).toHaveBeenCalledWith(index);
       expect(component.trackClickFavoriteItem).toHaveBeenCalledTimes(1);
     });
   });
