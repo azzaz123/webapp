@@ -11,6 +11,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 describe('GIVEN the WalletTransferModalComponent', () => {
   let component: WalletTransferModalComponent;
   let fixture: ComponentFixture<WalletTransferModalComponent>;
+  let ngbActiveModal: NgbActiveModal;
   const walletTransferModalSelector = '.WalletTransferModal';
   const walletTransferModalCloseSelector = `${walletTransferModalSelector}__close`;
 
@@ -23,6 +24,7 @@ describe('GIVEN the WalletTransferModalComponent', () => {
   });
 
   beforeEach(() => {
+    ngbActiveModal = TestBed.inject(NgbActiveModal);
     fixture = TestBed.createComponent(WalletTransferModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -35,7 +37,7 @@ describe('GIVEN the WalletTransferModalComponent', () => {
 
     describe('WHEN they click on the cross button', () => {
       it('should close the modal', () => {
-        const closeModalSpy = spyOn(component.activeModal, 'close');
+        const closeModalSpy = spyOn(ngbActiveModal, 'close');
 
         fixture.debugElement.query(By.css(walletTransferModalCloseSelector)).nativeElement.click();
 
