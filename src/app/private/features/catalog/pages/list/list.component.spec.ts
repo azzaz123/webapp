@@ -102,9 +102,9 @@ describe('ListComponent', () => {
   let i18nService: I18nService;
   let featureFlagService: FeatureFlagService;
 
-  const prosButtonSelector = '.List__profile__pros';
-  const deliveryButtonSelector = '.List__profile__delivery';
-  const walletButtonSelector = '.List__profile__wallet';
+  const prosButtonSelector = '.List__button--pros';
+  const deliveryButtonSelector = '.List__button--delivery';
+  const walletButtonSelector = '.List__button--wallet';
 
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;

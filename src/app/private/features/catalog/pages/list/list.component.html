@@ -18,14 +18,14 @@
               </div>
               <tsl-stars [stars]="userScore" [normalized]="false"></tsl-stars>
               <div *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-                <tsl-button id="qa-list-pro-button" class="List__profile__pros w-100 mt-2" className="btn btn-dark w-100" (click)="navigateToProsModule()">
+                <tsl-button id="qa-list-pro-button" class="List__button--pros w-100 mt-2" className="btn btn-dark w-100" (click)="navigateToProsModule()">
                   {{subscriptionButtonName}}
                 </tsl-button>
               </div>
               <div class="d-flex pt-1">
                 <a [routerLink]="['/profile/info']" class="edit-profile-btn mr-1" i18n="@@web_catalog_pages_list_147">Edit</a>
-                <a *tslDeliveryDevelopment [routerLink]="[walletPath]" class="List__profile__wallet edit-profile-btn mr-1" i18n="@@web_catalog_wallet">Wallet</a>
-                <a *tslDeliveryDevelopment [routerLink]="[deliveryPath]" class="List__profile__delivery edit-profile-btn mr-1" i18n="@@web_catalog_delivery">Delivery</a>
+                <a *tslDeliveryDevelopment [routerLink]="[walletPath]" class="List__button--wallet edit-profile-btn mr-1" i18n="@@web_catalog_wallet">Wallet</a>
+                <a *tslDeliveryDevelopment [routerLink]="[deliveryPath]" class="List__button--delivery edit-profile-btn mr-1" i18n="@@web_catalog_delivery">Delivery</a>
                 <a (click)="logout()" class="logout edit-profile-btn" i18n="@@web_catalog_pages_list_148">Logout</a>
               </div>
             </div>
