@@ -1,4 +1,191 @@
 import { CategoriesFilterOption } from '@public/shared/components/filters/components/categories-filter/interfaces/categories-filter-option.interface';
+import { CategoriesFilterIcon } from '../interfaces/categories-filter-icon.interface';
+
+export interface CategoryFilterIconMap extends CategoriesFilterIcon {
+  id: CATEGORY_ICON_ID;
+}
+
+enum CATEGORY_ICON_ID {
+  ALL = 'all',
+  CAR = 'car',
+  MOTORBIKE = 'motorbike',
+  HELMET = 'helmet',
+  T_SHIRT = 't-shirt',
+  HOUSE = 'house',
+  TV = 'tv',
+  PHONE = 'phone',
+  PC = 'pc',
+  BALL = 'ball',
+  BIKE = 'bike',
+  GAMEPAD = 'gamepad',
+  FURNITURE = 'furniture',
+  LAUNDRY = 'laundry',
+  BOOKSHELF = 'bookshelf',
+  BABY_CAR = 'baby_car',
+  COLLECTING = 'collecting',
+  BUILDIMG = 'building',
+  FARMING = 'farming',
+  JOBS = 'jobs',
+  TOOLBOX = 'toolbox',
+  GHOST = 'ghost',
+}
+
+export const CATEGORY_ICONS: CategoryFilterIconMap[] = [
+  {
+    id: CATEGORY_ICON_ID.ALL,
+    standard: '/assets/icons/filters/categories/all.svg',
+    active: '/assets/icons/filters/categories/all_selected.svg',
+    hover: '/assets/icons/filters/categories/all_hover.svg',
+    stroke: '/assets/icons/filters/categories/all_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.CAR,
+    standard: '/assets/icons/filters/categories/car.svg',
+    active: '/assets/icons/filters/categories/car_selected.svg',
+    hover: '/assets/icons/filters/categories/car_hover.svg',
+    stroke: '/assets/icons/filters/categories/car_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.MOTORBIKE,
+    standard: '/assets/icons/filters/categories/motorbike.svg',
+    active: '/assets/icons/filters/categories/motorbike_selected.svg',
+    hover: '/assets/icons/filters/categories/motorbike_hover.svg',
+    stroke: '/assets/icons/filters/categories/motorbike_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.HELMET,
+    standard: '/assets/icons/filters/categories/helmet.svg',
+    active: '/assets/icons/filters/categories/helmet_selected.svg',
+    hover: '/assets/icons/filters/categories/helmet_hover.svg',
+    stroke: '/assets/icons/filters/categories/helmet_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.T_SHIRT,
+    standard: '/assets/icons/filters/categories/t-shirt.svg',
+    active: '/assets/icons/filters/categories/t-shirt_selected.svg',
+    hover: '/assets/icons/filters/categories/t-shirt_hover.svg',
+    stroke: '/assets/icons/filters/categories/t-shirt_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.HOUSE,
+    standard: '/assets/icons/filters/categories/house.svg',
+    active: '/assets/icons/filters/categories/house_selected.svg',
+    hover: '/assets/icons/filters/categories/house_hover.svg',
+    stroke: '/assets/icons/filters/categories/house_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.TV,
+    standard: '/assets/icons/filters/categories/tv.svg',
+    active: '/assets/icons/filters/categories/tv_selected.svg',
+    hover: '/assets/icons/filters/categories/tv_hover.svg',
+    stroke: '/assets/icons/filters/categories/tv_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.PHONE,
+    standard: '/assets/icons/filters/categories/phone.svg',
+    active: '/assets/icons/filters/categories/phone_selected.svg',
+    hover: '/assets/icons/filters/categories/phone_hover.svg',
+    stroke: '/assets/icons/filters/categories/phone_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.PC,
+    standard: '/assets/icons/filters/categories/pc.svg',
+    active: '/assets/icons/filters/categories/pc_selected.svg',
+    hover: '/assets/icons/filters/categories/pc_hover.svg',
+    stroke: '/assets/icons/filters/categories/pc_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.BALL,
+    standard: '/assets/icons/filters/categories/ball.svg',
+    active: '/assets/icons/filters/categories/ball_selected.svg',
+    hover: '/assets/icons/filters/categories/ball_hover.svg',
+    stroke: '/assets/icons/filters/categories/ball_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.BIKE,
+    standard: '/assets/icons/filters/categories/bike.svg',
+    active: '/assets/icons/filters/categories/bike_selected.svg',
+    hover: '/assets/icons/filters/categories/bike_hover.svg',
+    stroke: '/assets/icons/filters/categories/bike_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.GAMEPAD,
+    standard: '/assets/icons/filters/categories/gamepad.svg',
+    active: '/assets/icons/filters/categories/gamepad_selected.svg',
+    hover: '/assets/icons/filters/categories/gamepad_hover.svg',
+    stroke: '/assets/icons/filters/categories/gamepad_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.FURNITURE,
+    standard: '/assets/icons/filters/categories/furniture.svg',
+    active: '/assets/icons/filters/categories/furniture_selected.svg',
+    hover: '/assets/icons/filters/categories/furniture_hover.svg',
+    stroke: '/assets/icons/filters/categories/furniture_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.LAUNDRY,
+    standard: '/assets/icons/filters/categories/laundry.svg',
+    active: '/assets/icons/filters/categories/laundry_selected.svg',
+    hover: '/assets/icons/filters/categories/laundry_hover.svg',
+    stroke: '/assets/icons/filters/categories/laundry_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.BOOKSHELF,
+    standard: '/assets/icons/filters/categories/bookshelf.svg',
+    active: '/assets/icons/filters/categories/bookshelf_selected.svg',
+    hover: '/assets/icons/filters/categories/bookshelf_hover.svg',
+    stroke: '/assets/icons/filters/categories/bookshelf_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.BABY_CAR,
+    standard: '/assets/icons/filters/categories/baby_car.svg',
+    active: '/assets/icons/filters/categories/baby_car_selected.svg',
+    hover: '/assets/icons/filters/categories/baby_car_hover.svg',
+    stroke: '/assets/icons/filters/categories/baby_car_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.COLLECTING,
+    standard: '/assets/icons/filters/categories/collecting.svg',
+    active: '/assets/icons/filters/categories/collecting_selected.svg',
+    hover: '/assets/icons/filters/categories/collecting_hover.svg',
+    stroke: '/assets/icons/filters/categories/collecting_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.BUILDIMG,
+    standard: '/assets/icons/filters/categories/building.svg',
+    active: '/assets/icons/filters/categories/building_selected.svg',
+    hover: '/assets/icons/filters/categories/building_hover.svg',
+    stroke: '/assets/icons/filters/categories/building_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.FARMING,
+    standard: '/assets/icons/filters/categories/farming.svg',
+    active: '/assets/icons/filters/categories/farming_selected.svg',
+    hover: '/assets/icons/filters/categories/farming_hover.svg',
+    stroke: '/assets/icons/filters/categories/farming_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.JOBS,
+    standard: '/assets/icons/filters/categories/jobs.svg',
+    active: '/assets/icons/filters/categories/jobs_selected.svg',
+    hover: '/assets/icons/filters/categories/jobs_hover.svg',
+    stroke: '/assets/icons/filters/categories/jobs_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.TOOLBOX,
+    standard: '/assets/icons/filters/categories/toolbox.svg',
+    active: '/assets/icons/filters/categories/toolbox_selected.svg',
+    hover: '/assets/icons/filters/categories/toolbox_hover.svg',
+    stroke: '/assets/icons/filters/categories/toolbox_stroke.svg',
+  },
+  {
+    id: CATEGORY_ICON_ID.GHOST,
+    standard: '/assets/icons/filters/categories/ghost.svg',
+    active: '/assets/icons/filters/categories/ghost_selected.svg',
+    hover: '/assets/icons/filters/categories/ghost_hover.svg',
+    stroke: '/assets/icons/filters/categories/ghost_stroke.svg',
+  },
+];
 
 export const CATEGORY_OPTIONS: CategoriesFilterOption[] = [
   {
