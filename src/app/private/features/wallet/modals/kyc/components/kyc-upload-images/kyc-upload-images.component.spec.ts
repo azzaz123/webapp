@@ -7,20 +7,17 @@ import { MOCK_MEDIA_STREAM } from '@fixtures/media-stream.fixtures.spec';
 import {
   MOCK_EMPTY_KYC_IMAGES,
   MOCK_KYC_IMAGES_BASE_64,
-  MOCK_KYC_IMAGES_BACK_DEFINED,
   MOCK_KYC_IMAGES_BASE_64_BACK_NULL,
   MOCK_JPEG_IMG_EVENT,
   MOCK_WITHOUT_JPEG_IMG_EVENT,
 } from '@fixtures/private/wallet/kyc/kyc-images.fixtures.spec';
-import { MOCK_DEVICE_PERMISSIONS } from '@fixtures/user-device-permissions.fixtures.spec';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
-import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { BannerComponent } from '@shared/banner/banner.component';
 import { ButtonComponent } from '@shared/button/button.component';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
-import { AskPermissionsService } from '@shared/services/ask-permissions/ask-permissions.service';
-import { DEVICE_PERMISSIONS_STATUS, UserDevicePermissions } from '@shared/services/ask-permissions/user-device-permissions.interface';
+import { RequestVideoPermissionsService } from '@shared/services/video/request-video-permissions/request-video-permissions.service';
+import { VIDEO_PERMISSIONS_STATUS } from '@shared/services/video/request-video-permissions/video-permissions-status.interface';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
@@ -30,13 +27,17 @@ import { KYCUploadImagesComponent } from './kyc-upload-images.component';
 @Component({
   selector: 'tsl-test-wrapper',
   template: `
-    <tsl-kyc-upload-images [imagesNeeded]="imagesNeeded" [takeImageMethod]="takeImageMethod" [images]="images"></tsl-kyc-upload-images>
+    <tsl-kyc-upload-images
+      [imagesNeeded]="imagesNeeded"
+      [takeImageMethod]="takeImageMethod"
+      [headerText]="headerText"
+    ></tsl-kyc-upload-images>
   `,
 })
 class TestWrapperComponent {
   @Input() imagesNeeded: KYCImagesNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
-  @Input() images: KYCImages;
+  @Input() headerText: string;
 }
 
 describe('KYCUploadImagesComponent', () => {
@@ -44,27 +45,25 @@ describe('KYCUploadImagesComponent', () => {
   let testComponent: TestWrapperComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
   let de: DebugElement;
-  let askPermissionsService: AskPermissionsService;
+  let requestVideoPermissionsService: RequestVideoPermissionsService;
 
-  const devicePermissionsSubjectMock: BehaviorSubject<UserDevicePermissions> = new BehaviorSubject<UserDevicePermissions>(
-    MOCK_DEVICE_PERMISSIONS
+  const videoPermissionsSubjectMock: BehaviorSubject<VIDEO_PERMISSIONS_STATUS> = new BehaviorSubject<VIDEO_PERMISSIONS_STATUS>(
+    VIDEO_PERMISSIONS_STATUS.LOADING
   );
-  const cameraResponseSubjectMock: BehaviorSubject<any> = new BehaviorSubject<any>(MOCK_MEDIA_STREAM);
+  const videoStreamSubjectMock: BehaviorSubject<any> = new BehaviorSubject<any>(MOCK_MEDIA_STREAM);
+  const srcObjectMock: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  const takePhotoCopy = $localize`:@@kyc_request_photo_counter_shoot:Take photo`;
-  const uploadPhotoCopy = $localize`:@@kyc_request_photo_counter_upload:Upload photo`;
-  const takeFrontSideImageSelector = '#takeFrontSideImage';
-  const takeBackSideImageSelector = '#takeBackSideImage';
-  const frontSideImageUploadSelector = '#frontSideImageUpload';
-  const backSideImageUploadSelector = '#backSideImageUpload';
+  const takeImageButtonSelector = '#takeImageButton';
+  const retakeImageButtonSelector = '#retakeImageButton';
+  const continueVerificationButtonSelector = '#continueVerificationButton';
   const endVerificationButtonSelector = '#endVerificationButton';
-  const imagesCounterButtonSelector = '#imagesCounterButton';
-  const frontSideImageSelector = '#frontSideImage';
-  const deleteFrontSideImageSelector = '#deleteFrontSideImage';
-  const backSideImageSelector = '#backSideImage';
-  const deleteBackSideImageSelector = '#deleteBackSideImage';
+  const uploadImageSelector = '#uploadImage';
+  const userVideoSelector = '#userVideo';
+  const definedImageSelector = '#definedImage';
   const backButtonSelector = '.KYCUploadImages__back';
-  const titleSelector = '#KYCUploadImages__title';
+  const imageBlockSelector = '#imageBlock';
+  const loadingBlockSelector = '#loadingBlock';
+  const uploadImageDefinedContentSelector = '#uploadImageDefinedContent';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -72,14 +71,16 @@ describe('KYCUploadImagesComponent', () => {
       declarations: [TestWrapperComponent, KYCUploadImagesComponent, BannerComponent, SvgIconComponent, ButtonComponent],
       providers: [
         {
-          provide: AskPermissionsService,
+          provide: RequestVideoPermissionsService,
           useValue: {
-            get userDevicePermissions$() {
-              return devicePermissionsSubjectMock.asObservable();
+            get userVideoPermissions$() {
+              return videoPermissionsSubjectMock.asObservable();
             },
-            askCameraPermissions() {
-              return cameraResponseSubjectMock.asObservable();
+            get videoStream$() {
+              return videoStreamSubjectMock.asObservable();
             },
+            stopStream() {},
+            request() {},
           },
         },
         {
@@ -93,16 +94,25 @@ describe('KYCUploadImagesComponent', () => {
   });
 
   beforeEach(() => {
+    mockSrcObjectInHTMLVideoElement();
     fixture = TestBed.createComponent(TestWrapperComponent);
-    askPermissionsService = TestBed.inject(AskPermissionsService);
+    requestVideoPermissionsService = TestBed.inject(RequestVideoPermissionsService);
     de = fixture.debugElement;
     component = de.query(By.directive(KYCUploadImagesComponent)).componentInstance;
     testComponent = fixture.componentInstance;
-    testComponent.images = MOCK_EMPTY_KYC_IMAGES;
+    component.images$.next(MOCK_EMPTY_KYC_IMAGES);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show the header text defined', () => {
+    testComponent.headerText = 'Laia';
+
+    fixture.detectChanges();
+
+    expect(de.nativeElement.querySelector('#headerText').innerHTML).toEqual(testComponent.headerText);
   });
 
   describe('when the user selects the shoot image method', () => {
@@ -110,50 +120,95 @@ describe('KYCUploadImagesComponent', () => {
       testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
     });
 
-    it('should show the shoot image title', () => {
-      fixture.detectChanges();
-
-      const title = de.query(By.css(titleSelector)).nativeElement;
-      expect(title.innerHTML).toBe($localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`);
-    });
-
     describe(`and the user's browser supports the API`, () => {
-      describe('and the user accept the permission', () => {
-        beforeEach(() => {
-          spyOn(component.imagesChange, 'emit');
-          cameraResponseSubjectMock.next(MOCK_MEDIA_STREAM);
-          devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.ACCEPTED });
+      beforeEach(() => {
+        spyOn(requestVideoPermissionsService, 'request');
+      });
 
+      describe(`and we are waiting for user's response`, () => {
+        beforeEach(() => {
+          videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.LOADING);
           fixture.detectChanges();
         });
 
-        it('should set the user permissions as accepted', () => {
-          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+        it('should set the user permissions as loading', () => {
+          let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-          component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
-            cameraPermissions = permissions.video;
+          component.videoPermissions$.subscribe((permissions: VIDEO_PERMISSIONS_STATUS) => {
+            videoPermissions = permissions;
           });
 
-          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.ACCEPTED);
+          expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.LOADING);
+        });
+
+        it('should show the loading status', () => {
+          expectShouldShowLoadingStatus(true);
+        });
+
+        it('should not show the error banner', () => {
+          const banner = de.query(By.directive(BannerComponent));
+          expect(banner).toBeFalsy();
+        });
+
+        it('should hide the camera block', () => {
+          expectImageBlockHiddenInDOM(true);
+        });
+      });
+
+      describe('and the user accept the permission', () => {
+        beforeEach(() => {
+          spyOn(component.goBack, 'emit');
+
+          videoStreamSubjectMock.next(MOCK_MEDIA_STREAM);
+          videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.ACCEPTED);
+        });
+
+        it('should set the user permissions as accepted', () => {
+          let videoPermissions: VIDEO_PERMISSIONS_STATUS;
+
+          fixture.detectChanges();
+          component.videoPermissions$.subscribe((permissions: VIDEO_PERMISSIONS_STATUS) => {
+            videoPermissions = permissions;
+          });
+
+          expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.ACCEPTED);
+        });
+
+        it('should show the webcam video in the template', () => {
+          fixture.detectChanges();
+
+          expectVideoInDOM(true);
         });
 
         it('should define the webcam video stream', () => {
-          expect(component.userCamera.nativeElement.srcObject).toStrictEqual(MOCK_MEDIA_STREAM);
+          fixture.detectChanges();
+
+          expect(srcObjectMock.value).toStrictEqual(MOCK_MEDIA_STREAM);
         });
 
-        it('should show the video on the template', () => {
-          const usersCamera = de.query(By.css('video'));
-          expect(usersCamera).toBeTruthy();
-        });
+        it('should show the camera block', () => {
+          fixture.detectChanges();
 
-        it('should show the take image button ', () => {
-          const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector));
-          expect(imagesCounterButton).toBeTruthy();
+          expectImageBlockHiddenInDOM(false);
         });
 
         it('should NOT show an error banner', () => {
+          fixture.detectChanges();
+
           const banner = de.query(By.directive(BannerComponent));
           expect(banner).toBeFalsy();
+        });
+
+        it('should NOT show the loading status', () => {
+          fixture.detectChanges();
+
+          expectShouldShowLoadingStatus(false);
+        });
+
+        it('should not render the input upload image ', () => {
+          fixture.detectChanges();
+
+          expectUploadImageInDOM(false);
         });
 
         describe('and the user must provide two images of the document', () => {
@@ -161,279 +216,360 @@ describe('KYCUploadImagesComponent', () => {
             testComponent.imagesNeeded = 2;
           });
 
-          describe('and the images are NOT shoot', () => {
+          describe('and we are on the front side image step', () => {
             beforeEach(() => {
-              testComponent.images = MOCK_EMPTY_KYC_IMAGES;
+              component.images$.next(MOCK_EMPTY_KYC_IMAGES);
 
               fixture.detectChanges();
             });
 
-            it('should show the front side take photo message', () => {
-              expectTakeFrontSideImageInDOM(true);
-            });
-
-            it('should NOT show the front side image', () => {
-              expectFrontSideImageInDOM(false);
-            });
-
-            it('should show the back side take photo message', () => {
-              expectTakeBackSideImageInDOM(true);
-            });
-
-            it('should NOT show the back side image', () => {
-              expectBackSideImageInDOM(false);
+            it('should show the continue verification button', () => {
+              expectContinueButtonInDOM(true);
             });
 
             it('should NOT show the end verification button', () => {
-              expectVerificationButtonInDOM(false);
+              expectEndVerificationButtonInDOM(false);
             });
 
-            it('should show the defined images counter as 0', () => {
-              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
+            describe('and the front side image is not defined', () => {
+              it('should show the correct title', () => {
+                const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_title:Take a photo of the front side of your ID document`;
 
-              expect(component.actionButtonCopy).toBe(takePhotoCopy);
-              expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (0/2)`);
-            });
-
-            describe('and they click on the front side image box', () => {
-              beforeEach(() => {
-                spyOn(de.query(By.css(frontSideImageUploadSelector)).nativeElement, 'click');
+                expectShowCorrectTitle(expectedTitle);
               });
 
-              it('should not open the device folder to update an image ', () => {
-                expect(component.frontSideImageUpload.nativeElement.click).not.toHaveBeenCalled();
-              });
-            });
+              it('should show the correct subtitle', () => {
+                const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Go somewhere with good lighting, focus the camera on the document, and take the best photo possible.`;
 
-            describe('and they click on the back side image box', () => {
-              beforeEach(() => {
-                spyOn(de.query(By.css(backSideImageUploadSelector)).nativeElement, 'click');
+                expectShowCorrectSubtitle(expectedSubtitle);
               });
 
-              it('should not open the device folder to update an image ', () => {
-                expect(component.backSideImageUpload.nativeElement.click).not.toHaveBeenCalled();
-              });
-            });
-
-            describe('and they shoot an image', () => {
-              beforeEach(() => {
-                spyOn(component.frontSideImage.nativeElement.getContext('2d'), 'drawImage');
-                spyOn(component.frontSideImage.nativeElement, 'toDataURL').and.returnValue('NEW_IMAGE_SHOOT');
-
-                de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
+              it('should show the take image button', () => {
+                expectTakeImageButtonInDOM(true);
               });
 
-              it('should convert the canvas to a jpeg image with hight quality', () => {
-                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
+              it('should show the correct take image message in the button', () => {
+                const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_photo_button:Take front side photo`;
+                expectTakeImageButtonCorrectMessage(expectedMessage);
               });
 
-              it('should draw the front side image on the screen', () => {
-                expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+              it('should NOT show the retake image button', () => {
+                expectRetakeImageButtonInDOM(false);
               });
 
-              it('should emit the new front side image', () => {
-                expect(component.imagesChange.emit).toHaveBeenCalledWith({
-                  ...component.images,
-                  frontSide: 'NEW_IMAGE_SHOOT',
+              it('should show the user video', () => {
+                expectVideoHiddenInDom(false);
+              });
+
+              it('should NOT show the front side image', () => {
+                expectDefinedImageInDOM(false);
+              });
+
+              it('should disable the continue button', () => {
+                expectContinueButtonDisabled(true);
+              });
+
+              describe('and they click on the shoot front side image button', () => {
+                beforeEach(() => {
+                  spyOn(component.definedImageCanvas.nativeElement.getContext('2d'), 'drawImage');
+                  spyOn(component.definedImageCanvas.nativeElement, 'toDataURL').and.returnValue('NEW_IMAGE_SHOOT');
+
+                  de.query(By.css(takeImageButtonSelector)).nativeElement.click();
+                  fixture.detectChanges();
                 });
+
+                it('should convert the canvas to a jpeg image with hight quality', () => {
+                  expect(component.definedImageCanvas.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
+                });
+
+                it('should draw the image on the screen', () => {
+                  expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+                });
+
+                it('should update the new front side image', () => {
+                  expect(component.images$.value).toStrictEqual({
+                    ...component.images$.value,
+                    frontSide: 'NEW_IMAGE_SHOOT',
+                  });
+                });
+              });
+            });
+
+            describe('and the front side image is defined', () => {
+              beforeEach(() => {
+                component.images$.next(MOCK_KYC_IMAGES_BASE_64_BACK_NULL);
+
+                fixture.detectChanges();
+              });
+
+              it('should show the correct title', () => {
+                const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_title:Check the photo of the front side of your document`;
+
+                expectShowCorrectTitle(expectedTitle);
+              });
+
+              it('should show the correct subtitle', () => {
+                const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_description:All the details on your ID document must be clear and perfectly legible.`;
+
+                expectShowCorrectSubtitle(expectedSubtitle);
+              });
+
+              it('should NOT show the take image button', () => {
+                expectTakeImageButtonInDOM(false);
+              });
+
+              it('should show the retake image button', () => {
+                expectRetakeImageButtonInDOM(true);
+              });
+
+              it('should show the correct retake image message in the button', () => {
+                const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_photo_button:Retake front side photo`;
+                expectRetakeImageButtonCorrectMessage(expectedMessage);
+              });
+
+              it('should not render the user video', () => {
+                expectVideoInDOM(false);
+              });
+
+              it('should stop all the activated tracks', () => {
+                expectAllTracksHaveBeenStopped();
+              });
+
+              it('should show the front side image', () => {
+                expectDefinedImageInDOM(true);
+              });
+
+              it('should enable the continue button', () => {
+                expectContinueButtonDisabled(false);
+              });
+
+              describe('and they click on retake the front side image', () => {
+                beforeEach(() => {
+                  de.query(By.css(retakeImageButtonSelector)).nativeElement.click();
+                });
+
+                it('should remove the front side image', () => {
+                  expect(component.images$.value).toStrictEqual({
+                    ...component.images$.value,
+                    frontSide: null,
+                  });
+                });
+
+                it('should active the video stream again', () => {
+                  expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
+                });
+              });
+
+              describe('and they click on continue verification button', () => {
+                beforeEach(() => {
+                  de.query(By.css(continueVerificationButtonSelector)).nativeElement.click();
+                });
+
+                it('should go to take the back side image', () => {
+                  expect(component.activeStep$.value).toBe(2);
+                });
+
+                it('should active the video stream again', () => {
+                  expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
+                });
+              });
+            });
+
+            describe('and the user go back', () => {
+              beforeEach(() => {
+                de.query(By.css(backButtonSelector)).nativeElement.click();
+              });
+
+              it('should emit the go back action to the parent', () => {
+                expect(component.goBack.emit).toHaveBeenCalledTimes(1);
               });
             });
           });
 
-          describe('and ONLY the front side image is already shoot', () => {
+          describe('and we are on the back side image step', () => {
             beforeEach(() => {
-              testComponent.images = MOCK_KYC_IMAGES_BASE_64_BACK_NULL;
+              component.activeStep$.next(2);
+              component.images$.next(MOCK_KYC_IMAGES_BASE_64_BACK_NULL);
+            });
 
+            it('should NOT show the continue verification button', () => {
               fixture.detectChanges();
-            });
 
-            it('should show the front side image', () => {
-              expectFrontSideImageInDOM(true);
-            });
-
-            it('should NOT show the front side take photo message', () => {
-              expectTakeFrontSideImageInDOM(false);
-            });
-
-            it('should NOT show the back side image', () => {
-              expectBackSideImageInDOM(false);
-            });
-
-            it('should show the back side take photo message', () => {
-              expectTakeBackSideImageInDOM(true);
-            });
-
-            it('should NOT show the end verification button', () => {
-              expectVerificationButtonInDOM(false);
-            });
-
-            it('should show the defined images counter as 1', () => {
-              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
-
-              expect(component.actionButtonCopy).toBe(takePhotoCopy);
-              expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (1/2)`);
-            });
-
-            describe('and they shoot an image', () => {
-              beforeEach(() => {
-                spyOn(component.backSideImage.nativeElement.getContext('2d'), 'drawImage');
-                spyOn(component.backSideImage.nativeElement, 'toDataURL').and.returnValue('NEW_BACK_IMAGE_SHOOT');
-
-                de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
-              });
-
-              it('should convert the canvas to a jpeg image with hight quality', () => {
-                expect(component.backSideImage.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
-              });
-
-              it('should draw the back side image on the screen', () => {
-                expect(component.backSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
-              });
-
-              it('should emit the new back side image', () => {
-                expect(component.imagesChange.emit).toHaveBeenCalledWith({
-                  ...component.images,
-                  backSide: 'NEW_BACK_IMAGE_SHOOT',
-                });
-              });
-            });
-
-            describe('and they delete the front side image', () => {
-              beforeEach(() => {
-                de.query(By.css(deleteFrontSideImageSelector)).nativeElement.click();
-              });
-
-              it('should emit the empty front side image', () => {
-                expect(component.imagesChange.emit).toHaveBeenCalledWith({
-                  ...component.images,
-                  frontSide: null,
-                });
-              });
-            });
-          });
-
-          describe('and ONLY the back side image is already shoot', () => {
-            beforeEach(() => {
-              testComponent.images = MOCK_KYC_IMAGES_BACK_DEFINED;
-
-              fixture.detectChanges();
-            });
-
-            it('should show the back side image', () => {
-              expectBackSideImageInDOM(true);
-            });
-
-            it('should NOT show the back side take photo message', () => {
-              expectTakeBackSideImageInDOM(false);
-            });
-
-            it('should NOT show the front side image', () => {
-              expectFrontSideImageInDOM(false);
-            });
-
-            it('should show the front side take photo message', () => {
-              expectTakeFrontSideImageInDOM(true);
-            });
-
-            it('should NOT show the end verification button', () => {
-              expectVerificationButtonInDOM(false);
-            });
-
-            it('should show the defined images counter as 1', () => {
-              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
-
-              expect(component.actionButtonCopy).toBe(takePhotoCopy);
-              expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (1/2)`);
-            });
-
-            describe('and they shoot an image', () => {
-              beforeEach(() => {
-                spyOn(component.frontSideImage.nativeElement.getContext('2d'), 'drawImage');
-                spyOn(component.frontSideImage.nativeElement, 'toDataURL').and.returnValue('NEW_FRONT_IMAGE_SHOOT');
-
-                de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
-              });
-
-              it('should convert the canvas to a jpeg image with hight quality', () => {
-                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
-              });
-
-              it('should draw the front side image on the screen', () => {
-                expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
-              });
-
-              it('should emit the new front side image', () => {
-                expect(component.imagesChange.emit).toHaveBeenCalledWith({
-                  ...component.images,
-                  frontSide: 'NEW_FRONT_IMAGE_SHOOT',
-                });
-              });
-            });
-
-            describe('and they delete the back side image', () => {
-              beforeEach(() => {
-                de.query(By.css(deleteBackSideImageSelector)).nativeElement.click();
-              });
-
-              it('should emit the empty back side image', () => {
-                expect(component.imagesChange.emit).toHaveBeenCalledWith({
-                  ...component.images,
-                  backSide: null,
-                });
-              });
-            });
-          });
-
-          describe('and the two images are already shoot', () => {
-            beforeEach(() => {
-              testComponent.images = MOCK_KYC_IMAGES_BASE_64;
-
-              fixture.detectChanges();
-            });
-
-            it('should NOT show the counter images button', () => {
-              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector));
-              expect(imagesCounterButton).toBeFalsy();
+              expectContinueButtonInDOM(false);
             });
 
             it('should show the end verification button', () => {
-              expectVerificationButtonInDOM(true);
+              fixture.detectChanges();
+
+              expectEndVerificationButtonInDOM(true);
             });
 
-            describe('and the user requests the KYC verification...', () => {
+            describe('and the back side image is not defined', () => {
               beforeEach(() => {
-                spyOn(component.endVerification, 'emit');
-                de.query(By.css(endVerificationButtonSelector)).nativeElement.click();
+                fixture.detectChanges();
               });
 
-              it('should notify to the parent that the verification is finished', () => {
-                expectEndVerificationNotifyParent();
-              });
-            });
+              it('should show the correct title', () => {
+                const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_title:Take a back side photo of your document`;
 
-            describe('and they delete the front side image', () => {
-              beforeEach(() => {
-                de.query(By.css(deleteFrontSideImageSelector)).nativeElement.click();
+                expectShowCorrectTitle(expectedTitle);
               });
 
-              it('should emit the empty front side image', () => {
-                expect(component.imagesChange.emit).toHaveBeenCalledWith({
-                  ...component.images,
-                  frontSide: null,
+              it('should show the correct subtitle', () => {
+                const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_description:To finish the verification process, you just need to take a photo of the back side of your ID document.`;
+
+                expectShowCorrectSubtitle(expectedSubtitle);
+              });
+
+              it('should show the take image button', () => {
+                expectTakeImageButtonInDOM(true);
+              });
+
+              it('should show the correct take image message in the button', () => {
+                const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_continue_button:Take back side photo`;
+                expectTakeImageButtonCorrectMessage(expectedMessage);
+              });
+
+              it('should NOT show the retake image button', () => {
+                expectRetakeImageButtonInDOM(false);
+              });
+
+              it('should show the user video', () => {
+                expectVideoHiddenInDom(false);
+              });
+
+              it('should NOT show the back side image', () => {
+                expectDefinedImageInDOM(false);
+              });
+
+              it('should disable the end verification button', () => {
+                expectEndVerificationButtonDisabled(true);
+              });
+
+              describe('and they click on the shoot back side image button', () => {
+                beforeEach(() => {
+                  spyOn(component.definedImageCanvas.nativeElement.getContext('2d'), 'drawImage');
+                  spyOn(component.definedImageCanvas.nativeElement, 'toDataURL').and.returnValue('NEW_BACK_IMAGE_SHOOT');
+
+                  de.query(By.css(takeImageButtonSelector)).nativeElement.click();
+                  fixture.detectChanges();
+                });
+
+                it('should convert the canvas to a jpeg image with hight quality', () => {
+                  expect(component.definedImageCanvas.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
+                });
+
+                it('should draw the back side image on the screen', () => {
+                  expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+                });
+
+                it('should update the new back side image', () => {
+                  expect(component.images$.value).toStrictEqual({
+                    ...component.images$.value,
+                    backSide: 'NEW_BACK_IMAGE_SHOOT',
+                  });
                 });
               });
             });
 
-            describe('and they delete the back side image', () => {
+            describe('and the back side image is defined', () => {
               beforeEach(() => {
-                de.query(By.css(deleteBackSideImageSelector)).nativeElement.click();
+                component.images$.next(MOCK_KYC_IMAGES_BASE_64);
+
+                fixture.detectChanges();
               });
 
-              it('should emit the empty back side image', () => {
-                expect(component.imagesChange.emit).toHaveBeenCalledWith({
-                  ...component.images,
+              it('should show the correct title', () => {
+                const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_title:Check the photo of the back side of your document`;
+
+                expectShowCorrectTitle(expectedTitle);
+              });
+
+              it('should show the correct subtitle', () => {
+                const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_description:All the details on your ID document must be clear and perfectly legible.`;
+
+                expectShowCorrectSubtitle(expectedSubtitle);
+              });
+
+              it('should NOT show the take image button', () => {
+                expectTakeImageButtonInDOM(false);
+              });
+
+              it('should show the retake image button', () => {
+                expectRetakeImageButtonInDOM(true);
+              });
+
+              it('should show the correct retake image message in the button', () => {
+                const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_photo_button:Retake back side photo`;
+                expectRetakeImageButtonCorrectMessage(expectedMessage);
+              });
+
+              it('should not render the user video', () => {
+                expectVideoInDOM(false);
+              });
+
+              it('should stop all the activated tracks', () => {
+                expectAllTracksHaveBeenStopped();
+              });
+
+              it('should show the back side image', () => {
+                expectDefinedImageInDOM(true);
+              });
+
+              it('should enable the end verification button', () => {
+                expectEndVerificationButtonDisabled(false);
+              });
+
+              describe('and they click on retake the back side image', () => {
+                beforeEach(() => {
+                  de.query(By.css(retakeImageButtonSelector)).nativeElement.click();
+                });
+
+                it('should remove the back side image', () => {
+                  expect(component.images$.value).toStrictEqual({
+                    ...component.images$.value,
+                    backSide: null,
+                  });
+                });
+
+                it('should active the video stream again', () => {
+                  expect(requestVideoPermissionsService.request).toHaveBeenCalled();
+                });
+              });
+
+              describe('and they click on end verification button', () => {
+                beforeEach(() => {
+                  spyOn(component.endVerification, 'emit');
+                  de.query(By.css(endVerificationButtonSelector)).nativeElement.click();
+                });
+
+                it('should notify to the parent that the verification ends ', () => {
+                  expect(component.endVerification.emit).toHaveBeenCalledTimes(1);
+                  expect(component.endVerification.emit).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64);
+                });
+              });
+            });
+
+            describe('and the user go back', () => {
+              beforeEach(() => {
+                fixture.detectChanges();
+
+                de.query(By.css(backButtonSelector)).nativeElement.click();
+              });
+
+              it('should clean the images', () => {
+                expect(component.images$.value).toStrictEqual({
+                  frontSide: null,
                   backSide: null,
                 });
+              });
+
+              it('should go to the define first image step', () => {
+                expect(component.activeStep$.value).toBe(1);
+              });
+
+              it('should active the video stream again', () => {
+                expect(requestVideoPermissionsService.request).toHaveBeenCalled();
               });
             });
           });
@@ -442,113 +578,174 @@ describe('KYCUploadImagesComponent', () => {
         describe('and the user must provide ONLY one image of the document', () => {
           beforeEach(() => {
             testComponent.imagesNeeded = 1;
+            component.images$.next(MOCK_EMPTY_KYC_IMAGES);
           });
 
-          describe('and the front side image is NOT shoot', () => {
-            beforeEach(() => {
-              testComponent.images = MOCK_EMPTY_KYC_IMAGES;
+          it('should NOT show the continue verification button', () => {
+            fixture.detectChanges();
 
+            expectContinueButtonInDOM(false);
+          });
+
+          it('should show the end verification button', () => {
+            fixture.detectChanges();
+
+            expectEndVerificationButtonInDOM(true);
+          });
+
+          describe('and the image is not defined', () => {
+            beforeEach(() => {
               fixture.detectChanges();
             });
 
-            it('should show the front side take photo message', () => {
-              expectTakeFrontSideImageInDOM(true);
+            it('should show the correct title', () => {
+              const expectedTitle = $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`;
+
+              expectShowCorrectTitle(expectedTitle);
+            });
+
+            it('should show the correct subtitle', () => {
+              const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_one_side_description:Go somewhere with good lighting and take the photo. Make sure the document you provide is valid for at least 3 months.`;
+
+              expectShowCorrectSubtitle(expectedSubtitle);
+            });
+
+            it('should show the take image button', () => {
+              expectTakeImageButtonInDOM(true);
+            });
+
+            it('should show the correct take image message in the button', () => {
+              const expectedMessage = $localize`:@@kyc_take_photo_view_if_one_side_take_photo_button:Take photo`;
+              expectTakeImageButtonCorrectMessage(expectedMessage);
+            });
+
+            it('should NOT show the retake image button', () => {
+              expectRetakeImageButtonInDOM(false);
+            });
+
+            it('should show the user video', () => {
+              expectVideoHiddenInDom(false);
             });
 
             it('should NOT show the front side image', () => {
-              expectFrontSideImageInDOM(false);
+              expectDefinedImageInDOM(false);
             });
 
-            it('should NOT render the back side image content', () => {
-              expectBackSideImageContentInNOTinDOM();
+            it('should disable the end verification button', () => {
+              expectEndVerificationButtonDisabled(true);
             });
 
-            it('should show the defined images counter as 0', () => {
-              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
-
-              expect(component.actionButtonCopy).toBe(takePhotoCopy);
-              expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (0/1)`);
-            });
-
-            it('should NOT show the end verification button', () => {
-              expectVerificationButtonInDOM(false);
-            });
-
-            describe('and they shoot an image', () => {
+            describe('and they click on the shoot front side image button', () => {
               beforeEach(() => {
-                spyOn(component.frontSideImage.nativeElement.getContext('2d'), 'drawImage');
-                spyOn(component.frontSideImage.nativeElement, 'toDataURL').and.returnValue('IMAGE_SHOOT');
+                spyOn(component.definedImageCanvas.nativeElement.getContext('2d'), 'drawImage');
+                spyOn(component.definedImageCanvas.nativeElement, 'toDataURL').and.returnValue('NEW_IMAGE_SHOOT');
 
-                de.query(By.css(imagesCounterButtonSelector)).nativeElement.click();
+                de.query(By.css(takeImageButtonSelector)).nativeElement.click();
+                fixture.detectChanges();
               });
 
               it('should convert the canvas to a jpeg image with hight quality', () => {
-                expect(component.frontSideImage.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
+                expect(component.definedImageCanvas.nativeElement.toDataURL).toHaveBeenCalledWith(MIME_TYPES.IMAGE_JPEG, 1);
               });
 
               it('should draw the front side image on the screen', () => {
-                expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+                expect(component.definedImageCanvas.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
               });
 
-              it('should emit the new front side image', () => {
-                expect(component.imagesChange.emit).toHaveBeenCalledWith({
-                  ...component.images,
-                  frontSide: 'IMAGE_SHOOT',
+              it('should update the new front side image', () => {
+                expect(component.images$.value).toStrictEqual({
+                  ...component.images$.value,
+                  frontSide: 'NEW_IMAGE_SHOOT',
                 });
               });
             });
           });
 
-          describe('and the front side image is already shoot', () => {
+          describe('and the image is defined', () => {
             beforeEach(() => {
-              testComponent.images = MOCK_KYC_IMAGES_BASE_64_BACK_NULL;
+              component.images$.next(MOCK_KYC_IMAGES_BASE_64_BACK_NULL);
 
               fixture.detectChanges();
             });
 
-            it('should NOT show the front side take photo message', () => {
-              expectTakeFrontSideImageInDOM(false);
+            it('should show the correct title', () => {
+              const expectedTitle = $localize`:@@kyc_take_photo_view_if_one_side_review_title:Check the photo of your document`;
+
+              expectShowCorrectTitle(expectedTitle);
+            });
+
+            it('should show the correct subtitle', () => {
+              const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_one_side_review_description:All the details on your document must be clear and perfectly legible.`;
+
+              expectShowCorrectSubtitle(expectedSubtitle);
+            });
+
+            it('should NOT show the take image button', () => {
+              expectTakeImageButtonInDOM(false);
+            });
+
+            it('should show the retake image button', () => {
+              expectRetakeImageButtonInDOM(true);
+            });
+
+            it('should show the correct retake image message in the button', () => {
+              const expectedMessage = $localize`:@@kyc_take_photo_view_if_one_side_review_retake_photo_button:Retake photo`;
+              expectRetakeImageButtonCorrectMessage(expectedMessage);
+            });
+
+            it('should not render the user video', () => {
+              expectVideoInDOM(false);
+            });
+
+            it('should stop all the activated tracks', () => {
+              expectAllTracksHaveBeenStopped();
             });
 
             it('should show the front side image', () => {
-              expectFrontSideImageInDOM(true);
+              expectDefinedImageInDOM(true);
             });
 
-            it('should NOT render the back side image content', () => {
-              expectBackSideImageContentInNOTinDOM();
+            it('should enable the end verification button', () => {
+              expectEndVerificationButtonDisabled(false);
             });
 
-            it('should NOT show the counter images button', () => {
-              const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector));
-              expect(imagesCounterButton).toBeFalsy();
+            describe('and they click on retake the front side image', () => {
+              beforeEach(() => {
+                de.query(By.css(retakeImageButtonSelector)).nativeElement.click();
+              });
+
+              it('should remove the front side image', () => {
+                expect(component.images$.value).toStrictEqual({
+                  ...component.images$.value,
+                  frontSide: null,
+                });
+              });
+
+              it('should active the video stream again', () => {
+                expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(1);
+              });
             });
 
-            it('should show the end verification button', () => {
-              expectVerificationButtonInDOM(true);
-            });
-
-            describe('and the user requests the KYC verification...', () => {
+            describe('and they click on end verification button', () => {
               beforeEach(() => {
                 spyOn(component.endVerification, 'emit');
                 de.query(By.css(endVerificationButtonSelector)).nativeElement.click();
               });
 
-              it('should notify to the parent that the verification is finished', () => {
-                expectEndVerificationNotifyParent();
+              it('should notify to the parent that the verification ends ', () => {
+                expect(component.endVerification.emit).toHaveBeenCalledTimes(1);
+                expect(component.endVerification.emit).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64_BACK_NULL);
               });
             });
+          });
 
-            describe('and they delete the front side image', () => {
-              beforeEach(() => {
-                de.query(By.css(deleteFrontSideImageSelector)).nativeElement.click();
-              });
+          describe('and the user go back', () => {
+            beforeEach(() => {
+              de.query(By.css(backButtonSelector)).nativeElement.click();
+            });
 
-              it('should emit the empty front side image', () => {
-                expect(component.imagesChange.emit).toHaveBeenCalledWith({
-                  ...component.images,
-                  frontSide: null,
-                });
-              });
+            it('should emit the go back action to the parent', () => {
+              expect(component.goBack.emit).toHaveBeenCalledTimes(1);
             });
           });
         });
@@ -556,20 +753,20 @@ describe('KYCUploadImagesComponent', () => {
 
       describe('and the user denied the permission', () => {
         beforeEach(() => {
-          cameraResponseSubjectMock.next(throwError('denied'));
-          devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.DENIED });
+          videoStreamSubjectMock.next(throwError('denied'));
+          videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.DENIED);
 
           fixture.detectChanges();
         });
 
         it('should set the user permissions as denied', () => {
-          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+          let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-          component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
-            cameraPermissions = permissions.video;
+          component.videoPermissions$.subscribe((permissions: VIDEO_PERMISSIONS_STATUS) => {
+            videoPermissions = permissions;
           });
 
-          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.DENIED);
+          expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.DENIED);
         });
 
         it('should show an error banner', () => {
@@ -580,20 +777,20 @@ describe('KYCUploadImagesComponent', () => {
 
       describe('and a problem other than permit rejection occurs', () => {
         beforeEach(() => {
-          cameraResponseSubjectMock.next(throwError('Generic Error'));
-          devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS });
+          videoStreamSubjectMock.next(throwError('Generic Error'));
+          videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
 
           fixture.detectChanges();
         });
 
         it('should set the user permissions as cannot access', () => {
-          let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+          let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-          component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
-            cameraPermissions = permissions.video;
+          component.videoPermissions$.subscribe((permissions: VIDEO_PERMISSIONS_STATUS) => {
+            videoPermissions = permissions;
           });
 
-          expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS);
+          expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
         });
 
         it('should show an error banner', () => {
@@ -605,20 +802,20 @@ describe('KYCUploadImagesComponent', () => {
 
     describe(`and the user's browser does NOT support the API`, () => {
       beforeEach(() => {
-        cameraResponseSubjectMock.next(throwError('Not Allowed'));
-        devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS });
+        videoStreamSubjectMock.next(throwError('Not Allowed'));
+        videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
 
         fixture.detectChanges();
       });
 
       it('should set the user permissions as cannot access', () => {
-        let cameraPermissions: DEVICE_PERMISSIONS_STATUS;
+        let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-        component.userDevicePermissions$.subscribe((permissions: UserDevicePermissions) => {
-          cameraPermissions = permissions.video;
+        component.videoPermissions$.subscribe((permissions: VIDEO_PERMISSIONS_STATUS) => {
+          videoPermissions = permissions;
         });
 
-        expect(cameraPermissions).toBe(DEVICE_PERMISSIONS_STATUS.CANNOT_ACCESS);
+        expect(videoPermissions).toBe(VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS);
       });
 
       it('should show an error banner', () => {
@@ -630,352 +827,872 @@ describe('KYCUploadImagesComponent', () => {
 
   describe('when the user selects the upload image method', () => {
     beforeEach(() => {
-      spyOn(askPermissionsService, 'askCameraPermissions');
+      spyOn(requestVideoPermissionsService, 'request');
       testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
+    });
 
+    it('should NOT show the loading status', () => {
+      expectShouldShowLoadingStatus(false);
+    });
+
+    it('should NOT request video access', () => {
       fixture.detectChanges();
+
+      expect(requestVideoPermissionsService.request).not.toHaveBeenCalled();
     });
 
-    it('should show the upload image title', () => {
-      const title = de.query(By.css(titleSelector)).nativeElement;
-      expect(title.innerHTML).toBe($localize`:@@kyc_upload_photo_view_title:Upload a photo of your document`);
+    it('should show the camera block', () => {
+      fixture.detectChanges();
+
+      expectImageBlockHiddenInDOM(false);
     });
 
-    it('should NOT request camera access', () => {
-      expect(askPermissionsService.askCameraPermissions).not.toHaveBeenCalled();
+    it('should NOT show the user video', () => {
+      fixture.detectChanges();
+
+      expectVideoInDOM(false);
     });
 
-    describe('and the user needs to upload two images', () => {
+    it('should NOT show an error banner', () => {
+      fixture.detectChanges();
+
+      const banner = de.query(By.directive(BannerComponent));
+      expect(banner).toBeFalsy();
+    });
+
+    it('should render the input upload image ', () => {
+      fixture.detectChanges();
+
+      expectUploadImageInDOM(true);
+    });
+
+    describe('and the user must provide two images of the document', () => {
       beforeEach(() => {
         testComponent.imagesNeeded = 2;
       });
 
-      describe('and the images are not uploaded', () => {
-        beforeEach(() => {
-          testComponent.images = MOCK_EMPTY_KYC_IMAGES;
-
+      describe('and we are on the front side image step', () => {
+        it('should show the continue verification button', () => {
           fixture.detectChanges();
+
+          expectContinueButtonInDOM(true);
         });
 
         it('should NOT show the end verification button', () => {
-          expectVerificationButtonInDOM(false);
+          fixture.detectChanges();
+
+          expectEndVerificationButtonInDOM(false);
         });
 
-        it('should show the defined images counter as 0', () => {
-          const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector)).nativeElement;
-
-          expect(component.actionButtonCopy).toBe(uploadPhotoCopy);
-          expect(imagesCounterButton.textContent).toBe(`${component.actionButtonCopy} (0/2)`);
-        });
-
-        it('should show the counter button disabled', () => {
-          const buttonComponentRef: ButtonComponent = de.query(By.css(imagesCounterButtonSelector)).componentInstance;
-
-          expect(buttonComponentRef.disabled).toBe(true);
-        });
-
-        describe('and the user clicks on the upload front side image box', () => {
+        describe('and the front side image is not defined', () => {
           beforeEach(() => {
-            spyOn(component.frontSideImage.nativeElement.getContext('2d'), 'drawImage');
-            spyOn(de.query(By.css(frontSideImageUploadSelector)).nativeElement, 'click');
-            spyOn(component.imagesChange, 'emit');
+            component.images$.next(MOCK_EMPTY_KYC_IMAGES);
 
-            de.query(By.css(takeFrontSideImageSelector)).nativeElement.click();
+            fixture.detectChanges();
+          });
+
+          it('should show the correct title', () => {
+            const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_title:Take a photo of the front side of your ID document`;
+
+            expectShowCorrectTitle(expectedTitle);
+          });
+
+          it('should show the correct subtitle', () => {
+            const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Go somewhere with good lighting, focus the camera on the document, and take the best photo possible.`;
+
+            expectShowCorrectSubtitle(expectedSubtitle);
+          });
+
+          it('should show the take image button', () => {
+            expectTakeImageButtonInDOM(true);
+          });
+
+          it('should show the correct take image message in the button', () => {
+            const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_photo_button:Take front side photo`;
+            expectTakeImageButtonCorrectMessage(expectedMessage);
+          });
+
+          it('should NOT show the retake image button', () => {
+            expectRetakeImageButtonInDOM(false);
+          });
+
+          it('should show the fallback upload image section', () => {
+            expectUploadImageFallbackContentInDOM(true);
+          });
+
+          it('should NOT show the image', () => {
+            expectUploadImageDefinedContentInDOM(false);
+          });
+
+          it('should disable the continue button', () => {
+            expectContinueButtonDisabled(true);
+          });
+
+          describe('and they click on the upload front side image button', () => {
+            beforeEach(() => {
+              spyOn(de.query(By.css(uploadImageSelector)).nativeElement, 'click');
+
+              de.query(By.css(takeImageButtonSelector)).nativeElement.click();
+            });
+
+            it('should open the input file upload', () => {
+              expect(de.query(By.css(uploadImageSelector)).nativeElement.click).toHaveBeenCalledTimes(1);
+            });
+
+            describe('and the user selects a front side image', () => {
+              beforeEach(() => {
+                triggerChangeImageUpload(true);
+
+                fixture.detectChanges();
+              });
+
+              it('should show the updated image on the screen', () => {
+                const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+                const selectedImage = MOCK_JPEG_IMG_EVENT().target.result;
+
+                expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+              });
+
+              it('should NOT show the fallback upload image section', () => {
+                expectUploadImageFallbackContentInDOM(false);
+              });
+
+              it('should update the selected image', () => {
+                expect(component.images$.value).toStrictEqual({
+                  ...component.images$.value,
+                  frontSide: MOCK_BASE_64_SMALL_IMAGE,
+                });
+              });
+            });
+
+            describe('and the user NOT selects a front side image', () => {
+              beforeEach(() => {
+                triggerChangeImageUpload(false);
+
+                fixture.detectChanges();
+              });
+
+              it('should NOT show the defined front side image', () => {
+                expectUploadImageDefinedContentInDOM(false);
+              });
+
+              it('should show the fallback upload image section', () => {
+                expectUploadImageFallbackContentInDOM(true);
+              });
+
+              it('should NOT update the images', () => {
+                expect(component.images$.value).toStrictEqual(MOCK_EMPTY_KYC_IMAGES);
+              });
+            });
+          });
+        });
+
+        describe('and the front side image is defined', () => {
+          beforeEach(() => {
+            component.images$.next(MOCK_KYC_IMAGES_BASE_64_BACK_NULL);
+
+            fixture.detectChanges();
+          });
+
+          it('should show the correct title', () => {
+            const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_title:Check the photo of the front side of your document`;
+
+            expectShowCorrectTitle(expectedTitle);
+          });
+
+          it('should show the correct subtitle', () => {
+            const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_description:All the details on your ID document must be clear and perfectly legible.`;
+
+            expectShowCorrectSubtitle(expectedSubtitle);
+          });
+
+          it('should NOT show the take image button', () => {
+            expectTakeImageButtonInDOM(false);
+          });
+
+          it('should show the retake image button', () => {
+            expectRetakeImageButtonInDOM(true);
+          });
+
+          it('should show the correct retake image message in the button', () => {
+            const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_photo_button:Retake front side photo`;
+            expectRetakeImageButtonCorrectMessage(expectedMessage);
+          });
+
+          it('should NOT show the fallback upload image section', () => {
+            expectUploadImageFallbackContentInDOM(false);
+          });
+
+          it('should show the front side image on the screen', () => {
+            const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+            const selectedImage = MOCK_KYC_IMAGES_BASE_64_BACK_NULL.frontSide;
+
+            expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+          });
+
+          it('should enable the continue button', () => {
+            expectContinueButtonDisabled(false);
+          });
+
+          describe('and they click on retake the front side image', () => {
+            beforeEach(() => {
+              spyOn(component.uploadImage.nativeElement, 'click');
+              de.query(By.css(retakeImageButtonSelector)).nativeElement.click();
+
+              fixture.detectChanges();
+            });
+
+            it('should show the fallback upload image section', () => {
+              expectUploadImageFallbackContentInDOM(true);
+            });
+
+            it('should NOT show the image', () => {
+              expectUploadImageDefinedContentInDOM(false);
+            });
+
+            it('should remove the front side image', () => {
+              expect(component.images$.value).toStrictEqual({
+                ...component.images$.value,
+                frontSide: null,
+              });
+            });
+
+            it('should clean the file input value', () => {
+              expect(component.uploadImage.nativeElement.value).toBeFalsy();
+            });
+
+            it('should open the device folder to update a new image', () => {
+              expect(component.uploadImage.nativeElement.click).toHaveBeenCalled();
+            });
+          });
+
+          describe('and they click on continue verification button', () => {
+            beforeEach(() => {
+              de.query(By.css(continueVerificationButtonSelector)).nativeElement.click();
+
+              fixture.detectChanges();
+            });
+
+            it('should go to take the back side image', () => {
+              expect(component.activeStep$.value).toBe(2);
+            });
+
+            it('should clean the defined image on the screen', () => {
+              expect(component.uploadImage.nativeElement.value).toBeFalsy();
+            });
+          });
+        });
+
+        describe('and the user go back', () => {
+          beforeEach(() => {
+            spyOn(component.goBack, 'emit');
+            de.query(By.css(backButtonSelector)).nativeElement.click();
+          });
+
+          it('should emit the go back action to the parent', () => {
+            expect(component.goBack.emit).toHaveBeenCalledTimes(1);
+          });
+        });
+      });
+
+      describe('and we are on the back side image step', () => {
+        beforeEach(() => {
+          component.activeStep$.next(2);
+        });
+
+        describe('and the back side image is not defined', () => {
+          beforeEach(() => {
+            component.images$.next(MOCK_KYC_IMAGES_BASE_64_BACK_NULL);
+
+            fixture.detectChanges();
+          });
+
+          it('should NOT show the continue verification button', () => {
+            fixture.detectChanges();
+
+            expectContinueButtonInDOM(false);
+          });
+
+          it('should show the end verification button', () => {
+            fixture.detectChanges();
+
+            expectEndVerificationButtonInDOM(true);
+          });
+
+          it('should show the correct title', () => {
+            const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_title:Take a back side photo of your document`;
+
+            expectShowCorrectTitle(expectedTitle);
+          });
+
+          it('should show the correct subtitle', () => {
+            const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_description:To finish the verification process, you just need to take a photo of the back side of your ID document.`;
+
+            expectShowCorrectSubtitle(expectedSubtitle);
+          });
+
+          it('should show the take image button', () => {
+            expectTakeImageButtonInDOM(true);
+          });
+
+          it('should show the correct take image message in the button', () => {
+            const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_continue_button:Take back side photo`;
+            expectTakeImageButtonCorrectMessage(expectedMessage);
+          });
+
+          it('should NOT show the retake image button', () => {
+            expectRetakeImageButtonInDOM(false);
+          });
+
+          it('should show the fallback upload image section', () => {
+            expectUploadImageFallbackContentInDOM(true);
+          });
+
+          it('should NOT show the defined back side image', () => {
+            expectUploadImageDefinedContentInDOM(false);
+          });
+
+          it('should disable the end verification button', () => {
+            expectEndVerificationButtonDisabled(true);
+          });
+
+          describe('and they click on the upload back side image button', () => {
+            beforeEach(() => {
+              spyOn(de.query(By.css(uploadImageSelector)).nativeElement, 'click');
+
+              de.query(By.css(takeImageButtonSelector)).nativeElement.click();
+            });
+
+            it('should open the input file upload', () => {
+              expect(de.query(By.css(uploadImageSelector)).nativeElement.click).toHaveBeenCalledTimes(1);
+            });
+
+            describe('and the user selects a back side image', () => {
+              beforeEach(() => {
+                triggerChangeImageUpload(true);
+
+                fixture.detectChanges();
+              });
+
+              it('should show the updated image on the screen', () => {
+                const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+                const selectedImage = MOCK_JPEG_IMG_EVENT().target.result;
+
+                expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+              });
+
+              it('should NOT show the fallback upload image section', () => {
+                expectUploadImageFallbackContentInDOM(false);
+              });
+
+              it('should update the selected image', () => {
+                expect(component.images$.value).toStrictEqual({
+                  ...component.images$.value,
+                  backSide: MOCK_BASE_64_SMALL_IMAGE,
+                });
+              });
+            });
+
+            describe('and the user NOT selects a back side image', () => {
+              beforeEach(() => {
+                triggerChangeImageUpload(false);
+
+                fixture.detectChanges();
+              });
+
+              it('should NOT show the defined back side image', () => {
+                expectUploadImageDefinedContentInDOM(false);
+              });
+
+              it('should show the fallback upload image section', () => {
+                expectUploadImageFallbackContentInDOM(true);
+              });
+
+              it('should NOT update the images', () => {
+                expect(component.images$.value).toStrictEqual(MOCK_KYC_IMAGES_BASE_64_BACK_NULL);
+              });
+            });
+          });
+        });
+
+        describe('and the back side image is defined', () => {
+          beforeEach(() => {
+            component.images$.next(MOCK_KYC_IMAGES_BASE_64);
+
+            fixture.detectChanges();
+          });
+
+          it('should show the correct title', () => {
+            const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_title:Check the photo of the back side of your document`;
+
+            expectShowCorrectTitle(expectedTitle);
+          });
+
+          it('should show the correct subtitle', () => {
+            const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_description:All the details on your ID document must be clear and perfectly legible.`;
+
+            expectShowCorrectSubtitle(expectedSubtitle);
+          });
+
+          it('should NOT show the take image button', () => {
+            expectTakeImageButtonInDOM(false);
+          });
+
+          it('should show the retake image button', () => {
+            expectRetakeImageButtonInDOM(true);
+          });
+
+          it('should show the correct retake image message in the button', () => {
+            const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_photo_button:Retake back side photo`;
+            expectRetakeImageButtonCorrectMessage(expectedMessage);
+          });
+
+          it('should NOT show the fallback upload image section', () => {
+            expectUploadImageFallbackContentInDOM(false);
+          });
+
+          it('should show the back side image on the screen', () => {
+            const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+            const selectedImage = MOCK_KYC_IMAGES_BASE_64.backSide;
+
+            expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+          });
+
+          it('should enable the end verification button', () => {
+            expectEndVerificationButtonDisabled(false);
+          });
+
+          describe('and they click on retake the back side image', () => {
+            beforeEach(() => {
+              spyOn(component.uploadImage.nativeElement, 'click');
+              de.query(By.css(retakeImageButtonSelector)).nativeElement.click();
+
+              fixture.detectChanges();
+            });
+
+            it('should show the fallback upload image section', () => {
+              expectUploadImageFallbackContentInDOM(true);
+            });
+
+            it('should NOT show the image', () => {
+              expectUploadImageDefinedContentInDOM(false);
+            });
+
+            it('should remove the back side image', () => {
+              expect(component.images$.value).toStrictEqual({
+                ...component.images$.value,
+                backSide: null,
+              });
+            });
+
+            it('should clean the file input value', () => {
+              expect(component.uploadImage.nativeElement.value).toBeFalsy();
+            });
+
+            it('should open the device folder to update a new image', () => {
+              expect(component.uploadImage.nativeElement.click).toHaveBeenCalled();
+            });
+          });
+
+          describe('and they click on end verification button', () => {
+            beforeEach(() => {
+              spyOn(component.endVerification, 'emit');
+              de.query(By.css(endVerificationButtonSelector)).nativeElement.click();
+            });
+
+            it('should notify to the parent that the verification ends ', () => {
+              expect(component.endVerification.emit).toHaveBeenCalledTimes(1);
+              expect(component.endVerification.emit).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64);
+            });
+          });
+        });
+
+        describe('and the user go back', () => {
+          beforeEach(() => {
+            fixture.detectChanges();
+
+            de.query(By.css(backButtonSelector)).nativeElement.click();
+          });
+
+          it('should clean the images', () => {
+            expect(component.images$.value).toStrictEqual({
+              frontSide: null,
+              backSide: null,
+            });
+          });
+
+          it('should go to the define first image step', () => {
+            expect(component.activeStep$.value).toBe(1);
+          });
+        });
+      });
+    });
+
+    describe('and the user must provide ONLY one image of the document', () => {
+      beforeEach(() => {
+        testComponent.imagesNeeded = 1;
+        component.images$.next(MOCK_EMPTY_KYC_IMAGES);
+      });
+
+      it('should NOT show the continue verification button', () => {
+        fixture.detectChanges();
+
+        expectContinueButtonInDOM(false);
+      });
+
+      it('should show the end verification button', () => {
+        fixture.detectChanges();
+
+        expectEndVerificationButtonInDOM(true);
+      });
+
+      describe('and the image is not defined', () => {
+        beforeEach(() => {
+          fixture.detectChanges();
+        });
+
+        it('should show the correct title', () => {
+          const expectedTitle = $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`;
+
+          expectShowCorrectTitle(expectedTitle);
+        });
+
+        it('should show the correct subtitle', () => {
+          const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_one_side_description:Go somewhere with good lighting and take the photo. Make sure the document you provide is valid for at least 3 months.`;
+
+          expectShowCorrectSubtitle(expectedSubtitle);
+        });
+
+        it('should show the take image button', () => {
+          expectTakeImageButtonInDOM(true);
+        });
+
+        it('should show the correct take image message in the button', () => {
+          const expectedMessage = $localize`:@@kyc_take_photo_view_if_one_side_take_photo_button:Take photo`;
+          expectTakeImageButtonCorrectMessage(expectedMessage);
+        });
+
+        it('should NOT show the retake image button', () => {
+          expectRetakeImageButtonInDOM(false);
+        });
+
+        it('should show the fallback upload image section', () => {
+          expectUploadImageFallbackContentInDOM(true);
+        });
+
+        it('should NOT show the image', () => {
+          expectUploadImageDefinedContentInDOM(false);
+        });
+
+        it('should disable the end verification button', () => {
+          expectEndVerificationButtonDisabled(true);
+        });
+
+        describe('and they click on the upload front side image button', () => {
+          beforeEach(() => {
+            spyOn(de.query(By.css(uploadImageSelector)).nativeElement, 'click');
+
+            de.query(By.css(takeImageButtonSelector)).nativeElement.click();
           });
 
           it('should open the input file upload', () => {
-            expect(de.query(By.css(frontSideImageUploadSelector)).nativeElement.click).toHaveBeenCalledTimes(1);
+            expect(de.query(By.css(uploadImageSelector)).nativeElement.click).toHaveBeenCalledTimes(1);
           });
 
           describe('and the user selects a front side image', () => {
             beforeEach(() => {
-              triggerChangeImageUpload(frontSideImageUploadSelector, true);
+              triggerChangeImageUpload(true);
+
+              fixture.detectChanges();
             });
 
-            it('should draw the front side image on the screen', () => {
-              expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
+            it('should show the updated image on the screen', () => {
+              const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+              const selectedImage = MOCK_JPEG_IMG_EVENT().target.result;
+
+              expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
             });
 
-            it('should emit the selected image', () => {
-              expect(component.imagesChange.emit).toHaveBeenCalledWith({
-                ...component.images,
+            it('should NOT show the fallback upload image section', () => {
+              expectUploadImageFallbackContentInDOM(false);
+            });
+
+            it('should update the selected image', () => {
+              expect(component.images$.value).toStrictEqual({
+                ...component.images$.value,
                 frontSide: MOCK_BASE_64_SMALL_IMAGE,
               });
             });
           });
 
-          describe(`and the user does NOT select an image`, () => {
+          describe('and the user NOT selects a front side image', () => {
             beforeEach(() => {
-              triggerChangeImageUpload(frontSideImageUploadSelector, false);
+              triggerChangeImageUpload(false);
+
+              fixture.detectChanges();
             });
 
-            it('should NOT draw the image on the screen', () => {
-              expect(component.frontSideImage.nativeElement.getContext('2d').drawImage).not.toHaveBeenCalled();
+            it('should NOT show the defined front side image', () => {
+              expectUploadImageDefinedContentInDOM(false);
             });
 
-            it('should NOT emit the selected image', () => {
-              expect(component.imagesChange.emit).not.toHaveBeenCalled();
-            });
-          });
-        });
-
-        describe('and the user clicks on the upload back side image box', () => {
-          beforeEach(() => {
-            spyOn(component.backSideImage.nativeElement.getContext('2d'), 'drawImage');
-            spyOn(component.imagesChange, 'emit');
-          });
-
-          beforeEach(() => {
-            spyOn(de.query(By.css(backSideImageUploadSelector)).nativeElement, 'click');
-
-            de.query(By.css(takeBackSideImageSelector)).nativeElement.click();
-          });
-
-          it('should open the input file upload', () => {
-            expect(de.query(By.css(backSideImageUploadSelector)).nativeElement.click).toHaveBeenCalledTimes(1);
-          });
-
-          describe('and the user selects a back side image', () => {
-            beforeEach(() => {
-              triggerChangeImageUpload(backSideImageUploadSelector, true);
+            it('should show the fallback upload image section', () => {
+              expectUploadImageFallbackContentInDOM(true);
             });
 
-            it('should draw the back side image on the screen', () => {
-              expect(component.backSideImage.nativeElement.getContext('2d').drawImage).toHaveBeenCalled();
-            });
-
-            it('should emit the selected image', () => {
-              expect(component.imagesChange.emit).toHaveBeenCalledWith({
-                ...component.images,
-                backSide: MOCK_BASE_64_SMALL_IMAGE,
-              });
-            });
-          });
-
-          describe(`and the user does NOT select an image`, () => {
-            beforeEach(() => {
-              triggerChangeImageUpload(backSideImageSelector, false);
-            });
-
-            it('should NOT draw the image on the screen', () => {
-              expect(component.backSideImage.nativeElement.getContext('2d').drawImage).not.toHaveBeenCalled();
-            });
-
-            it('should NOT emit the selected image', () => {
-              expect(component.imagesChange.emit).not.toHaveBeenCalled();
+            it('should NOT update the images', () => {
+              expect(component.images$.value).toStrictEqual(MOCK_EMPTY_KYC_IMAGES);
             });
           });
         });
       });
 
-      describe('and the images are uploaded', () => {
+      describe('and the image is defined', () => {
         beforeEach(() => {
-          testComponent.images = MOCK_KYC_IMAGES_BASE_64;
+          component.images$.next(MOCK_KYC_IMAGES_BASE_64_BACK_NULL);
 
           fixture.detectChanges();
         });
 
-        it('should show the end verification button', () => {
-          expectVerificationButtonInDOM(true);
+        it('should show the correct title', () => {
+          const expectedTitle = $localize`:@@kyc_take_photo_view_if_one_side_review_title:Check the photo of your document`;
+
+          expectShowCorrectTitle(expectedTitle);
         });
 
-        it('should NOT show the counter button', () => {
-          const imagesCounterButton = de.query(By.css(imagesCounterButtonSelector));
+        it('should show the correct subtitle', () => {
+          const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_one_side_review_description:All the details on your document must be clear and perfectly legible.`;
 
-          expect(imagesCounterButton).toBeFalsy();
+          expectShowCorrectSubtitle(expectedSubtitle);
         });
 
-        describe('and the user requests the KYC verification...', () => {
+        it('should NOT show the take image button', () => {
+          expectTakeImageButtonInDOM(false);
+        });
+
+        it('should show the retake image button', () => {
+          expectRetakeImageButtonInDOM(true);
+        });
+
+        it('should show the correct retake image message in the button', () => {
+          const expectedMessage = $localize`:@@kyc_take_photo_view_if_one_side_review_retake_photo_button:Retake photo`;
+          expectRetakeImageButtonCorrectMessage(expectedMessage);
+        });
+
+        it('should NOT show the fallback upload image section', () => {
+          expectUploadImageFallbackContentInDOM(false);
+        });
+
+        it('should show the front side image on the screen', () => {
+          const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
+          const selectedImage = MOCK_KYC_IMAGES_BASE_64_BACK_NULL.frontSide;
+
+          expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+        });
+
+        it('should enable the end verification button', () => {
+          expectEndVerificationButtonDisabled(false);
+        });
+
+        describe('and they click on retake the front side image', () => {
           beforeEach(() => {
-            spyOn(component.endVerification, 'emit');
-            de.query(By.css(endVerificationButtonSelector)).nativeElement.click();
+            spyOn(component.uploadImage.nativeElement, 'click');
+            de.query(By.css(retakeImageButtonSelector)).nativeElement.click();
+
+            fixture.detectChanges();
           });
 
-          it('should notify to the parent that the verification is finished', () => {
-            expectEndVerificationNotifyParent();
-          });
-        });
-
-        describe('and the front side image is deleted', () => {
-          beforeEach(() => {
-            spyOn(component.imagesChange, 'emit');
-            de.query(By.css(deleteFrontSideImageSelector)).nativeElement.click();
+          it('should show the fallback upload image section', () => {
+            expectUploadImageFallbackContentInDOM(true);
           });
 
-          it('should clean the front side input upload', () => {
-            expect(component.frontSideImageUpload.nativeElement.value).toBe('');
+          it('should NOT show the image', () => {
+            expectUploadImageDefinedContentInDOM(false);
           });
 
-          it('should emit the empty front side image', () => {
-            expect(component.imagesChange.emit).toHaveBeenCalledWith({
-              ...component.images,
+          it('should remove the front side image', () => {
+            expect(component.images$.value).toStrictEqual({
+              ...component.images$.value,
               frontSide: null,
             });
           });
-        });
 
-        describe('and the back side image is deleted', () => {
-          beforeEach(() => {
-            spyOn(component.imagesChange, 'emit');
-            de.query(By.css(deleteBackSideImageSelector)).nativeElement.click();
+          it('should clean the file input value', () => {
+            expect(component.uploadImage.nativeElement.value).toBeFalsy();
           });
 
-          it('should clean the back side input upload', () => {
-            expect(component.backSideImageUpload.nativeElement.value).toBe('');
-          });
-
-          it('should emit the empty back side image', () => {
-            expect(component.imagesChange.emit).toHaveBeenCalledWith({
-              ...component.images,
-              backSide: null,
-            });
+          it('should open the device folder to update a new image', () => {
+            expect(component.uploadImage.nativeElement.click).toHaveBeenCalled();
           });
         });
-      });
-    });
 
-    describe('and the user needs to upload only one image', () => {
-      beforeEach(() => {
-        testComponent.imagesNeeded = 1;
-      });
-
-      describe('and the image is already uploaded', () => {
-        beforeEach(() => {
-          component.images = MOCK_KYC_IMAGES_BASE_64_BACK_NULL;
-
-          fixture.detectChanges();
-        });
-
-        describe('and the user requests the KYC verification...', () => {
+        describe('and they click on end verification button', () => {
           beforeEach(() => {
             spyOn(component.endVerification, 'emit');
             de.query(By.css(endVerificationButtonSelector)).nativeElement.click();
           });
 
-          it('should notify to the parent that the verification is finished', () => {
-            expectEndVerificationNotifyParent();
+          it('should notify to the parent that the verification ends ', () => {
+            expect(component.endVerification.emit).toHaveBeenCalledTimes(1);
+            expect(component.endVerification.emit).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64_BACK_NULL);
           });
         });
       });
-    });
-  });
 
-  describe('when the user clicks on the back button...', () => {
-    beforeEach(() => {
-      spyOn(component.goBack, 'emit');
-      spyOn(component.imagesChange, 'emit');
-      devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.ACCEPTED });
+      describe('and the user go back', () => {
+        beforeEach(() => {
+          spyOn(component.goBack, 'emit');
+          de.query(By.css(backButtonSelector)).nativeElement.click();
+        });
 
-      fixture.detectChanges();
-      de.query(By.css(backButtonSelector)).nativeElement.click();
-    });
-
-    it('should reset the images value', () => {
-      expect(component.imagesChange.emit).toHaveBeenCalledWith({
-        ...component.images,
-        frontSide: null,
-        backSide: null,
+        it('should emit the go back action to the parent', () => {
+          expect(component.goBack.emit).toHaveBeenCalledTimes(1);
+        });
       });
-    });
-
-    it('should go back', () => {
-      expect(component.goBack.emit).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('ngOnDestroy', () => {
-    describe('and the user camera is active', () => {
+    describe('and the user video is active', () => {
       beforeEach(() => {
         testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.SHOOT;
-        cameraResponseSubjectMock.next(MOCK_MEDIA_STREAM);
-        devicePermissionsSubjectMock.next({ ...MOCK_DEVICE_PERMISSIONS, video: DEVICE_PERMISSIONS_STATUS.ACCEPTED });
+        videoStreamSubjectMock.next(MOCK_MEDIA_STREAM);
+        videoPermissionsSubjectMock.next(VIDEO_PERMISSIONS_STATUS.ACCEPTED);
 
         fixture.detectChanges();
       });
 
-      it('should turn off the camera', () => {
-        component.ngOnDestroy();
-
-        expect(component.userCamera.nativeElement.srcObject).toBeNull();
-      });
-
       it('should stop all the active track', () => {
-        const tracks = component.userCamera.nativeElement.srcObject.getTracks();
-        spyOn(tracks[0], 'stop');
-
         component.ngOnDestroy();
 
-        tracks.forEach((track) => expect(track.stop).toHaveBeenCalled());
+        expectAllTracksHaveBeenStopped();
       });
     });
   });
 
-  function expectVerificationButtonInDOM(expectIsDefined: boolean): void {
+  function expectShowCorrectTitle(expectedTitle: string): void {
+    expect(de.nativeElement.querySelector('.KYCUploadImages__title').innerHTML).toEqual(expectedTitle);
+  }
+
+  function expectShowCorrectSubtitle(expectedSubtitle: string) {
+    expect(de.nativeElement.querySelector('.KYCUploadImages__subtitle').innerHTML).toEqual(expectedSubtitle);
+  }
+
+  function expectTakeImageButtonCorrectMessage(expectedMessage: string): void {
+    const button: HTMLElement = de.query(By.css(takeImageButtonSelector)).nativeElement;
+
+    expect(button.textContent).toEqual(expectedMessage);
+  }
+
+  function expectRetakeImageButtonCorrectMessage(expectedMessage: string): void {
+    const button: HTMLElement = de.query(By.css(retakeImageButtonSelector)).nativeElement;
+
+    expect(button.textContent).toEqual(expectedMessage);
+  }
+
+  function expectDefinedImageInDOM(expectIsDefined: boolean): void {
+    const definedImage = de.query(By.css(definedImageSelector)).classes;
+
+    expectIsDefined ? expect(definedImage).not.toHaveProperty('d-none', true) : expect(definedImage).toHaveProperty('d-none', true);
+  }
+
+  function expectVideoInDOM(expectIsDefined: boolean): void {
+    const userSideImage = de.query(By.css(userVideoSelector));
+
+    expectIsDefined ? expect(userSideImage).toBeTruthy() : expect(userSideImage).toBeFalsy();
+  }
+
+  function expectVideoHiddenInDom(expectIsHidden: boolean): void {
+    const userSideImage = de.query(By.css(userVideoSelector)).classes;
+
+    expectIsHidden ? expect(userSideImage).toHaveProperty('d-none', true) : expect(userSideImage).not.toHaveProperty('d-none', true);
+  }
+
+  function expectEndVerificationButtonInDOM(expectIsDefined: boolean): void {
     const endVerificationButton = de.query(By.css(endVerificationButtonSelector));
-    if (expectIsDefined) {
-      expect(endVerificationButton).toBeTruthy();
-    } else {
-      expect(endVerificationButton).toBeFalsy();
-    }
+
+    expectIsDefined ? expect(endVerificationButton).toBeTruthy() : expect(endVerificationButton).toBeFalsy();
   }
 
-  function expectEndVerificationNotifyParent(): void {
-    expect(component.endVerification.emit).toHaveBeenCalledTimes(1);
+  function expectContinueButtonInDOM(expectIsDefined: boolean): void {
+    const continueButton = de.query(By.css(continueVerificationButtonSelector));
+
+    expectIsDefined ? expect(continueButton).toBeTruthy() : expect(continueButton).toBeFalsy();
   }
 
-  function expectTakeFrontSideImageInDOM(expectIsDefined: boolean): void {
-    const takeFrontSideImage = de.query(By.css(takeFrontSideImageSelector));
+  function expectContinueButtonDisabled(expectIsDisabled: boolean): void {
+    const continueButton = de.query(By.css(continueVerificationButtonSelector)).componentInstance;
 
-    if (expectIsDefined) {
-      expect(takeFrontSideImage).toBeTruthy();
-    } else {
-      expect(takeFrontSideImage).toBeFalsy();
-    }
+    expect(continueButton.disabled).toBe(expectIsDisabled);
   }
 
-  function expectFrontSideImageInDOM(expectIsDefined: boolean): void {
-    const frontSideImage = de.query(By.css(frontSideImageSelector)).classes;
+  function expectEndVerificationButtonDisabled(expectIsDisabled: boolean): void {
+    const endVerificationButton = de.query(By.css(endVerificationButtonSelector)).componentInstance;
 
-    if (expectIsDefined) {
-      expect(frontSideImage).not.toHaveProperty('d-none', true);
-    } else {
-      expect(frontSideImage).toHaveProperty('d-none', true);
-    }
+    expect(endVerificationButton.disabled).toBe(expectIsDisabled);
   }
 
-  function expectTakeBackSideImageInDOM(expectIsDefined: boolean): void {
-    const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
+  function expectTakeImageButtonInDOM(expectIsDefined: boolean): void {
+    const takeImageButton = de.query(By.css(takeImageButtonSelector));
 
-    if (expectIsDefined) {
-      expect(takeBackSideImage).toBeTruthy();
-    } else {
-      expect(takeBackSideImage).toBeFalsy();
-    }
+    expectIsDefined ? expect(takeImageButton).toBeTruthy() : expect(takeImageButton).toBeFalsy();
   }
 
-  function expectBackSideImageInDOM(expectIsDefined: boolean): void {
-    const backSideImage = de.query(By.css(backSideImageSelector)).classes;
+  function expectRetakeImageButtonInDOM(expectIsDefined: boolean): void {
+    const retakeImageButton = de.query(By.css(retakeImageButtonSelector));
 
-    if (expectIsDefined) {
-      expect(backSideImage).not.toHaveProperty('d-none', true);
-    } else {
-      expect(backSideImage).toHaveProperty('d-none', true);
-    }
+    expectIsDefined ? expect(retakeImageButton).toBeTruthy() : expect(retakeImageButton).toBeFalsy();
   }
 
-  function expectBackSideImageContentInNOTinDOM(): void {
-    const backSideImage = de.query(By.css(backSideImageSelector));
-    const takeBackSideImage = de.query(By.css(takeBackSideImageSelector));
+  function expectImageBlockHiddenInDOM(expectIsHidden: boolean): void {
+    const imageBlock = de.query(By.css(imageBlockSelector)).classes;
 
-    expect(backSideImage).toBeFalsy();
-    expect(takeBackSideImage).toBeFalsy();
+    expectIsHidden ? expect(imageBlock).toHaveProperty('d-none', true) : expect(imageBlock).not.toHaveProperty('d-none', true);
   }
 
-  function triggerChangeImageUpload(selector: string, isImageSelected: boolean): void {
+  function expectUploadImageInDOM(expectInDOM: boolean): void {
+    const uploadImage = de.query(By.css(uploadImageSelector));
+
+    expectInDOM ? expect(uploadImage).toBeTruthy() : expect(uploadImage).toBeFalsy();
+  }
+
+  function expectUploadImageFallbackContentInDOM(expectInDOM: boolean): void {
+    const uploadImageFallbackContent = de.query(By.css('#uploadImageFallbackContent'));
+
+    expectInDOM ? expect(uploadImageFallbackContent).toBeTruthy() : expect(uploadImageFallbackContent).toBeFalsy();
+  }
+
+  function expectUploadImageDefinedContentInDOM(expectInDOM: boolean): void {
+    const uploadImageDefinedContent = de.query(By.css(uploadImageDefinedContentSelector));
+
+    expectInDOM ? expect(uploadImageDefinedContent).toBeTruthy() : expect(uploadImageDefinedContent).toBeFalsy();
+  }
+
+  function triggerChangeImageUpload(isImageSelected: boolean): void {
     const MOCK_EVENT = isImageSelected ? MOCK_JPEG_IMG_EVENT() : MOCK_WITHOUT_JPEG_IMG_EVENT();
     spyOn(Image.prototype, 'addEventListener').and.callFake((p1, callback) => callback());
     spyOn(FileReader.prototype, 'addEventListener').and.callFake((p1, callback) => callback(MOCK_EVENT));
 
-    de.query(By.css(selector)).triggerEventHandler('change', MOCK_EVENT);
+    de.query(By.css(uploadImageSelector)).triggerEventHandler('change', MOCK_EVENT);
+  }
+
+  function expectShouldShowLoadingStatus(expectInDOM: boolean): void {
+    const loading = de.query(By.css(loadingBlockSelector));
+
+    expectInDOM ? expect(loading).toBeTruthy() : expect(loading).toBeFalsy();
+  }
+
+  function mockSrcObjectInHTMLVideoElement(): void {
+    Object.defineProperty(window.HTMLVideoElement.prototype, 'srcObject', {
+      set(mediaStream) {
+        srcObjectMock.next(mediaStream);
+      },
+    });
+  }
+
+  function expectAllTracksHaveBeenStopped(): void {
+    requestVideoPermissionsService.videoStream$.subscribe((tracks) => {
+      tracks.getTracks().forEach((track) => expect(track.stop).toHaveBeenCalled());
+    });
   }
 });

@@ -1,7 +1,9 @@
 @import '~style/common';
 
-$images-size-big: 180px;
-$images-size-small: 100px;
+$image-block-width: 300px;
+$image-block-width--big: 360px;
+$image-height: 200px;
+$image-height--big: 240px;
 
 .KYCUploadImages {
   &__back {
@@ -17,57 +19,56 @@ $images-size-small: 100px;
     }
   }
 
-  &__cameraContainer,
-  &__takenImage {
-    border-radius: $border-radius;
+  &__title,
+  &__subtitle {
+    color: $blue-grey-1;
   }
 
-  &__cameraContainer__overlay {
-    top: 12%;
-    left: 8%;
-    width: 83%;
-    height: 76%;
-    border: 3px solid $white;
-    box-shadow: rgb(0 0 0 / 50%) 0px 0px 0px 40px;
+  &__title {
+    font-size: $font-size-l;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__imageLaterals {
+    padding: 0px 32px;
+  }
+
+  &__imageContainer {
+    flex: 1;
   }
 
   &__image {
-    height: $images-size-big;
+    overflow: hidden;
+    height: $image-height;
+    border: dashed 2px $blue-grey-5;
+    border-radius: $border-radius;
 
-    @include media-breakpoint-down(sm) {
-      height: $images-size-small;
+    @include media-breakpoint-up(sm) {
+      height: $image-height--big;
     }
+  }
 
-    border: solid 2px $blue-grey-5;
+  &__video {
+    height: fit-content;
+  }
 
-    &__title {
-      color: $blue-grey-2;
+  &__uploadImageContainer {
+    overflow: hidden;
+    box-sizing: content-box;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  &__imageBlock {
+    width: $image-block-width;
+
+    @include media-breakpoint-up(sm) {
+      width: $image-block-width--big;
     }
+  }
 
-    &--enabled {
-      a {
-        display: none;
-        top: -10px;
-        right: -10px;
-        border-radius: 50%;
-        @include square(19px);
-        background: $blue-grey-4;
-        line-height: $line-height-ml;
-      }
-      &:hover {
-        cursor: pointer;
-        box-shadow: 0 4px 6px 0 rgba(37, 50, 56, 0.15);
-        a {
-          display: flex;
-        }
-      }
-    }
-
-    &--active {
-      border: solid 2px $blue-grey-2;
-      .KYCUploadImages__image__title {
-        color: $blue-grey-1;
-      }
-    }
+  &__bottomContainer {
+    bottom: 0;
   }
 }

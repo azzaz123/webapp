@@ -2,7 +2,7 @@
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
 </div>
 <div class="KYCModal__content modal-body profile-box">
-    <tsl-stepper (isInLastStep)="true">
+    <tsl-stepper>
         <ng-template step>
             <tsl-bank-account isKYC="true" (bankAccountSaved)="goNextStep()"></tsl-bank-account>
         </ng-template>
@@ -23,9 +23,8 @@
                 *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications"
                 [takeImageMethod]="KYCSpecifications.imageMethod"
                 [imagesNeeded]="KYCSpecifications.documentation.imagesNeeded"
-                [images]="KYCSpecifications.images"
-                (imagesChange)="defineImages($event)"
-                (endVerification)="endVerification(KYCSpecifications.images)"
+                [headerText]="KYCSpecifications.documentation.label"
+                (endVerification)="endVerification($event)"
                 (goBack)="goPreviousStep()"
             ></tsl-kyc-upload-images>
         </ng-template>

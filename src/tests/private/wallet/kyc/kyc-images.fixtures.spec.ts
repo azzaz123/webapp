@@ -8,11 +8,6 @@ export const MOCK_EMPTY_KYC_IMAGES: KYCImages = {
   backSide: null,
 };
 
-export const MOCK_KYC_IMAGES_BACK_DEFINED: KYCImages = {
-  frontSide: null,
-  backSide: MOCK_BASE_64_32KB_IMAGE,
-};
-
 export const MOCK_KYC_IMAGES_BASE_64: KYCImages = {
   frontSide: MOCK_BASE_64_32KB_IMAGE,
   backSide: MOCK_BASE_64_32KB_IMAGE,
