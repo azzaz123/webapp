@@ -45,7 +45,7 @@ export class WalletBalanceInfoComponent implements OnInit {
   }
 
   public transferBalance(): void {
-    this.modalService.open(WalletTransferModalComponent).result.then(() => {});
+    this.modalService.open(WalletTransferModalComponent);
   }
 
   private get hasPositiveBalance(): boolean {
