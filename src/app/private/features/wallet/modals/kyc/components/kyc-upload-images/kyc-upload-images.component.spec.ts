@@ -18,7 +18,6 @@ import { ButtonComponent } from '@shared/button/button.component';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 import { RequestVideoPermissionsService } from '@shared/services/video/request-video-permissions/request-video-permissions.service';
 import { VIDEO_PERMISSIONS_STATUS } from '@shared/services/video/request-video-permissions/video-permissions-status.interface';
-import { SpinnerComponent } from '@shared/spinner/spinner.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
@@ -62,12 +61,13 @@ describe('KYCUploadImagesComponent', () => {
   const definedImageSelector = '#definedImage';
   const backButtonSelector = '.KYCUploadImages__back';
   const imageBlockSelector = '#imageBlock';
+  const loadingBlockSelector = '#loadingBlock';
   const uploadImageDefinedContentSelector = '#uploadImageDefinedContent';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgbAlertModule],
-      declarations: [TestWrapperComponent, KYCUploadImagesComponent, BannerComponent, SvgIconComponent, ButtonComponent, SpinnerComponent],
+      declarations: [TestWrapperComponent, KYCUploadImagesComponent, BannerComponent, SvgIconComponent, ButtonComponent],
       providers: [
         {
           provide: RequestVideoPermissionsService,
@@ -78,6 +78,7 @@ describe('KYCUploadImagesComponent', () => {
             get videoStream$() {
               return videoStreamSubjectMock.asObservable();
             },
+            stopStream() {},
             request() {},
           },
         },
@@ -134,7 +135,7 @@ describe('KYCUploadImagesComponent', () => {
         });
 
         it('should show the loading status', () => {
-          expect(de.query(By.directive(SpinnerComponent))).toBeTruthy();
+          expectShouldShowLoadingStatus(true);
         });
 
         it('should not show the error banner', () => {
@@ -194,7 +195,7 @@ describe('KYCUploadImagesComponent', () => {
         it('should NOT show the loading status', () => {
           fixture.detectChanges();
 
-          expect(de.query(By.directive(SpinnerComponent))).toBeFalsy();
+          expectShouldShowLoadingStatus(false);
         });
 
         it('should not render the input upload image ', () => {
@@ -525,7 +526,7 @@ describe('KYCUploadImagesComponent', () => {
                 });
 
                 it('should active the video stream again', () => {
-                  expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
+                  expect(requestVideoPermissionsService.request).toHaveBeenCalled();
                 });
               });
 
@@ -561,7 +562,7 @@ describe('KYCUploadImagesComponent', () => {
               });
 
               it('should active the video stream again', () => {
-                expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
+                expect(requestVideoPermissionsService.request).toHaveBeenCalled();
               });
             });
           });
@@ -714,7 +715,7 @@ describe('KYCUploadImagesComponent', () => {
               });
 
               it('should active the video stream again', () => {
-                expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
+                expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(1);
               });
             });
 
@@ -824,7 +825,7 @@ describe('KYCUploadImagesComponent', () => {
     });
 
     it('should NOT show the loading status', () => {
-      expect(de.query(By.directive(SpinnerComponent))).toBeFalsy();
+      expectShouldShowLoadingStatus(false);
     });
 
     it('should NOT request video access', () => {
@@ -1666,6 +1667,12 @@ describe('KYCUploadImagesComponent', () => {
     spyOn(FileReader.prototype, 'addEventListener').and.callFake((p1, callback) => callback(MOCK_EVENT));
 
     de.query(By.css(uploadImageSelector)).triggerEventHandler('change', MOCK_EVENT);
+  }
+
+  function expectShouldShowLoadingStatus(expectInDOM: boolean): void {
+    const loading = de.query(By.css(loadingBlockSelector));
+
+    expectInDOM ? expect(loading).toBeTruthy() : expect(loading).toBeFalsy();
   }
 
   function mockSrcObjectInHTMLVideoElement(): void {

@@ -131,6 +131,23 @@ describe('RequestVideoPermissionsService', () => {
     });
   });
 
+  describe('when the video stream is already defined...', () => {
+    describe('and we ask for stop the video stream...', () => {
+      beforeEach(() => {
+        setPermissionsAsAccepted();
+        service.request();
+      });
+
+      it('should close all the video tracks', () => {
+        service.stopStream();
+
+        service.videoStream$.subscribe((tracks) => {
+          tracks.getTracks().forEach((track) => expect(track.stop).toHaveBeenCalled());
+        });
+      });
+    });
+  });
+
   function expectVideoStreamNotDefined() {
     let videoStream: MediaStream;
 

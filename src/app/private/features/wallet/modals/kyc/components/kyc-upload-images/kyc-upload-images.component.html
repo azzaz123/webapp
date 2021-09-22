@@ -7,7 +7,11 @@
             </a>
         </div>
     </div>
-    <tsl-spinner *ngIf="showLoadingBlock$ | async"></tsl-spinner>
+    <div *ngIf="showLoadingBlock$ | async" class="row w-100 h-100" id="loadingBlock">  
+        <div class="col d-flex p-0 align-items-center justify-content-center">
+            <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+        </div>      
+    </div>
     <ng-container *ngIf="showImageBlock$ | async">
         <div id="imageBlock" [ngClass]="(showLoadingBlock$ | async) ? 'd-none' : 'd-flex'"
             class="KYCUploadImages__imageLaterals row flex-column justify-content-between">

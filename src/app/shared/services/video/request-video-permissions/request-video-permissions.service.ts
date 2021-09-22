@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { VIDEO_PERMISSIONS_STATUS } from './video-permissions-status.interface';
 
 @Injectable()
@@ -30,11 +31,19 @@ export class RequestVideoPermissionsService {
     }
   }
 
+  public stopStream(): void {
+    this.videoStream$.pipe(take(1)).subscribe((videoStream: MediaStream) => {
+      if (videoStream?.getTracks) {
+        videoStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+      }
+    });
+  }
+
   private videoPermissionsSubject: BehaviorSubject<VIDEO_PERMISSIONS_STATUS> = new BehaviorSubject<VIDEO_PERMISSIONS_STATUS>(
     VIDEO_PERMISSIONS_STATUS.LOADING
   );
 
-  private videoStreamSubject: ReplaySubject<MediaStream> = new ReplaySubject(1);
+  private videoStreamSubject: BehaviorSubject<MediaStream> = new BehaviorSubject(null);
 
   private set userVideoPermissions(newPermissions: VIDEO_PERMISSIONS_STATUS) {
     this.videoPermissionsSubject.next(newPermissions);
