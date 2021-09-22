@@ -32,63 +32,30 @@ describe('NumbersOnlyDirective', () => {
   });
 
   describe('when the key down have been pulsed...', () => {
-    describe('and the new character is a number...', () => {
-      it('should keep it on the value', () => {
-        expect(keyPress('4').defaultPrevented).toBe(false);
-      });
-    });
-
-    describe('and the new key is the delete one ...', () => {
+    describe.each([['0'], ['1'], ['2'], ['3'], ['4'], ['5', ['6'], ['7'], ['8'], ['9']]])('WHEN the character is a number', (key) => {
       it('should let us to use it', () => {
-        expect(keyPress('Backspace').defaultPrevented).toBe(false);
+        expect(keyPress(key).defaultPrevented).toBe(false);
       });
     });
 
-    describe('and the new key is the tab one ...', () => {
+    describe.each([['ArrowDown'], ['ArrowLeft'], ['ArrowRight'], ['ArrowUp'], ['Backspace'], ['Delete', ['Tab']]])(
+      'WHEN the character is an allowed key',
+      (key) => {
+        it('should let us to use it', () => {
+          expect(keyPress(key).defaultPrevented).toBe(false);
+        });
+      }
+    );
+
+    describe.each([[' '], ['e'], ['E']])('WHEN the character is a disallowed key', (key) => {
       it('should let us to use it', () => {
-        expect(keyPress('Tab').defaultPrevented).toBe(false);
+        expect(keyPress(key).defaultPrevented).toBe(true);
       });
     });
 
-    describe('and the new key is the down arrow ...', () => {
-      it('should let us to use it', () => {
-        expect(keyPress('ArrowDown').defaultPrevented).toBe(false);
-      });
-    });
-
-    describe('and the new key is the left arrow ...', () => {
-      it('should let us to use it', () => {
-        expect(keyPress('ArrowLeft').defaultPrevented).toBe(false);
-      });
-    });
-
-    describe('and the new key is the right arrow ...', () => {
-      it('should let us to use it', () => {
-        expect(keyPress('ArrowRight').defaultPrevented).toBe(false);
-      });
-    });
-
-    describe('and the new key is the up arrow ...', () => {
-      it('should let us to use it', () => {
-        expect(keyPress('ArrowUp').defaultPrevented).toBe(false);
-      });
-    });
-
-    describe('and the new key is the delete key ...', () => {
-      it('should let us to use it', () => {
-        expect(keyPress('Delete').defaultPrevented).toBe(false);
-      });
-    });
-
-    describe('and the new character is an space...', () => {
+    describe.each([['a'], ['B'], ['c']])('WHEN the character is not a number', (key) => {
       it('should revert the character', () => {
-        expect(keyPress(' ').defaultPrevented).toBe(true);
-      });
-    });
-
-    describe('and the new character is NOT a number...', () => {
-      it('should revert the character', () => {
-        expect(keyPress('a').defaultPrevented).toBe(true);
+        expect(keyPress(key).defaultPrevented).toBe(true);
       });
     });
   });
