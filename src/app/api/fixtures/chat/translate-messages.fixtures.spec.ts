@@ -1,6 +1,7 @@
 import { TranslateMessagesMessage, TranslateMessagesResponse } from '@api/chat/dtos';
+import { MessageTranslation } from '@api/core/model/chat';
 
-export const messageTranslationFixture: TranslateMessagesMessage = {
+export const translateMessagesMessageFixture: TranslateMessagesMessage = {
   id: 'messageId',
   translation: 'translation',
   text: 'text',
@@ -10,6 +11,11 @@ export const messageTranslationFixture: TranslateMessagesMessage = {
   type: null,
 };
 
-export const translateMessagesResponseFixtures: TranslateMessagesResponse = {
-  messages: [messageTranslationFixture],
+export const translateMessagesResponseFixture: TranslateMessagesResponse = {
+  messages: [translateMessagesMessageFixture],
+};
+
+export const messageTranslationFixture: MessageTranslation = {
+  id: translateMessagesMessageFixture.id,
+  translation: translateMessagesMessageFixture.translation,
 };

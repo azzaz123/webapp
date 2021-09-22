@@ -4,7 +4,7 @@ import { ChatHttpService } from './chat-http.service';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TranslateMessagesResponse } from '@api/chat/dtos';
 import { TRANSLATE_MESSAGES_ENDPOINT } from '@api/chat/http/endpoints';
-import { translateMessagesResponseFixtures } from '@api/fixtures/chat';
+import { translateMessagesResponseFixture } from '@api/fixtures/chat';
 
 describe('ChatHttpService', () => {
   let service: ChatHttpService;
@@ -32,9 +32,9 @@ describe('ChatHttpService', () => {
         .subscribe((res: TranslateMessagesResponse) => (response = res));
 
       const req: TestRequest = httpMock.expectOne(TRANSLATE_MESSAGES_ENDPOINT);
-      req.flush(translateMessagesResponseFixtures);
+      req.flush(translateMessagesResponseFixture);
 
-      expect(response).toEqual(translateMessagesResponseFixtures);
+      expect(response).toEqual(translateMessagesResponseFixture);
     });
   });
 });
