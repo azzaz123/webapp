@@ -38,6 +38,7 @@
     "movements_history_all_users_movement_details_purchase_label": "Compra",
     "movements_history_all_users_movement_details_payment_sent_label": "Pago",
     "movements_history_all_users_movement_details_cashout_label": "Retirada",
+    "movements_history_all_users_movement_details_cashout_max_date_label": "En tu banco antes del {$INTERPOLATION}",
     "payment_credit_card_error": "Ouch, there is an error with the bank card",
     "payment_credit_card_error_invalid_holder_name": "Invalid card holder name",
     "payment_credit_card_error_refused": "Credit or debit card refused",
