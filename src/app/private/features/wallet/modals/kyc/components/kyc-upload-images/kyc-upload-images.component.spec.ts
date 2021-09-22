@@ -11,8 +11,9 @@ import {
   MOCK_JPEG_IMG_EVENT,
   MOCK_WITHOUT_JPEG_IMG_EVENT,
 } from '@fixtures/private/wallet/kyc/kyc-images.fixtures.spec';
+import { MOCK_KYC_DOCUMENTATION } from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
-import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
+import { KYCDocumentation, KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { BannerComponent } from '@shared/banner/banner.component';
 import { ButtonComponent } from '@shared/button/button.component';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
@@ -30,14 +31,14 @@ import { KYCUploadImagesComponent } from './kyc-upload-images.component';
     <tsl-kyc-upload-images
       [imagesNeeded]="imagesNeeded"
       [takeImageMethod]="takeImageMethod"
-      [headerText]="headerText"
+      [documentationSelected]="documentationSelected"
     ></tsl-kyc-upload-images>
   `,
 })
 class TestWrapperComponent {
   @Input() imagesNeeded: KYCImagesNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
-  @Input() headerText: string;
+  @Input() documentationSelected: KYCDocumentation;
 }
 
 describe('KYCUploadImagesComponent', () => {
@@ -46,6 +47,7 @@ describe('KYCUploadImagesComponent', () => {
   let fixture: ComponentFixture<TestWrapperComponent>;
   let de: DebugElement;
   let requestVideoPermissionsService: RequestVideoPermissionsService;
+  let kycTrackingEventsService: KYCTrackingEventsService;
 
   const videoPermissionsSubjectMock: BehaviorSubject<VIDEO_PERMISSIONS_STATUS> = new BehaviorSubject<VIDEO_PERMISSIONS_STATUS>(
     VIDEO_PERMISSIONS_STATUS.LOADING
@@ -97,9 +99,12 @@ describe('KYCUploadImagesComponent', () => {
     mockSrcObjectInHTMLVideoElement();
     fixture = TestBed.createComponent(TestWrapperComponent);
     requestVideoPermissionsService = TestBed.inject(RequestVideoPermissionsService);
+    kycTrackingEventsService = TestBed.inject(KYCTrackingEventsService);
     de = fixture.debugElement;
     component = de.query(By.directive(KYCUploadImagesComponent)).componentInstance;
     testComponent = fixture.componentInstance;
+    testComponent.documentationSelected = MOCK_KYC_DOCUMENTATION;
+
     component.images$.next(MOCK_EMPTY_KYC_IMAGES);
   });
 
@@ -108,11 +113,9 @@ describe('KYCUploadImagesComponent', () => {
   });
 
   it('should show the header text defined', () => {
-    testComponent.headerText = 'Laia';
-
     fixture.detectChanges();
 
-    expect(de.nativeElement.querySelector('#headerText').innerHTML).toEqual(testComponent.headerText);
+    expect(de.nativeElement.querySelector('#headerText').innerHTML).toEqual(testComponent.documentationSelected.label);
   });
 
   describe('when the user selects the shoot image method', () => {
