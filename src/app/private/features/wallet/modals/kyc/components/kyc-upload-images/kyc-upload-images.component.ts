@@ -7,7 +7,7 @@ import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 import { RequestVideoPermissionsService } from '@shared/services/video/request-video-permissions/request-video-permissions.service';
 import { VIDEO_PERMISSIONS_STATUS } from '@shared/services/video/request-video-permissions/video-permissions-status.interface';
 
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
 
@@ -63,6 +63,8 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   public showEndVerificationButton$: Observable<boolean> = this.buildShowEndVerificationButtonObservable();
   public showContinueButton$: Observable<boolean> = this.buildShowContinueButtonObservable();
 
+  private subscriptions: Subscription = new Subscription();
+
   constructor(private requestVideoPermissionsService: RequestVideoPermissionsService) {}
 
   ngOnInit() {
@@ -75,6 +77,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.isShootImageMethod) {
       this.requestVideoPermissionsService.stopStream();
+      this.subscriptions.unsubscribe();
     }
   }
 
@@ -418,14 +421,16 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   }
 
   private manageVideoStreamWhenDefinedImageChange(): void {
-    combineLatest([this.isCurrentImageDefined$, this.videoStream$]).subscribe(([isDefined, mediaStream]: [boolean, MediaStream]) => {
-      if (isDefined) {
-        this.requestVideoPermissionsService.stopStream();
-      }
-      if (!isDefined && !mediaStream?.active) {
-        this.requestVideoPermissionsService.request();
-      }
-    });
+    this.subscriptions.add(
+      combineLatest([this.isCurrentImageDefined$, this.videoStream$]).subscribe(([isDefined, mediaStream]: [boolean, MediaStream]) => {
+        if (isDefined) {
+          this.requestVideoPermissionsService.stopStream();
+        }
+        if (!isDefined && !mediaStream?.active) {
+          this.requestVideoPermissionsService.request();
+        }
+      })
+    );
   }
 
   private imagesAndActiveStep$(): Observable<[KYCImages, KYCImagesNeeded]> {
