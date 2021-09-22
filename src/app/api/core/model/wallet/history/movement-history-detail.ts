@@ -10,6 +10,7 @@ export interface WalletMovementHistoryDetail {
   type: WALLET_HISTORY_MOVEMENT_TYPE;
   title: string;
   description: string;
+  estimatedPayoutDescription?: string;
   date: Date;
   moneyAmmount: Money;
 }

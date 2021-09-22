@@ -5,6 +5,7 @@ import { WalletMovementHistoryDetail } from '@api/core/model/wallet/history/move
 import {
   MOCK_MOVEMENT_HISTORY_DETAIL_SALE,
   MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT,
+  MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT_WITH_ESTIMATED_PAYOUT,
 } from '@api/fixtures/core/model/wallet/history/movement-history-detail.fixtures.spec';
 
 import { WalletHistoryMovementComponent } from './wallet-history-movement.component';
@@ -25,6 +26,7 @@ describe('WalletHistoryMovementComponent', () => {
   const titleSelector = '.WalletHistoryMovement__text__title > div';
   const moneyAmountSelector = '.WalletHistoryMovement__text__title__money-amount';
   const descriptionSelector = '.WalletHistoryMovement__text__description';
+  const estimatedPayoutDescriptionSelector = '.WalletHistoryMovement__text__estimatedPayoutDescription';
   const iconSelector = 'tsl-svg-icon';
 
   beforeEach(async () => {
@@ -72,7 +74,7 @@ describe('WalletHistoryMovementComponent', () => {
 
     it('should show the description', () => {
       const descriptionElement = fixture.debugElement.query(By.css(descriptionSelector));
-      const description = descriptionElement.nativeElement.innerHTML;
+      const description = descriptionElement.nativeElement.innerHTML.trim();
       const expectedDescription = MOCK_MOVEMENT_HISTORY_DETAIL_SALE.description;
 
       expect(description).toEqual(expectedDescription);
@@ -105,6 +107,29 @@ describe('WalletHistoryMovementComponent', () => {
         const expectedIconUrl = 'assets/icons/money-out.svg';
 
         expect(iconUrl).toEqual(expectedIconUrl);
+      });
+    });
+
+    describe('and when movement has estimated payout description', () => {
+      beforeEach(() => {
+        wrapperComponent.walletMovementHistoryDetail = MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT_WITH_ESTIMATED_PAYOUT;
+        fixture.detectChanges();
+      });
+
+      it('should show the estimated payout description', () => {
+        const estimatedPayoutDescriptionElement = fixture.debugElement.query(By.css(estimatedPayoutDescriptionSelector));
+        const estimatedPayoutDescription = estimatedPayoutDescriptionElement.nativeElement.innerHTML.trim();
+        const expectedEstimatedPayoutDescription = MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT_WITH_ESTIMATED_PAYOUT.estimatedPayoutDescription;
+
+        expect(estimatedPayoutDescription).toEqual(expectedEstimatedPayoutDescription);
+      });
+    });
+
+    describe('and when movement does NOT have estimated payout description', () => {
+      it('should NOT show the estimated payout description', () => {
+        const estimatedPayoutDescriptionElement = fixture.debugElement.query(By.css(estimatedPayoutDescriptionSelector));
+
+        expect(estimatedPayoutDescriptionElement).toBeFalsy();
       });
     });
   });

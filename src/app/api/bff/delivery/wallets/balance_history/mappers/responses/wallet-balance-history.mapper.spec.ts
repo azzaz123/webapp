@@ -1,5 +1,5 @@
 import { WalletMovementsHistoryList } from '@api/core/model/wallet/history/wallet-movements-history-list.interface';
-import { MOCK_DEFAULT_WALLET_BALANCE_HISTORY_API } from '@api/fixtures/bff/delivery/wallets/balance_history/wallet-balance-history.fixtures.spec';
+import { MOCK_DEFAULT_WALLET_BALANCE_HISTORY_API } from '@api/fixtures/bff/delivery/wallets/balance_history/wallet-balance-history-api.fixtures.spec';
 import { MOCK_WALLET_MOVEMENTS_HISTORY_LIST } from '@api/fixtures/core/model/wallet/history/wallet-movements-history-list.fixtures.spec';
 import { mapWalletBalanceHistoryApiToWalletMovements } from './wallet-balance-history.mapper';
 

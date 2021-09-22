@@ -19,6 +19,16 @@ export const MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT: WalletMovementHistoryDetail =
   moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
 };
 
+export const MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT_WITH_ESTIMATED_PAYOUT: WalletMovementHistoryDetail = {
+  imageUrl: 'assets/images/bank.svg',
+  type: WALLET_HISTORY_MOVEMENT_TYPE.OUT,
+  title: 'ES91••••1332',
+  description: 'Withdrawal · 17 Sep',
+  estimatedPayoutDescription: 'In your bank before 22 Sep',
+  date: new Date('2021-09-17T11:04:20.177Z'),
+  moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
+};
+
 export const MOCK_DEFAULT_MOVEMENT_HISTORY_DETAILS: WalletMovementHistoryDetail[] = [
   MOCK_MOVEMENT_HISTORY_DETAIL_SALE,
   MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT,

@@ -75,7 +75,22 @@ const getTitleFromHistoryElement = (input: BalanceHistoryElementApi): string => 
 
 const getDescriptionFromHistoryElement = (historyElement: BalanceHistoryElementApi): string => {
   const { type, created_at } = historyElement;
-  return `${LOCALIZED_MOVEMENT_TYPE[type]} · ${moment(created_at).format('D MMM')}`;
+  return `${LOCALIZED_MOVEMENT_TYPE[type]} · ${getShortDate(created_at)}`;
+};
+
+const getEstimatedPayoutDescription = (historyElement: BalanceHistoryElementApi): string | null => {
+  const { estimated_pay_out_date } = historyElement;
+
+  if (estimated_pay_out_date) {
+    const formatedDay = getShortDate(estimated_pay_out_date);
+    return $localize`:@@movements_history_all_users_movement_details_cashout_max_date_label:In your bank before ${formatedDay}`;
+  }
+
+  return null;
+};
+
+const getShortDate = (createdAt: number): string => {
+  return moment(createdAt).format('D MMM');
 };
 
 const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): WalletMovementHistoryDetail => {
@@ -85,11 +100,12 @@ const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): Wall
   const mappedType = mapTransferTypeToDomain[type];
   const title = getTitleFromHistoryElement(input);
   const description = getDescriptionFromHistoryElement(input);
+  const estimatedPayoutDescription = getEstimatedPayoutDescription(input);
   const date = new Date(created_at);
   const numberSign = mappedType === WALLET_HISTORY_MOVEMENT_TYPE.IN ? 1 : -1;
   const moneyAmmount = mapNumberAndCurrencyCodeToMoney({ number: numberSign * amount, currency });
 
-  return {
+  const result: WalletMovementHistoryDetail = {
     imageUrl,
     type: mappedType,
     title,
@@ -97,4 +113,10 @@ const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): Wall
     date,
     moneyAmmount,
   };
+
+  if (estimatedPayoutDescription) {
+    result.estimatedPayoutDescription = estimatedPayoutDescription;
+  }
+
+  return result;
 };
