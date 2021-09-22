@@ -93,6 +93,9 @@ export class ListComponent implements OnInit, OnDestroy {
   public hasTrialAvailable: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
   public tierWithDiscount: Tier;
+  public prosPath: string = `/${PRO_PATHS.PRO_MANAGER}`;
+  public deliveryPath: string = `/${PRIVATE_PATHS.DELIVERY}`;
+  public walletPath: string = `/${PRIVATE_PATHS.WALLET}`;
   private bumpSuggestionModalRef: NgbModalRef;
   private active = true;
   private firstItemLoad = true;
@@ -124,18 +127,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public get itemsAmount() {
     return this.page * this.pageSize;
-  }
-
-  public get prosPath(): string {
-    return `/${PRO_PATHS.PRO_MANAGER}`;
-  }
-
-  public get deliveryPath(): string {
-    return `/${PRIVATE_PATHS.DELIVERY}`;
-  }
-
-  public get walletPath(): string {
-    return `/${PRIVATE_PATHS.WALLET}`;
   }
 
   ngOnInit() {
