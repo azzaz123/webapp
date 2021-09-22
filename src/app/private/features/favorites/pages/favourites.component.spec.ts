@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FavouritesComponent } from './favourites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
@@ -10,11 +10,6 @@ import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
 import { MeApiService } from '@api/me/me-api.service';
 import { FavouritesListTrackingEventsService } from '../services/favourites-list-tracking-events.service';
 import { By } from '@angular/platform-browser';
-@Component({
-  selector: 'tsl-item-card-favourite',
-  template: '',
-})
-class ItemCardFavouriteComponent {}
 
 describe('FavouritesComponent', () => {
   let component: FavouritesComponent;
@@ -28,7 +23,7 @@ describe('FavouritesComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [FavouritesComponent, ItemCardFavouriteComponent],
+        declarations: [FavouritesComponent],
         providers: [
           {
             provide: MeApiService,
@@ -61,7 +56,7 @@ describe('FavouritesComponent', () => {
             },
           },
         ],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );
@@ -311,7 +306,7 @@ describe('FavouritesComponent', () => {
     });
 
     it('should call click tracking method just once and with the correct params', () => {
-      const itemList = fixture.debugElement.queryAll(By.directive(ItemCardFavouriteComponent));
+      const itemList = fixture.debugElement.queryAll(By.css('tsl-item-card-favourite'));
       const index = 0;
 
       itemList[index].triggerEventHandler('click', index);
