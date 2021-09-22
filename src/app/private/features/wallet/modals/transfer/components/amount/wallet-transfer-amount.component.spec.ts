@@ -7,7 +7,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
-import { HelpLocaleId } from '@core/external-links/customer-help/customer-help-constants';
+import { WalletTransferJumpDirective } from '@private/features/wallet/modals/transfer/directives/jump/wallet-transfer-jump.directive';
+import { WalletTransferMaxLengthDirective } from '@private/features/wallet/modals/transfer/directives/max-length/wallet-transfer-max-length.directive';
 import {
   MockPaymentsWalletsService,
   MOCK_PAYMENTS_WALLETS_MAPPED_MONEY,
@@ -27,13 +28,8 @@ import { delay } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class FakeComponent extends WalletTransferAmountComponent {
-  constructor(
-    @Inject(LOCALE_ID) locale: HelpLocaleId,
-    changeDetectorRef: ChangeDetectorRef,
-    paymentsWalletsService: PaymentsWalletsService,
-    toastService: ToastService
-  ) {
-    super(locale, changeDetectorRef, paymentsWalletsService, toastService);
+  constructor(changeDetectorRef: ChangeDetectorRef, paymentsWalletsService: PaymentsWalletsService, toastService: ToastService) {
+    super(changeDetectorRef, paymentsWalletsService, toastService);
   }
 }
 
@@ -56,7 +52,7 @@ describe('WalletTransferAmountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ButtonComponent, FakeComponent, SvgIconComponent],
+      declarations: [ButtonComponent, FakeComponent, WalletTransferJumpDirective, WalletTransferMaxLengthDirective, SvgIconComponent],
       imports: [CommonModule, FormsModule, HttpClientTestingModule],
       providers: [{ provide: PaymentsWalletsService, useClass: MockPaymentsWalletsService }, DecimalPipe],
     }).compileComponents();
@@ -146,7 +142,7 @@ describe('WalletTransferAmountComponent', () => {
       it('should show 0 in the range', () => {
         const expectedRangeValue = `<span>Maximum ${MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY.amount.toString()} ${
           MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY.currency.symbol
-        } - Minimum 0,5 €</span>`;
+        } - Minimum 0.50 €</span>`;
         const rangeValue = fixture.debugElement.query(By.css(walletTransferAmountFigureRangeSelector)).nativeElement.innerHTML;
 
         expect(rangeValue).toEqual(expectedRangeValue);
@@ -205,10 +201,45 @@ describe('WalletTransferAmountComponent', () => {
       it('should show the amount of money in the range', () => {
         const expectedRangeValue = `<span>Maximum ${MOCK_PAYMENTS_WALLETS_MAPPED_MONEY.amount.toString()} ${
           MOCK_PAYMENTS_WALLETS_MAPPED_MONEY.currency.symbol
-        } - Minimum 0,5 €</span>`;
+        } - Minimum 0.50 €</span>`;
         const rangeValue = fixture.debugElement.query(By.css(walletTransferAmountFigureRangeSelector)).nativeElement.innerHTML;
 
         expect(rangeValue).toEqual(expectedRangeValue);
+      });
+    });
+
+    describe('WHEN the user clicks over the reset button', () => {
+      it('should empty the amount', () => {
+        const resetButtonRef = fixture.debugElement.query(By.css(walletTransferAmountFigureResetSelector));
+        const resetSpy = spyOn(component.transferAmount, 'empty').and.callThrough();
+
+        (resetButtonRef.nativeElement as HTMLDivElement).click();
+
+        expect(resetSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('WHEN the user leaves the integer text box', () => {
+      it('should format the integer part', fakeAsync(() => {
+        const integerPartRef = fixture.debugElement.query(By.css(walletTransferAmountFigureIntegerSelector));
+        const integerFormatSpy = jest.spyOn(component.transferAmount, 'integerAsUnits', 'get').mockReturnValue('0.00');
+
+        (integerPartRef.nativeElement as HTMLInputElement).focus();
+        (integerPartRef.nativeElement as HTMLInputElement).blur();
+
+        expect(integerFormatSpy).toHaveBeenCalledTimes(1);
+      }));
+    });
+
+    describe('WHEN the user leaves the decimals text box', () => {
+      it('should format the decimal part', () => {
+        const integerPartRef = fixture.debugElement.query(By.css(walletTransferAmountFigureDecimalSelector));
+        const decimalFormatSpy = jest.spyOn(component.transferAmount, 'decimalsAsCents', 'get').mockReturnValue('0.00');
+
+        (integerPartRef.nativeElement as HTMLDivElement).focus();
+        (integerPartRef.nativeElement as HTMLDivElement).blur();
+
+        expect(decimalFormatSpy).toHaveBeenCalledTimes(1);
       });
     });
 

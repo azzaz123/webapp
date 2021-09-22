@@ -48,8 +48,10 @@ export class WalletTransferAmountComponent implements OnInit {
     return this.transferAmount.isValid;
   }
 
-  public get amountAsText(): string {
-    return `${new WalletTransferAmountModel(this.walletBalance.amount.total).toString()} ${this.walletBalance.currency.symbol}`;
+  public amountAsText(amount: number): string {
+    return `${new WalletTransferAmountModel(amount, minimumTransferAmount, amountOfDecimals).toString()} ${
+      this.walletBalance.currency.symbol
+    }`;
   }
 
   public get decimalPartMaxLength(): number {
@@ -71,6 +73,14 @@ export class WalletTransferAmountComponent implements OnInit {
 
   public get integerPartMaxLength(): number {
     return this.walletBalance.amount.integer.toString().length;
+  }
+
+  public get maximumAsText(): string {
+    return this.amountAsText(this.walletBalance.amount.total);
+  }
+
+  public get minimumAsText(): string {
+    return this.amountAsText(minimumTransferAmount);
   }
 
   public get showBalance(): boolean {

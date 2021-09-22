@@ -56,7 +56,9 @@
           </div>
           <span class="WalletTransferAmount__line"></span>
           <div class="WalletTransferAmount__range">
-            <span i18n="@@make_transfer_view_amount_selector_price_limits_label">Maximum {{ amountAsText }} - Minimum 0,5 €</span>
+            <span i18n="@@make_transfer_view_amount_selector_price_limits_label"
+              >Maximum {{ maximumAsText }} - Minimum {{ minimumAsText }}</span
+            >
           </div>
           <div class="WalletTransferAmount__CTA">
             <tsl-button [disabled]="!allowTransfer" i18n="@@make_transfer_view_transfer_button" (click)="transferBalance()"
