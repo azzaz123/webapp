@@ -9,7 +9,7 @@ import { VIDEO_PERMISSIONS_STATUS } from '@shared/services/video/request-video-p
 
 import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
 
 @Component({
