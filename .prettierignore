@@ -32,9 +32,6 @@ githooks
 # WALLET
 /src/app/private/features/wallet/**/*.html
 
-# DELIVERY
-/src/app/private/features/delivery/**/*.html
-
 # ENGAGEMENT
 /src/app/private/features/favorites/**/*.html
 /src/app/private/features/profile/**/*.html

@@ -14,14 +14,16 @@ import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.inter
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
-import { MockSubscriptionService, MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { MockSubscriptionService, MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
 import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
+import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 import { of, throwError } from 'rxjs';
+import { SubscriptionPurchaseHeaderComponent } from '../subscription-purchase-header/subscription-purchase-header.component';
 import { PAYMENT_SUCCESSFUL_CODE, SubscriptionEditComponent } from './subscription-edit.component';
 
 describe('SubscriptionEditComponent', () => {
@@ -36,7 +38,7 @@ describe('SubscriptionEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionEditComponent, SubscriptionPurchaseSuccessComponent],
+      declarations: [SubscriptionEditComponent, SubscriptionPurchaseSuccessComponent, SubscriptionPurchaseHeaderComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
@@ -69,7 +71,7 @@ describe('SubscriptionEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionEditComponent);
     component = fixture.componentInstance;
-    component.subscription = MAPPED_SUBSCRIPTIONS[2];
+    component.subscription = MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED;
     component.user = MOCK_USER;
     toastService = TestBed.inject(ToastService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
@@ -241,6 +243,20 @@ describe('SubscriptionEditComponent', () => {
 
       expect(component.unselectSubscription.emit).toHaveBeenCalledTimes(1);
       expect(component.unselectSubscription.emit).toHaveBeenCalledWith();
+    });
+  });
+  describe('Categories modal', () => {
+    describe('and click open modal', () => {
+      it('should open modal', () => {
+        spyOn(modalService, 'open').and.callThrough();
+        const header = fixture.debugElement.query(By.directive(SubscriptionPurchaseHeaderComponent));
+
+        header.componentInstance.clickLink.emit();
+
+        expect(modalService.open).toHaveBeenCalledWith(CategoryListingModalComponent, {
+          windowClass: 'category-listing',
+        });
+      });
     });
   });
 });

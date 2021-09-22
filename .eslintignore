@@ -2,10 +2,6 @@
 # Please remove the directories from here once all the linting errors of the directory have been fixed
 
 # PROs
-/src/app/private/features/calls
-/src/app/private/features/dashboard
-/src/app/private/features/help
-/src/app/private/features/wallacoins
 
 # WALLET-CHAT
 /src/app/private/features/chat

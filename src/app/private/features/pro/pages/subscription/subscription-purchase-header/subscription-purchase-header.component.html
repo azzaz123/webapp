@@ -4,13 +4,17 @@
         </tsl-svg-icon>
     </div>
     <div class="SubscriptionPurchaseHeader__text text-center text-md-left">
-        <div class="mb-2 d-block d-md-flex flex-wrap justify-content-center justify-content-md-start">
+        <div class="mb-2 d-block d-md-flex flex-wrap justify-content-center justify-content-md-start align-items-center">
             <b><span i18n="@@web_subscription_purchase_subscription_title" class="SubscriptionPurchaseHeader__title mr-md-3">{{subscription.category_name}}
                     subscription
                 </span></b>
                 <span *ngIf="subscription.trial_available" class="d-block d-md-inline">
                     <span i18n="@@web_subscription_price_discount_days_trial_free"
                      class="SubscriptionPurchaseHeader__trialBanner px-2">{{subscription.trial_days}}-day trial for free</span>
+                </span>
+                <span *ngIf="subscription.category_ids.length > 1" class="d-block d-md-inline">
+                    <span i18n="@@pro_subscription_purchase_categories_type_clarification_label" (click)="onClickLink(subscription)"
+                     class="SubscriptionPurchaseHeader__link px-2">Which categories are included?</span>
                 </span>
         </div>
         <div class="mb-2 SubscriptionPurchaseHeader__subtitle" i18n="@@web_subscription_purchase_subscription_subtitle">

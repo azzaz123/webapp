@@ -1,4 +1,4 @@
-import { ATTRIBUTE_TYPE, CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '@api/catalog/dtos';
+import { ATTRIBUTE_TYPE, CAR_ATTRIBUTE_TYPE, CatalogItemAttributes, REAL_ESTATE_ATTRIBUTE_TYPE } from '@api/catalog/dtos';
 import { capitalizeString } from '@core/helpers/capitalize-string/capitalize-string';
 import { ItemType } from '@api/core/model/item';
 
@@ -31,7 +31,7 @@ const STORY_TELLING_LOW_ORDERED_BOOLEAN_ATTRS: ATTRIBUTE_TYPE[] = [
   REAL_ESTATE_ATTRIBUTE_TYPE.TERRACE,
 ];
 
-export function formatDescription(type: ItemType, description: string, attributes: CatalogItemAttribute[]): string {
+export function formatDescription(type: ItemType, description: string, attributes: CatalogItemAttributes): string {
   if (!STORY_TELLING_CATEGORIES.includes(type)) {
     return description;
   }
@@ -43,10 +43,12 @@ export function formatDescription(type: ItemType, description: string, attribute
   return [upperStorytelling, description, lowerStoryTelling, lowerBooleanValuedStoryTelling].filter((text) => !!text).join(' ');
 }
 
-function reduceAttrStorytelling(attributes: CatalogItemAttribute[], attrList: ATTRIBUTE_TYPE[], isBooleanValued?: boolean): string {
+function reduceAttrStorytelling(attributes: CatalogItemAttributes, attrList: ATTRIBUTE_TYPE[], isBooleanValued?: boolean): string {
   return attrList
     .reduce((acc, orderedAttribute) => {
-      const itemAttribute = attributes.find((attribute) => attribute.type === orderedAttribute);
+      const attributeKeys = Object.keys(attributes);
+      const itemAttributeKey = attributeKeys.find((key) => key === orderedAttribute);
+      const itemAttribute = attributes[itemAttributeKey];
 
       if (itemAttribute && !isBooleanValued) {
         return `${acc ? `${acc} ` : acc}${capitalizeString(itemAttribute.title)}: ${capitalizeString(itemAttribute.text)}`;
