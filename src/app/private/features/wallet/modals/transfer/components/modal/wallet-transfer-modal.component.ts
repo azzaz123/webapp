@@ -9,7 +9,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WalletTransferModalComponent {
-  constructor(public activeModal: NgbActiveModal) {}
+  constructor(private activeModal: NgbActiveModal) {}
 
   public closeModal(): void {
     this.activeModal.close();
