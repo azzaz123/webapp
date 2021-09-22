@@ -572,7 +572,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
   }
 
-  public onClickGoToProsModule(): void {
+  public navigateToProsModule(): void {
     this.router.navigate([PRO_PATHS.PRO_MANAGER]);
   }
 
