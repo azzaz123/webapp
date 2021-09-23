@@ -3,7 +3,7 @@ import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { CategoriesFilterParams } from './interfaces/categories-filter-params.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CATEGORY_OPTIONS } from './data/category_options';
+import { CATEGORY_ALL_OPTION } from './data/category_options';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { CategoriesFilterIcon } from './interfaces/categories-filter-icon.interface';
 import { CategoriesFilterOption } from './interfaces/categories-filter-option.interface';
@@ -11,12 +11,8 @@ import { FilterTemplateComponent } from '../abstract-filter/filter-template/filt
 import { DrawerPlaceholderTemplateComponent } from '../abstract-select-filter/select-filter-template/drawer-placeholder-template.component';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { CategoriesFilterConfig } from './interfaces/categories-filter-config.interface';
-import { HttpClient } from '@angular/common/http';
-import { API_VERSION_URL } from '@public/core/constants/api-version-url-constants';
-import { FILTER_OPTIONS_API_ENDPOINTS } from '@public/shared/services/filter-option/configurations/filter-options-api-endpoints';
-import { CategoryResponse } from '@public/shared/services/filter-option/interfaces/option-responses/category.response';
 import { map } from 'rxjs/operators';
-import { ACCEPT_HEADERS, HEADER_NAMES } from '@public/core/constants/header-constants';
+import { CategoriesApiService } from '@api/categories/categories-api.service';
 
 @Component({
   selector: 'tsl-categories-filter',
@@ -26,7 +22,7 @@ import { ACCEPT_HEADERS, HEADER_NAMES } from '@public/core/constants/header-cons
 export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterParams> implements OnInit, OnDestroy {
   @Input() config: CategoriesFilterConfig;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private categoriesApiService: CategoriesApiService) {
     super();
   }
 
@@ -134,7 +130,7 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private getCategoryIcon(value: string, iconType: keyof CategoriesFilterIcon): string {
-    return this.getCategoryByValue(value).icon[iconType];
+    return this.getCategoryByValue(value)?.icon[iconType];
   }
 
   private getCategoryLabel(value: string): string {
@@ -155,30 +151,10 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private getCategories(): Observable<CategoriesFilterOption[]> {
-    return this.httpClient
-      .get<CategoryResponse[]>(`${API_VERSION_URL.v3}${FILTER_OPTIONS_API_ENDPOINTS.CATEGORIES}`, {
-        headers: {
-          [HEADER_NAMES.ACCEPT]: ACCEPT_HEADERS.CATEGORIES_V2,
-        },
+    return this.categoriesApiService.getSearchCategories().pipe(
+      map((categories: CategoriesFilterOption[]) => {
+        return [CATEGORY_ALL_OPTION, ...categories];
       })
-      .pipe(
-        map((categories: CategoryResponse[]) => {
-          const formattedCategories: CategoriesFilterOption[] = [CATEGORY_OPTIONS[0]];
-
-          categories.forEach((categoryResponse) => {
-            const hardcodedCategory = CATEGORY_OPTIONS.find((category) => category.value === categoryResponse.category_id.toString());
-
-            if (hardcodedCategory) {
-              formattedCategories.push({
-                value: categoryResponse.category_id.toString(),
-                label: categoryResponse.name,
-                icon: hardcodedCategory.icon,
-              });
-            }
-          });
-
-          return formattedCategories;
-        })
-      );
+    );
   }
 }
