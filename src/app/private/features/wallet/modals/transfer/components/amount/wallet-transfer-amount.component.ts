@@ -91,6 +91,10 @@ export class WalletTransferAmountComponent implements OnInit {
     return !this.showSpinner && this.error;
   }
 
+  public get showWarnColor(): boolean {
+    return !this.transferAmount.isValid && !this.transferAmount.isEmpty;
+  }
+
   public get showSpinner(): boolean {
     return this.loading;
   }

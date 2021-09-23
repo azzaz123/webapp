@@ -56,6 +56,10 @@ export class WalletTransferAmountModel {
     return this.total.toFixed(this.amountOfDecimals).split('.')[0];
   }
 
+  public get isEmpty(): boolean {
+    return this._total === null;
+  }
+
   public get isValid(): boolean {
     return this.total >= this.minimum && this.total <= this.maximum;
   }
@@ -79,6 +83,7 @@ export class WalletTransferAmountModel {
     if (isNaN(parseInt(integerPart)) && isNaN(parseInt(decimalPart))) {
       this._total = null;
     }
+
     this._total = parseFloat(
       `${!isNaN(parseInt(integerPart, 10)) ? integerPart : 0}.${!isNaN(parseInt(decimalPart, 10)) ? decimalPart : 0}`
     );

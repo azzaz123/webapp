@@ -21,6 +21,7 @@ import { WalletTransferAmountComponent } from '@private/features/wallet/modals/t
 
 import { of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { WalletTransferAmountModel } from '../../models/wallet-transfer-amount.model';
 
 @Component({
   selector: 'tsl-fake-component',
@@ -44,10 +45,16 @@ describe('WalletTransferAmountComponent', () => {
   const walletTransferAmountSpinnerSelector = `${walletTransferAmountSelector}__spinner`;
   const walletTransferAmountFigureSelector = `${walletTransferAmountSelector}__figure`;
   const walletTransferAmountFigureIntegerSelector = `${walletTransferAmountFigureSelector}__integer`;
+  const walletTransferAmountFigureIntegerWarnSelector = `${walletTransferAmountFigureIntegerSelector}--invalid`;
   const walletTransferAmountFigureDecimalSelector = `${walletTransferAmountFigureSelector}__decimal`;
+  const walletTransferAmountFigureDecimalWarnSelector = `${walletTransferAmountFigureDecimalSelector}--invalid`;
   const walletTransferAmountFigureResetSelector = `${walletTransferAmountFigureSelector}__reset`;
+  const walletTransferAmountLineSelector = `${walletTransferAmountSelector}__line`;
+  const walletTransferAmountLineWarnSelector = `${walletTransferAmountLineSelector}--invalid`;
   const walletTransferAmountFigureRangeSelector = `${walletTransferAmountSelector}__range`;
+  const walletTransferAmountFigureRangeWarnSelector = `${walletTransferAmountFigureRangeSelector}--invalid`;
   const walletTransferAmountCtaSelector = `${walletTransferAmountSelector}__CTA`;
+  const walletTransferAmountCtaButtonSelector = `${walletTransferAmountCtaSelector} tsl-button button`;
   const walletTransferAmountErrorSelector = `${walletTransferAmountSelector}__error`;
 
   beforeEach(async () => {
@@ -206,6 +213,37 @@ describe('WalletTransferAmountComponent', () => {
 
         expect(rangeValue).toEqual(expectedRangeValue);
       });
+
+      it('should show the transfer button activated', () => {
+        const transferButton = fixture.debugElement.query(By.css(walletTransferAmountCtaButtonSelector)).nativeElement;
+
+        expect(transferButton).toBeTruthy();
+        expect((transferButton as HTMLButtonElement).disabled).toBe(false);
+      });
+
+      it('should not show the integer part in red color', () => {
+        const integerPartWarn = fixture.debugElement.query(By.css(walletTransferAmountFigureIntegerWarnSelector));
+
+        expect(integerPartWarn).toBeFalsy();
+      });
+
+      it('should not show the decimal part in red color', () => {
+        const decimalPartWarn = fixture.debugElement.query(By.css(walletTransferAmountFigureDecimalWarnSelector));
+
+        expect(decimalPartWarn).toBeFalsy();
+      });
+
+      it('should not show the line in red color', () => {
+        const lineWarn = fixture.debugElement.query(By.css(walletTransferAmountLineWarnSelector));
+
+        expect(lineWarn).toBeFalsy();
+      });
+
+      it('should not show the range in red color', () => {
+        const rangeWarn = fixture.debugElement.query(By.css(walletTransferAmountFigureRangeWarnSelector));
+
+        expect(rangeWarn).toBeFalsy();
+      });
     });
 
     describe('WHEN the user clicks over the reset button', () => {
@@ -240,6 +278,46 @@ describe('WalletTransferAmountComponent', () => {
         (integerPartRef.nativeElement as HTMLDivElement).blur();
 
         expect(decimalFormatSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('WHEN the user select an invalid amount', () => {
+      beforeEach(() => {
+        jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(MOCK_PAYMENTS_WALLETS_MAPPED_MONEY));
+        jest.spyOn(component, 'allowTransfer', 'get').mockReturnValue(false);
+        jest.spyOn(component, 'showWarnColor', 'get').mockReturnValue(true);
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should show the transfer button deactivated', () => {
+        const transferButton = fixture.debugElement.query(By.css(walletTransferAmountCtaButtonSelector)).nativeElement;
+
+        expect((transferButton as HTMLButtonElement).disabled).toBe(true);
+      });
+
+      it('should show the integer part in red color', () => {
+        const integerPartWarn = fixture.debugElement.query(By.css(walletTransferAmountFigureIntegerWarnSelector));
+
+        expect(integerPartWarn).toBeTruthy();
+      });
+
+      it('should show the decimal part in red color', () => {
+        const decimalPartWarn = fixture.debugElement.query(By.css(walletTransferAmountFigureDecimalWarnSelector));
+
+        expect(decimalPartWarn).toBeTruthy();
+      });
+
+      it('should show the line in red color', () => {
+        const lineWarn = fixture.debugElement.query(By.css(walletTransferAmountLineSelector));
+
+        expect(lineWarn).toBeTruthy();
+      });
+
+      it('should show the range in red color', () => {
+        const rangeWarn = fixture.debugElement.query(By.css(walletTransferAmountFigureRangeSelector));
+
+        expect(rangeWarn).toBeTruthy();
       });
     });
 

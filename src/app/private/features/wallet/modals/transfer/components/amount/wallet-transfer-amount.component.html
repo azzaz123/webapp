@@ -21,6 +21,7 @@
               inputmode="numeric"
               [(ngModel)]="transferAmount.integer"
               class="WalletTransferAmount__figure__integer"
+              [class.WalletTransferAmount__figure__integer--invalid]="showWarnColor"
               [disabled]="!this.transferAmount"
               (blur)="formatIntegerPart()"
               tslNumbersOnly
@@ -37,6 +38,7 @@
               inputmode="numeric"
               [(ngModel)]="transferAmount.decimals"
               class="WalletTransferAmount__figure__decimal"
+              [class.WalletTransferAmount__figure__decimal--invalid]="showWarnColor"
               [disabled]="!this.transferAmount"
               [maxlength]="2"
               (blur)="formatDecimalPart()"
@@ -54,8 +56,8 @@
               <tsl-svg-icon src="./assets/icons/remove.svg"></tsl-svg-icon>
             </div>
           </div>
-          <span class="WalletTransferAmount__line"></span>
-          <div class="WalletTransferAmount__range">
+          <span class="WalletTransferAmount__line" [class.WalletTransferAmount__line--invalid]="showWarnColor"></span>
+          <div class="WalletTransferAmount__range" [class.WalletTransferAmount__range--invalid]="showWarnColor">
             <span i18n="@@make_transfer_view_amount_selector_price_limits_label"
               >Maximum {{ maximumAsText }} - Minimum {{ minimumAsText }}</span
             >
