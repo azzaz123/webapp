@@ -55,9 +55,9 @@ $image-height--big: 240px;
   &__uploadImageContainer {
     overflow: hidden;
     box-sizing: content-box;
-    background-repeat: no-repeat !important;
-    background-position: center !important;
-    background-size: contain !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
   }
 
   &__imageBlock {

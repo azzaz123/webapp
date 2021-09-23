@@ -143,8 +143,8 @@ describe('KYCUploadImagesComponent', () => {
           expect(banner).toBeFalsy();
         });
 
-        it('should hide the camera block', () => {
-          expectImageBlockHiddenInDOM(true);
+        it('should not render the camera block', () => {
+          expect(de.query(By.css(imageBlockSelector))).toBeFalsy();
         });
       });
 
@@ -943,7 +943,7 @@ describe('KYCUploadImagesComponent', () => {
                 const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
                 const selectedImage = MOCK_JPEG_IMG_EVENT().target.result;
 
-                expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+                expect(imageContainer.style['background-image']).toStrictEqual('url(' + selectedImage + ')');
               });
 
               it('should NOT show the fallback upload image section', () => {
@@ -1020,7 +1020,7 @@ describe('KYCUploadImagesComponent', () => {
             const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
             const selectedImage = MOCK_KYC_IMAGES_BASE_64_BACK_NULL.frontSide;
 
-            expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+            expect(imageContainer.style['background-image']).toStrictEqual('url(' + selectedImage + ')');
           });
 
           it('should enable the continue button', () => {
@@ -1171,7 +1171,7 @@ describe('KYCUploadImagesComponent', () => {
                 const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
                 const selectedImage = MOCK_JPEG_IMG_EVENT().target.result;
 
-                expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+                expect(imageContainer.style['background-image']).toStrictEqual('url(' + selectedImage + ')');
               });
 
               it('should NOT show the fallback upload image section', () => {
@@ -1248,7 +1248,7 @@ describe('KYCUploadImagesComponent', () => {
             const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
             const selectedImage = MOCK_KYC_IMAGES_BASE_64.backSide;
 
-            expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+            expect(imageContainer.style['background-image']).toStrictEqual('url(' + selectedImage + ')');
           });
 
           it('should enable the end verification button', () => {
@@ -1403,7 +1403,7 @@ describe('KYCUploadImagesComponent', () => {
               const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
               const selectedImage = MOCK_JPEG_IMG_EVENT().target.result;
 
-              expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+              expect(imageContainer.style['background-image']).toStrictEqual('url(' + selectedImage + ')');
             });
 
             it('should NOT show the fallback upload image section', () => {
@@ -1480,7 +1480,7 @@ describe('KYCUploadImagesComponent', () => {
           const imageContainer: HTMLElement = fixture.debugElement.query(By.css(uploadImageDefinedContentSelector)).nativeElement;
           const selectedImage = MOCK_KYC_IMAGES_BASE_64_BACK_NULL.frontSide;
 
-          expect(imageContainer.style.background).toStrictEqual('url(' + selectedImage + ')');
+          expect(imageContainer.style['background-image']).toStrictEqual('url(' + selectedImage + ')');
         });
 
         it('should enable the end verification button', () => {
