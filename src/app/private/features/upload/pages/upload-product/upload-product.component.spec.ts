@@ -53,7 +53,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { BrandModel } from '../../core/models/brand-model.interface';
 import { CATEGORY_IDS } from '@core/category/category-ids';
-import { CategoryOption } from '@core/category/category-response.interface';
+import { CategoryOption, CategoryResponse } from '@core/category/category-response.interface';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import {
@@ -81,6 +81,7 @@ import {
   MOCK_UPLOAD_PRODUCT_LIST_ITEM_CG_SHIPPABLE_EVENT,
 } from '@fixtures/private/upload/events/upload-events.fixtures.spec';
 import { UploadTrackingEventService } from './upload-tracking-event/upload-tracking-event.service';
+import { CategoriesApiService } from '@api/categories/categories-api.service';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -107,6 +108,7 @@ describe('UploadProductComponent', () => {
   let deviceService: DeviceDetectorService;
   let userService: UserService;
   let categoryService: CategoryService;
+  let categoriesApiService: CategoriesApiService;
   let uploadService: UploadService;
   let itemReactivationService: ItemReactivationService;
   let shippingToggleService: ShippingToggleService;
@@ -162,6 +164,14 @@ describe('UploadProductComponent', () => {
               },
               getSuggestedCategory() {
                 return of(SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS);
+              },
+            },
+          },
+          {
+            provide: CategoriesApiService,
+            useValue: {
+              getUploadCategories() {
+                return of(CATEGORIES_DATA_CONSUMER_GOODS);
               },
             },
           },
@@ -250,6 +260,7 @@ describe('UploadProductComponent', () => {
     deviceService = TestBed.inject(DeviceDetectorService);
     userService = TestBed.inject(UserService);
     categoryService = TestBed.inject(CategoryService);
+    categoriesApiService = TestBed.inject(CategoriesApiService);
     uploadService = TestBed.inject(UploadService);
     itemReactivationService = TestBed.inject(ItemReactivationService);
     shippingToggleService = TestBed.inject(ShippingToggleService);
@@ -1481,29 +1492,18 @@ describe('UploadProductComponent', () => {
 
   describe('when getting the upload categories from the server', () => {
     it('should get value, label and icon from consumer goods categories', () => {
-      spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
-      const expected: CategoryOption[] = [
-        {
-          value: '15000',
-          icon_id: 'pc',
-          label: 'Computers & Electronic',
-        },
-        {
-          value: '15245',
-          icon_id: 'pc',
-          label: 'Computers & Electronic',
-        },
-        {
-          value: '14000',
-          icon_id: 'motorbike',
-          label: 'Motorbikes',
-        },
-        {
-          value: '12800',
-          icon_id: 'helmet',
-          label: 'Motor parts',
-        },
-      ];
+      const categories = CATEGORIES_DATA_CONSUMER_GOODS;
+      spyOn(categoriesApiService, 'getUploadCategories').and.returnValue(of(categories));
+
+      const expected: CategoryOption[] = categories.map((category: CategoryResponse) => {
+        const expectedCategory = {
+          value: category.category_id.toString(),
+          label: category.name,
+          icon_id: category.icon_id,
+        };
+
+        return expectedCategory;
+      });
 
       component.ngOnInit();
 
