@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { KYCAckService } from '@api/bff/delivery/kyc-ack/kyc-ack.service';
 import {
   MOCK_KYC_MODAL_ERROR_PROPERTIES,
   MOCK_KYC_MODAL_SUCCEED_PROPERTIES,
@@ -35,6 +36,12 @@ describe('KYCStatusModalComponent', () => {
           provide: Router,
           useValue: {
             navigate() {},
+          },
+        },
+        {
+          provide: KYCAckService,
+          useValue: {
+            notify() {},
           },
         },
       ],
