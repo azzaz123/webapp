@@ -1,8 +1,12 @@
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
-import { SubscriptionSlotResponse } from '../dtos/slots/slots-response.interface';
+import { SubscriptionSlotGeneralResponse, SubscriptionSlotResponse } from '../dtos/slots/slots-response.interface';
 import { SubscriptionSlot } from '../interfaces/subscription-slot/subscription-slot.interface';
 
-export function mapSlotsResponseToSlots(slots: SubscriptionSlotResponse[], subscriptions: SubscriptionsResponse[]): SubscriptionSlot[] {
+export function mapSlotsResponseToSlots(
+  slotsResponse: SubscriptionSlotGeneralResponse,
+  subscriptions: SubscriptionsResponse[]
+): SubscriptionSlot[] {
+  const { slots } = slotsResponse;
   return slots.map((slot) => mapSlotResponseToSlot(slot, subscriptions));
 }
 

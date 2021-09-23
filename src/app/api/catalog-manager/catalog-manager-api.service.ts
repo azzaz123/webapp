@@ -23,7 +23,7 @@ export class CatalogManagerApiService {
 
   public getSlots(): Observable<SubscriptionSlot[]> {
     return forkJoin([this.catalogManagerService.getSlots(), this.subscriptionsService.getSubscriptions(false)]).pipe(
-      map((values) => mapSlotsResponseToSlots(values[0].slots, values[1]))
+      map((values) => mapSlotsResponseToSlots(values[0], values[1]))
     );
   }
 
