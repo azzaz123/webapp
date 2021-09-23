@@ -44,7 +44,6 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.kycPropertiesService.get().subscribe();
     this.KYCProperties$ = this.kycPropertiesService.KYCProperties$;
   }
 

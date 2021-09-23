@@ -4,10 +4,14 @@ import { WalletBalanceModule } from './pages/wallet-balance/wallet-balance.modul
 import { WALLET_PATHS } from './wallet.routing.constants';
 import { BankDetailsModule } from './pages/bank-details/bank-details.module';
 import { WalletComponent } from './wallet.component';
+import { WalletResolver } from '@core/wallet/resolvers/wallet.resolver';
 
 const routes: Route[] = [
   {
     path: '',
+    resolve: {
+      walletResolver: WalletResolver,
+    },
     component: WalletComponent,
     children: [
       {
