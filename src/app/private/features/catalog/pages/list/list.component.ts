@@ -464,7 +464,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public onSelectSubscriptionSlot(subscription: SubscriptionSlot) {
     if (this.selectedSubscriptionSlot && subscription) {
-      if (this.selectedSubscriptionSlot.subscription.category_id === subscription.subscription.category_id) {
+      if (this.selectedSubscriptionSlot.subscription.type === subscription.subscription.type) {
         return;
       }
     }
