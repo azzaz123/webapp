@@ -30,7 +30,6 @@ import {
   RealestateContent,
   SelectedItemsAction,
   ListingFeeProductInfo,
-  ItemByCategoryResponse,
 } from './item-response.interface';
 import { find, findIndex, reverse, without, map as lodashMap, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';

@@ -7,13 +7,14 @@ import { CatalogManagerHttpService } from './http/catalog-manager-http.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 import { Item } from '@core/item/item';
-import { ItemByCategoryResponse, ItemsStore } from '@core/item/item-response.interface';
+import { ItemsStore } from '@core/item/item-response.interface';
 import { mapFilter, mapItems, mapSort } from './mappers/items-mapper';
+import { ItemBySubscriptionResponse } from './dtos/slots/items-subscription-type.interface';
+import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 
 @Injectable()
 export class CatalogManagerApiService {
   constructor(private catalogManagerService: CatalogManagerHttpService, private subscriptionsService: SubscriptionsService) {}
-  private lastTypeSearched: SUBSCRIPTION_CATEGORY_TYPES;
   protected items: ItemsStore = {
     active: [],
     pending: [],
@@ -28,49 +29,37 @@ export class CatalogManagerApiService {
   }
 
   public itemsBySubscriptionType(
-    pageNumber: number,
-    pageSize: number,
     type: SUBSCRIPTION_CATEGORY_TYPES,
     sortByParam: string,
-    status: string = 'active',
-    term?: string,
-    cache: boolean = true
+    status = STATUS.ACTIVE,
+    term?: string
   ): Observable<Item[]> {
-    const init: number = (pageNumber - 1) * pageSize;
-    const end: number = init + pageSize;
-
-    // TODO: Propper condition with last category id searched and so
-    if (status === 'TODO' && this.lastTypeSearched && this.lastTypeSearched === type && this.items[status] && cache) {
-      return of(this.items[status]);
-    } else {
-      return this.recursiveItemsByCategory(0, 20, type, status).pipe(
-        map(mapItems),
-        tap((items) => {
-          if (items.length) {
-            this.items[status] = items;
-            this.lastTypeSearched = type;
-          }
-        }),
-        map((res) => mapFilter(term, res)),
-        map((res) => mapSort(sortByParam, res))
-      );
-    }
+    return this.recursiveItemsByCategory(0, 20, type, status as STATUS).pipe(
+      map(mapItems),
+      tap((items) => {
+        if (items.length) {
+          this.items[status] = items;
+        }
+      }),
+      map((res) => mapFilter(term, res)),
+      map((res) => mapSort(sortByParam, res))
+    );
   }
 
   private recursiveItemsByCategory(
     init: number,
     offset: number,
     type: SUBSCRIPTION_CATEGORY_TYPES,
-    status: string
-  ): Observable<ItemByCategoryResponse[]> {
+    status: STATUS
+  ): Observable<ItemBySubscriptionResponse[]> {
     return this.catalogManagerService.getItemsBySubscriptionType(init, offset, type, status).pipe(
       mergeMap((res) => {
-        if (res.length > 0) {
+        if (res.length === offset) {
           return this.recursiveItemsByCategory(init + offset, offset, type, status).pipe(
             map((recursiveResult) => res.concat(recursiveResult))
           );
         } else {
-          return of([]);
+          return of(res);
         }
       })
     );

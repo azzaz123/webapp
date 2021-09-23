@@ -72,7 +72,7 @@ export class ListComponent implements OnInit, OnDestroy {
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
   public items: Item[] = [];
-  public selectedStatus: string = STATUS.PUBLISHED;
+  public selectedStatus: STATUS | string = STATUS.PUBLISHED;
   public loading = true;
   public end: boolean;
   public scrollTop: number;
@@ -647,11 +647,9 @@ export class ListComponent implements OnInit, OnDestroy {
     if (this.selectedSubscriptionSlot) {
       this.catalogManagerService
         .itemsBySubscriptionType(
-          this.page,
-          this.pageSize,
           this.selectedSubscriptionSlot.subscription.type,
           this.sortBy,
-          this.selectedStatus,
+          this.selectedStatus as STATUS,
           this.searchTerm
         )
         .subscribe((itemsByCategory) => {

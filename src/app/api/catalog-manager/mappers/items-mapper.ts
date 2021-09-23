@@ -1,8 +1,8 @@
 import { Item } from '@core/item/item';
-import { ItemByCategoryResponse } from '@core/item/item-response.interface';
-import { find, findIndex, reverse, without, map as lodashMap, filter, sortBy } from 'lodash-es';
+import { reverse, filter, sortBy } from 'lodash-es';
+import { ItemBySubscriptionResponse } from '../dtos/slots/items-subscription-type.interface';
 
-export function mapItems(items: ItemByCategoryResponse[]): Item[] {
+export function mapItems(items: ItemBySubscriptionResponse[]): Item[] {
   return items.length ? items.map((i) => mapItemByCategory(i)) : [];
 }
 
@@ -26,7 +26,7 @@ export function mapSort(sortByParam: string, res: Item[]): Item[] {
   return sorted;
 }
 
-function mapItemByCategory(response: ItemByCategoryResponse) {
+function mapItemByCategory(response: ItemBySubscriptionResponse) {
   const item = new Item(
     response.id,
     null,

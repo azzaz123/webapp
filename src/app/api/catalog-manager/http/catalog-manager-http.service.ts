@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { SubscriptionSlotGeneralResponse } from '../dtos/slots/slots-response.interface';
 import { ITEMS_BY_SUBSCRIPTION_TYPE, SUBSCRIPTIONS_SLOTS_ENDPOINT } from './endpoints';
 import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
+import { ItemBySubscriptionResponse } from '../dtos/slots/items-subscription-type.interface';
+import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 
 @Injectable()
 export class CatalogManagerHttpService {
@@ -13,8 +15,13 @@ export class CatalogManagerHttpService {
     return this.httpClient.get<SubscriptionSlotGeneralResponse>(SUBSCRIPTIONS_SLOTS_ENDPOINT);
   }
 
-  public getItemsBySubscriptionType(init: number, offset: number, type: SUBSCRIPTION_CATEGORY_TYPES, status: string): Observable<any> {
-    return this.httpClient.get<any>(ITEMS_BY_SUBSCRIPTION_TYPE, {
+  public getItemsBySubscriptionType(
+    init: number,
+    offset: number,
+    type: SUBSCRIPTION_CATEGORY_TYPES,
+    status: STATUS
+  ): Observable<ItemBySubscriptionResponse[]> {
+    return this.httpClient.get<ItemBySubscriptionResponse[]>(ITEMS_BY_SUBSCRIPTION_TYPE, {
       params: {
         status,
         init: init.toString(),
