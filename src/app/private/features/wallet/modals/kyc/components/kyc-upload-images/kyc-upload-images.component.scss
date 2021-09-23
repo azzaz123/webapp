@@ -30,7 +30,7 @@ $image-height--big: 240px;
   }
 
   &__imageLaterals {
-    padding: 0px 32px;
+    padding: 0px $spacer * 2;
   }
 
   &__imageContainer {
