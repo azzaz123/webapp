@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable, of } from 'rxjs';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { SubscriptionSlot } from './interfaces/subscription-slot/subscription-slot.interface';
 import { mapSlotsResponseToSlots } from './mappers/slots-mapper';
 import { CatalogManagerHttpService } from './http/catalog-manager-http.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 import { Item } from '@core/item/item';
-import { ItemsStore } from '@core/item/item-response.interface';
 import { mapFilter, mapItems, mapSort } from './mappers/items-mapper';
 import { ItemBySubscriptionResponse } from './dtos/slots/items-subscription-type.interface';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
@@ -15,12 +14,6 @@ import { STATUS } from '@private/features/catalog/components/selected-items/sele
 @Injectable()
 export class CatalogManagerApiService {
   constructor(private catalogManagerService: CatalogManagerHttpService, private subscriptionsService: SubscriptionsService) {}
-  protected items: ItemsStore = {
-    active: [],
-    pending: [],
-    sold: [],
-    featured: [],
-  };
 
   public getSlots(): Observable<SubscriptionSlot[]> {
     return forkJoin([this.catalogManagerService.getSlots(), this.subscriptionsService.getSubscriptions(false)]).pipe(
@@ -34,13 +27,8 @@ export class CatalogManagerApiService {
     status = STATUS.ACTIVE,
     term?: string
   ): Observable<Item[]> {
-    return this.recursiveItemsByCategory(0, 20, type, status as STATUS).pipe(
+    return this.recursiveItemsByCategory(0, 20, type, status).pipe(
       map(mapItems),
-      tap((items) => {
-        if (items.length) {
-          this.items[status] = items;
-        }
-      }),
       map((res) => mapFilter(term, res)),
       map((res) => mapSort(sortByParam, res))
     );

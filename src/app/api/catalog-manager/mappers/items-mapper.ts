@@ -1,11 +1,13 @@
 import { Item } from '@core/item/item';
+import { Image } from '@core/user/user-response.interface';
 import { reverse, filter, sortBy } from 'lodash-es';
-import { ItemBySubscriptionResponse } from '../dtos/slots/items-subscription-type.interface';
+import { ImageItemBySubscription, ItemBySubscriptionResponse } from '../dtos/slots/items-subscription-type.interface';
 
 export function mapItems(items: ItemBySubscriptionResponse[]): Item[] {
   return items.length ? items.map((i) => mapItemByCategory(i)) : [];
 }
 
+// TODO TEST
 export function mapFilter(term: string, res: Item[]): Item[] {
   term = term ? term.trim().toLowerCase() : '';
   if (term !== '') {
@@ -16,6 +18,7 @@ export function mapFilter(term: string, res: Item[]): Item[] {
   return res;
 }
 
+// TODO TEST
 export function mapSort(sortByParam: string, res: Item[]): Item[] {
   const sort = sortByParam.split('_');
   const field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
@@ -42,7 +45,7 @@ function mapItemByCategory(response: ItemBySubscriptionResponse) {
     response.flags,
     null,
     null,
-    response.main_image,
+    mapImage(response.main_image),
     null,
     response.web_slug,
     response.publish_date,
@@ -68,4 +71,17 @@ function mapItemByCategory(response: ItemBySubscriptionResponse) {
   }
 
   return item;
+}
+
+function mapImage(image: ImageItemBySubscription): Image {
+  delete image.urls_by_size.xmall;
+
+  const imageMapped: Image = {
+    ...image,
+    urls_by_size: {
+      ...image.urls_by_size,
+    },
+  };
+
+  return imageMapped;
 }

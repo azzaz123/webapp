@@ -11,7 +11,7 @@ import {
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
-import { MOCK_SUBSCRIPTION_SLOT_CARS, MOCK_SUBSCRIPTION_SLOT_MOTORBIKES } from '@fixtures/subsctiption-slots.fixtures.spec';
+import { MOCK_SUBSCRIPTION_SLOT_CARS, MOCK_SUBSCRIPTION_SLOT_REAL_ESTATE } from '@fixtures/subscription-slots.fixtures.spec';
 
 describe('SubscriptionsSlotItemComponent', () => {
   let component: SubscriptionsSlotItemComponent;
@@ -48,7 +48,7 @@ describe('SubscriptionsSlotItemComponent', () => {
     });
 
     it('should return false when selected slot and own subscription are different', () => {
-      component.selectedSubscriptionSlot = MOCK_SUBSCRIPTION_SLOT_MOTORBIKES;
+      component.selectedSubscriptionSlot = MOCK_SUBSCRIPTION_SLOT_REAL_ESTATE;
       expect(component.isSelected()).toBe(false);
     });
   });

@@ -69,8 +69,8 @@ import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
-import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subsctiption-slots.fixtures.spec';
 import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
+import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscription-slots.fixtures.spec';
 
 describe('ListComponent', () => {
   let component: ListComponent;

@@ -4,9 +4,9 @@ import { of } from 'rxjs';
 import { CatalogManagerHttpService } from './http/catalog-manager-http.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { CatalogManagerApiService } from './catalog-manager-api.service';
-import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE } from '@fixtures/subsctiption-slots.fixtures.spec';
 import { MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
 import { SubscriptionSlot } from './interfaces/subscription-slot/subscription-slot.interface';
+import { MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE, MOCK_SUBSCRIPTION_SLOTS } from '@fixtures/subscription-slots.fixtures.spec';
 
 describe('CatalogManagerApiService', () => {
   let service: CatalogManagerApiService;

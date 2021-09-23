@@ -3,20 +3,7 @@ import { ItemFlags, ItemVisibilityFlags } from '@core/item/item-response.interfa
 export interface ItemBySubscriptionResponse {
   id: string;
   title: string;
-  main_image: {
-    id: string;
-    original_width: number;
-    original_height: number;
-    average_hex_color: string;
-    urls_by_size: {
-      small: string;
-      xmall: string;
-      original: string;
-      large: string;
-      xlarge: string;
-      medium: string;
-    };
-  };
+  main_image: ImageItemBySubscription;
   modified_date: number;
   publish_date: number;
   sale_price: number;
@@ -27,5 +14,20 @@ export interface ItemBySubscriptionResponse {
   web_slug: string;
   car_info?: {
     km: number;
+  };
+}
+
+export interface ImageItemBySubscription {
+  id: string;
+  original_width: number;
+  original_height: number;
+  average_hex_color: string;
+  urls_by_size: {
+    small: string;
+    xmall: string;
+    original: string;
+    large: string;
+    xlarge: string;
+    medium: string;
   };
 }
