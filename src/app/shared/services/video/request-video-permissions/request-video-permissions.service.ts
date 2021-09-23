@@ -5,7 +5,7 @@ import { VIDEO_PERMISSIONS_STATUS } from './video-permissions-status.interface';
 
 @Injectable()
 export class RequestVideoPermissionsService {
-  public get videoStream$(): Observable<MediaStream> {
+  public get videoStream$(): Observable<MediaStream | null> {
     return this.videoStreamSubject.asObservable();
   }
 
@@ -13,7 +13,7 @@ export class RequestVideoPermissionsService {
     return this.videoPermissionsSubject.asObservable();
   }
 
-  public request(): void {
+  public startStream(): void {
     if (this.isAPIAllowed()) {
       navigator.mediaDevices
         .getUserMedia({
@@ -39,11 +39,11 @@ export class RequestVideoPermissionsService {
     });
   }
 
-  private videoPermissionsSubject: BehaviorSubject<VIDEO_PERMISSIONS_STATUS> = new BehaviorSubject<VIDEO_PERMISSIONS_STATUS>(
+  private readonly videoPermissionsSubject: BehaviorSubject<VIDEO_PERMISSIONS_STATUS> = new BehaviorSubject<VIDEO_PERMISSIONS_STATUS>(
     VIDEO_PERMISSIONS_STATUS.LOADING
   );
 
-  private videoStreamSubject: BehaviorSubject<MediaStream> = new BehaviorSubject(null);
+  private readonly videoStreamSubject: BehaviorSubject<MediaStream | null> = new BehaviorSubject(null);
 
   private set userVideoPermissions(newPermissions: VIDEO_PERMISSIONS_STATUS) {
     this.videoPermissionsSubject.next(newPermissions);

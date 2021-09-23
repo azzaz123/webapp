@@ -29,7 +29,7 @@ describe('RequestVideoPermissionsService', () => {
           setPermissionsAsAccepted();
           spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
 
-          service.request();
+          service.startStream();
         });
 
         it('should ask the user for the video permission', () => {
@@ -62,7 +62,7 @@ describe('RequestVideoPermissionsService', () => {
           setPermissionsError(true);
           spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
 
-          service.request();
+          service.startStream();
         });
 
         it('should ask the user for the video permission', () => {
@@ -88,7 +88,7 @@ describe('RequestVideoPermissionsService', () => {
           setPermissionsError(false);
           spyOn(navigator.mediaDevices, 'getUserMedia').and.callThrough();
 
-          service.request();
+          service.startStream();
         });
 
         it('should ask the user for the video permission', () => {
@@ -118,7 +118,7 @@ describe('RequestVideoPermissionsService', () => {
       it('should define the video permission as cannot access', fakeAsync(() => {
         let videoPermissions: VIDEO_PERMISSIONS_STATUS;
 
-        service.request();
+        service.startStream();
         tick();
         service.userVideoPermissions$.subscribe((result: VIDEO_PERMISSIONS_STATUS) => (videoPermissions = result));
 
@@ -135,7 +135,7 @@ describe('RequestVideoPermissionsService', () => {
     describe('and we ask for stop the video stream...', () => {
       beforeEach(() => {
         setPermissionsAsAccepted();
-        service.request();
+        service.startStream();
       });
 
       it('should close all the video tracks', () => {

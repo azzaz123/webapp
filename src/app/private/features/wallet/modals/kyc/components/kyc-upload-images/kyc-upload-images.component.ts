@@ -121,14 +121,15 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     const activeStep: KYCImagesNeeded = this.activeStep$.value;
 
     if (activeStep === 2) {
+      this.activeStep$.next(1);
+
+      this.requestVideoPermissionsService.stopStream();
+
       this.images$.next({
         ...this.images$.value,
         frontSide: null,
         backSide: null,
       });
-
-      this.requestVideoPermissionsService.stopStream();
-      this.activeStep$.next(1);
     } else {
       this.goBack.emit();
     }
@@ -378,8 +379,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   private buildShowImageBlockObservable(): Observable<boolean> {
     return this.requestVideoPermissionsService.userVideoPermissions$.pipe(
       map((videoPermissions: VIDEO_PERMISSIONS_STATUS) => {
-        const isAcceptedOrInProgress =
-          videoPermissions === VIDEO_PERMISSIONS_STATUS.ACCEPTED || videoPermissions === VIDEO_PERMISSIONS_STATUS.LOADING;
+        const isAcceptedOrInProgress = videoPermissions === VIDEO_PERMISSIONS_STATUS.ACCEPTED;
 
         return (isAcceptedOrInProgress && this.isShootImageMethod) || this.isUploadImageMethod;
       })
@@ -424,14 +424,16 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
   private manageVideoStreamWhenDefinedImageChange(): void {
     this.subscriptions.add(
-      combineLatest([this.isCurrentImageDefined$, this.videoStream$]).subscribe(([isDefined, mediaStream]: [boolean, MediaStream]) => {
-        if (isDefined) {
-          this.requestVideoPermissionsService.stopStream();
+      combineLatest([this.isCurrentImageDefined$, this.videoStream$]).subscribe(
+        ([isDefined, mediaStream]: [boolean, MediaStream | null]) => {
+          if (isDefined) {
+            this.requestVideoPermissionsService.stopStream();
+          }
+          if (!isDefined && !mediaStream?.active) {
+            this.requestVideoPermissionsService.startStream();
+          }
         }
-        if (!isDefined && !mediaStream?.active) {
-          this.requestVideoPermissionsService.request();
-        }
-      })
+      )
     );
   }
 
