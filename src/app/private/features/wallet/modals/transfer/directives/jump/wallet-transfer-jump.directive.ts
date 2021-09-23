@@ -25,6 +25,7 @@ export class WalletTransferJumpDirective {
 
     if (!!target && this.isValidJump) {
       target.focus();
+      (target as HTMLInputElement).select();
       e.preventDefault();
     }
   }
