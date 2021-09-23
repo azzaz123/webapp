@@ -168,16 +168,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           params.push({ key: FILTER_QUERY_PARAM_KEY.orderBy, value: SORT_BY_DISTANCE_OPTION.value });
         }
 
-        if (!this.paramsHaveLocation(params)) {
-          this.searchNavigatorService.navigate(
-            params,
-            (params.find((parameter) => parameter.key === FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE)?.value || null) as FILTERS_SOURCE,
-            false,
-            true
-          );
-        } else {
-          this.filterParameterStore.setParameters(params);
-        }
+        this.filterParameterStore.setParameters(params);
       })
     );
 
@@ -317,12 +308,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
       return CARD_TYPES.WIDE;
     }
     return CARD_TYPES.REGULAR;
-  }
-
-  private paramsHaveLocation(params: FilterParameter[]): boolean {
-    return (
-      params.filter((param) => param.key === FILTER_QUERY_PARAM_KEY.latitude || param.key === FILTER_QUERY_PARAM_KEY.longitude).length === 2
-    );
   }
 
   private paramsHaveSortBy(params: FilterParameter[]): boolean {
