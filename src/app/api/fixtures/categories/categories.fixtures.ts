@@ -1,11 +1,12 @@
 import { CategoryDto } from '@api/categories/dtos';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { CategoryResponse } from '@core/category/category-response.interface';
 import { CATEGORY_ICONS } from '@public/shared/components/filters/components/categories-filter/data/category_options';
 import { CategoriesFilterOption } from '@public/shared/components/filters/components/categories-filter/interfaces/categories-filter-option.interface';
 
 export const categoriesFixture: CategoryDto[] = [
   {
-    category_id: 100,
+    category_id: CATEGORY_IDS.CAR,
     name: 'Coches',
     icon_id: 'car',
     vertical_id: 'cars',
@@ -17,7 +18,7 @@ export const categoriesFixture: CategoryDto[] = [
     has_num_item_top_sellers: true,
   },
   {
-    category_id: 14000,
+    category_id: CATEGORY_IDS.MOTORBIKE,
     name: 'Motos',
     icon_id: 'motorbike',
     vertical_id: 'consumer_goods',
@@ -29,7 +30,7 @@ export const categoriesFixture: CategoryDto[] = [
     has_num_item_top_sellers: true,
   },
   {
-    category_id: 12800,
+    category_id: CATEGORY_IDS.MOTOR_ACCESSORIES,
     name: 'Motor y Accesorios',
     icon_id: 'helmet',
     vertical_id: 'consumer_goods',
@@ -41,7 +42,7 @@ export const categoriesFixture: CategoryDto[] = [
     has_num_item_top_sellers: true,
   },
   {
-    category_id: 12465,
+    category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
     name: 'Moda y Accesorios',
     icon_id: 't-shirt',
     vertical_id: 'consumer_goods',
@@ -62,7 +63,7 @@ export const categoriesFixture: CategoryDto[] = [
 
 export const mappedUploadCategoriesFixture: CategoryResponse[] = [
   {
-    category_id: 100,
+    category_id: CATEGORY_IDS.CAR,
     name: 'Coches',
     icon_id: 'car',
     vertical_id: 'cars',
@@ -70,7 +71,7 @@ export const mappedUploadCategoriesFixture: CategoryResponse[] = [
     hasShipping: false,
   },
   {
-    category_id: 14000,
+    category_id: CATEGORY_IDS.MOTORBIKE,
     name: 'Motos',
     icon_id: 'motorbike',
     vertical_id: 'consumer_goods',
@@ -78,7 +79,7 @@ export const mappedUploadCategoriesFixture: CategoryResponse[] = [
     hasShipping: false,
   },
   {
-    category_id: 12800,
+    category_id: CATEGORY_IDS.MOTOR_ACCESSORIES,
     name: 'Motor y Accesorios',
     icon_id: 'helmet',
     vertical_id: 'consumer_goods',
@@ -86,7 +87,7 @@ export const mappedUploadCategoriesFixture: CategoryResponse[] = [
     hasShipping: true,
   },
   {
-    category_id: 12465,
+    category_id: CATEGORY_IDS.FASHION_ACCESSORIES,
     name: 'Moda y Accesorios',
     icon_id: 't-shirt',
     vertical_id: 'consumer_goods',
@@ -103,22 +104,22 @@ export const mappedUploadCategoriesFixture: CategoryResponse[] = [
 
 export const mappedSearchCategoriesFixture: CategoriesFilterOption[] = [
   {
-    value: '100',
+    value: CATEGORY_IDS.CAR.toString(),
     label: 'Coches',
     icon: CATEGORY_ICONS.find((categoryIcon) => categoryIcon.id === 'car'),
   },
   {
-    value: '14000',
+    value: CATEGORY_IDS.MOTORBIKE.toString(),
     label: 'Motos',
     icon: CATEGORY_ICONS.find((categoryIcon) => categoryIcon.id === 'motorbike'),
   },
   {
-    value: '12800',
+    value: CATEGORY_IDS.MOTOR_ACCESSORIES.toString(),
     label: 'Motor y Accesorios',
     icon: CATEGORY_ICONS.find((categoryIcon) => categoryIcon.id === 'helmet'),
   },
   {
-    value: '12465',
+    value: CATEGORY_IDS.FASHION_ACCESSORIES.toString(),
     label: 'Moda y Accesorios',
     icon: CATEGORY_ICONS.find((categoryIcon) => categoryIcon.id === 't-shirt'),
   },

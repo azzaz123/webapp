@@ -26,7 +26,6 @@ import { CategoryService } from '@core/category/category.service';
 import {
   CATEGORIES_OPTIONS_CONSUMER_GOODS,
   CATEGORIES_DATA_CONSUMER_GOODS,
-  CATEGORY_DATA_WEB,
   SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS,
   SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS,
 } from '@fixtures/category.fixtures.spec';
