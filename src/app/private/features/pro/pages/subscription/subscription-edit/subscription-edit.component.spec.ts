@@ -70,9 +70,7 @@ describe('SubscriptionEditComponent', () => {
         {
           provide: CustomerHelpService,
           useValue: {
-            getPageUrl() {
-              return 'fake-url';
-            },
+            getPageUrl() {},
           },
         },
       ],
@@ -272,16 +270,27 @@ describe('SubscriptionEditComponent', () => {
     });
   });
   describe('Faqs', () => {
+    const articleUrl = 'articleUrl';
     beforeEach(() => {
-      spyOn(customerHelpService, 'getPageUrl').and.callThrough();
+      spyOn(customerHelpService, 'getPageUrl').and.returnValue(articleUrl);
       component.ngOnInit();
+      fixture.detectChanges();
     });
-    it('should show faqs', () => {
-      const elements = fixture.debugElement.queryAll(By.css('a'));
-      const faq = elements.find((element) => element.attributes.href === 'fake-url');
+    it('should show link', () => {
+      const link = fixture.debugElement.query(By.css('a'));
 
-      expect(faq).toBeTruthy();
-      expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(CUSTOMER_HELP_PAGE.CHANGE_PRO_SUBSCRIPCION);
+      expect(link).toBeTruthy();
+    });
+    it('link should open a new tab', () => {
+      const link = fixture.debugElement.query(By.css('a'));
+
+      expect(link.attributes.target).toEqual('_blank');
+    });
+    it('link should redirect to articleId', () => {
+      const link = fixture.debugElement.query(By.css('a'));
+
+      expect(link.attributes.href).toEqual(articleUrl);
+      expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(CUSTOMER_HELP_PAGE.CHANGE_PRO_SUBSCRIPTION);
     });
   });
 });

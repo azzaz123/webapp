@@ -60,7 +60,7 @@ export class SubscriptionEditComponent implements OnInit {
     this.subscribedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.selected_tier_id);
     this.selectedTier = this.subscribedTier;
     this.availableTiers = this.subscription.tiers.filter((tier) => tier.id !== this.subscription.selected_tier_id);
-    this.helpPageUrl = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.CHANGE_PRO_SUBSCRIPCION);
+    this.helpPageUrl = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.CHANGE_PRO_SUBSCRIPTION);
     this.checkTier();
   }
 

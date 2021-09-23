@@ -107,9 +107,7 @@ describe('SubscriptionPurchaseComponent', () => {
         {
           provide: CustomerHelpService,
           useValue: {
-            getPageUrl() {
-              return 'fake-url';
-            },
+            getPageUrl() {},
           },
         },
       ],
@@ -528,27 +526,44 @@ describe('SubscriptionPurchaseComponent', () => {
       });
     });
   });
+
   describe('Faqs', () => {
-    beforeEach(() => {
-      spyOn(customerHelpService, 'getPageUrl').and.callThrough();
-    });
     describe.each([
-      [MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED, CUSTOMER_HELP_PAGE.CARS_SUBSCRIPTION],
-      [MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED, CUSTOMER_HELP_PAGE.REAL_ESTATE_SUBSCRIPTION],
-      [FREE_TRIAL_AVAILABLE_SUBSCRIPTION, CUSTOMER_HELP_PAGE.MOTORBIKE_SUBSCRIPTION],
-      [MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED, CUSTOMER_HELP_PAGE.EVERYTHING_ELSE_SUBSCRIPTION],
-    ])('Faqs by subscription category', (subscription, urlId) => {
+      [MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED, CUSTOMER_HELP_PAGE.CARS_SUBSCRIPTION, CUSTOMER_HELP_PAGE.CARS_SUBSCRIPTION.toString()],
+      [
+        MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
+        CUSTOMER_HELP_PAGE.REAL_ESTATE_SUBSCRIPTION,
+        CUSTOMER_HELP_PAGE.REAL_ESTATE_SUBSCRIPTION.toString(),
+      ],
+      [FREE_TRIAL_AVAILABLE_SUBSCRIPTION, CUSTOMER_HELP_PAGE.MOTORBIKE_SUBSCRIPTION, CUSTOMER_HELP_PAGE.MOTORBIKE_SUBSCRIPTION.toString()],
+      [
+        MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+        CUSTOMER_HELP_PAGE.EVERYTHING_ELSE_SUBSCRIPTION,
+        CUSTOMER_HELP_PAGE.EVERYTHING_ELSE_SUBSCRIPTION.toString(),
+      ],
+    ])('Faqs by subscription category', (subscription, articleId, articleUrl) => {
       describe(`when category is ${subscription.category_name}`, () => {
-        it(`should redirect to ${urlId} help desk`, () => {
+        beforeEach(() => {
+          spyOn(customerHelpService, 'getPageUrl').and.returnValue(articleUrl);
           component.subscription = subscription;
           component.ngOnInit();
           fixture.detectChanges();
+        });
+        it('should show link', () => {
+          const link = fixture.debugElement.query(By.css('a'));
 
-          const elements = fixture.debugElement.queryAll(By.css('a'));
-          const faq = elements.find((element) => element.attributes.href === 'fake-url');
+          expect(link).toBeTruthy();
+        });
+        it('link should open a new tab', () => {
+          const link = fixture.debugElement.query(By.css('a'));
 
-          expect(faq).toBeTruthy();
-          expect(customerHelpService.getPageUrl).lastCalledWith(urlId);
+          expect(link.attributes.target).toEqual('_blank');
+        });
+        it(`link should redirect to article id ${articleId}`, () => {
+          const link = fixture.debugElement.query(By.css('a'));
+
+          expect(link.attributes.href).toEqual(articleUrl);
+          expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(articleId);
         });
       });
     });
