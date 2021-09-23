@@ -26,7 +26,7 @@ export class SubscriptionsSlotItemComponent {
     if (!this.selectedSubscriptionSlot) {
       return false;
     }
-    return this.subscriptionSlot.subscription.category_id === this.selectedSubscriptionSlot.subscription.category_id;
+    return this.subscriptionSlot.subscription.type === this.selectedSubscriptionSlot.subscription.type;
   }
 
   onClick(subscriptionSlot: SubscriptionSlot, e: any) {

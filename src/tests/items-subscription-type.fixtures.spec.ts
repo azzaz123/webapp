@@ -1,4 +1,4 @@
-import { ItemBySubscriptionResponse } from '@api/catalog-manager/dtos/slots/items-subscription-type.interface';
+import { ItemBySubscriptionResponse } from '@api/catalog-manager/dtos/items-by-subscription/items-subscription-type.interface';
 import { Item } from '@core/item/item';
 import { Image } from '@core/user/user-response.interface';
 

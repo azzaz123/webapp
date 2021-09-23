@@ -1,13 +1,12 @@
 import { Item } from '@core/item/item';
 import { Image } from '@core/user/user-response.interface';
 import { reverse, filter, sortBy } from 'lodash-es';
-import { ImageItemBySubscription, ItemBySubscriptionResponse } from '../dtos/slots/items-subscription-type.interface';
+import { ImageItemBySubscription, ItemBySubscriptionResponse } from '../dtos/items-by-subscription/items-subscription-type.interface';
 
 export function mapItems(items: ItemBySubscriptionResponse[]): Item[] {
   return items.length ? items.map((i) => mapItemByCategory(i)) : [];
 }
 
-// TODO TEST
 export function mapFilter(term: string, res: Item[]): Item[] {
   term = term ? term.trim().toLowerCase() : '';
   if (term !== '') {
@@ -18,7 +17,6 @@ export function mapFilter(term: string, res: Item[]): Item[] {
   return res;
 }
 
-// TODO TEST
 export function mapSort(sortByParam: string, res: Item[]): Item[] {
   const sort = sortByParam.split('_');
   const field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';

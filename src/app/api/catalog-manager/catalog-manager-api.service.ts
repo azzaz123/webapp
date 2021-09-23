@@ -8,8 +8,8 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 import { Item } from '@core/item/item';
 import { mapFilter, mapItems, mapSort } from './mappers/items-mapper';
-import { ItemBySubscriptionResponse } from './dtos/slots/items-subscription-type.interface';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
+import { ItemBySubscriptionResponse } from './dtos/items-by-subscription/items-subscription-type.interface';
 
 @Injectable()
 export class CatalogManagerApiService {
@@ -21,6 +21,7 @@ export class CatalogManagerApiService {
     );
   }
 
+  // TODO ADD UNIT TEST TO COVER ALL CASES [PQP-4363]
   public itemsBySubscriptionType(
     type: SUBSCRIPTION_CATEGORY_TYPES,
     sortByParam: string,

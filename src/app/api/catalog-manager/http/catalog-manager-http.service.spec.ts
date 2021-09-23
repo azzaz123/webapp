@@ -6,8 +6,8 @@ import { CatalogManagerHttpService } from './catalog-manager-http.service';
 import { SubscriptionSlotGeneralResponse } from '../dtos/slots/slots-response.interface';
 import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
-import { ItemBySubscriptionResponse } from '../dtos/slots/items-subscription-type.interface';
 import { MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE } from '@fixtures/subscription-slots.fixtures.spec';
+import { ItemBySubscriptionResponse } from '../dtos/items-by-subscription/items-subscription-type.interface';
 
 describe('CatalogHttpService', () => {
   let service: CatalogManagerHttpService;
