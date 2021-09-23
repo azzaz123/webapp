@@ -31,13 +31,10 @@ import {
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { isEqual } from 'lodash-es';
-import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { AdSlotSearch, AD_PUBLIC_SEARCH } from '../core/ads/search-ads.config';
 import { SearchListTrackingEventsService } from '../core/services/search-list-tracking-events/search-list-tracking-events.service';
 import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
-import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
-import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { debounce } from '@core/helpers/debounce/debounce';
 import { SORT_BY_DISTANCE_OPTION } from '../components/sort-filter/services/constants/sort-by-options-constants';
 import { SearchResponseExtraData } from '../core/services/interfaces/search-response-extra-data.interface';
@@ -45,7 +42,6 @@ import { SearchService } from '../core/services/search.service';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
-import { SortByService } from '../components/sort-filter/services/sort-by.service';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -131,10 +127,8 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     private router: Router,
     private route: ActivatedRoute,
     private queryStringService: SearchQueryStringService,
-    private searchNavigatorService: SearchNavigatorService,
     private searchListTrackingEventsService: SearchListTrackingEventsService,
     private searchTrackingEventsService: SearchTrackingEventsService,
-    private sortByService: SortByService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
