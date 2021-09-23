@@ -79,7 +79,7 @@ describe('KYCUploadImagesComponent', () => {
               return videoStreamSubjectMock.asObservable();
             },
             stopStream() {},
-            request() {},
+            startStream() {},
           },
         },
       ],
@@ -115,7 +115,7 @@ describe('KYCUploadImagesComponent', () => {
 
     describe(`and the user's browser supports the API`, () => {
       beforeEach(() => {
-        spyOn(requestVideoPermissionsService, 'request');
+        spyOn(requestVideoPermissionsService, 'startStream');
       });
 
       describe(`and we are waiting for user's response`, () => {
@@ -349,7 +349,7 @@ describe('KYCUploadImagesComponent', () => {
                 });
 
                 it('should active the video stream again', () => {
-                  expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
+                  expect(requestVideoPermissionsService.startStream).toHaveBeenCalledTimes(2);
                 });
               });
 
@@ -363,7 +363,7 @@ describe('KYCUploadImagesComponent', () => {
                 });
 
                 it('should active the video stream again', () => {
-                  expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(2);
+                  expect(requestVideoPermissionsService.startStream).toHaveBeenCalledTimes(2);
                 });
               });
             });
@@ -526,7 +526,7 @@ describe('KYCUploadImagesComponent', () => {
                 });
 
                 it('should active the video stream again', () => {
-                  expect(requestVideoPermissionsService.request).toHaveBeenCalled();
+                  expect(requestVideoPermissionsService.startStream).toHaveBeenCalled();
                 });
               });
 
@@ -562,7 +562,7 @@ describe('KYCUploadImagesComponent', () => {
               });
 
               it('should active the video stream again', () => {
-                expect(requestVideoPermissionsService.request).toHaveBeenCalled();
+                expect(requestVideoPermissionsService.startStream).toHaveBeenCalled();
               });
             });
           });
@@ -715,7 +715,7 @@ describe('KYCUploadImagesComponent', () => {
               });
 
               it('should active the video stream again', () => {
-                expect(requestVideoPermissionsService.request).toHaveBeenCalledTimes(1);
+                expect(requestVideoPermissionsService.startStream).toHaveBeenCalledTimes(1);
               });
             });
 
@@ -820,7 +820,7 @@ describe('KYCUploadImagesComponent', () => {
 
   describe('when the user selects the upload image method', () => {
     beforeEach(() => {
-      spyOn(requestVideoPermissionsService, 'request');
+      spyOn(requestVideoPermissionsService, 'startStream');
       testComponent.takeImageMethod = KYC_TAKE_IMAGE_OPTIONS.UPLOAD;
     });
 
@@ -831,7 +831,7 @@ describe('KYCUploadImagesComponent', () => {
     it('should NOT request video access', () => {
       fixture.detectChanges();
 
-      expect(requestVideoPermissionsService.request).not.toHaveBeenCalled();
+      expect(requestVideoPermissionsService.startStream).not.toHaveBeenCalled();
     });
 
     it('should show the camera block', () => {

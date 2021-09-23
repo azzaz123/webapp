@@ -422,14 +422,16 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
   private manageVideoStreamWhenDefinedImageChange(): void {
     this.subscriptions.add(
-      combineLatest([this.isCurrentImageDefined$, this.videoStream$]).subscribe(([isDefined, mediaStream]: [boolean, MediaStream]) => {
-        if (isDefined) {
-          this.requestVideoPermissionsService.stopStream();
+      combineLatest([this.isCurrentImageDefined$, this.videoStream$]).subscribe(
+        ([isDefined, mediaStream]: [boolean, MediaStream | null]) => {
+          if (isDefined) {
+            this.requestVideoPermissionsService.stopStream();
+          }
+          if (!isDefined && !mediaStream?.active) {
+            this.requestVideoPermissionsService.startStream();
+          }
         }
-        if (!isDefined && !mediaStream?.active) {
-          this.requestVideoPermissionsService.request();
-        }
-      })
+      )
     );
   }
 

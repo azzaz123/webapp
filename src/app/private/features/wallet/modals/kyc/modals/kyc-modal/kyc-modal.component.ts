@@ -46,7 +46,7 @@ export class KYCModalComponent implements OnDestroy {
   public endVerification(KYCImages: KYCImages): void {
     this.KYCService.request(KYCImages).subscribe(
       () => {
-        this.defineImages(KYCImages);
+        this.updateKYCImages(KYCImages);
         this.goNextStep();
       },
       (e: Error | KYCError) => {
@@ -88,7 +88,7 @@ export class KYCModalComponent implements OnDestroy {
     this.stepper.goBack();
   }
 
-  private defineImages(newImages: KYCImages): void {
+  private updateKYCImages(newImages: KYCImages): void {
     this.KYCStoreService.specifications = {
       ...this.KYCStoreService.specifications,
       images: {
