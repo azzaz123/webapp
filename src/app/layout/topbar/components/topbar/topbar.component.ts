@@ -143,7 +143,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.searchNavigator.navigate(filterParams, FILTERS_SOURCE.SEARCH_BOX, true);
+    this.searchNavigator.navigate(filterParams, FILTERS_SOURCE.SEARCH_BOX);
   }
 
   private redirectToOldSearch(searchParams: SearchBoxValue) {
