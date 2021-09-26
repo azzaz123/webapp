@@ -3,7 +3,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
@@ -13,12 +12,7 @@ import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enu
   providedIn: 'root',
 })
 export class SearchNavigatorService {
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private queryStringService: SearchQueryStringService,
-    private locationService: QueryStringLocationService
-  ) {}
+  constructor(private router: Router, private route: ActivatedRoute, private queryStringService: SearchQueryStringService) {}
   private notAutomaticallyCleanableParams: FILTER_QUERY_PARAM_KEY[] = [
     FILTER_QUERY_PARAM_KEY.keywords,
     FILTER_QUERY_PARAM_KEY.latitude,
@@ -45,56 +39,38 @@ export class SearchNavigatorService {
   }
 
   private getQueryParamsAfterFiltersChanged(filtersSource: FILTERS_SOURCE, filterParams: FilterParameter[]): Params {
-    const newParams = this.queryStringService.mapFilterToQueryParams(filterParams);
+    const queryParams = this.queryStringService.mapFilterToQueryParams(filterParams);
 
     if (filtersSource === FILTERS_SOURCE.DEFAULT_FILTERS) {
-      return this.cleanUndefined(newParams);
+      return this.cleanUndefined(queryParams);
     }
 
     const currentParams = this.route.snapshot.queryParams;
+    const newParams = { ...currentParams, ...queryParams };
 
-    if (this.hasCategoryChanged(currentParams, { ...currentParams, ...newParams })) {
-      return this.getParamsAfterCategoryChanged(currentParams, newParams);
+    if (this.hasCategoryChanged(currentParams, newParams)) {
+      return this.getParamsAfterCategoryChanged(newParams);
     }
 
-    if (this.hasRealEstateChanged(currentParams, { ...currentParams, ...newParams })) {
+    if (this.hasRealEstateChanged(currentParams, newParams)) {
       return this.getParamsAfterRealEstateChanged(currentParams, newParams);
     }
 
-    return this.getParamsAfterFilterChanged(currentParams, newParams);
+    return this.cleanUndefined(newParams);
   }
 
-  private getParamsAfterFilterChanged(currentParams: Params, newParams: Params): Params {
-    const params = { ...currentParams, ...newParams };
+  private getParamsAfterCategoryChanged(newParams: Params): Params {
+    const params = { [FILTER_QUERY_PARAM_KEY.categoryId]: newParams[FILTER_QUERY_PARAM_KEY.categoryId] };
+
+    this.notAutomaticallyCleanableParams.forEach((key) => (params[key] = newParams[key]));
 
     return this.cleanUndefined(params);
-  }
-
-  private getParamsAfterCategoryChanged(currentParams: Params, newParams: Params): Params {
-    const params = { ...currentParams, ...newParams };
-    const cleanParams = { [FILTER_QUERY_PARAM_KEY.categoryId]: params[FILTER_QUERY_PARAM_KEY.categoryId] };
-
-    this.notAutomaticallyCleanableParams.forEach((key) => (cleanParams[key] = params[key]));
-
-    return this.cleanUndefined(cleanParams);
   }
 
   private getParamsAfterRealEstateChanged(currentParams: Params, newParams: Params): Params {
     const params = this.cleanRealEstate(currentParams, newParams);
 
     return this.cleanUndefined(params);
-  }
-
-  private cleanParams(currentParams: Params, newParams: Params): Params {
-    if (this.hasCategoryChanged(currentParams, newParams)) {
-      return this.cleanCategory(newParams);
-    }
-
-    if (this.hasRealEstateChanged(currentParams, newParams)) {
-      return this.cleanRealEstate(currentParams, newParams);
-    }
-
-    return newParams;
   }
 
   private hasCategoryChanged(currentParams: Params, newParams: Params): boolean {
@@ -115,12 +91,6 @@ export class SearchNavigatorService {
     const newType = newParams[FILTER_QUERY_PARAM_KEY.type];
 
     return currentOperation !== newOperation || currentType !== newType;
-  }
-
-  private cleanCategory(newParams: Params): Params {
-    return {
-      [FILTER_QUERY_PARAM_KEY.categoryId]: newParams[FILTER_QUERY_PARAM_KEY.categoryId],
-    };
   }
 
   // TODO: Review and refactor this
@@ -171,20 +141,6 @@ export class SearchNavigatorService {
     return realEstateParams;
   }
 
-  private prepareFinalParams(currentParams: Params, newParams: Params, cleanParams: Params): Params {
-    const notClearableParams = {};
-    const auxParams = { ...currentParams, ...newParams };
-
-    this.notAutomaticallyCleanableParams.forEach((key) => (notClearableParams[key] = auxParams[key]));
-
-    return this.injectLocation(
-      this.cleanUndefined({
-        ...cleanParams,
-        ...notClearableParams,
-      })
-    );
-  }
-
   private cleanUndefined(params: Params): Params {
     const cleanedParams = {};
     const keys = Object.keys(params).filter((key) => params[key]);
@@ -192,14 +148,5 @@ export class SearchNavigatorService {
     keys.forEach((key) => (cleanedParams[key] = params[key]));
 
     return cleanedParams;
-  }
-
-  private injectLocation(params: Params): Params {
-    const locationParams = this.locationService.getLocationParameters({
-      [FILTER_QUERY_PARAM_KEY.longitude]: params[FILTER_QUERY_PARAM_KEY.longitude],
-      [FILTER_QUERY_PARAM_KEY.latitude]: params[FILTER_QUERY_PARAM_KEY.latitude],
-    });
-
-    return { ...params, ...locationParams };
   }
 }
