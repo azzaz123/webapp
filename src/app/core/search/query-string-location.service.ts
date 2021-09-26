@@ -11,11 +11,7 @@ import { APP_LOCALE } from 'configs/subdomains.config';
 export class QueryStringLocationService {
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private cookieService: CookieService) {}
 
-  public getLocationParameters(locationFromParameters?: SearchLocation): SearchLocation {
-    if (this.hasLocationParameters(locationFromParameters)) {
-      return locationFromParameters;
-    }
-
+  public getLocationParameters(): SearchLocation {
     const seoLocation = this.getSeoCookieLocation();
 
     if (seoLocation) {
