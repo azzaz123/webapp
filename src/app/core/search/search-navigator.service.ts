@@ -7,12 +7,18 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-specifications/realestate-constants';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { QueryStringLocationService } from './query-string-location.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchNavigatorService {
-  constructor(private router: Router, private route: ActivatedRoute, private queryStringService: SearchQueryStringService) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private queryStringService: SearchQueryStringService,
+    private locationService: QueryStringLocationService
+  ) {}
   private notAutomaticallyCleanableParams: FILTER_QUERY_PARAM_KEY[] = [
     FILTER_QUERY_PARAM_KEY.keywords,
     FILTER_QUERY_PARAM_KEY.latitude,
@@ -20,6 +26,16 @@ export class SearchNavigatorService {
     FILTER_QUERY_PARAM_KEY.distance,
     FILTER_QUERY_PARAM_KEY.orderBy,
   ];
+
+  public addLocationParams(currentParams: Params) {
+    const locationParams = this.locationService.getLocationParameters();
+    const queryParams = { ...currentParams, ...locationParams };
+
+    this.router.navigate(['/search'], {
+      relativeTo: this.route,
+      queryParams,
+    });
+  }
 
   public navigate(
     filterParams: FilterParameter[],
