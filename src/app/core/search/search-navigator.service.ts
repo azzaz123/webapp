@@ -33,19 +33,12 @@ export class SearchNavigatorService {
     keepCurrentParams?: boolean,
     replaceUrl: boolean = false
   ): void {
-    const currentParams = this.route.snapshot.queryParams;
-    let newParams = this.queryStringService.mapFilterToQueryParams(filterParams);
-
-    if (keepCurrentParams) {
-      newParams = { ...currentParams, ...newParams };
-    }
-
-    const cleanParams = this.cleanParams(currentParams, newParams);
+    const newQueryParams = this.getQueryParamsAfterFiltersChanged(filtersSource, filterParams);
 
     this.router.navigate(['/search'], {
       replaceUrl,
       queryParams: {
-        ...this.prepareFinalParams(currentParams, newParams, cleanParams),
+        ...newQueryParams,
         [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersSource,
       },
     });
@@ -60,15 +53,21 @@ export class SearchNavigatorService {
 
     const currentParams = this.route.snapshot.queryParams;
 
-    if (this.hasCategoryChanged(currentParams, newParams)) {
+    if (this.hasCategoryChanged(currentParams, { ...currentParams, ...newParams })) {
       return this.getParamsAfterCategoryChanged(currentParams, newParams);
     }
 
-    if (this.hasRealEstateChanged(currentParams, newParams)) {
+    if (this.hasRealEstateChanged(currentParams, { ...currentParams, ...newParams })) {
       return this.getParamsAfterRealEstateChanged(currentParams, newParams);
     }
 
-    return { ...currentParams, ...newParams };
+    return this.getParamsAfterFilterChanged(currentParams, newParams);
+  }
+
+  private getParamsAfterFilterChanged(currentParams: Params, newParams: Params): Params {
+    const params = { ...currentParams, ...newParams };
+
+    return this.cleanUndefined(params);
   }
 
   private getParamsAfterCategoryChanged(currentParams: Params, newParams: Params): Params {
