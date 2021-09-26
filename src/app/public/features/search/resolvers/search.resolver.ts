@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, Params } from '@angular/router';
-import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
-import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { Observable, of } from 'rxjs';
 
