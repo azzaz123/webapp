@@ -61,20 +61,29 @@ export class SearchNavigatorService {
     const currentParams = this.route.snapshot.queryParams;
 
     if (this.hasCategoryChanged(currentParams, newParams)) {
-      const filterParams = { ...currentParams, ...newParams };
-      const notClearableParams = {};
-
-      this.notAutomaticallyCleanableParams.forEach((key) => (notClearableParams[key] = filterParams[key]));
-      notClearableParams[FILTER_QUERY_PARAM_KEY.categoryId] = newParams[FILTER_QUERY_PARAM_KEY.categoryId];
-
-      return this.cleanUndefined(notClearableParams);
+      return this.getParamsAfterCategoryChanged(currentParams, newParams);
     }
 
     if (this.hasRealEstateChanged(currentParams, newParams)) {
-      const params = this.cleanRealEstate(currentParams, newParams);
-
-      return this.cleanUndefined(params);
+      return this.getParamsAfterRealEstateChanged(currentParams, newParams);
     }
+
+    return { ...currentParams, ...newParams };
+  }
+
+  private getParamsAfterCategoryChanged(currentParams: Params, newParams: Params): Params {
+    const params = { ...currentParams, ...newParams };
+    const cleanParams = { [FILTER_QUERY_PARAM_KEY.categoryId]: params[FILTER_QUERY_PARAM_KEY.categoryId] };
+
+    this.notAutomaticallyCleanableParams.forEach((key) => (cleanParams[key] = params[key]));
+
+    return this.cleanUndefined(cleanParams);
+  }
+
+  private getParamsAfterRealEstateChanged(currentParams: Params, newParams: Params): Params {
+    const params = this.cleanRealEstate(currentParams, newParams);
+
+    return this.cleanUndefined(params);
   }
 
   private cleanParams(currentParams: Params, newParams: Params): Params {
