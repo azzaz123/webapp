@@ -51,6 +51,32 @@ export class SearchNavigatorService {
     });
   }
 
+  private getQueryParamsAfterFiltersChanged(filtersSource: FILTERS_SOURCE, filterParams: FilterParameter[]): Params {
+    const newParams = this.queryStringService.mapFilterToQueryParams(filterParams);
+
+    if (filtersSource === FILTERS_SOURCE.DEFAULT_FILTERS) {
+      return this.cleanUndefined(newParams);
+    }
+
+    const currentParams = this.route.snapshot.queryParams;
+
+    if (this.hasCategoryChanged(currentParams, newParams)) {
+      const filterParams = { ...currentParams, ...newParams };
+      const notClearableParams = {};
+
+      this.notAutomaticallyCleanableParams.forEach((key) => (notClearableParams[key] = filterParams[key]));
+      notClearableParams[FILTER_QUERY_PARAM_KEY.categoryId] = newParams[FILTER_QUERY_PARAM_KEY.categoryId];
+
+      return this.cleanUndefined(notClearableParams);
+    }
+
+    if (this.hasRealEstateChanged(currentParams, newParams)) {
+      const params = this.cleanRealEstate(currentParams, newParams);
+
+      return this.cleanUndefined(params);
+    }
+  }
+
   private cleanParams(currentParams: Params, newParams: Params): Params {
     if (this.hasCategoryChanged(currentParams, newParams)) {
       return this.cleanCategory(newParams);
@@ -91,7 +117,7 @@ export class SearchNavigatorService {
 
   // TODO: Review and refactor this
   private cleanRealEstate(currentParams: Params, newParams: Params): Params {
-    const realEstateParams: Params = { ...newParams };
+    const realEstateParams: Params = { ...currentParams, ...newParams };
 
     if (
       (newParams[FILTER_QUERY_PARAM_KEY.operation] || currentParams[FILTER_QUERY_PARAM_KEY.operation]) &&
