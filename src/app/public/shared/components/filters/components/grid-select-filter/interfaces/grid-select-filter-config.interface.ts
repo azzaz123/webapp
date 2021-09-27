@@ -9,4 +9,5 @@ export interface GridSelectFilterConfig extends FilterConfig<GridSelectFilterPar
   mirrorsValueIcon?: boolean;
   hideLabels?: boolean;
   isBooleanFormat?: boolean;
+  gridColumns: number;
 }
