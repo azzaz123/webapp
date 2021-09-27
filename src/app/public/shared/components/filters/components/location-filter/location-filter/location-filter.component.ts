@@ -8,7 +8,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { LabeledSearchLocation, SearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { GEO_APP_CODE, GEO_APP_ID } from '@shared/geolocation/here-maps/here-maps.service';
 import { Observable, of, Subject, Subscription } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, take } from 'rxjs/operators';
 import { FILTER_QUERY_PARAM_KEY } from '../../../enums/filter-query-param-key.enum';
 import { FilterParameter } from '../../../interfaces/filter-parameter.interface';
 import { AbstractFilter } from '../../abstract-filter/abstract-filter';
@@ -38,14 +38,6 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   @Input() config: LocationFilterConfig;
 
   private subscriptions = new Subscription();
-  private currentLocationForm = new FormGroup({
-    location: new FormGroup({
-      latitude: new FormControl(),
-      longitude: new FormControl(),
-    }),
-    distance: new FormControl(MAX_FILTER_DISTANCE),
-  });
-
   public componentLocationForm = new FormGroup({
     location: new FormGroup({
       latitude: new FormControl(),
@@ -72,13 +64,8 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(
-      this.onApplyLocation().subscribe((locationName: string) => {
-        this.locationName = locationName;
-        this.updateBubble(this.locationName, this.currentDistance);
-        this.updateLocationMap(this.currentLocation, this.currentDistance);
-      })
-    );
+    super.ngOnInit();
+
     this.subscriptions.add(
       this.onDistanceChange().subscribe((distance: number) => {
         this.updateLocationMap(this.componentLocation, distance);
@@ -99,32 +86,10 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
         this.updateLocationMap(this.componentLocation, this.componentDistance);
       })
     );
-
-    super.ngOnInit();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
-  }
-
-  set currentLocation(location: SearchLocation) {
-    this.currentLocationForm.patchValue({ location });
-  }
-
-  get currentLocation(): SearchLocation {
-    const { location } = this.currentLocationForm.value;
-
-    return location;
-  }
-
-  set currentDistance(distance) {
-    this.currentLocationForm.patchValue({ distance });
-  }
-
-  get currentDistance(): number {
-    const { distance } = this.currentLocationForm.value;
-
-    return distance;
   }
 
   set componentLocation(location: SearchLocation) {
@@ -182,19 +147,15 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     const distance =
       currentValue.find((param) => param.key === FILTER_QUERY_PARAM_KEY.distance)?.value || MAX_FILTER_DISTANCE * DISTANCE_FACTOR;
 
-    this.currentDistance = +distance / DISTANCE_FACTOR;
-    this.componentDistance = +distance / DISTANCE_FACTOR;
-    this.currentLocation = { latitude, longitude };
-    this.componentLocation = { latitude, longitude };
-    this.updateLocationMap(this.currentLocation, this.componentDistance);
-  }
+    this.getLocationNameFromLatitudeAndLongitude({ latitude, longitude })
+      .pipe(take(1))
+      .subscribe((locationName: string) => {
+        this.componentDistance = +distance / DISTANCE_FACTOR;
+        this.componentLocation = { latitude, longitude };
+        this.locationName = locationName;
 
-  public onApplyLocation(): Observable<string> {
-    return this.currentLocationForm.get('location').valueChanges.pipe(
-      filter((location: SearchLocation) => !!location),
-      distinctUntilChanged(),
-      switchMap((location: SearchLocation) => this.getLocationNameFromLatitudeAndLongitude(location))
-    );
+        this.updateBubble(this.locationName, this.componentDistance);
+      });
   }
 
   public onDistanceChange(): Observable<number> {
