@@ -58,6 +58,8 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   public bubbleActive = false;
   public loadingGeolocation = false;
+  public inputValue: string;
+
   private readonly geolocationCoordinatesSubject: Subject<SearchLocation> = new Subject<SearchLocation>();
   private readonly selectedSuggestionSubject: Subject<string> = new Subject<string>();
 
@@ -153,6 +155,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
 
   set locationName(locationName: string) {
     this.componentLocationForm.patchValue({ locationName });
+    this.inputValue = locationName;
   }
 
   get mapURL(): string {

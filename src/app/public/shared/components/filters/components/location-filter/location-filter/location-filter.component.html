@@ -6,41 +6,40 @@
     [hasApplyButtonInDrawer]="true" [isClearable]="false" [placeholderLabel]="label" [placeholderIcon]="config.icon"
     (placeholderOpenStateChange)="openStateChange.emit($event)" (apply)="handleApply()">
 
-    <form [formGroup]="componentLocationForm">
-      <div class="LocationFilter py-2" [ngClass]="{'w-100 px-3': !(variant | isBubble)}">
-        <div class="LocationFilter__search">
-          <tsl-svg-icon class="LocationFilter__glass" src="/assets/icons/glass_icon.svg" width="28" height="28">
+    <div class="LocationFilter py-2" [ngClass]="{'w-100 px-3': !(variant | isBubble)}">
+      <div class="LocationFilter__search">
+        <tsl-svg-icon class="LocationFilter__glass" src="/assets/icons/glass_icon.svg" width="28" height="28">
+        </tsl-svg-icon>
+        <input [attr.disabled]="loadingGeolocation || null" class="LocationFilter__input py-0 px-5 w-100 form-control"
+          type="text" [(ngModel)]="inputValue" [ngbTypeahead]="search" [resultTemplate]="locationTemplate"
+          (selectItem)="selectSuggestion($event.item)" />
+      </div>
+
+      <div class="LocationFilter__map">
+        <button class="LocationFilter__geolocation p-0 d-flex align-items-center justify-content-center"
+          (click)="requestBrowserLocation()" [disabled]="loadingGeolocation">
+          <tsl-svg-icon src="/assets/icons/filters/location/geolocation_icon.svg" width="36" height="36">
           </tsl-svg-icon>
-          <input [attr.disabled]="loadingGeolocation || null" class="LocationFilter__input py-0 px-5 w-100 form-control"
-            type="text" formControlName="locationName" [editable]="false" [ngbTypeahead]="search"
-            [resultTemplate]="locationTemplate" (selectItem)="selectSuggestion($event.item)" />
+        </button>
+        <img [src]="mapURL" class="LocationFilter__image w-100 my-3" />
+        <div *ngIf="loadingGeolocation"
+          class="LocationFilter__loading w-100 h-100 d-flex align-items-center justify-content-center">
+          <img width="50" height="50" src="/assets/images/spinner.gif" />
         </div>
-
-        <div class="LocationFilter__map">
-          <button class="LocationFilter__geolocation p-0 d-flex align-items-center justify-content-center"
-            (click)="requestBrowserLocation()" [disabled]="loadingGeolocation">
-            <tsl-svg-icon src="/assets/icons/filters/location/geolocation_icon.svg" width="36" height="36">
-            </tsl-svg-icon>
-          </button>
-          <img [src]="mapURL" class="LocationFilter__image w-100 my-3" />
-          <div *ngIf="loadingGeolocation"
-            class="LocationFilter__loading w-100 h-100 d-flex align-items-center justify-content-center">
-            <img width="50" height="50" src="/assets/images/spinner.gif" />
-          </div>
-        </div>
-
+      </div>
+      <form [formGroup]="componentLocationForm">
         <tsl-slider-form formControlName="distance" [stepsConfig]="config.stepsConfig" [min]="config.range[0]"
           [max]="config.range[1]" [valueTooltip]="true" [limitless]="config.limitless" [limitTooltip]="true"
           [units]="config.units">
         </tsl-slider-form>
+      </form>
 
-        <ng-template #locationTemplate let-location="result">
-          <div class="SearchBox__suggestion d-flex flex-column justify-content-center">
-            <span>{{ location }}</span>
-          </div>
-        </ng-template>
-      </div>
-    </form>
+      <ng-template #locationTemplate let-location="result">
+        <div class="SearchBox__suggestion d-flex flex-column justify-content-center">
+          <span>{{ location }}</span>
+        </div>
+      </ng-template>
+    </div>
 
   </tsl-drawer-placeholder-template>
 
