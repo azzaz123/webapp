@@ -187,7 +187,7 @@ describe('FiltersWrapperComponent', () => {
       component.bubbleChange(newValues);
 
       expect(navigator.navigate).toHaveBeenCalledTimes(1);
-      expect(navigator.navigate).toHaveBeenCalledWith(newValues, FILTERS_SOURCE.QUICK_FILTERS, true);
+      expect(navigator.navigate).toHaveBeenCalledWith(newValues, FILTERS_SOURCE.QUICK_FILTERS);
     });
   });
 

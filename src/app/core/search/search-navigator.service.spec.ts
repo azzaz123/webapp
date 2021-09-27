@@ -11,7 +11,6 @@ import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
-import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
 
 @Component({
   selector: 'tsl-blank',
@@ -58,82 +57,6 @@ describe('SearchNavigatorService', () => {
         await router.navigate(['/search'], {
           queryParams: {
             existingParam: 'existingParam',
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-          },
-        });
-
-        spyOn(router, 'navigate');
-
-        service.navigate(
-          [
-            {
-              key: 'otherParam' as FILTER_QUERY_PARAM_KEY,
-              value: 'otherParam',
-            },
-          ],
-          filtersource,
-          true
-        );
-
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-          replaceUrl: false,
-          queryParams: {
-            existingParam: 'existingParam',
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-            otherParam: 'otherParam',
-            [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
-          },
-        });
-      });
-    });
-
-    describe('and asked to replace url', () => {
-      it('should replace url', async () => {
-        await router.navigate(['/search'], {
-          queryParams: {
-            existingParam: 'existingParam',
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-          },
-        });
-
-        spyOn(router, 'navigate');
-
-        service.navigate(
-          [
-            {
-              key: 'otherParam' as FILTER_QUERY_PARAM_KEY,
-              value: 'otherParam',
-            },
-          ],
-          filtersource,
-          false,
-          true
-        );
-
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-          replaceUrl: true,
-          queryParams: {
-            otherParam: 'otherParam',
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-            [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
-          },
-        });
-      });
-    });
-
-    describe('and should overwrite existing parameters', () => {
-      it('should not take current params as part of the set', async () => {
-        await router.navigate(['/search'], {
-          queryParams: {
-            existingParam: 'existingParam',
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
           },
         });
 
@@ -151,10 +74,8 @@ describe('SearchNavigatorService', () => {
 
         expect(router.navigate).toHaveBeenCalledTimes(1);
         expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-          replaceUrl: false,
           queryParams: {
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
+            existingParam: 'existingParam',
             otherParam: 'otherParam',
             [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
           },
@@ -169,8 +90,6 @@ describe('SearchNavigatorService', () => {
             queryParams: {
               [FILTER_QUERY_PARAM_KEY.categoryId]: '100',
               other_param: 'otherParam',
-              [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-              [FILTER_QUERY_PARAM_KEY.longitude]: '10',
             },
           });
 
@@ -192,11 +111,8 @@ describe('SearchNavigatorService', () => {
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
           expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-            replaceUrl: false,
             queryParams: {
               [FILTER_QUERY_PARAM_KEY.categoryId]: '200',
-              [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-              [FILTER_QUERY_PARAM_KEY.longitude]: '10',
               [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
             },
           });
@@ -211,8 +127,6 @@ describe('SearchNavigatorService', () => {
               [FILTER_QUERY_PARAM_KEY.minPrice]: '200',
               [FILTER_QUERY_PARAM_KEY.operation]: 'buy',
               [FILTER_QUERY_PARAM_KEY.type]: 'house',
-              [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-              [FILTER_QUERY_PARAM_KEY.longitude]: '10',
             },
           });
 
@@ -242,13 +156,10 @@ describe('SearchNavigatorService', () => {
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
           expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-            replaceUrl: false,
             queryParams: {
               [FILTER_QUERY_PARAM_KEY.categoryId]: '200',
               [FILTER_QUERY_PARAM_KEY.operation]: 'rent',
               [FILTER_QUERY_PARAM_KEY.type]: 'house',
-              [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-              [FILTER_QUERY_PARAM_KEY.longitude]: '10',
               [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
             },
           });
@@ -262,8 +173,6 @@ describe('SearchNavigatorService', () => {
               queryParams: {
                 [FILTER_QUERY_PARAM_KEY.categoryId]: '2',
                 [FILTER_QUERY_PARAM_KEY.distance]: '10',
-                [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-                [FILTER_QUERY_PARAM_KEY.longitude]: '10',
               },
             });
 
@@ -285,11 +194,8 @@ describe('SearchNavigatorService', () => {
 
             expect(router.navigate).toHaveBeenCalledTimes(1);
             expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-              replaceUrl: false,
               queryParams: {
                 [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
-                [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-                [FILTER_QUERY_PARAM_KEY.longitude]: '10',
                 [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
               },
             });
@@ -300,8 +206,6 @@ describe('SearchNavigatorService', () => {
               await router.navigate(['/search'], {
                 queryParams: {
                   [FILTER_QUERY_PARAM_KEY.categoryId]: '2',
-                  [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-                  [FILTER_QUERY_PARAM_KEY.longitude]: '10',
                 },
               });
 
@@ -327,11 +231,8 @@ describe('SearchNavigatorService', () => {
 
               expect(router.navigate).toHaveBeenCalledTimes(1);
               expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-                replaceUrl: false,
                 queryParams: {
                   [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
-                  [FILTER_QUERY_PARAM_KEY.latitude]: DEFAULT_LOCATIONS.en.latitude,
-                  [FILTER_QUERY_PARAM_KEY.longitude]: DEFAULT_LOCATIONS.en.longitude,
                   [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
                 },
               });
@@ -344,8 +245,6 @@ describe('SearchNavigatorService', () => {
             await router.navigate(['/search'], {
               queryParams: {
                 [FILTER_QUERY_PARAM_KEY.categoryId]: '2',
-                [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-                [FILTER_QUERY_PARAM_KEY.longitude]: '10',
               },
             });
 
@@ -363,11 +262,8 @@ describe('SearchNavigatorService', () => {
 
             expect(router.navigate).toHaveBeenCalledTimes(1);
             expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-              replaceUrl: false,
               queryParams: {
                 [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
-                [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-                [FILTER_QUERY_PARAM_KEY.longitude]: '10',
                 [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
               },
             });
