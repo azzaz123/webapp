@@ -154,6 +154,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
         this.componentLocation = { latitude, longitude };
         this.locationName = locationName;
 
+        this.updateLocationMap(this.componentLocation, this.componentDistance);
         this.updateBubble(this.locationName, this.componentDistance);
       });
   }
