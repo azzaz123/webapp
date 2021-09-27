@@ -189,7 +189,6 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
         .pipe(take(1))
         .subscribe((options) => {
           this.optionsSubject.next(options);
-          this.handleLabelChange();
         });
     }
   }
