@@ -83,8 +83,9 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
       })
     );
     this.subscriptions.add(
-      this.onSelectLocationSuggestion().subscribe((location: SearchLocation) => {
-        this.componentLocation = location;
+      this.onSelectLocationSuggestion().subscribe((location: LabeledSearchLocation) => {
+        this.componentLocation = { latitude: location.latitude, longitude: location.longitude };
+        this.locationName = location.label;
         this.updateLocationMap(this.componentLocation, this.componentDistance);
       })
     );
@@ -189,7 +190,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     return this.currentLocationForm.get('location').valueChanges.pipe(
       filter((location: SearchLocation) => !!location),
       distinctUntilChanged(),
-      switchMap((location: SearchLocation) => this.getLocationLabelFromLatitudeAndLongitude(location))
+      switchMap((location: SearchLocation) => this.getLocationNameFromLatitudeAndLongitude(location))
     );
   }
 
@@ -212,7 +213,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   public onGeolocationChange(): Observable<LabeledSearchLocation> {
     return this.geolocationCoordinates$.pipe(
       switchMap((location: SearchLocation) =>
-        this.getLocationLabelFromLatitudeAndLongitude(location).pipe(
+        this.getLocationNameFromLatitudeAndLongitude(location).pipe(
           map((label: string) => {
             return {
               ...location,
@@ -299,7 +300,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
     );
   }
 
-  private getLocationLabelFromLatitudeAndLongitude(location: SearchLocation): Observable<string> {
+  private getLocationNameFromLatitudeAndLongitude(location: SearchLocation): Observable<string> {
     return this.locationService.getLocationLabel(location);
   }
 
