@@ -12,5 +12,9 @@
   &__content {
     margin-top: $spacing-xxl;
     padding: $spacing-xl;
+    &--tight {
+      margin-top: 0;
+      padding: $spacing-ml;
+    }
   }
 }
