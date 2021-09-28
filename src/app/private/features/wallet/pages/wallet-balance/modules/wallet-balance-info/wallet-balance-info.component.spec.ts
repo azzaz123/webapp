@@ -2,17 +2,16 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
 import { ButtonComponent } from '@shared/button/button.component';
 import { ButtonModule } from '@shared/button/button.module';
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
-import { MOCK_KYC_NO_NEED_PROPERTIES_API } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 import {
-  MOCK_KYC_SPECIFICATIONS_NO_NEED,
-  MOCK_KYC_SPECIFICATIONS_PENDING,
-  MOCK_KYC_SPECIFICATIONS_VERIFIED,
-} from '@fixtures/private/wallet/kyc/kyc-specifications.fixtures.spec';
+  MOCK_KYC_NO_NEED_PROPERTIES,
+  MOCK_KYC_NO_NEED_PROPERTIES_API,
+  MOCK_KYC_PENDING_PROPERTIES,
+  MOCK_KYC_VERIFIED_PROPERTIES,
+} from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 import {
   MockPaymentsWalletsService,
   MOCK_PAYMENTS_WALLETS_MAPPED_MONEY,
@@ -60,9 +59,6 @@ describe('WalletBalanceInfoComponent', () => {
             get KYCProperties$() {
               return of(MOCK_KYC_NO_NEED_PROPERTIES_API);
             },
-            getBannerSpecificationsFromProperties(property) {
-              return of(MOCK_KYC_SPECIFICATIONS_NO_NEED);
-            },
           },
         },
         {
@@ -97,9 +93,7 @@ describe('WalletBalanceInfoComponent', () => {
         jest
           .spyOn(walletService, 'walletBalance$', 'get')
           .mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY).pipe(delay(delayedTime)));
-        jest
-          .spyOn(propertiesService, 'getBannerSpecificationsFromProperties')
-          .mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED).pipe(delay(delayedTime)));
+        jest.spyOn(propertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_NO_NEED_PROPERTIES).pipe(delay(delayedTime)));
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -132,9 +126,7 @@ describe('WalletBalanceInfoComponent', () => {
       it('should show a loading animation', fakeAsync(() => {
         component.loading = true;
         const delayedTime = 2000;
-        jest
-          .spyOn(propertiesService, 'getBannerSpecificationsFromProperties')
-          .mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED).pipe(delay(delayedTime)));
+        jest.spyOn(propertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_NO_NEED_PROPERTIES).pipe(delay(delayedTime)));
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -186,7 +178,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user is validated', () => {
         beforeEach(() => {
-          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_VERIFIED));
+          jest.spyOn(propertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_VERIFIED_PROPERTIES));
 
           component.ngOnInit();
           fixture.detectChanges();
@@ -256,7 +248,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user is validated', () => {
         beforeEach(() => {
-          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_VERIFIED));
+          jest.spyOn(propertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_VERIFIED_PROPERTIES));
 
           component.ngOnInit();
           fixture.detectChanges();
@@ -270,7 +262,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user does not need validation', () => {
         beforeEach(() => {
-          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_NO_NEED));
+          jest.spyOn(propertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_NO_NEED_PROPERTIES));
 
           component.ngOnInit();
           fixture.detectChanges();
@@ -284,7 +276,7 @@ describe('WalletBalanceInfoComponent', () => {
 
       describe('WHEN the user is not validated and needs validations', () => {
         beforeEach(() => {
-          jest.spyOn(propertiesService, 'getBannerSpecificationsFromProperties').mockReturnValue(of(MOCK_KYC_SPECIFICATIONS_PENDING));
+          jest.spyOn(propertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_PENDING_PROPERTIES));
 
           component.ngOnInit();
           fixture.detectChanges();
