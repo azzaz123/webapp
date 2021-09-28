@@ -126,9 +126,9 @@ describe('LocationFilterComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('when the component is initialized', () => {
+  describe('when a new location is applied', () => {
     beforeEach(() => {
-      component.onValueChange([], MOCK_LOCATION_FILTER_PARAMS);
+      spyOn(locationFilterService, 'getLocationLabel').and.returnValue(of(MOCK_CITY_NAME));
     });
 
     it('should set the initial location coordinates', () => {
@@ -140,19 +140,40 @@ describe('LocationFilterComponent', () => {
       });
     });
 
-    describe('if a distance is already provided in query params', () => {
-      it('should set the distance value in km', () => {
-        component.onValueChange([], MOCK_LOCATION_FILTER_PARAMS);
+    it('should show the current location name based on latitude and longitude params', () => {
+      component.onValueChange([], MOCK_LOCATION_FILTER_PARAMS);
 
+      expect(component.locationName).toEqual(MOCK_CITY_NAME);
+      expect(component.inputValue).toEqual(MOCK_CITY_NAME);
+    });
+
+    describe('if a distance is already provided', () => {
+      beforeEach(() => {
+        component.onValueChange([], MOCK_LOCATION_FILTER_PARAMS);
+      });
+
+      it('should set the distance value in km', () => {
         expect(component.componentDistance).toEqual(DISTANCE_MOCK / DISTANCE_FACTOR);
+      });
+
+      it('should mark the bubble as active', () => {
+        expect(component.bubbleActive).toBe(true);
       });
     });
 
-    describe('if any distance is provided in query params', () => {
+    describe('if any distance is provided', () => {
+      beforeEach(() => {
+        component.onValueChange([], MOCK_LOCATION_FILTER_PARAMS_WITHOUT_DISTANCE);
+      });
+
       it('should set the maximum distance value', () => {
+        expect(component.componentDistance).toEqual(MAX_FILTER_DISTANCE);
+      });
+
+      it('should not mark the bubble as active', () => {
         component.onValueChange([], MOCK_LOCATION_FILTER_PARAMS_WITHOUT_DISTANCE);
 
-        expect(component.componentDistance).toEqual(MAX_FILTER_DISTANCE);
+        expect(component.bubbleActive).toBe(false);
       });
     });
   });
@@ -180,10 +201,14 @@ describe('LocationFilterComponent', () => {
       openFilterContent();
       const searchBoxInput = fixture.debugElement.query(By.css('.LocationFilter__input'));
       spyOn(geolocationService, 'search').and.returnValue(of(MOCK_LOCATION_SUGGESTIONS));
-      spyOn(geolocationService, 'geocode').and.returnValue(of(MOCK_COORDINATE));
-      spyOn(locationFilterService, 'getLocationLabel').and.callThrough();
+      spyOn(geolocationService, 'geocode').and.returnValue(
+        of({
+          ...MOCK_COORDINATE,
+          name: MOCK_LOCATION_SUGGESTIONS[0].description,
+        })
+      );
 
-      searchBoxInput.nativeElement.value = 'Sant Cugat';
+      searchBoxInput.nativeElement.value = MOCK_CITY_NAME;
       searchBoxInput.nativeElement.dispatchEvent(new Event('input'));
       tick(LOCATION_SEARCH_BOX_DEBOUNCE);
       fixture.detectChanges();
@@ -241,37 +266,15 @@ describe('LocationFilterComponent', () => {
 
     it('should save the location for future searches', () => {
       spyOn(locationFilterService, 'setUserLocation').and.callThrough();
-
       component.componentLocation = MOCK_SEARCH_LOCATION;
       component.locationName = MOCK_CITY_NAME;
+
       component.handleApply();
 
       expect(locationFilterService.setUserLocation).toHaveBeenCalledWith({
         ...MOCK_SEARCH_LOCATION,
         label: MOCK_CITY_NAME,
       });
-    });
-
-    it('should update the bubble label with the new location', (done) => {
-      component.componentLocation = MOCK_SEARCH_LOCATION;
-      component.locationName = MOCK_CITY_NAME;
-      component.handleApply();
-
-      component.onApplyLocation().subscribe(() => {
-        expect(component.label).toEqual(MOCK_CITY_NAME);
-      });
-      done();
-    });
-
-    it('should not mark the bubble as active', (done) => {
-      component.componentLocation = MOCK_SEARCH_LOCATION;
-      component.locationName = MOCK_CITY_NAME;
-      component.handleApply();
-
-      component.onApplyLocation().subscribe(() => {
-        expect(component.bubbleActive).toBe(false);
-      });
-      done();
     });
 
     describe('if the distance filter is already applied', () => {
@@ -290,19 +293,6 @@ describe('LocationFilterComponent', () => {
           { key: FILTER_QUERY_PARAM_KEY.longitude, value: `${MOCK_SEARCH_LOCATION.longitude}` },
           { key: FILTER_QUERY_PARAM_KEY.distance, value: `${MOCK_DISTANCE * DISTANCE_FACTOR}` },
         ]);
-      });
-
-      it('should mark the bubble as active', (done) => {
-        component.componentLocation = MOCK_SEARCH_LOCATION;
-        component.locationName = MOCK_CITY_NAME;
-        component.componentDistance = MOCK_DISTANCE;
-
-        component.handleApply();
-
-        component.onApplyLocation().subscribe(() => {
-          expect(component.bubbleActive).toBe(true);
-        });
-        done();
       });
     });
   });
