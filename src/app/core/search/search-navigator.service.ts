@@ -8,6 +8,7 @@ import { REAL_ESTATE_SPECIFICATION_TYPE } from '@public/core/constants/item-spec
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { QueryStringLocationService } from './query-string-location.service';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +32,7 @@ export class SearchNavigatorService {
     const locationParams = this.locationService.getLocationParameters();
     const queryParams = { ...currentParams, ...locationParams };
 
-    this.router.navigate(['/search'], {
+    this.router.navigate([`/${PUBLIC_PATHS.SEARCH}`], {
       relativeTo: this.route,
       queryParams,
     });
@@ -40,7 +41,7 @@ export class SearchNavigatorService {
   public navigate(filterParams: FilterParameter[], filtersSource: FILTERS_SOURCE): void {
     const newQueryParams = this.getQueryParamsAfterFiltersChanged(filtersSource, filterParams);
 
-    this.router.navigate(['/search'], {
+    this.router.navigate([`/${PUBLIC_PATHS.SEARCH}`], {
       queryParams: {
         ...newQueryParams,
         [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersSource,
@@ -90,7 +91,7 @@ export class SearchNavigatorService {
     return currentCategory !== newCategory;
   }
 
-  private hasRealEstateChanged(currentParams: Params, newParams: Params) {
+  private hasRealEstateChanged(currentParams: Params, newParams: Params): boolean {
     if (newParams[FILTER_QUERY_PARAM_KEY.categoryId] !== CATEGORY_IDS.REAL_ESTATE.toString()) {
       return false;
     }
