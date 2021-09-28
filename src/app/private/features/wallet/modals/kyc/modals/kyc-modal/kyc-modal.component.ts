@@ -39,9 +39,7 @@ export class KYCModalComponent implements OnDestroy {
     private toastService: ToastService,
     private i18nService: I18nService,
     private kycTrackingEventsService: KYCTrackingEventsService
-  ) {
-    this.KYCStoreSpecifications$ = KYCStoreService.specifications$;
-  }
+  ) {}
 
   ngOnDestroy(): void {
     this.resetSpecifications();
