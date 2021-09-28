@@ -27,8 +27,8 @@ describe('VerificationsHttpService', () => {
     httpMock.verify();
   });
 
-  describe('when asking to get the delivery pending transactions', () => {
-    it('should get the delivery pending transactions', () => {
+  describe('when asking to get the verifications', () => {
+    it('should get the verifications response', () => {
       let response: VerificationsApi;
 
       service.get().subscribe((data) => (response = data));

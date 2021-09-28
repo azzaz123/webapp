@@ -1,5 +1,9 @@
+export type ActivityLevelApi = 'unknown' | 'inactive' | 'active' | 'novice' | 'exploring' | 'loyal' | 'lapsing';
+
+export type ValidationsLevelApi = 'not_verified' | 'partially_verified' | 'verified';
+
 export interface VerificationsApi {
-  activity_level: string;
+  activity_level: ActivityLevelApi;
   scoring_stars: number;
   validations: {
     birthday: boolean;
@@ -7,7 +11,7 @@ export interface VerificationsApi {
     facebook: boolean;
     gender: boolean;
     google_plus: boolean;
-    level: string;
+    level: ValidationsLevelApi;
     linkedin: boolean;
     location: boolean;
     mobile: boolean;

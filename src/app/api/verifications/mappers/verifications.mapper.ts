@@ -1,10 +1,10 @@
-import { Verifications } from '@api/core/model/verifications';
+import { UserVerifications } from '@api/core/model/verifications';
 import { ToDomainMapper } from '@api/core/utils/types';
 import { VerificationsApi } from '../dtos/verifications-api.interface';
 
-export const mapVerificationsApiToVerifications: ToDomainMapper<VerificationsApi, Verifications> = (
+export const mapVerificationsApiToVerifications: ToDomainMapper<VerificationsApi, UserVerifications> = (
   input: VerificationsApi
-): Verifications => {
+): UserVerifications => {
   const { validations } = input;
 
   return {
