@@ -13,6 +13,7 @@ import { ButtonComponent } from '@shared/button/button.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WALLET_PATHS } from '../../wallet.routing.constants';
 import { KYCStatusComponent } from '../kyc/components/kyc-status/kyc-status.component';
+import { KYCTrackingEventsService } from '../kyc/services/kyc-tracking-events/kyc-tracking-events.service';
 
 import { KYCStatusModalComponent } from './kyc-status-modal.component';
 
@@ -42,6 +43,12 @@ describe('KYCStatusModalComponent', () => {
           provide: KYCAckService,
           useValue: {
             notify() {},
+          },
+        },
+        {
+          provide: KYCTrackingEventsService,
+          useValue: {
+            trackViewKYCVerifyingIdentityScreen() {},
           },
         },
       ],

@@ -12,6 +12,7 @@ import { KYCStatusModalModule } from './modals/kyc-status-modal/kyc-status-modal
 import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { WalletResolver } from '@core/wallet/resolvers/wallet.resolver';
+import { KYCTrackingEventsService } from './modals/kyc/services/kyc-tracking-events/kyc-tracking-events.service';
 
 @NgModule({
   declarations: [WalletRoutedComponents],
@@ -26,6 +27,6 @@ import { WalletResolver } from '@core/wallet/resolvers/wallet.resolver';
     KYCModule,
     KYCStatusModalModule,
   ],
-  providers: [KYCPropertiesService, KYCPropertiesHttpService, KYCGuard, WalletResolver],
+  providers: [KYCPropertiesService, KYCPropertiesHttpService, KYCGuard, WalletResolver, KYCTrackingEventsService],
 })
 export class WalletModule {}
