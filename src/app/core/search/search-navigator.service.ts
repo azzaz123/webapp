@@ -39,7 +39,7 @@ export class SearchNavigatorService {
   }
 
   public navigate(filterParams: FilterParameter[], filtersSource: FILTERS_SOURCE): void {
-    const newQueryParams = this.getQueryParamsAfterFiltersChanged(filtersSource, filterParams);
+    const newQueryParams = this.getQueryParamsAfterFiltersChange(filtersSource, filterParams);
 
     this.router.navigate([`/${PUBLIC_PATHS.SEARCH}`], {
       queryParams: {
@@ -49,7 +49,7 @@ export class SearchNavigatorService {
     });
   }
 
-  private getQueryParamsAfterFiltersChanged(filtersSource: FILTERS_SOURCE, filterParams: FilterParameter[]): Params {
+  private getQueryParamsAfterFiltersChange(filtersSource: FILTERS_SOURCE, filterParams: FilterParameter[]): Params {
     const queryParams = this.queryStringService.mapFilterToQueryParams(filterParams);
 
     if (filtersSource === FILTERS_SOURCE.DEFAULT_FILTERS) {
@@ -59,18 +59,18 @@ export class SearchNavigatorService {
     const currentParams = this.route.snapshot.queryParams;
     const newParams = { ...currentParams, ...queryParams };
 
-    if (this.hasCategoryChanged(currentParams, newParams)) {
-      return this.getParamsAfterCategoryChanged(newParams);
+    if (this.hasCategoryChange(currentParams, newParams)) {
+      return this.getParamsAfterCategoryChange(newParams);
     }
 
-    if (this.hasRealEstateChanged(currentParams, newParams)) {
-      return this.getParamsAfterRealEstateChanged(currentParams, newParams);
+    if (this.hasRealEstateChange(currentParams, newParams)) {
+      return this.getParamsAfterRealEstateChange(currentParams, newParams);
     }
 
     return this.cleanUndefined(newParams);
   }
 
-  private getParamsAfterCategoryChanged(newParams: Params): Params {
+  private getParamsAfterCategoryChange(newParams: Params): Params {
     const params = { [FILTER_QUERY_PARAM_KEY.categoryId]: newParams[FILTER_QUERY_PARAM_KEY.categoryId] };
 
     this.notAutomaticallyCleanableParams.forEach((key) => (params[key] = newParams[key]));
@@ -78,20 +78,20 @@ export class SearchNavigatorService {
     return this.cleanUndefined(params);
   }
 
-  private getParamsAfterRealEstateChanged(currentParams: Params, newParams: Params): Params {
+  private getParamsAfterRealEstateChange(currentParams: Params, newParams: Params): Params {
     const params = this.cleanRealEstate(currentParams, newParams);
 
     return this.cleanUndefined(params);
   }
 
-  private hasCategoryChanged(currentParams: Params, newParams: Params): boolean {
+  private hasCategoryChange(currentParams: Params, newParams: Params): boolean {
     const currentCategory = currentParams[FILTER_QUERY_PARAM_KEY.categoryId];
     const newCategory = newParams[FILTER_QUERY_PARAM_KEY.categoryId];
 
     return currentCategory !== newCategory;
   }
 
-  private hasRealEstateChanged(currentParams: Params, newParams: Params): boolean {
+  private hasRealEstateChange(currentParams: Params, newParams: Params): boolean {
     if (newParams[FILTER_QUERY_PARAM_KEY.categoryId] !== CATEGORY_IDS.REAL_ESTATE.toString()) {
       return false;
     }
