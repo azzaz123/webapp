@@ -15,7 +15,7 @@ export const MOCK_KYC_DOCUMENTATION: KYCDocumentation = KYC_DOCUMENTATION[1];
 export const MOCK_KYC_SPECIFICATIONS: KYCSpecifications = {
   nationality: KYC_NATIONALITIES[0],
   documentation: KYC_DOCUMENTATION[0],
-  imageMethod: KYC_TAKE_IMAGE_OPTIONS.SHOOT,
+  imageMethod: KYC_TAKE_IMAGE_OPTIONS.UPLOAD,
   images: MOCK_EMPTY_KYC_IMAGES,
 };
 
