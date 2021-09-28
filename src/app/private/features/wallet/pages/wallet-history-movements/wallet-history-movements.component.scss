@@ -26,4 +26,10 @@ $wallet-history-movements-border: 1px solid $blue-grey-5;
       border-bottom: 1px solid $blue-grey-5;
     }
   }
+
+  &__balance {
+    color: $blue-grey-3;
+    font-size: $font-size-xs;
+    font-weight: 400;
+  }
 }

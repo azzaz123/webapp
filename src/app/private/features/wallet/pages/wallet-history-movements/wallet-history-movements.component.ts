@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { WalletBalanceHistoryService } from '@api/bff/delivery/wallets/balance_history/wallet-balance-history.service';
+import { Money } from '@api/core/model/money.interface';
 import { WalletMovementHistoryDetail } from '@api/core/model/wallet/history/movement-history-detail';
 import { WALLET_HISTORY_FILTERS } from '@api/core/model/wallet/history/wallet-history-filters.enum';
 import {} from '@api/core/model/wallet/history/wallet-movements-history-list.interface';
@@ -25,6 +26,7 @@ export class WalletHistoryMovementsComponent implements OnInit {
   public loading: boolean = true;
   public loadingIconSrc = '/assets/icons/spinner.svg';
   public loadingIconSizePixels: number = 32;
+  public totalBalance: Money;
   private initialLoad: boolean = true;
   private currentPage: number = 0;
   private nextPage: number = this.currentPage + 1;
@@ -72,8 +74,9 @@ export class WalletHistoryMovementsComponent implements OnInit {
       .get(this.currentPage, this.currentFilter)
       .pipe(
         tap((response) => {
-          const { list, paginationParameter } = response;
+          const { list, paginationParameter, walletBalance } = response;
           this.nextPage = paginationParameter;
+          this.totalBalance = walletBalance;
           this.requestedHistoryMovementsDetails = this.requestedHistoryMovementsDetails.concat(list);
 
           const mappedToUI = this.walletHistoryMovementsUIService.map(this.requestedHistoryMovementsDetails);

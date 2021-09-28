@@ -26,6 +26,7 @@ describe('WalletHistoryMovementsComponent', () => {
 
   const spinnerSelector = '.spinner';
   const componentWrapperSelector = '.WalletHistoryMovements';
+  const totalBalanceSelector = '.WalletHistoryMovements__balance';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -94,6 +95,22 @@ describe('WalletHistoryMovementsComponent', () => {
       const historyDetailsDebugElements = fixture.debugElement.queryAll(By.directive(WalletHistoryMovementComponent));
 
       expect(historyDetailsDebugElements.length).toBe(MOCK_WALLET_MOVEMENTS_HISTORY_LIST.list.length);
+    });
+
+    describe('and when displaying total balance', () => {
+      it('should show total balance only at the first displayed month', () => {
+        const totalBalanceElements = fixture.debugElement.queryAll(By.css(totalBalanceSelector));
+
+        expect(totalBalanceElements.length).toBe(1);
+      });
+
+      it('should display total balance', () => {
+        const totalBalanceElement = fixture.debugElement.query(By.css(totalBalanceSelector));
+        const expectedText = $localize`:@@movements_history_all_users_current_balance_label:Current balance: ${MOCK_WALLET_MOVEMENTS_HISTORY_LIST_LAST_PAGE.walletBalance}`;
+        const result = totalBalanceElement.nativeElement.innerHTML.trim();
+
+        expect(result).toBe(expectedText);
+      });
     });
 
     describe('and when user clicks on a filter', () => {
