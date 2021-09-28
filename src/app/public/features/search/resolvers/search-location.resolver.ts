@@ -5,7 +5,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { Observable, of } from 'rxjs';
 
 @Injectable()
-export class SearchResolver implements Resolve<boolean> {
+export class SearchLocationResolver implements Resolve<boolean> {
   constructor(private searchNavigatorService: SearchNavigatorService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
