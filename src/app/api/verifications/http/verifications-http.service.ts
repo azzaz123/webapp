@@ -4,9 +4,7 @@ import { Observable } from 'rxjs';
 import { VerificationsApi } from '../dtos';
 import { EXTRA_INFO_ENDPOINT } from './endpoints';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class VerificationsHttpService {
   public constructor(private httpClient: HttpClient) {}
 
