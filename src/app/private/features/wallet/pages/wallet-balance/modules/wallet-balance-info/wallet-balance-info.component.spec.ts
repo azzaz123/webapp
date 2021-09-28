@@ -28,6 +28,7 @@ import { WalletSharedErrorActionService } from '@private/features/wallet/shared/
 
 import { delay } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('WalletBalanceInfoComponent', () => {
   let propertiesService: KYCPropertiesService;
@@ -37,12 +38,14 @@ describe('WalletBalanceInfoComponent', () => {
   let toastService: ToastService;
   let walletService: PaymentsWalletsService;
   let errorActionService: WalletSharedErrorActionService;
+  let ngbModal: NgbModal;
 
   const walletBalanceInfoParentSelector = '.WalletBalanceInfo';
   const walletBalanceInfoLoadingSelector = `${walletBalanceInfoParentSelector}__loading`;
   const walletBalanceInfoErrorSelector = `${walletBalanceInfoParentSelector}__error`;
   const walletBalanceInfoAmountSelector = `${walletBalanceInfoParentSelector}__amount`;
   const walletBalanceInfoCtaSelector = `${walletBalanceInfoParentSelector}__CTA`;
+  const walletBalanceInfoCtaButtonSelector = `${walletBalanceInfoParentSelector}__CTA tsl-button`;
   const walletBalanceInfoIntegerSelector = `${walletBalanceInfoAmountSelector}__integer`;
   const walletBalanceInfoDecimalSelector = `${walletBalanceInfoAmountSelector}__decimal`;
   const walletBalanceInfoWithPositiveBalance = `${walletBalanceInfoAmountSelector}--hasPositiveBalance`;
@@ -69,6 +72,7 @@ describe('WalletBalanceInfoComponent', () => {
           provide: WalletSharedErrorActionService,
           useValue: MockWalletSharedErrorActionService,
         },
+        NgbModal,
       ],
     }).compileComponents();
   });
@@ -83,6 +87,7 @@ describe('WalletBalanceInfoComponent', () => {
     toastService = TestBed.inject(ToastService);
     propertiesService = TestBed.inject(KYCPropertiesService);
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
+    ngbModal = TestBed.inject(NgbModal);
   });
 
   it('should create', () => {
@@ -261,10 +266,46 @@ describe('WalletBalanceInfoComponent', () => {
           component.ngOnInit();
           fixture.detectChanges();
         });
+
         it('should display balance with the positive balance style', () => {
           const containerWithPositiveBalanceRef = fixture.debugElement.query(By.css(walletBalanceInfoWithPositiveBalance));
 
           expect(containerWithPositiveBalanceRef).toBeTruthy();
+        });
+
+        it('should not disable the transfer money button', () => {
+          const buttonComponentRef: ButtonComponent = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance;
+
+          expect(buttonComponentRef.disabled).toBe(false);
+        });
+
+        describe('WHEN the user clicks over the transfer button', () => {
+          beforeEach(() => {
+            jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(MOCK_PAYMENTS_WALLETS_MAPPED_MONEY));
+            spyOn(ngbModal, 'open').and.returnValue({
+              result: Promise.resolve(),
+            });
+          });
+
+          it('should open the modal view', () => {
+            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector))
+              .nativeElement;
+
+            (buttonComponentRef as HTMLButtonElement).click();
+
+            expect(ngbModal.open).toHaveBeenCalledTimes(1);
+          });
+
+          it('should retrieve the wallet balance', () => {
+            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector))
+              .nativeElement;
+
+            (buttonComponentRef as HTMLButtonElement).click();
+
+            walletService.walletBalance$.subscribe(() => {
+              expect(walletService.walletBalance$).toHaveBeenCalledTimes(1);
+            });
+          });
         });
       });
 
@@ -275,10 +316,46 @@ describe('WalletBalanceInfoComponent', () => {
           component.ngOnInit();
           fixture.detectChanges();
         });
+
         it('should display balance with the positive balance style', () => {
           const containerWithPositiveBalanceRef = fixture.debugElement.query(By.css(walletBalanceInfoWithPositiveBalance));
 
           expect(containerWithPositiveBalanceRef).toBeTruthy();
+        });
+
+        it('should not disable the transfer money button', () => {
+          const buttonComponentRef: ButtonComponent = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance;
+
+          expect(buttonComponentRef.disabled).toBe(false);
+        });
+
+        describe('WHEN the user clicks over the transfer button', () => {
+          beforeEach(() => {
+            jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(MOCK_PAYMENTS_WALLETS_MAPPED_MONEY));
+            spyOn(ngbModal, 'open').and.returnValue({
+              result: Promise.resolve(),
+            });
+          });
+
+          it('should open the modal view', () => {
+            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector))
+              .nativeElement;
+
+            (buttonComponentRef as HTMLButtonElement).click();
+
+            expect(ngbModal.open).toHaveBeenCalledTimes(1);
+          });
+
+          it('should retrieve the wallet balance', () => {
+            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector))
+              .nativeElement;
+
+            (buttonComponentRef as HTMLButtonElement).click();
+
+            walletService.walletBalance$.subscribe(() => {
+              expect(walletService.walletBalance$).toHaveBeenCalledTimes(1);
+            });
+          });
         });
       });
 
