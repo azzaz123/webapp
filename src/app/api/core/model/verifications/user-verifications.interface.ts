@@ -1,4 +1,4 @@
-export interface Verifications {
+export interface UserVerifications {
   email: boolean;
   mobile: boolean;
   facebook: boolean;

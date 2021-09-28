@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Verifications } from '@api/core/model/verifications';
+import { UserVerifications } from '@api/core/model/verifications';
 import { MOCK_VERIFICATIONS_MAPPED, MOCK_VERIFICATIONS_RESPONSE } from '@api/fixtures/verifications/verifications.fixtures.spec';
 import { of } from 'rxjs';
 import { VerificationsHttpService } from './http/verifications-http.service';
@@ -36,7 +36,7 @@ describe('VerificationsService', () => {
     });
 
     it('should map server response to web context', () => {
-      let response: Verifications;
+      let response: UserVerifications;
 
       service.verifications$.subscribe((data) => (response = data));
 

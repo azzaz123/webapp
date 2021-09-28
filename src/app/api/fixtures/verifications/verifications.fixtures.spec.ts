@@ -1,4 +1,4 @@
-import { Verifications } from '@api/core/model/verifications';
+import { UserVerifications } from '@api/core/model/verifications';
 import { VerificationsApi } from '@api/verifications/dtos';
 
 export const MOCK_VERIFICATIONS_RESPONSE: VerificationsApi = {
@@ -18,7 +18,7 @@ export const MOCK_VERIFICATIONS_RESPONSE: VerificationsApi = {
   activity_level: 'unknown',
 };
 
-export const MOCK_VERIFICATIONS_MAPPED: Verifications = {
+export const MOCK_VERIFICATIONS_MAPPED: UserVerifications = {
   email: false,
   mobile: true,
   facebook: false,
