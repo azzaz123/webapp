@@ -10,7 +10,7 @@ import { debounceTime, distinctUntilChanged, take } from 'rxjs/operators';
 import { ComplexSelectValue } from '@shared/form/components/select/types/complex-select-value';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { SuggesterFilterConfig } from './interfaces/suggester-filter-config.interface';
-import { BehaviorSubject, Subject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject, Observable, Subscription, ReplaySubject } from 'rxjs';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
@@ -21,7 +21,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
   styleUrls: ['./suggester-filter.component.scss'],
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilterParams> implements OnInit, OnDestroy, AfterContentInit {
+export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilterParams> implements OnInit, OnDestroy {
   @Input() config: SuggesterFilterConfig;
 
   @ViewChild('selectFilterTemplateComponent', { read: DrawerPlaceholderTemplateComponent })
@@ -35,7 +35,7 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   public searchQuery: string;
   private optionsSubject = new BehaviorSubject<FilterOption[]>([]);
   private searchQuery$ = new Subject<string>();
-  private labelSubject: BehaviorSubject<string> = new BehaviorSubject('');
+  private labelSubject: ReplaySubject<string> = new ReplaySubject(1);
 
   private subscriptions = new Subscription();
 
@@ -52,19 +52,23 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   }
 
   public ngOnInit(): void {
-    if (this.config.hasOptionsOnInit) {
-      this.getOptions();
+    if (this.config.hasOptionsOnInit || !this.config.isLabelInValue) {
+      this.getOptions()
+        .pipe(take(1))
+        .subscribe((options) => {
+          this.optionsSubject.next(options);
+          this.initializeFilter();
+        });
+    } else {
+      this.initializeFilter();
     }
+  }
+
+  private initializeFilter(): void {
     this.initLabel();
     this.initForm();
     this.initModel();
     super.ngOnInit();
-  }
-
-  public ngAfterContentInit(): void {
-    if (this.value.length > 0) {
-      this.updateValueFromParent();
-    }
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
@@ -117,7 +121,7 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   }
 
   private initModel(): void {
-    const subscription = this.searchQuery$.pipe(debounceTime(500), distinctUntilChanged()).subscribe(this.getOptions.bind(this));
+    const subscription = this.searchQuery$.pipe(debounceTime(500), distinctUntilChanged()).subscribe((query) => this.getSuggestions(query));
     this.subscriptions.add(subscription);
   }
 
@@ -182,14 +186,18 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     this.searchQuery$.next(this.searchQuery);
   }
 
-  private getOptions(query?: string): void {
+  private getSuggestions(query: string): void {
     if (this.config.hasOptionsOnInit || query) {
       this.optionService
-        .getOptions(this.config.id, query ? { text: query } : undefined)
+        .getOptions(this.config.id, { text: query })
         .pipe(take(1))
         .subscribe((options) => {
           this.optionsSubject.next(options);
         });
     }
+  }
+
+  private getOptions(): Observable<FilterOption[]> {
+    return this.optionService.getOptions(this.config.id);
   }
 }
