@@ -3,7 +3,7 @@
         <div class="mb-4">
             <tsl-user-avatar *ngIf="user?.image; else noAvatar" [user]="user" [imageUrl]="user?.image?.urls_by_size.large" size="90" [showProBadgeWide]="true"></tsl-user-avatar>
             <ng-template #noAvatar>
-                <tsl-svg-icon src="/assets/icons/badge-pro-dark.svg" alt="badge-pro" class="mb-4"></tsl-svg-icon>
+                <tsl-pro-badge class="mb-4" [IconType]="ICON_TYPE.LARGE"></tsl-pro-badge>
             </ng-template>
         </div>
         <div class="SubscriptionPurchaseSuccess__title">
