@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
 import {
   MOCK_KYC_NO_NEED_PROPERTIES_API,
@@ -42,29 +42,67 @@ describe('KYCPropertiesService', () => {
   });
 
   describe('when getting the kyc properties', () => {
-    beforeEach(() => {
+    it('should request the kyc properties to the api service', fakeAsync(() => {
       spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_PENDING_PROPERTIES_API));
-    });
-
-    it('should request the kyc properties to the api service', () => {
       let request: KYCProperties;
-      service.get().subscribe((result: KYCProperties) => {
+
+      const subscription = service.get().subscribe((result: KYCProperties) => {
         request = result;
       });
 
-      expect(kycPropertiesHttpService.get).toHaveBeenCalled();
+      tick(0);
+
+      expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(1);
       expect(request).toStrictEqual(mapKYCPropertiesApiToKYCProperties(MOCK_KYC_PENDING_PROPERTIES_API));
-    });
+      subscription.unsubscribe();
+    }));
 
-    it('should update the KYCProperties subject', () => {
-      service.get().subscribe();
-
+    it('should update the KYCProperties subject', fakeAsync(() => {
+      spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_PENDING_PROPERTIES_API));
+      const subscription = service.get().subscribe();
       let KYCPropertiesSubject: KYCProperties;
+
+      tick(0);
       service.KYCProperties$.subscribe((result: KYCProperties) => {
         KYCPropertiesSubject = result;
       });
 
       expect(KYCPropertiesSubject).toStrictEqual(mapKYCPropertiesApiToKYCProperties(MOCK_KYC_PENDING_PROPERTIES_API));
+      subscription.unsubscribe();
+    }));
+
+    describe('and the kyc status is needed...', () => {
+      beforeEach(() => {
+        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_PENDING_PROPERTIES_API));
+      });
+
+      it('should request the properties every 15 seconds', fakeAsync(() => {
+        const subscription = service.get().subscribe();
+
+        tick(0);
+        expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(1);
+        tick(15000);
+        expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(2);
+
+        subscription.unsubscribe();
+      }));
+    });
+
+    describe('and the kyc status is no need...', () => {
+      beforeEach(() => {
+        spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_NO_NEED_PROPERTIES_API));
+      });
+
+      it('should request the properties only one time', fakeAsync(() => {
+        const subscription = service.get().subscribe();
+
+        tick(0);
+        expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(1);
+        tick(15000);
+        expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(1);
+
+        subscription.unsubscribe();
+      }));
     });
   });
 
