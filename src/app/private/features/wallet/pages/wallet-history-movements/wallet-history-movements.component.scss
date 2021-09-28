@@ -9,14 +9,14 @@ $wallet-history-movements-border: 1px solid $blue-grey-5;
   color: $blue-grey-1;
   font-weight: $font-weight-chunky;
 
-  &__year {
+  &__header {
     margin-top: $spacing-ml;
     font-size: $font-size-xl;
+  }
 
-    &__month {
-      margin: $spacing-xl 0;
-      font-size: $font-size-l;
-    }
+  &__subtitle {
+    margin: $spacing-xl 0;
+    font-size: $font-size-l;
   }
 
   &__movement {
