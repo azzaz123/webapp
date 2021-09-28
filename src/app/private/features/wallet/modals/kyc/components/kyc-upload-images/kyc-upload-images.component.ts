@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild, OnInit } from '@angular/core';
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
-import { KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
+import { KYCDocumentation, KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages, KYC_IMAGES } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { BANNER_TYPES } from '@shared/banner/banner-types.enum';
 import { MIME_TYPES } from '@shared/enums/mime-types.enum';
 import { RequestVideoPermissionsService } from '@shared/services/video/request-video-permissions/request-video-permissions.service';
 import { VIDEO_PERMISSIONS_STATUS } from '@shared/services/video/request-video-permissions/video-permissions-status.interface';
 
+import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
@@ -24,7 +25,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
   @Input() imagesNeeded: KYCImagesNeeded;
   @Input() takeImageMethod: KYC_TAKE_IMAGE_OPTIONS;
-  @Input() headerText: string;
+  @Input() documentationSelected: KYCDocumentation;
 
   @Output() endVerification: EventEmitter<KYCImages> = new EventEmitter();
   @Output() goBack: EventEmitter<void> = new EventEmitter();
@@ -65,9 +66,14 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private requestVideoPermissionsService: RequestVideoPermissionsService) {}
+  constructor(
+    private requestVideoPermissionsService: RequestVideoPermissionsService,
+    private kycTrackingEventsService: KYCTrackingEventsService
+  ) {}
 
   ngOnInit() {
+    this.trackEventWhenViewKYCReviewDocumentationImageScreen();
+
     if (this.isShootImageMethod) {
       this.videoStream$ = this.requestVideoPermissionsService.videoStream$;
       this.manageVideoStreamWhenDefinedImageChange();
@@ -411,11 +417,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   private buildIsCurrentImageDefinedObservable(): Observable<boolean> {
     return this.imagesAndActiveStep$().pipe(
       map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
-        if (this.twoImagesNeeded) {
-          return activeStep === 1 ? !!images.frontSide : !!images.backSide;
-        } else {
-          return this.isFrontSideImageDefined;
-        }
+        return this.checkIfCurrentImageIsDefined(images, activeStep);
       })
     );
   }
@@ -437,5 +439,21 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
   private imagesAndActiveStep$(): Observable<[KYCImages, KYCImagesNeeded]> {
     return combineLatest([this.images$.asObservable(), this.activeStep$.asObservable()]);
+  }
+
+  private trackEventWhenViewKYCReviewDocumentationImageScreen(): void {
+    this.subscriptions.add(
+      this.imagesAndActiveStep$()
+        .pipe(
+          map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
+            return this.checkIfCurrentImageIsDefined(images, activeStep);
+          })
+        )
+        .subscribe((isCurrentImageDefined: boolean) => {
+          if (isCurrentImageDefined) {
+            this.kycTrackingEventsService.trackViewKYCReviewDocumentationImageScreen(this.documentationSelected.analyticsName);
+          }
+        })
+    );
   }
 }

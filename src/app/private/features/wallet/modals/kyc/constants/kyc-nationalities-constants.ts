@@ -9,6 +9,7 @@ export const KYC_NATIONALITIES: KYCNationality[] = [
     value: KYC_NATIONALITY_TYPE.EUROPEAN_UNION,
     svgPath: '/assets/icons/wallet/kyc/stepper/european_nationality.svg',
     availableDocuments: getKYCAvailableDocuments(KYC_NATIONALITY_TYPE.EUROPEAN_UNION),
+    analyticsName: 'european_community',
   },
   {
     label: $localize`:@@kyc_select_nationality_view_list_uk_usa_can_placeholder:UK, USA or Canada`,
@@ -16,6 +17,7 @@ export const KYC_NATIONALITIES: KYCNationality[] = [
     value: KYC_NATIONALITY_TYPE.UK_USA_CANADA,
     svgPath: '/assets/icons/wallet/kyc/stepper/ukusaca_nationality.svg',
     availableDocuments: getKYCAvailableDocuments(KYC_NATIONALITY_TYPE.UK_USA_CANADA),
+    analyticsName: 'usa_uk_and_canada',
   },
   {
     label: $localize`:@@kyc_select_nationality_view_list_other_place_placeholder:Rest of the world`,
@@ -23,5 +25,6 @@ export const KYC_NATIONALITIES: KYCNationality[] = [
     value: KYC_NATIONALITY_TYPE.OTHER,
     svgPath: '/assets/icons/wallet/kyc/stepper/world_nationality.svg',
     availableDocuments: getKYCAvailableDocuments(KYC_NATIONALITY_TYPE.OTHER),
+    analyticsName: 'rest_of_the_world',
   },
 ];
