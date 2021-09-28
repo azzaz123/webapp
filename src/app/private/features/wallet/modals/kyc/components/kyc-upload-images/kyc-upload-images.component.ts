@@ -442,16 +442,18 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   }
 
   private trackEventWhenViewKYCReviewDocumentationImageScreen(): void {
-    this.imagesAndActiveStep$()
-      .pipe(
-        map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
-          return this.checkIfCurrentImageIsDefined(images, activeStep);
+    this.subscriptions.add(
+      this.imagesAndActiveStep$()
+        .pipe(
+          map(([images, activeStep]: [KYCImages, KYCImagesNeeded]) => {
+            return this.checkIfCurrentImageIsDefined(images, activeStep);
+          })
+        )
+        .subscribe((isCurrentImageDefined: boolean) => {
+          if (isCurrentImageDefined) {
+            this.kycTrackingEventsService.trackViewKYCReviewDocumentationImageScreen(this.documentationSelected.analyticsName);
+          }
         })
-      )
-      .subscribe((isCurrentImageDefined: boolean) => {
-        if (isCurrentImageDefined) {
-          this.kycTrackingEventsService.trackViewKYCReviewDocumentationImageScreen(this.documentationSelected.analyticsName);
-        }
-      });
+    );
   }
 }
