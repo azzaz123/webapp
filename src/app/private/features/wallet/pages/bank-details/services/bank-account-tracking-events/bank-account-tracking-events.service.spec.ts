@@ -49,13 +49,13 @@ describe('BankAccountTrackingEventsService', () => {
         bankAccountTrackingEventCase.kycBannerStatus
       }"`, () => {
         beforeEach(() => {
-          spyOn(kycPropertiesService, 'get').and.returnValue(of({ status: bankAccountTrackingEventCase.kycBannerStatus }));
+          spyOn(kycPropertiesService, 'KYCProperties$').and.returnValue(of({ status: bankAccountTrackingEventCase.kycBannerStatus }));
         });
 
         it('should ask the KYC status to the server', () => {
           service.trackClickAddEditBankAccount(bankAccountTrackingEventCase.isEdit);
 
-          expect(kycPropertiesService.get).toHaveBeenCalledTimes(1);
+          expect(kycPropertiesService.KYCProperties$).toHaveBeenCalledTimes(1);
         });
 
         it('should track the event to analytics', () => {
@@ -81,12 +81,12 @@ describe('BankAccountTrackingEventsService', () => {
   );
 
   describe('when KYC status server gives an error', () => {
-    beforeEach(() => spyOn(kycPropertiesService, 'get').and.returnValue(throwError('F in chat')));
+    beforeEach(() => spyOn(kycPropertiesService, 'KYCProperties$').and.returnValue(throwError('F in chat')));
 
     it('should ask the KYC status to the server', () => {
       service.trackClickAddEditBankAccount(true);
 
-      expect(kycPropertiesService.get).toHaveBeenCalledTimes(1);
+      expect(kycPropertiesService.KYCProperties$).toHaveBeenCalledTimes(1);
     });
 
     it('should not track the event', () => {

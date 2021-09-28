@@ -10,8 +10,8 @@ import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.s
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 
-import { forkJoin } from 'rxjs';
-import { finalize, switchMap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-wallet-balance-info',
@@ -52,30 +52,29 @@ export class WalletBalanceInfoComponent implements OnInit {
   private loadBalanceAndSpecifications(): void {
     this.changeDetectorRef.detectChanges();
 
-    forkJoin({
-      walletBalance: this.paymentsWalletsService.walletBalance$,
-      specifications: this.kycPropertiesService.get().pipe(
+    combineLatest([
+      this.paymentsWalletsService.walletBalance$,
+      this.kycPropertiesService.KYCProperties$.pipe(
         switchMap((properties: KYCProperties) => {
           return this.kycPropertiesService.getBannerSpecificationsFromProperties(properties);
         })
       ),
-    })
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-          this.changeDetectorRef.detectChanges();
-        })
-      )
-      .subscribe({
-        next: ({ walletBalance, specifications }) => {
-          this.walletBalance = walletBalance;
-          this.specifications = specifications;
-        },
-        error: (error) => {
-          this.isError = true;
-          this.toastService.show(DEFAULT_ERROR_TOAST);
-          this.errorActionService.show(error);
-        },
-      });
+    ]).subscribe({
+      next: ([walletBalance, specifications]: [Money, KYCBannerSpecifications]) => {
+        this.walletBalance = walletBalance;
+        this.specifications = specifications;
+
+        this.loading = false;
+        this.changeDetectorRef.detectChanges();
+      },
+      error: (error) => {
+        this.isError = true;
+        this.toastService.show(DEFAULT_ERROR_TOAST);
+        this.errorActionService.show(error);
+
+        this.loading = false;
+        this.changeDetectorRef.detectChanges();
+      },
+    });
   }
 }

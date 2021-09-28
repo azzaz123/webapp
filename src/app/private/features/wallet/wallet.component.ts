@@ -36,6 +36,7 @@ export class WalletComponent implements OnInit {
     private customerHelpService: CustomerHelpService,
     private kycPropertiesService: KYCPropertiesService
   ) {
+    kycPropertiesService.get().subscribe();
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id || this.getLastLocationIdThatMatch(e);
