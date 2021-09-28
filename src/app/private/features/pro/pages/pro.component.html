@@ -11,7 +11,7 @@
       </div>
     </tsl-header>
     <div class="row mb-3">
-      <div class="col-12 col-md-9">
+      <div class="col-12 col-sm-9">
         <nav class="nav filters-nav d-flex d-md-inline-block">
           <a class="nav-link" [routerLink]="PRO_PATHS.SUBSCRIPTIONS" routerLinkActive="active"
             *ngxPermissionsExcept="[PERMISSIONS.professional]" (click)="trackClickSubscriptionTab()" i18n="@@web_wallapop_pro_tab_bar_subscriptions_label">Subscriptions</a>
@@ -20,6 +20,9 @@
           <a class="nav-link mr-0" [routerLink]="PRO_PATHS.BILLING" routerLinkActive="active" i18n="@@web_wallapop_pro_tab_bar_invoicing_label">Invoicing
               information</a>
           </nav>
+      </div>
+      <div *ngIf="helpPageUrl" class="col-12 col-sm-3 d-flex justify-content-end">
+        <a [href]="helpPageUrl" target="_blank" i18n="@@pro_subscription_purchase_tier_selector_top_bar_help_button">Help</a>
       </div>
     </div>
     <router-outlet></router-outlet>
