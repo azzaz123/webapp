@@ -4,18 +4,18 @@ $wallet-history-movements-border: 1px solid $blue-grey-5;
 
 .WalletHistoryMovements {
   @include box();
-  padding: 20px;
+  padding: $spacing-ml;
 
   color: $blue-grey-1;
   font-weight: $font-weight-chunky;
 
   &__year {
-    margin-top: 20px;
-    font-size: 32px;
+    margin-top: $spacing-ml;
+    font-size: $font-size-xl;
 
     &__month {
-      margin: 32px 0;
-      font-size: 20px;
+      margin: $spacing-xl 0;
+      font-size: $font-size-l;
     }
   }
 
