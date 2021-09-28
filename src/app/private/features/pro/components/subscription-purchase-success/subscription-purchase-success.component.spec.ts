@@ -1,18 +1,12 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ButtonComponent } from '@shared/button/button.component';
-import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
+import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
+import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { UserAvatarComponent } from '@shared/user-avatar/user-avatar.component';
 import { SubscriptionPurchaseSuccessComponent } from './subscription-purchase-success.component';
-
-@Component({
-  selector: 'tsl-svg-icon',
-  template: '',
-})
-class MockSvgIconComponent {}
 
 describe('SubscriptionPurchaseSuccessComponent', () => {
   let component: SubscriptionPurchaseSuccessComponent;
@@ -20,7 +14,7 @@ describe('SubscriptionPurchaseSuccessComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionPurchaseSuccessComponent, ButtonComponent, UserAvatarComponent, MockSvgIconComponent],
+      declarations: [SubscriptionPurchaseSuccessComponent, ButtonComponent, UserAvatarComponent, ProBadgeComponent],
     }).compileComponents();
   });
 
@@ -135,10 +129,10 @@ describe('SubscriptionPurchaseSuccessComponent', () => {
       });
 
       it('should show pro badge', () => {
-        const proBadge = fixture.debugElement.query(By.directive(MockSvgIconComponent));
+        const proBadge = fixture.debugElement.query(By.directive(ProBadgeComponent));
 
         expect(proBadge).toBeTruthy();
-        expect(proBadge.nativeElement.getAttribute('src')).toEqual('/assets/icons/badge-pro-dark.svg');
+        expect(proBadge.componentInstance.IconType).toEqual(ICON_TYPE.LARGE);
       });
     });
   });

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
-import { ICON_TYPE } from '@shared/pro-badge/pro-badge.component';
+import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { finalize } from 'rxjs/operators';
 
 @Component({

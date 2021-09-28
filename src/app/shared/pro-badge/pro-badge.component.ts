@@ -1,10 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-
-export enum ICON_TYPE {
-  SMALL,
-  DEFAULT,
-  LARGE,
-}
+import { IconConfig, ICON_TYPE } from './pro-badge.interface';
 
 @Component({
   selector: 'tsl-pro-badge',
@@ -13,9 +8,9 @@ export enum ICON_TYPE {
 })
 export class ProBadgeComponent implements OnInit {
   @Input() IconType = ICON_TYPE.DEFAULT;
-  selectedStyle;
+  public selectedType: IconConfig;
 
-  config = {
+  private readonly config: Record<ICON_TYPE, IconConfig> = {
     [ICON_TYPE.SMALL]: {
       src: '/assets/icons/pro/pro-seal.svg',
     },
@@ -32,6 +27,6 @@ export class ProBadgeComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.selectedStyle = this.config[this.IconType];
+    this.selectedType = this.config[this.IconType];
   }
 }

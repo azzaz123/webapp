@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { User } from '@core/user/user';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { ICON_TYPE } from '@shared/pro-badge/pro-badge.component';
+import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 
 @Component({
   selector: 'tsl-subscription-purchase-success',
