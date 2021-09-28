@@ -17,3 +17,8 @@ export const MOCK_WALLET_MOVEMENTS_HISTORY_LIST_LAST_PAGE: WalletMovementsHistor
   ...MOCK_WALLET_MOVEMENTS_HISTORY_LIST,
   paginationParameter: null,
 };
+
+export const MOCK_WALLET_MOVEMENTS_HISTORY_LIST_EMPTY: WalletMovementsHistoryList = {
+  list: [],
+  walletBalance: mapNumberAndCurrencyCodeToMoney({ number: 0, currency: 'EUR' }),
+};

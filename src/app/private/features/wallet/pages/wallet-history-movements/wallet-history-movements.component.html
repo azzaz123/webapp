@@ -1,6 +1,13 @@
 <div class="WalletHistoryMovements mt-3" tslInfiniteScroll [infiniteScrollDisabled]="infiniteScrollDisabled" (scrolled)="getItems()">
   <tsl-tabs-bar [tabsBarElements]="this.tabBarElements" (onChange)="onChangeFilter($event.value)"></tsl-tabs-bar>
   <div *ngIf="historicMovements$ | async as historicMovements">
+    <span
+      *ngIf="isHistoricMovementsEmpty(historicMovements)"
+      class="WalletHistoryMovements__no-results d-flex justify-content-center mt-3"
+      i18n="@@web_no_results_found"
+      >No results found</span
+    >
+
     <div class="WalletHistoryMovements__header" *ngFor="let year of historicMovements.years; let firstYear = first">
       {{ year.title }}
       <div class="WalletHistoryMovements__subtitle" *ngFor="let month of year.elements; let firstMonth = first">

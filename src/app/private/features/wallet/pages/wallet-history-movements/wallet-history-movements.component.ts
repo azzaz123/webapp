@@ -90,6 +90,10 @@ export class WalletHistoryMovementsComponent implements OnInit {
       .subscribe();
   }
 
+  public isHistoricMovementsEmpty(historicMovements: WalletMovementsHistory): boolean {
+    return historicMovements.years.length === 0;
+  }
+
   private calculateCurrentPage(): number {
     if (this.initialLoad) {
       return 0;

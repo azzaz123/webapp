@@ -6,6 +6,7 @@ import { WalletBalanceHistoryService } from '@api/bff/delivery/wallets/balance_h
 import { WALLET_HISTORY_FILTERS } from '@api/core/model/wallet/history/wallet-history-filters.enum';
 import {
   MOCK_WALLET_MOVEMENTS_HISTORY_LIST,
+  MOCK_WALLET_MOVEMENTS_HISTORY_LIST_EMPTY,
   MOCK_WALLET_MOVEMENTS_HISTORY_LIST_FIRST_PAGE,
   MOCK_WALLET_MOVEMENTS_HISTORY_LIST_LAST_PAGE,
 } from '@api/fixtures/core/model/wallet/history/wallet-movements-history-list.fixtures.spec';
@@ -27,6 +28,7 @@ describe('WalletHistoryMovementsComponent', () => {
   const spinnerSelector = '.spinner';
   const componentWrapperSelector = '.WalletHistoryMovements';
   const totalBalanceSelector = '.WalletHistoryMovements__balance';
+  const emptyStateSelector = '.WalletHistoryMovements__no-results';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -116,9 +118,9 @@ describe('WalletHistoryMovementsComponent', () => {
     describe('and when user clicks on a filter', () => {
       it('should ask server for filtered movements', () => {
         walletBalanceGetSpy.calls.reset();
-        const filtersDebugElement2 = fixture.debugElement.query(By.directive(TabsBarComponent));
+        const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
 
-        filtersDebugElement2.triggerEventHandler(
+        filtersDebugElement.triggerEventHandler(
           'onChange',
           component.tabBarElements.find((te) => te.value === WALLET_HISTORY_FILTERS.IN)
         );
@@ -161,6 +163,28 @@ describe('WalletHistoryMovementsComponent', () => {
 
           expect(walletBalanceHistoryService.get).not.toHaveBeenCalled();
         });
+      });
+    });
+
+    describe('and when server respons with an empty list', () => {
+      beforeEach(() => {
+        walletBalanceGetSpy.and.returnValue(of(MOCK_WALLET_MOVEMENTS_HISTORY_LIST_EMPTY));
+        const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
+
+        filtersDebugElement.triggerEventHandler(
+          'onChange',
+          component.tabBarElements.find((te) => te.value === WALLET_HISTORY_FILTERS.IN)
+        );
+
+        fixture.detectChanges();
+      });
+
+      it('should show no results found', () => {
+        const emptyStateElement = fixture.debugElement.query(By.css(emptyStateSelector));
+        const expectedText = $localize`:@@web_no_results:No results found`;
+        const result = emptyStateElement.nativeElement.innerHTML.trim();
+
+        expect(result).toEqual(expectedText);
       });
     });
   });

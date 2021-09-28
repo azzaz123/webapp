@@ -19,6 +19,11 @@ $wallet-history-movements-border: 1px solid $blue-grey-5;
     font-size: $font-size-l;
   }
 
+  &__no-results {
+    color: $blue-grey-3;
+    font-weight: 400;
+  }
+
   &__movement {
     border-top: 1px solid $blue-grey-5;
 
