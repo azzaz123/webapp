@@ -55,9 +55,6 @@ describe('WalletBalanceComponent', () => {
             get KYCProperties$() {
               return of(MOCK_KYC_NO_NEED_PROPERTIES_API);
             },
-            getBannerSpecificationsFromProperties(property) {
-              return of();
-            },
           },
         },
       ],
