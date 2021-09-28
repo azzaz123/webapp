@@ -1,4 +1,4 @@
-<div class="WalletHistoryMovements mt-3" tslInfiniteScroll [infiniteScrollDisabled]="disableInfinityScroll" (scrolled)="getItems()">
+<div class="WalletHistoryMovements mt-3" tslInfiniteScroll [infiniteScrollDisabled]="infiniteScrollDisabled" (scrolled)="getItems()">
   <tsl-tabs-bar [tabsBarElements]="this.tabBarElements" (onChange)="onChangeFilter($event.value)"></tsl-tabs-bar>
   <div *ngIf="historicMovements$ | async as historicMovements">
     <div class="WalletHistoryMovements__year" *ngFor="let year of historicMovements.years">

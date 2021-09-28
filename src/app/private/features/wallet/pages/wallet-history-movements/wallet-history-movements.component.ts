@@ -41,7 +41,7 @@ export class WalletHistoryMovementsComponent implements OnInit {
     return !this.nextPage && !this.initialLoad;
   }
 
-  public get disableInfinityScroll(): boolean {
+  public get infiniteScrollDisabled(): boolean {
     return this.noMoreItemsNeededToLoad || this.loading;
   }
 
