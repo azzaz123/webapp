@@ -7,3 +7,13 @@ export const MOCK_WALLET_MOVEMENTS_HISTORY_LIST: WalletMovementsHistoryList = {
   paginationParameter: null,
   walletBalance: mapNumberAndCurrencyCodeToMoney({ number: 132, currency: 'EUR' }),
 };
+
+export const MOCK_WALLET_MOVEMENTS_HISTORY_LIST_FIRST_PAGE: WalletMovementsHistoryList = {
+  ...MOCK_WALLET_MOVEMENTS_HISTORY_LIST,
+  paginationParameter: 1,
+};
+
+export const MOCK_WALLET_MOVEMENTS_HISTORY_LIST_LAST_PAGE: WalletMovementsHistoryList = {
+  ...MOCK_WALLET_MOVEMENTS_HISTORY_LIST,
+  paginationParameter: null,
+};
