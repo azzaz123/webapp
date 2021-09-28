@@ -25,7 +25,7 @@ describe('CategoriesApiService', () => {
   });
 
   describe('when asked to retrieve search categories', () => {
-    it('should return domain search fcategories', () => {
+    it('should return domain search categories', () => {
       spyOn(httpService, 'getCategories').and.returnValue(of(categoriesFixture));
       let response: CategoriesFilterOption[];
 
@@ -40,7 +40,7 @@ describe('CategoriesApiService', () => {
   });
 
   describe('when asked to retrieve upload categories', () => {
-    it('should return domain upload fcategories', () => {
+    it('should return domain upload categories', () => {
       spyOn(httpService, 'getCategories').and.returnValue(of(categoriesFixture));
       let response: CategoryResponse[];
 
