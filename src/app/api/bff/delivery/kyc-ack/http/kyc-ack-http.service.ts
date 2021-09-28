@@ -7,7 +7,7 @@ import { KYC_ACK_ENDPOINT } from './endpoints';
 export class KYCAckHttpService {
   constructor(private http: HttpClient) {}
 
-  public notify(): Observable<Object> {
-    return this.http.patch(KYC_ACK_ENDPOINT, null);
+  public notify(): Observable<null> {
+    return this.http.patch<null>(KYC_ACK_ENDPOINT, null);
   }
 }
