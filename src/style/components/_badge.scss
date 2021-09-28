@@ -1,16 +1,4 @@
 .badge {
-  &.badge-pro {
-    display: flex;
-    align-items: center;
-    color: $blue-grey-1;
-    background-color: $white;
-    text-transform: uppercase;
-    font-size: $font-size-xs;
-    line-height: $line-height-ms;
-    padding: $spacing-xs $spacing-s;
-    margin-left: $spacing-ms;
-    height: $spacing-ml;
-  }
   tsl-svg-icon {
     @include square(14px);
     margin-right: 2px;

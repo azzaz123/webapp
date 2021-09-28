@@ -66,7 +66,7 @@ export class UserAvatarComponent implements OnInit, OnChanges {
   private calculateBadgeStyles(): Object {
     return {
       'right.px': -1 * (this.badgeSize / 2) + 4,
-      'bottom.px': -1 * (this.badgeSize / 2) + 4,
+      'bottom.px': -1 * (this.badgeSize / 2),
     };
   }
 
