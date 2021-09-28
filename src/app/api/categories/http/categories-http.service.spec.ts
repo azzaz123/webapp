@@ -29,7 +29,6 @@ describe('CategoriesHttpService', () => {
       const context = 'search';
 
       service.getCategories(context).subscribe((res: CategoryDto[]) => (response = res));
-
       const req: TestRequest = httpMock.expectOne(`${CATEGORIES_ENDPOINT}?${CONTEXT_PARAM}=${context}`);
       req.flush(categoriesFixture);
 
@@ -44,7 +43,6 @@ describe('CategoriesHttpService', () => {
       const context = 'upload';
 
       service.getCategories(context).subscribe((res: CategoryDto[]) => (response = res));
-
       const req: TestRequest = httpMock.expectOne(`${CATEGORIES_ENDPOINT}?${CONTEXT_PARAM}=${context}`);
       req.flush(categoriesFixture);
 
