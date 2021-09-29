@@ -82,7 +82,9 @@ export class KYCModalComponent implements OnDestroy {
   }
 
   public closeModal(): void {
-    this.activeModal.close();
+    if (window.confirm('Seguro que quieres cerrar el modal?')) {
+      this.activeModal.close();
+    }
   }
 
   public goNextStep(): void {
@@ -114,8 +116,6 @@ export class KYCModalComponent implements OnDestroy {
         backSide: null,
       },
     };
-
-    this.closeModal();
   }
 
   private handleKYCError(e: Error | KYCError): void {

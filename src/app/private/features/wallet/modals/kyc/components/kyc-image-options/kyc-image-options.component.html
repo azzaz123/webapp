@@ -1,4 +1,4 @@
-<div class="KYCImageOptions container" >
+<div class="KYCImageOptions container h-100 d-flex flex-column justify-content-between">
     <div class="row">
         <div class="col">
             <a class="KYCImageOptions__back d-flex pb-4 pb-md-2" (click)="goBack.emit()">
@@ -9,8 +9,8 @@
     </div>
     <div class="row mb-4 mt-2">
         <div class="col col-md-11 offset-md-1">
-            <h3 i18n="@@kyc_image_options_title">Add your official ID document</h3>
-            <span i18n="@@kyc_image_options_subtitle">You will need to add an official identification document. This step is to verify that you are who you say you are.</span>
+            <h3 class="KYCImageOptions__title" i18n="@@kyc_image_options_title">Add your official ID document</h3>
+            <span class="KYCImageOptions__description" i18n="@@kyc_image_options_subtitle">You will need to add an official identification document. This step is to verify that you are who you say you are.</span>
         </div>
     </div>
     <div class="row justify-content-center mt-2">
@@ -43,9 +43,7 @@
             </div>
         </div>
     </div>
-    <div class="KYCImageOptions__bottomContainer row justify-content-center position-sticky mt-4">
-        <div class="col-12 col-md-7">
-            <tsl-button id="continueButton" className="btn-primary btn-block" (click)="takeImageOptionChange.emit(imageMethod)" i18n="@@kyc_image_options_action_button">Continue</tsl-button>
-        </div>
+    <div class="KYCImageOptions__bottomContainer row position-sticky text-center justify-content-center">
+        <tsl-button id="continueButton" className="btn-primary btn-block" class="col-12 col-md-7 p-0" (click)="takeImageOptionChange.emit(imageMethod)" i18n="@@kyc_image_options_action_button">Continue</tsl-button>
     </div>
 </div>

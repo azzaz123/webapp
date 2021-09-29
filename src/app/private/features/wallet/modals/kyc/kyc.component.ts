@@ -18,6 +18,7 @@ export class KYCComponent implements OnInit {
     this.modalService
       .open(KYCModalComponent, {
         windowClass: 'kyc',
+        backdrop: 'static',
       })
       .result.then(
         () => {
