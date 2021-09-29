@@ -28,6 +28,10 @@ export class WalletComponent implements OnInit, OnDestroy {
       id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`,
       display: $localize`:@@web_delivery_bank_details:Bank details`,
     },
+    {
+      id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.HISTORY}`,
+      display: $localize`:@@wallet_view_balance_history_title_web_specific:Movements`,
+    },
   ];
   public ZENDESK_WALLET_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.WALLET_HELP);
   private subscriptions: Subscription = new Subscription();
