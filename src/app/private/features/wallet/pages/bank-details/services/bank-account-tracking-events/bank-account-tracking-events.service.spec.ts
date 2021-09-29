@@ -1,4 +1,4 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
@@ -46,19 +46,20 @@ describe('BankAccountTrackingEventsService', () => {
     'when tracking the event',
     (bankAccountTrackingEventCase: BankAccountTrackingEventTestCase) => {
       describe(`and when user clicked on ${bankAccountTrackingEventCase.isEdit ? 'edit' : 'add'} bank account with KYC status "${
-        bankAccountTrackingEventCase.kycBannerStatus
+        bankAccountTrackingEventCase.kycProperties
       }"`, () => {
-        beforeEach(() => {
-          spyOn(kycPropertiesService, 'get').and.returnValue(of({ status: bankAccountTrackingEventCase.kycBannerStatus }));
-        });
-
         it('should ask the KYC status to the server', () => {
+          const KYCProperties = jest
+            .spyOn(kycPropertiesService, 'KYCProperties$', 'get')
+            .mockReturnValue(of(bankAccountTrackingEventCase.kycProperties));
+
           service.trackClickAddEditBankAccount(bankAccountTrackingEventCase.isEdit);
 
-          expect(kycPropertiesService.get).toHaveBeenCalledTimes(1);
+          expect(KYCProperties).toHaveBeenCalledTimes(1);
         });
 
         it('should track the event to analytics', () => {
+          jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(bankAccountTrackingEventCase.kycProperties));
           const addOrEdit = bankAccountTrackingEventCase.mappedAddOrEditToAnalytics;
           const kycStatus = bankAccountTrackingEventCase.mappedBannerStatusToAnalytics;
           const expectedEvent: AnalyticsEvent<ClickAddEditBankAccount> = {
@@ -81,15 +82,17 @@ describe('BankAccountTrackingEventsService', () => {
   );
 
   describe('when KYC status server gives an error', () => {
-    beforeEach(() => spyOn(kycPropertiesService, 'get').and.returnValue(throwError('F in chat')));
-
     it('should ask the KYC status to the server', () => {
+      const KYCProperties = jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(throwError('F in chat'));
+
       service.trackClickAddEditBankAccount(true);
 
-      expect(kycPropertiesService.get).toHaveBeenCalledTimes(1);
+      expect(KYCProperties).toHaveBeenCalledTimes(1);
     });
 
     it('should not track the event', () => {
+      jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(throwError('F in chat'));
+
       expect(analyticsService.trackEvent).not.toHaveBeenCalled();
     });
   });

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
 import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
@@ -7,7 +7,7 @@ import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { WALLET_PATHS } from './wallet.routing.constants';
 
 @Component({
@@ -16,7 +16,7 @@ import { WALLET_PATHS } from './wallet.routing.constants';
   styleUrls: ['./wallet.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WalletComponent implements OnInit {
+export class WalletComponent implements OnInit, OnDestroy {
   public KYCProperties$: Observable<KYCProperties>;
   public selectedNavLinkId: string;
   public navLinks: NavLink[] = [
@@ -30,12 +30,14 @@ export class WalletComponent implements OnInit {
     },
   ];
   public ZENDESK_WALLET_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.WALLET_HELP);
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private router: Router,
     private customerHelpService: CustomerHelpService,
     private kycPropertiesService: KYCPropertiesService
   ) {
+    this.subscriptions.add(kycPropertiesService.get().subscribe());
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id || this.getLastLocationIdThatMatch(e);
@@ -44,8 +46,11 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.kycPropertiesService.get().subscribe();
     this.KYCProperties$ = this.kycPropertiesService.KYCProperties$;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   public KYCBannerSpecifications$(properties: KYCProperties): Observable<KYCBannerSpecifications> {
