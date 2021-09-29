@@ -9,9 +9,11 @@ import { Money } from '@api/core/model/money.interface';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+import { WalletTransferMainComponent } from '@private/features/wallet/modals/transfer/components/main/wallet-transfer-main.component';
 
 import { forkJoin } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-wallet-balance-info',
@@ -30,7 +32,8 @@ export class WalletBalanceInfoComponent implements OnInit {
     private toastService: ToastService,
     private kycPropertiesService: KYCPropertiesService,
     private errorActionService: WalletSharedErrorActionService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -39,6 +42,10 @@ export class WalletBalanceInfoComponent implements OnInit {
 
   public get allowTransfer(): boolean {
     return this.hasPositiveBalance && this.isValidStatus;
+  }
+
+  public transferBalance(): void {
+    this.modalService.open(WalletTransferMainComponent);
   }
 
   private get hasPositiveBalance(): boolean {
