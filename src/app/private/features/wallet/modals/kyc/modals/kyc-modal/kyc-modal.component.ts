@@ -82,7 +82,9 @@ export class KYCModalComponent implements OnDestroy {
   }
 
   public closeModal(): void {
-    if (window.confirm('Seguro que quieres cerrar el modal?')) {
+    const isInLastStep = this.stepper.activeId === 4;
+    const shouldCloseModal = isInLastStep ? true : window.confirm('Seguro que quieres cerrar el modal?');
+    if (shouldCloseModal) {
       this.activeModal.close();
     }
   }

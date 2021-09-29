@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WALLET_PATHS } from '../../wallet.routing.constants';
 import { KYCModalComponent } from './modals/kyc-modal/kyc-modal.component';
@@ -11,23 +11,24 @@ import { KYCModalComponent } from './modals/kyc-modal/kyc-modal.component';
 })
 export class KYCComponent implements OnInit {
   public readonly WALLET_BALANCE_LINK = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}`;
+  private readonly KYCModalOptions: NgbModalOptions = {
+    windowClass: 'kyc',
+    beforeDismiss: () => {
+      return window.confirm('Seguro que quieres cerrar el modal?');
+    },
+  };
 
   constructor(private modalService: NgbModal, private router: Router) {}
 
   ngOnInit() {
-    this.modalService
-      .open(KYCModalComponent, {
-        windowClass: 'kyc',
-        backdrop: 'static',
-      })
-      .result.then(
-        () => {
-          this.navigateToWalletBalance();
-        },
-        () => {
-          this.navigateToWalletBalance();
-        }
-      );
+    this.modalService.open(KYCModalComponent, this.KYCModalOptions).result.then(
+      () => {
+        this.navigateToWalletBalance();
+      },
+      () => {
+        this.navigateToWalletBalance();
+      }
+    );
   }
 
   private navigateToWalletBalance(): void {
