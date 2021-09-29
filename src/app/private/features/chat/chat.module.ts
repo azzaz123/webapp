@@ -36,6 +36,7 @@ import { PersonalDataInformationModal } from './modals/personal-data-information
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { TranslateButtonModule } from '@core/components/translate-button/translate-button.module';
 import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
+import { ChatDomainServiceModule } from '@api/chat/chat-domain-service.module';
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import { ChatTranslationService } from '@private/features/chat/services/chat-tra
     CustomCurrencyModule,
     NgxPermissionsModule.forChild(),
     TranslateButtonModule,
+    ChatDomainServiceModule,
   ],
   declarations: [
     chatRoutedComponents,
