@@ -144,7 +144,7 @@ describe('LocationFilterComponent', () => {
       component.onValueChange([], MOCK_LOCATION_FILTER_PARAMS);
 
       expect(component.locationName).toEqual(MOCK_CITY_NAME);
-      expect(component.inputValue).toEqual(MOCK_CITY_NAME);
+      expect(component.valueLabel).toEqual(MOCK_CITY_NAME);
     });
 
     describe('if a distance is already provided', () => {

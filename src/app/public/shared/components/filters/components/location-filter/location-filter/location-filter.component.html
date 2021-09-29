@@ -11,7 +11,7 @@
         <tsl-svg-icon class="LocationFilter__glass" src="/assets/icons/glass_icon.svg" width="28" height="28">
         </tsl-svg-icon>
         <input [attr.disabled]="loadingGeolocation || null" class="LocationFilter__input py-0 px-5 w-100 form-control"
-          type="text" [(ngModel)]="inputValue" [ngbTypeahead]="search" [resultTemplate]="locationTemplate"
+          type="text" [(ngModel)]="valueLabel" [ngbTypeahead]="search" [resultTemplate]="locationTemplate"
           (selectItem)="selectSuggestion($event.item)" />
       </div>
 
