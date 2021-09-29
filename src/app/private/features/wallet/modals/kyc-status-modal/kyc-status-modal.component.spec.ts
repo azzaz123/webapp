@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { KYCAckService } from '@api/bff/delivery/kyc-ack/kyc-ack.service';
+import { KYCAckService } from '@api/delivery/kyc-ack/kyc-ack.service';
 import {
   MOCK_KYC_MODAL_ERROR_PROPERTIES,
   MOCK_KYC_MODAL_IN_PROGRESS_PROPERTIES,

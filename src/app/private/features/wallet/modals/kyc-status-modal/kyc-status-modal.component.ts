@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { KYCAckService } from '@api/bff/delivery/kyc-ack/kyc-ack.service';
+import { KYCAckService } from '@api/delivery/kyc-ack/kyc-ack.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WALLET_PATHS } from '../../wallet.routing.constants';
