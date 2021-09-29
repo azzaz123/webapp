@@ -59,8 +59,4 @@ export class QueryStringLocationService {
       [FILTER_QUERY_PARAM_KEY.latitude]: defaultLocation[FILTER_QUERY_PARAM_KEY.latitude],
     };
   }
-
-  private hasLocationParameters(location: SearchLocation): boolean {
-    return !!(location && location[FILTER_QUERY_PARAM_KEY.longitude] && location[FILTER_QUERY_PARAM_KEY.latitude]);
-  }
 }
