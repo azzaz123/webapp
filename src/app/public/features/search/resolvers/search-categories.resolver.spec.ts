@@ -1,10 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot } from '@angular/router';
 import { CategoriesApiService } from '@api/categories/categories-api.service';
 import { mappedSearchCategoriesFixture } from '@api/fixtures/categories/categories.fixtures';
 import { CategoriesFilterOption } from '@public/shared/components/filters/components/categories-filter/interfaces/categories-filter-option.interface';
 import { of } from 'rxjs';
-
 import { SearchCategoriesResolver } from './search-categories.resolver';
 
 describe('SearchCategoriesResolver', () => {
