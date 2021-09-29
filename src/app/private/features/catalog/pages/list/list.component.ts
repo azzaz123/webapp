@@ -31,6 +31,7 @@ import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { LOCAL_STORAGE_SUGGEST_PRO_SHOWN, LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
@@ -91,8 +92,10 @@ export class ListComponent implements OnInit, OnDestroy {
   public showTryProSlot: boolean;
   public hasTrialAvailable: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
-  public readonly PRO_PATHS = PRO_PATHS;
   public tierWithDiscount: Tier;
+  public prosPath: string = `/${PRO_PATHS.PRO_MANAGER}`;
+  public deliveryPath: string = `/${PRIVATE_PATHS.DELIVERY}`;
+  public walletPath: string = `/${PRIVATE_PATHS.WALLET}`;
   private bumpSuggestionModalRef: NgbModalRef;
   private active = true;
   private firstItemLoad = true;
@@ -122,7 +125,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private permissionService: NgxPermissionsService
   ) {}
 
-  get itemsAmount() {
+  public get itemsAmount() {
     return this.page * this.pageSize;
   }
 
@@ -171,6 +174,7 @@ export class ListComponent implements OnInit, OnDestroy {
         });
       });
 
+    // FIXME - Please kill this setTimeout and ensure nothing breaks
     setTimeout(() => {
       this.router.events.pipe(takeWhile(() => this.active)).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
@@ -557,6 +561,10 @@ export class ListComponent implements OnInit, OnDestroy {
     };
     this.analyticsService.trackEvent(event);
     this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
+  }
+
+  public navigateToProsModule(): void {
+    this.router.navigate([PRO_PATHS.PRO_MANAGER]);
   }
 
   private setNormalLinks(): void {
