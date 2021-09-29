@@ -8,6 +8,7 @@ import { WalletPendingTransactionsListComponent } from './components/wallet-pend
 import { WalletPendingTransactionsComponent } from './components/wallet-pending-transactions/wallet-pending-transactions.component';
 import { WalletBalanceInfoModule } from './modules/wallet-balance-info/wallet-balance-info.module';
 import { walletBalanceRoutedComponents, WalletBalanceRoutingModule } from './wallet-balance.routing.module';
+import { WalletTransferModule } from '@private/features/wallet/modals/transfer/wallet-transfer.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { walletBalanceRoutedComponents, WalletBalanceRoutingModule } from './wal
     WalletBalanceRoutingModule,
     RequestAndTransactionsPendingAsSellerModule,
     SvgIconModule,
+    WalletTransferModule,
     WalletSharedErrorActionModule,
   ],
   declarations: [
