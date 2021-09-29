@@ -13,4 +13,5 @@ export interface TranslateButtonCopies {
 export class TranslateButtonComponent {
   @Input() isTranslated: boolean;
   @Input() copies: TranslateButtonCopies;
+  @Input() disabled: boolean;
 }
