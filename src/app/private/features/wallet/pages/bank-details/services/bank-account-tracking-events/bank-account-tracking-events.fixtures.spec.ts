@@ -1,10 +1,17 @@
-import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
 import { InnerType } from '@api/core/utils/types';
 import { ClickAddEditBankAccount } from '@core/analytics/analytics-constants';
+import {
+  MOCK_KYC_ERROR_PROPERTIES,
+  MOCK_KYC_NO_NEED_PROPERTIES,
+  MOCK_KYC_PENDING_PROPERTIES,
+  MOCK_KYC_PENDING_VERIFICATION_PROPERTIES,
+  MOCK_KYC_VERIFIED_PROPERTIES,
+} from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 
 export type BankAccountTrackingEventTestCase = {
   isEdit: boolean;
-  kycBannerStatus: KYC_STATUS;
+  kycProperties: KYCProperties;
   mappedAddOrEditToAnalytics: InnerType<ClickAddEditBankAccount, 'addOrEdit'>;
   mappedBannerStatusToAnalytics?: InnerType<ClickAddEditBankAccount, 'kycStatus'>;
 };
@@ -12,30 +19,30 @@ export type BankAccountTrackingEventTestCase = {
 export const MOCK_ADD_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEventTestCase[] = [
   {
     isEdit: false,
-    kycBannerStatus: KYC_STATUS.PENDING,
+    kycProperties: MOCK_KYC_PENDING_PROPERTIES,
     mappedAddOrEditToAnalytics: 'add',
     mappedBannerStatusToAnalytics: 'pending',
   },
   {
     isEdit: false,
-    kycBannerStatus: KYC_STATUS.PENDING_VERIFICATION,
+    kycProperties: MOCK_KYC_PENDING_VERIFICATION_PROPERTIES,
     mappedAddOrEditToAnalytics: 'add',
     mappedBannerStatusToAnalytics: 'inProgress',
   },
   {
     isEdit: false,
-    kycBannerStatus: KYC_STATUS.VERIFIED,
+    kycProperties: MOCK_KYC_VERIFIED_PROPERTIES,
     mappedAddOrEditToAnalytics: 'add',
     mappedBannerStatusToAnalytics: 'verified',
   },
   {
     isEdit: false,
-    kycBannerStatus: KYC_STATUS.NO_NEED,
+    kycProperties: MOCK_KYC_NO_NEED_PROPERTIES,
     mappedAddOrEditToAnalytics: 'add',
   },
   {
     isEdit: false,
-    kycBannerStatus: KYC_STATUS.REJECTED,
+    kycProperties: MOCK_KYC_ERROR_PROPERTIES,
     mappedAddOrEditToAnalytics: 'add',
   },
 ];
@@ -43,30 +50,30 @@ export const MOCK_ADD_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEven
 export const MOCK_EDIT_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEventTestCase[] = [
   {
     isEdit: true,
-    kycBannerStatus: KYC_STATUS.PENDING,
+    kycProperties: MOCK_KYC_PENDING_PROPERTIES,
     mappedAddOrEditToAnalytics: 'edit',
     mappedBannerStatusToAnalytics: 'pending',
   },
   {
     isEdit: true,
-    kycBannerStatus: KYC_STATUS.PENDING_VERIFICATION,
+    kycProperties: MOCK_KYC_PENDING_VERIFICATION_PROPERTIES,
     mappedAddOrEditToAnalytics: 'edit',
     mappedBannerStatusToAnalytics: 'inProgress',
   },
   {
     isEdit: true,
-    kycBannerStatus: KYC_STATUS.VERIFIED,
+    kycProperties: MOCK_KYC_VERIFIED_PROPERTIES,
     mappedAddOrEditToAnalytics: 'edit',
     mappedBannerStatusToAnalytics: 'verified',
   },
   {
     isEdit: true,
-    kycBannerStatus: KYC_STATUS.NO_NEED,
+    kycProperties: MOCK_KYC_NO_NEED_PROPERTIES,
     mappedAddOrEditToAnalytics: 'edit',
   },
   {
     isEdit: true,
-    kycBannerStatus: KYC_STATUS.REJECTED,
+    kycProperties: MOCK_KYC_ERROR_PROPERTIES,
     mappedAddOrEditToAnalytics: 'edit',
   },
 ];
