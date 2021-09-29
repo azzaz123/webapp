@@ -1,0 +1,81 @@
+<div class="WalletTransferAmount">
+  <input type="text" class="WalletTransferAmount__hidden" />
+  <div class="WalletTransferAmount__question">
+    <span i18n="@@make_transfer_view_how_much_description">How much do you want to transfer?</span>
+  </div>
+  <div class="WalletTransferAmount__square py-3 box profile-box">
+    <div class="row">
+      <div class="col">
+        <div
+          *ngIf="showSpinner"
+          class="WalletTransferAmount__spinner w-100 h-100 d-flex justify-content-center align-content-center align-items-center"
+        >
+          <tsl-svg-icon width="64" height="64" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+        </div>
+
+        <div *ngIf="showBalance" class="w-100 h-100 d-flex flex-column justify-content-center align-content-center align-items-center">
+          <div class="WalletTransferAmount__figure w-100 d-flex justify-content-center align-content-start">
+            <input
+              type="number"
+              pattern="[0-9]{1,3}"
+              inputmode="numeric"
+              [(ngModel)]="transferAmount.integer"
+              class="WalletTransferAmount__figure__integer"
+              [class.WalletTransferAmount__figure__integer--invalid]="showWarnColor"
+              [disabled]="!this.transferAmount"
+              (blur)="formatIntegerPart()"
+              tslNumbersOnly
+              tslWalletTransferJump
+              jumpTargetId="decimalPart"
+              [jumpKey]="['.', ',']"
+              [tslWalletTransferMaxLength]="integerPartMaxLength"
+              #integerPart
+              id="integerPart"
+            />
+            <input
+              type="number"
+              pattern="[0-9]{1,2}"
+              inputmode="numeric"
+              [(ngModel)]="transferAmount.decimals"
+              class="WalletTransferAmount__figure__decimal"
+              [class.WalletTransferAmount__figure__decimal--invalid]="showWarnColor"
+              [disabled]="!this.transferAmount"
+              [maxlength]="2"
+              (blur)="formatDecimalPart()"
+              tslNumbersOnly
+              tslWalletTransferJump
+              jumpTargetId="integerPart"
+              jumpKey="Backspace"
+              jumpOnlyEmpty="true"
+              [tslWalletTransferMaxLength]="decimalPartMaxLength"
+              #decimalPart
+              id="decimalPart"
+            />
+            <div class="WalletTransferAmount__figure__currency">{{ walletBalance.currency.symbol }}</div>
+            <div class="WalletTransferAmount__figure__reset" (click)="emptyAmount()">
+              <tsl-svg-icon src="./assets/icons/remove.svg"></tsl-svg-icon>
+            </div>
+          </div>
+          <span class="WalletTransferAmount__line" [class.WalletTransferAmount__line--invalid]="showWarnColor"></span>
+          <div class="WalletTransferAmount__range" [class.WalletTransferAmount__range--invalid]="showWarnColor">
+            <span i18n="@@make_transfer_view_amount_selector_price_limits_label"
+              >Maximum {{ maximumAsText }} - Minimum {{ minimumAsText }}</span
+            >
+          </div>
+          <div class="WalletTransferAmount__CTA">
+            <tsl-button [disabled]="!allowTransfer" i18n="@@make_transfer_view_transfer_button" (click)="transferBalance()"
+              >Transfer to my bank account</tsl-button
+            >
+          </div>
+        </div>
+
+        <div
+          *ngIf="showError"
+          class="WalletTransferAmount__error w-100 h-100 d-flex justify-content-center align-content-center align-items-center"
+        >
+          <img src="/assets/images/error.svg" alt="error" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

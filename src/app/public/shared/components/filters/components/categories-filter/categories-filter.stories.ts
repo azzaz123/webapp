@@ -13,9 +13,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { GridSelectFormModule } from '@shared/form/components/grid-select/grid-select-form.module';
 import { CategoriesFilterConfig } from './interfaces/categories-filter-config.interface';
-import { CATEGORY_OPTIONS } from './data/category_options';
 import { FormatSelectOptionsPipe } from '@public/shared/components/filters/components/categories-filter/pipes/format-select-options.pipe';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { mappedSearchCategoriesFixture } from '@api/fixtures/categories/categories.fixtures';
 
 @Component({
   selector: 'tsl-filters',
@@ -87,7 +87,7 @@ const categoriesConfig: CategoriesFilterConfig = {
     parameterKey: FILTER_QUERY_PARAM_KEY.categoryId,
   },
   type: FILTER_TYPES.CATEGORIES,
-  options: CATEGORY_OPTIONS,
+  options: mappedSearchCategoriesFixture,
 };
 
 export const Default = Template.bind({});

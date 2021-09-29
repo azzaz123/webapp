@@ -5,6 +5,7 @@ import { ReusedRoute } from '@core/custom-route-reuse-strategy/interfaces/reused
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { SearchComponent } from './pages/search.component';
 import { SearchLocationResolver } from './resolvers/search-location.resolver';
+import { SearchCategoriesResolver } from './resolvers/search-categories.resolver';
 
 const SEARCH_ROUTE: ReusedRoute = {
   path: '',
@@ -12,6 +13,7 @@ const SEARCH_ROUTE: ReusedRoute = {
   resolve: {
     ads: AdsResolver,
     searchLocation: SearchLocationResolver,
+    searchCategories: SearchCategoriesResolver,
   },
   data: {
     shouldReuseRoute: true,
