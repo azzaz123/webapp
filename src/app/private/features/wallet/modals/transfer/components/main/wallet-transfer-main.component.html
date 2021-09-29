@@ -15,9 +15,6 @@
       <ng-template step>
         <tsl-wallet-transfer-confirm [transferAmount]="transferAmount" (canceled)="goPreviousStep($event)"></tsl-wallet-transfer-confirm>
       </ng-template>
-      <!-- <ng-template step>
-        <tsl-kyc-status [properties]="KYCStatusInProgressProperties" (buttonClick)="closeModal()"> </tsl-kyc-status>
-      </ng-template> -->
     </tsl-stepper>
   </div>
 </div>
