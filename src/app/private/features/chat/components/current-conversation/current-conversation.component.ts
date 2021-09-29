@@ -65,6 +65,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public momentCalendarSpec: CalendarSpec = this.momentCalendarSpecService.getCalendarSpec();
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
+  public isTranslating = false;
   private lastInboxMessage: InboxMessage;
   public isEndOfConversation = true;
   public scrollHeight = 0;
@@ -243,7 +244,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public translateConversation(): void {
-    this.translationService.translateConversation(this.currentConversation);
+    this.isTranslating = true;
+    this.translationService.translateConversation(this.currentConversation).subscribe(() => {
+      this.isTranslating = false;
+    });
   }
 
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
