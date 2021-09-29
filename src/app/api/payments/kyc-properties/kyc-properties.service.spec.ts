@@ -15,7 +15,7 @@ import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-b
 
 describe('KYCPropertiesService', () => {
   const fifteenSeconds = 15000;
-  const secondCases = Array.from(Array(fifteenSeconds).keys());
+  const secondCases = [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000];
 
   let service: KYCPropertiesService;
   let kycPropertiesHttpService: KYCPropertiesHttpService;
@@ -79,10 +79,11 @@ describe('KYCPropertiesService', () => {
         spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_PENDING_PROPERTIES_API));
       });
 
-      it('should request the properties every 15 seconds', fakeAsync(() => {
-        const subscription = service.get().subscribe();
+      it.each(secondCases)(
+        'should request the properties every 15 seconds',
+        fakeAsync((second: number) => {
+          const subscription = service.get().subscribe();
 
-        secondCases.forEach((second: number) => {
           const isLessThan15Seconds = second < fifteenSeconds;
           const expectedCalls = isLessThan15Seconds ? 1 : 2;
 
@@ -90,8 +91,8 @@ describe('KYCPropertiesService', () => {
 
           expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(expectedCalls);
           subscription.unsubscribe();
-        });
-      }));
+        })
+      );
     });
 
     describe('and the kyc status is no need...', () => {
@@ -99,16 +100,17 @@ describe('KYCPropertiesService', () => {
         spyOn(kycPropertiesHttpService, 'get').and.returnValue(of(MOCK_KYC_NO_NEED_PROPERTIES_API));
       });
 
-      it('should request the properties only one time', fakeAsync(() => {
-        const subscription = service.get().subscribe();
+      it.each(secondCases)(
+        'should request the properties only one time',
+        fakeAsync((second: number) => {
+          const subscription = service.get().subscribe();
 
-        secondCases.forEach((second: number) => {
           tick(second);
 
           expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(1);
           subscription.unsubscribe();
-        });
-      }));
+        })
+      );
     });
   });
 
