@@ -94,6 +94,10 @@ export class WalletHistoryMovementsComponent implements OnInit {
     return historicMovements.years.length === 0;
   }
 
+  public isBalanceVisible(isFirstYear: boolean, isFirstMonth: boolean): boolean {
+    return isFirstYear && isFirstMonth && this.currentFilter === WALLET_HISTORY_FILTERS.ALL;
+  }
+
   private calculateCurrentPage(): number {
     if (this.initialLoad) {
       return 0;

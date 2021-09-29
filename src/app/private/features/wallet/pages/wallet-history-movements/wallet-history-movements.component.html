@@ -14,7 +14,7 @@
         <div class="d-flex justify-content-between">
           <div>{{ month.title }}</div>
           <div
-            *ngIf="firstYear && firstMonth"
+            *ngIf="isBalanceVisible(firstYear, firstMonth)"
             class="WalletHistoryMovements__balance"
             i18n="@@movements_history_all_users_current_balance_label"
           >

@@ -113,6 +113,24 @@ describe('WalletHistoryMovementsComponent', () => {
 
         expect(result).toBe(expectedText);
       });
+
+      describe('and when user filters transactions', () => {
+        beforeEach(() => {
+          const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
+
+          filtersDebugElement.triggerEventHandler(
+            'onChange',
+            component.tabBarElements.find((te) => te.value === WALLET_HISTORY_FILTERS.IN)
+          );
+          fixture.detectChanges();
+        });
+
+        it('should not show the total balance', () => {
+          const totalBalanceElement = fixture.debugElement.query(By.css(totalBalanceSelector));
+
+          expect(totalBalanceElement).toBeFalsy();
+        });
+      });
     });
 
     describe('and when user clicks on a filter', () => {
