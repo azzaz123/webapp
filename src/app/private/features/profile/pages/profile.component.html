@@ -33,8 +33,9 @@
     <div class="row mb-3">
       <div class="col-12 col-md-9">
         <nav class="nav filters-nav d-flex d-md-inline-block">
-          <a class="nav-link" [routerLink]="['info']" routerLinkActive="active" i18n="@@web_profile_pages_318">Profile</a>
-          <a class="nav-link" [routerLink]="['account']" routerLinkActive="active" i18n="@@web_profile_pages_319">Account</a>
+          <a class="nav-link" [routerLink]="PROFILE_PATHS.INFO" routerLinkActive="active" i18n="@@web_profile_pages_318">Profile</a>
+          <a class="nav-link" [routerLink]="PROFILE_PATHS.ACCOUNT" routerLinkActive="active" i18n="@@web_profile_pages_319">Account</a>
+          <a class="nav-link" *ngIf="featureFlagService.isExperimentalFeaturesEnabled()"  [routerLink]="PROFILE_PATHS.VERIFICATIONS" routerLinkActive="active" i18n="@@verification_and_security_all_users_top_bar_title">Verifications and Security</a>
           </nav>
       </div>
       <div class="d-none col-md-3 d-md-block">

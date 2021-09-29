@@ -42,8 +42,8 @@
           saved as favourite</div>
       </div>
       <div class="cards-container" *ngIf="selectedStatus === 'products'">
-        <div class="card-wrapper" *ngFor="let item of items">
-          <tsl-item-card-favourite [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-item-card-favourite>
+        <div class="card-wrapper" *ngFor="let item of items; let i = index">
+          <tsl-item-card-favourite [item]="item" (onFavoriteChange)="onFavoriteChange($event)" (click)="trackClickFavoriteItem(i)"> </tsl-item-card-favourite>
         </div>
       </div>
       <div class="cards-container" *ngIf="selectedStatus === 'profiles'">

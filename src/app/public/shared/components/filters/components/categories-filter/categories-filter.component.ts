@@ -142,7 +142,7 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private getCategoryByValue(value: string): CategoriesFilterOption {
-    return CATEGORY_OPTIONS.find((option) => option.value === value);
+    return this.config.options.find((option) => option.value === value);
   }
 
   private closeTemplates(): void {

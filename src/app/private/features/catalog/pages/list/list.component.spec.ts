@@ -1,7 +1,7 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -31,7 +31,6 @@ import { STATUS } from '@private/features/catalog/components/selected-items/sele
 import { TryProSlotComponent } from '@private/features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import {
   createItemsArray,
   ITEMS_BULK_RESPONSE,
@@ -59,7 +58,7 @@ import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { find, cloneDeep } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { of, ReplaySubject, Subject } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { SubscriptionsSlotItemComponent } from '../../components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
 import { SubscriptionsSlotsListComponent } from '../../components/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -74,6 +73,11 @@ import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ButtonComponent } from '@shared/button/button.component';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
+import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -81,7 +85,6 @@ describe('ListComponent', () => {
   let itemService: ItemService;
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
-  let toastService: ToastService;
   let itemerviceSpy: jasmine.Spy;
   let paymentService: PaymentService;
   let route: ActivatedRoute;
@@ -97,7 +100,12 @@ describe('ListComponent', () => {
   let analyticsService: AnalyticsService;
   let permissionService: NgxPermissionsService;
   let i18nService: I18nService;
-  const routerEvents: Subject<any> = new Subject();
+  let featureFlagService: FeatureFlagService;
+
+  const prosButtonSelector = '.List__button--pros';
+  const deliveryButtonSelector = '.List__button--delivery';
+  const walletButtonSelector = '.List__button--wallet';
+
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
   const mockCounters: Partial<Counters> = {
@@ -108,10 +116,26 @@ describe('ListComponent', () => {
   const FAKE_DATE_NOW = 1627743615459;
   const FAKE_DATE_LESS_24 = 1627722294000;
   const FAKE_DATE_MORE_24 = 1627635894000;
+  const MOCK_LIST_ROUTES: Route[] = [
+    { path: '', component: ListComponent },
+    { path: PRO_PATHS.PRO_MANAGER, component: ListComponent, children: [{ path: '', component: ListComponent }] },
+    {
+      path: `${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
+      component: ListComponent,
+      children: [{ path: '', component: ListComponent }],
+    },
+    { path: `${PRIVATE_PATHS.CATALOG}/list`, component: ListComponent },
+    { path: `${PRIVATE_PATHS.CATALOG}/checkout`, component: ListComponent },
+    { path: `wallacoins`, component: ListComponent },
+    { path: PRIVATE_PATHS.DELIVERY, component: ListComponent },
+    { path: PRIVATE_PATHS.WALLET, component: ListComponent },
+  ];
+  const localFlagSubject = new ReplaySubject<boolean>(1);
+
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpModule, NgxPermissionsModule.forRoot()],
+        imports: [HttpModule, NgxPermissionsModule.forRoot(), RouterTestingModule.withRoutes(MOCK_LIST_ROUTES)],
         declarations: [
           ListComponent,
           ItemSoldDirective,
@@ -119,6 +143,8 @@ describe('ListComponent', () => {
           SubscriptionsSlotItemComponent,
           TryProSlotComponent,
           ProBadgeComponent,
+          DeliveryDevelopmentDirective,
+          ButtonComponent,
         ],
         providers: [
           I18nService,
@@ -210,13 +236,6 @@ describe('ListComponent', () => {
             },
           },
           {
-            provide: Router,
-            useValue: {
-              navigate() {},
-              events: routerEvents,
-            },
-          },
-          {
             provide: UserService,
             useValue: {
               user: MOCK_USER,
@@ -258,7 +277,6 @@ describe('ListComponent', () => {
     itemService = TestBed.inject(ItemService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     modalService = TestBed.inject(NgbModal);
-    toastService = TestBed.inject(ToastService);
     route = TestBed.inject(ActivatedRoute);
     paymentService = TestBed.inject(PaymentService);
     router = TestBed.inject(Router);
@@ -269,11 +287,16 @@ describe('ListComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     permissionService = TestBed.inject(NgxPermissionsService);
     i18nService = TestBed.inject(I18nService);
+    featureFlagService = TestBed.inject(FeatureFlagService);
+
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
+
+    spyOn(router, 'navigate').and.callThrough();
     spyOn(errorService, 'i18nError');
     spyOn(analyticsService, 'trackPageView');
     spyOn(analyticsService, 'trackEvent');
+    spyOn(featureFlagService, 'getLocalFlag').and.returnValue(localFlagSubject.asObservable());
     fixture.detectChanges();
   });
 
@@ -329,7 +352,6 @@ describe('ListComponent', () => {
     });
 
     it('should open bump confirmation modal', fakeAsync(() => {
-      spyOn(router, 'navigate');
       spyOn(localStorage, 'getItem').and.returnValue('bump');
       spyOn(localStorage, 'removeItem');
       component.ngOnInit();
@@ -348,20 +370,93 @@ describe('ListComponent', () => {
       component.end = true;
       component.ngOnInit();
       tick();
-      routerEvents.next(new NavigationEnd(1, 'url', 'url2'));
+      router.navigate(['']);
+      tick();
       expect(component.scrollTop).toBe(0);
       expect(component['init']).toBe(0);
       expect(component.end).toBeFalsy();
       expect(component['getItems']).toHaveBeenCalledTimes(2);
     }));
 
-    describe('if it`s a mobile device', () => {
+    describe('when using smaller screen such a mobile phone', () => {
+      let walletButton: DebugElement;
+      let deliveryButton: DebugElement;
+
       it('should not open upload confirmation modal', () => {
         spyOn(deviceService, 'isMobile').and.returnValue(true);
 
         component.ngOnInit();
 
         expect(modalService.open).not.toHaveBeenCalled();
+      });
+
+      describe('and when wallet feature flag is enabled', () => {
+        beforeEach(() => {
+          localFlagSubject.next(true);
+          fixture.detectChanges();
+
+          walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
+        });
+
+        it('should show a wallet button', () => {
+          expect(walletButton).toBeTruthy();
+        });
+
+        describe('and when clicking the wallet button', () => {
+          it('should navigate to wallet', () => {
+            walletButton.nativeElement.click();
+
+            expect(router.url).toEqual(`/${PRIVATE_PATHS.WALLET}`);
+          });
+        });
+      });
+
+      describe('and when wallet feature flag is NOT enabled', () => {
+        beforeEach(fakeAsync(() => {
+          localFlagSubject.next(false);
+          tick();
+          fixture.detectChanges();
+
+          walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
+        }));
+
+        it('should NOT show a wallet button', () => {
+          expect(walletButton).toBeFalsy();
+        });
+      });
+
+      describe('and when delivery feature flag is enabled', () => {
+        beforeEach(() => {
+          localFlagSubject.next(true);
+          fixture.detectChanges();
+
+          deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
+        });
+
+        it('should show a delivery button', () => {
+          expect(deliveryButton).toBeTruthy();
+        });
+
+        describe('and when clicking the delivery button', () => {
+          it('should navigate to delivery', () => {
+            deliveryButton.nativeElement.click();
+
+            expect(router.url).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
+          });
+        });
+      });
+
+      describe('and when delivery feature flag is NOT enabled', () => {
+        beforeEach(() => {
+          localFlagSubject.next(false);
+          fixture.detectChanges();
+
+          deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
+        });
+
+        it('should NOT show a delivery button', () => {
+          expect(deliveryButton).toBeFalsy();
+        });
       });
     });
 
@@ -401,7 +496,6 @@ describe('ListComponent', () => {
             result: Promise.resolve({ redirect: true }),
             componentInstance: { item: null },
           });
-          spyOn(router, 'navigate');
           component.ngOnInit();
           tick();
 
@@ -414,7 +508,6 @@ describe('ListComponent', () => {
             result: Promise.resolve({ redirect: false }),
             componentInstance: { item: null },
           });
-          spyOn(router, 'navigate');
           component.ngOnInit();
           tick();
 
@@ -527,7 +620,6 @@ describe('ListComponent', () => {
 
     it('should redirect to wallacoins if transaction is wallapack', fakeAsync(() => {
       spyOn(localStorage, 'getItem').and.returnValue('wallapack');
-      spyOn(router, 'navigate');
       route.params = of({
         code: 200,
       });
@@ -624,7 +716,7 @@ describe('ListComponent', () => {
 
   describe('logout', () => {
     it('should logout after clicking logout button', () => {
-      spyOn(userService, 'logout');
+      spyOn(userService, 'logout').and.returnValue(of());
       const logoutButton = fixture.debugElement.query(By.css('.logout')).nativeNode;
 
       logoutButton.click();
@@ -866,7 +958,6 @@ describe('ListComponent', () => {
           componentInstance: componentInstance,
           result: Promise.resolve('success'),
         });
-        spyOn(router, 'navigate');
 
         component.feature(ORDER_EVENT, 'urgent');
         tick();
@@ -881,7 +972,6 @@ describe('ListComponent', () => {
           componentInstance: componentInstance,
           result: Promise.resolve('error'),
         });
-        spyOn(router, 'navigate');
 
         component.feature(ORDER_EVENT, 'urgent');
         tick();
@@ -1303,8 +1393,6 @@ describe('ListComponent', () => {
       });
       describe('when click CTA button', () => {
         it('should redirect to subscriptions', () => {
-          spyOn(router, 'navigate');
-
           component.onClickTryProSlot();
 
           expect(router.navigate).toBeCalledTimes(1);
@@ -1366,9 +1454,6 @@ describe('ListComponent', () => {
       });
     });
     describe('and is not pro user', () => {
-      beforeEach(() => {
-        spyOn(router, 'navigate');
-      });
       describe('and has subscription permissions', () => {
         beforeEach(() => {
           permissionService.addPermission(PERMISSIONS.subscriptions);
@@ -1608,24 +1693,28 @@ describe('ListComponent', () => {
       }));
     });
   });
+
   describe('Pro button', () => {
+    let proButton: DebugElement;
+
     describe('and has subscriptions permission', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         permissionService.addPermission(PERMISSIONS.subscriptions);
-        fixture.detectChanges();
+
+        await fixture.whenStable();
+
+        proButton = fixture.debugElement.query(By.css(prosButtonSelector));
       });
 
       it('should show button', () => {
-        const proButton = fixture.debugElement.nativeElement.querySelector('#qa-list-pro-button');
-
         expect(proButton).toBeTruthy();
       });
 
       it('should redirect to pro section', () => {
-        const proButton = fixture.debugElement.nativeElement.querySelector('#qa-list-pro-button');
-        fixture.detectChanges();
+        proButton.nativeElement.click();
 
-        expect(proButton.routerLink).toEqual(`/${PRO_PATHS.PRO_MANAGER}`);
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([PRO_PATHS.PRO_MANAGER]);
       });
 
       describe('and is not pro user', () => {
@@ -1652,15 +1741,17 @@ describe('ListComponent', () => {
         });
       });
     });
+
     describe('and has not subscriptions permission', () => {
       beforeEach(() => {
         permissionService.removePermission(PERMISSIONS.subscriptions);
+
         fixture.detectChanges();
+
+        proButton = fixture.debugElement.query(By.css(prosButtonSelector));
       });
 
       it('should not show button', () => {
-        const proButton = fixture.debugElement.nativeElement.querySelector('#qa-list-pro-button');
-
         expect(proButton).toBeFalsy();
       });
     });

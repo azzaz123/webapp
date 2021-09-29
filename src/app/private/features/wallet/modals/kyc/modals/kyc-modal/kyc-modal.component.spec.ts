@@ -20,11 +20,19 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { KYCModule } from '../../kyc.module';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
 
 import { KYCModalComponent } from './kyc-modal.component';
+import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
+
+const kycSpecificationsSubjectMock: BehaviorSubject<KYCSpecifications> = new BehaviorSubject<KYCSpecifications>(
+  MOCK_EMPTY_KYC_SPECIFICATIONS
+);
 
 describe('KYCModalComponent', () => {
   const bankAccountSelector = 'tsl-bank-account';
@@ -36,6 +44,7 @@ describe('KYCModalComponent', () => {
   let component: KYCModalComponent;
   let kycStoreService: KYCStoreService;
   let kycService: KYCService;
+  let kycTrackingEventsService: KYCTrackingEventsService;
   let fixture: ComponentFixture<KYCModalComponent>;
   let activeModal: NgbActiveModal;
   let toastService: ToastService;
@@ -45,7 +54,31 @@ describe('KYCModalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [KYCModule, RouterTestingModule, HttpClientTestingModule, KYCServicesModule],
       declarations: [KYCModalComponent, StepperComponent, StepDirective],
-      providers: [DeviceDetectorService, NgbActiveModal, KYCStoreService, I18nService, ToastService],
+      providers: [
+        DeviceDetectorService,
+        NgbActiveModal,
+        KYCStoreService,
+        I18nService,
+        ToastService,
+        KYCTrackingEventsService,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        I18nService,
+        ToastService,
+        {
+          provide: KYCStoreService,
+          useValue: {
+            set specifications(spec: KYCSpecifications) {
+              kycSpecificationsSubjectMock.next(spec);
+            },
+            get specifications(): KYCSpecifications {
+              return kycSpecificationsSubjectMock.getValue();
+            },
+            get specifications$(): Observable<KYCSpecifications> {
+              return kycSpecificationsSubjectMock.asObservable();
+            },
+          },
+        },
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -54,6 +87,7 @@ describe('KYCModalComponent', () => {
     fixture = TestBed.createComponent(KYCModalComponent);
     component = fixture.componentInstance;
     kycStoreService = TestBed.inject(KYCStoreService);
+    kycTrackingEventsService = TestBed.inject(KYCTrackingEventsService);
     kycService = TestBed.inject(KYCService);
     activeModal = TestBed.inject(NgbActiveModal);
     toastService = TestBed.inject(ToastService);
@@ -181,38 +215,48 @@ describe('KYCModalComponent', () => {
       beforeEach(() => {
         kycStoreService.specifications = MOCK_KYC_SPECIFICATIONS;
         component.stepper.activeId = 3;
-
-        fixture.detectChanges();
       });
 
-      describe('and the images change...', () => {
+      describe('and the verification ends...', () => {
         beforeEach(() => {
-          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
-
-          KYCUploadImagesComponent.triggerEventHandler('imagesChange', MOCK_KYC_IMAGES_BASE_64);
+          spyOn(kycTrackingEventsService, 'trackClickKYCFinishIdentityVerification');
         });
 
-        it('should update the images on the store', () => {
-          expect(kycStoreService.specifications.images).toStrictEqual(MOCK_KYC_IMAGES_BASE_64);
-        });
-      });
-
-      describe('and the verification end...', () => {
         describe('and the verification request succeed', () => {
           beforeEach(() => {
             spyOn(kycService, 'request').and.returnValue(of(null));
             spyOn(component.stepper, 'goNext');
-            const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
 
+            fixture.detectChanges();
+
+            const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
             KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
           });
 
           it('should do the kyc request ', () => {
+            expect(kycService.request).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64);
             expect(kycService.request).toHaveBeenCalledTimes(1);
+          });
+
+          it('should update the specifications on the store', () => {
+            expect(kycStoreService.specifications).toStrictEqual({
+              ...kycStoreService.specifications,
+              images: {
+                frontSide: MOCK_KYC_IMAGES_BASE_64.frontSide,
+                backSide: MOCK_KYC_IMAGES_BASE_64.backSide,
+              },
+            });
           });
 
           it('should go to the next step', () => {
             expect(component.stepper.goNext).toHaveBeenCalledTimes(1);
+          });
+
+          it('should request to the KYC analytics service to track the click event', () => {
+            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledTimes(1);
+            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledWith(
+              MOCK_KYC_SPECIFICATIONS.documentation.analyticsName
+            );
           });
         });
 
@@ -222,13 +266,20 @@ describe('KYCModalComponent', () => {
             spyOn(i18nService, 'translate').and.returnValue('');
             spyOn(component.stepper, 'goNext');
             spyOn(toastService, 'show');
-            const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
 
+            fixture.detectChanges();
+
+            const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
             KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
           });
 
           it('should do the kyc request ', () => {
+            expect(kycService.request).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64);
             expect(kycService.request).toHaveBeenCalledTimes(1);
+          });
+
+          it('should NOT update the specifications on the store', () => {
+            expect(kycStoreService.specifications).toStrictEqual(MOCK_KYC_SPECIFICATIONS);
           });
 
           it('should show an error toast', () => {
@@ -239,14 +290,23 @@ describe('KYCModalComponent', () => {
           it('should NOT go to the next step', () => {
             expect(component.stepper.goNext).not.toHaveBeenCalled();
           });
+
+          it('should request to the KYC analytics service to track the click event', () => {
+            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledTimes(1);
+            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledWith(
+              MOCK_KYC_SPECIFICATIONS.documentation.analyticsName
+            );
+          });
         });
       });
 
       describe('and we click on the back button...', () => {
         beforeEach(() => {
           spyOn(component.stepper, 'goBack');
-          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
 
+          fixture.detectChanges();
+
+          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
           KYCUploadImagesComponent.triggerEventHandler('goBack', {});
         });
 

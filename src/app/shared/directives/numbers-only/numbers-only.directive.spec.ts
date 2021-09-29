@@ -13,6 +13,11 @@ describe('NumbersOnlyDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
   let input: HTMLElement;
 
+  const alphabeticalKeys = [['a'], ['B'], ['c'], ['D'], ['f'], ['G'], ['x'], ['Y'], ['z']];
+  const allowedNumbers = [['0'], ['1'], ['2'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9']];
+  const allowedSpecialKeys = [['ArrowDown'], ['ArrowLeft'], ['ArrowRight'], ['ArrowUp'], ['Backspace'], ['Delete'], ['Tab']];
+  const disallowedKeys = [[' '], ['e'], ['E']];
+
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
@@ -32,28 +37,25 @@ describe('NumbersOnlyDirective', () => {
   });
 
   describe('when the key down have been pulsed...', () => {
-    describe.each([['0'], ['1'], ['2'], ['3'], ['4'], ['5', ['6'], ['7'], ['8'], ['9']]])('WHEN the character is a number', (key) => {
+    describe.each(allowedNumbers)('WHEN the character is a number', (key) => {
       it('should let us to use it', () => {
         expect(keyPress(key).defaultPrevented).toBe(false);
       });
     });
 
-    describe.each([['ArrowDown'], ['ArrowLeft'], ['ArrowRight'], ['ArrowUp'], ['Backspace'], ['Delete', ['Tab']]])(
-      'WHEN the character is an allowed key',
-      (key) => {
-        it('should let us to use it', () => {
-          expect(keyPress(key).defaultPrevented).toBe(false);
-        });
-      }
-    );
+    describe.each(allowedSpecialKeys)('WHEN the character is an allowed key', (key) => {
+      it('should let us to use it', () => {
+        expect(keyPress(key).defaultPrevented).toBe(false);
+      });
+    });
 
-    describe.each([[' '], ['e'], ['E']])('WHEN the character is a disallowed key', (key) => {
+    describe.each(disallowedKeys)('WHEN the character is a disallowed key', (key) => {
       it('should let us to use it', () => {
         expect(keyPress(key).defaultPrevented).toBe(true);
       });
     });
 
-    describe.each([['a'], ['B'], ['c']])('WHEN the character is not a number', (key) => {
+    describe.each(alphabeticalKeys)('WHEN the character is not a number', (key) => {
       it('should revert the character', () => {
         expect(keyPress(key).defaultPrevented).toBe(true);
       });
