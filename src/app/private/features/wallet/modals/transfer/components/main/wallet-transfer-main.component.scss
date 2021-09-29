@@ -1,0 +1,16 @@
+@import '~web-styleguide/scss/spacing';
+@import '~web-styleguide/scss/text';
+
+.WalletTransferModal {
+  &__title {
+    font-family: $wallie;
+    font-size: $font-size-m;
+    font-weight: $font-weight-chunky;
+    left: 0;
+    top: 10px;
+  }
+  &__content {
+    margin-top: $spacing-xxl;
+    padding: $spacing-xl;
+  }
+}
