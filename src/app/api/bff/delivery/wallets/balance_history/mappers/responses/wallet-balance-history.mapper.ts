@@ -83,7 +83,7 @@ const getEstimatedPayoutDescription = (historyElement: BalanceHistoryElementApi)
 
   if (estimated_pay_out_date) {
     const formatedDay = getShortDate(estimated_pay_out_date);
-    return $localize`:@@movements_history_all_users_movement_details_cashout_max_date_label:In your bank before ${formatedDay}`;
+    return $localize`:@@movements_history_all_users_movement_details_cashout_max_date_label:In your bank before ${formatedDay}:INTERPOLATION:`;
   }
 
   return null;
