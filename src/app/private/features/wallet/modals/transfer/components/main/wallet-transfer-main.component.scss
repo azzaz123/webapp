@@ -1,5 +1,6 @@
 @import '~web-styleguide/scss/spacing';
 @import '~web-styleguide/scss/text';
+@import '~style/common';
 
 .WalletTransferModal {
   &__title {
@@ -11,7 +12,12 @@
   }
   &__content {
     margin-top: $spacing-xxl;
-    padding: $spacing-xl;
+    padding: $spacing-s;
+
+    @include media-breakpoint-up(md) {
+      padding: $spacing-xl;
+    }
+
     &--tight {
       margin-top: 0;
       padding: $spacing-ml;
