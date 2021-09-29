@@ -1,7 +1,7 @@
+import { HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MOCK_DEFAULT_WALLET_BALANCE_HISTORY_API } from '@api/fixtures/bff/delivery/wallets/balance_history/wallet-balance-history-api.fixtures.spec';
-import { WalletBalanceHistoryQueryParamsApi } from '../dtos/requests/wallet-balance-history-filters-api.interface';
 import { WalletBalanceHistoryApi } from '../dtos/responses';
 import { WALLET_BALANCE_HISTORY_ENDPOINT } from './endpoints';
 import { WalletBalanceHistoryHttpService } from './wallet-balance-history-http.service';
@@ -9,7 +9,7 @@ import { WalletBalanceHistoryHttpService } from './wallet-balance-history-http.s
 describe('WalletBalanceHistoryHttpService', () => {
   let service: WalletBalanceHistoryHttpService;
   let httpMock: HttpTestingController;
-  let queryParams: WalletBalanceHistoryQueryParamsApi;
+  let queryParams: HttpParams;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -33,9 +33,9 @@ describe('WalletBalanceHistoryHttpService', () => {
       const page = 1337;
 
       beforeEach(() => {
-        queryParams = {
+        queryParams = new HttpParams().appendAll({
           page: page.toString(),
-        };
+        });
       });
 
       it('should ask server for an specific page', () => {
@@ -56,10 +56,10 @@ describe('WalletBalanceHistoryHttpService', () => {
       const type = 'IN';
 
       beforeEach(() => {
-        queryParams = {
+        queryParams = new HttpParams().appendAll({
           page,
           type,
-        };
+        });
       });
 
       it('should get ask server for movements from in type Wallet ', () => {
@@ -80,10 +80,10 @@ describe('WalletBalanceHistoryHttpService', () => {
       const type = 'OUT';
 
       beforeEach(() => {
-        queryParams = {
+        queryParams = new HttpParams().appendAll({
           page,
           type,
-        };
+        });
       });
 
       it('should get ask server for movements from in type Wallet ', () => {

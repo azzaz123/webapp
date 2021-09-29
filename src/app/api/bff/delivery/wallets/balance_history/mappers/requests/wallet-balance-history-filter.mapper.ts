@@ -1,20 +1,19 @@
+import { HttpParams } from '@angular/common/http';
 import { WALLET_HISTORY_FILTERS } from '@api/core/model/wallet/history/wallet-history-filters.enum';
-import { InnerType, ToApiMapper } from '@api/core/utils/types';
-import { WalletBalanceHistoryQueryParamsApi } from '../../dtos/requests/wallet-balance-history-filters-api.interface';
+import { ToApiMapper } from '@api/core/utils/types';
 
 type WalletBalanceHistoryFilters = { page: number; type?: WALLET_HISTORY_FILTERS };
-type WalletBalanceHistoryQueryParamTypeApi = InnerType<WalletBalanceHistoryQueryParamsApi, 'type'>;
 
-export const mapWalletHistoryFiltersToApi: ToApiMapper<WalletBalanceHistoryFilters, WalletBalanceHistoryQueryParamsApi> = (
+export const mapWalletHistoryFiltersToApi: ToApiMapper<WalletBalanceHistoryFilters, HttpParams> = (
   input: WalletBalanceHistoryFilters
-): WalletBalanceHistoryQueryParamsApi => {
-  return {
+): HttpParams => {
+  return new HttpParams().appendAll({
     page: input.page.toString(),
     type: mapWalletHistoryTypeToApi[input.type],
-  };
+  });
 };
 
-const mapWalletHistoryTypeToApi: Record<WALLET_HISTORY_FILTERS, WalletBalanceHistoryQueryParamTypeApi | null> = {
+const mapWalletHistoryTypeToApi: Record<WALLET_HISTORY_FILTERS, string | null> = {
   [WALLET_HISTORY_FILTERS.ALL]: null,
   [WALLET_HISTORY_FILTERS.IN]: 'IN',
   [WALLET_HISTORY_FILTERS.OUT]: 'OUT',
