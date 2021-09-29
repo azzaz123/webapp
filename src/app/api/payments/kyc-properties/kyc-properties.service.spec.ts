@@ -14,6 +14,9 @@ import { mapKYCPropertiesApiToKYCProperties } from '../kyc/mappers/responses/kyc
 import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-banner-constants';
 
 describe('KYCPropertiesService', () => {
+  const fifteenSeconds = 15000;
+  const secondCases = Array.from(Array(fifteenSeconds).keys());
+
   let service: KYCPropertiesService;
   let kycPropertiesHttpService: KYCPropertiesHttpService;
 
@@ -79,12 +82,15 @@ describe('KYCPropertiesService', () => {
       it('should request the properties every 15 seconds', fakeAsync(() => {
         const subscription = service.get().subscribe();
 
-        tick(0);
-        expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(1);
-        tick(15000);
-        expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(2);
+        secondCases.forEach((second: number) => {
+          const isLessThan15Seconds = second < fifteenSeconds;
+          const expectedCalls = isLessThan15Seconds ? 1 : 2;
 
-        subscription.unsubscribe();
+          tick(second);
+
+          expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(expectedCalls);
+          subscription.unsubscribe();
+        });
       }));
     });
 
@@ -96,12 +102,12 @@ describe('KYCPropertiesService', () => {
       it('should request the properties only one time', fakeAsync(() => {
         const subscription = service.get().subscribe();
 
-        tick(0);
-        expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(1);
-        tick(15000);
-        expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(1);
+        secondCases.forEach((second: number) => {
+          tick(second);
 
-        subscription.unsubscribe();
+          expect(kycPropertiesHttpService.get).toHaveBeenCalledTimes(1);
+          subscription.unsubscribe();
+        });
       }));
     });
   });
