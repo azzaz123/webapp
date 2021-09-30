@@ -12,7 +12,7 @@ import { DELIVERY_PATHS } from '../delivery-routing-constants';
 export class DeliveryComponent {
   public navLinks: NavLink[] = [
     {
-      id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SHIPMENT_TRACKING}`,
+      id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.MY_SHIPPINGS}`,
       display: $localize`:@@web_delivery_shipment_tracking:Tracking`,
     },
     {

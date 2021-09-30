@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { ShipmentTrakingComponent } from './shipment-traking.component';
+import { MyShippingsComponent } from './my-shippings.component';
 
 const routes: Route[] = [
   {
     path: '',
-    component: ShipmentTrakingComponent,
+    component: MyShippingsComponent,
   },
 ];
 
@@ -13,6 +13,6 @@ const routes: Route[] = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ShipmentTrackingRoutingModule {}
+export class MyShippingsTrackingRoutingModule {}
 
-export const shipmentTrackingRoutedComponents = [ShipmentTrakingComponent];
+export const myShippingsRoutedComponents = [MyShippingsComponent];
