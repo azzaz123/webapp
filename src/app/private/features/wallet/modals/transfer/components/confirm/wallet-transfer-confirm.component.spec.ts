@@ -3,10 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
+import { MOCK_CURRENCY_EURO } from '@api/fixtures/core/currency.fixtures';
+import { MOCK_MONEY_TO_TRANSFER } from '@fixtures/private/wallet/transfer/wallet-transfer.fixtures.spec';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { WalletTransferAmountModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-amount.model';
 import { WalletTransferConfirmComponent } from '@private/features/wallet/modals/transfer/components/confirm/wallet-transfer-confirm.component';
+import { WalletTransferMoneyModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-money.model';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -35,7 +37,7 @@ describe('WalletTransferConfirmComponent', () => {
     toastService = TestBed.inject(ToastService);
     fixture = TestBed.createComponent(WalletTransferConfirmComponent);
     component = fixture.componentInstance;
-    component.transferAmount = new WalletTransferAmountModel(3.14);
+    component.transferAmount = MOCK_MONEY_TO_TRANSFER;
   });
 
   it('should create', () => {
@@ -44,7 +46,7 @@ describe('WalletTransferConfirmComponent', () => {
 
   describe('WHEN the user has set a correct amount of money', () => {
     it('should show the amount of money in the range', () => {
-      component.transferAmount = new WalletTransferAmountModel(13.31);
+      component.transferAmount = new WalletTransferMoneyModel(13.31, MOCK_CURRENCY_EURO);
       const expectedAmountValue = `<span>You are going to transfer 13.31 € from wallet to your bank account</span>`;
 
       fixture.detectChanges();
@@ -79,7 +81,7 @@ describe('WalletTransferConfirmComponent', () => {
   describe('WHEN they click on the cancel button', () => {
     it('should go back to the transfer view', () => {
       const canceledSpy = spyOn(component.canceled, 'emit');
-      const expectedTransferAmount = new WalletTransferAmountModel(99.99);
+      const expectedTransferAmount = new WalletTransferMoneyModel(99.99, MOCK_CURRENCY_EURO);
       component.transferAmount = expectedTransferAmount;
 
       fixture.debugElement.query(By.css(walletTransferConfirmContentCancelButtonSelector)).nativeElement.click();

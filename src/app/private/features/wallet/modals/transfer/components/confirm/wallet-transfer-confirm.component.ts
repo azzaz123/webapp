@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { Money } from '@api/core/model/money.interface';
 import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
-import { WalletTransferAmountModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-amount.model';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from '@layout/toast/core/services/toast.service';
 
 const transferSentMessage: Toast = {
   type: TOAST_TYPES.SUCCESS,
@@ -19,17 +19,17 @@ const transferSentMessage: Toast = {
 })
 export class WalletTransferConfirmComponent {
   @Input()
-  public transferAmount: WalletTransferAmountModel;
+  public transferAmount: Money;
 
   @Output()
-  public canceled: EventEmitter<WalletTransferAmountModel> = new EventEmitter<WalletTransferAmountModel>();
+  public canceled: EventEmitter<Money> = new EventEmitter<Money>();
 
   public isTransferInProgress: boolean;
 
   constructor(private changeDetectorRef: ChangeDetectorRef, private ngbActiveModal: NgbActiveModal, private toastService: ToastService) {}
 
   public get amountAsText(): string {
-    return `${this.transferAmount?.toString()} €`;
+    return this.transferAmount?.toString();
   }
 
   public cancelTransfer(): void {
