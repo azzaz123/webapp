@@ -12,7 +12,7 @@ export class KYCGuard implements CanActivate {
   constructor(private kycPropertiesService: KYCPropertiesService, private router: Router) {}
 
   public canActivate(): Observable<boolean> {
-    return this.kycPropertiesService.get().pipe(
+    return this.kycPropertiesService.KYCProperties$.pipe(
       map((properties: KYCProperties) => this.isVerificationNeeded(properties)),
       tap((isVerificationNeeded: boolean) => {
         if (!isVerificationNeeded) {

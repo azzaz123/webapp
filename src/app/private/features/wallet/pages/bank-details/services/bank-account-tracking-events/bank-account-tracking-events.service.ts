@@ -11,6 +11,7 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { take } from 'rxjs/operators';
 
 type KycStatusEventAttribute = InnerType<ClickAddEditBankAccount, 'kycStatus'> | undefined;
 type AddOrEditEventAttribute = InnerType<ClickAddEditBankAccount, 'addOrEdit'>;
@@ -25,7 +26,7 @@ export class BankAccountTrackingEventsService {
   constructor(private analyticsService: AnalyticsService, private kycPropertiesService: KYCPropertiesService) {}
 
   public trackClickAddEditBankAccount(isEdit: boolean): void {
-    this.kycPropertiesService.get().subscribe((kycProperties: KYCProperties) => {
+    this.kycPropertiesService.KYCProperties$.pipe(take(1)).subscribe((kycProperties: KYCProperties) => {
       const { status } = kycProperties;
       const addOrEdit = this.mapAddOrEditAttribute(isEdit);
       const kycStatus = this.mapKycBannerStatusToEventAttribute(status);
