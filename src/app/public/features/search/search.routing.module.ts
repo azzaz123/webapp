@@ -4,6 +4,7 @@ import { AdsResolver } from '@core/ads/resolvers/ads.resolver';
 import { ReusedRoute } from '@core/custom-route-reuse-strategy/interfaces/reused-route.interface';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { SearchComponent } from './pages/search.component';
+import { SearchLocationResolver } from './resolvers/search-location.resolver';
 import { SearchCategoriesResolver } from './resolvers/search-categories.resolver';
 
 const SEARCH_ROUTE: ReusedRoute = {
@@ -11,6 +12,7 @@ const SEARCH_ROUTE: ReusedRoute = {
   component: SearchComponent,
   resolve: {
     ads: AdsResolver,
+    searchLocation: SearchLocationResolver,
     searchCategories: SearchCategoriesResolver,
   },
   data: {
