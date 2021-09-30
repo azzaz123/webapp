@@ -2,10 +2,15 @@
 
 .BankAccount {
   &__KYCMessage {
-    color: $blue-grey-1;
     border: solid 1px $walla-main;
     border-radius: $border-radius;
     font-size: $font-size-s;
+  }
+
+  &__topBarMessage,
+  &__KYCMessage,
+  &__back {
+    color: $blue-grey-1;
   }
 
   &__message {
@@ -17,7 +22,6 @@
 
   &__back {
     cursor: pointer;
-    color: $blue-grey-1;
     &:hover {
       text-decoration: none;
       &,
