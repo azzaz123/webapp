@@ -6,6 +6,6 @@ export enum ICON_TYPE {
 
 export interface IconConfig {
   src: string;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
 }

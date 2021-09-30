@@ -43,7 +43,7 @@ describe('ProBadgeComponent', () => {
 
   describe('and we select small type', () => {
     beforeEach(() => {
-      component.IconType = ICON_TYPE.SMALL;
+      component.iconType = ICON_TYPE.SMALL;
       component.ngOnInit();
       fixture.detectChanges();
     });
@@ -57,7 +57,7 @@ describe('ProBadgeComponent', () => {
 
   describe('and we select small type', () => {
     beforeEach(() => {
-      component.IconType = ICON_TYPE.DEFAULT;
+      component.iconType = ICON_TYPE.DEFAULT;
       component.ngOnInit();
       fixture.detectChanges();
     });
@@ -73,7 +73,7 @@ describe('ProBadgeComponent', () => {
 
   describe('and we select large type', () => {
     beforeEach(() => {
-      component.IconType = ICON_TYPE.LARGE;
+      component.iconType = ICON_TYPE.LARGE;
       component.ngOnInit();
       fixture.detectChanges();
     });

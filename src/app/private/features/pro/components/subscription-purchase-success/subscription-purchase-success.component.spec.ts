@@ -132,7 +132,7 @@ describe('SubscriptionPurchaseSuccessComponent', () => {
         const proBadge = fixture.debugElement.query(By.directive(ProBadgeComponent));
 
         expect(proBadge).toBeTruthy();
-        expect(proBadge.componentInstance.IconType).toEqual(ICON_TYPE.LARGE);
+        expect(proBadge.componentInstance.iconType).toEqual(ICON_TYPE.LARGE);
       });
     });
   });

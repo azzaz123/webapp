@@ -7,12 +7,14 @@ import { IconConfig, ICON_TYPE } from './pro-badge.interface';
   styleUrls: ['./pro-badge.component.scss'],
 })
 export class ProBadgeComponent implements OnInit {
-  @Input() IconType = ICON_TYPE.DEFAULT;
+  @Input() iconType = ICON_TYPE.DEFAULT;
   public selectedType: IconConfig;
 
   private readonly config: Record<ICON_TYPE, IconConfig> = {
     [ICON_TYPE.SMALL]: {
       src: '/assets/icons/pro/pro-seal.svg',
+      width: 20,
+      height: 20,
     },
     [ICON_TYPE.DEFAULT]: {
       src: '/assets/icons/pro/pro-badge.svg',
@@ -27,6 +29,6 @@ export class ProBadgeComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.selectedType = this.config[this.IconType];
+    this.selectedType = this.config[this.iconType];
   }
 }
