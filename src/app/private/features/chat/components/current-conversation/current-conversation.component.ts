@@ -251,7 +251,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public translateConversation(): void {
-    if (this.currentConversation.isTranslatable) {
+    if (!this.currentConversation.isTranslating && this.currentConversation.isTranslatable) {
       const conversation = this.currentConversation;
       conversation.isTranslating = true;
       this.translationService
