@@ -2,7 +2,7 @@ export type ActivityLevelApi = 'unknown' | 'inactive' | 'active' | 'novice' | 'e
 
 export type ValidationsLevelApi = 'not_verified' | 'partially_verified' | 'verified';
 
-export interface VerificationsApi {
+export interface UserVerificationsApi {
   activity_level: ActivityLevelApi;
   scoring_stars: number;
   validations: {

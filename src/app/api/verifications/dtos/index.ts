@@ -1,1 +1,1 @@
-export * from './verifications-api.interface';
+export * from './user-verifications-api.interface';
