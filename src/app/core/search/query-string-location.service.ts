@@ -11,11 +11,7 @@ import { APP_LOCALE } from 'configs/subdomains.config';
 export class QueryStringLocationService {
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private cookieService: CookieService) {}
 
-  public getLocationParameters(locationFromParameters?: SearchLocation): SearchLocation {
-    if (this.hasLocationParameters(locationFromParameters)) {
-      return locationFromParameters;
-    }
-
+  public getLocationParameters(): SearchLocation {
     const seoLocation = this.getSeoCookieLocation();
 
     if (seoLocation) {
@@ -62,9 +58,5 @@ export class QueryStringLocationService {
       [FILTER_QUERY_PARAM_KEY.longitude]: defaultLocation[FILTER_QUERY_PARAM_KEY.longitude],
       [FILTER_QUERY_PARAM_KEY.latitude]: defaultLocation[FILTER_QUERY_PARAM_KEY.latitude],
     };
-  }
-
-  private hasLocationParameters(location: SearchLocation): boolean {
-    return !!(location && location[FILTER_QUERY_PARAM_KEY.longitude] && location[FILTER_QUERY_PARAM_KEY.latitude]);
   }
 }
