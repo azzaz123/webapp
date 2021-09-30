@@ -2,13 +2,12 @@
     [class.ItemCardList--loading]="isLoading && !showPlaceholder">
     <ng-container *ngFor="let item of items; let i = index">
         <ng-container *ngxPermissionsOnly="PERMISSIONS.showAds">
-          <ng-container *ngIf="slotTemplate">
               <div *ngIf="slotsConfig && (i | showSlot: slotsConfig)"
                   class="ItemCardList__slot d-flex justify-content-center align-items-center"
                   [class.ItemCardList__slot--wide]="cardType === cardTypes.WIDE">
-                  <ng-container *ngTemplateOutlet="slotTemplate;context: {$implicit: i}"></ng-container>
+                  <ng-content select="[slotType=shopping]"></ng-content>
+                  {{ i }}
               </div>
-          </ng-container>
 
           <div class="ItemCardList__inline-slot d-sm-none"
               [class.ItemCardList__inline-slot--wide]="cardType === cardTypes.WIDE"

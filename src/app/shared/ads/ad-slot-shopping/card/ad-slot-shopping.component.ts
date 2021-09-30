@@ -29,7 +29,7 @@ export class AdSlotShoppingComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.adsService.displayAdShopping(this.adShoppingPageOptions, this.adSlotShoppingConfiguration);
+    // this.adsService.displayAdShopping(this.adShoppingPageOptions, this.adSlotShoppingConfiguration);
   }
 
   private factoryStyleIdSlot(): string {

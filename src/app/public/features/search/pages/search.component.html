@@ -1,6 +1,7 @@
 <div
   class="Search"
   tslAdSlotGroup
+  tslAdSlotShopping
   tslInfiniteScroll
   [infiniteScrollDisabled]="(infiniteScrollDisabled$ | async) || (isLoadingPaginationResults$ | async)"
   (scrolled)="scrolled()"
@@ -44,18 +45,17 @@
         (clickedItemAndIndex)="trackClickItemCardEvent($event)"
         (toggleFavouriteEvent)="trackFavouriteToggleEvent($event)"
       >
-        <ng-container *ngIf="searchWithKeyword$ | async">
-          <ng-template #slotTemplate let-index>
+        <ng-container *ngxPermissionsOnly="PERMISSIONS.showAds" slotType="shopping" >
+          hola?
             <tsl-sky-shopping
+              shoppingAdSlot
               *ngxPermissionsOnly="PERMISSIONS.showAds"
               [adSlotContainer]="adSlotShoppingContainer"
               [adShoppingPageOptions]="adShoppingNativeListPageOptions"
               [index]="index"
               [cardType]="listCardType$ | async"
             ></tsl-sky-shopping>
-          </ng-template>
         </ng-container>
-
         <ng-container inlineAdSlot *ngxPermissionsOnly="PERMISSIONS.showAds">
           <tsl-sky *ngIf="device === DevicesType.MOBILE" [adSlot]="adSlots.search2r"></tsl-sky>
         </ng-container>
