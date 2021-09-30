@@ -59,6 +59,7 @@ export class ItemDetailTrackEventsService {
         screenId: SCREEN_IDS.ItemDetail,
         isPro: user.featured,
         isBumped: !!item.bumpFlags?.bumped,
+        shippingAllowed: null,
       },
     };
     this.analyticsService.trackEvent(event);
@@ -111,6 +112,7 @@ export class ItemDetailTrackEventsService {
         title: item.title,
         isPro: user.featured,
         screenId: SCREEN_IDS.ItemDetail,
+        sellerCountry: null,
       },
     };
     this.analyticsService.trackPageView(event);
@@ -192,6 +194,7 @@ export class ItemDetailTrackEventsService {
         isCarDealer: false,
         isPro: user.featured,
         screenId: SCREEN_IDS.ItemDetail,
+        sellerCountry: null,
       },
     };
     this.userService
