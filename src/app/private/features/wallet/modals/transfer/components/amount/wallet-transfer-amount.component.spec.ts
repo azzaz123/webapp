@@ -22,6 +22,8 @@ import { WalletTransferAmountComponent } from '@private/features/wallet/modals/t
 import { delay } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 import { WalletTransferAmountModel } from '../../models/wallet-transfer-amount.model';
+import { WalletTransferMoneyModel } from '../../models/wallet-transfer-money.model';
+import { MOCK_CURRENCY_EURO } from '@api/fixtures/core/currency.fixtures';
 
 @Component({
   selector: 'tsl-fake-component',
@@ -247,8 +249,8 @@ describe('WalletTransferAmountComponent', () => {
 
       describe('WHEN the user clicks over the transfer button', () => {
         it('should notify the action', () => {
-          const expected = new WalletTransferAmountModel(13.14);
-          component.transferAmount = expected;
+          component.transferAmount = new WalletTransferAmountModel(13.14);
+          const expected = new WalletTransferMoneyModel(component.transferAmount.total, MOCK_CURRENCY_EURO);
           const transferButton = fixture.debugElement.query(By.css(walletTransferAmountCtaButtonSelector));
           const transferSpy = spyOn(component.transfered, 'emit').and.callThrough();
 

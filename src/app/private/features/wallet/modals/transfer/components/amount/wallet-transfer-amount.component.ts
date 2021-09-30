@@ -16,6 +16,7 @@ import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletTransferAmountModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-amount.model';
+import { WalletTransferMoneyModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-money.model';
 
 import { finalize } from 'rxjs/operators';
 
@@ -39,7 +40,7 @@ export class WalletTransferAmountComponent implements OnInit {
   @ViewChild(transferId, { static: false }) transferElementRef: ElementRef;
 
   @Output()
-  public transfered: EventEmitter<WalletTransferAmountModel> = new EventEmitter<WalletTransferAmountModel>();
+  public transfered: EventEmitter<Money> = new EventEmitter<Money>();
 
   public transferAmount: WalletTransferAmountModel;
 
@@ -113,7 +114,7 @@ export class WalletTransferAmountComponent implements OnInit {
   }
 
   public transferBalance(): void {
-    this.transfered.emit(this.transferAmount);
+    this.transfered.emit(new WalletTransferMoneyModel(this.transferAmount.total, this.walletBalance.currency, amountOfDecimals));
   }
 
   private loadBalance(): void {
