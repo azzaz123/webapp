@@ -28,7 +28,7 @@
             ></tsl-kyc-upload-images>
         </ng-template>
         <ng-template step>
-            <tsl-kyc-status [properties]="KYCStatusInProgressProperties" (buttonClick)="closeModal()">
+            <tsl-kyc-status [properties]="KYCStatusInProgressProperties" (buttonClick)="closeModal()" (closeModal)="closeModal()">
             </tsl-kyc-status>
         </ng-template>
     </tsl-stepper>
