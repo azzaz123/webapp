@@ -8,8 +8,6 @@ export abstract class MessageComponent {
   @Input() message: InboxMessage;
   @Input() currentConversation: InboxConversation;
 
-  public;
-
   public containsHTMLTag(message: string): boolean {
     return this.HTML_REGEX.test(message);
   }
