@@ -17,6 +17,7 @@ import { KYC_MODAL_STATUS } from '../../enums/kyc-modal-status.enum';
 import { KYCModalProperties } from '../../interfaces/kyc-modal-properties.interface';
 import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
+import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
 
 @Component({
   selector: 'tsl-kyc-modal',
@@ -26,7 +27,7 @@ import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
 export class KYCModalComponent implements OnDestroy {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
-  public KYCStoreSpecifications$: Observable<KYCSpecifications>;
+  public KYCStoreSpecifications$: Observable<KYCSpecifications> = this.KYCStoreService.specifications$;
   public KYCStatusInProgressProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
     (properties) => properties.status === KYC_MODAL_STATUS.IN_PROGRESS
   );
@@ -36,18 +37,21 @@ export class KYCModalComponent implements OnDestroy {
     private KYCService: KYCService,
     private activeModal: NgbActiveModal,
     private toastService: ToastService,
-    private i18nService: I18nService
-  ) {
-    this.KYCStoreSpecifications$ = KYCStoreService.specifications$;
-  }
+    private i18nService: I18nService,
+    private kycTrackingEventsService: KYCTrackingEventsService
+  ) {}
 
   ngOnDestroy(): void {
     this.resetSpecifications();
   }
 
   public endVerification(KYCImages: KYCImages): void {
+    const selectedDocument = this.KYCStoreService.specifications.documentation.analyticsName;
+    this.kycTrackingEventsService.trackClickKYCFinishIdentityVerification(selectedDocument);
+
     this.KYCService.request(KYCImages).subscribe(
       () => {
+        this.updateKYCImages(KYCImages);
         this.goNextStep();
       },
       (e: Error | KYCError) => {
@@ -58,16 +62,6 @@ export class KYCModalComponent implements OnDestroy {
 
   public defineNationality(nationalitySelected: KYCNationality): void {
     this.KYCStoreService.specifications = { ...this.KYCStoreService.specifications, nationality: nationalitySelected };
-  }
-
-  public defineImages(newImages: KYCImages): void {
-    this.KYCStoreService.specifications = {
-      ...this.KYCStoreService.specifications,
-      images: {
-        frontSide: newImages.frontSide,
-        backSide: newImages.backSide,
-      },
-    };
   }
 
   public defineDocumentationAndGoNext(documentationSelected: KYCDocumentation): void {
@@ -97,6 +91,16 @@ export class KYCModalComponent implements OnDestroy {
 
   public goPreviousStep(): void {
     this.stepper.goBack();
+  }
+
+  private updateKYCImages(newImages: KYCImages): void {
+    this.KYCStoreService.specifications = {
+      ...this.KYCStoreService.specifications,
+      images: {
+        frontSide: newImages.frontSide,
+        backSide: newImages.backSide,
+      },
+    };
   }
 
   private resetSpecifications(): void {

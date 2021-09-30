@@ -1,0 +1,11 @@
+<div class="WalletTransferModal d-flex align-items-center justify-content-center">
+  <div class="WalletTransferModal__title d-flex align-items-center justify-content-center w-100 position-absolute">
+    <span i18n="@@make_transfer_view_transfer_button">Transfer to my bank account</span>
+  </div>
+  <div class="WalletTransferModal__close modal-close d-flex align-items-center justify-content-center" (click)="closeModal()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  </div>
+  <div class="WalletTransferModal__content">
+    <tsl-wallet-transfer-amount></tsl-wallet-transfer-amount>
+  </div>
+</div>

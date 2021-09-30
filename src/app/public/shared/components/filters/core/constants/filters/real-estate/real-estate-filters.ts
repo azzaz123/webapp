@@ -14,6 +14,7 @@ const REAL_ESTATE_FILTER_CONFIGURATION_COMMON: AvailableFilterConfig[] = [
     },
     isMultiselect: false,
     hasBigIcons: true,
+    gridColumns: 3,
   },
   {
     id: REAL_ESTATE_CONFIGURATION_ID.BATHROOMS,
@@ -25,6 +26,7 @@ const REAL_ESTATE_FILTER_CONFIGURATION_COMMON: AvailableFilterConfig[] = [
     },
     isMultiselect: false,
     hasBigIcons: true,
+    gridColumns: 3,
   },
   {
     id: REAL_ESTATE_CONFIGURATION_ID.CONDITION,
@@ -36,6 +38,7 @@ const REAL_ESTATE_FILTER_CONFIGURATION_COMMON: AvailableFilterConfig[] = [
     },
     isMultiselect: false,
     hasBigIcons: false,
+    gridColumns: 4,
   },
   {
     id: REAL_ESTATE_CONFIGURATION_ID.EXTRAS,
@@ -52,6 +55,7 @@ const REAL_ESTATE_FILTER_CONFIGURATION_COMMON: AvailableFilterConfig[] = [
     isMultiselect: true,
     hasBigIcons: false,
     isBooleanFormat: true,
+    gridColumns: 4,
   },
 ];
 
@@ -68,6 +72,7 @@ const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
     isMultiselect: false,
     hasBigIcons: false,
     mirrorsValueIcon: true,
+    gridColumns: 4,
   },
   {
     id: REAL_ESTATE_CONFIGURATION_ID.OPERATION,
@@ -81,6 +86,7 @@ const REAL_ESTATE_FILTER_CONFIGURATION_DEFAULT: AvailableFilterConfig[] = [
     isMultiselect: false,
     hasBigIcons: false,
     mirrorsValueIcon: true,
+    gridColumns: 6,
   },
   {
     id: REAL_ESTATE_CONFIGURATION_ID.DEFAULT_PRICE,

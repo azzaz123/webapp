@@ -7,6 +7,7 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { KYC_DOCUMENTATION } from '../../constants/kyc-documentation-constants';
 import { KYC_NATIONALITIES } from '../../constants/kyc-nationalities-constants';
 import { KYC_NATIONALITY_TYPE } from '../../enums/kyc-nationality-type.enum';
+import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
 
 import { KYCNationalityComponent } from './kyc-nationality.component';
 
@@ -22,6 +23,7 @@ describe('KYCNationalityComponent', () => {
   const drawingSelector = '.KYCNationality__drawing';
 
   let component: KYCNationalityComponent;
+  let kycTrackingEventsService: KYCTrackingEventsService;
   let fixture: ComponentFixture<KYCNationalityComponent>;
   let de: DebugElement;
   let el: HTMLElement;
@@ -30,11 +32,22 @@ describe('KYCNationalityComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [KYCNationalityComponent, SvgIconComponent, DropdownComponent],
+      providers: [
+        {
+          provide: KYCTrackingEventsService,
+          useValue: {
+            trackViewKYCIdentityVerificationScreen() {},
+            trackViewKYCUploadIdentityVerificationScreen() {},
+            trackViewKYCDocumentationTypeScreen() {},
+          },
+        },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(KYCNationalityComponent);
+    kycTrackingEventsService = TestBed.inject(KYCTrackingEventsService);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
@@ -42,6 +55,16 @@ describe('KYCNationalityComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('when we enter on the KYC nationality page...', () => {
+    it('should request to the KYC analytics service to track the page view event', () => {
+      spyOn(kycTrackingEventsService, 'trackViewKYCIdentityVerificationScreen');
+
+      fixture.detectChanges();
+
+      expect(kycTrackingEventsService.trackViewKYCIdentityVerificationScreen).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('when the nationality has been selected...', () => {
@@ -231,35 +254,47 @@ describe('KYCNationalityComponent', () => {
 
   describe('when we select a nationality...', () => {
     beforeEach(() => {
+      spyOn(kycTrackingEventsService, 'trackViewKYCUploadIdentityVerificationScreen');
       spyOn(component.nationalityChange, 'emit');
 
       fixture.detectChanges();
-    });
 
-    it('should emit the selected nationality', () => {
       de.query(By.directive(DropdownComponent)).triggerEventHandler('selected', {
         label: EUROPEAN_UNION_NATIONALITY.label,
         value: EUROPEAN_UNION_NATIONALITY.value,
       });
+    });
 
+    it('should emit the selected nationality', () => {
       expect(component.nationalityChange.emit).toHaveBeenCalledWith(EUROPEAN_UNION_NATIONALITY);
+    });
+
+    it('should request to the KYC analytics service to track the event', () => {
+      expect(kycTrackingEventsService.trackViewKYCUploadIdentityVerificationScreen).toHaveBeenCalledTimes(1);
+      expect(kycTrackingEventsService.trackViewKYCUploadIdentityVerificationScreen).toHaveBeenCalledWith(
+        EUROPEAN_UNION_NATIONALITY.analyticsName
+      );
     });
   });
 
   describe('when we select a document...', () => {
-    const selectedDocument = KYC_DOCUMENTATION[0];
-
     beforeEach(() => {
+      spyOn(kycTrackingEventsService, 'trackViewKYCDocumentationTypeScreen');
       spyOn(component.documentToRequestChange, 'emit');
       component.KYCNationality = EUROPEAN_UNION_NATIONALITY;
 
       fixture.detectChanges();
+
+      de.query(By.directive(DropdownComponent)).triggerEventHandler('selected', KYC_DOCUMENTATION[0]);
     });
 
     it('should emit the selected document', () => {
-      de.query(By.directive(DropdownComponent)).triggerEventHandler('selected', selectedDocument);
+      expect(component.documentToRequestChange.emit).toHaveBeenCalledWith(KYC_DOCUMENTATION[0]);
+    });
 
-      expect(component.documentToRequestChange.emit).toHaveBeenCalledWith(selectedDocument);
+    it('should request to the KYC analytics service to track the event', () => {
+      expect(kycTrackingEventsService.trackViewKYCDocumentationTypeScreen).toHaveBeenCalledTimes(1);
+      expect(kycTrackingEventsService.trackViewKYCDocumentationTypeScreen).toHaveBeenCalledWith(KYC_DOCUMENTATION[0].analyticsName);
     });
   });
 });
