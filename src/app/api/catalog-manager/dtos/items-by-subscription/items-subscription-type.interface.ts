@@ -1,5 +1,3 @@
-import { ItemFlags, ItemVisibilityFlags } from '@core/item/item-response.interface';
-
 export interface ItemBySubscriptionResponse {
   id: string;
   title: string;
@@ -30,4 +28,26 @@ export interface ImageItemBySubscription {
     xlarge: string;
     medium: string;
   };
+}
+
+interface ItemFlags {
+  pending: boolean;
+  sold: boolean;
+  favorite?: boolean;
+  reserved: boolean;
+  removed?: boolean;
+  banned: boolean;
+  expired: boolean;
+  review_done?: boolean;
+  bumped?: boolean;
+  highlighted?: boolean;
+  bump_type?: string;
+  onhold?: boolean;
+  notAvailable?: boolean;
+}
+
+interface ItemVisibilityFlags {
+  bumped: boolean;
+  highlighted: boolean;
+  country_bumped: boolean;
 }

@@ -38,7 +38,6 @@ describe('CatalogManagerApiService', () => {
       spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(
         of([MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED])
       );
-
       let response: SubscriptionSlot[];
 
       service.getSlots().subscribe((data: SubscriptionSlot[]) => {
