@@ -29,6 +29,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
   @Output() endVerification: EventEmitter<KYCImages> = new EventEmitter();
   @Output() goBack: EventEmitter<void> = new EventEmitter();
+  @Output() closeModal: EventEmitter<void> = new EventEmitter();
 
   public readonly MIME_TYPES = MIME_TYPES;
   public readonly VIDEO_PERMISSIONS_STATUS = VIDEO_PERMISSIONS_STATUS;

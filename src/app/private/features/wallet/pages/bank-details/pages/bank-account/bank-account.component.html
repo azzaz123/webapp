@@ -3,12 +3,15 @@
         <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
         <span i18n="@@web_catalog_pro_pages_checkout_638" class="ml-3">Back</span>
     </a>
-    <div *ngIf="isKYC" class="row d-flex justify-content-center mx-2 mb-4">
+    <div *ngIf="isKYC" class="row mb-4">
         <div class="col">
             <div class="BankAccount__topBarMessage row mb-3">
-                <span i18n="@kyc_bank_account_view_top_bar_title" class="col p-0">Bank account</span>
+                <div class="col d-flex justify-content-between p-0">
+                    <span i18n="@kyc_bank_account_view_top_bar_title" class="p-0">Bank account</span>
+                    <tsl-svg-icon src="/assets/icons/cross.svg" class="BankAccount__cross align-self-center" (click)="closeModal.emit()"></tsl-svg-icon>
+                </div>
             </div>
-            <div class="BankAccount__KYCMessage p-3 row">
+            <div class="BankAccount__KYCMessage p-3 row mx-2">
                 <span i18n="@@kyc_bank_account_view_info_matching_description" class="col">The name of the account holder must match the name on the ID you provide. In addition, the person must be over 18 years old.</span>
             </div>
         </div>

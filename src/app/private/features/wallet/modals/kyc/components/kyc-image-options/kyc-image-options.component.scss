@@ -55,4 +55,8 @@
     bottom: 0;
     background-color: transparentize($white, 0.5);
   }
+
+  &__cross {
+    cursor: pointer;
+  }
 }

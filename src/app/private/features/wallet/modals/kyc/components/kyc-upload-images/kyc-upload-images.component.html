@@ -1,10 +1,11 @@
 <div class="KYCUploadImages h-100 container d-flex flex-column justify-content-between">
     <div class="row">
-        <div class="col">
+        <div class="col d-flex justify-content-between p-0">
             <a class="KYCUploadImages__back d-flex" (click)="handleBack()">
                 <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
                 <span id="headerText" class="ml-3">{{documentationSelected.label}}</span>
             </a>
+            <tsl-svg-icon src="/assets/icons/cross.svg" class="KYCUploadImages__cross align-self-center" (click)="closeModal.emit()"></tsl-svg-icon>
         </div>
     </div>
     <div *ngIf="showLoadingBlock$ | async" class="row w-100 h-100" id="loadingBlock">  

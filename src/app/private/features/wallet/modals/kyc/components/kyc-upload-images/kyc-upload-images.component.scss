@@ -71,4 +71,8 @@ $image-height--big: 240px;
   &__bottomContainer {
     bottom: 0;
   }
+
+  &__cross {
+    cursor: pointer;
+  }
 }
