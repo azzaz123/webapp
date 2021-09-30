@@ -1,6 +1,6 @@
+import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionSlotGeneralResponse, SubscriptionSlotResponse } from '../dtos/slots/slots-response.interface';
-import { SubscriptionSlot } from '../interfaces/subscription-slot/subscription-slot.interface';
 
 export function mapSlotsResponseToSlots(
   slotsResponse: SubscriptionSlotGeneralResponse,

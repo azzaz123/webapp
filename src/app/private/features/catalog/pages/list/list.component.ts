@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
-import { SubscriptionSlot } from '@api/catalog-manager/interfaces/subscription-slot/subscription-slot.interface';
+import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,

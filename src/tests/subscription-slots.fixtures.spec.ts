@@ -1,5 +1,5 @@
-import { SubscriptionSlotResponse, SubscriptionSlotGeneralResponse } from '@api/catalog-manager/dtos/slots/slots-response.interface';
-import { SubscriptionSlot } from '@api/catalog-manager/interfaces/subscription-slot/subscription-slot.interface';
+import { SubscriptionSlotGeneralResponse, SubscriptionSlotResponse } from '@api/catalog-manager/dtos/slots/slots-response.interface';
+import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 import { MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED } from './subscriptions.fixtures.spec';
 

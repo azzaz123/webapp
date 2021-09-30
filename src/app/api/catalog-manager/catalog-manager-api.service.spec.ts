@@ -5,8 +5,8 @@ import { CatalogManagerHttpService } from './http/catalog-manager-http.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { CatalogManagerApiService } from './catalog-manager-api.service';
 import { MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
-import { SubscriptionSlot } from './interfaces/subscription-slot/subscription-slot.interface';
 import { MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE, MOCK_SUBSCRIPTION_SLOTS } from '@fixtures/subscription-slots.fixtures.spec';
+import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 
 describe('CatalogManagerApiService', () => {
   let service: CatalogManagerApiService;

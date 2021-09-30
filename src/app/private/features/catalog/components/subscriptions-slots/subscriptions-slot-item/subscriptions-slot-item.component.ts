@@ -7,7 +7,7 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
 } from '@core/analytics/analytics-constants';
-import { SubscriptionSlot } from '@api/catalog-manager/interfaces/subscription-slot/subscription-slot.interface';
+import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 
 @Component({
   selector: 'tsl-subscriptions-slot-item',
