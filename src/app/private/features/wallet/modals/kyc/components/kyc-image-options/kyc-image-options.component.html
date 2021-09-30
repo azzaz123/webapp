@@ -1,4 +1,4 @@
-<div class="KYCImageOptions container h-100 d-flex flex-column justify-content-between">
+<div class="KYCImageOptions container h-100 d-flex flex-column">
     <div class="row">
         <div class="col d-flex justify-content-between p-0">
             <a class="KYCImageOptions__back d-flex" (click)="goBack.emit()">
@@ -8,43 +8,47 @@
             <tsl-svg-icon src="/assets/icons/cross.svg" class="KYCImageOptions__cross align-self-center" (click)="closeModal.emit()"></tsl-svg-icon>
         </div>
     </div>
-    <div class="row">
-        <div class="col col-md-11 offset-md-1">
-            <h3 class="KYCImageOptions__title" i18n="@@kyc_image_options_title">Add your official ID document</h3>
-            <span class="KYCImageOptions__description" i18n="@@kyc_image_options_subtitle">You will need to add an official identification document. This step is to verify that you are who you say you are.</span>
-        </div>
-    </div>
-    <div class="row justify-content-center">
+    <div class="row mt-4">
         <div class="col col-md-10 offset-md-1">
-            <div class="row">
-                <div class="col" (click)="changeImageMethod(KYC_TAKE_IMAGE_OPTIONS.UPLOAD)">
-                    <div id="uploadOption" class="GenericCard KYCImageOptions__option d-flex justify-content-between mb-3 p-4" [ngClass]="{'KYCImageOptions__option--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD}"> 
-                        <div class="d-flex flex-column text-left mr-4">
-                            <span class="GenericCard__title KYCImageOptions__option__title mb-0" i18n="@@kyc_upload_image_option">Upload a photo of your document</span>
-                            <span *ngIf="isDesktop" class="GenericCard__subtitle mt-2 mb-0" i18n="@@kyc_recommended_option">Recommended</span>
-                        </div>
-                        <div class="input-radio">
-                            <input type="radio" [value]="KYC_TAKE_IMAGE_OPTIONS.UPLOAD" [(ngModel)]="imageMethod">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col" (click)="changeImageMethod(KYC_TAKE_IMAGE_OPTIONS.SHOOT)">
-                    <div id="shootOption" class="GenericCard KYCImageOptions__option d-flex justify-content-between p-4" [ngClass]="{'KYCImageOptions__option--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT}">
-                        <div class="d-flex flex-column text-left mr-4">
-                            <span class="GenericCard__title KYCImageOptions__option__title mb-0">{{takeImageMessage}}</span>
-                            <span *ngIf="!isDesktop" class="GenericCard__subtitle mt-2 mb-0" i18n="@@kyc_recommended_option">Recommended</span>
-                        </div>
-                        <div class="input-radio">
-                            <input type="radio" [value]="KYC_TAKE_IMAGE_OPTIONS.SHOOT" [(ngModel)]="imageMethod">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h3 class="KYCImageOptions__title text-center mb-3" i18n="@@kyc_image_options_title">Add your official ID document</h3>
+            <span class="KYCImageOptions__description text-center d-flex mb-3" i18n="@@kyc_image_options_subtitle">You will need to add an official identification document. This step is to verify that you are who you say you are.</span>
         </div>
     </div>
-    <div class="KYCImageOptions__bottomContainer row position-sticky text-center justify-content-center">
-        <tsl-button id="continueButton" className="btn-primary btn-block" class="col-12 col-md-7 p-0" (click)="takeImageOptionChange.emit(imageMethod)" i18n="@@kyc_image_options_action_button">Continue</tsl-button>
+    <div class="row justify-content-center h-100">
+        <div class="col d-flex flex-column justify-content-between">
+            <div class="row">
+                <div class="col col-md-10 offset-md-1">
+                    <div class="row">
+                        <div class="col" (click)="changeImageMethod(KYC_TAKE_IMAGE_OPTIONS.UPLOAD)">
+                            <div id="uploadOption" class="GenericCard KYCImageOptions__option d-flex justify-content-between mb-3 p-4" [ngClass]="{'KYCImageOptions__option--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.UPLOAD}"> 
+                                <div class="d-flex flex-column text-left mr-4">
+                                    <span class="GenericCard__title KYCImageOptions__option__title mb-0" i18n="@@kyc_upload_image_option">Upload a photo of your document</span>
+                                    <span *ngIf="isDesktop" class="GenericCard__subtitle mt-2 mb-0" i18n="@@kyc_recommended_option">Recommended</span>
+                                </div>
+                                <div class="input-radio">
+                                    <input type="radio" [value]="KYC_TAKE_IMAGE_OPTIONS.UPLOAD" [(ngModel)]="imageMethod">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" (click)="changeImageMethod(KYC_TAKE_IMAGE_OPTIONS.SHOOT)">
+                            <div id="shootOption" class="GenericCard KYCImageOptions__option d-flex justify-content-between p-4" [ngClass]="{'KYCImageOptions__option--selected': imageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT}">
+                                <div class="d-flex flex-column text-left mr-4">
+                                    <span class="GenericCard__title KYCImageOptions__option__title mb-0">{{takeImageMessage}}</span>
+                                    <span *ngIf="!isDesktop" class="GenericCard__subtitle mt-2 mb-0" i18n="@@kyc_recommended_option">Recommended</span>
+                                </div>
+                                <div class="input-radio">
+                                    <input type="radio" [value]="KYC_TAKE_IMAGE_OPTIONS.SHOOT" [(ngModel)]="imageMethod">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="KYCImageOptions__bottomContainer row position-sticky text-center justify-content-center">
+                <tsl-button id="continueButton" className="btn-primary btn-block" class="col-12 col-md-7 p-0" (click)="takeImageOptionChange.emit(imageMethod)" i18n="@@kyc_image_options_action_button">Continue</tsl-button>
+            </div>
+        </div>
     </div>
 </div>
