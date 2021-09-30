@@ -31,7 +31,7 @@ export const CONSUMER_GOODS_FILTERS: AvailableFilterConfig[] = [
   },
   {
     id: COMMON_CONSUMER_GOODS_CONFIGURATION_ID.OBJECT_TYPE,
-    type: FILTER_TYPES.SELECT,
+    type: FILTER_TYPES.MULTISELECT,
     title: $localize`:@@web_filter_subcategory_title:Subcategory`, // TODO align with Miqueñ
     bubblePlaceholder: $localize`:@@web_filter_subcategory_bubble_placeholder:Subcategory`,
     drawerPlaceholder: $localize`:@@web_filter_subcategory_drawer_placeholder:Select subcategory`,

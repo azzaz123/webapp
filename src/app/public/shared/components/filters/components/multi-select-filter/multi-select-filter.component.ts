@@ -98,7 +98,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   }
 
   private updateLabel(): void {
-    this.labelSubject.next(this._value.length ? this.buildLabel() : this.getLabelPlaceholder());
+    this.labelSubject.next(this._value.length && this.options.length ? this.buildLabel() : this.getLabelPlaceholder());
   }
 
   private updatePlaceholderIcon(): void {
@@ -113,10 +113,11 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     const stringValues = this._value.find((option) => option.key === this.config.mapKey.parameterKey).value?.split(',');
 
     stringValues.forEach((value: string, index: number) => {
-      label += `${this.options.find((option) => option.value === value)?.label}${index + 1 < stringValues.length ? ', ' : ''}`;
+      const option = this.options.find((option) => option.value === value);
+      label += option ? `${index !== 0 && label.length > 2 ? ', ' : ''}${option.label}` : '';
     });
 
-    return label;
+    return label.length ? label : this.getLabelPlaceholder();
   }
 
   private updateValueFromParent(): void {
