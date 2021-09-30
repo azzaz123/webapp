@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MOCK_VERIFICATIONS_RESPONSE } from '@api/fixtures/verifications/verifications.fixtures.spec';
-import { VerificationsApi } from '../dtos';
+import { UserVerificationsApi } from '../dtos';
 import { EXTRA_INFO_ENDPOINT } from './endpoints';
 
 import { VerificationsHttpService } from './verifications-http.service';
@@ -29,7 +29,7 @@ describe('VerificationsHttpService', () => {
 
   describe('when asking to get the verifications', () => {
     it('should get the verifications response', () => {
-      let response: VerificationsApi;
+      let response: UserVerificationsApi;
 
       service.get().subscribe((data) => (response = data));
       const req: TestRequest = httpMock.expectOne(EXTRA_INFO_ENDPOINT);
