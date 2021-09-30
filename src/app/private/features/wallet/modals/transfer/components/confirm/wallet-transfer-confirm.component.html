@@ -1,23 +1,23 @@
 <div class="WalletTransferConfirm h-100">
-  <div class="WalletTransferConfirm__content h-100 d-flex flex-column justify-content-center">
-    <div class="WalletTransferConfirm__content__icon w-100 h-100 d-flex justify-content-center">
+  <div class="WalletTransferConfirm__container h-100 d-flex flex-column justify-content-center">
+    <div class="WalletTransferConfirm__icon w-100 h-100 d-flex justify-content-center">
       <tsl-svg-icon src="./assets/icons/wallet/transfer/wallet-transfer-confirmation.svg"></tsl-svg-icon>
     </div>
 
-    <div class="WalletTransferConfirm__content__amount text-center">
+    <div class="WalletTransferConfirm__amount text-center">
       <span i18n="@@transfer_confirmation_view_title">You are going to transfer {{ amountAsText }} from wallet to your bank account</span>
     </div>
-    <div class="WalletTransferConfirm__content__info text-center">
+    <div class="WalletTransferConfirm__info text-center">
       <span i18n="@@transfer_confirmation_view_description"
         >The money will be reflected in your account within 2 to 5 working days, it depends on your bank.</span
       >
     </div>
-    <div class="WalletTransferConfirm__content__cancel">
+    <div class="WalletTransferConfirm__cancel">
       <tsl-button className="btn-secondary btn-block" i18n="@@transfer_confirmation_view_cancel_button" (click)="cancelTransfer()"
         >Cancel</tsl-button
       >
     </div>
-    <div class="WalletTransferConfirm__content__confirm">
+    <div class="WalletTransferConfirm__confirm">
       <tsl-button
         className="btn-primary btn-block"
         i18n="@@transfer_confirmation_view_confirm_button"

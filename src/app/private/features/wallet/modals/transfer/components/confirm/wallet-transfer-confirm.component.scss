@@ -5,32 +5,31 @@ $icon-height: 189px;
 $icon-width: 118px;
 
 .WalletTransferConfirm {
-  &__content {
+  &__container {
     width: $container-width;
+  }
+  &__icon {
+    height: $icon-height;
+    width: $icon-width;
+  }
 
-    &__icon {
-      height: $icon-height;
-      width: $icon-width;
-    }
+  &__amount,
+  &__info {
+    margin-top: $spacing-ml;
+    padding-left: $spacing-ms;
+    padding-right: $spacing-ms;
+  }
 
-    &__amount,
-    &__info {
-      margin-top: $spacing-ml;
-      padding-left: $spacing-ms;
-      padding-right: $spacing-ms;
-    }
+  &__amount {
+    font-size: $font-size-l;
+    font-weight: $font-weight-chunky;
+  }
 
-    &__amount {
-      font-size: $font-size-l;
-      font-weight: $font-weight-chunky;
-    }
-
-    &__info {
-      font-size: $font-size-base-walla;
-    }
-    &__cancel,
-    &__confirm {
-      margin-top: $spacing-ml;
-    }
+  &__info {
+    font-size: $font-size-base-walla;
+  }
+  &__cancel,
+  &__confirm {
+    margin-top: $spacing-ml;
   }
 }
