@@ -16,8 +16,8 @@ const Template: Story<MultiSelectOptionComponent> = (args) => ({
   props: args,
   component: MultiSelectOptionComponent,
   template: `
-    <div style="background: white; border: 1px dashed black;">
-        <tsl-multi-select-option [option]="option" [disabled]="disabled"></tsl-multi-select-option>
+    <div style="background: white;">
+        <tsl-multi-select-option [option]="option" [isDisabled]="disabled"></tsl-multi-select-option>
     </div>
     `,
 });
