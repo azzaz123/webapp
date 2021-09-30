@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-form.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { TemplateMultiSelectFormOption } from '../../interfaces/multi-select-form-option.interface';
 import { MultiSelectOptionComponent } from './multi-select-option.component';
 
@@ -29,7 +30,7 @@ describe('MultiSelectOptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, CheckboxFormModule, HttpClientTestingModule],
+      imports: [FormsModule, CheckboxFormModule, SvgIconModule, HttpClientTestingModule],
       declarations: [MultiSelectOptionComponent],
     }).compileComponents();
   });
@@ -74,7 +75,45 @@ describe('MultiSelectOptionComponent', () => {
       });
     });
 
+    describe('has children', () => {
+      beforeEach(() => {
+        component.option = optionWithSublabelFixture;
+        component.hasChildren = true;
+        fixture.detectChanges();
+      });
+
+      it('should show arrow instead of checkbox', () => {
+        const checkbox = debugElement.nativeElement.querySelector('input[type=checkbox]');
+        const arrow = debugElement.nativeElement.querySelector('tsl-svg-icon');
+
+        expect(checkbox).toBeFalsy();
+        expect(arrow).toBeTruthy();
+      });
+    });
+
+    describe('has not children', () => {
+      beforeEach(() => {
+        component.option = optionWithSublabelFixture;
+        component.hasChildren = false;
+        fixture.detectChanges();
+      });
+
+      it('should show arrow instead of checkbox', () => {
+        const checkbox = debugElement.nativeElement.querySelector('input[type=checkbox]');
+        const arrow = debugElement.nativeElement.querySelector('tsl-svg-icon');
+
+        expect(checkbox).toBeTruthy();
+        expect(arrow).toBeFalsy();
+      });
+    });
+
     describe('is toggled by the user', () => {
+      beforeEach(() => {
+        component.option = optionFixture;
+        component.hasChildren = false;
+        fixture.detectChanges();
+      });
+
       it('should toggle checkbox ', () => {
         spyOn(component.toggleOnChange, 'emit');
         const checkbox = debugElement.nativeElement.querySelector('input[type=checkbox]');

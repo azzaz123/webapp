@@ -4,9 +4,14 @@
   &--disabled {
     color: $blue-grey-2;
 
-    tsl-checkbox-form {
+    tsl-checkbox-form,
+    tsl-svg-icon {
       opacity: 0.5;
     }
+  }
+
+  &--with-children {
+    cursor: pointer;
   }
 
   &__label {

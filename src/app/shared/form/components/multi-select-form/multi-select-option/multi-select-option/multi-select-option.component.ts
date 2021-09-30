@@ -10,6 +10,7 @@ import { TemplateMultiSelectFormOption } from '../../interfaces/multi-select-for
 export class MultiSelectOptionComponent {
   @Input() option: TemplateMultiSelectFormOption;
   @Input() isDisabled: boolean;
+  @Input() hasChildren = false;
   @Output() toggleOnChange = new EventEmitter();
 
   @HostListener('click', ['$event'])

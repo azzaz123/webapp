@@ -17,7 +17,7 @@ const Template: Story<MultiSelectOptionComponent> = (args) => ({
   component: MultiSelectOptionComponent,
   template: `
     <div style="background: white;">
-        <tsl-multi-select-option [option]="option" [isDisabled]="disabled"></tsl-multi-select-option>
+        <tsl-multi-select-option [option]="option" [isDisabled]="disabled" [hasChildren]="hasChildren"></tsl-multi-select-option>
     </div>
     `,
 });
@@ -36,6 +36,17 @@ export const WithSublabel = Template.bind({});
 WithSublabel.args = {
   option: { label: 'aa', value: 'aa', sublabel: '1', checked: false },
   disabled: false,
+};
+
+export const WithChildren = Template.bind({});
+WithChildren.args = {
+  option: {
+    label: 'aa',
+    value: 'aa',
+    checked: false,
+  },
+  disabled: false,
+  hasChildren: true,
 };
 
 export const DisabledOption = Template.bind({});

@@ -6,7 +6,7 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { MultiSelectOptionComponent } from './multi-select-option.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, CheckboxFormModule],
+  imports: [CommonModule, FormsModule, CheckboxFormModule, SvgIconModule],
   declarations: [MultiSelectOptionComponent],
   exports: [MultiSelectOptionComponent],
 })

@@ -1,7 +1,8 @@
-<div class="MultiSelectOption d-flex w-100 position-relative p-3" [class.MultiSelectOption--disabled]="isDisabled">
+<div class="MultiSelectOption d-flex w-100 position-relative p-3" [class.MultiSelectOption--disabled]="isDisabled" [class.MultiSelectOption--with-children]="hasChildren">
   <div class="w-100 align-self-center d-flex justify-content-between">
     <span class="MultiSelectOption__label d-block">{{ option.label }}</span>
     <span *ngIf="!!option.sublabel" class="MultiSelectOption__label__sub mr-3">{{ option.sublabel }}</span>
   </div>
-  <tsl-checkbox-form [(ngModel)]="option.checked" (change)="toggleCheckbox()"></tsl-checkbox-form>
+  <tsl-checkbox-form *ngIf="!hasChildren" [(ngModel)]="option.checked" (change)="toggleCheckbox()"></tsl-checkbox-form>
+  <tsl-svg-icon *ngIf="hasChildren" class="d-flex align-items-center" src="assets/icons/arrow-right.svg"></tsl-svg-icon>
 </div>
