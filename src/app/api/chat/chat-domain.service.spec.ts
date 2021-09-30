@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ChatDomainService } from './chat-domain.service';
-import { ChatDomainServiceModule } from '@api/chat/chat-domain-service.module';
+import { ChatApiService } from './chat-api.service';
+import { ChatApiModule } from '@api/chat/chat-api.module';
 import { ChatHttpService } from '@api/chat/http/chat-http.service';
 import { inboxMessageFixture } from '@api/fixtures/chat/inbox-message.fixtures.spec';
 import { MessageTranslation } from '@api/core/model/chat';
@@ -10,14 +10,14 @@ import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ChatApiService', () => {
-  let service: ChatDomainService;
+  let service: ChatApiService;
   let httpService: ChatHttpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ChatDomainServiceModule, HttpClientTestingModule],
+      imports: [ChatApiModule, HttpClientTestingModule],
     });
-    service = TestBed.inject(ChatDomainService);
+    service = TestBed.inject(ChatApiService);
     httpService = TestBed.inject(ChatHttpService);
   });
 

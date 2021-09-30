@@ -8,7 +8,7 @@ import { mapTranslateMessagesResponseToMessageTranslations } from '@api/chat/map
 import { TranslateMessagesResponse } from '@api/chat/dtos';
 
 @Injectable()
-export class ChatDomainService {
+export class ChatApiService {
   public constructor(private httpService: ChatHttpService) {}
 
   public translateMessages(conversationId: string, messages: InboxMessage[]): Observable<MessageTranslation[]> {

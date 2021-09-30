@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { InboxConversation, InboxMessage } from '@private/features/chat/core/model';
-import { ChatDomainService } from '@api/chat/chat-domain.service';
+import { ChatApiService } from '@api/chat/chat-api.service';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { MessageTranslation } from '@api/core/model/chat';
 
 @Injectable()
 export class ChatTranslationService {
-  public constructor(private chatApiService: ChatDomainService) {}
+  public constructor(private chatApiService: ChatApiService) {}
 
   public translateConversation(conversation: InboxConversation): Observable<void> {
     const messages = this.getTranslatableMessages(conversation);
