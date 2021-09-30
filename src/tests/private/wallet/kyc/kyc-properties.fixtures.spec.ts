@@ -34,6 +34,27 @@ export const MOCK_KYC_PENDING_PROPERTIES: KYCProperties = {
   outflowStatus: KYC_FLOW_STATUS.UNBLOCKED,
 };
 
+export const MOCK_KYC_VERIFIED_PROPERTIES: KYCProperties = {
+  status: KYC_STATUS.VERIFIED,
+  refusedReason: null,
+  inflowStatus: KYC_FLOW_STATUS.UNBLOCKED,
+  outflowStatus: KYC_FLOW_STATUS.UNBLOCKED,
+};
+
+export const MOCK_KYC_NO_NEED_PROPERTIES: KYCProperties = {
+  status: KYC_STATUS.NO_NEED,
+  refusedReason: null,
+  inflowStatus: KYC_FLOW_STATUS.UNBLOCKED,
+  outflowStatus: KYC_FLOW_STATUS.UNBLOCKED,
+};
+
+export const MOCK_KYC_PENDING_VERIFICATION_PROPERTIES: KYCProperties = {
+  status: KYC_STATUS.PENDING_VERIFICATION,
+  refusedReason: null,
+  inflowStatus: KYC_FLOW_STATUS.UNBLOCKED,
+  outflowStatus: KYC_FLOW_STATUS.UNBLOCKED,
+};
+
 export const MOCK_KYC_ERROR_PROPERTIES: KYCProperties = {
   status: KYC_STATUS.REJECTED,
   refusedReason: {

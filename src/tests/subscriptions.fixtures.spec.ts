@@ -12,6 +12,7 @@ import {
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 export class MockSubscriptionService {
   getSubscriptions() {
@@ -176,7 +177,7 @@ export const TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT: Tier = {
 };
 
 const MOCK_CG_BASIC_DATA: Partial<SubscriptionsResponse> = {
-  category_ids: [CATEGORY_SUBSCRIPTIONS_IDS.HOME_GARDEN, CATEGORY_SUBSCRIPTIONS_IDS.SPORTS_LEISURE],
+  category_ids: [CATEGORY_IDS.HOME_GARDEN, CATEGORY_IDS.SPORTS_LEISURE],
   type: SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS,
 };
 

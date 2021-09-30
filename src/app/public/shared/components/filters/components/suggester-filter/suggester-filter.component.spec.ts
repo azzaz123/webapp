@@ -446,7 +446,7 @@ describe('SuggesterFilterComponent', () => {
         fixture.detectChanges();
 
         expect(optionService.getOptions).toHaveBeenCalledTimes(1);
-        expect(optionService.getOptions).toHaveBeenCalledWith(FASHION_CONFIGURATION_ID.BRAND, undefined);
+        expect(optionService.getOptions).toHaveBeenCalledWith(FASHION_CONFIGURATION_ID.BRAND);
       });
     });
 

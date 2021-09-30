@@ -1,7 +1,8 @@
 @import '~style/common';
 @import '../item-card-wide/styles/item-card-wide-variables';
 
-$margin: $spacer * 0.75;
+$margin: $spacer * 0.5;
+$margin-sm-up: $spacer * 0.75;
 $loading-opacity: 0.4;
 $loaded-opacity: 1;
 
@@ -53,5 +54,9 @@ $numCols: 1, 2, 3, 4, 5;
 
   &--loading {
     opacity: $loading-opacity;
+  }
+
+  @include media-breakpoint-up(sm) {
+    grid-gap: $margin-sm-up;
   }
 }

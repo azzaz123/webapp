@@ -15,6 +15,8 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { translations } from '@core/i18n/translations/constants/translations';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
@@ -34,6 +36,10 @@ import {
   SUBSCRIPTION_REQUIRES_ACTION,
   SUBSCRIPTION_REQUIRES_PAYMENT,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MULTI_TIER,
+  MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
+  FREE_TRIAL_AVAILABLE_SUBSCRIPTION,
+  MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -54,6 +60,7 @@ describe('SubscriptionPurchaseComponent', () => {
   let scrollIntoViewService: ScrollIntoViewService;
   let eventService: EventService;
   let modalService: NgbModal;
+  let customerHelpService: CustomerHelpService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -97,6 +104,12 @@ describe('SubscriptionPurchaseComponent', () => {
           provide: AnalyticsService,
           useClass: MockAnalyticsService,
         },
+        {
+          provide: CustomerHelpService,
+          useValue: {
+            getPageUrl() {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -113,6 +126,7 @@ describe('SubscriptionPurchaseComponent', () => {
     scrollIntoViewService = TestBed.inject(ScrollIntoViewService);
     eventService = TestBed.inject(EventService);
     benefitsService = TestBed.inject(SubscriptionBenefitsService);
+    customerHelpService = TestBed.inject(CustomerHelpService);
     modalService = TestBed.inject(NgbModal);
   });
 
@@ -508,6 +522,48 @@ describe('SubscriptionPurchaseComponent', () => {
 
         expect(modalService.open).toHaveBeenCalledWith(CategoryListingModalComponent, {
           windowClass: 'category-listing',
+        });
+      });
+    });
+  });
+
+  describe('Faqs', () => {
+    describe.each([
+      [MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED, CUSTOMER_HELP_PAGE.CARS_SUBSCRIPTION, CUSTOMER_HELP_PAGE.CARS_SUBSCRIPTION.toString()],
+      [
+        MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
+        CUSTOMER_HELP_PAGE.REAL_ESTATE_SUBSCRIPTION,
+        CUSTOMER_HELP_PAGE.REAL_ESTATE_SUBSCRIPTION.toString(),
+      ],
+      [FREE_TRIAL_AVAILABLE_SUBSCRIPTION, CUSTOMER_HELP_PAGE.MOTORBIKE_SUBSCRIPTION, CUSTOMER_HELP_PAGE.MOTORBIKE_SUBSCRIPTION.toString()],
+      [
+        MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+        CUSTOMER_HELP_PAGE.EVERYTHING_ELSE_SUBSCRIPTION,
+        CUSTOMER_HELP_PAGE.EVERYTHING_ELSE_SUBSCRIPTION.toString(),
+      ],
+    ])('Faqs by subscription category', (subscription, articleId, articleUrl) => {
+      describe(`when category is ${subscription.category_name}`, () => {
+        beforeEach(() => {
+          spyOn(customerHelpService, 'getPageUrl').and.returnValue(articleUrl);
+          component.subscription = subscription;
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should show link', () => {
+          const link = fixture.debugElement.query(By.css('a'));
+
+          expect(link).toBeTruthy();
+        });
+        it('link should open a new tab', () => {
+          const link = fixture.debugElement.query(By.css('a'));
+
+          expect(link.attributes.target).toEqual('_blank');
+        });
+        it(`link should redirect to article id ${articleId}`, () => {
+          const link = fixture.debugElement.query(By.css('a'));
+
+          expect(link.attributes.href).toEqual(articleUrl);
+          expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(articleId);
         });
       });
     });

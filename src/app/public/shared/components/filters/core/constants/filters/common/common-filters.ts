@@ -24,6 +24,7 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
     },
     hasBigIcons: true,
     isMultiselect: false,
+    gridColumns: 4,
   },
   {
     id: COMMON_CONFIGURATION_ID.PRICE,
