@@ -75,7 +75,8 @@ const createScreenIdsInterface = () => {
 };
 
 const parseScreenName = (screenName) => {
-    return screenName.match(/^\d/) ? `['${screenName}']` : screenName;
+    const stringStartsWithNumber = /^\d/;
+    return screenName.match(stringStartsWithNumber) ? `['${screenName}']` : screenName;
 }
 
 const cleanFolders = () => {
