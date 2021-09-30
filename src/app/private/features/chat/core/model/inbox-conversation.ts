@@ -19,6 +19,8 @@ export class InboxConversation {
   ) {}
 
   public active = false;
+  public isTranslating = false;
+  public isAutomaticallyTranslatable = false;
 
   get cannotChat(): boolean {
     return this.user.blocked || !this.user.available || this.item.status === InboxItemStatus.NOT_AVAILABLE;

@@ -36,7 +36,7 @@ import { UserService } from 'app/core/user/user.service';
 import { eq, includes, isEmpty } from 'lodash-es';
 import { CalendarSpec } from 'moment';
 import { of, Subscription } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';
 import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
 import { PERMISSIONS } from '@core/user/user-constants';
@@ -65,7 +65,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public momentCalendarSpec: CalendarSpec = this.momentCalendarSpecService.getCalendarSpec();
   private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
-  public isTranslating = false;
   private lastInboxMessage: InboxMessage;
   public isEndOfConversation = true;
   public scrollHeight = 0;
@@ -108,12 +107,20 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
         this.noMessages += 1;
         this.scrollHeight = this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
       }
+
+      if (this.currentConversation.isAutomaticallyTranslatable) {
+        this.translateConversation();
+      }
     });
 
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED, (conversation: InboxConversation) => {
       this.isLoadingMoreMessages = false;
       this.isConversationChanged = false;
       this.currentConversation = conversation;
+
+      if (this.currentConversation.isAutomaticallyTranslatable) {
+        this.translateConversation();
+      }
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () =>
@@ -244,10 +251,17 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public translateConversation(): void {
-    this.isTranslating = true;
-    this.translationService.translateConversation(this.currentConversation).subscribe(() => {
-      this.isTranslating = false;
-    });
+    if (this.currentConversation.isTranslatable) {
+      const conversation = this.currentConversation;
+      conversation.isTranslating = true;
+      this.translationService
+        .translateConversation(this.currentConversation)
+        .pipe(take(1))
+        .subscribe(() => {
+          conversation.isTranslating = false;
+          conversation.isAutomaticallyTranslatable = true;
+        });
+    }
   }
 
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
