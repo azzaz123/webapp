@@ -15,11 +15,11 @@ describe('WalletTransferConfirmComponent', () => {
   let fixture: ComponentFixture<WalletTransferConfirmComponent>;
   let ngbActiveModal: NgbActiveModal;
   let toastService: ToastService;
+
   const walletTransferConfirmSelector = '.WalletTransferConfirm';
-  const walletTransferConfirmContentSelector = `${walletTransferConfirmSelector}__content`;
-  const walletTransferConfirmContentAmountSelector = `${walletTransferConfirmContentSelector}__amount`;
-  const walletTransferConfirmContentCancelButtonSelector = `${walletTransferConfirmContentSelector}__cancel tsl-button button`;
-  const walletTransferConfirmContentConfirmButtonSelector = `${walletTransferConfirmContentSelector}__confirm tsl-button button`;
+  const walletTransferConfirmContentAmountSelector = `${walletTransferConfirmSelector}__amount`;
+  const walletTransferConfirmContentCancelButtonSelector = `${walletTransferConfirmSelector}__cancel tsl-button button`;
+  const walletTransferConfirmContentConfirmButtonSelector = `${walletTransferConfirmSelector}__confirm tsl-button button`;
   const walletTransferConfirmContentConfirmButtonLoadingSelector = `${walletTransferConfirmContentConfirmButtonSelector}.loading`;
 
   beforeEach(async () => {
