@@ -6,4 +6,5 @@ export interface MultiSelectFormOption extends SelectFormOption<string> {
 
 export interface TemplateMultiSelectFormOption extends MultiSelectFormOption {
   checked: boolean;
+  children?: TemplateMultiSelectFormOption[];
 }
