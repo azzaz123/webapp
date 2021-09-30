@@ -6,9 +6,9 @@
  */
 
 /**
- * The transaction is successful and the seller receives the money in the wallet
+ * The transaction is successful and the seller has received the money for the transaction. Event sent for the buyer
  */
-export interface TransactionPaymentSeller {
+export interface TransactionSucceededBuyer {
   /**
    * The unique identifier for an item
    */
@@ -22,11 +22,7 @@ export interface TransactionPaymentSeller {
    */
   transactionId: string;
   /**
-   * Amount of the payment received in the wallet
-   */
-  paymentAmount: number;
-  /**
-   * Whether the seller should receive a tracer push
+   * Whether the buyer should receive a tracer push
    */
   sendTracerPush: boolean;
 }

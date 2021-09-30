@@ -6,11 +6,15 @@
  */
 
 /**
- * User clicks to access FAQs on wallet
+ * User scans QR Code or introduces manual code
  */
-export interface ClickHelpWallet {
+export interface PayP2P {
   /**
-   * Identifier of the screen where the click is done
+   * Identifier of the wallet screen
    */
-  screenId: 235 | 276 | 277 | 278 | 279 | 280 | 281;
+  screenId: 279 | 282;
+  /**
+   * Amount the user wants to pay
+   */
+  paymentAmount: number;
 }

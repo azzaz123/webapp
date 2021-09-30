@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks to access FAQs on wallet
+ * Seller views scanning screen for the QR code for P2P payment
  */
-export interface ClickHelpWallet {
+export interface ViewP2PScanQRCode {
   /**
-   * Identifier of the screen where the click is done
+   * Identifier of QR code screen
    */
-  screenId: 235 | 276 | 277 | 278 | 279 | 280 | 281;
+  screenId: 279;
 }

@@ -32,9 +32,17 @@ export interface ClickChatButton {
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: 110 | 111 | 115 | 188 | 29 | 194 | 217;
+  screenId: 115;
   /**
    * When the event is triggered in SavedSearchesNewVsOld screen (217), specify if it is in the 'new' results or 'old'
    */
   savedSearchResults?: string;
+  /**
+   * Button clicked on the Item Detail
+   */
+  source?: 'primary' | 'secondary';
+  /**
+   * If the item has the shipping toggle ON and a shipping weight informed
+   */
+  shippingAllowed: boolean;
 }

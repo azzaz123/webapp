@@ -6,11 +6,15 @@
  */
 
 /**
- * User clicks to access FAQs on wallet
+ * User clicks on Pay button in the wallet screen
  */
-export interface ClickHelpWallet {
+export interface ClickP2PPay {
   /**
-   * Identifier of the screen where the click is done
+   * Identifier of the wallet screen
    */
-  screenId: 235 | 276 | 277 | 278 | 279 | 280 | 281;
+  screenId: 235;
+  /**
+   * Balance of the wallet
+   */
+  walletBalanceAmount: number;
 }
