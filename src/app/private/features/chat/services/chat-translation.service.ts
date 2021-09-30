@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { InboxConversation, InboxMessage } from '@private/features/chat/core/model';
 import { ChatApiService } from '@api/chat/chat-api.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { MessageTranslation } from '@api/core/model/chat';
 
@@ -11,6 +11,10 @@ export class ChatTranslationService {
 
   public translateConversation(conversation: InboxConversation): Observable<void> {
     const messages = this.getTranslatableMessages(conversation);
+
+    if (!messages.length) {
+      return of(null);
+    }
 
     return this.chatApiService.translateMessages(conversation.id, messages).pipe(
       take(1),
