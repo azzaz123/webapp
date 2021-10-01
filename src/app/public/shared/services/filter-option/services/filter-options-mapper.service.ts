@@ -107,10 +107,17 @@ export class FilterOptionsMapperService {
   }
 
   private mapObjectTypes(objectTypes: ObjectType[]): FilterOption[] {
-    return objectTypes.map((objectType) => ({
-      value: objectType.id,
-      label: objectType.name,
-      children: objectType.children?.length ? this.mapObjectTypes(objectType.children) : null,
-    }));
+    return objectTypes.map((objectType) => {
+      const mappedObjectType: FilterOption = {
+        value: objectType.id,
+        label: objectType.name,
+      };
+
+      if (objectType.children?.length) {
+        mappedObjectType.children = this.mapObjectTypes(objectType.children);
+      }
+
+      return mappedObjectType;
+    });
   }
 }
