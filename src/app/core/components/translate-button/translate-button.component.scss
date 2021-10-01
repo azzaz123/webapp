@@ -3,6 +3,7 @@
 .TranslateButton {
   &--disabled {
     opacity: 0.2;
+    cursor: auto !important;
   }
 
   &__wrapper {
