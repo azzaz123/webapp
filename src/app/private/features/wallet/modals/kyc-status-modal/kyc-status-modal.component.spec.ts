@@ -71,18 +71,6 @@ describe('KYCStatusModalComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when we click on the cross button...', () => {
-    beforeEach(() => {
-      spyOn(component.activeModal, 'close');
-
-      fixture.debugElement.query(By.css('.KYCStatusModal__cross')).nativeElement.click();
-    });
-
-    it('should close the modal', () => {
-      shouldCloseTheModal();
-    });
-  });
-
   describe('when we click on the CTA button...', () => {
     beforeEach(() => {
       spyOn(kycAckService, 'notify').and.returnValue(of(null));

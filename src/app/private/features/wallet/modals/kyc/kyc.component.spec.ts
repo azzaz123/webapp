@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { KYCComponent } from './kyc.component';
 import { KYCModalComponent } from './modals/kyc-modal/kyc-modal.component';
 
@@ -45,9 +45,7 @@ describe('KYCComponent', () => {
       });
 
       it('should open the kyc modal', () => {
-        expect(modalService.open).toHaveBeenCalledWith(KYCModalComponent, {
-          windowClass: 'kyc',
-        });
+        expect(modalService.open).toHaveBeenCalledWith(KYCModalComponent, component.KYCModalOptions);
       });
 
       it('should redirect to the ballance page', () => {
@@ -64,9 +62,7 @@ describe('KYCComponent', () => {
       });
 
       it('should open the kyc modal', () => {
-        expect(modalService.open).toHaveBeenCalledWith(KYCModalComponent, {
-          windowClass: 'kyc',
-        });
+        expect(modalService.open).toHaveBeenCalledWith(KYCModalComponent, component.KYCModalOptions);
       });
 
       it('should redirect to the ballance page', () => {

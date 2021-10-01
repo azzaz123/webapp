@@ -11,12 +11,13 @@ import { KYCModalComponent } from './modals/kyc-modal/kyc-modal.component';
 })
 export class KYCComponent implements OnInit {
   public readonly WALLET_BALANCE_LINK = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}`;
-  private readonly KYCModalOptions: NgbModalOptions = {
+  public readonly KYCModalOptions: NgbModalOptions = {
     windowClass: 'kyc',
     beforeDismiss: () => {
-      return window.confirm('Seguro que quieres cerrar el modal?');
+      return window.confirm(this.KYCModalCloseWarningCopy);
     },
   };
+  private KYCModalCloseWarningCopy = $localize`:@@web_kyc_modal_close_warning:Are you sure you want to get out of the process? All information will be lost.`;
 
   constructor(private modalService: NgbModal, private router: Router) {}
 
