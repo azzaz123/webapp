@@ -11,8 +11,6 @@ import { InboxMessage, MessageStatus, MessageType } from '@private/features/chat
 import { MaliciousConversationModalComponent } from '@private/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
-import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
 import {
   CREATE_MOCK_INBOX_CONVERSATION,
   MOCK_INBOX_CONVERSATION_BASIC,
@@ -21,7 +19,9 @@ import {
   MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER,
   MOCK_INBOX_TRANSLATABLE_CONVERSATION,
   MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICALLY,
-} from '@fixtures/inbox.fixtures.spec';
+  MOCK_CONVERSATION,
+  InboxConversationServiceMock,
+} from '@fixtures/chat';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { DeviceDetectorServiceMock, MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
 import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';

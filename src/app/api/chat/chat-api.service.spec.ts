@@ -6,8 +6,8 @@ import { ChatHttpService } from '@api/chat/http/chat-http.service';
 import { MessageTranslation } from '@api/core/model/chat';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MOCK_INBOX_MESSAGE } from '@fixtures/inbox.fixtures.spec';
-import { messageTranslationFixture, translateMessagesResponseFixture } from '@fixtures/chat';
+import { MOCK_MESSAGE_TRANSLATION, MOCK_INBOX_MESSAGE } from '@fixtures/chat';
+import { translateMessagesResponseFixture } from '@api/fixtures/chat';
 
 describe('ChatApiService', () => {
   let service: ChatApiService;
@@ -34,7 +34,7 @@ describe('ChatApiService', () => {
         .translateMessages('conversationId', [MOCK_INBOX_MESSAGE])
         .subscribe((translations: MessageTranslation[]) => (messageTranslations = translations));
 
-      expect(messageTranslations).toEqual([messageTranslationFixture]);
+      expect(messageTranslations).toEqual([MOCK_MESSAGE_TRANSLATION]);
     });
   });
 });

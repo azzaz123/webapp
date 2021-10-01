@@ -2,10 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ChatTranslationService } from './chat-translation.service';
 import { ChatApiModule } from '@api/chat/chat-api.module';
 import { ChatApiService } from '@api/chat/chat-api.service';
-import {
-  MOCK_INBOX_TRANSLATABLE_CONVERSATION,
-  MOCK_INBOX_TRANSLATABLE_CONVERSATION_ALREADY_TRANSLATED,
-} from '@fixtures/inbox.fixtures.spec';
+import { MOCK_INBOX_TRANSLATABLE_CONVERSATION, MOCK_INBOX_TRANSLATABLE_CONVERSATION_ALREADY_TRANSLATED } from '@fixtures/chat';
 import { of } from 'rxjs';
 import { InboxConversation, InboxMessage } from '@private/features/chat/core/model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
