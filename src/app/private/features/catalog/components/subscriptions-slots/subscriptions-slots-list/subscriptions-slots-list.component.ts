@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 
 @Component({
   selector: 'tsl-subscriptions-slots-list',

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { SubscriptionsService, SUBSCRIPTIONS_SLOTS_ENDPOINT, SUBSCRIPTION_TYPES } from './subscriptions.service';
+import { SubscriptionsService, SUBSCRIPTION_TYPES } from './subscriptions.service';
 import { of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { FeatureFlagService } from '../user/featureflag.service';
@@ -7,12 +7,10 @@ import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
-import { SubscriptionsResponse, SubscriptionSlot } from './subscriptions.interface';
+import { SubscriptionsResponse } from './subscriptions.interface';
 import {
   SUBSCRIPTIONS,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
-  MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE,
-  MOCK_SUBSCRIPTION_SLOTS,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
@@ -246,21 +244,6 @@ describe('SubscriptionsService', () => {
 
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.method).toBe('PUT');
-    });
-  });
-
-  describe('getSlots', () => {
-    it('should map slots from backend response', () => {
-      let mappedSlots: SubscriptionSlot[];
-      const expectedUrl = `${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`;
-
-      service.getSlots().subscribe((response) => (mappedSlots = response));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE);
-
-      expect(req.request.url).toBe(expectedUrl);
-      expect(req.request.method).toBe('GET');
-      expect(mappedSlots).toEqual(MOCK_SUBSCRIPTION_SLOTS);
     });
   });
 
