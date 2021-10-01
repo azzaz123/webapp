@@ -7,7 +7,7 @@
       "i18n": {
         "sourceLocale": {
           "code": "en",
-          "baseHref": "/app/"
+          "baseHref": ""
         },
         "locales": {
           "es": {
@@ -16,7 +16,7 @@
           },
           "it": {
             "translation": "src/locale/messages.it.json",
-            "baseHref": "/app/"
+            "baseHref": ""
           }
         }
       },
@@ -76,6 +76,7 @@
           },
           "configurations": {
             "docker": {
+              "baseHref": "/",
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -92,6 +93,7 @@
               "localize": true
             },
             "beta": {
+              "baseHref": "/app/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -122,6 +124,7 @@
               "localize": true
             },
             "production": {
+              "baseHref": "/app/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
