@@ -97,7 +97,7 @@
           (clickScroll)="scrollToLastMessage()"></tsl-scrolling-message>
       </div>
 
-      <div *ngIf="!currentConversation.isAutomaticallyTranslatable && currentConversation.isTranslatable" class="translation-button-container">
+      <div *ngIf="!currentConversation.isAutomaticallyTranslatable && currentConversation.isTranslatable" class="translation-button-container position-relative d-flex justify-content-center">
         <tsl-translate-button [disabled]="currentConversation.isTranslating" [isTranslated]="false" [copies]="translateButtonCopies" (click)="translateConversation()"></tsl-translate-button>
       </div>
 
