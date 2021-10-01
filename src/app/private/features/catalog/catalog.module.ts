@@ -20,6 +20,8 @@ import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-sl
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
 import { CatalogItemTrackingEventService } from './core/services/catalog-item-tracking-event.service';
 import { NavLinksModule } from '@shared/nav-links/nav-links.module';
+import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
+import { CatalogManagerApiModule } from '@api/catalog-manager/catalog-manager-api.module';
 
 @NgModule({
   imports: [
@@ -33,6 +35,7 @@ import { NavLinksModule } from '@shared/nav-links/nav-links.module';
     ItemAvatarModule,
     CustomCurrencyModule,
     NavLinksModule,
+    CatalogManagerApiModule,
   ],
   providers: [BumpTutorialService, ItemRequiredDataService, CatalogItemTrackingEventService],
   declarations: [

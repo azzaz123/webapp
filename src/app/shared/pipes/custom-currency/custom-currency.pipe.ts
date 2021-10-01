@@ -9,7 +9,7 @@ import { currencySymbolByCode } from '@api/core/model/currency.interface';
 export class CustomCurrencyPipe implements PipeTransform {
   constructor(private decimalPipe: DecimalPipe) {}
 
-  transform(value: number = 0, currencyCode: CurrencyCode, digits?: string): any {
+  transform(value: number = 0, currencyCode: CurrencyCode = 'EUR', digits?: string): any {
     if (currencyCode === 'wallacoins') {
       return this.decimalPipe.transform(value, digits);
     }

@@ -2,8 +2,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SubscriptionsSlotItemComponent } from './subscriptions-slot-item.component';
-import { MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscriptions.fixtures.spec';
-import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
@@ -13,6 +11,7 @@ import {
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
+import { MOCK_SUBSCRIPTION_SLOT_CARS, MOCK_SUBSCRIPTION_SLOT_REAL_ESTATE } from '@fixtures/subscription-slots.fixtures.spec';
 
 describe('SubscriptionsSlotItemComponent', () => {
   let component: SubscriptionsSlotItemComponent;
@@ -49,12 +48,7 @@ describe('SubscriptionsSlotItemComponent', () => {
     });
 
     it('should return false when selected slot and own subscription are different', () => {
-      component.selectedSubscriptionSlot = {
-        category: CATEGORY_DATA_WEB[1],
-        available: 2,
-        limit: 2,
-      };
-
+      component.selectedSubscriptionSlot = MOCK_SUBSCRIPTION_SLOT_REAL_ESTATE;
       expect(component.isSelected()).toBe(false);
     });
   });
