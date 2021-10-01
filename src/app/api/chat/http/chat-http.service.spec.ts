@@ -23,8 +23,8 @@ describe('ChatHttpService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when asked to retrieve user published items', () => {
-    it('should retrieve user published items', () => {
+  describe('when asked to retrieve message translations', () => {
+    it('should retrieve message translations', () => {
       let response: TranslateMessagesResponse;
 
       service
