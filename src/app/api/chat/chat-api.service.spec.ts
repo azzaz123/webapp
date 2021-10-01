@@ -4,10 +4,10 @@ import { ChatApiService } from './chat-api.service';
 import { ChatApiModule } from '@api/chat/chat-api.module';
 import { ChatHttpService } from '@api/chat/http/chat-http.service';
 import { MessageTranslation } from '@api/core/model/chat';
-import { messageTranslationFixture, translateMessagesResponseFixture } from '@api/fixtures/chat';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MOCK_INBOX_MESSAGE } from '@fixtures/inbox.fixtures.spec';
+import { messageTranslationFixture, translateMessagesResponseFixture } from '@fixtures/chat';
 
 describe('ChatApiService', () => {
   let service: ChatApiService;

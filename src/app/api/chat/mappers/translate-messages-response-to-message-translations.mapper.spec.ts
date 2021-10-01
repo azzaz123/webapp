@@ -1,5 +1,5 @@
 import { mapTranslateMessagesResponseToMessageTranslations } from './translate-messages-response-to-message-translations.mapper';
-import { messageTranslationFixture, translateMessagesResponseFixture } from '@api/fixtures/chat';
+import { messageTranslationFixture, translateMessagesResponseFixture } from '@fixtures/chat';
 
 describe('TranslateMessagesResponseToMessageTranslationsMapper', () => {
   describe('when mapping message from TranslateMessages context to MessageTranslation domain', () => {
