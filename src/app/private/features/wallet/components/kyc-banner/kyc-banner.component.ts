@@ -50,7 +50,7 @@ export class KYCBannerComponent {
     }
     if (KYCBannerStatus === KYC_STATUS.REJECTED) {
       const modalProperties: KYCModalProperties = this.getStatusProperty(KYC_MODAL_STATUS.ERROR);
-      modalProperties.description = this.KYCProperties.refusedReason.translation;
+      modalProperties.description = this.KYCProperties.refusedReason?.translation;
 
       return modalProperties;
     }

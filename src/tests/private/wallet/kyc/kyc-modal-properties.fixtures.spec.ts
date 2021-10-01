@@ -17,3 +17,11 @@ export const MOCK_KYC_MODAL_SUCCEED_PROPERTIES: KYCModalProperties = {
   svgPath: 'svgPath',
   messageCTA: 'messageCTA',
 };
+
+export const MOCK_KYC_MODAL_IN_PROGRESS_PROPERTIES: KYCModalProperties = {
+  status: KYC_MODAL_STATUS.IN_PROGRESS,
+  title: 'Nais',
+  description: 'Description',
+  svgPath: 'svgPath',
+  messageCTA: 'messageCTA',
+};

@@ -7,14 +7,14 @@
   }">
 
   <div class="SubscriptionsSlotItem__icon">
-    <tsl-svg-icon src="/assets/icons/categories/normal/{{subscriptionSlot.category.icon_id}}.svg"></tsl-svg-icon>
+    <tsl-svg-icon src="/assets/icons/categories/normal/{{subscriptionSlot.subscription.category_icon}}.svg"></tsl-svg-icon>
   </div>
 
   <div class="SubscriptionsSlotItem__info">
     <div class="SubscriptionsSlotItem__info-title">
-      <span i18n="@@web_manage_catalog_subscription">Manage {{subscriptionSlot.category.name}}</span>
+      <span i18n="@@web_manage_catalog_subscription">Manage {{subscriptionSlot.subscription.category_name}}</span>
     </div>
-    <div class="SubscriptionsSlotItem__info-description" i18n="@@web_subscriptions_slot_item_publish_more">You can list <b>{{subscriptionSlot.available}}</b> more {{subscriptionSlot.category.name}}</div>
+    <div class="SubscriptionsSlotItem__info-description" i18n="@@web_subscriptions_slot_item_publish_more">You can list <b>{{subscriptionSlot.available}}</b> more {{subscriptionSlot.subscription.category_name}}</div>
   </div>
 
   <div class="SubscriptionsSlotItem__deselect" (click)="onClick(undefined, $event)">

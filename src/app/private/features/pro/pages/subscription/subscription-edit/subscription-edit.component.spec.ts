@@ -9,19 +9,23 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
-import { MockSubscriptionService, MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { MockSubscriptionService, MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
 import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
+import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 import { of, throwError } from 'rxjs';
+import { SubscriptionPurchaseHeaderComponent } from '../subscription-purchase-header/subscription-purchase-header.component';
 import { PAYMENT_SUCCESSFUL_CODE, SubscriptionEditComponent } from './subscription-edit.component';
 
 describe('SubscriptionEditComponent', () => {
@@ -33,10 +37,11 @@ describe('SubscriptionEditComponent', () => {
   let analyticsService: AnalyticsService;
   let modalService: NgbModal;
   let modalSpy: jasmine.Spy;
+  let customerHelpService: CustomerHelpService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionEditComponent, SubscriptionPurchaseSuccessComponent],
+      declarations: [SubscriptionEditComponent, SubscriptionPurchaseSuccessComponent, SubscriptionPurchaseHeaderComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
@@ -62,6 +67,12 @@ describe('SubscriptionEditComponent', () => {
           provide: AnalyticsService,
           useClass: MockAnalyticsService,
         },
+        {
+          provide: CustomerHelpService,
+          useValue: {
+            getPageUrl() {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -69,13 +80,14 @@ describe('SubscriptionEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionEditComponent);
     component = fixture.componentInstance;
-    component.subscription = MAPPED_SUBSCRIPTIONS[2];
+    component.subscription = MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED;
     component.user = MOCK_USER;
     toastService = TestBed.inject(ToastService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     analyticsService = TestBed.inject(AnalyticsService);
     modalService = TestBed.inject(NgbModal);
     benefitsService = TestBed.inject(SubscriptionBenefitsService);
+    customerHelpService = TestBed.inject(CustomerHelpService);
     fixture.detectChanges();
   });
 
@@ -241,6 +253,44 @@ describe('SubscriptionEditComponent', () => {
 
       expect(component.unselectSubscription.emit).toHaveBeenCalledTimes(1);
       expect(component.unselectSubscription.emit).toHaveBeenCalledWith();
+    });
+  });
+  describe('Categories modal', () => {
+    describe('and click open modal', () => {
+      it('should open modal', () => {
+        spyOn(modalService, 'open').and.callThrough();
+        const header = fixture.debugElement.query(By.directive(SubscriptionPurchaseHeaderComponent));
+
+        header.componentInstance.clickLink.emit();
+
+        expect(modalService.open).toHaveBeenCalledWith(CategoryListingModalComponent, {
+          windowClass: 'category-listing',
+        });
+      });
+    });
+  });
+  describe('Faqs', () => {
+    const articleUrl = 'articleUrl';
+    beforeEach(() => {
+      spyOn(customerHelpService, 'getPageUrl').and.returnValue(articleUrl);
+      component.ngOnInit();
+      fixture.detectChanges();
+    });
+    it('should show link', () => {
+      const link = fixture.debugElement.query(By.css('a'));
+
+      expect(link).toBeTruthy();
+    });
+    it('link should open a new tab', () => {
+      const link = fixture.debugElement.query(By.css('a'));
+
+      expect(link.attributes.target).toEqual('_blank');
+    });
+    it('link should redirect to articleId', () => {
+      const link = fixture.debugElement.query(By.css('a'));
+
+      expect(link.attributes.href).toEqual(articleUrl);
+      expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(CUSTOMER_HELP_PAGE.CHANGE_PRO_SUBSCRIPTION);
     });
   });
 });

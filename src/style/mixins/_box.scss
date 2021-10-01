@@ -1,0 +1,6 @@
+@mixin box() {
+  background-color: $white;
+  border-radius: 10px;
+  border: solid 1px $blue-grey-5;
+  margin-bottom: $spacing-ml;
+}

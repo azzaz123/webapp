@@ -3,9 +3,12 @@
 </ng-container>
 <ng-template #editInProgress>
     <div class="SubscriptionEdit">
-        <div class="d-flex mb-3">
+        <div class="d-flex justify-content-between mb-3">
             <div class="d-flex align-items-center SubscriptionEdit__back" (click)="onClearSubscription()">
                 <tsl-svg-icon class="mr-2" src="/assets/icons/back-arrow.svg"></tsl-svg-icon><span i18n="@@web_catalog_pages_checkout_674">Back</span>
+            </div>
+            <div>
+                <a [href]="helpPageUrl" target="_blank" i18n="@@pro_subscription_purchase_tier_selector_top_bar_help_button">Help</a>
             </div>
         </div>
         <div class="GenericCard text-md-left text-center">
@@ -17,15 +20,15 @@
                 </div>
                 <tsl-button class="d-md-inline d-none" className="btn-secondary" (click)="cancelSubscription()" i18n="@@pro_manage_subscriptions_view_cancel_subscription_button">Cancel subscription</tsl-button>
             </div>
-            <tsl-subscription-purchase-header [subscription]="subscription" [benefits]="benefits">
+            <tsl-subscription-purchase-header [subscription]="subscription" [benefits]="benefits" (clickLink)="openCategoriesModal()">
             </tsl-subscription-purchase-header>
             <tsl-button class="d-md-none mt-3" className="btn-secondary" (click)="cancelSubscription()" i18n="@@pro_manage_subscriptions_view_cancel_subscription_button">Cancel subscription</tsl-button>
         </div>
         <div *ngIf="subscription.tiers.length > 1" class="GenericCard">
-            <div class="GenericCard__title" i18n="@@pro_edit_subscriptions_view_change_plan_current_plan_title">Current plan</div>
+            <div class="GenericCard__title mb-3" i18n="@@pro_edit_subscriptions_view_change_plan_current_plan_title">Current plan</div>
             <tsl-subscription-tier-selector class="SubscriptionEdit__subscribedTier" [subscription]="subscription" [tierList]="[subscribedTier]" [disableHover]="true">
             </tsl-subscription-tier-selector>
-            <div class="GenericCard__title mt-4" i18n="@@pro_edit_subscriptions_view_change_plan_other_available_plans_title">Other available</div>
+            <div class="GenericCard__title mb-3 mt-4" i18n="@@pro_edit_subscriptions_view_change_plan_other_available_plans_title">Other available</div>
             <tsl-subscription-tier-selector [subscription]="subscription" [tierList]="availableTiers"
                 [selectedTier]="selectedTier" (changeSelectedTier)="onSelectedTierChanged($event)">
             </tsl-subscription-tier-selector>

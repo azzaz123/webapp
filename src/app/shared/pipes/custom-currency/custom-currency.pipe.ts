@@ -1,27 +1,24 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { CurrencyCode } from '@api/core/model/currency.interface';
+import { currencySymbolByCode } from '@api/core/model/currency.interface';
 
 @Pipe({
   name: 'customCurrency',
 })
 export class CustomCurrencyPipe implements PipeTransform {
-  private currencies: any = {
-    EUR: '€',
-    GBP: '£',
-  };
-
   constructor(private decimalPipe: DecimalPipe) {}
 
-  transform(value: any, currencyCode: string = 'EUR', digits?: string): any {
-    if (!value) {
-      value = 0;
+  transform(value: number = 0, currencyCode: CurrencyCode = 'EUR', digits?: string): any {
+    if (currencyCode === 'wallacoins') {
+      return this.decimalPipe.transform(value, digits);
     }
     if (currencyCode === 'EUR' || currencyCode === 'wallacredits') {
-      return this.decimalPipe.transform(value, digits) + this.currencies['EUR'];
-    } else if (currencyCode === 'wallacoins') {
-      return this.decimalPipe.transform(value, digits);
-    } else {
-      return this.currencies[currencyCode] + this.decimalPipe.transform(value, digits);
+      return this.decimalPipe.transform(value, digits) + currencySymbolByCode[currencyCode];
     }
+    if (currencySymbolByCode[currencyCode]) {
+      return currencySymbolByCode[currencyCode] + this.decimalPipe.transform(value, digits);
+    }
+    return currencyCode + this.decimalPipe.transform(value, digits);
   }
 }
