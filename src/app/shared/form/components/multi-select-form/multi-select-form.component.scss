@@ -1,14 +1,28 @@
+@import 'src/style/common';
+
+$border: 1px solid $blue-grey-5;
+
 :host {
-  ::ng-deep > div:last-child {
-    .MultiSelectOption {
-      &::after {
-        content: '';
-        background-color: transparent !important;
-        height: 3px;
-        position: absolute;
-        width: 100%;
-        left: 0px;
-        bottom: 0px;
+  .MultiSelectForm {
+    &__option {
+      border-bottom: $border;
+    }
+
+    &__children {
+      background: $white;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+      z-index: 2;
+
+      &__back {
+        border-bottom: $border;
+        cursor: pointer;
+
+        tsl-svg-icon {
+          transform: scaleX(-1);
+        }
       }
     }
   }
