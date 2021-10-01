@@ -3,17 +3,18 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-form.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { MultiSelectFormOption } from '../../interfaces/multi-select-form-option.interface';
+import { TemplateMultiSelectFormOption } from '../../interfaces/multi-select-form-option.interface';
 import { MultiSelectOptionComponent } from './multi-select-option.component';
 
-export const optionFixture: MultiSelectFormOption = {
+export const optionFixture: TemplateMultiSelectFormOption = {
   label: 'aa',
   value: 'aa',
   checked: true,
 };
 
-export const optionWithSublabelFixture: MultiSelectFormOption = {
+export const optionWithSublabelFixture: TemplateMultiSelectFormOption = {
   label: 'bb',
   sublabel: '3',
   value: 'bb',
@@ -29,7 +30,7 @@ describe('MultiSelectOptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, SvgIconModule, HttpClientTestingModule],
+      imports: [FormsModule, CheckboxFormModule, SvgIconModule, HttpClientTestingModule],
       declarations: [MultiSelectOptionComponent],
     }).compileComponents();
   });
@@ -45,7 +46,7 @@ describe('MultiSelectOptionComponent', () => {
   });
 
   describe('when option', () => {
-    describe('...does not have sub label', () => {
+    describe('does not have sub label', () => {
       beforeEach(() => {
         component.option = optionFixture;
         fixture.detectChanges();
@@ -59,7 +60,7 @@ describe('MultiSelectOptionComponent', () => {
       });
     });
 
-    describe('...has sublabel', () => {
+    describe('has sublabel', () => {
       beforeEach(() => {
         component.option = optionWithSublabelFixture;
         fixture.detectChanges();
@@ -74,7 +75,45 @@ describe('MultiSelectOptionComponent', () => {
       });
     });
 
-    describe('...is toggled by the user', () => {
+    describe('has children', () => {
+      beforeEach(() => {
+        component.option = optionWithSublabelFixture;
+        component.hasChildren = true;
+        fixture.detectChanges();
+      });
+
+      it('should show arrow instead of checkbox', () => {
+        const checkbox = debugElement.nativeElement.querySelector('input[type=checkbox]');
+        const arrow = debugElement.nativeElement.querySelector('tsl-svg-icon');
+
+        expect(checkbox).toBeFalsy();
+        expect(arrow).toBeTruthy();
+      });
+    });
+
+    describe('has not children', () => {
+      beforeEach(() => {
+        component.option = optionWithSublabelFixture;
+        component.hasChildren = false;
+        fixture.detectChanges();
+      });
+
+      it('should show arrow instead of checkbox', () => {
+        const checkbox = debugElement.nativeElement.querySelector('input[type=checkbox]');
+        const arrow = debugElement.nativeElement.querySelector('tsl-svg-icon');
+
+        expect(checkbox).toBeTruthy();
+        expect(arrow).toBeFalsy();
+      });
+    });
+
+    describe('is toggled by the user', () => {
+      beforeEach(() => {
+        component.option = optionFixture;
+        component.hasChildren = false;
+        fixture.detectChanges();
+      });
+
       it('should toggle checkbox ', () => {
         spyOn(component.toggleOnChange, 'emit');
         const checkbox = debugElement.nativeElement.querySelector('input[type=checkbox]');
@@ -85,16 +124,19 @@ describe('MultiSelectOptionComponent', () => {
       });
     });
 
-    describe('...disabled checking behavior', () => {
+    describe('is disabled', () => {
       beforeEach(() => {
         component.option = optionFixture;
         component.isDisabled = true;
         fixture.detectChanges();
       });
-      it('should disable checking behavior if we stop user checking the option', () => {
+      it('should not change the value on user click', () => {
         const checkbox = debugElement.nativeElement.querySelector('input[type=checkbox]');
+        const initialValue = component.option.checked;
 
-        expect(checkbox.disabled).toBeTruthy();
+        checkbox.click();
+
+        expect(component.option.checked).toEqual(initialValue);
       });
     });
   });
