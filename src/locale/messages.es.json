@@ -1134,6 +1134,7 @@
     "kyc_select_document_view_if_usa_uk_can_top bar_title": "UK, USA or Canada",
     "kyc_select_nationality_view_list_other_place_placeholder": "Resto del mundo",
     "kyc_select_document_view_if_rest_of_the_world_top bar_title": "Resto del mundo",
+    "web_kyc_modal_close_warning": "¿Estás seguro de que quieres salir del proceso? Toda la información se perderá.",
     "make_transfer_view_how_much_description": "¿Cuánto dinero quieres transferir?",
     "make_transfer_view_amount_selector_price_limits_label": "Máximo {$INTERPOLATION} - Mínimo {$INTERPOLATION_1}",
     "make_transfer_view_transfer_button": "Transferir a mi banco",
