@@ -24,6 +24,7 @@ export const MOCK_UPLOAD_PRODUCT_EDIT_ITEM_CG_SHIPPABLE_EVENT = (
       isPro: false,
       screenId: SCREEN_IDS.EditItem,
       shippingAllowed: shippingAllowed,
+      salePriceChange: null,
     },
   };
 

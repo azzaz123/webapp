@@ -1201,6 +1201,7 @@ describe('UploadProductComponent', () => {
             isPro: false,
             screenId: SCREEN_IDS.EditItem,
             shippingAllowed: false,
+            salePriceChange: null,
           },
         };
         spyOn(analyticsService, 'trackEvent');
