@@ -106,8 +106,7 @@ export class FilterOptionsMapperService {
     return label;
   }
 
-  private mapObjectTypes(objectTypes: ObjectType[]): any {
-    // TODO QUITAR ANY
+  private mapObjectTypes(objectTypes: ObjectType[]): FilterOption[] {
     return objectTypes.map((objectType) => ({
       value: objectType.id,
       label: objectType.name,
