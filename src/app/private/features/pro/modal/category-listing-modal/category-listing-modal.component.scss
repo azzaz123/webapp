@@ -1,0 +1,51 @@
+@import '~style/common';
+
+.CategoryListingModal {
+  height: 80vh;
+
+  &__title {
+    font-size: $font-size-l;
+    font-weight: bold;
+    padding: 0 $spacing-xxxl;
+  }
+  &__subtitle {
+    font-size: $font-size-m;
+    padding: 0 $spacing-xxxl;
+    color: $blue-grey-2;
+  }
+  &__options {
+    overflow: auto;
+    tsl-select-option {
+      pointer-events: none;
+      margin: 0 $spacing-xxxl;
+      padding: 0 $spacing-ml;
+      border-bottom: 1px solid $blue-grey-5;
+    }
+  }
+}
+
+.modal__close {
+  cursor: pointer;
+  tsl-svg-icon {
+    ::ng-deep svg path {
+      fill: $blue-grey-2;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .CategoryListingModal {
+    &__title {
+      padding: 0 $spacing-ms;
+    }
+    &__subtitle {
+      padding: 0 $spacing-ms;
+    }
+    &__options {
+      tsl-select-option {
+        margin: 0 0;
+        padding: 0 $spacing-ms;
+      }
+    }
+  }
+}

@@ -139,23 +139,24 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private isUserUpdated(redirect?: string): void {
+    let isUserUpdated = false;
     this.userService
       .getAndUpdateLoggedUser()
       .pipe(
         repeatWhen((completed) =>
           completed.pipe(
             delay(1000),
-            takeWhile(() => this.loading)
+            takeWhile(() => !this.isUserUpdated)
           )
         ),
         take(30),
         finalize(() => {
-          this.redirectIfNeeded(redirect);
+          this.isSubscriptionUpdated(redirect);
         })
       )
-      .subscribe((updatedUser) => {
-        if (updatedUser.featured) {
-          this.loading = false;
+      .subscribe((user) => {
+        if (user.featured) {
+          isUserUpdated = true;
         }
       });
   }
@@ -230,13 +231,8 @@ export class SubscriptionsComponent implements OnInit {
       return CheckSubscriptionInAppModalComponent;
     }
 
-    // Subscription is active, from Stripe, not cancelled, with only one tier and no limits
-    if (
-      this.subscriptionsService.isStripeSubscription(subscription) &&
-      !subscription.subscribed_until &&
-      subscription.tiers.length === 1 &&
-      !subscription.tiers[0].limit
-    ) {
+    // Subscription is active, from Stripe, not cancelled, with only one tier
+    if (this.subscriptionsService.isStripeSubscription(subscription) && !subscription.subscribed_until && subscription.tiers.length === 1) {
       return CancelSubscriptionModalComponent;
     }
 

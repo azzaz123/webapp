@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
+import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -11,6 +12,7 @@ import { finalize } from 'rxjs/operators';
 export class SubscriptionBenefitsComponent implements OnInit {
   public loading = true;
   public benefits: SubscriptionBenefit[];
+  public readonly ICON_TYPE = ICON_TYPE;
 
   constructor(private subscriptionBenefitsService: SubscriptionBenefitsService) {}
 

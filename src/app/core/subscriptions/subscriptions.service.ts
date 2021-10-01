@@ -1,28 +1,19 @@
 import { of, throwError, forkJoin, Observable } from 'rxjs';
 
-import { catchError, retryWhen, delay, take, mergeMap, map, tap } from 'rxjs/operators';
+import { retryWhen, delay, take, mergeMap, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import {
-  SubscriptionSlot,
-  SubscriptionSlotResponse,
-  SubscriptionSlotGeneralResponse,
-  SUBSCRIPTION_MARKETS,
-} from './subscriptions.interface';
+import { SUBSCRIPTION_MARKETS } from './subscriptions.interface';
 import { UserService } from '../user/user.service';
 import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
-import { CategoryResponse } from '../category/category-response.interface';
-import { CategoryService } from '../category/category.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { CURRENCY_SYMBOLS } from '../constants';
 import { UuidService } from '../uuid/uuid.service';
 import { CATEGORIES_EXCLUDED_FROM_CONSUMER_GOODS, CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
+import { SubscriptionsHttpService } from './http/subscriptions-http.service';
+import { mapSubscriptions } from './mappers/subscriptions-mapper';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
-export const SUBSCRIPTIONS_URL = 'bff/subscriptions';
-
-export const SUBSCRIPTIONS_SLOTS_ENDPOINT = 'api/v3/users/me/slots-info';
 
 export enum SUBSCRIPTION_TYPES {
   notSubscribed = 1,
@@ -40,31 +31,9 @@ export class SubscriptionsService {
   constructor(
     private userService: UserService,
     private http: HttpClient,
-    private categoryService: CategoryService,
-    private uuidService: UuidService
+    private uuidService: UuidService,
+    private subscriptionsHttpService: SubscriptionsHttpService
   ) {}
-
-  public getSlots(): Observable<SubscriptionSlot[]> {
-    return this.http.get<SubscriptionSlotGeneralResponse>(`${environment.baseUrl}${SUBSCRIPTIONS_SLOTS_ENDPOINT}`).pipe(
-      mergeMap((response) => {
-        return forkJoin(response.slots.map((slot) => this.mapSlotResponseToSlot(slot)));
-      })
-    );
-  }
-
-  private mapSlotResponseToSlot(slot: SubscriptionSlotResponse): Observable<SubscriptionSlot> {
-    return this.categoryService.getCategoryById(slot.category_id).pipe(
-      map((category) => {
-        const mappedSlot: SubscriptionSlot = {
-          category,
-          available: slot.available,
-          limit: slot.limit,
-        };
-
-        return mappedSlot;
-      })
-    );
-  }
 
   public getUserSubscriptionType(useCache = true): Observable<SUBSCRIPTION_TYPES> {
     if (useCache && this._userSubscriptionType) {
@@ -142,23 +111,9 @@ export class SubscriptionsService {
       return of(this.subscriptions);
     }
 
-    return this.categoryService.getCategories().pipe(
-      mergeMap((categories) => {
-        return this.http
-          .get(`${environment.baseUrl}${SUBSCRIPTIONS_URL}`)
-          .pipe(
-            catchError((error) => {
-              return of(error);
-            })
-          )
-          .pipe(
-            map((subscriptions: SubscriptionsResponse[]) => {
-              if (subscriptions.length > 0) {
-                return subscriptions.map((subscription: SubscriptionsResponse) => this.mapSubscriptions(subscription, categories));
-              }
-            })
-          );
-      })
+    return this.subscriptionsHttpService.get().pipe(
+      map(mapSubscriptions),
+      tap((mappedSubscriptions) => (this.subscriptions = mappedSubscriptions))
     );
   }
 
@@ -180,44 +135,6 @@ export class SubscriptionsService {
       { plan_id: newPlanId },
       { observe: 'response' as 'body' }
     );
-  }
-
-  private mapSubscriptions(subscription: SubscriptionsResponse, categories: CategoryResponse[]): SubscriptionsResponse {
-    let category = categories.find((category: CategoryResponse) => subscription.category_id === category.category_id);
-
-    if (!category && subscription.category_id === 0) {
-      category = this.categoryService.getConsumerGoodsCategory();
-    }
-
-    if (category) {
-      subscription.category_name = category.name;
-      subscription.category_icon = category.icon_id;
-      subscription.selected_tier = this.getSelectedTier(subscription);
-    }
-
-    this.mapCurrenciesForTiers(subscription);
-
-    return subscription;
-  }
-
-  private mapCurrenciesForTiers(subscription: SubscriptionsResponse) {
-    subscription.tiers.forEach((tier) => {
-      const mappedCurrencyCharacter = CURRENCY_SYMBOLS[tier.currency];
-      if (mappedCurrencyCharacter) {
-        tier.currency = mappedCurrencyCharacter;
-      }
-      if (tier.discount) {
-        const oneDay = 1000 * 60 * 60 * 24;
-        tier.discount.no_discount_date = tier.discount.end_date + oneDay;
-      }
-    });
-  }
-
-  private getSelectedTier(subscription: SubscriptionsResponse): Tier {
-    const selectedTier = subscription.selected_tier_id
-      ? subscription.tiers.filter((tier) => tier.id === subscription.selected_tier_id)
-      : subscription.tiers.filter((tier) => tier.id === subscription.default_tier_id);
-    return selectedTier[0];
   }
 
   public isSubscriptionInApp(subscription: SubscriptionsResponse): boolean {
@@ -288,12 +205,12 @@ export class SubscriptionsService {
     let categorySubscriptionId: number;
 
     if (CATEGORIES_EXCLUDED_FROM_CONSUMER_GOODS.includes(categoryId)) {
-      categorySubscriptionId = CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS;
-    } else {
       categorySubscriptionId = categoryId;
+    } else {
+      categorySubscriptionId = CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS;
     }
 
-    return subscriptions.find((subscription) => subscription.category_id === categoryId);
+    return subscriptions.find((subscription) => subscription.category_id === categorySubscriptionId);
   }
 
   public tierDiscountByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): Tier {

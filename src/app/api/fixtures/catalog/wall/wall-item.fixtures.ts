@@ -1,5 +1,5 @@
-import { WallItem } from '@api/catalog/dtos';
-import { CAR_ATTRIBUTE_TYPE, CatalogItemAttribute, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute';
+import { CatalogItemAttributes, WallItem } from '@api/catalog/dtos';
+import { CAR_ATTRIBUTE_TYPE, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute-data';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { itemImageFixture, mappedItemImageFixture } from '@api/fixtures/core/image.fixtures';
 import { ItemType } from '@api/core/model';
@@ -10,32 +10,28 @@ const title = 'Title';
 const description = 'Description';
 const slug = 'my-slug';
 
-const attributes: CatalogItemAttribute[] = [
-  {
+const attributes: CatalogItemAttributes = {
+  [CAR_ATTRIBUTE_TYPE.BRAND]: {
     title: 'Brand',
     value: 'value',
     text: 'Audi',
-    type: CAR_ATTRIBUTE_TYPE.BRAND,
   },
-  {
+  [REAL_ESTATE_ATTRIBUTE_TYPE.SURFACE]: {
     title: 'Surface',
     value: 'value',
     text: '200',
-    type: REAL_ESTATE_ATTRIBUTE_TYPE.SURFACE,
   },
-  {
+  [REAL_ESTATE_ATTRIBUTE_TYPE.GARAGE]: {
     title: 'Garage',
     value: 'true',
     text: 'true',
-    type: REAL_ESTATE_ATTRIBUTE_TYPE.GARAGE,
   },
-  {
+  [REAL_ESTATE_ATTRIBUTE_TYPE.POOL]: {
     title: 'Pool',
     value: 'false',
     text: 'false',
-    type: REAL_ESTATE_ATTRIBUTE_TYPE.POOL,
   },
-];
+};
 
 const storytelling = 'Brand: Audi Surface: 200 Description Garage';
 
@@ -53,7 +49,7 @@ export const wallItemFixture: WallItem = {
   images: [itemImageFixture],
   type: ItemType.CONSUMER_GOODS,
   slug,
-  attributes,
+  type_attributes: attributes,
   title,
   description,
   price,

@@ -85,7 +85,7 @@ export class FiltersWrapperComponent {
   }
 
   public bubbleChange(parameters: FilterParameter[]): void {
-    this.searchNavigatorService.navigate(parameters, FILTERS_SOURCE.QUICK_FILTERS, true);
+    this.searchNavigatorService.navigate(parameters, FILTERS_SOURCE.QUICK_FILTERS);
   }
 
   public drawerChange(values: FilterParameter[]): void {

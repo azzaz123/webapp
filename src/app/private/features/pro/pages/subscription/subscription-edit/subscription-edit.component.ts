@@ -7,6 +7,8 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
@@ -17,6 +19,7 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
+import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 import { finalize } from 'rxjs/operators';
 
@@ -40,6 +43,7 @@ export class SubscriptionEditComponent implements OnInit {
   public isLoading: boolean;
   public isEqualTier: boolean;
   public showEditSuccessful: boolean;
+  public helpPageUrl: string;
 
   constructor(
     private subscriptionsService: SubscriptionsService,
@@ -47,7 +51,8 @@ export class SubscriptionEditComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private benefitsService: SubscriptionBenefitsService,
     private toastService: ToastService,
-    private i18n: I18nService
+    private i18n: I18nService,
+    private customerHelpService: CustomerHelpService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +60,7 @@ export class SubscriptionEditComponent implements OnInit {
     this.subscribedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.selected_tier_id);
     this.selectedTier = this.subscribedTier;
     this.availableTiers = this.subscription.tiers.filter((tier) => tier.id !== this.subscription.selected_tier_id);
+    this.helpPageUrl = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.CHANGE_PRO_SUBSCRIPTION);
     this.checkTier();
   }
 
@@ -106,6 +112,13 @@ export class SubscriptionEditComponent implements OnInit {
 
   public onClearSubscription(): void {
     this.unselectSubscription.emit();
+  }
+
+  public openCategoriesModal(): void {
+    const modal = this.modalService.open(CategoryListingModalComponent, {
+      windowClass: 'category-listing',
+    });
+    modal.componentInstance.subscription = this.subscription;
   }
 
   private checkTier(): void {

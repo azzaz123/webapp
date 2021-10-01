@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { SearchNavigatorService } from './search-navigator.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Router } from '@angular/router';
+import { Params, Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
@@ -11,7 +11,9 @@ import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
-import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 
 @Component({
   selector: 'tsl-blank',
@@ -52,167 +54,87 @@ describe('SearchNavigatorService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when asked to navigate', () => {
-    describe('and should keep current parameters', () => {
-      it('should take current params as part of the set', async () => {
-        await router.navigate(['/search'], {
-          queryParams: {
-            existingParam: 'existingParam',
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-          },
-        });
+  describe('when applying new search filters', () => {
+    const MOCK_PARAMS: FilterParameter[] = [
+      { key: FILTER_QUERY_PARAM_KEY.keywords, value: 'OnePlus One' },
+      { key: FILTER_QUERY_PARAM_KEY.categoryId, value: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}` },
+      { key: FILTER_QUERY_PARAM_KEY.minPrice, value: `${200}` },
+      { key: FILTER_QUERY_PARAM_KEY.maxPrice, value: undefined },
+    ];
 
+    const MOCK_QUERY_PARAMS: Params = {
+      [FILTER_QUERY_PARAM_KEY.keywords]: 'OnePlus One',
+      [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
+      [FILTER_QUERY_PARAM_KEY.minPrice]: `${200}`,
+    };
+
+    describe('and the change comes from the filters Drawer (filtersSource = DEFAULT_FILTERS)', () => {
+      it('should apply all search params that do not have an undefined value', () => {
+        const expectedQueryParams = {
+          ...MOCK_QUERY_PARAMS,
+          [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: FILTERS_SOURCE.DEFAULT_FILTERS,
+        };
         spyOn(router, 'navigate');
 
-        service.navigate(
-          [
-            {
-              key: 'otherParam' as FILTER_QUERY_PARAM_KEY,
-              value: 'otherParam',
-            },
-          ],
-          filtersource,
-          true
-        );
+        service.navigate(MOCK_PARAMS, FILTERS_SOURCE.DEFAULT_FILTERS);
 
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-          replaceUrl: false,
-          queryParams: {
-            existingParam: 'existingParam',
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-            otherParam: 'otherParam',
-            [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
-          },
+        expect(router.navigate).toHaveBeenCalledWith([`/${PUBLIC_PATHS.SEARCH}`], {
+          queryParams: expectedQueryParams,
         });
       });
     });
 
-    describe('and asked to replace url', () => {
-      it('should replace url', async () => {
-        await router.navigate(['/search'], {
-          queryParams: {
-            existingParam: 'existingParam',
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-          },
-        });
-
-        spyOn(router, 'navigate');
-
-        service.navigate(
-          [
-            {
-              key: 'otherParam' as FILTER_QUERY_PARAM_KEY,
-              value: 'otherParam',
-            },
-          ],
-          filtersource,
-          false,
-          true
-        );
-
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-          replaceUrl: true,
-          queryParams: {
-            otherParam: 'otherParam',
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-            [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
-          },
+    describe('and the change comes from other source different than the Drawer (search box, quick filters...)', () => {
+      beforeEach(async () => {
+        await router.navigate([`/${PUBLIC_PATHS.SEARCH}`], {
+          queryParams: MOCK_QUERY_PARAMS,
         });
       });
-    });
 
-    describe('and should overwrite existing parameters', () => {
-      it('should not take current params as part of the set', async () => {
-        await router.navigate(['/search'], {
-          queryParams: {
-            existingParam: 'existingParam',
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-          },
-        });
-
-        spyOn(router, 'navigate');
-
-        service.navigate(
-          [
-            {
-              key: 'otherParam' as FILTER_QUERY_PARAM_KEY,
-              value: 'otherParam',
-            },
-          ],
-          filtersource
-        );
-
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-          replaceUrl: false,
-          queryParams: {
-            [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-            [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-            otherParam: 'otherParam',
-            [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
-          },
-        });
-      });
-    });
-
-    describe('and clean is required', () => {
-      describe('due to a category change', () => {
-        it('should clean the parameters', async () => {
-          await router.navigate(['/search'], {
-            queryParams: {
-              [FILTER_QUERY_PARAM_KEY.categoryId]: '100',
-              other_param: 'otherParam',
-              [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-              [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-            },
-          });
-
+      describe('and the search category is the same than the previous search category', () => {
+        it('should apply all search params taking into account current ones and clearing undefined values', () => {
+          const expectedQueryParams = {
+            ...MOCK_QUERY_PARAMS,
+            [FILTER_QUERY_PARAM_KEY.condition]: 'As good as new',
+            [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: FILTERS_SOURCE.QUICK_FILTERS,
+          };
+          const newParams = [{ key: FILTER_QUERY_PARAM_KEY.condition, value: 'As good as new' }];
           spyOn(router, 'navigate');
 
-          service.navigate(
-            [
-              {
-                key: FILTER_QUERY_PARAM_KEY.categoryId,
-                value: '200',
-              },
-              {
-                key: 'other_param' as FILTER_QUERY_PARAM_KEY,
-                value: 'otherParam',
-              },
-            ],
-            filtersource
-          );
+          service.navigate(newParams, FILTERS_SOURCE.QUICK_FILTERS);
 
-          expect(router.navigate).toHaveBeenCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-            replaceUrl: false,
-            queryParams: {
-              [FILTER_QUERY_PARAM_KEY.categoryId]: '200',
-              [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-              [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-              [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
-            },
+          expect(router.navigate).toHaveBeenCalledWith([`/${PUBLIC_PATHS.SEARCH}`], {
+            queryParams: expectedQueryParams,
           });
         });
       });
 
-      describe('due to a change in real estate parameters', () => {
-        it('should clean the parameters', async () => {
+      describe('and the search category is different than the previous search category', () => {
+        it('should clear all parameters that cannot be maintained after a category change', () => {
+          const expectedQueryParams = {
+            [FILTER_QUERY_PARAM_KEY.keywords]: 'OnePlus One',
+            [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.MOTORBIKE}`,
+            [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: FILTERS_SOURCE.QUICK_FILTERS,
+          };
+          const newParams = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: `${CATEGORY_IDS.MOTORBIKE}` }];
+          spyOn(router, 'navigate');
+
+          service.navigate(newParams, FILTERS_SOURCE.QUICK_FILTERS);
+
+          expect(router.navigate).toHaveBeenCalledWith([`/${PUBLIC_PATHS.SEARCH}`], {
+            queryParams: expectedQueryParams,
+          });
+        });
+      });
+
+      describe('and the search category is real estate', () => {
+        it('should clean the real estate params that can change', async () => {
           await router.navigate(['/search'], {
             queryParams: {
               [FILTER_QUERY_PARAM_KEY.categoryId]: '200',
               [FILTER_QUERY_PARAM_KEY.minPrice]: '200',
               [FILTER_QUERY_PARAM_KEY.operation]: 'buy',
               [FILTER_QUERY_PARAM_KEY.type]: 'house',
-              [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-              [FILTER_QUERY_PARAM_KEY.longitude]: '10',
             },
           });
 
@@ -242,135 +164,12 @@ describe('SearchNavigatorService', () => {
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
           expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-            replaceUrl: false,
             queryParams: {
               [FILTER_QUERY_PARAM_KEY.categoryId]: '200',
               [FILTER_QUERY_PARAM_KEY.operation]: 'rent',
               [FILTER_QUERY_PARAM_KEY.type]: 'house',
-              [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-              [FILTER_QUERY_PARAM_KEY.longitude]: '10',
               [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
             },
-          });
-        });
-      });
-
-      describe('and non automatically cleanable param is present', () => {
-        describe('explicitly cleaned on the navigate', () => {
-          it('should clear the param', async () => {
-            await router.navigate(['/search'], {
-              queryParams: {
-                [FILTER_QUERY_PARAM_KEY.categoryId]: '2',
-                [FILTER_QUERY_PARAM_KEY.distance]: '10',
-                [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-                [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-              },
-            });
-
-            spyOn(router, 'navigate');
-
-            service.navigate(
-              [
-                {
-                  key: FILTER_QUERY_PARAM_KEY.categoryId,
-                  value: '4',
-                },
-                {
-                  key: FILTER_QUERY_PARAM_KEY.distance,
-                  value: undefined,
-                },
-              ],
-              filtersource
-            );
-
-            expect(router.navigate).toHaveBeenCalledTimes(1);
-            expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-              replaceUrl: false,
-              queryParams: {
-                [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
-                [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-                [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-                [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
-              },
-            });
-          });
-
-          describe('and clean params are location', () => {
-            it('should inject next priority location', async () => {
-              await router.navigate(['/search'], {
-                queryParams: {
-                  [FILTER_QUERY_PARAM_KEY.categoryId]: '2',
-                  [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-                  [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-                },
-              });
-
-              spyOn(router, 'navigate');
-
-              service.navigate(
-                [
-                  {
-                    key: FILTER_QUERY_PARAM_KEY.categoryId,
-                    value: '4',
-                  },
-                  {
-                    key: FILTER_QUERY_PARAM_KEY.longitude,
-                    value: undefined,
-                  },
-                  {
-                    key: FILTER_QUERY_PARAM_KEY.latitude,
-                    value: undefined,
-                  },
-                ],
-                filtersource
-              );
-
-              expect(router.navigate).toHaveBeenCalledTimes(1);
-              expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-                replaceUrl: false,
-                queryParams: {
-                  [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
-                  [FILTER_QUERY_PARAM_KEY.latitude]: DEFAULT_LOCATIONS.en.latitude,
-                  [FILTER_QUERY_PARAM_KEY.longitude]: DEFAULT_LOCATIONS.en.longitude,
-                  [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
-                },
-              });
-            });
-          });
-        });
-
-        describe('not explicitly cleaned on the navigate', () => {
-          it('should not clear the param', async () => {
-            await router.navigate(['/search'], {
-              queryParams: {
-                [FILTER_QUERY_PARAM_KEY.categoryId]: '2',
-                [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-                [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-              },
-            });
-
-            spyOn(router, 'navigate');
-
-            service.navigate(
-              [
-                {
-                  key: FILTER_QUERY_PARAM_KEY.categoryId,
-                  value: '4',
-                },
-              ],
-              filtersource
-            );
-
-            expect(router.navigate).toHaveBeenCalledTimes(1);
-            expect(router.navigate).toHaveBeenCalledWith(['/search'], {
-              replaceUrl: false,
-              queryParams: {
-                [FILTER_QUERY_PARAM_KEY.categoryId]: '4',
-                [FILTER_QUERY_PARAM_KEY.latitude]: '10',
-                [FILTER_QUERY_PARAM_KEY.longitude]: '10',
-                [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: filtersource,
-              },
-            });
           });
         });
       });

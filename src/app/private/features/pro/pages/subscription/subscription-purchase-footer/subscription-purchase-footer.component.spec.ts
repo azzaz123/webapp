@@ -2,7 +2,11 @@ import { DatePipe } from '@angular/common';
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FREE_TRIAL_AVAILABLE_SUBSCRIPTION, MAPPED_SUBSCRIPTIONS, TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  FREE_TRIAL_AVAILABLE_SUBSCRIPTION,
+  MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS,
+  TIER_WITH_DISCOUNT,
+} from '@fixtures/subscriptions.fixtures.spec';
 import { ButtonComponent } from '@shared/button/button.component';
 
 import { SubscriptionPurchaseFooterComponent } from './subscription-purchase-footer.component';
@@ -20,8 +24,8 @@ describe('SubscriptionPurchaseFooterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionPurchaseFooterComponent);
     component = fixture.componentInstance;
-    component.subscription = MAPPED_SUBSCRIPTIONS[0];
-    component.selectedTier = MAPPED_SUBSCRIPTIONS[0].tiers[0];
+    component.subscription = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS;
+    component.selectedTier = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS.tiers[0];
     fixture.detectChanges();
   });
 

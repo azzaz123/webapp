@@ -250,7 +250,7 @@ describe('SortFilterComponent', () => {
       fixture.detectChanges();
 
       expect(navigator.navigate).toHaveBeenCalledTimes(1);
-      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: lastOption.value }], FILTERS_SOURCE.QUICK_FILTERS, true);
+      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: lastOption.value }], FILTERS_SOURCE.QUICK_FILTERS);
     });
 
     it('should send default value if it is the first option', () => {
@@ -261,7 +261,7 @@ describe('SortFilterComponent', () => {
       fixture.detectChanges();
 
       expect(navigator.navigate).toHaveBeenCalledTimes(1);
-      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: lastOption.value }], FILTERS_SOURCE.QUICK_FILTERS, true);
+      expect(navigator.navigate).toHaveBeenCalledWith([{ key: 'order_by', value: lastOption.value }], FILTERS_SOURCE.QUICK_FILTERS);
     });
   });
 });

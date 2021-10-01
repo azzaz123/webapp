@@ -143,6 +143,7 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     },
     hasBigIcons: false,
     isMultiselect: true,
+    gridColumns: 3,
   },
   {
     id: CAR_CONFIGURATION_ID.ENGINE,
@@ -154,6 +155,7 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     },
     hasBigIcons: false,
     isMultiselect: true,
+    gridColumns: 3,
   },
   {
     id: CAR_CONFIGURATION_ID.GEARBOX,
@@ -165,5 +167,6 @@ export const CAR_FILTERS: AvailableFilterConfig[] = [
     },
     hasBigIcons: false,
     isMultiselect: true,
+    gridColumns: 6,
   },
 ];

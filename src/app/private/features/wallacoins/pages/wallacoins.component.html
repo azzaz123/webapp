@@ -42,7 +42,7 @@
                 <ng-template ngbSlide *ngIf="i < packs.length - ( itemsPerSlide.length - 1 )">
                   <div class="carousel-slider">
                     <ng-container *ngFor="let card of itemsPerSlide; let j = index">
-                      <tsl-pack-wallacoins [pack]="packs[i + j]" [packIndex]="i + j + 1" (onBuy)="openBuyModal(packs[i + j], i + j + 1)">
+                      <tsl-pack-wallacoins [pack]="packs[i + j]" [packIndex]="i + j + 1" (clickBuy)="openBuyModal(packs[i + j], i + j + 1)">
                       </tsl-pack-wallacoins>
                     </ng-container>
                   </div>
