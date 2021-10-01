@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MyShippingsComponent } from './my-shippings.component';
+import { StreamlineComponent } from './streamline.component';
 
-describe('MyShippingsComponent', () => {
-  let component: MyShippingsComponent;
-  let fixture: ComponentFixture<MyShippingsComponent>;
+describe('StreamlineComponent', () => {
+  let component: StreamlineComponent;
+  let fixture: ComponentFixture<StreamlineComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MyShippingsComponent],
+      declarations: [StreamlineComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MyShippingsComponent);
+    fixture = TestBed.createComponent(StreamlineComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

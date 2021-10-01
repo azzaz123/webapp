@@ -371,7 +371,7 @@ export class DeliveryAddressComponent implements OnInit {
         this.router.navigate([DELIVERY_PATHS.PAYVIEW]);
         break;
       case DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY:
-        this.router.navigate([DELIVERY_PATHS.MY_SHIPPINGS]);
+        this.router.navigate([DELIVERY_PATHS.STREAMLINE]);
         break;
     }
   }
