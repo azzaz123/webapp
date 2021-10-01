@@ -13,7 +13,7 @@ export class DeliveryComponent {
   public navLinks: NavLink[] = [
     {
       id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`,
-      display: $localize`:@@web_delivery_my_shippings:Shippings`,
+      display: $localize`:@@web_delivery_streamline_title:Shippings`,
     },
     {
       id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
