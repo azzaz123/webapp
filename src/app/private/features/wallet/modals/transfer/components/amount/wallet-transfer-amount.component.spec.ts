@@ -257,7 +257,7 @@ describe('WalletTransferAmountComponent', () => {
           (transferButton.nativeElement as HTMLDivElement).click();
 
           expect(transferSpy).toHaveBeenCalledTimes(1);
-          expect(transferSpy).toHaveBeenCalledWith(jasmine.objectContaining(expected));
+          expect(transferSpy).toHaveBeenCalledWith(expected);
         });
       });
     });
