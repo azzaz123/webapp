@@ -1,0 +1,61 @@
+import { WalletMovementHistoryDetail, WALLET_HISTORY_MOVEMENT_TYPE } from '@api/core/model/wallet/history/movement-history-detail';
+import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
+import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
+import * as moment from 'moment';
+
+const MONEY_MOVEMENT_SVG_URL_BY_TYPE: Record<WALLET_HISTORY_MOVEMENT_TYPE, string> = {
+  [WALLET_HISTORY_MOVEMENT_TYPE.IN]: 'assets/icons/money-in.svg',
+  [WALLET_HISTORY_MOVEMENT_TYPE.OUT]: 'assets/icons/money-out.svg',
+};
+
+export const mapWalletBalanceHistoryDetailsToHistoricList = (input: WalletMovementHistoryDetail[]): HistoricList => {
+  const result: HistoricList = { elements: [] };
+
+  input.forEach((balanceHistoryElement: WalletMovementHistoryDetail) => {
+    const headerFromElement = getYearFromHistoryElement(balanceHistoryElement);
+    const subtitleFromElement = getMonthFromHistoryElement(balanceHistoryElement);
+
+    const headerNeedsToBeAdded = !result.elements?.find((y) => y.label === headerFromElement);
+    if (headerNeedsToBeAdded) {
+      result.elements.push({ label: headerFromElement, elements: [] });
+    }
+
+    const headerInResult = result.elements.find((y) => y.label === headerFromElement);
+    const subtitleNeedsToBeAdded = !headerInResult.elements.find((m) => m.label === subtitleFromElement);
+    if (subtitleNeedsToBeAdded) {
+      headerInResult.elements.push({
+        label: subtitleFromElement,
+        elements: [mapWalletBalanceHistoryElementToHistoricElement(balanceHistoryElement)],
+      });
+      return;
+    }
+
+    const subtitleInResult = headerInResult.elements.find((m) => m.label === subtitleFromElement);
+    subtitleInResult.elements.push(mapWalletBalanceHistoryElementToHistoricElement(balanceHistoryElement));
+  });
+
+  return result;
+};
+
+export const getYearFromHistoryElement = (input: WalletMovementHistoryDetail): string => {
+  return moment(input.date).format('YYYY');
+};
+
+export const getMonthFromHistoryElement = (input: WalletMovementHistoryDetail): string => {
+  return moment(input.date).format('MMMM');
+};
+
+export const mapWalletBalanceHistoryElementToHistoricElement = (input: WalletMovementHistoryDetail): HistoricElement => {
+  const { imageUrl: itemImageUrl, type, title, description, estimatedPayoutDescription: subDescription, date, moneyAmmount } = input;
+  const iconUrl = MONEY_MOVEMENT_SVG_URL_BY_TYPE[type];
+
+  return {
+    itemImageUrl,
+    iconUrl,
+    title,
+    description,
+    subDescription,
+    date,
+    moneyAmmount,
+  };
+};
