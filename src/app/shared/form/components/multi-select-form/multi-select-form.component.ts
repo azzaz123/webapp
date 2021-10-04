@@ -48,6 +48,12 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
     this.onChange(this.value);
   }
 
+  public showChildren(option: TemplateMultiSelectFormOption): void {
+    if (option.children?.length) {
+      this.shownChildrenOptionId = option.value;
+    }
+  }
+
   private mapCheckedValue(): void {
     this.extendedOptions = this.mapCheckedOptions(this.extendedOptions);
     this.extendedOptionsSubject.next(this.extendedOptions);
