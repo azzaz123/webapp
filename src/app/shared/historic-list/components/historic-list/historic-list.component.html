@@ -1,4 +1,12 @@
 <div class="HistoricList" tslInfiniteScroll [infiniteScrollDisabled]="infiniteScrollDisabled" (scrolled)="handleScrolled()">
+  <div *ngIf="historicList">
+    <span
+      *ngIf="isHistoricListEmpty()"
+      class="HistoricList__no-results d-flex justify-content-center mt-3"
+      i18n="@@web_no_results_found"
+      >No results found</span
+    >
+  </div>
   <tsl-svg-icon
     *ngIf="loading"
     class="d-flex w-100 align-items-center justify-content-center spinner"

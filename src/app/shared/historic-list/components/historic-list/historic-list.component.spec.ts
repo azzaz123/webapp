@@ -1,18 +1,20 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { InfiniteScrollDirective } from '@shared/infinite-scroll/infinite-scroll.directive';
+import { MOCK_HISTORIC_LIST_EMPTY } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
+import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { InfiniteScrollModule } from '@shared/infinite-scroll/infinite-scroll.module';
 import { HistoricListComponent } from './historic-list.component';
 
 @Component({
   selector: 'tsl-test-wrapper-historic-list',
   template:
-    '<tsl-historic-list [loading]="loading" [infiniteScrollDisabled]="infiniteScrollDisabled" (scrolled)="handleScroll()"></tsl-historic-list>',
+    '<tsl-historic-list [loading]="loading" [infiniteScrollDisabled]="infiniteScrollDisabled" [historicList]="historicList" (scrolled)="handleScroll()"></tsl-historic-list>',
 })
 export class TestWrapperHistoricListComponent {
   @Input() loading: boolean;
   @Input() infiniteScrollDisabled = false;
+  @Input() historicList: HistoricList;
 
   public handleScroll(): void {}
 }
@@ -22,9 +24,9 @@ describe('HistoricListComponent', () => {
   let component: HistoricListComponent;
   let fixture: ComponentFixture<TestWrapperHistoricListComponent>;
   let spinnerElement: DebugElement;
-  let infiniteScrollDirective: InfiniteScrollDirective;
 
   const spinnerSelector = '.spinner';
+  const emptyStateSelector = '.HistoricList__no-results';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -39,7 +41,6 @@ describe('HistoricListComponent', () => {
     wrapperComponent = fixture.componentInstance;
     fixture.detectChanges();
     component = fixture.debugElement.query(By.directive(HistoricListComponent)).componentInstance;
-    infiniteScrollDirective = fixture.debugElement.query(By.directive(InfiniteScrollDirective)).componentInstance;
   });
 
   it('should create', () => {
@@ -111,6 +112,21 @@ describe('HistoricListComponent', () => {
       it('should NOT notify scroll', () => {
         expect(wrapperComponent.handleScroll).not.toHaveBeenCalled();
       });
+    });
+  });
+
+  describe('when displaying an empty list', () => {
+    beforeEach(() => {
+      wrapperComponent.historicList = MOCK_HISTORIC_LIST_EMPTY;
+      fixture.detectChanges();
+    });
+
+    it('should show no results found', () => {
+      const emptyStateElement = fixture.debugElement.query(By.css(emptyStateSelector));
+      const expectedText = $localize`:@@web_no_results:No results found`;
+      const result = emptyStateElement.nativeElement.innerHTML.trim();
+
+      expect(result).toEqual(expectedText);
     });
   });
 });
