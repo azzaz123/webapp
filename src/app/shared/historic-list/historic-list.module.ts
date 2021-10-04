@@ -7,7 +7,8 @@ import { HistoricElementComponent } from './components/historic-element/historic
 import { HistoricListComponent } from './components/historic-list/historic-list.component';
 
 @NgModule({
-  declarations: [HistoricElementComponent, HistoricListComponent],
   imports: [CommonModule, InfiniteScrollModule, TabsBarModule, SvgIconModule],
+  declarations: [HistoricElementComponent, HistoricListComponent],
+  exports: [HistoricListComponent],
 })
 export class HistoricListModule {}
