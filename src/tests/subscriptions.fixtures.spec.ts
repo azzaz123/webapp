@@ -4,15 +4,11 @@ import {
   SubscriptionResponse,
   SubscriptionsResponse,
   Tier,
-  SubscriptionSlotResponse,
-  SubscriptionSlot,
-  SubscriptionSlotGeneralResponse,
   SUBSCRIPTION_MARKETS,
   TierDiscount,
   SUBSCRIPTION_CATEGORY_TYPES,
   SubscriptionsV3Response,
 } from '../app/core/subscriptions/subscriptions.interface';
-import { CATEGORY_DATA_WEB } from './category.fixtures.spec';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
@@ -21,14 +17,6 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 export class MockSubscriptionService {
   getSubscriptions() {
     return of(SUBSCRIPTIONS);
-  }
-
-  public getSlots() {
-    return of([]);
-  }
-
-  public getSlotCategory(_id) {
-    return of([]);
   }
 
   public getUserSubscriptionType() {
@@ -132,58 +120,6 @@ export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [
     title: 'Without compromise',
     description: 'You can cancel your subscription whenever you want, without penalties',
   },
-];
-
-export const MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE: SubscriptionSlotResponse = {
-  category_id: 100,
-  available: 3,
-  limit: 10,
-};
-
-export const MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE: SubscriptionSlotResponse = {
-  category_id: 14000,
-  available: 2,
-  limit: 10,
-};
-
-export const MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE: SubscriptionSlotResponse = {
-  category_id: 12800,
-  available: 0,
-  limit: 10,
-};
-
-export const MOCK_SUBSCRIPTION_SLOTS_RESPONSE: SubscriptionSlotResponse[] = [
-  MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE,
-  MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE,
-  MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE,
-];
-
-export const MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE: SubscriptionSlotGeneralResponse = {
-  slots: MOCK_SUBSCRIPTION_SLOTS_RESPONSE,
-};
-
-export const MOCK_SUBSCRIPTION_SLOT_CARS: SubscriptionSlot = {
-  category: CATEGORY_DATA_WEB[0],
-  available: MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE.available,
-  limit: MOCK_SUBSCRIPTION_SLOT_CARS_RESPONSE.limit,
-};
-
-export const MOCK_SUBSCRIPTION_SLOT_MOTORBIKES: SubscriptionSlot = {
-  category: CATEGORY_DATA_WEB[3],
-  available: MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE.available,
-  limit: MOCK_SUBSCRIPTION_SLOT_MOTORBIKES_RESPONSE.limit,
-};
-
-export const MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES: SubscriptionSlot = {
-  category: CATEGORY_DATA_WEB[4],
-  available: MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE.available,
-  limit: MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES_RESPONSE.limit,
-};
-
-export const MOCK_SUBSCRIPTION_SLOTS: SubscriptionSlot[] = [
-  MOCK_SUBSCRIPTION_SLOT_CARS,
-  MOCK_SUBSCRIPTION_SLOT_MOTORBIKES,
-  MOCK_SUBSCRIPTION_SLOT_MOTOR_ACCESSORIES,
 ];
 
 export const TIER_DISCOUNT: TierDiscount = {

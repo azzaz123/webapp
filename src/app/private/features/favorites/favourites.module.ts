@@ -10,6 +10,7 @@ import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitize
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { MeApiModule } from '@api/me/me-api.module';
 import { FavouritesListTrackingEventsService } from './services/favourites-list-tracking-events.service';
+import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { FavouritesListTrackingEventsService } from './services/favourites-list-
     SanitizedBackgroundModule,
     CustomCurrencyModule,
     MeApiModule,
+    ProBadgeModule,
   ],
   declarations: [favoritesRoutedComponents, ItemCardFavouriteComponent, ProfileCardFavoriteComponent, ProfileImagesComponent],
   providers: [FavouritesListTrackingEventsService],

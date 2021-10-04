@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
+import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
@@ -23,7 +25,7 @@ import { CheapestProducts, ItemBulkResponse, ItemsData } from '@core/item/item-r
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
-import { SubscriptionSlot, SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
 import { PERMISSIONS } from '@core/user/user-constants';
@@ -71,7 +73,7 @@ export class ListComponent implements OnInit, OnDestroy {
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
   public items: Item[] = [];
-  public selectedStatus: string = STATUS.PUBLISHED;
+  public selectedStatus: STATUS | string = STATUS.PUBLISHED;
   public loading = true;
   public end: boolean;
   public scrollTop: number;
@@ -119,6 +121,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     protected i18n: I18nService,
     private subscriptionsService: SubscriptionsService,
+    private catalogManagerService: CatalogManagerApiService,
     private deviceService: DeviceDetectorService,
     private analyticsService: AnalyticsService,
     private i18nService: I18nService,
@@ -146,7 +149,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems();
     this.getCreditInfo();
 
-    this.subscriptionsService.getSlots().subscribe((subscriptionSlots) => {
+    this.catalogManagerService.getSlots().subscribe((subscriptionSlots) => {
       this.setSubscriptionSlots(subscriptionSlots);
     });
 
@@ -465,7 +468,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public onSelectSubscriptionSlot(subscription: SubscriptionSlot) {
     if (this.selectedSubscriptionSlot && subscription) {
-      if (this.selectedSubscriptionSlot.category.category_id === subscription.category.category_id) {
+      if (this.selectedSubscriptionSlot.subscription.type === subscription.subscription.type) {
         return;
       }
     }
@@ -650,13 +653,11 @@ export class ListComponent implements OnInit, OnDestroy {
     const status = this.selectedStatus;
 
     if (this.selectedSubscriptionSlot) {
-      this.itemService
-        .minesByCategory(
-          this.page,
-          this.pageSize,
-          this.selectedSubscriptionSlot.category.category_id,
+      this.catalogManagerService
+        .itemsBySubscriptionType(
+          this.selectedSubscriptionSlot.subscription.type,
           this.sortBy,
-          this.selectedStatus,
+          this.selectedStatus as STATUS,
           this.searchTerm
         )
         .subscribe((itemsByCategory) => {
@@ -874,7 +875,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private updateCountersWhenActivate(items: Item[]): void {
     let selectedSlot: SubscriptionSlot;
     if (!this.selectedSubscriptionSlot) {
-      selectedSlot = this.subscriptionSlots.find((slot) => slot.category.category_id === items[0].categoryId);
+      selectedSlot = this.subscriptionSlots.find((slot) => slot.subscription.category_ids.includes(items[0].categoryId));
     } else {
       selectedSlot = this.selectedSubscriptionSlot;
       const inactiveNavLink = this.getNavLinkById(STATUS.INACTIVE);
