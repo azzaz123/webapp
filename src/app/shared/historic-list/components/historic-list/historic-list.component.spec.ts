@@ -1,9 +1,10 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MOCK_HISTORIC_LIST_EMPTY } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
+import { MOCK_HISTORIC_LIST, MOCK_HISTORIC_LIST_EMPTY } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { InfiniteScrollModule } from '@shared/infinite-scroll/infinite-scroll.module';
+import { HistoricElementComponent } from '../historic-element/historic-element.component';
 import { HistoricListComponent } from './historic-list.component';
 
 @Component({
@@ -31,7 +32,7 @@ describe('HistoricListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [InfiniteScrollModule],
-      declarations: [TestWrapperHistoricListComponent, HistoricListComponent],
+      declarations: [TestWrapperHistoricListComponent, HistoricListComponent, HistoricElementComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -127,6 +128,21 @@ describe('HistoricListComponent', () => {
       const result = emptyStateElement.nativeElement.innerHTML.trim();
 
       expect(result).toEqual(expectedText);
+    });
+  });
+
+  describe('when displaying an historic list with elements', () => {
+    beforeEach(() => {
+      wrapperComponent.historicList = MOCK_HISTORIC_LIST;
+      fixture.detectChanges();
+    });
+
+    it('should show all historic elements', () => {
+      const historicElements = fixture.debugElement.queryAll(By.directive(HistoricElementComponent));
+      let totalHistoricElements = 0;
+      MOCK_HISTORIC_LIST.elements.forEach((h) => h.elements.forEach((st) => st.elements.forEach(() => totalHistoricElements++)));
+
+      expect(historicElements.length).toBe(totalHistoricElements);
     });
   });
 });

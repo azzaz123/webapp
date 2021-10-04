@@ -6,6 +6,17 @@
       i18n="@@web_no_results_found"
       >No results found</span
     >
+  <div class="HistoricList__header" *ngFor="let header of historicList.elements; let firstHeader = first">
+    {{ header.title }}
+    <div class="HistoricList__subtitle" *ngFor="let subtitle of header.elements; let firstSubtitle = first">
+      <div class="d-flex justify-content-between">
+        <div>{{ subtitle.title }}</div>
+      </div>
+      <div class="HistoricList__element" *ngFor="let historicElement of subtitle.elements">
+        <tsl-historic-element [historicElement]="historicElement"></tsl-historic-element>
+      </div>
+    </div>
+  </div>
   </div>
   <tsl-svg-icon
     *ngIf="loading"
