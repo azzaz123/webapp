@@ -158,67 +158,115 @@ describe('WalletTransferMaxLengthDirective', () => {
     });
 
     describe('WHEN the target is valid', () => {
+      const target = {
+        focus() {},
+        select() {},
+      };
       describe('AND WHEN jumping can be done with characters', () => {
-        it('should jump if the input is not empty', () => {
-          let target = {
-            focus() {},
-          };
-          getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
-          const focusSpy = spyOn(target, 'focus').and.callThrough();
-          component.jumpOnlyEmpty = false;
-          htmlInputElement.value = 'No empty';
+        describe('AND WHEN the input is not empty', () => {
+          it('should jump to the targe', () => {
+            getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
+            const focusSpy = spyOn(target, 'focus').and.callThrough();
+            component.jumpOnlyEmpty = false;
+            htmlInputElement.value = 'No empty';
 
-          fixture.detectChanges();
-          keyPress('.');
+            fixture.detectChanges();
+            keyPress('.');
 
-          expect(focusSpy).toHaveBeenCalledTimes(1);
+            expect(focusSpy).toHaveBeenCalledTimes(1);
+          });
+
+          it('should select the target content', () => {
+            getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
+            const selectSpy = spyOn(target, 'select').and.callThrough();
+            component.jumpOnlyEmpty = false;
+            htmlInputElement.value = 'No empty';
+
+            fixture.detectChanges();
+            keyPress('.');
+
+            expect(selectSpy).toHaveBeenCalledTimes(1);
+          });
         });
 
-        it('should jump if input is empty', () => {
-          let target = {
-            focus() {},
-          };
-          getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
-          const focusSpy = spyOn(target, 'focus').and.callThrough();
-          component.jumpOnlyEmpty = false;
-          htmlInputElement.value = '';
+        describe('AND WHEN the input is empty', () => {
+          it('should jump to the target', () => {
+            getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
+            const focusSpy = spyOn(target, 'focus').and.callThrough();
+            component.jumpOnlyEmpty = false;
+            htmlInputElement.value = '';
 
-          fixture.detectChanges();
-          keyPress('.');
+            fixture.detectChanges();
+            keyPress('.');
 
-          expect(focusSpy).toHaveBeenCalledTimes(1);
+            expect(focusSpy).toHaveBeenCalledTimes(1);
+          });
+
+          it('should select the target content', () => {
+            getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
+            const selectSpy = spyOn(target, 'select').and.callThrough();
+            component.jumpOnlyEmpty = false;
+            htmlInputElement.value = '';
+
+            fixture.detectChanges();
+            keyPress('.');
+
+            expect(selectSpy).toHaveBeenCalledTimes(1);
+          });
         });
       });
 
       describe('AND WHEN jumping can be done without characters', () => {
-        it('should not jump if the input is not empty', () => {
-          let target = {
-            focus() {},
-          };
-          getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
-          const focusSpy = spyOn(target, 'focus').and.callThrough();
-          component.jumpOnlyEmpty = true;
-          htmlInputElement.value = 'No empty';
+        describe('AND WHEN the input is not empty', () => {
+          it('should not jump to the target', () => {
+            getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
+            const focusSpy = spyOn(target, 'focus').and.callThrough();
+            component.jumpOnlyEmpty = true;
+            htmlInputElement.value = 'No empty';
 
-          fixture.detectChanges();
-          keyPress('.');
+            fixture.detectChanges();
+            keyPress('.');
 
-          expect(focusSpy).not.toHaveBeenCalled();
+            expect(focusSpy).not.toHaveBeenCalled();
+          });
+
+          it('should not select the target content', () => {
+            getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
+            const selectSpy = spyOn(target, 'select').and.callThrough();
+            component.jumpOnlyEmpty = true;
+            htmlInputElement.value = 'No empty';
+
+            fixture.detectChanges();
+            keyPress('.');
+
+            expect(selectSpy).toHaveBeenCalledTimes(0);
+          });
         });
 
-        it('should jump if input is empty', () => {
-          let target = {
-            focus() {},
-          };
-          getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
-          const focusSpy = spyOn(target, 'focus').and.callThrough();
-          component.jumpOnlyEmpty = true;
-          htmlInputElement.value = '';
+        describe('AND WHEN the input is empty', () => {
+          it('should jump to the target', () => {
+            getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
+            const focusSpy = spyOn(target, 'focus').and.callThrough();
+            component.jumpOnlyEmpty = true;
+            htmlInputElement.value = '';
 
-          fixture.detectChanges();
-          keyPress('.');
+            fixture.detectChanges();
+            keyPress('.');
 
-          expect(focusSpy).toHaveBeenCalledTimes(1);
+            expect(focusSpy).toHaveBeenCalledTimes(1);
+          });
+
+          it('should select the target content', () => {
+            getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(target);
+            const selectSpy = spyOn(target, 'select').and.callThrough();
+            component.jumpOnlyEmpty = true;
+            htmlInputElement.value = '';
+
+            fixture.detectChanges();
+            keyPress('.');
+
+            expect(selectSpy).toHaveBeenCalledTimes(1);
+          });
         });
       });
     });

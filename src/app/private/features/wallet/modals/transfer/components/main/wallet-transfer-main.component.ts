@@ -1,9 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 
+import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { WalletTransferAmountModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-amount.model';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+const confirmationId: number = 1;
 
 const noComissionsMessage: Toast = {
   type: TOAST_TYPES.SUCCESS,
@@ -16,6 +20,10 @@ const noComissionsMessage: Toast = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WalletTransferMainComponent implements OnInit {
+  @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
+
+  public transferAmount: WalletTransferAmountModel;
+
   constructor(private activeModal: NgbActiveModal, private toastService: ToastService) {}
 
   public ngOnInit(): void {
@@ -24,5 +32,19 @@ export class WalletTransferMainComponent implements OnInit {
 
   public closeModal(): void {
     this.activeModal.close();
+  }
+
+  public get isInConfirmationStep(): boolean {
+    return this.stepper.activeId === confirmationId;
+  }
+
+  public goNextStep(transferAmount: WalletTransferAmountModel): void {
+    this.transferAmount = transferAmount;
+    this.stepper.goNext();
+  }
+
+  public goPreviousStep(transferAmount: WalletTransferAmountModel): void {
+    this.transferAmount = transferAmount;
+    this.stepper.goBack();
   }
 }
