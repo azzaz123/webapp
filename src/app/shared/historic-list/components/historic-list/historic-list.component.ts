@@ -8,14 +8,10 @@ import { HistoricList } from '@shared/historic-list/interfaces/historic-list.int
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistoricListComponent {
-  @Input() loading: boolean = true;
   @Input() infiniteScrollDisabled: boolean = false;
   @Input() historicList: HistoricList;
   @Input() showTotalBalance: boolean = false;
   @Output() scrolled: EventEmitter<void> = new EventEmitter();
-
-  public loadingIconSrc: string = '/assets/icons/spinner.svg';
-  public loadingIconSizePixels: number = 32;
 
   public handleScrolled(): void {
     this.scrolled.emit();
