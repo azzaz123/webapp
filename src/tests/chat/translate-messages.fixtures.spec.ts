@@ -1,7 +1,7 @@
 import { MessageTranslation } from '@api/core/model/chat';
-import { translateMessagesMessageFixture } from '@api/fixtures/chat';
+import { MOCK_INBOX_MESSAGE } from './inbox.fixtures.spec';
 
 export const MOCK_MESSAGE_TRANSLATION: MessageTranslation = {
-  id: translateMessagesMessageFixture.id,
-  translation: translateMessagesMessageFixture.translation,
+  id: MOCK_INBOX_MESSAGE.id,
+  translation: 'translation',
 };

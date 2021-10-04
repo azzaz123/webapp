@@ -5,6 +5,7 @@ import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 import { ITEM_ID, ITEM_LEGACY_ID, MOCK_ITEM } from '../item.fixtures.spec';
 import { MOCK_USER, USER_ID } from '../user.fixtures.spec';
+import { CONVERSATION_ID, CONVERSATION_PHONE } from './inbox.fixtures.spec';
 
 export const SURVEY_RESPONSES: SurveyResponse[] = [
   {
