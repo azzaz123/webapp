@@ -38,15 +38,15 @@ export const mapWalletBalanceHistoryDetailsToHistoricList = (input: WalletMoveme
   return result;
 };
 
-export const getYearFromHistoryElement = (input: WalletMovementHistoryDetail): string => {
+const getYearFromHistoryElement = (input: WalletMovementHistoryDetail): string => {
   return moment(input.date).format('YYYY');
 };
 
-export const getMonthFromHistoryElement = (input: WalletMovementHistoryDetail): string => {
+const getMonthFromHistoryElement = (input: WalletMovementHistoryDetail): string => {
   return moment(input.date).format('MMMM');
 };
 
-export const mapWalletBalanceHistoryElementToHistoricElement = (input: WalletMovementHistoryDetail): HistoricElement => {
+const mapWalletBalanceHistoryElementToHistoricElement = (input: WalletMovementHistoryDetail): HistoricElement => {
   const { imageUrl: itemImageUrl, type, title, description, estimatedPayoutDescription: subDescription, date, moneyAmmount } = input;
   const iconUrl = MONEY_MOVEMENT_SVG_URL_BY_TYPE[type];
 
