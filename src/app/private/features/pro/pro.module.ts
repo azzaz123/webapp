@@ -39,6 +39,7 @@ import { SubscriptionEditComponent } from './pages/subscription/subscription-edi
 import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
 import { CategoryListingModalComponent } from './modal/category-listing-modal/category-listing-modal.component';
 import { SelectOptionModule } from '@shared/form/components/select/select-option/select-option.module';
+import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { SelectOptionModule } from '@shared/form/components/select/select-option
     UserAvatarModule,
     TabsBarModule,
     SelectOptionModule,
+    ProBadgeModule,
   ],
 })
 export class ProModule {}

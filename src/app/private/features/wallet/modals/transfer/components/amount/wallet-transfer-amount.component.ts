@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
 import { Money } from '@api/core/model/money.interface';
@@ -27,6 +37,9 @@ export class WalletTransferAmountComponent implements OnInit {
   @ViewChild(decimalPartId, { static: false }) decimalElementRef: ElementRef;
   @ViewChild(integerPartId, { static: false }) integerElementRef: ElementRef;
   @ViewChild(transferId, { static: false }) transferElementRef: ElementRef;
+
+  @Output()
+  public transfered: EventEmitter<WalletTransferAmountModel> = new EventEmitter<WalletTransferAmountModel>();
 
   public transferAmount: WalletTransferAmountModel;
 
@@ -97,6 +110,10 @@ export class WalletTransferAmountComponent implements OnInit {
 
   public get showSpinner(): boolean {
     return this.loading;
+  }
+
+  public transferBalance(): void {
+    this.transfered.emit(this.transferAmount);
   }
 
   private loadBalance(): void {
