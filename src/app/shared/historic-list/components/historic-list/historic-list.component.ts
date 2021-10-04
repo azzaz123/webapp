@@ -11,6 +11,7 @@ export class HistoricListComponent {
   @Input() loading: boolean = true;
   @Input() infiniteScrollDisabled: boolean = false;
   @Input() historicList: HistoricList;
+  @Input() showTotalBalance: boolean = false;
   @Output() scrolled: EventEmitter<void> = new EventEmitter();
 
   public loadingIconSrc: string = '/assets/icons/spinner.svg';
@@ -22,5 +23,9 @@ export class HistoricListComponent {
 
   public isHistoricListEmpty(): boolean {
     return this.historicList.elements.length === 0;
+  }
+
+  public isBalanceVisible(isFirstHeader: boolean, isFirstSubtitle: boolean): boolean {
+    return !!this.historicList.totalBalance && this.showTotalBalance && isFirstHeader && isFirstSubtitle;
   }
 }
