@@ -1,49 +1,65 @@
 import { Injectable } from '@angular/core';
-import { WalletMovementHistoryDetail } from '@api/core/model/wallet/history/movement-history-detail';
-import { WalletMovementsHistoryList } from '@api/core/model/wallet/history/wallet-movements-history-list.interface';
+import { WalletMovementHistoryDetail, WALLET_HISTORY_MOVEMENT_TYPE } from '@api/core/model/wallet/history/movement-history-detail';
+import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
+import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import * as moment from 'moment';
-import { WalletMovementsHistory } from '../../interfaces/wallet-movements-history.interface';
+
+const MONEY_MOVEMENT_SVG_URL_BY_TYPE: Record<WALLET_HISTORY_MOVEMENT_TYPE, string> = {
+  [WALLET_HISTORY_MOVEMENT_TYPE.IN]: 'assets/icons/money-in.svg',
+  [WALLET_HISTORY_MOVEMENT_TYPE.OUT]: 'assets/icons/money-out.svg',
+};
 
 @Injectable()
 export class WalletHistoryMovementsUIService {
-  public map(input: WalletMovementHistoryDetail[]): WalletMovementsHistory {
-    const result = { years: [] };
-    input.forEach((balanceHistoryElement: WalletMovementHistoryDetail) => {
-      const yearFromElement = this.getYearFromHistoryElement(balanceHistoryElement);
-      const monthFromElement = this.getMonthFromHistoryElement(balanceHistoryElement);
+  public mapToHistoricList(input: WalletMovementHistoryDetail[]): HistoricList {
+    const result: HistoricList = { elements: [] };
 
-      const yearNeedsToBeAdded = !result.years?.find((y) => y.value === yearFromElement);
-      if (yearNeedsToBeAdded) {
-        result.years.push({ value: yearFromElement, title: yearFromElement.toString(), elements: [] });
+    input.forEach((balanceHistoryElement: WalletMovementHistoryDetail) => {
+      const headerFromElement = this.getYearFromHistoryElement(balanceHistoryElement);
+      const subtitleFromElement = this.getMonthFromHistoryElement(balanceHistoryElement);
+
+      const headerNeedsToBeAdded = !result.elements?.find((y) => y.label === headerFromElement);
+      if (headerNeedsToBeAdded) {
+        result.elements.push({ label: headerFromElement, elements: [] });
       }
 
-      const yearInResult = result.years.find((y) => y.value === yearFromElement);
-      const monthNeedsToBeAdded = !yearInResult.elements.find((m) => m.value === monthFromElement);
-      if (monthNeedsToBeAdded) {
-        yearInResult.elements.push({
-          value: monthFromElement,
-          title: this.getMonthNameFromDate(balanceHistoryElement),
-          elements: [balanceHistoryElement],
+      const headerInResult = result.elements.find((y) => y.label === headerFromElement);
+      const subtitleNeedsToBeAdded = !headerInResult.elements.find((m) => m.label === subtitleFromElement);
+      if (subtitleNeedsToBeAdded) {
+        headerInResult.elements.push({
+          label: subtitleFromElement,
+          elements: [this.mapWalletBalanceHistoryElementToHistoricElement(balanceHistoryElement)],
         });
         return;
       }
 
-      const monthInResult = yearInResult.elements.find((m) => m.value === monthFromElement);
-      monthInResult.elements.push(balanceHistoryElement);
+      const subtitleInResult = headerInResult.elements.find((m) => m.label === subtitleFromElement);
+      subtitleInResult.elements.push(this.mapWalletBalanceHistoryElementToHistoricElement(balanceHistoryElement));
     });
 
     return result;
   }
 
-  private getYearFromHistoryElement(input: WalletMovementHistoryDetail): number {
-    return moment(input.date).year();
+  private getYearFromHistoryElement(input: WalletMovementHistoryDetail): string {
+    return moment(input.date).format('YYYY');
   }
 
-  private getMonthFromHistoryElement(input: WalletMovementHistoryDetail): number {
-    return moment(input.date).month();
-  }
-
-  private getMonthNameFromDate(input: WalletMovementHistoryDetail): string {
+  private getMonthFromHistoryElement(input: WalletMovementHistoryDetail): string {
     return moment(input.date).format('MMMM');
+  }
+
+  private mapWalletBalanceHistoryElementToHistoricElement(input: WalletMovementHistoryDetail): HistoricElement {
+    const { imageUrl: itemImageUrl, type, title, description, estimatedPayoutDescription: subDescription, date, moneyAmmount } = input;
+    const iconUrl = MONEY_MOVEMENT_SVG_URL_BY_TYPE[type];
+
+    return {
+      itemImageUrl,
+      iconUrl,
+      title,
+      description,
+      subDescription,
+      date,
+      moneyAmmount,
+    };
   }
 }
