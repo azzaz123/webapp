@@ -26,15 +26,31 @@ describe('ChatApiService', () => {
   });
 
   describe('when asked to translate messages', () => {
-    it('should translate messages', () => {
-      spyOn(httpService, 'translateMessages').and.returnValue(of(translateMessagesResponseFixture));
-      let messageTranslations: MessageTranslation[];
+    describe('and message array has content', () => {
+      it('should translate messages', () => {
+        spyOn(httpService, 'translateMessages').and.returnValue(of(translateMessagesResponseFixture));
+        let messageTranslations: MessageTranslation[];
 
-      service
-        .translateMessages('conversationId', [MOCK_INBOX_MESSAGE])
-        .subscribe((translations: MessageTranslation[]) => (messageTranslations = translations));
+        service
+          .translateMessages('conversationId', [MOCK_INBOX_MESSAGE])
+          .subscribe((translations: MessageTranslation[]) => (messageTranslations = translations));
 
-      expect(messageTranslations).toEqual([MOCK_MESSAGE_TRANSLATION]);
+        expect(messageTranslations).toEqual([MOCK_MESSAGE_TRANSLATION]);
+      });
+    });
+
+    describe('and message array is empty', () => {
+      it('should return empty array of translated messages', () => {
+        spyOn(httpService, 'translateMessages');
+        let messageTranslations: MessageTranslation[];
+
+        service
+          .translateMessages('conversationId', [])
+          .subscribe((translations: MessageTranslation[]) => (messageTranslations = translations));
+
+        expect(messageTranslations).toEqual([]);
+        expect(httpService.translateMessages).not.toHaveBeenCalled();
+      });
     });
   });
 });
