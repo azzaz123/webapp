@@ -6,11 +6,15 @@
  */
 
 /**
- * User clicks to access FAQs on wallet
+ * User views error when trying to access Tracer
  */
-export interface ClickHelpWallet {
+export interface ViewTracerError {
   /**
-   * Identifier of the screen where the click is done
+   * Identifier of error screen
    */
-  screenId: 235 | 276 | 277 | 278 | 279 | 280 | 281;
+  screenId: 288;
+  /**
+   * Error type for Tracer
+   */
+  errorType: 'expired' | 'already submitted';
 }

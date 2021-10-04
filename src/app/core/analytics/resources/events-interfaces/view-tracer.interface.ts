@@ -6,19 +6,19 @@
  */
 
 /**
- * User views TTS
+ * User views TRACER survey
  */
-export interface ViewTransactionalTimeline {
+export interface ViewTracer {
   /**
-   * Identifier of the transaction request
+   * Identifier of the transaction
    */
-  requestId: string;
+  transactionId: string;
   /**
    * Identifier of the transaction timeline screen
    */
-  screenId: 205;
+  screenId: 268;
   /**
-   * From where the user accesses the TRACER screen
+   * Indicates if the user comes from an external source
    */
-  source?: 'tracer-push' | 'mail' | 'N/A';
+  source?: 'tracer-push' | 'N/A';
 }

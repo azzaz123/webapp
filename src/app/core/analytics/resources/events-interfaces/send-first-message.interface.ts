@@ -46,6 +46,10 @@ export interface SendFirstMessage {
    */
   country?: string;
   /**
+   * Country of the item/seller (e.g.: ES, IT, etc.) using 2-digit ISO Code
+   */
+  sellerCountry?: string;
+  /**
    * Language of the user (buyer) that sends the first message (e.g.: ES, IT, etc.)
    */
   language?: string;

@@ -6,11 +6,15 @@
  */
 
 /**
- * User clicks to access FAQs on wallet
+ * Buyer views P2P payment success screen
  */
-export interface ClickHelpWallet {
+export interface ViewP2PPaymentSuccessBuyer {
   /**
-   * Identifier of the screen where the click is done
+   * Identifier of QR code screen
    */
-  screenId: 235 | 276 | 277 | 278 | 279 | 280 | 281;
+  screenId: 278;
+  /**
+   * Amount the user paid
+   */
+  paymentAmount: number;
 }

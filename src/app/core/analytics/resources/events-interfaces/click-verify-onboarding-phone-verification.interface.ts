@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks to access FAQs on wallet
+ * User clicks on Verify on the Onboarding Phone Verification info screen
  */
-export interface ClickHelpWallet {
+export interface ClickVerifyOnboardingPhoneVerification {
   /**
-   * Identifier of the screen where the click is done
+   * Identifier of the Onboarding Phone Verification screen
    */
-  screenId: 235 | 276 | 277 | 278 | 279 | 280 | 281;
+  screenId: 269;
 }
