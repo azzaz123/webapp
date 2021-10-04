@@ -36,6 +36,10 @@ export class WalletHistoryMovementsComponent implements OnInit {
     return this.walletHistoryMovementsUIService.historicList$;
   }
 
+  public get showTotalBalance(): boolean {
+    return this.currentFilter === WALLET_HISTORY_FILTERS.ALL;
+  }
+
   ngOnInit() {
     this.getItems();
   }
@@ -46,15 +50,7 @@ export class WalletHistoryMovementsComponent implements OnInit {
 
   public onChangeFilter(filter: WALLET_HISTORY_FILTERS) {
     this.currentFilter = filter;
-    this.reset();
-    this.getItems();
-  }
-
-  public showBalance(): boolean {
-    return this.currentFilter === WALLET_HISTORY_FILTERS.ALL;
-  }
-
-  private reset(): void {
     this.walletHistoryMovementsUIService.reset();
+    this.getItems();
   }
 }

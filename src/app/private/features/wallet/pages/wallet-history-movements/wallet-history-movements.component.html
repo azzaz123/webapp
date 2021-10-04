@@ -3,6 +3,7 @@
   <tsl-historic-list
     *ngIf="historicList$ | async as historicList"
     [historicList]="historicList"
+    [showTotalBalance]="showTotalBalance"
     [infiniteScrollDisabled]="infiniteScrollDisabled"
     (scrolled)="getItems()"
   ></tsl-historic-list>

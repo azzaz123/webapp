@@ -60,7 +60,7 @@ export class WalletHistoryMovementsUIService {
           const { list, paginationParameter, walletBalance } = response;
           this.nextPage = paginationParameter;
           this.requestedHistoryMovementsDetails = this.requestedHistoryMovementsDetails.concat(list);
-          this.historicList = mapWalletBalanceHistoryDetailsToHistoricList(this.requestedHistoryMovementsDetails);
+          this.historicList = mapWalletBalanceHistoryDetailsToHistoricList(this.requestedHistoryMovementsDetails, walletBalance);
         }),
         finalize(() => {
           this.initialLoad = false;

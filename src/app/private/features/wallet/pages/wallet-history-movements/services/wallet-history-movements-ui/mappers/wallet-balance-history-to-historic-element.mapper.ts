@@ -1,3 +1,4 @@
+import { Money } from '@api/core/model/money.interface';
 import { WalletMovementHistoryDetail, WALLET_HISTORY_MOVEMENT_TYPE } from '@api/core/model/wallet/history/movement-history-detail';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
@@ -8,8 +9,8 @@ const MONEY_MOVEMENT_SVG_URL_BY_TYPE: Record<WALLET_HISTORY_MOVEMENT_TYPE, strin
   [WALLET_HISTORY_MOVEMENT_TYPE.OUT]: 'assets/icons/money-out.svg',
 };
 
-export const mapWalletBalanceHistoryDetailsToHistoricList = (input: WalletMovementHistoryDetail[]): HistoricList => {
-  const result: HistoricList = { elements: [] };
+export const mapWalletBalanceHistoryDetailsToHistoricList = (input: WalletMovementHistoryDetail[], totalBalance: Money): HistoricList => {
+  const result: HistoricList = { elements: [], totalBalance };
 
   input.forEach((balanceHistoryElement: WalletMovementHistoryDetail) => {
     const headerFromElement = getYearFromHistoryElement(balanceHistoryElement);
