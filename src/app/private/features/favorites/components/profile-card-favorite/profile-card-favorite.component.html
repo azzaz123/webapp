@@ -3,7 +3,7 @@
     <tsl-profile-images *ngFor="let number of [0,1,2,3]"
       [profileImage]="profile?.item_images && profile?.item_images[number]" size="profile" fallbackLight="true">
     </tsl-profile-images>
-    <tsl-pro-badge *ngIf="!profile?.is_professional" class="badge featured"></tsl-pro-badge>
+    <tsl-pro-badge *ngIf="profile?.is_professional" class="badge featured"></tsl-pro-badge>
   </tsl-card-image>
   <tsl-card-content>
     <div>
