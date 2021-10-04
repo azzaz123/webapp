@@ -1,5 +1,6 @@
 @import '~style/common';
 
+$button-height: 50px;
 $container-width: 290px;
 $icon-height: 189px;
 $icon-width: 118px;
@@ -31,5 +32,9 @@ $icon-width: 118px;
   &__cancel,
   &__confirm {
     margin-top: $spacing-ml;
+
+    & .loading {
+      height: $button-height;
+    }
   }
 }

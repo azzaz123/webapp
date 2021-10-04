@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   ViewChild,
@@ -16,6 +17,7 @@ import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletTransferAmountModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-amount.model';
+import { WalletTransferMoneyInterface } from '@private/features/wallet/modals/transfer/interfaces/wallet-transfer-money.interface';
 import { WalletTransferMoneyModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-money.model';
 
 import { finalize } from 'rxjs/operators';
@@ -39,9 +41,13 @@ export class WalletTransferAmountComponent implements OnInit {
   @ViewChild(integerPartId, { static: false }) integerElementRef: ElementRef;
   @ViewChild(transferId, { static: false }) transferElementRef: ElementRef;
 
-  @Output()
-  public transfered: EventEmitter<Money> = new EventEmitter<Money>();
+  @Input()
+  public transferData: WalletTransferMoneyInterface;
 
+  @Output()
+  public transfered: EventEmitter<WalletTransferMoneyInterface> = new EventEmitter<WalletTransferMoneyInterface>();
+
+  public showTryAgainMessage: boolean;
   public transferAmount: WalletTransferAmountModel;
 
   private error: boolean;
@@ -55,7 +61,7 @@ export class WalletTransferAmountComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.loadBalance();
+    !!this.transferData ? this.loadBalanceFromTransferAmount() : this.loadBalance();
   }
 
   public get allowTransfer(): boolean {
@@ -74,14 +80,17 @@ export class WalletTransferAmountComponent implements OnInit {
 
   public emptyAmount(): void {
     this.transferAmount.empty();
+    this.showTryAgainMessage = false;
     (this.integerElementRef.nativeElement as HTMLInputElement).focus();
   }
 
   public formatDecimalPart(): void {
+    this.showTryAgainMessage = this.showTryAgainMessage && this.transferAmount.total === this.transferData.amount.total;
     (this.decimalElementRef.nativeElement as HTMLInputElement).value = this.transferAmount.decimalsAsCents;
   }
 
   public formatIntegerPart(): void {
+    this.showTryAgainMessage = this.showTryAgainMessage && this.transferAmount.total === this.transferData.amount.total;
     (this.integerElementRef.nativeElement as HTMLInputElement).value = this.transferAmount.integerAsUnits;
   }
 
@@ -114,7 +123,7 @@ export class WalletTransferAmountComponent implements OnInit {
   }
 
   public transferBalance(): void {
-    this.transfered.emit(new WalletTransferMoneyModel(this.transferAmount.total, this.walletBalance.currency, amountOfDecimals));
+    this.transfered.emit(new WalletTransferMoneyModel(this.transferAmount.total, this.walletBalance, amountOfDecimals));
   }
 
   private loadBalance(): void {
@@ -137,5 +146,13 @@ export class WalletTransferAmountComponent implements OnInit {
           this.toastService.show(DEFAULT_ERROR_TOAST);
         },
       });
+  }
+
+  private loadBalanceFromTransferAmount(): void {
+    this.walletBalance = this.transferData.balance;
+    this.transferAmount = new WalletTransferAmountModel(this.transferData.amount.total, minimumTransferAmount, amountOfDecimals);
+    this.transferAmount.setMaximum(this.walletBalance.amount.total);
+    this.loading = false;
+    this.showTryAgainMessage = true;
   }
 }

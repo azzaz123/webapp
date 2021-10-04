@@ -63,8 +63,19 @@
             >
           </div>
           <div class="WalletTransferAmount__CTA">
-            <tsl-button [disabled]="!allowTransfer" i18n="@@make_transfer_view_transfer_button" (click)="transferBalance()"
+            <tsl-button
+              *ngIf="!this.showTryAgainMessage"
+              [disabled]="!allowTransfer"
+              i18n="@@make_transfer_view_transfer_button"
+              (click)="transferBalance()"
               >Transfer to my bank account</tsl-button
+            >
+            <tsl-button
+              *ngIf="this.showTryAgainMessage"
+              [disabled]="!allowTransfer"
+              i18n="@@make_transfer_view_retry_transfer_button"
+              (click)="transferBalance()"
+              >Retry transfer</tsl-button
             >
           </div>
         </div>
