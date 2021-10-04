@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { InboxUser } from '@private/features/chat/core/model';
+import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { environment } from '../../../environments/environment';
 import { PLACEHOLDER_AVATAR, User } from '../../core/user/user';
 
@@ -16,6 +17,8 @@ export class UserAvatarComponent implements OnInit, OnChanges {
   public badgeSize = 22;
   public badgeStyles = {};
   public readonly PERMISSIONS = PERMISSIONS;
+  public readonly ICON_TYPE = ICON_TYPE;
+
   @Input() user: User | InboxUser;
   @Input() size = 40;
   @Input() imageUrl: string;
@@ -63,7 +66,7 @@ export class UserAvatarComponent implements OnInit, OnChanges {
   private calculateBadgeStyles(): Object {
     return {
       'right.px': -1 * (this.badgeSize / 2) + 4,
-      'bottom.px': -1 * (this.badgeSize / 2) + 4,
+      'bottom.px': -1 * (this.badgeSize / 2),
     };
   }
 

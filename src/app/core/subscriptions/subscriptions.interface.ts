@@ -1,5 +1,3 @@
-import { CategoryResponse } from '../category/category-response.interface';
-
 export interface SubscriptionResponse {
   id: string;
   latest_invoice_id: string;
@@ -73,26 +71,8 @@ export interface SubscriptionsV3Response {
   trial_available: boolean;
   trial_days: number;
   tiers: Tier[];
-  category_name?: string;
-  category_icon?: string;
   selected_tier?: Tier;
   subscribed_until?: number;
   market?: SUBSCRIPTION_MARKETS;
   type: SUBSCRIPTION_CATEGORY_TYPES;
-}
-
-export interface SubscriptionSlotGeneralResponse {
-  slots: SubscriptionSlotResponse[];
-}
-
-export interface SubscriptionSlotResponse {
-  category_id: number;
-  available: number;
-  limit: number;
-}
-
-export interface SubscriptionSlot {
-  category: CategoryResponse;
-  available: number;
-  limit: number;
 }
