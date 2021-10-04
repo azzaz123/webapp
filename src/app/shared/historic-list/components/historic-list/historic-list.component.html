@@ -7,10 +7,10 @@
       >No results found</span
     >
   <div class="HistoricList__header" *ngFor="let header of historicList.elements; let firstHeader = first">
-    {{ header.title }}
+    {{ header.label }}
     <div class="HistoricList__subtitle" *ngFor="let subtitle of header.elements; let firstSubtitle = first">
       <div class="d-flex justify-content-between">
-        <div>{{ subtitle.title }}</div>
+        <div>{{ subtitle.label }}</div>
         <div
         *ngIf="isBalanceVisible(firstHeader, firstSubtitle)"
         class="HistoricList__total-balance"
