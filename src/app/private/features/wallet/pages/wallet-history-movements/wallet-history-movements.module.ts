@@ -5,9 +5,17 @@ import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
 import { WalletBalanceHistoryModule } from '@api/bff/delivery/wallets/balance_history/wallet-balance-history.module';
 import { WalletHistoryMovementsUIService } from './services/wallet-history-movements-ui/wallet-history-movements-ui.service';
 import { HistoricListModule } from '@shared/historic-list/historic-list.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 @NgModule({
-  imports: [CommonModule, WalletBalanceHistoryModule, WalletHistoryMovementsRoutingModule, TabsBarModule, HistoricListModule],
+  imports: [
+    CommonModule,
+    WalletBalanceHistoryModule,
+    WalletHistoryMovementsRoutingModule,
+    TabsBarModule,
+    HistoricListModule,
+    SvgIconModule,
+  ],
   declarations: [walletHistoryMovementsRoutedComponents],
   providers: [WalletHistoryMovementsUIService],
 })
