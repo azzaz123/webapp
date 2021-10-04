@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment } from '@environments/environment';
@@ -10,14 +10,27 @@ import { WalletTransferRequestInterface } from '@private/features/wallet/interfa
 
 import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { WalletTransferPayUserBankAccountErrorMapper } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-pay-user-bank-account-error-mapper';
 
-export const PayBankAccountFromUserWalletEndPoint = `${environment.baseUrl}/api/v3/payments/pay_user_bank_account_from_user_wallet`;
+export const PayBankAccountFromUserWalletEndPoint = `${environment.baseUrl}/api/v3/payments/pay_user_bank_account_from_user_wallet_fake_url`;
+export const PayUserBankAccountsEndPoint = `${environment.baseUrl}/api/v3/payments/pay_user_bank_accounts`;
+
+const StatusParam: string = 'status';
 
 @Injectable()
 export class WalletTransferApiService {
   private errorMapper: WalletTransferErrorMapper = new WalletTransferErrorMapper();
+  private payUserBankAccountErrorMapper: WalletTransferErrorMapper = new WalletTransferPayUserBankAccountErrorMapper();
 
   constructor(private http: HttpClient) {}
+
+  public checkPayUserBankAccount(status: string): Observable<null> {
+    let params: HttpParams = new HttpParams().append(StatusParam, status);
+
+    return this.http
+      .head<null>(PayUserBankAccountsEndPoint, { params: params })
+      .pipe(catchError((error: WalletTransferErrorResponse) => this.payUserBankAccountErrorMapper.map(error)));
+  }
 
   public transfer(request: WalletTransferRequestInterface): Observable<null> {
     return this.http

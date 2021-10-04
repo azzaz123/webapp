@@ -6,12 +6,18 @@ import { WalletTransferMapperService } from './mapper/wallet-transfer-mapper.ser
 
 import { Observable } from 'rxjs';
 
+const PayUserBankAccountStarted: string = 'STARTED';
+
 @Injectable()
 export class WalletTransferService {
   constructor(
     private walletTransferApiService: WalletTransferApiService,
     private walletTransferMapperService: WalletTransferMapperService
   ) {}
+
+  public checkPayUserBankAccount(): Observable<null> {
+    return this.walletTransferApiService.checkPayUserBankAccount(PayUserBankAccountStarted);
+  }
 
   public transfer(money: Money): Observable<null> {
     return this.walletTransferApiService.transfer(this.walletTransferMapperService.mapToRequest(money));
