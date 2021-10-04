@@ -35,4 +35,16 @@ $wallet-balance-info-ammount-text-size: 74px;
   &__CTA {
     margin-top: 28px;
   }
+  &__transfer {
+    font-size: $font-size-s;
+    &__spinner {
+      margin-right: $spacing-ms;
+    }
+    &__title {
+      color: $walla-main;
+    }
+    &__content {
+      font-weight: $font-weight-chunky;
+    }
+  }
 }
