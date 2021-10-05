@@ -4,7 +4,7 @@ import { WalletMovementHistoryDetail } from '@api/core/model/wallet/history/move
 import { WALLET_HISTORY_FILTERS } from '@api/core/model/wallet/history/wallet-history-filters.enum';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { Observable, ReplaySubject } from 'rxjs';
-import { tap, finalize } from 'rxjs/operators';
+import { tap, finalize, take } from 'rxjs/operators';
 import { mapWalletBalanceHistoryDetailsToHistoricList } from './mappers/wallet-balance-history-to-historic-element.mapper';
 
 @Injectable()
@@ -65,7 +65,8 @@ export class WalletHistoryMovementsUIService {
         finalize(() => {
           this.initialLoad = false;
           this.loading = false;
-        })
+        }),
+        take(1)
       )
       .subscribe();
   }
