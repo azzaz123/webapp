@@ -3,6 +3,7 @@ import { HistoricList } from '../interfaces/historic-list.interface';
 import {
   MOCK_HISTORIC_ELEMENT,
   MOCK_HISTORIC_ELEMENT_CASHOUT,
+  MOCK_HISTORIC_ELEMENT_CASHOUT_WITH_ESTIMATED_PAYOUT,
   MOCK_HISTORIC_ELEMENT_SALE,
   MOCK_HISTORIC_ELEMENT_WITH_ICON,
   MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION,
@@ -43,5 +44,20 @@ export const MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS: HistoricList = {
       ],
     },
   ],
-  totalBalance: mapNumberAndCurrencyCodeToMoney({ number: 420, currency: 'EUR' }),
+  totalBalance: mapNumberAndCurrencyCodeToMoney({ number: 132, currency: 'EUR' }),
+};
+
+export const MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS_WITH_ALL_ELEMENTS: HistoricList = {
+  elements: [
+    {
+      label: '2021',
+      elements: [
+        {
+          label: 'September',
+          elements: [MOCK_HISTORIC_ELEMENT_SALE, MOCK_HISTORIC_ELEMENT_CASHOUT, MOCK_HISTORIC_ELEMENT_CASHOUT_WITH_ESTIMATED_PAYOUT],
+        },
+      ],
+    },
+  ],
+  totalBalance: mapNumberAndCurrencyCodeToMoney({ number: 132, currency: 'EUR' }),
 };

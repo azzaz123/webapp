@@ -36,3 +36,13 @@ export const MOCK_HISTORIC_ELEMENT_CASHOUT: HistoricElement = {
   date: new Date('2021-09-17T11:04:20.177Z'),
   moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
 };
+
+export const MOCK_HISTORIC_ELEMENT_CASHOUT_WITH_ESTIMATED_PAYOUT: HistoricElement = {
+  itemImageUrl: 'assets/images/bank.svg',
+  iconUrl: 'assets/icons/money-out.svg',
+  title: 'ES91••••1332',
+  description: 'Withdrawal · 17 Sep',
+  date: new Date('2021-09-17T11:04:20.177Z'),
+  moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
+  subDescription: 'In your bank before 22 Sep',
+};
