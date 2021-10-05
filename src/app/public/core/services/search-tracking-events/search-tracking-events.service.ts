@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SORT_BY } from '@api/core/model';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS, Search } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
@@ -24,7 +25,7 @@ export class SearchTrackingEventsService {
     [SORT_BY.RELEVANCE]: 'most_relevant',
   };
 
-  constructor(private analyticsService: AnalyticsService) {}
+  constructor(private analyticsService: AnalyticsService, private queryStringService: SearchQueryStringService) {}
 
   public trackSearchEvent(searchId: string, filterParams: FilterParameter[]): void {
     const event: AnalyticsEvent<Search> = {
@@ -41,17 +42,17 @@ export class SearchTrackingEventsService {
   }
 
   private fromFilterParameterEventFilter(filterParams: FilterParameter[]): Partial<Search> {
-    const filters = {};
     const FILTER_KEY_EVENT_MAP_KEYS = Object.keys(this.FILTER_KEY_EVENT_MAP);
+    const filters = this.queryStringService.mapFilterToQueryParams(filterParams);
 
-    filterParams.forEach((parameter) => {
-      if (parameter.key === FILTER_QUERY_PARAM_KEY.orderBy) {
-        parameter.value = this.ORDER_BY_VALUE_MAP[parameter.value];
+    Object.keys(filters).map((key) => {
+      if (key === FILTER_QUERY_PARAM_KEY.orderBy) {
+        filters[key] = this.ORDER_BY_VALUE_MAP[filters[key]];
       }
-
-      FILTER_KEY_EVENT_MAP_KEYS.includes(parameter.key)
-        ? (filters[this.FILTER_KEY_EVENT_MAP[parameter.key]] = parameter.value)
-        : (filters[this.camelize(parameter.key)] = parameter.value);
+      if (!FILTER_KEY_EVENT_MAP_KEYS.includes(key)) {
+        filters[this.camelize(key)] = filters[key];
+        delete filters[key];
+      }
     });
 
     return filters;
