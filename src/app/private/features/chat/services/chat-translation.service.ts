@@ -12,11 +12,11 @@ export class ChatTranslationService {
   public translateConversation(conversation: InboxConversation): Observable<void> {
     const messages = this.getTranslatableMessages(conversation);
 
-    if (!messages.length) {
-      return of(void 0);
-    }
+    return messages.length ? this.translateMessages(conversation.id, messages) : of(void 0);
+  }
 
-    return this.chatApiService.translateMessages(conversation.id, messages).pipe(
+  private translateMessages(conversationId: string, messages: InboxMessage[]): Observable<void> {
+    return this.chatApiService.translateMessages(conversationId, messages).pipe(
       take(1),
       map((messageTranslations: MessageTranslation[]) => {
         messages.forEach((message) => {
