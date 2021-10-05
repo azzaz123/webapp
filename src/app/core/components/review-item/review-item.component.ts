@@ -6,7 +6,7 @@ import { Review } from '@private/features/reviews/core/review';
 import { User } from '@core/user/user';
 import { ReviewsApiService } from '@api/reviews';
 import { finalize, take } from 'rxjs/operators';
-import { TranslateButtonCopies } from '@core/components/translate-button/translate-button.component';
+import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
 
 export interface ReviewItemCopies {
   soldCopy: string;

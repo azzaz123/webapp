@@ -1,9 +1,5 @@
 import { Component, Input } from '@angular/core';
-
-export interface TranslateButtonCopies {
-  showTranslation: string;
-  showOriginal?: string;
-}
+import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
 
 @Component({
   selector: 'tsl-translate-button',

@@ -40,8 +40,8 @@ import { delay, take } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';
 import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
 import { PERMISSIONS } from '@core/user/user-constants';
-import { TranslateButtonCopies } from '@core/components/translate-button/translate-button.component';
 import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
+import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
 
 @Component({
   selector: 'tsl-current-conversation',
