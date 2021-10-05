@@ -98,10 +98,10 @@ export class BankDetailsOverviewComponent implements OnInit {
 
   public openDeleteCardModal(): void {
     this.generateConfirmationModalRef({
-      title: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_TITLE_DELETE),
-      description: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_DESCRIPTION_DELETE),
-      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_ACCEPT_BUTTON_DELETE),
-      cancelMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_POPUP_CANCEL_BUTTON_DELETE),
+      title: this.i18nService.translate(TRANSLATION_KEY.BANK_DETAILS_POPUP_REMOVE_CREDIT_CARD_TITLE),
+      description: this.i18nService.translate(TRANSLATION_KEY.BANK_DETAILS_POPUP_REMOVE_CREDIT_CARD_DESCRIPTION),
+      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.BANK_DETAILS_POPUP_REMOVE_CREDIT_CARD_CONFIRM),
+      cancelMessage: this.i18nService.translate(TRANSLATION_KEY.BANK_DETAILS_POPUP_REMOVE_CREDIT_CARD_CANCEL),
       confirmColor: COLORS.NEGATIVE_MAIN,
     }).result.then(
       () => {
