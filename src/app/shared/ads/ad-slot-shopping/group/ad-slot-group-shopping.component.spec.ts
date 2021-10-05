@@ -40,7 +40,7 @@ describe('AdSlotGroupShoppingComponent', () => {
 
       component.ngAfterViewInit();
 
-      expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(MockAdShoppingPageOptions, MockAdSlotShopping);
+      expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(MockAdShoppingPageOptions, [MockAdSlotShopping]);
     });
   });
 });
