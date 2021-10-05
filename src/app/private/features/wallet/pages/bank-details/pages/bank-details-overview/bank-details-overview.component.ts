@@ -127,7 +127,7 @@ export class BankDetailsOverviewComponent implements OnInit {
   private deleteCard(): void {
     this.paymentsCreditCardService.delete().subscribe(
       () => {
-        this.showToast(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS, TOAST_TYPES.SUCCESS);
+        this.showToast(TRANSLATION_KEY.BANK_DETAILS_DELETE_CREDIT_CARD_SUCCESS, TOAST_TYPES.SUCCESS);
       },
       () => {
         this.showToast(TRANSLATION_KEY.BANK_DETAILS_DELETE_CREDIT_CARD_ERROR, TOAST_TYPES.ERROR);
@@ -138,7 +138,7 @@ export class BankDetailsOverviewComponent implements OnInit {
   private deleteBankAccount(): void {
     this.bankAccountService.delete().subscribe(
       () => {
-        this.showToast(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_SUCCESS, TOAST_TYPES.SUCCESS);
+        this.showToast(TRANSLATION_KEY.BANK_DETAILS_DELETE_BANK_ACCOUNT_SUCCESS, TOAST_TYPES.SUCCESS);
       },
       () => {
         this.showToast(TRANSLATION_KEY.BANK_DETAILS_DELETE_BANK_ACCOUNT_ERROR, TOAST_TYPES.ERROR);
