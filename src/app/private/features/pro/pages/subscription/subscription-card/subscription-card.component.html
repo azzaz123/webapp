@@ -1,4 +1,4 @@
-<div class="SubscriptionCard d-flex justify-content-between mb-3" [ngClass]="{
+<div class="SubscriptionCard d-flex justify-content-between" [ngClass]="{
     'SubscriptionCard--subscribed': isSubscribed
   }">
     <div class="w-100 d-flex flex-column align-items-start">
@@ -61,7 +61,6 @@
         </ng-template>
     </div>
     <div class="SubscriptionCard__icon">
-        <tsl-svg-icon [src]="iconSrc" class="image">
-        </tsl-svg-icon>
+        <img [src]="iconSrc"> 
     </div>
 </div>
