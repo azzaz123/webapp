@@ -25,7 +25,7 @@ export class SearchTrackingEventsService {
     [SORT_BY.RELEVANCE]: 'most_relevant',
   };
 
-  constructor(private analyticsService: AnalyticsService, private queryStringService: SearchQueryStringService) {}
+  constructor(private analyticsService: AnalyticsService) {}
 
   public trackSearchEvent(searchId: string, filterParams: FilterParameter[]): void {
     const event: AnalyticsEvent<Search> = {
@@ -43,17 +43,18 @@ export class SearchTrackingEventsService {
 
   private fromFilterParameterEventFilter(filterParams: FilterParameter[]): Partial<Search> {
     const FILTER_KEY_EVENT_MAP_KEYS = Object.keys(this.FILTER_KEY_EVENT_MAP);
-    const filters = this.queryStringService.mapFilterToQueryParams(filterParams);
+    const filters = filterParams.reduce((map, parameter) => {
+      const key = parameter.key;
+      const value = parameter.value;
 
-    Object.keys(filters).map((key) => {
       if (key === FILTER_QUERY_PARAM_KEY.orderBy) {
-        filters[key] = this.ORDER_BY_VALUE_MAP[filters[key]];
+        map[this.camelize(key)] = this.ORDER_BY_VALUE_MAP[value];
+      } else {
+        map[FILTER_KEY_EVENT_MAP_KEYS.includes(key) ? this.FILTER_KEY_EVENT_MAP[key] : this.camelize(key)] = value;
       }
-      if (!FILTER_KEY_EVENT_MAP_KEYS.includes(key)) {
-        filters[this.camelize(key)] = filters[key];
-        delete filters[key];
-      }
-    });
+
+      return map;
+    }, {});
 
     return filters;
   }
