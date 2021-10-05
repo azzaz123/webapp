@@ -30,7 +30,7 @@ export class SubscriptionCardComponent {
   }
 
   get descriptionText(): string {
-    return this.titleConfig[this.subscription.category_id];
+    return this.isSubscribed ? this.subscriptionBodyText : this.titleConfig[this.subscription.category_id];
   }
 
   get subscriptionBodyText(): string {

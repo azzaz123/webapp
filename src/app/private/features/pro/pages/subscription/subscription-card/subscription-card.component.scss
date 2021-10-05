@@ -3,11 +3,8 @@
 .SubscriptionCard {
   border: 1px solid $blue-grey-5;
   border-radius: 10px;
-  padding: $spacing-ms;
-  flex-wrap: wrap;
+  padding: 32px;
   color: $blue-grey-2;
-  height: 100%;
-  margin: 0 auto;
 
   &:hover {
     transform: translateY(-2px);
@@ -15,29 +12,25 @@
   }
 
   &__banner {
-    border-radius: 2px;
+    border-radius: 21px;
+    font-weight: bold;
+    font-size: 12px;
 
     &--trial {
-      background-color: $yellow-main;
+      background-color: #f75883;
       color: $blue-grey-1;
     }
 
     &--discount {
-      background-color: $skyblue-main;
+      background-color: #f75883;
       color: $white;
-    }
-
-    &--hidden {
-      visibility: hidden;
     }
   }
 
   &__info {
     font-size: $font-size-s;
-    flex-grow: 1;
     &--edit {
       color: $walla-main;
-      text-align: center;
       cursor: pointer;
     }
     &--price {
@@ -48,21 +41,7 @@
   &__title {
     font-size: $font-size-l;
     font-weight: bold;
-    color: $blue-grey-2;
-  }
-
-  &__subtitle {
-    min-height: 48px;
-  }
-
-  hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 2px solid $blue-grey-5;
-    margin: $spacing-xs 0;
-    width: 100%;
-    margin-top: auto;
+    color: $blue-grey-1;
   }
 
   &__icon {
@@ -78,20 +57,11 @@
     border: 2px solid $walla-main;
   }
 
-  .icon-check {
-    ::ng-deep svg path {
-      fill: $blue-grey-2;
-    }
-  }
-
   &__date {
-    color: $walla-main;
     font-size: $font-size-s;
-    text-align: center;
   }
 
   &__price {
-    color: $walla-main;
     font-size: $font-size-m;
     font-weight: bold;
 
