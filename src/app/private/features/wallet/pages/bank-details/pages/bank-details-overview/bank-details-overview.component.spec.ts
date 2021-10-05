@@ -198,7 +198,7 @@ describe('BankDetailsOverviewComponent', () => {
 
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR),
+              text: i18nService.translate(TRANSLATION_KEY.BANK_DETAILS_DELETE_CREDIT_CARD_ERROR),
               type: TOAST_TYPES.ERROR,
             });
           });
@@ -337,7 +337,7 @@ describe('BankDetailsOverviewComponent', () => {
 
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR),
+              text: i18nService.translate(TRANSLATION_KEY.BANK_DETAILS_DELETE_BANK_ACCOUNT_ERROR),
               type: TOAST_TYPES.ERROR,
             });
           });

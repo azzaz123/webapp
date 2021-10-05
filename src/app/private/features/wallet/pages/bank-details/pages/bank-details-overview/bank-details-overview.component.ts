@@ -130,7 +130,7 @@ export class BankDetailsOverviewComponent implements OnInit {
         this.showToast(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS, TOAST_TYPES.SUCCESS);
       },
       () => {
-        this.showToast(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR, TOAST_TYPES.ERROR);
+        this.showToast(TRANSLATION_KEY.BANK_DETAILS_DELETE_CREDIT_CARD_ERROR, TOAST_TYPES.ERROR);
       }
     );
   }
@@ -141,7 +141,7 @@ export class BankDetailsOverviewComponent implements OnInit {
         this.showToast(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_SUCCESS, TOAST_TYPES.SUCCESS);
       },
       () => {
-        this.showToast(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR, TOAST_TYPES.ERROR);
+        this.showToast(TRANSLATION_KEY.BANK_DETAILS_DELETE_BANK_ACCOUNT_ERROR, TOAST_TYPES.ERROR);
       }
     );
   }
