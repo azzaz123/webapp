@@ -8,10 +8,10 @@ import {
   MessageStatus,
   MessageType,
 } from '@private/features/chat/core/model';
-import { CATEGORY_IDS } from '../app/core/category/category-ids';
-import { ITEM_ID, MOCK_ITEM } from './item.fixtures.spec';
+import { CATEGORY_IDS } from '@core/category/category-ids';
+import { ITEM_ID, MOCK_ITEM } from '../item.fixtures.spec';
 import { MESSAGE_MAIN } from './message.fixtures.spec';
-import { OTHER_USER_ID, USER_ID } from './user.fixtures.spec';
+import { OTHER_USER_ID, USER_ID } from '../user.fixtures.spec';
 
 export const CONVERSATION_ID: string = MESSAGE_MAIN.thread;
 export const CONVERSATION_PHONE = '123.456.789';
@@ -380,6 +380,13 @@ export const MOCK_INBOX_MESSAGE_2: InboxMessage = new InboxMessage(
 );
 
 export const MOCK_INBOX_MESSAGES: InboxMessage[] = [MOCK_INBOX_MESSAGE, MOCK_INBOX_MESSAGE_2];
+export const MOCK_INBOX_TRANSLATED_MESSAGES: InboxMessage[] = MOCK_INBOX_MESSAGES.map(
+  ({ id, thread, text, from, fromSelf, date, status, type }) => {
+    const message = new InboxMessage(id, thread, text, from, fromSelf, date, status, type);
+    message.translation = `Translation: ${text}`;
+    return message;
+  }
+);
 
 export const MOCK_INBOX_CONVERSATION_BASIC: InboxConversation = new InboxConversation(
   'abcd',
@@ -419,3 +426,46 @@ export const MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER: InboxConversation = ne
   288,
   MOCK_INBOX_MESSAGES[0]
 );
+
+export const MOCK_INBOX_TRANSLATABLE_CONVERSATION: InboxConversation = new InboxConversation(
+  'abcd',
+  new Date(),
+  MOCK_MALICIOUS_INBOX_USER,
+  MOCK_INBOX_ITEM,
+  'bli',
+  MOCK_INBOX_MESSAGES,
+  false,
+  CONVERSATION_PHONE,
+  288,
+  MOCK_INBOX_MESSAGES[0],
+  true
+);
+
+export const MOCK_INBOX_TRANSLATABLE_CONVERSATION_ALREADY_TRANSLATED: InboxConversation = new InboxConversation(
+  'abcd',
+  new Date(),
+  MOCK_INBOX_USER,
+  MOCK_INBOX_ITEM,
+  'bli',
+  MOCK_INBOX_TRANSLATED_MESSAGES,
+  false,
+  CONVERSATION_PHONE,
+  288,
+  MOCK_INBOX_TRANSLATED_MESSAGES[0],
+  true
+);
+
+export const MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICALLY: InboxConversation = new InboxConversation(
+  'abcd',
+  new Date(),
+  MOCK_INBOX_USER,
+  MOCK_INBOX_ITEM,
+  'bli',
+  MOCK_INBOX_TRANSLATED_MESSAGES,
+  false,
+  CONVERSATION_PHONE,
+  288,
+  MOCK_INBOX_TRANSLATED_MESSAGES[0],
+  true
+);
+MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICALLY.isAutomaticallyTranslatable = true;

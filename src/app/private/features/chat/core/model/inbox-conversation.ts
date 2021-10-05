@@ -1,4 +1,3 @@
-import { environment } from '@environments/environment';
 import { InboxConversationApi, InboxItemApi, InboxUserApi } from './api';
 import { InboxImage, InboxItem, InboxItemPlaceholder, InboxItemStatus } from './inbox-item';
 import { InboxMessage } from './inbox-message';
@@ -15,10 +14,13 @@ export class InboxConversation {
     private _phoneShared: boolean,
     private _phone_number: string,
     private _unreadCounter: number = 0,
-    private _lastMessage?: InboxMessage
+    private _lastMessage?: InboxMessage,
+    private _translatable?: boolean
   ) {}
 
   public active = false;
+  public isTranslating = false;
+  public isAutomaticallyTranslatable = false;
 
   get cannotChat(): boolean {
     return this.user.blocked || !this.user.available || this.item.status === InboxItemStatus.NOT_AVAILABLE;
@@ -104,6 +106,22 @@ export class InboxConversation {
     return this.messages.length === 0;
   }
 
+  get isTranslatable(): boolean {
+    return this._translatable && this.hasTranslatableMessages();
+  }
+
+  private hasTranslatableMessages(): boolean {
+    const interlocutorMessages = this.messages.filter((message) => !message.fromSelf);
+
+    for (let message of interlocutorMessages) {
+      if (!message.translation) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   static errorConversationFromMessage(message: InboxMessage) {
     const user = InboxUserPlaceholder;
     const item = InboxItemPlaceholder;
@@ -131,7 +149,8 @@ export class InboxConversation {
       conversation.phone_shared,
       conversation.phone_number,
       conversation.unread_messages,
-      lastMessage
+      lastMessage,
+      conversation.translatable
     );
   }
 
@@ -178,7 +197,7 @@ export class InboxConversation {
     );
   }
 
-  private static buildInboxMessages(conversation, id) {
+  private static buildInboxMessages(conversation, id): InboxMessage[] {
     return InboxMessage.messsagesFromJson(
       conversation.messages.messages,
       conversation.hash,
