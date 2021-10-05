@@ -15,7 +15,9 @@ export class SessionService {
     return this._newSession$.asObservable();
   }
 
-  constructor(private cookieService: CookieService) {
+  constructor(private cookieService: CookieService) {}
+
+  public initSession(): void {
     const isNewSession = this.cookieService.get(SessionService.SESSION_COOKIE_NAME) !== 'true';
     this.initSessionTracking();
     if (isNewSession) {
