@@ -28,7 +28,7 @@ export class SearchNavigatorService {
     FILTER_QUERY_PARAM_KEY.orderBy,
   ];
 
-  public addLocationParams(currentParams: Params) {
+  public navigateWithLocationParams(currentParams: Params) {
     const locationParams = this.locationService.getLocationParameters();
     const queryParams = { ...currentParams, ...locationParams };
 

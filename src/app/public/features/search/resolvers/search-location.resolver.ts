@@ -12,7 +12,7 @@ export class SearchLocationResolver implements Resolve<boolean> {
     const queryParams = route.queryParams;
 
     if (!this.routeContainLocationParams(queryParams)) {
-      this.searchNavigatorService.addLocationParams(queryParams);
+      this.searchNavigatorService.navigateWithLocationParams(queryParams);
     }
     return of(true);
   }
