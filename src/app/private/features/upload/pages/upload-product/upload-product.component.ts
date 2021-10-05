@@ -868,6 +868,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         attributes: {
           ...baseEventAttrs,
           screenId: SCREEN_IDS.EditItem,
+          salePriceChange: null,
         },
       };
 
