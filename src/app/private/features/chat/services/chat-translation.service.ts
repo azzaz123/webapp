@@ -13,7 +13,7 @@ export class ChatTranslationService {
     const messages = this.getTranslatableMessages(conversation);
 
     if (!messages.length) {
-      return of(null);
+      return of(void 0);
     }
 
     return this.chatApiService.translateMessages(conversation.id, messages).pipe(
