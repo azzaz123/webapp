@@ -14,6 +14,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { By } from '@angular/platform-browser';
+import { FavouritesListTrackingEventsService } from '../../services/favourites-list-tracking-events.service';
 
 describe('ItemCardFavouriteComponent', () => {
   let component: ItemCardFavouriteComponent;
@@ -22,6 +23,7 @@ describe('ItemCardFavouriteComponent', () => {
 
   let itemService: ItemService;
   let modalService: NgbModal;
+  let favouritesListTrackingEventsService: FavouritesListTrackingEventsService;
 
   const modalRef: any = {
     result: Promise.resolve({
@@ -60,6 +62,7 @@ describe('ItemCardFavouriteComponent', () => {
             provide: SITE_URL,
             useValue: MOCK_SITE_URL,
           },
+          FavouritesListTrackingEventsService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -73,7 +76,7 @@ describe('ItemCardFavouriteComponent', () => {
     component.item = MOCK_ITEM;
     itemService = TestBed.inject(ItemService);
     modalService = TestBed.inject(NgbModal);
-
+    favouritesListTrackingEventsService = TestBed.inject(FavouritesListTrackingEventsService);
     fixture.detectChanges();
   });
 
@@ -108,6 +111,7 @@ describe('ItemCardFavouriteComponent', () => {
       spyOn(component, 'removeFavoriteModal').and.callThrough();
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'removeFavorite').and.callThrough();
+      spyOn(favouritesListTrackingEventsService, 'trackUnfavouriteItemEvent');
       removeFavoriteButton = fixture.debugElement.nativeElement.querySelector('tsl-card-footer');
       removeFavoriteButton.click();
     }));
@@ -123,6 +127,8 @@ describe('ItemCardFavouriteComponent', () => {
     it('should call removeFavorite method ', fakeAsync(() => {
       tick();
       expect(component.removeFavorite).toHaveBeenCalled();
+      expect(favouritesListTrackingEventsService.trackUnfavouriteItemEvent).toHaveBeenCalledTimes(1);
+      expect(favouritesListTrackingEventsService.trackUnfavouriteItemEvent).toHaveBeenCalledWith(component.item);
     }));
   });
 });
