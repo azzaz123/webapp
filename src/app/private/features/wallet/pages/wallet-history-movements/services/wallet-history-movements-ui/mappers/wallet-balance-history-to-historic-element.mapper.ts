@@ -50,13 +50,18 @@ const mapWalletBalanceHistoryElementToHistoricElement = (input: WalletMovementHi
   const { imageUrl: itemImageUrl, type, title, description, estimatedPayoutDescription: subDescription, date, moneyAmmount } = input;
   const iconUrl = MONEY_MOVEMENT_SVG_URL_BY_TYPE[type];
 
-  return {
+  const historicElement: HistoricElement = {
     itemImageUrl,
     iconUrl,
     title,
     description,
-    subDescription,
     date,
     moneyAmmount,
   };
+
+  if (subDescription) {
+    historicElement.subDescription = subDescription;
+  }
+
+  return historicElement;
 };
