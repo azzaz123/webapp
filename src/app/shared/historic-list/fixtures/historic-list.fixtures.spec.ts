@@ -31,7 +31,7 @@ export const MOCK_HISTORIC_LIST_WITH_BALANCE: HistoricList = {
   totalBalance: mapNumberAndCurrencyCodeToMoney({ number: 123, currency: 'EUR' }),
 };
 
-export const MOCK_HISTORY_LIST_FROM_WALLET_MOVEMENTS: HistoricList = {
+export const MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS: HistoricList = {
   elements: [
     {
       label: '2021',
