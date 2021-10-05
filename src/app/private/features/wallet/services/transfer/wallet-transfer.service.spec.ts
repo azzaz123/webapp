@@ -28,7 +28,7 @@ describe('WalletTransferService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('WHEN transfer the money', () => {
+  describe('WHEN transferint the money', () => {
     beforeEach(() => {
       spyOn(walletTransferApiService, 'transfer').and.returnValue(of(null));
       spyOn(walletTransferMapperService, 'mapToRequest').and.returnValue(MOCK_API_REQUEST_TO_TRANSFER);
@@ -44,6 +44,20 @@ describe('WalletTransferService', () => {
       const expectedFunds = { funds: MOCK_API_REQUEST_TO_TRANSFER.funds };
 
       expect(walletTransferApiService.transfer).toHaveBeenCalledWith(jasmine.objectContaining(expectedFunds));
+    });
+  });
+
+  describe('WHEN checking the pay user bank account', () => {
+    beforeEach(() => {
+      spyOn(walletTransferApiService, 'checkPayUserBankAccount').and.returnValue(of(null));
+
+      service.checkPayUserBankAccount().subscribe();
+    });
+
+    it('should call to the service with the corresponding status', () => {
+      const expectedStatus = 'STARTED';
+
+      expect(walletTransferApiService.checkPayUserBankAccount).toHaveBeenCalledWith(expectedStatus);
     });
   });
 });

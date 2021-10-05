@@ -1,5 +1,6 @@
 import {
   MOCK_WALLET_TRANSFER_ALREADY_STARTED_ERROR_RESPONSE,
+  MOCK_WALLET_TRANSFER_EMPTY_ERROR_RESPONSE,
   MOCK_WALLET_TRANSFER_INSUFFICIENT_FUNDS_ERROR_RESPONSE,
   MOCK_WALLET_TRANSFER_LESS_THAN_MINIMUM_ERROR_RESPONSE,
   MOCK_WALLET_TRANSFER_NETWORK_ERROR_RESPONSE,
@@ -12,7 +13,7 @@ import {
   WalletTransferErrorResponse,
 } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-error-mapper';
 import { WalletTransferGenericErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error.model';
-import { WalletTransferNetworkErrorModel } from '../../classes/transfer/wallet-transfer-network-error.model';
+import { WalletTransferNetworkErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-network-error.model';
 
 const walletTransferErrorMapper = new WalletTransferErrorMapper();
 const walletTransferErrorResponses = [
@@ -25,27 +26,39 @@ const walletTransferErrorResponses = [
 ];
 
 describe('WHEN receiving an error from payment backend', () => {
-  describe.each(walletTransferErrorResponses)('AND WHEN server notifies an already started error', (errorResponse) => {
+  describe.each(walletTransferErrorResponses)('WHEN the error is known', (errorResponse) => {
     it('should notify a generic error', () => {
-      let results: WalletTransferErrorResponse[];
+      let result: WalletTransferErrorResponse;
 
       walletTransferErrorMapper.map(errorResponse).subscribe({
-        error: (errors) => (results = errors),
+        error: (errors) => (result = errors),
       });
 
-      expect(results[0] instanceof WalletTransferGenericErrorModel).toBe(true);
+      expect(result instanceof WalletTransferGenericErrorModel).toBe(true);
     });
   });
 
-  describe('AND WHEN server notifies an already started error', () => {
-    it('should notify a netword error', () => {
-      let results: WalletTransferErrorResponse[];
+  describe('AND WHEN there is no internet connection', () => {
+    it('should notify a network error', () => {
+      let result: WalletTransferErrorResponse;
 
-      walletTransferErrorMapper.map(MOCK_WALLET_TRANSFER_NETWORK_ERROR_RESPONSE).subscribe({
-        error: (errors) => (results = errors),
+      walletTransferErrorMapper.map(MOCK_WALLET_TRANSFER_NETWORK_ERROR_RESPONSE as WalletTransferErrorResponse).subscribe({
+        error: (errors) => (result = errors),
       });
 
-      expect(results[0] instanceof WalletTransferNetworkErrorModel).toBe(true);
+      expect(result instanceof WalletTransferNetworkErrorModel).toBe(true);
+    });
+  });
+
+  describe('AND WHEN there is an unknown error', () => {
+    it('should notify a generic error', () => {
+      let result: WalletTransferErrorResponse;
+
+      walletTransferErrorMapper.map(MOCK_WALLET_TRANSFER_EMPTY_ERROR_RESPONSE as WalletTransferErrorResponse).subscribe({
+        error: (errors) => (result = errors),
+      });
+
+      expect(result instanceof WalletTransferGenericErrorModel).toBe(true);
     });
   });
 });

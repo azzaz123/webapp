@@ -13,6 +13,7 @@ import { WalletPendingTransactionComponent } from '@private/features/wallet/page
 import { WalletPendingTransactionsComponent } from '@private/features/wallet/pages/wallet-balance/components/wallet-pending-transactions/wallet-pending-transactions.component';
 import { WalletPendingTransactionsListComponent } from '@private/features/wallet/pages/wallet-balance/components/wallet-pending-transactions-list/wallet-pending-transactions-list.component';
 import { WalletSharedErrorActionComponent } from '@private/features/wallet/shared/error-action';
+import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { of } from 'rxjs';
 
@@ -57,6 +58,17 @@ describe('WalletBalanceComponent', () => {
             },
             getBannerSpecificationsFromProperties(property) {
               return of();
+            },
+          },
+        },
+        {
+          provide: WalletTransferService,
+          useValue: {
+            checkPayUserBankAccount() {
+              return of(null);
+            },
+            transfer() {
+              return of(null);
             },
           },
         },

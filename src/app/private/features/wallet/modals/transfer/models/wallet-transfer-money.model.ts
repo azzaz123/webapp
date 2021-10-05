@@ -16,7 +16,7 @@ export class WalletTransferMoneyModel implements WalletTransferMoneyInterface {
     this.amount = this.getAmount(amount, amountOfDecimals);
     this.balance = balance;
     this.currency = balance.currency;
-    this.amountOfDecimals = amountOfDecimals ?? defaultAmountOfDecimals;
+    this.amountOfDecimals = amountOfDecimals;
   }
 
   public toString(): string {

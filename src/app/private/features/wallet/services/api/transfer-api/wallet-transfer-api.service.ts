@@ -6,13 +6,13 @@ import {
   WalletTransferErrorMapper,
   WalletTransferErrorResponse,
 } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-error-mapper';
+import { WalletTransferPayUserBankAccountErrorMapper } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-pay-user-bank-account-error-mapper';
 import { WalletTransferRequestInterface } from '@private/features/wallet/interfaces/transfer/wallet-transfer-request.interface';
 
 import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { WalletTransferPayUserBankAccountErrorMapper } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-pay-user-bank-account-error-mapper';
 
-export const PayBankAccountFromUserWalletEndPoint = `${environment.baseUrl}/api/v3/payments/pay_user_bank_account_from_user_wallet_fake_url`;
+export const PayBankAccountFromUserWalletEndPoint = `${environment.baseUrl}/api/v3/payments/pay_user_bank_account_from_user_wallet`;
 export const PayUserBankAccountsEndPoint = `${environment.baseUrl}/api/v3/payments/pay_user_bank_accounts`;
 
 const StatusParam: string = 'status';

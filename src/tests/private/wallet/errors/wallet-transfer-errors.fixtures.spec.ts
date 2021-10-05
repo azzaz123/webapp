@@ -23,11 +23,6 @@ export const MOCK_WALLET_TRANSFER_LESS_THAN_MINIMUM_ERROR: WalletErrorApi<Wallet
   message: 'mangopay pay user bank account from user wallet less than minimum',
 };
 
-export const MOCK_WALLET_TRANSFER_NETWORK_ERROR: WalletErrorApi<WalletTransferErrorEnum> = {
-  error_code: WalletTransferErrorEnum.Network,
-  message: 'network error',
-};
-
 export const MOCK_WALLET_TRANSFER_USER_NOT_FOUND_ERROR: WalletErrorApi<WalletTransferErrorEnum> = {
   error_code: WalletTransferErrorEnum.UserNotFound,
   message: 'mangopay bank account for user not found',
@@ -48,6 +43,11 @@ export const MOCK_WALLET_TRANSFER_ALREADY_STARTED_ERROR_RESPONSE: WalletTransfer
   error: [MOCK_WALLET_TRANSFER_ALREADY_STARTED_ERROR],
 };
 
+export const MOCK_WALLET_TRANSFER_EMPTY_ERROR_RESPONSE: WalletTransferErrorResponse = {
+  ...MOCK_WALLET_TRANSFER_BASE_ERROR_RESPONSE,
+  error: [],
+};
+
 export const MOCK_WALLET_TRANSFER_INSUFFICIENT_FUNDS_ERROR_RESPONSE: WalletTransferErrorResponse = {
   ...MOCK_WALLET_TRANSFER_BASE_ERROR_RESPONSE,
   error: [MOCK_WALLET_TRANSFER_INSUFFICIENT_FUNDS_ERROR],
@@ -58,9 +58,22 @@ export const MOCK_WALLET_TRANSFER_LESS_THAN_MINIMUM_ERROR_RESPONSE: WalletTransf
   error: [MOCK_WALLET_TRANSFER_LESS_THAN_MINIMUM_ERROR],
 };
 
-export const MOCK_WALLET_TRANSFER_NETWORK_ERROR_RESPONSE: WalletTransferErrorResponse = {
-  ...MOCK_WALLET_TRANSFER_BASE_ERROR_RESPONSE,
-  error: [MOCK_WALLET_TRANSFER_NETWORK_ERROR],
+export const MOCK_WALLET_TRANSFER_NETWORK_ERROR_RESPONSE: unknown = {
+  error: {
+    bubbles: false,
+    cancelBubble: false,
+    cancelable: false,
+    composed: false,
+    defaultPrevented: false,
+    type: 'error',
+  },
+  headers: {},
+  message: 'Http failure response for http://fake_url: 0 Unknown Error',
+  name: 'HttpErrorResponse',
+  ok: false,
+  status: 0,
+  statusText: 'Unknown Error',
+  url: 'http://fake_url',
 };
 
 export const MOCK_WALLET_TRANSFER_USER_NOT_FOUND_ERROR_RESPONSE: WalletTransferErrorResponse = {

@@ -13,12 +13,12 @@ import { WalletSharedErrorActionService } from '@private/features/wallet/shared/
 import { WalletTransferDismissErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error.model';
 import { WalletTransferErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-error.model';
 import { WalletTransferMainComponent } from '@private/features/wallet/modals/transfer/components/main/wallet-transfer-main.component';
+import { WalletTransferPayUserBankAccountErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error.model';
 import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { forkJoin } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { WalletTransferPayUserBankAccountErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error.model';
 
 const validatingTransferMessage: Toast = {
   type: TOAST_TYPES.SUCCESS,
@@ -102,22 +102,15 @@ export class WalletBalanceInfoComponent implements OnInit {
   }
 
   private checkPayUserBankAccount(): void {
-    this.walletTransferService
-      .checkPayUserBankAccount()
-      .pipe(
-        finalize(() => {
-          this.changeDetectorRef.detectChanges();
-        })
-      )
-      .subscribe({
-        next: () => {},
-        error: (error: WalletTransferErrorModel) => {
-          if (error instanceof WalletTransferDismissErrorModel) {
-            return;
-          }
-          this.showTransferErrorMessage(error);
-        },
-      });
+    this.walletTransferService.checkPayUserBankAccount().subscribe({
+      next: () => {},
+      error: (error: WalletTransferErrorModel) => {
+        if (error instanceof WalletTransferDismissErrorModel) {
+          return;
+        }
+        this.showTransferErrorMessage(error);
+      },
+    });
   }
 
   private showTransferErrorMessage(error: WalletTransferErrorModel): void {

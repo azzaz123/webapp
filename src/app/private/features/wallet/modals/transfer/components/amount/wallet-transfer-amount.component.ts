@@ -47,7 +47,7 @@ export class WalletTransferAmountComponent implements OnInit {
   @Output()
   public transfered: EventEmitter<WalletTransferMoneyInterface> = new EventEmitter<WalletTransferMoneyInterface>();
 
-  public showTryAgainMessage: boolean;
+  public showRetryMessage: boolean;
   public transferAmount: WalletTransferAmountModel;
 
   private error: boolean;
@@ -80,18 +80,20 @@ export class WalletTransferAmountComponent implements OnInit {
 
   public emptyAmount(): void {
     this.transferAmount.empty();
-    this.showTryAgainMessage = false;
+    this.showRetryMessage = false;
     (this.integerElementRef.nativeElement as HTMLInputElement).focus();
   }
 
   public formatDecimalPart(): void {
-    this.showTryAgainMessage = this.showTryAgainMessage && this.transferAmount.total === this.transferData.amount.total;
+    this.showRetryMessage = this.showRetryMessage && this.transferAmount.total === this.transferData.amount.total;
     (this.decimalElementRef.nativeElement as HTMLInputElement).value = this.transferAmount.decimalsAsCents;
+    this.changeDetectorRef.detectChanges();
   }
 
   public formatIntegerPart(): void {
-    this.showTryAgainMessage = this.showTryAgainMessage && this.transferAmount.total === this.transferData.amount.total;
+    this.showRetryMessage = this.showRetryMessage && this.transferAmount.total === this.transferData.amount.total;
     (this.integerElementRef.nativeElement as HTMLInputElement).value = this.transferAmount.integerAsUnits;
+    this.changeDetectorRef.detectChanges();
   }
 
   public get integerPartMaxLength(): number {
@@ -152,7 +154,8 @@ export class WalletTransferAmountComponent implements OnInit {
     this.walletBalance = this.transferData.balance;
     this.transferAmount = new WalletTransferAmountModel(this.transferData.amount.total, minimumTransferAmount, amountOfDecimals);
     this.transferAmount.setMaximum(this.walletBalance.amount.total);
+    this.showRetryMessage = true;
     this.loading = false;
-    this.showTryAgainMessage = true;
+    this.changeDetectorRef.detectChanges();
   }
 }
