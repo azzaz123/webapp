@@ -65,7 +65,7 @@
                     <tsl-button
                         *ngIf="showEndVerificationButton$ | async" id="endVerificationButton"
                         [disabled]="(isEndVerificationButtonActive$ | async) === false"
-                        i18n="@@kyc_end_verification"
+                        i18n="@@kyc_take_photo_view_finish_verification_button"
                         class="col-12 col-md-7 p-0"
                         className="btn-primary btn-block"
                         (click)="emitEndVerification()">Finish verification</tsl-button>

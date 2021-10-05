@@ -428,7 +428,7 @@ describe('KYCUploadImagesComponent', () => {
               });
 
               it('should show the correct subtitle', () => {
-                const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_description:To finish the verification process, you just need to take a photo of the back side of your ID document.`;
+                const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_description:To finish the verification process, you just need to show a photo of the back side of your ID document.`;
 
                 expectShowCorrectSubtitle(expectedSubtitle);
               });
@@ -921,7 +921,7 @@ describe('KYCUploadImagesComponent', () => {
           });
 
           it('should show the correct title', () => {
-            const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_title:Take a photo of the front side of your ID document`;
+            const expectedTitle = $localize`:@@kyc_upload_photo_view_if_two_sides_front_side_title:Upload photo of your document`;
 
             expectShowCorrectTitle(expectedTitle);
           });
@@ -936,8 +936,8 @@ describe('KYCUploadImagesComponent', () => {
             expectTakeImageButtonInDOM(true);
           });
 
-          it('should show the correct take image message in the button', () => {
-            const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_photo_button:Take front side photo`;
+          it('should show the correct upload image message in the button', () => {
+            const expectedMessage = $localize`:@@kyc_upload_photo_view_if_two_sides_front_side_upload_button:Upload front side photo`;
             expectTakeImageButtonCorrectMessage(expectedMessage);
           });
 
@@ -1051,8 +1051,8 @@ describe('KYCUploadImagesComponent', () => {
             expectRetakeImageButtonInDOM(true);
           });
 
-          it('should show the correct retake image message in the button', () => {
-            const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_photo_button:Retake front side photo`;
+          it('should show the correct change image message in the button', () => {
+            const expectedMessage = $localize`:@@kyc_upload_photo_view_if_one_side_review_upload_button:Change photo`;
             expectRetakeImageButtonCorrectMessage(expectedMessage);
           });
 
@@ -1161,13 +1161,13 @@ describe('KYCUploadImagesComponent', () => {
           });
 
           it('should show the correct title', () => {
-            const expectedTitle = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_title:Take a back side photo of your document`;
+            const expectedTitle = $localize`:@@kyc_upload_photo_view_if_two_sides_front_side_title:Upload photo of your document`;
 
             expectShowCorrectTitle(expectedTitle);
           });
 
           it('should show the correct subtitle', () => {
-            const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_description:To finish the verification process, you just need to take a photo of the back side of your ID document.`;
+            const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_description:To finish the verification process, you just need to show a photo of the back side of your ID document.`;
 
             expectShowCorrectSubtitle(expectedSubtitle);
           });
@@ -1176,8 +1176,8 @@ describe('KYCUploadImagesComponent', () => {
             expectTakeImageButtonInDOM(true);
           });
 
-          it('should show the correct take image message in the button', () => {
-            const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_back_side_continue_button:Take back side photo`;
+          it('should show the correct upload image message in the button', () => {
+            const expectedMessage = $localize`:@@kyc_upload_photo_view_if_two_sides_back_side_upload_button:Upload back side photo`;
             expectTakeImageButtonCorrectMessage(expectedMessage);
           });
 
@@ -1291,8 +1291,8 @@ describe('KYCUploadImagesComponent', () => {
             expectRetakeImageButtonInDOM(true);
           });
 
-          it('should show the correct retake image message in the button', () => {
-            const expectedMessage = $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_photo_button:Retake back side photo`;
+          it('should show the correct change image message in the button', () => {
+            const expectedMessage = $localize`:@@kyc_upload_photo_view_if_two_sides_review_back_side_change_photo_button:Change photo`;
             expectRetakeImageButtonCorrectMessage(expectedMessage);
           });
 
@@ -1405,7 +1405,7 @@ describe('KYCUploadImagesComponent', () => {
         });
 
         it('should show the correct title', () => {
-          const expectedTitle = $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`;
+          const expectedTitle = $localize`:@@kyc_upload_photo_view_if_one_side_title:Upload photo of your document`;
 
           expectShowCorrectTitle(expectedTitle);
         });
@@ -1420,8 +1420,8 @@ describe('KYCUploadImagesComponent', () => {
           expectTakeImageButtonInDOM(true);
         });
 
-        it('should show the correct take image message in the button', () => {
-          const expectedMessage = $localize`:@@kyc_take_photo_view_if_one_side_take_photo_button:Take photo`;
+        it('should show the correct upload image message in the button', () => {
+          const expectedMessage = $localize`:@@kyc_upload_photo_view_if_one_side_upload_button:Upload photo`;
           expectTakeImageButtonCorrectMessage(expectedMessage);
         });
 
@@ -1535,8 +1535,8 @@ describe('KYCUploadImagesComponent', () => {
           expectRetakeImageButtonInDOM(true);
         });
 
-        it('should show the correct retake image message in the button', () => {
-          const expectedMessage = $localize`:@@kyc_take_photo_view_if_one_side_review_retake_photo_button:Retake photo`;
+        it('should show the correct change image message in the button', () => {
+          const expectedMessage = $localize`:@@kyc_upload_photo_view_if_one_side_review_upload_button:Change photo`;
           expectRetakeImageButtonCorrectMessage(expectedMessage);
         });
 
