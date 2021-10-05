@@ -69,7 +69,7 @@ export class WalletTransferAmountModel {
   }
 
   public toString(): string {
-    return this.total.toLocaleString(HELP_LOCALE.en, {
+    return this.total.toLocaleString(undefined, {
       maximumFractionDigits: this.amountOfDecimals,
       minimumFractionDigits: this.amountOfDecimals,
     });

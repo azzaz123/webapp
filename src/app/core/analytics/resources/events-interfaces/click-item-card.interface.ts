@@ -38,6 +38,10 @@ export interface ClickItemCard {
    */
   isPro?: boolean;
   /**
+   * If the item clicked is from a car dealer user
+   */
+  isCarDealer?: boolean;
+  /**
    * Item price
    */
   salePrice: number;
@@ -54,13 +58,17 @@ export interface ClickItemCard {
    */
   itemDistance?: number;
   /**
-   * If the listing has shipping allowed
+   * If the item has the shipping toggle ON and a shipping weight informed
    */
   shippingAllowed?: boolean;
   /**
    * Identifier of the user that the item belongs to
    */
   sellerUserId?: string;
+  /**
+   * Rating of the Seller, from 0 to 100
+   */
+  sellerRating?: number;
   /**
    * If the item clicked is a bumped item
    */
@@ -81,4 +89,8 @@ export interface ClickItemCard {
    * If the item clicked is inside the pros slider
    */
   isProSlider?: boolean;
+  /**
+   * If the item clicked is inside the wall recommendations slider
+   */
+  isWallRecommendationSlider?: boolean;
 }
