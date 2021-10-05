@@ -1,4 +1,4 @@
-<div class="KYCUploadImages h-100 container">
+<div class="KYCUploadImages h-100 container d-flex flex-column">
     <div class="row mb-4">
         <div class="col d-flex justify-content-between p-0">
             <a class="KYCUploadImages__back d-flex" (click)="handleBack()">
@@ -14,8 +14,7 @@
         </div>      
     </div>
     <ng-container *ngIf="showImageBlock$ | async">
-        <!-- Quitar 100 -->
-        <div class="row h-100">
+        <div class="row d-flex KYCUploadImages__uploadImagesRow">
             <div class="col d-flex flex-column justify-content-between">
                 <div id="imageBlock" class="KYCUploadImages__imageLaterals row flex-column justify-content-between d-flex">
                     <div class="col d-flex flex-column justify-content-center p-0 KYCUploadImages__imageContainer">

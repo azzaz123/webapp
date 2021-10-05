@@ -13,6 +13,10 @@ $drawing-height: 130px;
     }
   }
 
+  &__nationalityRow {
+    flex: 1;
+  }
+
   &__infoMessage {
     font-size: $font-size-s;
   }

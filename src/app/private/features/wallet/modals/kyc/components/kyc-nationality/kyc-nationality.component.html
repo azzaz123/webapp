@@ -1,4 +1,4 @@
-<div class="KYCNationality container h-100">
+<div class="KYCNationality container h-100 d-flex flex-column">
     <div class="row">
         <div class="col d-flex justify-content-between p-0">
             <a class="KYCNationality__back d-flex" (click)="handleBack()">
@@ -8,8 +8,7 @@
             <tsl-svg-icon src="/assets/icons/cross.svg" class="KYCNationality__cross align-self-center" (click)="closeModal.emit()"></tsl-svg-icon>
         </div>
     </div>
-    <!-- Quitar 100 -->
-    <div class="row h-100">
+    <div class="row d-flex KYCNationality__nationalityRow">
         <div class="col d-flex flex-column justify-content-between">
             <div class="row">
                 <div class="col d-flex justify-content-center">

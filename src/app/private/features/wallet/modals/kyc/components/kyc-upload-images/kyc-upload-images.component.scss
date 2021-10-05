@@ -29,6 +29,10 @@ $image-height--big: 240px;
     font-weight: $font-weight-chunky;
   }
 
+  &__uploadImagesRow {
+    flex: 1;
+  }
+
   &__imageLaterals {
     padding: 0px $spacer * 2;
   }

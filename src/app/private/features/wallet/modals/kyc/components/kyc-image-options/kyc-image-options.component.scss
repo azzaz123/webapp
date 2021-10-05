@@ -18,6 +18,10 @@
     }
   }
 
+  &__optionsRow {
+    flex: 1;
+  }
+
   &__title {
     font-weight: $font-weight-chunky;
     font-size: $font-size-l;

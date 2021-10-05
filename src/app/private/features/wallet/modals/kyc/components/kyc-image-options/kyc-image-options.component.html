@@ -1,4 +1,4 @@
-<div class="KYCImageOptions container h-100">
+<div class="KYCImageOptions container h-100 d-flex flex-column">
     <div class="row">
         <div class="col d-flex justify-content-between p-0">
             <a class="KYCImageOptions__back d-flex" (click)="goBack.emit()">
@@ -14,8 +14,7 @@
             <span class="KYCImageOptions__description text-center d-flex mb-3" i18n="@@kyc_image_options_subtitle">You will need to add an official identification document. This step is to verify that you are who you say you are.</span>
         </div>
     </div>
-    <!-- Quitar 100 -->
-    <div class="row justify-content-center h-100">
+    <div class="row justify-content-center d-flex KYCImageOptions__optionsRow">
         <div class="col d-flex flex-column justify-content-between">
             <div class="row">
                 <div class="col col-md-10 offset-md-1">
