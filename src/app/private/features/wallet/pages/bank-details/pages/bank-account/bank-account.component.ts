@@ -136,9 +136,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         () => {
-          const translationKey = this.isNewForm
-            ? TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS
-            : TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS;
+          const translationKey = this.isNewForm ? TRANSLATION_KEY.BANK_ACCOUNT_ADD_SUCCESS : TRANSLATION_KEY.BANK_ACCOUNT_EDIT_SUCCESS;
 
           this.showToast(translationKey, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;

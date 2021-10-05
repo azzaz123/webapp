@@ -264,7 +264,7 @@ describe('BankAccountComponent', () => {
 
           it('should show a succeed message', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS),
+              text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_ADD_SUCCESS),
               type: TOAST_TYPES.SUCCESS,
             });
           });
@@ -364,7 +364,7 @@ describe('BankAccountComponent', () => {
 
           it('should show a succeed message', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS),
+              text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_EDIT_SUCCESS),
               type: TOAST_TYPES.SUCCESS,
             });
           });
@@ -389,7 +389,7 @@ describe('BankAccountComponent', () => {
 
           it('should show a succeed message', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS),
+              text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_EDIT_SUCCESS),
               type: TOAST_TYPES.SUCCESS,
             });
           });
