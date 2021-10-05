@@ -7,7 +7,7 @@ import { KYCDocumentStatusApi, KYCFlowStatusApi, KYCPropertiesApi, KYCRefusedRea
 
 export function mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi: KYCPropertiesApi): KYCProperties {
   return {
-    status: KYC_STATUS.PENDING,
+    status: getDocumentStatus(KYCPropertiesApi.user_kyc_status),
     refusedReason: getRefusedReason(KYCPropertiesApi.document_refused_reason_type),
     inflowStatus: getFlowStatus(KYCPropertiesApi.inflow_status),
     outflowStatus: getFlowStatus(KYCPropertiesApi.outflow_status),
