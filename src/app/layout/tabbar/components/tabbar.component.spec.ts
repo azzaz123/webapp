@@ -4,7 +4,7 @@ import { EventService } from '@core/event/event.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
-import { MockUnreadChatMessagesService } from '@fixtures/message.fixtures.spec';
+import { MockUnreadChatMessagesService } from '@fixtures/chat';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
