@@ -83,7 +83,7 @@ describe('DeviceService', () => {
 
         expect(deviceId).toEqual('newDeviceId');
         expect(cookieService.put).toHaveBeenCalledWith('device_id', 'newDeviceId', {
-          domain: 'localhost',
+          domain: expect.anything(),
           path: '/',
           expires: expect.any(Date),
         });

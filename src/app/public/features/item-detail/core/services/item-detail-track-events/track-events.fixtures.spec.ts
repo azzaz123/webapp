@@ -37,6 +37,7 @@ export const MOCK_CLICK_CHAT_BUTTON_EVENT: AnalyticsEvent<ClickChatButton> = {
     screenId: SCREEN_IDS.ItemDetail,
     isPro: MOCK_USER.featured,
     isBumped: !!MOCK_ITEM.bumpFlags?.bumped,
+    shippingAllowed: null,
   },
 };
 
@@ -62,6 +63,7 @@ export const MOCK_VIEW_OTHERS_CG_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemC
     title: MOCK_ITEM_GBP.title,
     isPro: MOCK_OTHER_USER.featured,
     screenId: SCREEN_IDS.ItemDetail,
+    sellerCountry: null,
   },
 };
 
@@ -214,6 +216,7 @@ export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT: AnalyticsPageView<ViewOther
     isCarDealer: true,
     isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
     screenId: SCREEN_IDS.ItemDetail,
+    sellerCountry: null,
   },
 };
 

@@ -1,11 +1,15 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-banner-constants';
-import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
-import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
+import {
+  MOCK_KYC_ERROR_PROPERTIES,
+  MOCK_KYC_NO_NEED_PROPERTIES,
+  MOCK_KYC_PENDING_PROPERTIES,
+  MOCK_KYC_PENDING_VERIFICATION_PROPERTIES,
+  MOCK_KYC_VERIFIED_PROPERTIES,
+} from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
@@ -46,7 +50,7 @@ describe('KYCGuard', () => {
     describe('and the status is pending...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
-        spyOn(kycPropertiesService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS.PENDING)));
+        jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_PENDING_PROPERTIES));
       });
 
       it('should be able to activate the KYC page', () => {
@@ -70,7 +74,7 @@ describe('KYCGuard', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
 
-        spyOn(kycPropertiesService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS.REJECTED)));
+        jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_ERROR_PROPERTIES));
       });
 
       it('should be able to activate the KYC page', () => {
@@ -93,7 +97,7 @@ describe('KYCGuard', () => {
     describe('and the status is pending verification...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
-        spyOn(kycPropertiesService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS.PENDING_VERIFICATION)));
+        jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_PENDING_VERIFICATION_PROPERTIES));
       });
 
       it(`should NOT be able to activate the KYC page`, () => {
@@ -116,7 +120,7 @@ describe('KYCGuard', () => {
     describe('and the status is verified...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
-        spyOn(kycPropertiesService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS.VERIFIED)));
+        jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_VERIFIED_PROPERTIES));
       });
 
       it(`should NOT be able to activate the KYC page`, () => {
@@ -139,7 +143,7 @@ describe('KYCGuard', () => {
     describe('and the status is not need...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
-        spyOn(kycPropertiesService, 'get').and.returnValue(of(KYC_BANNER_SPECIFICATIONS(KYC_STATUS.NO_NEED)));
+        jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_NO_NEED_PROPERTIES));
       });
 
       it(`should NOT be able to activate the KYC page`, () => {
@@ -159,8 +163,4 @@ describe('KYCGuard', () => {
       });
     });
   });
-
-  function KYC_BANNER_SPECIFICATIONS(kycBannerStatus: KYC_STATUS): KYCBannerSpecifications {
-    return KYC_BANNER_TYPES.find((specification) => specification.status === kycBannerStatus);
-  }
 });

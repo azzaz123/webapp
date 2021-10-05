@@ -8,11 +8,9 @@ import { SwUpdate } from '@angular/service-worker';
 import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie';
-import { of, throwError } from 'rxjs';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { of } from 'rxjs';
 import { MOCK_ITEM_V3 } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
-import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ConnectionService } from '@core/connection/connection.service';
 import { CallsService } from '@core/conversation/calls.service';
 import { DesktopNotificationsService } from '@core/desktop-notifications/desktop-notifications.service';
@@ -23,25 +21,17 @@ import { PaymentService } from '@core/payments/payment.service';
 import { StripeService } from '@core/stripe/stripe.service';
 import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
-import { SessionService } from '@core/session/session.service';
-import { DeviceService } from '@core/device/device.service';
-import { ANALYTIC_EVENT_TYPES, ANALYTICS_EVENT_NAMES } from '@core/analytics/analytics-constants';
 
 import * as moment from 'moment';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { PrivateComponent } from './private.component';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { ExternalCommsService } from '@core/external-comms.service';
-import { MockExternalCommsService } from '@fixtures/external-comms-service.fixtures.spec';
 
 jest.mock('moment');
 
 let fixture: ComponentFixture<PrivateComponent>;
 let component: any;
 let de: DebugElement;
-let el: HTMLElement;
 let userService: UserService;
-let errorsService: ErrorsService;
 let eventService: EventService;
 let realTime: RealTimeService;
 let inboxService: InboxService;
@@ -52,11 +42,7 @@ let cookieService: CookieService;
 let connectionService: ConnectionService;
 let paymentService: PaymentService;
 let stripeService: StripeService;
-let analyticsService: AnalyticsService;
 let uuidService: UuidService;
-let activatedRoute: ActivatedRoute;
-let deviceService: DeviceService;
-let externalCommsService: ExternalCommsService;
 
 const ACCESS_TOKEN = 'accesstoken';
 
@@ -171,21 +157,13 @@ describe('PrivateComponent', () => {
             init() {},
           },
         },
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-        { provide: ExternalCommsService, useClass: MockExternalCommsService },
-        SessionService,
-        DeviceDetectorService,
-        DeviceService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
     fixture = TestBed.createComponent(PrivateComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-    el = de.nativeElement;
-    deviceService = TestBed.inject(DeviceService);
     userService = TestBed.inject(UserService);
-    errorsService = TestBed.inject(ErrorsService);
     eventService = TestBed.inject(EventService);
     realTime = TestBed.inject(RealTimeService);
     inboxService = TestBed.inject(InboxService);
@@ -196,10 +174,7 @@ describe('PrivateComponent', () => {
     connectionService = TestBed.inject(ConnectionService);
     paymentService = TestBed.inject(PaymentService);
     stripeService = TestBed.inject(StripeService);
-    analyticsService = TestBed.inject(AnalyticsService);
     uuidService = TestBed.inject(UuidService);
-    activatedRoute = TestBed.inject(ActivatedRoute);
-    externalCommsService = TestBed.inject(ExternalCommsService);
 
     spyOn(desktopNotificationsService, 'init');
     spyOn(window.location, 'reload');
@@ -417,63 +392,6 @@ describe('PrivateComponent', () => {
       spyOn(stripeService, 'init');
       component.ngOnInit();
       expect(stripeService.init).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('Analytics', () => {
-    it('should initialize the analytics library', () => {
-      spyOn(analyticsService, 'initialize');
-
-      component.ngOnInit();
-
-      expect(analyticsService.initialize).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('When the app initializes', () => {
-    it('should send Open Wallapop if user has a new session', () => {
-      spyOn(analyticsService, 'trackEvent');
-      spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');
-
-      component.ngOnInit();
-
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-        attributes: {
-          currentUrl: 'http://localhost/',
-          refererUrl: '',
-          webDeviceId: 'newUUID',
-          webPlatformType: 'desktop',
-        },
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        name: ANALYTICS_EVENT_NAMES.OpenWallapop,
-      });
-    });
-
-    it('should not send Open Wallapop if has an old session', () => {
-      cookieService.put('wallapop_keep_session', 'true');
-      spyOn(analyticsService, 'trackEvent');
-      spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');
-
-      component.ngOnInit();
-
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-        attributes: {
-          currentUrl: 'http://localhost/',
-          refererUrl: '',
-          webDeviceId: 'newUUID',
-          webPlatformType: 'desktop',
-        },
-        eventType: ANALYTIC_EVENT_TYPES.Other,
-        name: ANALYTICS_EVENT_NAMES.OpenWallapop,
-      });
-    });
-
-    it('should initialize external Braze communications', () => {
-      spyOn(externalCommsService, 'initializeBrazeCommunications');
-
-      component.ngOnInit();
-
-      expect(externalCommsService.initializeBrazeCommunications).toHaveBeenCalledTimes(1);
     });
   });
 });

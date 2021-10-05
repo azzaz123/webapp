@@ -6,6 +6,7 @@ import { Review } from '@private/features/reviews/core/review';
 import { User } from '@core/user/user';
 import { ReviewsApiService } from '@api/reviews';
 import { finalize, take } from 'rxjs/operators';
+import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
 
 export interface ReviewItemCopies {
   soldCopy: string;
@@ -27,6 +28,10 @@ export class ReviewItemComponent implements OnInit {
 
   public isTranslated = false;
   public reviewComment: string;
+  public translationButtonCopies: TranslateButtonCopies = {
+    showTranslation: $localize`:@@user_profile_reviews_translate_button:Translate review`,
+    showOriginal: $localize`:@@user_profile_reviews_show_original_text_button:View original text`,
+  };
   private translation: string;
   private loadingTranslation: boolean;
 

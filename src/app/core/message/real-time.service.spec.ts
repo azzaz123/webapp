@@ -3,10 +3,15 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '@private/features/chat/core/model';
 import { of, throwError } from 'rxjs';
 import { MockConnectionService, MockRemoteConsoleService } from '../../../tests';
-import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
-import { CONVERSATION_ID, MOCKED_CONVERSATIONS, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE, MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
-import { ACCESS_TOKEN, MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import {
+  CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE,
+  MOCK_INBOX_CONVERSATION,
+  CONVERSATION_ID,
+  MOCKED_CONVERSATIONS,
+  MOCK_CONVERSATION,
+} from '@fixtures/chat';
+import { ACCESS_TOKEN, MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,

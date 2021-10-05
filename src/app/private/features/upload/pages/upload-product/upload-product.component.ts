@@ -14,6 +14,7 @@ import {
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ShippingRulesPrice } from '@api/bff/delivery/rules/dtos/shipping-rules';
+import { CategoriesApiService } from '@api/categories/categories-api.service';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -145,7 +146,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private itemReactivationService: ItemReactivationService,
     private customerHelpService: CustomerHelpService,
     private shippingToggleService: ShippingToggleService,
-    private uploadTrackingEventService: UploadTrackingEventService
+    private uploadTrackingEventService: UploadTrackingEventService,
+    private categoriesApiService: CategoriesApiService
   ) {
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
@@ -798,7 +800,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private getUploadCategories(): Observable<CategoryOption[]> {
-    return this.categoryService.getCategories().pipe(
+    return this.categoriesApiService.getUploadCategories().pipe(
       tap((categories) => (this.rawCategories = categories)),
       map((categories) => this.getConsumerGoodCategories(categories)),
       map((categories) => this.getNgSelectOptions(categories))
@@ -866,6 +868,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         attributes: {
           ...baseEventAttrs,
           screenId: SCREEN_IDS.EditItem,
+          salePriceChange: null,
         },
       };
 
