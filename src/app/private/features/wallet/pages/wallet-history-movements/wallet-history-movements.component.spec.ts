@@ -2,20 +2,21 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { WalletBalanceHistoryService } from '@api/bff/delivery/wallets/balance_history/wallet-balance-history.service';
 import { WALLET_HISTORY_FILTERS } from '@api/core/model/wallet/history/wallet-history-filters.enum';
+import { HistoricElementComponent } from '@shared/historic-list/components/historic-element/historic-element.component';
+import { HistoricListComponent } from '@shared/historic-list/components/historic-list/historic-list.component';
 import {
-  MOCK_WALLET_MOVEMENTS_HISTORY_LIST,
-  MOCK_WALLET_MOVEMENTS_HISTORY_LIST_EMPTY,
-  MOCK_WALLET_MOVEMENTS_HISTORY_LIST_FIRST_PAGE,
-  MOCK_WALLET_MOVEMENTS_HISTORY_LIST_LAST_PAGE,
-} from '@api/fixtures/core/model/wallet/history/wallet-movements-history-list.fixtures.spec';
+  MOCK_HISTORIC_LIST_EMPTY,
+  MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS,
+  MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS_WITH_ALL_ELEMENTS,
+} from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
+import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { TabComponent } from '@shared/tabs-bar/components/tab/tab.component';
 import { TabsBarComponent } from '@shared/tabs-bar/components/tabs-bar/tabs-bar.component';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
-import { of } from 'rxjs';
-import { WalletHistoryMovementComponent } from './components/wallet-history-movement/wallet-history-movement.component';
+import { ReplaySubject } from 'rxjs';
+import { WalletHistoryMovementsUIService } from './services/wallet-history-movements-ui/wallet-history-movements-ui.service';
 
 import { WalletHistoryMovementsComponent } from './wallet-history-movements.component';
 import { WalletHistoryMovementsModule } from './wallet-history-movements.module';
@@ -23,24 +24,44 @@ import { WalletHistoryMovementsModule } from './wallet-history-movements.module'
 describe('WalletHistoryMovementsComponent', () => {
   let component: WalletHistoryMovementsComponent;
   let fixture: ComponentFixture<WalletHistoryMovementsComponent>;
-  let walletBalanceHistoryService: WalletBalanceHistoryService;
+  let walletHistoryMovementsUIService: WalletHistoryMovementsUIService;
+  let walletHistoryMovementsGetItemsSpy: jasmine.Spy;
+
+  const walletBalanceLoadingReplaySubject: ReplaySubject<boolean> = new ReplaySubject(1);
+  const walletBalanceHistoricListReplaySubject: ReplaySubject<HistoricList> = new ReplaySubject(1);
 
   const spinnerSelector = '.spinner';
-  const componentWrapperSelector = '.WalletHistoryMovements';
-  const totalBalanceSelector = '.WalletHistoryMovements__balance';
-  const emptyStateSelector = '.WalletHistoryMovements__no-results';
+  const totalBalanceSelector = '.HistoricList__total-balance';
+  const emptyStateSelector = '.HistoricList__no-results';
+
+  class MockWalletHistoryMovementsUIService {
+    get noMoreItemsAvailable() {
+      return false;
+    }
+    loading$ = walletBalanceLoadingReplaySubject.asObservable();
+    historicList$ = walletBalanceHistoricListReplaySubject.asObservable();
+    getItems = () => {};
+    reset = () => {};
+  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [WalletHistoryMovementsModule, HttpClientTestingModule, TabsBarModule],
       declarations: [WalletHistoryMovementsComponent],
+      providers: [
+        {
+          provide: WalletHistoryMovementsUIService,
+          useClass: MockWalletHistoryMovementsUIService,
+        },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WalletHistoryMovementsComponent);
     component = fixture.componentInstance;
-    walletBalanceHistoryService = TestBed.inject(WalletBalanceHistoryService);
+    walletHistoryMovementsUIService = TestBed.inject(WalletHistoryMovementsUIService);
+    walletHistoryMovementsGetItemsSpy = spyOn(walletHistoryMovementsUIService, 'getItems');
     fixture.detectChanges();
   });
 
@@ -67,6 +88,11 @@ describe('WalletHistoryMovementsComponent', () => {
   });
 
   describe('while waiting for server to respon', () => {
+    beforeEach(() => {
+      walletBalanceLoadingReplaySubject.next(true);
+      fixture.detectChanges();
+    });
+
     it('should show a loading spinner', () => {
       const spinnerElement = fixture.debugElement.query(By.css(spinnerSelector));
 
@@ -75,14 +101,9 @@ describe('WalletHistoryMovementsComponent', () => {
   });
 
   describe('when server respons with valid answer', () => {
-    let walletBalanceGetSpy: jasmine.Spy;
-
     beforeEach(fakeAsync(() => {
-      walletBalanceGetSpy = spyOn(walletBalanceHistoryService, 'get').and.returnValues(
-        of(MOCK_WALLET_MOVEMENTS_HISTORY_LIST_FIRST_PAGE),
-        of(MOCK_WALLET_MOVEMENTS_HISTORY_LIST_LAST_PAGE)
-      );
-      component.ngOnInit();
+      walletBalanceLoadingReplaySubject.next(false);
+      walletBalanceHistoricListReplaySubject.next(MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS);
       tick();
       fixture.detectChanges();
     }));
@@ -94,9 +115,10 @@ describe('WalletHistoryMovementsComponent', () => {
     });
 
     it('should show as many movements as web context mapped from server', () => {
-      const historyDetailsDebugElements = fixture.debugElement.queryAll(By.directive(WalletHistoryMovementComponent));
+      const expectedNumberOfElements: number = countHistoricElementsFromList(MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS);
+      const historyDetailsDebugElements = fixture.debugElement.queryAll(By.directive(HistoricElementComponent));
 
-      expect(historyDetailsDebugElements.length).toBe(MOCK_WALLET_MOVEMENTS_HISTORY_LIST.list.length);
+      expect(historyDetailsDebugElements.length).toBe(expectedNumberOfElements);
     });
 
     describe('and when displaying total balance', () => {
@@ -108,7 +130,7 @@ describe('WalletHistoryMovementsComponent', () => {
 
       it('should display total balance', () => {
         const totalBalanceElement = fixture.debugElement.query(By.css(totalBalanceSelector));
-        const expectedText = $localize`:@@movements_history_all_users_current_balance_label:Current balance: ${MOCK_WALLET_MOVEMENTS_HISTORY_LIST_LAST_PAGE.walletBalance}`;
+        const expectedText = $localize`:@@movements_history_all_users_current_balance_label:Current balance: ${MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS.totalBalance}`;
         const result = totalBalanceElement.nativeElement.innerHTML.trim();
 
         expect(result).toBe(expectedText);
@@ -135,7 +157,7 @@ describe('WalletHistoryMovementsComponent', () => {
 
     describe('and when user clicks on a filter', () => {
       it('should ask server for filtered movements', () => {
-        walletBalanceGetSpy.calls.reset();
+        walletHistoryMovementsGetItemsSpy.calls.reset();
         const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
 
         filtersDebugElement.triggerEventHandler(
@@ -143,57 +165,54 @@ describe('WalletHistoryMovementsComponent', () => {
           component.tabBarElements.find((te) => te.value === WALLET_HISTORY_FILTERS.IN)
         );
 
-        expect(walletBalanceHistoryService.get).toHaveBeenCalledTimes(1);
-        expect(walletBalanceHistoryService.get).toHaveBeenCalledWith(0, WALLET_HISTORY_FILTERS.IN);
+        expect(walletHistoryMovementsUIService.getItems).toHaveBeenCalledTimes(1);
+        expect(walletHistoryMovementsUIService.getItems).toHaveBeenCalledWith(WALLET_HISTORY_FILTERS.IN);
       });
     });
 
     describe('and when user scrolls', () => {
-      let componentWrapper: DebugElement;
+      let historicListElement: DebugElement;
 
       beforeEach(() => {
-        componentWrapper = fixture.debugElement.query(By.css(componentWrapperSelector));
-        componentWrapper.triggerEventHandler('scrolled', {});
+        walletHistoryMovementsGetItemsSpy.calls.reset();
+        historicListElement = fixture.debugElement.query(By.directive(HistoricListComponent));
+        historicListElement.triggerEventHandler('scrolled', {});
+        walletBalanceHistoricListReplaySubject.next(MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS_WITH_ALL_ELEMENTS);
         fixture.detectChanges();
       });
 
-      it('should ask for next page', () => {
-        expect(walletBalanceHistoryService.get).toHaveBeenCalledWith(
-          MOCK_WALLET_MOVEMENTS_HISTORY_LIST_FIRST_PAGE.paginationParameter,
-          WALLET_HISTORY_FILTERS.ALL
-        );
+      it('should ask for another page', () => {
+        expect(walletHistoryMovementsUIService.getItems).toHaveBeenCalledTimes(1);
+        expect(walletHistoryMovementsUIService.getItems).toHaveBeenCalledWith(WALLET_HISTORY_FILTERS.ALL);
       });
 
-      it('should add extra movements to the browser', () => {
-        const walletMovements = fixture.debugElement.queryAll(By.directive(WalletHistoryMovementComponent));
+      it('should display all movements from the server', () => {
+        const walletMovements = fixture.debugElement.queryAll(By.directive(HistoricElementComponent));
         const movementsComponentsLength = walletMovements.length;
-        const expectedLength =
-          MOCK_WALLET_MOVEMENTS_HISTORY_LIST_FIRST_PAGE.list.length + MOCK_WALLET_MOVEMENTS_HISTORY_LIST_LAST_PAGE.list.length;
+        const expectedLength = countHistoricElementsFromList(MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS_WITH_ALL_ELEMENTS);
 
         expect(movementsComponentsLength).toEqual(expectedLength);
       });
 
-      describe('and when user scrolls more but there are no more pages', () => {
-        beforeEach(() => walletBalanceGetSpy.calls.reset());
+      describe('and when there are no more pages', () => {
+        beforeEach(() => {
+          walletBalanceHistoricListReplaySubject.next(MOCK_HISTORIC_LIST_EMPTY);
+          jest.spyOn(walletHistoryMovementsUIService, 'noMoreItemsAvailable', 'get').mockReturnValue(true);
+          fixture.detectChanges();
+        });
 
-        it('should not ask for extra movements', () => {
-          componentWrapper.triggerEventHandler('scrolled', {});
+        it('should disable scrolling', () => {
+          const historicListComponent: HistoricListComponent = fixture.debugElement.query(By.directive(HistoricListComponent))
+            .componentInstance;
 
-          expect(walletBalanceHistoryService.get).not.toHaveBeenCalled();
+          expect(historicListComponent.infiniteScrollDisabled).toBe(true);
         });
       });
     });
 
     describe('and when server respons with an empty list', () => {
       beforeEach(() => {
-        walletBalanceGetSpy.and.returnValue(of(MOCK_WALLET_MOVEMENTS_HISTORY_LIST_EMPTY));
-        const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
-
-        filtersDebugElement.triggerEventHandler(
-          'onChange',
-          component.tabBarElements.find((te) => te.value === WALLET_HISTORY_FILTERS.IN)
-        );
-
+        walletBalanceHistoricListReplaySubject.next(MOCK_HISTORIC_LIST_EMPTY);
         fixture.detectChanges();
       });
 
@@ -206,4 +225,10 @@ describe('WalletHistoryMovementsComponent', () => {
       });
     });
   });
+
+  function countHistoricElementsFromList(historicList: HistoricList): number {
+    let totalHistoricElements = 0;
+    historicList.elements.forEach((h) => h.elements.forEach((st) => st.elements.forEach(() => totalHistoricElements++)));
+    return totalHistoricElements;
+  }
 });
