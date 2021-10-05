@@ -37,6 +37,8 @@ $wallet-balance-info-ammount-text-size: 74px;
   }
   &__transfer {
     font-size: $font-size-s;
+    margin-left: $spacing-ml;
+    margin-top: $spacing-ms;
     &__spinner {
       margin-right: $spacing-ms;
     }
