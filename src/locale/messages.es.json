@@ -1144,7 +1144,7 @@
     "transfer_confirmation_view_confirm_button": "Confirmar",
     "make_transfer_view_snackbar_money_sent_description": "¡Dinero enviado! Se verá reflejado en tu cuenta dentro del plazo previsto.",
     "make_transfer_view_snackbar_no_commissions_description": "Las transferencias son gratis, olvídate de las comisiones.",
-    "8332425769461089908": "Bank account",
+    "kyc_bank_account_view_top_bar_title": "Cuenta bancaria",
     "kyc_bank_account_view_info_matching_description": "El nombre del titular de la cuenta tiene que coincidir con el del documento de identidad que aportes luego. Además, la persona tiene que ser mayor de edad.",
     "delivery_add_bank_account_title": "Add bank account",
     "delivery_edit_bank_account_title": "Edit bank account",
