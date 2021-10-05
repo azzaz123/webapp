@@ -34,6 +34,14 @@ describe('ChatHttpService', () => {
       const req: TestRequest = httpMock.expectOne(TRANSLATE_MESSAGES_ENDPOINT);
       req.flush(translateMessagesResponseFixture);
 
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual({
+        conversation_id: 'conversationId',
+        first_message_id: 'firstId',
+        first_message_timestamp: 0,
+        last_message_id: 'lastId',
+        last_message_timestamp: 0,
+      });
       expect(response).toEqual(translateMessagesResponseFixture);
     });
   });
