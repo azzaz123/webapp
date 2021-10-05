@@ -34,7 +34,10 @@ githooks
 
 # ENGAGEMENT
 /src/app/private/features/favorites/**/*.html
-/src/app/private/features/profile/**/*.html
+/src/app/private/features/profile/modal/**/*.html
+/src/app/private/features/profile/pages/*.html
+/src/app/private/features/profile/pages/account/**/*.html
+/src/app/private/features/profile/pages/profile-info/**/*.html
 /src/app/private/features/reviews/**/*.html
 /src/app/private/features/stats/**/*.html
 /src/app/public/features/item-detail/**/*.html
