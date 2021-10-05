@@ -17,7 +17,6 @@ export class AdSlotGroupDirective implements AfterContentInit {
       const configurations = components.map((component) => component.adSlot);
 
       this.adsService.setSlots(configurations);
-      console.log('PUMBA');
 
       if (configurations.length) {
         // When handling ads with SRA, we only need to call display once per group, using any of the slots in the group.
