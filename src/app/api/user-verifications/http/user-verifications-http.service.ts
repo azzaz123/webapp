@@ -5,7 +5,7 @@ import { UserVerificationsApi } from '../dtos';
 import { EXTRA_INFO_ENDPOINT } from './endpoints';
 
 @Injectable()
-export class VerificationsHttpService {
+export class UserVerificationsHttpService {
   public constructor(private httpClient: HttpClient) {}
 
   public get(): Observable<UserVerificationsApi> {

@@ -1,7 +1,7 @@
 import { UserVerifications } from '@api/core/model/verifications';
-import { UserVerificationsApi } from '@api/verifications/dtos';
+import { UserVerificationsApi } from '@api/user-verifications/dtos';
 
-export const MOCK_VERIFICATIONS_RESPONSE: UserVerificationsApi = {
+export const MOCK_USER_VERIFICATIONS_API_RESPONSE: UserVerificationsApi = {
   scoring_stars: 0.0,
   validations: {
     email: false,
@@ -18,7 +18,7 @@ export const MOCK_VERIFICATIONS_RESPONSE: UserVerificationsApi = {
   activity_level: 'unknown',
 };
 
-export const MOCK_VERIFICATIONS_MAPPED: UserVerifications = {
+export const MOCK_USER_VERIFICATIONS_MAPPED: UserVerifications = {
   email: false,
   mobile: true,
   facebook: false,

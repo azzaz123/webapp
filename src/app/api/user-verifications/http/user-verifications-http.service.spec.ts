@@ -1,21 +1,21 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MOCK_VERIFICATIONS_RESPONSE } from '@api/fixtures/verifications/verifications.fixtures.spec';
+import { MOCK_USER_VERIFICATIONS_API_RESPONSE } from '@api/fixtures/user-verifications/user-verifications.fixtures.spec';
 import { UserVerificationsApi } from '../dtos';
 import { EXTRA_INFO_ENDPOINT } from './endpoints';
 
-import { VerificationsHttpService } from './verifications-http.service';
+import { UserVerificationsHttpService } from './user-verifications-http.service';
 
-describe('VerificationsHttpService', () => {
-  let service: VerificationsHttpService;
+describe('UserVerificationsHttpService', () => {
+  let service: UserVerificationsHttpService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [VerificationsHttpService],
+      providers: [UserVerificationsHttpService],
     });
-    service = TestBed.inject(VerificationsHttpService);
+    service = TestBed.inject(UserVerificationsHttpService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -27,16 +27,16 @@ describe('VerificationsHttpService', () => {
     httpMock.verify();
   });
 
-  describe('when asking to get the verifications', () => {
-    it('should get the verifications response', () => {
+  describe('when asking to get the user verifications', () => {
+    it('should retrieve the user verifications response', () => {
       let response: UserVerificationsApi;
 
       service.get().subscribe((data) => (response = data));
       const req: TestRequest = httpMock.expectOne(EXTRA_INFO_ENDPOINT);
-      req.flush(MOCK_VERIFICATIONS_RESPONSE);
+      req.flush(MOCK_USER_VERIFICATIONS_API_RESPONSE);
 
       expect(req.request.method).toBe('GET');
-      expect(response).toEqual(MOCK_VERIFICATIONS_RESPONSE);
+      expect(response).toEqual(MOCK_USER_VERIFICATIONS_API_RESPONSE);
     });
   });
 });
