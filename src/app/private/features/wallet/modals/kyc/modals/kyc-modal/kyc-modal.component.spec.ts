@@ -6,7 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DocumentImageIsInvalidError } from '@api/core/errors/payments/kyc';
 import { KYCServicesModule } from '@api/payments/kyc/kyc-services.module';
 import { KYCService } from '@api/payments/kyc/kyc.service';
-import { I18nService } from '@core/i18n/i18n.service';
 import {
   MOCK_EMPTY_KYC_SPECIFICATIONS,
   MOCK_KYC_DOCUMENTATION,
@@ -48,7 +47,6 @@ describe('KYCModalComponent', () => {
   let fixture: ComponentFixture<KYCModalComponent>;
   let activeModal: NgbActiveModal;
   let toastService: ToastService;
-  let i18nService: I18nService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -58,11 +56,9 @@ describe('KYCModalComponent', () => {
         DeviceDetectorService,
         NgbActiveModal,
         KYCStoreService,
-        I18nService,
         ToastService,
         KYCTrackingEventsService,
         { provide: AnalyticsService, useClass: MockAnalyticsService },
-        I18nService,
         ToastService,
         {
           provide: KYCStoreService,
@@ -91,7 +87,6 @@ describe('KYCModalComponent', () => {
     kycService = TestBed.inject(KYCService);
     activeModal = TestBed.inject(NgbActiveModal);
     toastService = TestBed.inject(ToastService);
-    i18nService = TestBed.inject(I18nService);
   });
 
   it('should create', () => {
@@ -263,7 +258,6 @@ describe('KYCModalComponent', () => {
         describe('and the verification request fails', () => {
           beforeEach(() => {
             spyOn(kycService, 'request').and.returnValue(throwError(new DocumentImageIsInvalidError()));
-            spyOn(i18nService, 'translate').and.returnValue('');
             spyOn(component.stepper, 'goNext');
             spyOn(toastService, 'show');
 

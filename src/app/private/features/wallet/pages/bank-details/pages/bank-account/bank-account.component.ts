@@ -6,7 +6,6 @@ import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.
 import { EventService } from '@core/event/event.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { I18nService } from '@core/i18n/i18n.service';
 import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
 import { finalize } from 'rxjs/operators';
 import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
@@ -26,6 +25,8 @@ import {
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
 import { KYCTrackingEventsService } from '@private/features/wallet/modals/kyc/services/kyc-tracking-events/kyc-tracking-events.service';
+import { BANK_ACCOUNT_TRANSLATIONS } from '@private/features/wallet/translations/bank-account.translations';
+import { translations } from '@core/i18n/translations/constants/translations';
 
 export const IBAN_LENGTH = 40;
 @Component({
@@ -58,7 +59,6 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     private uuidService: UuidService,
     private eventService: EventService,
     private toastService: ToastService,
-    private i18nService: I18nService,
     private router: Router,
     private bankAccountService: BankAccountService,
     private location: Location,
@@ -109,7 +109,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       this.submitValidForm();
     } else {
       this.bankAccountForm.markAsPending();
-      this.showToast(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR, TOAST_TYPES.ERROR);
+      this.showToast(BANK_ACCOUNT_TRANSLATIONS.MISSING_INFO_ERROR, TOAST_TYPES.ERROR);
       for (const control in this.bankAccountForm.controls) {
         if (this.bankAccountForm.controls.hasOwnProperty(control) && !this.bankAccountForm.controls[control].valid) {
           this.bankAccountForm.controls[control].markAsDirty();
@@ -136,7 +136,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         () => {
-          const translationKey = this.isNewForm ? TRANSLATION_KEY.BANK_ACCOUNT_ADD_SUCCESS : TRANSLATION_KEY.BANK_ACCOUNT_EDIT_SUCCESS;
+          const translationKey = this.isNewForm ? BANK_ACCOUNT_TRANSLATIONS.ADD_SUCCESS : BANK_ACCOUNT_TRANSLATIONS.EDIT_SUCCESS;
 
           this.showToast(translationKey, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;
@@ -154,7 +154,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   }
 
   private handleBankAccountErrors(errors: BankAccountError[]): void {
-    let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.FORM_FIELD_ERROR;
+    let toastText: string = BANK_ACCOUNT_TRANSLATIONS.MISSING_INFO_ERROR;
 
     errors.forEach((error: BankAccountError) => {
       if (error instanceof IbanCountryIsInvalidError || error instanceof IbanIsInvalidError) {
@@ -170,7 +170,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       }
 
       if (error instanceof PlatformResponseIsInvalidError || error instanceof UniqueBankAccountByUserError) {
-        translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
+        toastText = BANK_ACCOUNT_TRANSLATIONS.SAVE_GENERIC_ERROR;
       }
 
       if (!(error instanceof PlatformResponseIsInvalidError) && !(error instanceof UniqueBankAccountByUserError)) {
@@ -178,7 +178,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.showToast(translationKey, TOAST_TYPES.ERROR);
+    this.showToast(toastText, TOAST_TYPES.ERROR);
   }
 
   private setIncorrectControlAndShowError(formControl: string, message: string): void {
@@ -232,9 +232,9 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     });
   }
 
-  private showToast(key: TRANSLATION_KEY, type: TOAST_TYPES): void {
+  private showToast(text: string, type: TOAST_TYPES): void {
     this.toastService.show({
-      text: `${this.i18nService.translate(key)}`,
+      text,
       type,
     });
   }
