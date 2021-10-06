@@ -118,5 +118,5 @@ WithNestedOptions.args = {
 export const WithNestedOptionsAndDefaultValue = Template.bind({});
 WithNestedOptionsAndDefaultValue.args = {
   config: subcategoryConfig,
-  value: [{ key: FILTER_QUERY_PARAM_KEY.objectType, value: '10150, 9645' }],
+  value: [{ key: FILTER_QUERY_PARAM_KEY.objectType, value: '10150,9645' }],
 };
