@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
 
 @Component({
   selector: 'tsl-translate-button',
@@ -8,6 +7,4 @@ import { TranslateButtonCopies } from '@core/components/translate-button/interfa
 })
 export class TranslateButtonComponent {
   @Input() isTranslated: boolean;
-  @Input() copies: TranslateButtonCopies;
-  @Input() disabled: boolean;
 }

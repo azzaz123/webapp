@@ -51,11 +51,8 @@ Resources:
           phases:
               build:
                   commands:
-                    - aws s3 sync es/ s3://$HOSTING_BUCKET_ES --delete
-                    - aws s3 cp es/index.html s3://$HOSTING_BUCKET_ES/index.html --cache-control max-age=0
-                    - aws s3 sync it/ s3://$HOSTING_BUCKET_IT --delete
-                    - aws s3 cp it/index.html s3://$HOSTING_BUCKET_IT/index.html --cache-control max-age=0
                     - aws s3 sync ./ s3://$HOSTING_BUCKET_FUNCTIONAL_WEBAPP --delete --exclude 'infrastructure/*' --exclude 'dist/*'
+                    - aws s3 cp s3://$HOSTING_BUCKET_FUNCTIONAL_WEBAPP s3://$HOSTING_BUCKET_FUNCTIONAL_WEBAPP --recursive --include \"*.html\" --cache-control max-age=0,must-revalidate
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: "aws/codebuild/docker:17.09.0"
@@ -109,7 +106,7 @@ Resources:
                   commands:
                     - aws cloudfront create-invalidation --distribution-id $EN_DISTRIBUTION --paths "/index.html" "/ngsw.json"
                     - aws cloudfront create-invalidation --distribution-id $ES_DISTRIBUTION --paths "/index.html" "/ngsw.json"
-                    - aws cloudfront create-invalidation --distribution-id $FUNCTIONAL_WEBAPP_DISTRIBUTION_ID --paths "/app*"
+                    - aws cloudfront create-invalidation --distribution-id $FUNCTIONAL_WEBAPP_DISTRIBUTION_ID --paths "/app/index.html" "/app/ngsw-worker.js" "/app/ngsw.json"
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: "aws/codebuild/docker:17.09.0"

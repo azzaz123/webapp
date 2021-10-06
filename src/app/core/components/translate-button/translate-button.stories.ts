@@ -21,18 +21,8 @@ const Template: Story<TranslateButtonComponent> = (args) => ({
 });
 
 export const ShowTranslation = Template.bind({});
-ShowTranslation.args = {
-  copies: {
-    showTranslation: 'Show me the translation!',
-    showOriginal: 'Show me the original!',
-  },
-};
 
 export const ShowOriginal = Template.bind({});
 ShowOriginal.args = {
   isTranslated: true,
-  copies: {
-    showTranslation: 'Show me the translation!',
-    showOriginal: 'Show me the original!',
-  },
 };
