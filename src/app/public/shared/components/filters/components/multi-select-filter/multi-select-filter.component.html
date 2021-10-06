@@ -12,6 +12,8 @@
   (clear)="handleClear()"
   (openStateChange)="openStateChange.emit($event)"
   (cancel)="handleCancel()"
+  class="MultiSelectFilter__template"
+  [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId"
 >
   <tsl-drawer-placeholder-template
     #selectFilterTemplateComponent
@@ -25,7 +27,7 @@
   >
     <div [class.MultiSelectFilter--bubble]="variant | isBubble">
       <form [formGroup]="formGroup" class="MultiSelectFilter__form">
-        <tsl-multi-select-form formControlName="select" [options]="options"></tsl-multi-select-form>
+        <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
       </form>
     </div>
   </tsl-drawer-placeholder-template>
