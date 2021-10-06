@@ -299,13 +299,13 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
               : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_description:All the details on your ID document must be clear and perfectly legible.`;
           } else {
             return activeStep === 1
-              ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Go somewhere with good lighting, focus the camera on the document, and take the best photo possible.`
+              ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Make sure the image is in focus and clearly readable.`
               : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_description:To finish the verification process, you just need to show a photo of the back side of your ID document.`;
           }
         } else {
           return isDefined
             ? $localize`:@@kyc_take_photo_view_if_one_side_review_description:All the details on your document must be clear and perfectly legible.`
-            : $localize`:@@kyc_take_photo_view_if_one_side_description:Go somewhere with good lighting and take the photo. Make sure the document you provide is valid for at least 3 months.`;
+            : $localize`:@@kyc_take_photo_view_if_one_side_description:The document you provide must be valid for at least 3 months. Make sure the image is in focus and clearly readable.`;
         }
       })
     );

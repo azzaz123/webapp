@@ -78,8 +78,8 @@
             <tsl-banner [specifications]="errorBannerSpecifications" class="w-100">
                 <div class="d-flex align-items-center">
                     <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>
-                    <span *ngIf="(videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.DENIED" i18n="@@kyc_camera_access_refused">You must accept the permissions to be able to take photos</span>
-                    <span *ngIf="(videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS" i18n="@@kyc_camera_cannot_access" >Oops, an error occurred and we cannot access your camera</span>
+                    <span *ngIf="(videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.DENIED" i18n="@@kyc_camera_snackbar_access_refused_error_web_specific">You must accept the permissions to be able to take photos.</span>
+                    <span *ngIf="(videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS" i18n="@@kyc_camera_snackbar_cannot_access_error_web_specific" >Oops, due to an error we cannot access your camera.</span>
                 </div>
             </tsl-banner>
         </div>

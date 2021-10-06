@@ -243,7 +243,7 @@ describe('KYCUploadImagesComponent', () => {
               });
 
               it('should show the correct subtitle', () => {
-                const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Go somewhere with good lighting, focus the camera on the document, and take the best photo possible.`;
+                const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Make sure the image is in focus and clearly readable.`;
 
                 expectShowCorrectSubtitle(expectedSubtitle);
               });
@@ -625,7 +625,7 @@ describe('KYCUploadImagesComponent', () => {
             });
 
             it('should show the correct subtitle', () => {
-              const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_one_side_description:Go somewhere with good lighting and take the photo. Make sure the document you provide is valid for at least 3 months.`;
+              const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_one_side_description:The document you provide must be valid for at least 3 months. Make sure the image is in focus and clearly readable.`;
 
               expectShowCorrectSubtitle(expectedSubtitle);
             });
@@ -927,7 +927,7 @@ describe('KYCUploadImagesComponent', () => {
           });
 
           it('should show the correct subtitle', () => {
-            const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Go somewhere with good lighting, focus the camera on the document, and take the best photo possible.`;
+            const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Make sure the image is in focus and clearly readable.`;
 
             expectShowCorrectSubtitle(expectedSubtitle);
           });
@@ -1411,7 +1411,7 @@ describe('KYCUploadImagesComponent', () => {
         });
 
         it('should show the correct subtitle', () => {
-          const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_one_side_description:Go somewhere with good lighting and take the photo. Make sure the document you provide is valid for at least 3 months.`;
+          const expectedSubtitle = $localize`:@@kyc_take_photo_view_if_one_side_description:The document you provide must be valid for at least 3 months. Make sure the image is in focus and clearly readable.`;
 
           expectShowCorrectSubtitle(expectedSubtitle);
         });

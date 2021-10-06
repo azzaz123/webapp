@@ -31,7 +31,7 @@ export class KYCModalComponent implements OnDestroy {
   public KYCStatusInProgressProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
     (properties) => properties.status === KYC_MODAL_STATUS.IN_PROGRESS
   );
-  private KYCModalCloseWarningCopy = $localize`:@@web_kyc_modal_close_warning:Are you sure you want to get out of the process? All information will be lost.`;
+  private KYCModalCloseWarningCopy = $localize`:@@kyc_cancellation_system_modal_description_web_specific:Are you sure you want to get out of the process? All information will be lost.`;
 
   constructor(
     private KYCStoreService: KYCStoreService,

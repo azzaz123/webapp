@@ -17,7 +17,7 @@ export class KYCComponent implements OnInit {
       return window.confirm(this.KYCModalCloseWarningCopy);
     },
   };
-  private KYCModalCloseWarningCopy = $localize`:@@web_kyc_modal_close_warning:Are you sure you want to get out of the process? All information will be lost.`;
+  private KYCModalCloseWarningCopy = $localize`:@@kyc_cancellation_system_modal_description_web_specific:Are you sure you want to get out of the process? All information will be lost.`;
 
   constructor(private modalService: NgbModal, private router: Router) {}
 
