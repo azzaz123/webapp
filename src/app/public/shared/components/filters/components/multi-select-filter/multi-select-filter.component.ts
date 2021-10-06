@@ -72,7 +72,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     this.subscriptions.unsubscribe();
   }
   public handleCancel(): void {
-    const value = this.value.find((option) => option.key === this.config.mapKey.parameterKey).value?.split(',');
+    const value = this.value.find((option) => option.key === this.config.mapKey.parameterKey)?.value?.split(',');
     this.formGroup.controls.select.setValue(value, {
       emitEvent: false,
     });
