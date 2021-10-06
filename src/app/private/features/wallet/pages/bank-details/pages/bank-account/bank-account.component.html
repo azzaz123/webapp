@@ -20,14 +20,14 @@
         <form class="col" *ngIf="!loading; else loadingState" [formGroup]="bankAccountForm" (submit)="onSubmit()">
             <div class="row mb-2" *ngIf="!isKYC">
                 <div class="col-md-11 offset-md-1">
-                    <h3 *ngIf="isNewForm" i18n="@@delivery_add_bank_account_title">Add bank account</h3>
-                    <h3 *ngIf="!isNewForm" i18n="@@delivery_edit_bank_account_title">Edit bank account</h3>
+                    <h3 *ngIf="isNewForm" i18n="@@delivery_add_bank_account_title" id="bankAccountTitle">Add bank account</h3>
+                    <h3 *ngIf="!isNewForm" i18n="@@delivery_edit_bank_account_title" id="bankAccountTitle">Edit bank account</h3>
                 </div>
             </div>    
             <div class="row mb-2" *ngIf="isKYC">
                 <div class="col-md-11 offset-md-1">
-                    <h3 *ngIf="isNewForm" i18n="@@kyc_bank_account_view_if_empty_title">Add the bank account where you wish to receive payment for your sales</h3>
-                    <h3 *ngIf="!isNewForm" i18n="@@kyc_bank_account_view_if_already_filled_title">Please check your bank account details are correct</h3>
+                    <h3 *ngIf="isNewForm" i18n="@@kyc_bank_account_view_if_empty_title" id="bankAccountTitle">Add the bank account where you wish to receive payment for your sales</h3>
+                    <h3 *ngIf="!isNewForm" i18n="@@kyc_bank_account_view_if_already_filled_title" id="bankAccountTitle">Please check your bank account details are correct</h3>
                 </div>
             </div>
             <div class="form-group row align-items-center">

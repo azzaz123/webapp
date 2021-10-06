@@ -140,6 +140,32 @@ describe('BankAccountComponent', () => {
       it('should request to the KYC analytics service to track the page view event', () => {
         expect(kycTrackingEventsService.trackViewKYCBankAccountInfoScreen).toHaveBeenCalledTimes(1);
       });
+
+      describe('and the bank account is new', () => {
+        beforeEach(() => {
+          component.isNewForm = true;
+          fixture.detectChanges();
+        });
+
+        it('should show the correct title', () => {
+          const expectedTitle = $localize`:@@kyc_bank_account_view_if_empty_title:Add the bank account where you wish to receive payment for your sales`;
+
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+        });
+      });
+
+      describe('and the bank account was already provided', () => {
+        beforeEach(() => {
+          component.isNewForm = false;
+          fixture.detectChanges();
+        });
+
+        it('should show the correct title', () => {
+          const expectedTitle = $localize`:@@kyc_bank_account_view_if_already_filled_title:Please check your bank account details are correct`;
+
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+        });
+      });
     });
 
     describe('and is not KYC...', () => {
@@ -151,6 +177,32 @@ describe('BankAccountComponent', () => {
 
       it('should NOT request to the KYC analytics service to track the page view event', () => {
         expect(kycTrackingEventsService.trackViewKYCBankAccountInfoScreen).not.toHaveBeenCalled();
+      });
+
+      describe('and the bank account is new', () => {
+        beforeEach(() => {
+          component.isNewForm = true;
+          fixture.detectChanges();
+        });
+
+        it('should show the correct title', () => {
+          const expectedTitle = $localize`:@@delivery_add_bank_account_title:Add bank account`;
+
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+        });
+      });
+
+      describe('and the bank account was already provided', () => {
+        beforeEach(() => {
+          component.isNewForm = false;
+          fixture.detectChanges();
+        });
+
+        it('should show the correct title', () => {
+          const expectedTitle = $localize`:@@delivery_edit_bank_account_title:Edit bank account`;
+
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+        });
       });
     });
   });
