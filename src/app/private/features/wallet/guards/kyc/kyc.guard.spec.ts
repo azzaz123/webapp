@@ -49,7 +49,7 @@ describe('KYCGuard', () => {
   describe('when we check the KYC status banner specifications...', () => {
     describe('and the KYC properties are already initialized', () => {
       beforeEach(() => {
-        jest.spyOn(kycPropertiesService, 'arePropertiesInitialized', 'get').mockReturnValue(true);
+        kycPropertiesService.arePropertiesInitialized = true;
         jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_PENDING_PROPERTIES));
         spyOn(kycPropertiesService, 'get').and.returnValue(of(MOCK_KYC_PENDING_PROPERTIES));
 
@@ -63,7 +63,7 @@ describe('KYCGuard', () => {
 
     describe('and the KYC properties are NOT initialized', () => {
       beforeEach(() => {
-        jest.spyOn(kycPropertiesService, 'arePropertiesInitialized', 'get').mockReturnValue(false);
+        kycPropertiesService.arePropertiesInitialized = false;
         jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_PENDING_PROPERTIES));
         spyOn(kycPropertiesService, 'get').and.returnValue(of(MOCK_KYC_PENDING_PROPERTIES));
 
@@ -76,7 +76,7 @@ describe('KYCGuard', () => {
     });
 
     beforeEach(() => {
-      jest.spyOn(kycPropertiesService, 'arePropertiesInitialized', 'get').mockReturnValue(true);
+      kycPropertiesService.arePropertiesInitialized = true;
     });
 
     describe('and the status is pending...', () => {
