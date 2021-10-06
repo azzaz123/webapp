@@ -5,8 +5,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import * as moment from 'moment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
-import { concatMap, distinctUntilChanged, filter, finalize, map, mergeMap, take } from 'rxjs/operators';
-import { AnalyticsService } from '@core/analytics/analytics.service';
+import { distinctUntilChanged, filter, map, mergeMap } from 'rxjs/operators';
 import { ConnectionService } from '@core/connection/connection.service';
 import { CallsService } from '@core/conversation/calls.service';
 import { DesktopNotificationsService } from '@core/desktop-notifications/desktop-notifications.service';
@@ -18,12 +17,6 @@ import { StripeService } from '@core/stripe/stripe.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
-import { SessionService } from '@core/session/session.service';
-import { DeviceService } from '@core/device/device.service';
-import { ExternalCommsService } from '@core/external-comms.service';
-import { OpenWallapop } from '@core/analytics/resources/events-interfaces';
-import { ANALYTICS_EVENT_NAMES } from '@core/analytics/resources/analytics-event-names';
-import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
 import { APP_LOCALE } from 'configs/subdomains.config';
 
 @Component({
@@ -54,12 +47,8 @@ export class PrivateComponent implements OnInit {
     private paymentService: PaymentService,
     private callService: CallsService,
     private stripeService: StripeService,
-    private analyticsService: AnalyticsService,
-    private sessionService: SessionService,
     private uuidService: UuidService,
     private serviceWorker: SwUpdate,
-    private deviceService: DeviceService,
-    private externalCommsService: ExternalCommsService,
     @Inject(LOCALE_ID) private locale: APP_LOCALE
   ) {}
 
@@ -100,21 +89,6 @@ export class PrivateComponent implements OnInit {
     this.userService.checkUserStatus();
     this.desktopNotificationsService.init();
     this.connectionService.checkConnection();
-    this.externalCommsService.initializeBrazeCommunications();
-    this.externalCommsService.brazeReady$
-      .pipe(
-        take(1),
-        finalize(() => {
-          this.analyticsService.initialize();
-        })
-      )
-      .subscribe();
-    this.analyticsService.mParticleReady$
-      .pipe(
-        concatMap(() => this.sessionService.newSession$),
-        take(1)
-      )
-      .subscribe(() => this.trackOpenWallapop());
   }
 
   private initializeEventListeners(): void {
@@ -181,19 +155,6 @@ export class PrivateComponent implements OnInit {
       expires: expirationDate,
     };
     this.cookieService.put(name, token, options);
-  }
-
-  private trackOpenWallapop(): void {
-    this.analyticsService.trackEvent<OpenWallapop>({
-      name: ANALYTICS_EVENT_NAMES.OpenWallapop,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
-      attributes: {
-        currentUrl: window.location.href,
-        refererUrl: document.referrer,
-        webPlatformType: this.deviceService.getDeviceType(),
-        webDeviceId: this.deviceService.getDeviceId(),
-      },
-    });
   }
 
   private subscribeEventUserLogin(): void {

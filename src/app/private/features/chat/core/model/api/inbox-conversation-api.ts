@@ -10,4 +10,5 @@ export class InboxConversationApi {
   unread_messages: number;
   phone_shared: boolean;
   phone_number: string;
+  translatable: boolean;
 }

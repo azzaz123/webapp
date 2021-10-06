@@ -3,7 +3,6 @@ import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { BehaviorSubject } from 'rxjs';
 import { PublicFooterService } from './core/services/footer/public-footer.service';
 import { PublicComponent } from './public.component';
@@ -11,7 +10,6 @@ import { PublicComponent } from './public.component';
 describe('PublicComponent', () => {
   let component: PublicComponent;
   let fixture: ComponentFixture<PublicComponent>;
-  let analyticsService: AnalyticsService;
   let publicFooterServiceMock;
   const showFooterSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -23,7 +21,6 @@ describe('PublicComponent', () => {
       imports: [CommonModule],
       declarations: [PublicComponent],
       providers: [
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
         {
           provide: PublicFooterService,
           useValue: publicFooterServiceMock,
@@ -36,22 +33,11 @@ describe('PublicComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicComponent);
     component = fixture.componentInstance;
-    analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('Analytics', () => {
-    it('should initialize the analytics library', () => {
-      spyOn(analyticsService, 'initialize');
-
-      component.ngOnInit();
-
-      expect(analyticsService.initialize).toHaveBeenCalledTimes(1);
-    });
   });
 
   describe('showFooter', () => {
