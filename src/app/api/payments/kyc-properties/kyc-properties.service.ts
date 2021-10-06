@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, ReplaySubject, Subject, timer } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subject, timer } from 'rxjs';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { KYCPropertiesApi } from './dtos/responses';
 import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-banner-constants';
@@ -13,6 +13,7 @@ import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 export class KYCPropertiesService {
   private readonly KYCStatusIsNoNeededSubject: Subject<void> = new Subject();
   private readonly KYCPropertiesSubject: ReplaySubject<KYCProperties> = new ReplaySubject<KYCProperties>(1);
+  private readonly arePropertiesInitializedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private KYCPropertiesHttpService: KYCPropertiesHttpService) {}
 
@@ -20,11 +21,15 @@ export class KYCPropertiesService {
     return this.KYCPropertiesSubject.asObservable();
   }
 
+  public get arePropertiesInitialized(): boolean {
+    return this.arePropertiesInitializedSubject.value;
+  }
+
   private set KYCProperties(KYCProperties: KYCProperties) {
     this.KYCPropertiesSubject.next(KYCProperties);
   }
 
-  public get(): Observable<KYCProperties> {
+  public get(isPetitionFromGuard = false): Observable<KYCProperties> {
     const secondsPeriod = 15 * 1000;
 
     return timer(0, secondsPeriod).pipe(
@@ -32,6 +37,9 @@ export class KYCPropertiesService {
       map((KYCPropertiesApi: KYCPropertiesApi) => mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi)),
       tap((properties: KYCProperties) => {
         this.KYCProperties = properties;
+        if (!isPetitionFromGuard) {
+          this.arePropertiesInitializedSubject.next(true);
+        }
 
         if (properties.status === KYC_STATUS.NO_NEED) {
           this.KYCStatusIsNoNeededSubject.next();

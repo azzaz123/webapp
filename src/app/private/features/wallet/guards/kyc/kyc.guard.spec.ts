@@ -47,6 +47,38 @@ describe('KYCGuard', () => {
   });
 
   describe('when we check the KYC status banner specifications...', () => {
+    describe('and the KYC properties are already initialized', () => {
+      beforeEach(() => {
+        jest.spyOn(kycPropertiesService, 'arePropertiesInitialized', 'get').mockReturnValue(true);
+        jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_PENDING_PROPERTIES));
+        spyOn(kycPropertiesService, 'get').and.returnValue(of(MOCK_KYC_PENDING_PROPERTIES));
+
+        guard.canActivate().subscribe();
+      });
+
+      it('should NOT request the KYC properties', () => {
+        expect(kycPropertiesService.get).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('and the KYC properties are NOT initialized', () => {
+      beforeEach(() => {
+        jest.spyOn(kycPropertiesService, 'arePropertiesInitialized', 'get').mockReturnValue(false);
+        jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_PENDING_PROPERTIES));
+        spyOn(kycPropertiesService, 'get').and.returnValue(of(MOCK_KYC_PENDING_PROPERTIES));
+
+        guard.canActivate().subscribe();
+      });
+
+      it('should request the KYC properties', () => {
+        expect(kycPropertiesService.get).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    beforeEach(() => {
+      jest.spyOn(kycPropertiesService, 'arePropertiesInitialized', 'get').mockReturnValue(true);
+    });
+
     describe('and the status is pending...', () => {
       beforeEach(() => {
         spyOn(router, 'navigate');
