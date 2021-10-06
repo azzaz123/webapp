@@ -1086,7 +1086,7 @@
     "kyc_take_or_upload_photo_selector_view_photo_option_recommended_label_web_specific": "Suggested",
     "kyc_take_or_upload_photo_selector_view_photo_option_description_web_specific": "Take photo of the document",
     "kyc_take_or_upload_photo_selector_view_continue_button_web_specific": "Continue",
-    "kyc_select_document_view_header_placeholder": "Select document",
+    "kyc_select_document_view_list_title_placeholder": "Documents I can use",
     "kyc_select_nationality_view_list_title_placeholder": "I'm from...",
     "kyc_select_nationality_view_data_privacy_description": "Your information is confidential. It will be used only for the explained purposes.",
     "kyc_select_document_view_title": "Select a document type",
