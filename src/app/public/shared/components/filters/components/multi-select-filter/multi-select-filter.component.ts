@@ -34,6 +34,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     select: new FormControl(),
   });
   public options: FilterOption[] = [];
+  private allOptions: FilterOption[] = [];
 
   public label$ = this.labelSubject.asObservable();
   public placeholderIcon$ = this.labelSubject.asObservable();
@@ -48,9 +49,10 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
       .pipe(take(1))
       .subscribe((options) => {
         this.options = options;
+        this.allOptions = this.mergeOptions(options);
         this.updateLabel();
       });
-    this.updateLabel();
+
     this.updatePlaceholderIcon();
     super.ngOnInit();
   }
@@ -97,6 +99,18 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     }
   }
 
+  private mergeOptions(options: FilterOption[]): FilterOption[] {
+    let allOptions = [...options];
+
+    allOptions.map((option: FilterOption) => {
+      if (option.children?.length) {
+        allOptions = allOptions.concat(option.children);
+      }
+    });
+
+    return allOptions;
+  }
+
   private updateLabel(): void {
     this.labelSubject.next(this._value.length && this.options.length ? this.buildLabel() : this.getLabelPlaceholder());
   }
@@ -113,8 +127,10 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     const stringValues = this._value.find((option) => option.key === this.config.mapKey.parameterKey).value?.split(',');
 
     stringValues.forEach((value: string, index: number) => {
-      const option = this.options.find((option) => option.value === value);
-      label += option ? `${index !== 0 && label.length > 2 ? ', ' : ''}${option.label}` : '';
+      const valueOption = this.allOptions.find((option) => {
+        return option.value === value;
+      });
+      label += valueOption ? `${index !== 0 && label.length > 2 ? ', ' : ''}${valueOption.label}` : '';
     });
 
     return label.length ? label : this.getLabelPlaceholder();
