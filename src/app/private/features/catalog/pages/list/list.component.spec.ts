@@ -411,9 +411,7 @@ describe('ListComponent', () => {
 
         describe('and when clicking the wallet button', () => {
           it('should navigate to wallet', () => {
-            walletButton.nativeElement.click();
-
-            expect(router.url).toEqual(`/${PRIVATE_PATHS.WALLET}`);
+            expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
           });
         });
       });
@@ -446,9 +444,7 @@ describe('ListComponent', () => {
 
         describe('and when clicking the delivery button', () => {
           it('should navigate to delivery', () => {
-            deliveryButton.nativeElement.click();
-
-            expect(router.url).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
+            expect(deliveryButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
           });
         });
       });

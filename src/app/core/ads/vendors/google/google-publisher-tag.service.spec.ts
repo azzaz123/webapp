@@ -289,13 +289,11 @@ describe('GooglePublisherTagService', () => {
     it('should set page options and slot shopping to lib', () => {
       spyOn(windowMock, '_googCsa').and.callThrough();
 
-      service.displayShopping(MockAdShoppingPageOptions, MockAdSlotShopping);
+      service.displayShopping(MockAdShoppingPageOptions, [MockAdSlotShopping]);
 
-      expect(windowMock._googCsa).toHaveBeenCalledWith(
-        'plas',
-        { ...MockAdShoppingPageOptions, query: MockAdsKeywords.content },
-        MockAdSlotShopping
-      );
+      expect(windowMock._googCsa).toHaveBeenCalledWith('plas', { ...MockAdShoppingPageOptions, query: MockAdsKeywords.content }, [
+        MockAdSlotShopping,
+      ]);
     });
   });
 

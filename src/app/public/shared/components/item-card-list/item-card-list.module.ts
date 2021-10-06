@@ -9,10 +9,20 @@ import { ShowSlotPipe } from './pipes/show-slot.pipe';
 import { ItemCardWideModule } from '../item-card-wide/item-card-wide.module';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
+import { AdSlotShoppingModule } from '@shared/ads/ad-slot-shopping/ad-slot-shopping.module';
 
 @NgModule({
   declarations: [ItemCardListComponent, ShowSlotPipe],
-  imports: [SharedModule, RouterModule, CommonModule, ItemCardModule, ItemCardWideModule, ItemApiModule, PublicPipesModule],
+  imports: [
+    SharedModule,
+    RouterModule,
+    CommonModule,
+    ItemCardModule,
+    ItemCardWideModule,
+    ItemApiModule,
+    PublicPipesModule,
+    AdSlotShoppingModule,
+  ],
   exports: [ItemCardListComponent],
   providers: [ItemCardService],
 })
