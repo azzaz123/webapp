@@ -52,6 +52,7 @@ Resources:
               build:
                   commands:
                     - aws s3 sync ./ s3://$HOSTING_BUCKET_FUNCTIONAL_WEBAPP --delete --exclude 'infrastructure/*' --exclude 'dist/*'
+                    - aws s3 cp s3://$HOSTING_BUCKET_FUNCTIONAL_WEBAPP s3://$HOSTING_BUCKET_FUNCTIONAL_WEBAPP --recursive --include \"*.html\" --cache-control max-age=0,must-revalidate
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: "aws/codebuild/docker:17.09.0"
