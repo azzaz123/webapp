@@ -70,7 +70,7 @@
                     <input type="text" class="form-control" id="address" formControlName="address"/>
                     <div *ngIf="bankAccountForm.controls.address.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                         <ng-container *ngIf="bankAccountForm.controls.address.errors as addressError">
-                            <span *ngIf="addressError.required" i18n="@@bank_account_form_iban_non_valid_inline_error">
+                            <span *ngIf="addressError.required" i18n="@@bank_account_form_street_empty_field_inline_error">
                                 "Street and number" field must be filled
                             </span>
                         </ng-container>
