@@ -1,11 +1,8 @@
-<div class="SubscriptionCard d-flex justify-content-between" [ngClass]="{
+<div class="SubscriptionCard d-flex justify-content-between flex-md-row flex-sm-column-reverse" [ngClass]="{
     'SubscriptionCard--subscribed': isSubscribed
   }">
-    <div class="w-100 d-flex flex-column align-items-start">
-        <div *ngIf="hasTrialAvailable || tierDiscount" class="SubscriptionCard__banner px-2 mb-3" [ngClass]="{
-            'SubscriptionCard__banner--trial': hasTrialAvailable,
-            'SubscriptionCard__banner--discount': tierDiscount && !hasTrialAvailable 
-        }">
+    <div class="w-100 d-flex flex-column align-items-sm-center align-items-md-start">
+        <div *ngIf="hasTrialAvailable || tierDiscount" class="SubscriptionCard__banner px-2 mb-3">
             <span *ngIf="tierDiscount; else trialLabel"
                 i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tierDiscount.discount.percentage}}%
                 off!</span>
@@ -15,7 +12,7 @@
             </ng-template>
         </div>
         <div class="SubscriptionCard__title mb-1">{{subscription.category_name}}</div>
-        <div class="SubscriptionCard__subtitle d-flex align-items-center mb-1">{{descriptionText}}
+        <div class="SubscriptionCard__subtitle mb-1">{{descriptionText}}
         </div>
         <div class="SubscriptionCard__price mb-2">
             <ng-container *ngIf="!isSubscribed; else subscriptionPrice">
@@ -45,20 +42,22 @@
                     from <b>{{subscription.subscribed_from | date:'longDate' }}</b>
                 </span>
             </div>
-            <div class="mb-2 text-left" *ngIf="subscription.subscribed_until">
+            <div class="mb-2 text-md-left" *ngIf="subscription.subscribed_until">
                 <span i18n="@@pro_manage_subscriptions_view_cancel_plan_cancel_subscription_status_description">You
                     requested subscription cancellation, the deactivation will be effective starting</span><b
                     ngPreserveWhitespaces> {{subscription.subscribed_until | date:'longDate' }}</b>
             </div>
         </ng-container>
-        <ng-container *ngIf="isSubscribed; else subscriptionButton">
-            <tsl-button className="btn-secondary" (click)="onButtonClick()">
-                {{textButton}}</tsl-button>
-        </ng-container>
-        <ng-template #subscriptionButton>
-            <tsl-button className="btn-primary btn-primary--bold" (click)="onButtonClick()">
-                {{textButton}}</tsl-button>
-        </ng-template>
+        <div class="mt-2">
+            <ng-container *ngIf="isSubscribed; else subscriptionButton">
+                <tsl-button className="btn-secondary" (click)="onButtonClick()">
+                    {{textButton}}</tsl-button>
+            </ng-container>
+            <ng-template #subscriptionButton>
+                <tsl-button className="btn-primary btn-primary--bold" (click)="onButtonClick()">
+                    {{textButton}}</tsl-button>
+            </ng-template>
+        </div>
     </div>
     <div class="SubscriptionCard__icon">
         <img [src]="iconSrc">

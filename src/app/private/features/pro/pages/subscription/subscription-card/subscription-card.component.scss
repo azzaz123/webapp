@@ -16,16 +16,8 @@
     border-radius: 21px;
     font-weight: bold;
     font-size: 12px;
-
-    &--trial {
-      background-color: #f75883;
-      color: $blue-grey-1;
-    }
-
-    &--discount {
-      background-color: #f75883;
-      color: $white;
-    }
+    background-color: #f75883;
+    color: white;
   }
 
   &__info {
@@ -51,11 +43,11 @@
   }
 
   &--subscribed {
-    border: 2px solid $walla-main;
+    border: 2px solid #385ef9;
   }
 
   &__date {
-    font-size: $font-size-s;
+    font-size: $font-size-m;
   }
 
   &__price {
