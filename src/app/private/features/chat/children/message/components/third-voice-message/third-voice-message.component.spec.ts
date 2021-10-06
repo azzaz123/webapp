@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MessageType } from '@private/features/chat/core/model/inbox-message';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
 import { LinkTransformPipe } from '@shared/pipes/link-transform';
 import { ThirdVoiceReviewButtonComponent } from '../third-voice-review-button';
 import { ThirdVoiceMessageComponent } from './third-voice-message.component';

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { InboxMessage, MessageStatus, MessageType } from '@private/features/chat/core/model';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
 import { SharedModule } from '@shared/shared.module';
 import { ThirdVoiceMessageComponent } from '../third-voice-message';
 import { ThirdVoiceReviewComponent } from './third-voice-review.component';

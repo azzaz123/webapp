@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { InboxItemStatus } from '@private/features/chat/core/model';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
 import { DateCalendarPipe } from 'app/shared/pipes';
 import { ArchivedInboxConversationComponent } from './archived-inbox-conversation.component';
 

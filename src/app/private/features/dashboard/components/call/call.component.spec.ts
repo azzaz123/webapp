@@ -1,5 +1,6 @@
-import { MOCK_CONVERSATION } from '@fixtures/chat';
+import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
 import { MOCK_CALL } from '@fixtures/call.fixtures';
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CallComponent } from './call.component';
