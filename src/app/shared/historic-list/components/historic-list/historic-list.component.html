@@ -1,7 +1,7 @@
 <div class="HistoricList" tslInfiniteScroll [infiniteScrollDisabled]="infiniteScrollDisabled" (scrolled)="handleScrolled()">
   <div *ngIf="historicList">
     <span
-      *ngIf="isHistoricListEmpty()"
+      *ngIf="isHistoricListEmpty"
       class="HistoricList__no-results d-flex justify-content-center mt-3"
       i18n="@@web_no_results_found"
       >No results found</span
@@ -12,7 +12,7 @@
       <div class="d-flex justify-content-between">
         <div>{{ subtitle.label }}</div>
         <div
-        *ngIf="isBalanceVisible(firstHeader, firstSubtitle)"
+        *ngIf="isTotalBalanceVisible && firstHeader && firstSubtitle"
         class="HistoricList__total-balance"
         i18n="@@movements_history_all_users_current_balance_label"
         >

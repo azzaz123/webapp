@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChange,
+  SimpleChanges,
+} from '@angular/core';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 
 @Component({
@@ -7,21 +17,29 @@ import { HistoricList } from '@shared/historic-list/interfaces/historic-list.int
   styleUrls: ['./historic-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HistoricListComponent {
+export class HistoricListComponent implements OnChanges {
   @Input() infiniteScrollDisabled: boolean = false;
   @Input() historicList: HistoricList;
   @Input() showTotalBalance: boolean = false;
   @Output() scrolled: EventEmitter<void> = new EventEmitter();
 
+  public isHistoricListEmpty: boolean = true;
+  public isTotalBalanceVisible: boolean = false;
+
+  ngOnChanges() {
+    this.checkHistoricListEmpty();
+    this.checkTotalBalance();
+  }
+
   public handleScrolled(): void {
     this.scrolled.emit();
   }
 
-  public isHistoricListEmpty(): boolean {
-    return this.historicList.elements.length === 0;
+  private checkTotalBalance(): void {
+    this.isTotalBalanceVisible = !!this.historicList?.totalBalance && this.showTotalBalance;
   }
 
-  public isBalanceVisible(isFirstHeader: boolean, isFirstSubtitle: boolean): boolean {
-    return !!this.historicList.totalBalance && this.showTotalBalance && isFirstHeader && isFirstSubtitle;
+  private checkHistoricListEmpty(): void {
+    this.isHistoricListEmpty = this.historicList?.elements.length === 0;
   }
 }
