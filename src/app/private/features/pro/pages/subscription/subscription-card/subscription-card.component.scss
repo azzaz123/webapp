@@ -7,6 +7,11 @@
   color: $blue-grey-2;
   margin-top: 44px;
 
+  @include media-breakpoint-down(sm) {
+    background: linear-gradient(0deg, transparent 70%, #385ef9 30%);
+    padding: 16px;
+  }
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 2px 10px 0 rgba($blue-grey-1, 0.1);
@@ -40,6 +45,16 @@
   &__icon {
     margin-right: -50px;
     margin-top: -60px;
+
+    @include media-breakpoint-down(sm) {
+      margin-right: 0;
+      margin-top: 0;
+
+      img {
+        width: 240px;
+        height: 160px;
+      }
+    }
   }
 
   &--subscribed {

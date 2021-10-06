@@ -1,7 +1,7 @@
-<div class="SubscriptionCard d-flex justify-content-between flex-md-row flex-sm-column-reverse" [ngClass]="{
+<div class="SubscriptionCard d-flex justify-content-between flex-md-row flex-column-reverse" [ngClass]="{
     'SubscriptionCard--subscribed': isSubscribed
   }">
-    <div class="w-100 d-flex flex-column align-items-sm-center align-items-md-start">
+    <div class="w-100 d-flex flex-column align-items-center align-items-md-start">
         <div *ngIf="hasTrialAvailable || tierDiscount" class="SubscriptionCard__banner px-2 mb-3">
             <span *ngIf="tierDiscount; else trialLabel"
                 i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tierDiscount.discount.percentage}}%
