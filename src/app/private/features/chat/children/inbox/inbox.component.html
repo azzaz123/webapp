@@ -1,8 +1,8 @@
 <div *ngxPermissionsOnly="['isProfessional']" class="header">
-  <h2>
+  <h2 class="d-flex align-items-center">
     <span i18n="@@web_your_messages">Your Messages</span>
     <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-      <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
+      <tsl-pro-badge class="ml-2" *ngIf="userService.isPro"></tsl-pro-badge>
     </ng-container>
   </h2>
 </div>
@@ -35,7 +35,7 @@
     <div class="dropdown-header">
       <div *ngIf="isInbox" class="header-title" i18n="@@web_inbox_box">Inbox</div>
       <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-        <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
+        <tsl-pro-badge class="ml-2" *ngIf="userService.isPro"></tsl-pro-badge>
       </ng-container>
     </div>
   </div>

@@ -12,8 +12,8 @@ import { DELIVERY_PATHS } from '../delivery-routing-constants';
 export class DeliveryComponent {
   public navLinks: NavLink[] = [
     {
-      id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SHIPMENT_TRACKING}`,
-      display: $localize`:@@web_delivery_shipment_tracking:Tracking`,
+      id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`,
+      display: $localize`:@@web_delivery_streamline_title:Shippings`,
     },
     {
       id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,

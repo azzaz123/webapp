@@ -193,15 +193,6 @@ describe('ItemCardListComponent', () => {
       permissionService.addPermission(PERMISSIONS.showAds);
     });
     describe('when we have ads slots', () => {
-      it('should project the template', fakeAsync(() => {
-        fixture.detectChanges();
-        tick();
-
-        const adSlotList = fixture.debugElement.queryAll(By.css('.adSlot'));
-
-        expect(adSlotList.length).toBe(2);
-      }));
-
       it('should project the template with index', fakeAsync(() => {
         const slotConfig: SlotsConfig = componentWrapper.slotConfig;
         fixture.detectChanges();

@@ -25,4 +25,8 @@ export interface TransactionPaymentSeller {
    * Amount of the payment received in the wallet
    */
   paymentAmount: number;
+  /**
+   * Whether the seller should receive a tracer push
+   */
+  sendTracerPush: boolean;
 }

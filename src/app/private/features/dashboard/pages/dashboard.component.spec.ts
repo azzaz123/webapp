@@ -1,5 +1,4 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -11,17 +10,13 @@ import { RealTimeService } from '@core/message/real-time.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { ChatComponent } from '@private/features/chat/chat.component';
-import { ChatModule } from '@private/features/chat/chat.module';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
 import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import { InboxConversation } from '@private/features/chat/core/model';
 import { CallsServiceMock } from '@fixtures/call-service.fixtures.spec';
 import { createCallsArray } from '@fixtures/call.fixtures';
-import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
+import { MOCK_CONVERSATION, InboxConversationServiceMock, InboxServiceMock, createInboxConversationsArray } from '@fixtures/chat';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
-import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
-import { InboxServiceMock } from '@fixtures/inbox-service.fixtures.spec';
-import { createInboxConversationsArray } from '@fixtures/inbox.fixtures.spec';
 import { LoggedGuardServiceMock } from '@fixtures/logged-guard-service.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { of } from 'rxjs';
