@@ -22,6 +22,8 @@ h5 {
   flex-wrap: nowrap;
   span {
     white-space: pre-wrap;
+    word-break: break-word;
+    hyphens: auto;
   }
   .message-cloud {
     flex: 0 0 auto;

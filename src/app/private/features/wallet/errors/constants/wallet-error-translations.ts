@@ -1,6 +1,6 @@
 export const WalletBankAccountErrorTranslations = {
-  IBAN_COUNTRY_INVALID: $localize`:@@saving_bank_account_invalid_country:The country is invalid. wallapay is only available in Spain`,
-  IBAN_INVALID: $localize`:@@saving_bank_account_invalid_iban:The IBAN is not correct`,
-  OWNER_FIRST_NAME_INVALID: $localize`:@@saving_bank_account_invalid_first_name_error:Enter name as it appears in your ID`,
-  OWNER_LAST_NAME_INVALID: $localize`:@@saving_bank_account_invalid_last_name_error:The surname has to be valid too`,
+  IBAN_COUNTRY_INVALID: $localize`:@@bank_account_form_zip_code_non_valid_country_inline_error:The country is invalid.`,
+  IBAN_INVALID: $localize`:@@bank_account_form_iban_non_valid_inline_error:The IBAN is not correct`,
+  OWNER_FIRST_NAME_INVALID: $localize`:@@bank_account_form_name_missmatcht_info_inline_error:Enter name as it appears in your ID`,
+  OWNER_LAST_NAME_INVALID: $localize`:@@bank_account_form_surname_non_valid_inline_error:The surname has to be valid too`,
 };

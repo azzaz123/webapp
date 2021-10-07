@@ -1,14 +1,14 @@
 <div class="BankDetailsOverview container">
   <div class="row mb-2">
     <div class="col col-md-11 offset-md-1">
-      <h3 class="BankDetailsOverview__title" i18n="@@wallet_view_bank_details_title">Bank details</h3>
+      <h3 class="BankDetailsOverview__title" i18n="@@bank_list_view_top_bar_title">Bank details</h3>
     </div>
   </div>
   <div class="row offset-md-2">
     <div class="col-sm-12 col-md-5 mb-3 mb-md-0">
       <div class="row">
         <div class="col">
-          <h4 class="BankDetailsOverview__subtitle" i18n="@@delivery_credit_card">Credit or debit card</h4>
+          <h4 class="BankDetailsOverview__subtitle" i18n="@@bank_list_view_credit_card_info_title">Credit or debit card</h4>
         </div>
       </div>
       <div class="row">
@@ -26,7 +26,7 @@
         </div>
         <ng-template #addCreditCard>
           <tsl-add-credit-card class="col" (click)="redirect(CREDIT_CARD_FORM_LINK)" id="addCreditCard">
-            <span i18n="@@banking_data_menu_add_credit_card">Add credit or debit card</span>
+            <span i18n="@@bank_list_view_credit_card_info_add_label">Add card</span>
           </tsl-add-credit-card>
         </ng-template>
       </div>
@@ -34,7 +34,7 @@
     <div class="col-sm-12 col-md-5">
       <div class="row">
         <div class="col">
-          <h4 class="BankDetailsOverview__subtitle" i18n="@@delivery_bank_account">Bank account</h4>
+          <h4 class="BankDetailsOverview__subtitle" i18n="@@bank_list_view_bank_account_info_title">Bank account</h4>
         </div>
       </div>
       <div class="row">
@@ -51,7 +51,7 @@
         </div>
         <ng-template #addBankAccount>
           <tsl-add-credit-card (click)="handleBankAccountCardClick(BANK_ACCOUNT_FORM_LINK, bankAccount)" class="col" id="addBankAccount">
-            <span i18n="@@banking_data_menu_add_bank_account">Add bank account</span>
+            <span i18n="@@bank_list_view_bank_account_info_add_label">Add bank account</span>
           </tsl-add-credit-card>
         </ng-template>
       </div>
