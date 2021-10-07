@@ -19,7 +19,6 @@ import {
   MockPaymentsCreditCardService,
 } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import { PaymentsCreditCardService } from '@api/payments/cards';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { Router } from '@angular/router';
 import { UuidService } from '@core/uuid/uuid.service';
 import { MOCK_EMPTY_CREDIT_CARD_FORM } from '@fixtures/private/wallet/credit-card/credit-card.fixtures.spec';
@@ -33,7 +32,6 @@ import { Location } from '@angular/common';
 import { CreditCardComponent } from './credit-card.component';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { CREDIT_CARD_TRANSLATIONS } from '@private/features/wallet/translations/credit-card.translations';
-import { translations } from '@core/i18n/translations/constants/translations';
 
 describe('CreditCreditCardComponent', () => {
   const messageErrorSelector = '.CreditCard__message--error';
@@ -208,7 +206,7 @@ describe('CreditCreditCardComponent', () => {
 
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
-                text: translations[TRANSLATION_KEY.FORM_FIELD_ERROR],
+                text: CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR,
                 type: TOAST_TYPES.ERROR,
               });
             });
@@ -239,7 +237,7 @@ describe('CreditCreditCardComponent', () => {
 
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
-                text: translations[TRANSLATION_KEY.FORM_FIELD_ERROR],
+                text: CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR,
                 type: TOAST_TYPES.ERROR,
               });
             });
@@ -270,7 +268,7 @@ describe('CreditCreditCardComponent', () => {
 
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
-                text: translations[TRANSLATION_KEY.FORM_FIELD_ERROR],
+                text: CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR,
                 type: TOAST_TYPES.ERROR,
               });
             });
@@ -301,7 +299,7 @@ describe('CreditCreditCardComponent', () => {
 
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
-                text: translations[TRANSLATION_KEY.FORM_FIELD_ERROR],
+                text: CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR,
                 type: TOAST_TYPES.ERROR,
               });
             });
@@ -415,7 +413,7 @@ describe('CreditCreditCardComponent', () => {
 
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: translations[TRANSLATION_KEY.FORM_FIELD_ERROR],
+              text: CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR,
               type: TOAST_TYPES.ERROR,
             });
           });

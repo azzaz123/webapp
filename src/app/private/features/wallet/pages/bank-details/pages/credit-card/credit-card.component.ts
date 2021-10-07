@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import { PaymentsCreditCardService } from '@api/payments/cards';
 import { EventService } from '@core/event/event.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { UuidService } from '@core/uuid/uuid.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
@@ -33,7 +32,6 @@ import { Location } from '@angular/common';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
 import { CREDIT_CARD_TRANSLATIONS } from '@private/features/wallet/translations/credit-card.translations';
-import { translations } from '@core/i18n/translations/constants/translations';
 
 @Component({
   selector: 'tsl-credit-card',
@@ -163,7 +161,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
   }
 
   private handleCreditCardErrors(errors: PaymentsCardsError[]): void {
-    let toastText: string = translations[TRANSLATION_KEY.FORM_FIELD_ERROR];
+    let toastText: string = CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR;
 
     errors.forEach((error: PaymentsCardsError) => {
       if (error instanceof CardIsNotAuthorizedError || error instanceof CardNumberIsInvalidError) {

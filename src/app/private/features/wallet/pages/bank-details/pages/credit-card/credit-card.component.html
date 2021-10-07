@@ -31,7 +31,7 @@
                     <input type="text" class="form-control" id="cardNumber" formControlName="cardNumber" maxlength="24" [value]="creditCardForm.get('cardNumber').value | separateWordByCharacter:4:' '" tslNumbersOnly/>
                     <div *ngIf="creditCardForm.controls.cardNumber.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
                         <ng-container *ngIf="creditCardForm.controls.cardNumber.errors as cardNumberError">
-                            <span *ngIf="cardNumberError.required" i18n="@@credit_card_number_error">Invalid card number</span>
+                            <span *ngIf="cardNumberError.required" i18n="@@credit_card_form_card_number_empty_field_inline_error">"Card number" field must be filled</span>
                             <span *ngIf="!cardNumberError.required">
                                 {{formErrorMessages.cardNumber}}
                             </span>
@@ -45,7 +45,7 @@
                     <input type="text" class="form-control" id="cardExpirationDate"  formControlName="cardExpirationDate" maxlength="5" [value]="creditCardForm.get('cardExpirationDate').value | separateWordByCharacter:2:'/'" tslNumbersOnly/>
                     <div *ngIf="creditCardForm.controls.cardExpirationDate.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
                         <ng-container *ngIf="creditCardForm.controls.cardExpirationDate.errors as expirationDateError">
-                            <span *ngIf="expirationDateError.required" i18n="@@credit_card_date_error">Invalid date</span>
+                            <span *ngIf="expirationDateError.required" i18n="@@credit_card_form_date_empty_field_inline_error">"Date" field must be filled</span>
                             <span *ngIf="!expirationDateError.required">
                                 {{formErrorMessages.cardExpirationDate}}
                             </span>                  
@@ -59,7 +59,7 @@
                     <input type="text" class="form-control" id="cardCvx" formControlName="cardCvx" maxlength="4" pattern="[0-9]*" tslNumbersOnly/>
                     <div *ngIf="creditCardForm.controls.cardCvx.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
                         <ng-container *ngIf="creditCardForm.controls.cardCvx.errors as CVVError">
-                            <span *ngIf="CVVError.required" i18n="@@credit_card_cvv_error">Invalid CCV number</span>
+                            <span *ngIf="CVVError.required" i18n="@@credit_card_form_cvv_empty_field_inline_error">"CVV" field must be filled</span>
                             <span *ngIf="!CVVError.required">
                                 {{formErrorMessages.cardCvx}}
                             </span>  
