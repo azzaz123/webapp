@@ -11,6 +11,7 @@ import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 
 @Injectable()
 export class KYCPropertiesService {
+  public arePropertiesInitialized = false;
   private readonly KYCStatusIsNoNeededSubject: Subject<void> = new Subject();
   private readonly KYCPropertiesSubject: ReplaySubject<KYCProperties> = new ReplaySubject<KYCProperties>(1);
 
@@ -24,7 +25,7 @@ export class KYCPropertiesService {
     this.KYCPropertiesSubject.next(KYCProperties);
   }
 
-  public get(): Observable<KYCProperties> {
+  public get(isPetitionFromGuard = false): Observable<KYCProperties> {
     const secondsPeriod = 15 * 1000;
 
     return timer(0, secondsPeriod).pipe(
@@ -32,6 +33,9 @@ export class KYCPropertiesService {
       map((KYCPropertiesApi: KYCPropertiesApi) => mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi)),
       tap((properties: KYCProperties) => {
         this.KYCProperties = properties;
+        if (!isPetitionFromGuard) {
+          this.arePropertiesInitialized = true;
+        }
 
         if (properties.status === KYC_STATUS.NO_NEED) {
           this.KYCStatusIsNoNeededSubject.next();

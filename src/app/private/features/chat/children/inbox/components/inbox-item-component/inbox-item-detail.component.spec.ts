@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SITE_URL } from '@configs/site-url.config';
 import { ItemService } from '@core/item/item.service';
-import { environment } from '@environments/environment.prod';
-import { MOCKED_INBOX_CONVERSATIONS } from '@fixtures/inbox.fixtures.spec';
+import { MOCKED_INBOX_CONVERSATIONS } from '@fixtures/chat';
 import { ITEM_COUNTERS_DATA } from '@fixtures/item.fixtures.spec';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
@@ -18,10 +16,6 @@ describe('Component: Item', () => {
   let fixture: ComponentFixture<InboxItemDetailComponent>;
   let itemService: ItemService;
   let cookieService: CookieService;
-
-  const MOCK_CLICK_EVENT = {
-    stopPropagation() {},
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
