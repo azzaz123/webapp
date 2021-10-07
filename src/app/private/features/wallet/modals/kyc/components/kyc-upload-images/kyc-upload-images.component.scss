@@ -38,14 +38,17 @@ $image-height--big: 240px;
   }
 
   &__imageContainer {
+    overflow: hidden;
+    border: dashed 2px $blue-grey-5;
+    border-radius: $border-radius;
+  }
+
+  &__imageContentWrapper {
     flex: 1;
   }
 
   &__image {
-    overflow: hidden;
     height: $image-height;
-    border: dashed 2px $blue-grey-5;
-    border-radius: $border-radius;
 
     @include media-breakpoint-up(sm) {
       height: $image-height--big;
