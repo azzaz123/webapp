@@ -34,6 +34,9 @@ import {
 import { MaliciousConversationModalComponent } from './modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { TranslateButtonModule } from '@core/components/translate-button/translate-button.module';
+import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
+import { ChatApiModule } from '@api/chat/chat-api.module';
 
 @NgModule({
   imports: [
@@ -50,6 +53,8 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     ItemAvatarModule,
     CustomCurrencyModule,
     NgxPermissionsModule.forChild(),
+    TranslateButtonModule,
+    ChatApiModule,
   ],
   declarations: [
     chatRoutedComponents,
@@ -76,6 +81,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     MaliciousConversationModalComponent,
     PersonalDataInformationModal,
   ],
+  providers: [ChatTranslationService],
   exports: [InboxConversationComponent],
   entryComponents: [
     ArchiveInboxConversationComponent,

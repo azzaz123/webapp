@@ -14,6 +14,6 @@ export class AdSlotGroupShoppingComponent implements AfterViewInit {
   constructor(private adsService: AdsService) {}
 
   ngAfterViewInit(): void {
-    this.adsService.displayAdShopping(this.adShoppingPageOptions, this.adSlotShoppingConfiguration);
+    this.adsService.displayAdShopping(this.adShoppingPageOptions, [this.adSlotShoppingConfiguration]);
   }
 }

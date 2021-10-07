@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -11,16 +11,19 @@ import { InboxMessage, MessageStatus, MessageType } from '@private/features/chat
 import { MaliciousConversationModalComponent } from '@private/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
-import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
 import {
   CREATE_MOCK_INBOX_CONVERSATION,
   MOCK_INBOX_CONVERSATION_BASIC,
   MOCK_INBOX_CONVERSATION_WITH_MALICIOUS_USER,
+  MOCK_INBOX_TRANSLATABLE_CONVERSATION_ALREADY_TRANSLATED,
   MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER,
-} from '@fixtures/inbox.fixtures.spec';
+  MOCK_INBOX_TRANSLATABLE_CONVERSATION,
+  MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICALLY,
+  MOCK_CONVERSATION,
+  InboxConversationServiceMock,
+} from '@fixtures/chat';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
-import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
+import { DeviceDetectorServiceMock, MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
 import { MOCK_USER, USER_ID } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -38,10 +41,19 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import * as Visibility from 'visibilityjs';
 import { CurrentConversationComponent } from './current-conversation.component';
 import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
+import { ChatApiModule } from '@api/chat/chat-api.module';
+import { ScrollingMessageComponent } from '@private/features/chat/components/scrolling-message';
+import { InputComponent } from '@private/features/chat/components/input';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
   let fixture: ComponentFixture<CurrentConversationComponent>;
+  let debugElement: DebugElement;
   let realTime: RealTimeService;
   let eventService: EventService;
   let conversationService: InboxConversationService;
@@ -49,13 +61,14 @@ describe('CurrentConversationComponent', () => {
   let analyticsService: AnalyticsService;
   let modalService: NgbModal;
   let userService: UserService;
+  let chatTranslationService: ChatTranslationService;
   let modalMockResult: Promise<{}>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NgxPermissionsModule.forRoot()],
-        declarations: [CurrentConversationComponent, DateCalendarPipe],
+        imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule, ChatApiModule],
+        declarations: [CurrentConversationComponent, DateCalendarPipe, ScrollingMessageComponent, InputComponent],
         providers: [
           EventService,
           NgbModal,
@@ -66,6 +79,7 @@ describe('CurrentConversationComponent', () => {
           },
           { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
+          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
           {
             provide: UserService,
             useValue: {
@@ -96,6 +110,7 @@ describe('CurrentConversationComponent', () => {
           },
           I18nService,
           MomentCalendarSpecService,
+          ChatTranslationService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -104,6 +119,7 @@ describe('CurrentConversationComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CurrentConversationComponent);
+    debugElement = fixture.debugElement;
     component = fixture.componentInstance;
     component.currentConversation = CREATE_MOCK_INBOX_CONVERSATION();
     modalMockResult = Promise.resolve({});
@@ -115,6 +131,7 @@ describe('CurrentConversationComponent', () => {
     modalService = TestBed.inject(NgbModal);
     analyticsService = TestBed.inject(AnalyticsService);
     userService = TestBed.inject(UserService);
+    chatTranslationService = TestBed.inject(ChatTranslationService);
 
     fixture.detectChanges();
   });
@@ -526,6 +543,151 @@ describe('CurrentConversationComponent', () => {
     });
   });
 
+  describe('when current conversation is translatable', () => {
+    const translateButtonWrapperPredicate = By.css('.translation-button-container');
+    describe('and it does not have translatable messages', () => {
+      it('should not show translate button', () => {
+        component.currentConversation = MOCK_INBOX_TRANSLATABLE_CONVERSATION_ALREADY_TRANSLATED;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(null, MOCK_INBOX_TRANSLATABLE_CONVERSATION_ALREADY_TRANSLATED, false),
+        });
+        fixture.detectChanges();
+
+        const translateButton = debugElement.query(translateButtonWrapperPredicate);
+
+        expect(translateButton).toBeNull();
+      });
+    });
+
+    describe('and has translatable messages', () => {
+      it('should show translate button', () => {
+        component.currentConversation = MOCK_INBOX_TRANSLATABLE_CONVERSATION;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(null, MOCK_INBOX_TRANSLATABLE_CONVERSATION, false),
+        });
+        fixture.detectChanges();
+
+        const translateButton = debugElement.query(translateButtonWrapperPredicate);
+
+        expect(translateButton).toBeTruthy();
+      });
+    });
+
+    describe('and new messages arrives', () => {
+      describe('and translate button has not been clicked before', () => {
+        it('should not translate the message', fakeAsync(() => {
+          spyOn(chatTranslationService, 'translateConversation');
+          component.currentConversation = MOCK_INBOX_TRANSLATABLE_CONVERSATION_ALREADY_TRANSLATED;
+          component.ngOnChanges({
+            currentConversation: new SimpleChange(null, MOCK_INBOX_TRANSLATABLE_CONVERSATION_ALREADY_TRANSLATED, false),
+          });
+          fixture.detectChanges();
+
+          const newMessage = new InboxMessage(
+            'someId',
+            component.currentConversation.id,
+            'hola!',
+            component.currentConversation.messages[0].from,
+            false,
+            new Date(),
+            MessageStatus.RECEIVED,
+            MessageType.TEXT
+          );
+          component.currentConversation.messages.push(newMessage);
+          eventService.emit(EventService.MESSAGE_ADDED, newMessage);
+          tick(1000);
+
+          expect(chatTranslationService.translateConversation).not.toHaveBeenCalled();
+        }));
+      });
+
+      describe('and translate button has been clicked before', () => {
+        it('should translate the message', fakeAsync(() => {
+          spyOn(chatTranslationService, 'translateConversation').and.returnValue(of(null));
+          component.currentConversation = MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICALLY;
+          component.ngOnChanges({
+            currentConversation: new SimpleChange(null, MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICALLY, false),
+          });
+          fixture.detectChanges();
+
+          const newMessage = new InboxMessage(
+            'someId',
+            component.currentConversation.id,
+            'hola!',
+            component.currentConversation.messages[0].from,
+            false,
+            new Date(),
+            MessageStatus.RECEIVED,
+            MessageType.TEXT
+          );
+          component.currentConversation.messages.push(newMessage);
+          eventService.emit(EventService.MESSAGE_ADDED, newMessage);
+          tick(1000);
+
+          expect(chatTranslationService.translateConversation).toHaveBeenCalledTimes(1);
+          expect(chatTranslationService.translateConversation).toHaveBeenCalledWith(component.currentConversation);
+        }));
+      });
+    });
+
+    describe('and user clicks load more messages', () => {
+      describe('and translate button has not been clicked before', () => {
+        it('should not translate new messages', fakeAsync(() => {
+          spyOn(chatTranslationService, 'translateConversation');
+          component.currentConversation = MOCK_INBOX_TRANSLATABLE_CONVERSATION_ALREADY_TRANSLATED;
+          component.ngOnChanges({
+            currentConversation: new SimpleChange(null, MOCK_INBOX_TRANSLATABLE_CONVERSATION_ALREADY_TRANSLATED, false),
+          });
+          fixture.detectChanges();
+
+          const newMessage = new InboxMessage(
+            'someId',
+            component.currentConversation.id,
+            'hola!',
+            component.currentConversation.messages[0].from,
+            false,
+            new Date(),
+            MessageStatus.RECEIVED,
+            MessageType.TEXT
+          );
+          component.currentConversation.messages.push(newMessage);
+          eventService.emit(EventService.MORE_MESSAGES_LOADED, component.currentConversation);
+          tick(1000);
+
+          expect(chatTranslationService.translateConversation).not.toHaveBeenCalled();
+        }));
+      });
+
+      describe('and translate button has been clicked before', () => {
+        it('should translate new messages', fakeAsync(() => {
+          spyOn(chatTranslationService, 'translateConversation').and.returnValue(of(null));
+          component.currentConversation = MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICALLY;
+          component.ngOnChanges({
+            currentConversation: new SimpleChange(null, MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICALLY, false),
+          });
+          fixture.detectChanges();
+
+          const newMessage = new InboxMessage(
+            'someId',
+            component.currentConversation.id,
+            'hola!',
+            component.currentConversation.messages[0].from,
+            false,
+            new Date(),
+            MessageStatus.RECEIVED,
+            MessageType.TEXT
+          );
+          component.currentConversation.messages.push(newMessage);
+          eventService.emit(EventService.MORE_MESSAGES_LOADED, component.currentConversation);
+          tick(1000);
+
+          expect(chatTranslationService.translateConversation).toHaveBeenCalledTimes(1);
+          expect(chatTranslationService.translateConversation).toHaveBeenCalledWith(component.currentConversation);
+        }));
+      });
+    });
+  });
+
   describe('Analytics', () => {
     describe('when malicious modal is shown', () => {
       let mockedAtr: ViewBannedUserChatPopUp;
@@ -554,7 +716,7 @@ describe('CurrentConversationComponent', () => {
           component.ngOnChanges({
             currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false),
           });
-          tick();
+          tick(1000);
 
           expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         }));
@@ -574,7 +736,7 @@ describe('CurrentConversationComponent', () => {
           component.ngOnChanges({
             currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false),
           });
-          tick();
+          tick(1000);
 
           expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         }));

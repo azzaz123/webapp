@@ -1,4 +1,4 @@
-import { AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
+import { AdShoppingPageOptions, AdSlotShoppingBaseConfiguration, AdSlotShoppingConfiguration } from '@core/ads/models';
 
 interface AdShoppingLibPageOptions extends AdShoppingPageOptions {
   query: string;
@@ -7,5 +7,5 @@ interface AdShoppingLibPageOptions extends AdShoppingPageOptions {
 export type GoogCsa = (
   name: string,
   adShoppingLibPageOptions: AdShoppingLibPageOptions,
-  adSlotShoppingConfiguration: AdSlotShoppingBaseConfiguration
+  adSlotShoppingConfiguration: AdSlotShoppingBaseConfiguration[]
 ) => void;

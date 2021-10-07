@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
-import { AnalyticsService } from '@core/analytics/analytics.service';
+import { Component } from '@angular/core';
 import { PublicFooterService } from './core/services/footer/public-footer.service';
 
 @Component({
@@ -8,16 +7,8 @@ import { PublicFooterService } from './core/services/footer/public-footer.servic
   templateUrl: './public.component.html',
   styleUrls: ['./public.component.scss'],
 })
-export class PublicComponent implements OnInit {
+export class PublicComponent {
   public showFooter$: Observable<boolean> = this.publicFooterService.showFooter$;
 
-  constructor(private analyticsService: AnalyticsService, private publicFooterService: PublicFooterService) {}
-
-  public ngOnInit(): void {
-    this.initializeServices();
-  }
-
-  private initializeServices(): void {
-    this.analyticsService.initialize();
-  }
+  constructor(private publicFooterService: PublicFooterService) {}
 }

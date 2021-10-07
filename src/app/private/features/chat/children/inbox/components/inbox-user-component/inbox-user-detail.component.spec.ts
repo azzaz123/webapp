@@ -4,7 +4,7 @@ import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { InboxItem, InboxUser } from '@private/features/chat/core/model';
-import { MOCKED_INBOX_CONVERSATIONS } from '@fixtures/inbox.fixtures.spec';
+import { MOCKED_INBOX_CONVERSATIONS } from '@fixtures/chat';
 import { RESPONSE_RATE, SCORING_STARS, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { of } from 'rxjs';
 import { InboxUserDetailComponent } from './inbox-user-detail.component';

@@ -18,6 +18,7 @@ export class ItemCardListComponent {
   @Input() items: ItemCard[];
   @Input() showDescription = true;
   @Input() showPlaceholder = false;
+  @Input() showNativeAdSlots = false;
   @Input() placeholderCards = ItemCardListComponent.DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS;
   @Input() columnsConfig: ColumnsConfig = {
     xl: 5,

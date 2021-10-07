@@ -1,12 +1,10 @@
-/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { ItemAvatarComponent } from './item-avatar.component';
 import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-background.directive';
-import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH, Item } from '../../core/item/item';
-import { MOCK_ITEM, MOCK_ITEM_FEATURED } from '../../../tests/item.fixtures.spec';
-import { USER_ID } from '../../../tests/user.fixtures.spec';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '../../../tests/inbox.fixtures.spec';
+import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH, Item } from '@core/item/item';
+import { MOCK_ITEM, MOCK_ITEM_FEATURED } from '@fixtures/item.fixtures.spec';
+import { USER_ID } from '@fixtures/user.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
