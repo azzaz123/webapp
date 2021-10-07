@@ -3,22 +3,22 @@
 .SubscriptionCard {
   border: 1px solid $blue-grey-5;
   border-radius: 10px;
-  padding: 32px;
+  padding: $spacing-xl;
   color: $blue-grey-2;
-  margin-top: 44px;
+  margin-top: $spacing-xxl;
 
   @include media-breakpoint-down(sm) {
-    background: linear-gradient(0deg, transparent 70%, #385ef9 30%);
-    padding: 16px;
-    margin-top: 16px;
+    background: linear-gradient(0deg, transparent 70%, $color-pro-main 30%);
+    padding: $spacing-m;
+    margin-top: $spacing-m;
   }
 
   &__banner {
     border-radius: 21px;
-    font-weight: bold;
-    font-size: 12px;
-    background-color: #f75883;
-    color: white;
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-xs;
+    background-color: $color-pro-discount;
+    color: $white;
   }
 
   &__info {
@@ -28,13 +28,13 @@
       cursor: pointer;
     }
     &--price {
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
     }
   }
 
   &__title {
     font-size: $font-size-l;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
     color: $blue-grey-1;
   }
 
@@ -53,7 +53,7 @@
   }
 
   &--subscribed {
-    border: 2px solid #385ef9;
+    border: 2px solid $color-pro-main;
   }
 
   &__date {
@@ -62,7 +62,7 @@
 
   &__price {
     font-size: $font-size-m;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
 
     &__description {
       color: $blue-grey-2;
