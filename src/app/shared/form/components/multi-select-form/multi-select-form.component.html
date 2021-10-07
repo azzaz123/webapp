@@ -1,11 +1,11 @@
 <ng-container *ngFor="let option of extendedOptions$ | async">
-  <div *ngIf="!shownChildrenOptionId" class="w-100">
+  <div *ngIf="(shownChildrenOptionId$ | async) === null" class="w-100">
     <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="option" [isDisabled]="isDisabled" 
     (toggleOnChange)="handleSelectedOption()" (click)="showChildren(option);" [hasChildren]="option.children?.length"></tsl-multi-select-option>
   </div>
-  <div *ngIf="shownChildrenOptionId === option.value">
+  <div *ngIf="(shownChildrenOptionId$ | async) === option.value">
     <div class="MultiSelectForm__children" >
-      <div class="MultiSelectForm__children__back d-flex align-items-center p-3 font-weight-bold" (click)="shownChildrenOptionId = null">
+      <div class="MultiSelectForm__children__back d-flex align-items-center p-3 font-weight-bold" (click)="restartNavigation()">
         <tsl-svg-icon class="d-block mr-2" src="assets/icons/arrow-right.svg"></tsl-svg-icon> {{option.label}}
       </div>
   

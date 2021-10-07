@@ -120,7 +120,7 @@ describe('MultiSelectFormComponent', () => {
 
       beforeEach(() => {
         component.options = optionsWithChildrenFixture;
-        component.shownChildrenOptionId = parentOptionValue;
+        component['shownChildrenOptionIdSubject'].next(parentOptionValue);
         fixture.detectChanges();
       });
 
