@@ -3,15 +3,18 @@
     <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="option" [isDisabled]="isDisabled" 
     (toggleOnChange)="handleSelectedOption()" (click)="showChildren(option);" [hasChildren]="option.children?.length"></tsl-multi-select-option>
   </div>
-  <div *ngIf="(shownChildrenOptionId$ | async) === option.value">
-    <div class="MultiSelectForm__children" >
-      <div class="MultiSelectForm__children__back d-flex align-items-center p-3 font-weight-bold" (click)="restartNavigation()">
+
+  <ng-container *ngIf="(shownChildrenOptionId$ | async) === option.value">
+    <div class="MultiSelectForm__children" #children>
+      <div class="MultiSelectForm__children__back d-flex align-items-center p-3 font-weight-bold position-absolute" (click)="restartNavigation()">
         <tsl-svg-icon class="d-block mr-2" src="assets/icons/arrow-right.svg"></tsl-svg-icon> {{option.label}}
       </div>
   
-      <div *ngFor="let childOption of option.children" class="w-100 ">
-        <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="childOption" [isDisabled]="isDisabled" (toggleOnChange)="handleSelectedOption()"></tsl-multi-select-option>
+      <div class="MultiSelectForm__children__options">
+        <div *ngFor="let childOption of option.children" class="w-100">
+          <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="childOption" [isDisabled]="isDisabled" (toggleOnChange)="handleSelectedOption()"></tsl-multi-select-option>
+        </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 </ng-container>

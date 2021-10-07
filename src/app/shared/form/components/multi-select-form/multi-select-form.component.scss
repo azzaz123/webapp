@@ -1,8 +1,13 @@
 @import 'src/style/common';
 
 $border: 1px solid $blue-grey-5;
+$nested-title-height: 57px;
 
 :host {
+  display: block;
+  height: 100%;
+  overflow: auto;
+
   .MultiSelectForm {
     &__option {
       border-bottom: $border;
@@ -17,12 +22,19 @@ $border: 1px solid $blue-grey-5;
       z-index: 2;
 
       &__back {
+        background: $white;
         border-bottom: $border;
         cursor: pointer;
+        width: 100%;
+        z-index: 1;
 
         tsl-svg-icon {
           transform: scaleX(-1);
         }
+      }
+
+      &__options {
+        padding-top: $nested-title-height;
       }
     }
   }

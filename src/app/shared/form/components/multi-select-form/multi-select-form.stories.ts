@@ -10,8 +10,8 @@ import { MultiSelectFormModule } from './multi-select-form.module';
   selector: 'tsl-story-multi-select-form',
   template: `
     <h4 class="mt-4">MultiSelect FormGroup: {{ formGroup.value.select }}</h4>
-    <div style="background: white;background: white;max-height: 300px;overflow: auto;">
-      <form [formGroup]="formGroup">
+    <div style="background: white;background: white;height: 300px;">
+      <form [formGroup]="formGroup" style="height:100%">
         <tsl-multi-select-form formControlName="select" [options]="options" [disabled]="disabled"></tsl-multi-select-form>
       </form>
     </div>
