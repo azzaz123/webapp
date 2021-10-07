@@ -17,10 +17,13 @@ export class SubscriptionBenefitsComponent implements OnInit {
   public readonly ICON_TYPE = ICON_TYPE;
   public helpPageUrl: string;
 
-  constructor(private subscriptionBenefitsService: SubscriptionBenefitsService, private customerHelpService: CustomerHelpService) {}
+  constructor(private subscriptionBenefitsService: SubscriptionBenefitsService) {}
+
+  get faqUrl(): string {
+    return $localize`:@@web_footer_links_faq_href:https://ayuda.wallapop.com/hc/en-us`;
+  }
 
   ngOnInit() {
-    this.helpPageUrl = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.PROS_SUBSCRIPRION_INFO);
     this.subscriptionBenefitsService
       .getSubscriptionBenefits()
       .pipe(finalize(() => (this.loading = false)))
