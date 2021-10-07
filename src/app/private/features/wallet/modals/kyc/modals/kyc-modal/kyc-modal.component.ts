@@ -122,7 +122,7 @@ export class KYCModalComponent implements OnDestroy {
   }
 
   private handleKYCError(e: Error | KYCError): void {
-    let errorMessage: string = `${this.i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR)}`;
+    let errorMessage = $localize`:@@kyc_failed_snackbar_unknown_error_web_specific:Oops! There was an error.`;
 
     if (e instanceof KYCError) {
       errorMessage = e.message;
