@@ -8,6 +8,7 @@ import {
   MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
   TIER_WITH_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
+import { DiscountBadgeComponent } from '@private/features/pro/components/discount-badge/discount-badge.component';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SubscriptionCardComponent } from './subscription-card.component';
 
@@ -17,7 +18,7 @@ describe('SubscriptionCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionCardComponent, ButtonComponent],
+      declarations: [SubscriptionCardComponent, ButtonComponent, DiscountBadgeComponent],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(SubscriptionCardComponent, {
@@ -45,7 +46,7 @@ describe('SubscriptionCardComponent', () => {
     });
 
     it('should not show banner', () => {
-      const trialBanner = fixture.debugElement.query(By.css('.SubscriptionCard__banner'));
+      const trialBanner = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
       expect(trialBanner).toBeFalsy();
     });
@@ -155,17 +156,17 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should show banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner'));
+        const trialBannerHidden = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
         expect(trialBannerHidden).toBeTruthy();
       });
       it('should show free days amount', () => {
-        const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__banner')).nativeElement;
+        const trialBanner: HTMLElement = fixture.debugElement.query(By.directive(DiscountBadgeComponent)).nativeElement;
 
         expect(trialBanner.textContent).toContain(component.subscription.trial_days);
       });
       it('should show trial banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner'));
+        const trialBannerHidden = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
         expect(trialBannerHidden).toBeTruthy();
       });
@@ -178,12 +179,12 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should show banner', () => {
-        const banner = fixture.debugElement.query(By.css('.SubscriptionCard__banner'));
+        const banner = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
         expect(banner).toBeTruthy();
       });
       it('should show discount percentage', () => {
-        const banner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__banner')).nativeElement;
+        const banner: HTMLElement = fixture.debugElement.query(By.directive(DiscountBadgeComponent)).nativeElement;
 
         expect(banner.textContent).toContain(TIER_WITH_DISCOUNT.discount.percentage);
       });
@@ -196,7 +197,7 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should not show banner', () => {
-        const banner = fixture.debugElement.query(By.css('.SubscriptionCard__banner'));
+        const banner = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
         expect(banner).toBeFalsy();
       });
