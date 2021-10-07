@@ -1,8 +1,14 @@
 <div class="message-body" *ngIf="!message.payload" [ngClass]="{'from-self': message.fromSelf}">
-  <p class="message-cloud">
-    <span *ngIf="!message.payload && !messageContainsHTMLTag()" [innerHTML]="message.text | linkTransform"></span>
-    <span *ngIf="!message.payload  && messageContainsHTMLTag()">{{message.text | linkTransform}}</span>
+  <div class="message-cloud">
+    <p *ngIf="!message.payload" [class.translated-message--original]="message.translation">
+      <span *ngIf="!containsHTMLTag(message.text)" [innerHTML]="message.text | linkTransform"></span>
+      <span *ngIf="containsHTMLTag(message.text)">{{message.text | linkTransform}}</span>
+    </p>
+    <p *ngIf="message.translation && !message.payload" class="translated-message--translation">
+      <span *ngIf="!containsHTMLTag(message.translation)" [innerHTML]="message.translation | linkTransform"></span>
+      <span *ngIf="containsHTMLTag(message.translation)">{{message.translation | linkTransform}}</span>
+    </p>
     <small class="message-date">{{message.date | date:'shortTime'}}</small>
     <span *ngIf="message.fromSelf" class="message-status" [ngClass]="message.status"></span>
-  </p>
+  </div>
 </div>
