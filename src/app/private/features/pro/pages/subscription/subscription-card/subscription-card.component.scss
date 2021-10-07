@@ -8,15 +8,14 @@
   margin-top: $spacing-xxl;
 
   @include media-breakpoint-down(sm) {
-    background: linear-gradient(0deg, transparent 70%, $color-pro-main 30%);
-    padding: $spacing-m;
+    padding: 0;
     margin-top: $spacing-m;
   }
 
   &__content {
     max-width: 500px;
     @include media-breakpoint-down(sm) {
-      margin-top: $spacing-ms;
+      padding: $spacing-m;
     }
   }
 
@@ -39,10 +38,13 @@
     margin-top: -60px;
 
     @include media-breakpoint-down(sm) {
+      background: linear-gradient(0deg, transparent 30%, $color-pro-main 30%);
+      border-radius: 6px;
       margin-right: 0;
       margin-top: 0;
 
       img {
+        padding-top: $spacing-ml;
         height: 160px;
       }
     }
