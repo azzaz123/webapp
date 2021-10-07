@@ -5,7 +5,6 @@ import { DELIVERY_INPUTS_MAX_LENGTH } from '@private/features/delivery/enums/del
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { EventService } from '@core/event/event.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
 import { finalize } from 'rxjs/operators';
 import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
@@ -26,7 +25,6 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
 import { KYCTrackingEventsService } from '@private/features/wallet/modals/kyc/services/kyc-tracking-events/kyc-tracking-events.service';
 import { BANK_ACCOUNT_TRANSLATIONS } from '@private/features/wallet/translations/bank-account.translations';
-import { translations } from '@core/i18n/translations/constants/translations';
 
 export const IBAN_LENGTH = 40;
 @Component({
