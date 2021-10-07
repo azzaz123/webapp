@@ -55,8 +55,8 @@ export class KYCModalComponent implements OnDestroy {
         this.updateKYCImages(KYCImages);
         this.goNextStep();
       },
-      (e: Error | KYCError) => {
-        this.handleKYCError(e);
+      (e: Error[] | KYCError[]) => {
+        this.handleKYCError(e[0]);
       }
     );
   }
@@ -122,7 +122,7 @@ export class KYCModalComponent implements OnDestroy {
   }
 
   private handleKYCError(e: Error | KYCError): void {
-    let errorMessage = $localize`:@@kyc_failed_snackbar_unknown_error_web_specific:Oops! There was an error.`;
+    let errorMessage = e?.message ? e.message : $localize`:@@kyc_failed_snackbar_unknown_error_web_specific:Oops! There was an error.`;
 
     if (e instanceof KYCError) {
       errorMessage = e.message;
