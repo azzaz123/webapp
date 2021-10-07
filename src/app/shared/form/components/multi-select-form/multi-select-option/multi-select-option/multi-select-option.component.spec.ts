@@ -89,6 +89,13 @@ describe('MultiSelectOptionComponent', () => {
         expect(checkbox).toBeFalsy();
         expect(arrow).toBeTruthy();
       });
+
+      it('should add correct class', () => {
+        const elementSelector = '.MultiSelectOption';
+        const expectedClass = 'MultiSelectOption--with-children';
+
+        expect(fixture.debugElement.query(By.css(elementSelector)).classes[expectedClass]).toBeTruthy();
+      });
     });
 
     describe('has not children', () => {
@@ -137,6 +144,13 @@ describe('MultiSelectOptionComponent', () => {
         checkbox.click();
 
         expect(component.option.checked).toEqual(initialValue);
+      });
+
+      it('should add correct class', () => {
+        const elementSelector = '.MultiSelectOption';
+        const expectedClass = 'MultiSelectOption--disabled';
+
+        expect(fixture.debugElement.query(By.css(elementSelector)).classes[expectedClass]).toBeTruthy();
       });
     });
   });
