@@ -44,14 +44,14 @@ describe('SubscriptionCardComponent', () => {
       expect(card).toBeTruthy();
     });
 
-    it('should not show trial banner', () => {
-      const trialBanner = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
+    it('should not show banner', () => {
+      const trialBanner = fixture.debugElement.query(By.css('.SubscriptionCard__banner'));
 
-      expect(trialBanner).toBeTruthy();
+      expect(trialBanner).toBeFalsy();
     });
 
-    it('should show active icon', () => {
-      expect(component.iconSrc).toEqual(`/assets/icons/categories/disabled/${component.subscription.category_icon}.svg`);
+    it('should show icon', () => {
+      expect(component.iconSrc).toEqual(`/assets/images/subscriptions/types/${component.subscription.category_icon}.svg`);
     });
 
     it('should show title', () => {
@@ -81,7 +81,7 @@ describe('SubscriptionCardComponent', () => {
           fixture.detectChanges();
         });
         it('should show tier limit', () => {
-          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__subtitle')).nativeElement;
 
           expect(info.textContent).toContain(
             $localize`:@@web_profile_pages_subscription_332:List up to ${component.subscription.selected_tier.limit} real estate`
@@ -90,7 +90,7 @@ describe('SubscriptionCardComponent', () => {
       });
       describe('and is not Real estate', () => {
         it('should show tier limit', () => {
-          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__subtitle')).nativeElement;
 
           expect(info.textContent).toContain(
             $localize`:@@web_profile_pages_subscription_325:List up to ${component.subscription.selected_tier.limit} items`
@@ -104,7 +104,7 @@ describe('SubscriptionCardComponent', () => {
         component.subscription.selected_tier.limit = null;
 
         fixture.detectChanges();
-        const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+        const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__subtitle')).nativeElement;
 
         expect(info.textContent).toContain($localize`:@@web_profile_pages_subscription_586:List without limits`);
       });
@@ -117,7 +117,7 @@ describe('SubscriptionCardComponent', () => {
           fixture.detectChanges();
         });
         it('should show subscription end date', () => {
-          const subscriptionEnd: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+          const subscriptionEnd: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__endDate')).nativeElement;
 
           expect(subscriptionEnd.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_until, 'longDate'));
         });
@@ -129,11 +129,9 @@ describe('SubscriptionCardComponent', () => {
           fixture.detectChanges();
         });
         it('should show subscription start date', () => {
-          const subscriptionStart: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+          const subscriptionEnd = fixture.debugElement.query(By.css('.SubscriptionCard__endDate'));
 
-          expect(subscriptionStart.textContent).not.toContain(
-            new DatePipe('en').transform(component.subscription.subscribed_until, 'longDate')
-          );
+          expect(subscriptionEnd).toBeFalsy();
         });
       });
     });
@@ -157,9 +155,9 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should show banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner'));
 
-        expect(trialBannerHidden).toBeFalsy();
+        expect(trialBannerHidden).toBeTruthy();
       });
       it('should show free days amount', () => {
         const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__banner')).nativeElement;
@@ -167,7 +165,7 @@ describe('SubscriptionCardComponent', () => {
         expect(trialBanner.textContent).toContain(component.subscription.trial_days);
       });
       it('should show trial banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--trial'));
+        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner'));
 
         expect(trialBannerHidden).toBeTruthy();
       });
@@ -180,19 +178,14 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should show banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
+        const banner = fixture.debugElement.query(By.css('.SubscriptionCard__banner'));
 
-        expect(trialBannerHidden).toBeFalsy();
+        expect(banner).toBeTruthy();
       });
       it('should show discount percentage', () => {
-        const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__banner')).nativeElement;
+        const banner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__banner')).nativeElement;
 
-        expect(trialBanner.textContent).toContain(TIER_WITH_DISCOUNT.discount.percentage);
-      });
-      it('should show discount banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--discount'));
-
-        expect(trialBannerHidden).toBeTruthy();
+        expect(banner.textContent).toContain(TIER_WITH_DISCOUNT.discount.percentage);
       });
     });
 
@@ -203,28 +196,20 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should not show banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
+        const banner = fixture.debugElement.query(By.css('.SubscriptionCard__banner'));
 
-        expect(trialBannerHidden).toBeTruthy();
+        expect(banner).toBeFalsy();
       });
     });
 
-    it('should show inactive icon', () => {
-      expect(component.iconSrc).toEqual(`/assets/icons/categories/normal/${component.subscription.category_icon}.svg`);
+    it('should show icon', () => {
+      expect(component.iconSrc).toEqual(`/assets/images/subscriptions/types/${component.subscription.category_icon}.svg`);
     });
 
     it('should show title', () => {
       const title: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__title')).nativeElement;
 
       expect(title.textContent).toEqual(component.subscription.category_name);
-    });
-
-    it('should show benefits', () => {
-      component.subscriptionBenefits = ['benefit1', 'benefit2'];
-      fixture.detectChanges();
-
-      const benefitsContainer: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
-      expect(benefitsContainer.children[0].children.length).toBe(2);
     });
   });
 

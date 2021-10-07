@@ -21,17 +21,6 @@
     color: $white;
   }
 
-  &__info {
-    font-size: $font-size-s;
-    &--edit {
-      color: $walla-main;
-      cursor: pointer;
-    }
-    &--price {
-      font-weight: $font-weight-chunky;
-    }
-  }
-
   &__title {
     font-size: $font-size-l;
     font-weight: $font-weight-chunky;
@@ -56,17 +45,11 @@
     border: 2px solid $color-pro-main;
   }
 
-  &__date {
-    font-size: $font-size-m;
-  }
-
   &__price {
-    font-size: $font-size-m;
     font-weight: $font-weight-chunky;
 
-    &__description {
+    &Description {
       color: $blue-grey-2;
-      font-size: $font-size-s;
       font-weight: normal;
     }
   }

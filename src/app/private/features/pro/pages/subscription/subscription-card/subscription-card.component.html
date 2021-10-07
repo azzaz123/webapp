@@ -22,7 +22,7 @@
             <ng-template #subscriptionPrice>
                 <span
                     i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.discount ? subscription.selected_tier.discount.price : subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span>
-                <div class="SubscriptionCard__price__description">
+                <div class="SubscriptionCard__priceDescription">
                     <span *ngIf="subscription.trial_available;else noFreeTrialDesc"
                         i18n="@@web_price_after_free_days">at the end of free trial</span>
                     <ng-template #noFreeTrialDesc>
@@ -42,7 +42,7 @@
                     from <b>{{subscription.subscribed_from | date:'longDate' }}</b>
                 </span>
             </div>
-            <div class="mb-2 text-md-left" *ngIf="subscription.subscribed_until">
+            <div class="mb-2 text-md-left SubscriptionCard__endDate" *ngIf="subscription.subscribed_until">
                 <span i18n="@@pro_manage_subscriptions_view_cancel_plan_cancel_subscription_status_description">You
                     requested subscription cancellation, the deactivation will be effective starting</span><b
                     ngPreserveWhitespaces> {{subscription.subscribed_until | date:'longDate' }}</b>
