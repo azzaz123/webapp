@@ -13,6 +13,13 @@
     margin-top: $spacing-m;
   }
 
+  &__content {
+    max-width: 500px;
+    @include media-breakpoint-down(sm) {
+      margin-top: $spacing-ms;
+    }
+  }
+
   &__banner {
     border-radius: 21px;
     font-weight: $font-weight-chunky;
